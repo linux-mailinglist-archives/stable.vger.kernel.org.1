@@ -1,156 +1,342 @@
-Return-Path: <stable+bounces-179408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125BAB55A73
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 01:46:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1A2B55DDF
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 04:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9BB37BE2F1
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 23:44:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A215EAC4AC2
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 02:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A5F28469B;
-	Fri, 12 Sep 2025 23:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BA81DBB2E;
+	Sat, 13 Sep 2025 02:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HdPbYmdq"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="K+QLVMqx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F055D19258E;
-	Fri, 12 Sep 2025 23:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690141C7015
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 02:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757720754; cv=none; b=eWSwM5Jd6IYqoGbioqJmWTAA4J83yV/jwJEfgdeyp1HZ2Aaq26hHtKgm9OPFBf1xvfc2qKAziG8bai+3+roCr+E7hC4N5q1vdgGXXu33J/N7ODXE2f0jBsIuwiLghjs5NkGJQDHDVjSZutSwQbCEOAN7pOX7ni3uEwaoFmYbiSI=
+	t=1757731706; cv=none; b=P5E8I4/GGo2Yo/wjGY43AkCLVGTavtg13sbptHum3mCxR8u7HqQFLrhd2bWTSilr1Z0ysiRGqSVjGTwlcubAuYXzRtrPmlbDVicW2gdawrBfYji3UAwTE4H7zhbeAvZedanzvBiTpxx2T/wIzva7tKi4VNMUd4AepjoRu7+nt7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757720754; c=relaxed/simple;
-	bh=SOVAzC1jMb7cNXpuMxdlDIX2YS5nXeUAkLHtZaFcXVg=;
-	h=Date:To:From:Subject:Message-Id; b=p4LYhRBuuhUO+jJ8cDu6MjMgEM3RL05zRoItrT2/SUuLdCL7R81bRN0VItVid1r/M+9uQ5HbwNAZCDgT3dqpYGG4qe5MRjRjSWBvnL5jrtiMXb/Gf9uCuQ5anVi3YqtUBAaXZOSov49Mc21Kvt7TVdno3q65q7ZhsqBJwHPqmIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HdPbYmdq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657CFC4CEF1;
-	Fri, 12 Sep 2025 23:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757720753;
-	bh=SOVAzC1jMb7cNXpuMxdlDIX2YS5nXeUAkLHtZaFcXVg=;
-	h=Date:To:From:Subject:From;
-	b=HdPbYmdqSZvMukJDvKiS/0t2ialGvtOy2x4UMMFp7ZpHXlimDAlZlYxBp/RI0MRUd
-	 gQPB2WIFhH5OEEWG6GM+dsBfem4wTvtgYqNhDWw90jivczelyOG8d202IduT/vX+eO
-	 WX/Z4zFmWfC6NT43551I8EPBvX7KbNqh1Vw06o+U=
-Date: Fri, 12 Sep 2025 16:45:52 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250912234553.657CFC4CEF1@smtp.kernel.org>
+	s=arc-20240116; t=1757731706; c=relaxed/simple;
+	bh=ZgDzLUPuZXuQEWnXyNiXs6bEELAKGlfOKneMLqyun5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c46+XJTUT5OouT9NmgFIFVee0XeAK769QNaCTUoyBZ/9QQ8Doy08wkOU7hWx1rQxjpdAQHy7P9dfCz6IQ4d40a1itF9DBfdoO0/ugiZ1cheg4I1ndAvrVHe7i9RbY8W3xYOpzjNkXaHck/8SJ6gDZLSwe+yWwCvxyNBTn24Zcr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=K+QLVMqx; arc=none smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-62470472ebaso1304783d50.1
+        for <stable@vger.kernel.org>; Fri, 12 Sep 2025 19:48:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1757731703; x=1758336503; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dkY2yS7RSwh45nVEv3otHU3VH9SAKoF62TZrQgSQhHE=;
+        b=K+QLVMqxoe/VPwG14fizIyXZJhHeo7E909SiTRkxy9MdedQ555Co7frMx1W0bGNdHu
+         J9Z6k586KkpF1nTkU24dj438IUr7kXq8Fg1+SS2FPURLAsj2BD6dEtW0cGwrFlXvQFu8
+         x9kTdCxCxgjWni+ioxLM8cJChC0i7YV98xZqOGJpj8A/Ojo1eKB7H5X5VKKT+FWlMhSh
+         KmsQMaBcaOA3fHj7nwSFh0svbYDgVVAPMLUeZYI9+MAOZu6PtR55qG9KFZggk0v0G08F
+         fA1QIp0gIyjhpFQ7Uu/pjl55pqhyGWguUNDMYbFwYnpj5B7kf9/JmkGMMikznMBPKgB5
+         lgzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757731703; x=1758336503;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dkY2yS7RSwh45nVEv3otHU3VH9SAKoF62TZrQgSQhHE=;
+        b=pjA9kHfyk9YU9ZJGCyJkrALRgOchApslOshMJ3Xgr02GLzJerdhlpcmHCLdf2UbYvB
+         cPG9aCAGLmQ7yQLxc/gudUtb86Jd86r7ELcgdi1gbWXiA4pWKM62BS7oYA049HmHF5RH
+         h/7Zz1bXt7UeN/qtIyHUpBloTvqa4hXIu/SFIMn2tQIiKGBOynKePL5fK7Y6acZeghnc
+         DXydrl1P3+wchYIDZTawS7zXomoo1A3kmzn0mqtRVpMOItLe5ge7mT29TAfPS/OFmnwe
+         pQUE6vBaS9+DH8cIksIfuBdwc7PoigM5ah7exgfipHoUXKC81ztVmHyHg9S65X4qluTM
+         5v0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUY4dv5bDoSro/J+O7d8iNFL3Vw08MsRmY2rKK6AQkTvZi0LAteTYf9vOWzm0gIbp4q+3sucWQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIUhEswRsBOf2XGq23Plg0ff1FzaGuVtqA0JES7dSasz6fJuXz
+	Blnucd7Bq7EtAbFenM7RJ4Pn55l8bDImk+ff3Oov4aVC5Ujp5udcMh+XQuXmXW0bzIoUiKiufU2
+	etPHFzfWsKg4FZ2yqx78F4JgJ3E+iCA8L1rJ5SEY4NA==
+X-Gm-Gg: ASbGncvHrbeA2Jxqcq/9vVyEkqKN4RKxjfMimKwti2RY8X2qAIB1t0V9o34s2K4bxUR
+	gERxTWk8+pM533Z/y5t/S4+oOYm+oCvkAFjdmsxGFHbfku7PEcHY/3Gy1LhVnBQdzPY7lrN+UVi
+	ZjI+9N6AgUYECg+XKkMpJ4mgDXIjSKLY9rl6xzZAUfXLg1k1+kHFIWGiiiOCg0chjBHEdbvl6sz
+	vRy/WJ8A2warJk=
+X-Google-Smtp-Source: AGHT+IGiKD+4jzf4TGq8bTBu8gsWjwWmWFiXXnkLbYhS2Yr6yBghdtRZuNxqqC+KU1Yu03Hdf+Hg2fEWLC9p8tq8dhA=
+X-Received: by 2002:a53:e712:0:b0:5fe:91c3:f0fb with SMTP id
+ 956f58d0204a3-627234f4904mr3827458d50.32.1757731703206; Fri, 12 Sep 2025
+ 19:48:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <8957c526-d05c-4c0d-bfed-0eb6e6d2476c@linux.ibm.com> <BAEAC2F7-7D7F-49E4-AB21-10FC0E4BF5F3@linux.ibm.com>
+In-Reply-To: <BAEAC2F7-7D7F-49E4-AB21-10FC0E4BF5F3@linux.ibm.com>
+From: Julian Sun <sunjunchao@bytedance.com>
+Date: Sat, 13 Sep 2025 10:48:12 +0800
+X-Gm-Features: Ac12FXxyQ3rupesgBRE_rBBovmGPVj00T36Qe6boIv2jYp-KBN6pOz85tL_EOvs
+Message-ID: <CAHSKhteHC26yXVFtjgdanfM7+vsOVZ+HHWnBYD01A4eiRHibVQ@mail.gmail.com>
+Subject: Re: [External] Re: [linux-next20250911]Kernel OOPs while running
+ generic/256 on Pmem device
+To: Venkat <venkat88@linux.ibm.com>
+Cc: tj@kernel.org, akpm@linux-foundation.org, stable@vger.kernel.org, 
+	songmuchun@bytedance.com, shakeelb@google.com, hannes@cmpxchg.org, 
+	roman.gushchin@linux.dev, mhocko@suse.com, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, riteshh@linux.ibm.com, 
+	ojaswin@linux.ibm.com, linux-fsdevel@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, 
+	cgroups@vger.kernel.org, linux-mm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+Does this fix make sense to you?
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d0dfaa0ccaba..ed24dcece56a 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3945,9 +3945,10 @@ static void mem_cgroup_css_free(struct
+cgroup_subsys_state *css)
+                 * Not necessary to wait for wb completion which might
+cause task hung,
+                 * only used to free resources. See
+memcg_cgwb_waitq_callback_fn().
+                 */
+-               __add_wait_queue_entry_tail(wait->done.waitq, &wait->wq_ent=
+ry);
+                if (atomic_dec_and_test(&wait->done.cnt))
+-                       wake_up_all(wait->done.waitq);
++                       kfree(wait);
++               else
++                       __add_wait_queue_entry_tail(wait->done.waitq,
+&wait->wq_entry);;
+        }
+ #endif
+        if (cgroup_subsys_on_dfl(memory_cgrp_subsys) && !cgroup_memory_noso=
+cket)
+
+On Fri, Sep 12, 2025 at 8:33=E2=80=AFPM Venkat <venkat88@linux.ibm.com> wro=
+te:
+>
+>
+>
+> > On 12 Sep 2025, at 10:51=E2=80=AFAM, Venkat Rao Bagalkote <venkat88@lin=
+ux.ibm.com> wrote:
+> >
+> > Greetings!!!
+> >
+> >
+> > IBM CI has reported a kernel crash, while running generic/256 test case=
+ on pmem device from xfstests suite on linux-next20250911 kernel.
+> >
+> >
+> > xfstests: git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
+> >
+> > local.config:
+> >
+> > [xfs_dax]
+> > export RECREATE_TEST_DEV=3Dtrue
+> > export TEST_DEV=3D/dev/pmem0
+> > export TEST_DIR=3D/mnt/test_pmem
+> > export SCRATCH_DEV=3D/dev/pmem0.1
+> > export SCRATCH_MNT=3D/mnt/scratch_pmem
+> > export MKFS_OPTIONS=3D"-m reflink=3D0 -b size=3D65536 -s size=3D512"
+> > export FSTYP=3Dxfs
+> > export MOUNT_OPTIONS=3D"-o dax"
+> >
+> >
+> > Test case: generic/256
+> >
+> >
+> > Traces:
+> >
+> >
+> > [  163.371929] ------------[ cut here ]------------
+> > [  163.371936] kernel BUG at lib/list_debug.c:29!
+> > [  163.371946] Oops: Exception in kernel mode, sig: 5 [#1]
+> > [  163.371954] LE PAGE_SIZE=3D64K MMU=3DRadix  SMP NR_CPUS=3D8192 NUMA =
+pSeries
+> > [  163.371965] Modules linked in: xfs nft_fib_inet nft_fib_ipv4 nft_fib=
+_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_=
+ct nft_chain_nat nf_nat nf_conntrack bonding tls nf_defrag_ipv6 nf_defrag_i=
+pv4 rfkill ip_set nf_tables nfnetlink sunrpc pseries_rng vmx_crypto dax_pme=
+m fuse ext4 crc16 mbcache jbd2 nd_pmem papr_scm sd_mod libnvdimm sg ibmvscs=
+i ibmveth scsi_transport_srp pseries_wdt
+> > [  163.372127] CPU: 22 UID: 0 PID: 130 Comm: kworker/22:0 Kdump: loaded=
+ Not tainted 6.17.0-rc5-next-20250911 #1 VOLUNTARY
+> > [  163.372142] Hardware name: IBM,9080-HEX Power11 (architected) 0x8202=
+00 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+> > [  163.372155] Workqueue: cgroup_free css_free_rwork_fn
+> > [  163.372169] NIP:  c000000000d051d4 LR: c000000000d051d0 CTR: 0000000=
+000000000
+> > [  163.372176] REGS: c00000000ba079b0 TRAP: 0700   Not tainted (6.17.0-=
+rc5-next-20250911)
+> > [  163.372183] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>=
+  CR: 28000000  XER: 00000006
+> > [  163.372214] CFAR: c0000000002bae9c IRQMASK: 0
+> > [  163.372214] GPR00: c000000000d051d0 c00000000ba07c50 c00000000230a60=
+0 0000000000000075
+> > [  163.372214] GPR04: 0000000000000004 0000000000000001 c000000000507e2=
+c 0000000000000001
+> > [  163.372214] GPR08: c000000d0cb87d13 0000000000000000 000000000000000=
+0 a80e000000000000
+> > [  163.372214] GPR12: c00e0001a1970fa2 c000000d0ddec700 c000000000208e5=
+8 c000000107b5e190
+> > [  163.372214] GPR16: c00000000d3e5d08 c00000000b71cf78 c00000000d3e5d0=
+5 c00000000b71cf30
+> > [  163.372214] GPR20: c00000000b71cf08 c00000000b71cf10 c000000019f5858=
+8 c000000004704bc8
+> > [  163.372214] GPR24: c000000107b5e100 c000000004704bd0 000000000000000=
+3 c000000004704bd0
+> > [  163.372214] GPR28: c000000004704bc8 c000000019f585a8 c000000019f53da=
+8 c000000004704bc8
+> > [  163.372315] NIP [c000000000d051d4] __list_add_valid_or_report+0x124/=
+0x188
+> > [  163.372326] LR [c000000000d051d0] __list_add_valid_or_report+0x120/0=
+x188
+> > [  163.372335] Call Trace:
+> > [  163.372339] [c00000000ba07c50] [c000000000d051d0] __list_add_valid_o=
+r_report+0x120/0x188 (unreliable)
+> > [  163.372352] [c00000000ba07ce0] [c000000000834280] mem_cgroup_css_fre=
+e+0xa0/0x27c
+> > [  163.372363] [c00000000ba07d50] [c0000000003ba198] css_free_rwork_fn+=
+0xd0/0x59c
+> > [  163.372374] [c00000000ba07da0] [c0000000001f5d60] process_one_work+0=
+x41c/0x89c
+> > [  163.372385] [c00000000ba07eb0] [c0000000001f76c0] worker_thread+0x55=
+8/0x848
+> > [  163.372394] [c00000000ba07f80] [c000000000209038] kthread+0x1e8/0x23=
+0
+> > [  163.372406] [c00000000ba07fe0] [c00000000000ded8] start_kernel_threa=
+d+0x14/0x18
+> > [  163.372416] Code: 4b9b1099 60000000 7f63db78 4bae8245 60000000 e8bf0=
+008 3c62ff88 7fe6fb78 7fc4f378 38637d40 4b5b5c89 60000000 <0fe00000> 600000=
+00 60000000 7f83e378
+> > [  163.372453] ---[ end trace 0000000000000000 ]---
+> > [  163.380581] pstore: backend (nvram) writing error (-1)
+> > [  163.380593]
+> >
+> >
+> > If you happen to fix this issue, please add below tag.
+> >
+> >
+> > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> >
+> >
+> >
+> > Regards,
+> >
+> > Venkat.
+> >
+> >
+>
+> After reverting the below commit, issue is not seen.
+>
+> commit 61bbf51e75df1a94cf6736e311cb96aeb79826a8
+> Author: Julian Sun <sunjunchao@bytedance.com>
+> Date:   Thu Aug 28 04:45:57 2025 +0800
+>
+>     memcg: don't wait writeback completion when release memcg
+>          Recently, we encountered the following hung task:
+>          INFO: task kworker/4:1:1334558 blocked for more than 1720 second=
+s.
+>     [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_f=
+n
+>     [Wed Jul 30 17:47:45 2025] Call Trace:
+>     [Wed Jul 30 17:47:45 2025]  __schedule+0x934/0xe10
+>     [Wed Jul 30 17:47:45 2025]  ? complete+0x3b/0x50
+>     [Wed Jul 30 17:47:45 2025]  ? _cond_resched+0x15/0x30
+>     [Wed Jul 30 17:47:45 2025]  schedule+0x40/0xb0
+>     [Wed Jul 30 17:47:45 2025]  wb_wait_for_completion+0x52/0x80
+>     [Wed Jul 30 17:47:45 2025]  ? finish_wait+0x80/0x80
+>     [Wed Jul 30 17:47:45 2025]  mem_cgroup_css_free+0x22/0x1b0
+>     [Wed Jul 30 17:47:45 2025]  css_free_rwork_fn+0x42/0x380
+>     [Wed Jul 30 17:47:45 2025]  process_one_work+0x1a2/0x360
+>     [Wed Jul 30 17:47:45 2025]  worker_thread+0x30/0x390
+>     [Wed Jul 30 17:47:45 2025]  ? create_worker+0x1a0/0x1a0
+>     [Wed Jul 30 17:47:45 2025]  kthread+0x110/0x130
+>     [Wed Jul 30 17:47:45 2025]  ? __kthread_cancel_work+0x40/0x40
+>     [Wed Jul 30 17:47:45 2025]  ret_from_fork+0x1f/0x30
+>          The direct cause is that memcg spends a long time waiting for di=
+rty page
+>     writeback of foreign memcgs during release.
+>          The root causes are:
+>         a. The wb may have multiple writeback tasks, containing millions
+>            of dirty pages, as shown below:
+>          >>> for work in list_for_each_entry("struct wb_writeback_work", =
+\
+>                                         wb.work_list.address_of_(), "list=
+"):
+>     ...     print(work.nr_pages, work.reason, hex(work))
+>     ...
+>     900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
+>     1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
+>     1275228 WB_REASON_FOREIGN_FLUSH 0xffff969d9b444bc0
+>     1099673 WB_REASON_FOREIGN_FLUSH 0xffff969f0954d6c0
+>     1351522 WB_REASON_FOREIGN_FLUSH 0xffff969e76713340
+>     2567437 WB_REASON_FOREIGN_FLUSH 0xffff9694ae208400
+>     2954033 WB_REASON_FOREIGN_FLUSH 0xffff96a22d62cbc0
+>     3008860 WB_REASON_FOREIGN_FLUSH 0xffff969eee8ce3c0
+>     3337932 WB_REASON_FOREIGN_FLUSH 0xffff9695b45156c0
+>     3348916 WB_REASON_FOREIGN_FLUSH 0xffff96a22c7a4f40
+>     3345363 WB_REASON_FOREIGN_FLUSH 0xffff969e5d872800
+>     3333581 WB_REASON_FOREIGN_FLUSH 0xffff969efd0f4600
+>     3382225 WB_REASON_FOREIGN_FLUSH 0xffff969e770edcc0
+>     3418770 WB_REASON_FOREIGN_FLUSH 0xffff96a252ceea40
+>     3387648 WB_REASON_FOREIGN_FLUSH 0xffff96a3bda86340
+>     3385420 WB_REASON_FOREIGN_FLUSH 0xffff969efc6eb280
+>     3418730 WB_REASON_FOREIGN_FLUSH 0xffff96a348ab1040
+>     3426155 WB_REASON_FOREIGN_FLUSH 0xffff969d90beac00
+>     3397995 WB_REASON_FOREIGN_FLUSH 0xffff96a2d7288800
+>     3293095 WB_REASON_FOREIGN_FLUSH 0xffff969dab423240
+>     3293595 WB_REASON_FOREIGN_FLUSH 0xffff969c765ff400
+>     3199511 WB_REASON_FOREIGN_FLUSH 0xffff969a72d5e680
+>     3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
+>     3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
+>              b. The writeback might severely throttled by wbt, with a spe=
+ed
+>            possibly less than 100kb/s, leading to a very long writeback t=
+ime.
+>          >>> wb.write_bandwidth
+>     (unsigned long)24
+>     >>> wb.write_bandwidth
+>     (unsigned long)13
+>          The wb_wait_for_completion() here is probably only used to preve=
+nt
+>     use-after-free.  Therefore, we manage 'done' separately and automatic=
+ally
+>     free it.
+>          This allows us to remove wb_wait_for_completion() while preventi=
+ng the
+>     use-after-free issue.
+>      com
+>     Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flush=
+ing")
+>     Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+>     Acked-by: Tejun Heo <tj@kernel.org>
+>     Cc: Michal Hocko <mhocko@suse.com>
+>     Cc: Roman Gushchin <roman.gushchin@linux.dev>
+>     Cc: Johannes Weiner <hannes@cmpxchg.org>
+>     Cc: Shakeel Butt <shakeelb@google.com>
+>     Cc: Muchun Song <songmuchun@bytedance.com>
+>     Cc: <stable@vger.kernel.org>
+>     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>
+> Regards,
+> Venkat.
+>
+> >
+>
 
 
-The patch titled
-     Subject: mm/hugetlb: fix folio is still mapped when deleted
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jinjiang Tu <tujinjiang@huawei.com>
-Subject: mm/hugetlb: fix folio is still mapped when deleted
-Date: Fri, 12 Sep 2025 15:41:39 +0800
-
-Migration may be raced with fallocating hole.  remove_inode_single_folio
-will unmap the folio if the folio is still mapped.  However, it's called
-without folio lock.  If the folio is migrated and the mapped pte has been
-converted to migration entry, folio_mapped() returns false, and won't
-unmap it.  Due to extra refcount held by remove_inode_single_folio,
-migration fails, restores migration entry to normal pte, and the folio is
-mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
-
-The log is as follows:
- BUG: Bad page cache in process hugetlb  pfn:156c00
- page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
- head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
- aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
- flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
- page_type: f4(hugetlb)
- page dumped because: still mapped when deleted
- CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
- Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x70
-  filemap_unaccount_folio+0xc4/0x1c0
-  __filemap_remove_folio+0x38/0x1c0
-  filemap_remove_folio+0x41/0xd0
-  remove_inode_hugepages+0x142/0x250
-  hugetlbfs_fallocate+0x471/0x5a0
-  vfs_fallocate+0x149/0x380
-
-Hold folio lock before checking if the folio is mapped to avold race with
-migration.
-
-Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
-Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/hugetlbfs/inode.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
---- a/fs/hugetlbfs/inode.c~mm-hugetlb-fix-folio-is-still-mapped-when-deleted
-+++ a/fs/hugetlbfs/inode.c
-@@ -517,14 +517,16 @@ static bool remove_inode_single_folio(st
- 
- 	/*
- 	 * If folio is mapped, it was faulted in after being
--	 * unmapped in caller.  Unmap (again) while holding
--	 * the fault mutex.  The mutex will prevent faults
--	 * until we finish removing the folio.
-+	 * unmapped in caller or hugetlb_vmdelete_list() skips
-+	 * unmapping it due to fail to grab lock.  Unmap (again)
-+	 * while holding the fault mutex.  The mutex will prevent
-+	 * faults until we finish removing the folio.  Hold folio
-+	 * lock to guarantee no concurrent migration.
- 	 */
-+	folio_lock(folio);
- 	if (unlikely(folio_mapped(folio)))
- 		hugetlb_unmap_file_folio(h, mapping, folio, index);
- 
--	folio_lock(folio);
- 	/*
- 	 * We must remove the folio from page cache before removing
- 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
-_
-
-Patches currently in -mm which might be from tujinjiang@huawei.com are
-
-mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
-filemap-optimize-folio-refount-update-in-filemap_map_pages.patch
-
+--=20
+Julian Sun <sunjunchao@bytedance.com>
 
