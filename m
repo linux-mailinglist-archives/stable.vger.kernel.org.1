@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-179438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F107B560AB
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:23:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0A3B560AE
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C9E3565654
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:23:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0EB57B8A8B
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A1A2EC565;
-	Sat, 13 Sep 2025 12:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4882ECD1C;
+	Sat, 13 Sep 2025 12:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiCgljn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfMSiMx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671062EB5D8
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677E82ECD07
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766180; cv=none; b=pdIFG3R0ZwKvJhE2KmzTzKYS2VxvGk7fP57SOrYRAW8Cg3QsOzPATCWC9eGWZcTB2FjRS1hPWn5Ssl5btosQxznnZiWY8MYnwpV+8F9+yhs2iP//wDwFz4hgCMwVNfB4gQAd1HRHuebghWeSyZK7VdktK9BKEU6aJHUnC3mXsws=
+	t=1757766192; cv=none; b=ER16IOM5DLJpfjNCNUq2UezSqoNnWkUGYr/E+f3/KciVBL+w0zXIU6jWAPdNvuAXsk8R23Xu/qvdl3Mg4iN6DtUj36EeF4uAJvIGuWAm/3x2TvwXerQXBlWlV0Hu43sVdedWaDz1hjk0UjN++FCus8kkhR8czOTraDLl+z0fQzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766180; c=relaxed/simple;
-	bh=a2mufQn9CyyGPTnz9yfAjccaMMhkKci035kmZDazAuo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oyr8QM1pPrmsdIyMF+2kqVcXbdNPDxeOq1pwocTgeTJTdScDGqHc9jKcWMGtC1tu/To2eNpaPhKZLCiPdLkNolrX/yyb/WwqZFPsLBa2T7vIOiR+oVG2BcK36jNwefPxuCa64teOqqOTV2kYOFV/J0sPwR2veq7BUMMvpEqgX5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiCgljn1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A35BC4CEEB;
-	Sat, 13 Sep 2025 12:22:59 +0000 (UTC)
+	s=arc-20240116; t=1757766192; c=relaxed/simple;
+	bh=Lp1rmA3QiJJ94vMgfP2qBpb6jtnkSk6zkC3nAMaMfec=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RQ+Fb51fI8kzLhq9xIM+DaNnXRZpvvQ8mefc/JEHMgt28bFU42KuBV3CjrSyu8FfxfCh5g7MvT6XYtwe3Ub+xoe0I+LqVbfnK5G+8xPFDdV4TrPnoImVQ53pN6EnDBvGOVzCaGgkM9GSmKSyImJuoNxdpI087GMalXL3nYzenpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfMSiMx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ECCC4CEEB;
+	Sat, 13 Sep 2025 12:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766179;
-	bh=a2mufQn9CyyGPTnz9yfAjccaMMhkKci035kmZDazAuo=;
+	s=korg; t=1757766191;
+	bh=Lp1rmA3QiJJ94vMgfP2qBpb6jtnkSk6zkC3nAMaMfec=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JiCgljn19MJ6IhPkAZK1mkSNQdONkYeSK4CIZLK9qJwhmxHbKov6gE102MOsUJ6Yg
-	 XMsIyAxpKFhYNjc2JPBt26FE1LwwADtB/06jsZnVMZoEXwkDUwk+48L3wys8duwq3Z
-	 z5VJJgLVtovpvLhmDoQleRQSFktsyKkvwExv1E/8=
-Subject: FAILED: patch "[PATCH] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing" failed to apply to 5.10-stable tree
-To: alexander.sverdlin@gmail.com,ada@thorsis.com,alexander.sverdlin@siemens.com,miquel.raynal@bootlin.com
+	b=GfMSiMx1khEeOOaETBl7SoIbJuPew31FAUfq0UE9O8uOwGfGVBxJMEeSV9fR62iA6
+	 j+TqQZltL3gtHdFdvBo2wiwCHb69eb66aWMQrcwQpm6tl+ATApYVQC9DrnmKApetAs
+	 M4Glr9Ptqs5hsQMMgXOaQ/XIA4EMQ7Ps24nO5ncY=
+Subject: FAILED: patch "[PATCH] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC" failed to apply to 5.15-stable tree
+To: christophe.kerello@foss.st.com,miquel.raynal@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:22:46 +0200
-Message-ID: <2025091346-museum-immunity-ab3d@gregkh>
+Date: Sat, 13 Sep 2025 14:23:08 +0200
+Message-ID: <2025091308-trio-unedited-6b17@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x fd779eac2d659668be4d3dbdac0710afd5d6db12
+git cherry-pick -x 513c40e59d5a414ab763a9c84797534b5e8c208d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091346-museum-immunity-ab3d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091308-trio-unedited-6b17@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,58 +77,134 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fd779eac2d659668be4d3dbdac0710afd5d6db12 Mon Sep 17 00:00:00 2001
-From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Date: Thu, 21 Aug 2025 14:00:57 +0200
-Subject: [PATCH] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
+From 513c40e59d5a414ab763a9c84797534b5e8c208d Mon Sep 17 00:00:00 2001
+From: Christophe Kerello <christophe.kerello@foss.st.com>
+Date: Tue, 12 Aug 2025 09:26:58 +0200
+Subject: [PATCH] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC
+ buffer
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+Avoid below overlapping mappings by using a contiguous
+non-cacheable buffer.
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
+[    4.077708] DMA-API: stm32_fmc2_nfc 48810000.nand-controller: cacheline tracking EEXIST,
+overlapping mappings aren't supported
+[    4.089103] WARNING: CPU: 1 PID: 44 at kernel/dma/debug.c:568 add_dma_entry+0x23c/0x300
+[    4.097071] Modules linked in:
+[    4.100101] CPU: 1 PID: 44 Comm: kworker/u4:2 Not tainted 6.1.82 #1
+[    4.106346] Hardware name: STMicroelectronics STM32MP257F VALID1 SNOR / MB1704 (LPDDR4 Power discrete) + MB1703 + MB1708 (SNOR MB1730) (DT)
+[    4.118824] Workqueue: events_unbound deferred_probe_work_func
+[    4.124674] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    4.131624] pc : add_dma_entry+0x23c/0x300
+[    4.135658] lr : add_dma_entry+0x23c/0x300
+[    4.139792] sp : ffff800009dbb490
+[    4.143016] x29: ffff800009dbb4a0 x28: 0000000004008022 x27: ffff8000098a6000
+[    4.150174] x26: 0000000000000000 x25: ffff8000099e7000 x24: ffff8000099e7de8
+[    4.157231] x23: 00000000ffffffff x22: 0000000000000000 x21: ffff8000098a6a20
+[    4.164388] x20: ffff000080964180 x19: ffff800009819ba0 x18: 0000000000000006
+[    4.171545] x17: 6361727420656e69 x16: 6c6568636163203a x15: 72656c6c6f72746e
+[    4.178602] x14: 6f632d646e616e2e x13: ffff800009832f58 x12: 00000000000004ec
+[    4.185759] x11: 00000000000001a4 x10: ffff80000988af58 x9 : ffff800009832f58
+[    4.192916] x8 : 00000000ffffefff x7 : ffff80000988af58 x6 : 80000000fffff000
+[    4.199972] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
+[    4.207128] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000812d2c40
+[    4.214185] Call trace:
+[    4.216605]  add_dma_entry+0x23c/0x300
+[    4.220338]  debug_dma_map_sg+0x198/0x350
+[    4.224373]  __dma_map_sg_attrs+0xa0/0x110
+[    4.228411]  dma_map_sg_attrs+0x10/0x2c
+[    4.232247]  stm32_fmc2_nfc_xfer.isra.0+0x1c8/0x3fc
+[    4.237088]  stm32_fmc2_nfc_seq_read_page+0xc8/0x174
+[    4.242127]  nand_read_oob+0x1d4/0x8e0
+[    4.245861]  mtd_read_oob_std+0x58/0x84
+[    4.249596]  mtd_read_oob+0x90/0x150
+[    4.253231]  mtd_read+0x68/0xac
 
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
-
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
 Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Dahl <ada@thorsis.com>
+Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 84ab4a83cbd6..db94d14a3807 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1377,14 +1377,24 @@ static int atmel_smc_nand_prepare_smcconf(struct atmel_nand *nand,
- 	if (ret)
+diff --git a/drivers/mtd/nand/raw/stm32_fmc2_nand.c b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+index a960403081f1..222c3c3b6848 100644
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -272,6 +272,7 @@ struct stm32_fmc2_nfc {
+ 	struct sg_table dma_data_sg;
+ 	struct sg_table dma_ecc_sg;
+ 	u8 *ecc_buf;
++	dma_addr_t dma_ecc_addr;
+ 	int dma_ecc_len;
+ 	u32 tx_dma_max_burst;
+ 	u32 rx_dma_max_burst;
+@@ -902,17 +903,10 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+ 
+ 	if (!write_data && !raw) {
+ 		/* Configure DMA ECC status */
+-		p = nfc->ecc_buf;
+ 		for_each_sg(nfc->dma_ecc_sg.sgl, sg, eccsteps, s) {
+-			sg_set_buf(sg, p, nfc->dma_ecc_len);
+-			p += nfc->dma_ecc_len;
+-		}
+-
+-		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+-				 eccsteps, dma_data_dir);
+-		if (!ret) {
+-			ret = -EIO;
+-			goto err_unmap_data;
++			sg_dma_address(sg) = nfc->dma_ecc_addr +
++					     s * nfc->dma_ecc_len;
++			sg_dma_len(sg) = nfc->dma_ecc_len;
+ 		}
+ 
+ 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
+@@ -921,7 +915,7 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+ 						   DMA_PREP_INTERRUPT);
+ 		if (!desc_ecc) {
+ 			ret = -ENOMEM;
+-			goto err_unmap_ecc;
++			goto err_unmap_data;
+ 		}
+ 
+ 		reinit_completion(&nfc->dma_ecc_complete);
+@@ -929,7 +923,7 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+ 		desc_ecc->callback_param = &nfc->dma_ecc_complete;
+ 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
+ 		if (ret)
+-			goto err_unmap_ecc;
++			goto err_unmap_data;
+ 
+ 		dma_async_issue_pending(nfc->dma_ecc_ch);
+ 	}
+@@ -949,7 +943,7 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+ 		if (!write_data && !raw)
+ 			dmaengine_terminate_all(nfc->dma_ecc_ch);
+ 		ret = -ETIMEDOUT;
+-		goto err_unmap_ecc;
++		goto err_unmap_data;
+ 	}
+ 
+ 	/* Wait DMA data transfer completion */
+@@ -969,11 +963,6 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+ 		}
+ 	}
+ 
+-err_unmap_ecc:
+-	if (!write_data && !raw)
+-		dma_unmap_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+-			     eccsteps, dma_data_dir);
+-
+ err_unmap_data:
+ 	dma_unmap_sg(nfc->dev, nfc->dma_data_sg.sgl, eccsteps, dma_data_dir);
+ 
+@@ -1610,7 +1599,8 @@ static int stm32_fmc2_nfc_dma_setup(struct stm32_fmc2_nfc *nfc)
  		return ret;
  
-+	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
+ 	/* Allocate a buffer to store ECC status registers */
+-	nfc->ecc_buf = devm_kzalloc(nfc->dev, FMC2_MAX_ECC_BUF_LEN, GFP_KERNEL);
++	nfc->ecc_buf = dmam_alloc_coherent(nfc->dev, FMC2_MAX_ECC_BUF_LEN,
++					   &nfc->dma_ecc_addr, GFP_KERNEL);
+ 	if (!nfc->ecc_buf)
+ 		return -ENOMEM;
+ 
 
 
