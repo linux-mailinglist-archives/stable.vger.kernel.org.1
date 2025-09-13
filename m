@@ -1,83 +1,99 @@
-Return-Path: <stable+bounces-179483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665C7B56123
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 15:33:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C93AB56157
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E313B24FB
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 13:33:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DCD13BC8E1
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3572F28EE;
-	Sat, 13 Sep 2025 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108F92EBDFD;
+	Sat, 13 Sep 2025 14:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="pqo+BTil"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q1b2DSTM"
 X-Original-To: stable@vger.kernel.org
-Received: from cdmsr1.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC3F2F0C4D
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 13:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42811E515
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 14:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757770221; cv=none; b=kWnqDX+NbXwQ7VXC5CZOmnFQD6M6GekBEsNrbsPzhqygtiCLkJuG86nI1/4l07FlrnhqN3owY2h/z+ePQZC7LyGwouLaZSlHMP6QAulsv066wb4OOr8zuQd8OJRD+o7gqJn7REnojJeDR/wXMGS4OiwpUBSD93Un1HQ9V+AphBE=
+	t=1757772620; cv=none; b=GRqB1Kf1D5Z5X4oGsxV0JlM3Um4i0Zo7+tvgKbGXqTRz0tajRZsVXx7Psh4YrZoQtt6QRSOeb4qBmjVmTRo4bk3tfrOULkvCxKIp2228nEG/+MsSR52TpSJJiHuglr2Ugj4xy34C85AWzRZlsFcgBO1nkSRo49rwBkR0pPLOEbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757770221; c=relaxed/simple;
-	bh=/OMbF9owtaHhE9k8kJ20eu1/oMpRys03hx98tByb++U=;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=aqWJ9PCgCxtZBEyaCek1g7joINvQ+8KDxxa9OH3/elEc0mbuhoZhaGPms4TuWZmptppkEfgmGuYj93g2DBF6Da79UXUFaCxBzqmvXM9eR1QILHXS04q6mH4VwNnbvPHJdT8yb1O7Z4dllOGqgt6qbilmmfLFwpxKVo90a3Wu2UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=pqo+BTil; arc=none smtp.client-ip=210.65.1.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
-Received: from cmsr6.hinet.net ([10.199.216.85])
-	by cdmsr1.hinet.net (8.15.2/8.15.2) with ESMTPS id 58DDU74g087959
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 21:30:10 +0800
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=ms29.hinet.net;
-	s=default; t=1757770210; bh=G8ZRgE8IGNZe3GIsPWp3hDJnuTo=;
-	h=From:To:Subject:Date;
-	b=pqo+BTilebMtEjZ3UyMnmx/1lYEUKixQdtGWe27/HYSM40L1I1zAXxttVUwdqn26U
-	 wMy+576HbvsRiP46nI+awiJdiEkGfuXEY/JejOuuwqxSKltJRWooGr9z2f+gLzcY/9
-	 rLFCXzYF7A9tWOkCQoPm1eDVOjOQ3gMWeiCwr9Nw=
-Received: from [127.0.0.1] (122-118-38-94.dynamic-ip.hinet.net [122.118.38.94])
-	by cmsr6.hinet.net (8.15.2/8.15.2) with ESMTPS id 58DDP7aj164563
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 21:25:28 +0800
-From: "Info - Albinayah 102" <Stable@ms29.hinet.net>
+	s=arc-20240116; t=1757772620; c=relaxed/simple;
+	bh=ShTIfg/nWe9l1HFwk7FyIYML7NbBCFBs24+Xq3txdFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rKjeTLxH9KTN3wDHfWFGN6HyvPRr4Olniz5jfcfY6wSU99Qlk2+myrptNz8zw88tLSXCbCzoCqxiqb2GSDvgGJSDRxTrLEwBVrpwoKEeEwVjdcwvYCYhvcNgc5+srr3+H/GK8l3f6VLD8ZbiIac+g32VtJGtj20/3o5U6g7qOJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q1b2DSTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC94DC4CEEB;
+	Sat, 13 Sep 2025 14:10:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757772620;
+	bh=ShTIfg/nWe9l1HFwk7FyIYML7NbBCFBs24+Xq3txdFE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q1b2DSTMnCDxM/IZaalAsHaXK4vCoAEmjX6CMbqEglo2z+slfBygR5l6mDvE0XuPU
+	 t1wt7AcsJlnyK3JmzW64BT9/pTnA8u8Q4AqGXIXvCNAuoBT8q5HJJ0pqn3TfwRYkab
+	 SKO7dQKWeV93G6e2B9gQbqyLeNmGiEQSqdHrbE8QQZGyjwiSY3d8O/RNFAusrMb1TF
+	 EaWsw9K4iT013Hpf+WkW/7MIl1/qajWCX2LTXei85MaDdJbu9j7pWf51sKpCt6kbUy
+	 eCmpM2Ru0bBrIw30d5UEtsIHX+WmvhJLWn9RYt8bpW9WTMcyKCVn3JxbndDC9Rdg+u
+	 aQdSAXiaxrs0w==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
-Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gOTA3ODUgU2F0dXJkYXksIFNlcHRlbWJlciAxMywgMjAyNSBhdCAwMzoyNToyNyBQTQ==?=
-Message-ID: <5bcf7b7f-0358-12e3-1369-610bb8785aa7@ms29.hinet.net>
-Content-Transfer-Encoding: 7bit
-Date: Sat, 13 Sep 2025 13:25:27 +0000
+Cc: Alexander Dahl <ada@thorsis.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] mtd: nand: raw: atmel: Fix comment in timings preparation
+Date: Sat, 13 Sep 2025 10:10:16 -0400
+Message-ID: <20250913141017.1361840-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025091345-disinfect-afterlife-38dd@gregkh>
+References: <2025091345-disinfect-afterlife-38dd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-HiNet-Brightmail: Spam
-X-CMAE-Score: 100
-X-CMAE-Analysis: v=2.4 cv=G5G/EMk5 c=0 sm=1 tr=0 ts=68c570c9
-	p=OrFXhexWvejrBOeqCD4A:9 a=SuhHfwZ5qzqcMNOjqX1vSA==:117 a=IkcTkHD0fZMA:10
-	a=5KLPUuaC_9wA:10
+Content-Transfer-Encoding: 8bit
 
-Hi Stable,
+From: Alexander Dahl <ada@thorsis.com>
 
-Please provide a quote for your products:
+[ Upstream commit 1c60e027ffdebd36f4da766d9c9abbd1ea4dd8f9 ]
 
-Include:
-1.Pricing (per unit)
-2.Delivery cost & timeline
-3.Quote expiry date
+Looks like a copy'n'paste mistake introduced when initially adding the
+dynamic timings feature with commit f9ce2eddf176 ("mtd: nand: atmel: Add
+->setup_data_interface() hooks").  The context around this and
+especially the code itself suggests 'read' is meant instead of write.
 
-Deadline: September
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240226122537.75097-1-ada@thorsis.com
+Stable-dep-of: fd779eac2d65 ("mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mtd/nand/raw/atmel/nand-controller.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks!
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index d4fd1302008eb..6e4a0c6c7cb4d 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1378,7 +1378,7 @@ static int atmel_smc_nand_prepare_smcconf(struct atmel_nand *nand,
+ 		return ret;
+ 
+ 	/*
+-	 * The write cycle timing is directly matching tWC, but is also
++	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
+-- 
+2.51.0
 
-Kamal Prasad
-
-Albinayah Trading
 
