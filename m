@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-179494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFADB561B2
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 17:08:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3CFB561B4
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 17:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 080EEAA7BC7
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 15:08:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4501B2768F
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 15:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D3B2EF664;
-	Sat, 13 Sep 2025 15:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7122C2EF64C;
+	Sat, 13 Sep 2025 15:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNi7V2VJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qpZ4Xk/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CC02DC775
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 15:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AD42DC775;
+	Sat, 13 Sep 2025 15:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757776116; cv=none; b=Mzf5gkO6CszL+/GtYC4HnHEMhaP6o77m43OD4q+dMoiW0ASoLJXJ+blBT9NThYYVIPTo2qYztQOgGarQtPg3glMVU+VQPc4sLeg6L+ZpNa9Lo6k6k4OWQl0xFlFuyEmpbRUpL+0ru0CeWx8sUTEkeUC5nCIME/BBS1lMA4B/c0o=
+	t=1757776165; cv=none; b=RIb6ooBt2I9Ox1ehMeB8+oPeIGhTxF6UkSxeyWPYeN16veW62RFYH661FUZTaJmkIM4snL3L7QkvMBNKUfJXl7kuAVnauQ0R44ISpVIDnsRaglnGS5tFzWk6LSAgPKQpyfRvrDiuZAE4Z8usSP2C9OsrRhezcWpZTTZbQoHqr6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757776116; c=relaxed/simple;
-	bh=G4gzTQrZUTcwRi0+XZV2s29+erit6WCM34UVzTCCAjA=;
+	s=arc-20240116; t=1757776165; c=relaxed/simple;
+	bh=k3JGm7bgPzqa31QJZlMPgghHEp9L20SNijx437wsPug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osKwMW/ppQ0K1yLquxZ91dSxREY8f+wFVtjh5Wbh19dyKfP1qM0GfXzzTn2T/e8myC99IKEUv3O/hIXOs7jz3/1jaVIfuMPaLyGaWZtTEyvbHpUAgJPvcA7B5AGT4bLEuwKnQf3q++u8ow9yZxZORbNp4q2Rk/uVbYybJEIQUOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNi7V2VJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCF0C4CEF5;
-	Sat, 13 Sep 2025 15:08:33 +0000 (UTC)
+	 MIME-Version; b=WwiC2yrp1US2ExMsbmhJXHY5ldtCVUBNryF98Qqa2wJuaPj8JEEKFCaTKkbjAvA7/qkvtx8ljA9x9By8/uyKJS7iP0Fnn2XUyOfrIlgPAYmIY3Un5jfa0QZ5eWHSbEkIIDjS99nDUrQdZwhlMwk6jXQSSSvIif6GLKPtCM+NRpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qpZ4Xk/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBA7C4CEEB;
+	Sat, 13 Sep 2025 15:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757776115;
-	bh=G4gzTQrZUTcwRi0+XZV2s29+erit6WCM34UVzTCCAjA=;
+	s=k20201202; t=1757776164;
+	bh=k3JGm7bgPzqa31QJZlMPgghHEp9L20SNijx437wsPug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNi7V2VJ3X00YzkGrdHl71RPaiKzRKd9Fd8OCDxG7AbcHlKlWN2TImxtfr1ih51NO
-	 svrRjcUIVRO1dO8iipE76JL4/54gnKdBWrpZxYDo+KB4/e/7uhP+afUVBJJTAKsbMv
-	 kMVVgXoTHM5kSH6ggE+dbJyyaZlnGv43q9i0EDxRIwYy5mxlcUraWbxpX3+TunHNeG
-	 NcBqN0/mWfeKi3efPSzVr43fovRNBYh9CBJ0QJoORjVXch0IGKHtIUp7RBbqHh/bPk
-	 nIrCO28W/thO61Pk2ec2FCH/5oik3V/zXMjurobLBeNUCJHgfGOO1asg2A1N8Lc/aI
-	 TjKBHLl7zA7Mg==
+	b=qpZ4Xk/0h6acPs74zvOc1NFJ5Jxq3AutOs0wqXl+ci/YlJMKz2qsZ7wQfDFyBvrJR
+	 lC9m1DO0QpsyefA0jSIkWLuo+iQ23zEINuTRDSaA1wtEGdp6toKAFNpCnyx76DKAhD
+	 8f473nFSEKygwdbTVRQ0yekLJhvrj8dr+zl3mSM/vCPVo8VKdCw6DL3fxtRtA0Ft0O
+	 3o7r2ZJ6ajL9TTnimHNSCKl+54t5yx7wumR8QHAEnrT7lZ+4gP4THT1Lemj0kp4sYs
+	 VpZOpFhwL/9ivY///QFf3eH7S3btU6e6wo+/NHtYm2A6W/cokalzFhnWNbMK1RbWrt
+	 hCobJgwcrm+kQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexander Dahl <ada@thorsis.com>,
+Cc: Jack Wang <jinpu.wang@ionos.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Cai Huoqing <cai.huoqing@linux.dev>,
+	linux-mtd@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
-Date: Sat, 13 Sep 2025 11:08:29 -0400
-Message-ID: <20250913150829.1407206-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] mtd: rawnand: stm32_fmc2: Fix dma_map_sg error check
+Date: Sat, 13 Sep 2025 11:09:16 -0400
+Message-ID: <20250913150917.1408380-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250913150829.1407206-1-sashal@kernel.org>
-References: <2025091345-prewar-jump-dad8@gregkh>
- <20250913150829.1407206-1-sashal@kernel.org>
+In-Reply-To: <2025091308-trio-unedited-6b17@gregkh>
+References: <2025091308-trio-unedited-6b17@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,62 +71,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
+[ Upstream commit 43b81c2a3e6e07915151045aa13a6e8a9bd64419 ]
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+dma_map_sg return 0 on error, in case of error return -EIO.
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
-
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
-
-Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Dahl <ada@thorsis.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: Cai Huoqing <cai.huoqing@linux.dev>
+Cc: linux-mtd@lists.infradead.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Reviewed-by: Christophe Kerello <christophe.kerello@foss.st.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20220819060801.10443-5-jinpu.wang@ionos.com
+Stable-dep-of: 513c40e59d5a ("mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 511bd0d1e0672..78f317ac04afa 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1377,14 +1377,24 @@ static int atmel_smc_nand_prepare_smcconf(struct atmel_nand *nand,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/mtd/nand/raw/stm32_fmc2_nand.c b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+index 1ac8c4887ce03..a65ee2d3c1b3a 100644
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -860,8 +860,8 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
  
-+	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
+ 	ret = dma_map_sg(nfc->dev, nfc->dma_data_sg.sgl,
+ 			 eccsteps, dma_data_dir);
+-	if (ret < 0)
+-		return ret;
++	if (!ret)
++		return -EIO;
+ 
+ 	desc_data = dmaengine_prep_slave_sg(dma_ch, nfc->dma_data_sg.sgl,
+ 					    eccsteps, dma_transfer_dir,
+@@ -891,8 +891,10 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+ 
+ 		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+ 				 eccsteps, dma_data_dir);
+-		if (ret < 0)
++		if (!ret) {
++			ret = -EIO;
+ 			goto err_unmap_data;
++		}
+ 
+ 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
+ 						   nfc->dma_ecc_sg.sgl,
 -- 
 2.51.0
 
