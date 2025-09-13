@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-179435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75807B560A3
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B7AB560AA
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8CD51B24955
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:22:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E189B1B24D3D
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F092EB5D8;
-	Sat, 13 Sep 2025 12:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811872EC55C;
+	Sat, 13 Sep 2025 12:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQWBqCRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmTX1yt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97C82E8DE6
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19ED82ECD16
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766133; cv=none; b=o/ROjN5QOqYEFjC+inVLaxoqrsxpGC8TzJwS2+kKzT26Cv4nYuxJ+13yr7x7nqC2ijqEbMTzRsMWlwfqCqNVOsP1yP6/L2dCJH+OjGCWNCMpA273vwufEg5IJ2zJpxi8x6VnywNn5lcVlnaxqhBZtPGpJTeXU87tvo6xiP8S8Xc=
+	t=1757766177; cv=none; b=f1Ss1wTJPIvTHICYHh1WGo4+7QWIUHlMuN7tRRNbvUfDFf9mZewTvNSQqg7yZubwm8r3J68PruH1wGlIWHzJEMk2/cFZMvEh1Zo9ZNpRWiWPwxzROacoDMzMWx8BFvZAWSXiqUSU8TwNa95Z7BWOEKorxhou+0dBOibe65AIx5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766133; c=relaxed/simple;
-	bh=qVZZ2cnCIRbeWhPK16HDq8n5nHp55ACQMYvc7y4TihQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IcJBnoDDcA1XAi5WEx89dqvojyDFlYlb8/LrZpq6o6BqWAAUOuO7OBXuAVZeFYOzpNPZGnxbT5/A/eKk8pZKTjNnbuBRiEym85IM+7eYe7nQYyo+Lrr4iooJfImBYw8/bPAW5UUiqFb0lpj9iuozl09SKjJi/XZvm3PqTVY9CaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQWBqCRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF75C4CEEB;
-	Sat, 13 Sep 2025 12:22:12 +0000 (UTC)
+	s=arc-20240116; t=1757766177; c=relaxed/simple;
+	bh=yM4Err1odOJsCTogvkgNxG7zLD986NyhmQY+4WPD89U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BZpplGrZ+iiFKUcYovCXxobNLsjpyA2uqJ8tI4xLSwUkPZlf0dmFJtbyS1fiD+aoPdMWEEzPK6rNZ0z6JdF8hqSEF/ze4OFqtHCmXzb/CmeqaXWmP5INoW2PmJ/tTBVvF4dxvayeHBhHjGBTqW3iKH+fcpj9LDrQUy79yzq63I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmTX1yt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A970C4CEEB;
+	Sat, 13 Sep 2025 12:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766133;
-	bh=qVZZ2cnCIRbeWhPK16HDq8n5nHp55ACQMYvc7y4TihQ=;
+	s=korg; t=1757766176;
+	bh=yM4Err1odOJsCTogvkgNxG7zLD986NyhmQY+4WPD89U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=oQWBqCRd4iayvH5z/kpIuiP8sZW5mWffeCyO2U6tzuPK2a+zWHEPFNYlPC8R0J6QY
-	 EDzG0xDPuyHz1YoBhTSGEg5xz/77IrC8nk+aL0P7OpKSZRQbv9laXYLinFzvbzvY+c
-	 jY0KUJlh/fhWn/zwXvF27IvnT3QO9/lssKWTIUuM=
-Subject: FAILED: patch "[PATCH] riscv: kexec: initialize kexec_buf struct" failed to apply to 6.16-stable tree
-To: leitao@debian.org,agordeev@linux.ibm.com,akpm@linux-foundation.org,alex@ghiti.fr,aou@eecs.berkeley.edu,bhe@redhat.com,borntraeger@linux.ibm.com,catalin.marinas@arm.com,coxu@redhat.com,gor@linux.ibm.com,hca@linux.ibm.com,palmer@dabbelt.com,paul.walmsley@sifive.com,stable@vger.kernel.org,svens@linux.ibm.com,will@kernel.org
+	b=VmTX1yt26GCsIYA8YH3h+uZjuWosdAwATO3IJB3Gvp2993Y2D9BUUUjgUKDejYUrW
+	 5CIbIx5X63sreV/N3J8aAHsR3BKVrS2JSA0IgFwrYOewfUZFPhwmC1wbJ2WdD4dBk7
+	 ss0eyPtRA4d008UtcvtyOSwl+mZX5rTrQUbtJPCQ=
+Subject: FAILED: patch "[PATCH] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing" failed to apply to 6.1-stable tree
+To: alexander.sverdlin@gmail.com,ada@thorsis.com,alexander.sverdlin@siemens.com,miquel.raynal@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:22:10 +0200
-Message-ID: <2025091310-tuition-parameter-2cd6@gregkh>
+Date: Sat, 13 Sep 2025 14:22:45 +0200
+Message-ID: <2025091345-prewar-jump-dad8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.16-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8afbd0045922b8146acf1a78ae818693e0468dbd
+git cherry-pick -x fd779eac2d659668be4d3dbdac0710afd5d6db12
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091310-tuition-parameter-2cd6@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091345-prewar-jump-dad8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,93 +77,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8afbd0045922b8146acf1a78ae818693e0468dbd Mon Sep 17 00:00:00 2001
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 27 Aug 2025 03:42:22 -0700
-Subject: [PATCH] riscv: kexec: initialize kexec_buf struct
+From fd779eac2d659668be4d3dbdac0710afd5d6db12 Mon Sep 17 00:00:00 2001
+From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Date: Thu, 21 Aug 2025 14:00:57 +0200
+Subject: [PATCH] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
 
-The kexec_buf structure was previously declared without initialization.
-commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-added a field that is always read but not consistently populated by all
-architectures. This un-initialized field will contain garbage.
+Having setup time 0 violates tAR, tCLR of some chips, for instance
+TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
+being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
+98 dc 90 15 76 ...).
 
-This is also triggering a UBSAN warning when the uninitialized data was
-accessed:
+Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
+[1], but it looks more appropriate to just calculate setup time properly.
 
-	------------[ cut here ]------------
-	UBSAN: invalid-load in ./include/linux/kexec.h:210:10
-	load of value 252 is not a valid value for type '_Bool'
+[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
 
-Zero-initializing kexec_buf at declaration ensures all fields are
-cleanly set, preventing future instances of uninitialized memory being
-used.
+Cc: stable@vger.kernel.org
+Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Link: https://lkml.kernel.org/r/20250827-kbuf_all-v1-2-1df9882bb01a@debian.org
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/arch/riscv/kernel/kexec_elf.c b/arch/riscv/kernel/kexec_elf.c
-index 56444c7bd34e..531d348db84d 100644
---- a/arch/riscv/kernel/kexec_elf.c
-+++ b/arch/riscv/kernel/kexec_elf.c
-@@ -28,7 +28,7 @@ static int riscv_kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
- 	int i;
- 	int ret = 0;
- 	size_t size;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	const struct elf_phdr *phdr;
+diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+index 84ab4a83cbd6..db94d14a3807 100644
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1377,14 +1377,24 @@ static int atmel_smc_nand_prepare_smcconf(struct atmel_nand *nand,
+ 	if (ret)
+ 		return ret;
  
- 	kbuf.image = image;
-@@ -66,7 +66,7 @@ static int elf_find_pbase(struct kimage *image, unsigned long kernel_len,
- {
- 	int i;
- 	int ret;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	const struct elf_phdr *phdr;
- 	unsigned long lowest_paddr = ULONG_MAX;
- 	unsigned long lowest_vaddr = ULONG_MAX;
-diff --git a/arch/riscv/kernel/kexec_image.c b/arch/riscv/kernel/kexec_image.c
-index 26a81774a78a..8f2eb900910b 100644
---- a/arch/riscv/kernel/kexec_image.c
-+++ b/arch/riscv/kernel/kexec_image.c
-@@ -41,7 +41,7 @@ static void *image_load(struct kimage *image,
- 	struct riscv_image_header *h;
- 	u64 flags;
- 	bool be_image, be_kernel;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	int ret;
- 
- 	/* Check Image header */
-diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
-index e36104af2e24..b9eb41b0a975 100644
---- a/arch/riscv/kernel/machine_kexec_file.c
-+++ b/arch/riscv/kernel/machine_kexec_file.c
-@@ -261,7 +261,7 @@ int load_extra_segments(struct kimage *image, unsigned long kernel_start,
- 	int ret;
- 	void *fdt;
- 	unsigned long initrd_pbase = 0UL;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	char *modified_cmdline = NULL;
- 
- 	kbuf.image = image;
++	/*
++	 * Read setup timing depends on the operation done on the NAND:
++	 *
++	 * NRD_SETUP = max(tAR, tCLR)
++	 */
++	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
++	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
++	totalcycles += ncycles;
++	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
+-	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
+-	 *
+-	 * NRD_SETUP is always 0.
++	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
+ 	 */
+ 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
+ 	ncycles = max(totalcycles, ncycles);
 
 
