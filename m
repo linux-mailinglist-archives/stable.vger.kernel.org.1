@@ -1,131 +1,169 @@
-Return-Path: <stable+bounces-179418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C811B55EFA
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 08:41:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946F3B55F05
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 08:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2DC71C8830A
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 06:42:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD86C1CC2784
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 06:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609C22E7F07;
-	Sat, 13 Sep 2025 06:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YJQZunZz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F43D2E716E;
+	Sat, 13 Sep 2025 06:45:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B1C2E7BAB
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 06:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2555A3BBF2
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 06:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757745695; cv=none; b=qBpl5kv57RQD/VMgDMTy4+9RGEdIKtErC/vx76qbi2uKK0v6itFTz9AFFKUoNB51KfCvvkpleqlaeNcatup3xNma4jMnGCAlSZONB+K1XRfM7bHvOE2SN71SrdcN7SdK6iPH7zZE0PYzxuslyNykhxY+VM5ojG31JjnjXv88SXk=
+	t=1757745925; cv=none; b=Dz+8jLwxbs3CECE/l8rnxMd4R9KJDZhp1JSDhtabJtz2vBPybCqTcVsjbbCKwiFMthcIJP4Ha7nw68f3lIf3+Vis5UXnZXLPffeGkG6hVS+IMKn7LvNaFBEWDBltHSsAni9uYBUKcKBGAGhY4j1ophrC57c9c5mb9peRyfDJ9F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757745695; c=relaxed/simple;
-	bh=b4u/3r8EbbEWIWFxBt9+YcYVVzC+/qin113CQAU/g5A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Xgb5uMUlm+VprgCX4s+sYkJhaf4Gz7x6PkyiTegrgEbb792FOi0fnWMugyfLzWH/LuZ7hbCyVCS6AkXEHF1m+eLcaOk15mCb/0HEvyCXdU5nkJrVWQJ2F6Ax1QsAolL47Jl974sOigg0Dc+d5CLK7/r6NYYbgz0bxNQ+4WZjCfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YJQZunZz; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2570bf605b1so24578975ad.2
-        for <stable@vger.kernel.org>; Fri, 12 Sep 2025 23:41:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757745693; x=1758350493; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I+9gSbQhTkyUKu4oc46FN0yP83tgnQ9EveENpBOiA0w=;
-        b=YJQZunZz+Z3KjLKM913jEadZLnOuK6XkCvNGtjDKJYuQvXCeWyAKlRceC/SYVcLBTC
-         ha4La7ce1PBvnhIYrt0puzT97DoAIE0VSdpsiXCH9swN+4qjCAseUl0boKlUPfZakSvT
-         6eD+cVH5PJQANKcq/55jWe4zGvhC5RwAisRKw/CcGt6YHkLmyFcrT03JGiPEsonvSS00
-         IqH7RnBkeua2QRM9ZElQ99/o6BOEj8joeMqL1zzeuCWY/qw5vQ1nTLVPnGPFqO6Dx8vX
-         7b1NQmlrqXQwDvNIa+3E8Gsyf/mC7jGn7FSdCipkLjyzJJJtxiRR16UIpANndrLHJBhC
-         vQGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757745693; x=1758350493;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I+9gSbQhTkyUKu4oc46FN0yP83tgnQ9EveENpBOiA0w=;
-        b=urDhUhnK7aA848TjvkQcWI6LxQo/ukDzg5Qov+zkWk4kVjWthmB2uFhIOP+NGnrGVA
-         IIOfIJU2B9N7oqYRhWrwalTX82IRhll4dCQEBLMC1YUAMkPqWO+3794oAJw+OTlqURK5
-         DEVJGk5S17T8Li2p/s9gR6becyCFiXA3Ddt0uMLhnQFe8app9K63zugW30HCa6GhqeDx
-         5bqT7YcDHVjSl6vj3XOQfcW3bhAaAP02njXkP5c76l1LKoxT0uNzg3OyABVpmmji8hXp
-         wK0E+4lGf2pBPpGYV+pkRxk81cfxTFKBeb/g0rFPKH+U4a8fWnn1R/f3zvySkfnlCneT
-         ygUg==
-X-Forwarded-Encrypted: i=1; AJvYcCVOQ27yIlfB0nS2rXV8hNDu/Qf4AcIxbmvjUFDbUhvHvAVezWwoiVLvZS3bg7uXCIQAF3wFOiQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYktLayLOUGqoauhBTId/GWWarNmITmhHUq/4pj5PZjDZ4fLhJ
-	tfo0aXyuFSf1zwDwEtgGS2wPk7pks2awy25ff5OvqQTYvpA7tXTwKkiQ
-X-Gm-Gg: ASbGnctsX7zhNUxOThIvtNsKshCQu/RwAH+d2hVAvL+Cx/cK3+tfTTAr47EGMpjnqnu
-	VxsBrjrtIvYzkeNoOW8GFeIqbdRMmW4HhwAzK1NuT0/SI+BPfKG6c1MzIhj9bCdovDxMVUDnElQ
-	bYoVqlqQa8N7reYb8w2glp823VN+Z4nH0E19kV4usgkZl52C7kvxJMyomTFau3ylonjpJuyeeJK
-	affaPYhftBHgeizWofYKjTub0zi2iYwQ9XT7ClZEvbmujGA9ZbwQUZcKFy4GYb+xkBEjDfepYvw
-	2y2dJqp+2ZtMG/aQJjCd2y1Jav0RQAsAJMFVx2+jHZhg87XCoXnRN82XO/E/vmgz2T3Iix0YaH7
-	i4ZicHOR3SpmlUaRUZ/ZO4rtZ8iKH5rLMbjHtzp6a+Kk7+oNhjnWpmn8Ul66f2aRxcQ==
-X-Google-Smtp-Source: AGHT+IEPMOXqhtSRG3ommkdDyK73YAd9aNroh5EmvYiCkuWeEel+Gu02hYUJwz3pnEOvbev7iIXNag==
-X-Received: by 2002:a17:903:1666:b0:261:cb35:5a0e with SMTP id d9443c01a7336-261cb355f8dmr13755645ad.57.1757745692902;
-        Fri, 12 Sep 2025 23:41:32 -0700 (PDT)
-Received: from fb990434ae75 (ai200241.d.west.v6connect.net. [138.64.200.241])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c341aabafsm69525245ad.0.2025.09.12.23.41.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 23:41:32 -0700 (PDT)
-From: Tamura Dai <kirinode0@gmail.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tamura Dai <kirinode0@gmail.com>,
-	stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3] arm64: dts: qcom: sdm845-shift-axolotl: Fix typo of compatible
-Date: Sat, 13 Sep 2025 06:39:59 +0000
-Message-Id: <20250913063958.149-1-kirinode0@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <Message-ID: <2d41c617-b7c7-43ae-aa90-7368e960e8a5@kernel.org>
-References: <Message-ID: <2d41c617-b7c7-43ae-aa90-7368e960e8a5@kernel.org>
+	s=arc-20240116; t=1757745925; c=relaxed/simple;
+	bh=PYlgmZhwhioZnSwJzR77QkbxJdvtLyYNPx/bF8eOzn8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oMII8iW3eu/h1Tlabh3SF0qltgDAdVoJevAeuGDPAGW4zbe0lh1xGBLtw22Kj+JYuf1iKhe2ksHeGucJexr+6j0Cgd1kAazTiamp6z6wc+Tc5F6shp+422AbEJbkaSJU4/HSnGUWj/q9xmxDBIu6KpQB+5EXT9mrB0BSw0CKxSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uxK0S-0003EI-0E; Sat, 13 Sep 2025 08:45:08 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uxK0P-0013XQ-2K;
+	Sat, 13 Sep 2025 08:45:05 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uxK0P-00544Q-1t;
+	Sat, 13 Sep 2025 08:45:05 +0200
+Date: Sat, 13 Sep 2025 08:45:05 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Hubert =?utf-8?Q?Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	stable@vger.kernel.org, kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>, Xu Yang <xu.yang_2@nxp.com>,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH net v1 1/1] net: usb: asix: ax88772: drop phylink use in
+ PM to avoid MDIO runtime PM wakeups
+Message-ID: <aMUS8ZIUpZJ4HNNX@pengutronix.de>
+References: <20250908112619.2900723-1-o.rempel@pengutronix.de>
+ <CGME20250911135853eucas1p283b1afd37287b715403cd2cdbfa03a94@eucas1p2.samsung.com>
+ <b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com>
+ <aMLfGPIpWKwZszrY@shell.armlinux.org.uk>
+ <20250911075513.1d90f8b0@kernel.org>
+ <aMM1K_bkk4clt5WD@shell.armlinux.org.uk>
+ <22773d93-cbad-41c5-9e79-4d7f6b9e5ec0@rowland.harvard.edu>
+ <aMPawXCxlFmz6MaC@shell.armlinux.org.uk>
+ <a25b24ec-67bd-42b7-ac7b-9b8d729faba4@rowland.harvard.edu>
+ <aMQwQAaoSB0Y0-YD@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aMQwQAaoSB0Y0-YD@shell.armlinux.org.uk>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Fix typo in the compatible string for the touchscreen node. According to
-Documentation/devicetree/bindings/input/touchscreen/edt-ft5x06.yaml,
-the correct compatible is "focaltech,ft8719", but the device tree used
-"focaltech,fts8719".
+On Fri, Sep 12, 2025 at 03:37:52PM +0100, Russell King (Oracle) wrote:
+> On Fri, Sep 12, 2025 at 10:29:47AM -0400, Alan Stern wrote:
+> > On Fri, Sep 12, 2025 at 09:33:05AM +0100, Russell King (Oracle) wrote:
+> > > On Thu, Sep 11, 2025 at 10:30:09PM -0400, Alan Stern wrote:
+> > > > The USB subsystem uses only one pair of callbacks for suspend and resume 
+> > > > because USB hardware has only one suspend state.  However, the callbacks 
+> > > > do get an extra pm_message_t parameter which they can use to distinguish 
+> > > > between system sleep transitions and runtime PM transitions.
+> > > 
+> > > Unfortunately, this isn't the case. While a struct usb_device_driver's
+> > > suspend()/resume() methods get the pm_message_t, a struct usb_driver's
+> > > suspend()/resume() methods do not:
+> > > 
+> > > static int usb_resume_interface(struct usb_device *udev,
+> > >                 struct usb_interface *intf, pm_message_t msg, int reset_resume)
+> > > {
+> > >         struct usb_driver       *driver;
+> > > ...
+> > >         if (reset_resume) {
+> > >                 if (driver->reset_resume) {
+> > >                         status = driver->reset_resume(intf);
+> > > ...
+> > >         } else {
+> > >                 status = driver->resume(intf);
+> > > 
+> > > vs
+> > > 
+> > > static int usb_resume_device(struct usb_device *udev, pm_message_t msg)
+> > > {
+> > >         struct usb_device_driver        *udriver;
+> > > ...
+> > >         if (status == 0 && udriver->resume)
+> > >                 status = udriver->resume(udev, msg);
+> > > 
+> > > and in drivers/net/usb/asix_devices.c:
+> > > 
+> > > static struct usb_driver asix_driver = {
+> > > ...
+> > >         .suspend =      asix_suspend,
+> > >         .resume =       asix_resume,
+> > >         .reset_resume = asix_resume,
+> > > 
+> > > where asix_resume() only takes one argument:
+> > > 
+> > > static int asix_resume(struct usb_interface *intf)
+> > > {
+> > 
+> > Your email made me go back and check the code more carefully, and it 
+> > turns out that we were both half-right.  :-)
+> > 
+> > The pm_message_t argument is passed to the usb_driver's ->suspend 
+> > callback in usb_suspend_interface(), but not to the ->resume callback in 
+> > usb_resume_interface().  Yes, it's inconsistent.
+> > 
+> > I suppose the API could be changed, at the cost of updating a lot of 
+> > drivers.  But it would be easier if this wasn't necessary, if there was 
+> > some way to work around the problem.  Unfortunately, I don't know 
+> > anything about how the network stack handles suspend and resume, or 
+> > what sort of locking it requires, so I can't offer any suggestions.
+> 
+> I, too, am unable to help further as I have no bandwidth available
+> to deal with this. Sorry.
 
-Fixes: 45882459159d ("arm64: dts: qcom: sdm845: add device tree for SHIFT6mq")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tamura Dai <kirinode0@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for all the valuable input.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 2cf7b5e1243c..a0b288d6162f 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -432,7 +432,7 @@ &i2c5 {
- 	status = "okay";
- 
- 	touchscreen@38 {
--		compatible = "focaltech,fts8719";
-+		compatible = "focaltech,ft8719";
- 		reg = <0x38>;
- 		wakeup-source;
- 		interrupt-parent = <&tlmm>;
+I’ll process the feedback and investigate possible ways to proceed. As a
+first step I’ll measure the actual power savings from USB auto-suspend
+on AX88772 to see if runtime PM is worth the added complexity.
+
+Best Regards,
+Oleksij
 -- 
-2.34.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
