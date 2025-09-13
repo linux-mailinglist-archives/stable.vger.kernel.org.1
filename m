@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-179457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AF6B560C4
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 487AFB560C5
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0E27189A8AA
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:26:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75BA1896B61
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAAB02EC571;
-	Sat, 13 Sep 2025 12:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E388287248;
+	Sat, 13 Sep 2025 12:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPMliBhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/lWZvhB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED691E4AB
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7BBDDD2
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766345; cv=none; b=twpaj8vYrSgqSl6o1FAbVQDkpL6o91jK3YXuQs+dCtckpiyPrYDC6BRhov5whQUAXdnQqnqQqSZKV85GrrW6E1aHxAtVI7Wp5BuSdVH3S2vJ+wEUikEBfTWzxjb/cJ8mAFLgM8O+mtOkyCm0vCylnpBrwVDpEiIDwWfl1L4lvOw=
+	t=1757766362; cv=none; b=aUONbyoPOPztjS4dX97riJKvYVC282JnMg189LMWQkgNJ7Z3hiF/K9kYJ3UHhSU+GIVJK2prd6FLQE8ucJ448ux1WkfAf0EbN0SBZaOiMq85klLJBtPzS2gMzy2Y2jT8ss/FYzEwqfA56eDkGalQ5sCVQW6c/mxCUNV2jyC9kLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766345; c=relaxed/simple;
-	bh=aHHclfTkSBQ051osuH2XS0nwq6X1+MACh71zA+NcguQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SjcrQBjQgdhfLt0ITD23wGClYVH1S6petadNKhhg7t910u8dT+SljqPUB8Lblg7SkSubfUy4msKoqhCDW+uHszej+/1SFaobod32Lexata8yh5I5tJi+dqErzm3hsXu/W45T4DhxFYOoBDcxqh65zWS68buXHbsshj8yE0DCPlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPMliBhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042CEC4CEEB;
-	Sat, 13 Sep 2025 12:25:44 +0000 (UTC)
+	s=arc-20240116; t=1757766362; c=relaxed/simple;
+	bh=u13NF5J2k++Tf3tFZgfdf+bC6ZnGJP6ee2Tbs5aWZjc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cccFa6NjS5k9m+CMXuObnKSLpA5XxozuHZv3Pn479msT9MKRsThLtxAcPZMHyz5ipNIbCT2vmi/XeSQ4kh4Lb0n5n7id8d3MuiIdU8/rpIwYaYkZrKMdQ3w2rBSw3/CnsqTq5AX1JYylUrVclJDlZCWsfEmyxhRHkhd3jMjg5rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/lWZvhB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AEBC4CEEB;
+	Sat, 13 Sep 2025 12:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766345;
-	bh=aHHclfTkSBQ051osuH2XS0nwq6X1+MACh71zA+NcguQ=;
+	s=korg; t=1757766360;
+	bh=u13NF5J2k++Tf3tFZgfdf+bC6ZnGJP6ee2Tbs5aWZjc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OPMliBhlvnbJaaeXCFy53wdKht9LGLcpxDiSbvhuDBiSHglOyxBO+BLV4kQVCdCbV
-	 zIJVviWqbdq8i+f70XrrTHlUAHTw6DhSStRAK4UfmEeE5n/NuDseAsyPv8RJ/QH0m/
-	 fyZYqdIX2bevnqxgzTM5Cm8LdKInSpIKn22F5xck=
-Subject: FAILED: patch "[PATCH] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page))" failed to apply to 5.4-stable tree
-To: linmiaohe@huawei.com,akpm@linux-foundation.org,david@redhat.com,nao.horiguchi@gmail.com,stable@vger.kernel.org
+	b=v/lWZvhBJbWNtAXKsT3Qf60hvF167SniUILbQr5NKV337aS4vGQ7otR34JARZDrxL
+	 8MHu3dbRL/F6kOdZVj9pVTgPkM65msEX7wy2lewM5QoFLwXq7pZtzyhKoDY0iBQ2pO
+	 8ubG3B/tK61EikPHZXgtMjxrHavaoJvTCXZ47G7U=
+Subject: FAILED: patch "[PATCH] mm/damon/core: set quota->charged_from to jiffies at first" failed to apply to 5.15-stable tree
+To: ekffu200098@gmail.com,akpm@linux-foundation.org,sj@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:25:32 +0200
-Message-ID: <2025091332-fool-outflank-732f@gregkh>
+Date: Sat, 13 Sep 2025 14:25:57 +0200
+Message-ID: <2025091357-stapling-walrus-d0f7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x d613f53c83ec47089c4e25859d5e8e0359f6f8da
+git cherry-pick -x ce652aac9c90a96c6536681d17518efb1f660fb8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091332-fool-outflank-732f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091357-stapling-walrus-d0f7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,108 +77,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d613f53c83ec47089c4e25859d5e8e0359f6f8da Mon Sep 17 00:00:00 2001
-From: Miaohe Lin <linmiaohe@huawei.com>
-Date: Thu, 28 Aug 2025 10:46:18 +0800
-Subject: [PATCH] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page))
- when unpoison memory
+From ce652aac9c90a96c6536681d17518efb1f660fb8 Mon Sep 17 00:00:00 2001
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Fri, 22 Aug 2025 11:50:57 +0900
+Subject: [PATCH] mm/damon/core: set quota->charged_from to jiffies at first
+ charge window
 
-When I did memory failure tests, below panic occurs:
+Kernel initializes the "jiffies" timer as 5 minutes below zero, as shown
+in include/linux/jiffies.h
 
-page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
-kernel BUG at include/linux/page-flags.h:616!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- unpoison_memory+0x2f3/0x590
- simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
- debugfs_attr_write+0x42/0x60
- full_proxy_write+0x5b/0x80
- vfs_write+0xd5/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f0314887
-RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
-RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
-RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
- </TASK>
-Modules linked in: hwpoison_inject
----[ end trace 0000000000000000 ]---
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: Fatal exception ]---
+ /*
+ * Have the 32 bit jiffies value wrap 5 minutes after boot
+ * so jiffies wrap bugs show up earlier.
+ */
+ #define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
 
-The root cause is that unpoison_memory() tries to check the PG_HWPoison
-flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
-triggered.  This can be reproduced by below steps:
+And jiffies comparison help functions cast unsigned value to signed to
+cover wraparound
 
-1.Offline memory block:
+ #define time_after_eq(a,b) \
+  (typecheck(unsigned long, a) && \
+  typecheck(unsigned long, b) && \
+  ((long)((a) - (b)) >= 0))
 
- echo offline > /sys/devices/system/memory/memory12/state
+When quota->charged_from is initialized to 0, time_after_eq() can
+incorrectly return FALSE even after reset_interval has elapsed.  This
+occurs when (jiffies - reset_interval) produces a value with MSB=1, which
+is interpreted as negative in signed arithmetic.
 
-2.Get offlined memory pfn:
+This issue primarily affects 32-bit systems because: On 64-bit systems:
+MSB=1 values occur after ~292 million years from boot (assuming HZ=1000),
+almost impossible.
 
- page-types -b n -rlN
+On 32-bit systems: MSB=1 values occur during the first 5 minutes after
+boot, and the second half of every jiffies wraparound cycle, starting from
+day 25 (assuming HZ=1000)
 
-3.Write pfn to unpoison-pfn
+When above unexpected FALSE return from time_after_eq() occurs, the
+charging window will not reset.  The user impact depends on esz value at
+that time.
 
- echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+If esz is 0, scheme ignores configured quotas and runs without any limits.
 
-This scenario can be identified by pfn_to_online_page() returning NULL.
-And ZONE_DEVICE pages are never expected, so we can simply fail if
-pfn_to_online_page() == NULL to fix the bug.
+If esz is not 0, scheme stops working once the quota is exhausted.  It
+remains until the charging window finally resets.
 
-Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
-Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+So, change quota->charged_from to jiffies at damos_adjust_quota() when it
+is considered as the first charge window.  By this change, we can avoid
+unexpected FALSE return from time_after_eq()
+
+Link: https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com
+Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 10b3c281c2ae..df6ee59527dd 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2568,10 +2568,9 @@ int unpoison_memory(unsigned long pfn)
- 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
- 					DEFAULT_RATELIMIT_BURST);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 106ee8b0f2d5..c2e0b469fd43 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2111,6 +2111,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
+ 		return;
  
--	if (!pfn_valid(pfn))
--		return -ENXIO;
--
--	p = pfn_to_page(pfn);
-+	p = pfn_to_online_page(pfn);
-+	if (!p)
-+		return -EIO;
- 	folio = page_folio(p);
- 
- 	mutex_lock(&mf_mutex);
++	/* First charge window */
++	if (!quota->total_charged_sz && !quota->charged_from)
++		quota->charged_from = jiffies;
++
+ 	/* New charge window starts */
+ 	if (time_after_eq(jiffies, quota->charged_from +
+ 				msecs_to_jiffies(quota->reset_interval))) {
 
 
