@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-179486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91E9B56159
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:10:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B9EB5615A
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:10:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1E8584D0B
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:10:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41BB11C242D0
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DDD52EBDFD;
-	Sat, 13 Sep 2025 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B6B2EFDA6;
+	Sat, 13 Sep 2025 14:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yua2qvor"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrHyVZfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFAD2E88B2
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 14:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B382EFDB9
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757772629; cv=none; b=udt3bkiFdJ2ypC6xbIXrgJC1W95xhzC4g2FzmSz0nArQiOJClQ/WXyKJA8OqOh+nYYtuNjD1Gg3V1RlHyWxL7aObmeNFN/OZpDOxP/2FF2mUaf9oj2V3UPMer5ehf3VCkM3U1ZWf+XTIAGxnfTwf/zXTSMzk0dVjm9vyhszxvzQ=
+	t=1757772629; cv=none; b=NV1pju0m4m043y+szs1vkNGyy6I4SvCUx79Tb1id/zSV85i+3U5DCXMuDQdyZU75bFDIZIIX10Pl0D52R89il/4kHquPdtqW3/TsdH2+l1SquFAXkZhm8eQFYHiSvPm8CKaKCpECzRir7/ecN8RQxrUsIBhK/W1E5dUhmLTlFWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757772629; c=relaxed/simple;
-	bh=QL+Kclrc3uy+iFP86FyHoOltUSSC8s+GRLu5mAo7LNw=;
+	bh=1uewDDMxDfKjvPoDVel2ts8xTHtqOeXtlew/EiA2Mzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+yI/5HqLxiaen3TGZF7czE9+xgSdwP81ZqniOFu5fzGDpLXyK2/swiRfsIUJ0r2VCZC0tfSUePF/QFh3+m8SwaYzXs2ktcJiVoBRYKQ9lkv78ZsvC9HKelJtgRdQXt//WGTQdfRpmn05kG0V3wdrz1BxMKjPC8mkVyRkiEQ8IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yua2qvor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CA7C4CEEB;
-	Sat, 13 Sep 2025 14:10:28 +0000 (UTC)
+	 MIME-Version; b=drnYjVm/ExPCUnJ8nc+O5M4hdz584fEGcOWzE5KieOD1XB9ENQZr5plMqu0Gy/mboWOm1J5zTqkXhPg36/ll4pTu/a4BOOifpHFByEs6Up6VYEpjgZtUckahaR5Q01usX/yxBZ6adV4vyAfujCI14uODCMk5ggnNUYQE4eaedmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrHyVZfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FE1C4CEF4;
+	Sat, 13 Sep 2025 14:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757772628;
-	bh=QL+Kclrc3uy+iFP86FyHoOltUSSC8s+GRLu5mAo7LNw=;
+	s=k20201202; t=1757772629;
+	bh=1uewDDMxDfKjvPoDVel2ts8xTHtqOeXtlew/EiA2Mzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yua2qvoroyjxTWq0iyAQhoLreOU2GvSTOLEOzgIz51+aICOCqPiGlrxSMqH/E5Jps
-	 W6zIp92VRgcSlV8IV1XqDudnjIg6gZea1CTJz9pOtjZ8mE8Chckd92N/1VZzThl39G
-	 SUNorDk+hDKABlt+6/rAWUlZaziKOYJqbNJmiXfbOOZwWvN1vD5o7wT9Bf/8MqPS3j
-	 scQtPbgEczIvoh+13Wj8p060KRoy0ejjWblVvfSCcCL5I/kRmFA7095zWXW/UUGLWC
-	 SfLCR3oM1+PGYMDvhB48jpbD+SrdBVuiuiXH7LlWzVKZdmX9iMeClg6Vu/7OGuLpvQ
-	 6X0gM+29XNfEw==
+	b=GrHyVZfgoua6+qqmEYSKcQv4tf4gwfFE3Lei53ld3NvfUhwCuABHeUlxvjsOPK0Lw
+	 iWGxeYieYGMtyx0hcOxi8/R7kxT7kTKMUtqdwRKKRRGiRuPol0SdyTvhEDS4hlZrxO
+	 vIUGqDM5BrphZ+XDG0K18PkvJfwnRZFPPrDmPq8I77CNl8HAr1tUbDYp3xqOUM2FGT
+	 vCFM4tyJe+q23v6j9UmPtD1IDq+YUdoVctnUStNI7ecY5zbgswUerD0bPOhyD9LPZ8
+	 jg8J8Ctc7ctRuygnfXfwQPlht9f2f8kVZgdZ6EG6Qdjd8J9qjrFlHFigYq2fzj6DFg
+	 vRgxNqIyl9wqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Geliang Tang <geliang@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/4] netlink: specs: mptcp: add missing 'server-side' attr
-Date: Sat, 13 Sep 2025 10:10:23 -0400
-Message-ID: <20250913141026.1362030-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/4] netlink: specs: mptcp: clearly mention attributes
+Date: Sat, 13 Sep 2025 10:10:24 -0400
+Message-ID: <20250913141026.1362030-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091346-avenue-afterglow-5b42@gregkh>
+In-Reply-To: <20250913141026.1362030-1-sashal@kernel.org>
 References: <2025091346-avenue-afterglow-5b42@gregkh>
+ <20250913141026.1362030-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,73 +64,194 @@ Content-Transfer-Encoding: 8bit
 
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 6b830c6a023ff6e8fe05dbe47a9e5cd276df09ee ]
+[ Upstream commit bea87657b5ee8e6f18af2833ee4b88212ef52d28 ]
 
-This attribute is added with the 'created' and 'established' events, but
-the documentation didn't mention it.
+The rendered version of the MPTCP events [1] looked strange, because the
+whole content of the 'doc' was displayed in the same block.
+
+It was then not clear that the first words, not even ended by a period,
+were the attributes that are defined when such events are emitted. These
+attributes have now been moved to the end, prefixed by 'Attributes:' and
+ended with a period. Note that '>-' has been added after 'doc:' to allow
+':' in the text below.
 
 The documentation in the UAPI header has been auto-generated by:
 
   ./tools/net/ynl/ynl-regen.sh
 
+Link: https://docs.kernel.org/networking/netlink_spec/mptcp_pm.html#event-type [1]
 Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-1-e54f2db3f844@kernel.org
+Link: https://patch.msgid.link/20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-2-e54f2db3f844@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 7094b84863e5 ("netlink: specs: mptcp: fix if-idx attribute type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/mptcp_pm.yaml |  6 ++++--
- include/uapi/linux/mptcp_pm.h             | 11 ++++++-----
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ Documentation/netlink/specs/mptcp_pm.yaml | 50 ++++++++++-----------
+ include/uapi/linux/mptcp_pm.h             | 53 ++++++++++++-----------
+ 2 files changed, 52 insertions(+), 51 deletions(-)
 
 diff --git a/Documentation/netlink/specs/mptcp_pm.yaml b/Documentation/netlink/specs/mptcp_pm.yaml
-index dc190bf838fec..fc0603f51665a 100644
+index fc0603f51665a..59087a2305651 100644
 --- a/Documentation/netlink/specs/mptcp_pm.yaml
 +++ b/Documentation/netlink/specs/mptcp_pm.yaml
-@@ -23,7 +23,8 @@ definitions:
+@@ -22,67 +22,67 @@ definitions:
+       doc: unused event
       -
        name: created
-       doc:
--        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport
-+        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
-+        server-side
+-      doc:
+-        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
+-        server-side
++      doc: >-
          A new MPTCP connection has been created. It is the good time to
          allocate memory and send ADD_ADDR if needed. Depending on the
          traffic-patterns it can take a long time until the
-@@ -31,7 +32,8 @@ definitions:
+         MPTCP_EVENT_ESTABLISHED is sent.
++        Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
++        dport, server-side.
       -
        name: established
-       doc:
--        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport
-+        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
-+        server-side
+-      doc:
+-        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
+-        server-side
++      doc: >-
          A MPTCP connection is established (can start new subflows).
++        Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
++        dport, server-side.
       -
        name: closed
+-      doc:
+-        token
++      doc: >-
+         A MPTCP connection has stopped.
++        Attribute: token.
+      -
+       name: announced
+       value: 6
+-      doc:
+-        token, rem_id, family, daddr4 | daddr6 [, dport]
++      doc: >-
+         A new address has been announced by the peer.
++        Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
+      -
+       name: removed
+-      doc:
+-        token, rem_id
++      doc: >-
+         An address has been lost by the peer.
++        Attributes: token, rem_id.
+      -
+       name: sub-established
+       value: 10
+-      doc:
+-        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, backup, if_idx [, error]
++      doc: >-
+         A new subflow has been established. 'error' should not be set.
++        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++        daddr6, sport, dport, backup, if_idx [, error].
+      -
+       name: sub-closed
+-      doc:
+-        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, backup, if_idx [, error]
++      doc: >-
+         A subflow has been closed. An error (copy of sk_err) could be set if an
+         error has been detected for this subflow.
++        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++        daddr6, sport, dport, backup, if_idx [, error].
+      -
+       name: sub-priority
+       value: 13
+-      doc:
+-        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, backup, if_idx [, error]
++      doc: >-
+         The priority of a subflow has changed. 'error' should not be set.
++        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++        daddr6, sport, dport, backup, if_idx [, error].
+      -
+       name: listener-created
+       value: 15
+-      doc:
+-        family, sport, saddr4 | saddr6
++      doc: >-
+         A new PM listener is created.
++        Attributes: family, sport, saddr4 | saddr6.
+      -
+       name: listener-closed
+-      doc:
+-        family, sport, saddr4 | saddr6
++      doc: >-
+         A PM listener is closed.
++        Attributes: family, sport, saddr4 | saddr6.
+ 
+ attribute-sets:
+   -
 diff --git a/include/uapi/linux/mptcp_pm.h b/include/uapi/linux/mptcp_pm.h
-index 50589e5dd6a38..b34fd95b6f841 100644
+index b34fd95b6f841..84fa8a21dfd02 100644
 --- a/include/uapi/linux/mptcp_pm.h
 +++ b/include/uapi/linux/mptcp_pm.h
-@@ -13,12 +13,13 @@
+@@ -12,32 +12,33 @@
+ /**
   * enum mptcp_event_type
   * @MPTCP_EVENT_UNSPEC: unused event
-  * @MPTCP_EVENT_CREATED: token, family, saddr4 | saddr6, daddr4 | daddr6,
-- *   sport, dport A new MPTCP connection has been created. It is the good time
-- *   to allocate memory and send ADD_ADDR if needed. Depending on the
-- *   traffic-patterns it can take a long time until the MPTCP_EVENT_ESTABLISHED
-- *   is sent.
-+ *   sport, dport, server-side A new MPTCP connection has been created. It is
-+ *   the good time to allocate memory and send ADD_ADDR if needed. Depending on
-+ *   the traffic-patterns it can take a long time until the
-+ *   MPTCP_EVENT_ESTABLISHED is sent.
-  * @MPTCP_EVENT_ESTABLISHED: token, family, saddr4 | saddr6, daddr4 | daddr6,
-- *   sport, dport A MPTCP connection is established (can start new subflows).
-+ *   sport, dport, server-side A MPTCP connection is established (can start new
-+ *   subflows).
-  * @MPTCP_EVENT_CLOSED: token A MPTCP connection has stopped.
-  * @MPTCP_EVENT_ANNOUNCED: token, rem_id, family, daddr4 | daddr6 [, dport] A
-  *   new address has been announced by the peer.
+- * @MPTCP_EVENT_CREATED: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side A new MPTCP connection has been created. It is
+- *   the good time to allocate memory and send ADD_ADDR if needed. Depending on
+- *   the traffic-patterns it can take a long time until the
+- *   MPTCP_EVENT_ESTABLISHED is sent.
+- * @MPTCP_EVENT_ESTABLISHED: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side A MPTCP connection is established (can start new
+- *   subflows).
+- * @MPTCP_EVENT_CLOSED: token A MPTCP connection has stopped.
+- * @MPTCP_EVENT_ANNOUNCED: token, rem_id, family, daddr4 | daddr6 [, dport] A
+- *   new address has been announced by the peer.
+- * @MPTCP_EVENT_REMOVED: token, rem_id An address has been lost by the peer.
+- * @MPTCP_EVENT_SUB_ESTABLISHED: token, family, loc_id, rem_id, saddr4 |
+- *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error] A new
+- *   subflow has been established. 'error' should not be set.
+- * @MPTCP_EVENT_SUB_CLOSED: token, family, loc_id, rem_id, saddr4 | saddr6,
+- *   daddr4 | daddr6, sport, dport, backup, if_idx [, error] A subflow has been
+- *   closed. An error (copy of sk_err) could be set if an error has been
+- *   detected for this subflow.
+- * @MPTCP_EVENT_SUB_PRIORITY: token, family, loc_id, rem_id, saddr4 | saddr6,
+- *   daddr4 | daddr6, sport, dport, backup, if_idx [, error] The priority of a
+- *   subflow has changed. 'error' should not be set.
+- * @MPTCP_EVENT_LISTENER_CREATED: family, sport, saddr4 | saddr6 A new PM
+- *   listener is created.
+- * @MPTCP_EVENT_LISTENER_CLOSED: family, sport, saddr4 | saddr6 A PM listener
+- *   is closed.
++ * @MPTCP_EVENT_CREATED: A new MPTCP connection has been created. It is the
++ *   good time to allocate memory and send ADD_ADDR if needed. Depending on the
++ *   traffic-patterns it can take a long time until the MPTCP_EVENT_ESTABLISHED
++ *   is sent. Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
++ *   sport, dport, server-side.
++ * @MPTCP_EVENT_ESTABLISHED: A MPTCP connection is established (can start new
++ *   subflows). Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
++ *   sport, dport, server-side.
++ * @MPTCP_EVENT_CLOSED: A MPTCP connection has stopped. Attribute: token.
++ * @MPTCP_EVENT_ANNOUNCED: A new address has been announced by the peer.
++ *   Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
++ * @MPTCP_EVENT_REMOVED: An address has been lost by the peer. Attributes:
++ *   token, rem_id.
++ * @MPTCP_EVENT_SUB_ESTABLISHED: A new subflow has been established. 'error'
++ *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
++ *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
++ * @MPTCP_EVENT_SUB_CLOSED: A subflow has been closed. An error (copy of
++ *   sk_err) could be set if an error has been detected for this subflow.
++ *   Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++ *   daddr6, sport, dport, backup, if_idx [, error].
++ * @MPTCP_EVENT_SUB_PRIORITY: The priority of a subflow has changed. 'error'
++ *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
++ *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
++ * @MPTCP_EVENT_LISTENER_CREATED: A new PM listener is created. Attributes:
++ *   family, sport, saddr4 | saddr6.
++ * @MPTCP_EVENT_LISTENER_CLOSED: A PM listener is closed. Attributes: family,
++ *   sport, saddr4 | saddr6.
+  */
+ enum mptcp_event_type {
+ 	MPTCP_EVENT_UNSPEC,
 -- 
 2.51.0
 
