@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-179434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBE4B560A2
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75807B560A3
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7592E1B24787
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:21:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8CD51B24955
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF6C2E8DF1;
-	Sat, 13 Sep 2025 12:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F092EB5D8;
+	Sat, 13 Sep 2025 12:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH34aBMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQWBqCRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC31A1DFCB
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97C82E8DE6
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766059; cv=none; b=FnXQRPNlx87CLEKbvbu3bnW2MRV6cNYDlV1aDxD9L1s3ASvo6MBb/fmo602CxTa1im4fSiODI086uY4aLjNR6lZjcLg0RNz64JUdzrV+BdmgG3qw+oP08vIX8p/04J+YMDL2e+gKGazjIdeVHhNtGw+NRytsw28VIdnqsyDPJCo=
+	t=1757766133; cv=none; b=o/ROjN5QOqYEFjC+inVLaxoqrsxpGC8TzJwS2+kKzT26Cv4nYuxJ+13yr7x7nqC2ijqEbMTzRsMWlwfqCqNVOsP1yP6/L2dCJH+OjGCWNCMpA273vwufEg5IJ2zJpxi8x6VnywNn5lcVlnaxqhBZtPGpJTeXU87tvo6xiP8S8Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766059; c=relaxed/simple;
-	bh=YiXemU1lldyVBwWWE1skoseYiA7a5JbhVS2z7q8hfv0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oN99XyJhJR8sIz3/cDWKPW018whoTB1Bn/dPmhlyaL397Q3+Xe3D9+9jhBgeZxHi8C+mMnQERvMekcrm+Lo98Gw0ukoD0Iedxd5TG0t6Dop/Y1peuVn7eQGg00sQGKvWLtp1pnSzH9iKXlWz90VqCc9Ys13V8ymIebuQR4ai4Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH34aBMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41D1C4CEEB;
-	Sat, 13 Sep 2025 12:20:58 +0000 (UTC)
+	s=arc-20240116; t=1757766133; c=relaxed/simple;
+	bh=qVZZ2cnCIRbeWhPK16HDq8n5nHp55ACQMYvc7y4TihQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IcJBnoDDcA1XAi5WEx89dqvojyDFlYlb8/LrZpq6o6BqWAAUOuO7OBXuAVZeFYOzpNPZGnxbT5/A/eKk8pZKTjNnbuBRiEym85IM+7eYe7nQYyo+Lrr4iooJfImBYw8/bPAW5UUiqFb0lpj9iuozl09SKjJi/XZvm3PqTVY9CaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQWBqCRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF75C4CEEB;
+	Sat, 13 Sep 2025 12:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766059;
-	bh=YiXemU1lldyVBwWWE1skoseYiA7a5JbhVS2z7q8hfv0=;
+	s=korg; t=1757766133;
+	bh=qVZZ2cnCIRbeWhPK16HDq8n5nHp55ACQMYvc7y4TihQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BH34aBMhatRjAWbXJxfEyMGunB1Y1U6xGKl2cCfWzoTaZJEVBvzqWk+Dx6MSd4MwG
-	 dYwBssPu0/RDK3PUcks8k8ESXu8/KMkVQtqsg1p0U8+hHbIS8AtGkgZ0BW5ZlAZeMH
-	 wFpl997Df1w8vsIpMzS1BnAcp4gMdSRYVoMkFnH8=
-Subject: FAILED: patch "[PATCH] btrfs: fix corruption reading compressed range when block" failed to apply to 5.15-stable tree
-To: wqu@suse.com,dsterba@suse.com,fdmanana@suse.com
+	b=oQWBqCRd4iayvH5z/kpIuiP8sZW5mWffeCyO2U6tzuPK2a+zWHEPFNYlPC8R0J6QY
+	 EDzG0xDPuyHz1YoBhTSGEg5xz/77IrC8nk+aL0P7OpKSZRQbv9laXYLinFzvbzvY+c
+	 jY0KUJlh/fhWn/zwXvF27IvnT3QO9/lssKWTIUuM=
+Subject: FAILED: patch "[PATCH] riscv: kexec: initialize kexec_buf struct" failed to apply to 6.16-stable tree
+To: leitao@debian.org,agordeev@linux.ibm.com,akpm@linux-foundation.org,alex@ghiti.fr,aou@eecs.berkeley.edu,bhe@redhat.com,borntraeger@linux.ibm.com,catalin.marinas@arm.com,coxu@redhat.com,gor@linux.ibm.com,hca@linux.ibm.com,palmer@dabbelt.com,paul.walmsley@sifive.com,stable@vger.kernel.org,svens@linux.ibm.com,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:20:48 +0200
-Message-ID: <2025091348-sublet-racism-4910@gregkh>
+Date: Sat, 13 Sep 2025 14:22:10 +0200
+Message-ID: <2025091310-tuition-parameter-2cd6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.16-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9786531399a679fc2f4630d2c0a186205282ab2f
+git cherry-pick -x 8afbd0045922b8146acf1a78ae818693e0468dbd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091348-sublet-racism-4910@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091310-tuition-parameter-2cd6@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,227 +77,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9786531399a679fc2f4630d2c0a186205282ab2f Mon Sep 17 00:00:00 2001
-From: Qu Wenruo <wqu@suse.com>
-Date: Fri, 22 Aug 2025 16:06:13 +0930
-Subject: [PATCH] btrfs: fix corruption reading compressed range when block
- size is smaller than page size
+From 8afbd0045922b8146acf1a78ae818693e0468dbd Mon Sep 17 00:00:00 2001
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 27 Aug 2025 03:42:22 -0700
+Subject: [PATCH] riscv: kexec: initialize kexec_buf struct
 
-[BUG]
-With 64K page size (aarch64 with 64K page size config) and 4K btrfs
-block size, the following workload can easily lead to a corrupted read:
+The kexec_buf structure was previously declared without initialization.
+commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+added a field that is always read but not consistently populated by all
+architectures. This un-initialized field will contain garbage.
 
-        mkfs.btrfs -f -s 4k $dev > /dev/null
-        mount -o compress $dev $mnt
-        xfs_io -f -c "pwrite -S 0xff 0 64k" $mnt/base > /dev/null
-	echo "correct result:"
-        od -Ad -t x1 $mnt/base
-        xfs_io -f -c "reflink $mnt/base 32k 0 32k" \
-		  -c "reflink $mnt/base 0 32k 32k" \
-		  -c "pwrite -S 0xff 60k 4k" $mnt/new > /dev/null
-	echo "incorrect result:"
-        od -Ad -t x1 $mnt/new
-        umount $mnt
+This is also triggering a UBSAN warning when the uninitialized data was
+accessed:
 
-This shows the following result:
+	------------[ cut here ]------------
+	UBSAN: invalid-load in ./include/linux/kexec.h:210:10
+	load of value 252 is not a valid value for type '_Bool'
 
-correct result:
-0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0065536
-incorrect result:
-0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0032768 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-*
-0061440 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0065536
+Zero-initializing kexec_buf at declaration ensures all fields are
+cleanly set, preventing future instances of uninitialized memory being
+used.
 
-Notice the zero in the range [32K, 60K), which is incorrect.
+Link: https://lkml.kernel.org/r/20250827-kbuf_all-v1-2-1df9882bb01a@debian.org
+Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-[CAUSE]
-With extra trace printk, it shows the following events during od:
-(some unrelated info removed like CPU and context)
-
- od-3457   btrfs_do_readpage: enter r/i=5/258 folio=0(65536) prev_em_start=0000000000000000
-
-The "r/i" is indicating the root and inode number. In our case the file
-"new" is using ino 258 from fs tree (root 5).
-
-Here notice the @prev_em_start pointer is NULL. This means the
-btrfs_do_readpage() is called from btrfs_read_folio(), not from
-btrfs_readahead().
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=0 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=4096 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=8192 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=12288 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=16384 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=20480 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=24576 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=28672 got em start=0 len=32768
-
-These above 32K blocks will be read from the first half of the
-compressed data extent.
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=32768 got em start=32768 len=32768
-
-Note here there is no btrfs_submit_compressed_read() call. Which is
-incorrect now.
-Although both extent maps at 0 and 32K are pointing to the same compressed
-data, their offsets are different thus can not be merged into the same
-read.
-
-So this means the compressed data read merge check is doing something
-wrong.
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=36864 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=40960 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=45056 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=49152 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=53248 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=57344 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=61440 skip uptodate
- od-3457   btrfs_submit_compressed_read: cb orig_bio: file off=0 len=61440
-
-The function btrfs_submit_compressed_read() is only called at the end of
-folio read. The compressed bio will only have an extent map of range [0,
-32K), but the original bio passed in is for the whole 64K folio.
-
-This will cause the decompression part to only fill the first 32K,
-leaving the rest untouched (aka, filled with zero).
-
-This incorrect compressed read merge leads to the above data corruption.
-
-There were similar problems that happened in the past, commit 808f80b46790
-("Btrfs: update fix for read corruption of compressed and shared
-extents") is doing pretty much the same fix for readahead.
-
-But that's back to 2015, where btrfs still only supports bs (block size)
-== ps (page size) cases.
-This means btrfs_do_readpage() only needs to handle a folio which
-contains exactly one block.
-
-Only btrfs_readahead() can lead to a read covering multiple blocks.
-Thus only btrfs_readahead() passes a non-NULL @prev_em_start pointer.
-
-With v5.15 kernel btrfs introduced bs < ps support. This breaks the above
-assumption that a folio can only contain one block.
-
-Now btrfs_read_folio() can also read multiple blocks in one go.
-But btrfs_read_folio() doesn't pass a @prev_em_start pointer, thus the
-existing bio force submission check will never be triggered.
-
-In theory, this can also happen for btrfs with large folios, but since
-large folio is still experimental, we don't need to bother it, thus only
-bs < ps support is affected for now.
-
-[FIX]
-Instead of passing @prev_em_start to do the proper compressed extent
-check, introduce one new member, btrfs_bio_ctrl::last_em_start, so that
-the existing bio force submission logic will always be triggered.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c953297aa89a..b21cb72835cc 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -111,6 +111,24 @@ struct btrfs_bio_ctrl {
- 	 */
- 	unsigned long submit_bitmap;
- 	struct readahead_control *ractl;
-+
-+	/*
-+	 * The start offset of the last used extent map by a read operation.
-+	 *
-+	 * This is for proper compressed read merge.
-+	 * U64_MAX means we are starting the read and have made no progress yet.
-+	 *
-+	 * The current btrfs_bio_is_contig() only uses disk_bytenr as
-+	 * the condition to check if the read can be merged with previous
-+	 * bio, which is not correct. E.g. two file extents pointing to the
-+	 * same extent but with different offset.
-+	 *
-+	 * So here we need to do extra checks to only merge reads that are
-+	 * covered by the same extent map.
-+	 * Just extent_map::start will be enough, as they are unique
-+	 * inside the same inode.
-+	 */
-+	u64 last_em_start;
- };
+diff --git a/arch/riscv/kernel/kexec_elf.c b/arch/riscv/kernel/kexec_elf.c
+index 56444c7bd34e..531d348db84d 100644
+--- a/arch/riscv/kernel/kexec_elf.c
++++ b/arch/riscv/kernel/kexec_elf.c
+@@ -28,7 +28,7 @@ static int riscv_kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
+ 	int i;
+ 	int ret = 0;
+ 	size_t size;
+-	struct kexec_buf kbuf;
++	struct kexec_buf kbuf = {};
+ 	const struct elf_phdr *phdr;
  
- static void submit_one_bio(struct btrfs_bio_ctrl *bio_ctrl)
-@@ -909,7 +927,7 @@ static void btrfs_readahead_expand(struct readahead_control *ractl,
-  * return 0 on success, otherwise return error
-  */
- static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
--		      struct btrfs_bio_ctrl *bio_ctrl, u64 *prev_em_start)
-+			     struct btrfs_bio_ctrl *bio_ctrl)
+ 	kbuf.image = image;
+@@ -66,7 +66,7 @@ static int elf_find_pbase(struct kimage *image, unsigned long kernel_len,
  {
- 	struct inode *inode = folio->mapping->host;
- 	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
-@@ -1019,12 +1037,11 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
- 		 * non-optimal behavior (submitting 2 bios for the same extent).
- 		 */
- 		if (compress_type != BTRFS_COMPRESS_NONE &&
--		    prev_em_start && *prev_em_start != (u64)-1 &&
--		    *prev_em_start != em->start)
-+		    bio_ctrl->last_em_start != U64_MAX &&
-+		    bio_ctrl->last_em_start != em->start)
- 			force_bio_submit = true;
- 
--		if (prev_em_start)
--			*prev_em_start = em->start;
-+		bio_ctrl->last_em_start = em->start;
- 
- 		btrfs_free_extent_map(em);
- 		em = NULL;
-@@ -1238,12 +1255,15 @@ int btrfs_read_folio(struct file *file, struct folio *folio)
- 	const u64 start = folio_pos(folio);
- 	const u64 end = start + folio_size(folio) - 1;
- 	struct extent_state *cached_state = NULL;
--	struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ };
-+	struct btrfs_bio_ctrl bio_ctrl = {
-+		.opf = REQ_OP_READ,
-+		.last_em_start = U64_MAX,
-+	};
- 	struct extent_map *em_cached = NULL;
+ 	int i;
+ 	int ret;
+-	struct kexec_buf kbuf;
++	struct kexec_buf kbuf = {};
+ 	const struct elf_phdr *phdr;
+ 	unsigned long lowest_paddr = ULONG_MAX;
+ 	unsigned long lowest_vaddr = ULONG_MAX;
+diff --git a/arch/riscv/kernel/kexec_image.c b/arch/riscv/kernel/kexec_image.c
+index 26a81774a78a..8f2eb900910b 100644
+--- a/arch/riscv/kernel/kexec_image.c
++++ b/arch/riscv/kernel/kexec_image.c
+@@ -41,7 +41,7 @@ static void *image_load(struct kimage *image,
+ 	struct riscv_image_header *h;
+ 	u64 flags;
+ 	bool be_image, be_kernel;
+-	struct kexec_buf kbuf;
++	struct kexec_buf kbuf = {};
  	int ret;
  
- 	lock_extents_for_read(inode, start, end, &cached_state);
--	ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl, NULL);
-+	ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
- 	btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
+ 	/* Check Image header */
+diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
+index e36104af2e24..b9eb41b0a975 100644
+--- a/arch/riscv/kernel/machine_kexec_file.c
++++ b/arch/riscv/kernel/machine_kexec_file.c
+@@ -261,7 +261,7 @@ int load_extra_segments(struct kimage *image, unsigned long kernel_start,
+ 	int ret;
+ 	void *fdt;
+ 	unsigned long initrd_pbase = 0UL;
+-	struct kexec_buf kbuf;
++	struct kexec_buf kbuf = {};
+ 	char *modified_cmdline = NULL;
  
- 	btrfs_free_extent_map(em_cached);
-@@ -2583,7 +2603,8 @@ void btrfs_readahead(struct readahead_control *rac)
- {
- 	struct btrfs_bio_ctrl bio_ctrl = {
- 		.opf = REQ_OP_READ | REQ_RAHEAD,
--		.ractl = rac
-+		.ractl = rac,
-+		.last_em_start = U64_MAX,
- 	};
- 	struct folio *folio;
- 	struct btrfs_inode *inode = BTRFS_I(rac->mapping->host);
-@@ -2591,12 +2612,11 @@ void btrfs_readahead(struct readahead_control *rac)
- 	const u64 end = start + readahead_length(rac) - 1;
- 	struct extent_state *cached_state = NULL;
- 	struct extent_map *em_cached = NULL;
--	u64 prev_em_start = (u64)-1;
- 
- 	lock_extents_for_read(inode, start, end, &cached_state);
- 
- 	while ((folio = readahead_folio(rac)) != NULL)
--		btrfs_do_readpage(folio, &em_cached, &bio_ctrl, &prev_em_start);
-+		btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
- 
- 	btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
- 
+ 	kbuf.image = image;
 
 
