@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-179504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA92B561CA
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 17:23:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2774EB561CE
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 17:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6846D584FC4
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 15:23:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D16273BA45E
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 15:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588122F28EE;
-	Sat, 13 Sep 2025 15:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAEE1A5B9E;
+	Sat, 13 Sep 2025 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XfIrpqCK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLDWwl4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CEC6FC5
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 15:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7236FC5
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 15:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757776993; cv=none; b=Wx1J8VM0m2NeQr1lVocsikV7GnkdaQoNxxAajuLx3dwh+emaT1WLmnXd6c5y3VwYpG/AZUTs1SSp4hSLgPDDGO/t9Unw/YDBLovYUHLNqLYWAf7qHKfsEZ653achkOcgN5eu2iQ1m3j+bSMvQaiim4G/7QLY8X7dNtVKhao1www=
+	t=1757777453; cv=none; b=b8ogY0CIf5zyl7CLG/yozArKf5yzElRO8NFRkFkJIkJKZ1rdWD+x05IuQP/LNnKwBEjD532OzqAlo6y8ICCTn0XFx7iRdI4L8hg8+MUfIgnjxIdg01eFSar5GB2KKEYPbNZ1M7vbCpFGheH6jVWVUqwmeFMxW4I91pXLxOcWtTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757776993; c=relaxed/simple;
-	bh=GD63cAKORPVbcmOiA3JkBR7vH8sJzSawf+AiF50E+iw=;
+	s=arc-20240116; t=1757777453; c=relaxed/simple;
+	bh=OyaqNmzZUPlW/gQfTvm/X2RI6dw6Ts+xPtX0SlJfOfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dg/hPO32FNlfQn+NX9/J8YRsNrqQ09Y0+98aGQSlBz1vEpwL2SRCzglh7Vrg+tDEuz5D4q+uMdQy0l+l4IhebjNRieR/LZijT4/dGTaqWtYwBMjktUNFrCtSWlX/KhA3+gkAzXyciSX5BJtt4IfwT0f3iJCBRwR3iuGWn1Fhq4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XfIrpqCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E248C4CEF9;
-	Sat, 13 Sep 2025 15:23:12 +0000 (UTC)
+	 MIME-Version; b=Tx94khMv9drG8+cFFlz49UZ4zqtHWU806d01Jh6P2V38rH7/XSPbnr4wL92MtgvO1g4OoWZT9S9dFghk09e9kuqpLB16usflaDFFvDWSb3+7cxKOSU4/yEm/7QrcTCc+hj79UKDywV93iOqnNh8h70FhYPBvLBXVIh8+6b7na5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLDWwl4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103CAC4CEEB;
+	Sat, 13 Sep 2025 15:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757776993;
-	bh=GD63cAKORPVbcmOiA3JkBR7vH8sJzSawf+AiF50E+iw=;
+	s=k20201202; t=1757777452;
+	bh=OyaqNmzZUPlW/gQfTvm/X2RI6dw6Ts+xPtX0SlJfOfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfIrpqCKuOtSrJx8UiRvVX7nhyJCgm2JQOIfqBrXT43u7ytHxK6z47XSrDchCEyfv
-	 5nyzuyEUrqK17zglr8Drth8yvOEBascl6Gpa+j3M+zTelXCgiTyuz7fftzq0hQiczr
-	 QGw+xSZwVRpItBHvy21rl7KBRJ8w/98ojwR159AJaikfmHwMvMJZvxMXKhbpsZLVqK
-	 j5oGM1baP3c17Dkm4+XZ474TueMtqHbipaihF31YN6iz+kc/Y59nZsu5UfXOZ72fGX
-	 x2FZJ9fXeAQ3QPMcFxvaEelV93IbLOuyPLNFHnQe/BIthYQZ4AkFV1hYk+P/pMHcGI
-	 x33oy3TbsD24w==
+	b=SLDWwl4ySJMguegZyD0T2+i5CcbfNu0RQzi1QWIR1E+h7ZBgcgnYgL+PJaGudNbE8
+	 oFlEN3fRg1rrHe9n074j7LKvTkvlvDqVoU8E+2IGqXwmbBL5mgFxuLDeatJ+7EyQbl
+	 xAMZ3D27BwgMION39NQ5Nw+G7/zgMrAq+xYx+RdvFYFAWwpNhavaQQS1kdlI6IyjnT
+	 +gEYQ8BQ4X6Mbp52EW+SksiyRR4V7lzNRYGqrmyBz4nL+3XLYny+sx9p/LzMP27gxZ
+	 p0fHQE3ZMlV5LASFgoK+BP0Ws4F9Zn7IjDiqBPArwXB4gBh1rSttklNQ+twJQaeh5p
+	 uJB0/wMuwB++w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexander Dahl <ada@thorsis.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/2] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
-Date: Sat, 13 Sep 2025 11:23:07 -0400
-Message-ID: <20250913152307.1415556-2-sashal@kernel.org>
+Subject: [PATCH 6.16.y 1/3] mtd: spinand: Add a ->configure_chip() hook
+Date: Sat, 13 Sep 2025 11:30:47 -0400
+Message-ID: <20250913153049.1419819-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250913152307.1415556-1-sashal@kernel.org>
-References: <2025091346-runaround-croon-39cc@gregkh>
- <20250913152307.1415556-1-sashal@kernel.org>
+In-Reply-To: <2025091343-unmade-clapped-31e9@gregkh>
+References: <2025091343-unmade-clapped-31e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,62 +59,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
+[ Upstream commit da55809ebb45d1d80b7a388ffef841ed683e1a6f ]
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+There is already a manufacturer hook, which is manufacturer specific but
+not chip specific. We no longer have access to the actual NAND identity
+at this stage so let's add a per-chip configuration hook to align the
+chip configuration (if any) with the core's setting.
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
-
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
-
-Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Dahl <ada@thorsis.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Stable-dep-of: 4550d33e1811 ("mtd: spinand: winbond: Fix oob_layout for W25N01JW")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/spi/core.c | 16 ++++++++++++++--
+ include/linux/mtd/spinand.h |  7 +++++++
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 2610460cd288c..21fa4f95082cd 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1311,14 +1311,24 @@ static int atmel_smc_nand_prepare_smcconf(struct atmel_nand *nand,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index b90f15c986a31..83e5e79e2f0db 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1253,8 +1253,19 @@ static int spinand_id_detect(struct spinand_device *spinand)
  
-+	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
+ static int spinand_manufacturer_init(struct spinand_device *spinand)
+ {
+-	if (spinand->manufacturer->ops->init)
+-		return spinand->manufacturer->ops->init(spinand);
++	int ret;
 +
- 	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
++	if (spinand->manufacturer->ops->init) {
++		ret = spinand->manufacturer->ops->init(spinand);
++		if (ret)
++			return ret;
++	}
++
++	if (spinand->configure_chip) {
++		ret = spinand->configure_chip(spinand);
++		if (ret)
++			return ret;
++	}
+ 
+ 	return 0;
+ }
+@@ -1349,6 +1360,7 @@ int spinand_match_and_init(struct spinand_device *spinand,
+ 		spinand->flags = table[i].flags;
+ 		spinand->id.len = 1 + table[i].devid.len;
+ 		spinand->select_target = table[i].select_target;
++		spinand->configure_chip = table[i].configure_chip;
+ 		spinand->set_cont_read = table[i].set_cont_read;
+ 		spinand->fact_otp = &table[i].fact_otp;
+ 		spinand->user_otp = &table[i].user_otp;
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 15eaa09da998c..c13b088ef75f1 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -484,6 +484,7 @@ struct spinand_user_otp {
+  * @op_variants.update_cache: variants of the update-cache operation
+  * @select_target: function used to select a target/die. Required only for
+  *		   multi-die chips
++ * @configure_chip: Align the chip configuration with the core settings
+  * @set_cont_read: enable/disable continuous cached reads
+  * @fact_otp: SPI NAND factory OTP info.
+  * @user_otp: SPI NAND user OTP info.
+@@ -507,6 +508,7 @@ struct spinand_info {
+ 	} op_variants;
+ 	int (*select_target)(struct spinand_device *spinand,
+ 			     unsigned int target);
++	int (*configure_chip)(struct spinand_device *spinand);
+ 	int (*set_cont_read)(struct spinand_device *spinand,
+ 			     bool enable);
+ 	struct spinand_fact_otp fact_otp;
+@@ -539,6 +541,9 @@ struct spinand_info {
+ #define SPINAND_SELECT_TARGET(__func)					\
+ 	.select_target = __func
+ 
++#define SPINAND_CONFIGURE_CHIP(__configure_chip)			\
++	.configure_chip = __configure_chip
++
+ #define SPINAND_CONT_READ(__set_cont_read)				\
+ 	.set_cont_read = __set_cont_read
+ 
+@@ -607,6 +612,7 @@ struct spinand_dirmap {
+  *		passed in spi_mem_op be DMA-able, so we can't based the bufs on
+  *		the stack
+  * @manufacturer: SPI NAND manufacturer information
++ * @configure_chip: Align the chip configuration with the core settings
+  * @cont_read_possible: Field filled by the core once the whole system
+  *		configuration is known to tell whether continuous reads are
+  *		suitable to use or not in general with this chip/configuration.
+@@ -647,6 +653,7 @@ struct spinand_device {
+ 	const struct spinand_manufacturer *manufacturer;
+ 	void *priv;
+ 
++	int (*configure_chip)(struct spinand_device *spinand);
+ 	bool cont_read_possible;
+ 	int (*set_cont_read)(struct spinand_device *spinand,
+ 			     bool enable);
 -- 
 2.51.0
 
