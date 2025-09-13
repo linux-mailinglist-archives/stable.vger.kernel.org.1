@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-179508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7DFB5622F
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 18:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71683B56230
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 18:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 700585803EA
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:13:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25870580422
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57EB2C21F0;
-	Sat, 13 Sep 2025 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A097E2EFD8C;
+	Sat, 13 Sep 2025 16:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQvXE677"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5fknwLQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43851DD0D4
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD0A1DD0D4
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 16:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757780033; cv=none; b=XryYBHzIIEFSMHKw9yo8tC49bXRfhk4zeaIcywYCwDElhTHldWzyzJVb5Rn3MlQXnDMygvS7A8pydCWHl20Gn3fe7jpQEcmhHmy5MQQQTow7BoiIM6a1toDIG0KhfnFeA7aECaBQ85ol1FDQfi76SnzilZXLPsLmJ+ztKWlTWJI=
+	t=1757780037; cv=none; b=MbXEC4RJ8t4LiOAbDhpfrFhHTlvyXmadqyzRUdpgFtIYGU3Ge8f0pPrW2/Okk0nPkMPp5YcFc7wC1yIdI/iMURbU8TMW9Q+1G0oHfYZB9MWcEmiCuNIpu9ljfzMopI48p4Tq+GMybflP1LXQavY0tcAn9j10elr43nReUCTTUAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757780033; c=relaxed/simple;
-	bh=Q0FAkzExqDIsBM2ycy+Jn3dXdVKSI1xAAd5JwKYjQ0w=;
+	s=arc-20240116; t=1757780037; c=relaxed/simple;
+	bh=t25E7Qx2/8aOFpF5RHCchOM6LswxSq9NjI5Ud7/rQ7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wao1NnmsrxaHKpkFtJ2xApYhBaIe9jXM1RhgJBXx2+enbZk3ErojfjXB8T+I+51VBfox02mHas2D4qAUPKEH15oh6ypZGLTTQdiDxjasN9bNqA1D1fgsJKAxS9769/KwTtR+e9WvFnGpxKWfWbZmFjWnnxRJnk46Eb4/zfHqiEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQvXE677; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF824C4CEEB;
-	Sat, 13 Sep 2025 16:13:52 +0000 (UTC)
+	 MIME-Version; b=j0EKMB3/J8xy4QB80Yw6kL0JS3ZYuuy2vExyeN5PD3piSUAYZZ9wiMbjNItVKzjpNiJgAb107GWhyKRfF8JZHfkfgPuKlV6pHS+TbtjhiiwTvWzN28111ZbT3saJAWbVXzBeJfy/ZWcgg2AFXfQF/BEMyQcBkhib6BVsYKHayi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r5fknwLQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E041C4CEEB;
+	Sat, 13 Sep 2025 16:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757780033;
-	bh=Q0FAkzExqDIsBM2ycy+Jn3dXdVKSI1xAAd5JwKYjQ0w=;
+	s=k20201202; t=1757780037;
+	bh=t25E7Qx2/8aOFpF5RHCchOM6LswxSq9NjI5Ud7/rQ7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQvXE677SAzI5FClbOlbyyvv5Sj2M7MAv5/KxsVzYTXlqTEh2zsW6jn4yLh3D4HBF
-	 Hi+EQEMYOujZKaQp1OkHZOeARH8+WL/NN8P1/Eo1x75ICMn+WyQTQ4z0Sk9/d9rZuo
-	 d4UyuVLpEnepY2OWVFu4OD7UQozPkrg2Bu3ZCZvFr2XCkcvIex6odidHxpCbqSvPa5
-	 nOm4Q3zntD948K0EG3XDo5QbR/cZLCSUwX1Me6BWMvtEp61YJgIiC1D7QJ03VE4wwH
-	 9nXitXCL2bKMdndZlw0UXxCz56BYhA8UaR7qcONwoegNg/31EKnDxWmrkcUfrAKQya
-	 mexKPvAFFQOkA==
+	b=r5fknwLQDSKAMIoVRLpnom1So740R9tnjorpJ1p9mCiJ0qAK0PVoKO0ehGo5MksnQ
+	 5gC+7J8odgXxkr5HiJ0xZgh06d8OFGNBMznPqTmaJpw2QMmyzWlR6JuBbFdHdMVK9J
+	 uhlEGJcaT9oLSkrqkCE3+xumWI72pKHpcYVvcBhSKTpiq2SLIXQyXHpigSy2KuZwoQ
+	 VvaNf2sdY6h49ZtmCdZBCW0ySjMIHsGCV0uXLOqILDvCxVnim11Y0DcMnAn0Fhpras
+	 No/5ZRol9BmiYK1WYw6+EDzYZv/SU+Cs9BVkMLBR43SVs9gea5qAbsljCYeGJhVuKD
+	 HlT0pKgWb1X4w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Christophe Kerello <christophe.kerello@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+Cc: Boris Burkov <boris@bur.io>,
+	Dimitrios Apostolou <jimis@gmx.net>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer
-Date: Sat, 13 Sep 2025 12:13:49 -0400
-Message-ID: <20250913161349.1443080-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] btrfs: use readahead_expand() on compressed extents
+Date: Sat, 13 Sep 2025 12:13:52 -0400
+Message-ID: <20250913161353.1443138-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091309-impeach-gauntlet-7646@gregkh>
-References: <2025091309-impeach-gauntlet-7646@gregkh>
+In-Reply-To: <2025091345-gloater-dolly-54a5@gregkh>
+References: <2025091345-gloater-dolly-54a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,138 +62,203 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 513c40e59d5a414ab763a9c84797534b5e8c208d ]
+[ Upstream commit 9e9ff875e4174be939371667d2cc81244e31232f ]
 
-Avoid below overlapping mappings by using a contiguous
-non-cacheable buffer.
+We recently received a report of poor performance doing sequential
+buffered reads of a file with compressed extents. With bs=128k, a naive
+sequential dd ran as fast on a compressed file as on an uncompressed
+(1.2GB/s on my reproducing system) while with bs<32k, this performance
+tanked down to ~300MB/s.
 
-[    4.077708] DMA-API: stm32_fmc2_nfc 48810000.nand-controller: cacheline tracking EEXIST,
-overlapping mappings aren't supported
-[    4.089103] WARNING: CPU: 1 PID: 44 at kernel/dma/debug.c:568 add_dma_entry+0x23c/0x300
-[    4.097071] Modules linked in:
-[    4.100101] CPU: 1 PID: 44 Comm: kworker/u4:2 Not tainted 6.1.82 #1
-[    4.106346] Hardware name: STMicroelectronics STM32MP257F VALID1 SNOR / MB1704 (LPDDR4 Power discrete) + MB1703 + MB1708 (SNOR MB1730) (DT)
-[    4.118824] Workqueue: events_unbound deferred_probe_work_func
-[    4.124674] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.131624] pc : add_dma_entry+0x23c/0x300
-[    4.135658] lr : add_dma_entry+0x23c/0x300
-[    4.139792] sp : ffff800009dbb490
-[    4.143016] x29: ffff800009dbb4a0 x28: 0000000004008022 x27: ffff8000098a6000
-[    4.150174] x26: 0000000000000000 x25: ffff8000099e7000 x24: ffff8000099e7de8
-[    4.157231] x23: 00000000ffffffff x22: 0000000000000000 x21: ffff8000098a6a20
-[    4.164388] x20: ffff000080964180 x19: ffff800009819ba0 x18: 0000000000000006
-[    4.171545] x17: 6361727420656e69 x16: 6c6568636163203a x15: 72656c6c6f72746e
-[    4.178602] x14: 6f632d646e616e2e x13: ffff800009832f58 x12: 00000000000004ec
-[    4.185759] x11: 00000000000001a4 x10: ffff80000988af58 x9 : ffff800009832f58
-[    4.192916] x8 : 00000000ffffefff x7 : ffff80000988af58 x6 : 80000000fffff000
-[    4.199972] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
-[    4.207128] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000812d2c40
-[    4.214185] Call trace:
-[    4.216605]  add_dma_entry+0x23c/0x300
-[    4.220338]  debug_dma_map_sg+0x198/0x350
-[    4.224373]  __dma_map_sg_attrs+0xa0/0x110
-[    4.228411]  dma_map_sg_attrs+0x10/0x2c
-[    4.232247]  stm32_fmc2_nfc_xfer.isra.0+0x1c8/0x3fc
-[    4.237088]  stm32_fmc2_nfc_seq_read_page+0xc8/0x174
-[    4.242127]  nand_read_oob+0x1d4/0x8e0
-[    4.245861]  mtd_read_oob_std+0x58/0x84
-[    4.249596]  mtd_read_oob+0x90/0x150
-[    4.253231]  mtd_read+0x68/0xac
+i.e., slow:
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Cc: stable@vger.kernel.org
-Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-[ adapted variable name from nfc to fmc2 throughout the patch ]
+  dd if=some-compressed-file of=/dev/null bs=4k count=X
+
+vs fast:
+
+  dd if=some-compressed-file of=/dev/null bs=128k count=Y
+
+The cause of this slowness is overhead to do with looking up extent_maps
+to enable readahead pre-caching on compressed extents
+(add_ra_bio_pages()), as well as some overhead in the generic VFS
+readahead code we hit more in the slow case. Notably, the main
+difference between the two read sizes is that in the large sized request
+case, we call btrfs_readahead() relatively rarely while in the smaller
+request we call it for every compressed extent. So the fast case stays
+in the btrfs readahead loop:
+
+    while ((folio = readahead_folio(rac)) != NULL)
+	    btrfs_do_readpage(folio, &em_cached, &bio_ctrl, &prev_em_start);
+
+where the slower one breaks out of that loop every time. This results in
+calling add_ra_bio_pages a lot, doing lots of extent_map lookups,
+extent_map locking, etc.
+
+This happens because although add_ra_bio_pages() does add the
+appropriate un-compressed file pages to the cache, it does not
+communicate back to the ractl in any way. To solve this, we should be
+using readahead_expand() to signal to readahead to expand the readahead
+window.
+
+This change passes the readahead_control into the btrfs_bio_ctrl and in
+the case of compressed reads sets the expansion to the size of the
+extent_map we already looked up anyway. It skips the subpage case as
+that one already doesn't do add_ra_bio_pages().
+
+With this change, whether we use bs=4k or bs=128k, btrfs expands the
+readahead window up to the largest compressed extent we have seen so far
+(in the trivial example: 128k) and the call stacks of the two modes look
+identical. Notably, we barely call add_ra_bio_pages at all. And the
+performance becomes identical as well. So this change certainly "fixes"
+this performance problem.
+
+Of course, it does seem to beg a few questions:
+
+1. Will this waste too much page cache with a too large ra window?
+2. Will this somehow cause bugs prevented by the more thoughtful
+   checking in add_ra_bio_pages?
+3. Should we delete add_ra_bio_pages?
+
+My stabs at some answers:
+
+1. Hard to say. See attempts at generic performance testing below. Is
+   there a "readahead_shrink" we should be using? Should we expand more
+   slowly, by half the remaining em size each time?
+2. I don't think so. Since the new behavior is indistinguishable from
+   reading the file with a larger read size passed in, I don't see why
+   one would be safe but not the other.
+3. Probably! I tested that and it was fine in fstests, and it seems like
+   the pages would get re-used just as well in the readahead case.
+   However, it is possible some reads that use page cache but not
+   btrfs_readahead() could suffer. I will investigate this further as a
+   follow up.
+
+I tested the performance implications of this change in 3 ways (using
+compress-force=zstd:3 for compression):
+
+Directly test the affected workload of small sequential reads on a
+compressed file (improved from ~250MB/s to ~1.2GB/s)
+
+==========for-next==========
+  dd /mnt/lol/non-cmpr 4k
+  1048576+0 records in
+  1048576+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 6.02983 s, 712 MB/s
+  dd /mnt/lol/non-cmpr 128k
+  32768+0 records in
+  32768+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 5.92403 s, 725 MB/s
+  dd /mnt/lol/cmpr 4k
+  1048576+0 records in
+  1048576+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 17.8832 s, 240 MB/s
+  dd /mnt/lol/cmpr 128k
+  32768+0 records in
+  32768+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 3.71001 s, 1.2 GB/s
+
+==========ra-expand==========
+  dd /mnt/lol/non-cmpr 4k
+  1048576+0 records in
+  1048576+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 6.09001 s, 705 MB/s
+  dd /mnt/lol/non-cmpr 128k
+  32768+0 records in
+  32768+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 6.07664 s, 707 MB/s
+  dd /mnt/lol/cmpr 4k
+  1048576+0 records in
+  1048576+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 3.79531 s, 1.1 GB/s
+  dd /mnt/lol/cmpr 128k
+  32768+0 records in
+  32768+0 records out
+  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 3.69533 s, 1.2 GB/s
+
+Built the linux kernel from clean (no change)
+
+Ran fsperf. Mostly neutral results with some improvements and
+regressions here and there.
+
+Reported-by: Dimitrios Apostolou <jimis@gmx.net>
+Link: https://lore.kernel.org/linux-btrfs/34601559-6c16-6ccc-1793-20a97ca0dbba@gmx.net/
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Assert doesn't take a format string ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/stm32_fmc2_nand.c | 27 +++++++++-----------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ fs/btrfs/extent_io.c | 34 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/stm32_fmc2_nand.c b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-index ad4d944ada0c1..9a375fcbec13b 100644
---- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-+++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-@@ -266,6 +266,7 @@ struct stm32_fmc2_nfc {
- 	struct sg_table dma_data_sg;
- 	struct sg_table dma_ecc_sg;
- 	u8 *ecc_buf;
-+	dma_addr_t dma_ecc_addr;
- 	int dma_ecc_len;
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index d322cf82783f9..c59b6ec43581f 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -108,6 +108,7 @@ struct btrfs_bio_ctrl {
+ 	 * This is to avoid touching ranges covered by compression/inline.
+ 	 */
+ 	unsigned long submit_bitmap;
++	struct readahead_control *ractl;
+ };
  
- 	struct completion complete;
-@@ -942,24 +943,19 @@ static int stm32_fmc2_xfer(struct nand_chip *chip, const u8 *buf,
+ static void submit_one_bio(struct btrfs_bio_ctrl *bio_ctrl)
+@@ -929,6 +930,23 @@ static struct extent_map *get_extent_map(struct btrfs_inode *inode,
  
- 	if (!write_data && !raw) {
- 		/* Configure DMA ECC status */
--		p = fmc2->ecc_buf;
- 		for_each_sg(fmc2->dma_ecc_sg.sgl, sg, eccsteps, s) {
--			sg_set_buf(sg, p, fmc2->dma_ecc_len);
--			p += fmc2->dma_ecc_len;
-+			sg_dma_address(sg) = fmc2->dma_ecc_addr +
-+					     s * fmc2->dma_ecc_len;
-+			sg_dma_len(sg) = fmc2->dma_ecc_len;
- 		}
+ 	return em;
+ }
++
++static void btrfs_readahead_expand(struct readahead_control *ractl,
++				   const struct extent_map *em)
++{
++	const u64 ra_pos = readahead_pos(ractl);
++	const u64 ra_end = ra_pos + readahead_length(ractl);
++	const u64 em_end = em->start + em->ram_bytes;
++
++	/* No expansion for holes and inline extents. */
++	if (em->disk_bytenr > EXTENT_MAP_LAST_BYTE)
++		return;
++
++	ASSERT(em_end >= ra_pos);
++	if (em_end > ra_end)
++		readahead_expand(ractl, ra_pos, em_end - ra_pos);
++}
++
+ /*
+  * basic readpage implementation.  Locked extent state structs are inserted
+  * into the tree that are removed when the IO is done (by the end_io
+@@ -994,6 +1012,17 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
  
--		ret = dma_map_sg(fmc2->dev, fmc2->dma_ecc_sg.sgl,
--				 eccsteps, dma_data_dir);
--		if (ret < 0)
--			goto err_unmap_data;
--
- 		desc_ecc = dmaengine_prep_slave_sg(fmc2->dma_ecc_ch,
- 						   fmc2->dma_ecc_sg.sgl,
- 						   eccsteps, dma_transfer_dir,
- 						   DMA_PREP_INTERRUPT);
- 		if (!desc_ecc) {
- 			ret = -ENOMEM;
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 		}
+ 		iosize = min(extent_map_end(em) - cur, end - cur + 1);
+ 		iosize = ALIGN(iosize, blocksize);
++
++		/*
++		 * Only expand readahead for extents which are already creating
++		 * the pages anyway in add_ra_bio_pages, which is compressed
++		 * extents in the non subpage case.
++		 */
++		if (bio_ctrl->ractl &&
++		    !btrfs_is_subpage(fs_info, folio->mapping) &&
++		    compress_type != BTRFS_COMPRESS_NONE)
++			btrfs_readahead_expand(bio_ctrl->ractl, em);
++
+ 		if (compress_type != BTRFS_COMPRESS_NONE)
+ 			disk_bytenr = em->disk_bytenr;
+ 		else
+@@ -2360,7 +2389,10 @@ int btrfs_writepages(struct address_space *mapping, struct writeback_control *wb
  
- 		reinit_completion(&fmc2->dma_ecc_complete);
-@@ -967,7 +963,7 @@ static int stm32_fmc2_xfer(struct nand_chip *chip, const u8 *buf,
- 		desc_ecc->callback_param = &fmc2->dma_ecc_complete;
- 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
- 		if (ret)
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 
- 		dma_async_issue_pending(fmc2->dma_ecc_ch);
- 	}
-@@ -988,7 +984,7 @@ static int stm32_fmc2_xfer(struct nand_chip *chip, const u8 *buf,
- 		if (!write_data && !raw)
- 			dmaengine_terminate_all(fmc2->dma_ecc_ch);
- 		ret = -ETIMEDOUT;
--		goto err_unmap_ecc;
-+		goto err_unmap_data;
- 	}
- 
- 	/* Wait DMA data transfer completion */
-@@ -1009,11 +1005,6 @@ static int stm32_fmc2_xfer(struct nand_chip *chip, const u8 *buf,
- 		}
- 	}
- 
--err_unmap_ecc:
--	if (!write_data && !raw)
--		dma_unmap_sg(fmc2->dev, fmc2->dma_ecc_sg.sgl,
--			     eccsteps, dma_data_dir);
--
- err_unmap_data:
- 	dma_unmap_sg(fmc2->dev, fmc2->dma_data_sg.sgl, eccsteps, dma_data_dir);
- 
-@@ -1625,8 +1616,8 @@ static int stm32_fmc2_dma_setup(struct stm32_fmc2_nfc *fmc2)
- 		return ret;
- 
- 	/* Allocate a buffer to store ECC status registers */
--	fmc2->ecc_buf = devm_kzalloc(fmc2->dev, FMC2_MAX_ECC_BUF_LEN,
--				     GFP_KERNEL);
-+	fmc2->ecc_buf = dmam_alloc_coherent(fmc2->dev, FMC2_MAX_ECC_BUF_LEN,
-+					   &fmc2->dma_ecc_addr, GFP_KERNEL);
- 	if (!fmc2->ecc_buf)
- 		return -ENOMEM;
- 
+ void btrfs_readahead(struct readahead_control *rac)
+ {
+-	struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ | REQ_RAHEAD };
++	struct btrfs_bio_ctrl bio_ctrl = {
++		.opf = REQ_OP_READ | REQ_RAHEAD,
++		.ractl = rac
++	};
+ 	struct folio *folio;
+ 	struct btrfs_inode *inode = BTRFS_I(rac->mapping->host);
+ 	const u64 start = readahead_pos(rac);
 -- 
 2.51.0
 
