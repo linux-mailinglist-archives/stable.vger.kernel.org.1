@@ -1,292 +1,139 @@
-Return-Path: <stable+bounces-179491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42EAB56176
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F3DB56185
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 513DD17A5BE
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:13:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3E0B16B358
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B402F1FDA;
-	Sat, 13 Sep 2025 14:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F71C1A3142;
+	Sat, 13 Sep 2025 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvW4cv0X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfDDj9se"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AB72F1FD6
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 14:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29D13D81
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 14:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757772756; cv=none; b=qrhjw58/2E3p2DdUIK7M1NXaLhTr8bdm65aXJLRjX+Y2oi4WGzfR003pjGcY9foig4mwX4JdtFHy1q2bsb+5vJjctcflEHN/ayGldPrCvTJMkMWz2ATugM36XEEGdKQhKT8hOus95vKiIezdTBuB5I3UrQpEAoGNPU7VMqnlfE8=
+	t=1757773001; cv=none; b=ZZsidowZQ2PksJC1xk/nFkCfAcimIlTYyKCzfmxnAm77XWvnMEr4E7UxMmZaVDUzYaeNZF/NDm64pA21YNi7R35zL+f0ZQW5RbBcNij9UOfGXGujrcjWtGbNiL+mHWaE9cDbu4bEnudQwEIUY4YULKvycfneyuC3FeQN1i826fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757772756; c=relaxed/simple;
-	bh=u/hvYO1yfOPAwv7NMzyHGFkPAknzn0+p+eLUvL5sayQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eobQ/oMmc1rfKkbhz21+Wd0TlVPBuUhSfQKfrIk6lrine40P+nPq9/BO7Entzqmtp/dKb/3WmHYQM+h+wPFWmdUEcX4lT7O5NAXd6uvYzWB9KAMBm9xV+LTSkhMDIxRVbZ/2QqM6c1mNpYnFB7WCD2PzQGbwTwOK7nCB/FSHEIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvW4cv0X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3526C4CEFD;
-	Sat, 13 Sep 2025 14:12:35 +0000 (UTC)
+	s=arc-20240116; t=1757773001; c=relaxed/simple;
+	bh=+lrjcMGg3Px8IKmTOfTbU9mIcZ4mEKewhKEKhOYGr/o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eyikbGlaRFfhVMKdAS+P5TYwHmz1T/qX1Fl2HE2bayZLI91Bti8nIn0qNSyEd3zimkkzzbrENcIfpzw+E+z5X2ovy2lFnkU5LJ4l2gdFIAPlS4Wldv6eJ1e8u3OMSL9AYl7zxmme2LTfmoeD6DH0grOehbUA5R618eKP6nsaCcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfDDj9se; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D932DC4CEEB;
+	Sat, 13 Sep 2025 14:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757772756;
-	bh=u/hvYO1yfOPAwv7NMzyHGFkPAknzn0+p+eLUvL5sayQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvW4cv0Xkji/g/d0heg1vuOPIslRXYMEtp7Qbz138q2f/oJLMYbVQFwLU0ghI1mSE
-	 OBavHBvF48CnGHdXo1x2R+Ti/wKWfu4+97gWPaw/7cio1NzyIrzQcXhmVQG0VkCbqt
-	 91WtRZsEKHagWQNa5VbjeJW6ybCE8LzG4b4AnkjT7M84tbxPHPQVrflXggvy5/ZT4k
-	 hB1jLIJ5QLzmWEFgsTo2CiVkKV1pYz7MeaRwnUzb1v0AgubT+heB2f40MuFva9imBU
-	 WBkv35x1fEq2QCV732Ab0f8+19WPviT4uZjB7r6FW08RAIGoRoMRrS7bHogU/1owTz
-	 KJDJVXCNeYM8g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 2/2] btrfs: fix corruption reading compressed range when block size is smaller than page size
-Date: Sat, 13 Sep 2025 10:12:33 -0400
-Message-ID: <20250913141233.1363589-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250913141233.1363589-1-sashal@kernel.org>
-References: <2025091344-hardly-system-b1fb@gregkh>
- <20250913141233.1363589-1-sashal@kernel.org>
+	s=k20201202; t=1757773000;
+	bh=+lrjcMGg3Px8IKmTOfTbU9mIcZ4mEKewhKEKhOYGr/o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sfDDj9serfE/bNwhVpUrUJrgzwXd4KUbXtyAUR0/9kUP4FQgwbC15VbnpzGT4/25y
+	 ksI4qU0y2tDByjB9nGBmW9FQQqn6rK6/Igr9YCDCysRCpY/wNjl1qQryEPXPRP8uUJ
+	 /PUqJvOnkQfZTI6P51tNqpGgYppfjpzhl+ambXqxnUW1fiUZ6wif5KSy+ueTpvi2BC
+	 SGIOYlqIA1oyLG2b7lD0ev1tOCbihK26E+0RwNt/3RBJkod1nLSZnMeMkMf4LZC8uV
+	 p5IQWL1gRuJO5k6kzH0zJaT/OdSFGO8Dt6LGX961fgNrTI2E7wtaegfrE+hgwfSqZL
+	 eS6Lk0LkTlllQ==
+Message-ID: <6e15e5c0-8e37-44c2-a8b9-90c47e343328@kernel.org>
+Date: Sat, 13 Sep 2025 16:16:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.12.y 4/4] netlink: specs: mptcp: fix if-idx attribute
+ type
+Content-Language: en-GB, fr-BE
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Geliang Tang <geliang@kernel.org>, Jakub Kicinski <kuba@kernel.org>
+References: <2025091346-avenue-afterglow-5b42@gregkh>
+ <20250913141026.1362030-1-sashal@kernel.org>
+ <20250913141026.1362030-4-sashal@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20250913141026.1362030-4-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Qu Wenruo <wqu@suse.com>
+Hi Sasha,
 
-[ Upstream commit 9786531399a679fc2f4630d2c0a186205282ab2f ]
+On 13/09/2025 16:10, Sasha Levin wrote:
+> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+> 
+> [ Upstream commit 7094b84863e5832cb1cd9c4b9d648904775b6bd9 ]
+> 
+> This attribute is used as a signed number in the code in pm_netlink.c:
+> 
+>   nla_put_s32(skb, MPTCP_ATTR_IF_IDX, ssk->sk_bound_dev_if))
+> 
+> The specs should then reflect that. Note that other 'if-idx' attributes
+> from the same .yaml file use a signed number as well.
+> 
+> Fixes: bc8aeb2045e2 ("Documentation: netlink: add a YAML spec for mptcp")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Link: https://patch.msgid.link/20250908-net-mptcp-misc-fixes-6-17-rc5-v1-1-5f2168a66079@kernel.org
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-[BUG]
-With 64K page size (aarch64 with 64K page size config) and 4K btrfs
-block size, the following workload can easily lead to a corrupted read:
+Thank you for having backported these 4 patches, that looks good to me.
 
-        mkfs.btrfs -f -s 4k $dev > /dev/null
-        mount -o compress $dev $mnt
-        xfs_io -f -c "pwrite -S 0xff 0 64k" $mnt/base > /dev/null
-	echo "correct result:"
-        od -Ad -t x1 $mnt/base
-        xfs_io -f -c "reflink $mnt/base 32k 0 32k" \
-		  -c "reflink $mnt/base 0 32k 32k" \
-		  -c "pwrite -S 0xff 60k 4k" $mnt/new > /dev/null
-	echo "incorrect result:"
-        od -Ad -t x1 $mnt/new
-        umount $mnt
-
-This shows the following result:
-
-correct result:
-0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0065536
-incorrect result:
-0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0032768 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-*
-0061440 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0065536
-
-Notice the zero in the range [32K, 60K), which is incorrect.
-
-[CAUSE]
-With extra trace printk, it shows the following events during od:
-(some unrelated info removed like CPU and context)
-
- od-3457   btrfs_do_readpage: enter r/i=5/258 folio=0(65536) prev_em_start=0000000000000000
-
-The "r/i" is indicating the root and inode number. In our case the file
-"new" is using ino 258 from fs tree (root 5).
-
-Here notice the @prev_em_start pointer is NULL. This means the
-btrfs_do_readpage() is called from btrfs_read_folio(), not from
-btrfs_readahead().
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=0 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=4096 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=8192 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=12288 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=16384 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=20480 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=24576 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=28672 got em start=0 len=32768
-
-These above 32K blocks will be read from the first half of the
-compressed data extent.
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=32768 got em start=32768 len=32768
-
-Note here there is no btrfs_submit_compressed_read() call. Which is
-incorrect now.
-Although both extent maps at 0 and 32K are pointing to the same compressed
-data, their offsets are different thus can not be merged into the same
-read.
-
-So this means the compressed data read merge check is doing something
-wrong.
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=36864 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=40960 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=45056 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=49152 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=53248 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=57344 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=61440 skip uptodate
- od-3457   btrfs_submit_compressed_read: cb orig_bio: file off=0 len=61440
-
-The function btrfs_submit_compressed_read() is only called at the end of
-folio read. The compressed bio will only have an extent map of range [0,
-32K), but the original bio passed in is for the whole 64K folio.
-
-This will cause the decompression part to only fill the first 32K,
-leaving the rest untouched (aka, filled with zero).
-
-This incorrect compressed read merge leads to the above data corruption.
-
-There were similar problems that happened in the past, commit 808f80b46790
-("Btrfs: update fix for read corruption of compressed and shared
-extents") is doing pretty much the same fix for readahead.
-
-But that's back to 2015, where btrfs still only supports bs (block size)
-== ps (page size) cases.
-This means btrfs_do_readpage() only needs to handle a folio which
-contains exactly one block.
-
-Only btrfs_readahead() can lead to a read covering multiple blocks.
-Thus only btrfs_readahead() passes a non-NULL @prev_em_start pointer.
-
-With v5.15 kernel btrfs introduced bs < ps support. This breaks the above
-assumption that a folio can only contain one block.
-
-Now btrfs_read_folio() can also read multiple blocks in one go.
-But btrfs_read_folio() doesn't pass a @prev_em_start pointer, thus the
-existing bio force submission check will never be triggered.
-
-In theory, this can also happen for btrfs with large folios, but since
-large folio is still experimental, we don't need to bother it, thus only
-bs < ps support is affected for now.
-
-[FIX]
-Instead of passing @prev_em_start to do the proper compressed extent
-check, introduce one new member, btrfs_bio_ctrl::last_em_start, so that
-the existing bio force submission logic will always be triggered.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/extent_io.c | 40 ++++++++++++++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 10 deletions(-)
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index f6b9bc3867919..b843db855f402 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -111,6 +111,24 @@ struct btrfs_bio_ctrl {
- 	 */
- 	unsigned long submit_bitmap;
- 	struct readahead_control *ractl;
-+
-+	/*
-+	 * The start offset of the last used extent map by a read operation.
-+	 *
-+	 * This is for proper compressed read merge.
-+	 * U64_MAX means we are starting the read and have made no progress yet.
-+	 *
-+	 * The current btrfs_bio_is_contig() only uses disk_bytenr as
-+	 * the condition to check if the read can be merged with previous
-+	 * bio, which is not correct. E.g. two file extents pointing to the
-+	 * same extent but with different offset.
-+	 *
-+	 * So here we need to do extra checks to only merge reads that are
-+	 * covered by the same extent map.
-+	 * Just extent_map::start will be enough, as they are unique
-+	 * inside the same inode.
-+	 */
-+	u64 last_em_start;
- };
- 
- static void submit_one_bio(struct btrfs_bio_ctrl *bio_ctrl)
-@@ -910,7 +928,7 @@ static void btrfs_readahead_expand(struct readahead_control *ractl,
-  * return 0 on success, otherwise return error
-  */
- static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
--		      struct btrfs_bio_ctrl *bio_ctrl, u64 *prev_em_start)
-+			     struct btrfs_bio_ctrl *bio_ctrl)
- {
- 	struct inode *inode = folio->mapping->host;
- 	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
-@@ -1020,12 +1038,11 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
- 		 * non-optimal behavior (submitting 2 bios for the same extent).
- 		 */
- 		if (compress_type != BTRFS_COMPRESS_NONE &&
--		    prev_em_start && *prev_em_start != (u64)-1 &&
--		    *prev_em_start != em->start)
-+		    bio_ctrl->last_em_start != U64_MAX &&
-+		    bio_ctrl->last_em_start != em->start)
- 			force_bio_submit = true;
- 
--		if (prev_em_start)
--			*prev_em_start = em->start;
-+		bio_ctrl->last_em_start = em->start;
- 
- 		btrfs_free_extent_map(em);
- 		em = NULL;
-@@ -1239,12 +1256,15 @@ int btrfs_read_folio(struct file *file, struct folio *folio)
- 	const u64 start = folio_pos(folio);
- 	const u64 end = start + folio_size(folio) - 1;
- 	struct extent_state *cached_state = NULL;
--	struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ };
-+	struct btrfs_bio_ctrl bio_ctrl = {
-+		.opf = REQ_OP_READ,
-+		.last_em_start = U64_MAX,
-+	};
- 	struct extent_map *em_cached = NULL;
- 	int ret;
- 
- 	lock_extents_for_read(inode, start, end, &cached_state);
--	ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl, NULL);
-+	ret = btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
- 	btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
- 
- 	btrfs_free_extent_map(em_cached);
-@@ -2582,7 +2602,8 @@ void btrfs_readahead(struct readahead_control *rac)
- {
- 	struct btrfs_bio_ctrl bio_ctrl = {
- 		.opf = REQ_OP_READ | REQ_RAHEAD,
--		.ractl = rac
-+		.ractl = rac,
-+		.last_em_start = U64_MAX,
- 	};
- 	struct folio *folio;
- 	struct btrfs_inode *inode = BTRFS_I(rac->mapping->host);
-@@ -2590,12 +2611,11 @@ void btrfs_readahead(struct readahead_control *rac)
- 	const u64 end = start + readahead_length(rac) - 1;
- 	struct extent_state *cached_state = NULL;
- 	struct extent_map *em_cached = NULL;
--	u64 prev_em_start = (u64)-1;
- 
- 	lock_extents_for_read(inode, start, end, &cached_state);
- 
- 	while ((folio = readahead_folio(rac)) != NULL)
--		btrfs_do_readpage(folio, &em_cached, &bio_ctrl, &prev_em_start);
-+		btrfs_do_readpage(folio, &em_cached, &bio_ctrl);
- 
- 	btrfs_unlock_extent(&inode->io_tree, start, end, &cached_state);
- 
+Cheers,
+Matt
 -- 
-2.51.0
+Sponsored by the NGI0 Core fund.
 
 
