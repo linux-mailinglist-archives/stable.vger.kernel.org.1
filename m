@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-179526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A49EB562DB
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 22:09:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739F2B562DC
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 22:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB54BA06759
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 20:09:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 241417A81F9
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 20:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E69B635;
-	Sat, 13 Sep 2025 20:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DC925B69F;
+	Sat, 13 Sep 2025 20:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SFu6D1qt"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TIyh4j+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAD32571BA;
-	Sat, 13 Sep 2025 20:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B7C23D7DB;
+	Sat, 13 Sep 2025 20:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757794169; cv=none; b=AVqsIkMS3Ez0sj4LKc+jdrqSDwqZfMJ+kg4/kk5ewTjX6xbt73fmT3/N0Gu5yL26WXzzmWO17/3RHVal56NyQrCvv3jgoWVmvAYpOlrGb1HgFWvCldc8hSBxThUR+o9MM1kuVRWoI1pQIlMRGC00I7f7ghWhlwLBqx5Zw+lZZJU=
+	t=1757794176; cv=none; b=Kph+tnjlQRmC9q27rdm7Oa2KLE3PRPdyQKM/pER06v9Wo+iloJBafPEbDYPrdICw4tHaQ02XEVAIsWevVNEOosKfHHvBgkjMHUe11LqppUVUPnhXwdrss8x0AA+7MuhSZScj6H93GihU0PhcvO3NkHrMYah16kBn2DXWvjoI4vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757794169; c=relaxed/simple;
-	bh=euD3nkTU6AvjaoI/vnLCE0wNaswRZWvlszPapKNqook=;
-	h=Date:To:From:Subject:Message-Id; b=GgqmQMYjhISymYmCBnXnDEDLWWhFXBq9RyrO5By/27Uj5rD1qsnB9WzVKzUo5BdODTPr0prmD7Xb3VAezpyBNrpsUwe6uuuoj6Yz9JNfAmCUqYNghX0IaFv1OWobWJgdHI8HBKeBkvnopslSgucC/AX/GmcPp4hkvBYtZFu6Qkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SFu6D1qt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4355EC4CEEB;
-	Sat, 13 Sep 2025 20:09:28 +0000 (UTC)
+	s=arc-20240116; t=1757794176; c=relaxed/simple;
+	bh=El3379nhL1fJ+T7IN5nGZGX55cqNlukP57Krn/pIaq8=;
+	h=Date:To:From:Subject:Message-Id; b=jqrJX83Y3LC/I6z5SgQIB6X9OcKWEBTBG4T2qRiX8gT+ot/TFY/vzlrCdqjejtX15s65ZsDSD5HJKfN+Q3xT7AyG5J4Lf3g+6ES+e8E2ii1vgFLnQQYFF+eL3KZHBMF6iwheWLXzV9KUjRp/fSPtxvHtb9PfdTCPRsJ8+Tho4Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TIyh4j+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C75C4CEEB;
+	Sat, 13 Sep 2025 20:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757794168;
-	bh=euD3nkTU6AvjaoI/vnLCE0wNaswRZWvlszPapKNqook=;
+	s=korg; t=1757794176;
+	bh=El3379nhL1fJ+T7IN5nGZGX55cqNlukP57Krn/pIaq8=;
 	h=Date:To:From:Subject:From;
-	b=SFu6D1qtl4g+hEoUMK5HJ+8uCPXh8fiqBW9P+KH+TAgT/8TJCM9TMmYlf+RlGeRX0
-	 bLDK/S2JLHemR4NX8N0QdBEqtLAC869CjV6Z/h+VFjetzUX5pZuhlHhF6Uhr6te2jC
-	 XylPK5ZiSP3T+16hddkHkLrhUFE+5nZUTU8Ei7IU=
-Date: Sat, 13 Sep 2025 13:09:27 -0700
-To: mm-commits@vger.kernel.org,yuzhao@google.com,yuanchu@google.com,yangge1116@126.com,willy@infradead.org,will@kernel.org,weixugc@google.com,vbabka@suse.cz,stable@vger.kernel.org,shivankg@amd.com,riel@surriel.com,peterx@redhat.com,lizhe.67@bytedance.com,koct9i@gmail.com,keirf@google.com,jhubbard@nvidia.com,jgg@ziepe.ca,hch@infradead.org,hannes@cmpxchg.org,david@redhat.com,chrisl@kernel.org,axelrasmussen@google.com,aneesh.kumar@kernel.org,hughd@google.com,akpm@linux-foundation.org
+	b=TIyh4j+Feyg2+e9VJvACN8Hxyy64cVPSfn0z9i5yr9wq322TXA+AhZNhvONAhp0Ge
+	 FdU4yzKtBfcQuJxVlLtbgEeaphaKsCuPEkcuUltAA8h44/RYCsEAi0cj+0+6XGqaWS
+	 Y5SKRJEZWUd3ytjCdAVR46shDXKP9Z257TGyJeUY=
+Date: Sat, 13 Sep 2025 13:09:35 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-folio_may_be_lru_cached-unless-folio_test_large.patch removed from -mm tree
-Message-Id: <20250913200928.4355EC4CEEB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] samples-damon-wsse-avoid-starting-damon-before-initialization.patch removed from -mm tree
+Message-Id: <20250913200936.15C75C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,150 +50,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: folio_may_be_lru_cached() unless folio_test_large()
+     Subject: samples/damon/wsse: avoid starting DAMON before initialization
 has been removed from the -mm tree.  Its filename was
-     mm-folio_may_be_lru_cached-unless-folio_test_large.patch
+     samples-damon-wsse-avoid-starting-damon-before-initialization.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Hugh Dickins <hughd@google.com>
-Subject: mm: folio_may_be_lru_cached() unless folio_test_large()
-Date: Mon, 8 Sep 2025 15:23:15 -0700 (PDT)
+From: SeongJae Park <sj@kernel.org>
+Subject: samples/damon/wsse: avoid starting DAMON before initialization
+Date: Mon, 8 Sep 2025 19:22:36 -0700
 
-mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
-large folio is added: so collect_longterm_unpinnable_folios() just wastes
-effort when calling lru_add_drain[_all]() on a large folio.
+Patch series "samples/damon: fix boot time enable handling fixup merge
+mistakes".
 
-But although there is good reason not to batch up PMD-sized folios, we
-might well benefit from batching a small number of low-order mTHPs (though
-unclear how that "small number" limitation will be implemented).
+First three patches of the patch series "mm/damon: fix misc bugs in DAMON
+modules" [1] were trying to fix boot time DAMON sample modules enabling
+issues.  The issues are the modules can crash if those are enabled before
+DAMON is enabled, like using boot time parameter options.  The three
+patches were fixing the issues by avoiding starting DAMON before the
+module initialization phase.
 
-So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
-insulate those particular checks from future change.  Name preferred to
-"folio_is_batchable" because large folios can well be put on a batch: it's
-just the per-CPU LRU caches, drained much later, which need care.
+However, probably by a mistake during a merge, only half of the change is
+merged, and the part for avoiding the starting of DAMON before the module
+initialized is missed.  So the problem is not solved and thus the modules
+can still crash if enabled before DAMON is initialized.  Fix those by
+applying the unmerged parts again.
 
-Marked for stable, to counter the increase in lru_add_drain_all()s from
-"mm/gup: check ref_count instead of lru before migration".
+Note that the broken commits are merged into 6.17-rc1, but also backported
+to relevant stable kernels.  So this series also needs to be merged into
+the stable kernels.  Hence Cc-ing stable@.
 
-Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
-Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
+
+This patch (of 3):
+
+Commit 0ed1165c3727 ("samples/damon/wsse: fix boot time enable handling")
+is somehow incompletely applying the origin patch [2].  It is missing the
+part that avoids starting DAMON before module initialization.  Probably a
+mistake during a merge has happened.  Fix it by applying the missed part
+again.
+
+Link: https://lkml.kernel.org/r/20250909022238.2989-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250909022238.2989-2-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250706193207.39810-1-sj@kernel.org [1]
+Link: https://lore.kernel.org/20250706193207.39810-2-sj@kernel.org [2]
+Fixes: 0ed1165c3727 ("samples/damon/wsse: fix boot time enable handling")
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/swap.h |   10 ++++++++++
- mm/gup.c             |    4 ++--
- mm/mlock.c           |    6 +++---
- mm/swap.c            |    2 +-
- 4 files changed, 16 insertions(+), 6 deletions(-)
+ samples/damon/wsse.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/swap.h~mm-folio_may_be_lru_cached-unless-folio_test_large
-+++ a/include/linux/swap.h
-@@ -385,6 +385,16 @@ void folio_add_lru_vma(struct folio *, s
- void mark_page_accessed(struct page *);
- void folio_mark_accessed(struct folio *);
+--- a/samples/damon/wsse.c~samples-damon-wsse-avoid-starting-damon-before-initialization
++++ a/samples/damon/wsse.c
+@@ -118,6 +118,9 @@ static int damon_sample_wsse_enable_stor
+ 		return 0;
  
-+static inline bool folio_may_be_lru_cached(struct folio *folio)
-+{
-+	/*
-+	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
-+	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
-+	 * will be sensible, but nobody has implemented and tested that yet.
-+	 */
-+	return !folio_test_large(folio);
-+}
+ 	if (enabled) {
++		if (!init_called)
++			return 0;
 +
- extern atomic_t lru_disable_count;
- 
- static inline bool lru_cache_disabled(void)
---- a/mm/gup.c~mm-folio_may_be_lru_cached-unless-folio_test_large
-+++ a/mm/gup.c
-@@ -2307,13 +2307,13 @@ static unsigned long collect_longterm_un
- 			continue;
- 		}
- 
--		if (drained == 0 &&
-+		if (drained == 0 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain();
- 			drained = 1;
- 		}
--		if (drained == 1 &&
-+		if (drained == 1 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
---- a/mm/mlock.c~mm-folio_may_be_lru_cached-unless-folio_test_large
-+++ a/mm/mlock.c
-@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
- 
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
-@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio
- 
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
-@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
- 	 */
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, folio) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
---- a/mm/swap.c~mm-folio_may_be_lru_cached-unless-folio_test_large
-+++ a/mm/swap.c
-@@ -192,7 +192,7 @@ static void __folio_batch_add_and_move(s
- 		local_lock(&cpu_fbatches.lock);
- 
- 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
--			folio_test_large(folio) || lru_cache_disabled())
-+			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
- 
- 	if (disable_irq)
+ 		err = damon_sample_wsse_start();
+ 		if (err)
+ 			enabled = false;
 _
 
-Patches currently in -mm which might be from hughd@google.com are
+Patches currently in -mm which might be from sj@kernel.org are
 
-mm-lru_add_drain_all-do-local-lru_add_drain-first.patch
+mm-zswap-store-page_size-compression-failed-page-as-is.patch
+mm-zswap-store-page_size-compression-failed-page-as-is-fix.patch
+mm-zswap-store-page_size-compression-failed-page-as-is-v5.patch
+mm-zswap-store-page_size-compression-failed-page-as-is-fix-2.patch
+mm-damon-core-add-damon_ctx-addr_unit.patch
+mm-damon-paddr-support-addr_unit-for-access-monitoring.patch
+mm-damon-paddr-support-addr_unit-for-damos_pageout.patch
+mm-damon-paddr-support-addr_unit-for-damos_lru_prio.patch
+mm-damon-paddr-support-addr_unit-for-migrate_hotcold.patch
+mm-damon-paddr-support-addr_unit-for-damos_stat.patch
+mm-damon-sysfs-implement-addr_unit-file-under-context-dir.patch
+docs-mm-damon-design-document-address-unit-parameter.patch
+docs-admin-guide-mm-damon-usage-document-addr_unit-file.patch
+docs-abi-damon-document-addr_unit-file.patch
 
 
