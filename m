@@ -1,180 +1,112 @@
-Return-Path: <stable+bounces-179424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED3AB55FEC
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 11:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AAC5B56084
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 13:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73CED5885C4
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 09:28:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C9EF584A3C
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 11:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB05A2E8DFF;
-	Sat, 13 Sep 2025 09:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527F82BEC31;
+	Sat, 13 Sep 2025 11:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="QeKv04cO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7/5jS8+"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22B42D5946;
-	Sat, 13 Sep 2025 09:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03860B67F;
+	Sat, 13 Sep 2025 11:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757755681; cv=none; b=QycCDrcyrx9VY+foF5PiIGd1Lv9kE9FmW9Blz3Lj4DmReYxJyNsaYQ9sIrnYxP5VhoZLQEkFIeYAt7qbfMANcejl71CSKGZZlFkmhTKUy3eikJlASyLQIQyQ+Ekwq8AFJn2lAfulqSMuDpzS/Ly3iGlqY9kaTnFhHIYxdkptUF4=
+	t=1757763319; cv=none; b=rZtJ1xITWdjoHs3JTT1izKzhHl17kX6MKFEK32HZusN+iigObCNbQbKDs2MfN0yhCK/ExxP31ZirRewJ9y+lc903yZ92YbTbwcG7kmclM0OHrIciqXEAm0zBtizlwVyPeocq0Fz29R9Y+QaiY/KGYXcKzvEYFTAM4WUo/IuZxPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757755681; c=relaxed/simple;
-	bh=awvsvpXqRlkZ99qbX4b278mAef9+7B1wvnHRlagBzLY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtvrXjCjwyEQH137hWhx2fk14CQKAZN95cKKp8MUrJg+agL8D4BsyD0wdQk8GdiMXrKUdetjnSBbi+25zAdyId6AulfRZroqWoeRIQ/ownFRpQFYxjqpwYBRbjn5ZeWxfyKoUdd11dfEfNPBnfEebYbrKq0QJjNpx5CFhPhkRHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=QeKv04cO; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wz1Nlepo1I7EPbDFYbA1uUSymAbIx41UYBcLNwJ+PYc=; b=QeKv04cO6mDZSLvW3OACnmxb7i
-	K0Jlp9Ouyy6BecJDom2lxOwncLPnXGR5YSOBMqmAhfH2NL0+cbKvUHD3fnPEelCSJUHGPWJk3YMIf
-	KlJytgg32HZXnQlt2ymr4KnTe+NCA+Dv2BnJFGN8xXw07D+4c2r66JCPwwjDQihsRVFFH3MjRgifY
-	5GNa4nbQ5ooHLnY/kFEnEJNd4+k37ahpZlqRBP7geBejojRf766mY7MzyOLyOiMmle0EDceaPGSU9
-	NOWvGmr4VHgPcWNW85TdGfS/s9l7NjumbkJoeM2CgE6JJprDynTM3KnlBUQ8TdQ1fjjT4416YEXL2
-	LxiTj66g==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1uxM2e-00AMpN-B5; Sat, 13 Sep 2025 08:55:32 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 6F5D9BE2DE0; Sat, 13 Sep 2025 10:55:31 +0200 (CEST)
-Date: Sat, 13 Sep 2025 10:55:31 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Staffan Melin <staffan.melin@oscillator.se>
-Cc: zhangheng <zhangheng@kylinos.cn>, Jiri Kosina <jkosina@suse.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org,
-	1114557@bugs.debian.org
-Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
- SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
- Composite Device
-Message-ID: <aMUxg6FLqDetwiGu@eldamar.lan>
-References: <aL2gYJaXoB6p_oyM@eldamar.lan>
- <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
- <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
- <aMUxHZF-7p7--1qS@eldamar.lan>
+	s=arc-20240116; t=1757763319; c=relaxed/simple;
+	bh=Q0cNPxSupnkVAkshxZGO8UHs+uFC+c4ZXhf+1svpx3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DLv3plTlx4wTmmU47Q4sct6jbuUJcTuMZPDhXMNGGlM9Nw4qN1iTIjSoKcA/fp3c1N/2JzDFsoUDWubCGavkpy7ysR/n9kFM3csfNHbANiiPne7Fih3dnuMra4SNU4gZeRQUxEtIR3S7SwzCo531JluzGFFD78HCqFZhKc7/5fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7/5jS8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F35BC4CEEB;
+	Sat, 13 Sep 2025 11:35:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757763318;
+	bh=Q0cNPxSupnkVAkshxZGO8UHs+uFC+c4ZXhf+1svpx3A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=B7/5jS8+4+BjhZq1jX8hg/Yl6ErTVzIllexc+qsqJT18t0VD8z+DSN012LF74XR2X
+	 hkU25chC7/fKi2Qpk4TMZlnSL5bkNJJzMPkhI5ZEb/1AOQpQfs+2vZXz/FZjgerQ6s
+	 32yKHwhyaQBhf0Hdvz3V+wZ8+OSos7G6/6flQO/qxtS+UF0wl495X2MtCJ718ov7k7
+	 WJ0oPSaxZ41joaczaUWMsE2lGw7tEJ6MyW3WfCpVZN6b19u/+voBVXGbEzM2AsbsC2
+	 +P2j7LL705Q10BC0PSgf6szqJwP3F+xlx5GoGqNIg1t+bNZQY0CVXh05AVoamVQZ9J
+	 AM3iYTY+F53vg==
+From: Hans de Goede <hansg@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Hans de Goede <hansg@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH v2] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
+Date: Sat, 13 Sep 2025 13:35:15 +0200
+Message-ID: <20250913113515.21698-1-hansg@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="SSq+zSyke7FBHmjg"
-Content-Disposition: inline
-In-Reply-To: <aMUxHZF-7p7--1qS@eldamar.lan>
-X-Debian-User: carnil
+Content-Transfer-Encoding: 8bit
 
+Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
+device property") rfkill_find_type() gets called with the possibly
+uninitialized "const char *type_name;" local variable.
 
---SSq+zSyke7FBHmjg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
+acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
 
-Hi Staffan,
+        rfkill->type = (unsigned)id->driver_data;
 
-chiming in hopefully it is of help.
+and there is no "type" property so device_property_read_string() will fail
+and leave type_name uninitialized, leading to a potential crash.
 
-Now really with the patch ...
+rfkill_find_type() does accept a NULL pointer, fix the potential crash
+by initializing type_name to NULL.
 
-On Fri, Sep 12, 2025 at 09:57:04PM +0200, Staffan Melin wrote:
-> Thank you,
-> 
-> I tried to apply this patch to 6.12.39, the first problematic kernel, as
-> well as 6.12.41, the first bad I tried, and on both I got an error message:
-> 
-> Applying: HID: quirks: Add device descriptor for 4c4a:4155
-> error: patch failed: drivers/hid/hid-quirks.c:1068
-> error: drivers/hid/hid-quirks.c: patch does not apply
-> Patch failed at 0001 HID: quirks: Add device descriptor for 4c4a:4155
-> 
-> To which kernel version should I apply the patch?
+Note likely sofar this has not been caught because:
 
-As the deveopment goes from mainline then down to stable series, the
-fix needs to be developed first for mainline. So the patch is targeted
-there.
+1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
+2. The stack happened to contain NULL where type_name is stored
 
-But please find attached an updated patch which hopefully should work
-which resolved the context changes on top of 6.12.47.
-
-But ideally you can provide a Tested-by on zhangheng's mainline patch
-to get things rolling as needed.
-
-Regards,
-Salvatore
-
---SSq+zSyke7FBHmjg
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-HID-quirks-Add-device-descriptor-for-4c4a-4155.patch"
-
-From 16b03e802a858ebf3eafcfdb22e3025e1a840afd Mon Sep 17 00:00:00 2001
-From: Zhang Heng <zhangheng@kylinos.cn>
-Date: Fri, 12 Sep 2025 20:38:18 +0800
-Subject: [PATCH] HID: quirks: Add device descriptor for 4c4a:4155
-
-Two USB devices use the same ID. To avoid affecting functionality,
-device descriptors are added to distinguish between them
-
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
+Cc: stable@vger.kernel.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
 ---
- drivers/hid/hid-quirks.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Changes in v2:
+- Fix typo in stable email address
+---
+ net/rfkill/rfkill-gpio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 64f9728018b8..cbb658c2c60d 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -898,6 +898,17 @@ static const struct hid_device_id hid_ignore_list[] = {
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
-+	{ }
-+};
-+/*
-+ * hid_ignore_mic - Microphone devices do not require HID core processing
-+ *
-+ * Now there are two USB devices using the same ID, one is the microphone and the other
-+ * is the touch screen. The touch screen requires hid core processing, but the
-+ * microphone does not. The two have different bcdIDs, which will be used to
-+ * distinguish them in the future
-+ */
-+static const struct hid_device_id hid_ignore_mic[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
- 	{ }
- };
-@@ -1061,6 +1072,9 @@ bool hid_ignore(struct hid_device *hdev)
- 	    hid_match_id(hdev, hid_mouse_ignore_list))
- 		return true;
+diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+index 41e657e97761..cf2dcec6ce5a 100644
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -94,10 +94,10 @@ static const struct dmi_system_id rfkill_gpio_deny_table[] = {
+ static int rfkill_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct rfkill_gpio_data *rfkill;
+-	struct gpio_desc *gpio;
++	const char *type_name = NULL;
+ 	const char *name_property;
+ 	const char *type_property;
+-	const char *type_name;
++	struct gpio_desc *gpio;
+ 	int ret;
  
-+	if(hid_match_id(hdev, hid_ignore_mic) && (hdev->version > 1.1))
-+		return true;
-+
- 	return !!hid_match_id(hdev, hid_ignore_list);
- }
- EXPORT_SYMBOL_GPL(hid_ignore);
-@@ -1259,7 +1273,8 @@ static unsigned long hid_gets_squirk(const struct hid_device *hdev)
- 	const struct hid_device_id *bl_entry;
- 	unsigned long quirks = hdev->initial_quirks;
- 
--	if (hid_match_id(hdev, hid_ignore_list))
-+	if (hid_match_id(hdev, hid_ignore_list) ||
-+	   (hid_match_id(hdev, hid_ignore_mic) && (hdev->version > 1.1)))
- 		quirks |= HID_QUIRK_IGNORE;
- 
- 	if (hid_match_id(hdev, hid_have_special_driver))
+ 	if (dmi_check_system(rfkill_gpio_deny_table))
 -- 
 2.51.0
 
-
---SSq+zSyke7FBHmjg--
 
