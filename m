@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-179414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E2AB55ED9
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 08:05:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E449B55EDE
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 08:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72153565ED0
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 06:05:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EB453B9F59
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 06:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD982E6CC6;
-	Sat, 13 Sep 2025 06:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99DA2E6CBC;
+	Sat, 13 Sep 2025 06:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn1gIkoh"
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="dLk/m294"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5736D2D94BF;
-	Sat, 13 Sep 2025 06:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A08B1A9FA8
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 06:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757743519; cv=none; b=sLsyN/5N4+UNe4hfZMjUGiQvbtrBNHRvURww6E+FLpmxodfO9vgF1w6PY9KryNCdJwWnweX4jBbcuOq555BNiXADAhvvVAer4UgVkjfjA5D9XqZYpblq4TQk3JLjGYazLR/5bI+iJVfVSRXSkY+vaEgpY4/0X/IGX04uQw2XhA4=
+	t=1757743852; cv=none; b=L6Sg/h0tL36265acaXZMEnJnH0ytxjr4qFzg3XKzS1mwy6frTnj88EvaZMxostE1yuh6DeWZO3vFqA37pIoc7OIzxjBbAbkaGRSKxRBq5cGsFRH7Wxxuwf48UXx/Wy5+WpKaP0/OsVH8Rxo1BFms4gIq91k6BXHP84xMt9EMms0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757743519; c=relaxed/simple;
-	bh=GyZIzWAtehw+usycPJMh6r6YySiZ3FIOwMksfbkFqUk=;
+	s=arc-20240116; t=1757743852; c=relaxed/simple;
+	bh=+wvFGS6uqzkckuB2AHW2uu89uyY0X7k6QNEhSYv9PuU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qdNJXgQ/kIv7yS9dd1m6+dN+dsY1WzqJ8oN8yApOi+44T47eyjqRXfp6MQRwnziPrxgpWWbNWk0PR/zZKnallzSjOn3W/HHIm/XicyKrtf7HLUTX37FxdwhyupkA8/e+18Srt2db+dJIYsqXLWmZ5S+soGdaDVnK1tSN18Mrs3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn1gIkoh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6754CC4CEEB;
-	Sat, 13 Sep 2025 06:05:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757743516;
-	bh=GyZIzWAtehw+usycPJMh6r6YySiZ3FIOwMksfbkFqUk=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gi6QfY63mNbu6XRJxmUhPIE9yVkqiiuJd1m5G+3z34AgIfIB8DvkzWz3wIPOG4Re+wvnWL3enAivAqsffAgK+7lGImCGwF4QJc4twX2bDCzGzGM6FRfTTwXK/hGnllUe6tv1ZvQOR9zTadeoFflEMRjX/cCIZrIftFLZ3+fzYTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=dLk/m294; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 3E9F650666;
+	Sat, 13 Sep 2025 08:10:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1757743848;
+	bh=+wvFGS6uqzkckuB2AHW2uu89uyY0X7k6QNEhSYv9PuU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mn1gIkoheGYCabLjCi2pDaCtXe+Vk7oADLAcFkBWdaRzFjMpnVqiShU2MsCWy4J0c
-	 vUXlrnxUJrYb+hgBzwqkqQY0sra8Ykwvt7hygbZnuTnG3mXiw1QjA2l6NjzGAnNnEs
-	 o5Tok+r0dEmY9lZh+56ofNibYfMNv+3+AWZQvVeE=
-Date: Sat, 13 Sep 2025 08:05:13 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: GuangFei Luo <luogf2025@163.com>
-Cc: rafael@kernel.org, dan.carpenter@linaro.org, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org, lkp@intel.com, sre@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI: battery: prevent sysfs_add_battery re-entry on
- rapid events
-Message-ID: <2025091354-query-oblivion-9d18@gregkh>
-References: <2025091242-waltz-gruffly-0936@gregkh>
- <20250912162516.692861-1-luogf2025@163.com>
+	b=dLk/m294COsltbcegL91FhTeiyIPMhux6X3wolTYRCeY7QJ+ulDEODnQFoWPtl2BQ
+	 VlncaRWLWE+pn/R6isQaMDY5xPT0Z+1GEX7+a4Ym+rjE3+FIbHIvd8ZWgl0OHMgxYP
+	 caiLksSbEQN2qvlEXbEtyExe6veLbft/OSv5skQXJI7/+M20xac+4SYnBNbnROEVnK
+	 9ku6rCvOB0gq0tkN4GZ0YoKcWYuTY+MiD7TuOBrEJHngRcUp5uhKriIHfzvDNsnb4O
+	 6WXdVVtE7zuP6atIQxwGBiCwxLaoqFEeQRXhPTfFaHCWaiG+YSn6fefeyUVjMDGxLB
+	 iJwgUPyh8CCZg==
+Date: Sat, 13 Sep 2025 08:10:47 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: Vasant Hegde <vasant.hegde@amd.com>
+Cc: iommu@lists.linux.dev, will@kernel.org, robin.murphy@arm.com, 
+	suravee.suthikulpanit@amd.com, Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
+	stable@vger.kernel.org, Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH] iommu/amd/pgtbl: Fix possible race while increase page
+ table level
+Message-ID: <sizw3br3mzal4o5vej7njvnjxsd5ego37zw6ejsh5fufxdr36n@ubrpt7sxsn3d>
+References: <20250911121416.633216-1-vasant.hegde@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,57 +63,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250912162516.692861-1-luogf2025@163.com>
+In-Reply-To: <20250911121416.633216-1-vasant.hegde@amd.com>
 
-On Sat, Sep 13, 2025 at 12:25:16AM +0800, GuangFei Luo wrote:
-> Hi Greg,
-> 
-> Thanks for your review and suggestion.
-> 
-> I've updated sysfs_add_battery() to address your comment.
-> The locking is now applied explicitly inside the function
-> to prevent re-entry issues, while keeping the function
-> self-contained for all call sites.
-> 
-> Patch version: v3
-> 
-> Thanks,
-> GuangFei
-> 
-> v3:
->   - Modified the earlier approach: since sysfs_add_battery() is invoked
->     from multiple places, the most reliable way is to add the lock inside
->     the function itself.
->   - sysfs_remove_battery() had a similar race issue in the past, which was
->     fixed by adding a lock as well. Reference:
->     https://lore.kernel.org/all/9c921c22a7f33397a6774d7fa076db9b6a0fd669
-> 	.1312318300.git.len.brown@intel.com/
-> 
-> v2:
->  - Fix missing mutex_unlock in acpi_battery_update()
->    (Reported-by: kernel test robot)
-> 
-> v1:
-> When removing and reinserting the laptop battery, ACPI can trigger
-> two notifications in quick succession:
+Hey Vasant,
 
-Note, none of the above should be here in the changelog body, it should
-be below the --- line.
+On Thu, Sep 11, 2025 at 12:14:15PM +0000, Vasant Hegde wrote:
+> Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+> Cc: stable@vger.kernel.org
+> Cc: Joao Martins <joao.m.martins@oracle.com>
+> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
 
-> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> index 6905b56bf3e4..f6d4a8b39a9c 100644
-> --- a/drivers/acpi/battery.c
-> +++ b/drivers/acpi/battery.c
-> @@ -850,6 +850,12 @@ static void __exit battery_hook_exit(void)
->  
->  static int sysfs_add_battery(struct acpi_battery *battery)
->  {
-> +	mutex_lock(&battery->sysfs_lock);
+Can you please send again with a Fixes tag?
 
-Again, can you use guard() to make this logic simpler?  That would turn
-this into a much smaller patch.
 
-thanks,
-
-greg k-h
+	Joerg
 
