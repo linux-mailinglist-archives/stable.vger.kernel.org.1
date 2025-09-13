@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-179525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F827B562DA
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 22:09:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A49EB562DB
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 22:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7FBD580F4D
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 20:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB54BA06759
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 20:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1982561AB;
-	Sat, 13 Sep 2025 20:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E69B635;
+	Sat, 13 Sep 2025 20:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OKhPmlIo"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SFu6D1qt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF54258EF4;
-	Sat, 13 Sep 2025 20:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAD32571BA;
+	Sat, 13 Sep 2025 20:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757794167; cv=none; b=VM+ZMsKBT//hPNLJdtXulDK+uDGDEuf0tjSZjKMU2DcHabOj3Qwp7ORiE0r5cCF78pQJ6bB8ThsjpdHMmcxKDJJQvlNlYljMPfcvREyJQaMFekdwhCPYuZz4evZLYp1a/9sMOLs3Z8zks4/yEKb+VHdb28gGbLjxZVUe7srUWPY=
+	t=1757794169; cv=none; b=AVqsIkMS3Ez0sj4LKc+jdrqSDwqZfMJ+kg4/kk5ewTjX6xbt73fmT3/N0Gu5yL26WXzzmWO17/3RHVal56NyQrCvv3jgoWVmvAYpOlrGb1HgFWvCldc8hSBxThUR+o9MM1kuVRWoI1pQIlMRGC00I7f7ghWhlwLBqx5Zw+lZZJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757794167; c=relaxed/simple;
-	bh=JcEtxV2oPd8E5doDvFAK0j+6xSCOLDUCCR7aokuDBr4=;
-	h=Date:To:From:Subject:Message-Id; b=EG1ciRTcBl0EyIbvmLpuRZiQKl/qP1GXwrex10TTxXJSGNjnQtjZ62NITI+AFylg+1EGDqeShrZyMJRYbD9rgfMeG7LAcqNmRUI96wp9CJGv+Lg9MlJ5d1fJMblXmo+2G3wXMtCON9lne1snbXhnOsyFj+CITtobMGSZFIkjWgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OKhPmlIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A75C4CEEB;
-	Sat, 13 Sep 2025 20:09:26 +0000 (UTC)
+	s=arc-20240116; t=1757794169; c=relaxed/simple;
+	bh=euD3nkTU6AvjaoI/vnLCE0wNaswRZWvlszPapKNqook=;
+	h=Date:To:From:Subject:Message-Id; b=GgqmQMYjhISymYmCBnXnDEDLWWhFXBq9RyrO5By/27Uj5rD1qsnB9WzVKzUo5BdODTPr0prmD7Xb3VAezpyBNrpsUwe6uuuoj6Yz9JNfAmCUqYNghX0IaFv1OWobWJgdHI8HBKeBkvnopslSgucC/AX/GmcPp4hkvBYtZFu6Qkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SFu6D1qt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4355EC4CEEB;
+	Sat, 13 Sep 2025 20:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757794166;
-	bh=JcEtxV2oPd8E5doDvFAK0j+6xSCOLDUCCR7aokuDBr4=;
+	s=korg; t=1757794168;
+	bh=euD3nkTU6AvjaoI/vnLCE0wNaswRZWvlszPapKNqook=;
 	h=Date:To:From:Subject:From;
-	b=OKhPmlIof1HnxWs7lK133NF1TAIFNoAuS2hspLxLH4VqTdIlPZsTAseQnTSjL1RS1
-	 YNQ4V/ziZ3bbf997DiJ+/VX6nT0sYUdsSywxONLtWiNehzoe5FFHDgHKER3V7Oeyoz
-	 WLPc4ZGdusWt1k5ShkxcvRWeeZELDo8dgFQm6EhQ=
-Date: Sat, 13 Sep 2025 13:09:25 -0700
+	b=SFu6D1qtl4g+hEoUMK5HJ+8uCPXh8fiqBW9P+KH+TAgT/8TJCM9TMmYlf+RlGeRX0
+	 bLDK/S2JLHemR4NX8N0QdBEqtLAC869CjV6Z/h+VFjetzUX5pZuhlHhF6Uhr6te2jC
+	 XylPK5ZiSP3T+16hddkHkLrhUFE+5nZUTU8Ei7IU=
+Date: Sat, 13 Sep 2025 13:09:27 -0700
 To: mm-commits@vger.kernel.org,yuzhao@google.com,yuanchu@google.com,yangge1116@126.com,willy@infradead.org,will@kernel.org,weixugc@google.com,vbabka@suse.cz,stable@vger.kernel.org,shivankg@amd.com,riel@surriel.com,peterx@redhat.com,lizhe.67@bytedance.com,koct9i@gmail.com,keirf@google.com,jhubbard@nvidia.com,jgg@ziepe.ca,hch@infradead.org,hannes@cmpxchg.org,david@redhat.com,chrisl@kernel.org,axelrasmussen@google.com,aneesh.kumar@kernel.org,hughd@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-revert-mm-vmscanc-fix-oom-on-swap-stress-test.patch removed from -mm tree
-Message-Id: <20250913200926.66A75C4CEEB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-folio_may_be_lru_cached-unless-folio_test_large.patch removed from -mm tree
+Message-Id: <20250913200928.4355EC4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,23 +50,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: revert "mm: vmscan.c: fix OOM on swap stress test"
+     Subject: mm: folio_may_be_lru_cached() unless folio_test_large()
 has been removed from the -mm tree.  Its filename was
-     mm-revert-mm-vmscanc-fix-oom-on-swap-stress-test.patch
+     mm-folio_may_be_lru_cached-unless-folio_test_large.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
 From: Hugh Dickins <hughd@google.com>
-Subject: mm: revert "mm: vmscan.c: fix OOM on swap stress test"
-Date: Mon, 8 Sep 2025 15:21:12 -0700 (PDT)
+Subject: mm: folio_may_be_lru_cached() unless folio_test_large()
+Date: Mon, 8 Sep 2025 15:23:15 -0700 (PDT)
 
-This reverts commit 0885ef470560: that was a fix to the reverted
-33dfe9204f29b415bbc0abb1a50642d1ba94f5e9.
+mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
+large folio is added: so collect_longterm_unpinnable_folios() just wastes
+effort when calling lru_add_drain[_all]() on a large folio.
 
-Link: https://lkml.kernel.org/r/aa0e9d67-fbcd-9d79-88a1-641dfbe1d9d1@google.com
+But although there is good reason not to batch up PMD-sized folios, we
+might well benefit from batching a small number of low-order mTHPs (though
+unclear how that "small number" limitation will be implemented).
+
+So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
+insulate those particular checks from future change.  Name preferred to
+"folio_is_batchable" because large folios can well be put on a batch: it's
+just the per-CPU LRU caches, drained much later, which need care.
+
+Marked for stable, to counter the increase in lru_add_drain_all()s from
+"mm/gup: check ref_count instead of lru before migration".
+
+Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
+Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
 Signed-off-by: Hugh Dickins <hughd@google.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
 Acked-by: David Hildenbrand <david@redhat.com>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: Axel Rasmussen <axelrasmussen@google.com>
@@ -92,20 +107,89 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/vmscan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/swap.h |   10 ++++++++++
+ mm/gup.c             |    4 ++--
+ mm/mlock.c           |    6 +++---
+ mm/swap.c            |    2 +-
+ 4 files changed, 16 insertions(+), 6 deletions(-)
 
---- a/mm/vmscan.c~mm-revert-mm-vmscanc-fix-oom-on-swap-stress-test
-+++ a/mm/vmscan.c
-@@ -4507,7 +4507,7 @@ static bool sort_folio(struct lruvec *lr
- 	}
+--- a/include/linux/swap.h~mm-folio_may_be_lru_cached-unless-folio_test_large
++++ a/include/linux/swap.h
+@@ -385,6 +385,16 @@ void folio_add_lru_vma(struct folio *, s
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
  
- 	/* ineligible */
--	if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
-+	if (zone > sc->reclaim_idx) {
- 		gen = folio_inc_gen(lruvec, folio, false);
- 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
- 		return true;
++static inline bool folio_may_be_lru_cached(struct folio *folio)
++{
++	/*
++	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
++	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
++	 * will be sensible, but nobody has implemented and tested that yet.
++	 */
++	return !folio_test_large(folio);
++}
++
+ extern atomic_t lru_disable_count;
+ 
+ static inline bool lru_cache_disabled(void)
+--- a/mm/gup.c~mm-folio_may_be_lru_cached-unless-folio_test_large
++++ a/mm/gup.c
+@@ -2307,13 +2307,13 @@ static unsigned long collect_longterm_un
+ 			continue;
+ 		}
+ 
+-		if (drained == 0 &&
++		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain();
+ 			drained = 1;
+ 		}
+-		if (drained == 1 &&
++		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+--- a/mm/mlock.c~mm-folio_may_be_lru_cached-unless-folio_test_large
++++ a/mm/mlock.c
+@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
+ 	 */
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, folio) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+--- a/mm/swap.c~mm-folio_may_be_lru_cached-unless-folio_test_large
++++ a/mm/swap.c
+@@ -192,7 +192,7 @@ static void __folio_batch_add_and_move(s
+ 		local_lock(&cpu_fbatches.lock);
+ 
+ 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
+-			folio_test_large(folio) || lru_cache_disabled())
++			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 
+ 	if (disable_irq)
 _
 
 Patches currently in -mm which might be from hughd@google.com are
