@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-179567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A18B5686C
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 14:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC287B5688D
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 14:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FDA617AF31
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 12:20:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B689E16236C
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 12:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3530021CC44;
-	Sun, 14 Sep 2025 12:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43911223301;
+	Sun, 14 Sep 2025 12:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5POcjVx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sGt6gZl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4D91DFCB
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 12:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032931DFCE
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 12:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757852434; cv=none; b=EjguiG9oWw/KtcaZIASoC++k2INtlhB5/rN5CDYXBuarZeO/AspBUB8DmzZXL31djrl/IJtxRL9jA70baTf+5OgNXQ55P9miYGMmiUp8otOPx3equF/JhVBm/jVn/wj058Pfagy5ZOj2S/2Pgm622UZ5UYddMTV2AlfR5Qq6HRE=
+	t=1757852783; cv=none; b=oGEESZbRlm06l4aYyKvhmwJR0AFrdKv37bXtzNr74i/hQJ3zB0K1xAWtNXwnRMQiw1L7kzLITp6u9vvSDHHsr2axTiHFFNe6IlZS2WYBXx3d5R+Z+aEEVsDi2g9C6zUG6yxjzZV4LlQEKpyYgZTRMokCdgYeOLSdVWNp/4IPwaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757852434; c=relaxed/simple;
-	bh=SXYxCczlkjWyZPicwWJFsYRUooe8+S64edlE2hPA36c=;
+	s=arc-20240116; t=1757852783; c=relaxed/simple;
+	bh=S3bO87nLQw2/9zVJcXZyODoVv0hXrOdqIC32FnMC6Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pk1QHYAQP/gUxSHkZnIwYAKW0ZMnhKWXrmZ1l5gS/hAoBNyVldb6PL0ikRbh+QytGleCWbBlPnvOTnU/sMFJnXiaWbB097Wt98bVEoc1sNqILAASskO/XUelI7esDIvn7RK+pOYBEM+1FSKYtloLzphs07pFo3j6HQitSDizlZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5POcjVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4728C4CEF0;
-	Sun, 14 Sep 2025 12:20:32 +0000 (UTC)
+	 MIME-Version; b=ejc3LpiNhITWP70CorqMjuwk/YN9hUWfT6q6gVbbI3h9prLW+9wmCyzrmBm3CvEz08h4/CaHJh9LDCImBeVHMvs7AxpKI+eI/y0sJG7l/dFsydZU98fnMCVAFn2dlcex2VtJ99dRuBG/tgeRDARqb438iCduBc5NKclEO+PISDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sGt6gZl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99BDC4CEF0;
+	Sun, 14 Sep 2025 12:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757852433;
-	bh=SXYxCczlkjWyZPicwWJFsYRUooe8+S64edlE2hPA36c=;
+	s=k20201202; t=1757852782;
+	bh=S3bO87nLQw2/9zVJcXZyODoVv0hXrOdqIC32FnMC6Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5POcjVxnw/OQtqUm45O855fkltyTw5eT1mORt+BU9gmcP18OUv8yy3IBJGwaIO7E
-	 pPvlnFfwjZV+rNp6hsABShfDwZXFGUOKK+8qyGTgkS0tANN736pZXhMcBZvi7PKHzJ
-	 aHFzgKqkDJSwmSKzOJ+m1I+z5a59vXPxMPz1qEd31AqhmwLPoCMBd92I9okMh1sxpN
-	 lZMWf5KrSpHr0K7GQBDaI10bLwq69DffQ2Ekh9RfegCVlHXp2AcxQARMoTVKacVzut
-	 tX0eFJ5g6w9RpQYwb2+QOx7EDA/YUSAJVnXe/5e7mRwJe2hkxbqFpSYsprTG5uOBuT
-	 6jVoPVotJsi0A==
+	b=sGt6gZl6W/pnntaVHwL9a/EHsPgD2Ed194z1SqMhU2qt/CbpPq+BvvbvPJqp8EG5C
+	 NNyg7apDth0K4kpD01/yDv78Ofpq6JfqoQLfdQWIIm4kP+faGlkcjJQwuq0SiJWeam
+	 j/GyubxyQbeLoZeePt+iWEK8542/C3g1S5nZ+ue2+eyiyG1lL8fpQbU+9/rpu2J+07
+	 YxIO4lIE0apEODbStKQ7Wj1bXUKE5+zhHHF4Tth3QeX5KXD3+k2gxxNQ9MFqqDOrJd
+	 q/8+cbYMqmS7/7K+XVSb7xMLz9JAMEhE3TAcRQ1wYj6Lu1q+fhY7m4W2CK9LBNeDz2
+	 kSKeH118xkUpg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chen Ridong <chenridong@huawei.com>,
@@ -49,12 +49,12 @@ Cc: Chen Ridong <chenridong@huawei.com>,
 	Tejun Heo <tj@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] kernfs: Fix UAF in polling when open file is released
-Date: Sun, 14 Sep 2025 08:20:28 -0400
-Message-ID: <20250914122028.28607-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] kernfs: Fix UAF in polling when open file is released
+Date: Sun, 14 Sep 2025 08:26:20 -0400
+Message-ID: <20250914122620.30948-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091422-proximity-patrol-4fca@gregkh>
-References: <2025091422-proximity-patrol-4fca@gregkh>
+In-Reply-To: <2025091423-knapsack-multiple-1d0f@gregkh>
+References: <2025091423-knapsack-multiple-1d0f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -154,7 +154,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 36 insertions(+), 18 deletions(-)
 
 diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
-index 6b90fea6cca20..257ba5398387b 100644
+index cf57b7cc3a430..5087d18cd1f82 100644
 --- a/fs/kernfs/file.c
 +++ b/fs/kernfs/file.c
 @@ -70,6 +70,24 @@ static struct kernfs_open_node *of_on(struct kernfs_open_file *of)
