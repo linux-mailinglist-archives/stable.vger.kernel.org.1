@@ -1,121 +1,92 @@
-Return-Path: <stable+bounces-179589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C749B56C25
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 22:24:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A5AB56C2A
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 22:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A934178158
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 20:24:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A66F3A7947
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 20:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DAB284678;
-	Sun, 14 Sep 2025 20:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595A8221703;
+	Sun, 14 Sep 2025 20:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmTA/Rl7"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AlV/4yJO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486921A38F9
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 20:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8567038DDB
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 20:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757881443; cv=none; b=YzFyq84mmA4Snp01/XOExvB+E6PwMldhJaJmnASmfWTkzzrRTT+XcibaQhmuYXOf4u1O0FY32EaLFjrRv4eFPZGnbFB569A2hcVJCp9dWI57tat4htns0zFaw6SShuSLBj4HM6f4d2NaeENr5x/YGy5gQwGoMNRZeCIum2H8qn0=
+	t=1757881894; cv=none; b=f2BkBsyWSdt+xhfC0FwWIlzLQW+l57cwznGXLAfviF62gr+TE3CNniaHRmPjEFuxCkY4mqtJuexSWKR72aIrY3dToxjme2GqJ7oJFnQhy33zudtY/7E04bpgsUFfCDt57cCpqCBoze5CLOysT1PT2Y5VMAbaPxdaVJZjGxeETk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757881443; c=relaxed/simple;
-	bh=GH+8PbRHoCrEX96jdWeylHWYmBy+uRuI2SQTAnoyoo0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cUZG3eTeGQdhqMgbe/4tl0cKn8gtf1eWRCi1FFM3wN8B17vsWdUGl79ZXfRuvcikyF3PJFFVMTBiNuP65dsmUE12AzOblB+vwX8xUp2auG1lZ6nE8v87Wv7+NNZXfs194UyC5zfPphq2u/9ZpEqXj1AG1NrsyB2k7R9gj7V3nNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmTA/Rl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CEEC4CEF0;
-	Sun, 14 Sep 2025 20:24:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757881442;
-	bh=GH+8PbRHoCrEX96jdWeylHWYmBy+uRuI2SQTAnoyoo0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmTA/Rl7DHN1oiEYjDhSkYyybfgNaEhXnuz85d68nr64P6BlkcgDc9SgxCNeV7FBx
-	 53rmkoyH+pATcOqJMbM5GeprKyC2UoCuKV0kKyQxgU3E1FqXvRmBVYv1o+TntWBwAl
-	 kjIeKFylRZnhcVlibNUFGNhtDG/ZfJiNyedbnHLuy3YJX10htr8qxznPMfBdvtKIyf
-	 Ia6GjAgIN7AhAUkoaENWqX8tA53N63zptCBuHIsYUkKSkpo7ugxt+p79hbssG8bE/F
-	 6HtoURtANPg+V0HsG6HugxJyDyzX7p8ZxX6dEpMqg7dePHW86ZhUW0j0GivfxO17t5
-	 De3vQ6P3aohcA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] drm/i915/power: fix size for for_each_set_bit() in abox iteration
-Date: Sun, 14 Sep 2025 16:23:59 -0400
-Message-ID: <20250914202359.203056-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091356-brownnose-numbing-a046@gregkh>
-References: <2025091356-brownnose-numbing-a046@gregkh>
+	s=arc-20240116; t=1757881894; c=relaxed/simple;
+	bh=nyU6g/YyKcQCKJcz+Ftzb4Tj9xRJ3xTCyqnFXZF5yYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iLw+ZeKfBYeO4TqBxxF5+5zp9t79KEYsZQU9YwOQxjR44NhfzmRVYWDZTyUy+gEBPbjwbbyDofRoZkyrmaZ3MsRaGQ/1bCnZyF7HjtbcbL7enwz09H4vWPj0klR71VG52o5eHxiEc5wRZ5PEF7vEuIiyk9trk9V/Gp9dXx1LuEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AlV/4yJO; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id ADE9E1A0DC1;
+	Sun, 14 Sep 2025 20:31:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 833AB6063F;
+	Sun, 14 Sep 2025 20:31:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6D350102F29EC;
+	Sun, 14 Sep 2025 22:31:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1757881887; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=1Qcyn4NnyhNNIw4hqoYXQ807lVMNnOD7WkvqhmoR/SY=;
+	b=AlV/4yJOgyZZlnkhqFPM4cBMZodZy/bdV/FMfrVtE7Yj1/5PmgjBgLdLLXcslsk6g4BV9O
+	mb2M87cDO/t1nqD0SSgNRn5ZCkLfekzvLD5n8oO7p/BAN5+p1Hi2B4tFY8JzFwO1J34H9j
+	gFORJlGSIXDfhcIDK5S72QhZfyb03kVaJXbocA9Skolu9/JmJcagejFhpKfzIFKmlh58UT
+	xlUnlrZ8xdkVjFyo6mmraU3QUVT0GafXysQAy4naezXofizKMHOKwTkBKs7lwgTQXoDWaO
+	UP1V7uB5Q6j0rNdBvU8hOZwhjxxeaA0riXERcjBUUikOvgO0u1fwJfxzjphaHA==
+Date: Sun, 14 Sep 2025 22:31:25 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: linux-i3c@lists.infradead.org,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Boris Brezillon <bbrezillon@kernel.org>,
+	stable@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH v2] i3c: Fix default I2C adapter timeout value
+Message-ID: <175788160628.376561.12355074762741116990.b4-ty@bootlin.com>
+References: <20250905100320.954536-1-jarkko.nikula@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250905100320.954536-1-jarkko.nikula@linux.intel.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Jani Nikula <jani.nikula@intel.com>
+On Fri, 05 Sep 2025 13:03:20 +0300, Jarkko Nikula wrote:
+> Commit 3a379bbcea0a ("i3c: Add core I3C infrastructure") set the default
+> adapter timeout for I2C transfers as 1000 (ms). However that parameter
+> is defined in jiffies not in milliseconds.
+> 
+> With mipi-i3c-hci driver this wasn't visible until commit c0a90eb55a69
+> ("i3c: mipi-i3c-hci: use adapter timeout value for I2C transfers").
+> 
+> [...]
 
-[ Upstream commit cfa7b7659757f8d0fc4914429efa90d0d2577dd7 ]
+Applied, thanks!
 
-for_each_set_bit() expects size to be in bits, not bytes. The abox mask
-iteration uses bytes, but it works by coincidence, because the local
-variable holding the mask is unsigned long, and the mask only ever has
-bit 2 as the highest bit. Using a smaller type could lead to subtle and
-very hard to track bugs.
+[1/1] i3c: Fix default I2C adapter timeout value
+      https://git.kernel.org/i3c/c/f6fecd2759be
 
-Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://lore.kernel.org/r/20250905104149.1144751-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 7ea3baa6efe4bb93d11e1c0e6528b1468d7debf6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-[ adapted struct intel_display *display parameters to struct drm_i915_private *dev_priv ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/i915/display/intel_display_power.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Best regards,
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_power.c b/drivers/gpu/drm/i915/display/intel_display_power.c
-index 7277e58b01f13..30174c050cc16 100644
---- a/drivers/gpu/drm/i915/display/intel_display_power.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power.c
-@@ -4780,7 +4780,7 @@ static void icl_mbus_init(struct drm_i915_private *dev_priv)
- 	if (IS_GEN(dev_priv, 12))
- 		abox_regs |= BIT(0);
- 
--	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
-+	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
- 		intel_de_rmw(dev_priv, MBUS_ABOX_CTL(i), mask, val);
- }
- 
-@@ -5277,11 +5277,11 @@ static void tgl_bw_buddy_init(struct drm_i915_private *dev_priv)
- 	if (table[config].page_mask == 0) {
- 		drm_dbg(&dev_priv->drm,
- 			"Unknown memory configuration; disabling address buddy logic.\n");
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
- 			intel_de_write(dev_priv, BW_BUDDY_CTL(i),
- 				       BW_BUDDY_DISABLE);
- 	} else {
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
- 			intel_de_write(dev_priv, BW_BUDDY_PAGE_MASK(i),
- 				       table[config].page_mask);
- 
 -- 
-2.51.0
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
