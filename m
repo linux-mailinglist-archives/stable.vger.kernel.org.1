@@ -1,311 +1,107 @@
-Return-Path: <stable+bounces-179556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245BFB56633
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 06:02:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514A3B56720
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 08:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85D6217F69B
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 04:02:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B968E1A21CE9
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 06:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D86270557;
-	Sun, 14 Sep 2025 04:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AF525C822;
+	Sun, 14 Sep 2025 06:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GWa2r8lO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oABnD2WI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC1E26B2A5
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 04:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F7A23B616;
+	Sun, 14 Sep 2025 06:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757822523; cv=none; b=f2f9xHKoxJMOzyZrzEWe0N2XBCfDTTbcJgNzoXxlLkbw3x1M55N0geI0zYoLzf7u+ihL+WZiSgptVMnTugyAXvONXb+nAovlAvrb+y397MmNpk0OhlrIP7+aO/QqdGH6uhDKysOB1XfykgSSVgVYHImEwceblAFGwqbV2Z0VhJ0=
+	t=1757832427; cv=none; b=Dlh/XeXY8XYNqOf5BZzw90z2+r+EfeOfjKFu0G6LkdY+NoaS29PobWbt26qBv2Z04lB/BGZy7V9EpiZTqauSUhB1Bla6D8ebYvUS0MDXKTYRhNlucK4nON68BBf89Opv70XLWGD53eyEie8urFAAEthlK/d8iEUd2q6wStBdq2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757822523; c=relaxed/simple;
-	bh=UjIiRCYlTtCXjG2Ph/iUVqUsBOrgJwmFej56Ha1EY3A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uy407GLM5EGzqeuSn4MoKUTF7C/nDbcnqNa+N6oQLOps41YcLQnCH6NL7WZtePrqCeeztLnf6cEYOO3o1GlQF2toSteixdehJh/il7R+pFnaC3DEUr1pfICT48agMJTSKy2JxoUkRpwOrOR9Qk9L0HgUQMRzzY4pTCFPrAVw9hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GWa2r8lO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AA1C4CEFE;
-	Sun, 14 Sep 2025 04:02:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757822520;
-	bh=UjIiRCYlTtCXjG2Ph/iUVqUsBOrgJwmFej56Ha1EY3A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWa2r8lOfG4/5GoaReQS0Td5kcFrlH1tCsNrA2+WtWlCxFeM+GSdTyFMWUkqsAH/i
-	 zutiYFncE1bN1dWfjsSl0UvdklnsSnSiYrLECcWpbdsWGxp0H6K1TxUXGY151A+tWB
-	 rxnGZgt9xBATnfKgfSrv7Bz3Td6Rzh9x0+1BNTiAioUUTPiPBcWGcnmQqrhx9vfJlB
-	 3yWqJKAj/PLsGmLUvebQpUaKPfGLg4vL0aZmXFyuMaBbNxvGrPfxFSqZOK7QQMgKTk
-	 b1axHCcSuJTxLsklY8lEq1m/P9pxvoFVDq5cPMhx0MAJ9UhZFIeSaBgBSdFpVtBUE1
-	 pMcWLXQWKyhFg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] btrfs: fix corruption reading compressed range when block size is smaller than page size
-Date: Sun, 14 Sep 2025 00:01:57 -0400
-Message-ID: <20250914040157.1958299-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250914040157.1958299-1-sashal@kernel.org>
-References: <2025091346-suspect-numerate-b884@gregkh>
- <20250914040157.1958299-1-sashal@kernel.org>
+	s=arc-20240116; t=1757832427; c=relaxed/simple;
+	bh=ngd42q6af0I6yj6kQcs47JogyuSAQZidJb5hPUi99xQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xqn83pdOwOdq885PMBaylYKBuL/KvvqXy2Bisipd5FUhq5qfTTgZvEx7cG4tWGS3Q3lGImmtuU89pTEaCN5qXdCAjjm0BhuhvNPrG5SkYmeNohh4N/M3jRib7A25q11oXNvX4wr9mYWhUAHPseSh7yNItilyRlPQB4hZNHRAxes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oABnD2WI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB574C4CEF0;
+	Sun, 14 Sep 2025 06:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757832426;
+	bh=ngd42q6af0I6yj6kQcs47JogyuSAQZidJb5hPUi99xQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oABnD2WIh304JhRQRMbM7saDpmUlIVsRdBjAlxabhr9GYcyJ7cmsbnc0TBFSJfM7C
+	 oNYu/4XiB2RWsrpzqz0vVEDcpsMxXGpnm85/8zlW4jqcXTM2VQUHJBhUJL1hhGqoxb
+	 fu5mQCAuRv7DcwbYzZtwoj0wcQ773dvt8/jmd7uw=
+Date: Sun, 14 Sep 2025 08:47:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: ekffu200098@gmail.com, akpm@linux-foundation.org,
+	stable@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: FAILED: patch "[PATCH] mm/damon/core: set quota->charged_from to
+ jiffies at first" failed to apply to 5.15-stable tree
+Message-ID: <2025091447-stagnant-underwear-b8ff@gregkh>
+References: <2025091357-stapling-walrus-d0f7@gregkh>
+ <20250914015539.56587-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250914015539.56587-1-sj@kernel.org>
 
-From: Qu Wenruo <wqu@suse.com>
+On Sat, Sep 13, 2025 at 06:55:39PM -0700, SeongJae Park wrote:
+> Hi Greg,
+> 
+> On Sat, 13 Sep 2025 14:25:57 +0200 <gregkh@linuxfoundation.org> wrote:
+> 
+> > 
+> > The patch below does not apply to the 5.15-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x ce652aac9c90a96c6536681d17518efb1f660fb8
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091357-stapling-walrus-d0f7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> > 
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> > 
+> > ------------------ original commit in Linus's tree ------------------
+> > 
+> > >From ce652aac9c90a96c6536681d17518efb1f660fb8 Mon Sep 17 00:00:00 2001
+> > From: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > Date: Fri, 22 Aug 2025 11:50:57 +0900
+> > Subject: [PATCH] mm/damon/core: set quota->charged_from to jiffies at first
+> >  charge window
+> [...]
+> > Link: https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com
+> > Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control") # 5.16
+> 
+> The broken commit was introduced from 5.16, so I don't think this commit need
+> to be cherry-picked on 5.15.y.  Please let me knwo if I'm missing something or
+> there is anything I can help.
 
-[ Upstream commit 9786531399a679fc2f4630d2c0a186205282ab2f ]
+You are right, I was too loose in the version ranges here, thanks.
 
-[BUG]
-With 64K page size (aarch64 with 64K page size config) and 4K btrfs
-block size, the following workload can easily lead to a corrupted read:
-
-        mkfs.btrfs -f -s 4k $dev > /dev/null
-        mount -o compress $dev $mnt
-        xfs_io -f -c "pwrite -S 0xff 0 64k" $mnt/base > /dev/null
-	echo "correct result:"
-        od -Ad -t x1 $mnt/base
-        xfs_io -f -c "reflink $mnt/base 32k 0 32k" \
-		  -c "reflink $mnt/base 0 32k 32k" \
-		  -c "pwrite -S 0xff 60k 4k" $mnt/new > /dev/null
-	echo "incorrect result:"
-        od -Ad -t x1 $mnt/new
-        umount $mnt
-
-This shows the following result:
-
-correct result:
-0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0065536
-incorrect result:
-0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0032768 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-*
-0061440 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-*
-0065536
-
-Notice the zero in the range [32K, 60K), which is incorrect.
-
-[CAUSE]
-With extra trace printk, it shows the following events during od:
-(some unrelated info removed like CPU and context)
-
- od-3457   btrfs_do_readpage: enter r/i=5/258 folio=0(65536) prev_em_start=0000000000000000
-
-The "r/i" is indicating the root and inode number. In our case the file
-"new" is using ino 258 from fs tree (root 5).
-
-Here notice the @prev_em_start pointer is NULL. This means the
-btrfs_do_readpage() is called from btrfs_read_folio(), not from
-btrfs_readahead().
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=0 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=4096 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=8192 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=12288 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=16384 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=20480 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=24576 got em start=0 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=28672 got em start=0 len=32768
-
-These above 32K blocks will be read from the first half of the
-compressed data extent.
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=32768 got em start=32768 len=32768
-
-Note here there is no btrfs_submit_compressed_read() call. Which is
-incorrect now.
-Although both extent maps at 0 and 32K are pointing to the same compressed
-data, their offsets are different thus can not be merged into the same
-read.
-
-So this means the compressed data read merge check is doing something
-wrong.
-
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=36864 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=40960 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=45056 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=49152 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=53248 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=57344 got em start=32768 len=32768
- od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=61440 skip uptodate
- od-3457   btrfs_submit_compressed_read: cb orig_bio: file off=0 len=61440
-
-The function btrfs_submit_compressed_read() is only called at the end of
-folio read. The compressed bio will only have an extent map of range [0,
-32K), but the original bio passed in is for the whole 64K folio.
-
-This will cause the decompression part to only fill the first 32K,
-leaving the rest untouched (aka, filled with zero).
-
-This incorrect compressed read merge leads to the above data corruption.
-
-There were similar problems that happened in the past, commit 808f80b46790
-("Btrfs: update fix for read corruption of compressed and shared
-extents") is doing pretty much the same fix for readahead.
-
-But that's back to 2015, where btrfs still only supports bs (block size)
-== ps (page size) cases.
-This means btrfs_do_readpage() only needs to handle a folio which
-contains exactly one block.
-
-Only btrfs_readahead() can lead to a read covering multiple blocks.
-Thus only btrfs_readahead() passes a non-NULL @prev_em_start pointer.
-
-With v5.15 kernel btrfs introduced bs < ps support. This breaks the above
-assumption that a folio can only contain one block.
-
-Now btrfs_read_folio() can also read multiple blocks in one go.
-But btrfs_read_folio() doesn't pass a @prev_em_start pointer, thus the
-existing bio force submission check will never be triggered.
-
-In theory, this can also happen for btrfs with large folios, but since
-large folio is still experimental, we don't need to bother it, thus only
-bs < ps support is affected for now.
-
-[FIX]
-Instead of passing @prev_em_start to do the proper compressed extent
-check, introduce one new member, btrfs_bio_ctrl::last_em_start, so that
-the existing bio force submission logic will always be triggered.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/extent_io.c | 46 ++++++++++++++++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 14 deletions(-)
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c841027d32af1..ccf94c5fbfdfd 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -104,6 +104,24 @@ struct btrfs_bio_ctrl {
- 	btrfs_bio_end_io_t end_io_func;
- 	struct writeback_control *wbc;
- 	struct readahead_control *ractl;
-+
-+	/*
-+	 * The start offset of the last used extent map by a read operation.
-+	 *
-+	 * This is for proper compressed read merge.
-+	 * U64_MAX means we are starting the read and have made no progress yet.
-+	 *
-+	 * The current btrfs_bio_is_contig() only uses disk_bytenr as
-+	 * the condition to check if the read can be merged with previous
-+	 * bio, which is not correct. E.g. two file extents pointing to the
-+	 * same extent but with different offset.
-+	 *
-+	 * So here we need to do extra checks to only merge reads that are
-+	 * covered by the same extent map.
-+	 * Just extent_map::start will be enough, as they are unique
-+	 * inside the same inode.
-+	 */
-+	u64 last_em_start;
- };
- 
- static void submit_one_bio(struct btrfs_bio_ctrl *bio_ctrl)
-@@ -978,7 +996,7 @@ static void btrfs_readahead_expand(struct readahead_control *ractl,
-  * return 0 on success, otherwise return error
-  */
- static int btrfs_do_readpage(struct page *page, struct extent_map **em_cached,
--		      struct btrfs_bio_ctrl *bio_ctrl, u64 *prev_em_start)
-+		      struct btrfs_bio_ctrl *bio_ctrl)
- {
- 	struct inode *inode = page->mapping->host;
- 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
-@@ -1095,12 +1113,11 @@ static int btrfs_do_readpage(struct page *page, struct extent_map **em_cached,
- 		 * non-optimal behavior (submitting 2 bios for the same extent).
- 		 */
- 		if (test_bit(EXTENT_FLAG_COMPRESSED, &em->flags) &&
--		    prev_em_start && *prev_em_start != (u64)-1 &&
--		    *prev_em_start != em->start)
-+		    bio_ctrl->last_em_start != (u64)-1 &&
-+		    bio_ctrl->last_em_start != em->start)
- 			force_bio_submit = true;
- 
--		if (prev_em_start)
--			*prev_em_start = em->start;
-+		bio_ctrl->last_em_start = em->start;
- 
- 		free_extent_map(em);
- 		em = NULL;
-@@ -1146,12 +1163,15 @@ int btrfs_read_folio(struct file *file, struct folio *folio)
- 	struct btrfs_inode *inode = BTRFS_I(page->mapping->host);
- 	u64 start = page_offset(page);
- 	u64 end = start + PAGE_SIZE - 1;
--	struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ };
-+	struct btrfs_bio_ctrl bio_ctrl = {
-+		.opf = REQ_OP_READ,
-+		.last_em_start = (u64)-1,
-+	};
- 	int ret;
- 
- 	btrfs_lock_and_flush_ordered_range(inode, start, end, NULL);
- 
--	ret = btrfs_do_readpage(page, NULL, &bio_ctrl, NULL);
-+	ret = btrfs_do_readpage(page, NULL, &bio_ctrl);
- 	/*
- 	 * If btrfs_do_readpage() failed we will want to submit the assembled
- 	 * bio to do the cleanup.
-@@ -1163,8 +1183,7 @@ int btrfs_read_folio(struct file *file, struct folio *folio)
- static inline void contiguous_readpages(struct page *pages[], int nr_pages,
- 					u64 start, u64 end,
- 					struct extent_map **em_cached,
--					struct btrfs_bio_ctrl *bio_ctrl,
--					u64 *prev_em_start)
-+					struct btrfs_bio_ctrl *bio_ctrl)
- {
- 	struct btrfs_inode *inode = BTRFS_I(pages[0]->mapping->host);
- 	int index;
-@@ -1172,8 +1191,7 @@ static inline void contiguous_readpages(struct page *pages[], int nr_pages,
- 	btrfs_lock_and_flush_ordered_range(inode, start, end, NULL);
- 
- 	for (index = 0; index < nr_pages; index++) {
--		btrfs_do_readpage(pages[index], em_cached, bio_ctrl,
--				  prev_em_start);
-+		btrfs_do_readpage(pages[index], em_cached, bio_ctrl);
- 		put_page(pages[index]);
- 	}
- }
-@@ -2255,11 +2273,11 @@ void extent_readahead(struct readahead_control *rac)
- {
- 	struct btrfs_bio_ctrl bio_ctrl = {
- 		.opf = REQ_OP_READ | REQ_RAHEAD,
--		.ractl = rac
-+		.ractl = rac,
-+		.last_em_start = (u64)-1,
- 	};
- 	struct page *pagepool[16];
- 	struct extent_map *em_cached = NULL;
--	u64 prev_em_start = (u64)-1;
- 	int nr;
- 
- 	while ((nr = readahead_page_batch(rac, pagepool))) {
-@@ -2267,7 +2285,7 @@ void extent_readahead(struct readahead_control *rac)
- 		u64 contig_end = contig_start + readahead_batch_length(rac) - 1;
- 
- 		contiguous_readpages(pagepool, nr, contig_start, contig_end,
--				&em_cached, &bio_ctrl, &prev_em_start);
-+				&em_cached, &bio_ctrl);
- 	}
- 
- 	if (em_cached)
--- 
-2.51.0
-
+greg k-h
 
