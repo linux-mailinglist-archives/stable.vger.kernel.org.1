@@ -1,185 +1,149 @@
-Return-Path: <stable+bounces-179582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B320B56AA2
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 18:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E785B56AEA
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 19:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E400C7A7609
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 16:33:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE31A3BB26F
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 17:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC9525E813;
-	Sun, 14 Sep 2025 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CB22DA767;
+	Sun, 14 Sep 2025 17:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARn9FU6o"
+	dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b="j8pabMHE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7916E1EA7CE
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 16:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA751D9324
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 17:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757867692; cv=none; b=II6HSxOeR/yZuwRiiG1H1kZ//AEfvdTkYVXZV35d5AL4cAEkyale4HKyyiFfuXl2d2P13xZ80qgPSF8YXznnU9owd6G/1hK7rLRf5/4XbbJDV2Z3KaMeVw1TKHH7gFs4uEhaf/+em4EUknOHmgCjaqcHfmLExCYu2A+ZzPq3xjo=
+	t=1757871811; cv=none; b=cZo5/PpiLUlxHyP3CuK+EsnfFSgwIJDcgLmrnAarqdCAEkJo2sm00gQTI8jqjHSSX5ccbN0NTaxdkGWCv+PXg/k9YXYTUhCFqv6LUuAORtY/gtjHtvJnH7M9atH4RHnvQR77g2Yw+Orrby/Zkq4cSgmsyYVsY2os8JTmwUIAm7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757867692; c=relaxed/simple;
-	bh=SWLkwOjD1Xlq1LgcIMYT8LAd6ZABrYX1ovfNzr7uE6E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j38eWzI8xpHphSD9W1iv+E13ErhlK6EHkYsuYYNZfiYY/byCuRJSYorjZiqUPcF/c7D4iIrC5Sr6nxLjFPpibJbIBUjDa8Bop8X2kv8j1jcDAbMwBjRMP3YR8bJqFBn+WGNq2nIkYSjY6hMqLwtDgO3Y3q9okBB4L33937u2jN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARn9FU6o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0290C4CEF0;
-	Sun, 14 Sep 2025 16:34:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757867692;
-	bh=SWLkwOjD1Xlq1LgcIMYT8LAd6ZABrYX1ovfNzr7uE6E=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ARn9FU6ou3TusptlzVMu1yvhCO+5AO4T2IYmV1syPzJbuLhLwScQr9YVrwApRrZaB
-	 6q518REGXnzyu4SVjWJxypiTMEcJerC8s+3UzqyAhQJEsU+iPeGQ9hQic31uc+xdiT
-	 Ltqvz67VW7+lcrQbys3QoUaIYKkBh+Qe5a1bgUxo=
-Subject: FAILED: patch "[PATCH] x86/cpu/topology: Always try cpu_parse_topology_ext() on" failed to apply to 5.4-stable tree
-To: kprateek.nayak@amd.com,bp@alien8.de,naveen@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 14 Sep 2025 18:34:33 +0200
-Message-ID: <2025091433-skillet-nature-e56b@gregkh>
+	s=arc-20240116; t=1757871811; c=relaxed/simple;
+	bh=Ryys8VUIqN5H+IVOdF/nLFXxb8kDNnVht7qZSDjh9pw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=moyOtkWWp9SxX0tBIA8zmjU5xs1xqpuDvDexzbA6ci4/4s16okXJtjqew3bRLK6GVi5b2ND1QPP+Vd9uMcRpuFAR/TqNDcyb+GJ4G0kUyIT7VxTiXu2gU0jdbphh0WDfWJHZFO6jloWs5cPv6dZ/a9+CLSGKA/ev13q2csZW+Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io; spf=pass smtp.mailfrom=layalina.io; dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b=j8pabMHE; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=layalina.io
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45dd513f4ecso20978705e9.3
+        for <stable@vger.kernel.org>; Sun, 14 Sep 2025 10:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=layalina-io.20230601.gappssmtp.com; s=20230601; t=1757871808; x=1758476608; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8jDXbU3SpN0Xo+axU4p7nE5zZEp9R21umV9iSQ59EdE=;
+        b=j8pabMHERj8gkPl6XVwMdj6egSNRRgakjqaFh7CQY8ZfVIKfRrCeNLXq+ADzQZpYNp
+         YihdfjGuzlFZB1Hgt1y6kW8HSVuvbPOP4G112w8LEamzRfUkn03zCKVDbeniKlCNzzLI
+         hAA/cUg6n9Lf9K6Dx8/VEeMr25ubNxCwB6hWm0MNORAFY7I4kf3PXkYW8JUpLHB6b6WN
+         0Gl51Jrp8LIyIIOGhMe+0YKWFoD8jzo9bJRf7Eclv0s6l/cBoKtzfVhHeQ4GTe/XUEDh
+         wKclXxKNliKfw8TqPtyuCJ3vQEIEuCicp/BxrmgJm5i7Per4/kM0OUBlwghkkvrXXS4V
+         WjyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757871808; x=1758476608;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8jDXbU3SpN0Xo+axU4p7nE5zZEp9R21umV9iSQ59EdE=;
+        b=NoxRL8wa09Nv7liq7qJcAx+cr6JuFdvB3DfjNlvGS3H7uDqRvW0rwbl+VRi8iknv5y
+         Vddk92tfud5ezU8MoihVpTWgig2eyU3D4gKiSIZJPBW5Utvsanr9t8Bvy20u3zU4X+Bj
+         XMdgWLI16jYmqesulGA0HpSV0hHixACNlwSqGA7Rtwbd9I5jUmlWufb17RPUO5CXUXhL
+         P6oE90DoDOA3+y5FBzZV4emGXpztQfODNfhSnTBBPCDDpNj5QxVMlukKF2e8HB9MyY0j
+         7SMCahHA+MWdZbgrKWtpETaoo4ihP7p5yEGzKoYysrnWlHOWAN9hgxHHOOETGLr9RquL
+         BxnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXw8u27dAMqVqrlgGUckOfj3EQD74K0XspsOzg84nHcfM3DtB/NgzGBnmf3QQb5sAeZhws2VAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOMoRs6D2bRHa977oUo6Sb+oeI7WT5ECv0TaUUilDjSpUe/6V+
+	lhI408PfKDletkhPMs9vAaYHVfOgHMQ3HGsZX/cpP5zPrCDbAIILLE4v2F0PmVcjvFE=
+X-Gm-Gg: ASbGncuztnfUxC0UieJQFJ2LLQKi22asKBGFZ7DPiF0z7UteHQrvrgQz2ViaQDSeUkh
+	uxaKpFf7oEq4w+dXIO1VGJKCOlyguML1UniJ6ImMhKi/7pS6i2lX9vkdRWKUiJYkUadAbhveVVA
+	R+XXSqMliD+Ev6afFSIeRK6unGZEriMow3enUIN/dleLFvwT8xnz/irdUd/cXmxmpEuwVxAh6uV
+	6WaCl4//pg21tWaxjtYXs3lKijrMRMOZcD6dxhdydS/9avYpj5JcsFTmKe08ZG7UMDjod5hIMxL
+	WQCPKN0W8hUPzTYodfWsSmXlMLblZwOeGy3RZ1fJlGLOaibpt8IA4lXhbgusjZ8mBF6jPdXVth8
+	sKwHb//LcTBuM2XvTpoJqpcUZYK51gm7Sm5ps04LqZ7Pw1dJX7x/bhQYC3+9ppqzb6k1Oxhk=
+X-Google-Smtp-Source: AGHT+IE+T2eeWGYqh9T07uxdNYOPCRMCR0PjTPw88lyvl1tUrpS1IRHTqFmX5MMmPi6cwIW7C435MQ==
+X-Received: by 2002:a05:600c:c4a3:b0:45b:7e86:7378 with SMTP id 5b1f17b1804b1-45f21221e3amr75486365e9.34.1757871808294;
+        Sun, 14 Sep 2025 10:43:28 -0700 (PDT)
+Received: from airbuntu (host86-160-23-239.range86-160.btcentralplus.com. [86.160.23.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e01575fadsm145376405e9.6.2025.09.14.10.43.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Sep 2025 10:43:27 -0700 (PDT)
+Date: Sun, 14 Sep 2025 18:43:26 +0100
+From: Qais Yousef <qyousef@layalina.io>
+To: Shawn Guo <shawnguo2@yeah.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: cap the default transition delay at 10 ms
+Message-ID: <20250914174326.i7nqmrzjtjq7kpqm@airbuntu>
+References: <20250910065312.176934-1-shawnguo2@yeah.net>
+ <CAJZ5v0gL5s99h0eq1U4ngaUfPq_AcfgPruSD096JtBWVMjSZwQ@mail.gmail.com>
+ <aMQbIu5QNvPoAsSF@dragon>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aMQbIu5QNvPoAsSF@dragon>
+
+On 09/12/25 21:07, Shawn Guo wrote:
+> On Fri, Sep 12, 2025 at 12:41:14PM +0200, Rafael J. Wysocki wrote:
+> > On Wed, Sep 10, 2025 at 8:53 AM Shawn Guo <shawnguo2@yeah.net> wrote:
+> > >
+> > > From: Shawn Guo <shawnguo@kernel.org>
+> > >
+> > > A regression is seen with 6.6 -> 6.12 kernel upgrade on platforms where
+> > > cpufreq-dt driver sets cpuinfo.transition_latency as CPUFREQ_ETERNAL (-1),
+> > > due to that platform's DT doesn't provide the optional property
+> > > 'clock-latency-ns'.  The dbs sampling_rate was 10000 us on 6.6 and
+> > > suddently becomes 6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these
+> > > platforms, because that the 10 ms cap for transition_delay_us was
+> > > accidentally dropped by the commits below.
+> > 
+> > IIRC, this was not accidental.
+> 
+> I could be wrong, but my understanding is that the intention of Qais's
+> commits is to drop 10 ms (and LATENCY_MULTIPLIER) as the *minimal* limit
+> on transition_delay_us, so that it's possible to get a much less
+> transition_delay_us on platforms like M1 mac mini where the transition
+> latency is just tens of us.  But it breaks platforms where 10 ms used
+> to be the *maximum* limit.
+> 
+> Even if it's intentional to remove 10 ms as both the minimal and maximum
+> limits, breaking some platforms must not be intentional, I guess :)
+
+These limits were arbitrary. The limit was reduced to 2ms initially but then
+were dropped to avoid making assumptions as they are all arbitrary.
+
+> 
+> > Why do you want to address the issue in the cpufreq core instead of
+> > doing that in the cpufreq-dt driver?
+> 
+> My intuition was to fix the regression at where the regression was
+> introduced by recovering the code behavior.
+
+Isn't the right fix here is at the driver level still? We can only give drivers
+what they ask for. If they ask for something wrong and result in something
+wrong, it is still their fault, no?
+
+Alternatively maybe we can add special handling for CPUFREQ_ETERNAL value,
+though I'd suggest to return 1ms (similar to the case of value being 0). Maybe
+we can redefine CPUFREQ_ETERNAL to be 0, but not sure if this can have side
+effects.
 
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Thanks
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x cba4262a19afae21665ee242b3404bcede5a94d7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091433-skillet-nature-e56b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From cba4262a19afae21665ee242b3404bcede5a94d7 Mon Sep 17 00:00:00 2001
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-Date: Mon, 1 Sep 2025 17:04:15 +0000
-Subject: [PATCH] x86/cpu/topology: Always try cpu_parse_topology_ext() on
- AMD/Hygon
-
-Support for parsing the topology on AMD/Hygon processors using CPUID leaf 0xb
-was added in
-
-  3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available").
-
-In an effort to keep all the topology parsing bits in one place, this commit
-also introduced a pseudo dependency on the TOPOEXT feature to parse the CPUID
-leaf 0xb.
-
-The TOPOEXT feature (CPUID 0x80000001 ECX[22]) advertises the support for
-Cache Properties leaf 0x8000001d and the CPUID leaf 0x8000001e EAX for
-"Extended APIC ID" however support for 0xb was introduced alongside the x2APIC
-support not only on AMD [1], but also historically on x86 [2].
-
-Similar to 0xb, the support for extended CPU topology leaf 0x80000026 too does
-not depend on the TOPOEXT feature.
-
-The support for these leaves is expected to be confirmed by ensuring
-
-  leaf <= {extended_}cpuid_level
-
-and then parsing the level 0 of the respective leaf to confirm EBX[15:0]
-(LogProcAtThisLevel) is non-zero as stated in the definition of
-"CPUID_Fn0000000B_EAX_x00 [Extended Topology Enumeration]
-(Core::X86::Cpuid::ExtTopEnumEax0)" in Processor Programming Reference (PPR)
-for AMD Family 19h Model 01h Rev B1 Vol1 [3] Sec. 2.1.15.1 "CPUID Instruction
-Functions".
-
-This has not been a problem on baremetal platforms since support for TOPOEXT
-(Fam 0x15 and later) predates the support for CPUID leaf 0xb (Fam 0x17[Zen2]
-and later), however, for AMD guests on QEMU, the "x2apic" feature can be
-enabled independent of the "topoext" feature where QEMU expects topology and
-the initial APICID to be parsed using the CPUID leaf 0xb (especially when
-number of cores > 255) which is populated independent of the "topoext" feature
-flag.
-
-Unconditionally call cpu_parse_topology_ext() on AMD and Hygon processors to
-first parse the topology using the XTOPOLOGY leaves (0x80000026 / 0xb) before
-using the TOPOEXT leaf (0x8000001e).
-
-While at it, break down the single large comment in parse_topology_amd() to
-better highlight the purpose of each CPUID leaf.
-
-Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available")
-Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org # Only v6.9 and above; depends on x86 topology rewrite
-Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.suthikulpanit@amd.com/ [1]
-Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel.com/ [2]
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 [3]
-
-diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
-index 827dd0dbb6e9..c79ebbb639cb 100644
---- a/arch/x86/kernel/cpu/topology_amd.c
-+++ b/arch/x86/kernel/cpu/topology_amd.c
-@@ -175,27 +175,30 @@ static void topoext_fixup(struct topo_scan *tscan)
- 
- static void parse_topology_amd(struct topo_scan *tscan)
- {
--	bool has_topoext = false;
--
- 	/*
--	 * If the extended topology leaf 0x8000_001e is available
--	 * try to get SMT, CORE, TILE, and DIE shifts from extended
-+	 * Try to get SMT, CORE, TILE, and DIE shifts from extended
- 	 * CPUID leaf 0x8000_0026 on supported processors first. If
- 	 * extended CPUID leaf 0x8000_0026 is not supported, try to
--	 * get SMT and CORE shift from leaf 0xb first, then try to
--	 * get the CORE shift from leaf 0x8000_0008.
-+	 * get SMT and CORE shift from leaf 0xb. If either leaf is
-+	 * available, cpu_parse_topology_ext() will return true.
- 	 */
--	if (cpu_feature_enabled(X86_FEATURE_TOPOEXT))
--		has_topoext = cpu_parse_topology_ext(tscan);
-+	bool has_xtopology = cpu_parse_topology_ext(tscan);
- 
- 	if (cpu_feature_enabled(X86_FEATURE_AMD_HTR_CORES))
- 		tscan->c->topo.cpu_type = cpuid_ebx(0x80000026);
- 
--	if (!has_topoext && !parse_8000_0008(tscan))
-+	/*
-+	 * If XTOPOLOGY leaves (0x26/0xb) are not available, try to
-+	 * get the CORE shift from leaf 0x8000_0008 first.
-+	 */
-+	if (!has_xtopology && !parse_8000_0008(tscan))
- 		return;
- 
--	/* Prefer leaf 0x8000001e if available */
--	if (parse_8000_001e(tscan, has_topoext))
-+	/*
-+	 * Prefer leaf 0x8000001e if available to get the SMT shift and
-+	 * the initial APIC ID if XTOPOLOGY leaves are not available.
-+	 */
-+	if (parse_8000_001e(tscan, has_xtopology))
- 		return;
- 
- 	/* Try the NODEID MSR */
-
+--
+Qais Yousef
 
