@@ -1,139 +1,346 @@
-Return-Path: <stable+bounces-179566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897C8B56833
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 14:00:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A18B5686C
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 14:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A5B63A3F91
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 12:00:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FDA617AF31
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 12:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EC02571DE;
-	Sun, 14 Sep 2025 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3530021CC44;
+	Sun, 14 Sep 2025 12:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsWhIibm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5POcjVx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413882550CA
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 12:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4D91DFCB
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 12:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757851212; cv=none; b=tHGXPMNmbxCmnnEGbFOv9pwt4PpDhP5IzM9HTyLKnrOrOgWm7WnGjYznGFnRQJsG4qbuNXTWIApZIlO6amE1P1NKTQydGByDbXJ6T4zrBHNAGT9spEkGuLx7PvkZLoWapMMAyajnT0nKjlvz+76zJQq7+Lh34lP1eyQw4Vs02KM=
+	t=1757852434; cv=none; b=EjguiG9oWw/KtcaZIASoC++k2INtlhB5/rN5CDYXBuarZeO/AspBUB8DmzZXL31djrl/IJtxRL9jA70baTf+5OgNXQ55P9miYGMmiUp8otOPx3equF/JhVBm/jVn/wj058Pfagy5ZOj2S/2Pgm622UZ5UYddMTV2AlfR5Qq6HRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757851212; c=relaxed/simple;
-	bh=H83KzL8/CfZhNhi4O5n9Ik6CFSV8CrYLcK1ANXxGpTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QMzqbCdx5wifDhEr6JpcAV1de8gfxc/S/XFwYCC1uEwbfF+U9FqCXbVzncYCJI97/lVpEq9S6SVTkSwcrWxDG8NC9IfySo8VSG0zAOlm0PcWFOta6m22LyqLJaXS3qn7FCy/Elhqm+lq175pgzPuVi34anbbqWysyg4qL6m9XmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsWhIibm; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-62ec5f750f7so5388045a12.3
-        for <stable@vger.kernel.org>; Sun, 14 Sep 2025 05:00:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757851208; x=1758456008; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sFTAcA6XM8wkhD1HzW4kDc6Y/3kd/E27zk6PuMogAcw=;
-        b=VsWhIibmk5hLiAlouffYSz2ycBV8ZUuspiwtHjrdmsv3zJHpCQmlelsj1y9tLvhSEt
-         vHHkf+VbduRbJRGGsKZzh5NzIgUO5JUfaFFyjP5GLDSgO9O4E19uGs4mIs1L96ObjViv
-         /r/h5EW/mcPFOR4aosDgG/Lhy0tHF4fc9bWD5uIOAPYp8q9KY6p62/ANZKtqSs3rMiPn
-         sZflP7tGMkKBPlLjOeBFjd/toGZiXDs2CJbU/F8z1bGXVoPvtfwfcKgeCdibXmEL2QTg
-         79loUasIUN0wbyrBYz8n6E+vD02ZQ+HkMrv9kaGkj86kVK2q6bqE/+wCRXuP9Azey4yW
-         Lcpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757851208; x=1758456008;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sFTAcA6XM8wkhD1HzW4kDc6Y/3kd/E27zk6PuMogAcw=;
-        b=ScVzokgoq2lvRJ6BvrjFPvQomXBsDZUapwZUwxKxci7TsyhVoj7GgUp8e1QWrLoT8f
-         k+CERz8KHlJID8JAKKx/zbACtc3kwoEWSDBDWcdv6CDPTZhKwBDsbxU9Th69CZwypUdC
-         7c38f/ADJBuGnMq0gYtM+bDAvYT+f66BiT/BZFqgA5ZxLLZFGN8p9/7giCzNKA8nTkrf
-         hcgm/ODNWZpEJcWEzNuQkkomaoozL6ygrsH9hjo/rYekotdHPZY1S9/XfFcCcuwJ/F0l
-         jpC42iopKtREOkbBWynMUfy3DZy3dBn1vbmNgOLL8NDurkVpBgnHFh9iDNm/npxBCuzv
-         FNrw==
-X-Gm-Message-State: AOJu0Yw1L/7uAoE8rXQXLLdIxXxvkI9cgttoddXn6B0ziwM90yEfn8q3
-	yB01BH9VYdb0eRQcOFvpSmY9Ykp9X5uaevbs/y6QNgyRsQHag504BnbW
-X-Gm-Gg: ASbGnctzAUxATxkkKe2W3RzNP2uivp/jckY5/0n1uKOfONpyd6njQKr53CfmNgSGvcD
-	yLPCjhLwkH6EoDmEPjlz/q2PsgumHxvrxQ9tovgBzmm+i5B7H9VoBnMKhNvj2ivEDUEpcNWQYW2
-	9V2oQJAT/EwlcYfzA2SOXmKIwpN1oVp5Hy6JDgUDF3sLHUDo9SPG4WOkZfKKpFGwwRr+5EEoq/P
-	IsP9q/2Ss5PsQ3eruPjxlildQeZrVAEr4+90YcmOkDzo3nVx8d6WKexyZusPI9v2BDftCppQFuq
-	k+UcgwMw8X91EDoi0Q1frf80e/MeDIrRBGT2UALtPKzzl9dgju+DMz1OorItTBvQnqi4JGJUHJg
-	XKMpwJebZfwzBajT4GmnQlg2S9ie2H2EhJseluFfOYjI1SaCPnE5Smx2n
-X-Google-Smtp-Source: AGHT+IHrhatpADYdxw5A1Cb3MSU9waSkeNIvXJj+dZ+fBnicwXRH+2zGZRn+rKJ+xNpYEQKKmll32A==
-X-Received: by 2002:a17:907:f818:b0:afe:d055:7531 with SMTP id a640c23a62f3a-b07c3841de1mr924389166b.48.1757851208312;
-        Sun, 14 Sep 2025 05:00:08 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07e1aed5ffsm334685966b.81.2025.09.14.05.00.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Sep 2025 05:00:06 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 78397BE2DE0; Sun, 14 Sep 2025 14:00:04 +0200 (CEST)
-Date: Sun, 14 Sep 2025 14:00:04 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Marcel Jira <marcel.jira@gmail.com>,
-	Niklas Cathor <niklas.cathor@gmx.de>, 1114806@bugs.debian.org
-Subject: Re: Please backport commit 440cec4ca1c2 ("drm/amdgpu: Wait for
- bootloader after PSPv11 reset") to v6.16.y
-Message-ID: <aMauROClYgtk9wrq@eldamar.lan>
-References: <aMakc-rP93XNJaA6@eldamar.lan>
- <2025091431-manpower-osmosis-b679@gregkh>
+	s=arc-20240116; t=1757852434; c=relaxed/simple;
+	bh=SXYxCczlkjWyZPicwWJFsYRUooe8+S64edlE2hPA36c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Pk1QHYAQP/gUxSHkZnIwYAKW0ZMnhKWXrmZ1l5gS/hAoBNyVldb6PL0ikRbh+QytGleCWbBlPnvOTnU/sMFJnXiaWbB097Wt98bVEoc1sNqILAASskO/XUelI7esDIvn7RK+pOYBEM+1FSKYtloLzphs07pFo3j6HQitSDizlZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5POcjVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4728C4CEF0;
+	Sun, 14 Sep 2025 12:20:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757852433;
+	bh=SXYxCczlkjWyZPicwWJFsYRUooe8+S64edlE2hPA36c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=M5POcjVxnw/OQtqUm45O855fkltyTw5eT1mORt+BU9gmcP18OUv8yy3IBJGwaIO7E
+	 pPvlnFfwjZV+rNp6hsABShfDwZXFGUOKK+8qyGTgkS0tANN736pZXhMcBZvi7PKHzJ
+	 aHFzgKqkDJSwmSKzOJ+m1I+z5a59vXPxMPz1qEd31AqhmwLPoCMBd92I9okMh1sxpN
+	 lZMWf5KrSpHr0K7GQBDaI10bLwq69DffQ2Ekh9RfegCVlHXp2AcxQARMoTVKacVzut
+	 tX0eFJ5g6w9RpQYwb2+QOx7EDA/YUSAJVnXe/5e7mRwJe2hkxbqFpSYsprTG5uOBuT
+	 6jVoPVotJsi0A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chen Ridong <chenridong@huawei.com>,
+	stable <stable@kernel.org>,
+	Zhang Zhaotian <zhangzhaotian@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] kernfs: Fix UAF in polling when open file is released
+Date: Sun, 14 Sep 2025 08:20:28 -0400
+Message-ID: <20250914122028.28607-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025091422-proximity-patrol-4fca@gregkh>
+References: <2025091422-proximity-patrol-4fca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025091431-manpower-osmosis-b679@gregkh>
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+From: Chen Ridong <chenridong@huawei.com>
 
-[note fixing up my typo for the Debian bug, sorry about that]
+[ Upstream commit 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f ]
 
-On Sun, Sep 14, 2025 at 01:43:38PM +0200, Greg Kroah-Hartman wrote:
-> On Sun, Sep 14, 2025 at 01:18:11PM +0200, Salvatore Bonaccorso wrote:
-> > Hi
-> > 
-> > In Debian we got the report in https://bugs.debian.org/1114806 that
-> > suspend to RAM fails (amdgpu driver hang) and Niklas Cathor was both
-> > able to bisect the issue down to 8345a71fc54b ("drm/amdgpu: Add more
-> > checks to PSP mailbox") (which was backported to 6.12.2 as well).
-> > 
-> > There is an upstream report as well at
-> > https://gitlab.freedesktop.org/drm/amd/-/issues/4531 matching the
-> > issue and fixed by 440cec4ca1c2 ("drm/amdgpu: Wait for bootloader
-> > after PSPv11 reset").
-> > 
-> > Unfortunately the commit does not apply cleanly to 6.16.y as well as
-> > there were the changes around 9888f73679b7 ("drm/amdgpu: Add a
-> > noverbose flag to psp_wait_for").
-> > 
-> > Attached patch backports the commit due to this context changes,
-> > assuming it is not desirable to pick as well 9888f73679b7.
-> > 
-> > Does that looks good? If yes, can you please consider picking it up or
-> > the next 6.16.y stable series as well?
-> 
-> I have a revert of the offending commit in the 6.16.y queue right now,
-> as this was pointed out as causing a problem:
-> 	https://lore.kernel.org/all/20250904220457.473940-1-alexander.deucher@amd.com/
-> so that should resolve this issue, right?
+A use-after-free (UAF) vulnerability was identified in the PSI (Pressure
+Stall Information) monitoring mechanism:
 
-Ah good, yes that should be equally fine (I missed the pending
-revert). Thanks a lot!
+BUG: KASAN: slab-use-after-free in psi_trigger_poll+0x3c/0x140
+Read of size 8 at addr ffff3de3d50bd308 by task systemd/1
 
-Regards,
-Salvatore
+psi_trigger_poll+0x3c/0x140
+cgroup_pressure_poll+0x70/0xa0
+cgroup_file_poll+0x8c/0x100
+kernfs_fop_poll+0x11c/0x1c0
+ep_item_poll.isra.0+0x188/0x2c0
+
+Allocated by task 1:
+cgroup_file_open+0x88/0x388
+kernfs_fop_open+0x73c/0xaf0
+do_dentry_open+0x5fc/0x1200
+vfs_open+0xa0/0x3f0
+do_open+0x7e8/0xd08
+path_openat+0x2fc/0x6b0
+do_filp_open+0x174/0x368
+
+Freed by task 8462:
+cgroup_file_release+0x130/0x1f8
+kernfs_drain_open_files+0x17c/0x440
+kernfs_drain+0x2dc/0x360
+kernfs_show+0x1b8/0x288
+cgroup_file_show+0x150/0x268
+cgroup_pressure_write+0x1dc/0x340
+cgroup_file_write+0x274/0x548
+
+Reproduction Steps:
+1. Open test/cpu.pressure and establish epoll monitoring
+2. Disable monitoring: echo 0 > test/cgroup.pressure
+3. Re-enable monitoring: echo 1 > test/cgroup.pressure
+
+The race condition occurs because:
+1. When cgroup.pressure is disabled (echo 0 > cgroup.pressure), it:
+   - Releases PSI triggers via cgroup_file_release()
+   - Frees of->priv through kernfs_drain_open_files()
+2. While epoll still holds reference to the file and continues polling
+3. Re-enabling (echo 1 > cgroup.pressure) accesses freed of->priv
+
+epolling			disable/enable cgroup.pressure
+fd=open(cpu.pressure)
+while(1)
+...
+epoll_wait
+kernfs_fop_poll
+kernfs_get_active = true	echo 0 > cgroup.pressure
+...				cgroup_file_show
+				kernfs_show
+				// inactive kn
+				kernfs_drain_open_files
+				cft->release(of);
+				kfree(ctx);
+				...
+kernfs_get_active = false
+				echo 1 > cgroup.pressure
+				kernfs_show
+				kernfs_activate_one(kn);
+kernfs_fop_poll
+kernfs_get_active = true
+cgroup_file_poll
+psi_trigger_poll
+// UAF
+...
+end: close(fd)
+
+To address this issue, introduce kernfs_get_active_of() for kernfs open
+files to obtain active references. This function will fail if the open file
+has been released. Replace kernfs_get_active() with kernfs_get_active_of()
+to prevent further operations on released file descriptors.
+
+Fixes: 34f26a15611a ("sched/psi: Per-cgroup PSI accounting disable/re-enable interface")
+Cc: stable <stable@kernel.org>
+Reported-by: Zhang Zhaotian <zhangzhaotian@huawei.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20250822070715.1565236-2-chenridong@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Drop llseek bits ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/kernfs/file.c | 54 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 36 insertions(+), 18 deletions(-)
+
+diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
+index 6b90fea6cca20..257ba5398387b 100644
+--- a/fs/kernfs/file.c
++++ b/fs/kernfs/file.c
+@@ -70,6 +70,24 @@ static struct kernfs_open_node *of_on(struct kernfs_open_file *of)
+ 					 !list_empty(&of->list));
+ }
+ 
++/* Get active reference to kernfs node for an open file */
++static struct kernfs_open_file *kernfs_get_active_of(struct kernfs_open_file *of)
++{
++	/* Skip if file was already released */
++	if (unlikely(of->released))
++		return NULL;
++
++	if (!kernfs_get_active(of->kn))
++		return NULL;
++
++	return of;
++}
++
++static void kernfs_put_active_of(struct kernfs_open_file *of)
++{
++	return kernfs_put_active(of->kn);
++}
++
+ /**
+  * kernfs_deref_open_node_locked - Get kernfs_open_node corresponding to @kn
+  *
+@@ -139,7 +157,7 @@ static void kernfs_seq_stop_active(struct seq_file *sf, void *v)
+ 
+ 	if (ops->seq_stop)
+ 		ops->seq_stop(sf, v);
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ }
+ 
+ static void *kernfs_seq_start(struct seq_file *sf, loff_t *ppos)
+@@ -152,7 +170,7 @@ static void *kernfs_seq_start(struct seq_file *sf, loff_t *ppos)
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return ERR_PTR(-ENODEV);
+ 
+ 	ops = kernfs_ops(of->kn);
+@@ -238,7 +256,7 @@ static ssize_t kernfs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn)) {
++	if (!kernfs_get_active_of(of)) {
+ 		len = -ENODEV;
+ 		mutex_unlock(&of->mutex);
+ 		goto out_free;
+@@ -252,7 +270,7 @@ static ssize_t kernfs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	else
+ 		len = -EINVAL;
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	mutex_unlock(&of->mutex);
+ 
+ 	if (len < 0)
+@@ -323,7 +341,7 @@ static ssize_t kernfs_fop_write_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn)) {
++	if (!kernfs_get_active_of(of)) {
+ 		mutex_unlock(&of->mutex);
+ 		len = -ENODEV;
+ 		goto out_free;
+@@ -335,7 +353,7 @@ static ssize_t kernfs_fop_write_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	else
+ 		len = -EINVAL;
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	mutex_unlock(&of->mutex);
+ 
+ 	if (len > 0)
+@@ -357,13 +375,13 @@ static void kernfs_vma_open(struct vm_area_struct *vma)
+ 	if (!of->vm_ops)
+ 		return;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return;
+ 
+ 	if (of->vm_ops->open)
+ 		of->vm_ops->open(vma);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ }
+ 
+ static vm_fault_t kernfs_vma_fault(struct vm_fault *vmf)
+@@ -375,14 +393,14 @@ static vm_fault_t kernfs_vma_fault(struct vm_fault *vmf)
+ 	if (!of->vm_ops)
+ 		return VM_FAULT_SIGBUS;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	ret = VM_FAULT_SIGBUS;
+ 	if (of->vm_ops->fault)
+ 		ret = of->vm_ops->fault(vmf);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+@@ -395,7 +413,7 @@ static vm_fault_t kernfs_vma_page_mkwrite(struct vm_fault *vmf)
+ 	if (!of->vm_ops)
+ 		return VM_FAULT_SIGBUS;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	ret = 0;
+@@ -404,7 +422,7 @@ static vm_fault_t kernfs_vma_page_mkwrite(struct vm_fault *vmf)
+ 	else
+ 		file_update_time(file);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+@@ -418,14 +436,14 @@ static int kernfs_vma_access(struct vm_area_struct *vma, unsigned long addr,
+ 	if (!of->vm_ops)
+ 		return -EINVAL;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return -EINVAL;
+ 
+ 	ret = -EINVAL;
+ 	if (of->vm_ops->access)
+ 		ret = of->vm_ops->access(vma, addr, buf, len, write);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+@@ -504,7 +522,7 @@ static int kernfs_fop_mmap(struct file *file, struct vm_area_struct *vma)
+ 	mutex_lock(&of->mutex);
+ 
+ 	rc = -ENODEV;
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		goto out_unlock;
+ 
+ 	ops = kernfs_ops(of->kn);
+@@ -539,7 +557,7 @@ static int kernfs_fop_mmap(struct file *file, struct vm_area_struct *vma)
+ 	}
+ 	vma->vm_ops = &kernfs_vm_ops;
+ out_put:
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ out_unlock:
+ 	mutex_unlock(&of->mutex);
+ 
+@@ -894,7 +912,7 @@ static __poll_t kernfs_fop_poll(struct file *filp, poll_table *wait)
+ 	struct kernfs_node *kn = kernfs_dentry_node(filp->f_path.dentry);
+ 	__poll_t ret;
+ 
+-	if (!kernfs_get_active(kn))
++	if (!kernfs_get_active_of(of))
+ 		return DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
+ 
+ 	if (kn->attr.ops->poll)
+@@ -902,7 +920,7 @@ static __poll_t kernfs_fop_poll(struct file *filp, poll_table *wait)
+ 	else
+ 		ret = kernfs_generic_poll(of, wait);
+ 
+-	kernfs_put_active(kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+-- 
+2.51.0
+
 
