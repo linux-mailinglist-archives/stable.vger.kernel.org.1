@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-179538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E34B56404
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 02:15:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63909B5640B
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 02:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A53E7A6EF0
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 00:13:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDF3A3A3CC5
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 00:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08312AD25;
-	Sun, 14 Sep 2025 00:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308A53AC1C;
+	Sun, 14 Sep 2025 00:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XYX+0E+w"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rcGVanUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9316018B0F;
-	Sun, 14 Sep 2025 00:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF67428E0F;
+	Sun, 14 Sep 2025 00:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757808924; cv=none; b=QGongc3rMmmyB5D5hbCeJPqP/iQek9k8BmXTq2cmo6fG3XdD6yc+y26y4ytthZpji6KBfvfnAHYpQQwX/u04pjzzO25qb2PeLau3+/wzqjgjdMxTc/PLytdYJ2df1ao9BtHkNbFctaPLpTv88X5mBG5B0Q2FFfqYKx+JDIx9j1A=
+	t=1757810106; cv=none; b=a8jQzD1+NRo2yDPj+lteOoBh9KWTvXuX6VNqKpN/457376uKR32/QUGVCPO/ZH3ZOFp59xkbE8v+BF1088++AHvQcZvCP1635nAcEgluUa/HA3aMZOZUAM7aoCC05hEMaMsXlTmdzncFADMZOYpvxHo4sewvpgpxuhsrswVgbnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757808924; c=relaxed/simple;
-	bh=rekzWScgw/RCtbuC/N7Wd78LY3vCXYc5AIruzbTQZgQ=;
-	h=Date:To:From:Subject:Message-Id; b=ow7W92kajFZAHrm2XkdACHLu5X7Ywn6M9ELgaFooTt3AW2xkOSWLQ7Qp+YGUwg0LtRiyivfm/ImFWpyuFv4+hOCiUG1ajlQY+QDHGj1X+/NhkEteHjowOhk/DtzKsYdJOzBc62Rk15nSLG4km8nmBcV0z7EAVkWxXNdrRpJlS0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XYX+0E+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C759C4CEEB;
-	Sun, 14 Sep 2025 00:15:24 +0000 (UTC)
+	s=arc-20240116; t=1757810106; c=relaxed/simple;
+	bh=RfmBBnEUZX/mtqQMRZhsAJQ9NmUpgNJo5cG9xMSUOBo=;
+	h=Date:To:From:Subject:Message-Id; b=b9GMhbSbcg/cqD6SPa1wbw+17FftmrBWdxN1eTMGHnyUE+BsceFS9bNdSaUrYM9ISZJlMR/3Kj10Qg29q4HRrctujceNlD7htMr106PzwIzWTLaihPERsGVxDdmU7ogvfmVt44bASbO51V7YeUAsXi57mN5WZPA5nLzUyImV0ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rcGVanUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40A1C4CEF7;
+	Sun, 14 Sep 2025 00:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757808924;
-	bh=rekzWScgw/RCtbuC/N7Wd78LY3vCXYc5AIruzbTQZgQ=;
+	s=korg; t=1757810105;
+	bh=RfmBBnEUZX/mtqQMRZhsAJQ9NmUpgNJo5cG9xMSUOBo=;
 	h=Date:To:From:Subject:From;
-	b=XYX+0E+w9XLg+FXWVGCpGlOG115AU0vjA87Yk1gk0oaTXAbsCfBK6reDuQPMPlfns
-	 L/kDqmftA907+DthNls3WxwPNeqHOYefc7+soOuZesG9tjaFx8Bkvv8Uj5tlGnYXKN
-	 +6zu1KsrARCp3GzYy0F8nNhX+84iMqfQDTIHJi54=
-Date: Sat, 13 Sep 2025 17:15:23 -0700
+	b=rcGVanUcG//Ev7L64JrPshiFQimUf021c3LmEnYLyCHMH/PuBpdJFWwIAq7Ow0r4C
+	 lXD60YKpRLXy00cCtDlGWzJVl9OgBKAaqdVAuuTLC8GaozcyWIlAWauvGn7ctXRtyA
+	 WuYQnluFMpywxb4ujrrSpwcdiV+ZQYuL25id+5Aw=
+Date: Sat, 13 Sep 2025 17:35:05 -0700
 To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,jack@suse.cz,brauner@kernel.org,chenhuacai@loongson.cn,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [folded-merged] init-handle-bootloader-identifier-in-kernel-parameters-v4.patch removed from -mm tree
-Message-Id: <20250914001524.1C759C4CEEB@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] init-handle-bootloader-identifier-in-kernel-parameters.patch removed from -mm tree
+Message-Id: <20250914003505.B40A1C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,20 +50,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: init-handle-bootloader-identifier-in-kernel-parameters-v4
+     Subject: init: handle bootloader identifier in kernel parameters
 has been removed from the -mm tree.  Its filename was
-     init-handle-bootloader-identifier-in-kernel-parameters-v4.patch
+     init-handle-bootloader-identifier-in-kernel-parameters.patch
 
-This patch was dropped because it was folded into init-handle-bootloader-identifier-in-kernel-parameters.patch
+This patch was dropped because it was merged into the mm-nonmm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
 From: Huacai Chen <chenhuacai@loongson.cn>
-Subject: init-handle-bootloader-identifier-in-kernel-parameters-v4
-Date: Fri, 15 Aug 2025 17:01:20 +0800
+Subject: init: handle bootloader identifier in kernel parameters
+Date: Mon, 21 Jul 2025 18:13:43 +0800
 
-use strstarts()
+BootLoaders (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
+/boot/vmlinuz-x.y.z" to kernel parameters.  But these identifiers are not
+recognized by the kernel itself so will be passed to userspace.  However
+user space init program also don't recognize it.
 
-Link: https://lkml.kernel.org/r/20250815090120.1569947-1-chenhuacai@loongson.cn
+KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
+some architectures.
+
+We cannot change BootLoader's behavior, because this behavior exists for
+many years, and there are already user space programs search BOOT_IMAGE=
+in /proc/cmdline to obtain the kernel image locations:
+
+https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
+(search getBootOptions)
+https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
+(search getKernelReleaseWithBootOption) So the the best way is handle
+(ignore) it by the kernel itself, which can avoid such boot warnings (if
+we use something like init=/bin/bash, bootloader identifier can even cause
+a crash):
+
+Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
+Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
+
+[chenhuacai@loongson.cn: use strstarts()]
+  Link: https://lkml.kernel.org/r/20250815090120.1569947-1-chenhuacai@loongson.cn
+Link: https://lkml.kernel.org/r/20250721101343.3283480-1-chenhuacai@loongson.cn
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Cc: Al Viro <viro@zeniv.linux.org.uk>
 Cc: Christian Brauner <brauner@kernel.org>
@@ -72,24 +96,40 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- init/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ init/main.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/init/main.c~init-handle-bootloader-identifier-in-kernel-parameters-v4
+--- a/init/main.c~init-handle-bootloader-identifier-in-kernel-parameters
 +++ a/init/main.c
-@@ -559,7 +559,7 @@ static int __init unknown_bootoption(cha
+@@ -544,6 +544,12 @@ static int __init unknown_bootoption(cha
+ 				     const char *unused, void *arg)
+ {
+ 	size_t len = strlen(param);
++	/*
++	 * Well-known bootloader identifiers:
++	 * 1. LILO/Grub pass "BOOT_IMAGE=...";
++	 * 2. kexec/kdump (kexec-tools) pass "kexec".
++	 */
++	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
  
- 	/* Handle bootloader identifier */
- 	for (int i = 0; bootloader[i]; i++) {
--		if (!strncmp(param, bootloader[i], strlen(bootloader[i])))
+ 	/* Handle params aliased to sysctls */
+ 	if (sysctl_is_alias(param))
+@@ -551,6 +557,12 @@ static int __init unknown_bootoption(cha
+ 
+ 	repair_env_string(param, val);
+ 
++	/* Handle bootloader identifier */
++	for (int i = 0; bootloader[i]; i++) {
 +		if (strstarts(param, bootloader[i]))
- 			return 0;
- 	}
- 
++			return 0;
++	}
++
+ 	/* Handle obsolete-style parameters */
+ 	if (obsolete_checksetup(param))
+ 		return 0;
 _
 
 Patches currently in -mm which might be from chenhuacai@loongson.cn are
 
-init-handle-bootloader-identifier-in-kernel-parameters.patch
 
 
