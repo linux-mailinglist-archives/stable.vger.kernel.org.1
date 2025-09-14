@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-179555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D81AB56625
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 06:02:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245BFB56633
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 06:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4906B3B308B
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 04:02:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85D6217F69B
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 04:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1D62749DA;
-	Sun, 14 Sep 2025 04:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D86270557;
+	Sun, 14 Sep 2025 04:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rQzh0FN5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GWa2r8lO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BF31B043F
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 04:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC1E26B2A5
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 04:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757822520; cv=none; b=feSkl2BE0v/eIh972TfOdbZv0CMS5kkysXQhHWhYxy/crOXNVl+IqCfhKo5vldXk70A1k7wR7YHVdJpdkxCKzyVLaC/GX6qAaMCQ2wa/6VlAFpZ+TWXtOZaMxJXRkVzjz5NXojeIC8pbpgUosvJvwtZWkJvtaLQC8U/CIGIETc8=
+	t=1757822523; cv=none; b=f2f9xHKoxJMOzyZrzEWe0N2XBCfDTTbcJgNzoXxlLkbw3x1M55N0geI0zYoLzf7u+ihL+WZiSgptVMnTugyAXvONXb+nAovlAvrb+y397MmNpk0OhlrIP7+aO/QqdGH6uhDKysOB1XfykgSSVgVYHImEwceblAFGwqbV2Z0VhJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757822520; c=relaxed/simple;
-	bh=p1CD26VRy0z7wuNWTtaDplQVAdmwounS997XbqvrPTg=;
+	s=arc-20240116; t=1757822523; c=relaxed/simple;
+	bh=UjIiRCYlTtCXjG2Ph/iUVqUsBOrgJwmFej56Ha1EY3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nO5ckKqqe080Vf7zNpvR18oU6goZtFGuRCqUAcjjX7lkk3kBI+cYiKbuCpARG79q8RddtakdDDDKH1ohDx8nE7RI8UeWhwAx2GbogpYITaHsSFAj7uQkHbFjcUUnCU+5vK+HYrX7aVo9BvqETvJPqyNGiiR2wxA15bx9JdeNMmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rQzh0FN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0A6C4CEF1;
-	Sun, 14 Sep 2025 04:01:59 +0000 (UTC)
+	 MIME-Version; b=uy407GLM5EGzqeuSn4MoKUTF7C/nDbcnqNa+N6oQLOps41YcLQnCH6NL7WZtePrqCeeztLnf6cEYOO3o1GlQF2toSteixdehJh/il7R+pFnaC3DEUr1pfICT48agMJTSKy2JxoUkRpwOrOR9Qk9L0HgUQMRzzY4pTCFPrAVw9hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GWa2r8lO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AA1C4CEFE;
+	Sun, 14 Sep 2025 04:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757822519;
-	bh=p1CD26VRy0z7wuNWTtaDplQVAdmwounS997XbqvrPTg=;
+	s=k20201202; t=1757822520;
+	bh=UjIiRCYlTtCXjG2Ph/iUVqUsBOrgJwmFej56Ha1EY3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQzh0FN5fDuKLZsaSEwOQ7/0J0q8HYQdAOSoib5PSI384AChT91CFNSwDvO2k9KeB
-	 RAcTTa2G3ojxMkVRc1/gthGqJDLgo8m6hegIkIv8GxpXovk6F7QuL8jJLFcqPs8XWM
-	 nqmNUDZaaoi6EA/asayTFHZM8jmbe4JusRTic/tBnK9qodD/SErQQvkaolUR+aaUFw
-	 +6azQ2C/SYYJfn2YpQ9FR+gbvuYtjfa1y/E3Vo7jtM2wX4sZOHyLED5K1yIo57p5Pq
-	 EcBU2fHabWTjZrWz/QZXUkFTWfF7eruS0ySkxhCibdN5zQ8k1n2giXJD8fqUTWWPvs
-	 CjFNNSBKg42Yw==
+	b=GWa2r8lOfG4/5GoaReQS0Td5kcFrlH1tCsNrA2+WtWlCxFeM+GSdTyFMWUkqsAH/i
+	 zutiYFncE1bN1dWfjsSl0UvdklnsSnSiYrLECcWpbdsWGxp0H6K1TxUXGY151A+tWB
+	 rxnGZgt9xBATnfKgfSrv7Bz3Td6Rzh9x0+1BNTiAioUUTPiPBcWGcnmQqrhx9vfJlB
+	 3yWqJKAj/PLsGmLUvebQpUaKPfGLg4vL0aZmXFyuMaBbNxvGrPfxFSqZOK7QQMgKTk
+	 b1axHCcSuJTxLsklY8lEq1m/P9pxvoFVDq5cPMhx0MAJ9UhZFIeSaBgBSdFpVtBUE1
+	 pMcWLXQWKyhFg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Boris Burkov <boris@bur.io>,
-	Dimitrios Apostolou <jimis@gmx.net>,
+Cc: Qu Wenruo <wqu@suse.com>,
 	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] btrfs: use readahead_expand() on compressed extents
-Date: Sun, 14 Sep 2025 00:01:56 -0400
-Message-ID: <20250914040157.1958299-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] btrfs: fix corruption reading compressed range when block size is smaller than page size
+Date: Sun, 14 Sep 2025 00:01:57 -0400
+Message-ID: <20250914040157.1958299-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091346-suspect-numerate-b884@gregkh>
+In-Reply-To: <20250914040157.1958299-1-sashal@kernel.org>
 References: <2025091346-suspect-numerate-b884@gregkh>
+ <20250914040157.1958299-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,202 +62,249 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Boris Burkov <boris@bur.io>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 9e9ff875e4174be939371667d2cc81244e31232f ]
+[ Upstream commit 9786531399a679fc2f4630d2c0a186205282ab2f ]
 
-We recently received a report of poor performance doing sequential
-buffered reads of a file with compressed extents. With bs=128k, a naive
-sequential dd ran as fast on a compressed file as on an uncompressed
-(1.2GB/s on my reproducing system) while with bs<32k, this performance
-tanked down to ~300MB/s.
+[BUG]
+With 64K page size (aarch64 with 64K page size config) and 4K btrfs
+block size, the following workload can easily lead to a corrupted read:
 
-i.e., slow:
+        mkfs.btrfs -f -s 4k $dev > /dev/null
+        mount -o compress $dev $mnt
+        xfs_io -f -c "pwrite -S 0xff 0 64k" $mnt/base > /dev/null
+	echo "correct result:"
+        od -Ad -t x1 $mnt/base
+        xfs_io -f -c "reflink $mnt/base 32k 0 32k" \
+		  -c "reflink $mnt/base 0 32k 32k" \
+		  -c "pwrite -S 0xff 60k 4k" $mnt/new > /dev/null
+	echo "incorrect result:"
+        od -Ad -t x1 $mnt/new
+        umount $mnt
 
-  dd if=some-compressed-file of=/dev/null bs=4k count=X
+This shows the following result:
 
-vs fast:
+correct result:
+0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+*
+0065536
+incorrect result:
+0000000 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+*
+0032768 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+*
+0061440 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+*
+0065536
 
-  dd if=some-compressed-file of=/dev/null bs=128k count=Y
+Notice the zero in the range [32K, 60K), which is incorrect.
 
-The cause of this slowness is overhead to do with looking up extent_maps
-to enable readahead pre-caching on compressed extents
-(add_ra_bio_pages()), as well as some overhead in the generic VFS
-readahead code we hit more in the slow case. Notably, the main
-difference between the two read sizes is that in the large sized request
-case, we call btrfs_readahead() relatively rarely while in the smaller
-request we call it for every compressed extent. So the fast case stays
-in the btrfs readahead loop:
+[CAUSE]
+With extra trace printk, it shows the following events during od:
+(some unrelated info removed like CPU and context)
 
-    while ((folio = readahead_folio(rac)) != NULL)
-	    btrfs_do_readpage(folio, &em_cached, &bio_ctrl, &prev_em_start);
+ od-3457   btrfs_do_readpage: enter r/i=5/258 folio=0(65536) prev_em_start=0000000000000000
 
-where the slower one breaks out of that loop every time. This results in
-calling add_ra_bio_pages a lot, doing lots of extent_map lookups,
-extent_map locking, etc.
+The "r/i" is indicating the root and inode number. In our case the file
+"new" is using ino 258 from fs tree (root 5).
 
-This happens because although add_ra_bio_pages() does add the
-appropriate un-compressed file pages to the cache, it does not
-communicate back to the ractl in any way. To solve this, we should be
-using readahead_expand() to signal to readahead to expand the readahead
-window.
+Here notice the @prev_em_start pointer is NULL. This means the
+btrfs_do_readpage() is called from btrfs_read_folio(), not from
+btrfs_readahead().
 
-This change passes the readahead_control into the btrfs_bio_ctrl and in
-the case of compressed reads sets the expansion to the size of the
-extent_map we already looked up anyway. It skips the subpage case as
-that one already doesn't do add_ra_bio_pages().
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=0 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=4096 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=8192 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=12288 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=16384 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=20480 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=24576 got em start=0 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=28672 got em start=0 len=32768
 
-With this change, whether we use bs=4k or bs=128k, btrfs expands the
-readahead window up to the largest compressed extent we have seen so far
-(in the trivial example: 128k) and the call stacks of the two modes look
-identical. Notably, we barely call add_ra_bio_pages at all. And the
-performance becomes identical as well. So this change certainly "fixes"
-this performance problem.
+These above 32K blocks will be read from the first half of the
+compressed data extent.
 
-Of course, it does seem to beg a few questions:
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=32768 got em start=32768 len=32768
 
-1. Will this waste too much page cache with a too large ra window?
-2. Will this somehow cause bugs prevented by the more thoughtful
-   checking in add_ra_bio_pages?
-3. Should we delete add_ra_bio_pages?
+Note here there is no btrfs_submit_compressed_read() call. Which is
+incorrect now.
+Although both extent maps at 0 and 32K are pointing to the same compressed
+data, their offsets are different thus can not be merged into the same
+read.
 
-My stabs at some answers:
+So this means the compressed data read merge check is doing something
+wrong.
 
-1. Hard to say. See attempts at generic performance testing below. Is
-   there a "readahead_shrink" we should be using? Should we expand more
-   slowly, by half the remaining em size each time?
-2. I don't think so. Since the new behavior is indistinguishable from
-   reading the file with a larger read size passed in, I don't see why
-   one would be safe but not the other.
-3. Probably! I tested that and it was fine in fstests, and it seems like
-   the pages would get re-used just as well in the readahead case.
-   However, it is possible some reads that use page cache but not
-   btrfs_readahead() could suffer. I will investigate this further as a
-   follow up.
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=36864 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=40960 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=45056 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=49152 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=53248 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=57344 got em start=32768 len=32768
+ od-3457   btrfs_do_readpage: r/i=5/258 folio=0(65536) cur=61440 skip uptodate
+ od-3457   btrfs_submit_compressed_read: cb orig_bio: file off=0 len=61440
 
-I tested the performance implications of this change in 3 ways (using
-compress-force=zstd:3 for compression):
+The function btrfs_submit_compressed_read() is only called at the end of
+folio read. The compressed bio will only have an extent map of range [0,
+32K), but the original bio passed in is for the whole 64K folio.
 
-Directly test the affected workload of small sequential reads on a
-compressed file (improved from ~250MB/s to ~1.2GB/s)
+This will cause the decompression part to only fill the first 32K,
+leaving the rest untouched (aka, filled with zero).
 
-==========for-next==========
-  dd /mnt/lol/non-cmpr 4k
-  1048576+0 records in
-  1048576+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 6.02983 s, 712 MB/s
-  dd /mnt/lol/non-cmpr 128k
-  32768+0 records in
-  32768+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 5.92403 s, 725 MB/s
-  dd /mnt/lol/cmpr 4k
-  1048576+0 records in
-  1048576+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 17.8832 s, 240 MB/s
-  dd /mnt/lol/cmpr 128k
-  32768+0 records in
-  32768+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 3.71001 s, 1.2 GB/s
+This incorrect compressed read merge leads to the above data corruption.
 
-==========ra-expand==========
-  dd /mnt/lol/non-cmpr 4k
-  1048576+0 records in
-  1048576+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 6.09001 s, 705 MB/s
-  dd /mnt/lol/non-cmpr 128k
-  32768+0 records in
-  32768+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 6.07664 s, 707 MB/s
-  dd /mnt/lol/cmpr 4k
-  1048576+0 records in
-  1048576+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 3.79531 s, 1.1 GB/s
-  dd /mnt/lol/cmpr 128k
-  32768+0 records in
-  32768+0 records out
-  4294967296 bytes (4.3 GB, 4.0 GiB) copied, 3.69533 s, 1.2 GB/s
+There were similar problems that happened in the past, commit 808f80b46790
+("Btrfs: update fix for read corruption of compressed and shared
+extents") is doing pretty much the same fix for readahead.
 
-Built the linux kernel from clean (no change)
+But that's back to 2015, where btrfs still only supports bs (block size)
+== ps (page size) cases.
+This means btrfs_do_readpage() only needs to handle a folio which
+contains exactly one block.
 
-Ran fsperf. Mostly neutral results with some improvements and
-regressions here and there.
+Only btrfs_readahead() can lead to a read covering multiple blocks.
+Thus only btrfs_readahead() passes a non-NULL @prev_em_start pointer.
 
-Reported-by: Dimitrios Apostolou <jimis@gmx.net>
-Link: https://lore.kernel.org/linux-btrfs/34601559-6c16-6ccc-1793-20a97ca0dbba@gmx.net/
+With v5.15 kernel btrfs introduced bs < ps support. This breaks the above
+assumption that a folio can only contain one block.
+
+Now btrfs_read_folio() can also read multiple blocks in one go.
+But btrfs_read_folio() doesn't pass a @prev_em_start pointer, thus the
+existing bio force submission check will never be triggered.
+
+In theory, this can also happen for btrfs with large folios, but since
+large folio is still experimental, we don't need to bother it, thus only
+bs < ps support is affected for now.
+
+[FIX]
+Instead of passing @prev_em_start to do the proper compressed extent
+check, introduce one new member, btrfs_bio_ctrl::last_em_start, so that
+the existing bio force submission logic will always be triggered.
+
+CC: stable@vger.kernel.org # 5.15+
 Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ fs/btrfs/extent_io.c | 46 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
 diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 48b06459bc485..c841027d32af1 100644
+index c841027d32af1..ccf94c5fbfdfd 100644
 --- a/fs/btrfs/extent_io.c
 +++ b/fs/btrfs/extent_io.c
-@@ -103,6 +103,7 @@ struct btrfs_bio_ctrl {
- 	blk_opf_t opf;
+@@ -104,6 +104,24 @@ struct btrfs_bio_ctrl {
  	btrfs_bio_end_io_t end_io_func;
  	struct writeback_control *wbc;
-+	struct readahead_control *ractl;
+ 	struct readahead_control *ractl;
++
++	/*
++	 * The start offset of the last used extent map by a read operation.
++	 *
++	 * This is for proper compressed read merge.
++	 * U64_MAX means we are starting the read and have made no progress yet.
++	 *
++	 * The current btrfs_bio_is_contig() only uses disk_bytenr as
++	 * the condition to check if the read can be merged with previous
++	 * bio, which is not correct. E.g. two file extents pointing to the
++	 * same extent but with different offset.
++	 *
++	 * So here we need to do extra checks to only merge reads that are
++	 * covered by the same extent map.
++	 * Just extent_map::start will be enough, as they are unique
++	 * inside the same inode.
++	 */
++	u64 last_em_start;
  };
  
  static void submit_one_bio(struct btrfs_bio_ctrl *bio_ctrl)
-@@ -952,6 +953,23 @@ __get_extent_map(struct inode *inode, struct page *page, size_t pg_offset,
- 	}
- 	return em;
- }
-+
-+static void btrfs_readahead_expand(struct readahead_control *ractl,
-+				   const struct extent_map *em)
-+{
-+	const u64 ra_pos = readahead_pos(ractl);
-+	const u64 ra_end = ra_pos + readahead_length(ractl);
-+	const u64 em_end = em->start + em->ram_bytes;
-+
-+	/* No expansion for holes and inline extents. */
-+	if (em->block_start > EXTENT_MAP_LAST_BYTE)
-+		return;
-+
-+	ASSERT(em_end >= ra_pos);
-+	if (em_end > ra_end)
-+		readahead_expand(ractl, ra_pos, em_end - ra_pos);
-+}
-+
- /*
-  * basic readpage implementation.  Locked extent state structs are inserted
-  * into the tree that are removed when the IO is done (by the end_io
-@@ -1023,6 +1041,17 @@ static int btrfs_do_readpage(struct page *page, struct extent_map **em_cached,
- 
- 		iosize = min(extent_map_end(em) - cur, end - cur + 1);
- 		iosize = ALIGN(iosize, blocksize);
-+
-+		/*
-+		 * Only expand readahead for extents which are already creating
-+		 * the pages anyway in add_ra_bio_pages, which is compressed
-+		 * extents in the non subpage case.
-+		 */
-+		if (bio_ctrl->ractl &&
-+		    !btrfs_is_subpage(fs_info, page) &&
-+		    compress_type != BTRFS_COMPRESS_NONE)
-+			btrfs_readahead_expand(bio_ctrl->ractl, em);
-+
- 		if (compress_type != BTRFS_COMPRESS_NONE)
- 			disk_bytenr = em->block_start;
- 		else
-@@ -2224,7 +2253,10 @@ int extent_writepages(struct address_space *mapping,
- 
- void extent_readahead(struct readahead_control *rac)
+@@ -978,7 +996,7 @@ static void btrfs_readahead_expand(struct readahead_control *ractl,
+  * return 0 on success, otherwise return error
+  */
+ static int btrfs_do_readpage(struct page *page, struct extent_map **em_cached,
+-		      struct btrfs_bio_ctrl *bio_ctrl, u64 *prev_em_start)
++		      struct btrfs_bio_ctrl *bio_ctrl)
  {
--	struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ | REQ_RAHEAD };
+ 	struct inode *inode = page->mapping->host;
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
+@@ -1095,12 +1113,11 @@ static int btrfs_do_readpage(struct page *page, struct extent_map **em_cached,
+ 		 * non-optimal behavior (submitting 2 bios for the same extent).
+ 		 */
+ 		if (test_bit(EXTENT_FLAG_COMPRESSED, &em->flags) &&
+-		    prev_em_start && *prev_em_start != (u64)-1 &&
+-		    *prev_em_start != em->start)
++		    bio_ctrl->last_em_start != (u64)-1 &&
++		    bio_ctrl->last_em_start != em->start)
+ 			force_bio_submit = true;
+ 
+-		if (prev_em_start)
+-			*prev_em_start = em->start;
++		bio_ctrl->last_em_start = em->start;
+ 
+ 		free_extent_map(em);
+ 		em = NULL;
+@@ -1146,12 +1163,15 @@ int btrfs_read_folio(struct file *file, struct folio *folio)
+ 	struct btrfs_inode *inode = BTRFS_I(page->mapping->host);
+ 	u64 start = page_offset(page);
+ 	u64 end = start + PAGE_SIZE - 1;
+-	struct btrfs_bio_ctrl bio_ctrl = { .opf = REQ_OP_READ };
 +	struct btrfs_bio_ctrl bio_ctrl = {
-+		.opf = REQ_OP_READ | REQ_RAHEAD,
-+		.ractl = rac
++		.opf = REQ_OP_READ,
++		.last_em_start = (u64)-1,
 +	};
+ 	int ret;
+ 
+ 	btrfs_lock_and_flush_ordered_range(inode, start, end, NULL);
+ 
+-	ret = btrfs_do_readpage(page, NULL, &bio_ctrl, NULL);
++	ret = btrfs_do_readpage(page, NULL, &bio_ctrl);
+ 	/*
+ 	 * If btrfs_do_readpage() failed we will want to submit the assembled
+ 	 * bio to do the cleanup.
+@@ -1163,8 +1183,7 @@ int btrfs_read_folio(struct file *file, struct folio *folio)
+ static inline void contiguous_readpages(struct page *pages[], int nr_pages,
+ 					u64 start, u64 end,
+ 					struct extent_map **em_cached,
+-					struct btrfs_bio_ctrl *bio_ctrl,
+-					u64 *prev_em_start)
++					struct btrfs_bio_ctrl *bio_ctrl)
+ {
+ 	struct btrfs_inode *inode = BTRFS_I(pages[0]->mapping->host);
+ 	int index;
+@@ -1172,8 +1191,7 @@ static inline void contiguous_readpages(struct page *pages[], int nr_pages,
+ 	btrfs_lock_and_flush_ordered_range(inode, start, end, NULL);
+ 
+ 	for (index = 0; index < nr_pages; index++) {
+-		btrfs_do_readpage(pages[index], em_cached, bio_ctrl,
+-				  prev_em_start);
++		btrfs_do_readpage(pages[index], em_cached, bio_ctrl);
+ 		put_page(pages[index]);
+ 	}
+ }
+@@ -2255,11 +2273,11 @@ void extent_readahead(struct readahead_control *rac)
+ {
+ 	struct btrfs_bio_ctrl bio_ctrl = {
+ 		.opf = REQ_OP_READ | REQ_RAHEAD,
+-		.ractl = rac
++		.ractl = rac,
++		.last_em_start = (u64)-1,
+ 	};
  	struct page *pagepool[16];
  	struct extent_map *em_cached = NULL;
- 	u64 prev_em_start = (u64)-1;
+-	u64 prev_em_start = (u64)-1;
+ 	int nr;
+ 
+ 	while ((nr = readahead_page_batch(rac, pagepool))) {
+@@ -2267,7 +2285,7 @@ void extent_readahead(struct readahead_control *rac)
+ 		u64 contig_end = contig_start + readahead_batch_length(rac) - 1;
+ 
+ 		contiguous_readpages(pagepool, nr, contig_start, contig_end,
+-				&em_cached, &bio_ctrl, &prev_em_start);
++				&em_cached, &bio_ctrl);
+ 	}
+ 
+ 	if (em_cached)
 -- 
 2.51.0
 
