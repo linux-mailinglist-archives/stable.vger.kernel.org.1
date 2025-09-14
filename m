@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-179586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AC6B56B79
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 21:09:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6835B56C1F
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 22:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0BB1899DE7
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 19:09:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 661AB3B3C23
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 20:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFF8284678;
-	Sun, 14 Sep 2025 19:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2FC1F8724;
+	Sun, 14 Sep 2025 20:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qBI0qGyT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkK1ZCPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A168469D
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 19:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9144A3C
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 20:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757876954; cv=none; b=m9OuDJu1b3hPjpdttq1qsD3ho+JxedRj+c+Udt+/p97jCbdjmdkh3OLcu9E1tv3M+m6NWt6gjP2d4YPpZVxMe8wYcBkIwJ1Wxq21zqIafit2bavhKZDXBJC7CcPM8rjHzEFQApBuxK/OcAdhyiLEFfPI4fqH08LahGzLmvr+9dk=
+	t=1757881023; cv=none; b=av/+qudvl0J3o5uinO4Vmr8qkifDCzlV3bauxVxhNi1iaW9UTYHAzUhp7hRrh8ix3lk2KZQI9JTPW1zIl0p+HzddetF4BsHXu8nm6C/wouC3uAwnh1990H9tCY6UblWBUErh5Q6PwHfa53f4EaX0qKXaxJ/brjBeCR0Us9aN9xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757876954; c=relaxed/simple;
-	bh=gMCa7Xm0E1apWWcxIlAt2+ix1LQcLi7zWeWZ6EOmMlc=;
+	s=arc-20240116; t=1757881023; c=relaxed/simple;
+	bh=e0MCoVNKFq2j+u5ZVdh5udX63X1hzVJl7seMuZsJfd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ckEd/2KpPXQlAsbrvkHVAEDU56b1dgauCJrIS2AUsWBgm3XjPkXtag3MHM/esypflillWQykTwNaN0ug46OmtNjKbCZ3jzrf1VtPeOUvLJIrwEpi7EIz0iGV0VUNI85o+Kvd1mPglWI7+dyF4jgPwgJoaPYKiszM6tUXFY2NzkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qBI0qGyT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90416C4CEF0;
-	Sun, 14 Sep 2025 19:09:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=shXdIdZbUjBGjLOAWFnOekFu0K1pr2gdHq7WoG1zFDLL4JA18N5nj02fo6n8H+E9LQqKC67kZyBUcOXWDKFfEtg874c09oBuxpVQLG7dQaHNUWtLf59lXmskl5IvJIgAzyQFV8dJvY2jTqUZQjVirvDuxwL4Gex5+uthNmRvWIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkK1ZCPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C693C4CEF0;
+	Sun, 14 Sep 2025 20:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757876954;
-	bh=gMCa7Xm0E1apWWcxIlAt2+ix1LQcLi7zWeWZ6EOmMlc=;
+	s=k20201202; t=1757881023;
+	bh=e0MCoVNKFq2j+u5ZVdh5udX63X1hzVJl7seMuZsJfd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBI0qGyT5Ec3Ntr1GYI1oL3qjVpfJFYC3a0Rns/AbQs2MuxttQIbqw62ihPD4LREx
-	 1KNQqLK3EBhAcLvl6lbsSoENyzO5DQZ3EtN2cCNl4WRpx1Ggdrbu05XHGub2Y5sloB
-	 8H5KL4HT4VyNnNMZErFztsGCCQP8XU5HcdSWlPhvIedqIpjFp84rFc5oy1encaOi7Z
-	 eljKLxlDU8f5ZjlNCRwG2F6W2PD93SmAnU5fy5jTmO8BwhLNE3/VPKjD6K+ZZrBQbD
-	 7GJlpg3g2+HGwK62n1yITtYFA9hMuAmwbwMuDTqwat45wLifUs+65ss8Y8r5yXMsql
-	 lAm0HOT0b4/ZA==
+	b=gkK1ZCPGwTdR5DPyW8YVvwK8luK0JO/aeA00hxc5X1U6jWMIc9KFO342+zQn0BR80
+	 9VjJy8JptMhrBHSBZgCFR/X2DO8jynmJl8JZlm+R/TgDGRjEA9pVqHTcmUtSA3y98V
+	 Ao9SHO+2b10IzdCFcczvD20m8o7OqvWP3wIOGzV/kLpmEn6TXR7F02jgUwajhWIR1R
+	 1qbnOkLrGmL5OZCaWgUeTdkAUS3smHYXQAhDgo227tnoCxDG18CQFTeFTFfid0fJpT
+	 mV95lWbXmNXj5t0R2EoN15lxSVI2u9iX9IPnR4PPXx1z+LwnVd2vT6s9Q0jfgCRHUn
+	 KLILklqKHP1IQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jani Nikula <jani.nikula@intel.com>,
@@ -48,12 +48,12 @@ Cc: Jani Nikula <jani.nikula@intel.com>,
 	Matt Roper <matthew.d.roper@intel.com>,
 	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] drm/i915/power: fix size for for_each_set_bit() in abox iteration
-Date: Sun, 14 Sep 2025 15:09:11 -0400
-Message-ID: <20250914190911.183186-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] drm/i915/power: fix size for for_each_set_bit() in abox iteration
+Date: Sun, 14 Sep 2025 16:17:00 -0400
+Message-ID: <20250914201700.200541-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091355-getaway-public-74cc@gregkh>
-References: <2025091355-getaway-public-74cc@gregkh>
+In-Reply-To: <2025091355-hut-broken-9e61@gregkh>
+References: <2025091355-hut-broken-9e61@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/i915/display/intel_display_power.c b/drivers/gpu/drm/i915/display/intel_display_power.c
-index 9e01054c24300..8beeda3439818 100644
+index 1a63da28f3300..8b8ba7426404a 100644
 --- a/drivers/gpu/drm/i915/display/intel_display_power.c
 +++ b/drivers/gpu/drm/i915/display/intel_display_power.c
-@@ -1170,7 +1170,7 @@ static void icl_mbus_init(struct drm_i915_private *dev_priv)
+@@ -1122,7 +1122,7 @@ static void icl_mbus_init(struct drm_i915_private *dev_priv)
  	if (DISPLAY_VER(dev_priv) == 12)
  		abox_regs |= BIT(0);
  
@@ -101,7 +101,7 @@ index 9e01054c24300..8beeda3439818 100644
  		intel_de_rmw(dev_priv, MBUS_ABOX_CTL(i), mask, val);
  }
  
-@@ -1623,11 +1623,11 @@ static void tgl_bw_buddy_init(struct drm_i915_private *dev_priv)
+@@ -1587,11 +1587,11 @@ static void tgl_bw_buddy_init(struct drm_i915_private *dev_priv)
  	if (table[config].page_mask == 0) {
  		drm_dbg(&dev_priv->drm,
  			"Unknown memory configuration; disabling address buddy logic.\n");
