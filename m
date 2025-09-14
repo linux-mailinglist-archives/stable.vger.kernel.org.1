@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-179548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E400B5647F
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 05:22:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98275B56482
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 05:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B8A9423D99
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 03:22:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F494189BCF0
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 03:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A5B25784F;
-	Sun, 14 Sep 2025 03:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9D258CE9;
+	Sun, 14 Sep 2025 03:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdnycFfi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4xYnGjq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C7021254B;
-	Sun, 14 Sep 2025 03:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6971891AB;
+	Sun, 14 Sep 2025 03:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757820142; cv=none; b=uQ5H8iBSpbarjKVQwTCht8cFCeprqHNzXg8JF00C8txkgTUqzQCP+cRv2QkAyls70pmsfu4vupVbFfuR/V5MdO77hJ2tCUykm29xXmmF/sOMV0i4kIqmpGZqI+eqOI7pwQn6WFsVm/oteB50KQ/sNleK0VQfJF9bDuXXzI6tP5s=
+	t=1757820530; cv=none; b=Itm8dgt3p9EUOCNBpG8z0f8XOylj2oZZSi7CW2um3H68wWDsPnAyO4QgpfIhW8eqCpHlIBDK8xqvoTt4eVxJ4jTWiCmpbkSvU61e6MqvWyiKb3SDluSiRoFUQgJJo7/kpc1EmY57IDjxieIJWui9UMgZlvZEx9n4i50HK9ngkDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757820142; c=relaxed/simple;
-	bh=El6nVhFI97/oYWWUFLD4ND//Mg+FlQlLf38ySjrt6UM=;
+	s=arc-20240116; t=1757820530; c=relaxed/simple;
+	bh=zKFUO0dAbe0G3kl5KxkzLbQ5BddyyVWMYls3G9oKbrQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lOMlkFF36pulzOI3iYq6iCXsp5vg9jj8uqw+9QV1YCEyHYkU0bU3ul85wsm0/GAL9trzrtcwyvIYsQyrsvx51oRx9H7VK/NMBRpgDq4Hd5C10GDw01JzZ/gCMSCP2M6paITWd6gzS8T/jXAFkZYnRZXYOgQxghSPfTG8ifKW1fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdnycFfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1744EC4CEEB;
-	Sun, 14 Sep 2025 03:22:22 +0000 (UTC)
+	 MIME-Version; b=Y/tiHXf8T4OlkTxFqAYMup0mgBYqAjADNJcsJh5NFYh0w/p7N/fNoOj8hC2t01NXTvDypgma8GxIwmOVCNOXiP72rCvwIRUtcZZD/8qs+FzNwr64BmwBqOQ6vLJkTNbCSGwSE/V/LAYaac9oUlVcteli39g6GOiy0v76Swz23O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4xYnGjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9EEC4CEEB;
+	Sun, 14 Sep 2025 03:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757820142;
-	bh=El6nVhFI97/oYWWUFLD4ND//Mg+FlQlLf38ySjrt6UM=;
+	s=k20201202; t=1757820530;
+	bh=zKFUO0dAbe0G3kl5KxkzLbQ5BddyyVWMYls3G9oKbrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BdnycFfis1X5QLtBy1vkrNo3m4N6RsbPiZ4x3yDRg40L4zak2RsiiFioj72hCbKHW
-	 +6mqUqcSSR8YhbNwnQ17frYsxm0pFcnb8yZD1L9+mnsK1ixPnBZoZVOiqkXApshn1+
-	 IHtrIJTXTEE9PU3nYtlHCBaOB/mFD26687rF5pK/cUfwpRqcduN9IEnsOOKzvTAfxz
-	 WpZnIBG6jXzogD1A9iTAM8tcxfSQFJntvNLXqhEf4oBv9624LLqIOhzBrFy0RYO/9K
-	 /JzfKhzb3dlesv4idyVRFw+EFMm7v7ydh2oZR8J5s3nMA56gGf8TKxcWSv4gV5ZviI
-	 gWt4AlipFv9dA==
+	b=h4xYnGjqhLL1FdOh24PGzgFTf6h8xI+eGs6WuepI8FiYe28LXfCl/Cq7yi6rmvbdC
+	 kiUoVL25aIEP8QUG0/uD+tKRVEbmUn4o6aVsGSOYsE0sWJleXlFaUIgn0igsERJiOs
+	 LrbtfDOQ1EkxLXqEPCNcUrsGB2XsmzWgaDBRlyED00gRjKmkZJr9qnuyx3/W+26/o1
+	 KDl1t1tbqOc6aw9wEVoqQN+qkqTK93lRQGscfSqArfp6tWp25KoMfcmOmPkAgniNPI
+	 ey6R25GrvczG4ThwPby0xzOoYNXd8aMY5kshQDrqWnEwSN+jNQNgXZ+SoUZVroHzxr
+	 Wp58En1UfYQRQ==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
@@ -49,12 +49,12 @@ Cc: damon@lists.linux.dev,
 	Kefeng Wang <wangkefeng.wang@huawei.com>,
 	ze zuo <zuoze1@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/damon/reclaim: avoid divide-by-zero in damon_reclaim_apply_parameters()
-Date: Sat, 13 Sep 2025 20:22:18 -0700
-Message-Id: <20250914032218.2285-1-sj@kernel.org>
+Subject: [PATCH 6.1.y] mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
+Date: Sat, 13 Sep 2025 20:28:45 -0700
+Message-Id: <20250914032845.1748-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025091328-reversing-judiciary-ca17@gregkh>
-References: <2025091328-reversing-judiciary-ca17@gregkh>
+In-Reply-To: <2025091308-affix-ungreased-9889@gregkh>
+References: <2025091308-affix-ungreased-9889@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,37 +65,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Quanmin Yan <yanquanmin1@huawei.com>
 
-When creating a new scheme of DAMON_RECLAIM, the calculation of
-'min_age_region' uses 'aggr_interval' as the divisor, which may lead to
-division-by-zero errors.  Fix it by directly returning -EINVAL when such a
-case occurs.
+Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
+application".
 
-Link: https://lkml.kernel.org/r/20250827115858.1186261-3-yanquanmin1@huawei.com
-Fixes: f5a79d7c0c87 ("mm/damon: introduce struct damos_access_pattern")
+DAMON's RECLAIM and LRU_SORT modules perform no validation on
+user-configured parameters during application, which may lead to
+division-by-zero errors.
+
+Avoid the divide-by-zero by adding validation checks when DAMON modules
+attempt to apply the parameters.
+
+This patch (of 2):
+
+During the calculation of 'hot_thres' and 'cold_thres', either
+'sample_interval' or 'aggr_interval' is used as the divisor, which may
+lead to division-by-zero errors.  Fix it by directly returning -EINVAL
+when such a case occurs.  Additionally, since 'aggr_interval' is already
+required to be set no smaller than 'sample_interval' in damon_set_attrs(),
+only the case where 'sample_interval' is zero needs to be checked.
+
+Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
 Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
 Cc: ze zuo <zuoze1@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
+Cc: <stable@vger.kernel.org>	[6.0+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit e6b543ca9806d7bced863f43020e016ee996c057)
+(cherry picked from commit 711f19dfd783ffb37ca4324388b9c4cb87e71363)
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/reclaim.c | 3 +++
+ mm/damon/lru_sort.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 66e190f0374a..586daa2cefe4 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -167,6 +167,9 @@ static int damon_reclaim_apply_parameters(void)
- 	struct damos_filter *filter;
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 98a678129b06..61311800abc9 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -203,6 +203,9 @@ static int damon_lru_sort_apply_parameters(void)
+ 	unsigned int hot_thres, cold_thres;
  	int err = 0;
  
-+	if (!damon_reclaim_mon_attrs.aggr_interval)
++	if (!damon_lru_sort_mon_attrs.sample_interval)
 +		return -EINVAL;
 +
- 	err = damon_set_attrs(ctx, &damon_reclaim_mon_attrs);
+ 	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
  	if (err)
  		return err;
 -- 
