@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-179570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4B5B568E8
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 14:47:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20423B5691F
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 15:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5BA03B01E7
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 12:47:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C331793C5
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 13:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713C71B4141;
-	Sun, 14 Sep 2025 12:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CED61E9B37;
+	Sun, 14 Sep 2025 13:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VYqOCrQE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="alq4qa7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F81F2DC790
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 12:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11E51BCA07
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 13:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757854026; cv=none; b=Ul2EQK3yVKWNGGD1rm7GnSJWP2iq+XTn2IVstO8h4XmS08A4f8sqM2rIP5+QXbKOJ1ruShAFe2YYtj969oohITuctHa6SwlJhZc4IzLJofwPQeZccfZq+wAJvEt2mtkf9ctyNpDZUVMqh7lRpoG9LHyr17jjEORIongsRH8VrcI=
+	t=1757855525; cv=none; b=McIQsPovmFSbv8mU4kQKHTHd9x/VBkuQd0A5zlF0vQzcXX1feVm8jTUbGbs3twrzXj19sIf/7mOPXoAjy6T3DAigHgDSiW3QoO3ZTn+zYaxHS6QkM8BkEhFifbNEwuKxvoLgJKU6Hdjxi8Oxrs3n+rC8GMBHhQMwfmXkElactbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757854026; c=relaxed/simple;
-	bh=Is69c0tlQunkGpR/RPVnsk8SP1oR0bmtgDIIbQcHMcE=;
+	s=arc-20240116; t=1757855525; c=relaxed/simple;
+	bh=kFgOSHGireA8JhmM/ZnQKoEe0hmCQSB030ukNcLlnTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jq7tWrLSwRWNvz2nonnmQkfW7zpvCvSHi8ZkIOYczRWMx0292oFb/eXwJvCXZeUa1mJ89CNygbBvf6DjMJsC6l7PxSL853yIN3sXAZdnIlSLMPWgjEeS1wHGp5+YGsTct0z1EXqx/PbZL/ksmsI62a2PsR3fKohvceOAL0wr0jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VYqOCrQE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C62C4CEF0;
-	Sun, 14 Sep 2025 12:47:04 +0000 (UTC)
+	 MIME-Version; b=MlCzNRbIY12+q2TyBz1fXcVCmi/oIJTQ20aCnvkuSLzhCPGL6gbSl3jTzyrEoKu1qvur1HYo62yW4R1l8s0IDjS9O6iZDSRmhZG6obmQYSQNoEZJ1+PYjb6551D9pnazdVkY6I/4YWBMzKac1VFw+4XP+/xiK/3IvR1zWUwr+Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=alq4qa7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F11C4CEF0;
+	Sun, 14 Sep 2025 13:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757854025;
-	bh=Is69c0tlQunkGpR/RPVnsk8SP1oR0bmtgDIIbQcHMcE=;
+	s=k20201202; t=1757855524;
+	bh=kFgOSHGireA8JhmM/ZnQKoEe0hmCQSB030ukNcLlnTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYqOCrQE5eVbcznwuG8WrtBOiVvBKK1B9Yn3SHWPHvRwoCEav8D0jV5equoLyo87U
-	 3rKRodo9+uP2LOHc+hyWg5IGgjdmhyav3K0WX8sAMXhsUhkU2wrN2O0NlGByCSrv3H
-	 P3jTAaDA7q1U1VDWQTppHxlju8Vg6R4vY04zpZtkMojl2sBNJEUEco/7G+fUhw0THQ
-	 aSDxT7yTS+m6ELo+dIUxh7MnjWJVMBrIxJ9UVPbgvTqiSH4eZJmVp1E4UWGw5qWz+f
-	 icIOTNmcf7NtjZieWpHV50W5vsPaAmwJS2TLqvjaihldqM+e9WddRCk8SFGzuCjQUX
-	 Om95vkhdbLSYg==
+	b=alq4qa7RP0NAitQmQocj8+LIg7LaBrXXVihMDOYtMSMKrzO+1pbX6gNNjLc/PEN1v
+	 aH1gz4qVmNamjq1ynC4V59dUjIjrg/Zs261R7XaTYW7z32SHuG+SNIcByt0hyqKyc5
+	 x8dWQhFFHSZFxaa5XZ5tdRfLBd2tOG8DzemWsP+DeHyjPlMtl0qEeDuc/2/781N/lD
+	 V7CGCcRutbN+RQKWdDgkKALd8B/dyrlfanmVTbyl91LrxDZ7nh9USQgBsVU4p1W9km
+	 UIg55r8dMpaBodiuwlaw/YMR8P6BSGYBoZ7h9d7Pi0z/F79Q2yVXVsa7IuTQvh/i5W
+	 32eDa/FmQB/oA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Miaohe Lin <linmiaohe@huawei.com>,
@@ -48,12 +48,12 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>,
 	Naoya Horiguchi <nao.horiguchi@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
-Date: Sun, 14 Sep 2025 08:47:02 -0400
-Message-ID: <20250914124702.58771-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Date: Sun, 14 Sep 2025 09:12:01 -0400
+Message-ID: <20250914131201.67627-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091330-anguished-choosy-4882@gregkh>
-References: <2025091330-anguished-choosy-4882@gregkh>
+In-Reply-To: <2025091331-revocable-fountain-3136@gregkh>
+References: <2025091331-revocable-fountain-3136@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -151,10 +151,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 0f706ee04bafd..482c2b6039f0d 100644
+index e2b1591a85963..66390688a62c0 100644
 --- a/mm/memory-failure.c
 +++ b/mm/memory-failure.c
-@@ -2346,10 +2346,9 @@ int unpoison_memory(unsigned long pfn)
+@@ -2056,10 +2056,9 @@ int unpoison_memory(unsigned long pfn)
  	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
  					DEFAULT_RATELIMIT_BURST);
  
