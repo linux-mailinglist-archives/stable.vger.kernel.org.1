@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-179544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A54DB56473
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 04:57:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 486A9B56474
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 05:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BADA1A22932
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 02:57:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4171201B8B
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 03:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808D8246BBA;
-	Sun, 14 Sep 2025 02:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0921EEA54;
+	Sun, 14 Sep 2025 03:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fszKJFi6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uXmLxIY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3743110FD;
-	Sun, 14 Sep 2025 02:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5857EEBD;
+	Sun, 14 Sep 2025 03:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757818632; cv=none; b=eqxzH07Yt6+eFsI5ecBHWdjzpJTXN7/2LR2ppSrRcAE96okSzkEeA0jGg+bLW7pGIJOyaQNs3Bg7lbZMDPzUly9ZPToPUhccHyz2v1ggepxMUS7192HHL+3bKNrI/UsNzGx9NLa1civ0Yajy/cE3HrxiG2G2xDxoZJ8ln8aZ87A=
+	t=1757819099; cv=none; b=ijRHkMd0bGvqfiJT1EJj9ev6ancx4eh7jmEa9WPJND7Q4RyLkobXiYRHXMsWc8q6nKAXGPASOFd3LnoPTnhdjAf9S+6ZWGoKSlVOdZlCERxhJAdV1+wDc+9unrwclN8MVGU+zQpSiiF7Li3wXs1celsWthFI8NIrWgAZFLLxjCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757818632; c=relaxed/simple;
-	bh=qvMPxfYnDc2wBVd4IkxHgTXdjuTXTSOO3yLGuEfCGic=;
+	s=arc-20240116; t=1757819099; c=relaxed/simple;
+	bh=y40KDOWdfDDPNtbMORQTC8pZzhlS+QABKpQZ3J2cRHU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pAUVE4EInZ8a0qby1rRvBhzDzPh9HxOeaVHSjWfNH/Eb3zgdaaIm21bUMUuteQCq6NHETdH92lmVe4in/aOK5mupIlDO0Ybts0Da4Bn0sAe6g6DZgLV0pu92DvfWD0ORfLtsvrg32fRuhFodpt6i8g2hrn79dM7WfBmHmBbRuWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fszKJFi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C6EC4CEF4;
-	Sun, 14 Sep 2025 02:57:10 +0000 (UTC)
+	 MIME-Version; b=Qn+4tJhrvz4UJLcGmCoURD117C5jceMNuPmrR7Js1pwqRxKYIEaASVi4qQhU7OoseVDVWv/MODfztmmVJeseMGuSZqn/bI24rFBaUbuhngGsD7Ts/g9vUOpYyKish24kUiHkxPJ03DFDUOS+Qdl4IVMElaqpskBVm7tbFtY7438=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uXmLxIY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05EBCC4CEEB;
+	Sun, 14 Sep 2025 03:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757818630;
-	bh=qvMPxfYnDc2wBVd4IkxHgTXdjuTXTSOO3yLGuEfCGic=;
+	s=k20201202; t=1757819099;
+	bh=y40KDOWdfDDPNtbMORQTC8pZzhlS+QABKpQZ3J2cRHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fszKJFi68LdVDCs39/Xw+ewOdWNNsKTk+Y1XPlk0ifBbMUZIin7XVGAo+JQoNaRkG
-	 uL6w3lwXA1S+CR8hLshwrpwz/a10sVSMAirc/Bw3oYZeh57i7uTudxqi19MhK/fNAZ
-	 xu7y92Ng3xBWnzA0UWmeVNuk2bAnKLf5tbd4BfOMFRAyLMX75AjHFG6xCf4MVf9Ulu
-	 YYNvZL53JJ4XbCi9cvCasbaDqShUC9r0hVZEaVqQ+zsgXnxsMWQ0o+1svcn1Fa/wux
-	 Q7ik7pcXjA82onN6tFXQvvvRnjVE8CJwghh7CesFZswTIKtPQKwEkix283nbp+CKrW
-	 zLVS2d8GkUbTQ==
+	b=uXmLxIY3P1Kfm3vXs4ki7O7osSIELnVc2Lhlqd3bKM9Q4xtjF8z/sGi4vs4yRy7ra
+	 ONAsxpAgh53CmsrY0HbL+HJv1TBcqXeOHcHr4J7j3JNLwXvneXUVZR3W81R2KSZCAN
+	 tk6hWZlY4V+/8Q3x3lPMcs3di8vjLSR0Ivr+XfyChKQHZsqaTGTIPENqrkKzB+/JfF
+	 +bT99ip1xbM0MB+dbr/FqgJVQhBUKcZ9HBdWMovMJAzdwHUPSsZ3UWKoRQcSod1Ejl
+	 3fboLX6/ryy929Uye6hBqDLWEFYVEENsa1SyXEkkf2v4pXGDfqPBAhpbFosOmNRYOo
+	 iSgaGLsUCnpow==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
-	Stanislav Fort <stanislav.fort@aisle.com>,
-	Stanislav Fort <disclosure@aisle.com>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
 	SeongJae Park <sj@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	ze zuo <zuoze1@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y] mm/damon/sysfs: fix use-after-free in state_show()
-Date: Sat, 13 Sep 2025 19:57:06 -0700
-Message-Id: <20250914025706.1846-1-sj@kernel.org>
+Subject: [PATCH 6.12.y] mm/damon/reclaim: avoid divide-by-zero in damon_reclaim_apply_parameters()
+Date: Sat, 13 Sep 2025 20:04:56 -0700
+Message-Id: <20250914030456.8942-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025091319-muscular-shorts-753a@gregkh>
-References: <2025091319-muscular-shorts-753a@gregkh>
+In-Reply-To: <2025091327-foil-awaken-b0be@gregkh>
+References: <2025091327-foil-awaken-b0be@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,71 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Stanislav Fort <stanislav.fort@aisle.com>
+From: Quanmin Yan <yanquanmin1@huawei.com>
 
-state_show() reads kdamond->damon_ctx without holding damon_sysfs_lock.
-This allows a use-after-free race:
+When creating a new scheme of DAMON_RECLAIM, the calculation of
+'min_age_region' uses 'aggr_interval' as the divisor, which may lead to
+division-by-zero errors.  Fix it by directly returning -EINVAL when such a
+case occurs.
 
-CPU 0                         CPU 1
------                         -----
-state_show()                  damon_sysfs_turn_damon_on()
-ctx = kdamond->damon_ctx;     mutex_lock(&damon_sysfs_lock);
-                              damon_destroy_ctx(kdamond->damon_ctx);
-                              kdamond->damon_ctx = NULL;
-                              mutex_unlock(&damon_sysfs_lock);
-damon_is_running(ctx);        /* ctx is freed */
-mutex_lock(&ctx->kdamond_lock); /* UAF */
-
-(The race can also occur with damon_sysfs_kdamonds_rm_dirs() and
-damon_sysfs_kdamond_release(), which free or replace the context under
-damon_sysfs_lock.)
-
-Fix by taking damon_sysfs_lock before dereferencing the context, mirroring
-the locking used in pid_show().
-
-The bug has existed since state_show() first accessed kdamond->damon_ctx.
-
-Link: https://lkml.kernel.org/r/20250905101046.2288-1-disclosure@aisle.com
-Fixes: a61ea561c871 ("mm/damon/sysfs: link DAMON for virtual address spaces monitoring")
-Signed-off-by: Stanislav Fort <disclosure@aisle.com>
-Reported-by: Stanislav Fort <disclosure@aisle.com>
+Link: https://lkml.kernel.org/r/20250827115858.1186261-3-yanquanmin1@huawei.com
+Fixes: f5a79d7c0c87 ("mm/damon: introduce struct damos_access_pattern")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 3260a3f0828e06f5f13fac69fb1999a6d60d9cff)
+(cherry picked from commit e6b543ca9806d7bced863f43020e016ee996c057)
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ mm/damon/reclaim.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 9ea21b6d266b..18f459a3c9ff 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2093,14 +2093,18 @@ static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
- {
- 	struct damon_sysfs_kdamond *kdamond = container_of(kobj,
- 			struct damon_sysfs_kdamond, kobj);
--	struct damon_ctx *ctx = kdamond->damon_ctx;
--	bool running;
-+	struct damon_ctx *ctx;
-+	bool running = false;
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 9e0077a9404e..65842e6854fd 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -194,6 +194,11 @@ static int damon_reclaim_apply_parameters(void)
+ 	if (err)
+ 		return err;
  
--	if (!ctx)
--		running = false;
--	else
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
++	if (!damon_reclaim_mon_attrs.aggr_interval) {
++		err = -EINVAL;
++		goto out;
++	}
 +
-+	ctx = kdamond->damon_ctx;
-+	if (ctx)
- 		running = damon_sysfs_ctx_running(ctx);
- 
-+	mutex_unlock(&damon_sysfs_lock);
-+
- 	return sysfs_emit(buf, "%s\n", running ?
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_ON] :
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_OFF]);
+ 	err = damon_set_attrs(ctx, &damon_reclaim_mon_attrs);
+ 	if (err)
+ 		goto out;
 -- 
 2.39.5
 
