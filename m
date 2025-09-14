@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-179569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF2DB5689F
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 14:34:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4B5B568E8
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 14:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30D941637D5
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 12:34:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5BA03B01E7
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 12:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7731DED5B;
-	Sun, 14 Sep 2025 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713C71B4141;
+	Sun, 14 Sep 2025 12:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcNAtOI2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VYqOCrQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B810E55A
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F81F2DC790
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 12:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757853272; cv=none; b=fl7YVOFUDVslLevjGxSCJbkxz0URCmSnBjXBAK9S4IYFuAyEXI+ppDAa8zL/d1OX8iTLoGe0RJ0hoy7ZfvJbB2JPwNEBNa3DIyF39wBQdORwt7oSLUr9tyVw39bbLGKSSwUd025Nfs04bwcaokzeWa1s6JjZeCAD4Oy8iWmUneM=
+	t=1757854026; cv=none; b=Ul2EQK3yVKWNGGD1rm7GnSJWP2iq+XTn2IVstO8h4XmS08A4f8sqM2rIP5+QXbKOJ1ruShAFe2YYtj969oohITuctHa6SwlJhZc4IzLJofwPQeZccfZq+wAJvEt2mtkf9ctyNpDZUVMqh7lRpoG9LHyr17jjEORIongsRH8VrcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757853272; c=relaxed/simple;
-	bh=bmS6QrZZo1BytHN9KWBmuiFQEaci9tLyOhgOFfuJQ1c=;
+	s=arc-20240116; t=1757854026; c=relaxed/simple;
+	bh=Is69c0tlQunkGpR/RPVnsk8SP1oR0bmtgDIIbQcHMcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbtidP44rZqnubJTwzUx6/SVWmFQBA5ZocZNCV2TZT/IS8A/BAWzv05WQQsRZGB9owUGKqsHfzzvayNWMh1uBCMsXN7kE8m6rGpMqmz+4+VL9HcV+U9VnJt4Fdeano1869rEHObq29byYXW7gNJH7zWh+FOpUstK+kNti5TcGWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcNAtOI2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B770C4CEF0;
-	Sun, 14 Sep 2025 12:34:31 +0000 (UTC)
+	 MIME-Version; b=Jq7tWrLSwRWNvz2nonnmQkfW7zpvCvSHi8ZkIOYczRWMx0292oFb/eXwJvCXZeUa1mJ89CNygbBvf6DjMJsC6l7PxSL853yIN3sXAZdnIlSLMPWgjEeS1wHGp5+YGsTct0z1EXqx/PbZL/ksmsI62a2PsR3fKohvceOAL0wr0jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VYqOCrQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C62C4CEF0;
+	Sun, 14 Sep 2025 12:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757853271;
-	bh=bmS6QrZZo1BytHN9KWBmuiFQEaci9tLyOhgOFfuJQ1c=;
+	s=k20201202; t=1757854025;
+	bh=Is69c0tlQunkGpR/RPVnsk8SP1oR0bmtgDIIbQcHMcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcNAtOI2+vhqvjA6+xQMm4kQ5u24EBRrnxg2jHcxjo2dKVPLSXE8VDJExe5+yOsNX
-	 V9iWzn+Ra6Nf5K+h2avXR5/ZZ7JIi+jubgyk0u9rOm7lgkI8WjpDVErpm+RvLJmUrd
-	 AGcatBUYyNma0mNr1ecXVi3ccG7iGfoTvVZHil7FP1BgYTaLsh7HAjnlqt5JFk3jJr
-	 gespHD+YL/I5wbSLae9/z4y2yRKmiDdYaO+iMgf4biw8ePninnRgJAwAEHHv7m/DuU
-	 czASSa9k5uUlnhf3K8e72xG16DOKsKlvZU2+IQ0BszozV1Q0iDfLTSM4JB8tREc9s6
-	 f8XH3EauVdG3w==
+	b=VYqOCrQE5eVbcznwuG8WrtBOiVvBKK1B9Yn3SHWPHvRwoCEav8D0jV5equoLyo87U
+	 3rKRodo9+uP2LOHc+hyWg5IGgjdmhyav3K0WX8sAMXhsUhkU2wrN2O0NlGByCSrv3H
+	 P3jTAaDA7q1U1VDWQTppHxlju8Vg6R4vY04zpZtkMojl2sBNJEUEco/7G+fUhw0THQ
+	 aSDxT7yTS+m6ELo+dIUxh7MnjWJVMBrIxJ9UVPbgvTqiSH4eZJmVp1E4UWGw5qWz+f
+	 icIOTNmcf7NtjZieWpHV50W5vsPaAmwJS2TLqvjaihldqM+e9WddRCk8SFGzuCjQUX
+	 Om95vkhdbLSYg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Pratap Nirujogi <pratap.nirujogi@amd.com>,
-	Alexey Zagorodnikov <xglooom@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y] drm/amd/amdgpu: Declare isp firmware binary file
-Date: Sun, 14 Sep 2025 08:34:29 -0400
-Message-ID: <20250914123429.37713-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Date: Sun, 14 Sep 2025 08:47:02 -0400
+Message-ID: <20250914124702.58771-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091303-unstaffed-specimen-7319@gregkh>
-References: <2025091303-unstaffed-specimen-7319@gregkh>
+In-Reply-To: <2025091330-anguished-choosy-4882@gregkh>
+References: <2025091330-anguished-choosy-4882@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,37 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Pratap Nirujogi <pratap.nirujogi@amd.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit 857ccfc19f9be1269716f3d681650c1bd149a656 ]
+[ Upstream commit d613f53c83ec47089c4e25859d5e8e0359f6f8da ]
 
-Declare isp firmware file isp_4_1_1.bin required by isp4.1.1 device.
+When I did memory failure tests, below panic occurs:
 
-Suggested-by: Alexey Zagorodnikov <xglooom@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Pratap Nirujogi <pratap.nirujogi@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d97b74a833eba1f4f69f67198fd98ef036c0e5f9)
-Cc: stable@vger.kernel.org
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered.  This can be reproduced by below steps:
+
+1.Offline memory block:
+
+ echo offline > /sys/devices/system/memory/memory12/state
+
+2.Get offlined memory pfn:
+
+ page-types -b n -rlN
+
+3.Write pfn to unpoison-pfn
+
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+
+This scenario can be identified by pfn_to_online_page() returning NULL.
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
+Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/memory-failure.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c b/drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c
-index 574880d670099..2ab6fa4fcf20b 100644
---- a/drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c
-@@ -29,6 +29,8 @@
- #include "amdgpu.h"
- #include "isp_v4_1_1.h"
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 0f706ee04bafd..482c2b6039f0d 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2346,10 +2346,9 @@ int unpoison_memory(unsigned long pfn)
+ 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					DEFAULT_RATELIMIT_BURST);
  
-+MODULE_FIRMWARE("amdgpu/isp_4_1_1.bin");
-+
- static const unsigned int isp_4_1_1_int_srcid[MAX_ISP411_INT_SRC] = {
- 	ISP_4_1__SRCID__ISP_RINGBUFFER_WPT9,
- 	ISP_4_1__SRCID__ISP_RINGBUFFER_WPT10,
+-	if (!pfn_valid(pfn))
+-		return -ENXIO;
+-
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	page = compound_head(p);
+ 
+ 	mutex_lock(&mf_mutex);
 -- 
 2.51.0
 
