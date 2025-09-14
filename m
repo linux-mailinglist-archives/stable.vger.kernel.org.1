@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-179542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95BAB5646D
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 04:44:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95967B56472
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 04:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B18A71A21097
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 02:44:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5959A16E847
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 02:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21F924A074;
-	Sun, 14 Sep 2025 02:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1834025486D;
+	Sun, 14 Sep 2025 02:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3TVU5nF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ftIwtQUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63252D531;
-	Sun, 14 Sep 2025 02:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A4B24466D;
+	Sun, 14 Sep 2025 02:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757817854; cv=none; b=R23bUgTLrh9UD2Nhlb/zbU4cds/76i/k7nu05p8zZ8LPpQxzr/tX5/BJVyrVGXG9p8CjOrgi1C+1WZrFIdJdL+6SduF+gkPvhuWMAuEsMLRzFpcF6oRVZPZp+fvjgnO5CmPIXKogVFbi35kbawN5Op87SZYHIOd+SuSr3rauGts=
+	t=1757818284; cv=none; b=APY+HCNRo7/hPYeUCZoKPxAr5xTKLkfENeCOfhjrJBUcwrCNI+hsPmAghDsH9FuQxLmlGcUXljK6gXaULJX+Ktr4WjlQuZLdQrcBnp/1L9pvCw6uGY/qPeQ2pv40HZVz+aPXqujEcmRhDF8pvnMSGFqTc93ZSFJDELXR9TIgMto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757817854; c=relaxed/simple;
-	bh=Y730O9sViAf3b3p+i7zR+wVuu86a8CS64X6qn1YEAqs=;
+	s=arc-20240116; t=1757818284; c=relaxed/simple;
+	bh=EEttELQ0YqnMfVMS6rsgMzRidkodEpmUZswFU0OhZIA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aAWYGPR89QlwOotgn6iqSsm94aH2mzY2/ynnNZbN8jNrB/WAUhKZtDnXui30YucWzld6MOCDBSKpyCgULmB83VG8Gw1nZiLNfcPdvIegYkMZcnFoTFHXtaQWiZDX9TH0JMSsixyDH2rzsEI79QH+MD4GPeVuC+uHigqS6NcfuhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3TVU5nF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA18BC4CEEB;
-	Sun, 14 Sep 2025 02:44:13 +0000 (UTC)
+	 MIME-Version; b=D3SRaCrwEXqZqFbkH+f0mkImOJGAf5kbiJipD2qbq9LaTaZ4VcC2d0+Wgej7zSS/ggHGbaV34QWsR4gabeAYtVqIEi8q6oirebGsU2aW0fVizueSaLb69jqUHsYEJAj1TVhzRb+RgY3g3yKfDshRw6wTkb96DGA8DMxqjFP/gXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ftIwtQUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D36BC4CEEB;
+	Sun, 14 Sep 2025 02:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757817854;
-	bh=Y730O9sViAf3b3p+i7zR+wVuu86a8CS64X6qn1YEAqs=;
+	s=k20201202; t=1757818284;
+	bh=EEttELQ0YqnMfVMS6rsgMzRidkodEpmUZswFU0OhZIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3TVU5nFHtDiT3HotDXquhv2pdZczdV8z+Q+9GBd50/wZRW2KRxyjLWyEsPT6VC5C
-	 ohoqC3+dJAKrV1EUDgcA3JhXTcuWxdv6HBX4JIdsMhLQQlKzP79ijzpIDqviDcmOsC
-	 1HTcH8R7wQhFau5wDte+PUwKzsbtf5Osa7q+U8zwWWFldzBnLu0CMkdz62H30ukxn9
-	 KI0BHf1A2/dXxK+yyHgT1bgdhRf1NJINhMvzTjwHNF2Y10fi4I0RJyy373+IQPATW9
-	 LkYKsNrwCs6S/HG2S+tG+eGaR9TpB2eekm3/xBDp+YW3Qk1qORVSYUEnFXFkHa+u4w
-	 kEuTPVzpnC/bg==
+	b=ftIwtQUmQePnUQ84pTdM71MBHOvPs0B9rOMTYmCsk1kogvt891vc4957LB2idotK3
+	 qRSfD53jnqWeApkO3fTuT93STDzFH5VzjdJD0W9XJ/DrEcizPE7nzgE72uS0+/a4Hc
+	 d2BUK0wXYrPY9dE829znKzNJMXTlc1G2t6HnveDRKBTSBa0wILs5/1dDDLSDY0Seq9
+	 l1mFB+y7YZpMlJ4OEsetYoIDZ6NnBLxIyoQNiD2PLQ9DxbRobqTtQWbdiGykhzXncC
+	 a0o1nWt8UZt+YlEF+SEFgaMcCMbsZIHMXPQCRv35lCeCAzTMWgvO36orQ9yiqV1gjN
+	 IY9On+ArPn+Yw==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
@@ -48,12 +48,12 @@ Cc: damon@lists.linux.dev,
 	Stanislav Fort <disclosure@aisle.com>,
 	SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y] mm/damon/sysfs: fix use-after-free in state_show()
-Date: Sat, 13 Sep 2025 19:44:08 -0700
-Message-Id: <20250914024408.9009-1-sj@kernel.org>
+Subject: [PATCH 6.6.y] mm/damon/sysfs: fix use-after-free in state_show()
+Date: Sat, 13 Sep 2025 19:51:21 -0700
+Message-Id: <20250914025121.2284-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025091318-dreamt-kindling-f2c4@gregkh>
-References: <2025091318-dreamt-kindling-f2c4@gregkh>
+In-Reply-To: <2025091318-trombone-graduate-3828@gregkh>
+References: <2025091318-trombone-graduate-3828@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,10 +100,10 @@ Signed-off-by: SeongJae Park <sj@kernel.org>
  1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 58145d59881d..9ce2abc64de4 100644
+index b317f51dcc98..91893543d47c 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1067,14 +1067,18 @@ static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -1055,14 +1055,18 @@ static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
  {
  	struct damon_sysfs_kdamond *kdamond = container_of(kobj,
  			struct damon_sysfs_kdamond, kobj);
