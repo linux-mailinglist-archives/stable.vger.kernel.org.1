@@ -1,372 +1,107 @@
-Return-Path: <stable+bounces-179559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04021B5673B
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 09:43:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4924CB56745
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 09:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46E451A2024C
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 07:44:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F31C717F397
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 07:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B298A21CC47;
-	Sun, 14 Sep 2025 07:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F51F874C;
+	Sun, 14 Sep 2025 07:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACN05O9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peF/10ck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F76921254B
-	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 07:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D5772610;
+	Sun, 14 Sep 2025 07:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757835815; cv=none; b=I93hm8tXkQC/NUoOE1707k7IzG0WjMDgq2QMsF7L9PDq9T+9gk7ZjK4O6mUK+D1oJw3n588U3vtPIzy58vBtR6YT2CWuFJox/HEBWdpxXz334bi/pnme+M6rHrkYU2cn0vpO47b6E5eKiCc7hWmsfyqe+bQAm/1ZBDGOnt2Ntck=
+	t=1757835979; cv=none; b=lASKfrSijUp4I61fkYPMw4YSJ8Q7FHQczMpKijd7AlKr1N6OlCW5j8s+aM4npX9Do5anLC7fbqSoPkOeQoHg1De0m6pLJcE7Chb+VaKdn247aAS6dTXXCFp/X+0RJrdMj2QOwitxwy1RW2wht3WfDlF4Lv0rRzigfXEB8JDz/bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757835815; c=relaxed/simple;
-	bh=W/ni7xxY5wz3M8rKKkExlZswenBpx1dzTYWpHeqK23I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F3QYdus2qwfypTU8AoTs2gzDfVLy27K7vyV60oBkvh+vjwMP8egKXbxXQABEFDLPrUJorkm55kNqoy0TEuD/YX+Pf/L9oVYrPryu6vWxRlSkPb9xQc+L7wYJs0nWZDqyelwWOwJGR/vAeDrdKCBK6lrsG4dhY4zRqMI9qfFQ9ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACN05O9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98195C4CEF0;
-	Sun, 14 Sep 2025 07:43:34 +0000 (UTC)
+	s=arc-20240116; t=1757835979; c=relaxed/simple;
+	bh=uRoR8HF+Jj93KvQtO8TpSGfoT2TfKi54xjzjuPQ1C4E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VPzQkc1mzpaEWeFUjz0UnCdQxEyXRMb6CeH5sIpasVMzFcNC6cIDR8EVm8qGTOWqSyoPjvnp4Z+pvWpKv90ztKNbgOR0UAyJuSoWyi/JLrZwp/ErndUAwLqL984oNV5+tUkIBCNypIk2wRfDWkZMWN4Q5KWlnc32UZj3b4nTe2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peF/10ck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10353C4CEF0;
+	Sun, 14 Sep 2025 07:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757835815;
-	bh=W/ni7xxY5wz3M8rKKkExlZswenBpx1dzTYWpHeqK23I=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ACN05O9NqYjj/x9E2U+7N8hx2mp+gQW8omHsO7WTm9oQEKoP6IdReDKkqRxYEo9L5
-	 izG8qJyQfR8X0/wiFIy2gY0bNGSzQcuUKEQDqx+dNbPZaKnrayIpQsd+ClwElUM28p
-	 T8Yc7hsiTDL58x8TxAanrKQSV7KsbfRE0z73f3SA=
-Subject: FAILED: patch "[PATCH] kernfs: Fix UAF in polling when open file is released" failed to apply to 6.1-stable tree
-To: chenridong@huawei.com,gregkh@linuxfoundation.org,stable@kernel.org,tj@kernel.org,zhangzhaotian@huawei.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 14 Sep 2025 09:43:24 +0200
-Message-ID: <2025091423-knapsack-multiple-1d0f@gregkh>
+	s=korg; t=1757835975;
+	bh=uRoR8HF+Jj93KvQtO8TpSGfoT2TfKi54xjzjuPQ1C4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=peF/10ck23Rt+vFIAstmyQGLbn+bo3R01SX+81aamcQSLfpMCD2vbQR3vDPMN27uK
+	 4gkcOXHyYB9kcZHkxTSY4wom6Fbvide8Nhs0XjnwSsgOLueiTpej38SNa33NskVg2o
+	 ExuFP8ahJ16MLV/SxhsOOfpyEL28PCIKg/9lm7Gg=
+Date: Sun, 14 Sep 2025 09:46:12 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: stable@vger.kernel.org, damon@lists.linux.dev,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	ze zuo <zuoze1@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.6.y] mm/damon/lru_sort: avoid divide-by-zero in
+ damon_lru_sort_apply_parameters()
+Message-ID: <2025091402-errand-pegboard-a439@gregkh>
+References: <20250914033350.2284-1-sj@kernel.org>
+ <20250914033711.2344-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250914033711.2344-1-sj@kernel.org>
 
+On Sat, Sep 13, 2025 at 08:37:11PM -0700, SeongJae Park wrote:
+> On Sat, 13 Sep 2025 20:33:50 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+> > From: Quanmin Yan <yanquanmin1@huawei.com>
+> > 
+> > Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
+> > application".
+> > 
+> > DAMON's RECLAIM and LRU_SORT modules perform no validation on
+> > user-configured parameters during application, which may lead to
+> > division-by-zero errors.
+> > 
+> > Avoid the divide-by-zero by adding validation checks when DAMON modules
+> > attempt to apply the parameters.
+> > 
+> > This patch (of 2):
+> > 
+> > During the calculation of 'hot_thres' and 'cold_thres', either
+> > 'sample_interval' or 'aggr_interval' is used as the divisor, which may
+> > lead to division-by-zero errors.  Fix it by directly returning -EINVAL
+> > when such a case occurs.  Additionally, since 'aggr_interval' is already
+> > required to be set no smaller than 'sample_interval' in damon_set_attrs(),
+> > only the case where 'sample_interval' is zero needs to be checked.
+> > 
+> > Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
+> > Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+> > Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+> > Reviewed-by: SeongJae Park <sj@kernel.org>
+> > Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> > Cc: ze zuo <zuoze1@huawei.com>
+> > Cc: <stable@vger.kernel.org>	[6.0+]
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > (cherry picked from commit 711f19dfd783ffb37ca4324388b9c4cb87e71363)
+> > Signed-off-by: SeongJae Park <sj@kernel.org>
+> 
+> FYI, the commit was able to be cleanly cherry-picked, but seems it caused a
+> build error, similar to that [1] for 6.1.y.  This patch fixes the build error.
+> 
+> [1] https://lore.kernel.org/20250914033221.49447-1-sj@kernel.org
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091423-knapsack-multiple-1d0f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+Wonderful, thank you.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f Mon Sep 17 00:00:00 2001
-From: Chen Ridong <chenridong@huawei.com>
-Date: Fri, 22 Aug 2025 07:07:14 +0000
-Subject: [PATCH] kernfs: Fix UAF in polling when open file is released
-
-A use-after-free (UAF) vulnerability was identified in the PSI (Pressure
-Stall Information) monitoring mechanism:
-
-BUG: KASAN: slab-use-after-free in psi_trigger_poll+0x3c/0x140
-Read of size 8 at addr ffff3de3d50bd308 by task systemd/1
-
-psi_trigger_poll+0x3c/0x140
-cgroup_pressure_poll+0x70/0xa0
-cgroup_file_poll+0x8c/0x100
-kernfs_fop_poll+0x11c/0x1c0
-ep_item_poll.isra.0+0x188/0x2c0
-
-Allocated by task 1:
-cgroup_file_open+0x88/0x388
-kernfs_fop_open+0x73c/0xaf0
-do_dentry_open+0x5fc/0x1200
-vfs_open+0xa0/0x3f0
-do_open+0x7e8/0xd08
-path_openat+0x2fc/0x6b0
-do_filp_open+0x174/0x368
-
-Freed by task 8462:
-cgroup_file_release+0x130/0x1f8
-kernfs_drain_open_files+0x17c/0x440
-kernfs_drain+0x2dc/0x360
-kernfs_show+0x1b8/0x288
-cgroup_file_show+0x150/0x268
-cgroup_pressure_write+0x1dc/0x340
-cgroup_file_write+0x274/0x548
-
-Reproduction Steps:
-1. Open test/cpu.pressure and establish epoll monitoring
-2. Disable monitoring: echo 0 > test/cgroup.pressure
-3. Re-enable monitoring: echo 1 > test/cgroup.pressure
-
-The race condition occurs because:
-1. When cgroup.pressure is disabled (echo 0 > cgroup.pressure), it:
-   - Releases PSI triggers via cgroup_file_release()
-   - Frees of->priv through kernfs_drain_open_files()
-2. While epoll still holds reference to the file and continues polling
-3. Re-enabling (echo 1 > cgroup.pressure) accesses freed of->priv
-
-epolling			disable/enable cgroup.pressure
-fd=open(cpu.pressure)
-while(1)
-...
-epoll_wait
-kernfs_fop_poll
-kernfs_get_active = true	echo 0 > cgroup.pressure
-...				cgroup_file_show
-				kernfs_show
-				// inactive kn
-				kernfs_drain_open_files
-				cft->release(of);
-				kfree(ctx);
-				...
-kernfs_get_active = false
-				echo 1 > cgroup.pressure
-				kernfs_show
-				kernfs_activate_one(kn);
-kernfs_fop_poll
-kernfs_get_active = true
-cgroup_file_poll
-psi_trigger_poll
-// UAF
-...
-end: close(fd)
-
-To address this issue, introduce kernfs_get_active_of() for kernfs open
-files to obtain active references. This function will fail if the open file
-has been released. Replace kernfs_get_active() with kernfs_get_active_of()
-to prevent further operations on released file descriptors.
-
-Fixes: 34f26a15611a ("sched/psi: Per-cgroup PSI accounting disable/re-enable interface")
-Cc: stable <stable@kernel.org>
-Reported-by: Zhang Zhaotian <zhangzhaotian@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20250822070715.1565236-2-chenridong@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
-index a6c692cac616..9adf36e6364b 100644
---- a/fs/kernfs/file.c
-+++ b/fs/kernfs/file.c
-@@ -70,6 +70,24 @@ static struct kernfs_open_node *of_on(struct kernfs_open_file *of)
- 					 !list_empty(&of->list));
- }
- 
-+/* Get active reference to kernfs node for an open file */
-+static struct kernfs_open_file *kernfs_get_active_of(struct kernfs_open_file *of)
-+{
-+	/* Skip if file was already released */
-+	if (unlikely(of->released))
-+		return NULL;
-+
-+	if (!kernfs_get_active(of->kn))
-+		return NULL;
-+
-+	return of;
-+}
-+
-+static void kernfs_put_active_of(struct kernfs_open_file *of)
-+{
-+	return kernfs_put_active(of->kn);
-+}
-+
- /**
-  * kernfs_deref_open_node_locked - Get kernfs_open_node corresponding to @kn
-  *
-@@ -139,7 +157,7 @@ static void kernfs_seq_stop_active(struct seq_file *sf, void *v)
- 
- 	if (ops->seq_stop)
- 		ops->seq_stop(sf, v);
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- }
- 
- static void *kernfs_seq_start(struct seq_file *sf, loff_t *ppos)
-@@ -152,7 +170,7 @@ static void *kernfs_seq_start(struct seq_file *sf, loff_t *ppos)
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return ERR_PTR(-ENODEV);
- 
- 	ops = kernfs_ops(of->kn);
-@@ -238,7 +256,7 @@ static ssize_t kernfs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		len = -ENODEV;
- 		mutex_unlock(&of->mutex);
- 		goto out_free;
-@@ -252,7 +270,7 @@ static ssize_t kernfs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
- 	else
- 		len = -EINVAL;
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
- 
- 	if (len < 0)
-@@ -323,7 +341,7 @@ static ssize_t kernfs_fop_write_iter(struct kiocb *iocb, struct iov_iter *iter)
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		mutex_unlock(&of->mutex);
- 		len = -ENODEV;
- 		goto out_free;
-@@ -335,7 +353,7 @@ static ssize_t kernfs_fop_write_iter(struct kiocb *iocb, struct iov_iter *iter)
- 	else
- 		len = -EINVAL;
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
- 
- 	if (len > 0)
-@@ -357,13 +375,13 @@ static void kernfs_vma_open(struct vm_area_struct *vma)
- 	if (!of->vm_ops)
- 		return;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return;
- 
- 	if (of->vm_ops->open)
- 		of->vm_ops->open(vma);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- }
- 
- static vm_fault_t kernfs_vma_fault(struct vm_fault *vmf)
-@@ -375,14 +393,14 @@ static vm_fault_t kernfs_vma_fault(struct vm_fault *vmf)
- 	if (!of->vm_ops)
- 		return VM_FAULT_SIGBUS;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return VM_FAULT_SIGBUS;
- 
- 	ret = VM_FAULT_SIGBUS;
- 	if (of->vm_ops->fault)
- 		ret = of->vm_ops->fault(vmf);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -395,7 +413,7 @@ static vm_fault_t kernfs_vma_page_mkwrite(struct vm_fault *vmf)
- 	if (!of->vm_ops)
- 		return VM_FAULT_SIGBUS;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return VM_FAULT_SIGBUS;
- 
- 	ret = 0;
-@@ -404,7 +422,7 @@ static vm_fault_t kernfs_vma_page_mkwrite(struct vm_fault *vmf)
- 	else
- 		file_update_time(file);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -418,14 +436,14 @@ static int kernfs_vma_access(struct vm_area_struct *vma, unsigned long addr,
- 	if (!of->vm_ops)
- 		return -EINVAL;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return -EINVAL;
- 
- 	ret = -EINVAL;
- 	if (of->vm_ops->access)
- 		ret = of->vm_ops->access(vma, addr, buf, len, write);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -455,7 +473,7 @@ static int kernfs_fop_mmap(struct file *file, struct vm_area_struct *vma)
- 	mutex_lock(&of->mutex);
- 
- 	rc = -ENODEV;
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		goto out_unlock;
- 
- 	ops = kernfs_ops(of->kn);
-@@ -490,7 +508,7 @@ static int kernfs_fop_mmap(struct file *file, struct vm_area_struct *vma)
- 	}
- 	vma->vm_ops = &kernfs_vm_ops;
- out_put:
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- out_unlock:
- 	mutex_unlock(&of->mutex);
- 
-@@ -852,7 +870,7 @@ static __poll_t kernfs_fop_poll(struct file *filp, poll_table *wait)
- 	struct kernfs_node *kn = kernfs_dentry_node(filp->f_path.dentry);
- 	__poll_t ret;
- 
--	if (!kernfs_get_active(kn))
-+	if (!kernfs_get_active_of(of))
- 		return DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
- 
- 	if (kn->attr.ops->poll)
-@@ -860,7 +878,7 @@ static __poll_t kernfs_fop_poll(struct file *filp, poll_table *wait)
- 	else
- 		ret = kernfs_generic_poll(of, wait);
- 
--	kernfs_put_active(kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -875,7 +893,7 @@ static loff_t kernfs_fop_llseek(struct file *file, loff_t offset, int whence)
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		mutex_unlock(&of->mutex);
- 		return -ENODEV;
- 	}
-@@ -886,7 +904,7 @@ static loff_t kernfs_fop_llseek(struct file *file, loff_t offset, int whence)
- 	else
- 		ret = generic_file_llseek(file, offset, whence);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
- 	return ret;
- }
-
 
