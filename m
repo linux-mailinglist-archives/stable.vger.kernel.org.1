@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-179552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6CBB56485
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 05:37:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7B3B56611
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 06:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2A5189DDD0
-	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 03:37:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBED57B3C8F
+	for <lists+stable@lfdr.de>; Sun, 14 Sep 2025 04:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCA625DB1D;
-	Sun, 14 Sep 2025 03:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CA9267B90;
+	Sun, 14 Sep 2025 04:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6bOEs6i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pMQJb68Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232502745C;
-	Sun, 14 Sep 2025 03:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18977248176
+	for <stable@vger.kernel.org>; Sun, 14 Sep 2025 04:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757821035; cv=none; b=c3n7x+irrTzJm0S+I3WQWGK2oh28QDApl6itXp5jgEHE90l7Nitb2loYlmCnQbtw8tsrYprm+BDpB87/b7g2acYUr8c4wbdGpHz62yvPRAl3CJUV29JbEhvetFkywu8Azgs/lEfooLbzt3H1m5LLuhJa8Ws735LyylbH8VDbLVU=
+	t=1757822485; cv=none; b=BT6W2EJWOlhUC5IOFYcceZ5y62cMt96ZC9jpR0Zxb/yxUQ3V0dNjNtUyzzDgZr4ceuZUpDoY6IXbJ3SyvYonZzkWbbmJa78mKUfTihLvxlvsrYk9zokcwRlhRgdT15ynaZ8GK+5eEAVEbZQjvT5jb6yPqx7Zsbxi+B4hgJrx3+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757821035; c=relaxed/simple;
-	bh=bkHe9Vm5JzUUpMMNjnWLXeYD8tWI4frctGkhsHUCOPU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h2Ci3MSLXLKVdyCrP32p0ZRYaZBThzVu/MeX4pON74r+fiSX32axFiOwRsCEKUEc4NEWF6NHP8ONJt7PSydmWWTonMnJLs90gtkORqMgL6M6iEC1Abff12WvzbUwKoKsAzVJklTbeOVcm8q5IDLgTvk0cuqwMkylpY+c/gjYdGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6bOEs6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853D3C4CEF0;
-	Sun, 14 Sep 2025 03:37:14 +0000 (UTC)
+	s=arc-20240116; t=1757822485; c=relaxed/simple;
+	bh=EgOt7Vg1RqvQ+T89g758gpktodyomUtAtv3G1m46NQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pbw8u0PAv1nDB0ojCtBAQnhn7E88IO3fUKufNisGb9SAiJTeKL23CQSsS2eOAsDktXSi3wFCAMyAwwyojssQcMeJ+fHY/BWVWKKU4j+RpKV/8h0fPd/i39XUSB1NQXTLz3VTYGBa0BdinIzxbO3DJgFfy77VjR7iOQMZjCvIA4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pMQJb68Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B8DC4CEFB;
+	Sun, 14 Sep 2025 04:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757821034;
-	bh=bkHe9Vm5JzUUpMMNjnWLXeYD8tWI4frctGkhsHUCOPU=;
+	s=k20201202; t=1757822484;
+	bh=EgOt7Vg1RqvQ+T89g758gpktodyomUtAtv3G1m46NQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6bOEs6itfiszz+TTmIHgqY9WY6+rOWbxuP8l2TAnhHcrqnwceeH8gTvLTb9eRVcp
-	 XMA1sWV4MCX5qhH67Hwbf29YKDAbPLZz8dtBHtcx737+9jOIHuNZTjulwt9qkFGKi1
-	 aE962yFCowlOvpCng7qweI7ERZz1qskpa1XJg81IjUPR1N2GEeFNMWcEwjZSDHXfgO
-	 kIxOusj/rkNKJlI8lbZLQ2AuE0RKoidok1chpBDxr425mrLZFHomFaDz08R9gs2Nd6
-	 adgarw8snTjgunC8oaT2HoAWxCeCr9twtkEfPGhvn3+/yd6Z1Q5i6/DQGZdQym8S4t
-	 NrfsWAY/YUChg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: stable@vger.kernel.org,
-	damon@lists.linux.dev,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	ze zuo <zuoze1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.6.y] mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
-Date: Sat, 13 Sep 2025 20:37:11 -0700
-Message-Id: <20250914033711.2344-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250914033350.2284-1-sj@kernel.org>
-References: 
+	b=pMQJb68ZKLn7lsCWv9RIv3uc9cCCXg4KD/VJdTFH3i4gpuKagk6zBrb2s05PRB4Qh
+	 QD+9UmliHhrTdwzWkspMuYRm9um64DDPr8pmpUA/ZNWWk6UFyn8Eg9npUBHn9Gmr6/
+	 89Kd3gx0pfEkSXXc80R60Z/pFmwnBxkrwHZu7PguM1GLmFkdlDvyPazbs4FlGDTgQF
+	 O6yzK4k7vhGHjV8vd44+vGNJZa5Bz1kV0pNl4U+2R8AWxwxd/wpX3XgLmwl4ndJlWM
+	 GOyBWWGBz+ien+jlabmn0CB7YVTHDkJYAwFGQNvaSlIE7NyyKm5mYqi5xg7c7bMX5F
+	 E5jCm4Voj12tw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16.y 1/2] mm/damon/sysfs: use DAMON core API damon_is_running()
+Date: Sun, 14 Sep 2025 00:01:20 -0400
+Message-ID: <20250914040121.1957914-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025091318-salsa-tarantula-9209@gregkh>
+References: <2025091318-salsa-tarantula-9209@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,48 +60,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sat, 13 Sep 2025 20:33:50 -0700 SeongJae Park <sj@kernel.org> wrote:
+From: SeongJae Park <sj@kernel.org>
 
-> From: Quanmin Yan <yanquanmin1@huawei.com>
-> 
-> Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
-> application".
-> 
-> DAMON's RECLAIM and LRU_SORT modules perform no validation on
-> user-configured parameters during application, which may lead to
-> division-by-zero errors.
-> 
-> Avoid the divide-by-zero by adding validation checks when DAMON modules
-> attempt to apply the parameters.
-> 
-> This patch (of 2):
-> 
-> During the calculation of 'hot_thres' and 'cold_thres', either
-> 'sample_interval' or 'aggr_interval' is used as the divisor, which may
-> lead to division-by-zero errors.  Fix it by directly returning -EINVAL
-> when such a case occurs.  Additionally, since 'aggr_interval' is already
-> required to be set no smaller than 'sample_interval' in damon_set_attrs(),
-> only the case where 'sample_interval' is zero needs to be checked.
-> 
-> Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
-> Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: ze zuo <zuoze1@huawei.com>
-> Cc: <stable@vger.kernel.org>	[6.0+]
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 711f19dfd783ffb37ca4324388b9c4cb87e71363)
-> Signed-off-by: SeongJae Park <sj@kernel.org>
+[ Upstream commit d2b5be741a5045272b9d711908eab017632ac022 ]
 
-FYI, the commit was able to be cleanly cherry-picked, but seems it caused a
-build error, similar to that [1] for 6.1.y.  This patch fixes the build error.
+DAMON core implements a static function to see if a given DAMON context is
+running.  DAMON sysfs interface is implementing the same one on its own.
+Make the core function non-static and reuse it from the DAMON sysfs
+interface.
 
-[1] https://lore.kernel.org/20250914033221.49447-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250705175000.56259-5-sj@kernel.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3260a3f0828e ("mm/damon/sysfs: fix use-after-free in state_show()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/damon.h |  1 +
+ mm/damon/core.c       |  8 +++++++-
+ mm/damon/sysfs.c      | 14 ++------------
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index a4011726cb3ba..be02ca4329657 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -934,6 +934,7 @@ static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs
+ 
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
++bool damon_is_running(struct damon_ctx *ctx);
+ 
+ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
+ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 8ead13792f049..0317f749b9296 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1340,7 +1340,13 @@ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs)
+ 	return err;
+ }
+ 
+-static bool damon_is_running(struct damon_ctx *ctx)
++/**
++ * damon_is_running() - Returns if a given DAMON context is running.
++ * @ctx:	The DAMON context to see if running.
++ *
++ * Return: true if @ctx is running, false otherwise.
++ */
++bool damon_is_running(struct damon_ctx *ctx)
+ {
+ 	bool running;
+ 
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 1af6aff35d84a..0d86ea6938f90 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1163,16 +1163,6 @@ static void damon_sysfs_kdamond_rm_dirs(struct damon_sysfs_kdamond *kdamond)
+ 	kobject_put(&kdamond->contexts->kobj);
+ }
+ 
+-static bool damon_sysfs_ctx_running(struct damon_ctx *ctx)
+-{
+-	bool running;
+-
+-	mutex_lock(&ctx->kdamond_lock);
+-	running = ctx->kdamond != NULL;
+-	mutex_unlock(&ctx->kdamond_lock);
+-	return running;
+-}
+-
+ /*
+  * enum damon_sysfs_cmd - Commands for a specific kdamond.
+  */
+@@ -1249,7 +1239,7 @@ static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
+ 	if (!ctx)
+ 		running = false;
+ 	else
+-		running = damon_sysfs_ctx_running(ctx);
++		running = damon_is_running(ctx);
+ 
+ 	return sysfs_emit(buf, "%s\n", running ?
+ 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_ON] :
+@@ -1403,7 +1393,7 @@ static inline bool damon_sysfs_kdamond_running(
+ 		struct damon_sysfs_kdamond *kdamond)
+ {
+ 	return kdamond->damon_ctx &&
+-		damon_sysfs_ctx_running(kdamond->damon_ctx);
++		damon_is_running(kdamond->damon_ctx);
+ }
+ 
+ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+-- 
+2.51.0
 
-Thanks,
-SJ
-
-[...]
 
