@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-179595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3FAB56E3E
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 04:19:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00293B56E53
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 04:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBB5F189BA67
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 02:20:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B04AB3B9ECB
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 02:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C24B1DC988;
-	Mon, 15 Sep 2025 02:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C5B19067C;
+	Mon, 15 Sep 2025 02:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V24DX/1J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9zODm5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5352DC790
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 02:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA747211F
+	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 02:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757902777; cv=none; b=HufX8ayqePAbfTEkuQRqU+USbFJ84WM9+kVfc2ZSFDaPvK8Reki6VWSrPeYDHJkurVureck6od+MkrIO5E8wZqy2PlMNrLdSbD8MsJAdPxf+ZfrqlYdUHEkrVJVBo7eGx72lJKBofl0CbZdPEvSh2+smpoEaHesS4+qKqFbzSJM=
+	t=1757903490; cv=none; b=cI5oBWPx7wjE1tqmQEVP6uHbBEp39LaJjytwI+5ev5xMoWTYpF7/C1yKB7aZ/KoLMbnDBFKw9MkSBffwRC8dxSG1IEVJThuyieI69Rs0d3w53YFOT0YDQkqPObzqJj5KCNembtlHBrDWKWFyU4aF/pyv8ySlxiwu/6qvqIV9QWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757902777; c=relaxed/simple;
-	bh=Qc7QnJhLTaFW0vGd+tzEUeayV1al5EEzjxrLVuQ0t6E=;
+	s=arc-20240116; t=1757903490; c=relaxed/simple;
+	bh=TpRG/iSZSHfz7lztaevH/Uc6ttsg+FzGjpoyKdUIadQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b2q5jyMQjTwGKJYIgQ23k9A1EXZPxgAab8ek32E00pz9AOuTaRvEFzAoH6QdZ+umvHsvM5WJGJZ2MU9UxE/D1OIaciabOQ+uxFqb1wPiIwFMqrFH8p4RuB13U/Nb944EdhDsAxxsTLaRuMd8APbhlWyB2RscKqLtWNRuyQls0Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V24DX/1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184ECC4CEF0;
-	Mon, 15 Sep 2025 02:19:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VjhTLwQTbWQblNLqld+iasm7vpw9BgXxGSqFO6mSR+jl2UENj5X57xCBVh9nGiIfS422hUI6Kp1iLb9AGV1/gNoOTFUTGUJ4WsbaDn86OhUZBxXs3s8SsDVSpm2U7jr4HxMHTIQyvJwzYaZfjW/AwBLG0hQTRIMGqwnOLCs8w9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9zODm5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9323DC4CEF0;
+	Mon, 15 Sep 2025 02:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757902776;
-	bh=Qc7QnJhLTaFW0vGd+tzEUeayV1al5EEzjxrLVuQ0t6E=;
+	s=k20201202; t=1757903490;
+	bh=TpRG/iSZSHfz7lztaevH/Uc6ttsg+FzGjpoyKdUIadQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V24DX/1Jhbf5lwUYWstI5jtuSBvPNgXiJ4nsvDOHKFincEiJ6hajvI0JziKd/ry31
-	 fKttkPhIPnfQ/3NKmjjZR2fj5rJtKUMoXGSF24Vh3GJ2d5JM3iBGX49PxGY3Iu0bUH
-	 joO+3Fp2Kq1DF8+msnl1OR6SHXV/AAIPJlur63TGqda5mJAQc12k5UzNP9VWs22J9N
-	 /XSf7kjM7ULYbJnzOXXGg1eTkgzwn0Mx1Hfm8XGCXLTwKXAP/W6iDLNxm08zyQhVnc
-	 1GZDJDUU7H1rOh41ZqZwyIwoPvX1PSWTdSD5EGRVZ5o2hR2ZfiuH+muZmLnExbpgtV
-	 Igv//JbGpt76g==
+	b=J9zODm5XI0AdzvDn2vyTUDyKhy+O6H8lhpXVEWz87aRxVRe60U4qmv/e96UBMEqiH
+	 ityPcDMg4ol4mZcnqai18tN2S1ziyekLXbFWhcN7fBBNop/wumz5cn9keDGITmCaJn
+	 6UrnFqADAGI8A+XnFP/IXli/jYf422WCyd5yyUcmL6//yPahxsyjZpF9MK9OcexQvq
+	 8DYWjk1Vdtn0OQooTZ7/BDkrsFo1PgBy8UnZiUHFuWAo2HQXDarVjFuyHkNqBCdyCF
+	 tUUXAQyFrG+OQ2VmD3IyCKfyVOmmmAazH8AmYn1cb8Lxgmyum0eNkYGkpUQ/VWhrCl
+	 TT1eORAjaUnSw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Alex Deucher <alexander.deucher@amd.com>,
@@ -48,12 +48,12 @@ Cc: Alex Deucher <alexander.deucher@amd.com>,
 	Vitaly Prosyak <vitaly.prosyak@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] drm/amdgpu: fix a memory leak in fence cleanup when unloading
-Date: Sun, 14 Sep 2025 22:19:33 -0400
-Message-ID: <20250915021933.371266-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] drm/amdgpu: fix a memory leak in fence cleanup when unloading
+Date: Sun, 14 Sep 2025 22:31:27 -0400
+Message-ID: <20250915023127.376435-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091359-thank-chest-a9e0@gregkh>
-References: <2025091359-thank-chest-a9e0@gregkh>
+In-Reply-To: <2025091359-extruding-tartly-9ee4@gregkh>
+References: <2025091359-extruding-tartly-9ee4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index f44b303ae287a..eebac2e1a6c75 100644
+index cb73d06e1d38d..e1ba061987833 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -396,9 +396,6 @@ void amdgpu_ring_fini(struct amdgpu_ring *ring)
+@@ -368,9 +368,6 @@ void amdgpu_ring_fini(struct amdgpu_ring *ring)
  	dma_fence_put(ring->vmid_wait);
  	ring->vmid_wait = NULL;
  	ring->me = 0;
