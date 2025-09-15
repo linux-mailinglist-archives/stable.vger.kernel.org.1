@@ -1,61 +1,40 @@
-Return-Path: <stable+bounces-179607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CBFB57324
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 10:37:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2ABB5743A
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 11:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B97189E695
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 08:38:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 335BB16358D
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 09:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED6920CCCA;
-	Mon, 15 Sep 2025 08:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1E62ED174;
+	Mon, 15 Sep 2025 09:13:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5351FC0EA;
-	Mon, 15 Sep 2025 08:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E191ADFFB
+	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 09:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757925467; cv=none; b=ex0qHV4S3XO41kfpbo0SYQgmZmoYdQpw2kFO9AuMWDpxsATEHtWGaurFqJlJL+0nQWEy54AzdF27FNweTyAIH4BuvsOPYmZv/8B8gjc4I/FR1b+EifoyY2tJNQzUfQv4X1J7EzPUjHRkJuphpoWH5DbvTpoLgfSxeseG4CB+BA8=
+	t=1757927615; cv=none; b=aDjcg7f1Mox6AFhe2Da0RymVkbuQWEI9PSJIV1/0/CQDeT4kc3kMeTGEK5q07JMhgiMv1sGxXKjgysV0OVla6o+51I514sIA1xXq2n7WGqvikjrEk7/QGRyuhKeTlyqlsyranaPs3t/RjIC3/z9l8bezPNWXKjdAfhoaWrVY2JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757925467; c=relaxed/simple;
-	bh=Q7bkcaIQnbjNFPHv/tC1SIIJFRyufAAQqwPFLV8GJAo=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=eSy+Jsc/Qgk2J8MypY/KkBOZ+wT8q091ChvsQ4bm17ZhZ7ycF+kdVUA8KhWFDMjVb6CHhI0PhQsaigHtBMa/c+Ur9xJZb6PxZ3pO5rB6RMTUfkPekC1RTBM9WM3w5tRFA5KK8SZBgJ5D1wuGgkamJhMlHyjkC0gFjForcGZUnrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 3a35dedc920f11f0b29709d653e92f7d-20250915
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:08e1c689-82e9-461f-98a5-e270daf56fe0,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:5,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:1739cc9bc6146cabd937cc9efa99b55b,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:2,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 3a35dedc920f11f0b29709d653e92f7d-20250915
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangheng@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1963435072; Mon, 15 Sep 2025 16:37:34 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id EB90EE009009;
-	Mon, 15 Sep 2025 16:37:33 +0800 (CST)
-X-ns-mid: postfix-68C7D04D-860271352
-Received: from [172.25.120.76] (unknown [172.25.120.76])
-	by mail.kylinos.cn (NSMail) with ESMTPA id C8398E009008;
-	Mon, 15 Sep 2025 16:37:31 +0800 (CST)
-Content-Type: multipart/mixed; boundary="------------8Ut23cP00acSb4c9XjXIPEhR"
-Message-ID: <94520aac-2a68-40d2-b188-80f9e361d6de@kylinos.cn>
-Date: Mon, 15 Sep 2025 16:37:29 +0800
+	s=arc-20240116; t=1757927615; c=relaxed/simple;
+	bh=NtcqAVPtebwVePikKYuDoVB0ug1k1jHfCkmM7NepnwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KTuprqHfNwj/2emTT8F0q2YbvmQJUSaeNzcEwRv41b+Aqo3F57K8sVMSY+nQ5zLuct/bc+7x2l0l4XmyYsdcMTwjxtYL5R4yWYjUzvdnaw+yIZTcHRpg/2ZRUwyF++gAQcxQPQYEXkXcG2PWA+sChw/PgBejrQ3vvj37eD8Zbx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E468B1424;
+	Mon, 15 Sep 2025 02:13:24 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 177063F694;
+	Mon, 15 Sep 2025 02:13:30 -0700 (PDT)
+Message-ID: <5d30d737-945f-4524-81ac-12ff03edca6c@arm.com>
+Date: Mon, 15 Sep 2025 10:13:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,129 +42,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
- SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
- Composite Device
-To: Staffan Melin <staffan.melin@oscillator.se>,
- Salvatore Bonaccorso <carnil@debian.org>
-Cc: Jiri Kosina <jkosina@suse.com>, Benjamin Tissoires <bentiss@kernel.org>,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org, 1114557@bugs.debian.org
-References: <aL2gYJaXoB6p_oyM@eldamar.lan>
- <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
- <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
- <aMUxHZF-7p7--1qS@eldamar.lan> <aMUxg6FLqDetwiGu@eldamar.lan>
- <f08669ec112d6ab2f62e35c0c96d1f06@oscillator.se>
-From: zhangheng <zhangheng@kylinos.cn>
-In-Reply-To: <f08669ec112d6ab2f62e35c0c96d1f06@oscillator.se>
+Subject: Re: [PATCH] KVM: arm64: Fix debug checking for np-guests using huge
+ mappings
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, maz@kernel.org,
+ oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com,
+ yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, james.morse@arm.com, tabba@google.com,
+ Quentin Perret <qperret@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ stable@vger.kernel.org
+References: <20250815162655.121108-1-ben.horgan@arm.com>
+ <aKMkvQEyeK1QH12X@google.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <aKMkvQEyeK1QH12X@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is a multi-part message in MIME format.
---------------8Ut23cP00acSb4c9XjXIPEhR
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
 
-Apply this new patch and test the kernel again. I don't have the=20
-original mic device in my hands, which means I have to wait for a=20
-response for testing now.
 
-You can test it first, and the other mic device also needs to be retested
+On 8/18/25 14:03, Vincent Donnefort wrote:
+> Thanks for the fix!
+> 
+> On Fri, Aug 15, 2025 at 05:26:55PM +0100, Ben Horgan wrote:
+>> When running with transparent huge pages and CONFIG_NVHE_EL2_DEBUG then
+>> the debug checking in assert_host_shared_guest() fails on the launch of an
+>> np-guest. This WARN_ON() causes a panic and generates the stack below.
+>>
+>> In __pkvm_host_relax_perms_guest() the debug checking assumes the mapping
+>> is a single page but it may be a block map. Update the checking so that
+>> the size is not checked and just assumes the correct size.
+>>
+>> While we're here make the same fix in __pkvm_host_mkyoung_guest().
+>>
+>>   Info: # lkvm run -k /share/arch/arm64/boot/Image -m 704 -c 8 --name guest-128
+>>   Info: Removed ghost socket file "/.lkvm//guest-128.sock".
+>> [ 1406.521757] kvm [141]: nVHE hyp BUG at: arch/arm64/kvm/hyp/nvhe/mem_protect.c:1088!
+>> [ 1406.521804] kvm [141]: nVHE call trace:
+>> [ 1406.521828] kvm [141]:  [<ffff8000811676b4>] __kvm_nvhe_hyp_panic+0xb4/0xe8
+>> [ 1406.521946] kvm [141]:  [<ffff80008116d12c>] __kvm_nvhe_assert_host_shared_guest+0xb0/0x10c
+>> [ 1406.522049] kvm [141]:  [<ffff80008116f068>] __kvm_nvhe___pkvm_host_relax_perms_guest+0x48/0x104
+>> [ 1406.522157] kvm [141]:  [<ffff800081169df8>] __kvm_nvhe_handle___pkvm_host_relax_perms_guest+0x64/0x7c
+>> [ 1406.522250] kvm [141]:  [<ffff800081169f0c>] __kvm_nvhe_handle_trap+0x8c/0x1a8
+>> [ 1406.522333] kvm [141]:  [<ffff8000811680fc>] __kvm_nvhe___skip_pauth_save+0x4/0x4
+>> [ 1406.522454] kvm [141]: ---[ end nVHE call trace ]---
+>> [ 1406.522477] kvm [141]: Hyp Offset: 0xfffece8013600000
+>> [ 1406.522554] Kernel panic - not syncing: HYP panic:
+>> [ 1406.522554] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
+>> [ 1406.522554] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
+>> [ 1406.522554] VCPU:0000000000000000
+>> [ 1406.523337] CPU: 3 UID: 0 PID: 141 Comm: kvm-vcpu-0 Not tainted 6.16.0-rc7 #97 PREEMPT
+>> [ 1406.523485] Hardware name: FVP Base RevC (DT)
+>> [ 1406.523566] Call trace:
+>> [ 1406.523629]  show_stack+0x18/0x24 (C)
+>> [ 1406.523753]  dump_stack_lvl+0xd4/0x108
+>> [ 1406.523899]  dump_stack+0x18/0x24
+>> [ 1406.524040]  panic+0x3d8/0x448
+>> [ 1406.524184]  nvhe_hyp_panic_handler+0x10c/0x23c
+>> [ 1406.524325]  kvm_handle_guest_abort+0x68c/0x109c
+>> [ 1406.524500]  handle_exit+0x60/0x17c
+>> [ 1406.524630]  kvm_arch_vcpu_ioctl_run+0x2e0/0x8c0
+>> [ 1406.524794]  kvm_vcpu_ioctl+0x1a8/0x9cc
+>> [ 1406.524919]  __arm64_sys_ioctl+0xac/0x104
+>> [ 1406.525067]  invoke_syscall+0x48/0x10c
+>> [ 1406.525189]  el0_svc_common.constprop.0+0x40/0xe0
+>> [ 1406.525322]  do_el0_svc+0x1c/0x28
+>> [ 1406.525441]  el0_svc+0x38/0x120
+>> [ 1406.525588]  el0t_64_sync_handler+0x10c/0x138
+>> [ 1406.525750]  el0t_64_sync+0x1ac/0x1b0
+>> [ 1406.525876] SMP: stopping secondary CPUs
+>> [ 1406.525965] Kernel Offset: disabled
+>> [ 1406.526032] CPU features: 0x0000,00000080,8e134ca1,9446773f
+>> [ 1406.526130] Memory Limit: none
+>> [ 1406.959099] ---[ end Kernel panic - not syncing: HYP panic:
+>> [ 1406.959099] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
+>> [ 1406.959099] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
+>> [ 1406.959099] VCPU:0000000000000000 ]
+>>
+>> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+>> Fixes: db14091d8f75 ("KVM: arm64: Stage-2 huge mappings for np-guests")
+> 
+> Not sure if it really matters but it's more about fixing f28f1d02f4ea (KVM: arm64: Add a range
+> to __pkvm_host_unshare_guest()) which introduced the check size !=
+> kvm_granule_size(). Even though this is noop until db14091d8f75
 
-=E5=9C=A8 2025/9/13 21:11, Staffan Melin =E5=86=99=E9=81=93:
-> Ah, thanks, I get it now :)
->
-> So I got 6.16.7, and the patch applied without problems.
->
-> But no luck, the same results as before: touchscreen not working,=20
-> xinput --list not showing the Jieli touchscreen. dmesg shows the same=20
-> as before, too.
->
-> Best regards,
->
-> Staffan
->
->
-> On 2025-09-13 10:55, Salvatore Bonaccorso wrote:
->> Hi Staffan,
->>
->> chiming in hopefully it is of help.
->>
->> Now really with the patch ...
->>
->> On Fri, Sep 12, 2025 at 09:57:04PM +0200, Staffan Melin wrote:
->>> Thank you,
->>>
->>> I tried to apply this patch to 6.12.39, the first problematic=20
->>> kernel, as
->>> well as 6.12.41, the first bad I tried, and on both I got an error=20
->>> message:
->>>
->>> Applying: HID: quirks: Add device descriptor for 4c4a:4155
->>> error: patch failed: drivers/hid/hid-quirks.c:1068
->>> error: drivers/hid/hid-quirks.c: patch does not apply
->>> Patch failed at 0001 HID: quirks: Add device descriptor for 4c4a:4155
->>>
->>> To which kernel version should I apply the patch?
->>
->> As the deveopment goes from mainline then down to stable series, the
->> fix needs to be developed first for mainline. So the patch is targeted
->> there.
->>
->> But please find attached an updated patch which hopefully should work
->> which resolved the context changes on top of 6.12.47.
->>
->> But ideally you can provide a Tested-by on zhangheng's mainline patch
->> to get things rolling as needed.
->>
->> Regards,
->> Salvatore
---------------8Ut23cP00acSb4c9XjXIPEhR
-Content-Type: text/plain; charset=UTF-8;
- name="v2-0001-HID-quirks-Add-device-descriptor-for-4c4a-4155.patch"
-Content-Disposition: attachment;
- filename*0="v2-0001-HID-quirks-Add-device-descriptor-for-4c4a-4155.patch"
-Content-Transfer-Encoding: base64
+Happy to update the Fixes tag with whatever is required. I was in two
+minds but opted for db14091d8f75 as that's where this starts to make a
+functional difference.
 
-RnJvbSBmM2MxMzEyZWM0YWQ0MzQ4MDE5ODFkYzk3MjA5ZWZmNTEyYjJjMTk1IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBaaGFuZyBIZW5nIDx6aGFuZ2hlbmdAa3lsaW5vcy5j
-bj4KRGF0ZTogRnJpLCAxMiBTZXAgMjAyNSAyMDozODoxOCArMDgwMApTdWJqZWN0OiBbUEFU
-Q0ggdjJdIEhJRDogcXVpcmtzOiBBZGQgZGV2aWNlIGRlc2NyaXB0b3IgZm9yIDRjNGE6NDE1
-NQoKVHdvIFVTQiBkZXZpY2VzIHVzZSB0aGUgc2FtZSBJRC4gVG8gYXZvaWQgYWZmZWN0aW5n
-IGZ1bmN0aW9uYWxpdHksCmRldmljZSBkZXNjcmlwdG9ycyBhcmUgYWRkZWQgdG8gZGlzdGlu
-Z3Vpc2ggYmV0d2VlbiB0aGVtCgpTaWduZWQtb2ZmLWJ5OiBaaGFuZyBIZW5nIDx6aGFuZ2hl
-bmdAa3lsaW5vcy5jbj4KLS0tCiBkcml2ZXJzL2hpZC9oaWQtcXVpcmtzLmMgfCAxNyArKysr
-KysrKysrKysrKysrLQogMSBmaWxlIGNoYW5nZWQsIDE2IGluc2VydGlvbnMoKyksIDEgZGVs
-ZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2hpZC9oaWQtcXVpcmtzLmMgYi9kcml2
-ZXJzL2hpZC9oaWQtcXVpcmtzLmMKaW5kZXggZmZkMDM0NTY2ZTJlLi5kMzlhOGU1M2VhMzYg
-MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvaGlkL2hpZC1xdWlya3MuYworKysgYi9kcml2ZXJzL2hp
-ZC9oaWQtcXVpcmtzLmMKQEAgLTkxMyw2ICs5MTMsMTcgQEAgc3RhdGljIGNvbnN0IHN0cnVj
-dCBoaWRfZGV2aWNlX2lkIGhpZF9pZ25vcmVfbGlzdFtdID0gewogI2VuZGlmCiAJeyBISURf
-VVNCX0RFVklDRShVU0JfVkVORE9SX0lEX1lFQUxJTkssIFVTQl9ERVZJQ0VfSURfWUVBTElO
-S19QMUtfUDRLX0IySykgfSwKIAl7IEhJRF9VU0JfREVWSUNFKFVTQl9WRU5ET1JfSURfUVVB
-TlRBLCBVU0JfREVWSUNFX0lEX1FVQU5UQV9IUF81TVBfQ0FNRVJBXzU0NzMpIH0sCisJeyB9
-Cit9OworLyoKKyAqIGhpZF9pZ25vcmVfbWljIC0gTWljcm9waG9uZSBkZXZpY2VzIGRvIG5v
-dCByZXF1aXJlIEhJRCBjb3JlIHByb2Nlc3NpbmcKKyAqCisgKiBOb3cgdGhlcmUgYXJlIHR3
-byBVU0IgZGV2aWNlcyB1c2luZyB0aGUgc2FtZSBJRCwgb25lIGlzIHRoZSBtaWNyb3Bob25l
-IGFuZCB0aGUgb3RoZXIKKyAqIGlzIHRoZSB0b3VjaCBzY3JlZW4uIFRoZSB0b3VjaCBzY3Jl
-ZW4gcmVxdWlyZXMgaGlkIGNvcmUgcHJvY2Vzc2luZywgYnV0IHRoZQorICogbWljcm9waG9u
-ZSBkb2VzIG5vdC4gVGhlIHR3byBoYXZlIGRpZmZlcmVudCBiY2RJRHMsIHdoaWNoIHdpbGwg
-YmUgdXNlZCB0bworICogZGlzdGluZ3Vpc2ggdGhlbSBpbiB0aGUgZnV0dXJlCisgKi8KK3N0
-YXRpYyBjb25zdCBzdHJ1Y3QgaGlkX2RldmljZV9pZCBoaWRfaWdub3JlX21pY1tdID0gewog
-CXsgSElEX1VTQl9ERVZJQ0UoVVNCX1ZFTkRPUl9JRF9TTUFSVExJTktURUNITk9MT0dZLCBV
-U0JfREVWSUNFX0lEX1NNQVJUTElOS1RFQ0hOT0xPR1lfNDE1NSkgfSwKIAl7IH0KIH07CkBA
-IC0xMDY4LDYgKzEwNzksOSBAQCBib29sIGhpZF9pZ25vcmUoc3RydWN0IGhpZF9kZXZpY2Ug
-KmhkZXYpCiAJICAgIGhkZXYtPnF1aXJrcyAmIEhJRF9RVUlSS19JR05PUkVfTU9VU0UpCiAJ
-CXJldHVybiB0cnVlOwogCisJaWYoaGlkX21hdGNoX2lkKGhkZXYsIGhpZF9pZ25vcmVfbWlj
-KSAmJiAoaGRldi0+dmVyc2lvbiA+IDEuMSkpCisJCXJldHVybiB0cnVlOworCiAJcmV0dXJu
-ICEhaGlkX21hdGNoX2lkKGhkZXYsIGhpZF9pZ25vcmVfbGlzdCk7CiB9CiBFWFBPUlRfU1lN
-Qk9MX0dQTChoaWRfaWdub3JlKTsKQEAgLTEyNjYsNyArMTI4MCw4IEBAIHN0YXRpYyB1bnNp
-Z25lZCBsb25nIGhpZF9nZXRzX3NxdWlyayhjb25zdCBzdHJ1Y3QgaGlkX2RldmljZSAqaGRl
-dikKIAljb25zdCBzdHJ1Y3QgaGlkX2RldmljZV9pZCAqYmxfZW50cnk7CiAJdW5zaWduZWQg
-bG9uZyBxdWlya3MgPSBoZGV2LT5pbml0aWFsX3F1aXJrczsKIAotCWlmIChoaWRfbWF0Y2hf
-aWQoaGRldiwgaGlkX2lnbm9yZV9saXN0KSkKKwlpZiAoaGlkX21hdGNoX2lkKGhkZXYsIGhp
-ZF9pZ25vcmVfbGlzdCkgfHwKKwkgICAoaGlkX21hdGNoX2lkKGhkZXYsIGhpZF9pZ25vcmVf
-bWljKSAmJiAoaGRldi0+dmVyc2lvbiA+IDEuMSkpKQogCQlxdWlya3MgfD0gSElEX1FVSVJL
-X0lHTk9SRTsKIAogCWlmIChoaWRfbWF0Y2hfaWQoaGRldiwgaGlkX21vdXNlX2lnbm9yZV9s
-aXN0KSkKLS0gCjIuNDcuMQoK
+> 
+>> Cc: Vincent Donnefort <vdonnefort@google.com>
+>> Cc: Quentin Perret <qperret@google.com>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: stable@vger.kernel.org
+> 
+> Reviewed-by: Vincent Donnefort <vdonnefort@google.com>Thanks!
+Ben
 
---------------8Ut23cP00acSb4c9XjXIPEhR--
 
