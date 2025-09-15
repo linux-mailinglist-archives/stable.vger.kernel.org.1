@@ -1,264 +1,162 @@
-Return-Path: <stable+bounces-179636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B6CB580D3
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 17:35:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6061BB580FE
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 17:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A5F44C328F
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 15:33:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D5B32A5327
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 15:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F239F350D77;
-	Mon, 15 Sep 2025 15:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A15C1F419B;
+	Mon, 15 Sep 2025 15:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LiiiSV9i"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WXDccESt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD798350D59
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 15:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0517D1E4BE;
+	Mon, 15 Sep 2025 15:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757950197; cv=none; b=dN3aBj+3LyomF1IjgP7uZ0aBT5+hbHfXjtw2cIE6bbRMDVVzfyPJOaCVBTBIKJ+2a/5dHjEIakw+zmCysOL1LOSxN8kTPML3IIwT2Rc7RsN36HZvr2azhfOQK4Bj/VnbW6KuzQeibKdYgm0Yx02Wjfl/Zv179L1JbnQ2fXw3dUc=
+	t=1757950558; cv=none; b=T0QSLzOAKLMcwuA2zox+Q7Wh1NE0EO6PXcZSlAdC+iIiIn34oJk/YYgs81QxUgn+tlIWd3WZmKy1tPvVtFaAgVUhoGtJQz5x0JghW9Hl6GrAVVmysrrN4WQu6HaznAQhOSi/3uCrFHNBZmFXzLh2Qs0w0r9Ht+auQOPL2EfmbSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757950197; c=relaxed/simple;
-	bh=YuGKbbBQeAOFe11AzIFAEXN5dtq282XmgJD2V7U1TQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=My4wpuFQMEFEYA5+/ukUvM+Glsuq+MjLFnXaFFKj5wjcNAPVDohShwPTqJUUz7KSrw7LIu1+ST+KA+Iq46O80Jwz5s96APYdyKhtYvhhkd9qyaYz/O3N8itaCczLI8EifMFMdx/IHOLlzsWKS3iP7u3meEooovWTeYtN/0OyWNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LiiiSV9i; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-628f29d68ecso8741367a12.3
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 08:29:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757950194; x=1758554994; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VsbTlX6nanbvH5f2tDWnICsM+5DdN8K//SzupK675NI=;
-        b=LiiiSV9iNYOldSHCmj+ZdpbqL0pqxO0wJmt7qJK6DtNQP3ZOQNla5jKDRrHzSd3WQp
-         /gFNLeErWnH0DqOnHQBPYB+nC6p5nLhtdnGcuESp119xkelii3at9EeUpXgcnon8TIOe
-         xZShgxzHIq81cfjgjkXMXbskQ4Z/qtpDtAonPqu2Fwa7Ri1dVzW1PJi/t2cQ1CYG/G+P
-         aiv1bKC+k4JvsV/igkVvZqzMsODg1dXhwVK4SxrTNVaqGjKxQa02fz55aKZazv4WecxQ
-         cdOKK6O6SC2M9Q/87GrvrB0/exszf15tsukNwsoU/0a23+GRsdV7coMDi3IK8ET+eR/i
-         SJ2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757950194; x=1758554994;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VsbTlX6nanbvH5f2tDWnICsM+5DdN8K//SzupK675NI=;
-        b=VZZ09Zro/vGbWMeYGZgvjkkBr84Cn4MyIngmbhsjqL+PTG1KZiJpxRwZ2Awl26Ui30
-         B1ZfczMqE2129wvnq+G+U7xaNdFtNxjVCXYXAoykqMHZppjFTVXQTzT6ifQT5ofYBbks
-         awEar/XVSnGWx4INcZl5Y5kKtR2XpzN43jANQbusN28+bIjfkWRDGh8F+/RHty/YokKE
-         gWHu73xB6SF/1Y/2jqE40Wg2LgN0KHZ81BwdRrO6+QqXlHyhXiCTL5YmMORRioXv4gVR
-         RVJ17QBKe/baMsAqZ5dhE/7hMPk/7C0Bi9fsRPiaIjT/k1SLLrhSMZc8bvqUZa9kB/C3
-         2sKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdEJBgksJ9gK7h139ec6ZOF2Imv+5yNR/mzluCuERe6RXPjNuLm2ueOCInikrt6bbNgUa5am8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV5n5kpsDKMaR39lgorBofWTQiyKJ5rJCuveGLxaiXRMDzHK2f
-	CXfXOY5zCJVNSUmV4MrFt1682q6caq2GvgZ/hhLr1NprN2VMlkWQD8KsRhGWP/YER4ajJuxGV0P
-	LDf2hEkbLAltMwTR9fHWLxUChhtjG6hE=
-X-Gm-Gg: ASbGncuFAVoXeMCfbuV9HszVu6OQTkylHGynFHjcuuUI3y9brhEPzbyibSnVE/XXKpt
-	NNE+r4eiIKBhPPCTEgfnAGYExysshi4hjh6uWfbx9ZtmJ2GKLDz5Q9b+kEdXbfpkI2ByiESUCZI
-	3ux+GTzE2h9IKjiVN2yQ37HZtZaZbaPipLH78xih2T89oi+ktGuPThE15GsR5Rgp2d3IFCBlwTe
-	7/XSDHn4+M8szMCcHUGy0HcGHPd0nc24AEWRpOAfQ==
-X-Google-Smtp-Source: AGHT+IHwo9Dbn1IBq1pRK2KYpbDo+aDAWPKHa2DN5fGM+stACl5ZbknSqG9QI2B/kqiprzOfMMxWr8rwlPxWBS5iOiY=
-X-Received: by 2002:a05:6402:2744:b0:62f:41d3:ece7 with SMTP id
- 4fb4d7f45d1cf-62f41d3eee5mr3475949a12.14.1757950193792; Mon, 15 Sep 2025
- 08:29:53 -0700 (PDT)
+	s=arc-20240116; t=1757950558; c=relaxed/simple;
+	bh=PxGo7kzl/T2s9qu0TsdeGJcTqn+JdLL61q41vdO9il4=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=JJfshq6HspBqj/UzDkEOOLCC3XCk3/xAc+QHMMVQEhB/eQGpO3Qv8L29V0k7aa5x9Ta31aYcV9NEI72+Zwei5LZBmiEe7LvBkgJhUvYFMZOXjMEXPH2QtWsajKUOrxy7nTGKqXQ0k5kFsZK7rr/936QSMBAlw8C5j+H+WrsI1nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WXDccESt; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1757950526; x=1758555326; i=markus.elfring@web.de;
+	bh=PxGo7kzl/T2s9qu0TsdeGJcTqn+JdLL61q41vdO9il4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=WXDccEStW10SJoelt1vAGHJp9LDzubDn42yeT4k8DFFc7yG/hc1POpjzRrzzukfX
+	 BczdPRcrq/jsImVifeFEPjO+TMtbNRDQapOciSX8OvOZeOalldbb5WPoxzf11hb/q
+	 JbT7xgmWACl8UjiCKerd7HzVC5sQwmy8J1DfJWx4DlxCTw7QjsPb3uyxKQ4up+0IU
+	 ILkZTcPMfOCvYhsOu2tjobALf5dN4L7/Wo9LPcPAM9eGwWVIJBj7D93CdKqY7ekho
+	 ZB69yRRXVP1TK/EKXCk1R18hctCZwbNFNxCK45bnHghlLxsL8cBxLnp/WutnDGuaK
+	 lO9EfxbErP8Ar3KltA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.188]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MuF8x-1u6mOp2pKv-00rfY4; Mon, 15
+ Sep 2025 17:35:26 +0200
+Message-ID: <f1e106c1-f441-434f-a69c-55348163435a@web.de>
+Date: Mon, 15 Sep 2025 17:35:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250915101510.7994-1-acsjakub@amazon.de> <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
- <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
-In-Reply-To: <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Mon, 15 Sep 2025 17:29:40 +0200
-X-Gm-Features: AS18NWDzs8ZYHHKEHo80wJYN_pBq_JfjRVuZAjz8emwmk1hcFxQPA6Q11EU_jCw
-Message-ID: <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
-Subject: Re: [PATCH] ovl: check before dereferencing s_root field
-To: Jan Kara <jack@suse.cz>, Jakub Acs <acsjakub@amazon.de>
-Cc: linux-unionfs@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Haoxiang Li <haoxiang_li2024@163.com>,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Hans Verkuil <hverkuil@kernel.org>, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Tiffany Lin <tiffany.lin@mediatek.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
+ Yunfei Dong <yunfei.dong@mediatek.com>
+References: <20250915120938.177691-1-haoxiang_li2024@163.com>
+Subject: Re: [PATCH] media: mediatek: vcodec: Fix a reference leak in
+ mtk_vcodec_fw_vpu_init()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250915120938.177691-1-haoxiang_li2024@163.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:R9VKhmOH0+oLOPpLvX8CgduHZG20PP6w2bHj9YQBmaa3U1sf9P8
+ 9f/3y4vsr67zJjLI8r9QKVQDi6KC+2bKfiotz2NvjY/wbJAgs+O04SduaP3ooQyw12rhE3z
+ dCk7f72BO1vJjkfDuIrXsLzGvF47fi83g1Ofzd/II4F2C6h6HNXVUddqalxKhrtqLlxnFnh
+ p+jImSkp5xD9GL2JpBo/Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+VmF3fcdpNM=;o4VsCfF/509KeeS3TGBYH7vImt2
+ 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
+ hWMRnWGNU+/TR4h5nX0
 
-On Mon, Sep 15, 2025 at 4:07=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->
-> On Mon 15-09-25 15:01:13, Amir Goldstein wrote:
-> > On Mon, Sep 15, 2025 at 12:15=E2=80=AFPM Jakub Acs <acsjakub@amazon.de>=
- wrote:
-> > >
-> > > Calling intotify_show_fdinfo() on fd watching an overlayfs inode, whi=
-le
-> > > the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
-> > >
-> > > This issue was found by syzkaller.
-> > >
-> > > Race Condition Diagram:
-> > >
-> > > Thread 1                           Thread 2
-> > > --------                           --------
-> > >
-> > > generic_shutdown_super()
-> > >  shrink_dcache_for_umount
-> > >   sb->s_root =3D NULL
-> > >
-> > >                     |
-> > >                     |             vfs_read()
-> > >                     |              inotify_fdinfo()
-> > >                     |               * inode get from mark *
-> > >                     |               show_mark_fhandle(m, inode)
-> > >                     |                exportfs_encode_fid(inode, ..)
-> > >                     |                 ovl_encode_fh(inode, ..)
-> > >                     |                  ovl_check_encode_origin(inode)
-> > >                     |                   * deref i_sb->s_root *
-> > >                     |
-> > >                     |
-> > >                     v
-> > >  fsnotify_sb_delete(sb)
-> > >
-> > > Which then leads to:
-> > >
-> > > [   32.133461] Oops: general protection fault, probably for non-canon=
-ical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-> > > [   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0=
-000000000000037]
-> > > [   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tain=
-ted 6.17.0-rc6 #22 PREEMPT(none)
-> > >
-> > > <snip registers, unreliable trace>
-> > >
-> > > [   32.143353] Call Trace:
-> > > [   32.143732]  ovl_encode_fh+0xd5/0x170
-> > > [   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
-> > > [   32.144425]  show_mark_fhandle+0xbe/0x1f0
-> > > [   32.145805]  inotify_fdinfo+0x226/0x2d0
-> > > [   32.146442]  inotify_show_fdinfo+0x1c5/0x350
-> > > [   32.147168]  seq_show+0x530/0x6f0
-> > > [   32.147449]  seq_read_iter+0x503/0x12a0
-> > > [   32.148419]  seq_read+0x31f/0x410
-> > > [   32.150714]  vfs_read+0x1f0/0x9e0
-> > > [   32.152297]  ksys_read+0x125/0x240
-> > >
-> > > IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was =
-set
-> > > to NULL in the unmount path.
-> > >
-> > > Minimize the window of opportunity by adding explicit check.
-> > >
-> > > Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no al=
-ias")
-> > > Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-> > > Cc: Miklos Szeredi <miklos@szeredi.hu>
-> > > Cc: Amir Goldstein <amir73il@gmail.com>
-> > > Cc: linux-unionfs@vger.kernel.org
-> > > Cc: linux-kernel@vger.kernel.org
-> > > Cc: stable@vger.kernel.org
-> > > ---
-> > >
-> > > I'm happy to take suggestions for a better fix - I looked at taking
-> > > s_umount for reading, but it wasn't clear to me for how long would th=
-e
-> > > fdinfo path need to hold it. Hence the most primitive suggestion in t=
-his
-> > > v1.
-> > >
-> > > I'm also not sure if ENOENT or EBUSY is better?.. or even something e=
-lse?
-> > >
-> > >  fs/overlayfs/export.c | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-> > > index 83f80fdb1567..424c73188e06 100644
-> > > --- a/fs/overlayfs/export.c
-> > > +++ b/fs/overlayfs/export.c
-> > > @@ -195,6 +195,8 @@ static int ovl_check_encode_origin(struct inode *=
-inode)
-> > >         if (!ovl_inode_lower(inode))
-> > >                 return 0;
-> > >
-> > > +       if (!inode->i_sb->s_root)
-> > > +               return -ENOENT;
-> >
-> > For a filesystem method to have to check that its own root is still ali=
-ve sounds
-> > like the wrong way to me.
-> > That's one of the things that should be taken for granted by fs code.
-> >
-> > I don't think this is an overlayfs specific issue, because other fs wou=
-ld be
-> > happy if encode_fh() would be called with NULL sb->s_root.
->
-> Actually, I don't see where that would blow up? Generally references to
-> sb->s_root in filesystems outside of mount / remount code are pretty rare=
-.
-> Also most of the code should be unreachable by the time we set sb->s_root
-> to NULL because there are no open files at that moment, no exports etc. B=
-ut
-> as this report shows, there are occasional surprises (I remember similar
-> issue with ext4 sysfs files handlers using s_root without checking couple
-> years back).
->
+=E2=80=A6
+> Fix this by calling put_device() on fw_pdev->dev before returning
+> on the error path.
 
-I am not sure that I understand what you are arguing for.
-I did a very naive grep s_root fs/*/export.c and quickly found:
+How do you think about to increase the application of scope-based resource=
+ management?
 
-static int gfs2_encode_fh(struct inode *inode, __u32 *p, int *len,
-                          struct inode *parent)
-{
-...
-        if (!parent || inode =3D=3D d_inode(sb->s_root))
-                return *len;
-
-So it's not an overlayfs specific issue, just so happens that zysbot
-likes to test overlayfs.
-
-Are you suggesting that we fix all of those one by one?
-
-> > Jan,
-> >
-> > Can we change the order of generic_shutdown_super() so that
-> > fsnotify_sb_delete(sb) is called before setting s_root to NULL?
-> >
-> > Or is there a better solution for this race?
->
-> Regarding calling fsnotify_sb_delete() before setting s_root to NULL:
-> In 2019 (commit 1edc8eb2e9313 ("fs: call fsnotify_sb_delete after
-> evict_inodes")) we've moved the call after evict_inodes() because otherwi=
-se
-> we were just wasting cycles scanning many inodes without watches. So movi=
-ng
-> it earlier wouldn't be great...
-
-Yes, I noticed that and I figured there were subtleties.
-
-In any case, Jakub, your patch is insufficient because:
-1. Checking sb->sb_root without a lock and without READ_ONCE()
-    and a matching WRITE_ONCE() is not safe
-2. sb_root can become NULL after the check since you are not holding
-    the s_umount lock
-
-Jakub,
-
-Instead of an unsafe check inside ovl_encode_fh(), I think it is better to =
-use
-super_trylock_shared() inside show_mark_fhandle() before calling
-exportfs_encode_fid()?
-
-Feels like the corner case is show_mark_fhandle() and there is no strong
-incentive to make this code very efficient.
-
-Jan, WDYT?
-
-Thanks,
-Amir.
+Regards,
+Markus
 
