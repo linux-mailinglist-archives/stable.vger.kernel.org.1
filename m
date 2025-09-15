@@ -1,141 +1,123 @@
-Return-Path: <stable+bounces-179625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55FBB57CDC
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 15:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD48B57D84
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 15:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FCFB163FE1
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 13:26:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9781D16996D
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 13:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B762FA0F1;
-	Mon, 15 Sep 2025 13:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE663191D0;
+	Mon, 15 Sep 2025 13:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="klZkKTTW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UDdnRA01"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="AsSGvqyl"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2811E3090EE;
-	Mon, 15 Sep 2025 13:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F959312830
+	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 13:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757942787; cv=none; b=cx3zTaJzixCNmvixrdWW1N60Pc8VgcvgWccecUcWTmosT8z7kfJc97dyE3JjtYUzRubIJx5Y8Bev0rSmE8Cy5SogfsZ5xflwK7oZyQqa286XW41LN1uJQQaS4zN09Oh+41M5eLvOXgOL7y8KTya2rM8NVrL7fftO/7hcfcAtfFo=
+	t=1757943490; cv=none; b=bkBqTCYXI5nFF7AzLeNkGJVIhkMyL6zrBsEziHWn3FcovjFRg6ZJypVP1H8TTZ4NLo2ML1RTHHKA2bYOye6ExZCCk7hXO6T2N7y62DUMJafxdr+/Eigexi9NJ7VOC9l+o2AKAt8E4lCQ7InW3F+YGcGHigvf4Tas/D+PxOxBMl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757942787; c=relaxed/simple;
-	bh=sQBsFFLYopAGT8T7Z3FYq459tKvmyfzfRQ9rDODfirw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tuPzGmU2LjXLzd/Xf4dgf+a2I97+14xwijCIez2C5HpnwcmY2F2KpDhdO0WeaSToMeDwEaPN5vLTU2wQEljU4QzuaGrB28BEJcrCrQbcy1uZkgekoGxNm4cFyIIrvh+Dd2awHRGrSoUbz5KTA5Fc3lNwVAE7l9364bN3qev6yZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=klZkKTTW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UDdnRA01; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 287C17A0116;
-	Mon, 15 Sep 2025 09:26:24 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 15 Sep 2025 09:26:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1757942784; x=1758029184; bh=hGr2ZXHNbB
-	QlZWjzf51lRHlmuYxk6VbQFOily101OV8=; b=klZkKTTWixs+e294pY+FAVziaa
-	vL7zinKhv7vWGB/Bb1Na2c8ybgQ9njaP0eFuybptrguYX6VK1/de2iZzxTxUmOvN
-	r7OinonaGwkuavvXKrTneSvNSX4HbcpyaH88roFk03NuxhxxsdaCN6Vt37hFaLMa
-	fnj46+ySIdV52TU/60+GBvORh+nn5sQYb7flObXJoTWZ0uRbmXgz8FUmGZgTcXOX
-	shE03hwjxPmhGm3vlWFDJdxH3eUEhBq7l7MgAo0Hr4ddl6rgWybiZViabOzK5t/+
-	JsSdMxp1e2kWEgwPu6e4F2dHMbo6GjvIXyJ240GaOSM8DOy23mL/4kEBaWKA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1757942784; x=1758029184; bh=hGr2ZXHNbBQlZWjzf51lRHlmuYxk6VbQFOi
-	ly101OV8=; b=UDdnRA01yyzByFjml2RU9Id/gIX8QQvkpf9t3Sswb2u015W5lWQ
-	Ahu/r4L26HVKy2XLk4QXq4inctGpZklC476K+RePAniwMurZYzYSF2IpNzrLfXId
-	vRCa/keUf+7HIGIuhvVGEVgANFKBWVnojscZ+huIZoR157JmlJTuAop28CRq+kSA
-	5WoYNgUVJ5OtDIuXhuLqcpG4sEq63eMZmKLiyA+Vhndv/drM3oDJK46dBug33XeF
-	XohE6of+2Be8YuO03XIoCnYcFjpnDeG25t1KPDlgr/mI4/FJu4CYylSG+BLF261N
-	whiR2Wc8EH0+BEZG15lylca/qPzyn+CMdzQ==
-X-ME-Sender: <xms:_xPIaBAXz4mskkenqPaQ8QLVGixPmGL5EkIkNE67qLA9ICzjY3bgbw>
-    <xme:_xPIaMYGw2XOU_82PKPSHCXby4mevcnWf2wjA7RVQRqeDn5QLaB37367HA7zWf_8W
-    eRByBF_wSBEvFyQVpA>
-X-ME-Received: <xmr:_xPIaMV7NIy6uqt8364hTh2On6c4nVhHUM0qjL9g8MXPfZidWhrRxAltSkVD-512MIN3_SQG4pWRPCMDKG2ewY4iVgwCsUsmeSs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdefjeektdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepgfdvff
-    evleegudejfeefheehkeehleehfefgjefffeetudegtefhuedufeehfeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurd
-    hnvghtpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehhrghnshhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvghllhgvrhesghhmgi
-    druggvpdhrtghpthhtohepthhrvgguihhnghesnhhvihguihgrrdgtohhmpdhrtghpthht
-    oheplhhinhhugidqfhgsuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegurhhiqdguvghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepthgvtghhsehtohhothgrihdrnhgvthdprhgtphhtthhopehsthgrsghl
-    vgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:_xPIaLPgp0pZTvFIT8wWQsrJb1ejIL6243RP0whykhOh50GqJyhBxw>
-    <xmx:_xPIaGY0AQ4vdP3Dw9buA8gXFRYSFY817xdSdaXGqvevpdmC-v0MGg>
-    <xmx:_xPIaK_vpZb9VEiDwunhGEP8IlE77Cl_FNMxbSgqc1LnBQYP1BwS2A>
-    <xmx:_xPIaHQuHmlf14Jg0X1Vt3GH4BPf-A5YLsAa97i-AYfHqkeVApZAiw>
-    <xmx:_xPIaC6of_hqXpaVMJjBGWS-Ig_2QYEHoin6uTAt4VnB0MmyatHVHfJm>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 Sep 2025 09:26:23 -0400 (EDT)
-Date: Mon, 15 Sep 2025 15:26:21 +0200
-From: Janne Grunau <j@jannau.net>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Helge Deller <deller@gmx.de>, Thierry Reding <treding@nvidia.com>,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, Daniel Huhardeaux <tech@tootai.net>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] fbdev/simplefb: Fix use after free in
- simplefb_detach_genpds()
-Message-ID: <20250915132621.GA1931265@robin.jannau.net>
-References: <20250915-simplefb-genpd-uaf-v3-1-5bb51506a5b9@jannau.net>
- <802c1bad-94e4-4dae-94fe-ced28aebbe2a@kernel.org>
+	s=arc-20240116; t=1757943490; c=relaxed/simple;
+	bh=BPfPr/EhqGdOAgcaYSl7ChPAovmIh95NjGuHNfkPd7o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TMak85L+6BR4Xo0kiiRGxHwuDYtdkqP1qOI+Ny1XqdfhO+3g/Vvn+qwAj2nBRe4eoO0Sph3GMjr64U7hsBlbGBk/F8wtCMD7DESpXsR9mC6OoSQJqfSpEsehyXyo6vD02nxvAHcqLdvf8IGM9kcJeBf20w3QoK1J9fo581fcGuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=AsSGvqyl; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 35FCFA0ACA;
+	Mon, 15 Sep 2025 15:38:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=CqevzXuJmSFLDexdsImo2Fo4EnZ+d/W8X7whgyP3mJo=; b=
+	AsSGvqylvkAIvGpYYxPn2ODpLQ5w5/Ev+MiIUuml9bR87M/laS+PCEqaDmqiv5Vc
+	/iE+i3dCSmnmVflVrhFuOYH5844GgnMLmN3FLdSKGAeAGwWzOS3Bbko65wFaLr+W
+	BVSW0sZQk0FeuACWnAs+ZfYqQfLxMQGnNxaHOatIww0AylItCPQgCBLgBEwnUlP4
+	JSSnusTkhUVWiXQVL01oXoEKJawcju5H2aL+dESWoMhU4OXtFGOtoOaG/ld3iAwD
+	GxbNT245fXzRI/RVuAs+jmxkFzx+LoNloYqpVWNzmGO+DPETRuFdIqdnVHmXKA/y
+	VeoLMGTtf4xJferg93VwNJsN8cTdj5D4y1jWDTfXugMN0ivK/j3xAbT5zaMTdUuE
+	yO8frzprZSdUHxxTzw3SiIDqFTfoxRoeOPQLKV3dShExyraYGszr1THtiDJ392bB
+	3hgi/egVkPYTFAXbagjYyS5g4VAV8YT0Dxv1TNBnkf+8WHEHTsFvZQsqMBdwXLxE
+	oTabL4U/eQOKvFENv7/AI29vF30AMDinveLt5VwR+R1NpVyFUIVegYHAccJD6BwM
+	oTV9MWIjTsklNw+Xelj0N0bFZkTiqsPzsg2I7MytjF8FFFxpMAr93Ea1g3cOvtU5
+	S8nSxfaKy0Zivl9u6sRpaEUXvQzvPS3lKiZerbaCBE8=
+From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+To: <stable@vger.kernel.org>
+CC: Buday Csaba <buday.csaba@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni
+	<pabeni@redhat.com>
+Subject: [PATCH 6.12] net: mdiobus: release reset_gpio in mdiobus_unregister_device()
+Date: Mon, 15 Sep 2025 15:35:40 +0200
+Message-ID: <20250915133540.824705-2-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <802c1bad-94e4-4dae-94fe-ced28aebbe2a@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1757943482;VERSION=7998;MC=2068852340;ID=57108;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A296767155E62726A
 
-On Mon, Sep 15, 2025 at 02:19:30PM +0200, Hans de Goede wrote:
-> Hi,
-> 
-> On 15-Sep-25 8:36 AM, Janne Grunau wrote:
-> > The pm_domain cleanup can not be devres managed as it uses struct
-> > simplefb_par which is allocated within struct fb_info by
-> > framebuffer_alloc(). This allocation is explicitly freed by
-> > unregister_framebuffer() in simplefb_remove().
-> > Devres managed cleanup runs after the device remove call and thus can no
-> > longer access struct simplefb_par.
-> > Call simplefb_detach_genpds() explicitly from simplefb_destroy() like
-> > the cleanup functions for clocks and regulators.
-> > 
-> > Fixes an use after free on M2 Mac mini during
-> > aperture_remove_conflicting_devices() using the downstream asahi kernel
-> > with Debian's kernel config. For unknown reasons this started to
-> > consistently dereference an invalid pointer in v6.16.3 based kernels.
-> 
-> Thanks, this v3 patch looks good to me:
-> 
-> Reviewed-by: Hans de Goede <hansg@kernel.org>
-> 
-> I assume that you will push this do drm-misc yourself ?
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-I don't have drm-misc commit access yet. I took this as reminder to
-request access so I will either commit it myself or ask someone else in
-a couple of days (if nobody beats me to it).
+reset_gpio is claimed in mdiobus_register_device(), but it is not
+released in mdiobus_unregister_device(). It is instead only
+released when the whole MDIO bus is unregistered.
+When a device uses the reset_gpio property, it becomes impossible
+to unregister it and register it again, because the GPIO remains
+claimed.
+This patch resolves that issue.
 
-thanks,
-Janne
+Fixes: bafbdd527d56 ("phylib: Add device reset GPIO support") # see notes
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+[ csokas.bence: Resolve rebase conflict and clarify msg ]
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Link: https://patch.msgid.link/20250807135449.254254-2-csokas.bence@prolan.hu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Upstream commit 8ea25274ebaf2f6be8be374633b2ed8348ec0e70 ]
+[ csokas.bence: Use the v1 patch on top of 6.12, as specified in notes ]
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+---
+ drivers/net/phy/mdio_bus.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 591e8fd33d8e..a508cd81cd4e 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -97,6 +97,7 @@ int mdiobus_unregister_device(struct mdio_device *mdiodev)
+ 	if (mdiodev->bus->mdio_map[mdiodev->addr] != mdiodev)
+ 		return -EINVAL;
+ 
++	gpiod_put(mdiodev->reset_gpio);
+ 	reset_control_put(mdiodev->reset_ctrl);
+ 
+ 	mdiodev->bus->mdio_map[mdiodev->addr] = NULL;
+@@ -814,9 +815,6 @@ void mdiobus_unregister(struct mii_bus *bus)
+ 		if (!mdiodev)
+ 			continue;
+ 
+-		if (mdiodev->reset_gpio)
+-			gpiod_put(mdiodev->reset_gpio);
+-
+ 		mdiodev->device_remove(mdiodev);
+ 		mdiodev->device_free(mdiodev);
+ 	}
+-- 
+2.43.0
+
+
 
