@@ -1,126 +1,154 @@
-Return-Path: <stable+bounces-179632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B948BB57F28
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 16:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B11B57F88
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 16:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 317773A224A
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 14:35:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CD2E3B0C34
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9636C30217C;
-	Mon, 15 Sep 2025 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A3A340DB7;
+	Mon, 15 Sep 2025 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="OO9hFSAI"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="pdUFRMFB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24861C700B
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 14:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5887340DA6;
+	Mon, 15 Sep 2025 14:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757946919; cv=none; b=IeZ7MdOn2a+OAs4nDDOIYo3awj+Ysvsg6FRlfhNbynHAF/yrPgbMhHnOh8VEiGfuizrFzXmnmMMGFsW4KD9kakY7K4JCCBsE2kxNSY98LD/G604ZE91weWanKPfB8rI37wPgK51jG7OzB2nhC7bUf8SxWcQ92O/Y8t/m+tha7fA=
+	t=1757947748; cv=none; b=OTcA1UObTPCxA8iV51VJQtH+PyGoQUnScgAuEOC9sIdesRBG/INmyac8Vq/XgMjrmEjx9i1czCB/uOKNoWCJlIbD0NCTouS7LK5biLrcg25AHJ3NhZFL9AzNuuCn2Eb7114877hrrHfoVGZ+HiKHHKgeRLqVG2cv19W4ni3RyJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757946919; c=relaxed/simple;
-	bh=0VsWNLTd9ylwn+QoPr4YmoQKkPOQWdVwd5YylLcpM78=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GhhW6dnzlFKZV5LnK3AHZy0rTZW0ekSBEq+ra4dH0Uf/sVEbXJnDX1HmJYjPpZVIPPbusmuXGSMiAXGltltw1eG3qBpuHyDtaVToj0HhBcM8+jY6/saPcUqIRNOtejtqhGfFtY5K1iKGFMoiRdLNRwjJyJE2Z4fBO1+rO2J8iUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=OO9hFSAI; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-776379289dcso85240b3a.0
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 07:35:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista.com; s=google; t=1757946914; x=1758551714; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cPDb1LgGCl+kv/Au5bK0NNM1gZf4OEIqKGFkGmxWX7g=;
-        b=OO9hFSAIsF0oic1Lg+QC9B14P3AMes9iQ+/WRcwpc41CkmEPG/DJUcuipWvzVNUyBO
-         2Phi5juq0rqWE/cJh63IXYoeCUL1BVl7vmPqoti5WVbIZk+rcKznLlq++XLTFN/K8D9X
-         lXNqclOA1gFUuwdowYgv3skKed6bMAhOdRaX0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757946914; x=1758551714;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cPDb1LgGCl+kv/Au5bK0NNM1gZf4OEIqKGFkGmxWX7g=;
-        b=DXRtQVd+gv6zwHxZNpYa4Nx4R9kfgsY2E3pNQxyyxypyhHe/EBImGQRpXLhujE4+Vp
-         W29lx5/fDe4ZoykFvD3fW4XIBA5ldnFFvF5tNVG8habg46cFyZvwCVBK9eIud+QD2/8y
-         oqu/8qvmgibB/HP07cf0lvPQcD8JZFU9+sF5bBYbKi2Mt2LqshhIaPqXYJIF0fyH86LE
-         Y/Nb0YOwHB/goIsnreFWrQU+FOmHVLPvswKbXG8Z0o097yYeF2af3aLxNSLY6vRdydZc
-         mM84GK4X0LV0UJOgQGTBrO9waf/ZYJ6OAVs1/o3LJcwfuP6Iwh8eyQuoAMGI5/fePJkr
-         Tm8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWOmXkWiS158DyRFDc5DTEMnlKnvoQI4mhpWN+x4bNBaAHv5O9bAa4uy0KPBEUeDDrLtCZDeYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yymd6LMxTlibq2I2nUMU6cWkxUuTsMj4/935bNO+pjNIcPFASeb
-	pBuut+gNWh6lohOzFpWNflmNPo501nEpgvE18hOT+pII5oGGxHrqMs6aalZObqdY2XU=
-X-Gm-Gg: ASbGncuwQ/tUrV9wuOnhNQ3KdJe7KnMb6zQkfFKlFhuXRvb44fcY0SXRguV8yYHWUGP
-	m5zjQ07aiOmzvQbJfKfmZpAOoinu21EdNnWDqfv4rR2feijAfDLvxSAnUvn+dbfvLbGoKCSJFXi
-	AudQ4tuLbEOHHEj103Lw3zITK8uEswSxVaoBNRjDcHXhwcVaeSbTZPkHVYQ8JhW//SQ7dC6U0AL
-	BcpQVZUbcBpDpnDCXuGkob1T3NshKQye0gg5yz5wwidLH+vZAPUqzRGDfr2tG+q1sgp2U68tLQW
-	//AKj+dAktQZyQWg5erSrghdFwaURnjoiRmFyT4dxa+cgDmwnmE7nIvI97iw17SGUQBjX/Pws/E
-	tt/n4Zc3/42bBGmXcpgIMkO9PN+YN7m2HDg==
-X-Google-Smtp-Source: AGHT+IG0g1SLvadEUf12b4ySPk41SRpeDT1iDlrUpnNzhsKcTPSGW1DQxXBq4nosWcpEk5JIbSHc8Q==
-X-Received: by 2002:a05:6a21:33a5:b0:252:2bfe:b649 with SMTP id adf61e73a8af0-2602cd27895mr9423338637.8.1757946913758;
-        Mon, 15 Sep 2025 07:35:13 -0700 (PDT)
-Received: from shubhamPC.mvista.com ([182.74.28.237])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54a398cfbasm12001361a12.39.2025.09.15.07.35.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 07:35:13 -0700 (PDT)
-From: skulkarni@mvista.com
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	gianf.trad@gmail.com,
-	jack@suse.cz,
-	stable@vger.kernel.org
-Cc: shubham.k-mv@celestialsys.com
-Subject: Patch "udf: fix uninit-value use in udf_get_fileshortad" missing from stable kernel v5.10
-Date: Mon, 15 Sep 2025 20:04:59 +0530
-Message-Id: <20250915143459.450899-1-skulkarni@mvista.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1757947748; c=relaxed/simple;
+	bh=482u6jxGleysWP98tfgATbmerynE8PjrJfFsYgUUIvE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=sOEqdJJr+AKJzceJizhmcd3eyMu8dl8llVI+DJteS8HomWHaADFi+FvmMIWz2L9ZRSgQiwSaan2AQxuK+x6DmDVy1NfpYunMsGp87sOqJQOiRGy59wKoy2FVC3wJ2cQ22e3dXbjRDL1xKB4WNqB4fcUj+Gyxs15Ft6VdYo1R0HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pdUFRMFB; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1757947734; x=1758552534; i=markus.elfring@web.de;
+	bh=482u6jxGleysWP98tfgATbmerynE8PjrJfFsYgUUIvE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=pdUFRMFBX3y9VNiuv90E5y0K3leDD3HcC/eJn9kyKVtbk8ehXu9KNl5gNs7pefxY
+	 i8UpZPzts8g7x4rObabvMi0AoYCxeqMLw6qfQtvlibuTn+KB59b8N+C5waRiKd3O9
+	 cJ8c5f1YbUE05Mb6mjGzPO212o6bSjeMunCFjH9QdyeJQr9VsNJB0bSw+KMZhREdx
+	 vPZ/W3rHUVYpf3Mo4Ppurz6kyFlpAKvPdYVT9CBo+Ei8wyUgNNzt81iOG/+FLWPbT
+	 uKKhmzR6ECq8WwR2l+Q9bhaym13UPCcvQb/mj4R3IbPgIxMOAlXDTzoxsjS/Q5IYo
+	 GmcIWcFTrfvQ26oOJw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.188]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N3Gki-1uGtKZ3YIM-012td8; Mon, 15
+ Sep 2025 16:48:53 +0200
+Message-ID: <222e3744-554b-44ba-80d2-a40fc4e9bed0@web.de>
+Date: Mon, 15 Sep 2025 16:48:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Haoxiang Li <haoxiang_li2024@163.com>, kernel-janitors@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Andreas Larsson <andreas@gaisler.com>, "David S. Miller"
+ <davem@davemloft.net>
+References: <20250915135201.187119-1-haoxiang_li2024@163.com>
+Subject: Re: [PATCH] sparc: Fix a reference leak in central_build_irq()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250915135201.187119-1-haoxiang_li2024@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:HDsnPt6XmmqvRVP/1lOnoyj4myfgeygTe+D4KNYgmudWzU5jvmG
+ o8VsSczmF4GfmokRiZ53+/XkmSXI1+l5s8TmzCuGCfe+vFQXkEhLHvbe2RDr5WIasTDsL7N
+ PCmIzrFThMCSFJ1yk2AgjzAFlYcdrgoD4F6KCggauaCwnJlqoVjFpgJ+2qF9Vak0Gq6GuTz
+ 2nEWFFSnoB8PUiboSU4qg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:CJifsE4RA+k=;lwfPRGdMa6c366xpf1kmb3zkRUd
+ 7orfJwo0Qa+BQdqazRTvD8cQbVxA6ovwWG46lja59QsCAlhOTzO0ly0Pb/Zk2wUQ8TrM+GW8H
+ tm4g/escRCLn5+p6FrwLQni/m6wpUvvmgRCoYpCJF8XQASXv7pbg+ZeiiC4pxt5yn+b7S2Qcc
+ b+BViIcu1S56czItVbgz5J1qYIf7JMluWFybwMvgMPnt7rANbTQy3XRDLKau7q/N+I5pi4iZW
+ 45/79wwWE//BtygjyecW1WXcNiKitpzrHciCd1tBQB3Lq2Jv2PJUxT4mSCart+G8fK1zOypmF
+ TlEE+gGO34SCH/o9MSh25rQxgJpYkLf3nzN2oCXSPPIVJJ64FPqsrVWYZ/EccD/2Q9uSp3HQc
+ CLgXoxPzxltUNAMj8D6YhEuoJ1bhyomcoVLMGI4+wrFOe15JQPxT6iBG3MBgq4N71VQmsZPF0
+ 6/1xnSJMuf8UDODT6QMRMGKXZumHSzZRfPO6X9oIbrLjggnFPa/FU3L2AswJB/jzs6FAxHe3D
+ yanFAVUvMImCPJjU8BxLx/9ks0gUlR2F+jYH5AlUF2hFYShhYApe5+uWrL+dLN5zj9Dnn8Ui+
+ DZBic4utUxQTCgOSuYJ5qXADa1ANODRZ7rrkC8k0PfavtxMyodIMQSgumhsc5r1zkrb4XMv2e
+ q/FoAODPDPKQ/rxLn5tOrD8lDC873eRpivCLsYiWfiZK8+aq6YTwR20PLUWWy1cUYuvQOHkKD
+ OOUytd/1FP/P4bk//3kvgjIo4+vrSSiiFe5vLqyaewRbxyI6G8bYUHgpkT3tucZwPKgIBB/dM
+ qJYT2fBBLUy94kxu7pIXXcF7mxMrBGUV8Zvu7/kDvYECvdfiZgNbnUuufj1zGM8K2M+YryElI
+ qs7mDG86s9dsDj0+R62k30u3WlmXhCLpIjiMdpL0qFqbw46A/O0A75l3eyft8PgGfMCLbts8J
+ VKujufmSwXlfETDegectxZ71nwO0UqH8/d7EqQfgMMCZa2dMlz/DCUXqxYl+q7D1AGdQUkW4j
+ WX1VuDXfuUa94aTQ0BRkv6oqXXIFtIJmKgJXGuwsucFFQeAcyq1EouJaIshgpyoDLhBZ9ukeW
+ ctMSBzK1ANaxzwehqKwG94RA2JIyRrg0YXQnD4cORTCFbJniD5Tq7myusR4MhXefdPoqGAHSd
+ S8Lniy+TjOYoBQ61d99XD7U08S7q6U/zIQ7C4ux74UdjlgGRMEjAE8T0QjGGuCv1W8Ij7z4Ss
+ j8VlZzom3LFvdKUTznEmgNco0MbFR6dBju1x+V9ycpZq+/YxTzlD7T6Tsq8d+gHJgKiBQXgLE
+ 5/sYDzvCDbo4ShuIJg8cSoBAqDJk9RGlZ+n4bs6M+8KSFCnhEyd0OkeIxj15SxpLrlx0KQgKD
+ rLJmKUVs9wNNCACSQQnHEOAGnIAzmBbs2SzKaQHFIDtIMlm+2NOmfES/7LnN3D6uiN84kclyt
+ FqWcViDvX2sijtVjgkmj9OwxYYYQSjmO4b6LBZfRhC1UgpfML5P3EQVKY960yi8eGK8UAspkr
+ K1iWvo1mhz/WdJCN40YHbs2gPRgrV5k12mVsXzjt/0ELc3iEx8nDCIPbxJi6x1HCS/YRWwSAY
+ J6CnDnRFQDq3BEPjz7KwupOA/3CwIANIQS1Or+xrSXyTubvMHQv2W88Yoo0ynDpBCDQNsLA74
+ o83NwoO/jtKpoJ4fD7sA9BkDh+cpizhk9J3HP0phxrSzhf44nXGccDo+mEnbRukcylFAZxK/K
+ RWrLfj2M1spWfyJd/lJbc31lhVKQBj7AOa4IHpSnUJfVlAeIFRlgafqPUmQ9a4kLQqV7HQmtX
+ DbxuTTtv2EzdWPHiKUnYeDFyPRQ0Cl2YmW41m88Qcj7JPMQRQyJLSU5fBulaWOHbA5lzZqvLN
+ /L9nca42K0Lo71jr3G/Nhs0zZHNFPGq2MoFhAXzXF17dqsDmH9+RaIInXvD7pD+sI/Q1GL+k5
+ rWyDKGLGw2A1X2KaZ516LjlJoTok6exVEeir8ZX9UYxVK9p0mfe61a7zCr2R17gTWsPlBAanx
+ 43ihN5TZvjQJyejit+tm20Op4LCQd77S00LhaUD9lJLLBV7RN+zeKYTsvOhQ7t1x4t3xac+LF
+ IPdkFVK380hoZuCJccMoGl4sZaL9cl70lLXJX9qRpW/Pz64X90rYkbP3NQcBmdDlOvqQlMtJ4
+ XdTh2ds6dJKf12S4ahRIgSSHM4k5eojiA2CG2SaKSVGri2RHqA1RCLRS029SLELZX3MNthufw
+ Rji1IlBNnO7RTrkoaWEdPNKZJddnDYWgkISeTtM6AfBQEyzTWqbNcLhEZxTIdfh0Zud/PYhDg
+ piPhSI6EyPB6Kwy/B5RqgVjKTSNPgIEfPm/XkAbjkQ4qnoNmXo5gfxxkSUQNObxKQyjSIg6TO
+ GeeMG52EJxKCKZkJtRz4RoERst8pXw325jHylx7laMiDT94El/4ZMUWIY9su//FrpG34h1EEi
+ WNvH/M1Jk4wlvfvcnpeWbK/8BbZDWO4mdOjgXOuR7KJhhq63hBKZHQvsj8MeB0AiK4qR6k9yz
+ TDnaeLuKKrwbwdn1hk9uEcSpq/CtIjjnP45j/HtYl9LZQD7gKiEwZRpN1VBaZDofvh9yvszSC
+ vBZtJjTm2DTB28HUKvtbHMeDYxPgmzsksfSC1jaMBL0UDQguwuKWQooyGz1CHTXfyQ+Nq3c+1
+ Jw7e+6yqX5a/dSjocgh5YcGXQ9YLJknUIXjEKoMwySZTcRbVtIoVpBHIv3aJJOduhG4xkUwSA
+ 40F6+dAqy5m2QsClIj0j01H9zG/uDKTlXXk53SDiInihKssczyDETvkrieF6XhSlH/6vsH/Ya
+ 0MTMHzvspxii92cGiUbx7XTE3sSO1Fx2dO8y17wGirAoU/n6IRX++Wp4ovHca8A8AcfRwrYgR
+ EpVXIJIzeRg6j38R4OQANieM5xRwsJXpUp6qKNb052cOqd22Y3F7lzMXh5VxxMe/4c1cj/0Vz
+ bPt0mww7Q69p0WHRng30F36toYgNuBwbEykSGeDT9byvL5mQnBZcEkk9GndkgI7UjoXG+xNAQ
+ SqZqvF9DXU/kTKC8HygGlOqPBzQ9IlILxeg6mg7pybKHb17jnBDCZrN/xLR4sSvytBM5HEVkY
+ 4L99SKod1QxOFNmJNJn/gBgXnOFYFabHGPfVj/xc/EaJhaia6rB1IfOz/3XFDjZpDwNWnKuMY
+ mqL0cbXqyCTNH2+HWNgbjrKBOk9q78fUyk5/Scn2hcDB393luQud3nc+Dlbb0iXgzEMg2LUge
+ LJmo4LU6omFrOqHtZNqgPha0Q7Glj96wMOlA0tU+Jvkl/C6ltJJTaISqn8sT9GyQlnJ7GXQMf
+ mssN0XnRbTNlCY1T1B1pmcfTyeXjx47SJhf9PrmSJmLTFKxTrVy5XsUOtJdXD/toUFLLaZDhz
+ ShiUav537zfpfc6ZGQKaiY3JZC4qZJqfDFNTJxstC42Avcc94XKvQmtPUbohOA7XdcK6Kqbqx
+ NUZ1Nkhn3WofvAB+rnzLwmQqONcrHP5h0zuqzojnT4fWgr3tvpoiLpSIX+ELzM3F4VAu9vjNy
+ PCR3Pza3DPNPkUFpflSLRdepWgrM0Wk5VduKHED4zYvBR6tA5Xb53tA8hP/WfhIhZlcL8Kh+q
+ DXwHHpxCDkYFD7qD/W1d3Q/bY6iq6oOwp2XBOr7G6CApwLXPcaopbjlx/UyRQ3eXNZ7fAnBlx
+ KG5kopOTiK+kInDs+4CoL6AAaykVDTYrsCv0jJfUU6uLcZCGCm8yfRbciGtQneMq904E5VxOo
+ TF9KNe8s6PN8RZu1cqEx/j5STpPlzt2hSN0oB92QU0wAkG1qSjqGBgLcRSsCmyM4qPkY4CjDI
+ dXNZ6LyNxYZz5GkgAOJm7xuMSoA5ZOhwXrfal2bARqceCFThbXj8V7/AIFi5jaIAifqfwLkMn
+ /a23Q4WsW2wUsdJm3uMNfADkZrUF+W6EibpJFv9uJZUYj9eyrDt3+Z6jQbw8e3THMCUVx/GKY
+ w9vQvzULMRgRvQrqPBcTpZb0QWjIM/y0qryakuT58cpzQ4ROqlr9O7OzSmwzEzBFHY6+e0eOY
+ hNV8Rv2MrfjJgRkQvRi2JAchRtAG1I9fIzIWDV3No9vDPdRuWQqPUg4zHESJ8kY44VfULmPS+
+ 1LmMDSHlqJQ1W46oDO6S7kaDQxTbdaqS5K87gYmlF0SQlZZymyW5q+omJ2Ki8A4V7hhtWXFri
+ 5Hltg7tnRcr35FvHadxhaSYMxltkMLHbeNx3qJTy6NyKS2sDmiVjBuKezif9EfJMYliTiD+ql
+ vrTjB8ImvNjfWY2gp6k7wQcv7fIE+2mK4ouKnk0GMu8sRAr3WRVzyh1t8LghaXY/sUg1f7GYD
+ iizbDATMdLhr2S4ToCCnwRjzejCB0yM4VAMokyBP6/qUkZUUYsEbylI2y0u6BF5FYqfNN8w3w
+ xAv09WbV/cVgTKdry4M1ZlZ1be1rqJ6nV1xsS9JQUGI7Qsby85D6eXDGD9hbQ5wArono6eUOi
+ e5Pc3ko6/K1fyJm13ynI0KoOg65oi+ObT2oFKlruvwnFREv+m5/tgnGmt8MCpCI7qIcG08xqC
+ t/UD+e4zW9V4NlX5xMzXXo9jYdRe4HDqSl/lkpT4+GrR6oq9iBKLRGlUAjWoDEdszBrD+gqSw
+ cZl1LYY23fZy//xPQkQ3qtVm2TAepEvoPcKsskzg036YQiWJmZ8hfy97Ekbxk7D1V5eqd0Jx/
+ VczGugJU9DXghf0q4iTW1BN1CUCteGtaPMfrO4U4stMhMy7ygg==
 
-Hi Greg/Sasha/All,
+> Call put_device() once central_op is no longer needed, preventing
+> a reference leak.
 
-Patch "udf: fix uninit-value use in udf_get_fileshortad" which is commit 264db9d666ad in the mainline kernel, fixes CVE-2024-50143.
-The patch from mainline was first backported to stable versions 5.15.170, 6.1.115, 6.6.59, 6.11.6. Ref: https://lore.kernel.org/all/2024110743-CVE-2024-50143-4678@gregkh/
+How do you think about to apply the attribute =E2=80=9C__free(put_device)=
+=E2=80=9D here?
+https://elixir.bootlin.com/linux/v6.17-rc5/source/include/linux/device.h#L=
+1180
 
-But later on, this patch was backported into v5.4 with https://github.com/gregkh/linux/commit/417bd613bdbe & into v4.19 with https://github.com/gregkh/linux/commit/5eb76fb98b33. 
-But in v5.10, it was missed. When I looked at LKML to find if there were any reported issues which led to dropping this patch in v5.10, I couldn't find any.
-I guess this might have been missed accidentally. 
-
-Assuming the backport process would be the same as in other cases, I tried to get the backported patch locally from v5.15. The patch gets applied cleanly, but unfortunately, it generates build warnings.
-
-"
-fs/udf/inode.c: In function ‘udf_current_aext’:
-
-./include/linux/overflow.h:70:15: warning: comparison of distinct pointer types lacks a cast
-   70 |  (void) (&__a == &__b);   \
-      |               ^~
-fs/udf/inode.c:2199:7: note: in expansion of macro ‘check_add_overflow’
- 2199 |   if (check_add_overflow(sizeof(struct allocExtDesc),
-      |       ^~~~~~~~~~~~~~~~~~
-./include/linux/overflow.h:71:15: warning: comparison of distinct pointer types lacks a cast
-   71 |  (void) (&__a == __d);   \
-      |               ^~
-fs/udf/inode.c:2199:7: note: in expansion of macro ‘check_add_overflow’
- 2199 |   if (check_add_overflow(sizeof(struct allocExtDesc),
-"
-
-I had a look at the nearest stable versions v5.4 & v5.15 to check for any dependent patches, but I couldn't find a cleanly applicable dependent patch.
-I will give it a try to backport this missed patch to v5.10 in the background.
-
-I am still new to kernel development & mailing lists, but what I know from Greg's other conversations is that missing a patch in between stable trees can generate regressions.
-Thus, I thought of reporting this issue first to the mailing list, as I am not sure how big of an impact this would have.
-
-Thanks,
-Shubham
+Regards,
+Markus
 
