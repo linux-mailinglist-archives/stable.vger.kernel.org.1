@@ -1,171 +1,184 @@
-Return-Path: <stable+bounces-179611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E546CB5756C
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 12:02:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD336B5760B
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 12:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A10633A910C
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 10:02:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5688117D1C2
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 10:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ED62F90C5;
-	Mon, 15 Sep 2025 10:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840CD2FB62F;
+	Mon, 15 Sep 2025 10:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b="aiHspCza"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="H24x3boB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3F6258EED
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 10:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C0B2E6122;
+	Mon, 15 Sep 2025 10:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.83.148.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757930533; cv=none; b=QmFARBUcrd38J3UOotednDdyKaTeuq1TtX+w7voZInPa1aRL3pKuOCeWlYGe88ETfwzS2UcP413uJmqHzYBthTNkI3IDCJIjynkaYQiPo2sO5LLeXogYRdGDN44Qq/xGdluFymBktZBAV74GIA2hW6TLQ0xWBeUhAqTRfeizhn0=
+	t=1757931332; cv=none; b=EmvZiYD4WQ3W2hxA449i3mCGCQ5o1135pnsm6Fy8F/tMgvdhrz+4rwepiN/Eqpc/cvsmQF/fLAoUz7RqFmoKMP+UqHl7KVIgvMGLyMoVnBu1iaZm7B6L9rh41pe9scxoGCHPIrUhEJoMZrIZunYbZZ3XnIlleArZGcCcOly6A1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757930533; c=relaxed/simple;
-	bh=E3+oVjwbyn39N5bbJ8PtDEtoLjERba4fXbVGOjw/WDQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ENCa40Lf20gKhYI5FgiTJjolUq1ImAiGmffroB3g9MtnmKU8A3vYAvX0JHLw7SZWVqd4AJgIHRFYCSjQBU+YsZgET0CARE33zU2AOrQUSbQEqQ3eFSnuJFXg7Q4kOsuYhZ/c0prM6ubcABINouHY/BOYaeOb3MneXgWkb2MkuL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io; spf=pass smtp.mailfrom=layalina.io; dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b=aiHspCza; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=layalina.io
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45dd505a1dfso32528435e9.2
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 03:02:11 -0700 (PDT)
+	s=arc-20240116; t=1757931332; c=relaxed/simple;
+	bh=+gcpMbiu9oLbl6QoezcqlIaQLCZv0/EesdUcLulXk/s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bkTf+Opj2PSzBuycoxfop3AzmS92FdSnLJ2k8epQPEMezJNnixWxrbdVeHlUY9D29la1Zg4ygqQxVT/sSB+JSjTT/fD89h1BvFpBpP8E1UYAuhqLnZHUtTkPmPC5J3bkoRxAc17HUg3H7bb/tnLu6Ca0Pn2WgCFDrIMKfH7PA1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=H24x3boB; arc=none smtp.client-ip=35.83.148.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=layalina-io.20230601.gappssmtp.com; s=20230601; t=1757930530; x=1758535330; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aRVL9IUAAqgHrjK9nkhZ1Oduj9r/xQ7fhJ7EmcfoG/8=;
-        b=aiHspCzalk7rtf1PwXf86Uny47ZFswkpGATv2fmnFHHPUh76nA3cr3kXBJmbIAauLW
-         bGflJwF4qDjLEl4T4l7QXxRhAP4W7tL8xjlOJSuRnHfe5w3/10NeGldnlke6hcaOHzi3
-         E9Crf32imTfbeIWf6yJLSptDEzIHH7ipE7rmcaxR1RptzRVdtkbK/B1CiumIjGMhVrEQ
-         8trowDztboYB7tcdrENMGFQNO18LcJfBwl/CAc8Vgb3NTYZdaRYvLHTes9mo5T373tIa
-         7VSnxARPM34RUI3ACoO92V2olg1+ZCqRveARdwgz3NeT9R/3Sp+df6rjV5xKHzTgJ+Yh
-         K3Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757930530; x=1758535330;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aRVL9IUAAqgHrjK9nkhZ1Oduj9r/xQ7fhJ7EmcfoG/8=;
-        b=dApW/8cHqUkZUDbYFGbSpZcVSWQOcW0YI+cv+aL9p+oi+xW0bsJL30M7ttq3yh+g+C
-         cCCAYyLAx6mmfgXg6ZCajGp2iJlfGSGNUCXDexT1v2l5VLliEnp7WqOqHiwVevQSnBhu
-         hMLdbOPrG2kL8pzN3xIKj0Rsyn7Pr4wikYSt5sF84ci+cOErZdtfqeA0KcPD+wHUii0c
-         4kV0Oq19tujlug265ETf6MCzGho9RsDc5AqY98V7KfYnM/BsDm971QaVFrHexKEBb8aj
-         wdjPYJJNPpztKnyBwli1UnHA9zKU+WTutGxPhUnAYwfdKKTOQ0PyhpsFtokG8vhepIlx
-         gatA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPnqtRxOXUNW5fNJIYcP0r7/hvDwBVWzgS02KTimIUJuahNqG0DEOZIF2iORqccJFv92BU4HM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz86UgR+COuvtwF3cvYEEP6f1XwoN9dL9ZUOSx5PJLZnheZkYNv
-	HjCBd9FFLVwwI0tVAP2zyY7ooKFTpx2ifqxZXAogLOi57wAKacAw8looQas7bASjxlI=
-X-Gm-Gg: ASbGnctJO/tCpVfqJ91SUVFkh6PoBMv40oTS0PfeZS7QnmhvVbLSDZKRaVtRgc+k6sr
-	PK2gH0pGWv/h2KRrvdKNp/J6Zi4XUccDt3HJT6LdvEACOIiPehdQrLDSJ2VD/6r+TDQESQSkN1B
-	cs70lANXGox+qjXZVWkgE+9GJ9j5sBO63TtbqiX8jgMt2CQgC8ZDlAxihheJ5tzxAZBBsP8DrQc
-	6EC6H4CAGqlFJ3YHeYsVhenOVvEoFAKBTuTWUK76On83SCp3Jq9+WDs82sIDp5HwB1Pzz72TKWZ
-	IJuAe7V7xxUrQK4BCbtmx+ghvJxcRFF0Oq0houmGi+5iHR4A3wDPBVmmF8cs9CwU0Hu2d6LXvfm
-	BtUxoJy7mIOJGwga/e80rHmIwT7fLp2gEiD4YLlFx07sFVp4ABqmItK9aDby0KQDhNcADWS3Ch0
-	DTpQG8YA==
-X-Google-Smtp-Source: AGHT+IFWv6FkVBTnKeZEQb3UM8U1+lQXiSAg03mu+qCRATFWX8WcP+0O2Dka4KG3lOwejUMfLpLyjg==
-X-Received: by 2002:a05:600c:6b15:b0:45d:d88d:9ed9 with SMTP id 5b1f17b1804b1-45f2120568fmr70439915e9.34.1757930529767;
-        Mon, 15 Sep 2025 03:02:09 -0700 (PDT)
-Received: from airbuntu (host86-160-23-239.range86-160.btcentralplus.com. [86.160.23.239])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e9c2954b10sm5957250f8f.50.2025.09.15.03.02.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 03:02:09 -0700 (PDT)
-Date: Mon, 15 Sep 2025 11:02:07 +0100
-From: Qais Yousef <qyousef@layalina.io>
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: cap the default transition delay at 10 ms
-Message-ID: <20250915100207.5amkmknirijnvuoh@airbuntu>
-References: <20250910065312.176934-1-shawnguo2@yeah.net>
- <CAJZ5v0gL5s99h0eq1U4ngaUfPq_AcfgPruSD096JtBWVMjSZwQ@mail.gmail.com>
- <aMQbIu5QNvPoAsSF@dragon>
- <20250914174326.i7nqmrzjtjq7kpqm@airbuntu>
- <aMfAQXE4sRjru9I_@dragon>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1757931330; x=1789467330;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZvQ+c1vVkSnOsX9uWa42mm4Y1xQwU137w0177dY9K94=;
+  b=H24x3boBcu7v1A3/uJTfnOxp8P981JG2swrZSt9XU7DucuDjV3VyLivX
+   4yWT2n2Zj9yQePOQ0ME79SqLNp53SJMacUH3aAwvS1dr7Zg0mJ1/LCMoh
+   QtY315muCAZSL2VP36DBtlJ5NNlJsa5UciTDt/eRwuizOxdLBtLYZ+7J5
+   aw+BQ+X15D+zKthFF1QKCtnVm9ClZvk/8+Dd6sGitJFcMmfvYjcDz9iN7
+   GhqEslj/cYLymWDGCYtu8/jl+z9r2maGO5tIPT3JgEkX8Cwf2SkyM6qWs
+   EgZvM1S5oWOlnNaABvGstPVuYTQ8h1HDPJ+j1ov12k2Wg9BgzLBPU6uD5
+   g==;
+X-CSE-ConnectionGUID: 7V3sTs8+QaOed5oQ3RG/4A==
+X-CSE-MsgGUID: nBUeqQLETPOV8up8YAT6gQ==
+X-IronPort-AV: E=Sophos;i="6.18,265,1751241600"; 
+   d="scan'208";a="2890406"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 10:15:28 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:44557]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.60.76:2525] with esmtp (Farcaster)
+ id 0f51da61-bb62-4199-98c0-c13ee554b8ea; Mon, 15 Sep 2025 10:15:28 +0000 (UTC)
+X-Farcaster-Flow-ID: 0f51da61-bb62-4199-98c0-c13ee554b8ea
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 15 Sep 2025 10:15:25 +0000
+Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
+ (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Mon, 15 Sep 2025
+ 10:15:24 +0000
+From: Jakub Acs <acsjakub@amazon.de>
+To: <linux-unionfs@vger.kernel.org>
+CC: <acsjakub@amazon.de>, Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein
+	<amir73il@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] ovl: check before dereferencing s_root field
+Date: Mon, 15 Sep 2025 10:15:10 +0000
+Message-ID: <20250915101510.7994-1-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aMfAQXE4sRjru9I_@dragon>
+X-ClientProxiedBy: EX19D033UWA004.ant.amazon.com (10.13.139.85) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On 09/15/25 15:29, Shawn Guo wrote:
-> On Sun, Sep 14, 2025 at 06:43:26PM +0100, Qais Yousef wrote:
-> > > > Why do you want to address the issue in the cpufreq core instead of
-> > > > doing that in the cpufreq-dt driver?
-> > > 
-> > > My intuition was to fix the regression at where the regression was
-> > > introduced by recovering the code behavior.
-> > 
-> > Isn't the right fix here is at the driver level still? We can only give drivers
-> > what they ask for. If they ask for something wrong and result in something
-> > wrong, it is still their fault, no?
-> 
-> I'm not sure.  The cpufreq-dt driver is following suggestion to use
-> CPUFREQ_ETERNAL, which has the implication that core will figure out
-> a reasonable default value for platforms where the latency is unknown.
-> And that was exactly the situation before the regression.  How does it
-> become the fault of cpufreq-dt driver?
+Calling intotify_show_fdinfo() on fd watching an overlayfs inode, while
+the overlayfs is being unmounted, can lead to dereferencing NULL ptr.
 
-Rafael and Viresh would know better, but amd-pstate chooses to fallback to
-specific values if cppc returned CPUFREQ_ETERNAL.
+This issue was found by syzkaller.
 
-Have you tried to look why dev_pm_opp_get_max_transition_latency() returns
-0 for your platform? I think this is the problem that was being masked before.
+Race Condition Diagram:
 
-> 
-> > Alternatively maybe we can add special handling for CPUFREQ_ETERNAL value,
-> > though I'd suggest to return 1ms (similar to the case of value being 0). Maybe
-> > we can redefine CPUFREQ_ETERNAL to be 0, but not sure if this can have side
-> > effects.
-> 
-> Changing CPUFREQ_ETERNAL to 0 looks so risky to me.  What about adding
-> an explicit check for CPUFREQ_ETERNAL?
+Thread 1                           Thread 2
+--------                           --------
 
-Yeah this is what I had in mind. I think treating CPUFREQ_ETERNAL like 0 where
-we don't know the right value and end up with a sensible default makes sense to
-me.
+generic_shutdown_super()
+ shrink_dcache_for_umount
+  sb->s_root = NULL
 
-I think printing info/warn message that the driver is not specifying the actual
-hardware transition delay would be helpful for admins. A driver/DT file is
-likely needs to be updated.
+                    |
+                    |             vfs_read()
+                    |              inotify_fdinfo()
+                    |               * inode get from mark *
+                    |               show_mark_fhandle(m, inode)
+                    |                exportfs_encode_fid(inode, ..)
+                    |                 ovl_encode_fh(inode, ..)
+                    |                  ovl_check_encode_origin(inode)
+                    |                   * deref i_sb->s_root *
+                    |
+                    |
+                    v
+ fsnotify_sb_delete(sb)
 
-Better hear from Rafael first to make sure it makes sense to him too.
+Which then leads to:
 
-> 
-> ---8<---
-> 
-> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-> index fc7eace8b65b..053f3a0288bc 100644
-> --- a/drivers/cpufreq/cpufreq.c
-> +++ b/drivers/cpufreq/cpufreq.c
-> @@ -549,11 +549,15 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
->         if (policy->transition_delay_us)
->                 return policy->transition_delay_us;
->  
-> +       if (policy->cpuinfo.transition_latency == CPUFREQ_ETERNAL)
-> +               goto default_delay;
-> +
->         latency = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
->         if (latency)
->                 /* Give a 50% breathing room between updates */
->                 return latency + (latency >> 1);
->  
-> +default_delay:
->         return USEC_PER_MSEC;
->  }
->  EXPORT_SYMBOL_GPL(cpufreq_policy_transition_delay_us);
-> 
-> --->8---
-> 
-> Shawn
-> 
+[   32.133461] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   32.134438] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+[   32.135032] CPU: 1 UID: 0 PID: 4468 Comm: systemd-coredum Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+
+<snip registers, unreliable trace>
+
+[   32.143353] Call Trace:
+[   32.143732]  ovl_encode_fh+0xd5/0x170
+[   32.144031]  exportfs_encode_inode_fh+0x12f/0x300
+[   32.144425]  show_mark_fhandle+0xbe/0x1f0
+[   32.145805]  inotify_fdinfo+0x226/0x2d0
+[   32.146442]  inotify_show_fdinfo+0x1c5/0x350
+[   32.147168]  seq_show+0x530/0x6f0
+[   32.147449]  seq_read_iter+0x503/0x12a0
+[   32.148419]  seq_read+0x31f/0x410
+[   32.150714]  vfs_read+0x1f0/0x9e0
+[   32.152297]  ksys_read+0x125/0x240
+
+IOW ovl_check_encode_origin derefs inode->i_sb->s_root, after it was set
+to NULL in the unmount path.
+
+Minimize the window of opportunity by adding explicit check.
+
+Fixes: c45beebfde34 ("ovl: support encoding fid from inode with no alias")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: linux-unionfs@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+
+I'm happy to take suggestions for a better fix - I looked at taking
+s_umount for reading, but it wasn't clear to me for how long would the
+fdinfo path need to hold it. Hence the most primitive suggestion in this
+v1.
+
+I'm also not sure if ENOENT or EBUSY is better?.. or even something else?
+
+ fs/overlayfs/export.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index 83f80fdb1567..424c73188e06 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -195,6 +195,8 @@ static int ovl_check_encode_origin(struct inode *inode)
+ 	if (!ovl_inode_lower(inode))
+ 		return 0;
+ 
++	if (!inode->i_sb->s_root)
++		return -ENOENT;
+ 	/*
+ 	 * Root is never indexed, so if there's an upper layer, encode upper for
+ 	 * root.
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
