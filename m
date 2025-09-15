@@ -1,188 +1,126 @@
-Return-Path: <stable+bounces-179662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9661CB5885C
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 01:40:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9E5B58863
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 01:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E9D27A4DC2
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 23:39:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D7EF1AA6C8A
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 23:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96822D839E;
-	Mon, 15 Sep 2025 23:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8152DA76C;
+	Mon, 15 Sep 2025 23:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVgb0isJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AnCtHntQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804751A267;
-	Mon, 15 Sep 2025 23:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062982D238A;
+	Mon, 15 Sep 2025 23:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757979634; cv=none; b=Rwg8lTFNlWq4pJIxaarPgw/R94obmIb6N9nni4S3kODo1PSPSmYQcYOzCCLOk5t3Wekt7ihfKK+VfSIvBdDk2qQlMEa+eBe9/6l1Vp+E43UYX9srxRYjwnFXWzYVg0nX87dxWupJ9o2U7rJIDIVMqOXcUJprXqrnP8el1ugrBkY=
+	t=1757979770; cv=none; b=Vof92Ffcf1yBKPl7rkOnLDPEpooxvgdRWkP8y3Yt0I7K/YsyKS+OsXGnDYuFrFfp5kMWQPE1W9CpZvHgWoPJS/4vCJz80WndeHneOiUtEVq5V1KsKFKGLJop1GLyx0r02dmHhXwso4FuI8Gz36eRnnGIEfUrNHf8ZtNf3T2FwNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757979634; c=relaxed/simple;
-	bh=s9gaIDNQpFpJ/NdxlfswUF29RfCQahH7tUCg3I4JnyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JK8OTvfHLi7c9e3r5OWlaj4gn4YZJn9niOARIy2xo72V0t6yHcIiZjjozonipOYLgBnD1IlAG6tI8a4Sy0+5M6t8nOodV054o6ez/fbC3pyj5GXn76YFv9eMeiTzvU97k9ykXCBkLH5GV3YQ+Qv/aK7F5/XEpQ7LVOJGhTAVwfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVgb0isJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05807C4CEF1;
-	Mon, 15 Sep 2025 23:40:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757979633;
-	bh=s9gaIDNQpFpJ/NdxlfswUF29RfCQahH7tUCg3I4JnyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bVgb0isJGxvzR3J80oZ8JoYgxZZVUmvmpygyo52TIHQQEXn9rjJrIHVI2Vs+dQBz6
-	 3tIq4ZUEyfmI8FQOdq57rbD26mbxXZfY1f15yRLpAiUxA3mGfRGMqDhuFPn3TBFm03
-	 VayAmkie+yWjJQPlUy6wAkREF5mmz8/MBtZsAG9WH/o8K167Ev+Gt9lLbuWvipcujZ
-	 bjpTZfapJqCRoTdxj1dFroHwEgAjLx2ZFSX1lV6CrZ2W9qSfLP+weoWb5nX9HafH1L
-	 WrbBWSvCcj4KBNI+db8qbMXn6AliwzYV9ouDPI0RgV0G4skDiuglaW/XGBDTHM8C80
-	 UmLqgcIUwMhMw==
-Date: Mon, 15 Sep 2025 16:40:32 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Carlos Maiolino <cem@kernel.org>, linux-xfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH CANDIDATE 5.15, 6.1, 6.6] xfs: Increase
- XFS_QM_TRANS_MAXDQS to 5
-Message-ID: <20250915234032.GB8096@frogsfrogsfrogs>
-References: <20250913030503.433914-1-amir73il@gmail.com>
- <20250915182056.GO8096@frogsfrogsfrogs>
- <CAOQ4uxg4eBMS-FQADVYLGVh66QfMO+tHDAv3TUSpKqXn==XdKw@mail.gmail.com>
+	s=arc-20240116; t=1757979770; c=relaxed/simple;
+	bh=jZaEOziBglpDbUCJBMp8aBXcUFCv9ylBZH717KvszyM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ih9CbCLkMQUeTkPBRFa5j7M9VVwUxs1TeHYg7JYkrYIkNckcZe9RxLZr4s1ulRn/BgeQlSl+krxPjyAueaZ36Y+jkkd1T+iGyX3fbSJw9nrFS4BrJufrzhUIZdVzTBXa8M0AIh9eha1tCWeo4MQwRF3IDRJJ4iPtOMSH4j3rDA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AnCtHntQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EDBC4CEF1;
+	Mon, 15 Sep 2025 23:42:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757979769;
+	bh=jZaEOziBglpDbUCJBMp8aBXcUFCv9ylBZH717KvszyM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AnCtHntQV2wzjjVOmP7rYmJTYXrxHdpQNyC9lYZE3PU+JqtgKPEoQINB57cW+RvAU
+	 N6E1+flXLdPkwdQGvd/3aobMeQFKOVIOXF4PA41hCKK4Dgw/SHpKYvv9l8NbY5c2zx
+	 cF3Nj4j1aHnWP8rfbcVJEr79OfpmS7rIrYZNvvTU=
+Date: Mon, 15 Sep 2025 16:42:48 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>, Ritesh Harjani
+ <ritesh.list@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Wei Yang <richard.weiyang@gmail.com>, Aboorva
+ Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Giorgi Tchankvetadze
+ <giorgitchankvetadze1997@gmail.com>, stable@vger.kernel.org, Joe Perches
+ <joe@perches.com>
+Subject: Re: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in
+ mm_struct during fork
+Message-Id: <20250915164248.788601c4dc614913081ec7d7@linux-foundation.org>
+In-Reply-To: <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+References: <cover.1757946863.git.donettom@linux.ibm.com>
+	<4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxg4eBMS-FQADVYLGVh66QfMO+tHDAv3TUSpKqXn==XdKw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 15, 2025 at 10:20:40PM +0200, Amir Goldstein wrote:
-> On Mon, Sep 15, 2025 at 8:20 PM Darrick J. Wong <djwong@kernel.org> wrote:
-> >
-> > On Sat, Sep 13, 2025 at 05:05:02AM +0200, Amir Goldstein wrote:
-> > > From: Allison Henderson <allison.henderson@oracle.com>
-> > >
-> > > [ Upstream  commit f103df763563ad6849307ed5985d1513acc586dd ]
-> > >
-> > > With parent pointers enabled, a rename operation can update up to 5
-> > > inodes: src_dp, target_dp, src_ip, target_ip and wip.  This causes
-> > > their dquots to a be attached to the transaction chain, so we need
-> > > to increase XFS_QM_TRANS_MAXDQS.  This patch also add a helper
-> > > function xfs_dqlockn to lock an arbitrary number of dquots.
-> > >
-> > > Signed-off-by: Allison Henderson <allison.henderson@oracle.com>
-> > > Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-> > > Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-> > > Reviewed-by: Christoph Hellwig <hch@lst.de>
-> > >
-> > > [amir: backport to kernels prior to parent pointers to fix an old bug]
-> > >
-> > > A rename operation of a directory (i.e. mv A/C/ B/) may end up changing
-> > > three different dquot accounts under the following conditions:
-> > > 1. user (or group) quotas are enabled
-> > > 2. A/ B/ and C/ have different owner uids (or gids)
-> > > 3. A/ blocks shrinks after remove of entry C/
-> > > 4. B/ blocks grows before adding of entry C/
-> > > 5. A/ ino <= XFS_DIR2_MAX_SHORT_INUM
-> > > 6. B/ ino > XFS_DIR2_MAX_SHORT_INUM
-> > > 7. C/ is converted from sf to block format, because its parent entry
-> > >    needs to be stored as 8 bytes (see xfs_dir2_sf_replace_needblock)
-> > >
-> > > When all conditions are met (observed in the wild) we get this assertion:
-> > >
-> > > XFS: Assertion failed: qtrx, file: fs/xfs/xfs_trans_dquot.c, line: 207
-> > >
-> > > The upstream commit fixed this bug as a side effect, so decided to apply
-> > > it as is rather than changing XFS_QM_TRANS_MAXDQS to 3 in stable kernels.
-> >
-> > Heh.  Indeed, you only need MAXDQS==5 for filesystems that support
-> > parent pointers, because only on those filesystems can you end up
-> > needing to allocate a xattr block either to the new whiteout file or
-> > free one from the file being unlinked.
-> >
-> > > The Fixes commit below is NOT the commit that introduced the bug, but
-> > > for some reason, which is not explained in the commit message, it fixes
-> > > the comment to state that highest number of dquots of one type is 3 and
-> > > not 2 (which leads to the assertion), without actually fixing it.
-> >
-> > Agree.
-> >
-> > > The change of wording from "usr, grp OR prj" to "usr, grp and prj"
-> > > suggests that there may have been a confusion between "the number of
-> > > dquote of one type" and "the number of dquot types" (which is also 3),
-> > > so the comment change was only accidentally correct.
-> >
-> > I interpret the "OR" -> "and" change to reflect the V4 -> V5 transition
-> > where you actually can have all three dquot types because group/project
-> > quota are no longer mutually exclusive.
-> >
-> > The "...involved in a transaction is 3" part I think is separate, and
-> > strange that XFS_QM_TRANS_MAXDQS wasn't updated.
-> >
-> > > Fixes: 10f73d27c8e9 ("xfs: fix the comment explaining xfs_trans_dqlockedjoin")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > > ---
-> > >
-> > > Christoph,
-> > >
-> > > This is a cognitive challenge. can you say what you where thinking in
-> > > 2013 when making the comment change in the Fixes commit?
-> > > Is my speculation above correct?
-> > >
-> > > Catherine and Leah,
-> > >
-> > > I decided that cherry-pick this upstream commit as is with a commit
-> > > message addendum was the best stable tree strategy.
-> > > The commit applies cleanly to 5.15.y, so I assume it does for 6.6 and
-> > > 6.1 as well. I ran my tests on 5.15.y and nothing fell out, but did not
-> > > try to reproduce these complex assertion in a test.
-> > >
-> > > Could you take this candidate backport patch to a spin on your test
-> > > branch?
-> > >
-> > > What do you all think about this?
-> >
-> > I only think you need MAXDQS==5 for 6.12 to handle parent pointers.
-> >
+On Mon, 15 Sep 2025 20:33:04 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
+
+> Currently, the KSM-related counters in `mm_struct`, such as
+> `ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are
+> inherited by the child process during fork. This results in inconsistent
+> accounting.
 > 
-> Yes, of course. I just preferred to keep the 5 to avoid deviating from
-> the upstream commit if there is no good reason to do so.
-
-<shrug> What do Greg and Sasha think about this?  If they don't mind
-this then I guess I don't either. ;)
-
-> > The older kernels could have it set to 3 instead.  struct xfs_dqtrx on a
-> > 6.17-rc6 kernel is 88 bytes.  Stuffing 9 of them into struct
-> > xfs_dquot_acct instead of 15 means that the _acct struct is only 792
-> > bytes instead of 1392, which means we can use the 1k slab instead of the
-> > 2k slab.
+> When a process uses KSM, identical pages are merged and an rmap item is
+> created for each merged page. The `ksm_merging_pages` and
+> `ksm_rmap_items` counters are updated accordingly. However, after a
+> fork, these counters are copied to the child while the corresponding
+> rmap items are not. As a result, when the child later triggers an
+> unmerge, there are no rmap items present in the child, so the counters
+> remain stale, leading to incorrect accounting.
 > 
-> Huh? there is only one xfs_dquot_acct per transaction.
-
-Yes, but there can be a lot of transactions in flight.
-
-> Does it really matter if it's 1k or 2k??
+> A similar issue exists with `ksm_zero_pages`, which maintains both a
+> global counter and a per-process counter. During fork, the per-process
+> counter is inherited by the child, but the global counter is not
+> incremented. Since the child also references zero pages, the global
+> counter should be updated as well. Otherwise, during zero-page unmerge,
+> both the global and per-process counters are decremented, causing the
+> global counter to become inconsistent.
 > 
-> Am I missing something?
-
-It seems silly to waste so much memory on a scenario that can't happen
-just so we can say that we hammered in a less appropriate solution.
-
---D
-
-> Thanks,
-> Amir.
+> To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0
+> during fork, and the global ksm_zero_pages counter is updated with the
+> per-process ksm_zero_pages value inherited by the child. This ensures
+> that KSM statistics remain accurate and reflect the activity of each
+> process correctly.
 > 
+> Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+
+Linux-v5.19
+
+> Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+
+Linux-v6.1
+
+> Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+
+Linux-v6.10
+
+> cc: stable@vger.kernel.org # v6.6
+
+So how was Linux-v6.6 arrived at?
+
+I think the most important use for Fixes: is to tell the -stable
+maintainers which kernel version(s) we believe should receive the
+patch.  So listing multiple Fixes: targets just causes confusion.
+
+Maybe the -stable maintainers parse the "# v6.6" thing, I don't know. 
+But providing them with a single Fixes: recommendation is a good thing
+either way.
+
+So can you please revisit this and suggest a single Fixes: target which
+clarifies your reccomendation?
+
+Thanks.
+
+(Cc Joe.  Should checkpatch say something about this)?
 
