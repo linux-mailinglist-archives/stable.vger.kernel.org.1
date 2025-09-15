@@ -1,160 +1,121 @@
-Return-Path: <stable+bounces-179644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC855B58268
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 18:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E597B583F2
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 19:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C68A208584
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 16:46:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD441698A1
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 17:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB79521FF25;
-	Mon, 15 Sep 2025 16:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AEE278E7B;
+	Mon, 15 Sep 2025 17:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zV/k/JN+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJSf30fI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F7E21D585
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 16:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A9D101F2;
+	Mon, 15 Sep 2025 17:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757954754; cv=none; b=qBd+DDOJvJF1B5zPPMS8nKP++AeaGEEi1egXDSuN4YPzpOPjCsTVCSjWBy3EblB6SDJPPM1aQHXz6XomSxR2Ag4bdbOJPG/dZ3jI7fdmbkA/h4oxTLlBj8TxIMRWvctU0Oxw/rqoSluGIjqjQeN8IRzoh8sR5Qa9fFO6JigCPvo=
+	t=1757958561; cv=none; b=jKkQW0ys3K0YKmF7j0feOUenk8qNlEKWeu2WhK1+Oaaug2DVB7h6okwlb+zMeaKI9z/rK213bhY/P4cM7pjkgC1s5lqJ6uLZBGBO883FXn6wN1gGN5Au6eDsq8/TzcDkgc5F9aHhaoOd2CpyNEgyRBew//l9yfyIjMlABRlv3Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757954754; c=relaxed/simple;
-	bh=vPqrFhzsoS56yk34gogqjEXAKiAKcL51MnvFt/0vTxk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kJ81oU1Fmdcf5696EukggPVB/j0Z1/bw/RSel0R1qIuOy6w2TgdhsnTRcZd7FiO9wDYf6mWVXq9JRU6a8RSnBCTopQ+LiKbH0CTjemvFSwom30DGyvS5qfLszHfQYr9cknmyWfG5UpN/RFgClxJlFhrVuBn8/VPI89CxBOYoohw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kaleshsingh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zV/k/JN+; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kaleshsingh.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-244570600a1so48031275ad.1
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 09:45:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757954752; x=1758559552; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Dh1IS3JVHOf86RTcG+zb9g2w/Ys+63vuY/qru+PreQ=;
-        b=zV/k/JN+MEs5mTleaLd/vdGTldfkvMs9MFHiB7jKUhkcINpmK79TDVqdPin9BNv2o9
-         VmNHWv406Dj7sIufglyt8C8zDiLy6lRB1+z8X869/5iTJjhJzWOfVuWbS6XBK4sgews8
-         9u8DrFyTcvo6UUdgtRbWBQ26Mv6zghSrdvgX/pP/eGJnD6rObeFKl22e3foOx3Y+9LMI
-         k2kwvqw+ODGe0A4rAoQ80qoiSJFar4+n+1vByHVOeso+429EXL//YmjNqu79XREIRQ9+
-         bgAq4lqrkPTv8udsm19RkT16QSMiF+UZ7wUDgdnBMrOD+7rjvVUBridRM4Ef9TB4Idya
-         t6lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757954752; x=1758559552;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Dh1IS3JVHOf86RTcG+zb9g2w/Ys+63vuY/qru+PreQ=;
-        b=n/H3BUR49oEtO7lPj/zQa0v8/bd7TT0+MM4hZTvr7JHA5DqzmywStwwLsHNjHt6ltd
-         slAAjNMV4KkIlDFGLP3de1QW3kqecnfcMciwVqQWfXhHTjDfAUtUSyUbBMd0fPasOmjW
-         qsffifc0QTip8bCa6AjfAa2PbD0XwnwtYjduzEe6NZDezMcNz0oYrIOV+Hen4xr1LvWB
-         +eyxLGxt7BW0QClZdNl6AqXucu21vFmFk3LRLVSdaBvVWz5OykmG1mmq1b2ZOxFd2yot
-         pP/NMBa/fqFaphqkGOoX3AF7tD+v4/mCWoHlMKMjLyuaD3+DduHIv3HlKhv+c6yGSqfF
-         OdHw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxC4BbT4sjSJ2LQr0m7vmFGYsZZWK2cIyLkVEhzXnv46lt4PEMNvhaDXXFp1nwIfXT/l51geg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbgaTpaaUbo5qw33A8s4iK/cPbVqMjD+hDcgvliFY5f2h6skkg
-	4halZpVKgSI43OMgEe2hqflxfvoxKHhL5jvygrUKT+Ilv/eeeiaA0DXmwMyffVhoxV4FwOWl3Ks
-	GED2Pk1iCO/EjvlqCEWWj0NFgYA==
-X-Google-Smtp-Source: AGHT+IETeFsnzxOgNLMCiDHUaYpnu2vRB/Fb66R7+b7xgDA1s+PPQqB4+bTMKY9LvQ479LuxEWFmKDI75ZPJsp8Xlg==
-X-Received: from plkb5.prod.google.com ([2002:a17:903:fa5:b0:264:7b3c:4fe4])
- (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:dac2:b0:24b:1585:6350 with SMTP id d9443c01a7336-25d2ac3c545mr185756655ad.11.1757954752355;
- Mon, 15 Sep 2025 09:45:52 -0700 (PDT)
-Date: Mon, 15 Sep 2025 09:36:32 -0700
-In-Reply-To: <20250915163838.631445-1-kaleshsingh@google.com>
+	s=arc-20240116; t=1757958561; c=relaxed/simple;
+	bh=oqOMkDLjrDehn7S/LFap64KzjTGq4HPu0TK1qIK27T0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cU69NdlMwE1QRRqLQu4HvwleYeAjv3TLPsOqkcxJDPZn+Yrrc7+G86PRUt7o0tD6uinBADG9qUZw/XRLTtFP8CdK3/pa3B1LYHg2ReKH8eupiGfzsBJaTMn0W3MfoAukCABGm45Vo5w8JRQorNm6tNOdrftppkPp0LYUZzkIcPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJSf30fI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E23EC4CEF1;
+	Mon, 15 Sep 2025 17:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757958559;
+	bh=oqOMkDLjrDehn7S/LFap64KzjTGq4HPu0TK1qIK27T0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gJSf30fIVQ5uENV2J7AWHrMcZSXJ/asmHxhqPi7jeCK5keTs14GXGBCja+nIx/p1R
+	 M7cULPglnFeaI8rMKcZzYpxIFtjw/2w9xG7q2XsOZ/C/uAiItwup/itWAkIu0GmwWl
+	 s9009sYHQXMcu8qRqnVqmmuAh1guQDTdvIliXJzimGYObOtIjRHix/lplHZQSYUmCA
+	 Alg5XOfF423Wj36CCpEE9HQBCVeRjn/gFXBnf9G+nnWOYJ6/T65p8CKWMZyNtRMp7F
+	 OBn1yVKtjmKEgc73OUdnHRfYy+nvqhRpHSGMowu07Gwibcq8nbgSXL6OP6VYajVg8U
+	 mVULXJ3u8MvOg==
+Message-ID: <f6c18910-d870-4fa7-8035-abc8700aef2b@kernel.org>
+Date: Mon, 15 Sep 2025 19:49:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250915163838.631445-1-kaleshsingh@google.com>
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250915163838.631445-2-kaleshsingh@google.com>
-Subject: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
-From: Kalesh Singh <kaleshsingh@google.com>
-To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
-	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
-Cc: kernel-team@android.com, android-mm@google.com, 
-	Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
-	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
-	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpiolib: Extend software-node support to support
+ secondary software-nodes
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij
+ <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250913184309.81881-1-hansg@kernel.org>
+ <kpoek6bs3rea4fl6b4h55grmsykw2zw2j6kohu3aijlabjngyc@7fbnoon3ilhw>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <kpoek6bs3rea4fl6b4h55grmsykw2zw2j6kohu3aijlabjngyc@7fbnoon3ilhw>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The VMA count limit check in do_mmap() and do_brk_flags() uses a
-strict inequality (>), which allows a process's VMA count to exceed
-the configured sysctl_max_map_count limit by one.
+Hi,
 
-A process with mm->map_count == sysctl_max_map_count will incorrectly
-pass this check and then exceed the limit upon allocation of a new VMA
-when its map_count is incremented.
+On 15-Sep-25 3:21 AM, Dmitry Torokhov wrote:
+> Hi Hans,
+> 
+> On Sat, Sep 13, 2025 at 08:43:09PM +0200, Hans de Goede wrote:
+>> When a software-node gets added to a device which already has another
+>> fwnode as primary node it will become the secondary fwnode for that
+>> device.
+>>
+>> Currently if a software-node with GPIO properties ends up as the secondary
+>> fwnode then gpiod_find_by_fwnode() will fail to find the GPIOs.
+>>
+>> Add a check to gpiod_find_by_fwnode() to try a software-node lookup on
+>> the secondary fwnode if the GPIO was not found in the primary fwnode.
+> 
+> Thanks for catching this. I think it would be better if we added
+> handling of the secondary node to gpiod_find_and_request(). This way the
+> fallback will work for all kind of combinations, even if secondary node
+> happens to be an OF or ACPI one.
 
-Other VMA allocation paths, such as split_vma(), already use the
-correct, inclusive (>=) comparison.
+IOW something like this:
 
-Fix this bug by changing the comparison to be inclusive in do_mmap()
-and do_brk_flags(), bringing them in line with the correct behavior
-of other allocation paths.
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index b619fea498c8..1a3b5ca00554 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -4630,6 +4630,13 @@ struct gpio_desc *gpiod_find_and_request(struct device *consumer,
+ 	scoped_guard(srcu, &gpio_devices_srcu) {
+ 		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
+ 					    &flags, &lookupflags);
++
++		if (gpiod_not_found(desc) && fwnode) {
++			dev_dbg(consumer, "trying secondary fwnode for GPIO lookup\n");
++			desc = gpiod_find_by_fwnode(fwnode->secondary, consumer,
++						    con_id, idx, &flags, &lookupflags);
++		}
++
+ 		if (gpiod_not_found(desc) && platform_lookup_allowed) {
+ 			/*
+ 			 * Either we are not using DT or ACPI, or their lookup
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: <stable@vger.kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
----
+That should work too, but if there is an OF or ACPI node it should always
+be the primary one. So my original patch id fine as is.
 
-Chnages in v2:
- - Fix mmap check, per Pedro
+Either way works for me. If you prefer the above approach instead of my
+original patch let me know and I'll give it a test-run and then post a v2.
 
- mm/mmap.c | 2 +-
- mm/vma.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Regards,
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 7306253cc3b5..e5370e7fcd8f 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 		return -EOVERFLOW;
- 
- 	/* Too many mappings? */
--	if (mm->map_count > sysctl_max_map_count)
-+	if (mm->map_count >= sysctl_max_map_count)
- 		return -ENOMEM;
- 
- 	/*
-diff --git a/mm/vma.c b/mm/vma.c
-index 3b12c7579831..033a388bc4b1 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2772,7 +2772,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
- 		return -ENOMEM;
- 
--	if (mm->map_count > sysctl_max_map_count)
-+	if (mm->map_count >= sysctl_max_map_count)
- 		return -ENOMEM;
- 
- 	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
--- 
-2.51.0.384.g4c02a37b29-goog
+Hans
+
 
 
