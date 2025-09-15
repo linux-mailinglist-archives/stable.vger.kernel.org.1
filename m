@@ -1,290 +1,122 @@
-Return-Path: <stable+bounces-179647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025CBB58471
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 20:21:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3886B58519
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 21:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C0321AA7769
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 18:21:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94102203AEC
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 19:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304FA2DCF6D;
-	Mon, 15 Sep 2025 18:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6E927FB06;
+	Mon, 15 Sep 2025 19:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ii1Im98I"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="NYNN3Ts/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D710A2C2354;
-	Mon, 15 Sep 2025 18:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A68F23814D
+	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 19:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757960458; cv=none; b=ntMzGPoRzBERgH3fQu9lHJ4ubGXJaClyDOyD4iB8lJsrnEUGd5Xoeer7aSqujU7AErGORfLo/tAvAxG3itPK08bRXrl+zgO7WD9n8Cvc+BQwAwZaDKPWChMuACoZ/1197nms4JbIIE0/N215kG1JldvDtIIxZdmc40ajdEanPJU=
+	t=1757963174; cv=none; b=IgcYzB8JR25/cMh5tqJ8vyGMHl6xFiu/WZRWcvbZNt3ZqLDC3UuavNveZH9z06QjjZyvBL7ctYMmYHkfP1tJYejijoXFtAwtdhre2QSnqtYroXotnZYnuomKCUa1+1X+zQNSzUFLyJ43sCtP2a+nehuviZrfuCbyihgN5S218h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757960458; c=relaxed/simple;
-	bh=C+jlw61u8ZmAqA0aRDKtJ2SMaA4kWKFBfzyeC1aSKlU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b6tSRIOOH13MyUkYtcTwKozHCysYKdCs6r+BGi5HJQzHzq3tmlwnFvDXm941/Jn+iRax629Rs97PfSqwC7PKB//aGbRaTce8x9TcMPeBl/lPam66EX7rtYu923M3/XmnLk64/1QSHi+BzKSy0gpIz6i8PAz0XrgExmyAZzawVug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ii1Im98I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71161C4CEF1;
-	Mon, 15 Sep 2025 18:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757960457;
-	bh=C+jlw61u8ZmAqA0aRDKtJ2SMaA4kWKFBfzyeC1aSKlU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ii1Im98IiZudOz56pMvlutKTZjh2F2ni2qJNyZg8+heQA1qwGI/U4HdRVCmno2LvR
-	 1wIdWZaDlhrHC7be4w6d2WkwT4pu7f/ahGiDwnWj9ctFjpY8SWSQ59PErO3GWfO/LH
-	 3ZRfZD++RmQdOT74G0CSLqk/RjbPaqq8GDDVsym3jt2m1XUJXL36kM0q1GxKvznxbX
-	 sJym0YgCeFtN7fyx1USRdZo0/YLkyAOvDh6GeUY6cj1ZaJ7kkS8Jb/aerBeid+FIJ5
-	 //0FpOSI8HDj1Swtlj1T9iPWbExvXrfUt4jtLGtZ8wTDcAAfLhyDkE+lO2dx8D35so
-	 VNfr7SzRRmbuA==
-Date: Mon, 15 Sep 2025 11:20:56 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Carlos Maiolino <cem@kernel.org>, linux-xfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH CANDIDATE 5.15, 6.1, 6.6] xfs: Increase
- XFS_QM_TRANS_MAXDQS to 5
-Message-ID: <20250915182056.GO8096@frogsfrogsfrogs>
-References: <20250913030503.433914-1-amir73il@gmail.com>
+	s=arc-20240116; t=1757963174; c=relaxed/simple;
+	bh=uG8nC9oDH61dYzrtPeYvBQoL9gSQjgCoib4sR0f3whs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=YFBgKYLiSKWnYFVXAaJhZWGO00pAQRd3mGBPUYYe52oHLM/rx46k2BUG/Ed55Ov98BJDfxVJ6G60gLVQs/wx00EvzTWstHTJzzY/Ed+R04vtSl1ff8EglyWesXMCSS2KLxGwxkyJnTBwwNj91agIO+msnDIJPBlVtRVc26FoRaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=NYNN3Ts/; arc=none smtp.client-ip=209.85.166.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-3fe48646d40so30597885ab.0
+        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 12:06:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1757963171; x=1758567971; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YVh6sd5jyxq/syVYCa2EI7xp2H1Pq0+2Ah4mfKjgzlg=;
+        b=NYNN3Ts/Vzg+H1ZsgdHr2dvbyL7CgJpkHNaLVB2rR70gLED2MApyLiZkQ1Ltbw6jHS
+         EoqUOdyTST7bRRN75NOm4jxdcMzCAo3ZcQj0kbRLt75YPEB1EBOalaiBOrVtXYUQHMRJ
+         DgFIj5uFqQtzHhY0id1xkJTsfkSATYbDFm3la/KdFrZAjJ7HpmtmSJHXbwZAjfgAxE/z
+         RvepyobH9dgnxNPjFvUkfR8OijaV7esVqfUHS1HvmJsg+vLh0KuI1f6/+Ypg5T1+lZGc
+         NFoJct8gdCUXkNkfjduALHsqIxQMbQrf5IRWlRgz0pw94x3xQWJD31lPZcVMeJooIAsi
+         oXEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757963171; x=1758567971;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YVh6sd5jyxq/syVYCa2EI7xp2H1Pq0+2Ah4mfKjgzlg=;
+        b=aay2/DyWfkyqgGQgoECY2f6YMv+L7WxaVml+MG+YhCfvvIR0x7q8iQmHupPZt3Cze3
+         9YECmo/1iuvvSw6RsBc1urTmO02GVMIgyqS3N4QshFz5jIq2Jy4wP5xoiSEqr3wfbfYm
+         wesqsZRAm+7si1UYZIPL7Zeoevvihits3xr8g2Ljz3RbaPgP2V9hl5XmQx/xKFQo1bmR
+         s+TFiNHBxta3X/b3NzqZW895/c4aPRd4cLae0NIqVASvQA4twT7qbr1z30n6OuY9LObV
+         dM9c9iarq2cq6JEdud8JTji5IF/RdZiafQmC5Nsc4p7eVKe+WLmIe487KTxy4V87EUWf
+         F1lQ==
+X-Gm-Message-State: AOJu0YxqLHqUSjYA4k3svSoWVAciOLN9eaONVOETrrnc7ep2nAHiajr7
+	3wsMoCOltmk+4SA35ibbhrW8KmU5cy1D3Rzul7adaybLlUP6ZKNCwOO/E8+pwuS7j2Q=
+X-Gm-Gg: ASbGnct+ug8eixnP7DWwKtVBJbZ6eRHgHwZ9o3jAxuKWgy5DV05/Af+B5Wmj6+J6wU9
+	w7kkA3pDITg664gWjGRJJM9vwn95quvOcD3n0njFvQN+G3h6P/03iWb9/5FgWaC1n4q6imzmknv
+	AhYNK6K1r3jAKTkuZQHwVM9MPZMOdnHL2pFZlHWVjB0UQwTBRCMcJmSfrUzePapMthrXvdboeaM
+	W03SCkrXketzhoxoBgx6o4jj1CFnQv0JUOW1K6E4KzSZDMpVMs4E7vpqdttsw/G5ZTcKDt7NnFb
+	ieJ+/9fqb5nAzQSDpgdYTzCwIpqJvllLM7dNmrwDshZ/mMhrbDovAL7M2ihkYNfQcS9OmoRsHQG
+	IyXllSbh2E/ANhg==
+X-Google-Smtp-Source: AGHT+IGcYD4IuB/wNW8MI8+e27nl+qICtx3uV3uHHdDP6AqZ/REWrrxVvvAsFfR/EjZbUXKsqyNkjA==
+X-Received: by 2002:a05:6e02:4815:b0:424:657:7782 with SMTP id e9e14a558f8ab-42406577ad6mr46791835ab.7.1757963170660;
+        Mon, 15 Sep 2025 12:06:10 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-41dfb240f4fsm60222675ab.43.2025.09.15.12.06.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 12:06:10 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Fengnan Chang <changfengnan@bytedance.com>, 
+ Sasha Levin <sashal@kernel.org>, Diangang Li <lidiangang@bytedance.com>, 
+ io-uring@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Max Kellermann <max.kellermann@ionos.com>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20250912000609.1429966-1-max.kellermann@ionos.com>
+References: <20250912000609.1429966-1-max.kellermann@ionos.com>
+Subject: Re: [PATCH] io_uring/io-wq: fix `max_workers` breakage and
+ `nr_workers` underflow
+Message-Id: <175796316976.265356.16431775523856266594.b4-ty@kernel.dk>
+Date: Mon, 15 Sep 2025 13:06:09 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250913030503.433914-1-amir73il@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-2ce6c
 
-On Sat, Sep 13, 2025 at 05:05:02AM +0200, Amir Goldstein wrote:
-> From: Allison Henderson <allison.henderson@oracle.com>
-> 
-> [ Upstream  commit f103df763563ad6849307ed5985d1513acc586dd ]
-> 
-> With parent pointers enabled, a rename operation can update up to 5
-> inodes: src_dp, target_dp, src_ip, target_ip and wip.  This causes
-> their dquots to a be attached to the transaction chain, so we need
-> to increase XFS_QM_TRANS_MAXDQS.  This patch also add a helper
-> function xfs_dqlockn to lock an arbitrary number of dquots.
-> 
-> Signed-off-by: Allison Henderson <allison.henderson@oracle.com>
-> Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-> Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> 
-> [amir: backport to kernels prior to parent pointers to fix an old bug]
-> 
-> A rename operation of a directory (i.e. mv A/C/ B/) may end up changing
-> three different dquot accounts under the following conditions:
-> 1. user (or group) quotas are enabled
-> 2. A/ B/ and C/ have different owner uids (or gids)
-> 3. A/ blocks shrinks after remove of entry C/
-> 4. B/ blocks grows before adding of entry C/
-> 5. A/ ino <= XFS_DIR2_MAX_SHORT_INUM
-> 6. B/ ino > XFS_DIR2_MAX_SHORT_INUM
-> 7. C/ is converted from sf to block format, because its parent entry
->    needs to be stored as 8 bytes (see xfs_dir2_sf_replace_needblock)
-> 
-> When all conditions are met (observed in the wild) we get this assertion:
-> 
-> XFS: Assertion failed: qtrx, file: fs/xfs/xfs_trans_dquot.c, line: 207
-> 
-> The upstream commit fixed this bug as a side effect, so decided to apply
-> it as is rather than changing XFS_QM_TRANS_MAXDQS to 3 in stable kernels.
 
-Heh.  Indeed, you only need MAXDQS==5 for filesystems that support
-parent pointers, because only on those filesystems can you end up
-needing to allocate a xattr block either to the new whiteout file or
-free one from the file being unlinked.
-
-> The Fixes commit below is NOT the commit that introduced the bug, but
-> for some reason, which is not explained in the commit message, it fixes
-> the comment to state that highest number of dquots of one type is 3 and
-> not 2 (which leads to the assertion), without actually fixing it.
-
-Agree.
-
-> The change of wording from "usr, grp OR prj" to "usr, grp and prj"
-> suggests that there may have been a confusion between "the number of
-> dquote of one type" and "the number of dquot types" (which is also 3),
-> so the comment change was only accidentally correct.
-
-I interpret the "OR" -> "and" change to reflect the V4 -> V5 transition
-where you actually can have all three dquot types because group/project
-quota are no longer mutually exclusive.
-
-The "...involved in a transaction is 3" part I think is separate, and
-strange that XFS_QM_TRANS_MAXDQS wasn't updated.
-
-> Fixes: 10f73d27c8e9 ("xfs: fix the comment explaining xfs_trans_dqlockedjoin")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> ---
+On Fri, 12 Sep 2025 02:06:09 +0200, Max Kellermann wrote:
+> Commit 88e6c42e40de ("io_uring/io-wq: add check free worker before
+> create new worker") reused the variable `do_create` for something
+> else, abusing it for the free worker check.
 > 
-> Christoph,
+> This caused the value to effectively always be `true` at the time
+> `nr_workers < max_workers` was checked, but it should really be
+> `false`.  This means the `max_workers` setting was ignored, and worse:
+> if the limit had already been reached, incrementing `nr_workers` was
+> skipped even though another worker would be created.
 > 
-> This is a cognitive challenge. can you say what you where thinking in
-> 2013 when making the comment change in the Fixes commit?
-> Is my speculation above correct?
-> 
-> Catherine and Leah,
-> 
-> I decided that cherry-pick this upstream commit as is with a commit
-> message addendum was the best stable tree strategy.
-> The commit applies cleanly to 5.15.y, so I assume it does for 6.6 and
-> 6.1 as well. I ran my tests on 5.15.y and nothing fell out, but did not
-> try to reproduce these complex assertion in a test.
-> 
-> Could you take this candidate backport patch to a spin on your test
-> branch?
-> 
-> What do you all think about this?
+> [...]
 
-I only think you need MAXDQS==5 for 6.12 to handle parent pointers.
+Applied, thanks!
 
-The older kernels could have it set to 3 instead.  struct xfs_dqtrx on a
-6.17-rc6 kernel is 88 bytes.  Stuffing 9 of them into struct
-xfs_dquot_acct instead of 15 means that the _acct struct is only 792
-bytes instead of 1392, which means we can use the 1k slab instead of the
-2k slab.
+[1/1] io_uring/io-wq: fix `max_workers` breakage and `nr_workers` underflow
+      (no commit info)
 
---D
+Best regards,
+-- 
+Jens Axboe
 
-> Thanks,
-> Amir.
-> 
->  fs/xfs/xfs_dquot.c       | 41 ++++++++++++++++++++++++++++++++++++++++
->  fs/xfs/xfs_dquot.h       |  1 +
->  fs/xfs/xfs_qm.h          |  2 +-
->  fs/xfs/xfs_trans_dquot.c | 15 ++++++++++-----
->  4 files changed, 53 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
-> index c15d61d47a06..6b05d47aa19b 100644
-> --- a/fs/xfs/xfs_dquot.c
-> +++ b/fs/xfs/xfs_dquot.c
-> @@ -1360,6 +1360,47 @@ xfs_dqlock2(
->  	}
->  }
->  
-> +static int
-> +xfs_dqtrx_cmp(
-> +	const void		*a,
-> +	const void		*b)
-> +{
-> +	const struct xfs_dqtrx	*qa = a;
-> +	const struct xfs_dqtrx	*qb = b;
-> +
-> +	if (qa->qt_dquot->q_id > qb->qt_dquot->q_id)
-> +		return 1;
-> +	if (qa->qt_dquot->q_id < qb->qt_dquot->q_id)
-> +		return -1;
-> +	return 0;
-> +}
-> +
-> +void
-> +xfs_dqlockn(
-> +	struct xfs_dqtrx	*q)
-> +{
-> +	unsigned int		i;
-> +
-> +	BUILD_BUG_ON(XFS_QM_TRANS_MAXDQS > MAX_LOCKDEP_SUBCLASSES);
-> +
-> +	/* Sort in order of dquot id, do not allow duplicates */
-> +	for (i = 0; i < XFS_QM_TRANS_MAXDQS && q[i].qt_dquot != NULL; i++) {
-> +		unsigned int	j;
-> +
-> +		for (j = 0; j < i; j++)
-> +			ASSERT(q[i].qt_dquot != q[j].qt_dquot);
-> +	}
-> +	if (i == 0)
-> +		return;
-> +
-> +	sort(q, i, sizeof(struct xfs_dqtrx), xfs_dqtrx_cmp, NULL);
-> +
-> +	mutex_lock(&q[0].qt_dquot->q_qlock);
-> +	for (i = 1; i < XFS_QM_TRANS_MAXDQS && q[i].qt_dquot != NULL; i++)
-> +		mutex_lock_nested(&q[i].qt_dquot->q_qlock,
-> +				XFS_QLOCK_NESTED + i - 1);
-> +}
-> +
->  int __init
->  xfs_qm_init(void)
->  {
-> diff --git a/fs/xfs/xfs_dquot.h b/fs/xfs/xfs_dquot.h
-> index 6b5e3cf40c8b..0e954f88811f 100644
-> --- a/fs/xfs/xfs_dquot.h
-> +++ b/fs/xfs/xfs_dquot.h
-> @@ -231,6 +231,7 @@ int		xfs_qm_dqget_uncached(struct xfs_mount *mp,
->  void		xfs_qm_dqput(struct xfs_dquot *dqp);
->  
->  void		xfs_dqlock2(struct xfs_dquot *, struct xfs_dquot *);
-> +void		xfs_dqlockn(struct xfs_dqtrx *q);
->  
->  void		xfs_dquot_set_prealloc_limits(struct xfs_dquot *);
->  
-> diff --git a/fs/xfs/xfs_qm.h b/fs/xfs/xfs_qm.h
-> index 442a0f97a9d4..f75c12c4c6a0 100644
-> --- a/fs/xfs/xfs_qm.h
-> +++ b/fs/xfs/xfs_qm.h
-> @@ -121,7 +121,7 @@ enum {
->  	XFS_QM_TRANS_PRJ,
->  	XFS_QM_TRANS_DQTYPES
->  };
-> -#define XFS_QM_TRANS_MAXDQS		2
-> +#define XFS_QM_TRANS_MAXDQS		5
->  struct xfs_dquot_acct {
->  	struct xfs_dqtrx	dqs[XFS_QM_TRANS_DQTYPES][XFS_QM_TRANS_MAXDQS];
->  };
-> diff --git a/fs/xfs/xfs_trans_dquot.c b/fs/xfs/xfs_trans_dquot.c
-> index 955c457e585a..99a03acd4488 100644
-> --- a/fs/xfs/xfs_trans_dquot.c
-> +++ b/fs/xfs/xfs_trans_dquot.c
-> @@ -268,24 +268,29 @@ xfs_trans_mod_dquot(
->  
->  /*
->   * Given an array of dqtrx structures, lock all the dquots associated and join
-> - * them to the transaction, provided they have been modified.  We know that the
-> - * highest number of dquots of one type - usr, grp and prj - involved in a
-> - * transaction is 3 so we don't need to make this very generic.
-> + * them to the transaction, provided they have been modified.
->   */
->  STATIC void
->  xfs_trans_dqlockedjoin(
->  	struct xfs_trans	*tp,
->  	struct xfs_dqtrx	*q)
->  {
-> +	unsigned int		i;
->  	ASSERT(q[0].qt_dquot != NULL);
->  	if (q[1].qt_dquot == NULL) {
->  		xfs_dqlock(q[0].qt_dquot);
->  		xfs_trans_dqjoin(tp, q[0].qt_dquot);
-> -	} else {
-> -		ASSERT(XFS_QM_TRANS_MAXDQS == 2);
-> +	} else if (q[2].qt_dquot == NULL) {
->  		xfs_dqlock2(q[0].qt_dquot, q[1].qt_dquot);
->  		xfs_trans_dqjoin(tp, q[0].qt_dquot);
->  		xfs_trans_dqjoin(tp, q[1].qt_dquot);
-> +	} else {
-> +		xfs_dqlockn(q);
-> +		for (i = 0; i < XFS_QM_TRANS_MAXDQS; i++) {
-> +			if (q[i].qt_dquot == NULL)
-> +				break;
-> +			xfs_trans_dqjoin(tp, q[i].qt_dquot);
-> +		}
->  	}
->  }
->  
-> -- 
-> 2.47.1
-> 
-> 
+
+
 
