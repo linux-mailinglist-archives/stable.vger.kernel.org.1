@@ -1,153 +1,145 @@
-Return-Path: <stable+bounces-179659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72789B587DC
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 00:50:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D64B58815
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 01:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE48A1896D62
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 22:51:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE50189B9A9
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 23:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8B02D47EB;
-	Mon, 15 Sep 2025 22:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="phSRlIB9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13502DAFA7;
+	Mon, 15 Sep 2025 23:15:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from cosmicgizmosystems.com (beyond-windows.com [63.249.102.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D1D21A420
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 22:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63CF1DF723;
+	Mon, 15 Sep 2025 23:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.249.102.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757976640; cv=none; b=sM74Y/iU2Ed40HK3RJ6hDrJpLnjqLA7uKHgJRcy/hmZ1WPuyur53iY7aJgB8yeD9YTck85ICEYwKeQ7eS2qWeO0x6ufovVwt0ty+PjzMf2eo54GCFhYwHCiCSHQ4Lnr1sK9eCDNc3OnLzx2lH1pmZkCamHMuTs71FaDel5h+NJs=
+	t=1757978139; cv=none; b=ObW60ppOXRj0QrYCLsbAOgfwd5DI+avufkBcY6Xs8bFBUzFd8DHY4/+R28TtBzJMUt1xmvsiU+yAhsBNoyFyFX/HpNe+ppdigkrQauuxgEMxjQKOaQBYpkQlfNu23sojM85mT0odukSRn61Vez7cD5htJ9y2vaPqmslwrqPTLfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757976640; c=relaxed/simple;
-	bh=7XUcFdyi5pghNDqYShPZlZf5FW9PbMiBbI2R59AvwA8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HIHvpnRdvxsefP2ys+MClx2i3KRtInRyAg9SMUpG+Fdrezs9G2mdtrIojIDkW0Z0j+S0VsO36icVpyxXm1Q9ZA/O5KyvuxB3P3a5JbMAMIzjjTX6aA6YkFzqdOJcBgjCzifqQKY5reHkNB3hOc6B2+/KXqIplJHDeFArDUNIoCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ynaffit.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=phSRlIB9; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ynaffit.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-24457f59889so48359395ad.0
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 15:50:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757976639; x=1758581439; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:user-agent:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FHCYBGzmS+VHS2LiTQcupGZB9njnywXUSm+3JCgstqg=;
-        b=phSRlIB9fD4gXp+Zy40KyrcyUiBev4gwgSUoJptNyN5W54FHoZ23Mz+d9Vu0OCsM3t
-         uyQxPzacIub4ayA4Hwn0em4TKWiT61s9ZS6WaqT+SU1IVAbP2Gn+Ax6vkEeIaoeBKlmx
-         fYDqrhrZ4d2FdeHXhbuCYoDriH8jVi33KHeEpfd2APSj17Yl/pqI0N0e4cNRhkLOZSyG
-         Wxy7b3jLenkTY4VnYfmwGXrJ4IThE8axVFewjklCAP9EEpKDfTBBALllHqMYUXaaNbD6
-         0T9gE2PKSOhD/33g4cSxPVtaaGCrYTp1xMZ7e2RNDfmhRv2/VO4cFr8c4If8B0PdwbBb
-         DHnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757976639; x=1758581439;
-        h=cc:to:from:subject:message-id:user-agent:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FHCYBGzmS+VHS2LiTQcupGZB9njnywXUSm+3JCgstqg=;
-        b=ohmsAiumrJiOD0Vqp8geN2NT81/dAoCfL7JQkGCNN0Umsi7Qne1PdAksaft5uFdIlV
-         EhdZrueguhabAUg2WfqjFWDfcl+BV0qCDU7qT1OREMsKrmyjRL84RsNqpaBAxP0MNADF
-         GKCIkKLUxgOXHHrAo86Wapc+zlq+0AKX9EFk0kstlt5FWzE19iPEFEejGguxlvesp+vV
-         CvgkCVlmgq9CZ9vlwzCvsn2o5tP8wpsKLtLrMe+jg9m20P+VJKElZ8RzxRnRndNZ0ITv
-         65efZkUC0IxRcSSy7QgY6h6Gs1XHSRIgAnmoeooVBpE6tFZN0bI+WB+I9tX0M9MVvRdv
-         DiPw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8yB9Ev+Gas3g0cD51UkkdJfURZ1jPUoMpEARowNsGd7gBCZuVKzg430gQRL+Sf9BX14i5+6E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9dBq+OtB7X144TWHrC5so43xpVV2jr/8Q0lmp7mdVrzAnw+t6
-	Ky8MSjr3xKKGA+QOeCJtHM65bA+lcJrU7uYXJFmp1szs29kGBfk7AnZLKkDkMVi5iQOMM3thUiE
-	wKTPlJj9z1g==
-X-Google-Smtp-Source: AGHT+IE6hbDx6V/jMsnsms/qKiIlFQPmNSNP/cWma2PRVBTnkAUf3QF90DV5CUSA3kwoSWRzABSKSW2f8m9J
-X-Received: from pjbsz5.prod.google.com ([2002:a17:90b:2d45:b0:32b:6136:95b9])
- (user=ynaffit job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:32c9:b0:267:bd8d:1a0
- with SMTP id d9443c01a7336-267bd8d09dfmr14585835ad.13.1757976638706; Mon, 15
- Sep 2025 15:50:38 -0700 (PDT)
-Date: Mon, 15 Sep 2025 15:50:37 -0700
-In-Reply-To: <20250915221248.3470154-1-cmllamas@google.com> (Carlos Llamas's
- message of "Mon, 15 Sep 2025 22:12:47 +0000")
+	s=arc-20240116; t=1757978139; c=relaxed/simple;
+	bh=0+yASABHD1oLRJxQ4j3zNau+abec8VVEFlh79vv6Gy8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U4uDGw3sbo22LJU1pahIvEMpZxTtiH9dWAgMV7L5yuMIYqOMt+e6AOvkZwoQdjMgmYknRx/3Qvyo6Fw79fAyN7h3Jnd6XEv700vPM4qxWAeO327NWIn2ajnCAoznEP81GVJHliIORjhznzOWknaf3JRKiKqAYYZsEZOTs05Ufnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com; spf=pass smtp.mailfrom=cosmicgizmosystems.com; arc=none smtp.client-ip=63.249.102.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cosmicgizmosystems.com
+Received: from [10.0.0.100] (c-71-193-224-155.hsd1.wa.comcast.net [71.193.224.155])
+	by host11.cruzio.com (Postfix) with ESMTPSA id CD3301E7ACA9;
+	Mon, 15 Sep 2025 16:06:43 -0700 (PDT)
+Message-ID: <735c20da-c052-4528-ad91-185a835ca40c@cosmicgizmosystems.com>
+Date: Mon, 15 Sep 2025 16:06:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250915221248.3470154-1-cmllamas@google.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Message-ID: <dbx8a52vuy82.fsf@ynaffit-andsys.c.googlers.com>
-Subject: Re: [PATCH] binder: fix double-free in dbitmap
-From: Tiffany Yang <ynaffit@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?utf-8?Q?Arve_Hj?= =?utf-8?Q?=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Alice Ryhl <aliceryhl@google.com>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
+ SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
+ Composite Device
+To: zhangheng <zhangheng@kylinos.cn>,
+ Staffan Melin <staffan.melin@oscillator.se>,
+ Salvatore Bonaccorso <carnil@debian.org>
+Cc: Jiri Kosina <jkosina@suse.com>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org, 1114557@bugs.debian.org
+References: <aL2gYJaXoB6p_oyM@eldamar.lan>
+ <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
+ <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
+ <aMUxHZF-7p7--1qS@eldamar.lan> <aMUxg6FLqDetwiGu@eldamar.lan>
+ <f08669ec112d6ab2f62e35c0c96d1f06@oscillator.se>
+ <94520aac-2a68-40d2-b188-80f9e361d6de@kylinos.cn>
+Content-Language: en-US
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+In-Reply-To: <94520aac-2a68-40d2-b188-80f9e361d6de@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Carlos Llamas <cmllamas@google.com> writes:
 
-> A process might fail to allocate a new bitmap when trying to expand its
-> proc->dmap. In that case, dbitmap_grow() fails and frees the old bitmap
-> via dbitmap_free(). However, the driver calls dbitmap_free() again when
-> the same process terminates, leading to a double-free error:
 
->    ==================================================================
->    BUG: KASAN: double-free in binder_proc_dec_tmpref+0x2e0/0x55c
->    Free of addr ffff00000b7c1420 by task kworker/9:1/209
+On 9/15/25 1:37 AM, zhangheng wrote:
+> Apply this new patch and test the kernel again. I don't have the original mic device in my hands, which means I have to wait for a response for testing now.
+> 
+> You can test it first, and the other mic device also needs to be retested
 
->    CPU: 9 UID: 0 PID: 209 Comm: kworker/9:1 Not tainted 6.17.0-rc6-dirty  
-> #5 PREEMPT
->    Hardware name: linux,dummy-virt (DT)
->    Workqueue: events binder_deferred_func
->    Call trace:
->     kfree+0x164/0x31c
->     binder_proc_dec_tmpref+0x2e0/0x55c
->     binder_deferred_func+0xc24/0x1120
->     process_one_work+0x520/0xba4
->    [...]
+Your patch will not work as you expect for two reasons.
 
->    Allocated by task 448:
->     __kmalloc_noprof+0x178/0x3c0
->     bitmap_zalloc+0x24/0x30
->     binder_open+0x14c/0xc10
->    [...]
+	if (hid_match_id(hdev, hid_ignore_list) ||
+	   (hid_match_id(hdev, hid_ignore_mic) && (hdev->version > 1.1)))
+ 		quirks |= HID_QUIRK_IGNORE;
 
->    Freed by task 449:
->     kfree+0x184/0x31c
->     binder_inc_ref_for_node+0xb44/0xe44
->     binder_transaction+0x29b4/0x7fbc
->     binder_thread_write+0x1708/0x442c
->     binder_ioctl+0x1b50/0x2900
->    [...]
->    ==================================================================
+hdev->version is U32 not float. Version (bcdDevice) 1.00 would be 0x0100. The value 1.1 is probably cast to 0x0001.
 
-> Fix this issue by marking proc->map NULL in dbitmap_free().
+Second, both devices have identical VID, PID, bcdDevice, and Product names.
 
-> Cc: stable@vger.kernel.org
-> Fixes: 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> ---
->   drivers/android/dbitmap.h | 1 +
->   1 file changed, 1 insertion(+)
+[  563.104908] usb 1-1.4.1.2: New USB device found, idVendor=4c4a, idProduct=4155, bcdDevice= 1.00
+[  563.104910] usb 1-1.4.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  563.104911] usb 1-1.4.1.2: Product: USB Composite Device
+[  563.104912] usb 1-1.4.1.2: Manufacturer: SmartlinkTechnology
+[  563.104913] usb 1-1.4.1.2: SerialNumber: 20201111000001
 
-> diff --git a/drivers/android/dbitmap.h b/drivers/android/dbitmap.h
-> index 956f1bd087d1..c7299ce8b374 100644
-> --- a/drivers/android/dbitmap.h
-> +++ b/drivers/android/dbitmap.h
-> @@ -37,6 +37,7 @@ static inline void dbitmap_free(struct dbitmap *dmap)
->   {
->   	dmap->nbits = 0;
->   	kfree(dmap->map);
-> +	dmap->map = NULL;
->   }
+[   10.451534] usb 3-3: New USB device found, idVendor=4c4a, idProduct=4155, bcdDevice= 1.00
+[   10.451540] usb 3-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[   10.451543] usb 3-3: Product: USB Composite Device
+[   10.451545] usb 3-3: Manufacturer: Jieli Technology
+[   10.451546] usb 3-3: SerialNumber: FFFFFFFFFFFFFFFF
 
->   /* Returns the nbits that a dbitmap can shrink to, 0 if not possible. */
+If you could get the descriptors for the microphone device, it would be helpful.
 
-Reviewed-by: Tiffany Yang <ynaffit@google.com>
+Thanks,
+Terry
 
--- 
-Tiffany Y. Yang
+> 
+> 在 2025/9/13 21:11, Staffan Melin 写道:
+>> Ah, thanks, I get it now :)
+>>
+>> So I got 6.16.7, and the patch applied without problems.
+>>
+>> But no luck, the same results as before: touchscreen not working, xinput --list not showing the Jieli touchscreen. dmesg shows the same as before, too.
+>>
+>> Best regards,
+>>
+>> Staffan
+>>
+>>
+>> On 2025-09-13 10:55, Salvatore Bonaccorso wrote:
+>>> Hi Staffan,
+>>>
+>>> chiming in hopefully it is of help.
+>>>
+>>> Now really with the patch ...
+>>>
+>>> On Fri, Sep 12, 2025 at 09:57:04PM +0200, Staffan Melin wrote:
+>>>> Thank you,
+>>>>
+>>>> I tried to apply this patch to 6.12.39, the first problematic kernel, as
+>>>> well as 6.12.41, the first bad I tried, and on both I got an error message:
+>>>>
+>>>> Applying: HID: quirks: Add device descriptor for 4c4a:4155
+>>>> error: patch failed: drivers/hid/hid-quirks.c:1068
+>>>> error: drivers/hid/hid-quirks.c: patch does not apply
+>>>> Patch failed at 0001 HID: quirks: Add device descriptor for 4c4a:4155
+>>>>
+>>>> To which kernel version should I apply the patch?
+>>>
+>>> As the deveopment goes from mainline then down to stable series, the
+>>> fix needs to be developed first for mainline. So the patch is targeted
+>>> there.
+>>>
+>>> But please find attached an updated patch which hopefully should work
+>>> which resolved the context changes on top of 6.12.47.
+>>>
+>>> But ideally you can provide a Tested-by on zhangheng's mainline patch
+>>> to get things rolling as needed.
+>>>
+>>> Regards,
+>>> Salvatore
+
 
