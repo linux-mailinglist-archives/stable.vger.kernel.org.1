@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-179609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F763B574FC
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 11:39:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70761B57542
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 11:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C07A7A2C40
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 09:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E66651626D2
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 09:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED32A2F618A;
-	Mon, 15 Sep 2025 09:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECAD2F60CF;
+	Mon, 15 Sep 2025 09:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iXkvwGCS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2vgHIqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FC72DF130;
-	Mon, 15 Sep 2025 09:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A22D2E5418;
+	Mon, 15 Sep 2025 09:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757929138; cv=none; b=E2bGL1Ya/SIMwYdQyrDtqp6RZxvQI4FHtDZirRaztXnxfF/ITFZadE6jFKRWvj1V5W2zAG/WKBdoAeBg1EM1A+NRViB0SMZMpA3oDegDwAl6FzezXXSVG7iqLnvZZtOXGpp5nubKWWO+uGe4Adfp4uv2Y6UxUiTCxEnAaDa6xjg=
+	t=1757929883; cv=none; b=SHjh3AZrdP6MADhK3WN/PkSXpgXbiczGcZaAzc+1HrwCKqkaDttLHc3SYnw4K/eLP0NbcoA3lEcBqmF5XobJF2EUThTe0cKqhnFZOOKmr8qwBkw/AzBof+UyVuIICEjHdy6r6nV/a0LBFSO4YEHKyEsN4pXdkxb38LLTBbOvt6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757929138; c=relaxed/simple;
-	bh=pPcw5Aglj30q8w9L1jbmAPFHByeSGZ84ttWKjhwzqnY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qvRBArGdyZC8nSZFfcJ86BJ1Y8ImX3PSb4yJvvU59Z1N6un8pdz7VU4oVIJR0FvSoV5oEIBxX57DlSMWjsJYEtzKa5xblzpBcbafZtT90wL+hGhm23YBYr1AwpCzwm3pNhSxiYQ4mEfIZolDF2woEhEdGjAICP5iDPWpZLbex5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iXkvwGCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213E8C4CEF1;
-	Mon, 15 Sep 2025 09:38:58 +0000 (UTC)
+	s=arc-20240116; t=1757929883; c=relaxed/simple;
+	bh=WnvFPefftVMi57x0Cm0fT5bmITli/JYWAqUWuBi4lYE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q6DnSEvPlzsUFX1vbGh5YKhS9isNDCeEIa4Zx8l1nyreiFYg1HFygi2dKmQb3nHwP9bwQTS0P33ynzC5PTOcUEGhbRk9xpdBr8zq7dAQcSdy8SNGXKiN1wy8e41IOJ64yCBgLFMjeZZ61rfPDWkQAPltaKTEWEtjkG812zGEPyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2vgHIqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AD5C4CEF1;
+	Mon, 15 Sep 2025 09:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757929138;
-	bh=pPcw5Aglj30q8w9L1jbmAPFHByeSGZ84ttWKjhwzqnY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iXkvwGCSqZkDn4G0fMbAyiH2KCJYx3UK0SD6fSjnM6gBYvRaWpmPWZA/hFGr77koC
-	 g8g4RFGr8ynQomGmuhNzeoHzgcmOI0u960M+XzxoAH7fev8q3zGtno3LQGqs/eYsBl
-	 pnc9R8PYRo/JfcK1dJU7Ne6vS3bDkOfUL1y8t0W135nycBlRWuKnoxAqGj7OvY8t/m
-	 XsZnHZJsnklN3mBfQIW4iA8N0bQ9+e2SrDo8z6V70bMNwk1VXcvUuLKEpis48zh607
-	 /m8EaGXsbDj6F2vQ5o4M0XojlOp60r4Y7W42izT/IwmTYv++abN98rVpn1WgEgU5xK
-	 zr5gbvFLaRVpw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	s=k20201202; t=1757929881;
+	bh=WnvFPefftVMi57x0Cm0fT5bmITli/JYWAqUWuBi4lYE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=u2vgHIqFRTWF1iMBEYAe1cawXkRSaQXb66y5dTwbpcu9S3aQ6ro0/N3L9M6e5zlnT
+	 xP5p/0a/gtSDrRuZ38hsR7bKZNxu7N/9JSyXNPbBgjqwif1n7MhplpMCo735Hrlj0Q
+	 icL9TrZOGRA6GtCcnEzznvt9RUkg2Zi7BYY2ID2Jkg1b7EaK3MOIVt4op3hpIpkC0Z
+	 DyxrhrX6oyVWWTYEs/50KhqLHiDf/m51uMQVd5dXcaL4ShZP4bumIKO6PswBpx4VOj
+	 v1G/zLkFm8TjWWyyrSwUtfkMxBbnFtmfeWxwPuF59QulO6S8iDVnd6V3KDdRLjo+dM
+	 iAA/ckjxuBxqg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1uy5fk-00000006JJB-06WB;
-	Mon, 15 Sep 2025 09:38:56 +0000
-Date: Mon, 15 Sep 2025 10:38:55 +0100
-Message-ID: <86zfawawcw.wl-maz@kernel.org>
+	id 1uy5rj-00000006JXG-3XXW;
+	Mon, 15 Sep 2025 09:51:20 +0000
 From: Marc Zyngier <maz@kernel.org>
-To: Ben Horgan <ben.horgan@arm.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>,
-	catalin.marinas@arm.com,
+To: catalin.marinas@arm.com,
 	will@kernel.org,
 	oliver.upton@linux.dev,
 	joey.gouly@arm.com,
@@ -60,111 +56,53 @@ Cc: Vincent Donnefort <vdonnefort@google.com>,
 	yuzenghui@huawei.com,
 	linux-arm-kernel@lists.infradead.org,
 	kvmarm@lists.linux.dev,
-	james.morse@arm.com,
+	Ben Horgan <ben.horgan@arm.com>
+Cc: james.morse@arm.com,
 	tabba@google.com,
+	Vincent Donnefort <vdonnefort@google.com>,
 	Quentin Perret <qperret@google.com>,
 	Ryan Roberts <ryan.roberts@arm.com>,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] KVM: arm64: Fix debug checking for np-guests using huge mappings
-In-Reply-To: <5d30d737-945f-4524-81ac-12ff03edca6c@arm.com>
+Date: Mon, 15 Sep 2025 10:51:16 +0100
+Message-Id: <175792986708.521391.13226361640238803389.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250815162655.121108-1-ben.horgan@arm.com>
 References: <20250815162655.121108-1-ben.horgan@arm.com>
-	<aKMkvQEyeK1QH12X@google.com>
-	<5d30d737-945f-4524-81ac-12ff03edca6c@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: ben.horgan@arm.com, vdonnefort@google.com, catalin.marinas@arm.com, will@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, james.morse@arm.com, tabba@google.com, qperret@google.com, ryan.roberts@arm.com, stable@vger.kernel.org
+X-SA-Exim-Rcpt-To: catalin.marinas@arm.com, will@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, ben.horgan@arm.com, james.morse@arm.com, tabba@google.com, vdonnefort@google.com, qperret@google.com, ryan.roberts@arm.com, stable@vger.kernel.org
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, 15 Sep 2025 10:13:29 +0100,
-Ben Horgan <ben.horgan@arm.com> wrote:
+On Fri, 15 Aug 2025 17:26:55 +0100, Ben Horgan wrote:
+> When running with transparent huge pages and CONFIG_NVHE_EL2_DEBUG then
+> the debug checking in assert_host_shared_guest() fails on the launch of an
+> np-guest. This WARN_ON() causes a panic and generates the stack below.
 > 
+> In __pkvm_host_relax_perms_guest() the debug checking assumes the mapping
+> is a single page but it may be a block map. Update the checking so that
+> the size is not checked and just assumes the correct size.
 > 
-> 
-> On 8/18/25 14:03, Vincent Donnefort wrote:
-> > Thanks for the fix!
-> > 
-> > On Fri, Aug 15, 2025 at 05:26:55PM +0100, Ben Horgan wrote:
-> >> When running with transparent huge pages and CONFIG_NVHE_EL2_DEBUG then
-> >> the debug checking in assert_host_shared_guest() fails on the launch of an
-> >> np-guest. This WARN_ON() causes a panic and generates the stack below.
-> >>
-> >> In __pkvm_host_relax_perms_guest() the debug checking assumes the mapping
-> >> is a single page but it may be a block map. Update the checking so that
-> >> the size is not checked and just assumes the correct size.
-> >>
-> >> While we're here make the same fix in __pkvm_host_mkyoung_guest().
-> >>
-> >>   Info: # lkvm run -k /share/arch/arm64/boot/Image -m 704 -c 8 --name guest-128
-> >>   Info: Removed ghost socket file "/.lkvm//guest-128.sock".
-> >> [ 1406.521757] kvm [141]: nVHE hyp BUG at: arch/arm64/kvm/hyp/nvhe/mem_protect.c:1088!
-> >> [ 1406.521804] kvm [141]: nVHE call trace:
-> >> [ 1406.521828] kvm [141]:  [<ffff8000811676b4>] __kvm_nvhe_hyp_panic+0xb4/0xe8
-> >> [ 1406.521946] kvm [141]:  [<ffff80008116d12c>] __kvm_nvhe_assert_host_shared_guest+0xb0/0x10c
-> >> [ 1406.522049] kvm [141]:  [<ffff80008116f068>] __kvm_nvhe___pkvm_host_relax_perms_guest+0x48/0x104
-> >> [ 1406.522157] kvm [141]:  [<ffff800081169df8>] __kvm_nvhe_handle___pkvm_host_relax_perms_guest+0x64/0x7c
-> >> [ 1406.522250] kvm [141]:  [<ffff800081169f0c>] __kvm_nvhe_handle_trap+0x8c/0x1a8
-> >> [ 1406.522333] kvm [141]:  [<ffff8000811680fc>] __kvm_nvhe___skip_pauth_save+0x4/0x4
-> >> [ 1406.522454] kvm [141]: ---[ end nVHE call trace ]---
-> >> [ 1406.522477] kvm [141]: Hyp Offset: 0xfffece8013600000
-> >> [ 1406.522554] Kernel panic - not syncing: HYP panic:
-> >> [ 1406.522554] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
-> >> [ 1406.522554] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
-> >> [ 1406.522554] VCPU:0000000000000000
-> >> [ 1406.523337] CPU: 3 UID: 0 PID: 141 Comm: kvm-vcpu-0 Not tainted 6.16.0-rc7 #97 PREEMPT
-> >> [ 1406.523485] Hardware name: FVP Base RevC (DT)
-> >> [ 1406.523566] Call trace:
-> >> [ 1406.523629]  show_stack+0x18/0x24 (C)
-> >> [ 1406.523753]  dump_stack_lvl+0xd4/0x108
-> >> [ 1406.523899]  dump_stack+0x18/0x24
-> >> [ 1406.524040]  panic+0x3d8/0x448
-> >> [ 1406.524184]  nvhe_hyp_panic_handler+0x10c/0x23c
-> >> [ 1406.524325]  kvm_handle_guest_abort+0x68c/0x109c
-> >> [ 1406.524500]  handle_exit+0x60/0x17c
-> >> [ 1406.524630]  kvm_arch_vcpu_ioctl_run+0x2e0/0x8c0
-> >> [ 1406.524794]  kvm_vcpu_ioctl+0x1a8/0x9cc
-> >> [ 1406.524919]  __arm64_sys_ioctl+0xac/0x104
-> >> [ 1406.525067]  invoke_syscall+0x48/0x10c
-> >> [ 1406.525189]  el0_svc_common.constprop.0+0x40/0xe0
-> >> [ 1406.525322]  do_el0_svc+0x1c/0x28
-> >> [ 1406.525441]  el0_svc+0x38/0x120
-> >> [ 1406.525588]  el0t_64_sync_handler+0x10c/0x138
-> >> [ 1406.525750]  el0t_64_sync+0x1ac/0x1b0
-> >> [ 1406.525876] SMP: stopping secondary CPUs
-> >> [ 1406.525965] Kernel Offset: disabled
-> >> [ 1406.526032] CPU features: 0x0000,00000080,8e134ca1,9446773f
-> >> [ 1406.526130] Memory Limit: none
-> >> [ 1406.959099] ---[ end Kernel panic - not syncing: HYP panic:
-> >> [ 1406.959099] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
-> >> [ 1406.959099] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
-> >> [ 1406.959099] VCPU:0000000000000000 ]
-> >>
-> >> Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-> >> Fixes: db14091d8f75 ("KVM: arm64: Stage-2 huge mappings for np-guests")
-> > 
-> > Not sure if it really matters but it's more about fixing f28f1d02f4ea (KVM: arm64: Add a range
-> > to __pkvm_host_unshare_guest()) which introduced the check size !=
-> > kvm_granule_size(). Even though this is noop until db14091d8f75
-> 
-> Happy to update the Fixes tag with whatever is required. I was in two
-> minds but opted for db14091d8f75 as that's where this starts to make a
-> functional difference.
+> [...]
 
-No need to resend, I've adjusted this locally.
+Applied to next, thanks!
 
-Thanks,
+[1/1] KVM: arm64: Fix debug checking for np-guests using huge mappings
+      commit: 2ba972bf71cb71d2127ec6c3db1ceb6dd0c73173
+
+Cheers,
 
 	M.
-
 -- 
 Without deviation from the norm, progress is not possible.
+
+
 
