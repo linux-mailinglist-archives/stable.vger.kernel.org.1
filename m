@@ -1,109 +1,300 @@
-Return-Path: <stable+bounces-179616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA16B579FD
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 14:10:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01314B57A49
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 14:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB3CD1888592
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 12:10:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFDA53AACE2
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 12:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE54303A00;
-	Mon, 15 Sep 2025 12:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C4A304BC1;
+	Mon, 15 Sep 2025 12:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EEBeOIh/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Co5+sy+Q"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFF52F28EF;
-	Mon, 15 Sep 2025 12:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE3B2FE597;
+	Mon, 15 Sep 2025 12:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757938220; cv=none; b=rYxBrPaQS0HxsUO9PGNVoyaFxFLSrRwDZ5vB/1q1bIDhdRpMJw1s8cR97Bcg4q4gIdIi/uMLpcxgdao6XITVuw8rnOs0izPYc0/dCVTWJj1tIMc+01c0wHGbLUgnnXfrNWht8g9MJpGI5iUkmmgw0bp/S0Xhad7batEql9eir7Y=
+	t=1757938774; cv=none; b=UntsQvolk2U0KCUwXPOrJqh2wxPkvMA5YNvaggdm+THWdxRamOtJddjrc/21gr8xuMih585kZU4MbcbmNY4dzFFZAhFyTW8OFo+8ljUYswb+dgrZNSUrTN73MC7e7XSJot+s860A/vHUU5Z0qaTOfgPaSFSRsLp7QlIYNQ85LjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757938220; c=relaxed/simple;
-	bh=uqn7sQTP/O+KXMPXYRFmgLHEQTjpBe9h/9/eeXkz65Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BPtcFJgDpGqE4b9vc16jRbLzhUFRSXqamlNAdMjxV+SRsxmnV9UVx4XRJmhBI/kj2z2HYnZq1bhYzbIAdk7jkhJwpWE+OKhaqmfNf9/cPwvqTc3FBpXdoFXNoVs5wXRhd8pehsk2Lw/1p5kmGNvxnFHHLJBhK8nHHT29Tk07j4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EEBeOIh/; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=uX
-	YipikAORq7rmSiXBAcddF/TDyI+Ck/jJ3ssPKAKWY=; b=EEBeOIh/Oflc6xA5cO
-	8ewa4chJ9vmkDiAP0WKltbkUE51T+ydUcJOSThGB7wYBC3BGFDNj3cmMSDBBI24M
-	K6YVLH18A0lDwF3Lk62/HSo6S16spdoIdjuY+AhMUJaQ3cJJhWS0MEXVRgJODkTO
-	N/KpT3GlRi7SB86gO4ylZNVW4=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3L8IEAshoNuutBQ--.65473S4;
-	Mon, 15 Sep 2025 20:09:41 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: tiffany.lin@mediatek.com,
-	andrew-ct.chen@mediatek.com,
-	yunfei.dong@mediatek.com,
-	mchehab@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	haoxiang_li2024@163.com,
-	hverkuil@kernel.org,
-	tzungbi@kernel.org,
-	jiasheng@iscas.ac.cn
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH] media: mediatek: vcodec: Fix a reference leak in mtk_vcodec_fw_vpu_init()
-Date: Mon, 15 Sep 2025 20:09:38 +0800
-Message-Id: <20250915120938.177691-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1757938774; c=relaxed/simple;
+	bh=MnBwRfTnVKlws2kOlxFS7l9GMj/kw+QrNq5OEgfPKYo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NZWwpk7w87rV0zMuKoWf0QIX2sc5Q9kNMRs6OOs62IONoT94eZVLwvWDh/cxgTXKCMTKCX9M1EIELn4TM8vmJOIlKQS/iYZQSN+iOuajyAjPPyGhSdZNtUZ7lQuGGkYCOZsnia9NpkzVQJgBqpobAR0gX/a0/1YqHVUm1pI9u7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Co5+sy+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476D1C4CEF1;
+	Mon, 15 Sep 2025 12:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757938774;
+	bh=MnBwRfTnVKlws2kOlxFS7l9GMj/kw+QrNq5OEgfPKYo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Co5+sy+QHZjcwW9dpqXXywQcZ4Vcr/lkvc46SbgOpgRR99eD6X1l410LI5wK6zQRs
+	 mhW6eQQ/aOTdSXBqYaz1rbryWAyHBBFA4sT2on91yTiz0iCGefr9cK8WsIAppuALmS
+	 tvHL6uNzIFti5nHLTpz3OQ5C4DeRi8l380qFVQoZoNhKGllCyxRTmhhnA9q/ICDfcd
+	 XnwjSfUEAT2SfyDBvb+BPmwNaHAwTiyT7UqJxaFLUHj4rN3OPIb0H/bOBUF7my188/
+	 GEQ86lKXEAoV26gHZzmkgDePEUid6koMBG4qUOs2jtxnOJTk/eVG24desegOOfJW+5
+	 Jpa/u1ozR/6IA==
+Message-ID: <802c1bad-94e4-4dae-94fe-ced28aebbe2a@kernel.org>
+Date: Mon, 15 Sep 2025 14:19:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3L8IEAshoNuutBQ--.65473S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww1rWr4DKw4rAFWUGFWfXwb_yoW8GF4Dpr
-	s3Ka42kFyUJw1qvw18Zw4Uuay5Cr1SgrW8Cw13Zw1a9rnxXFWIqr1jy3WIqFZ7JFyvka43
-	Xrnaga4fCF4Fvr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_MKuUUUUUU=
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBEAnJbmjIAYMTQwAAsM
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] fbdev/simplefb: Fix use after free in
+ simplefb_detach_genpds()
+To: Janne Grunau <j@jannau.net>, Helge Deller <deller@gmx.de>,
+ Thierry Reding <treding@nvidia.com>
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Daniel Huhardeaux <tech@tootai.net>,
+ stable@vger.kernel.org
+References: <20250915-simplefb-genpd-uaf-v3-1-5bb51506a5b9@jannau.net>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20250915-simplefb-genpd-uaf-v3-1-5bb51506a5b9@jannau.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-vpu_get_plat_device() increases the reference count of the returned
-platform device. However, when devm_kzalloc() fails, the reference
-is not released, causing a reference leak.
+Hi,
 
-Fix this by calling put_device() on fw_pdev->dev before returning
-on the error path.
+On 15-Sep-25 8:36 AM, Janne Grunau wrote:
+> The pm_domain cleanup can not be devres managed as it uses struct
+> simplefb_par which is allocated within struct fb_info by
+> framebuffer_alloc(). This allocation is explicitly freed by
+> unregister_framebuffer() in simplefb_remove().
+> Devres managed cleanup runs after the device remove call and thus can no
+> longer access struct simplefb_par.
+> Call simplefb_detach_genpds() explicitly from simplefb_destroy() like
+> the cleanup functions for clocks and regulators.
+> 
+> Fixes an use after free on M2 Mac mini during
+> aperture_remove_conflicting_devices() using the downstream asahi kernel
+> with Debian's kernel config. For unknown reasons this started to
+> consistently dereference an invalid pointer in v6.16.3 based kernels.
 
-Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- .../media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Thanks, this v3 patch looks good to me:
 
-diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-index d7027d600208..1c94316f2d7d 100644
---- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-+++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-@@ -117,8 +117,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_init(void *priv, enum mtk_vcodec_fw_use
- 		vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_enc_handler, priv, rst_id);
- 
- 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
--	if (!fw)
-+	if (!fw) {
-+		put_device(&fw_pdev->dev);
- 		return ERR_PTR(-ENOMEM);
-+	}
- 	fw->type = VPU;
- 	fw->ops = &mtk_vcodec_vpu_msg;
- 	fw->pdev = fw_pdev;
--- 
-2.25.1
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+
+I assume that you will push this do drm-misc yourself ?
+
+Regards,
+
+Hans
+
+
+
+
+
+
+
+
+> [    6.736134] BUG: KASAN: slab-use-after-free in simplefb_detach_genpds+0x58/0x220
+> [    6.743545] Read of size 4 at addr ffff8000304743f0 by task (udev-worker)/227
+> [    6.750697]
+> [    6.752182] CPU: 6 UID: 0 PID: 227 Comm: (udev-worker) Tainted: G S                  6.16.3-asahi+ #16 PREEMPTLAZY
+> [    6.752186] Tainted: [S]=CPU_OUT_OF_SPEC
+> [    6.752187] Hardware name: Apple Mac mini (M2, 2023) (DT)
+> [    6.752189] Call trace:
+> [    6.752190]  show_stack+0x34/0x98 (C)
+> [    6.752194]  dump_stack_lvl+0x60/0x80
+> [    6.752197]  print_report+0x17c/0x4d8
+> [    6.752201]  kasan_report+0xb4/0x100
+> [    6.752206]  __asan_report_load4_noabort+0x20/0x30
+> [    6.752209]  simplefb_detach_genpds+0x58/0x220
+> [    6.752213]  devm_action_release+0x50/0x98
+> [    6.752216]  release_nodes+0xd0/0x2c8
+> [    6.752219]  devres_release_all+0xfc/0x178
+> [    6.752221]  device_unbind_cleanup+0x28/0x168
+> [    6.752224]  device_release_driver_internal+0x34c/0x470
+> [    6.752228]  device_release_driver+0x20/0x38
+> [    6.752231]  bus_remove_device+0x1b0/0x380
+> [    6.752234]  device_del+0x314/0x820
+> [    6.752238]  platform_device_del+0x3c/0x1e8
+> [    6.752242]  platform_device_unregister+0x20/0x50
+> [    6.752246]  aperture_detach_platform_device+0x1c/0x30
+> [    6.752250]  aperture_detach_devices+0x16c/0x290
+> [    6.752253]  aperture_remove_conflicting_devices+0x34/0x50
+> ...
+> [    6.752343]
+> [    6.967409] Allocated by task 62:
+> [    6.970724]  kasan_save_stack+0x3c/0x70
+> [    6.974560]  kasan_save_track+0x20/0x40
+> [    6.978397]  kasan_save_alloc_info+0x40/0x58
+> [    6.982670]  __kasan_kmalloc+0xd4/0xd8
+> [    6.986420]  __kmalloc_noprof+0x194/0x540
+> [    6.990432]  framebuffer_alloc+0xc8/0x130
+> [    6.994444]  simplefb_probe+0x258/0x2378
+> ...
+> [    7.054356]
+> [    7.055838] Freed by task 227:
+> [    7.058891]  kasan_save_stack+0x3c/0x70
+> [    7.062727]  kasan_save_track+0x20/0x40
+> [    7.066565]  kasan_save_free_info+0x4c/0x80
+> [    7.070751]  __kasan_slab_free+0x6c/0xa0
+> [    7.074675]  kfree+0x10c/0x380
+> [    7.077727]  framebuffer_release+0x5c/0x90
+> [    7.081826]  simplefb_destroy+0x1b4/0x2c0
+> [    7.085837]  put_fb_info+0x98/0x100
+> [    7.089326]  unregister_framebuffer+0x178/0x320
+> [    7.093861]  simplefb_remove+0x3c/0x60
+> [    7.097611]  platform_remove+0x60/0x98
+> [    7.101361]  device_remove+0xb8/0x160
+> [    7.105024]  device_release_driver_internal+0x2fc/0x470
+> [    7.110256]  device_release_driver+0x20/0x38
+> [    7.114529]  bus_remove_device+0x1b0/0x380
+> [    7.118628]  device_del+0x314/0x820
+> [    7.122116]  platform_device_del+0x3c/0x1e8
+> [    7.126302]  platform_device_unregister+0x20/0x50
+> [    7.131012]  aperture_detach_platform_device+0x1c/0x30
+> [    7.136157]  aperture_detach_devices+0x16c/0x290
+> [    7.140779]  aperture_remove_conflicting_devices+0x34/0x50
+> ...
+> 
+> Reported-by: Daniel Huhardeaux <tech@tootai.net>
+> Cc: stable@vger.kernel.org
+> Fixes: 92a511a568e44 ("fbdev/simplefb: Add support for generic power-domains")
+> Signed-off-by: Janne Grunau <j@jannau.net>
+> ---
+> Changes in v3:
+> - release power-domains on probe errors
+> - set par->num_genpds when it's <= 1
+> - set par->num_genpds to 0 after detaching
+> - Link to v2: https://lore.kernel.org/r/20250908-simplefb-genpd-uaf-v2-1-f88a0d9d880f@jannau.net
+> 
+> Changes in v2:
+> - reworked change due to missed use of `par->num_genpds` before setting
+>   it. Missed in testing due to mixing up FB_SIMPLE and SYSFB_SIMPLEFB.
+> - Link to v1: https://lore.kernel.org/r/20250901-simplefb-genpd-uaf-v1-1-0d9f3a34c4dc@jannau.net
+> ---
+>  drivers/video/fbdev/simplefb.c | 31 +++++++++++++++++++++++--------
+>  1 file changed, 23 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
+> index 1893815dc67f4c1403eea42c0e10a7ead4d96ba9..6acf5a00c2bacfab89c3a63bab3d8b1b091a20a8 100644
+> --- a/drivers/video/fbdev/simplefb.c
+> +++ b/drivers/video/fbdev/simplefb.c
+> @@ -93,6 +93,7 @@ struct simplefb_par {
+>  
+>  static void simplefb_clocks_destroy(struct simplefb_par *par);
+>  static void simplefb_regulators_destroy(struct simplefb_par *par);
+> +static void simplefb_detach_genpds(void *res);
+>  
+>  /*
+>   * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
+> @@ -105,6 +106,7 @@ static void simplefb_destroy(struct fb_info *info)
+>  
+>  	simplefb_regulators_destroy(info->par);
+>  	simplefb_clocks_destroy(info->par);
+> +	simplefb_detach_genpds(info->par);
+>  	if (info->screen_base)
+>  		iounmap(info->screen_base);
+>  
+> @@ -445,13 +447,14 @@ static void simplefb_detach_genpds(void *res)
+>  		if (!IS_ERR_OR_NULL(par->genpds[i]))
+>  			dev_pm_domain_detach(par->genpds[i], true);
+>  	}
+> +	par->num_genpds = 0;
+>  }
+>  
+>  static int simplefb_attach_genpds(struct simplefb_par *par,
+>  				  struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+> -	unsigned int i;
+> +	unsigned int i, num_genpds;
+>  	int err;
+>  
+>  	err = of_count_phandle_with_args(dev->of_node, "power-domains",
+> @@ -465,26 +468,35 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
+>  		return err;
+>  	}
+>  
+> -	par->num_genpds = err;
+> +	num_genpds = err;
+>  
+>  	/*
+>  	 * Single power-domain devices are handled by the driver core, so
+>  	 * nothing to do here.
+>  	 */
+> -	if (par->num_genpds <= 1)
+> +	if (num_genpds <= 1) {
+> +		par->num_genpds = num_genpds;
+>  		return 0;
+> +	}
+>  
+> -	par->genpds = devm_kcalloc(dev, par->num_genpds, sizeof(*par->genpds),
+> +	par->genpds = devm_kcalloc(dev, num_genpds, sizeof(*par->genpds),
+>  				   GFP_KERNEL);
+>  	if (!par->genpds)
+>  		return -ENOMEM;
+>  
+> -	par->genpd_links = devm_kcalloc(dev, par->num_genpds,
+> +	par->genpd_links = devm_kcalloc(dev, num_genpds,
+>  					sizeof(*par->genpd_links),
+>  					GFP_KERNEL);
+>  	if (!par->genpd_links)
+>  		return -ENOMEM;
+>  
+> +	/*
+> +	 * Set par->num_genpds only after genpds and genpd_links are allocated
+> +	 * to exit early from simplefb_detach_genpds() without full
+> +	 * initialisation.
+> +	 */
+> +	par->num_genpds = num_genpds;
+> +
+>  	for (i = 0; i < par->num_genpds; i++) {
+>  		par->genpds[i] = dev_pm_domain_attach_by_id(dev, i);
+>  		if (IS_ERR(par->genpds[i])) {
+> @@ -506,9 +518,10 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
+>  			dev_warn(dev, "failed to link power-domain %u\n", i);
+>  	}
+>  
+> -	return devm_add_action_or_reset(dev, simplefb_detach_genpds, par);
+> +	return 0;
+>  }
+>  #else
+> +static void simplefb_detach_genpds(void *res) { }
+>  static int simplefb_attach_genpds(struct simplefb_par *par,
+>  				  struct platform_device *pdev)
+>  {
+> @@ -622,18 +635,20 @@ static int simplefb_probe(struct platform_device *pdev)
+>  	ret = devm_aperture_acquire_for_platform_device(pdev, par->base, par->size);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "Unable to acquire aperture: %d\n", ret);
+> -		goto error_regulators;
+> +		goto error_genpds;
+>  	}
+>  	ret = register_framebuffer(info);
+>  	if (ret < 0) {
+>  		dev_err(&pdev->dev, "Unable to register simplefb: %d\n", ret);
+> -		goto error_regulators;
+> +		goto error_genpds;
+>  	}
+>  
+>  	dev_info(&pdev->dev, "fb%d: simplefb registered!\n", info->node);
+>  
+>  	return 0;
+>  
+> +error_genpds:
+> +	simplefb_detach_genpds(par);
+>  error_regulators:
+>  	simplefb_regulators_destroy(par);
+>  error_clocks:
+> 
+> ---
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> change-id: 20250901-simplefb-genpd-uaf-352704761a29
+> 
+> Best regards,
 
 
