@@ -1,87 +1,61 @@
-Return-Path: <stable+bounces-179606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5232B57235
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 10:02:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1CBFB57324
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 10:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BDBB17A0E5
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 08:02:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B97189E695
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 08:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA612E6CC0;
-	Mon, 15 Sep 2025 08:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E+Z3o74A"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED6920CCCA;
+	Mon, 15 Sep 2025 08:37:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9242E54BB
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 08:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5351FC0EA;
+	Mon, 15 Sep 2025 08:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757923343; cv=none; b=WMxzGYk9zHGsZUBmhj/dprxKy8W/86nUQdVZ757CPUqsma4NZOZDteLb2My8vNJzcW3EWcqYmxVw5iVfuu+mC+VtUBDxZkRwXjpv8BP9HxjIrc9cHCWnQQ79sMmn3E4C+k7wEn9AZHSSeHVSKAQn8r1RoVyG4N8wVrtQ2SJIOcI=
+	t=1757925467; cv=none; b=ex0qHV4S3XO41kfpbo0SYQgmZmoYdQpw2kFO9AuMWDpxsATEHtWGaurFqJlJL+0nQWEy54AzdF27FNweTyAIH4BuvsOPYmZv/8B8gjc4I/FR1b+EifoyY2tJNQzUfQv4X1J7EzPUjHRkJuphpoWH5DbvTpoLgfSxeseG4CB+BA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757923343; c=relaxed/simple;
-	bh=NxN20Gn0aHENTScrUN7kSeNIZDjx6Vfsg2GuEin00cI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r+7JRy+mGfkcUt0+UnYRXGCMOU1QEbxY8IDGPVmmJElsUWkb0HLZWzds8E6KqwGFzbi+VimxcsBuIzYrQYlHrLQFWwg360UlInWKSNaSSuorpMwzvYerMVFo+Er9VJwX5MAKJiw2jdAQDKDzrrF7YyITv/XIeXGP9d8MUEDt/Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E+Z3o74A; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58F7I1BP013545
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 08:02:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ZkqyB913YY3yMnVNUtYTJNCapGusGIc3uihCU//zesY=; b=E+Z3o74AcYrQCKfJ
-	q++aZsY3x5gkBr3fR2bN23BcfOK6+uSrLRIhdG5hmkc0vop4MqS0u6EVdS28qPoV
-	+eT3NYEddOpyIszr5MYllrQTXdzh0vkcORMBlE8tfl9aHQlbs+3InWCJjMnOmZFl
-	DKhB1USPR+ni34xj1RZB9RoKUN9xGoBp4j0beyNMwJolUSIfF7idDLiR1LcH2+ai
-	UC+19lTNnkzpVkzkRE5O6fuleOYJrceegAczVRj2NWSftphzWJ/zkebMejZ/E7Ws
-	ZVbqUR6OZcielbTxVxBdjMFVAZMqqpYPLKNfmwZt5/5tcfzS1Vvw4RQyCgxG4boi
-	K6oNpA==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 496da98ags-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 08:02:19 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4b5f112dafeso105391081cf.1
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 01:02:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757923338; x=1758528138;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZkqyB913YY3yMnVNUtYTJNCapGusGIc3uihCU//zesY=;
-        b=Zc2dWo/8AUs8r32FkkTRR6MvopYTaY+5EV4bRrDDOHLu/dGJbXby5JRbxSVElII/ZP
-         AoYp+e0Kpv6shq5b/Xp5zhWTT/fPS5+pPoye/QHVgJo2SJQBD/Jevx9EPCasL3dzdzPq
-         XjQFp3Ysl0Kdp/PlA8A2GuC2AksjjECJcB9dwm8uY+S7+il/tLD/AqsOk/Xfz2IzB/aS
-         ZkjrYHE/WwZ76OF6/MOzxw7C4FkbZDrqO8N+RezQQhWEskgILf0xzLoNSIT+q7CnQbU8
-         67JFaiQphcEwLeSyluyxvgkCHQiXAieyTfL0cSF8bkdyWjzWgFPzC7u9aPWbG+gf5hPF
-         GpKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBQ4kDIdKI3OSCeLJ0LHCI0XvYgsKXt4sFO7c2LSzktfjFzsYkJy301tA3Q+ScSZmZdQU9rlE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/PID7mcN7J6MwlpB/8Fzo9f5g5RDLIoa4uLmT7qudlCrEyz4n
-	ZvOF3I0n+WzOuTsZA6BlZk7qOYBOfRNike6fjMo/t6c+iETLScbHa+eF2WSo+2JJsG3lr1HlWnl
-	KEM0ZuKm438/qe9Un6A6kEVouqeZaxWx/nNfjAHDXNnR/BhGoA0HS38Z6vlk=
-X-Gm-Gg: ASbGncsJ5xQJkj7iOoJfUvyI9FneNXCloadV/wcH3hIVt6etalkc+YL6mopulaePbED
-	sHOZN2djY/fgUQhp/J3drqlM7jwJp6kkqAj7HGpR+xR6QUdgQn6fVjxjn3wupeLXLbHzPg66tmR
-	pcfnjWITthao+lR63v0sbGFKfUG4XIZ75ZDb0CKVv1dtwEIGlUyGq9umFX3h6xcckv8oKMS+9Er
-	9pXysupyLVAxyEXgLYBB4vsM+gjrywNMIDtuN8E2XyZUTj8gcwKNWcdFCncBWU3oVW+a2X4cGwF
-	CHpC6AtedqpOIrd8NGWRyZnlO/AsJceKAxPHo8C0uH97KjeMjkv3kObAmjsxxFjeQ1Q=
-X-Received: by 2002:a05:622a:247:b0:4b6:3178:b253 with SMTP id d75a77b69052e-4b77d06a1f4mr163367801cf.58.1757923338455;
-        Mon, 15 Sep 2025 01:02:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNw31LJSCp0juE0c9doaAiFovtWcdc7NGc8wtk3ZUQMcSD0QCoI0uGjhTOyxUVgoOmvnfINA==
-X-Received: by 2002:a05:622a:247:b0:4b6:3178:b253 with SMTP id d75a77b69052e-4b77d06a1f4mr163367321cf.58.1757923337914;
-        Mon, 15 Sep 2025 01:02:17 -0700 (PDT)
-Received: from [192.168.68.120] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3e9fd89af70sm4863751f8f.43.2025.09.15.01.02.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Sep 2025 01:02:17 -0700 (PDT)
-Message-ID: <f13c79a7-9595-4795-bd74-ea440f74a12f@oss.qualcomm.com>
-Date: Mon, 15 Sep 2025 09:02:16 +0100
+	s=arc-20240116; t=1757925467; c=relaxed/simple;
+	bh=Q7bkcaIQnbjNFPHv/tC1SIIJFRyufAAQqwPFLV8GJAo=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=eSy+Jsc/Qgk2J8MypY/KkBOZ+wT8q091ChvsQ4bm17ZhZ7ycF+kdVUA8KhWFDMjVb6CHhI0PhQsaigHtBMa/c+Ur9xJZb6PxZ3pO5rB6RMTUfkPekC1RTBM9WM3w5tRFA5KK8SZBgJ5D1wuGgkamJhMlHyjkC0gFjForcGZUnrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 3a35dedc920f11f0b29709d653e92f7d-20250915
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:08e1c689-82e9-461f-98a5-e270daf56fe0,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:5,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:1739cc9bc6146cabd937cc9efa99b55b,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:2,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 3a35dedc920f11f0b29709d653e92f7d-20250915
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangheng@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1963435072; Mon, 15 Sep 2025 16:37:34 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id EB90EE009009;
+	Mon, 15 Sep 2025 16:37:33 +0800 (CST)
+X-ns-mid: postfix-68C7D04D-860271352
+Received: from [172.25.120.76] (unknown [172.25.120.76])
+	by mail.kylinos.cn (NSMail) with ESMTPA id C8398E009008;
+	Mon, 15 Sep 2025 16:37:31 +0800 (CST)
+Content-Type: multipart/mixed; boundary="------------8Ut23cP00acSb4c9XjXIPEhR"
+Message-ID: <94520aac-2a68-40d2-b188-80f9e361d6de@kylinos.cn>
+Date: Mon, 15 Sep 2025 16:37:29 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,88 +63,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ASoC: qcom: sc8280xp: Fix sound card driver name match
- data for QCS8275
-To: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Prasad Kumpatla <quic_pkumpatl@quicinc.com>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@oss.qualcomm.com,
-        prasad.kumpatla@oss.qualcomm.com, ajay.nandam@oss.qualcomm.com,
-        stable@vger.kernel.org
-References: <20250914131549.1198740-1-mohammad.rafi.shaik@oss.qualcomm.com>
-Content-Language: en-US
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-In-Reply-To: <20250914131549.1198740-1-mohammad.rafi.shaik@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=M+5NKzws c=1 sm=1 tr=0 ts=68c7c80b cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=3r9HinHMD_fb42oTSBcA:9 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-GUID: zHIZ8O7ECLylpCDUOsMEbv1GJA4B0MmV
-X-Proofpoint-ORIG-GUID: zHIZ8O7ECLylpCDUOsMEbv1GJA4B0MmV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA1NiBTYWx0ZWRfXy6LvBzRE+gNG
- GFoMPo51xnuxZiWWgqB3qT98A0aurc/Kj3GHDbwpsJNM5QT10scOaKyYke7mKecKIY8wJ5vElkY
- 100KjbIbrB9TZvgMHBuZev9YOkcIBxZYbSmTUJUiLl+6QT9byXxcpsQ+xcZ4+nv74U/2L8U/wvK
- loBbS6GwBrKQiWDx5eQY7g041lkDSic8wvj7Yxr/Ly7JiOM7cIiDnnyLxrUCsqp6qRF4InxK8f4
- TrNDbCHGdf2Q9Srhh453hNggdtea2zJh+QVIyWOuAgxiu59OyAbZ5fSCFzUBMVS++yvt4Lt5LdA
- gYW+VOamysBqt6hMLz7S0NQZEMY6I6SEfBlLJk8PKN8DbfHV0Y4kPhU1CwFP0+ovqvSxOzClhWP
- XHF8aJft
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-15_03,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 clxscore=1015 suspectscore=0 priorityscore=1501
- phishscore=0 adultscore=0 bulkscore=0 impostorscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509150056
+Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
+ SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
+ Composite Device
+To: Staffan Melin <staffan.melin@oscillator.se>,
+ Salvatore Bonaccorso <carnil@debian.org>
+Cc: Jiri Kosina <jkosina@suse.com>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org, 1114557@bugs.debian.org
+References: <aL2gYJaXoB6p_oyM@eldamar.lan>
+ <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
+ <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
+ <aMUxHZF-7p7--1qS@eldamar.lan> <aMUxg6FLqDetwiGu@eldamar.lan>
+ <f08669ec112d6ab2f62e35c0c96d1f06@oscillator.se>
+From: zhangheng <zhangheng@kylinos.cn>
+In-Reply-To: <f08669ec112d6ab2f62e35c0c96d1f06@oscillator.se>
 
+This is a multi-part message in MIME format.
+--------------8Ut23cP00acSb4c9XjXIPEhR
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
+Apply this new patch and test the kernel again. I don't have the=20
+original mic device in my hands, which means I have to wait for a=20
+response for testing now.
 
-On 9/14/25 2:15 PM, Mohammad Rafi Shaik wrote:
-> The QCS8275 board is based on Qualcomm's QCS8300 SoC family, and all
-I guess you meant SoC instead of board here.
+You can test it first, and the other mic device also needs to be retested
 
-> supported firmware files are located in the qcs8300 directory. The
-> sound topology and ALSA UCM configuration files have also been migrated
-> from the qcs8275 directory to the actual SoC qcs8300 directory in
-> linux-firmware. With the current setup, the sound topology fails
-> to load, resulting in sound card registration failure.
-> 
-> This patch updates the driver match data to use the correct driver name
-> qcs8300 for the qcs8275-sndcard, ensuring that the sound card driver
-> correctly loads the sound topology and ALSA UCM configuration files
-> from the qcs8300 directory.
-> 
-> Fixes: 34d340d48e595 ("ASoC: qcom: sc8280xp: Add support for QCS8275")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+=E5=9C=A8 2025/9/13 21:11, Staffan Melin =E5=86=99=E9=81=93:
+> Ah, thanks, I get it now :)
+>
+> So I got 6.16.7, and the patch applied without problems.
+>
+> But no luck, the same results as before: touchscreen not working,=20
+> xinput --list not showing the Jieli touchscreen. dmesg shows the same=20
+> as before, too.
+>
+> Best regards,
+>
+> Staffan
+>
+>
+> On 2025-09-13 10:55, Salvatore Bonaccorso wrote:
+>> Hi Staffan,
+>>
+>> chiming in hopefully it is of help.
+>>
+>> Now really with the patch ...
+>>
+>> On Fri, Sep 12, 2025 at 09:57:04PM +0200, Staffan Melin wrote:
+>>> Thank you,
+>>>
+>>> I tried to apply this patch to 6.12.39, the first problematic=20
+>>> kernel, as
+>>> well as 6.12.41, the first bad I tried, and on both I got an error=20
+>>> message:
+>>>
+>>> Applying: HID: quirks: Add device descriptor for 4c4a:4155
+>>> error: patch failed: drivers/hid/hid-quirks.c:1068
+>>> error: drivers/hid/hid-quirks.c: patch does not apply
+>>> Patch failed at 0001 HID: quirks: Add device descriptor for 4c4a:4155
+>>>
+>>> To which kernel version should I apply the patch?
+>>
+>> As the deveopment goes from mainline then down to stable series, the
+>> fix needs to be developed first for mainline. So the patch is targeted
+>> there.
+>>
+>> But please find attached an updated patch which hopefully should work
+>> which resolved the context changes on top of 6.12.47.
+>>
+>> But ideally you can provide a Tested-by on zhangheng's mainline patch
+>> to get things rolling as needed.
+>>
+>> Regards,
+>> Salvatore
+--------------8Ut23cP00acSb4c9XjXIPEhR
+Content-Type: text/plain; charset=UTF-8;
+ name="v2-0001-HID-quirks-Add-device-descriptor-for-4c4a-4155.patch"
+Content-Disposition: attachment;
+ filename*0="v2-0001-HID-quirks-Add-device-descriptor-for-4c4a-4155.patch"
+Content-Transfer-Encoding: base64
 
-LGTM,
+RnJvbSBmM2MxMzEyZWM0YWQ0MzQ4MDE5ODFkYzk3MjA5ZWZmNTEyYjJjMTk1IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBaaGFuZyBIZW5nIDx6aGFuZ2hlbmdAa3lsaW5vcy5j
+bj4KRGF0ZTogRnJpLCAxMiBTZXAgMjAyNSAyMDozODoxOCArMDgwMApTdWJqZWN0OiBbUEFU
+Q0ggdjJdIEhJRDogcXVpcmtzOiBBZGQgZGV2aWNlIGRlc2NyaXB0b3IgZm9yIDRjNGE6NDE1
+NQoKVHdvIFVTQiBkZXZpY2VzIHVzZSB0aGUgc2FtZSBJRC4gVG8gYXZvaWQgYWZmZWN0aW5n
+IGZ1bmN0aW9uYWxpdHksCmRldmljZSBkZXNjcmlwdG9ycyBhcmUgYWRkZWQgdG8gZGlzdGlu
+Z3Vpc2ggYmV0d2VlbiB0aGVtCgpTaWduZWQtb2ZmLWJ5OiBaaGFuZyBIZW5nIDx6aGFuZ2hl
+bmdAa3lsaW5vcy5jbj4KLS0tCiBkcml2ZXJzL2hpZC9oaWQtcXVpcmtzLmMgfCAxNyArKysr
+KysrKysrKysrKysrLQogMSBmaWxlIGNoYW5nZWQsIDE2IGluc2VydGlvbnMoKyksIDEgZGVs
+ZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2hpZC9oaWQtcXVpcmtzLmMgYi9kcml2
+ZXJzL2hpZC9oaWQtcXVpcmtzLmMKaW5kZXggZmZkMDM0NTY2ZTJlLi5kMzlhOGU1M2VhMzYg
+MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvaGlkL2hpZC1xdWlya3MuYworKysgYi9kcml2ZXJzL2hp
+ZC9oaWQtcXVpcmtzLmMKQEAgLTkxMyw2ICs5MTMsMTcgQEAgc3RhdGljIGNvbnN0IHN0cnVj
+dCBoaWRfZGV2aWNlX2lkIGhpZF9pZ25vcmVfbGlzdFtdID0gewogI2VuZGlmCiAJeyBISURf
+VVNCX0RFVklDRShVU0JfVkVORE9SX0lEX1lFQUxJTkssIFVTQl9ERVZJQ0VfSURfWUVBTElO
+S19QMUtfUDRLX0IySykgfSwKIAl7IEhJRF9VU0JfREVWSUNFKFVTQl9WRU5ET1JfSURfUVVB
+TlRBLCBVU0JfREVWSUNFX0lEX1FVQU5UQV9IUF81TVBfQ0FNRVJBXzU0NzMpIH0sCisJeyB9
+Cit9OworLyoKKyAqIGhpZF9pZ25vcmVfbWljIC0gTWljcm9waG9uZSBkZXZpY2VzIGRvIG5v
+dCByZXF1aXJlIEhJRCBjb3JlIHByb2Nlc3NpbmcKKyAqCisgKiBOb3cgdGhlcmUgYXJlIHR3
+byBVU0IgZGV2aWNlcyB1c2luZyB0aGUgc2FtZSBJRCwgb25lIGlzIHRoZSBtaWNyb3Bob25l
+IGFuZCB0aGUgb3RoZXIKKyAqIGlzIHRoZSB0b3VjaCBzY3JlZW4uIFRoZSB0b3VjaCBzY3Jl
+ZW4gcmVxdWlyZXMgaGlkIGNvcmUgcHJvY2Vzc2luZywgYnV0IHRoZQorICogbWljcm9waG9u
+ZSBkb2VzIG5vdC4gVGhlIHR3byBoYXZlIGRpZmZlcmVudCBiY2RJRHMsIHdoaWNoIHdpbGwg
+YmUgdXNlZCB0bworICogZGlzdGluZ3Vpc2ggdGhlbSBpbiB0aGUgZnV0dXJlCisgKi8KK3N0
+YXRpYyBjb25zdCBzdHJ1Y3QgaGlkX2RldmljZV9pZCBoaWRfaWdub3JlX21pY1tdID0gewog
+CXsgSElEX1VTQl9ERVZJQ0UoVVNCX1ZFTkRPUl9JRF9TTUFSVExJTktURUNITk9MT0dZLCBV
+U0JfREVWSUNFX0lEX1NNQVJUTElOS1RFQ0hOT0xPR1lfNDE1NSkgfSwKIAl7IH0KIH07CkBA
+IC0xMDY4LDYgKzEwNzksOSBAQCBib29sIGhpZF9pZ25vcmUoc3RydWN0IGhpZF9kZXZpY2Ug
+KmhkZXYpCiAJICAgIGhkZXYtPnF1aXJrcyAmIEhJRF9RVUlSS19JR05PUkVfTU9VU0UpCiAJ
+CXJldHVybiB0cnVlOwogCisJaWYoaGlkX21hdGNoX2lkKGhkZXYsIGhpZF9pZ25vcmVfbWlj
+KSAmJiAoaGRldi0+dmVyc2lvbiA+IDEuMSkpCisJCXJldHVybiB0cnVlOworCiAJcmV0dXJu
+ICEhaGlkX21hdGNoX2lkKGhkZXYsIGhpZF9pZ25vcmVfbGlzdCk7CiB9CiBFWFBPUlRfU1lN
+Qk9MX0dQTChoaWRfaWdub3JlKTsKQEAgLTEyNjYsNyArMTI4MCw4IEBAIHN0YXRpYyB1bnNp
+Z25lZCBsb25nIGhpZF9nZXRzX3NxdWlyayhjb25zdCBzdHJ1Y3QgaGlkX2RldmljZSAqaGRl
+dikKIAljb25zdCBzdHJ1Y3QgaGlkX2RldmljZV9pZCAqYmxfZW50cnk7CiAJdW5zaWduZWQg
+bG9uZyBxdWlya3MgPSBoZGV2LT5pbml0aWFsX3F1aXJrczsKIAotCWlmIChoaWRfbWF0Y2hf
+aWQoaGRldiwgaGlkX2lnbm9yZV9saXN0KSkKKwlpZiAoaGlkX21hdGNoX2lkKGhkZXYsIGhp
+ZF9pZ25vcmVfbGlzdCkgfHwKKwkgICAoaGlkX21hdGNoX2lkKGhkZXYsIGhpZF9pZ25vcmVf
+bWljKSAmJiAoaGRldi0+dmVyc2lvbiA+IDEuMSkpKQogCQlxdWlya3MgfD0gSElEX1FVSVJL
+X0lHTk9SRTsKIAogCWlmIChoaWRfbWF0Y2hfaWQoaGRldiwgaGlkX21vdXNlX2lnbm9yZV9s
+aXN0KSkKLS0gCjIuNDcuMQoK
 
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-
-
---srini
-> ---
->  sound/soc/qcom/sc8280xp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
-> index 73f9f82c4e25..db48168b7d3f 100644
-> --- a/sound/soc/qcom/sc8280xp.c
-> +++ b/sound/soc/qcom/sc8280xp.c
-> @@ -186,7 +186,7 @@ static int sc8280xp_platform_probe(struct platform_device *pdev)
->  static const struct of_device_id snd_sc8280xp_dt_match[] = {
->  	{.compatible = "qcom,qcm6490-idp-sndcard", "qcm6490"},
->  	{.compatible = "qcom,qcs6490-rb3gen2-sndcard", "qcs6490"},
-> -	{.compatible = "qcom,qcs8275-sndcard", "qcs8275"},
-> +	{.compatible = "qcom,qcs8275-sndcard", "qcs8300"},
->  	{.compatible = "qcom,qcs9075-sndcard", "qcs9075"},
->  	{.compatible = "qcom,qcs9100-sndcard", "qcs9100"},
->  	{.compatible = "qcom,sc8280xp-sndcard", "sc8280xp"},
-
+--------------8Ut23cP00acSb4c9XjXIPEhR--
 
