@@ -1,60 +1,73 @@
-Return-Path: <stable+bounces-179618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56FDB57AB5
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 14:24:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E22FB57ADC
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 14:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 686C748143C
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 12:23:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C28D1887E4B
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 12:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543A5308F13;
-	Mon, 15 Sep 2025 12:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8728D30214D;
+	Mon, 15 Sep 2025 12:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="jrFESGPW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGlGorY5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BC92FF15D;
-	Mon, 15 Sep 2025 12:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9D02FB962;
+	Mon, 15 Sep 2025 12:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757938908; cv=none; b=qWRGAHV9GrZ2XJ1XZZc/n51uhOK/GNpJWDm6q5CLW7TWXW41o15eHwC+mr99ur9/dtwqin/sT1p55LJpUwQXoiPvfcfJE7BQxkfndkQMAuPkTHGhLyCjTRSo/YyBwLtScF4E1oAUqsuHnQ3Ej0cl3zVwm1OPNBtqj1lHFTv2Fag=
+	t=1757939058; cv=none; b=qtpSvdEUB69oezre4WTWCMnT2gUzjX6Ggi5M9WHiDkOJMtdsUG3BZn0LxXmdtjC3fjgODNV5HBbhT999LIdoiHqpJBWl5+m3ZMmr0KF9I6uQ9pbjoGEdtFhWZc3ciDdl7l8oRGvB8alpP3TyyoxIWLbgbr0Fh7yoBNfgaDv2Cyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757938908; c=relaxed/simple;
-	bh=z2kNIlcXBW6MfC2xnrcVa0oHxwllCrJCejQCNVLE0eQ=;
+	s=arc-20240116; t=1757939058; c=relaxed/simple;
+	bh=7P1TH/iXUySVg0i/AUOTjLXI0gPuddCzRAcSmSb5R4w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZiH9A/Vmohr2aOxV5Bv8HE1n1yWRhdHuv31Wr9lJ/6dYcwoQNJK1s/z8ASoiaZmLiSt5Ro7Pl72S7eR5W23nILJCCfwjDq8oJmGN2mckG1yJA0FUzPYJ5liVCxJR+7fH5sxjlLYSRa8VCwsY+KH+dZ+jWT94p9x1TddCqCry9ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=jrFESGPW; arc=none smtp.client-ip=220.197.32.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=OOyfLZgtX27UDIP2iLeBPK7IHVGLm6yCXP8suJxPQlk=;
-	b=jrFESGPWhXpollyfx2m2Rmh87nxknxI0bHyUfUBTA7k8Zz0Jk6COaBKi03L4dr
-	I/WOcZ6ziU5uN2cHpS83VNHtD/12Jduq12MQIgeUSo9BAs7jjeUHXdEG6fBpvZa0
-	aa5V28EzrTFTAgUQpbIXpKUut6KGamE3qez/pMsnrO1SQ=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgB3b7qDBMhoodmEBA--.36439S3;
-	Mon, 15 Sep 2025 20:20:20 +0800 (CST)
-Date: Mon, 15 Sep 2025 20:20:18 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Qais Yousef <qyousef@layalina.io>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: cap the default transition delay at 10 ms
-Message-ID: <aMgEgvTyHEzaEJ1v@dragon>
-References: <20250910065312.176934-1-shawnguo2@yeah.net>
- <CAJZ5v0gL5s99h0eq1U4ngaUfPq_AcfgPruSD096JtBWVMjSZwQ@mail.gmail.com>
- <aMQbIu5QNvPoAsSF@dragon>
- <20250914174326.i7nqmrzjtjq7kpqm@airbuntu>
- <aMfAQXE4sRjru9I_@dragon>
- <20250915100207.5amkmknirijnvuoh@airbuntu>
+	 Content-Type:Content-Disposition:In-Reply-To; b=rxGk9TsBi6zZ+Km+8ZbBFA3kJl2YZVTkOVfvsFkvDgRbzPkw6QC9D0i0a5fBJ303BzEYL6Boa0jfd1byUdiN+MCGY/TvMmvmhwJMIv5oQ614DUc5PeXQIl+w2a1/6xvPENUZWm2SORV1wrJLOh6dfSgqKFxIrFmnHLM0O+8waJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGlGorY5; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757939056; x=1789475056;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7P1TH/iXUySVg0i/AUOTjLXI0gPuddCzRAcSmSb5R4w=;
+  b=HGlGorY5u4O6qVMz6bRyfyylVveO7XBK+tCOx2gImVVfftYiS9C7HnxO
+   wJZce1TYStwCIbpdN6/LHA9fXXFM/P44vJWLcCmyLrgi8HLMoQsdIucXr
+   GUCOHVuU1mHpi51ruZMVkMPZISQtEIpXNksJaByCICGF97TNkHqfXXmey
+   vT7jVuracm2K1TlQv9WC/+0kzdbbjlB52DNqR3GStZ5H025Pebz3KHdpt
+   fEz+A59meQdoIvvF3ixWvAocfg9cOy1C6vvJtqWv56BpsU9SYSTyl3z4V
+   1tNOaUhQzqbte3V0GeRVtugbbEvhpI3Ujtr0c4W/lVFVpDebFEBgpvGoZ
+   A==;
+X-CSE-ConnectionGUID: 2CxM061aQb2/xftyHhLUSA==
+X-CSE-MsgGUID: fx2PL+chRj6tNYhutlfOXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="70807161"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
+   d="scan'208";a="70807161"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 05:24:15 -0700
+X-CSE-ConnectionGUID: lBHa8urVQ0C6GbcF5fU5aw==
+X-CSE-MsgGUID: UPGdaX0TSLSniCBvTRZPGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
+   d="scan'208";a="179783356"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by orviesa005.jf.intel.com with SMTP; 15 Sep 2025 05:24:12 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 15 Sep 2025 15:24:11 +0300
+Date: Mon, 15 Sep 2025 15:24:11 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: rfkill: gpio: Fix crash due to dereferencering
+ uninitialized pointer
+Message-ID: <aMgFa9LLJBhjcgJr@kuha.fi.intel.com>
+References: <20250913113515.21698-1-hansg@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,43 +76,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250915100207.5amkmknirijnvuoh@airbuntu>
-X-CM-TRANSID:Mc8vCgB3b7qDBMhoodmEBA--.36439S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7try8Ww1fWrWDKFyDAw48Crg_yoW8GF43pF
-	W7K3W2kF1kGF4Dtws2yw4Uuw1Ykwn5tr4UGry8WF1rA398Wrn0gw4Iga1Y9FW3Jr4DCw1q
-	qr40g3srZayYyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ut9N3UUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEh3JZWjHo9vN3AABsk
+In-Reply-To: <20250913113515.21698-1-hansg@kernel.org>
 
-On Mon, Sep 15, 2025 at 11:02:07AM +0100, Qais Yousef wrote:
-> On 09/15/25 15:29, Shawn Guo wrote:
-> > On Sun, Sep 14, 2025 at 06:43:26PM +0100, Qais Yousef wrote:
-> > > > > Why do you want to address the issue in the cpufreq core instead of
-> > > > > doing that in the cpufreq-dt driver?
-> > > > 
-> > > > My intuition was to fix the regression at where the regression was
-> > > > introduced by recovering the code behavior.
-> > > 
-> > > Isn't the right fix here is at the driver level still? We can only give drivers
-> > > what they ask for. If they ask for something wrong and result in something
-> > > wrong, it is still their fault, no?
-> > 
-> > I'm not sure.  The cpufreq-dt driver is following suggestion to use
-> > CPUFREQ_ETERNAL, which has the implication that core will figure out
-> > a reasonable default value for platforms where the latency is unknown.
-> > And that was exactly the situation before the regression.  How does it
-> > become the fault of cpufreq-dt driver?
+On Sat, Sep 13, 2025 at 01:35:15PM +0200, Hans de Goede wrote:
+> Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
+> device property") rfkill_find_type() gets called with the possibly
+> uninitialized "const char *type_name;" local variable.
 > 
-> Rafael and Viresh would know better, but amd-pstate chooses to fallback to
-> specific values if cppc returned CPUFREQ_ETERNAL.
+> On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
+> acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
 > 
-> Have you tried to look why dev_pm_opp_get_max_transition_latency() returns
-> 0 for your platform? I think this is the problem that was being masked before.
+>         rfkill->type = (unsigned)id->driver_data;
+> 
+> and there is no "type" property so device_property_read_string() will fail
+> and leave type_name uninitialized, leading to a potential crash.
+> 
+> rfkill_find_type() does accept a NULL pointer, fix the potential crash
+> by initializing type_name to NULL.
+> 
+> Note likely sofar this has not been caught because:
+> 
+> 1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
+> 2. The stack happened to contain NULL where type_name is stored
+> 
+> Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
+> Cc: stable@vger.kernel.org
+> Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Signed-off-by: Hans de Goede <hansg@kernel.org>
 
-My platform doesn't scale voltage along with frequency, and the platform
-DT doesn't specify 'clock-latency-ns' which is an optional property
-after all.
+FWIW:
 
-Shawn
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
+> ---
+> Changes in v2:
+> - Fix typo in stable email address
+> ---
+>  net/rfkill/rfkill-gpio.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+> index 41e657e97761..cf2dcec6ce5a 100644
+> --- a/net/rfkill/rfkill-gpio.c
+> +++ b/net/rfkill/rfkill-gpio.c
+> @@ -94,10 +94,10 @@ static const struct dmi_system_id rfkill_gpio_deny_table[] = {
+>  static int rfkill_gpio_probe(struct platform_device *pdev)
+>  {
+>  	struct rfkill_gpio_data *rfkill;
+> -	struct gpio_desc *gpio;
+> +	const char *type_name = NULL;
+>  	const char *name_property;
+>  	const char *type_property;
+> -	const char *type_name;
+> +	struct gpio_desc *gpio;
+>  	int ret;
+>  
+>  	if (dmi_check_system(rfkill_gpio_deny_table))
+> -- 
+> 2.51.0
+
+-- 
+heikki
 
