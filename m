@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-179615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC87B578E7
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 13:47:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA16B579FD
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 14:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F92F1A22159
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 11:47:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB3CD1888592
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 12:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E7A2FE060;
-	Mon, 15 Sep 2025 11:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE54303A00;
+	Mon, 15 Sep 2025 12:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Uv9pjGXI"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EEBeOIh/"
 X-Original-To: stable@vger.kernel.org
 Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E8A2FD7D3;
-	Mon, 15 Sep 2025 11:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFF52F28EF;
+	Mon, 15 Sep 2025 12:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757936822; cv=none; b=QQZ5noEJAFt8shdT6ErQH8jlua098t8gTA3MXmF9dV14uYNGblmBFFosz7BbmfeJfL4ymOnl8beHANHaQBQfR7JAORgNNXRJC4/JHg2//F4WJeV9erGtHhuG1t96W7Qe0YM1/zEQql7LAxYMaDNZUwfDDlFfda3K4/2233MUsjg=
+	t=1757938220; cv=none; b=rYxBrPaQS0HxsUO9PGNVoyaFxFLSrRwDZ5vB/1q1bIDhdRpMJw1s8cR97Bcg4q4gIdIi/uMLpcxgdao6XITVuw8rnOs0izPYc0/dCVTWJj1tIMc+01c0wHGbLUgnnXfrNWht8g9MJpGI5iUkmmgw0bp/S0Xhad7batEql9eir7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757936822; c=relaxed/simple;
-	bh=YH1lYv37rvuaCIt3LkdDU2QwLfCom7OlCQhnjTrSLaM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VEeHkUMpCK2Vjh/pizfvGUcT6Ts3aKN+ey54bcsrGEQMDc4lILiL5P6F11QM7YHdpI9NgRJ89zkLqQOxr3RCUoQ+9OqXrkp1iVd7usBzhrj57GzrFyGbyBlot1qtnuuVO+E+Esqi0/y1cKQtJThktaYDM5/S8Am4qMIwKGPxaJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Uv9pjGXI; arc=none smtp.client-ip=220.197.31.4
+	s=arc-20240116; t=1757938220; c=relaxed/simple;
+	bh=uqn7sQTP/O+KXMPXYRFmgLHEQTjpBe9h/9/eeXkz65Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BPtcFJgDpGqE4b9vc16jRbLzhUFRSXqamlNAdMjxV+SRsxmnV9UVx4XRJmhBI/kj2z2HYnZq1bhYzbIAdk7jkhJwpWE+OKhaqmfNf9/cPwvqTc3FBpXdoFXNoVs5wXRhd8pehsk2Lw/1p5kmGNvxnFHHLJBhK8nHHT29Tk07j4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EEBeOIh/; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=g7
-	bBZ08Y30YBsmASg69y6dlkae34XywuX+RyAixm0dw=; b=Uv9pjGXIfw6UMFCeeb
-	EnxoUMEgtn/DY1qMT70OwSudd4X4Z+5NciXB5gJ/EOAS2oMrNiLtO3tr0HssMl9F
-	a1ZU1aJoub1DSeWasHglvtxlfhVhQc+Bhy+irzCK7LjVfm9R0Aqtt1rMVoJZQD7c
-	ERGLzvZOnLNH717HkflvjNZ04=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=uX
+	YipikAORq7rmSiXBAcddF/TDyI+Ck/jJ3ssPKAKWY=; b=EEBeOIh/Oflc6xA5cO
+	8ewa4chJ9vmkDiAP0WKltbkUE51T+ydUcJOSThGB7wYBC3BGFDNj3cmMSDBBI24M
+	K6YVLH18A0lDwF3Lk62/HSo6S16spdoIdjuY+AhMUJaQ3cJJhWS0MEXVRgJODkTO
+	N/KpT3GlRi7SB86gO4ylZNVW4=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgAnhAuW_Mdoi3VIDA--.37972S4;
-	Mon, 15 Sep 2025 19:46:31 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3L8IEAshoNuutBQ--.65473S4;
+	Mon, 15 Sep 2025 20:09:41 +0800 (CST)
 From: Haoxiang Li <haoxiang_li2024@163.com>
-To: pdeschrijver@nvidia.com,
-	pgaikwad@nvidia.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	linmq006@gmail.com
-Cc: linux-clk@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
+To: tiffany.lin@mediatek.com,
+	andrew-ct.chen@mediatek.com,
+	yunfei.dong@mediatek.com,
+	mchehab@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	haoxiang_li2024@163.com,
+	hverkuil@kernel.org,
+	tzungbi@kernel.org,
+	jiasheng@iscas.ac.cn
+Cc: linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
 	stable@vger.kernel.org
-Subject: [PATCH] clk: tegra: tegra124-emc: Fix a reference leak in emc_ensure_emc_driver()
-Date: Mon, 15 Sep 2025 19:46:29 +0800
-Message-Id: <20250915114629.174472-1-haoxiang_li2024@163.com>
+Subject: [PATCH] media: mediatek: vcodec: Fix a reference leak in mtk_vcodec_fw_vpu_init()
+Date: Mon, 15 Sep 2025 20:09:38 +0800
+Message-Id: <20250915120938.177691-1-haoxiang_li2024@163.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,39 +66,43 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgAnhAuW_Mdoi3VIDA--.37972S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw1DXry5XF1DCF43Jr4kXrb_yoWDZrbEkF
-	4jv3s7Xw45Cr1UCF15Gr4fZryIyFn8WF4vvFy7tFZ3G345ur45Xr45ursakrnIg3yDCa4D
-	WF10g398Gr98CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRMsjjDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBEBnJbmjH+kpShwAAsk
+X-CM-TRANSID:_____wD3L8IEAshoNuutBQ--.65473S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww1rWr4DKw4rAFWUGFWfXwb_yoW8GF4Dpr
+	s3Ka42kFyUJw1qvw18Zw4Uuay5Cr1SgrW8Cw13Zw1a9rnxXFWIqr1jy3WIqFZ7JFyvka43
+	Xrnaga4fCF4Fvr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_MKuUUUUUU=
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBEAnJbmjIAYMTQwAAsM
 
-put_device() is only called on the error path, causing a reference leak
-on the success path. Fix this by calling put_device() once pdev is no
-longer needed.
+vpu_get_plat_device() increases the reference count of the returned
+platform device. However, when devm_kzalloc() fails, the reference
+is not released, causing a reference leak.
 
-Fixes: 6d6ef58c2470 ("clk: tegra: tegra124-emc: Fix missing put_device() call in emc_ensure_emc_driver")
+Fix this by calling put_device() on fw_pdev->dev before returning
+on the error path.
+
+Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
 Cc: stable@vger.kernel.org
 Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
- drivers/clk/tegra/clk-tegra124-emc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
-index 2a6db0434281..b9f2f47ec6e5 100644
---- a/drivers/clk/tegra/clk-tegra124-emc.c
-+++ b/drivers/clk/tegra/clk-tegra124-emc.c
-@@ -197,8 +197,9 @@ static struct tegra_emc *emc_ensure_emc_driver(struct tegra_clk_emc *tegra)
- 	tegra->emc_node = NULL;
+diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+index d7027d600208..1c94316f2d7d 100644
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+@@ -117,8 +117,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_init(void *priv, enum mtk_vcodec_fw_use
+ 		vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_enc_handler, priv, rst_id);
  
- 	tegra->emc = platform_get_drvdata(pdev);
-+	put_device(&pdev->dev);
-+
- 	if (!tegra->emc) {
--		put_device(&pdev->dev);
- 		pr_err("%s: cannot find EMC driver\n", __func__);
- 		return NULL;
- 	}
+ 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
+-	if (!fw)
++	if (!fw) {
++		put_device(&fw_pdev->dev);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 	fw->type = VPU;
+ 	fw->ops = &mtk_vcodec_vpu_msg;
+ 	fw->pdev = fw_pdev;
 -- 
 2.25.1
 
