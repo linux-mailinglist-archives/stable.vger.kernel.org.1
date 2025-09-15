@@ -1,144 +1,88 @@
-Return-Path: <stable+bounces-179655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C80B58734
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 00:13:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47817B58793
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 00:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2657A2A3350
-	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 22:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AABE1B25441
+	for <lists+stable@lfdr.de>; Mon, 15 Sep 2025 22:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B83529DB8F;
-	Mon, 15 Sep 2025 22:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721D42D4B61;
+	Mon, 15 Sep 2025 22:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zh+fRe+Y"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XD41Em6O"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A305E2C0260
-	for <stable@vger.kernel.org>; Mon, 15 Sep 2025 22:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FA6221282;
+	Mon, 15 Sep 2025 22:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757974376; cv=none; b=CLOzKdS+T2qISRN6pTaMKdg1MjgD5iGDpV6cvUfj4yB1IBpH39rA27J33yMXeH5rsRx0103lxY20PbGfuVsXNhQBM34GMrJc2SgS3oRDBwJtaT+ro0Aa8/QRNvmqJuYPlhIGtq4Sp/Rg0sYigAd3yF4Qaut5rL9hfa+AwIrPmwk=
+	t=1757975805; cv=none; b=XNV3FmujvbxFpVeWTOLSx6ShGchfC+LWciwNRTkV7aMEB88iGDdL95ekENB8g1zMJlz1gqDLpYbtQZBD9hUacbQSm6ftPS04SlXLhnnMUw+xCN9dbxEfQ9yGKtIDQG69C6Hhr3t6eTJ+IFJ/t43pFvCRaLkTqT8uZWuk4/srrEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757974376; c=relaxed/simple;
-	bh=DVlri7iCY4MppHBj5wNw7dj3I14e1CKN3HUDI+4tCxc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=arsKpb3nxthKcCyBTBPVob4IKCNZizohvhmp4xuGvyG7JeJDfVd6mm0qY5i74oPitLBola6+J6MGFkv1cItuS09UGSJIdOT+wLkN1I81t2RZv93mbHJokLTajCGje6fY7XobF45gIgNlhfWjK5Ces++1LljAA9SKcp/IoThlc1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zh+fRe+Y; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-24458274406so91454225ad.3
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 15:12:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757974374; x=1758579174; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=j87FXg7tFCRagVDld0PEyw37R7wt3rGw/96+RjwDdpc=;
-        b=zh+fRe+YJX/Bb+/CxIxM+9MJ78BDesrkz23xE1ox02Wng9oGIrxafdZbpv9yRevap+
-         ERjJBuTZbMRcGrmSoFiGlfkh2hwrfqmoA6o5qiGIp88zuCITmV0m9L0YUusRtzvK8dsd
-         ypnfa+zZDGv+wTK7yOL26v6N+53S8SXh7HUR/OkzbVtcWIPiwxhcULXCGuk6QeqmNxEy
-         I/txx3ltug6suifUM49ZK0DbwVREfweSzABoiSDPR24Fo0V9VojXxHE/dEkGox2gF3+W
-         8WCzP/kwFoEA7AnRHYf3fscIAxY8hUdul9H/N3lyDAYargDQewMFlsZhwcK1e+pJWzVd
-         rUGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757974374; x=1758579174;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=j87FXg7tFCRagVDld0PEyw37R7wt3rGw/96+RjwDdpc=;
-        b=EUZxaKpM4fLugoWqAuVLKfX0vS001Mdc+jPQ9tVKY6mNZ8HbWrfCjbLumOStK8gulW
-         ZZAgbgsPEj7Zdzb3o/V9DvNyd9qEdROVgbKd2uHsaoiOxBKXMx4Bz6EDCHePLpuucVOv
-         /jLGPG+HKQqg0GpyWCI5iWbjcBSyfgMdPaaNvf5hFVGKiWfNFn49uqa5Nbrhjnib5Z+7
-         ylboaWMyRLouTD+zE0BGouH9COWob8ZQrU2PhcQoEup9TvHDW/Azj19X2zc0mQ21/teT
-         316qGahppOKknMFZJaJoEuo1InOHlb5ur2ZBuxdhvCdX8Esnwjca2exT4fqee+E2v23g
-         N3sw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCw4eSYOJ5Gh/apT8LFPLFieffR6uI+XUaE7QVI/Z209DmSwrHFokqkctSCmeh2iDE4J2s+lA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX21kYTWz845DnUpapn6T7l+gSuBdNhupvJHcZwFpbQ/jt0c6J
-	Zt0zreAkx659XXOLXlKdUz3+rYMhi3lahdRhFLnb6s1ZLiBBKKjePEhcf4FAd4yjHEdkMNR21bg
-	3lKnY/zLefSrpeQ==
-X-Google-Smtp-Source: AGHT+IFESkUZb/k54fYGaZPTJJrL+f2Yr5vCiqX3z2w9zyP+DcCmdgG7J/85fpkmx6lSHtDQasSIhXCTc2ZlIA==
-X-Received: from plbme6.prod.google.com ([2002:a17:902:fc46:b0:24b:14e1:af48])
- (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2ac6:b0:24c:7bc6:7ac7 with SMTP id d9443c01a7336-25d25a72d8dmr182399555ad.18.1757974374029;
- Mon, 15 Sep 2025 15:12:54 -0700 (PDT)
-Date: Mon, 15 Sep 2025 22:12:47 +0000
+	s=arc-20240116; t=1757975805; c=relaxed/simple;
+	bh=ylWCf7mn++QEdplcms6pMXryBGpylSj+eyDc/Pa9P1s=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=jLY/IjV/w9HtOqRRnwZY3XAX9dwJFFUiqu8ywoubfGB2oLoYe67bM8yO+B1qn4GrGIDTa89FpJKdhP/ykST6SHfFO8b3BEshIs4rtp5FMYzm6cWQWpux4onFf3h+h43lzlJ6rKCxRzPhTXVOePaMtUGNV86dyvjOu2fGu16HElU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XD41Em6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39092C4CEF1;
+	Mon, 15 Sep 2025 22:36:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757975804;
+	bh=ylWCf7mn++QEdplcms6pMXryBGpylSj+eyDc/Pa9P1s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XD41Em6OmVs/HoC8kKF4blvfGChKvN0hV2kHafNbdfw7lxTmLwGmw/DqpX6A5BsrR
+	 HUDbr829kBnmqQtUMiyeZGsD9I3AGTqn13vd4Lod1ocker4JYMSk1Z/HoSLo4sATDE
+	 MZ77dRrPipxfDZKn4KoHAdPIpv1J26ShiMCw8YHs=
+Date: Mon, 15 Sep 2025 15:36:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
+ kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, Peter
+ Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn
+ <jannh@google.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit
+ checks
+Message-Id: <20250915153642.7f46974a536a3af635f49a89@linux-foundation.org>
+In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+	<20250915163838.631445-2-kaleshsingh@google.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250915221248.3470154-1-cmllamas@google.com>
-Subject: [PATCH] binder: fix double-free in dbitmap
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Alice Ryhl <aliceryhl@google.com>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	Tiffany Yang <ynaffit@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-A process might fail to allocate a new bitmap when trying to expand its
-proc->dmap. In that case, dbitmap_grow() fails and frees the old bitmap
-via dbitmap_free(). However, the driver calls dbitmap_free() again when
-the same process terminates, leading to a double-free error:
+On Mon, 15 Sep 2025 09:36:32 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
 
-  ==================================================================
-  BUG: KASAN: double-free in binder_proc_dec_tmpref+0x2e0/0x55c
-  Free of addr ffff00000b7c1420 by task kworker/9:1/209
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 
-  CPU: 9 UID: 0 PID: 209 Comm: kworker/9:1 Not tainted 6.17.0-rc6-dirty #5 PREEMPT
-  Hardware name: linux,dummy-virt (DT)
-  Workqueue: events binder_deferred_func
-  Call trace:
-   kfree+0x164/0x31c
-   binder_proc_dec_tmpref+0x2e0/0x55c
-   binder_deferred_func+0xc24/0x1120
-   process_one_work+0x520/0xba4
-  [...]
+lol.
 
-  Allocated by task 448:
-   __kmalloc_noprof+0x178/0x3c0
-   bitmap_zalloc+0x24/0x30
-   binder_open+0x14c/0xc10
-  [...]
+x1:/usr/src/25> grep "Fixes.*1da177e4c3f4" ../gitlog|wc -l
+661
 
-  Freed by task 449:
-   kfree+0x184/0x31c
-   binder_inc_ref_for_node+0xb44/0xe44
-   binder_transaction+0x29b4/0x7fbc
-   binder_thread_write+0x1708/0x442c
-   binder_ioctl+0x1b50/0x2900
-  [...]
-  ==================================================================
-
-Fix this issue by marking proc->map NULL in dbitmap_free().
-
-Cc: stable@vger.kernel.org
-Fixes: 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- drivers/android/dbitmap.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/android/dbitmap.h b/drivers/android/dbitmap.h
-index 956f1bd087d1..c7299ce8b374 100644
---- a/drivers/android/dbitmap.h
-+++ b/drivers/android/dbitmap.h
-@@ -37,6 +37,7 @@ static inline void dbitmap_free(struct dbitmap *dmap)
- {
- 	dmap->nbits = 0;
- 	kfree(dmap->map);
-+	dmap->map = NULL;
- }
- 
- /* Returns the nbits that a dbitmap can shrink to, 0 if not possible. */
--- 
-2.51.0.384.g4c02a37b29-goog
+we really blew it that time!
 
 
