@@ -1,132 +1,138 @@
-Return-Path: <stable+bounces-179744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37570B59EC5
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 19:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D32BB59EF9
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 19:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F064F16F068
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 17:05:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D741C00FCC
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 17:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DB92F5A27;
-	Tue, 16 Sep 2025 17:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9A22F7AA6;
+	Tue, 16 Sep 2025 17:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="COVHlHgZ"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ATr4gjLb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-28.smtpout.orange.fr [80.12.242.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1A232D5DB;
-	Tue, 16 Sep 2025 17:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22D72F5A03;
+	Tue, 16 Sep 2025 17:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758042346; cv=none; b=Ooud9fl/xRRMMOj+gG7vJz6AOWWP/2auY00bjmZPbK0a8Mt7eM2El9dtDz6OaRYSfSQAvSLN3Blk3+vaTagWED7w/BhOi+EjmWEKEwqfaat5NBPzVwh4fR2w2d0rT1uzpJvlEz2G6oOXS50IwZPs65+Bugx4AQfa9yJgfzaX6Kw=
+	t=1758042648; cv=none; b=j6T3WvXxl9zc4ZvDoRJOCesPYP/GhziV5Ta2eIN+iZKRF4Y5OiQeiXkAASVURLeiklptf6OqOcaVCjnwIBNOD4B5vpdQvLUL2+oD4r9iWZBGDUHz7S8EUfYhBQPFAq99lCzFwDsk09MTtuWGCIVCeXK+HzngH+6qpoXfLZU52Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758042346; c=relaxed/simple;
-	bh=f2S84XCnfyCMujHxvoGwdS9xv/u+KapxI+1bjHR3tJs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AHZpw7ZOXHDs9Iz7Yv04+dsPtzF/g+OGn94kxNVdyL809aJKg5tDzht2VAX/fdBp6dgekNEQ2KM3YAun3kUEhj1GA7vpSjwtFpYdfy7NUf/kr2TJjHyuvByLrBuAlsLox//geuoNERBxtLN8g/RQcyVBGQyD+/QF1KYFkm1NuxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=COVHlHgZ; arc=none smtp.client-ip=80.12.242.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPA
-	id yYyWugYwOPNPdyYyWuxO1w; Tue, 16 Sep 2025 18:56:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1758041780;
-	bh=KxXeHLxPfTqm5VMdb4U/d3SjNLsOdUyu/UfmEVmpoBU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=COVHlHgZiQJu0vXSGCu8h560SE2GEPKVyuM25traI/yLHGjYZrafnA+mDEYAFiAN0
-	 Ql8lCne8c0zz5uCsgQHg0S5p8v56D5eb9mQIbvquYxx9trNJ2sCKjfsmX9iRXq5eTq
-	 wUMBCpBoVxlwPzQkBA4h7mTk905D0Zx4RPjefzdTBulkax9UyagZKleI00E/a3Oc24
-	 vz3iF0qP+60XJWCqEW1kWcx6IbxgFBiz0cUPyCuVupJEm1NKNwFTUCzAW+mUO5JbTs
-	 s06r3M0V8pPrC+StU+evUxWMGIAm6P20X7jSovxvu4qNO5Mc1w0Er0qMQMy5WiMXsD
-	 oEKLaKR1SF1hw==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Tue, 16 Sep 2025 18:56:20 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <a9b8f7bb-5704-48b0-9a33-e1470b222688@wanadoo.fr>
-Date: Tue, 16 Sep 2025 18:56:15 +0200
+	s=arc-20240116; t=1758042648; c=relaxed/simple;
+	bh=52a5khhWywk3mzbTtG/eaLSUFbCkMvNbfSSHenmqqkw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rz8Nv3db0NtKmIvKmyMK9iE0KMmEcSiHf8ZHkYnFKJZeCQ18XnvD63i4Th3nj3fuUyCyWXat2e6iMisaeLLzIqgKIp1k3UeoCgsYXoXzzx0ijBbSLPjkKhGvIv46KqElCUsOBr5Kn+o7YXaQ4kimOBi63L3DtgoNFRBjJdf55w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ATr4gjLb; arc=none smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1758042646; x=1789578646;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Yj/co0t5Iw8d47vXLDniXY4H2qDpIH8uba9JHqJdO8s=;
+  b=ATr4gjLbGQWyDG4dZXegrRq/p+vS4/Ed4oIHY2fibY11y7PooZEV3iRI
+   7cjb6DH4KdrM+V2iK1eyri1Btn2zQXyjCJgi4O7f/mc39scYD5K+yOi3q
+   xqoOk35EgqQPtneOkVZ1b701J5I29XkCyy83QS3Q9tBcW6BawJPHTc/Nx
+   A1MnXZ3fUvSSuT/Nu7TWT4+aKBjFc/vjLomlk36dWoJvvMMIGaVaOkqx8
+   RNLPR6NiwJ8AexYkCBDvsiKKoS/wKG8uNXhTT8Lw/FVybQCDR0DQ4SXLV
+   O5c+oazkssFC36dqL3S7Qu+IfFvV5iXSvhbFGEbAQ/+Mzll2bRappf0GT
+   g==;
+X-CSE-ConnectionGUID: r2MH0a+nShCa9LtTSfPqNg==
+X-CSE-MsgGUID: KgO2vHhiQHyJRTkCEVp8IQ==
+X-IronPort-AV: E=Sophos;i="6.18,269,1751241600"; 
+   d="scan'208";a="3085197"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 17:10:46 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:56726]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.219:2525] with esmtp (Farcaster)
+ id a8e25940-f42e-4026-bea0-0929d2af846d; Tue, 16 Sep 2025 17:10:46 +0000 (UTC)
+X-Farcaster-Flow-ID: a8e25940-f42e-4026-bea0-0929d2af846d
+Received: from EX19D032UWA001.ant.amazon.com (10.13.139.62) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 16 Sep 2025 17:10:45 +0000
+Received: from dev-dsk-ajgja-2a-6a9b5603.us-west-2.amazon.com (172.22.68.79)
+ by EX19D032UWA001.ant.amazon.com (10.13.139.62) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 16 Sep 2025 17:10:45 +0000
+From: Andrew Guerrero <ajgja@amazon.com>
+To: <gregkh@linuxfoundation.org>
+CC: <ajgja@amazon.com>, <akpm@linux-foundation.org>,
+	<cgroups@vger.kernel.org>, <gunnarku@amazon.com>, <guro@fb.com>,
+	<hannes@cmpxchg.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<mhocko@kernel.org>, <muchun.song@linux.dev>, <roman.gushchin@linux.dev>,
+	<shakeel.butt@linux.dev>, <stable@vger.kernel.org>, <vdavydov.dev@gmail.com>
+Subject: Re: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
+Date: Tue, 16 Sep 2025 17:10:40 +0000
+Message-ID: <20250916171040.12436-1-ajgja@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2025091216-purveyor-prior-2a81@gregkh>
+References: <2025091216-purveyor-prior-2a81@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: mtk-mdp: Fix a reference leak in mtk_mdp_probe()
-To: Haoxiang Li <haoxiang_li2024@163.com>, minghsiu.tsai@mediatek.com,
- houlong.wei@mediatek.com, andrew-ct.chen@mediatek.com, mchehab@kernel.org,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- hverkuil@kernel.org, eballetbo@kernel.org, eizan@chromium.org
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- stable@vger.kernel.org
-References: <20250915125248.181608-1-haoxiang_li2024@163.com>
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Content-Language: en-US, fr-FR
-In-Reply-To: <20250915125248.181608-1-haoxiang_li2024@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
+ EX19D032UWA001.ant.amazon.com (10.13.139.62)
 
-Le 15/09/2025 à 14:52, Haoxiang Li a écrit :
-> vpu_get_plat_device() increases the reference count of the returned
-> platform device. Add platform_device_put() to prevent reference leak.
-
-Hi,
-
-I think it is also missing in the remove function.
-
-And while at it, mtk_mdp_unregister_m2m_device(mdp) seems to also be 
-missing in the error handling path of the probe.
-
-Just my 2c.
-
-CJ
-
+On 2025-09-12 12:45 UTC, Greg KH wrote:
+> On Mon, Sep 08, 2025 at 09:09:00PM +0000, Andrew Guerrero wrote:
+> > On 2025-09-07 13:10 UTC, Greg KH wrote:
+> > > On Sat, Sep 06, 2025 at 03:21:08AM +0000, Andrew Guerrero wrote:
+> > > > This patch is intended for the 5.10 longterm release branch. It will not apply
+> > > > cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
+> > > > later release branches:
+> > > > a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
+> > > 
+> > > Why can't we take those instead?
+> > > 
+> > > > In 5.15, the counter flushing code is completely removed. This may be another
+> > > > viable option here too, though it's a larger change.
+> > > 
+> > > If it's not needed anymore, why not just remove it with the upstream
+> > > commits as well?
+> > 
+> > Yeah, my understanding is the typical flow is to pull commits from upstream into
+> > stable branches. However, I'm not confident I know the the answer to "which
+> > upstream commits?" To get started,
+> > 
+> > `git log -L :memcg_hotplug_cpu_dead:mm/memcontrol.c linux-5.10.y..linux-5.15.y`
+> > 
+> > tells me that the upstream changes to pull are:
+> > 
+> > - https://lore.kernel.org/all/20210209163304.77088-1-hannes@cmpxchg.org/T/#u
+> > - https://lore.kernel.org/all/20210716212137.1391164-1-shakeelb@google.com/T/#u
+> > 
+> > However, these are substantial features that "fix" the issue indirectly by
+> > transitioning the memcg accounting system over to rstats. I can pick these 10
+> > upstream commits, but I'm worried I may overlook some additional patches from
+> > 5.15.y that need to go along with them. I may need some guidance if we go this
+> > route.
 > 
-> Fixes: ee18fc7b0b95 ("media: mtk-mdp: handle vpu_wdt_reg_handler() errors during probe")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
->   drivers/media/platform/mediatek/mdp/mtk_mdp_core.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
+> Testing is key :)
 > 
-> diff --git a/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c b/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
-> index 80fdc6ff57e0..6aedb6033010 100644
-> --- a/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
-> +++ b/drivers/media/platform/mediatek/mdp/mtk_mdp_core.c
-> @@ -198,7 +198,7 @@ static int mtk_mdp_probe(struct platform_device *pdev)
->   				  VPU_RST_MDP);
->   	if (ret) {
->   		dev_err(&pdev->dev, "Failed to register reset handler\n");
-> -		goto err_m2m_register;
-> +		goto err_vpu_get_dev;
->   	}
->   
->   	platform_set_drvdata(pdev, mdp);
-> @@ -206,7 +206,7 @@ static int mtk_mdp_probe(struct platform_device *pdev)
->   	ret = vb2_dma_contig_set_max_seg_size(&pdev->dev, DMA_BIT_MASK(32));
->   	if (ret) {
->   		dev_err(&pdev->dev, "Failed to set vb2 dma mag seg size\n");
-> -		goto err_m2m_register;
-> +		goto err_vpu_get_dev;
->   	}
->   
->   	pm_runtime_enable(dev);
-> @@ -214,6 +214,9 @@ static int mtk_mdp_probe(struct platform_device *pdev)
->   
->   	return 0;
->   
-> +err_vpu_get_dev:
-> +	platform_device_put(mdp->vpu_dev);
-> +
->   err_m2m_register:
->   	v4l2_device_unregister(&mdp->v4l2_dev);
->   
+> > Another reasonable option is to take neither route. We can maintain this patch
+> > internally and then drop it once we upgrade to a new kernel version.
+> 
+> Perhaps just do that for now if you all are hitting this issue?  It
+> seems to be the only report I've seen so far.
 
+We are hitting this issue only in a stress test, and I think we got lucky with
+experiencing it, so I wouldn't be too surprised if this is the first and only
+report.
+
+Thanks for taking a look!
+
+Andrew
 
