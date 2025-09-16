@@ -1,191 +1,131 @@
-Return-Path: <stable+bounces-179734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28987B598E4
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:10:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254BAB59915
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621DB3A772E
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:08:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 338174800DD
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E5734165C;
-	Tue, 16 Sep 2025 14:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5E92D8DDA;
+	Tue, 16 Sep 2025 14:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CSfXvnU5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mOCGnvwg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B04129E6E;
-	Tue, 16 Sep 2025 14:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17272673B7
+	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 14:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758031399; cv=none; b=oYWKoIcvoKt31M0zd4EQBPwfijsaHOecQIpwqNa1Pxv1UT+0tyTcIbdOQLsWoAleBxJNP3qpKOxJzwyX0j/k5J+SyhwGNUO7jDGSDeAzQ7Od5+Zb+J3Ikiee2Lcdvajr2OyY07BK7lMHmj4JrdnWdqcUe6FyWB8NH7T0yFHZV7M=
+	t=1758031944; cv=none; b=TYge9y8Ks+OHygDypxtxYPNspcc/1BFawRVimWu13Ui7KWV/pjtkYJkBx7NVxvZt+wBVyg9IkcuoVqcy0vmai2euBK8BXh1Ltk/WZYSAoj4ZqL3v00F4T8GNx706H/ceZHc0WfGzzbqvWYYcrUA+C3AhfEbBrCX+RPdrz1FGKOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758031399; c=relaxed/simple;
-	bh=lFV+fw+L8i1jg9c+p1LCKtySyEmUlzqQ14ODWK6gkok=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MtdjnYCs6a1u/qZVty5ROvnwSBUirII/rCTooGy4uNr/WlE1PUyVPKpiacCANCTmr5TgtckNRCyD49Fa31U6CTjpoms4Nj1YJL1x5J/Gzm41zs/rUl5i6jB/6Mz3/Pp9RBCXN3tP1gtrmhZQ3XdzA+pXLOEwKaMxvK59rpqzOGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CSfXvnU5; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58GAKlDS020394;
-	Tue, 16 Sep 2025 14:03:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=v8Tu5LUQavuzbEX1FDO9TFCB23DnjS203lh
-	5d2K19V4=; b=CSfXvnU5gc46rbapwyfyBELUnEhb/1hCwvFt3/NS3O04Nvr2/eN
-	slmvlMCaMBMHREWkdg8ASCIPbZc3jGuIhW8H/Ale27Xc3WvDkmLzj0esHvAZkO4e
-	LxL/M5W1ODESLAwOlWvonKjZsdoF4qCeZ71ZFDqtHqPnSEoWd5VqwGZjkBGn8C42
-	7S9LpkX3uFZv5USwP/VMJDcf2X4yiaNFp34SaUva8q20013ZAFMD6eAMJftTJ2cY
-	RPU6xpD1tf9nNYTuSJwfJmpv6lK/0Vn3kMyUtGI2zaaslJpccSKxEJ+tqIhUKUtU
-	4e9MpcueM0GlRyxaFCId6MIK/quIEcx6lPQ==
-Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4951chh0v6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 14:03:05 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 58GE32Bt019834;
-	Tue, 16 Sep 2025 14:03:02 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 4951pmcha5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 14:03:02 +0000
-Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58GE31P4019819;
-	Tue, 16 Sep 2025 14:03:02 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 58GE31aQ019807
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 14:03:01 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id 9781523404; Tue, 16 Sep 2025 22:03:00 +0800 (CST)
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-To: dmitry.baryshkov@oss.qualcomm.com, marcel@holtmann.org,
-        luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org, stable@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_chejiang@quicinc.com, Shuai Zhang <quic_shuaz@quicinc.com>
-Subject: [PATCH v12] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
-Date: Tue, 16 Sep 2025 22:02:59 +0800
-Message-Id: <20250916140259.400285-1-quic_shuaz@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1758031944; c=relaxed/simple;
+	bh=fVduY9ChM+XTiJ/WxOZb5vLjE0k0RtwqZkyUiEW8pZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QoB6YuhvL/xprn+TGQlqY80B61moraAgO6dALWe3+yWyXsEfaIpRmj4opz9T+z8+iARgjXfl0GTFd3QTEdUftIV94qGQEnNbjsgPS3I0xYERjY1HfmUiJiShM4zFll8usniiFdPz4VgIFspWHZm8JCE9r6NvtxglWWdHox1xU8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mOCGnvwg; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b9a856dc2so34839075e9.0
+        for <stable@vger.kernel.org>; Tue, 16 Sep 2025 07:12:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758031941; x=1758636741; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5ihTrH7t7gLzKRumooOOczb4IBjokkGyHJ2+QxNRMxY=;
+        b=mOCGnvwgcrU5KMtGEYRdZSbfkuz1xSxEYBDr0cn6QPZPfHN3Ekbdo2d4sqORAIe5Md
+         BWG3CUqFvXoePD6D2vMNjzRJMlxt/DDkXlXbSKT3p5XRGysYXw98oGzaUSF5L6m8FEMr
+         OzIjEKCneuEMM6RXtPw1JcA8qF/6eUN6Rax4+x3DVn4TB+Lpx5JbC0Tz1QpCl9QGDrlJ
+         jreFR6TE2YU7/XEPu0u7ag1n+bpDl5msFmnjdxhllhSaZT2vxM2Xl6QklzlghUipVSZC
+         HGZ2Ad3FDOmHkSwgdSdNuh0hpoJSHa5xvXNmLqPaVA+zLmlYR1hEyGuK9VPacYtdSF2M
+         K09w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758031941; x=1758636741;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ihTrH7t7gLzKRumooOOczb4IBjokkGyHJ2+QxNRMxY=;
+        b=s33eZxTbod94/eboq9SEQW9Hw8NxN12LlHT5Mpchc3jskid28iZmjiqrx1cC/hwOce
+         85ftTEWLAlPdQEKTitu+XCRKxwQ4p0nVvifm5wCjxo2MeC/CkHolICalltV7gnl6U7Py
+         19wk9PhNdStHyEMj0P3NdiF6eCUNLNhDEUhEV0Lom19s+Daxt1m6K7jfW6leRFHJUu5N
+         qPdmwSMQ71Wz/hGZ49Tr1DHZwwRyEYl3Ur+XupJryvTMKjrCNfVHDeZlVqtyjRBCtEws
+         DRTAXPMpLWNN1nkzi0Qo/RXK5fDDsMLl8kgYiEdOMCesmtcNK8DSGUWjzSq3p0tW0WJ7
+         zFkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ4iUj5ec7obUeEOqrLafb1MK+jpiu0Xm7nqhSB07VH2v2kKSgGoZ2LjrzlmuYZn/khHf+UfE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1WVY3CQmvzMJbKQPeIDqvYo4VO0zB8SwZ0ShCsecHstMzBwnB
+	AYG91JJqgCqPv6f4xqoaVvQzjIXGIZArNpseQr45dHeIIj2KizYSotMxKL19E/ZBJLk=
+X-Gm-Gg: ASbGncts6WVftkVWeUb2q9FdkFGMtDRzHtZ2Y6I4F4SnuPPpxtHxctZ0me8d0fUOzvd
+	TYnnV13wZVGPhQ1qJDYzi3sSoqerlYYxzZHvGPpnNw7ZPZUIYcii0h3qi36qcYnaG+mZiTnOyUh
+	R97Ai12a5ravOZxHVjGswJOIPB9BA/hotcU5snVDcNI6yeJmNlXUaXGnUNt8Ks1IwX4mDJNyyJH
+	LLATVoAGfJf+MVkyOiuBRMSzMErctaEmbRuWPnWGM29RGnBsLDoVBm4Q3x+Zfb8/SSzQPXCi3/V
+	01RUnEiYHdIt5upLuuJpJ7RB2oTaDtXn1T1KwbeyekmYY0DYqoLjpEAFxva5iMChFGBadczdPZn
+	YhFTu2bl9XAwSELy+OPS5DFeoECS4ddVy3uD7MxSEbYE5c04hZNymul4Jj9ghUbpJJwIMj1VsCr
+	Z98yQj1eZIXFcjGWLCc7s=
+X-Google-Smtp-Source: AGHT+IGmb1kHFNHQ4frPlib14MxI7w4SRTDLbyi2XJON83MQa2TxlNaD5uBHUokreLL+hCdD46cN6Q==
+X-Received: by 2002:a05:600c:1546:b0:458:bc3f:6a77 with SMTP id 5b1f17b1804b1-45f211c4c03mr137113085e9.2.1758031941271;
+        Tue, 16 Sep 2025 07:12:21 -0700 (PDT)
+Received: from [192.168.0.19] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e8c7375fb7sm14091558f8f.14.2025.09.16.07.12.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Sep 2025 07:12:20 -0700 (PDT)
+Message-ID: <ca511d42-0381-41d1-bea0-0d766e04f9f4@linaro.org>
+Date: Tue, 16 Sep 2025 15:12:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=eeo9f6EH c=1 sm=1 tr=0 ts=68c96e19 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=i1iVT939vnhokII3DuMA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: Ol-zXOWSmWPWNRGqDV8MgV1kQVU1yDx_
-X-Proofpoint-GUID: Ol-zXOWSmWPWNRGqDV8MgV1kQVU1yDx_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAzNiBTYWx0ZWRfXx9VA/G0uZM/F
- UWC6R8VkKKFYmtwA73vDw6y032wNfEZP8dEFhw1kC75mQEBCOin4YXvWO217qcOxVlCgy2dzo+A
- IgDwa4D4jMwQiOmOT3Yr5LWB/BkSy/4fLQzE4UkhoYAoIy68kROH3B9x8qoNhk+C8B2QJ41ABb5
- 2glz2q3unbX+H5V/ByL/aqPHP0ztyXlWAFYLo83lCIf/1YR4dZiSO8/IbQg+VLdAUzlyfrGkZ5c
- YG5KMccD1Uv0XHX1JIAdWLmPnYw6piiK0xCK5MTPtGChKb6vaZBfqdVGbGEUO9XzrqIzQ9iXgwb
- SPLeXqgK2xV/hBy8n2GRH0NcCXZAzcpfJYTqQENUeMXCG3Oh0ARsofKd9xsOwB9yVVUF6aKG0xZ
- ZcmA8O3+
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 impostorscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 phishscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130036
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] tty: serial: qcom_geni_serial: Fix error handling for
+ RS485 mode
+To: Anup Kulkarni <anup.kulkarni@oss.qualcomm.com>,
+ gregkh@linuxfoundation.org, jirislaby@kernel.org, johan+linaro@kernel.org,
+ dianders@chromium.org, quic_ptalari@quicinc.com, quic_zongjian@quicinc.com,
+ quic_jseerapu@quicinc.com, quic_vdadhani@quicinc.com,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org
+Cc: mukesh.savaliya@oss.qualcomm.com, viken.dadhaniya@oss.qualcomm.com,
+ stable@vger.kernel.org
+References: <20250916093957.4058328-1-anup.kulkarni@oss.qualcomm.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250916093957.4058328-1-anup.kulkarni@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On QCS9075 and QCA8275 platforms, the BT_EN pin is always pulled up by hw
-and cannot be controlled by the host. As a result, in case of a firmware
-crash, the host cannot trigger a cold reset. Instead, the BT controller
-performs a warm restart on its own, without reloading the firmware.
-
-This leads to the controller remaining in IBS_WAKE state, while the host
-expects it to be in sleep mode. The mismatch causes HCI reset commands
-to time out. Additionally, the driver does not clear internal flags
-QCA_SSR_TRIGGERED and QCA_IBS_DISABLED, which blocks the reset sequence.
-If the SSR duration exceeds 2 seconds, the host may enter TX sleep mode
-due to tx_idle_timeout, further preventing recovery. Also, memcoredump_flag
-is not cleared, so only the first SSR generates a coredump.
-
-Tell driver that BT controller has undergone a proper restart sequence:
-
-- Clear QCA_SSR_TRIGGERED and QCA_IBS_DISABLED flags after SSR.
-- Add a 50ms delay to allow the controller to complete its warm reset.
-- Reset tx_idle_timer to prevent the host from entering TX sleep mode.
-- Clear memcoredump_flag to allow multiple coredump captures.
-
-Apply these steps only when HCI_QUIRK_NON_PERSISTENT_SETUP is not set,
-which indicates that BT_EN is defined in DTS and cannot be toggled.
-
-Refer to the comment in include/net/bluetooth/hci.h for details on
-HCI_QUIRK_NON_PERSISTENT_SETUP.
-
-Changes in v12:
-- Rewrote commit to clarify the actual issue and affected platforms.
-- Used imperative language to describe the fix.
-- Explained the role of HCI_QUIRK_NON_PERSISTENT_SETUP.
-
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
----
- drivers/bluetooth/hci_qca.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 4cff4d9be..2d6560482 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1653,6 +1653,39 @@ static void qca_hw_error(struct hci_dev *hdev, u8 code)
- 		skb_queue_purge(&qca->rx_memdump_q);
- 	}
- 
-+	/*
-+	 * If the BT chip's bt_en pin is connected to a 3.3V power supply via
-+	 * hardware and always stays high, driver cannot control the bt_en pin.
-+	 * As a result, during SSR (SubSystem Restart), QCA_SSR_TRIGGERED and
-+	 * QCA_IBS_DISABLED flags cannot be cleared, which leads to a reset
-+	 * command timeout.
-+	 * Add an msleep delay to ensure controller completes the SSR process.
-+	 *
-+	 * Host will not download the firmware after SSR, controller to remain
-+	 * in the IBS_WAKE state, and the host needs to synchronize with it
-+	 *
-+	 * Since the bluetooth chip has been reset, clear the memdump state.
-+	 */
-+	if (!hci_test_quirk(hu->hdev, HCI_QUIRK_NON_PERSISTENT_SETUP)) {
-+		/*
-+		 * When the SSR (SubSystem Restart) duration exceeds 2 seconds,
-+		 * it triggers host tx_idle_delay, which sets host TX state
-+		 * to sleep. Reset tx_idle_timer after SSR to prevent
-+		 * host enter TX IBS_Sleep mode.
-+		 */
-+		mod_timer(&qca->tx_idle_timer, jiffies +
-+				  msecs_to_jiffies(qca->tx_idle_delay));
-+
-+		/* Controller reset completion time is 50ms */
-+		msleep(50);
-+
-+		clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
-+		clear_bit(QCA_IBS_DISABLED, &qca->flags);
-+
-+		qca->tx_ibs_state = HCI_IBS_TX_AWAKE;
-+		qca->memdump_state = QCA_MEMDUMP_IDLE;
-+	}
-+
- 	clear_bit(QCA_HW_ERROR_EVENT, &qca->flags);
- }
- 
--- 
-2.34.1
-
+On 16/09/2025 10:39, Anup Kulkarni wrote:
+> If uart_get_rs485() fails, the driver returns without detaching
+> the PM domain list.
+> 
+> Fix the error handling path in uart_get_rs485_mode() to ensure the
+> PM domain list is detached before exiting.
+> 
+> Fixes: 86fa39dd6fb7 ("serial: qcom-geni: Enable Serial on SA8255p Qualcomm platforms")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anup Kulkarni <anup.kulkarni@oss.qualcomm.com>
+> ---
+>   drivers/tty/serial/qcom_geni_serial.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+> index 9c7b1cea7cfe..0fc0f215b85c 100644
+> --- a/drivers/tty/serial/qcom_geni_serial.c
+> +++ b/drivers/tty/serial/qcom_geni_serial.c
+> @@ -1928,7 +1928,7 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+>   
+>   	ret = uart_get_rs485_mode(uport);
+>   	if (ret)
+> -		return ret;
+> +		goto error;
+>   
+>   	devm_pm_runtime_enable(port->se.dev);
+>   
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
