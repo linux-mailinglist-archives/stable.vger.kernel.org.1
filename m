@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-179753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2D4B5A3CF
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 23:23:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0CBB5A3D5
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 23:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F4001BC8403
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 21:24:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97736487859
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 21:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913B12D9EE5;
-	Tue, 16 Sep 2025 21:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4AA2F9D8B;
+	Tue, 16 Sep 2025 21:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="SmzCuHWw"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="AoKzvVUR"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76EF2582;
-	Tue, 16 Sep 2025 21:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.178.143.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC5C274FEF;
+	Tue, 16 Sep 2025 21:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.158.23.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758057815; cv=none; b=BdjkQvAvPQzE7NLzycDGv49NGgvHEm8VdOXV4394GOnt/E2H63/8X10+BRNRNGv7Qh8wIGgh9KpNiP4HDjmd5Z0+m9OwJUp9wA0KhF4RrKM7Ow/ZLW7RilF8j6y2Dom00Ds4UklT+Ns9+UyLlF6B9wvsZZ7dUr02PbVB4TI9PCY=
+	t=1758057822; cv=none; b=roHX9va7hea+xmh7WGWgNQ36oH0m+L++kupavBeC5qNUIePNrIpf7LIj/a3gRXa73olha9zJ7yrsZ0Y9mUtYzhqviqZWZKP0/1glVcFk1lcNzERraSmWGyR0eXIO954faHQR6WSZZdWMb8aYzC/1zoi7ePQ0FOuNcPQMhBW8ys8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758057815; c=relaxed/simple;
-	bh=5XR/Nu7YN6Mb0hln5K8aUCoScT/acOCPiKkGyc9xAGY=;
+	s=arc-20240116; t=1758057822; c=relaxed/simple;
+	bh=pM0GBqHaGgzTZAGnSnn4Qw9WJ3hdqwctGR3yE354y1A=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKKmogrTfTBv3mX5WiX6SI+J4fQfKrOG3r8bSQLyRD2+aPPpZX9JaAYDmGb0rZLO3OYv6YQ4lmoJNeDhWq+Kb+wDbVfVXQd3r/5jwV0XweBc0YZ0DEMJfLpW4qb9lFUdJFT197Y4BATd/+21VwUEQFlzDvLomtQby1+3gBnNlQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=SmzCuHWw; arc=none smtp.client-ip=63.178.143.178
+	 MIME-Version:Content-Type; b=hphNKuytjJs6V7S8WwbuGnVrOnIC+23U5I9uJ9vyXoxj2qcRpziHonzZ8KnKRw1UZF2idWhdB3tUHMsgEXMGrimAEiV/HWtwkwg1Boubz2W6p2FdhMrDmQcKTc1sa1W06g5l/w+ihcf798ZQ9f55y5YvFG1CBqsssb3XNRHNM2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=AoKzvVUR; arc=none smtp.client-ip=35.158.23.94
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758057813; x=1789593813;
+  t=1758057820; x=1789593820;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3kgm8GxYEPdMjTswKbqKIM4NTuUgeLbOvcH9Wo5RG/8=;
-  b=SmzCuHWwBfLFTtjMm/u6pb4TvZXZ1N1jKy9lXFYWs+mzVhA/zymelc8S
-   GqIVsn0ANJ24AC1YbZLTyQpzMbtmfHpBcZjWaP/ZgSjHojXyh/AHPfGZg
-   okAdaIMYMVrmY8DC8Q45JZInARQ5Exw7zv5oPN1azgDtJRohRzRj7RIRi
-   AwekJgrdWBq7KXwbzfC5X4hGpRnuh0zIj+jBqSSYMXPRjCU7c3/TtbVzd
-   sW6EY13Ur92VkvJDknbm0Wzdic6fobnh2aoV3h9XsTe01qo5mb5ONBwOl
-   Wpl69bMqydrVQqYnYbwrxQcjerljCyUbb2BuS1GpTdfGc9tfvDBSWCGS6
-   Q==;
-X-CSE-ConnectionGUID: +DMxqd5qQkiCxbzxF5IjqQ==
-X-CSE-MsgGUID: STNCBFudQY+K7/nihwt2TQ==
+  bh=/D/xQfMG4xISuPuewijkl5zRVX5oHEv0v15y1ZTU64s=;
+  b=AoKzvVURTx++R4HgDf803i1leLyNbHbHiN05PZZ5l8MrAZkKj87WQhS5
+   7V1dZI7Dolqd+Zm76ehJXvZX8azjMjnRJfdnObUT8LuAC12AsnZQNZtuQ
+   oWk6+v62fQ3U1+po5NGKFuMnPvXFekgcgqTdA8KV7nHBF0NcZ9nUft/wA
+   72jeLBhVXv+Wv0lXFbMEu5OTIIaM8eDHmsArDhP1VVRe/UPq07imW2JIu
+   9vGEQkc4zKG0jbh4cuP/rqxbvUv0CQwe7bPYrBwd1nilYlCMiGKwksAj1
+   vNy7raon4fFm1QNTA1axAjxv+jzct8OAzPp2NBPk/dqVhTfJM/42xpBtu
+   g==;
+X-CSE-ConnectionGUID: ZOYVgWIKR9uYc+VYcI48uQ==
+X-CSE-MsgGUID: Dg2cLvD3RQy+dTLvVJcQRw==
 X-IronPort-AV: E=Sophos;i="6.18,270,1751241600"; 
-   d="scan'208";a="2106538"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 21:23:23 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:23013]
+   d="scan'208";a="2214971"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 21:23:29 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:10742]
  by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.21.238:2525] with esmtp (Farcaster)
- id 63959fd0-27a5-43aa-8cc2-e0bb2692163b; Tue, 16 Sep 2025 21:23:22 +0000 (UTC)
-X-Farcaster-Flow-ID: 63959fd0-27a5-43aa-8cc2-e0bb2692163b
+ id bf89d354-2c59-4d77-bb3e-bd01be6eb971; Tue, 16 Sep 2025 21:23:29 +0000 (UTC)
+X-Farcaster-Flow-ID: bf89d354-2c59-4d77-bb3e-bd01be6eb971
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Tue, 16 Sep 2025 21:23:22 +0000
+ Tue, 16 Sep 2025 21:23:26 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Tue, 16 Sep 2025
- 21:23:17 +0000
+ 21:23:22 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
 	<akpm@linux-foundation.org>, <gregkh@linuxfoundation.org>, <sj@kernel.org>,
@@ -70,11 +70,10 @@ To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
 	<andriy.shevchenko@linux.intel.com>, <bvanassche@acm.org>,
 	<keescook@chromium.org>, <linux-sparse@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
-CC: <jonnyc@amazon.com>, <farbere@amazon.com>, <stable@vger.kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: [PATCH 1/7 5.10.y] tracing: Define the is_signed_type() macro once
-Date: Tue, 16 Sep 2025 21:22:53 +0000
-Message-ID: <20250916212259.48517-2-farbere@amazon.com>
+CC: <jonnyc@amazon.com>, <farbere@amazon.com>, <stable@vger.kernel.org>
+Subject: [PATCH 2/7 5.10.y] minmax: sanity check constant bounds when clamping
+Date: Tue, 16 Sep 2025 21:22:54 +0000
+Message-ID: <20250916212259.48517-3-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250916212259.48517-1-farbere@amazon.com>
 References: <20250916212259.48517-1-farbere@amazon.com>
@@ -89,77 +88,81 @@ Content-Type: text/plain
 X-ClientProxiedBy: EX19D038UWC001.ant.amazon.com (10.13.139.213) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 
-commit 92d23c6e94157739b997cacce151586a0d07bb8a upstream.
+commit 5efcecd9a3b18078d3398b359a84c83f549e22cf upstream.
 
-There are two definitions of the is_signed_type() macro: one in
-<linux/overflow.h> and a second definition in <linux/trace_events.h>.
+The clamp family of functions only makes sense if hi>=lo.  If hi and lo
+are compile-time constants, then raise a build error.  Doing so has
+already caught buggy code.  This also introduces the infrastructure to
+improve the clamping function in subsequent commits.
 
-As suggested by Linus, move the definition of the is_signed_type() macro
-into the <linux/compiler.h> header file.  Change the definition of the
-is_signed_type() macro to make sure that it does not trigger any sparse
-warnings with future versions of sparse for bitwise types.
-
-Link: https://lore.kernel.org/all/CAHk-=whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com/
-Link: https://lore.kernel.org/all/CAHk-=wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com/
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Acked-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-(cherry picked from commit a49a64b5bf195381c09202c524f0f84b5f3e816f)
+[akpm@linux-foundation.org: coding-style cleanups]
+[akpm@linux-foundation.org: s@&&\@&& \@]
+Link: https://lkml.kernel.org/r/20220926133435.1333846-1-Jason@zx2c4.com
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 5efcecd9a3b18078d3398b359a84c83f549e22cf)
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/compiler.h     | 6 ++++++
- include/linux/overflow.h     | 1 -
- include/linux/trace_events.h | 2 --
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ include/linux/minmax.h | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index bbd74420fa21..004a030d5ad2 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -245,6 +245,12 @@ static inline void *offset_to_ptr(const int *off)
- /* &a[0] degrades to a pointer: a different type from an array */
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+index 1aea34b8f19b..8b092c66c5aa 100644
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -37,6 +37,28 @@
+ 		__cmp(x, y, op), \
+ 		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
  
-+/*
-+ * Whether 'type' is a signed type or an unsigned type. Supports scalar types,
-+ * bool and also pointer types.
-+ */
-+#define is_signed_type(type) (((type)(-1)) < (__force type)1)
++#define __clamp(val, lo, hi)	\
++	__cmp(__cmp(val, lo, >), hi, <)
 +
- /*
-  * This is needed in functions which generate the stack canary, see
-  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
-diff --git a/include/linux/overflow.h b/include/linux/overflow.h
-index 35af574d006f..66dd311ad8eb 100644
---- a/include/linux/overflow.h
-+++ b/include/linux/overflow.h
-@@ -32,7 +32,6 @@
-  * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
-  * credit to Christian Biere.
++#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
++		typeof(val) unique_val = (val);				\
++		typeof(lo) unique_lo = (lo);				\
++		typeof(hi) unique_hi = (hi);				\
++		__clamp(unique_val, unique_lo, unique_hi); })
++
++#define __clamp_input_check(lo, hi)					\
++        (BUILD_BUG_ON_ZERO(__builtin_choose_expr(			\
++                __is_constexpr((lo) > (hi)), (lo) > (hi), false)))
++
++#define __careful_clamp(val, lo, hi) ({					\
++	__clamp_input_check(lo, hi) +					\
++	__builtin_choose_expr(__typecheck(val, lo) && __typecheck(val, hi) && \
++			      __typecheck(hi, lo) && __is_constexpr(val) && \
++			      __is_constexpr(lo) && __is_constexpr(hi),	\
++		__clamp(val, lo, hi),					\
++		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
++			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
++
+ /**
+  * min - return minimum of two values of the same or compatible types
+  * @x: first value
+@@ -103,7 +125,7 @@
+  * This macro does strict typechecking of @lo/@hi to make sure they are of the
+  * same type as @val.  See the unnecessary pointer comparisons.
   */
--#define is_signed_type(type)       (((type)(-1)) < (type)1)
- #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
- #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
- #define type_min(T) ((T)((T)-type_max(T)-(T)1))
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 5af2acb9fb7d..0c8c3cf36f96 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -700,8 +700,6 @@ extern int trace_add_event_call(struct trace_event_call *call);
- extern int trace_remove_event_call(struct trace_event_call *call);
- extern int trace_event_get_offsets(struct trace_event_call *call);
+-#define clamp(val, lo, hi) min((typeof(val))max(val, lo), hi)
++#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
  
--#define is_signed_type(type)	(((type)(-1)) < (type)1)
--
- int ftrace_set_clr_event(struct trace_array *tr, char *buf, int set);
- int trace_set_clr_event(const char *system, const char *event, int set);
- int trace_array_set_clr_event(struct trace_array *tr, const char *system,
+ /*
+  * ..and if you can't take the strict
+@@ -138,7 +160,7 @@
+  * This macro does no typechecking and uses temporary variables of type
+  * @type to make all the comparisons.
+  */
+-#define clamp_t(type, val, lo, hi) min_t(type, max_t(type, val, lo), hi)
++#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
+ 
+ /**
+  * clamp_val - return a value clamped to a given range using val's type
 -- 
 2.47.3
 
