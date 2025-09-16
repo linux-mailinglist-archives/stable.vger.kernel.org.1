@@ -1,84 +1,152 @@
-Return-Path: <stable+bounces-179677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48610B58C76
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 05:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC835B58CA3
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 06:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03280523023
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 03:44:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC05A52234E
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 04:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C9F26FDA8;
-	Tue, 16 Sep 2025 03:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF82D29BDA7;
+	Tue, 16 Sep 2025 04:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNNZItGZ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="D/EaM1OC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793EB2222D0;
-	Tue, 16 Sep 2025 03:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606198248B;
+	Tue, 16 Sep 2025 04:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757994250; cv=none; b=AIRi1s0IGHqqITHaa1rY2MMTpYr3XiGA4tZwZWB3q3cPy7jdLHzVnwxahp6vCILOs8DRAkqnrNVoVAHv0rGJXMdjyrtaupyp+pJ2Y7yYXljUtgvIDjfGW20LlfGevsIHxlCYaXuISETKkoJCsQqTrvp+EZMUTcQFrrDmDZF/07Y=
+	t=1757995679; cv=none; b=MezFGuilOdEtGFCB/9d1X4GX0nrLEoFEUbwRPI3+yVEn9z0+bCGvbEv2qVLK2AG3QpCtcrFqxnIwBP8DgqaproAkZuJj0l4H3t2t4ZTA90UQLEezS1YC3iyA3ApXQfAE5qZ+080oIoWfoVtILf8fXnUYSwWgWiSItV4Gs7W+088=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757994250; c=relaxed/simple;
-	bh=6C7Ju+dhzY1OJEKfUPdFBki4vKRrlbJv3fbezkMeJk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=chUYpW5dN0j9wZR63qdx/H8/mb51+b5OF2HXU2tSDS6tpUTKjofO/qm2gto4ARwmGnHQQX95UGZ5YZpjOC7nOtNS42MhfUT6Dm/cYODMAohq9dvfn+nSHre4nt/PVF95JN2Bzti42WcibU0082/hkcgx5qZvpxbI5t8py5UTK/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNNZItGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E694CC4CEF7;
-	Tue, 16 Sep 2025 03:44:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757994250;
-	bh=6C7Ju+dhzY1OJEKfUPdFBki4vKRrlbJv3fbezkMeJk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jNNZItGZb1zzUcgKo8bdMydHebPYljwB/+qgD7tXublQltuS7e6zksLyIcfzDCC/V
-	 vRT+DZyi6pQA/8voeBFuSq0EhjDv5g9HOkBhE9MhtWnTypGWEhqtioZQTFq+WkngqU
-	 JgALwfNB2dxONDB4BTYzowwbCnZdXE8zMYWIAzITUtrDrl2MlMpH9B1w2F/neg+ghl
-	 1Ri5D6s9eZst03L8ZkW5F4whXj1BFvEqwRm7Cb53ZgfjR0TfmLLbQxWx/kyFmeBfO6
-	 RmhULbDroggV3OxPE9aPrS4jNQ8flNX2G3/1h6nn5tRzn7N2QJsac/iLvF57fPzjYa
-	 LyG78h4prP1dg==
-Date: Tue, 16 Sep 2025 03:44:05 +0000
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: tiffany.lin@mediatek.com, andrew-ct.chen@mediatek.com,
-	yunfei.dong@mediatek.com, mchehab@kernel.org,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	hverkuil@kernel.org, jiasheng@iscas.ac.cn,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: mediatek: vcodec: Fix a reference leak in
- mtk_vcodec_fw_vpu_init()
-Message-ID: <aMjdBSP1bvwvTRiO@google.com>
-References: <20250915120938.177691-1-haoxiang_li2024@163.com>
+	s=arc-20240116; t=1757995679; c=relaxed/simple;
+	bh=NYhWKQhQ/0Cc81fHZLR4FOZInE5vxOHt2PJwuSYvfls=;
+	h=Date:To:From:Subject:Message-Id; b=LIUzEBpPzDDPjXEIflXYB9+8b1oNuAb3B+zERDoP3GwKW0oSEbvuqoDgFJwH0QdFCtAayfRJr81h7BJvddHdzwnzFwFSTOmjz09oWeCEoiNIHCsSbvQq3Rf+a+WyDZpaxM0XlN3MJJh7M+7OVuF9LOTbnVcoUXnIBNubq9u2DI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=D/EaM1OC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBD9C4CEEB;
+	Tue, 16 Sep 2025 04:07:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757995678;
+	bh=NYhWKQhQ/0Cc81fHZLR4FOZInE5vxOHt2PJwuSYvfls=;
+	h=Date:To:From:Subject:From;
+	b=D/EaM1OCT2cDg+QmvfUJd188EDx4kyQxDDvz92McaLPe1Oh3chi7iRtge/UlTozQr
+	 nkirMXc6AcC0s2rlYygfMLzWQbjEj2kt//Xd7kpb7fhl7bsfTxzZR4ve5uybXKQxvK
+	 gBxKbrtw2sB1QJgmKasRxqK4stbrLwcQWSwzZJ3Q=
+Date: Mon, 15 Sep 2025 21:07:58 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mjguzik@gmail.com,jirislaby@kernel.org,brauner@kernel.org,oleg@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fix-the-racy-usage-of-task_locktsk-group_leader-in-sys_prlimit64-paths.patch added to mm-nonmm-unstable branch
+Message-Id: <20250916040758.BBBD9C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915120938.177691-1-haoxiang_li2024@163.com>
 
-On Mon, Sep 15, 2025 at 08:09:38PM +0800, Haoxiang Li wrote:
-> vpu_get_plat_device() increases the reference count of the returned
-> platform device. However, when devm_kzalloc() fails, the reference
-> is not released, causing a reference leak.
-> 
-> Fix this by calling put_device() on fw_pdev->dev before returning
-> on the error path.
-> 
-> Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 
-The reference, taking via of_find_device_by_node(), needs to be dropped after
-use.  mtk_vcodec_vpu_release() does but the error handling path doesn't.
+The patch titled
+     Subject: kernel/sys.c: fix the racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     fix-the-racy-usage-of-task_locktsk-group_leader-in-sys_prlimit64-paths.patch
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-the-racy-usage-of-task_locktsk-group_leader-in-sys_prlimit64-paths.patch
+
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Oleg Nesterov <oleg@redhat.com>
+Subject: kernel/sys.c: fix the racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths
+Date: Mon, 15 Sep 2025 14:09:17 +0200
+
+The usage of task_lock(tsk->group_leader) in sys_prlimit64()->do_prlimit()
+path is very broken.
+
+sys_prlimit64() does get_task_struct(tsk) but this only protects task_struct
+itself. If tsk != current and tsk is not a leader, this process can exit/exec
+and task_lock(tsk->group_leader) may use the already freed task_struct.
+
+Another problem is that sys_prlimit64() can race with mt-exec which changes
+->group_leader. In this case do_prlimit() may take the wrong lock, or (worse)
+->group_leader may change between task_lock() and task_unlock().
+
+Change sys_prlimit64() to take tasklist_lock when necessary. This is not
+nice, but I don't see a better fix for -stable.
+
+Link: https://lkml.kernel.org/r/20250915120917.GA27702@redhat.com
+Fixes: 18c91bb2d872 ("prlimit: do not grab the tasklist_lock")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/sys.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+--- a/kernel/sys.c~fix-the-racy-usage-of-task_locktsk-group_leader-in-sys_prlimit64-paths
++++ a/kernel/sys.c
+@@ -1734,6 +1734,7 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
+ 	struct rlimit old, new;
+ 	struct task_struct *tsk;
+ 	unsigned int checkflags = 0;
++	bool need_tasklist;
+ 	int ret;
+ 
+ 	if (old_rlim)
+@@ -1760,8 +1761,25 @@ SYSCALL_DEFINE4(prlimit64, pid_t, pid, u
+ 	get_task_struct(tsk);
+ 	rcu_read_unlock();
+ 
+-	ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
+-			old_rlim ? &old : NULL);
++	need_tasklist = !same_thread_group(tsk, current);
++	if (need_tasklist) {
++		/*
++		 * Ensure we can't race with group exit or de_thread(),
++		 * so tsk->group_leader can't be freed or changed until
++		 * read_unlock(tasklist_lock) below.
++		 */
++		read_lock(&tasklist_lock);
++		if (!pid_alive(tsk))
++			ret = -ESRCH;
++	}
++
++	if (!ret) {
++		ret = do_prlimit(tsk, resource, new_rlim ? &new : NULL,
++				old_rlim ? &old : NULL);
++	}
++
++	if (need_tasklist)
++		read_unlock(&tasklist_lock);
+ 
+ 	if (!ret && old_rlim) {
+ 		rlim_to_rlim64(&old, &old64);
+_
+
+Patches currently in -mm which might be from oleg@redhat.com are
+
+fix-the-wrong-comment-on-task_lock-nesting-with-tasklist_lock.patch
+fix-the-racy-usage-of-task_locktsk-group_leader-in-sys_prlimit64-paths.patch
+
 
