@@ -1,114 +1,134 @@
-Return-Path: <stable+bounces-179669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72564B58B30
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 03:30:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2199FB58B86
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 03:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 766FA3BA32A
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 01:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B154E1C1C
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 01:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AD2222575;
-	Tue, 16 Sep 2025 01:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAA0221DB3;
+	Tue, 16 Sep 2025 01:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWVE2bSo"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="IubZfCkp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C6B1E379B;
-	Tue, 16 Sep 2025 01:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C135C96;
+	Tue, 16 Sep 2025 01:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757986218; cv=none; b=lXi1WxfaxwRz09wrFHDI5g19TEUfvdmQIpriqU7LqQpHYsz/+i69Zro3YUc7XGlSxbGShb2FRmieAHM08wl1Aa0pXMzVITCab609n8gp/t1Y+VNC+K+RbopHSFMsdhtvwpoDOygNfUbINluYhxTEzMK33ptpfduTbegiI0Aocr8=
+	t=1757987616; cv=none; b=Avbpz9i5LhXnNnF/4wCfrbO+MPhD4phfubIiIaXPx6vFyv/Nhzd6zuOkqi1PVQWambOZfOglZq69ikGAkWjosIKSOepcY/ZJIE/LB42+I4ggqXbxLU2eGDprs1K6hM+mwz/78cnjNKHmsQ7AM9R0Sv1Y8c5eJv4DgYsAytJTC+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757986218; c=relaxed/simple;
-	bh=1jnjci6bRhFdax2eDMvwFKReYb8NK6G/YWbEbRNYPws=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K8seL0Wf+eTgk76UdFkEDZY/rZUxyZViY5EMXoWxQ9dVUSQ6jKBWJWrBSzKLrK4GN9o4o8LSUoykW2Jt3B7CfHUnIprs4SDUc8LR+Qqs+rtbL3CShK6TNYJQfpn9OOvM7txAmNOGJCdbmlyy8DyPflWypKwvIoFNsx97vUM55vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWVE2bSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5604EC4CEF5;
-	Tue, 16 Sep 2025 01:30:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757986218;
-	bh=1jnjci6bRhFdax2eDMvwFKReYb8NK6G/YWbEbRNYPws=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=eWVE2bSohiSHV3vMPcRpuwIz2Sm3XZ+538RHT1I1DIgAJ/bZqr1CdnKPoxgQhymdm
-	 rGd38Q2MwelfeJiqrux0Z4sijvEyXHqIy+5AI9RYgHQofPOfVw/0ud1MriqdXhm6yB
-	 6YJQBHY+sZ9kiv2rer+95ty42g1JaIaW1NhzPm+7ag/SUDA3yDlZsX2mR9B+rfE4a3
-	 DPMpHjok7GtRx7JaIFbbXRo/As6HQCRAZZAdDtY1wt2pRVtyv5mz2+TEOtWcuVpeNN
-	 Vy4XN9yjbxrRzSFgtwulDBo/tKAAEvVSRVSjvdrAmnvSS1sPLbMZhUntS1WcrZPLcp
-	 XIxhEDEdg58yw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE3539D0C17;
-	Tue, 16 Sep 2025 01:30:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1757987616; c=relaxed/simple;
+	bh=+WC97bJV2feID+JAMJ7EpHO+HiaXV2tmzHdqaD9C6eA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PbFkw1HnBbR/L5ALa/sIeaU8CwjWMYzbkphltJcmT4WEKvLBb8IAWQc8IMgsr4Zi2qpXHvC9yM4KEuuqrai0k0lNZChWID9vSdwbarNjlsJQLCS7oif6ElZT2YTeLT1EX8ZAShqWNmrAjsDAmk5/xCPcDuGvxRAIncc6fMCj94I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=IubZfCkp; arc=none smtp.client-ip=220.197.32.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=l6mMRQRQgJNTDEgOEAjOL4ukZGtOO3ve5WWGMFpFwsE=;
+	b=IubZfCkp+y3i0Zn1VNHhEEJjR94YNbfb3FgcUJt5Fv8AyIafbrHS2C4xcLSHF2
+	97sGvdUaPnjqKgr1Hkmm0CAHjzGYnkXZdvGo9KqJOl57syyV3AzxNhvK6r1//H6w
+	csZe2wfnGLXKbKoLK0lmdP5kFwm5sptbAls1WeTpUusRo=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXTwb4wshoJtOeBA--.45753S3;
+	Tue, 16 Sep 2025 09:52:58 +0800 (CST)
+Date: Tue, 16 Sep 2025 09:52:56 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Qais Yousef <qyousef@layalina.io>,
+	Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: cap the default transition delay at 10 ms
+Message-ID: <aMjC-BHKXjZkFmvj@dragon>
+References: <20250910065312.176934-1-shawnguo2@yeah.net>
+ <CAJZ5v0gL5s99h0eq1U4ngaUfPq_AcfgPruSD096JtBWVMjSZwQ@mail.gmail.com>
+ <aMQbIu5QNvPoAsSF@dragon>
+ <20250914174326.i7nqmrzjtjq7kpqm@airbuntu>
+ <aMfAQXE4sRjru9I_@dragon>
+ <CAJZ5v0i8L8w_ojua1ir3CGcwGSvE+3Jj0Sh5Cs1Yi8i4BX1Lbw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/5] selftests: mptcp: avoid spurious errors on TCP
- disconnect
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175798621949.559370.15168394018432640770.git-patchwork-notify@kernel.org>
-Date: Tue, 16 Sep 2025 01:30:19 +0000
-References: <20250912-net-mptcp-fix-sft-connect-v1-0-d40e77cbbf02@kernel.org>
-In-Reply-To: <20250912-net-mptcp-fix-sft-connect-v1-0-d40e77cbbf02@kernel.org>
-To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0i8L8w_ojua1ir3CGcwGSvE+3Jj0Sh5Cs1Yi8i4BX1Lbw@mail.gmail.com>
+X-CM-TRANSID:Ms8vCgDXTwb4wshoJtOeBA--.45753S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CF4kZw1fuw1fur4xXrWDArb_yoW8trWxpF
+	W5WwsFya4kXayqgwsFkw48ur1FqanYvFy7Ka4UurnYyw47JFnYg3WDKrWjyF95Aw1kJa1Y
+	qFyqk39rGFWUArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uz6wZUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIBo7oGjIwvrUKQAA3E
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 12 Sep 2025 14:25:49 +0200 you wrote:
-> This series should fix the recent instabilities seen by MPTCP and NIPA
-> CIs where the 'mptcp_connect.sh' tests fail regularly when running the
-> 'disconnect' subtests with "plain" TCP sockets, e.g.
+On Mon, Sep 15, 2025 at 03:18:44PM +0200, Rafael J. Wysocki wrote:
+> The question is not about who's fault it is, but what's the best place
+> to address this issue.
 > 
->   # INFO: disconnect
->   # 63 ns1 MPTCP -> ns1 (10.0.1.1:20001      ) MPTCP     (duration   996ms) [ OK ]
->   # 64 ns1 MPTCP -> ns1 (10.0.1.1:20002      ) TCP       (duration   851ms) [ OK ]
->   # 65 ns1 TCP   -> ns1 (10.0.1.1:20003      ) MPTCP     Unexpected revents: POLLERR/POLLNVAL(19)
->   # (duration   896ms) [FAIL] file received by server does not match (in, out):
->   # -rw-r--r-- 1 root root 11112852 Aug 19 09:16 /tmp/tmp.hlJe5DoMoq.disconnect
->   # Trailing bytes are:
->   # /{ga 6@=#.8:-rw------- 1 root root 10085368 Aug 19 09:16 /tmp/tmp.blClunilxx
->   # Trailing bytes are:
->   # /{ga 6@=#.8:66 ns1 MPTCP -> ns1 (dead:beef:1::1:20004) MPTCP     (duration   987ms) [ OK ]
->   # 67 ns1 MPTCP -> ns1 (dead:beef:1::1:20005) TCP       (duration   911ms) [ OK ]
->   # 68 ns1 TCP   -> ns1 (dead:beef:1::1:20006) MPTCP     (duration   980ms) [ OK ]
->   # [FAIL] Tests of the full disconnection have failed
+> I think that addressing it in cpufreq_policy_transition_delay_us() is
+> a bit confusing because it is related to initialization and the new
+> branch becomes pure overhead for the drivers that don't set
+> cpuinfo.transition_latency to CPUFREQ_ETERNAL.
 > 
-> [...]
+> However, addressing it at the initialization time would effectively
+> mean that the core would do something like:
+> 
+> if (policy->cpuinfo.transition_latency == CPUFREQ_ETERNAL)
+>         policy->cpuinfo.transition_latency =
+> CPUFREQ_DEFAULT_TANSITION_LATENCY_NS;
+> 
+> but then it would be kind of more straightforward to update everybody
+> using CPUFREQ_ETERNAL to set cpuinfo.transition_latency to
+> CPUFREQ_DEFAULT_TANSITION_LATENCY_NS directly (and then get rid of
+> CPUFREQ_ETERNAL entirely).
 
-Here is the summary with links:
-  - [net,1/5] mptcp: propagate shutdown to subflows when possible
-    https://git.kernel.org/netdev/net/c/f755be0b1ff4
-  - [net,2/5] selftests: mptcp: connect: catch IO errors on listen side
-    https://git.kernel.org/netdev/net/c/14e22b43df25
-  - [net,3/5] selftests: mptcp: avoid spurious errors on TCP disconnect
-    https://git.kernel.org/netdev/net/c/8708c5d8b3fb
-  - [net,4/5] selftests: mptcp: print trailing bytes with od
-    https://git.kernel.org/netdev/net/c/a17c5aa3a323
-  - [net,5/5] selftests: mptcp: connect: print pcap prefix
-    https://git.kernel.org/netdev/net/c/cf74e0aa0eb0
+So we fix the regression with an immediate change like below, and then
+plan to remove CPUFREQ_ETERNAL entirely with another development series.
+Do I get you right?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+---8<---
 
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index d873ff9add49..e37722ce7aec 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -574,6 +574,10 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
+        if (policy->transition_delay_us)
+                return policy->transition_delay_us;
+ 
++       if (policy->cpuinfo.transition_latency == CPUFREQ_ETERNAL)
++               policy->cpuinfo.transition_latency =
++                       CPUFREQ_DEFAULT_TANSITION_LATENCY_NS;
++
+        latency = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
+        if (latency)
+                /*
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 7fe0981a7e46..7331bc06f161 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -36,6 +36,8 @@
+ /* Print length for names. Extra 1 space for accommodating '\n' in prints */
+ #define CPUFREQ_NAME_PLEN              (CPUFREQ_NAME_LEN + 1)
+ 
++#define CPUFREQ_DEFAULT_TANSITION_LATENCY_NS   NSEC_PER_MSEC
++
+ struct cpufreq_governor;
+ 
+ enum cpufreq_table_sorting {
+
+--->8---
+
+Shawn
 
 
