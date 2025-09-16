@@ -1,100 +1,108 @@
-Return-Path: <stable+bounces-179736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D542B599B5
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:26:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C64B599E7
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9BA71887DF4
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:20:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C0DA3BD547
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA0A3680A9;
-	Tue, 16 Sep 2025 14:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E1D3376A6;
+	Tue, 16 Sep 2025 14:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ILKVhXbj"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="ZmjL6RjW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5903629A4
-	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 14:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835251078F;
+	Tue, 16 Sep 2025 14:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758032053; cv=none; b=Y47gv5nLWNDN+csgcMuYnVCbf3tXTg3sZmXI5C126Lj/MIxznsCkdI3VTWrtB/AvuLJKBRqyNSGmCXVUKnGuZvsy6YaTJLURHNAKP5hmsvXJemZCf2fDtsRHzfSjMHDLxsjiM0rQ64K+jH23B23MpnPb8PEZGCIShv9YhnSffNc=
+	t=1758032418; cv=none; b=aWWGDc/ruSasPIParLoXU5A1Crb6QBaQLNw9YWkYbEcrZI89ko+yI05Yc15mlT8jgR4vjKqa4+YftWdftCD4ynnQY4txrWiiyglLdtfzHtcOstv0UqME1Kq6C7YnA0oqsR5v9ckUJ9zZovYXID3NiNkUiksedRCjAvxLon4G8uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758032053; c=relaxed/simple;
-	bh=Zbsdt50Z5fsETLQG+p3y3hX4Pal2szzPL6rZG5xWQTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OxUCkdbey+9XM1Sm+kQDy6GGuSP7hPY5nUXCGvD7QvwS/I6F4tsfgPD8ALnhJl7Q3j/CnypMJd3w5XuXavNf8Ht48Up6HZERbHgNXNrb9nsT/NzWAqwhd1k+KbLViYsfSxvQPdk0HVZjsvo6pdocFQPQTspv5l5cWWJgCfonxlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ILKVhXbj; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758032052; x=1789568052;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Zbsdt50Z5fsETLQG+p3y3hX4Pal2szzPL6rZG5xWQTg=;
-  b=ILKVhXbjudszXrQVw0i5KZ2HDT9F3GuNLmzP698jzk/9G5ZHVwGKjd/4
-   h81rwgTjLrYtYSjp1YSbGcHKmfzTLZOWARwOigwU7f66a4TIIJaUZZspa
-   jemDAigbDOD4aao5sbFlpc5xGmXN8KLYLscAEKyyOt0y2SUzc96PsCTOu
-   Jc05dupN2imuNnAqzxWi1uZcYkZX1DHHAZ/35/+WYIkbyEn2+FRCeuw3I
-   7NejQ6pR0HiVSmEe+vFeCG+htaEzAAvJ6NzApxGF7KC3lhTVZZH5oGqxJ
-   P6rfGbqQEFjtjWjy6tIaFM7xY6n8ixuoEOj654g993KF4AwfhSV7muJjr
-   A==;
-X-CSE-ConnectionGUID: 3WXpHU2fSMuEuo8sufh4Tw==
-X-CSE-MsgGUID: uOPvP2C0SIKBJh6JQm4itQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="63946121"
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="63946121"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 07:14:11 -0700
-X-CSE-ConnectionGUID: Ic5TUWBuQMaDXpb3ttM06g==
-X-CSE-MsgGUID: aPGyoomBRXe8RcweihIGXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="174242137"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 16 Sep 2025 07:14:10 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uyWRb-0000M3-0c;
-	Tue, 16 Sep 2025 14:14:07 +0000
-Date: Tue, 16 Sep 2025 22:14:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shuai Zhang <quic_shuaz@quicinc.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v12] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail
- when BT_EN is pulled up by hw
-Message-ID: <aMlwrKpOpTE1WLNm@65c3091165ef>
+	s=arc-20240116; t=1758032418; c=relaxed/simple;
+	bh=gxDtgHz7G1qQsGNenAHFPQ0Z2+aX6Y9VV1cwAM/Bx0k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HTyM+OWagcmXP9a77A4Dw/wLqFTpzMGsdjpg20w7K4ZvS9ppNYzanCZc/9ZZDA86HYDYTGH5w11AJly7ZIlyMgHsTebJukeslwgUXpGGchvGH+TpCIn9QpHIsNXC1DdcZoqqjTyZl8yk+4210DK1XqB2mMU+Dxk9fT7LX5C/OJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=ZmjL6RjW; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 6F8B140506
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1758032415; bh=zYbUqQqq5gBAL5NIx7a64DWZNoB49w8Fp0Gj3T0pxnM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ZmjL6RjWsOZ3eAjNFWsOuzjJ0Ru9j9OUpBRNBMRLLKNfG48ZXDy7L1DBpuUggW6Sb
+	 Kchk7t0p0giMOvQ+nErBhBHHuOMLmgD2X0Os32s4ZIHYuaOxRxO95RmmZmombPAI6x
+	 VnU5WL1lASRpwAuGmchNSyDbfhNSbjgWo95ypTGez30DhV5nm91BcgQrda0Fc34U/0
+	 X14t+pZGhwYrqfWabPVAD1U+rr8gEiYrdFwLfCtkOMSSbfMIOyv5m5HgVyts62/am/
+	 E1zv0QBP7UDkqON3AtqWjJI0Wa2A6d5d4VTIaaxZMvOTJYdeTACO+Jawj+JyfdW1fg
+	 eH5UgPsER07pA==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 6F8B140506;
+	Tue, 16 Sep 2025 14:20:15 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Andrew Morton <akpm@linux-foundation.org>, Kalesh Singh
+ <kaleshsingh@google.com>
+Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
+ kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook
+ <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar
+ <mingo@redhat.com>, Peter
+ Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn
+ <jannh@google.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
+In-Reply-To: <20250915153642.7f46974a536a3af635f49a89@linux-foundation.org>
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915163838.631445-2-kaleshsingh@google.com>
+ <20250915153642.7f46974a536a3af635f49a89@linux-foundation.org>
+Date: Tue, 16 Sep 2025 08:20:14 -0600
+Message-ID: <87v7lifpi9.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916140259.400285-1-quic_shuaz@quicinc.com>
+Content-Type: text/plain
 
-Hi,
+Andrew Morton <akpm@linux-foundation.org> writes:
 
-Thanks for your patch.
+> On Mon, 15 Sep 2025 09:36:32 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
+>
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>
+> lol.
+>
+> x1:/usr/src/25> grep "Fixes.*1da177e4c3f4" ../gitlog|wc -l
+> 661
+>
+> we really blew it that time!
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+A few years back I made a list of the most-fixed commits in the kernel
+history; unsurprisingly that one (I call it the "original sin") came out
+on top:
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+  https://lwn.net/Articles/914632/
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v12] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
-Link: https://lore.kernel.org/stable/20250916140259.400285-1-quic_shuaz%40quicinc.com
+Perhaps the time has come to update that analysis.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+jon
 
