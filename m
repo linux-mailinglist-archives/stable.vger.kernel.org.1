@@ -1,319 +1,198 @@
-Return-Path: <stable+bounces-179688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA55B58F04
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 09:21:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33181B58F57
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 09:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D3D7484A8D
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 07:21:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2EE01BC4379
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 07:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3622E5405;
-	Tue, 16 Sep 2025 07:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF032E974E;
+	Tue, 16 Sep 2025 07:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T+hd48NL"
+	dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b="jf6QV1Kx"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2127.outbound.protection.outlook.com [40.107.95.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD03262FF6
-	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 07:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758007255; cv=none; b=C04GSHmUg9nhAFgI51L6F1F7EkXpX7CoTzU0XPCaMS1KHdGge+SJIV8p5bHAuB8wz2AUcGn9shXlyOVU7LJh9yW72MYO18lm/+O1dS9NsRXGL7Ejil/aP+4g0n3AfLat6NiC2oR9ql/F8JqqJtE7NwsWa9n3F2gZ0TbYxo8OpCY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758007255; c=relaxed/simple;
-	bh=D2PYxksF/dZdIIrgGr9oJIXIyMD6Og9N45pfqzQ7Io8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VY41wsU5rapZMkwsNEMLa9epQqhzFbEo8Sq+WskehfL679ctgmcEhX6B3CZl4Vp9+lzpbFiqw0PTsLy6MwNeWFInFuoGg2g3EH9Jfxwd/pSG+k0+7DMOrHIxfaXgxPlMKJtVo8CTT2PcVtnazKTpgw9NNhZR0d+Pz/mkOvo5lzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T+hd48NL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758007252;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q/Nxsdqh36+lmBaZm9CtqQ3jvwS0JIENCmRR3IT8IFg=;
-	b=T+hd48NLDGKEI3u/VlmP+vC7x8RSU7G50G7fsX/uBQQuzJQWL9s/3kuPHYfc989X0DT0bP
-	mSsxoBGdKH4CQuiBzlnX8yg20bcsj9EFoW4cRiuFseak1MPlujg5sIkmLRhC11s2ewJTXA
-	ynnur3wofNlnr9ih/qgrEKwmwOBm2R4=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-0DJuDHvoM4y1fP0sG18cgg-1; Tue, 16 Sep 2025 03:20:49 -0400
-X-MC-Unique: 0DJuDHvoM4y1fP0sG18cgg-1
-X-Mimecast-MFC-AGG-ID: 0DJuDHvoM4y1fP0sG18cgg_1758007248
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-32e372d0ee6so1853194a91.0
-        for <stable@vger.kernel.org>; Tue, 16 Sep 2025 00:20:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758007248; x=1758612048;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q/Nxsdqh36+lmBaZm9CtqQ3jvwS0JIENCmRR3IT8IFg=;
-        b=e+r8oy/I7eRoyMZ2z7P8UVtZcKB+h94OK/vEpC6lxYYicqf2e9Ex3BfQphPdvlpJup
-         jynKnrfbt7a8ZzRv68TR2XjMap5JwqgZ6sZ1Tr8RWA5eR8hnXY4Y5mQl9XYX0J731bX/
-         VK9AzplGwE6KRRLiVMRTO+/Z1z3kKoybWWEUUWlwZzh5jaUC9Kk3YkltWB4O8NmPprQP
-         ADTUjvSZc6d/qhW9roW0C70SYPxsPxA4bO53JCJjxrK6bl1Zo850izqXpEMGhb0/A2AC
-         by3N/Hny/eqXl03RULiBkRYBKgOeNKGTE1QQKsAWGWxrs2I1n8ek9c9edoCV0K6TEezy
-         rfaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVcC+A5wRoAQBLdKq0Wj6EycSrSoZx4wrQlqe3GUJDPiJd+cDtZkC3Y77c+pNAblWx85m5RR4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYtHi6cBkleAaURdoSUXf1IOzp4xGUrG6Dle1TxgpZTR/b6UsU
-	KROYRocUVPkKwSMffPIlVuuD8k+uCZB6OYzvHl792V6L7izKSjfbFiKB/D6OW1df7GbWDL2iwQo
-	/+lolCMUzlLnxHdpw9hO6eu+WA2NdJMibD6venRUlxB1UTvj4nHemgljQWAgyDrjke0o+upXhDG
-	Fiy2ttk2avnsv6sbveMCrlSxhsAdlx476b
-X-Gm-Gg: ASbGnct4SHFPdhmO5ZUXxeptGZTMZtmK7XMSfa9FdmJ7143JLuFbigKjbUmlT3bprQS
-	3ZqZ18n5a5tk9vz321JTfcvw1S1pBCDN+/cIE7EeO779WZzjRiHOhHk8zbrPlgfgbHVj+Hw/aVE
-	XPcstTT2yNyoitRrYxzcBx
-X-Received: by 2002:a17:90b:4c43:b0:32b:6cf2:a2cf with SMTP id 98e67ed59e1d1-32de4ecfef6mr18297101a91.14.1758007248407;
-        Tue, 16 Sep 2025 00:20:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhF2Kgtp4xrR3HJKlpJRKm798eKMryRKtU0e/2ABrGoXHJxF41jb2NOJdiA0RY3u/G/hSk1zeKHpmSBpMi9yw=
-X-Received: by 2002:a17:90b:4c43:b0:32b:6cf2:a2cf with SMTP id
- 98e67ed59e1d1-32de4ecfef6mr18297077a91.14.1758007248004; Tue, 16 Sep 2025
- 00:20:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA1823507B
+	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 07:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.127
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758008375; cv=fail; b=ppp1MR/mEhjaEnG0fsWOOF+6UatkG/1TPzjubLIjoLLr+8EX0Ign5kP5RFPnF7r4eB0DRjSTnAfwgVjQ7wCexoJZA78iCWuYTkXbat1mTtNjV0hwp5SZ8m4wBvnsyJ7lHzWCkmp0w6FDkotSSbi4/ZF5OansPfmav8v8p5LqHmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758008375; c=relaxed/simple;
+	bh=usZ6cIyPQ8B9xUrCrVBkgETMAd1Vn8HHur8N+Uw1Jbg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=tc1GpD1zFqmMvHzgXcHWQ3kIWBAoL2L6btyANaMslhuXycPF9FCkixluslooDgzynhvKbyVDRvdKG+ucLGxljXqcVtbOKtt9C7zlp13sXTDCeknK+HO5lNeS7CxLOMpwYeBfozNie6o30Iph6f8w5jsi8hN7w+HRueBgHXsYTrs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axiado.com; spf=pass smtp.mailfrom=axiado.com; dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b=jf6QV1Kx; arc=fail smtp.client-ip=40.107.95.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axiado.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axiado.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fmxi8DMeR1u3DZZGDAqO99CRB9e1V/IOLKFXgO5EI53mfgqYqKP2HzeJlQJrjiEApJbEyZsjo/LIV0QDxdjJ+1YhRgKmkhI1PFrJxwMQ0ucP/lLL/3OIQ8u6JRKgmyzQRA6GbGsnir0CbZjsIn95cCTTSVZ0jnHe6iuPfJuDE97fqUP4ImRfhwxJ3BeTkGWl6CLbGfy1hlE9rtkLL0xiQrx2QxmZtn5eb5QjseD0TBbz+hpnL+qhRF4X3Qkccf01prisDJVXpwIm7Xc7YbG+X1UqYjzcGqDf6wm0ZExS5wRCyPQ4idmsqY/1tBCntCUPl9U9nzsr4R6kNYKq7YDyNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XgI7qK9PWJJ8FHN/WuWrnwzuRYIchhyaF+IcVtt0eZs=;
+ b=DZYUcqi9MBTkNRZTzrQzTkq0KNDpASkVqjiKUVwjvmdmnjb9bnSjCAHBZxEmRheql4jd+Td25ixbCE66qO2xRIpd75ZR+NSmofJCrmIc2smKxLXvP2M5ta3KxHIrskkVHwoaKJEPRVctmw5WcjG6UVDc1uGcj0XzxzQCNsEntoY4PmjaXZdsoTts09i9z2FSsH2wA6G/9zb1h/fC7uhvZlWz87fcSw4gdqadTQ7Fzcc7Mks0CR61kfSvBDwrJswhBRq5DGtcVHmFjXHIOYz47TAUHGqKPwurzKu0Py2/lMDfRcwLixS2lvh/TfsQnn3yk6qA1Q+0lJXCAhb3CLXjLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axiado.com; dmarc=pass action=none header.from=axiado.com;
+ dkim=pass header.d=axiado.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axiado.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XgI7qK9PWJJ8FHN/WuWrnwzuRYIchhyaF+IcVtt0eZs=;
+ b=jf6QV1KxEJzscWUwy6x5sgIzFHJa3kOFOUxvwcTA6qhmA+PDXapYSb47f3864gu3XYV69e0ayOmeTC+Hxa5XNBQ11NLf2+amGaox5ZtiUrXzcOPxpjyZtfWETon/noL6kVKT3mZsT/dhQDSof0+8DKx3A7qjL25vaqntNkunjjqeyJGWVDPLFhmrskNIR1ZkGeHeraY/Jf5q7R2gaIxhcWRwX3yr8t5W8KwOR1P4wL80PkgDmlAD9Ce6GvyuTtMI0ID3gtLu33DSjGjV5V01uHw1CDZST5Twsb+VDHXpp7x8lilf35GROyMAei4L/62L51Fq+Fi8lFjG7ScpMnmcjA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axiado.com;
+Received: from MN2PR18MB2605.namprd18.prod.outlook.com (2603:10b6:208:106::33)
+ by DM4PR18MB4160.namprd18.prod.outlook.com (2603:10b6:5:38b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Tue, 16 Sep
+ 2025 07:39:30 +0000
+Received: from MN2PR18MB2605.namprd18.prod.outlook.com
+ ([fe80::e620:d653:8268:5542]) by MN2PR18MB2605.namprd18.prod.outlook.com
+ ([fe80::e620:d653:8268:5542%7]) with mapi id 15.20.9115.018; Tue, 16 Sep 2025
+ 07:39:30 +0000
+From: PetarStepanvoic <axiado-2557@axiado.com>
+To: stepanovicpetar@gmail.com
+Cc: Xu Yang <xu.yang_2@nxp.com>,
+	stable@vger.kernel.org,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Petar Stepanovic <axiado-2557@axiado.com>
+Subject: [PATCH] net: usb: asix_devices: add phy_mask for ax88772 mdio bus
+Date: Tue, 16 Sep 2025 00:39:05 -0700
+Message-Id: <20250916073905.253979-1-axiado-2557@axiado.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR17CA0004.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::17) To MN2PR18MB2605.namprd18.prod.outlook.com
+ (2603:10b6:208:106::33)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250912082658.2262-1-jasowang@redhat.com> <20250912082658.2262-2-jasowang@redhat.com>
- <20250915120210-mutt-send-email-mst@kernel.org> <CACGkMEufUAL1tBrfZVMQCEBmBZ=Z+aPqUtP=RzOQhjtG9jn7UA@mail.gmail.com>
- <20250916011733-mutt-send-email-mst@kernel.org> <CACGkMEu_p-ouLbEq26vMTJmeGs1hw5JHOk1qLt8mLLPOMLDbaQ@mail.gmail.com>
- <20250916030549-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250916030549-mutt-send-email-mst@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 16 Sep 2025 15:20:36 +0800
-X-Gm-Features: AS18NWDLd3H-vMtakLEmVtIvlkzOFoFZiZ-WeXmRjS-Z87EyAa_8rPBU-THus9Y
-Message-ID: <CACGkMEt2fAkCb_nC4QwR+3Jq+fS8=7bx=T3AEzPP1KGLErbSBA@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] vhost-net: correctly flush batched packet before
- enabling notification
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: eperezma@redhat.com, jonah.palmer@oracle.com, kuba@kernel.org, 
-	jon@nutanix.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR18MB2605:EE_|DM4PR18MB4160:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0ae8123-c1f1-4de2-c549-08ddf4f42b75
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?60rC00qrNoPwrNrYoQm1aWETE2SL3+Y1U4XJu4F13E6+sG+QveMMnujI+5v0?=
+ =?us-ascii?Q?hZIUCO+3OI9uPE2IrJhMbwYFmAAzc/z8j27biQLC4+6Qs+QDvwK/qHRLqPYy?=
+ =?us-ascii?Q?NODY/0W2fCku6ChFCTxRiG/yuRJQksPvTJiN6ebpJXMhwCzA/h1egftFBmVF?=
+ =?us-ascii?Q?q9LgJ4rTDCWUxpE6xVWm1amlrV0Vm3ile5wZuq+lD7TYLcQp7hid1qgq2yC5?=
+ =?us-ascii?Q?TYLzYLYYnnN+dKT7TJqdZFxlWC4KeRApbpSc3M8+8Ta9NdQ9nEXp+yPGQuum?=
+ =?us-ascii?Q?Cgwz0yuou3Rnrtdj0bojb/c1t/eTAwQhV10zLSFqNqApka0okXGXFSaFgCy5?=
+ =?us-ascii?Q?9a8cnVg32z6ob6jr1ofpOorV1eGNN/9Oh/Y/O40Q37BJqh4JKv3XReyVA9fp?=
+ =?us-ascii?Q?PH2r9vNcd392ZCnHoMAyQ6qEl6FTIq39QMLz7yYvND0rUS4Ds6tLEyi5/URn?=
+ =?us-ascii?Q?mDH/m4YVCz5IQUcjhORkcbbRhlbc9alkHpjN/XMEIxonjseSA5HuYkCu4j1K?=
+ =?us-ascii?Q?/oSf5pVMDcWK2QQZgbvd93h8owY0dXyxvhBGoeXf7IhWWvUKNu2284VrW+yO?=
+ =?us-ascii?Q?G3o6/Ur/e1W/dPe9VMFvlBRp8zJgbsub6ZIaPvft3Ix7RjM474cOPj95nE9o?=
+ =?us-ascii?Q?58BJkrbuSNH/BrZIDJWGE/M43AIArmZN1MphuMfVdCarj52/rKTumK1464NC?=
+ =?us-ascii?Q?2yFW+zZvBOPqORdejVwe86oVSFCjjiXGYbPGiemVyD9qy1WkTtm4Js8Ch3Se?=
+ =?us-ascii?Q?vTFufYOyush040Bu2Lrt6eN5S7NdFHy+Ob5ff4mi9gsmHnevukrnf7ZqzWNu?=
+ =?us-ascii?Q?lugLfiC6uQHCgEQ967ddynijdD4iy/tPf4CyEFCCSELwf3YHBtn5pFuSX/Kq?=
+ =?us-ascii?Q?TCFK1lLmzI72tCqIx6QwTllXw6BWhWsY6myDwMKT5hj6nJOTKBmZ5rUFQxTU?=
+ =?us-ascii?Q?gPtknK2szJqvmUDrdW3XA6O9VNvWnrDzwshNixrSGXSCF0eeG/hl38Rg/Ph0?=
+ =?us-ascii?Q?R1Dr6kJWFocLoTWy4rato0wnBnm6uHOTS0iR2//YOP86/BuELoix4rmH/tXe?=
+ =?us-ascii?Q?QjNVKTeqb4HTMXDkaIwR/MwPrGmWXb8M/yslj7V2776+X8Tyh0ZTNjbbsyRn?=
+ =?us-ascii?Q?Qe84ts2s7G6mygfbXr1s/6ExmPPxOp1SeM68ed4PowhP8NanyplAmT7H1P1j?=
+ =?us-ascii?Q?ZQlAlPT67QcFbdVhZO2LMnLwrFho62gByKrMSNoSWxo1VJHVQX2rQrpJqvPT?=
+ =?us-ascii?Q?E4+oaZ6cbq7WZZ+o6Gw4I1C+pdE3rGCefZD3j9XkQqDBNAfLJ3qx9cc+3ElP?=
+ =?us-ascii?Q?L7AWxJGY28BA2QOD5G2CHqm6tmvbwCbAO6H8Gx9MYKuJoWxM+N6MhK6lpYGt?=
+ =?us-ascii?Q?08M08cCpn0uByMeSvjCEZBpwdq0MT162U0cf2O24iy8D+tKGpdl2kL0GD6EF?=
+ =?us-ascii?Q?TFCyGWIbEFk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR18MB2605.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ONzivZv43mhDiZHsG+p7d5sy2qYi5nbUPMRKziAmbzm4Xr6txPV6kkx53pQC?=
+ =?us-ascii?Q?1PK+WdRJXjyckvJ4CjH85pljdBH/lnQbBSvDlWiHz1M0r8Tu4rPXmGDKuuOj?=
+ =?us-ascii?Q?kBUG9rOQZRZHMD21AqW4nw1Rj2f3oj9I6iAqhnAwB/LTiXD7+FthHHfDTfBu?=
+ =?us-ascii?Q?777myxiVnGHsJyqKXGiAMinShAVmIlSDp3EK2M7rrniy9FOgair55iP13XfS?=
+ =?us-ascii?Q?0rI7tTRQEJekEXqYlBupEuMkfuQXCVtuhHVBYAHoohJsBmRYC/Zq/NR10obB?=
+ =?us-ascii?Q?dJA0c5m6kh8O2TNfPNys26joD7cxrhUipINDAJX/trdxsjl+haplGhcGq7ah?=
+ =?us-ascii?Q?dfJ/OeRrz37HH3V7sauP2rYpL1TrNi0r3ZLshT4HGx88dDdkCBJzOWMkm4+F?=
+ =?us-ascii?Q?AE4jYdNPdsfbkZKMgAqDMimqwlbYRIzEzw09irE3fENWARILe3zhvV59VZXq?=
+ =?us-ascii?Q?oV0icfj0cNYqib6yv4VKwRLs1US2ZIrGsY5t4jzZ2FxdehlNQxPQQcVLPCLk?=
+ =?us-ascii?Q?+G46oFzeCBYEq/RdTSkJhBC7kUOmYlooGibN0pmGPLzsoaTNuz94CtkmAAyq?=
+ =?us-ascii?Q?AsvKUbNXNBQ1HDHMd5a8pNlwgYNG5ab4TOsWPxV64jctVca+Gub80Qz79fnx?=
+ =?us-ascii?Q?stXQXeup5iaWjJXqi5MqkENaZmqyj0NV5V25PkWN/pW9YWUJmE3TEiDNSQQn?=
+ =?us-ascii?Q?R41QayJCO+Ef9bkdzwxQbnQYZKQLKH6mzaimZICFbzl5/ucplIbxaG5BRPCt?=
+ =?us-ascii?Q?eqivuI2t8a5AktEI9ohOfcny0/H8epHKcWF/RQdUm01tENId8iz9yP+MitsR?=
+ =?us-ascii?Q?KxddEubdIbDITIRhptag+WdJWcZWMbZEgu0qmM5dLgXkKF3v0zNUL4sxi9CT?=
+ =?us-ascii?Q?1wv9UW+zOlSf+EcJItFJib4Bz3xww4YIufaEE+wSf3bhaZqO+7XfydTNJM46?=
+ =?us-ascii?Q?UTnBStJ2WNET5Ek/eiMTP9AagwU6ilZk/3NSDygIq0M9JdPn19fhN2paXmIf?=
+ =?us-ascii?Q?AIzYXrBHUbZ8PZxy1h8Ud6Xo51C7xtlwlPBkvcdp1c4IJ8leO1vEZwPKU5mQ?=
+ =?us-ascii?Q?kigGacLOL4fMMkcf9c0Kj7tM+LMvTyzRl3Kn4RMeaAoiWnErGVQ/c4xKr1gh?=
+ =?us-ascii?Q?otxm0JKegxXUDtRao3+QkKyKmR/2uTPRiD3loP0t8xxaB+HlALocYsjzDr0E?=
+ =?us-ascii?Q?cPnTupRgxysB4CClAIsoHwKB/QsMR/TEc/ZH3NGLZvf2CW5JMFLdLL3v+S1W?=
+ =?us-ascii?Q?RrqK3DJpvnNhENAJkiAhdUxSe4jgO9TBYyxRtGkEegpO9/+nUdSnPCjQ3MPw?=
+ =?us-ascii?Q?aVDDN676al4IkdCeOGrhCHjAyFp2DwdJV8a2s3L+3kvCrgjmArkVCvPgSUxy?=
+ =?us-ascii?Q?2BE/8rDMSjR/k8OjbB6Us8AXeZPnBcII1gF2R/7lnXi7ljWew9+faejpUjdT?=
+ =?us-ascii?Q?o+ficDkaIqFcGiARMbonb1AZFu83VYuJ07uwArLs04fg/beNruMy5iakOnR4?=
+ =?us-ascii?Q?8TbuXU+O4L3HtWlepjZMED1LmgHxoFjyTSJUkEcmpX/PsNTKKhgX3fUl2+Xo?=
+ =?us-ascii?Q?LN6VYaPT2msxnUznA1dQXNrUzsVqi9dfHz7i2CmKThWepvsulKDW6z0V6ddC?=
+ =?us-ascii?Q?fA=3D=3D?=
+X-OriginatorOrg: axiado.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0ae8123-c1f1-4de2-c549-08ddf4f42b75
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR18MB2605.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 07:39:30.0954
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: ff2db17c-4338-408e-9036-2dee8e3e17d7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uDPoJPgMIxqr7wXgMjv8JsqfAcTIAOY29NNBD52e/8pmHV3zvJ1TQeSzBXWAzJWqSU6SKZ0IiMPaS6FxJ7IueQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR18MB4160
 
-On Tue, Sep 16, 2025 at 3:08=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Tue, Sep 16, 2025 at 02:24:22PM +0800, Jason Wang wrote:
-> > On Tue, Sep 16, 2025 at 1:19=E2=80=AFPM Michael S. Tsirkin <mst@redhat.=
-com> wrote:
-> > >
-> > > On Tue, Sep 16, 2025 at 10:37:35AM +0800, Jason Wang wrote:
-> > > > On Tue, Sep 16, 2025 at 12:03=E2=80=AFAM Michael S. Tsirkin <mst@re=
-dhat.com> wrote:
-> > > > >
-> > > > > On Fri, Sep 12, 2025 at 04:26:58PM +0800, Jason Wang wrote:
-> > > > > > Commit 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until=
- after
-> > > > > > sendmsg") tries to defer the notification enabling by moving th=
-e logic
-> > > > > > out of the loop after the vhost_tx_batch() when nothing new is
-> > > > > > spotted. This will bring side effects as the new logic would be=
- reused
-> > > > > > for several other error conditions.
-> > > > > >
-> > > > > > One example is the IOTLB: when there's an IOTLB miss, get_tx_bu=
-fs()
-> > > > > > might return -EAGAIN and exit the loop and see there's still av=
-ailable
-> > > > > > buffers, so it will queue the tx work again until userspace fee=
-d the
-> > > > > > IOTLB entry correctly. This will slowdown the tx processing and=
- may
-> > > > > > trigger the TX watchdog in the guest.
-> > > > > >
-> > > > > > Fixing this by stick the notificaiton enabling logic inside the=
- loop
-> > > > > > when nothing new is spotted and flush the batched before.
-> > > > > >
-> > > > > > Reported-by: Jon Kohler <jon@nutanix.com>
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Fixes: 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until=
- after sendmsg")
-> > > > > > Signed-off-by: Jason Wang <jasowang@redhat.com>
-> > > > > > ---
-> > > > > >  drivers/vhost/net.c | 33 +++++++++++++--------------------
-> > > > > >  1 file changed, 13 insertions(+), 20 deletions(-)
-> > > > > >
-> > > > > > diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> > > > > > index 16e39f3ab956..3611b7537932 100644
-> > > > > > --- a/drivers/vhost/net.c
-> > > > > > +++ b/drivers/vhost/net.c
-> > > > > > @@ -765,11 +765,11 @@ static void handle_tx_copy(struct vhost_n=
-et *net, struct socket *sock)
-> > > > > >       int err;
-> > > > > >       int sent_pkts =3D 0;
-> > > > > >       bool sock_can_batch =3D (sock->sk->sk_sndbuf =3D=3D INT_M=
-AX);
-> > > > > > -     bool busyloop_intr;
-> > > > > >       bool in_order =3D vhost_has_feature(vq, VIRTIO_F_IN_ORDER=
-);
-> > > > > >
-> > > > > >       do {
-> > > > > > -             busyloop_intr =3D false;
-> > > > > > +             bool busyloop_intr =3D false;
-> > > > > > +
-> > > > > >               if (nvq->done_idx =3D=3D VHOST_NET_BATCH)
-> > > > > >                       vhost_tx_batch(net, nvq, sock, &msg);
-> > > > > >
-> > > > > > @@ -780,10 +780,18 @@ static void handle_tx_copy(struct vhost_n=
-et *net, struct socket *sock)
-> > > > > >                       break;
-> > > > > >               /* Nothing new?  Wait for eventfd to tell us they=
- refilled. */
-> > > > > >               if (head =3D=3D vq->num) {
-> > > > > > -                     /* Kicks are disabled at this point, brea=
-k loop and
-> > > > > > -                      * process any remaining batched packets.=
- Queue will
-> > > > > > -                      * be re-enabled afterwards.
-> > > > > > +                     /* Flush batched packets before enabling
-> > > > > > +                      * virqtueue notification to reduce
-> > > > > > +                      * unnecssary virtqueue kicks.
-> > > > > >                        */
-> > > > > > +                     vhost_tx_batch(net, nvq, sock, &msg);
-> > > > >
-> > > > > So why don't we do this in the "else" branch"? If we are busy pol=
-ling
-> > > > > then we are not enabling kicks, so is there a reason to flush?
-> > > >
-> > > > It should be functional equivalent:
-> > > >
-> > > > do {
-> > > >     if (head =3D=3D vq->num) {
-> > > >         vhost_tx_batch();
-> > > >         if (unlikely(busyloop_intr)) {
-> > > >             vhost_poll_queue()
-> > > >         } else if () {
-> > > >             vhost_disable_notify(&net->dev, vq);
-> > > >             continue;
-> > > >         }
-> > > >         return;
-> > > > }
-> > > >
-> > > > vs
-> > > >
-> > > > do {
-> > > >     if (head =3D=3D vq->num) {
-> > > >         if (unlikely(busyloop_intr)) {
-> > > >             vhost_poll_queue()
-> > > >         } else if () {
-> > > >             vhost_tx_batch();
-> > > >             vhost_disable_notify(&net->dev, vq);
-> > > >             continue;
-> > > >         }
-> > > >         break;
-> > > > }
-> > > >
-> > > > vhost_tx_batch();
-> > > > return;
-> > > >
-> > > > Thanks
-> > > >
-> > >
-> > > But this is not what the code comment says:
-> > >
-> > >                      /* Flush batched packets before enabling
-> > >                       * virqtueue notification to reduce
-> > >                       * unnecssary virtqueue kicks.
-> > >
-> > >
-> > > So I ask - of we queued more polling, why do we need
-> > > to flush batched packets? We might get more in the next
-> > > polling round, this is what polling is designed to do.
-> >
-> > The reason is there could be a rx work when busyloop_intr is true, so
-> > we need to flush.
-> >
-> > Thanks
->
-> Then you need to update the comment to explain.
-> Want to post your version of this patchset?
+From: Xu Yang <xu.yang_2@nxp.com>
 
-I'm fine if you wish. Just want to make sure, do you prefer a patch
-for your vhost tree or net?
+Without setting phy_mask for ax88772 mdio bus, current driver may create
+at most 32 mdio phy devices with phy address range from 0x00 ~ 0x1f.
+DLink DUB-E100 H/W Ver B1 is such a device. However, only one main phy
+device will bind to net phy driver. This is creating issue during system
+suspend/resume since phy_polling_mode() in phy_state_machine() will
+directly deference member of phydev->drv for non-main phy devices. Then
+NULL pointer dereference issue will occur. Due to only external phy or
+internal phy is necessary, add phy_mask for ax88772 mdio bus to workarnoud
+the issue.
 
-For net, I would stick to 2 patches as if we go for 3, the last patch
-that brings back flush looks more like an optimization.
-For vhost, I can go with 3 patches, but I see that your series has been que=
-ued.
+Closes: https://lore.kernel.org/netdev/20250806082931.3289134-1-xu.yang_2@nxp.com
+Fixes: e532a096be0e ("net: usb: asix: ax88772: add phylib support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250811092931.860333-1-xu.yang_2@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Petar Stepanovic <axiado-2557@axiado.com>
+---
+ drivers/net/usb/asix_devices.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-And the build of the current vhost tree is broken by:
-
-commit 41bafbdcd27bf5ce8cd866a9b68daeb28f3ef12b (HEAD)
-Author: Michael S. Tsirkin <mst@redhat.com>
-Date:   Mon Sep 15 10:47:03 2025 +0800
-
-    vhost-net: flush batched before enabling notifications
-
-It looks like it misses a brace.
-
-Thanks
-
->
->
-> > >
-> > >
-> > > >
-> > > > >
-> > > > >
-> > > > > > +                     if (unlikely(busyloop_intr)) {
-> > > > > > +                             vhost_poll_queue(&vq->poll);
-> > > > > > +                     } else if (unlikely(vhost_enable_notify(&=
-net->dev,
-> > > > > > +                                                             v=
-q))) {
-> > > > > > +                             vhost_disable_notify(&net->dev, v=
-q);
-> > > > > > +                             continue;
-> > > > > > +                     }
-> > > > > >                       break;
-> > > > > >               }
-> > > > > >
-> > > > > > @@ -839,22 +847,7 @@ static void handle_tx_copy(struct vhost_ne=
-t *net, struct socket *sock)
-> > > > > >               ++nvq->done_idx;
-> > > > > >       } while (likely(!vhost_exceeds_weight(vq, ++sent_pkts, to=
-tal_len)));
-> > > > > >
-> > > > > > -     /* Kicks are still disabled, dispatch any remaining batch=
-ed msgs. */
-> > > > > >       vhost_tx_batch(net, nvq, sock, &msg);
-> > > > > > -
-> > > > > > -     if (unlikely(busyloop_intr))
-> > > > > > -             /* If interrupted while doing busy polling, reque=
-ue the
-> > > > > > -              * handler to be fair handle_rx as well as other =
-tasks
-> > > > > > -              * waiting on cpu.
-> > > > > > -              */
-> > > > > > -             vhost_poll_queue(&vq->poll);
-> > > > > > -     else
-> > > > > > -             /* All of our work has been completed; however, b=
-efore
-> > > > > > -              * leaving the TX handler, do one last check for =
-work,
-> > > > > > -              * and requeue handler if necessary. If there is =
-no work,
-> > > > > > -              * queue will be reenabled.
-> > > > > > -              */
-> > > > > > -             vhost_net_busy_poll_try_queue(net, vq);
-> > > > > >  }
-> > > > > >
-> > > > > >  static void handle_tx_zerocopy(struct vhost_net *net, struct s=
-ocket *sock)
-> > > > > > --
-> > > > > > 2.34.1
-> > > > >
-> > >
->
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 9b0318fb50b5..d9f5942ccc44 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
+-- 
+2.25.1
 
 
