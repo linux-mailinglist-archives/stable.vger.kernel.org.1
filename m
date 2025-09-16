@@ -1,257 +1,127 @@
-Return-Path: <stable+bounces-179748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE177B5A0E5
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 21:03:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363BBB5A0EB
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 21:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E655219FA
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 19:03:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCFD71C01961
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 19:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA052DAFDD;
-	Tue, 16 Sep 2025 19:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=harmstone.com header.i=@harmstone.com header.b="XcvYHvGx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642602D47F1;
+	Tue, 16 Sep 2025 19:05:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.burntcomma.com (mail2.burntcomma.com [217.169.27.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1696D2D47F1;
-	Tue, 16 Sep 2025 19:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.169.27.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD6E1E0DEA;
+	Tue, 16 Sep 2025 19:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758049433; cv=none; b=SBJLWpLXyolyDjV5RnZ4EBzj/DsJzgeLfdkwYmQ27DZspJ39jJx7cjC01CJhDXVgbDFoKWNMeJlDe6Il+RRgvMUjBj/i0TqS24Ksp5fJMOnGPGxY/9X3JcVQDpIDuFKA+SeMZ79YtrJKlLRDSbuInfhAhn3yVTxAjmeoqhiIwsE=
+	t=1758049517; cv=none; b=V7mF7AdL/vtFJe/4lFrOgzk65h7eoqKO+Ooan0BU3JcG3cVPogdmxn1vBWQIGmcCqSoKNZv/og6oY2zS3wQaB6pplqTwdDG25ZYCvStAZl8ITV2U8SItbQc5GpxiHAJlEAwie+sm5v3Hk/WOkTo5KiPLVeqJHZDoWtWKfWmQv5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758049433; c=relaxed/simple;
-	bh=6T8xgcg3GJ/eyqR/4tiAb/hZshcEhhULYcSuDN8rSR4=;
-	h=Message-ID:Date:Mime-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M3S8aBmR9mb83BlXbCg9pZ+ql8wB0fhSYxvIHUxHuV4JC506TfEYZ+gvcIdGs+iQIqfKPbGyVN3KSn8yvBN0eQaOorHN4Bni2Ow9WAvprpIrKxdTb4fzK+x0U/KpWy6D1sxNwi6lejbdDeZAJ/8biPfqJZQKwHWaY1veDBXDv08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=harmstone.com; spf=pass smtp.mailfrom=harmstone.com; dkim=pass (1024-bit key) header.d=harmstone.com header.i=@harmstone.com header.b=XcvYHvGx; arc=none smtp.client-ip=217.169.27.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=harmstone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=harmstone.com
-Received: from [IPV6:2a02:8012:8cf0:0:ce28:aaff:fe0d:6db2] (beren.burntcomma.com [IPv6:2a02:8012:8cf0:0:ce28:aaff:fe0d:6db2])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
-	 client-signature RSA-PSS (2048 bits) client-digest SHA256)
-	(Client CN "hellas", Issuer "burntcomma.com" (verified OK))
-	by mail.burntcomma.com (Postfix) with ESMTPS id F192E2B89E7;
-	Tue, 16 Sep 2025 19:58:10 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=harmstone.com;
-	s=mail; t=1758049091;
-	bh=9CRWlhepUa3NwEJD5MBsJogKriioWIexgEtfCbT/svI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XcvYHvGxd2OCRpYOvGIrnizNYKD5BO4LhvFX31/c4oIxs5q1i3eGU8bNRrOxLtxYe
-	 x8bm+I9pTRbOI/mEi41+UHoOGBs3OV3MFgnfhFhxiyAETQGB5cdv6n+2ul4T0H4naZ
-	 xZ6jqA+lrVrSmnDbNZ9Zg1R9DjC6YKzR7QtYlT6I=
-Message-ID: <a36c8edd-e692-485d-861d-a4752b0411ac@harmstone.com>
-Date: Tue, 16 Sep 2025 19:58:10 +0100
+	s=arc-20240116; t=1758049517; c=relaxed/simple;
+	bh=BocNEQlJuQpTpdJ+perq7Zf+f5uddM0lcHE0m9ROn5U=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=abLQSuUWUZ04r0iOrR4V8L9Jnu+3jqeubE7OXTq2nW9SCLkJMisUaDT8kV+ry2pGamPvXc8LcL8LWfDuG/EwR7lCNngM16NpcZU8v61TurIKDG634buc15HA6SbdGmSKqJfFG+wjFl0/jdYnHOO4Fx0ouxdMP5069AhxIrtdjkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.2.103] (213.87.161.48) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 16 Sep
+ 2025 22:04:53 +0300
+Message-ID: <ed43a751-3b02-46db-9fe1-da6c9f79fd80@omp.ru>
+Date: Tue, 16 Sep 2025 22:04:52 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Subject: Re: [PATCH AUTOSEL 6.16-6.12] btrfs: don't allow adding block device
- of less than 1 MB
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>, clm@fb.com,
- linux-btrfs@vger.kernel.org
-References: <20250916135936.1450850-1-sashal@kernel.org>
- <20250916135936.1450850-7-sashal@kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10.y] cpufreq: scmi: Fix null-ptr-deref in
+ scmi_cpufreq_get_rate()
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+To: <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Henry Martin <bsdhenrymartin@gmail.com>, Sudeep Holla
+	<sudeep.holla@arm.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+	<lvc-project@linuxtesting.org>
+References: <b6ebf19c-8328-44de-a695-157061a9d8a8@omp.ru>
 Content-Language: en-US
-From: Mark Harmstone <mark@harmstone.com>
-Autocrypt: addr=mark@harmstone.com; keydata=
- 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
-In-Reply-To: <20250916135936.1450850-7-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Organization: Open Mobile Platform
+In-Reply-To: <b6ebf19c-8328-44de-a695-157061a9d8a8@omp.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/16/2025 18:41:44
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 19
+X-KSE-AntiSpam-Info: Lua profiles 196326 [Sep 16 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 66 0.3.66
+ fc5dda3b6b70d34b3701db39319eece2aeb510fb
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {Tracking_spam_in_reply_from_match_msgid}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 213.87.161.48 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info:
+	omp.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;marc.info:7.1.1
+X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.161.48
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 19
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/16/2025 18:45:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/16/2025 4:28:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-There's no real security angle here as you need to be root to call the
-ioctl, but that aside the LLM analysis is impressively good.
+On 9/12/25 11:35 PM, Sergey Shtylyov wrote:
 
-On 16/09/2025 2.59 pm, Sasha Levin wrote:
-> From: Mark Harmstone <mark@harmstone.com>
+> From: Henry Martin <bsdhenrymartin@gmail.com>
 > 
-> [ Upstream commit 3d1267475b94b3df7a61e4ea6788c7c5d9e473c4 ]
+> [ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
 > 
-> Commit 15ae0410c37a79 ("btrfs-progs: add error handling for
-> device_get_partition_size_fd_stat()") in btrfs-progs inadvertently
-> changed it so that if the BLKGETSIZE64 ioctl on a block device returned
-> a size of 0, this was no longer seen as an error condition.
+> cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+> in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
+> this case, which results in a NULL pointer dereference.
 > 
-> Unfortunately this is how disconnected NBD devices behave, meaning that
-> with btrfs-progs 6.16 it's now possible to add a device you can't
-> remove:
+> Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
 > 
->    # btrfs device add /dev/nbd0 /root/temp
->    # btrfs device remove /dev/nbd0 /root/temp
->    ERROR: error removing device '/dev/nbd0': Invalid argument
+> [Sergey: resolved reject (reordering the local variables).]
 > 
-> This check should always have been done kernel-side anyway, so add a
-> check in btrfs_init_new_device() that the new device doesn't have a size
-> less than BTRFS_DEVICE_RANGE_RESERVED (i.e. 1 MB).
-> 
-> Reviewed-by: Qu Wenruo <wqu@suse.com>
-> Signed-off-by: Mark Harmstone <mark@harmstone.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> 
-> LLM Generated explanations, may be completely bogus:
-> 
-> Based on my extensive investigation using multiple specialized agents
-> and deep code analysis, here is my determination:
-> 
-> ## **Backport Status: YES**
-> 
-> This commit MUST be backported to stable kernel trees. Here's the
-> comprehensive analysis:
-> 
-> ### **1. Critical Bug Fix**
-> The commit fixes a severe bug where block devices smaller than 1MB
-> (including 0-size NBD devices) can be added to a btrfs filesystem but
-> **cannot be removed**, leaving the filesystem in a permanently degraded
-> state. The specific error users encounter:
-> ```
-> ERROR: error removing device '/dev/nbd0': Invalid argument
-> ```
-> 
-> ### **2. Real User Impact**
-> - **Unrecoverable filesystem state**: Once a small/zero-size device is
->    added, it cannot be removed without recreating the entire filesystem
-> - **Data migration required**: Users must backup all data and recreate
->    the filesystem to resolve
-> - **NBD vulnerability**: Disconnected NBD devices report 0 size, making
->    this easy to trigger accidentally
-> - **No workaround available**: There is no way to force-remove the stuck
->    device
-> 
-> ### **3. Root Cause Analysis**
-> The kernel-code-researcher agent found:
-> - The kernel **never had this validation** - it always relied on
->    userspace (btrfs-progs) to check
-> - Btrfs-progs commit 15ae0410c37a79 in version 6.16 inadvertently
->    removed the size check for 0-byte devices
-> - The kernel reserves the first 1MB (`BTRFS_DEVICE_RANGE_RESERVED =
->    SZ_1M`) for bootloader safety
-> - Device removal fails because shrinking calculations become invalid
->    when device size ≤ 1MB
-> 
-> ### **4. Security Implications**
-> The security-auditor agent identified:
-> - **Medium severity DoS vulnerability** (CVSS 6.0)
-> - **Security boundary violation**: Privileged operations creating
->    irreversible states
-> - **Container/cloud impact**: Affects modern deployment scenarios with
->    device passthrough
-> - **No CVE assigned yet**: This is an unreported vulnerability
-> 
-> ### **5. Code Change Analysis**
-> The fix is minimal and safe:
-> ```c
-> +       if (bdev_nr_bytes(file_bdev(bdev_file)) <=
-> BTRFS_DEVICE_RANGE_RESERVED) {
-> +               ret = -EINVAL;
-> +               goto error;
-> +       }
-> ```
-> - **5 lines added** in `btrfs_init_new_device()`
-> - **No complexity**: Simple size check before device initialization
-> - **Zero regression risk**: Only blocks operations that would fail
->    anyway
-> - **Clear error path**: Uses existing error handling
-> 
-> ### **6. Stable Tree Criteria Met**
-> ✅ **Fixes a real bug**: Users cannot remove devices, filesystem stuck
-> ✅ **Small and contained**: 5-line change in one function
-> ✅ **No new features**: Pure bug fix, no functional changes
-> ✅ **Minimal regression risk**: Only blocks already-broken operations
-> ✅ **Clear side effects**: None - prevents invalid state creation
-> ✅ **Important for users**: Prevents unrecoverable filesystem states
-> ✅ **Maintainer reviewed**: Approved by Qu Wenruo and David Sterba
-> 
-> ### **7. Version Applicability**
-> The search-specialist agent found:
-> - **No prior bug reports**: This is a newly discovered issue
-> - **Affects all kernel versions** when used with btrfs-progs 6.16+
-> - Should be backported to **all actively maintained stable branches**
->    (4.19, 5.4, 5.10, 5.15, 6.1, 6.6, 6.11)
-> 
-> ### **8. Testing Verification**
-> The fix can be easily verified:
-> ```bash
-> # Without patch: succeeds but creates stuck device
-> btrfs device add /dev/zero_size_device /mnt
-> btrfs device remove /dev/zero_size_device /mnt  # Fails with -EINVAL
-> 
-> # With patch: properly rejects at add time
-> btrfs device add /dev/zero_size_device /mnt  # Fails with -EINVAL
-> ```
-> 
-> ### **Conclusion**
-> This is a textbook example of a commit that should be backported to
-> stable:
-> - Fixes a real, user-impacting bug with no workaround
-> - Minimal, safe change with clear benefits
-> - Prevents filesystem corruption/stuck states
-> - Has security implications (DoS)
-> - Already reviewed by subsystem maintainers
-> 
-> The absence of this validation in the kernel combined with the recent
-> btrfs-progs change creates a critical gap that leaves users vulnerable
-> to unrecoverable filesystem states. This fix closes that gap with
-> minimal risk.
-> 
->   fs/btrfs/volumes.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-> index f475b4b7c4578..817d3ef501ec4 100644
-> --- a/fs/btrfs/volumes.c
-> +++ b/fs/btrfs/volumes.c
-> @@ -2714,6 +2714,11 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
->   		goto error;
->   	}
->   
-> +	if (bdev_nr_bytes(file_bdev(bdev_file)) <= BTRFS_DEVICE_RANGE_RESERVED) {
-> +		ret = -EINVAL;
-> +		goto error;
-> +	}
-> +
->   	if (fs_devices->seeding) {
->   		seeding_dev = true;
->   		down_write(&sb->s_umount);
+> Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+
+   Probably should have noted that this patch fixes CVE-2025-37830:
+
+https://marc.info/?l=linux-cve-announce&m=174668615621702
+
+   (Sorry, lore doesn't work for me anymre...]
+
+MBR, Sergey
 
 
