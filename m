@@ -1,282 +1,290 @@
-Return-Path: <stable+bounces-179684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D18B58E73
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 08:24:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE6EB58E8B
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 08:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 717C13B932E
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 06:24:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26F231B2762F
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 06:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935F52DFA2D;
-	Tue, 16 Sep 2025 06:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7FC2DCF46;
+	Tue, 16 Sep 2025 06:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RWFX2NRP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PsiUKty1"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6F32DCF62
-	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 06:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B5428C864
+	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 06:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758003881; cv=none; b=MSwjeLKwTc4ALny2hL/eFo1tIbAQrYaxMzgAayUr67g7srWUBkmPAK29GZVSE4IEOXjSU26CLaceNGR8m7di+hIObHvdyac6K9jTOKs/nkCa/sn1PIVEWTRQcgW5uuFUAK1ZDvoMr2luW9spZeUcxzsL/Dw9rRda7fHodoqR3fU=
+	t=1758004690; cv=none; b=dZ2iakC+VDN8Y/JAFNQtaGZVsYwM7to/H3fEpc4/RwDfHnLeM+ppSNJdUF8TcpIrreso/lRavN5mqzXHFqRtRckY9TNUdPEsz5tj0hFhDSkUShVXkIhuZtUQQgticZlSlK/XLquVjj9EG0tyD227WWU/dDYoRbMUcADjXxJTN/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758003881; c=relaxed/simple;
-	bh=huKYgVyJW4FB240PvQMLWp06kAelPCsGdj3ntdrQhJg=;
+	s=arc-20240116; t=1758004690; c=relaxed/simple;
+	bh=UlB06k3fabYJVeuwagIuYZbusArRJV8PYAWb8HnCM7w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nY19gHrwzD1HaoGlMF2hhyDUaEPNr7460J7BVUrJoy1iYz9M4rODaEIvsgA83kuW1/p2+xbkgvdlBTywO5TH8Cven5W8aIlFpjGqsX++ez6wrHO+NCG875njz4vbSsVxdNJIqPridabK3tpwhZtzMNyk2yBVAh6+80Oep+UUgk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RWFX2NRP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758003878;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dlQN4SQLxZ6U3+89gIilu0VdL6Q8/3iQQAj8V3mQl2E=;
-	b=RWFX2NRP++unLJu8yypS6dnp0MI0sodCUQIV4e+b4XFbgHgtTLJhqHyanhpUe2GRRPEqFc
-	REl1YhXDEg5iIQh8pE6uUd3Rub46KYwVNtqMSP8k+O+bdnl0bDVe6/zJQgpDxQ43ALitRg
-	53XNqUq/Lq3PkeaenTzCsXSZOrRdg8s=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-bKDK3MkcNpiWDvcswKPDTg-1; Tue, 16 Sep 2025 02:24:35 -0400
-X-MC-Unique: bKDK3MkcNpiWDvcswKPDTg-1
-X-Mimecast-MFC-AGG-ID: bKDK3MkcNpiWDvcswKPDTg_1758003874
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-32eb18b5659so88111a91.2
-        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 23:24:34 -0700 (PDT)
+	 To:Cc:Content-Type; b=RnHWWV6+tomzmAOdAziQwBpXiJAPulPUGxiYhSXbn6lGyETWbxRTOvbIxutKNm2A/F55U1xKRoYlP9+9OD0QtQD3z9rDHG86WylDIeu8TqGoOtjyOIOb8EYTRzkqDQnwbFdzjYiq2R2wg0QdJkIDVSnnQKSgmoDPjp30WJavXps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PsiUKty1; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-62ef469bb2cso6642354a12.2
+        for <stable@vger.kernel.org>; Mon, 15 Sep 2025 23:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758004687; x=1758609487; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cc7WNX8qWIF/5rBWrjguwjC9B2870jwiQMPwsz1WD7s=;
+        b=PsiUKty1B98lWgRqrbCDHt0hkAHaIW4HuFmjEArGfYu69O5UrKAfY2wOpg8ZzGuZZ7
+         6AJ9MLKwi+6RHa9l5FUVFY39k9VOsQrI0Dz7ok/4S/60De4v/dIB19HtDzfh5YnCnrVW
+         Uz5iJJAexi11ZzSK8jtGxn8l8YcJPcE5IgnI99JZpYrDqGxUCOPkKCudO9DTItfz/dAt
+         tyGyoFxWd9HJErEupzWMUR8BXwce2c5nYs/wvmz1bRVCmoRibFaF7+1dUIIhUISXJC9S
+         vktHA547rxc8V4ujPrSQD9H+ojnctzfy+I3USpl07v/7+y/6SG70kQKRm/ESqyDUKoUJ
+         ysNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758003874; x=1758608674;
+        d=1e100.net; s=20230601; t=1758004687; x=1758609487;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dlQN4SQLxZ6U3+89gIilu0VdL6Q8/3iQQAj8V3mQl2E=;
-        b=NOraznkdfVznXsr4HMog4Ur+PQBx2Q/3gFxN+7O+QnEpPGRqXo99D1d/R80QD2znJt
-         wfqM5nnlgUAnNuZ+ezmhn0Ryss3Y+QCb9jqcgnWNVBoO44BF28IWZbSMfo0y//ZHsmv3
-         F4Sk7yNRg9SKMB74moqJ2neZUiFAavfqM60sJTXiK053TGeRqc3CyBZUmg8JdyVusTYK
-         IvIJAe5OLYX2ilJ9Hh0dgtw8Bjm10bu1jHU+NZEqyW6SvI7se3ygxGkNj7QZeLKq1uPb
-         +PrpRhHW4iHj7jm4vn3P+OY1/dpXv3WbCeS0vvkU9zPL7Lr2U9uKM8LPuGthq+dbRxzf
-         k8Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCWUBscONmgiEgZvOgTksspGcrkU7EGJ68QKVkMalhyx/H+t2JsM4+teY/TxpMadvq0y5gTpwXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7tNhrRoA35pBJ+2lAULf50IMgLxNhlT/bLO/rpZSgHrAsGlCQ
-	ydiUezq6HVj+x0653PJcFIZXPK7u5pjG+/1+eQj6Bj6QO/SUpnHVwkONDAIqW1gjCfz055uaBVz
-	U6lyV+rGzUuRfsqjE8msFtEiM1bNcUmO9YjrfZ23opljzP7VU+1E61x9hoq49eSt8yueUBBITL1
-	pj+TFNt21YPpjf3+Le8LypnE6yWVIT9uPg
-X-Gm-Gg: ASbGncvebeROvuMJ/OSd4Jv2lQnaCJGyX22t/wEMwSb/4l2a6sRG/GBUcyHbsW16lzg
-	qJf404SP6s74jOtSX0HRfuqKv7KZEy+/hDkjXQFp4UYB2LUfd/089M7cbP6zmhHcf6NOqHS8L4o
-	91mP68CRVEWZ9WpqyuVqjFqg==
-X-Received: by 2002:a17:90b:2648:b0:32d:ea1c:a4e5 with SMTP id 98e67ed59e1d1-32dea1ca751mr15264751a91.1.1758003873960;
-        Mon, 15 Sep 2025 23:24:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1pLFeOzviQ4Xy/lHgZpWGGPzFdvtokwot9P7w4EynJ3kpRhRB6zmkC7K48b57/V9M7J8hnwn7YZsltep2S8A=
-X-Received: by 2002:a17:90b:2648:b0:32d:ea1c:a4e5 with SMTP id
- 98e67ed59e1d1-32dea1ca751mr15264722a91.1.1758003873504; Mon, 15 Sep 2025
- 23:24:33 -0700 (PDT)
+        bh=Cc7WNX8qWIF/5rBWrjguwjC9B2870jwiQMPwsz1WD7s=;
+        b=BmKLlcwaP7607islpqTbRYlOIbvbAkuf/dbKer/f7f21SXHj/zzrKuTr5XBrUcTVnk
+         7ZsyGGiwsRjMb0BCVl8sLUQatc3ncE36nEKh0K8LrT+6J/6I9ouJzL81EX2+zo1I8VTd
+         lOgAKtoB5ivY0O5yyoKuq8s0wvq93b/zIfuMBzSar/oNOXph1RNjWl+2/nw3oVslHd9j
+         FzbUzSIGW4y+7nUsebojnMD8Lhy4jd+12eDoJZKFURLfEgSGY6/f4KoMj4EqKeCSaJ3Q
+         V1pCnd1TTKpZEBcw17b8ciRxmGKkz2n8AYaRJsenaEdTtLRLxfkKj7uAcO7O09wTMP64
+         SWVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUe6m92apYk1MKQibX6AsOkhjctKY+DFC9LXHnHMjvUBCgwcBMABhvBOTJb9VeVPWYjoX64tsA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0EEOYHMkHCkV511GoLn54/CHrBvtZfPTq35O8LWneRyw6fftN
+	BAy0d/3D5ejtBclqPpwLHNkkRxsJanfYAGewMeR8YRPK1EzqLP/8baTS+AxU/ff52nLO7A9W8z9
+	FxhOiXRDBgPv6lMk2RGluKki+Y6f6lhQ=
+X-Gm-Gg: ASbGnctPsCV797UDxP/+CIKVQ0665RgnRyP/R+k+W+kHye4A3HylepWAXT+jVOVM4uR
+	TcLilchGwsBVaMU1+RNbjJN74BI1fIhItyulB/ibzvFoxL5lXh/opY4OsghaCUytxuhmhGZtbNw
+	4176I0tBMiR9wJMZCvJ6VLl1ukM5UIzXzbPCUdxONU3VuGOobIR79INDllovIVl4vKdBtR3Ijwk
+	e2SKSViczvkeWjn9FsXRDhXA7vDNLkCPnbaPUysxQ==
+X-Google-Smtp-Source: AGHT+IEappBHI1UrvMjtLUDln5FT0zMJjv0rXy1s/F3AnYYR3eWGfQGcNmj9FYjanF5LXOZTAGbS3nKFLn4NHTrsf7Y=
+X-Received: by 2002:a05:6402:21c9:b0:628:e8e3:ada with SMTP id
+ 4fb4d7f45d1cf-62ed82f1777mr15910586a12.27.1758004687031; Mon, 15 Sep 2025
+ 23:38:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250912082658.2262-1-jasowang@redhat.com> <20250912082658.2262-2-jasowang@redhat.com>
- <20250915120210-mutt-send-email-mst@kernel.org> <CACGkMEufUAL1tBrfZVMQCEBmBZ=Z+aPqUtP=RzOQhjtG9jn7UA@mail.gmail.com>
- <20250916011733-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250916011733-mutt-send-email-mst@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 16 Sep 2025 14:24:22 +0800
-X-Gm-Features: AS18NWBEENXnq_7VvTKCq3s046_2Fg4yd7Uf6NSOzQJJ0vEyLQYZEm5uVl98-eY
-Message-ID: <CACGkMEu_p-ouLbEq26vMTJmeGs1hw5JHOk1qLt8mLLPOMLDbaQ@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] vhost-net: correctly flush batched packet before
- enabling notification
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: eperezma@redhat.com, jonah.palmer@oracle.com, kuba@kernel.org, 
-	jon@nutanix.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250913030503.433914-1-amir73il@gmail.com> <20250915182056.GO8096@frogsfrogsfrogs>
+ <CAOQ4uxg4eBMS-FQADVYLGVh66QfMO+tHDAv3TUSpKqXn==XdKw@mail.gmail.com> <20250915234032.GB8096@frogsfrogsfrogs>
+In-Reply-To: <20250915234032.GB8096@frogsfrogsfrogs>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Tue, 16 Sep 2025 08:37:54 +0200
+X-Gm-Features: AS18NWCgfg5Hw8iQqX8b7xRdqkWHU35zVtNeheSZPySuvChBeuzUdAY9rTPwdtM
+Message-ID: <CAOQ4uxh00vdYLs24aMTonCNJ0wnmudwysxaJQa95-iq7zziD4Q@mail.gmail.com>
+Subject: Re: [PATCH CANDIDATE 5.15, 6.1, 6.6] xfs: Increase
+ XFS_QM_TRANS_MAXDQS to 5
+To: "Darrick J. Wong" <djwong@kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+Cc: Christoph Hellwig <hch@lst.de>, Catherine Hoang <catherine.hoang@oracle.com>, 
+	Leah Rumancik <leah.rumancik@gmail.com>, Allison Henderson <allison.henderson@oracle.com>, 
+	Carlos Maiolino <cem@kernel.org>, linux-xfs@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 16, 2025 at 1:19=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+On Tue, Sep 16, 2025 at 1:40=E2=80=AFAM Darrick J. Wong <djwong@kernel.org>=
  wrote:
 >
-> On Tue, Sep 16, 2025 at 10:37:35AM +0800, Jason Wang wrote:
-> > On Tue, Sep 16, 2025 at 12:03=E2=80=AFAM Michael S. Tsirkin <mst@redhat=
-.com> wrote:
+> On Mon, Sep 15, 2025 at 10:20:40PM +0200, Amir Goldstein wrote:
+> > On Mon, Sep 15, 2025 at 8:20=E2=80=AFPM Darrick J. Wong <djwong@kernel.=
+org> wrote:
 > > >
-> > > On Fri, Sep 12, 2025 at 04:26:58PM +0800, Jason Wang wrote:
-> > > > Commit 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until aft=
-er
-> > > > sendmsg") tries to defer the notification enabling by moving the lo=
-gic
-> > > > out of the loop after the vhost_tx_batch() when nothing new is
-> > > > spotted. This will bring side effects as the new logic would be reu=
-sed
-> > > > for several other error conditions.
+> > > On Sat, Sep 13, 2025 at 05:05:02AM +0200, Amir Goldstein wrote:
+> > > > From: Allison Henderson <allison.henderson@oracle.com>
 > > > >
-> > > > One example is the IOTLB: when there's an IOTLB miss, get_tx_bufs()
-> > > > might return -EAGAIN and exit the loop and see there's still availa=
-ble
-> > > > buffers, so it will queue the tx work again until userspace feed th=
-e
-> > > > IOTLB entry correctly. This will slowdown the tx processing and may
-> > > > trigger the TX watchdog in the guest.
+> > > > [ Upstream  commit f103df763563ad6849307ed5985d1513acc586dd ]
 > > > >
-> > > > Fixing this by stick the notificaiton enabling logic inside the loo=
-p
-> > > > when nothing new is spotted and flush the batched before.
+> > > > With parent pointers enabled, a rename operation can update up to 5
+> > > > inodes: src_dp, target_dp, src_ip, target_ip and wip.  This causes
+> > > > their dquots to a be attached to the transaction chain, so we need
+> > > > to increase XFS_QM_TRANS_MAXDQS.  This patch also add a helper
+> > > > function xfs_dqlockn to lock an arbitrary number of dquots.
 > > > >
-> > > > Reported-by: Jon Kohler <jon@nutanix.com>
+> > > > Signed-off-by: Allison Henderson <allison.henderson@oracle.com>
+> > > > Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+> > > > Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+> > > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > > >
+> > > > [amir: backport to kernels prior to parent pointers to fix an old b=
+ug]
+> > > >
+> > > > A rename operation of a directory (i.e. mv A/C/ B/) may end up chan=
+ging
+> > > > three different dquot accounts under the following conditions:
+> > > > 1. user (or group) quotas are enabled
+> > > > 2. A/ B/ and C/ have different owner uids (or gids)
+> > > > 3. A/ blocks shrinks after remove of entry C/
+> > > > 4. B/ blocks grows before adding of entry C/
+> > > > 5. A/ ino <=3D XFS_DIR2_MAX_SHORT_INUM
+> > > > 6. B/ ino > XFS_DIR2_MAX_SHORT_INUM
+> > > > 7. C/ is converted from sf to block format, because its parent entr=
+y
+> > > >    needs to be stored as 8 bytes (see xfs_dir2_sf_replace_needblock=
+)
+> > > >
+> > > > When all conditions are met (observed in the wild) we get this asse=
+rtion:
+> > > >
+> > > > XFS: Assertion failed: qtrx, file: fs/xfs/xfs_trans_dquot.c, line: =
+207
+> > > >
+> > > > The upstream commit fixed this bug as a side effect, so decided to =
+apply
+> > > > it as is rather than changing XFS_QM_TRANS_MAXDQS to 3 in stable ke=
+rnels.
+> > >
+> > > Heh.  Indeed, you only need MAXDQS=3D=3D5 for filesystems that suppor=
+t
+> > > parent pointers, because only on those filesystems can you end up
+> > > needing to allocate a xattr block either to the new whiteout file or
+> > > free one from the file being unlinked.
+> > >
+> > > > The Fixes commit below is NOT the commit that introduced the bug, b=
+ut
+> > > > for some reason, which is not explained in the commit message, it f=
+ixes
+> > > > the comment to state that highest number of dquots of one type is 3=
+ and
+> > > > not 2 (which leads to the assertion), without actually fixing it.
+> > >
+> > > Agree.
+> > >
+> > > > The change of wording from "usr, grp OR prj" to "usr, grp and prj"
+> > > > suggests that there may have been a confusion between "the number o=
+f
+> > > > dquote of one type" and "the number of dquot types" (which is also =
+3),
+> > > > so the comment change was only accidentally correct.
+> > >
+> > > I interpret the "OR" -> "and" change to reflect the V4 -> V5 transiti=
+on
+> > > where you actually can have all three dquot types because group/proje=
+ct
+> > > quota are no longer mutually exclusive.
+> > >
+> > > The "...involved in a transaction is 3" part I think is separate, and
+> > > strange that XFS_QM_TRANS_MAXDQS wasn't updated.
+> > >
+> > > > Fixes: 10f73d27c8e9 ("xfs: fix the comment explaining xfs_trans_dql=
+ockedjoin")
 > > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until aft=
-er sendmsg")
-> > > > Signed-off-by: Jason Wang <jasowang@redhat.com>
+> > > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 > > > > ---
-> > > >  drivers/vhost/net.c | 33 +++++++++++++--------------------
-> > > >  1 file changed, 13 insertions(+), 20 deletions(-)
 > > > >
-> > > > diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> > > > index 16e39f3ab956..3611b7537932 100644
-> > > > --- a/drivers/vhost/net.c
-> > > > +++ b/drivers/vhost/net.c
-> > > > @@ -765,11 +765,11 @@ static void handle_tx_copy(struct vhost_net *=
-net, struct socket *sock)
-> > > >       int err;
-> > > >       int sent_pkts =3D 0;
-> > > >       bool sock_can_batch =3D (sock->sk->sk_sndbuf =3D=3D INT_MAX);
-> > > > -     bool busyloop_intr;
-> > > >       bool in_order =3D vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
+> > > > Christoph,
 > > > >
-> > > >       do {
-> > > > -             busyloop_intr =3D false;
-> > > > +             bool busyloop_intr =3D false;
-> > > > +
-> > > >               if (nvq->done_idx =3D=3D VHOST_NET_BATCH)
-> > > >                       vhost_tx_batch(net, nvq, sock, &msg);
+> > > > This is a cognitive challenge. can you say what you where thinking =
+in
+> > > > 2013 when making the comment change in the Fixes commit?
+> > > > Is my speculation above correct?
 > > > >
-> > > > @@ -780,10 +780,18 @@ static void handle_tx_copy(struct vhost_net *=
-net, struct socket *sock)
-> > > >                       break;
-> > > >               /* Nothing new?  Wait for eventfd to tell us they ref=
-illed. */
-> > > >               if (head =3D=3D vq->num) {
-> > > > -                     /* Kicks are disabled at this point, break lo=
-op and
-> > > > -                      * process any remaining batched packets. Que=
-ue will
-> > > > -                      * be re-enabled afterwards.
-> > > > +                     /* Flush batched packets before enabling
-> > > > +                      * virqtueue notification to reduce
-> > > > +                      * unnecssary virtqueue kicks.
-> > > >                        */
-> > > > +                     vhost_tx_batch(net, nvq, sock, &msg);
+> > > > Catherine and Leah,
+> > > >
+> > > > I decided that cherry-pick this upstream commit as is with a commit
+> > > > message addendum was the best stable tree strategy.
+> > > > The commit applies cleanly to 5.15.y, so I assume it does for 6.6 a=
+nd
+> > > > 6.1 as well. I ran my tests on 5.15.y and nothing fell out, but did=
+ not
+> > > > try to reproduce these complex assertion in a test.
+> > > >
+> > > > Could you take this candidate backport patch to a spin on your test
+> > > > branch?
+> > > >
+> > > > What do you all think about this?
 > > >
-> > > So why don't we do this in the "else" branch"? If we are busy polling
-> > > then we are not enabling kicks, so is there a reason to flush?
-> >
-> > It should be functional equivalent:
-> >
-> > do {
-> >     if (head =3D=3D vq->num) {
-> >         vhost_tx_batch();
-> >         if (unlikely(busyloop_intr)) {
-> >             vhost_poll_queue()
-> >         } else if () {
-> >             vhost_disable_notify(&net->dev, vq);
-> >             continue;
-> >         }
-> >         return;
-> > }
-> >
-> > vs
-> >
-> > do {
-> >     if (head =3D=3D vq->num) {
-> >         if (unlikely(busyloop_intr)) {
-> >             vhost_poll_queue()
-> >         } else if () {
-> >             vhost_tx_batch();
-> >             vhost_disable_notify(&net->dev, vq);
-> >             continue;
-> >         }
-> >         break;
-> > }
-> >
-> > vhost_tx_batch();
-> > return;
-> >
-> > Thanks
-> >
->
-> But this is not what the code comment says:
->
->                      /* Flush batched packets before enabling
->                       * virqtueue notification to reduce
->                       * unnecssary virtqueue kicks.
->
->
-> So I ask - of we queued more polling, why do we need
-> to flush batched packets? We might get more in the next
-> polling round, this is what polling is designed to do.
-
-The reason is there could be a rx work when busyloop_intr is true, so
-we need to flush.
-
-Thanks
-
->
->
-> >
+> > > I only think you need MAXDQS=3D=3D5 for 6.12 to handle parent pointer=
+s.
 > > >
-> > >
-> > > > +                     if (unlikely(busyloop_intr)) {
-> > > > +                             vhost_poll_queue(&vq->poll);
-> > > > +                     } else if (unlikely(vhost_enable_notify(&net-=
->dev,
-> > > > +                                                             vq)))=
- {
-> > > > +                             vhost_disable_notify(&net->dev, vq);
-> > > > +                             continue;
-> > > > +                     }
-> > > >                       break;
-> > > >               }
-> > > >
-> > > > @@ -839,22 +847,7 @@ static void handle_tx_copy(struct vhost_net *n=
-et, struct socket *sock)
-> > > >               ++nvq->done_idx;
-> > > >       } while (likely(!vhost_exceeds_weight(vq, ++sent_pkts, total_=
-len)));
-> > > >
-> > > > -     /* Kicks are still disabled, dispatch any remaining batched m=
-sgs. */
-> > > >       vhost_tx_batch(net, nvq, sock, &msg);
-> > > > -
-> > > > -     if (unlikely(busyloop_intr))
-> > > > -             /* If interrupted while doing busy polling, requeue t=
-he
-> > > > -              * handler to be fair handle_rx as well as other task=
-s
-> > > > -              * waiting on cpu.
-> > > > -              */
-> > > > -             vhost_poll_queue(&vq->poll);
-> > > > -     else
-> > > > -             /* All of our work has been completed; however, befor=
-e
-> > > > -              * leaving the TX handler, do one last check for work=
-,
-> > > > -              * and requeue handler if necessary. If there is no w=
-ork,
-> > > > -              * queue will be reenabled.
-> > > > -              */
-> > > > -             vhost_net_busy_poll_try_queue(net, vq);
-> > > >  }
-> > > >
-> > > >  static void handle_tx_zerocopy(struct vhost_net *net, struct socke=
-t *sock)
-> > > > --
-> > > > 2.34.1
-> > >
+> >
+> > Yes, of course. I just preferred to keep the 5 to avoid deviating from
+> > the upstream commit if there is no good reason to do so.
+>
+> <shrug> What do Greg and Sasha think about this?  If they don't mind
+> this then I guess I don't either. ;)
 >
 
+Ok let's see.
+
+Greg,
+
+In kernels < 6.10 the size of the 'dqs' array per transaction was too small
+(XFS_QM_TRANS_MAXDQS is 2 instead of 3) which can, as explained
+in my commit, cause an assertion and crash the kernel.
+
+This bug exists for a long time, it may have low probability for the entire
+"world", but under specific conditions (e.g. a specific workload that is fu=
+lly
+controlled by unpriv user) it happens for us every other week on kernel 5.1=
+5.y
+and with more effort, an upriv user can trigger it much more frequently.
+
+In kernel 6.10, XFS_QM_TRANS_MAXDQS was increased to 5 to
+cover a use case for a new feature (parent pointer).
+That means that upstream no longer has the bug.
+
+I opted for applying this upstream commit to fix the stable kernel bug
+although raising the max to 5 is an overkill.
+
+This has a slight impact on memory footprint, but I think it is negligible
+and in any case, same exact memory footprint as upstream code.
+
+What do you prefer? Applying the commit as is with increase to 5
+or apply a customized commit for kernels < 6.10 which raises the
+max to 3 without mentioning the upstream commit?
+
+If you agree with my choice, please advise regarding my choice of
+formatting of the commit message - original commit message followed
+by stable specific bug fix commit message which explains the above.
+
+
+> > > The older kernels could have it set to 3 instead.  struct xfs_dqtrx o=
+n a
+> > > 6.17-rc6 kernel is 88 bytes.  Stuffing 9 of them into struct
+> > > xfs_dquot_acct instead of 15 means that the _acct struct is only 792
+> > > bytes instead of 1392, which means we can use the 1k slab instead of =
+the
+> > > 2k slab.
+> >
+> > Huh? there is only one xfs_dquot_acct per transaction.
+>
+> Yes, but there can be a lot of transactions in flight.
+>
+> > Does it really matter if it's 1k or 2k??
+> >
+> > Am I missing something?
+>
+> It seems silly to waste so much memory on a scenario that can't happen
+> just so we can say that we hammered in a less appropriate solution.
+>
+
+Yeh, I do not like waste, but do not like to over complicate and micro
+optimize either.
+
+Talking about waste, in current upstream xfs_dquot_acct is bloated
+as you described for the majority of users that enable quotas, who
+do not enable parent pointers.
+
+So if we consider this memory waste to be a bug, I prefer that stable
+and upstream will be bug compatible.
+
+If we fix that waste in upstream, we could add:
+Fixes: f103df763563a ("xfs: Increase XFS_QM_TRANS_MAXDQS to 5")
+
+Which would then be flagged for picking to stable kernels
+that have this commit applied.
+
+So? WDYT?
+
+Thanks,
+Amir.
 
