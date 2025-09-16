@@ -1,138 +1,202 @@
-Return-Path: <stable+bounces-179745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D32BB59EF9
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 19:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56414B59F47
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 19:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D741C00FCC
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 17:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142071C04D20
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 17:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9A22F7AA6;
-	Tue, 16 Sep 2025 17:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF4D2727E5;
+	Tue, 16 Sep 2025 17:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ATr4gjLb"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pvFHTJTJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7f+V+D0R";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pvFHTJTJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7f+V+D0R"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22D72F5A03;
-	Tue, 16 Sep 2025 17:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0906F2397AA
+	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 17:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758042648; cv=none; b=j6T3WvXxl9zc4ZvDoRJOCesPYP/GhziV5Ta2eIN+iZKRF4Y5OiQeiXkAASVURLeiklptf6OqOcaVCjnwIBNOD4B5vpdQvLUL2+oD4r9iWZBGDUHz7S8EUfYhBQPFAq99lCzFwDsk09MTtuWGCIVCeXK+HzngH+6qpoXfLZU52Jk=
+	t=1758043773; cv=none; b=K8oCfbwX/Tr0IYZqOPcm0cbL5lkijNwBlACyOxIoKXOtU1k5MBXHD24vI3QkHAXlAqoZQkXvt0BEy4AqJrOpMTGxLjNjLvIkdw93Q7JBQc4hX4G1xfx0nT0kZR5XkBaK8tM6uuRzevu50XLv5UzN3EZgwwCtEX/YFeKsuXTkyZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758042648; c=relaxed/simple;
-	bh=52a5khhWywk3mzbTtG/eaLSUFbCkMvNbfSSHenmqqkw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rz8Nv3db0NtKmIvKmyMK9iE0KMmEcSiHf8ZHkYnFKJZeCQ18XnvD63i4Th3nj3fuUyCyWXat2e6iMisaeLLzIqgKIp1k3UeoCgsYXoXzzx0ijBbSLPjkKhGvIv46KqElCUsOBr5Kn+o7YXaQ4kimOBi63L3DtgoNFRBjJdf55w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ATr4gjLb; arc=none smtp.client-ip=52.42.203.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758042646; x=1789578646;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Yj/co0t5Iw8d47vXLDniXY4H2qDpIH8uba9JHqJdO8s=;
-  b=ATr4gjLbGQWyDG4dZXegrRq/p+vS4/Ed4oIHY2fibY11y7PooZEV3iRI
-   7cjb6DH4KdrM+V2iK1eyri1Btn2zQXyjCJgi4O7f/mc39scYD5K+yOi3q
-   xqoOk35EgqQPtneOkVZ1b701J5I29XkCyy83QS3Q9tBcW6BawJPHTc/Nx
-   A1MnXZ3fUvSSuT/Nu7TWT4+aKBjFc/vjLomlk36dWoJvvMMIGaVaOkqx8
-   RNLPR6NiwJ8AexYkCBDvsiKKoS/wKG8uNXhTT8Lw/FVybQCDR0DQ4SXLV
-   O5c+oazkssFC36dqL3S7Qu+IfFvV5iXSvhbFGEbAQ/+Mzll2bRappf0GT
-   g==;
-X-CSE-ConnectionGUID: r2MH0a+nShCa9LtTSfPqNg==
-X-CSE-MsgGUID: KgO2vHhiQHyJRTkCEVp8IQ==
-X-IronPort-AV: E=Sophos;i="6.18,269,1751241600"; 
-   d="scan'208";a="3085197"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 17:10:46 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:56726]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.219:2525] with esmtp (Farcaster)
- id a8e25940-f42e-4026-bea0-0929d2af846d; Tue, 16 Sep 2025 17:10:46 +0000 (UTC)
-X-Farcaster-Flow-ID: a8e25940-f42e-4026-bea0-0929d2af846d
-Received: from EX19D032UWA001.ant.amazon.com (10.13.139.62) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Tue, 16 Sep 2025 17:10:45 +0000
-Received: from dev-dsk-ajgja-2a-6a9b5603.us-west-2.amazon.com (172.22.68.79)
- by EX19D032UWA001.ant.amazon.com (10.13.139.62) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Tue, 16 Sep 2025 17:10:45 +0000
-From: Andrew Guerrero <ajgja@amazon.com>
-To: <gregkh@linuxfoundation.org>
-CC: <ajgja@amazon.com>, <akpm@linux-foundation.org>,
-	<cgroups@vger.kernel.org>, <gunnarku@amazon.com>, <guro@fb.com>,
-	<hannes@cmpxchg.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<mhocko@kernel.org>, <muchun.song@linux.dev>, <roman.gushchin@linux.dev>,
-	<shakeel.butt@linux.dev>, <stable@vger.kernel.org>, <vdavydov.dev@gmail.com>
-Subject: Re: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
-Date: Tue, 16 Sep 2025 17:10:40 +0000
-Message-ID: <20250916171040.12436-1-ajgja@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2025091216-purveyor-prior-2a81@gregkh>
-References: <2025091216-purveyor-prior-2a81@gregkh>
+	s=arc-20240116; t=1758043773; c=relaxed/simple;
+	bh=DUhd/YyCaZGHc5TlXFroXO7WR7cEGAD5ivioK4Rd+nQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Te4Iyn9rNl1Gr6i9mnmvwNR3NyEu3Li0trvM37ipbShucgTHzCH96FoKcFzoMTZQo9Ofta5OSNIa7a+q2ECHNUzS4pMNd8eQZ2ecP00QyjqoHvuTZm13dIDBAXl38U/12EsIUu0YL7jUWjRHHGozdIoR6L2qZu3nr7wqo+8XFLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pvFHTJTJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7f+V+D0R; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pvFHTJTJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7f+V+D0R; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2204A22678;
+	Tue, 16 Sep 2025 17:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758043769; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eQZUiiOKNAqUAvMt6unAWfm+QcDfr4cjlxIZGHRV7Cc=;
+	b=pvFHTJTJD1T1aKajBJwY0aV0B4a0qABOR5Tl4CEJQdx8AiiGZaGTCOxaXLnAIFJOOw8HgY
+	EjYgCob2tMN3MPhjsOBLNnZp16TderOBQKQ6RoptO9S7RwokQFoaa9uVGQuqC6gfsGKgO7
+	jTKf+BHC6qDrL7kOq4BHHJDWobcFv7g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758043769;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eQZUiiOKNAqUAvMt6unAWfm+QcDfr4cjlxIZGHRV7Cc=;
+	b=7f+V+D0REjxwrKGdY9trehSQU3sWApzaoCa91hl9MDtOwlzoZoEA1Pk+JV+QbC58HGQ/Ty
+	lRjlXLli4wYDuvAw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pvFHTJTJ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7f+V+D0R
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758043769; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eQZUiiOKNAqUAvMt6unAWfm+QcDfr4cjlxIZGHRV7Cc=;
+	b=pvFHTJTJD1T1aKajBJwY0aV0B4a0qABOR5Tl4CEJQdx8AiiGZaGTCOxaXLnAIFJOOw8HgY
+	EjYgCob2tMN3MPhjsOBLNnZp16TderOBQKQ6RoptO9S7RwokQFoaa9uVGQuqC6gfsGKgO7
+	jTKf+BHC6qDrL7kOq4BHHJDWobcFv7g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758043769;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eQZUiiOKNAqUAvMt6unAWfm+QcDfr4cjlxIZGHRV7Cc=;
+	b=7f+V+D0REjxwrKGdY9trehSQU3sWApzaoCa91hl9MDtOwlzoZoEA1Pk+JV+QbC58HGQ/Ty
+	lRjlXLli4wYDuvAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A17DE139CB;
+	Tue, 16 Sep 2025 17:29:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id OHYNGnieyWjvAQAAD6G6ig
+	(envelope-from <ematsumiya@suse.de>); Tue, 16 Sep 2025 17:29:28 +0000
+Date: Tue, 16 Sep 2025 14:29:18 -0300
+From: Enzo Matsumiya <ematsumiya@suse.de>
+To: David Howells <dhowells@redhat.com>, Steve French <sfrench@samba.org>
+Cc: Paulo Alcantara <pc@manguebit.org>, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] cifs: Fix oops due to uninitialised variable
+Message-ID: <vmavmpfosqg2fiwc3z4x53c64ueoocd2p43u2k2bkktcinr3xz@htqyifxcrsah>
+References: <1977959.1755617256@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
- EX19D032UWA001.ant.amazon.com (10.13.139.62)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <1977959.1755617256@warthog.procyon.org.uk>
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 2204A22678
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.01
 
-On 2025-09-12 12:45 UTC, Greg KH wrote:
-> On Mon, Sep 08, 2025 at 09:09:00PM +0000, Andrew Guerrero wrote:
-> > On 2025-09-07 13:10 UTC, Greg KH wrote:
-> > > On Sat, Sep 06, 2025 at 03:21:08AM +0000, Andrew Guerrero wrote:
-> > > > This patch is intended for the 5.10 longterm release branch. It will not apply
-> > > > cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
-> > > > later release branches:
-> > > > a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
-> > > 
-> > > Why can't we take those instead?
-> > > 
-> > > > In 5.15, the counter flushing code is completely removed. This may be another
-> > > > viable option here too, though it's a larger change.
-> > > 
-> > > If it's not needed anymore, why not just remove it with the upstream
-> > > commits as well?
-> > 
-> > Yeah, my understanding is the typical flow is to pull commits from upstream into
-> > stable branches. However, I'm not confident I know the the answer to "which
-> > upstream commits?" To get started,
-> > 
-> > `git log -L :memcg_hotplug_cpu_dead:mm/memcontrol.c linux-5.10.y..linux-5.15.y`
-> > 
-> > tells me that the upstream changes to pull are:
-> > 
-> > - https://lore.kernel.org/all/20210209163304.77088-1-hannes@cmpxchg.org/T/#u
-> > - https://lore.kernel.org/all/20210716212137.1391164-1-shakeelb@google.com/T/#u
-> > 
-> > However, these are substantial features that "fix" the issue indirectly by
-> > transitioning the memcg accounting system over to rstats. I can pick these 10
-> > upstream commits, but I'm worried I may overlook some additional patches from
-> > 5.15.y that need to go along with them. I may need some guidance if we go this
-> > route.
+Hi David, Steve,
+
+On 08/19, David Howells wrote:
+>Fix smb3_init_transform_rq() to initialise buffer to NULL before calling
+>netfs_alloc_folioq_buffer() as netfs assumes it can append to the buffer it
+>is given.  Setting it to NULL means it should start a fresh buffer, but the
+>value is currently undefined.
+
+This patch was based on David's RFC series
+"netfs: [WIP] Allow the use of MSG_SPLICE_PAGES and use netmem
+allocator", specifically patch 15/31 "cifs: Use
+netfs_alloc/free_folioq_buffer()", which were never merged.
+
+Current code in smb3_init_transform_rq() initializes buffer with
+cifs_alloc_folioq_buffer() and NULL-checked right after:
+
+> ...
+>                 struct folio_queue *buffer;
+>                 size_t size = iov_iter_count(&old->rq_iter);
 > 
-> Testing is key :)
+>                 orig_len += smb_rqst_len(server, old);
+>                 new->rq_iov = old->rq_iov;
+>                 new->rq_nvec = old->rq_nvec;
 > 
-> > Another reasonable option is to take neither route. We can maintain this patch
-> > internally and then drop it once we upgrade to a new kernel version.
-> 
-> Perhaps just do that for now if you all are hitting this issue?  It
-> seems to be the only report I've seen so far.
+>                 if (size > 0) {
+>                         buffer = cifs_alloc_folioq_buffer(size);
+>                         if (!buffer)
+>                                 goto err_free;
+> ...
 
-We are hitting this issue only in a stress test, and I think we got lucky with
-experiencing it, so I wouldn't be too surprised if this is the first and only
-report.
+Sorry not catching this earlier, but this just got my attention because
+there's now a CVE for this non-bug/vulnerability
+https://nvd.nist.gov/vuln/detail/CVE-2025-38737
 
-Thanks for taking a look!
+I don't know what exactly can/should be done, but I thought I'd let you
+know.
 
-Andrew
+
+Cheers,
+
+Enzo
+
+>Fixes: a2906d3316fc ("cifs: Switch crypto buffer to use a folio_queue rather than an xarray")
+>Signed-off-by: David Howells <dhowells@redhat.com>
+>cc: Steve French <sfrench@samba.org>
+>cc: Paulo Alcantara <pc@manguebit.org>
+>cc: linux-cifs@vger.kernel.org
+>cc: linux-fsdevel@vger.kernel.org
+>---
+> fs/smb/client/smb2ops.c |    2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+>index ad8947434b71..cd0c9b5a35c3 100644
+>--- a/fs/smb/client/smb2ops.c
+>+++ b/fs/smb/client/smb2ops.c
+>@@ -4487,7 +4487,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
+> 	for (int i = 1; i < num_rqst; i++) {
+> 		struct smb_rqst *old = &old_rq[i - 1];
+> 		struct smb_rqst *new = &new_rq[i];
+>-		struct folio_queue *buffer;
+>+		struct folio_queue *buffer = NULL;
+> 		size_t size = iov_iter_count(&old->rq_iter);
+>
+> 		orig_len += smb_rqst_len(server, old);
+>
+>
 
