@@ -1,153 +1,186 @@
-Return-Path: <stable+bounces-179710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC4CB59275
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 11:40:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87367B5929B
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 11:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72F111BC4AF0
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 09:40:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B4B81B218E0
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 09:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBFF29B217;
-	Tue, 16 Sep 2025 09:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8E229B8C7;
+	Tue, 16 Sep 2025 09:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EZMzOkBu"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K65Bx6sn";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="s+q/lPMQ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K65Bx6sn";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="s+q/lPMQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0196A286890
-	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 09:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11F22882B8
+	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 09:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758015618; cv=none; b=ug+mmBC6yBKzWhv464RlS42JfJFBp/IggayHzqiYkBTWMw8iDpQmkdsE5w6/1gk6W6et28+N3/a/IJUNMHO3c4UKSw3xt2oZbqsSmv0wkBP5EJTijbreU/OZsixSZpDLq1iH0pda/9BDOB9ViQ4X+jUfsM9GP/BAKzGtaIFbCOM=
+	t=1758015952; cv=none; b=soPXRRZa/EkCNLCoe7kR+ZYECZNBmMwN6FLWuWqWnxDTjGsY0D5YLJgZGHmG7JgD3aZSsBpxGJJb76lhCpz+eAoz6nhe7cfo3XjV4tDHSHMR8oJ31aBUAM0ncuFxuk8UjIxbcq1KmznTyINja55TrW89joM5qAqyWqn5gdENxqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758015618; c=relaxed/simple;
-	bh=/AN0edio5MaldEncQLvD0kSKxTKUGpgRttz9iXUqZxk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ofI9DiQCW+il1k65srDa+iN3YHX5hPnZCcnSv8t+ziL8g36Y4LhxjI2fCfo+kueTI65vGnGnclxjKFzduJK7+n/7aiecpmNbAZnn2ZCF9VXEAEwiW5pd2X4dK2waQV1DNVbIrGtzPu9Mr3bMpwhlXXy4ocHaaTFz9u+UbfAR7DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EZMzOkBu; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58G3ptnl012590
-	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 09:40:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=SdbaG+qQMcuHskGeXqpUq0AHk1Ukw/1hxqZ
-	/MRYhBG0=; b=EZMzOkBufAGzt8zUKa+ntj9/CVAth93d+7cckdcF8ZTiDToWPuG
-	CscdwL+BVXtjmkPH0VohXQCskDnrtjelQBRHsrha1Cs9tEyIWYdcx+bvt/YTwIo7
-	Tin5+4pB3Oc2wxQuRsMZGrJn5YRJgZJo5guCmcoihIMAXTLOOx/MRnR0qS4yReuS
-	GNvFAdqE4tox4iHAJajKJfi/VtG4Dr7Fcs9QIJxiHMeP6B2Lj7yzjU2DyoCOseku
-	2q/AqJ50zm6NYDacIUl5AOgoIBShsjEGQO0bAEL9WMkQLLMO9OKdDSGTTHU0NvPx
-	9DnReY10lUbGmEO7gucYkowJ2aJP7ilAylA==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 496g12m164-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 09:40:16 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2675d9ad876so23319855ad.1
-        for <stable@vger.kernel.org>; Tue, 16 Sep 2025 02:40:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758015615; x=1758620415;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SdbaG+qQMcuHskGeXqpUq0AHk1Ukw/1hxqZ/MRYhBG0=;
-        b=CnrllQj1+GKOGS0K/0o6KuJYdFxJCk4WjcPSkDPQ79Wa7tzUrtXh96QI35jdEe6yq8
-         PEauLVfJibTPz0JDfpL9XMugpl1qJr89wXjVm9RDOQswzymhNaG6Kuofcf7eKG20dfY3
-         +mom4v+tynsYWZ/7ZpuSGZwU3c7OopWu9jO/XD3C/2uBYadwAlbEMK2FYHTwbrwGSwex
-         gpA0ZWCBUmpdjO9oEQqN7FeG00xou0zeIMPTAhMkKAty5/kb+pMZ8v7ZWF2GYdoZBrRE
-         H1044/66AzShoT4NTHODAPZmvP7PefDB4DAl+IC8LQwzut/F69T+BJO0AgY1TElaE2aj
-         e+dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkEhlyTr73dx/ATRJxHhs6I/CT5V4OIXuWACR95CPZj/iwF4uzUYweKxC9FHdenIpg26QzeaQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaxtdkajtV3Gxbc9X/S3PeETqbF79M5vNocCA1slEIDim8Stk5
-	mt3SvQ1Nim3/YnXB1Wt7mZmJc48gv5SHN4AZ27/hNh63S3yX8ZxQnSa38NatEGjcO9lcJ9xIZoU
-	J7eP14pqpBTvsd1ebivpJRkYUKYLNNlljygxqoXEb427ECLXXwSLJ7g2R7NY=
-X-Gm-Gg: ASbGncsS/KGeMYNq+i65E6WmqSN+ZUa6FoBp1fniEut4oLgbrxWXwX73LHg5pR1vAOd
-	AwNxUsrRGEMtfgIho4uXqn4MbhfPBS4e9fi4PrhPiaeCRK/MxWP/NfDMBIhMIvSw18gDcomGr7E
-	Mr6X6nBdy0KDN5zTrdt0wHdT6IkdM+0fX+exElGnR2Bo8p4lNx7GcvzncvCzEUVS442pD23i9Ts
-	TpWO9hrupFlD7c3TbzmcQ24Zg0jp09ZNS0HaTCLUkFbmWHzBEZwq+avACG9ITV4eGrsQpB/ZjBN
-	tArKNljDzjboE6LDyBPi/+0ZQ2WM9vvU3AQbYACU7gzVWfFYOL5dT3Ye/ZvoZ++wxJymz43QFg=
-	=
-X-Received: by 2002:a17:903:3c2d:b0:25c:b543:2da7 with SMTP id d9443c01a7336-25d2528c254mr178027555ad.9.1758015615270;
-        Tue, 16 Sep 2025 02:40:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3iRujT5RyN/Y70BYxNaVIMPtLsc7G5+gxIL9VhuL7Lh/nsZi48blzFd7jfvLmyl8MB9cHzg==
-X-Received: by 2002:a17:903:3c2d:b0:25c:b543:2da7 with SMTP id d9443c01a7336-25d2528c254mr178027315ad.9.1758015614822;
-        Tue, 16 Sep 2025 02:40:14 -0700 (PDT)
-Received: from hu-anupkulk-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2663f633893sm55434465ad.119.2025.09.16.02.40.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 02:40:14 -0700 (PDT)
-From: Anup Kulkarni <anup.kulkarni@oss.qualcomm.com>
-To: gregkh@linuxfoundation.org, jirislaby@kernel.org, johan+linaro@kernel.org,
-        dianders@chromium.org, quic_ptalari@quicinc.com,
-        bryan.odonoghue@linaro.org, quic_zongjian@quicinc.com,
-        anup.kulkarni@oss.qualcomm.com, quic_jseerapu@quicinc.com,
-        quic_vdadhani@quicinc.com, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Cc: mukesh.savaliya@oss.qualcomm.com, viken.dadhaniya@oss.qualcomm.com,
-        stable@vger.kernel.org
-Subject: [PATCH v1] tty: serial: qcom_geni_serial: Fix error handling for RS485 mode
-Date: Tue, 16 Sep 2025 15:09:57 +0530
-Message-Id: <20250916093957.4058328-1-anup.kulkarni@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1758015952; c=relaxed/simple;
+	bh=lWnSe1pV0Ful5u/fWF13PXLlDM6P7YcSgGp/5IvU0sA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZL2XnMOL1d/2Y3FDYCwRThpWEBOVv5uPJ44LoCzuTFlXNu/6/ewLOJmjcUOIm78wCK5JES7WxUr5E/SKmoBOgnxqbOqmjIX0paRkrodDlBBAU+rRMa5Mo7Q6c1IkEFHSwpNFP2bULdzKgyRQDYm/+Dg/2sWFRLZpTAHJO29RAM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K65Bx6sn; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=s+q/lPMQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K65Bx6sn; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=s+q/lPMQ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0F0EB229B4;
+	Tue, 16 Sep 2025 09:45:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758015949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5oCU9M02aU9Dmr9fi7iWYb6ulEbsfk24rHf2PZ4f6ns=;
+	b=K65Bx6snDj8aGtx3uk0hpU3UuFWQxNh+kSu5kW/d2PmF+YMm4doF3EzSukzv8G9tmKlzZp
+	kS5nzKgodqpGpgFJSnAWtM0G+vKj5jkmuZ7Ie9X27H4PQMZajeY8Hr6dxA+h64/0+rDYZf
+	9dTXxaLMPUEikbSt/5CA1b4wThkhBS0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758015949;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5oCU9M02aU9Dmr9fi7iWYb6ulEbsfk24rHf2PZ4f6ns=;
+	b=s+q/lPMQNDvYqbcNUv9cxVllj/4LZhw7lsUjq9p3o5Wdr3t8BlyJ2hTD5O0Nj+LW6Loki3
+	doMwA+VJdxT/bvBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=K65Bx6sn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="s+q/lPMQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758015949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5oCU9M02aU9Dmr9fi7iWYb6ulEbsfk24rHf2PZ4f6ns=;
+	b=K65Bx6snDj8aGtx3uk0hpU3UuFWQxNh+kSu5kW/d2PmF+YMm4doF3EzSukzv8G9tmKlzZp
+	kS5nzKgodqpGpgFJSnAWtM0G+vKj5jkmuZ7Ie9X27H4PQMZajeY8Hr6dxA+h64/0+rDYZf
+	9dTXxaLMPUEikbSt/5CA1b4wThkhBS0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758015949;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5oCU9M02aU9Dmr9fi7iWYb6ulEbsfk24rHf2PZ4f6ns=;
+	b=s+q/lPMQNDvYqbcNUv9cxVllj/4LZhw7lsUjq9p3o5Wdr3t8BlyJ2hTD5O0Nj+LW6Loki3
+	doMwA+VJdxT/bvBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D7BEC139CB;
+	Tue, 16 Sep 2025 09:45:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HvRYMcoxyWgWPwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 16 Sep 2025 09:45:46 +0000
+Date: Tue, 16 Sep 2025 10:45:45 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, 
+	lorenzo.stoakes@oracle.com, david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
+Message-ID: <ekawpt644ur6grvw5a6mqxzssyxxjo5mcfzxxe7vkjevge4yze@36zxeivutuk5>
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915163838.631445-2-kaleshsingh@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: nHYgsIja8vbyOw9jvHmqMwKhtUnVsKFB
-X-Proofpoint-GUID: nHYgsIja8vbyOw9jvHmqMwKhtUnVsKFB
-X-Authority-Analysis: v=2.4 cv=E5PNpbdl c=1 sm=1 tr=0 ts=68c93080 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=ZXCm3_ECWB7Dsui8_W4A:9
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA4NiBTYWx0ZWRfX8QOOlPJwQ1fT
- 6Rq1FwAeruCDLy4rWI6Fzyd0fGf19JXlzQ2wMK/OVWEI06LkoKVQ1lHWFAYjT5zXRAJ8UCm6a1/
- lg8qhSII14tgsiutIlnJLPSyi4u1He7ER8Fn093p85HoPr6T1JESMh0Z3jHJccqRyZikBH3PJXT
- GoSGRjeyBsyi68EGdPJlKZY7EtcmfkH4BdEk+tB0/5+z7preKJclgAdvZDg8GqFJK039C7xJCce
- 9yxtqY+DpjbtlfvH8InWQCR8fDwCuxrTXMwV+MtOTMMCHgmcR64aETBhTHANJpiQgxiBKm0Isk3
- Q81dKb3GbcLRBEbNtsZB0SZ863ieQFJjweclMrtULJn3fd8g28tjf3ym4OoTXoe08xLe7KnPvei
- imc6sOAo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1011 adultscore=0 bulkscore=0 impostorscore=0
- spamscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150086
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 0F0EB229B4
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	R_RATELIMIT(0.00)[to_ip_from(RLg31yqq1xypujqsbh8raoa6zf)];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email]
+X-Spam-Score: -4.01
 
-If uart_get_rs485() fails, the driver returns without detaching
-the PM domain list.
+On Mon, Sep 15, 2025 at 09:36:32AM -0700, Kalesh Singh wrote:
+> The VMA count limit check in do_mmap() and do_brk_flags() uses a
+> strict inequality (>), which allows a process's VMA count to exceed
+> the configured sysctl_max_map_count limit by one.
+> 
+> A process with mm->map_count == sysctl_max_map_count will incorrectly
+> pass this check and then exceed the limit upon allocation of a new VMA
+> when its map_count is incremented.
+> 
+> Other VMA allocation paths, such as split_vma(), already use the
+> correct, inclusive (>=) comparison.
+> 
+> Fix this bug by changing the comparison to be inclusive in do_mmap()
+> and do_brk_flags(), bringing them in line with the correct behavior
+> of other allocation paths.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: <stable@vger.kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 
-Fix the error handling path in uart_get_rs485_mode() to ensure the
-PM domain list is detached before exiting.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Fixes: 86fa39dd6fb7 ("serial: qcom-geni: Enable Serial on SA8255p Qualcomm platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anup Kulkarni <anup.kulkarni@oss.qualcomm.com>
----
- drivers/tty/serial/qcom_geni_serial.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Looks good, thanks!
 
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index 9c7b1cea7cfe..0fc0f215b85c 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1928,7 +1928,7 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
- 
- 	ret = uart_get_rs485_mode(uport);
- 	if (ret)
--		return ret;
-+		goto error;
- 
- 	devm_pm_runtime_enable(port->se.dev);
- 
 -- 
-2.34.1
-
+Pedro
 
