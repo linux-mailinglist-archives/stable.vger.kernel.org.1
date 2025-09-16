@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-179694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40ACB590B0
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 10:32:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9CFB590BC
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 10:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D1BE44E2BE9
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 08:32:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3996D1BC5D7B
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 08:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCC71BE871;
-	Tue, 16 Sep 2025 08:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4D223313E;
+	Tue, 16 Sep 2025 08:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHu/x8C5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH3UYMv+"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C39A136E3F
-	for <Stable@vger.kernel.org>; Tue, 16 Sep 2025 08:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C592288EE
+	for <Stable@vger.kernel.org>; Tue, 16 Sep 2025 08:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758011507; cv=none; b=gYwWaQW79YMKxMEDK4mr/jaqv3fVP5hv+vu8ANB3NBWwaAsoUASAGpwAF+yYoN8a4HKcosRlb6qyUMRAWpi4ApA/bMMNnziYcCryvhxXM+UwwgIHPWSlZJzH+qbGGQZsrlyCJman+ZMBKcJVJVyYKVVk/n3PYsU3SYGw921Cj6A=
+	t=1758011515; cv=none; b=cxsA7EDgrUNsIzsTF4Y94C41/7U4RLcUKGyCIj0C+ZU00osWHSg4Ki3VWvKJdgHd97YL3X0XgAs/O8p3wIQhNmyepy3JeVj8+lVa+0CakA90hgBqYRmN7RmDXgEzQfQXa64CXwb6Pn9HOjZ4nIDsau7U5830yDdTSFN3RDRgq84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758011507; c=relaxed/simple;
-	bh=1RFbn5wQyZYe/1gm7gzxELq7TGoEGkcNoL2ZTZ03lUw=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=NdLODmIFKZtqgU27Yb8uXQB41hjSkKDrWcglGxKJ0UbpyHHQUqK14cVHZBGNUFIV9sCfhr9S/gpcBz2eevr0FUbrcSE5aPLFcjTb7Jo+IaOja/9JDKV9z1d6ra6CH/LfBIABvGsS4gEUckOCsaj1fsEu3gJfkeMQobM6ZqQYZq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHu/x8C5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2769BC4CEEB;
-	Tue, 16 Sep 2025 08:31:45 +0000 (UTC)
+	s=arc-20240116; t=1758011515; c=relaxed/simple;
+	bh=BYjO1tVYOyXHq2E4yu7PRnnp3O428YCEgUoFbuL63Ho=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=gKWhwb/YvKedtfB9n27OZQq7xRTZxxQt4/wlccIn7WMhTEMvM6yLSjjKLmeuvKVfc0Ga5kcfXrITc4C7sh1r+w8tJCGV8DObMOikyk3SYAZU3VfmnFz8vp6RXn6ExpsGapFOJtuBF9wsyLQ8RDYgFIlfGesls97GlIAKsEtP34U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH3UYMv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5506C4CEEB;
+	Tue, 16 Sep 2025 08:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758011506;
-	bh=1RFbn5wQyZYe/1gm7gzxELq7TGoEGkcNoL2ZTZ03lUw=;
+	s=korg; t=1758011513;
+	bh=BYjO1tVYOyXHq2E4yu7PRnnp3O428YCEgUoFbuL63Ho=;
 	h=Subject:To:From:Date:From;
-	b=gHu/x8C50cEaHzc25qKQYwrDjKdYYbGc2MqcFZANN+LjNS6JVUzg0AJa+edgHDsHy
-	 +rHHkHgBs7lo8ykbmab/vTcaJ8caE+YxmTabk/IE1ABqbzgc0iLDBTeMmFPfJIAGLp
-	 1LK6zPZhG/xjRs05YBKsM6ydJgcAzkcNPZCgTDZo=
-Subject: patch "iio: frequency: adf4350: Fix prescaler usage." added to char-misc-testing
-To: michael.hennerich@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andy@kernel.org,nuno.sa@analog.com
+	b=dH3UYMv+zRK4CcaYyPFa2cbHhs4WmIavOODGdVM1Iu/2NGTnn3QdJWWk0/pIGhOaD
+	 mXYKvBdoH+AaTpsgkFImjJ/BRpuV844hkKpygIiajDWgOJnGKttKrpgPVLf6NSbvDR
+	 IzDSHPZQoVau2JHNnEV2AqZ40GrjzQ1B+qXejuRw=
+Subject: patch "iio: xilinx-ams: Unmask interrupts after updating alarms" added to char-misc-testing
+To: sean.anderson@linux.dev,Jonathan.Cameron@huawei.com,Salih.Erim@amd.com,Stable@vger.kernel.org,conall.ogriofa@amd.com
 From: <gregkh@linuxfoundation.org>
 Date: Tue, 16 Sep 2025 10:31:32 +0200
-Message-ID: <2025091632-glue-euphemism-48ae@gregkh>
+Message-ID: <2025091631-spirited-juicy-df39@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: frequency: adf4350: Fix prescaler usage.
+    iio: xilinx-ams: Unmask interrupts after updating alarms
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,75 +69,110 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 33d7ecbf69aa7dd4145e3b77962bcb8759eede3d Mon Sep 17 00:00:00 2001
-From: Michael Hennerich <michael.hennerich@analog.com>
-Date: Fri, 29 Aug 2025 12:25:42 +0100
-Subject: iio: frequency: adf4350: Fix prescaler usage.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From feb500c7ae7a198db4d2757901bce562feeefa5e Mon Sep 17 00:00:00 2001
+From: Sean Anderson <sean.anderson@linux.dev>
+Date: Mon, 14 Jul 2025 20:28:47 -0400
+Subject: iio: xilinx-ams: Unmask interrupts after updating alarms
 
-The ADF4350/1 features a programmable dual-modulus prescaler of 4/5 or 8/9.
-When set to 4/5, the maximum RF frequency allowed is 3 GHz.
-Therefore, when operating the ADF4351 above 3 GHz, this must be set to 8/9.
-In this context not the RF output frequency is meant
-- it's the VCO frequency.
+To convert level-triggered alarms into edge-triggered IIO events, alarms
+are masked when they are triggered. To ensure we catch subsequent
+alarms, we then periodically poll to see if the alarm is still active.
+If it isn't, we unmask it. Active but masked alarms are stored in
+current_masked_alarm.
 
-Therefore move the prescaler selection after we derived the VCO frequency
-from the desired RF output frequency.
+If an active alarm is disabled, it will remain set in
+current_masked_alarm until ams_unmask_worker clears it. If the alarm is
+re-enabled before ams_unmask_worker runs, then it will never be cleared
+from current_masked_alarm. This will prevent the alarm event from being
+pushed even if the alarm is still active.
 
-This BUG may have caused PLL lock instabilities when operating the VCO at
-the very high range close to 4.4 GHz.
+Fix this by recalculating current_masked_alarm immediately when enabling
+or disabling alarms.
 
-Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20250829-adf4350-fix-v2-1-0bf543ba797d@analog.com
+Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+Tested-by: Erim, Salih <Salih.Erim@amd.com>
+Acked-by: Erim, Salih <Salih.Erim@amd.com>
+Link: https://patch.msgid.link/20250715002847.2035228-1-sean.anderson@linux.dev
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/frequency/adf4350.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/iio/adc/xilinx-ams.c | 45 ++++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-index 47f1c7e9efa9..475a7a653bfb 100644
---- a/drivers/iio/frequency/adf4350.c
-+++ b/drivers/iio/frequency/adf4350.c
-@@ -149,6 +149,19 @@ static int adf4350_set_freq(struct adf4350_state *st, unsigned long long freq)
- 	if (freq > ADF4350_MAX_OUT_FREQ || freq < st->min_out_freq)
- 		return -EINVAL;
+diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+index 76dd0343f5f7..180d4140993d 100644
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -389,6 +389,29 @@ static void ams_update_pl_alarm(struct ams *ams, unsigned long alarm_mask)
+ 	ams_pl_update_reg(ams, AMS_REG_CONFIG3, AMS_REGCFG3_ALARM_MASK, cfg);
+ }
  
-+	st->r4_rf_div_sel = 0;
++static void ams_unmask(struct ams *ams)
++{
++	unsigned int status, unmask;
 +
-+	/*
-+	 * !\TODO: The below computation is making sure we get a power of 2
-+	 * shift (st->r4_rf_div_sel) so that freq becomes higher or equal to
-+	 * ADF4350_MIN_VCO_FREQ. This might be simplified with fls()/fls_long()
-+	 * and friends.
-+	 */
-+	while (freq < ADF4350_MIN_VCO_FREQ) {
-+		freq <<= 1;
-+		st->r4_rf_div_sel++;
-+	}
++	status = readl(ams->base + AMS_ISR_0);
 +
- 	if (freq > ADF4350_MAX_FREQ_45_PRESC) {
- 		prescaler = ADF4350_REG1_PRESCALER;
- 		mdiv = 75;
-@@ -157,13 +170,6 @@ static int adf4350_set_freq(struct adf4350_state *st, unsigned long long freq)
- 		mdiv = 23;
- 	}
++	/* Clear those bits which are not active anymore */
++	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
++
++	/* Clear status of disabled alarm */
++	unmask |= ams->intr_mask;
++
++	ams->current_masked_alarm &= status;
++
++	/* Also clear those which are masked out anyway */
++	ams->current_masked_alarm &= ~ams->intr_mask;
++
++	/* Clear the interrupts before we unmask them */
++	writel(unmask, ams->base + AMS_ISR_0);
++
++	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
++}
++
+ static void ams_update_alarm(struct ams *ams, unsigned long alarm_mask)
+ {
+ 	unsigned long flags;
+@@ -401,6 +424,7 @@ static void ams_update_alarm(struct ams *ams, unsigned long alarm_mask)
  
--	st->r4_rf_div_sel = 0;
+ 	spin_lock_irqsave(&ams->intr_lock, flags);
+ 	ams_update_intrmask(ams, AMS_ISR0_ALARM_MASK, ~alarm_mask);
++	ams_unmask(ams);
+ 	spin_unlock_irqrestore(&ams->intr_lock, flags);
+ }
+ 
+@@ -1035,28 +1059,9 @@ static void ams_handle_events(struct iio_dev *indio_dev, unsigned long events)
+ static void ams_unmask_worker(struct work_struct *work)
+ {
+ 	struct ams *ams = container_of(work, struct ams, ams_unmask_work.work);
+-	unsigned int status, unmask;
+ 
+ 	spin_lock_irq(&ams->intr_lock);
 -
--	while (freq < ADF4350_MIN_VCO_FREQ) {
--		freq <<= 1;
--		st->r4_rf_div_sel++;
--	}
+-	status = readl(ams->base + AMS_ISR_0);
 -
- 	/*
- 	 * Allow a predefined reference division factor
- 	 * if not set, compute our own
+-	/* Clear those bits which are not active anymore */
+-	unmask = (ams->current_masked_alarm ^ status) & ams->current_masked_alarm;
+-
+-	/* Clear status of disabled alarm */
+-	unmask |= ams->intr_mask;
+-
+-	ams->current_masked_alarm &= status;
+-
+-	/* Also clear those which are masked out anyway */
+-	ams->current_masked_alarm &= ~ams->intr_mask;
+-
+-	/* Clear the interrupts before we unmask them */
+-	writel(unmask, ams->base + AMS_ISR_0);
+-
+-	ams_update_intrmask(ams, ~AMS_ALARM_MASK, ~AMS_ALARM_MASK);
+-
++	ams_unmask(ams);
+ 	spin_unlock_irq(&ams->intr_lock);
+ 
+ 	/* If still pending some alarm re-trigger the timer */
 -- 
 2.51.0
 
