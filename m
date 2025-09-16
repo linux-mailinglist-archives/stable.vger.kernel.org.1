@@ -1,185 +1,183 @@
-Return-Path: <stable+bounces-179732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB1DB598E9
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 542ABB598FA
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C368C1C0321A
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:07:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4B351C03793
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F8E36999A;
-	Tue, 16 Sep 2025 14:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33D0337684;
+	Tue, 16 Sep 2025 14:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYD1/VKV"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZKh2TdbB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413F9369987;
-	Tue, 16 Sep 2025 14:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51C1321F3F;
+	Tue, 16 Sep 2025 14:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758031222; cv=none; b=i0BsH0EuhfRCYzt2x/k5vU9svMKdge8xyWfytnmM8CirroS3e5Cm99uLg4qUCcqEFtXtO/CYuunTZafGl9oUF/8nb9z2tQHH9WyoF4Rjj7y+DB21+lIQtgZboVqZeNpOA0SzlKjK8hewy1tRQpzRuezk6rHnffDEUqT3VJmAxxg=
+	t=1758031386; cv=none; b=rAirzRjtxgTl95cMuN0K40tVEuPC6S5QC/iY7fv1kk47OghpHnPo+wOMDbf2OOAX2Iuu4qRgWxiO4BEBwjh1mjEgAxWRrDjtwKiFB+Q3qmiChuY2LR/oz3pgtZuo6RKEqRaabkFgdlzPsbMcIJYWNGwE+c8GGdAwcwrBagK8J7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758031222; c=relaxed/simple;
-	bh=0QSLi/S/YNEEN6uEu4MBmwP9+WgRKwJwLmuLbC4ONP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jMwziX2RiObOiO+4rKzHaSbH0RVS+J0iO6zQRfP32orDBX+nzUMyo22R2ahpX7O37TPMyNo9DQLDF12+PnRNMuSPHjzQCiyBiI+oz8eZaDhtUKddRcTmFtpdMmt9I5Z63hevtMdurRdE89+0HUnQx7kxDOsz49jHQngPqiqxvKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYD1/VKV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D983EC4CEEB;
-	Tue, 16 Sep 2025 14:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758031221;
-	bh=0QSLi/S/YNEEN6uEu4MBmwP9+WgRKwJwLmuLbC4ONP0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYD1/VKVUxqzLd6Bo6s0EDjX7/xWAbqiC66rB0b4Znt6ugOpeoIjCKaxUaf2SZR7d
-	 2LWreLdpEbzA8ddEOQpEeci/lirM8rjpPeKDx70wtPPxGomvEQ330YHy9Jt1pA08uT
-	 8DwWRAAiJrCw1b2BajEPt1EwRk/ml5GcqQynkGHfOZ2IHVtozpmDbETJ68kCcmnRgL
-	 D9tvDnDJ2iJPDx2wD7KpfBuuZ0tpXI1+PKyPPgw22UQs389/0LHnwinFvIVpQ59I4/
-	 6JxNOrHWu1PMHyaIH8w17zOUnz0vXvRg0dVyS3cr2pf2F+Fe5bhdswfKiKlMd5hkSM
-	 teQuwR2ySUErQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: James Guan <guan_yufei@163.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kuba@kernel.org,
-	kuniyu@google.com,
-	shaw.leon@gmail.com,
-	kees@kernel.org
-Subject: [PATCH AUTOSEL 6.16-6.6] wifi: virt_wifi: Fix page fault on connect
-Date: Tue, 16 Sep 2025 09:59:04 -0400
-Message-ID: <20250916135936.1450850-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250916135936.1450850-1-sashal@kernel.org>
-References: <20250916135936.1450850-1-sashal@kernel.org>
+	s=arc-20240116; t=1758031386; c=relaxed/simple;
+	bh=+yRQ9oonAF8T7vZkFL2jQ52Qo7+EmpAEbpXPQLkSqCY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=oE3qUcuiHdsnsRVVQ60QA/UwKmS93DvK8bBevoeDMU9c3G/9zHNbyLSKwlQksN2spcvg7zKMirbzkiZ2LYhL7fmrZDU0QsgspHzfyz/sCqVa1YN/FD0gRRW/fPUyBdI8Xl1wOpPenVorB8iOpjHcUSa3M5zEeFfNJUtGqqovzKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZKh2TdbB; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58GAGQxn012287;
+	Tue, 16 Sep 2025 14:02:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	QW0FlAn8J5dMbTfSiA/mX2MJhAU8mCp/skcnKKG70UQ=; b=ZKh2TdbBzhFReJ9C
+	dttgqL9Z05dh8Qb/0ixuQxUotK76GShwZMjjqtLc79u+dXEOeq/ZM6JjHIOH0QDI
+	5H6dASBA+dluoVQgj2KHF+C1EjhenjxlFdN3Y2PoTuSL2GNB/melqIAZ0crzwwG+
+	tHzUTlH0KQ4W8vbTeRRkjCMo8GGdY9R7EZ5tWawkfRBDYmMwwT1MypBW5W42TkRr
+	xCCbdELvoKv4SXR8plqtsPqoap4NT3uRYpseVHQiXNvjCURBG12Z+8Vm5/VJ7fGR
+	SRU7eZHWtHVnfufRbi0ug+1Umtg5enmpqB6lx8CBUVkt+DkCTtTVB/n6AfXp64JB
+	TNZ72Q==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 496g12mqy1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Sep 2025 14:02:57 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 58GE2tvu016238
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Sep 2025 14:02:55 GMT
+Received: from [10.239.96.215] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Tue, 16 Sep
+ 2025 07:02:53 -0700
+Message-ID: <0b1f0a51-3bed-4e66-9285-61f110707ebf@quicinc.com>
+Date: Tue, 16 Sep 2025 22:02:51 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.16.7
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail
+ when BT_EN is pulled up by hw
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+CC: <marcel@holtmann.org>, <luiz.dentz@gmail.com>,
+        <linux-bluetooth@vger.kernel.org>, <stable@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_chejiang@quicinc.com>
+References: <20250827102519.195439-1-quic_shuaz@quicinc.com>
+ <5kjgeb2a2sugm34io7ikws7xy4jroc7g2jxlrydfc4ipvdpl5z@ckbdxxnjoh2d>
+Content-Language: en-US
+From: Shuai Zhang <quic_shuaz@quicinc.com>
+In-Reply-To: <5kjgeb2a2sugm34io7ikws7xy4jroc7g2jxlrydfc4ipvdpl5z@ckbdxxnjoh2d>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Kga5QlJPLMzF_8yv4TGOaeTQlIThXTjU
+X-Proofpoint-GUID: Kga5QlJPLMzF_8yv4TGOaeTQlIThXTjU
+X-Authority-Analysis: v=2.4 cv=E5PNpbdl c=1 sm=1 tr=0 ts=68c96e11 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10
+ a=zbsBYyxTTkarEyjW37MA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA4NiBTYWx0ZWRfXy75IZJHjhB56
+ ENTxSN9nE55ujvYM/+Lka6YPcZM76+Osh78I5ZZgEHZ5eySsDIwvlKQqaRXLu8xycemPIMDck92
+ M4opZSVxBDjOVTdNGJknv+/1fIuyZK5yscwvOZjCLIREGziIilRpwnZrdHscqyWGImMvxiZAOTY
+ SWgOf8CMkdz9cJcUlFnO91ypw9FzEf3Ch8LSBVSbRownfZ5Dlm0R4qFHxu92gmzM3IhFrNrh4GI
+ ySAIgLVmna5tm20wDoSdOcUmW9M/D+z03UwzCNr9N9kB2/XamCizOrn3WRack61+Al4ZyMiaylw
+ hkCnmH3D85+BqYdxy3lOLaiKxNfBnvmyCUjFTIf+G89SuXfRik64axW6eahW+aFbLeKQXcPbMVz
+ /RAS8oUi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 adultscore=0 bulkscore=0 impostorscore=0
+ spamscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150086
 
-From: James Guan <guan_yufei@163.com>
+Hi Dmitry
 
-[ Upstream commit 9c600589e14f5fc01b8be9a5d0ad1f094b8b304b ]
+On 9/15/2025 8:45 PM, Dmitry Baryshkov wrote:
+> On Wed, Aug 27, 2025 at 06:25:19PM +0800, Shuai Zhang wrote:
+>> When the host actively triggers SSR and collects coredump data,
+>> the Bluetooth stack sends a reset command to the controller. However, due
+>> to the inability to clear the QCA_SSR_TRIGGERED and QCA_IBS_DISABLED bits,
+>> the reset command times out.
+> 
+> Why? Does it apply to all platforms (as it seems from your text)?
+> 
+> Please write the commit message in the form that is easy to
+> udnerstand for somebody who doesn't know Qualcomm _specifics_.
+> 
+> - Decribe the issue first. The actual issue, not just the symtoms.
+>   Provide enough details to understand whether the issue applies to one
+>   platform, to a set of platforms or to all platforms.
+> 
+> - Describe what needs to be done. Use imperative language (see
+>   Documentation/process/submitting-patches.rst). Don't use phrases like
+>   'This patch does' or 'This change does'.
+> 
+>>
+>> To address this, this patch clears the QCA_SSR_TRIGGERED and
+>> QCA_IBS_DISABLED flags and adds a 50ms delay after SSR, but only when
+>> HCI_QUIRK_NON_PERSISTENT_SETUP is not set. This ensures the controller
+>> completes the SSR process when BT_EN is always high due to hardware.
+>>
+>> For the purpose of HCI_QUIRK_NON_PERSISTENT_SETUP, please refer to
+>> the comment in `include/net/bluetooth/hci.h`.
+> 
+> Which comment?
+> 
+>>
+>> The HCI_QUIRK_NON_PERSISTENT_SETUP quirk is associated with BT_EN,
+>> and its presence can be used to determine whether BT_EN is defined in DTS.
+>>
+>> After SSR, host will not download the firmware, causing
+>> controller to remain in the IBS_WAKE state. Host needs
+>> to synchronize with the controller to maintain proper operation.
+>>
+>> Multiple triggers of SSR only first generate coredump file,
+>> due to memcoredump_flag no clear.
+>>
+>> add clear coredump flag when ssr completed.
+>>
+>> When the SSR duration exceeds 2 seconds, it triggers
+>> host tx_idle_timeout, which sets host TX state to sleep. due to the
+>> hardware pulling up bt_en, the firmware is not downloaded after the SSR.
+>> As a result, the controller does not enter sleep mode. Consequently,
+>> when the host sends a command afterward, it sends 0xFD to the controller,
+>> but the controller does not respond, leading to a command timeout.
+>>
+>> So reset tx_idle_timer after SSR to prevent host enter TX IBS_Sleep mode.
+> 
+> The whole commit message can be formulated as:
+> 
+> On XYZ there is no way to control BT_EN pin and as such trigger a cold
+> reset in case of firmware crash. The BT chip performs a warm restart on
+> its own (without reloading the firmware, foo, bar baz). This triggers
+> bar baz foo in the driver. Tell the driver that the BT controller has
+> undergone a proper restart sequence:
+> 
+> - Foo
+> 
+> - Bar
+> 
+> - Baz
+> 
+Appreciate your patient guidance. I have implemented and integrated
+the proposed changes into v12, and it awaits your review.
 
-This patch prevents page fault in __cfg80211_connect_result()[1]
-when connecting a virt_wifi device, while ensuring that virt_wifi
-can connect properly.
-
-[1] https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
-
-Closes: https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
-Signed-off-by: James Guan <guan_yufei@163.com>
-Link: https://patch.msgid.link/20250910111929.137049-1-guan_yufei@163.com
-[remove irrelevant network-manager instructions]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-## Backport Status: YES
-
-Based on my exhaustive investigation and analysis of commit
-9c600589e14f5 ("wifi: virt_wifi: Fix page fault on connect"), this
-commit **should be backported** to stable kernel trees.
-
-### Detailed Analysis:
-
-**1. Bug Nature and Impact:**
-The commit fixes a **kernel page fault** (NULL pointer dereference) in
-`__cfg80211_connect_result()` at line 866 of net/wireless/sme.c. When
-virt_wifi reports a successful connection, it was passing NULL for the
-BSSID parameter instead of the expected `fake_router_bssid`. The
-cfg80211 layer unconditionally copies this address with
-`ether_addr_copy(wdev->u.client.connected_addr, connected_addr)`,
-causing an immediate kernel panic when the pointer is NULL.
-
-**2. Fix Details:**
-The one-line fix changes line 280 in `virt_wifi_connect_complete()`
-from:
-```c
-cfg80211_connect_result(priv->upperdev, requested_bss, NULL, 0, NULL, 0,
-```
-to:
-```c
-cfg80211_connect_result(priv->upperdev,
-                       priv->is_connected ? fake_router_bssid : NULL,
-```
-This ensures that on successful connections (`priv->is_connected ==
-true`), a valid BSSID is always provided.
-
-**3. Stable Kernel Rules Compliance:**
-- ✅ **Already in mainline**: Merged as commit 9c600589e14f5
-- ✅ **Obviously correct and tested**: Simple NULL pointer fix, signed-
-  off by Johannes Berg (wireless maintainer)
-- ✅ **Size < 100 lines**: Only 4 lines changed (3 additions, 1 deletion)
-- ✅ **Fixes a real bug**: Prevents kernel panic/page fault that crashes
-  the system
-- ✅ **No new features**: Pure bug fix, no architectural changes
-- ✅ **Minimal regression risk**: Only affects virt_wifi virtual driver,
-  not production hardware
-
-**4. Bug Introduction Timeline:**
-- **Introduced**: Commit b5d14b0c6716f (July 2024, v6.11-rc1) - Added
-  SSID verification that enabled successful connections with NULL BSSID
-- **Fixed**: Commit 9c600589e14f5 (September 2025, v6.17-rc6)
-- **Affected versions**: Linux 6.11 through 6.17-rc5
-
-**5. Backport Priority:**
-While virt_wifi is primarily used in testing/development environments
-(Android emulators, Waydroid, kernel testing), the fix prevents a
-**system crash** that requires a hard reboot. This meets the stable
-criteria of fixing "an oops, a hang" as specified in
-Documentation/process/stable-kernel-rules.rst.
-
-**6. Security Considerations:**
-Though this is a local DoS vulnerability (requires authenticated
-access), no CVE has been assigned as it only affects a virtual testing
-driver. The limited scope doesn't diminish its importance for stable
-backporting since it causes complete system unavailability.
-
-**7. Risk Assessment:**
-- **Regression risk**: Extremely low - changes only error path behavior
-- **Correctness**: Obviously correct - prevents NULL dereference
-- **Testing**: Fix aligns with existing successful connection pattern
-- **Side effects**: None - uses the same static BSSID already exposed in
-  normal operation
-
-The commit is an ideal stable backport candidate: it fixes a crash bug
-with a trivial, obviously correct change that has zero architectural
-impact and cannot break existing functionality.
-
- drivers/net/wireless/virtual/virt_wifi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index 1fffeff2190ca..4eae89376feb5 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -277,7 +277,9 @@ static void virt_wifi_connect_complete(struct work_struct *work)
- 		priv->is_connected = true;
- 
- 	/* Schedules an event that acquires the rtnl lock. */
--	cfg80211_connect_result(priv->upperdev, requested_bss, NULL, 0, NULL, 0,
-+	cfg80211_connect_result(priv->upperdev,
-+				priv->is_connected ? fake_router_bssid : NULL,
-+				NULL, 0, NULL, 0,
- 				status, GFP_KERNEL);
- 	netif_carrier_on(priv->upperdev);
- }
--- 
-2.51.0
+BR,
+Shuai
 
 
