@@ -1,107 +1,95 @@
-Return-Path: <stable+bounces-179717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7BCB595C6
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:09:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A45B59678
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C6DB3B1BAE
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 12:09:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02B8F7ACDE1
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 12:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834A830E0CE;
-	Tue, 16 Sep 2025 12:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6151186294;
+	Tue, 16 Sep 2025 12:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UX4EWgXH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ptuA/Ovl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3206530DEB4;
-	Tue, 16 Sep 2025 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BD741AAC;
+	Tue, 16 Sep 2025 12:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758024531; cv=none; b=o1KNE++Bn0IyjXI8Rg5G4RwV8CIEP6roc2lopqe7WtUWul7A63YxsG2uWNLeEeO96/Z3MzxZVxVRNN8LuPtm8wmYRcQOQFOo8sNR5XT/e8F3z+FCXdLAzw2RMkWKihhPM36vRC1Qq5p7yG5wTaUJLDDg/tW2UvLquLcIMIw7b8k=
+	t=1758026730; cv=none; b=S2XZ5kXNcSjNZ0npoIV8ER9ZQTx8vSk7t4nQH+U/LovmJXY/NJUI4IGvotq61XwdcJos9uUZ31d5nAj97D7UdPBYpvpEUF/UWb/Fy2HMdFbRGlgGKEMmAcwqURSAfK00r2jed5xN+/F9lTiK9f9XLhpgKG0OPbVmOQhcFCkiS0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758024531; c=relaxed/simple;
-	bh=lroRgaiNQjTEgIzOrH59+2moAsgRYB7bHRVnEv4zEs8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=E1qWNEwcOFk9XGfvNeuJNdGNaL+1diAv6LdwrAOyMFwdG1/vgzssc0NYbGOq+vsAIL7AldiIIyMwVBn2XBpI3oYtCWSl9RKj//dEiRE17txnshlgaq5MUDwdPetPpu2jfHAEzR9OjPpAqc6+CWuHWEN0SDXeOYqj0e+SNQNXHto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UX4EWgXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD60C4CEEB;
-	Tue, 16 Sep 2025 12:08:48 +0000 (UTC)
+	s=arc-20240116; t=1758026730; c=relaxed/simple;
+	bh=Q8b3LidWHXwy7z60vkFZIq9N/I8zXE5IsO+IFYXOuW4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZweR2RO//hmL0fyDvV63XfGF0rhA0SThg/ripac8bnr59EtZJ8bOf0mcGHEK9Tb49UIRvdAYmTHTWJ4jVPgoYtNtOZ8/u3QTZ1dRYzEZg+MeW75d7ebO0DaR0TNQmxDHvJSXNBVAw9Waz3gatn6UDfifFRFUTYANekXm2xAWluA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ptuA/Ovl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FB2C4CEF0;
+	Tue, 16 Sep 2025 12:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758024530;
-	bh=lroRgaiNQjTEgIzOrH59+2moAsgRYB7bHRVnEv4zEs8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=UX4EWgXHkfs9xl/c7N5Nw5eHl8xYqGwEIjGbFUF7hUx0/GVRQ1w36cVWwGh/Oo5mt
-	 ZEyDDiZ1iEfURMWl6fGz8+7j6Fk0wgrQarP9dbqTPNxnZgkDTM/c7tIjtZ9xhNrwaN
-	 +HcVW4ekMLhCXUFr8dSc5lY0/p9JD4AS7LxwADEKoRkXQrfK2XOBK/JLC/7+/WJIdr
-	 sl7RvZLr6wjy9E5V/HdGYMSDIvX6DMD0Vc6Swk6rY9OyHqw4AdkEtTkxBLsQ4NWLcT
-	 rswCJ/jci0iW4I9wZ94xwZyhlZK4jJRq5+Y/9cA4+fqtVLEMh0vBS12QKu/wAJRmUR
-	 EXlnn5gCU0XLA==
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Prasad Kumpatla <quic_pkumpatl@quicinc.com>, 
- Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel@oss.qualcomm.com, 
- prasad.kumpatla@oss.qualcomm.com, ajay.nandam@oss.qualcomm.com, 
- stable@vger.kernel.org
-In-Reply-To: <20250914131549.1198740-1-mohammad.rafi.shaik@oss.qualcomm.com>
-References: <20250914131549.1198740-1-mohammad.rafi.shaik@oss.qualcomm.com>
-Subject: Re: [PATCH v1] ASoC: qcom: sc8280xp: Fix sound card driver name
- match data for QCS8275
-Message-Id: <175802452817.111062.2711141246036859762.b4-ty@kernel.org>
-Date: Tue, 16 Sep 2025 13:08:48 +0100
+	s=k20201202; t=1758026729;
+	bh=Q8b3LidWHXwy7z60vkFZIq9N/I8zXE5IsO+IFYXOuW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ptuA/OvltuPdVFVrhaioHbpDtjjM/9DLVoKZRVx29LpT6Lc27PzSLHnMoWj+LabK/
+	 eSB+1RL4IAAJL4T1VXQJ5+iYTsn7JXgyGlOH4hzbM11KXJFo6qB4aU5mlTE/iTrs37
+	 aPkgsNTYjGHXOq3fe79+sF/CACO/9Myq4aFvNdzvvbjDzHUL52XDc12HUyqe478iBS
+	 fXIPutO5ul1uTbTGhX5oNMA15xV/XnW2crYH7vx7LIJdw293p9Y/CN0DlDz2CUlZBd
+	 g4BCf7eHVj2CB4TlEPmfSE7rQ80+8IFDAiIdOnz3FV3vdCPukB3fyUoG7YXfQAV+Bb
+	 hJlsJninGzF8A==
+Date: Tue, 16 Sep 2025 08:45:27 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Donet Tom <donettom@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
+	stable@vger.kernel.org, Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in
+ mm_struct during fork
+Message-ID: <aMlb5x0eWA4rpVKe@laps>
+References: <cover.1757946863.git.donettom@linux.ibm.com>
+ <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+ <20250915164248.788601c4dc614913081ec7d7@linux-foundation.org>
+ <aMjohar0r-nffx9V@laps>
+ <20250915214117.5117d339669e091b1d3fa96d@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-56183
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250915214117.5117d339669e091b1d3fa96d@linux-foundation.org>
 
-On Sun, 14 Sep 2025 18:45:49 +0530, Mohammad Rafi Shaik wrote:
-> The QCS8275 board is based on Qualcomm's QCS8300 SoC family, and all
-> supported firmware files are located in the qcs8300 directory. The
-> sound topology and ALSA UCM configuration files have also been migrated
-> from the qcs8275 directory to the actual SoC qcs8300 directory in
-> linux-firmware. With the current setup, the sound topology fails
-> to load, resulting in sound card registration failure.
-> 
-> [...]
+On Mon, Sep 15, 2025 at 09:41:17PM -0700, Andrew Morton wrote:
+>On Tue, 16 Sep 2025 00:33:09 -0400 Sasha Levin <sashal@kernel.org> wrote:
+>> On Mon, Sep 15, 2025 at 04:42:48PM -0700, Andrew Morton wrote:
+>> >I think the most important use for Fixes: is to tell the -stable
+>> >maintainers which kernel version(s) we believe should receive the
+>> >patch.  So listing multiple Fixes: targets just causes confusion.
+>>
+>> Right - there's no way of communicating if all the commits listed in multiple
+>> Fixes tags should exist in the tree, or any one of them, for the new fix to be
+>> applicable.
+>
+>So what should we do in this situation?
 
-Applied to
+For us, ideally point to the oldest commit fixed by the new commit with a
+Fixes: tag, and then a note along with the stable tag if this is a more complex
+scenario that we need to consider.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: qcom: sc8280xp: Fix sound card driver name match data for QCS8275
-      commit: c7a321e4e90e1bd072697bc050b9426e04cffc6a
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
+-- 
 Thanks,
-Mark
-
+Sasha
 
