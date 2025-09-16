@@ -1,97 +1,99 @@
-Return-Path: <stable+bounces-179665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDCCB588B4
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 02:00:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A15B588FD
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 02:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3ED9204E5D
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 00:00:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E1611B2195D
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 00:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C39C1EDA2C;
-	Tue, 16 Sep 2025 00:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8582919DF4F;
+	Tue, 16 Sep 2025 00:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvGG+cPS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJgPGL+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108531BC5C;
-	Tue, 16 Sep 2025 00:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3B718DB01;
+	Tue, 16 Sep 2025 00:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757980807; cv=none; b=bVpavt41DxZj2Sy2SP8iMLfZA6l9IWMv4WEDhYQSn7/n6rwFjrlZXSRJAiW2rKS8JmerRYP1G7Y9T2Y2naEM7XG/qEMQH0M/maQ3E/DTLd4z8Q/RKvn0GMsgdh0Ssoh0UC/qAdvwn3qzrumVPwxeLJp2RKOMSx/7wLpGy/RoGKc=
+	t=1757981899; cv=none; b=lVzw/6uArC75thnZy/u+XKlcf0/3krGRCFVtxRbr0QGbctfI9amNArvkMFAcdkYCS+ttMY/m0ob5E18YJEJ98XYba1btoZ+a0LeoNCtyHr8jUNLGCUSLL2AzxYvPpNwLb/dJZqd+3sUy9g7ZPqeytDiot5DgGYK8uZN4bFsAARw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757980807; c=relaxed/simple;
-	bh=m+NikykpL2wGDa+qKk4c9X1UBB6XqdEMd19a08SIEZ8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Kefwohh01GWA4ruJt79ln7lBwg/rhWxNtNkQi2LornH/okCXB5OHU0cmo1/vXyuDJFIft10kSvfXOAUZ4IGa7VPXtSn1YMakTddVEMYf5P1s4GOIqyJ7OZESqk1BveSMUmklZKo9amdclr4TZhOS90T9A04Ehdu3ePAwAZWxpwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvGG+cPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B175C4CEF1;
-	Tue, 16 Sep 2025 00:00:05 +0000 (UTC)
+	s=arc-20240116; t=1757981899; c=relaxed/simple;
+	bh=l8gDacOlHD1WhPZV6iAXx62PPLRHwgZGUcBphNhg7KY=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uVprzKVJTSKDES4mcWEvAMKRBWnym/yX6MRWRAaWAS1ClKoziDkQWqfrkhLrZVLp1MS3F6jiBoP//sg625zPSL27VCC3LWie5kCPVne8NDDmke5pZMPpsGz0TKcHndNjTni6BX7T/1wQ8MlUI1S/186SJFbdaM6S75x/wW6NMP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJgPGL+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D81C4CEF1;
+	Tue, 16 Sep 2025 00:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757980805;
-	bh=m+NikykpL2wGDa+qKk4c9X1UBB6XqdEMd19a08SIEZ8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=TvGG+cPSNlSG5chnTgb0er0AajH2OG2DeGwKS2heVVx7WR26QLzyD3Ab27CcsNxMk
-	 lGagpUaIMJV86Q70lvnbktL1cgcOT/E+FN9L7us+4pygvxKOad4R7kV03rKcH0hm5q
-	 Inw1VjTyJNVU2odz7W/2cCDuy/QFMAotMBGAb/jmwevUtU7s3yE5XMsSiDBscMGUvn
-	 VmtvgzzpYfpeuL0xdYyCpKxh8tjm9uZB+WBMET+713YUjFQoS8SenzVwtFyKCErkVa
-	 doQDbmXRxXEO78idJ69obuM4HsMMxrp8voxyDyqxbuW1gmOGcRvqXC0IQgkek/9/WQ
-	 FQ8UX2RGBtFgg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D1939D0C18;
-	Tue, 16 Sep 2025 00:00:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1757981898;
+	bh=l8gDacOlHD1WhPZV6iAXx62PPLRHwgZGUcBphNhg7KY=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=CJgPGL+jF0y6Q+kYs1mRdCqKi4QTNY+ZgI6nsdh5kBjUR0OIwq3NUvmxi0FkYHY9M
+	 7uGKhpNgQFqh8BrQd6SrZ5bRh4MaVY1NtcPtItkglu8/j74WdgqrqH9hU7ID7OH5/E
+	 1rmBME4dxRBy6+MuYJSrjoIjYcbBTLMf3LjYoRVTI/OaWdaHtb/1FLZns/ZBrr7U+F
+	 MD+WOAygJpU5cmUtTZ1nBZXHVo/h8R0tSn/EqDj1TH+fyxlf8hstHrpLid06VHIxEm
+	 6/RAHlrbl/zaAy7o+kFuZMfrcsi+3GQT44RkIRvyGc9hoCNcWIe8vd4U1EoqVZDhIm
+	 CAboUozu5FzUA==
+Date: Mon, 15 Sep 2025 17:18:18 -0700
+Subject: [PATCHSET RFC v5 1/8] fuse: general bug fixes
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: djwong@kernel.org, miklos@szeredi.hu
+Cc: stable@vger.kernel.org, joannelkoong@gmail.com, bernd@bsbernd.com,
+ linux-xfs@vger.kernel.org, John@groves.net, linux-fsdevel@vger.kernel.org,
+ neal@gompa.dev, joannelkoong@gmail.com
+Message-ID: <175798149979.381990.14913079500562122255.stgit@frogsfrogsfrogs>
+In-Reply-To: <20250916000759.GA8080@frogsfrogsfrogs>
+References: <20250916000759.GA8080@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] rds: ib: Increment i_fastreg_wrs before bailing
- out
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175798080701.534846.17163351278679972758.git-patchwork-notify@kernel.org>
-Date: Tue, 16 Sep 2025 00:00:07 +0000
-References: <20250911133336.451212-1-haakon.bugge@oracle.com>
-In-Reply-To: <20250911133336.451212-1-haakon.bugge@oracle.com>
-To: Haakon Bugge <haakon.bugge@oracle.com>
-Cc: allison.henderson@oracle.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Hi all,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Here's a collection of fixes that I *think* are bugs in fuse, along with
+some scattered improvements.
 
-On Thu, 11 Sep 2025 15:33:34 +0200 you wrote:
-> We need to increment i_fastreg_wrs before we bail out from
-> rds_ib_post_reg_frmr().
-> 
-> We have a fixed budget of how many FRWR operations that can be
-> outstanding using the dedicated QP used for memory registrations and
-> de-registrations. This budget is enforced by the atomic_t
-> i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
-> "leak" the possibility of posting an FRWR operation, and if that
-> accumulates, no FRWR operation can be carried out.
-> 
-> [...]
+If you're going to start using this code, I strongly recommend pulling
+from my git trees, which are linked below.
 
-Here is the summary with links:
-  - [net,v4] rds: ib: Increment i_fastreg_wrs before bailing out
-    https://git.kernel.org/netdev/net/c/4351ca3fcb3f
+This has been running on the djcloud for months with no problems.  Enjoy!
+Comments and questions are, as always, welcome.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+--D
 
+kernel git tree:
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=fuse-fixes
+---
+Commits in this patchset:
+ * fuse: fix livelock in synchronous file put from fuseblk workers
+ * fuse: flush pending fuse events before aborting the connection
+ * fuse: capture the unique id of fuse commands being sent
+ * fuse: signal that a fuse filesystem should exhibit local fs behaviors
+ * fuse: implement file attributes mask for statx
+ * fuse: update file mode when updating acls
+ * fuse: propagate default and file acls on creation
+ * fuse: enable FUSE_SYNCFS for all fuseblk servers
+---
+ fs/fuse/fuse_i.h    |   55 +++++++++++++++++++++++++++
+ fs/fuse/acl.c       |  105 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/fuse/dev.c       |   60 +++++++++++++++++++++++++++--
+ fs/fuse/dev_uring.c |    4 +-
+ fs/fuse/dir.c       |   96 +++++++++++++++++++++++++++++++++++------------
+ fs/fuse/file.c      |    8 +++-
+ fs/fuse/inode.c     |   17 ++++++++
+ fs/fuse/virtio_fs.c |    3 -
+ 8 files changed, 314 insertions(+), 34 deletions(-)
 
 
