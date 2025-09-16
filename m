@@ -1,93 +1,127 @@
-Return-Path: <stable+bounces-179738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5CCB59AA6
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:45:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F4EB59B17
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 16:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D8C1883DE8
-	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:43:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 975162A49F3
+	for <lists+stable@lfdr.de>; Tue, 16 Sep 2025 14:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B71F33A034;
-	Tue, 16 Sep 2025 14:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A624B3375CF;
+	Tue, 16 Sep 2025 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTDC3X4b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2vdxwJm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED7932F77B;
-	Tue, 16 Sep 2025 14:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFE133EB03
+	for <stable@vger.kernel.org>; Tue, 16 Sep 2025 14:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758033782; cv=none; b=etP7oUjiPNw3K4IaVrv8H35EKzfVJx8RUOm1xpZ1WR2UHgyr/5G+I8sjGnS++A8MrHvBKC8Y/3Z5GLFeh4tUalsChrm0IB+8nlSJP6N3ownBFSUntGZy2JNSB7qqDtczm5NeGcR4l6snYZXBJ9r6fQ1+cOMZ5aBg/JaXGu0r1QQ=
+	t=1758034657; cv=none; b=XOMPV0xdS8oJz1dnE2UW3cEynulg6lD0FgutlPbcu9wE+zAqvBI1tKxHqdzbyz18fN3ajmlRPSfvBBzoKomXKSU+E5YCeKZ8R01ctQ9dzrOkG/Vx9gGz7jaUngRE59A/D1Bl07Io+beM1PMXbVrfxaVFt1lgVcl0+Hnv/vDSbBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758033782; c=relaxed/simple;
-	bh=9CXMfeWckRDvBvDHG9XadDvfadOIeWKQ5x4Hda3B4pA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Do0ETyFFpqAX7ZjSVF5v5BckdPP8i56Djr6Ixy+Ri2pqwPNksKeTo0Il5GeuzfuDWwXkNFYzshTturtlLCWX6fu6QV7siN08kIJHT1R4Di3QO65GVIaVvAmoAhpb1jMltwsG6uMV98yiYqU7/4dMKFJoyBOM1xUpWaTlfnpanig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTDC3X4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D1AC4CEEB;
-	Tue, 16 Sep 2025 14:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758033780;
-	bh=9CXMfeWckRDvBvDHG9XadDvfadOIeWKQ5x4Hda3B4pA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lTDC3X4bKxLH2t/3/4Y1FMq57qD4H2OA8iFV5D7XfOCnxgFbuRlQWLN/hgpT0ImnX
-	 XArmcMufNimUat9F7TQKapLm+ELbpmklb0OWALKXJvBKsQRYLfGoVnidWBde3LZb4u
-	 +6cOQPLpG29uGuNg7Dz+ZmxNBtUohnMIWCMmJSU/KxR4YX2+AE+f8nXaG1aF3fPnnC
-	 tz74rwSPDLG2tPkFevWux32vJJ6FQDz6yhAW3q9bxInrfpoLmXvAOMHiGRCmurTHaO
-	 2RFSdVF8t8RN02HZ4K5u/c4zs704H6+hiBtf54LWD3+jtIC/UOJQk5O6K10seTjvtU
-	 flFvejGWLWdcQ==
-Date: Tue, 16 Sep 2025 07:42:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Alan Stern <stern@rowland.harvard.edu>, "Russell King (Oracle)"
- <linux@armlinux.org.uk>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Hubert =?UTF-8?B?V2nFm25pZXdza2k=?=
- <hubert.wisniewski.25632@gmail.com>, stable@vger.kernel.org,
- kernel@pengutronix.de, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, Xu Yang
- <xu.yang_2@nxp.com>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: ax88772: drop phylink use in
- PM to avoid MDIO runtime PM wakeups
-Message-ID: <20250916074259.509382a8@kernel.org>
-In-Reply-To: <aMkPMa650kfKfmF4@pengutronix.de>
-References: <CGME20250911135853eucas1p283b1afd37287b715403cd2cdbfa03a94@eucas1p2.samsung.com>
-	<b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com>
-	<aMLfGPIpWKwZszrY@shell.armlinux.org.uk>
-	<20250911075513.1d90f8b0@kernel.org>
-	<aMM1K_bkk4clt5WD@shell.armlinux.org.uk>
-	<22773d93-cbad-41c5-9e79-4d7f6b9e5ec0@rowland.harvard.edu>
-	<aMPawXCxlFmz6MaC@shell.armlinux.org.uk>
-	<a25b24ec-67bd-42b7-ac7b-9b8d729faba4@rowland.harvard.edu>
-	<aMQwQAaoSB0Y0-YD@shell.armlinux.org.uk>
-	<aMUS8ZIUpZJ4HNNX@pengutronix.de>
-	<aMkPMa650kfKfmF4@pengutronix.de>
+	s=arc-20240116; t=1758034657; c=relaxed/simple;
+	bh=8palloZvosHrIgHRGThUtWJIYbk78Nd31FUAB6PjsBc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tXAQrnWiwo8VVUsrZlA1qzzebLqpfJXeYpETHb1406R62kr7vHv0LHCYgH8FxFE3NwkSTQyLpl5HifLMjhQ8fnleMWxYAkS43jMEO1URYQ41fxZpNIEcCjzRHko1lY1CxSdNlApJnt29ckBNBPaEszrLWl9+sqESBSCSp18xIHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2vdxwJm; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-261682fdfceso28209955ad.1
+        for <stable@vger.kernel.org>; Tue, 16 Sep 2025 07:57:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758034655; x=1758639455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BhPFazCfoeMydP8mh5h0YOREkSkQ/yfL4yFrVQbtIJk=;
+        b=I2vdxwJm+js/OvxkMDblnnUDptNtPRVY0dWKzio/LEPnMkNJ7nKsFiaC66ztEVJ6T0
+         LtIWhWrg4QvMG3zXNgJP7eA9aSBSwGudlQtgwVkHFJg9Aq2pBPr5OHX1KQ0VWBNxTxA2
+         gri2kPbQ3Om7llIw3mNqeTFNZHDe2dJFRBSE9AIP1uu/IxXpjEF77AZiFI3UF9t6sxcJ
+         FqJ0J5w+XoSRGXkqdJjF4tuDsufV2BkJYyzVN5P226TCduRsnFkkZd1oYIBlaMAceL0e
+         plxbIbOd/H3wG8s53I+5N6bT3CjQ83/woad15fwLGJ/0asC/w0XLszVA2Un48jXPtqHi
+         wbnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758034655; x=1758639455;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BhPFazCfoeMydP8mh5h0YOREkSkQ/yfL4yFrVQbtIJk=;
+        b=CRiSRnDW7FHLV1WeoQrcO3NKfpxDYFrQ44PVtCld/e3wHZZSa8p1qCJaM5h+MbeOz2
+         HnEemuHw4vqAHYjCowq4rLw06hkUHp3JwUpwsHC5konBxT/r8ntNQgZYbI4M37py+++6
+         8I69q8S/qxt1wQ2dGxS3pd6rgjPOxnHMQ6as5Q44z5xtXouWeWNoXDnAykIw+zHMuqOj
+         HA25qh9RY0upeLQ3XYGL2KNIzC0IAjWZvCCGKsJ4a1ncVAkmg0qqUDKkEZaUcrw7wZ2c
+         oDEKAChVFvPxdPlHi1aKoWmb3246BGXxzQHPIafKh8+eS85jxdPqsUMquIu5uVE8z7zv
+         i2jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXl2Vh59GIb3ohdZ3PDEMlXnytzPO2JTQOAL4xuOoyEpB42cfZz367f3KFsgluOwFTp4DSNSyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHm+MtxuRu1DGttVrH9V4+swYrofJ2jVQPA/BrnahqD9mC/vjH
+	pgradSwryEmmMyxit/0aRddrZiyF/MZnwsHlSIqJ88xOMJJve9cb5pET
+X-Gm-Gg: ASbGncvIQ8NUthOK+vG7DbSPhIxx14BtCd0R028DTUkRwMn0OIa2FwjFz2wyIWeXYTa
+	YNHbmwdJmgATy83rv4Qv2hJzSWRb6vRZup9yIgEg1jNk5QSKUkzVY4PJajxHZPWxQqXRMp/+BLl
+	q2E6IQZVzRlYlTM0mhBnRfbmEe+S/Da5VWHH9e75kQziz7RkJXNV0t9g87M5DYrN5OFWu4f3Ntv
+	kXD13Dfcd1jKiMTJIJh/d/F1WKJyErhKoDhSm+XS1Zv+7Mc6b083UpK+QXu7ir2DuYS3m4VlA7P
+	lkZInQZ6A/NGSNuuLOVKEbymWmNvPJmSvc+3eKGwN8uh4r6j8GJL4MWbEcRaXju75TSw5omF4yw
+	VtkFbOIQRKrYlV5TO3Abtzvw=
+X-Google-Smtp-Source: AGHT+IE70dT64itvjVNcN+FspZAaHywtKEf5DdHLD2RGP4yJ8tS/2lNgczMINmrv9xvEqDqg18WQaw==
+X-Received: by 2002:a17:902:c945:b0:267:c172:971a with SMTP id d9443c01a7336-267d15d7bb4mr43532905ad.18.1758034655035;
+        Tue, 16 Sep 2025 07:57:35 -0700 (PDT)
+Received: from lgs.. ([2408:8417:e00:1e5d:6d43:6fc3:26a2:6645])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-267a5b097f6sm48728095ad.11.2025.09.16.07.57.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 07:57:34 -0700 (PDT)
+From: lgs201920130244@gmail.com
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nam Cao <namcao@kernel.org>,
+	Xi Ruoyao <xry111@xry111.site>,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Guangshuo Li <202321181@mail.sdu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] LoongArch: vDSO: check kcalloc() result in init_vdso
+Date: Tue, 16 Sep 2025 22:57:10 +0800
+Message-ID: <20250916145710.2994663-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 16 Sep 2025 09:18:09 +0200 Oleksij Rempel wrote:
-> Given autosuspend brings no measurable benefit here, and it hasn=E2=80=99=
-t been
-> effectively functional for this device in earlier kernels, I suggest a mi=
-nimal
-> -stable patch that disables USB autosuspend for ASIX driver to avoid the
-> PM/RTNL/MDIO issues. If someone needs autosuspend-based low-power later, =
-they
-> can implement a proper device low-power sequence and re-enable it.
->=20
-> Would this minimal -stable patch be acceptable?
+From: Guangshuo Li <202321181@mail.sdu.edu.cn>
 
-SGTM
+Add a NULL-pointer check after the kcalloc() call in init_vdso(). If
+allocation fails, return -ENOMEM to prevent a possible dereference of
+vdso_info.code_mapping.pages when it is NULL.
+
+Fixes: 2ed119aef60d ("LoongArch: Set correct size for vDSO code mapping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <202321181@mail.sdu.edu.cn>
+---
+ arch/loongarch/kernel/vdso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/loongarch/kernel/vdso.c b/arch/loongarch/kernel/vdso.c
+index 10cf1608c7b3..da7a7922fb24 100644
+--- a/arch/loongarch/kernel/vdso.c
++++ b/arch/loongarch/kernel/vdso.c
+@@ -53,7 +53,8 @@ static int __init init_vdso(void)
+ 	vdso_info.size = PAGE_ALIGN(vdso_end - vdso_start);
+ 	vdso_info.code_mapping.pages =
+ 		kcalloc(vdso_info.size / PAGE_SIZE, sizeof(struct page *), GFP_KERNEL);
+-
++	if (!vdso_info.code_mapping.pages)
++		return -ENOMEM;
+ 	pfn = __phys_to_pfn(__pa_symbol(vdso_info.vdso));
+ 	for (i = 0; i < vdso_info.size / PAGE_SIZE; i++)
+ 		vdso_info.code_mapping.pages[i] = pfn_to_page(pfn + i);
+-- 
+2.43.0
+
 
