@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-180319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1590FB7F165
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9C4B7EC7E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EB21627A28
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46D34A28F9
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658802FBDF8;
-	Wed, 17 Sep 2025 13:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298B71E1E00;
+	Wed, 17 Sep 2025 12:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTUAngJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYmtfupM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2257E183CA6;
-	Wed, 17 Sep 2025 13:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA169330D52;
+	Wed, 17 Sep 2025 12:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114084; cv=none; b=pWZVDsrC+olezQw4EJ8YSToDWbTkegz9jS0VuzcGOV1gPKUSzgEiqd4FsKIfd9sISm/C4dDW8tBxFoYdO+3QWytrzKlA5vERd4CMeMPnkdrcZJuMbnSFRkzSDtnYy4BeWa3ULq1LK2pJyYUPATFrTJE3sJRZOJMHR1nUguKIOIY=
+	t=1758113584; cv=none; b=O9ZoF+aO+uulIBF58zNOaaFcJ58Mw+Qpg+db+Ef5XBqWpup6HMRDh3D8yxmPX20smNMBj3nadY+E5OQ8vRi4qycVy3FnJYVYYh8IuccCXROjLVzucAo7Mz8+hKe3QXhTAxRnyrrV/T8IbAu3FI+QnNebKG90gZAw0oYAOMDWKbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114084; c=relaxed/simple;
-	bh=ureW8E1eoqgFbMKa1G10M5bi2mw9auhEXwGKhGN5nWg=;
+	s=arc-20240116; t=1758113584; c=relaxed/simple;
+	bh=u+ox/106ehrUc/dWHkHQrmf6n/bH1FsXlu17xAWzZps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1LZC7lgs1Zp/Gk9oLR43NIPgYRS3wWSRGv8GGFJ/F7AduraaqbQmuYRXZlKxHRXbCu6Ylh/HdE2Mp2167CJKBBeKTU+jJRE3D1CuMJxs/1Qf27j5BxA1Nue0ixFUSy7L8CkFdLxuuycvU/D/AfytbFvstMzmtYFMhHUHYxFx9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTUAngJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F73EC4CEF0;
-	Wed, 17 Sep 2025 13:01:23 +0000 (UTC)
+	 MIME-Version; b=WJm3G4uOCpKonUPoR35FelFr1VgGEhAYZjQQ9oz7xxYtPosVuXF3u9vxYdH4EZeI8dJ20OrvH33pWhofjVpdg8VnJwZDlYNiE7tkJZTtc6DAY6aVW75SZ92L4R0eAZsMovuVxBQMeu9nj8zkIJYS8YcRQ3s6xqwxzG082pGsHpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYmtfupM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540DFC4CEF0;
+	Wed, 17 Sep 2025 12:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114084;
-	bh=ureW8E1eoqgFbMKa1G10M5bi2mw9auhEXwGKhGN5nWg=;
+	s=korg; t=1758113584;
+	bh=u+ox/106ehrUc/dWHkHQrmf6n/bH1FsXlu17xAWzZps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTUAngJ858sRXZ+H50FeFzLE/XflEUbeU+Q2jKxyGG01bM4wK/ck2YMNE39UBwOiG
-	 kvM5aSf4c6sdbvfYDnXqqd8T133s/H1JVKKo0tjKKrNYRIVZxKFDLAvAgn/crpk0lg
-	 4gaRukHv2zwNf5VFG1V4SK5ICvV6mDUFhLFxzcBc=
+	b=aYmtfupME0WiR0MbZOpVvl7EFjOZlu5KqRd8ckNh5CbaRVdmPr58EkhNV34rd6Vwp
+	 o7nkHjynkpeXLlYCOVzesZh9rwHngjX2B5oHncql3cFo/N3VaC/OEL4GcLlm1HFWsZ
+	 /hHKlttJ3Fpunx2oF3weBA65ylWk0sv+GoRmHyYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 42/78] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
-Date: Wed, 17 Sep 2025 14:35:03 +0200
-Message-ID: <20250917123330.592922671@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 132/140] dmaengine: qcom: bam_dma: Fix DT error handling for num-channels/ees
+Date: Wed, 17 Sep 2025 14:35:04 +0200
+Message-ID: <20250917123347.543968641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit d613f53c83ec47089c4e25859d5e8e0359f6f8da upstream.
+commit 5068b5254812433e841a40886e695633148d362d upstream.
 
-When I did memory failure tests, below panic occurs:
+When we don't have a clock specified in the device tree, we have no way to
+ensure the BAM is on. This is often the case for remotely-controlled or
+remotely-powered BAM instances. In this case, we need to read num-channels
+from the DT to have all the necessary information to complete probing.
 
-page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
-kernel BUG at include/linux/page-flags.h:616!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- unpoison_memory+0x2f3/0x590
- simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
- debugfs_attr_write+0x42/0x60
- full_proxy_write+0x5b/0x80
- vfs_write+0xd5/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f0314887
-RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
-RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
-RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
- </TASK>
-Modules linked in: hwpoison_inject
----[ end trace 0000000000000000 ]---
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: Fatal exception ]---
+However, at the moment invalid device trees without clock and without
+num-channels still continue probing, because the error handling is missing
+return statements. The driver will then later try to read the number of
+channels from the registers. This is unsafe, because it relies on boot
+firmware and lucky timing to succeed. Unfortunately, the lack of proper
+error handling here has been abused for several Qualcomm SoCs upstream,
+causing early boot crashes in several situations [1, 2].
 
-The root cause is that unpoison_memory() tries to check the PG_HWPoison
-flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
-triggered.  This can be reproduced by below steps:
+Avoid these early crashes by erroring out when any of the required DT
+properties are missing. Note that this will break some of the existing DTs
+upstream (mainly BAM instances related to the crypto engine). However,
+clearly these DTs have never been tested properly, since the error in the
+kernel log was just ignored. It's safer to disable the crypto engine for
+these broken DTBs.
 
-1.Offline memory block:
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
 
- echo offline > /sys/devices/system/memory/memory12/state
-
-2.Get offlined memory pfn:
-
- page-types -b n -rlN
-
-3.Write pfn to unpoison-pfn
-
- echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
-
-This scenario can be identified by pfn_to_online_page() returning NULL.
-And ZONE_DEVICE pages are never expected, so we can simply fail if
-pfn_to_online_page() == NULL to fix the bug.
-
-Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
-Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 48d163b1aa6e ("dmaengine: qcom: bam_dma: get num-channels and num-ees from dt")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-8-f560889e65d8@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/dma/qcom/bam_dma.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2346,10 +2346,9 @@ int unpoison_memory(unsigned long pfn)
- 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
- 					DEFAULT_RATELIMIT_BURST);
+--- a/drivers/dma/qcom/bam_dma.c
++++ b/drivers/dma/qcom/bam_dma.c
+@@ -1283,13 +1283,17 @@ static int bam_dma_probe(struct platform
+ 	if (!bdev->bamclk) {
+ 		ret = of_property_read_u32(pdev->dev.of_node, "num-channels",
+ 					   &bdev->num_channels);
+-		if (ret)
++		if (ret) {
+ 			dev_err(bdev->dev, "num-channels unspecified in dt\n");
++			return ret;
++		}
  
--	if (!pfn_valid(pfn))
--		return -ENXIO;
--
--	p = pfn_to_page(pfn);
-+	p = pfn_to_online_page(pfn);
-+	if (!p)
-+		return -EIO;
- 	page = compound_head(p);
+ 		ret = of_property_read_u32(pdev->dev.of_node, "qcom,num-ees",
+ 					   &bdev->num_ees);
+-		if (ret)
++		if (ret) {
+ 			dev_err(bdev->dev, "num-ees unspecified in dt\n");
++			return ret;
++		}
+ 	}
  
- 	mutex_lock(&mf_mutex);
+ 	ret = clk_prepare_enable(bdev->bamclk);
 
 
 
