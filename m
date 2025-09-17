@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-179898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A17B7E130
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6882DB7E891
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13F751B2248B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5865117507E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7FB31A81E;
-	Wed, 17 Sep 2025 12:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375E532341C;
+	Wed, 17 Sep 2025 12:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAL9VfGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL82HbA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC9F31A802;
-	Wed, 17 Sep 2025 12:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50FE328977;
+	Wed, 17 Sep 2025 12:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112746; cv=none; b=Slpk8z92i+aJ6E709vaN4lG9B8ONRYHHQ8BCRWZutb04y2vCc2QMpJWzo3Qcz9Qm73sA1eCLQI1Iw4r8rGDtzD4BHQY5blGcRfVXDhpXrtsO+ubDRO+wh6pLfk2COeLUX7DKK+1pN6HeP6AZ+XRMdx3EEGbyzQmgeN8/QmrpOA4=
+	t=1758113254; cv=none; b=bL/6FIn2HlKRqsF+orR4WQErt7QjrwluJTAkL9LGGdnLEtxxS6VuHGglezwFdElvFhKchi96zMbBzN0yI/TvVtXOkQCor2iy7Qz2JmLDEeyTjWoqyxWlV9n7AQrs1GlznZ8lcewOLJAeSbFP9aXES6aw6KE9EG9A3g9aZk2WFSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112746; c=relaxed/simple;
-	bh=7nRY5HU4XRsfbDkyx7nzE5wMXJrBp5d2M6GeOdqO1Sk=;
+	s=arc-20240116; t=1758113254; c=relaxed/simple;
+	bh=RhU44sMsNFwRLE7LN8qhxN50fF0GTD26yfcqxdpV13Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUu5MAzOO4BvBCIHamCPn0LTpHgtLzhIHPGX7ir8GbziSnfxS+Dk26sGsv1FEYt89T1HELblkJW/ReES+1YhXz8VP60fZpyBNXmupVjjeulFJP/LQz1Xqp9yp+jMf2O8mbQwcRJv+WObDe9wUg/kCRMxrGx1QU+z7dMBw7QAJ6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAL9VfGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D49C4CEF0;
-	Wed, 17 Sep 2025 12:39:05 +0000 (UTC)
+	 MIME-Version; b=S/2rmZ3ejju0MteOKApMA1X6qcnSaBxZ2C2BKfQa5L78u9YvAWxnA6YLF73elDZJ2LfhCcAbnbYIPIAIJSZ9uPQArFC0PxjJmFCPGJ3FKuMl5Af+5PWED5Zt3WJFkhl81Fw68I/W65XWxb64BfE0NGBHH91KSulh33T90oFdoN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL82HbA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BC9C4CEF5;
+	Wed, 17 Sep 2025 12:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112746;
-	bh=7nRY5HU4XRsfbDkyx7nzE5wMXJrBp5d2M6GeOdqO1Sk=;
+	s=korg; t=1758113253;
+	bh=RhU44sMsNFwRLE7LN8qhxN50fF0GTD26yfcqxdpV13Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAL9VfGzfGsowANVTwNSXOB6T2JZFjIvA2gVs0KCguuK3UadLBFegv4R8m48F1GMK
-	 iX4vmwJN08+LdWgZTrqCfa2Uhz+C1eBIzXsRdbEH+WPOzdhKT9WUi0yS9rw9bEN3/d
-	 vgWz1JfCVeTJy12rWlRoG7WPkFx77lDbFJ47T0Vg=
+	b=JL82HbA+zB90M91HC+wfBUavmv/8cLU7BwbqD6Ge6rGoDWNPxsQqrZoP8nYQYZsIK
+	 z4Qp6hsZeV1/tCiRer4NY/SEb+zfV+gHLdKyefk8nHokplp9r5ZpA4cwCODUwITkAf
+	 IR/3v2/FAA0tv/4BpeBL5cOyBW7UX1y+Scsv4FS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Todd Brandt <todd.e.brandt@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>
-Subject: [PATCH 6.16 065/189] PM: hibernate: Restrict GFP mask in hibernation_snapshot()
+	Sean Anderson <sean.anderson@linux.dev>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 003/140] dma-mapping: trace dma_alloc/free direction
 Date: Wed, 17 Sep 2025 14:32:55 +0200
-Message-ID: <20250917123353.459941800@linuxfoundation.org>
+Message-ID: <20250917123344.402595521@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit 449c9c02537a146ac97ef962327a221e21c9cab3 upstream.
+[ Upstream commit 3afff779a725cba914e6caba360b696ae6f90249 ]
 
-Commit 12ffc3b1513e ("PM: Restrict swap use to later in the suspend
-sequence") incorrectly removed a pm_restrict_gfp_mask() call from
-hibernation_snapshot(), so memory allocations involving swap are not
-prevented from being carried out in this code path any more which may
-lead to serious breakage.
+In preparation for using these tracepoints in a few more places, trace
+the DMA direction as well. For coherent allocations this is always
+bidirectional.
 
-The symptoms of such breakage have become visible after adding a
-shrink_shmem_memory() call to hibernation_snapshot() in commit
-2640e819474f ("PM: hibernate: shrink shmem pages after dev_pm_ops.prepare()")
-which caused this problem to be much more likely to manifest itself.
-
-However, since commit 2640e819474f was initially present in the DRM
-tree that did not include commit 12ffc3b1513e, the symptoms of this
-issue were not visible until merge commit 260f6f4fda93 ("Merge tag
-'drm-next-2025-07-30' of https://gitlab.freedesktop.org/drm/kernel")
-that exposed it through an entirely reasonable merge conflict
-resolution.
-
-Fixes: 12ffc3b1513e ("PM: Restrict swap use to later in the suspend sequence")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220555
-Reported-by: Todd Brandt <todd.e.brandt@linux.intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
-Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 7e2368a21741 ("dma-debug: don't enforce dma mapping check on noncoherent allocations")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/hibernate.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/trace/events/dma.h | 18 ++++++++++++------
+ kernel/dma/mapping.c       |  6 ++++--
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -423,6 +423,7 @@ int hibernation_snapshot(int platform_mo
- 	}
+diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
+index b0f41265191c3..012729cc178f0 100644
+--- a/include/trace/events/dma.h
++++ b/include/trace/events/dma.h
+@@ -116,8 +116,9 @@ DEFINE_EVENT(dma_unmap, dma_unmap_resource,
  
- 	console_suspend_all();
-+	pm_restrict_gfp_mask();
+ TRACE_EVENT(dma_alloc,
+ 	TP_PROTO(struct device *dev, void *virt_addr, dma_addr_t dma_addr,
+-		 size_t size, gfp_t flags, unsigned long attrs),
+-	TP_ARGS(dev, virt_addr, dma_addr, size, flags, attrs),
++		 size_t size, enum dma_data_direction dir, gfp_t flags,
++		 unsigned long attrs),
++	TP_ARGS(dev, virt_addr, dma_addr, size, dir, flags, attrs),
  
- 	error = dpm_suspend(PMSG_FREEZE);
+ 	TP_STRUCT__entry(
+ 		__string(device, dev_name(dev))
+@@ -125,6 +126,7 @@ TRACE_EVENT(dma_alloc,
+ 		__field(u64, dma_addr)
+ 		__field(size_t, size)
+ 		__field(gfp_t, flags)
++		__field(enum dma_data_direction, dir)
+ 		__field(unsigned long, attrs)
+ 	),
  
+@@ -137,8 +139,9 @@ TRACE_EVENT(dma_alloc,
+ 		__entry->attrs = attrs;
+ 	),
+ 
+-	TP_printk("%s dma_addr=%llx size=%zu virt_addr=%p flags=%s attrs=%s",
++	TP_printk("%s dir=%s dma_addr=%llx size=%zu virt_addr=%p flags=%s attrs=%s",
+ 		__get_str(device),
++		decode_dma_data_direction(__entry->dir),
+ 		__entry->dma_addr,
+ 		__entry->size,
+ 		__entry->virt_addr,
+@@ -148,14 +151,15 @@ TRACE_EVENT(dma_alloc,
+ 
+ TRACE_EVENT(dma_free,
+ 	TP_PROTO(struct device *dev, void *virt_addr, dma_addr_t dma_addr,
+-		 size_t size, unsigned long attrs),
+-	TP_ARGS(dev, virt_addr, dma_addr, size, attrs),
++		 size_t size, enum dma_data_direction dir, unsigned long attrs),
++	TP_ARGS(dev, virt_addr, dma_addr, size, dir, attrs),
+ 
+ 	TP_STRUCT__entry(
+ 		__string(device, dev_name(dev))
+ 		__field(void *, virt_addr)
+ 		__field(u64, dma_addr)
+ 		__field(size_t, size)
++		__field(enum dma_data_direction, dir)
+ 		__field(unsigned long, attrs)
+ 	),
+ 
+@@ -164,11 +168,13 @@ TRACE_EVENT(dma_free,
+ 		__entry->virt_addr = virt_addr;
+ 		__entry->dma_addr = dma_addr;
+ 		__entry->size = size;
++		__entry->dir = dir;
+ 		__entry->attrs = attrs;
+ 	),
+ 
+-	TP_printk("%s dma_addr=%llx size=%zu virt_addr=%p attrs=%s",
++	TP_printk("%s dir=%s dma_addr=%llx size=%zu virt_addr=%p attrs=%s",
+ 		__get_str(device),
++		decode_dma_data_direction(__entry->dir),
+ 		__entry->dma_addr,
+ 		__entry->size,
+ 		__entry->virt_addr,
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 74d453ec750a1..9720f3c157d9f 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -619,7 +619,8 @@ void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
+ 	else
+ 		return NULL;
+ 
+-	trace_dma_alloc(dev, cpu_addr, *dma_handle, size, flag, attrs);
++	trace_dma_alloc(dev, cpu_addr, *dma_handle, size, DMA_BIDIRECTIONAL,
++			flag, attrs);
+ 	debug_dma_alloc_coherent(dev, size, *dma_handle, cpu_addr, attrs);
+ 	return cpu_addr;
+ }
+@@ -644,7 +645,8 @@ void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
+ 	if (!cpu_addr)
+ 		return;
+ 
+-	trace_dma_free(dev, cpu_addr, dma_handle, size, attrs);
++	trace_dma_free(dev, cpu_addr, dma_handle, size, DMA_BIDIRECTIONAL,
++		       attrs);
+ 	debug_dma_free_coherent(dev, size, cpu_addr, dma_handle);
+ 	if (dma_alloc_direct(dev, ops))
+ 		dma_direct_free(dev, size, cpu_addr, dma_handle, attrs);
+-- 
+2.51.0
+
 
 
 
