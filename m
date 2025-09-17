@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-180166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDA1B7EC81
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA60FB7F0C9
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A31B4A2A28
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF5CF2A22E4
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFC0330D5A;
-	Wed, 17 Sep 2025 12:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080823195E3;
+	Wed, 17 Sep 2025 12:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbtgqiER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFospepG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C9D330D39;
-	Wed, 17 Sep 2025 12:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9E41A3167;
+	Wed, 17 Sep 2025 12:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113588; cv=none; b=SXVwRNq8SbzhH/PLFV2FWLfDa9wGHCc8tLgZWOGR+lj5BF32yTsN70LYQk7twaMNBMV4sPiFfwMvDmFY3EEMgTdVgo5HZpE3Luj1CNEKxx5y3tLj9xIJprg02LTWK96FE9u4O0EsYEflTYssEUaWPYrLxb2EpXjxtNYp3ZXusLA=
+	t=1758113879; cv=none; b=p6+mYlSsbyxHvraLDXyDgFe9hc/3n6IJUQz7TOnm5pgdzH209hLOBYoUZUj1DgiJZoFXVJz1TGNpvjb4dQLBYZzYEGKY2UVRpM4rOMR3uXhmoUiXCFZDad4hryqeBeIZ6+E1ZWfimnydsoOeLnq6lI9kY4N8NbRuY2VFZETp0Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113588; c=relaxed/simple;
-	bh=B1vIx43VTeoP63b65kCa2s9xgJZAiPN9cTCmP0aLW2w=;
+	s=arc-20240116; t=1758113879; c=relaxed/simple;
+	bh=I5gC/ui3MCJcKTWQiCovPlXYLYugq2Z/sI2iu404YJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lu7/E2dF9OVOt0N4rqFsjEB7XRFE0h5kY0l4WeoVurOk2aISTNAjpAoASSCsLiSctiaI7x8rcbgttTUJLnEv2YrYbOtORzxpf2Mx9IMa5pWzdkKUR6Dar7DxAkVEhJnztctzxpZAosPxDouKkqOiosTzFtlF9mqugHENv0f52Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbtgqiER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5214C4CEF0;
-	Wed, 17 Sep 2025 12:53:07 +0000 (UTC)
+	 MIME-Version; b=c02rBSLcUgUAv8c18Zo6jDp8bvJqs3NZ1CW0Z5r4nrneBJgM/F76NltUzSFOByBCh41YrfNSeBqCLbT7/ynmLTT4zWDNFhd2Shq3F7LVdNfdlLjv8ymxsGtn6a0yCo6X1KkCfpkmjgdlHlONpiDrAq7w+NPoIn5oklVXQ8XVgbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFospepG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363A3C4CEF0;
+	Wed, 17 Sep 2025 12:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113588;
-	bh=B1vIx43VTeoP63b65kCa2s9xgJZAiPN9cTCmP0aLW2w=;
+	s=korg; t=1758113879;
+	bh=I5gC/ui3MCJcKTWQiCovPlXYLYugq2Z/sI2iu404YJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbtgqiERdLSU78Xom4eiPAfb4p+0Py5uwZX4xfTUFKfgy+rd2w6KzRKO1mDmFrNGa
-	 2UMHoqcm1MnjnfOJiln7X+Y327djdE7UtV1DtTmRz7a5ttQVYY/tmU8rRXL/5lOS9e
-	 oeAU1b+bbJR2gaPZ+Qihs5s/jI7GyeLiaeJ8/q10=
+	b=DFospepGpina+C1R3EdUDA4vYFM5AUZgGK8kddLLAVzKJ/Izc6CqJnuVInWbJi/D/
+	 /JuOn+x8K0Iq09vwSh4gEKItX7wTTssv6pBAHy3hqEMHsXPmn2/lG3AHG5neHzUWUR
+	 4OW3J2CIrxmCfq8F1x+J82MQoV0IfDXBUdMevFkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 133/140] dmaengine: dw: dmamux: Fix device reference leak in rzn1_dmamux_route_allocate
+	Yi Sun <yi.sun@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 082/101] dmaengine: idxd: Fix refcount underflow on module unload
 Date: Wed, 17 Sep 2025 14:35:05 +0200
-Message-ID: <20250917123347.568665794@linuxfoundation.org>
+Message-ID: <20250917123338.817246725@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Yi Sun <yi.sun@intel.com>
 
-commit aa2e1e4563d3ab689ffa86ca1412ecbf9fd3b308 upstream.
+[ Upstream commit b7cb9a034305d52222433fad10c3de10204f29e7 ]
 
-The reference taken by of_find_device_by_node()
-must be released when not needed anymore.
-Add missing put_device() call to fix device reference leaks.
+A recent refactor introduced a misplaced put_device() call, resulting in a
+reference count underflow during module unload.
 
-Fixes: 134d9c52fca2 ("dmaengine: dw: dmamux: Introduce RZN1 DMA router support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20250902090358.2423285-1-linmq006@gmail.com
+There is no need to add additional put_device() calls for idxd groups,
+engines, or workqueues. Although the commit claims: "Note, this also
+fixes the missing put_device() for idxd groups, engines, and wqs."
+
+It appears no such omission actually existed. The required cleanup is
+already handled by the call chain:
+idxd_unregister_devices() -> device_unregister() -> put_device()
+
+Extend idxd_cleanup() to handle the remaining necessary cleanup and
+remove idxd_cleanup_internals(), which duplicates deallocation logic
+for idxd, engines, groups, and workqueues. Memory management is also
+properly handled through the Linux device model.
+
+Fixes: a409e919ca32 ("dmaengine: idxd: Refactor remove call with idxd_cleanup() helper")
+Signed-off-by: Yi Sun <yi.sun@intel.com>
+Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+
+Link: https://lore.kernel.org/r/20250729150313.1934101-3-yi.sun@intel.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw/rzn1-dmamux.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/dma/idxd/init.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/dma/dw/rzn1-dmamux.c
-+++ b/drivers/dma/dw/rzn1-dmamux.c
-@@ -48,12 +48,16 @@ static void *rzn1_dmamux_route_allocate(
- 	u32 mask;
- 	int ret;
- 
--	if (dma_spec->args_count != RNZ1_DMAMUX_NCELLS)
--		return ERR_PTR(-EINVAL);
-+	if (dma_spec->args_count != RNZ1_DMAMUX_NCELLS) {
-+		ret = -EINVAL;
-+		goto put_device;
-+	}
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
--	if (!map)
--		return ERR_PTR(-ENOMEM);
-+	if (!map) {
-+		ret = -ENOMEM;
-+		goto put_device;
-+	}
- 
- 	chan = dma_spec->args[0];
- 	map->req_idx = dma_spec->args[4];
-@@ -94,12 +98,15 @@ static void *rzn1_dmamux_route_allocate(
- 	if (ret)
- 		goto clear_bitmap;
- 
-+	put_device(&pdev->dev);
- 	return map;
- 
- clear_bitmap:
- 	clear_bit(map->req_idx, dmamux->used_chans);
- free_map:
- 	kfree(map);
-+put_device:
-+	put_device(&pdev->dev);
- 
- 	return ERR_PTR(ret);
- }
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 3a78973882211..163a276d2670e 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -904,7 +904,10 @@ static void idxd_remove(struct pci_dev *pdev)
+ 	device_unregister(idxd_confdev(idxd));
+ 	idxd_shutdown(pdev);
+ 	idxd_device_remove_debugfs(idxd);
+-	idxd_cleanup(idxd);
++	perfmon_pmu_remove(idxd);
++	idxd_cleanup_interrupts(idxd);
++	if (device_pasid_enabled(idxd))
++		idxd_disable_system_pasid(idxd);
+ 	pci_iounmap(pdev, idxd->reg_base);
+ 	put_device(idxd_confdev(idxd));
+ 	pci_disable_device(pdev);
+-- 
+2.51.0
+
 
 
 
