@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD37B7EAB9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC78BB7EF38
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F49152056A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66798188F14E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B9127A456;
-	Wed, 17 Sep 2025 12:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCA331A7EA;
+	Wed, 17 Sep 2025 12:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTA7GI50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBOK/u5T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A74832340B;
-	Wed, 17 Sep 2025 12:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C018308F18;
+	Wed, 17 Sep 2025 12:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113478; cv=none; b=REy3xqs/29AO2lYdcAwc6Lrv0S9hgqIGpL5m67EE3UyG0bJVar00+YJIWq0DX5nY8W+Ka2laZg//6V4t5Y4AxoJseiQomJ+hg/+h/voxhJ8fuor9GAoG+vir6v1dz4M3KZuiDU9BJyAgAqo23t5sYUd2og/zQ4DGvCOO+aw6sWg=
+	t=1758113773; cv=none; b=QygEpKjdw2mYlLhTemxKNjuAX/g2lxw/GDpgKdVTZuaV6bdQNjmZM7p/o40YmMoGVJCTmjaiPKJLJZ0hnOp/9N4Rfydod/Xh9h+L3am0LfJJiVRiX2/jhJs+23xNx6XJroJeHXsB6lq01/WR2wohRTKg5lChJd9mjBEnhvenozg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113478; c=relaxed/simple;
-	bh=j7nP8tIrHTAT3NbfIyww5ZWPS4wE8g3ET0DNNaHVeZ4=;
+	s=arc-20240116; t=1758113773; c=relaxed/simple;
+	bh=dMNf3DSngKwTJV9SbBWRb2nUGKz10wYf+Vb2u/zSMRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ib7L4fFlOAtdc2md2OVfro2gcD8SSSKlEITtJhDamCe7vhCrn3MH9KmFT0PBJEbG5Ztw+wG6mmdlsQBrWYHTk+MR/tiTA0GOLDc6KwGOa4QUKjsN7H4uCICHAfziJxuafJcldpyFIs4/WwSMpczIrckUni+I2YoeASFwUxZGwIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTA7GI50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87757C4CEF5;
-	Wed, 17 Sep 2025 12:51:17 +0000 (UTC)
+	 MIME-Version; b=o+YNCaiQ5BjxCDpAcUZMVrDy8PbXG3Udd2VHtXO0sAPoxPbyI5xR66RIKWiK0fSGcSPEVdNevJnbf2pEmMTwo/UhlVoL44+rYil45/VFr4z3xaNQdq5uPLDnOVdDWpEvNJ2bQmF2s3TkYOALGI1gk2zfLo+VKr2MvkxeYvF9W1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBOK/u5T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F474C4CEF0;
+	Wed, 17 Sep 2025 12:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113478;
-	bh=j7nP8tIrHTAT3NbfIyww5ZWPS4wE8g3ET0DNNaHVeZ4=;
+	s=korg; t=1758113773;
+	bh=dMNf3DSngKwTJV9SbBWRb2nUGKz10wYf+Vb2u/zSMRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTA7GI50vmZydxzusdJrJx3f1BakE2SKJmmjGNEtrXdtFhaywN3SZ4LqHFvb/vxPp
-	 cm0uqs1E4sWMQTavGAXbUiaCPD4UuPPqiO+UMLCfNWGfHy5V89NTtAjodlNkRsoBJ8
-	 jb5i8rHWjgbY14Seetd7TYpTy7+pa5cm8SGujtrc=
+	b=PBOK/u5T8iCM16fl2VkSqHf0N6EvTBoKxENgsKbKM1EP2oUvjTFPBfKWmAmYt/4fE
+	 EMzyZ0p8vo542bObr4fEpq3EXFGZLOztzgjNX3T6dMfhHjP9e9nVXdVvgwFWW8biAv
+	 ynWfOLWgXYr8sifksHDPkwgNivDq7YTebO5f8eEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Dahl <ada@thorsis.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/140] net: bridge: Bounce invalid boolopts
+Subject: [PATCH 6.6 047/101] mtd: nand: raw: atmel: Fix comment in timings preparation
 Date: Wed, 17 Sep 2025 14:34:30 +0200
-Message-ID: <20250917123346.698879825@linuxfoundation.org>
+Message-ID: <20250917123337.980656645@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Alexander Dahl <ada@thorsis.com>
 
-[ Upstream commit 8625f5748fea960d2af4f3c3e9891ee8f6f80906 ]
+[ Upstream commit 1c60e027ffdebd36f4da766d9c9abbd1ea4dd8f9 ]
 
-The bridge driver currently tolerates options that it does not recognize.
-Instead, it should bounce them.
+Looks like a copy'n'paste mistake introduced when initially adding the
+dynamic timings feature with commit f9ce2eddf176 ("mtd: nand: atmel: Add
+->setup_data_interface() hooks").  The context around this and
+especially the code itself suggests 'read' is meant instead of write.
 
-Fixes: a428afe82f98 ("net: bridge: add support for user-controlled bool options")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/e6fdca3b5a8d54183fbda075daffef38bdd7ddce.1757070067.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240226122537.75097-1-ada@thorsis.com
+Stable-dep-of: fd779eac2d65 ("mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/nand/raw/atmel/nand-controller.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br.c b/net/bridge/br.c
-index 2cab878e0a39c..ed08717541fe7 100644
---- a/net/bridge/br.c
-+++ b/net/bridge/br.c
-@@ -312,6 +312,13 @@ int br_boolopt_multi_toggle(struct net_bridge *br,
- 	int err = 0;
- 	int opt_id;
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1378,7 +1378,7 @@ static int atmel_smc_nand_prepare_smccon
+ 		return ret;
  
-+	opt_id = find_next_bit(&bitmap, BITS_PER_LONG, BR_BOOLOPT_MAX);
-+	if (opt_id != BITS_PER_LONG) {
-+		NL_SET_ERR_MSG_FMT_MOD(extack, "Unknown boolean option %d",
-+				       opt_id);
-+		return -EINVAL;
-+	}
-+
- 	for_each_set_bit(opt_id, &bitmap, BR_BOOLOPT_MAX) {
- 		bool on = !!(bm->optval & BIT(opt_id));
- 
--- 
-2.51.0
-
+ 	/*
+-	 * The write cycle timing is directly matching tWC, but is also
++	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
 
 
 
