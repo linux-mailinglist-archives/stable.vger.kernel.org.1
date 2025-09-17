@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-180332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D906B7F18C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8E6B7EDC9
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57B8C524B1C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A65F7B5FDC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201CF31A814;
-	Wed, 17 Sep 2025 13:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265B836999D;
+	Wed, 17 Sep 2025 12:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ww67k4Xb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtFErkpi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26DE309DDD;
-	Wed, 17 Sep 2025 13:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6955330D27;
+	Wed, 17 Sep 2025 12:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114126; cv=none; b=gsVDr5d5tXIaJp1uFMjsAtsPiuKEArdQOqLRfyHmsP8RdVgbeuhDoCjU+Q4csZ3jFIYMYG71J++R+wzntlSmdFibwXRCKmJALJpgK4avafalxto77H6hIgtVjIbRLQdnahlGcXLNDXR/LR+TL+/jqeRX4hDWu62JhuGX8TPdGEg=
+	t=1758113914; cv=none; b=pgm7nuupvXxva6gSaBrHb+pGGGEq+cUqt1f1zod8XJxlTYBGl3LEqrAjV8FbCM1TGj+yJ+0Z52KrNejCGLGF6vobSBRvE4JYG0fPFBbOS+hqKehOYlf/nPTeD3RHvtv/074oHNKJ6sWPGJa8A/ExIlhLEqo9QfRgFpBwNtvVoHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114126; c=relaxed/simple;
-	bh=2JDImE8+fW7/C1e+Auflkk3ia9LGBD7Aq4QAzyCldtA=;
+	s=arc-20240116; t=1758113914; c=relaxed/simple;
+	bh=8IgLQcWLvdEByU+ALFdAHB1n/9Ej57wkWUJBkQIEH9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kR0K5ib1BkgUCN3CA2lSihB+mO3qAvLORkmEz1rdnaFIIF9DzrxZooJ49X3k6KX+bK9gERBQGb9ueuZFhwLhWFJ53zE4qUyXrmjuvjJpgfikJ5s9AY09NgpBRWpa3M3WhDNS9h7oG1Rb2yiUdN9Mpm+UPH151VVGmig4d6RFHH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ww67k4Xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49743C4CEF0;
-	Wed, 17 Sep 2025 13:02:06 +0000 (UTC)
+	 MIME-Version; b=VD6yf55wjPfmXrEHmMoDz5UuQjAjmE21X7GbV8fue7tuuOfSaP2LxLpPCrWmjhl2yoKllJXx9eKkftakNhrXNldsWjg0b0+Y+2ojC9rvEy84TJ8wlK1gPMoAow2k+xlrupdo8i4BmjJEDT4gRpUf5j7roV9zuX9C5ac8BpiRoeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtFErkpi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5057AC4CEF0;
+	Wed, 17 Sep 2025 12:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114126;
-	bh=2JDImE8+fW7/C1e+Auflkk3ia9LGBD7Aq4QAzyCldtA=;
+	s=korg; t=1758113914;
+	bh=8IgLQcWLvdEByU+ALFdAHB1n/9Ej57wkWUJBkQIEH9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ww67k4Xb5rKEfmfJNx2a+2oYn4v15Yd17JVVjyN6fYb4nf/rhPk7ueJhadAtgo5le
-	 935Biz1y7sm+kGT5sDplfodugl51AmonGxjgpR3szZOymNslHWiT1FajGz1pX1Cvg0
-	 TCakVGulR7gXzjXIr5RdoQFWU6XsOyJshzG/it+Q=
+	b=wtFErkpi2o93c1rGbF8X1ut3FVBnCrnsFX8OuZAJa9NikcRTU04VdiuLO8Z8ttalH
+	 zDNzliU2i7dj8P0IEQMfdkgQA5XYKM0pKk7osVmwdom2hdAC6LribVFVA0yAX++Tz7
+	 pPizy+4j1LZne8OqNAB2AaG/23np0CoifaIoUu50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.1 54/78] igb: fix link test skipping when interface is admin down
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 092/101] usb: gadget: midi2: Fix missing UMP group attributes initialization
 Date: Wed, 17 Sep 2025 14:35:15 +0200
-Message-ID: <20250917123330.885427386@linuxfoundation.org>
+Message-ID: <20250917123339.065760564@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit d709f178abca22a4d3642513df29afe4323a594b ]
+commit 21d8525d2e061cde034277d518411b02eac764e2 upstream.
 
-The igb driver incorrectly skips the link test when the network
-interface is admin down (if_running == false), causing the test to
-always report PASS regardless of the actual physical link state.
+The gadget card driver forgot to call snd_ump_update_group_attrs()
+after adding FBs, and this leaves the UMP group attributes
+uninitialized.  As a result, -ENODEV error is returned at opening a
+legacy rawmidi device as an inactive group.
 
-This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe,
-etc.) which correctly test the physical link state regardless of admin
-state.
-Remove the if_running check to ensure link test always reflects the
-physical link state.
+This patch adds the missing call to address the behavior above.
 
-Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is down")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20250904153932.13589-1-tiwai@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/gadget/function/f_midi2.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index ceff537d9d22d..ba067c3860a51 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -2081,11 +2081,8 @@ static void igb_diag_test(struct net_device *netdev,
- 	} else {
- 		dev_info(&adapter->pdev->dev, "online testing starting\n");
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -1601,6 +1601,7 @@ static int f_midi2_create_card(struct f_
+ 			strscpy(fb->info.name, ump_fb_name(b),
+ 				sizeof(fb->info.name));
+ 		}
++		snd_ump_update_group_attrs(ump);
+ 	}
  
--		/* PHY is powered down when interface is down */
--		if (if_running && igb_link_test(adapter, &data[TEST_LINK]))
-+		if (igb_link_test(adapter, &data[TEST_LINK]))
- 			eth_test->flags |= ETH_TEST_FL_FAILED;
--		else
--			data[TEST_LINK] = 0;
- 
- 		/* Online tests aren't run; pass by default */
- 		data[TEST_REG] = 0;
--- 
-2.51.0
-
+ 	for (i = 0; i < midi2->num_eps; i++) {
 
 
 
