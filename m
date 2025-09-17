@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-180186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C3DB7EDB7
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD4FB7E993
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:54:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9A22A7A3C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:57:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBFCD325F4F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BEA328985;
-	Wed, 17 Sep 2025 12:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785722BD022;
+	Wed, 17 Sep 2025 12:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQWajt2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqAYvFFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456921EF363;
-	Wed, 17 Sep 2025 12:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360291EB1AA;
+	Wed, 17 Sep 2025 12:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113652; cv=none; b=iQs+f4rrQGUSRAHszZL1VTUkkQZxhiZSgL7GuDc31tZITgh04nWGLZT9rNB0PvVzt5AVKHKQbtnOsaRqJoGatK/M9cycoBtmkNiuqIWhM2jLOf5HXbS44+CCf6h1AxqD8n+nnRP6tbpiLa40+kdflq/uf/lEdmcicqBbuQByqrk=
+	t=1758113367; cv=none; b=bvooPHGA72kdX/nJMeIfe3QbkTlO0NPGFRNwyfKV/o7YQRpRqDX9tOXNEqJ/uKlEcb7QZg+aekIwekhW+CatxjqObzgdFOHppS5ZrsETSOy6RK0DknNv7z393gyLA8rgFHMLzGn6ruGnqMUNsjsgxlEQFQ0Xk2d0TXsqZQE71XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113652; c=relaxed/simple;
-	bh=P/qLRxuK5hKkoH2rhDabiELu29vgx2y3WHc7LP0fs60=;
+	s=arc-20240116; t=1758113367; c=relaxed/simple;
+	bh=S8dk87Cbx7vWDxuU/wfxvO7aFx3B2xuMdpF2Ibd2/L0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ST6e7Dand00ifOPjRWQly7AtcV1VB1VBKrPMK+XQNjJt82n/8YZPc/QQF8EqaEq55keiN6oNm8HAjDiN9qjGfTxEJzrIWJHgOvmHKYLw9JLrKpx87pAjOqO0KMxdyngSgcw0H2QY36Xz9bd/bNjyYZLjuv164giVFVEGfZIXBHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQWajt2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1C7C4CEF0;
-	Wed, 17 Sep 2025 12:54:11 +0000 (UTC)
+	 MIME-Version; b=Yb6sYO6oJRRpgNLZGpYaG7B/xUnb1sDhiXZMumAEqAYHTfDtxSU4Tz25McRZLj5ACRZVM2YKyVf9BU4lWw+Hr+AH0G0N+Gkm7vXAN/PmiFjG2HB36v/7JZ/U+DunpB4XtBoSIhwTOZGm0XzKBwZMhTS3LtKzwpiNBhKkjnJfMYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqAYvFFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D07C4CEF0;
+	Wed, 17 Sep 2025 12:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113652;
-	bh=P/qLRxuK5hKkoH2rhDabiELu29vgx2y3WHc7LP0fs60=;
+	s=korg; t=1758113367;
+	bh=S8dk87Cbx7vWDxuU/wfxvO7aFx3B2xuMdpF2Ibd2/L0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQWajt2VDAhk6GroZHJll2RW9e6lh5NfEEBbUB7md5Qps/d8/oz5C+Nod92An7jzn
-	 Ew6qyTmVn28uI5ahFtYeRlzqUNupXz+XXmQoNof/PrvAr5CjNMbtGNq1tgkT3U1tIs
-	 y3jkH7gRmeguHVzAVpDCcWk4kfZ8zbifchcQ0bWc=
+	b=eqAYvFFxBTPX7AyNHOr8Y2cYYn8ke+u78vKe+C0+muyMMVN+PAzw1pHBH8FGiIEEG
+	 Y3tW/cAd9GVzIQlDF8EppFkuXqACiRISUnAqoBHE+mykiHlliLXHz6vrcY8yBu1CSP
+	 evJVWsa1dqTPjWANyF+2xzPNzW8/7RjTy9u2DYJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/101] NFSv4: Clear the NFS_CAP_FS_LOCATIONS flag if it is not set
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 063/140] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
 Date: Wed, 17 Sep 2025 14:33:55 +0200
-Message-ID: <20250917123337.164382558@linuxfoundation.org>
+Message-ID: <20250917123345.841213875@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit dd5a8621b886b02f8341c5d4ea68eb2c552ebd3e ]
+commit d613f53c83ec47089c4e25859d5e8e0359f6f8da upstream.
 
-_nfs4_server_capabilities() is expected to clear any flags that are not
-supported by the server.
+When I did memory failure tests, below panic occurs:
 
-Fixes: 8a59bb93b7e3 ("NFSv4 store server support for fs_location attribute")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered.  This can be reproduced by below steps:
+
+1.Offline memory block:
+
+ echo offline > /sys/devices/system/memory/memory12/state
+
+2.Get offlined memory pfn:
+
+ page-types -b n -rlN
+
+3.Write pfn to unpoison-pfn
+
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+
+This scenario can be identified by pfn_to_online_page() returning NULL.
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
+Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/memory-failure.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index bc1eaabaf2c30..124b9cee6fed7 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3882,8 +3882,9 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
- 			res.attr_bitmask[2] &= FATTR4_WORD2_NFS42_MASK;
- 		}
- 		memcpy(server->attr_bitmask, res.attr_bitmask, sizeof(server->attr_bitmask));
--		server->caps &= ~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS |
--				  NFS_CAP_SYMLINKS| NFS_CAP_SECURITY_LABEL);
-+		server->caps &=
-+			~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS |
-+			  NFS_CAP_SECURITY_LABEL | NFS_CAP_FS_LOCATIONS);
- 		server->fattr_valid = NFS_ATTR_FATTR_V4;
- 		if (res.attr_bitmask[0] & FATTR4_WORD0_ACL &&
- 				res.acl_bitmask & ACL4_SUPPORT_ALLOW_ACL)
--- 
-2.51.0
-
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2570,10 +2570,9 @@ int unpoison_memory(unsigned long pfn)
+ 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					DEFAULT_RATELIMIT_BURST);
+ 
+-	if (!pfn_valid(pfn))
+-		return -ENXIO;
+-
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	folio = page_folio(p);
+ 
+ 	mutex_lock(&mf_mutex);
 
 
 
