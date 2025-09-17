@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-180131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7E1B7EAE7
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DEAB7E4C7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0006B17927D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F5C623602
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4472FBDF1;
-	Wed, 17 Sep 2025 12:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B8230AD1E;
+	Wed, 17 Sep 2025 12:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBgRYq5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSEhLqUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA4130CB29;
-	Wed, 17 Sep 2025 12:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066951F583D;
+	Wed, 17 Sep 2025 12:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113482; cv=none; b=Nq/I+PbqebHl5Ro/hmDQAB6zV1APJHq0WZBqWVSLYbq097qC0MQoVZhyyYucpTLbOeGJyw5ckPkvr1geoHtJmnRd4otiGRFWqzyymt74h6M4oeN00On2qxLjFe12cGeAgjoZ173SHV0sDg6R+sx6Q1QT0V5MHlr21bGEKH8/shQ=
+	t=1758113063; cv=none; b=i29dbNIuQuSNLKmTydjWc5pE2dJyqx4P3VTdkisf+OFqI65+aRG0cqmDqOmctcEQJHkLe15wGy9ABpX/6JAJdfP6magQk+1SBFLtqJuA0Sk0fxQUSP+tBl+r1CRKtx/Xp3/4MKoV3flZ5UFrxEGtInMueCwJj62U7Gvccb4l8uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113482; c=relaxed/simple;
-	bh=Ioc+Ji2mp5ANTtEyuOxr26hHQwIrpEIY6m2mkd3swEg=;
+	s=arc-20240116; t=1758113063; c=relaxed/simple;
+	bh=P/CudsXeO5/cjLB13WLQ3w26AET60UKXMcEJyjeuksA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lz5AklbL/vROTrMYcDPnOAAI7eWHuyBTFfX4UzpZ3v/OpxzxCCEDEqZ9gXvijFgAwUNfvq+MdFnvyphINu8Akr/Ko7ifgoJJx1pMUatK2gekv4jgEJjz9btzbuVVcZVr8JYUxq5TD3PqsDRJrFvS1pqYfy/UX1oRGMnsf1VyjNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBgRYq5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF953C4CEF0;
-	Wed, 17 Sep 2025 12:51:20 +0000 (UTC)
+	 MIME-Version; b=im2Su7g25hAw26IZBkWee/mxUqUtD0rdaOAEqDhSX5PXUC/Qi6em9KjEgBNurYJf8AFAWLNnK71jPJLA19d+99P4fQ4Z3HAVeSiSW2BChoWj59LsKCqhkY2CZ70RtPiabe6wCosj0C4fi/KiX0BLN143GsM+vBfoyjSGKvqAw1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSEhLqUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40184C4CEF0;
+	Wed, 17 Sep 2025 12:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113481;
-	bh=Ioc+Ji2mp5ANTtEyuOxr26hHQwIrpEIY6m2mkd3swEg=;
+	s=korg; t=1758113062;
+	bh=P/CudsXeO5/cjLB13WLQ3w26AET60UKXMcEJyjeuksA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBgRYq5s7m9TILowb/n1SnnyKMa/C9mLrt2Yk1bTT3CYR9IlpdysxyNNW8KSWKGbu
-	 v278adjZYSAhCSeVq+xDSTHTOqLQJCFIBPdzXMWKET7ZYW4rIM2PJUGvK0PHnVX5fW
-	 Pt6jSUrd6TXWqPSmjKN7g4TbqbSHNUujkx/QLmko=
+	b=cSEhLqUBEHowyorZ+1KKfB/e3PsphTOZSSByDSjkJLuQspoPVQitUJdzFchPreJr2
+	 Ty2Zx8OdXiSaxYvPwVMU6eEYvjegXmfe/udeG2CsbNQ663CpysfWCwU5ZvvbILfLDC
+	 uvHQ0fXdskqL4hJFtjl/R6/qxJ2w65Q4Slis34Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/140] tunnels: reset the GSO metadata before reusing the skb
+Subject: [PATCH 6.16 161/189] netfilter: nf_tables: make nft_set_do_lookup available unconditionally
 Date: Wed, 17 Sep 2025 14:34:31 +0200
-Message-ID: <20250917123346.721879130@linuxfoundation.org>
+Message-ID: <20250917123355.808813076@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e3c674db356c4303804b2415e7c2b11776cdd8c3 ]
+[ Upstream commit 11fe5a82e53ac3581a80c88e0e35fb8a80e15f48 ]
 
-If a GSO skb is sent through a Geneve tunnel and if Geneve options are
-added, the split GSO skb might not fit in the MTU anymore and an ICMP
-frag needed packet can be generated. In such case the ICMP packet might
-go through the segmentation logic (and dropped) later if it reaches a
-path were the GSO status is checked and segmentation is required.
+This function was added for retpoline mitigation and is replaced by a
+static inline helper if mitigations are not enabled.
 
-This is especially true when an OvS bridge is used with a Geneve tunnel
-attached to it. The following set of actions could lead to the ICMP
-packet being wrongfully segmented:
+Enable this helper function unconditionally so next patch can add a lookup
+restart mechanism to fix possible false negatives while transactions are
+in progress.
 
-1. An skb is constructed by the TCP layer (e.g. gso_type SKB_GSO_TCPV4,
-   segs >= 2).
+Adding lookup restarts in nft_lookup_eval doesn't work as nft_objref would
+then need the same copypaste loop.
 
-2. The skb hits the OvS bridge where Geneve options are added by an OvS
-   action before being sent through the tunnel.
+This patch is separate to ease review of the actual bug fix.
 
-3. When the skb is xmited in the tunnel, the split skb does not fit
-   anymore in the MTU and iptunnel_pmtud_build_icmp is called to
-   generate an ICMP fragmentation needed packet. This is done by reusing
-   the original (GSO!) skb. The GSO metadata is not cleared.
-
-4. The ICMP packet being sent back hits the OvS bridge again and because
-   skb_is_gso returns true, it goes through queue_gso_packets...
-
-5. ...where __skb_gso_segment is called. The skb is then dropped.
-
-6. Note that in the above example on re-transmission the skb won't be a
-   GSO one as it would be segmented (len > MSS) and the ICMP packet
-   should go through.
-
-Fix this by resetting the GSO information before reusing an skb in
-iptunnel_pmtud_build_icmp and iptunnel_pmtud_build_icmpv6.
-
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Reported-by: Adrian Moreno <amorenoz@redhat.com>
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20250904125351.159740-1-atenart@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: b2f742c846ca ("netfilter: nf_tables: restart set lookup on base_seq change")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/net/netfilter/nf_tables_core.h | 10 ++--------
+ net/netfilter/nft_lookup.c             | 17 ++++++++++++-----
+ 2 files changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index f65d2f7273813..8392d304a72eb 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -204,6 +204,9 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
- 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct iphdr)))
- 		return -EINVAL;
- 
-+	if (skb_is_gso(skb))
-+		skb_gso_reset(skb);
+diff --git a/include/net/netfilter/nf_tables_core.h b/include/net/netfilter/nf_tables_core.h
+index 6a52fb97b8443..04699eac5b524 100644
+--- a/include/net/netfilter/nf_tables_core.h
++++ b/include/net/netfilter/nf_tables_core.h
+@@ -109,17 +109,11 @@ nft_hash_lookup_fast(const struct net *net, const struct nft_set *set,
+ const struct nft_set_ext *
+ nft_hash_lookup(const struct net *net, const struct nft_set *set,
+ 		const u32 *key);
++#endif
 +
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
- 	skb_reset_network_header(skb);
-@@ -298,6 +301,9 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct ipv6hdr)))
- 		return -EINVAL;
+ const struct nft_set_ext *
+ nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+ 		  const u32 *key);
+-#else
+-static inline const struct nft_set_ext *
+-nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+-		  const u32 *key)
+-{
+-	return set->ops->lookup(net, set, key);
+-}
+-#endif
  
-+	if (skb_is_gso(skb))
-+		skb_gso_reset(skb);
+ /* called from nft_pipapo_avx2.c */
+ const struct nft_set_ext *
+diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
+index 40c602ffbcba7..2c6909bf1b407 100644
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -24,11 +24,11 @@ struct nft_lookup {
+ 	struct nft_set_binding		binding;
+ };
+ 
+-#ifdef CONFIG_MITIGATION_RETPOLINE
+-const struct nft_set_ext *
+-nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+-		  const u32 *key)
++static const struct nft_set_ext *
++__nft_set_do_lookup(const struct net *net, const struct nft_set *set,
++		    const u32 *key)
+ {
++#ifdef CONFIG_MITIGATION_RETPOLINE
+ 	if (set->ops == &nft_set_hash_fast_type.ops)
+ 		return nft_hash_lookup_fast(net, set, key);
+ 	if (set->ops == &nft_set_hash_type.ops)
+@@ -51,10 +51,17 @@ nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+ 		return nft_rbtree_lookup(net, set, key);
+ 
+ 	WARN_ON_ONCE(1);
++#endif
+ 	return set->ops->lookup(net, set, key);
+ }
 +
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
- 	skb_reset_network_header(skb);
++const struct nft_set_ext *
++nft_set_do_lookup(const struct net *net, const struct nft_set *set,
++		  const u32 *key)
++{
++	return __nft_set_do_lookup(net, set, key);
++}
+ EXPORT_SYMBOL_GPL(nft_set_do_lookup);
+-#endif
+ 
+ void nft_lookup_eval(const struct nft_expr *expr,
+ 		     struct nft_regs *regs,
 -- 
 2.51.0
 
