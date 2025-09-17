@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFC5B7F057
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:11:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60878B7F1DE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B9DD1C264C2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C12462487A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6020B3195E0;
-	Wed, 17 Sep 2025 12:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8683A316188;
+	Wed, 17 Sep 2025 13:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCGpgvAY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffEVJdkn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB8A1E25EF;
-	Wed, 17 Sep 2025 12:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434CF288DA;
+	Wed, 17 Sep 2025 13:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113931; cv=none; b=LVwXC4Huk02Ru+7JlMoCj/qt22j8aXZc/vVssqFu1UTT2p5UO7Zw+QQW9hPXicIT6oJYeRq+9MUTUw9P9kpZUIHmWy/N5/i6UuPVW/xHL2slRmYbtZYFKhkoEUjeody626CVh3R+nx5/L+SrqkHjVyPCyphaJs67876OVLi7l0c=
+	t=1758114143; cv=none; b=rh/I0zBkcFiEtAMyk3pYidi44WXpW9DDTnql7xgvWL2LJ6gHaGQWH3ekJNC0okuYp/wLdV3TqGFMcy4GXahu2Ye7HsSqoNlyFJY+W6MR3GS4c3Gyb7h7UVIsfomVTLmYi4cG1c1TnNwQnL7c1KTbk0hFTZUq3aGjufDh1CfzKyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113931; c=relaxed/simple;
-	bh=9M8VIxavC4J0Gdx+YdjgLmzyQQp4jyzurH7x++NH92g=;
+	s=arc-20240116; t=1758114143; c=relaxed/simple;
+	bh=ix8hU52bXcN+QpQUQ6zE3+jS2lQReXGgeb4fHC4y0qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQ7GeRyjts5oxhhTcJcwU4w38FUWRKNEowfcwDVXHahln/PpgM7gTSKMeEJ+XKb+N2KUsIQsgxtU3EjHVCdcq1OkQSd4ENd5yRdlckjyzkOd32STwBtjrTR0vQEG7ebWGT6B84LiU2eGDqq+lVib/rgfgvajiOoESaV38qtfpIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCGpgvAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936B2C4CEF0;
-	Wed, 17 Sep 2025 12:58:50 +0000 (UTC)
+	 MIME-Version; b=hxN+aU+C5+LLJJ+UmX6nW74QEJVxEiNjaFH1WnfJoG6DC1rBwMxa/zV5gVkS3gqCT21ozKbN77prkanLWGg0oDyXSP7t7xHMofOcx9g07t6zLCWQ7DukZKGWHXl/v1Duhvu8/EFknYl9Tw8JqqkCWxnVidTwCe6K6m5UWYA75g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffEVJdkn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AC8C4CEF0;
+	Wed, 17 Sep 2025 13:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113931;
-	bh=9M8VIxavC4J0Gdx+YdjgLmzyQQp4jyzurH7x++NH92g=;
+	s=korg; t=1758114143;
+	bh=ix8hU52bXcN+QpQUQ6zE3+jS2lQReXGgeb4fHC4y0qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nCGpgvAYdS1QpXLfMWzH6KKfYvSLLinS1DGahbJ2OdoWbp5hEQNISIbb3M9WT+jI5
-	 Py5gvvraOKVMVPfDeIyeoMnW8XUYXcvZuJuYxn9YgDVvcp1LjZ1FQYL/g45QQSyxJL
-	 zIcQxco0nqlBqipsHX/7Vi7RLN27VBM8x7y8OBFc=
+	b=ffEVJdknqwwqRuiEX4kpzKMxlEQMBRda1p1o843288m1kLqpgTHuYAdgCfxWmf7pd
+	 e5mZ/DGAVMbxaLdw0ORBtB1K2s6zLi+AaBMl/0qBll/x/TQZ+WFO033QBB443le6Of
+	 sikZrfBxXHxT1Keaj3fJt92k+yjw/y7gS+e8+UGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JC Kuo <jckuo@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 096/101] phy: tegra: xusb: fix device and OF node leak at probe
+	Anssi Hannula <anssi.hannula@bitwise.fi>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 58/78] can: xilinx_can: xcan_write_frame(): fix use-after-free of transmitted SKB
 Date: Wed, 17 Sep 2025 14:35:19 +0200
-Message-ID: <20250917123339.155690685@linuxfoundation.org>
+Message-ID: <20250917123330.987337425@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Anssi Hannula <anssi.hannula@bitwise.fi>
 
-commit bca065733afd1e3a89a02f05ffe14e966cd5f78e upstream.
+[ Upstream commit ef79f00be72bd81d2e1e6f060d83cf7e425deee4 ]
 
-Make sure to drop the references taken to the PMC OF node and device by
-of_parse_phandle() and of_find_device_by_node() during probe.
+can_put_echo_skb() takes ownership of the SKB and it may be freed
+during or after the call.
 
-Note the holding a reference to the PMC device does not prevent the
-PMC regmap from going away (e.g. if the PMC driver is unbound) so there
-is no need to keep the reference.
+However, xilinx_can xcan_write_frame() keeps using SKB after the call.
 
-Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
-Cc: stable@vger.kernel.org	# 5.14
-Cc: JC Kuo <jckuo@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-2-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix that by only calling can_put_echo_skb() after the code is done
+touching the SKB.
+
+The tx_lock is held for the entire xcan_write_frame() execution and
+also on the can_get_echo_skb() side so the order of operations does not
+matter.
+
+An earlier fix commit 3d3c817c3a40 ("can: xilinx_can: Fix usage of skb
+memory") did not move the can_put_echo_skb() call far enough.
+
+Signed-off-by: Anssi Hannula <anssi.hannula@bitwise.fi>
+Fixes: 1598efe57b3e ("can: xilinx_can: refactor code in preparation for CAN FD support")
+Link: https://patch.msgid.link/20250822095002.168389-1-anssi.hannula@bitwise.fi
+[mkl: add "commit" in front of sha1 in patch description]
+[mkl: fix indention]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb-tegra210.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/can/xilinx_can.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra210.c
-+++ b/drivers/phy/tegra/xusb-tegra210.c
-@@ -3164,18 +3164,22 @@ tegra210_xusb_padctl_probe(struct device
+diff --git a/drivers/net/can/xilinx_can.c b/drivers/net/can/xilinx_can.c
+index 43c812ea1de02..7d8dc36c9bbd8 100644
+--- a/drivers/net/can/xilinx_can.c
++++ b/drivers/net/can/xilinx_can.c
+@@ -622,14 +622,6 @@ static void xcan_write_frame(struct net_device *ndev, struct sk_buff *skb,
+ 		dlc |= XCAN_DLCR_EDL_MASK;
  	}
  
- 	pdev = of_find_device_by_node(np);
-+	of_node_put(np);
- 	if (!pdev) {
- 		dev_warn(dev, "PMC device is not available\n");
- 		goto out;
+-	if (!(priv->devtype.flags & XCAN_FLAG_TX_MAILBOXES) &&
+-	    (priv->devtype.flags & XCAN_FLAG_TXFEMP))
+-		can_put_echo_skb(skb, ndev, priv->tx_head % priv->tx_max, 0);
+-	else
+-		can_put_echo_skb(skb, ndev, 0, 0);
+-
+-	priv->tx_head++;
+-
+ 	priv->write_reg(priv, XCAN_FRAME_ID_OFFSET(frame_offset), id);
+ 	/* If the CAN frame is RTR frame this write triggers transmission
+ 	 * (not on CAN FD)
+@@ -662,6 +654,14 @@ static void xcan_write_frame(struct net_device *ndev, struct sk_buff *skb,
+ 					data[1]);
+ 		}
  	}
- 
--	if (!platform_get_drvdata(pdev))
-+	if (!platform_get_drvdata(pdev)) {
-+		put_device(&pdev->dev);
- 		return ERR_PTR(-EPROBE_DEFER);
-+	}
- 
- 	padctl->regmap = dev_get_regmap(&pdev->dev, "usb_sleepwalk");
- 	if (!padctl->regmap)
- 		dev_info(dev, "failed to find PMC regmap\n");
- 
-+	put_device(&pdev->dev);
- out:
- 	return &padctl->base;
++
++	if (!(priv->devtype.flags & XCAN_FLAG_TX_MAILBOXES) &&
++	    (priv->devtype.flags & XCAN_FLAG_TXFEMP))
++		can_put_echo_skb(skb, ndev, priv->tx_head % priv->tx_max, 0);
++	else
++		can_put_echo_skb(skb, ndev, 0, 0);
++
++	priv->tx_head++;
  }
+ 
+ /**
+-- 
+2.51.0
+
 
 
 
