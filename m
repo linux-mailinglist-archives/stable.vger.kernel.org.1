@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E018EB7E750
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101B4B7E16F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E29EE1663A9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9D962217B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0223090EC;
-	Wed, 17 Sep 2025 12:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96DC2F7459;
+	Wed, 17 Sep 2025 12:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES0S+OWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHelgds0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A082E7BA0;
-	Wed, 17 Sep 2025 12:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55C71F09A5;
+	Wed, 17 Sep 2025 12:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113192; cv=none; b=o5rA6ERjh2R7EbJMYA0yYotHMaocOPgVJeU2mmHp9QxC6a4YAh3DBdHR4QDgz0+bqoIjcN6LIWogaAsw3k5fqE6ABbNCvhCkj6VlX+l4Y6GR83gMD+pCqounOF1xnGzxdPj6ErbD4Xg4VmD/lCzoXIEeJ8YtwT3eeirNd+bdM7Y=
+	t=1758112772; cv=none; b=quRg9skN3TljsHdl9BxgMg1/rDw4qo5Rl8BirXlv9Nq0+taHWm6/rWtt/mhxVzd1HrsDzMSqcukPI0SaYK1Yy/4Y41dHlJcL9j+WR3QSFBIy1kbsMfv9iYOZOdAf46djsXXHqMPksjy0puH/7l162gs6dVR9UlZhz4DbAoDoMpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113192; c=relaxed/simple;
-	bh=8z6H+FBua2nPe8KkorGUSY9/rf8YLJbs+e1cQSRN+wY=;
+	s=arc-20240116; t=1758112772; c=relaxed/simple;
+	bh=vj9VLr3ilFDwK36sXPb7FYLh/NWicj4ZSAoiWnJjN60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGoSAZH/Zt4ZXJPqqxH3EFSYm7j3xMCqQHw5H5rTuSJw0FZsXKvCDaGLO74PRhEh8S9GZqrNPvCP9SunIiupoztBGCHsmyUn48hJMH8UDDsN1D64GOIpYOQiWmU2uM2byyAP6KwdhBmg1dOM+FIzmqhfHg6WwRTTvrUHJDEBvNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ES0S+OWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2748C4CEF0;
-	Wed, 17 Sep 2025 12:46:31 +0000 (UTC)
+	 MIME-Version; b=uJ/jQHxkiDHGnhBTQbIYhTRIOE80E4trjm9uWKdEIRS4K47hDn647kJbNLtMGKdCdQQQLlXnONWacrFi8XFwDUJ+Vjr31yIs9ev2ZAoBqHMQv8CxcirjaWKp/HZP4eWzMvkTb1tb/BKRUEPvTfY6QDw+m+CVsws+ev67bKdTZ5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHelgds0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F6EC4CEF5;
+	Wed, 17 Sep 2025 12:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113192;
-	bh=8z6H+FBua2nPe8KkorGUSY9/rf8YLJbs+e1cQSRN+wY=;
+	s=korg; t=1758112772;
+	bh=vj9VLr3ilFDwK36sXPb7FYLh/NWicj4ZSAoiWnJjN60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ES0S+OWAoSFrej1km4XeX4lbGIAThyvO88lRbVXxnOD1JBMbqf9sqq6uvTcIYUDkJ
-	 S4BDi/q0vuX0uV5YfLG3K1r8pJYF8kJegEatsqk1q0WGaoO1Iq7znWlxtuaWHrknxb
-	 7F319KEhPlQhNcYtwzwsp8dP5eRu/+C6s6WBKrCQ=
+	b=FHelgds0mqNCymXN5w/SLMaE5Vr4ubNWOiVh8xss5wQS+Bl7Urs+jQmwtIWtf8ZvU
+	 KVLRgLgj5LhktQ4Pg9mhf3BkZ0xbWDqN58Iwv/uNETExSzZjiKMilznU/QA9KWnU6K
+	 b86ZKUlVJhbAKAtDSQ8T8XDksnf3XslbVxoR/QYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/140] dma-debug: fix physical address calculation for struct dma_debug_entry
+	Amir Goldstein <amir73il@gmail.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.16 073/189] fuse: do not allow mapping a non-regular backing file
 Date: Wed, 17 Sep 2025 14:33:03 +0200
-Message-ID: <20250917123344.593908517@linuxfoundation.org>
+Message-ID: <20250917123353.653059502@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit aef7ee7649e02f7fc0d2e5e532f352496976dcb1 ]
+commit e9c8da670e749f7dedc53e3af54a87b041918092 upstream.
 
-Offset into the page should also be considered while calculating a physical
-address for struct dma_debug_entry. page_to_phys() just shifts the value
-PAGE_SHIFT bits to the left so offset part is zero-filled.
+We do not support passthrough operations other than read/write on
+regular file, so allowing non-regular backing files makes no sense.
 
-An example (wrong) debug assertion failure with CONFIG_DMA_API_DEBUG
-enabled which is observed during systemd boot process after recent
-dma-debug changes:
-
-DMA-API: e1000 0000:00:03.0: cacheline tracking EEXIST, overlapping mappings aren't supported
-WARNING: CPU: 4 PID: 941 at kernel/dma/debug.c:596 add_dma_entry
-CPU: 4 UID: 0 PID: 941 Comm: ip Not tainted 6.12.0+ #288
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:add_dma_entry kernel/dma/debug.c:596
-Call Trace:
- <TASK>
-debug_dma_map_page kernel/dma/debug.c:1236
-dma_map_page_attrs kernel/dma/mapping.c:179
-e1000_alloc_rx_buffers drivers/net/ethernet/intel/e1000/e1000_main.c:4616
-...
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 9d4f645a1fd4 ("dma-debug: store a phys_addr_t in struct dma_debug_entry")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-[hch: added a little helper to clean up the code]
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: efad7153bf93 ("fuse: allow O_PATH fd for FUSE_DEV_IOC_BACKING_OPEN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/debug.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ fs/fuse/passthrough.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 0221023e1120d..39972e834e7a1 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1224,7 +1224,7 @@ void debug_dma_map_page(struct device *dev, struct page *page, size_t offset,
+--- a/fs/fuse/passthrough.c
++++ b/fs/fuse/passthrough.c
+@@ -237,6 +237,11 @@ int fuse_backing_open(struct fuse_conn *
+ 	if (!file)
+ 		goto out;
  
- 	entry->dev       = dev;
- 	entry->type      = dma_debug_single;
--	entry->paddr	 = page_to_phys(page);
-+	entry->paddr	 = page_to_phys(page) + offset;
- 	entry->dev_addr  = dma_addr;
- 	entry->size      = size;
- 	entry->direction = direction;
-@@ -1382,6 +1382,18 @@ void debug_dma_unmap_sg(struct device *dev, struct scatterlist *sglist,
- 	}
- }
- 
-+static phys_addr_t virt_to_paddr(void *virt)
-+{
-+	struct page *page;
++	/* read/write/splice/mmap passthrough only relevant for regular files */
++	res = d_is_dir(file->f_path.dentry) ? -EISDIR : -EINVAL;
++	if (!d_is_reg(file->f_path.dentry))
++		goto out_fput;
 +
-+	if (is_vmalloc_addr(virt))
-+		page = vmalloc_to_page(virt);
-+	else
-+		page = virt_to_page(virt);
-+
-+	return page_to_phys(page) + offset_in_page(virt);
-+}
-+
- void debug_dma_alloc_coherent(struct device *dev, size_t size,
- 			      dma_addr_t dma_addr, void *virt,
- 			      unsigned long attrs)
-@@ -1404,8 +1416,7 @@ void debug_dma_alloc_coherent(struct device *dev, size_t size,
- 
- 	entry->type      = dma_debug_coherent;
- 	entry->dev       = dev;
--	entry->paddr	 = page_to_phys((is_vmalloc_addr(virt) ?
--				vmalloc_to_page(virt) : virt_to_page(virt)));
-+	entry->paddr	 = virt_to_paddr(virt);
- 	entry->size      = size;
- 	entry->dev_addr  = dma_addr;
- 	entry->direction = DMA_BIDIRECTIONAL;
-@@ -1428,8 +1439,7 @@ void debug_dma_free_coherent(struct device *dev, size_t size,
- 	if (!is_vmalloc_addr(virt) && !virt_addr_valid(virt))
- 		return;
- 
--	ref.paddr = page_to_phys((is_vmalloc_addr(virt) ?
--			vmalloc_to_page(virt) : virt_to_page(virt)));
-+	ref.paddr = virt_to_paddr(virt);
- 
- 	if (unlikely(dma_debug_disabled()))
- 		return;
--- 
-2.51.0
-
+ 	backing_sb = file_inode(file)->i_sb;
+ 	res = -ELOOP;
+ 	if (backing_sb->s_stack_depth >= fc->max_stack_depth)
 
 
 
