@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-180288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15536B7F10E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:13:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593B6B7EA59
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB7ED460FAD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 695C318911C7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0491A37C10F;
-	Wed, 17 Sep 2025 12:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F05323415;
+	Wed, 17 Sep 2025 12:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dq8+JZ5R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZg1hqWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7854333A8E;
-	Wed, 17 Sep 2025 12:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DBE323408;
+	Wed, 17 Sep 2025 12:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113980; cv=none; b=hwmuVK1bNdDP4DJdIeNuVXKI2MfAVbYBe2Sq1VDPwI+J6Tj9LY/3E+gWwoCIZOfj/gvEU8e+wmr4GuuLdXNAcCnWxJQ1aWUNEbtTSnjVeaTwZ2cjmlVEGem2bQ9W8uVQyEXb4Nce/L2P8v1aWeKlp9KOVJz0XMdSSAW+rXKx6Yo=
+	t=1758113484; cv=none; b=ekdw9BKSHmR89hdwB+8ljbBEjqTGc5Elsd1TKLpMOyP0EkVc3cBIlhl1mYFlQbFA9zW2N9wRGvghbXIgOcqvdDdDcP0hMelevU8sN8Uv2Oy4cUHy3l7u1y1uG5y1d5VX2MKaXmLoqBkzFLf68QMfmn8D+j4VJ3EFyfCHXTvIFP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113980; c=relaxed/simple;
-	bh=CN9kLrhx5NRlM+w9YFr/laNN6hX97mLKDSClA4hU3JY=;
+	s=arc-20240116; t=1758113484; c=relaxed/simple;
+	bh=ige89Y1AQ5SkFSB9xqIEBFD9dBPlGNcSGAwm345ztxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ks992eJ5jbbr6gaq2VZo0kCgUPi/1syCXr6ce1F/c6k+a5b+CISVm/V6A5m2PRtkaBQhNZquF7YXIQJqGtmh4qdncRE7E66qpXZuXP6MVYNinXzRMKVc5VSCADHYgL6BhPaEgQBvG7BrFgQO/GXLg0MzzPGQMMw+LRymvFZQ3dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dq8+JZ5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EE4C4CEF0;
-	Wed, 17 Sep 2025 12:59:40 +0000 (UTC)
+	 MIME-Version; b=YzAykURpZ6DmemAyLJoQq4pG9U+RpP9kT0Dr9i4VehmkWJB+tR9+DIeEvDi3WyaDFRfVA2qzV41//5Ls1SNNVyskL+F5tmxSAxH/bhGKxU7QAIrBO2lcxPGP2okZ6v9GPmt8soWB8AgIVcypitflbICKQDFuJiAZb6fXGnqfpjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZg1hqWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2762C4CEF0;
+	Wed, 17 Sep 2025 12:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113980;
-	bh=CN9kLrhx5NRlM+w9YFr/laNN6hX97mLKDSClA4hU3JY=;
+	s=korg; t=1758113484;
+	bh=ige89Y1AQ5SkFSB9xqIEBFD9dBPlGNcSGAwm345ztxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dq8+JZ5RueHj56mkOoQoLzCBlAQntsbFvJFFrCibxwWuLl2MAQNe5Gj7U6LqEw2bM
-	 4+kP3B2hhSyyCWtJjQO0YqwL/30dL6g1GXnt1KocBXF6y+ArXBrJ+rBlvohy8OZ6kQ
-	 KbUSTpuf5Jw5RsP6mdYHEi6EuRImUOQoBLB+K/x4=
+	b=gZg1hqWI6gxd6WTpEWSKfbdmLIZPyeh7dhKEOkmubiFIs3wwwBoZwPYci48facKjJ
+	 n/Szdu3rCIZogDpQJPsVhfEFn0g7uRaXs9Hegmu73XpBlN8OcAGr5dV8Ah3HemqAcR
+	 ScWXIDGzC9uwAUc3bSvKtmTyrkk0CHmS3e/dOPwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Alex Tran <alex.t.tran@gmail.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/78] NFSv4: Clear the NFS_CAP_FS_LOCATIONS flag if it is not set
+Subject: [PATCH 6.12 100/140] docs: networking: can: change bcm_msg_head frames member to support flexible array
 Date: Wed, 17 Sep 2025 14:34:32 +0200
-Message-ID: <20250917123329.843768183@linuxfoundation.org>
+Message-ID: <20250917123346.746926538@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Alex Tran <alex.t.tran@gmail.com>
 
-[ Upstream commit dd5a8621b886b02f8341c5d4ea68eb2c552ebd3e ]
+[ Upstream commit 641427d5bf90af0625081bf27555418b101274cd ]
 
-_nfs4_server_capabilities() is expected to clear any flags that are not
-supported by the server.
+The documentation of the 'bcm_msg_head' struct does not match how
+it is defined in 'bcm.h'. Changed the frames member to a flexible array,
+matching the definition in the header file.
 
-Fixes: 8a59bb93b7e3 ("NFSv4 store server support for fs_location attribute")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+flexible-array members")
+
+Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250904031709.1426895-1-alex.t.tran@gmail.com
+Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217783
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ Documentation/networking/can.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 29f189dc334fd..f8a91d15982dc 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3888,8 +3888,9 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
- 			res.attr_bitmask[2] &= FATTR4_WORD2_NFS42_MASK;
- 		}
- 		memcpy(server->attr_bitmask, res.attr_bitmask, sizeof(server->attr_bitmask));
--		server->caps &= ~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS |
--				  NFS_CAP_SYMLINKS| NFS_CAP_SECURITY_LABEL);
-+		server->caps &=
-+			~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS |
-+			  NFS_CAP_SECURITY_LABEL | NFS_CAP_FS_LOCATIONS);
- 		server->fattr_valid = NFS_ATTR_FATTR_V4;
- 		if (res.attr_bitmask[0] & FATTR4_WORD0_ACL &&
- 				res.acl_bitmask & ACL4_SUPPORT_ALLOW_ACL)
+diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
+index 62519d38c58ba..58cc609e8669b 100644
+--- a/Documentation/networking/can.rst
++++ b/Documentation/networking/can.rst
+@@ -742,7 +742,7 @@ The broadcast manager sends responses to user space in the same form:
+             struct timeval ival1, ival2;    /* count and subsequent interval */
+             canid_t can_id;                 /* unique can_id for task */
+             __u32 nframes;                  /* number of can_frames following */
+-            struct can_frame frames[0];
++            struct can_frame frames[];
+     };
+ 
+ The aligned payload 'frames' uses the same basic CAN frame structure defined
 -- 
 2.51.0
 
