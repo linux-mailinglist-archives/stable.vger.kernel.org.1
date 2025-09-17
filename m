@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-180016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE232B7E636
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B7AB7EA7A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30F43AB2F2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B48AC1891789
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958E531A812;
-	Wed, 17 Sep 2025 12:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8AD2FBE1D;
+	Wed, 17 Sep 2025 12:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yo5eeOo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtwxeWV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532DA31A80D;
-	Wed, 17 Sep 2025 12:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C39E1F462C;
+	Wed, 17 Sep 2025 12:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113111; cv=none; b=THFni5yHzO6hlYeGLeGGPT/lT6SWINAhz/uIzlbe9WmwefuGoD6L0vRcl+rCdr753aAtwu/z2iDM58QjKiYeA9uh0EMzKowbJA8f7ZI2uDQhanyacgpRsFUbCPgmoYFa9J10fOFW58ac4GSY94gk0kflb84MqKpfu628glHymZg=
+	t=1758113531; cv=none; b=BEkZU0E8V5EWeyyF0AVXr+Ig1jlbTc570Op1NTDw4N1jiqktFK1Iy+SAf7ShgNs45lvlu2p6+mCLNRm/5DfvIgHEQXafONfph/catdRl2rij+7FaXdBpaPSLAKTkXhSlE/kMy4CinPnpu97w7r8+rKkkCAdlMuvldDlylkHV4jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113111; c=relaxed/simple;
-	bh=oAbErMeYVWrXq1Wrp5xd1I4Wd28sfZTHxlwog0mKBCE=;
+	s=arc-20240116; t=1758113531; c=relaxed/simple;
+	bh=+iBSfQxsyKWhpFk+uYG1A9hAGZKQEeXeJrFgQOGkrhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvAGN4pZHdQOR3gzM8vbdK2UCecBizQM6QDu4yDtS318TGFzzDfMqAeD1wxYr+fZoxbdsvbxl9sNDV1562INIeH2ClEXqnTU2TXzRi1hNvTdf7GUfftRiCnmOwUdxH1g8RKku+BACQ7K4XD00N7XhCHYVu67cs/KBt785S7jsTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yo5eeOo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F2C4CEF0;
-	Wed, 17 Sep 2025 12:45:10 +0000 (UTC)
+	 MIME-Version; b=pZdOi1myLgv1y+ib++4H7sQvvFf6YCQB6jNUO8le0ZOD2YLJ0iDdvTOt+xIVZHHymQmZpbvAENQEUT2z37wemEVekYchisoaG4tXo2fkM590RnadGqnWmK2e5YwQHQfL1PveCwRcrKltEiA7HODTcGO+qRbjTroF39tdTxtx/Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtwxeWV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BD1C4CEF0;
+	Wed, 17 Sep 2025 12:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113111;
-	bh=oAbErMeYVWrXq1Wrp5xd1I4Wd28sfZTHxlwog0mKBCE=;
+	s=korg; t=1758113529;
+	bh=+iBSfQxsyKWhpFk+uYG1A9hAGZKQEeXeJrFgQOGkrhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yo5eeOo18svzYcBcdDyT2yfSY/QZwpV9FFuGwfpNkti51GeLyH6Stgu7kzUVNy0qE
-	 vlvgc7Q1pnC9sFSQyfeXI0y+i9iHsoFmaCoOckU6M18vdVMXCWOC2JPCq83GCSfXpa
-	 5nPJAnSR1wUrlNGyDydtW1gPlM56yBlo8AZ2B1SQ=
+	b=GtwxeWV6wt8K/sN6d9YS+NfZS+9E2Yb1PPYN4MIfYWcIzITas/EJtQtyvaqAO1I13
+	 +PKt888B3p56kUohjWje+w1K2nwaKDUXBoOyPrXrKvVNqDmb+vKTposagT+kp9TWVG
+	 CcDfuh5qhSIMtEl/CW1qQlchy5xuS9LSLb4AV/F8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <akemnade@kernel.org>,
-	Alistair Francis <alistair@alistair23.me>,
-	Peng Fan <peng.fan@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 175/189] regulator: sy7636a: fix lifecycle of power good gpio
+Subject: [PATCH 6.12 113/140] netfilter: nf_tables: Reintroduce shortened deletion notifications
 Date: Wed, 17 Sep 2025 14:34:45 +0200
-Message-ID: <20250917123356.158713352@linuxfoundation.org>
+Message-ID: <20250917123347.067172658@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <akemnade@kernel.org>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit c05d0b32eebadc8be6e53196e99c64cf2bed1d99 ]
+[ Upstream commit a1050dd071682d2c9d8d6d5c96119f8f401b62f0 ]
 
-Attach the power good gpio to the regulator device devres instead of the
-parent device to fix problems if probe is run multiple times
-(rmmod/insmod or some deferral).
+Restore commit 28339b21a365 ("netfilter: nf_tables: do not send complete
+notification of deletions") and fix it:
 
-Fixes: 8c485bedfb785 ("regulator: sy7636a: Initial commit")
-Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
-Reviewed-by: Alistair Francis <alistair@alistair23.me>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Message-ID: <20250906-sy7636-rsrc-v1-2-e2886a9763a7@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+- Avoid upfront modification of 'event' variable so the conditionals
+  become effective.
+- Always include NFTA_OBJ_TYPE attribute in object notifications, user
+  space requires it for proper deserialisation.
+- Catch DESTROY events, too.
+
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: b2f742c846ca ("netfilter: nf_tables: restart set lookup on base_seq change")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/sy7636a-regulator.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 67 ++++++++++++++++++++++++++---------
+ 1 file changed, 50 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/regulator/sy7636a-regulator.c b/drivers/regulator/sy7636a-regulator.c
-index d1e7ba1fb3e1a..27e3d939b7bb9 100644
---- a/drivers/regulator/sy7636a-regulator.c
-+++ b/drivers/regulator/sy7636a-regulator.c
-@@ -83,9 +83,11 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
- 	if (!regmap)
- 		return -EPROBE_DEFER;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3743e4249dc8c..4430bfa34a993 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1017,9 +1017,9 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
+ {
+ 	struct nlmsghdr *nlh;
  
--	gdp = devm_gpiod_get(pdev->dev.parent, "epd-pwr-good", GPIOD_IN);
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+@@ -1029,6 +1029,12 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_TABLE_PAD))
+ 		goto nla_put_failure;
+ 
++	if (event == NFT_MSG_DELTABLE ||
++	    event == NFT_MSG_DESTROYTABLE) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
 +
-+	gdp = devm_gpiod_get(&pdev->dev, "epd-pwr-good", GPIOD_IN);
- 	if (IS_ERR(gdp)) {
--		dev_err(pdev->dev.parent, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
-+		dev_err(&pdev->dev, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
- 		return PTR_ERR(gdp);
- 	}
+ 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
+ 			 htonl(table->flags & NFT_TABLE_F_MASK)))
+ 		goto nla_put_failure;
+@@ -1872,9 +1878,9 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
+ {
+ 	struct nlmsghdr *nlh;
  
-@@ -105,7 +107,6 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
- 	}
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
  
- 	config.dev = &pdev->dev;
--	config.dev->of_node = pdev->dev.parent->of_node;
- 	config.regmap = regmap;
+@@ -1884,6 +1890,13 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_CHAIN_PAD))
+ 		goto nla_put_failure;
  
- 	rdev = devm_regulator_register(&pdev->dev, &desc, &config);
++	if (!hook_list &&
++	    (event == NFT_MSG_DELCHAIN ||
++	     event == NFT_MSG_DESTROYCHAIN)) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
++
+ 	if (nft_is_base_chain(chain)) {
+ 		const struct nft_base_chain *basechain = nft_base_chain(chain);
+ 		struct nft_stats __percpu *stats;
+@@ -4654,9 +4667,10 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 	u32 seq = ctx->seq;
+ 	int i;
+ 
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, ctx->family,
+-			   NFNETLINK_V0, nft_base_seq(ctx->net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, ctx->family, NFNETLINK_V0,
++			   nft_base_seq(ctx->net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+@@ -4668,6 +4682,12 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			 NFTA_SET_PAD))
+ 		goto nla_put_failure;
+ 
++	if (event == NFT_MSG_DELSET ||
++	    event == NFT_MSG_DESTROYSET) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
++
+ 	if (set->flags != 0)
+ 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
+ 			goto nla_put_failure;
+@@ -7990,20 +8010,26 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
+ {
+ 	struct nlmsghdr *nlh;
+ 
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_string(skb, NFTA_OBJ_TABLE, table->name) ||
+ 	    nla_put_string(skb, NFTA_OBJ_NAME, obj->key.name) ||
++	    nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
+ 	    nla_put_be64(skb, NFTA_OBJ_HANDLE, cpu_to_be64(obj->handle),
+ 			 NFTA_OBJ_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
+-	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
++	if (event == NFT_MSG_DELOBJ ||
++	    event == NFT_MSG_DESTROYOBJ) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
++
++	if (nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
+ 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
+ 		goto nla_put_failure;
+ 
+@@ -9008,9 +9034,9 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
+ 	struct nft_hook *hook;
+ 	struct nlmsghdr *nlh;
+ 
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+@@ -9020,6 +9046,13 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_FLOWTABLE_PAD))
+ 		goto nla_put_failure;
+ 
++	if (!hook_list &&
++	    (event == NFT_MSG_DELFLOWTABLE ||
++	     event == NFT_MSG_DESTROYFLOWTABLE)) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
++
+ 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
+ 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
+ 		goto nla_put_failure;
 -- 
 2.51.0
 
