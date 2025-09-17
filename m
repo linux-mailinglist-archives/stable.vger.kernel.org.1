@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DB5B7EFE9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE581B7E627
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AD9F4A46C1
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FEFD1894940
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C66C30F933;
-	Wed, 17 Sep 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C42A30C63E;
+	Wed, 17 Sep 2025 12:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6wNNdXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWtbY3dt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3973931A7EE;
-	Wed, 17 Sep 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099202E7BA0;
+	Wed, 17 Sep 2025 12:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113767; cv=none; b=J8fmi4ZFGtlYeShL2xWfiJG2pNX8s8vXTO+sih69ODTqXyCtnUDihxTBriytT2FJPhoNscN0DqSrY5hAi4/WsiA3lyXG5zfNJR1W4M+Ppr2/SK55prp5NeXJ0kRUGa9VgKCi40EeyqyPZpRSzecwtYxCecsEe9VzaLvjgCF2J1Y=
+	t=1758113179; cv=none; b=utKar5uNfcvhDO6Cd7gyQsDVvC2W5wVuCEXgKQYMyREg52ADM9CjN4V2He2CgHcFwdUVc7zLJD8Bvyei/lAokCWsyXgVx3dYx7qLEvLnzbwwTljoaUTDc4nA6Z9gvcgqBKRlPz6gw8sr6WkecdMkTiicOBnt8KHwQkkcxeRXyPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113767; c=relaxed/simple;
-	bh=JSXYldzeB6rjPnoVuHU+cFQQTO2/BqVoEgq/Ix0kgpg=;
+	s=arc-20240116; t=1758113179; c=relaxed/simple;
+	bh=YWgz6SnJQqYrMw72hZ4NmyEbrcLxel0b0YhD7hsYeTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckEIdkm9AogFzsIZgd7EmSfuZcuJYmqkbs/HcgAOowCq6E329dut9sg7vj9BTyEvk4OkobwRu0HzGQM7a2ImE9ro1S5IqY9KDUP/8UBat99WYM15CHsiBh+olI0axkf9ANrpe3gl/hOs+Fn73avw6P9kFs2y5Cw2HEttfAIeIKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6wNNdXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81B9C4CEF0;
-	Wed, 17 Sep 2025 12:56:06 +0000 (UTC)
+	 MIME-Version; b=g6gtbSpE4z5BN8Hnt5vJpA4AAcLmXsc+bEinoN5Z/fmRCdP/HnIo4P9dBkae6OhxW5XO8G+Bg8W0HgxO0Qul1KKsO5VA7zkmHf4SYYFc3bLdOX+NYJS40ZO+T+2vmckzKAjsrgFiJZz/BEA/TQP0eFlhuEkJi3iggXFOZNLQfd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWtbY3dt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7893BC4CEF0;
+	Wed, 17 Sep 2025 12:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113767;
-	bh=JSXYldzeB6rjPnoVuHU+cFQQTO2/BqVoEgq/Ix0kgpg=;
+	s=korg; t=1758113178;
+	bh=YWgz6SnJQqYrMw72hZ4NmyEbrcLxel0b0YhD7hsYeTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6wNNdXunkqoB4Gpycs+WvLP0xOmZ0olLYasTkFHVzFNx4HhvtkuV6bQE6lZ/oG59
-	 KG9ad3egeHSg30tT9Atvb0zI9loY6AzId5w0DNiLyzJOZgWaTG9vl5Z4O+7fKkto1V
-	 3CPzWpbxuszYbubTm5pjxvoAMH3WDp+4XslzPb3c=
+	b=NWtbY3dtfPhnbr/Xh+imqISUTS3iHFTxJuGFzekhH1ojhCW6wcVsCqT8F33bIk4Fo
+	 egmn8bGIegP0QnIGzGpFSuAWGe8fjt271t7jJZw2Tx/wyv5jbYB1ih7VDqSXxl4Ioa
+	 jdXANpduekbf1hjNRehx2w0Ki/xRSvQKHo7YHqFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 046/101] drm/amdgpu/vcn4: Fix IB parsing with multiple engine info packages
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 159/189] netfilter: nf_tables: Reintroduce shortened deletion notifications
 Date: Wed, 17 Sep 2025 14:34:29 +0200
-Message-ID: <20250917123337.956801292@linuxfoundation.org>
+Message-ID: <20250917123355.761286403@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Phil Sutter <phil@nwl.cc>
 
-commit 2b10cb58d7a3fd621ec9b2ba765a092e562ef998 upstream.
+[ Upstream commit a1050dd071682d2c9d8d6d5c96119f8f401b62f0 ]
 
-There can be multiple engine info packages in one IB and the first one
-may be common engine, not decode/encode.
-We need to parse the entire IB instead of stopping after finding first
-engine info.
+Restore commit 28339b21a365 ("netfilter: nf_tables: do not send complete
+notification of deletions") and fix it:
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit dc8f9f0f45166a6b37864e7a031c726981d6e5fc)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Avoid upfront modification of 'event' variable so the conditionals
+  become effective.
+- Always include NFTA_OBJ_TYPE attribute in object notifications, user
+  space requires it for proper deserialisation.
+- Catch DESTROY events, too.
+
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: b2f742c846ca ("netfilter: nf_tables: restart set lookup on base_seq change")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |   52 +++++++++++++---------------------
- 1 file changed, 21 insertions(+), 31 deletions(-)
+ net/netfilter/nf_tables_api.c | 67 ++++++++++++++++++++++++++---------
+ 1 file changed, 50 insertions(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-@@ -1747,22 +1747,16 @@ out:
- 
- #define RADEON_VCN_ENGINE_TYPE_ENCODE			(0x00000002)
- #define RADEON_VCN_ENGINE_TYPE_DECODE			(0x00000003)
--
- #define RADEON_VCN_ENGINE_INFO				(0x30000001)
--#define RADEON_VCN_ENGINE_INFO_MAX_OFFSET		16
--
- #define RENCODE_ENCODE_STANDARD_AV1			2
- #define RENCODE_IB_PARAM_SESSION_INIT			0x00000003
--#define RENCODE_IB_PARAM_SESSION_INIT_MAX_OFFSET	64
- 
--/* return the offset in ib if id is found, -1 otherwise
-- * to speed up the searching we only search upto max_offset
-- */
--static int vcn_v4_0_enc_find_ib_param(struct amdgpu_ib *ib, uint32_t id, int max_offset)
-+/* return the offset in ib if id is found, -1 otherwise */
-+static int vcn_v4_0_enc_find_ib_param(struct amdgpu_ib *ib, uint32_t id, int start)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 0e86434ca13b0..3a443765d7e90 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1153,9 +1153,9 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
  {
+ 	struct nlmsghdr *nlh;
+ 
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+@@ -1165,6 +1165,12 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_TABLE_PAD))
+ 		goto nla_put_failure;
+ 
++	if (event == NFT_MSG_DELTABLE ||
++	    event == NFT_MSG_DESTROYTABLE) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
++
+ 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
+ 			 htonl(table->flags & NFT_TABLE_F_MASK)))
+ 		goto nla_put_failure;
+@@ -2022,9 +2028,9 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
+ {
+ 	struct nlmsghdr *nlh;
+ 
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+@@ -2034,6 +2040,13 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_CHAIN_PAD))
+ 		goto nla_put_failure;
+ 
++	if (!hook_list &&
++	    (event == NFT_MSG_DELCHAIN ||
++	     event == NFT_MSG_DESTROYCHAIN)) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
++
+ 	if (nft_is_base_chain(chain)) {
+ 		const struct nft_base_chain *basechain = nft_base_chain(chain);
+ 		struct nft_stats __percpu *stats;
+@@ -4871,9 +4884,10 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 	u32 seq = ctx->seq;
  	int i;
  
--	for (i = 0; i < ib->length_dw && i < max_offset && ib->ptr[i] >= 8; i += ib->ptr[i]/4) {
-+	for (i = start; i < ib->length_dw && ib->ptr[i] >= 8; i += ib->ptr[i] / 4) {
- 		if (ib->ptr[i + 1] == id)
- 			return i;
- 	}
-@@ -1777,33 +1771,29 @@ static int vcn_v4_0_ring_patch_cs_in_pla
- 	struct amdgpu_vcn_decode_buffer *decode_buffer;
- 	uint64_t addr;
- 	uint32_t val;
--	int idx;
-+	int idx = 0, sidx;
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, ctx->family,
+-			   NFNETLINK_V0, nft_base_seq(ctx->net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, ctx->family, NFNETLINK_V0,
++			   nft_base_seq(ctx->net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
  
- 	/* The first instance can decode anything */
- 	if (!ring->me)
- 		return 0;
+@@ -4885,6 +4899,12 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			 NFTA_SET_PAD))
+ 		goto nla_put_failure;
  
--	/* RADEON_VCN_ENGINE_INFO is at the top of ib block */
--	idx = vcn_v4_0_enc_find_ib_param(ib, RADEON_VCN_ENGINE_INFO,
--			RADEON_VCN_ENGINE_INFO_MAX_OFFSET);
--	if (idx < 0) /* engine info is missing */
--		return 0;
--
--	val = amdgpu_ib_get_value(ib, idx + 2); /* RADEON_VCN_ENGINE_TYPE */
--	if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {
--		decode_buffer = (struct amdgpu_vcn_decode_buffer *)&ib->ptr[idx + 6];
--
--		if (!(decode_buffer->valid_buf_flag  & 0x1))
--			return 0;
--
--		addr = ((u64)decode_buffer->msg_buffer_address_hi) << 32 |
--			decode_buffer->msg_buffer_address_lo;
--		return vcn_v4_0_dec_msg(p, job, addr);
--	} else if (val == RADEON_VCN_ENGINE_TYPE_ENCODE) {
--		idx = vcn_v4_0_enc_find_ib_param(ib, RENCODE_IB_PARAM_SESSION_INIT,
--			RENCODE_IB_PARAM_SESSION_INIT_MAX_OFFSET);
--		if (idx >= 0 && ib->ptr[idx + 2] == RENCODE_ENCODE_STANDARD_AV1)
--			return vcn_v4_0_limit_sched(p, job);
-+	while ((idx = vcn_v4_0_enc_find_ib_param(ib, RADEON_VCN_ENGINE_INFO, idx)) >= 0) {
-+		val = amdgpu_ib_get_value(ib, idx + 2); /* RADEON_VCN_ENGINE_TYPE */
-+		if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {
-+			decode_buffer = (struct amdgpu_vcn_decode_buffer *)&ib->ptr[idx + 6];
++	if (event == NFT_MSG_DELSET ||
++	    event == NFT_MSG_DESTROYSET) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
 +
-+			if (!(decode_buffer->valid_buf_flag & 0x1))
-+				return 0;
+ 	if (set->flags != 0)
+ 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
+ 			goto nla_put_failure;
+@@ -8359,20 +8379,26 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
+ {
+ 	struct nlmsghdr *nlh;
+ 
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_string(skb, NFTA_OBJ_TABLE, table->name) ||
+ 	    nla_put_string(skb, NFTA_OBJ_NAME, obj->key.name) ||
++	    nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
+ 	    nla_put_be64(skb, NFTA_OBJ_HANDLE, cpu_to_be64(obj->handle),
+ 			 NFTA_OBJ_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
+-	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
++	if (event == NFT_MSG_DELOBJ ||
++	    event == NFT_MSG_DESTROYOBJ) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
 +
-+			addr = ((u64)decode_buffer->msg_buffer_address_hi) << 32 |
-+				decode_buffer->msg_buffer_address_lo;
-+			return vcn_v4_0_dec_msg(p, job, addr);
-+		} else if (val == RADEON_VCN_ENGINE_TYPE_ENCODE) {
-+			sidx = vcn_v4_0_enc_find_ib_param(ib, RENCODE_IB_PARAM_SESSION_INIT, idx);
-+			if (sidx >= 0 && ib->ptr[sidx + 2] == RENCODE_ENCODE_STANDARD_AV1)
-+				return vcn_v4_0_limit_sched(p, job);
-+		}
-+		idx += ib->ptr[idx] / 4;
- 	}
- 	return 0;
- }
++	if (nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
+ 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
+ 		goto nla_put_failure;
+ 
+@@ -9413,9 +9439,9 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
+ 	struct nft_hook *hook;
+ 	struct nlmsghdr *nlh;
+ 
+-	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
+-	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
+-			   NFNETLINK_V0, nft_base_seq(net));
++	nlh = nfnl_msg_put(skb, portid, seq,
++			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
++			   flags, family, NFNETLINK_V0, nft_base_seq(net));
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
+@@ -9425,6 +9451,13 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_FLOWTABLE_PAD))
+ 		goto nla_put_failure;
+ 
++	if (!hook_list &&
++	    (event == NFT_MSG_DELFLOWTABLE ||
++	     event == NFT_MSG_DESTROYFLOWTABLE)) {
++		nlmsg_end(skb, nlh);
++		return 0;
++	}
++
+ 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
+ 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
+ 		goto nla_put_failure;
+-- 
+2.51.0
+
 
 
 
