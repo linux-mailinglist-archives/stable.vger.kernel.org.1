@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF83B7E8DC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4412B7EF64
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63131890197
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62E7A1753DB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E29A1F460B;
-	Wed, 17 Sep 2025 12:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B79332A40;
+	Wed, 17 Sep 2025 12:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yx4tsWOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwIC+dvH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF53731BC88;
-	Wed, 17 Sep 2025 12:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCA8332A3A;
+	Wed, 17 Sep 2025 12:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113400; cv=none; b=Ozyz2hBocpp+3AsVCHuNbAuoYQ2MlS3alD0qIonbX/nSHu+2JnpjmRCSV3iQsd9pwPKFwlkwzSnznSUpV2NhUNriyTRYa189DYWHzu+SqR5OJqe9+4SJ8oZ4a/auVkNM9ITvw/dQJHkjDzra1wM65e4MinoL3umtpfKzSwl6qrk=
+	t=1758113805; cv=none; b=tMM82LYMLjKWwDcwl81ncQpTPNOJvj+RCEGTxwA0AkxX8JJO7+KdK/5ozyP3U2q9vnbr0Ff+CYAg8gv5RjsyAHwG3+CWdmwzvu5DOKQTgvAzcSwhViYS+SzjDFkw1BD/efwxjappV4gByueP/VtanMMo2bKVJBnhQY4RBi8SfjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113400; c=relaxed/simple;
-	bh=muIZj2gD+w8vQIJ5LagQD+PeVxbFNLid7tCgANVIsnw=;
+	s=arc-20240116; t=1758113805; c=relaxed/simple;
+	bh=6F3PON2DzhSXnsJNjGIQnHEcxsGloG+mwaRhz2MseAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h39IuC+Pa2LDLxamjRcY06rU/Bno4y9pd76BBDKABrL6/nQ07k0OmrUGjE+PnV9y0rDed9b478GsK1fnq4XLq+BU1bJ878nJshBZJQ9qrhFYiWgbtdUCdXUI/kgMTr8ur8Hs7Pq6y9IUIe1PDJ4efWmg7HXNvSVh7MN05Mb+04U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yx4tsWOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B955C4CEF0;
-	Wed, 17 Sep 2025 12:49:59 +0000 (UTC)
+	 MIME-Version; b=OK7gITdNYJ/l6d8CJb03ITm+gBz4dvrmnEgC5hDmVQ5+d68FLV1HJbFTJVbLU/FNZYiSUbBezZaDzfOwE18S8ZeQrcb0f4fySHB3HLF1A+DW/QLBScVbDvvZ8VX3KVGHTV6JpZ3m806g8OJVPkVR49z1jeBSU9XbbypkcUD6ZjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwIC+dvH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F97C4CEF5;
+	Wed, 17 Sep 2025 12:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113400;
-	bh=muIZj2gD+w8vQIJ5LagQD+PeVxbFNLid7tCgANVIsnw=;
+	s=korg; t=1758113805;
+	bh=6F3PON2DzhSXnsJNjGIQnHEcxsGloG+mwaRhz2MseAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yx4tsWOb7Oby2oB4nMfB+2cmGVEO4iVasMv+KPL/E8cRo6l89N4BT2JPn3N4nvfc6
-	 ajmZNSvZx5egR2H92FobPITh/qFexo1D6pyR+8xT34VloreCxxXXwGdviAlvgfvuKl
-	 vT44fcckiQb368+bYsLG2gZHu4gklErXi3bjCiUs=
+	b=HwIC+dvHovlMXNCD0djOdqX42XiUl9ZIQUzdtAsd8zytMWn6AngQF97c5cHhy3kQu
+	 PJcq/8robTSjR2/UnkljZEbck1SH33ZWhqlt81u7oqDksZR9dQC/Oc4R1FxN2LPNfF
+	 OI7N7nzB19vwXOOJTP4jfiD6LC5J24unwKoNoui4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Curley <jcurley@purestorage.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/140] netlink: specs: mptcp: clearly mention attributes
+Subject: [PATCH 6.6 021/101] NFSv4/flexfiles: Fix layout merge mirror check.
 Date: Wed, 17 Sep 2025 14:34:04 +0200
-Message-ID: <20250917123346.067951334@linuxfoundation.org>
+Message-ID: <20250917123337.371249263@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,197 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Jonathan Curley <jcurley@purestorage.com>
 
-[ Upstream commit bea87657b5ee8e6f18af2833ee4b88212ef52d28 ]
+[ Upstream commit dd2fa82473453661d12723c46c9f43d9876a7efd ]
 
-The rendered version of the MPTCP events [1] looked strange, because the
-whole content of the 'doc' was displayed in the same block.
+Typo in ff_lseg_match_mirrors makes the diff ineffective. This results
+in merge happening all the time. Merge happening all the time is
+problematic because it marks lsegs invalid. Marking lsegs invalid
+causes all outstanding IO to get restarted with EAGAIN and connections
+to get closed.
 
-It was then not clear that the first words, not even ended by a period,
-were the attributes that are defined when such events are emitted. These
-attributes have now been moved to the end, prefixed by 'Attributes:' and
-ended with a period. Note that '>-' has been added after 'doc:' to allow
-':' in the text below.
+Closing connections constantly triggers race conditions in the RDMA
+implementation...
 
-The documentation in the UAPI header has been auto-generated by:
-
-  ./tools/net/ynl/ynl-regen.sh
-
-Link: https://docs.kernel.org/networking/netlink_spec/mptcp_pm.html#event-type [1]
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-2-e54f2db3f844@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7094b84863e5 ("netlink: specs: mptcp: fix if-idx attribute type")
+Fixes: 660d1eb22301c ("pNFS/flexfile: Don't merge layout segments if the mirrors don't match")
+Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/netlink/specs/mptcp_pm.yaml |   50 ++++++++++++++--------------
- include/uapi/linux/mptcp_pm.h             |   53 +++++++++++++++---------------
- 2 files changed, 52 insertions(+), 51 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/netlink/specs/mptcp_pm.yaml
-+++ b/Documentation/netlink/specs/mptcp_pm.yaml
-@@ -22,67 +22,67 @@ definitions:
-       doc: unused event
-      -
-       name: created
--      doc:
--        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
--        server-side
-+      doc: >-
-         A new MPTCP connection has been created. It is the good time to
-         allocate memory and send ADD_ADDR if needed. Depending on the
-         traffic-patterns it can take a long time until the
-         MPTCP_EVENT_ESTABLISHED is sent.
-+        Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
-+        dport, server-side.
-      -
-       name: established
--      doc:
--        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
--        server-side
-+      doc: >-
-         A MPTCP connection is established (can start new subflows).
-+        Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
-+        dport, server-side.
-      -
-       name: closed
--      doc:
--        token
-+      doc: >-
-         A MPTCP connection has stopped.
-+        Attribute: token.
-      -
-       name: announced
-       value: 6
--      doc:
--        token, rem_id, family, daddr4 | daddr6 [, dport]
-+      doc: >-
-         A new address has been announced by the peer.
-+        Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
-      -
-       name: removed
--      doc:
--        token, rem_id
-+      doc: >-
-         An address has been lost by the peer.
-+        Attributes: token, rem_id.
-      -
-       name: sub-established
-       value: 10
--      doc:
--        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
--        dport, backup, if_idx [, error]
-+      doc: >-
-         A new subflow has been established. 'error' should not be set.
-+        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
-+        daddr6, sport, dport, backup, if_idx [, error].
-      -
-       name: sub-closed
--      doc:
--        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
--        dport, backup, if_idx [, error]
-+      doc: >-
-         A subflow has been closed. An error (copy of sk_err) could be set if an
-         error has been detected for this subflow.
-+        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
-+        daddr6, sport, dport, backup, if_idx [, error].
-      -
-       name: sub-priority
-       value: 13
--      doc:
--        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
--        dport, backup, if_idx [, error]
-+      doc: >-
-         The priority of a subflow has changed. 'error' should not be set.
-+        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
-+        daddr6, sport, dport, backup, if_idx [, error].
-      -
-       name: listener-created
-       value: 15
--      doc:
--        family, sport, saddr4 | saddr6
-+      doc: >-
-         A new PM listener is created.
-+        Attributes: family, sport, saddr4 | saddr6.
-      -
-       name: listener-closed
--      doc:
--        family, sport, saddr4 | saddr6
-+      doc: >-
-         A PM listener is closed.
-+        Attributes: family, sport, saddr4 | saddr6.
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index b05dd4d3ed653..42c73c647a27f 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -276,7 +276,7 @@ ff_lseg_match_mirrors(struct pnfs_layout_segment *l1,
+ 		struct pnfs_layout_segment *l2)
+ {
+ 	const struct nfs4_ff_layout_segment *fl1 = FF_LAYOUT_LSEG(l1);
+-	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l1);
++	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l2);
+ 	u32 i;
  
- attribute-sets:
-   -
---- a/include/uapi/linux/mptcp_pm.h
-+++ b/include/uapi/linux/mptcp_pm.h
-@@ -12,32 +12,33 @@
- /**
-  * enum mptcp_event_type
-  * @MPTCP_EVENT_UNSPEC: unused event
-- * @MPTCP_EVENT_CREATED: token, family, saddr4 | saddr6, daddr4 | daddr6,
-- *   sport, dport, server-side A new MPTCP connection has been created. It is
-- *   the good time to allocate memory and send ADD_ADDR if needed. Depending on
-- *   the traffic-patterns it can take a long time until the
-- *   MPTCP_EVENT_ESTABLISHED is sent.
-- * @MPTCP_EVENT_ESTABLISHED: token, family, saddr4 | saddr6, daddr4 | daddr6,
-- *   sport, dport, server-side A MPTCP connection is established (can start new
-- *   subflows).
-- * @MPTCP_EVENT_CLOSED: token A MPTCP connection has stopped.
-- * @MPTCP_EVENT_ANNOUNCED: token, rem_id, family, daddr4 | daddr6 [, dport] A
-- *   new address has been announced by the peer.
-- * @MPTCP_EVENT_REMOVED: token, rem_id An address has been lost by the peer.
-- * @MPTCP_EVENT_SUB_ESTABLISHED: token, family, loc_id, rem_id, saddr4 |
-- *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error] A new
-- *   subflow has been established. 'error' should not be set.
-- * @MPTCP_EVENT_SUB_CLOSED: token, family, loc_id, rem_id, saddr4 | saddr6,
-- *   daddr4 | daddr6, sport, dport, backup, if_idx [, error] A subflow has been
-- *   closed. An error (copy of sk_err) could be set if an error has been
-- *   detected for this subflow.
-- * @MPTCP_EVENT_SUB_PRIORITY: token, family, loc_id, rem_id, saddr4 | saddr6,
-- *   daddr4 | daddr6, sport, dport, backup, if_idx [, error] The priority of a
-- *   subflow has changed. 'error' should not be set.
-- * @MPTCP_EVENT_LISTENER_CREATED: family, sport, saddr4 | saddr6 A new PM
-- *   listener is created.
-- * @MPTCP_EVENT_LISTENER_CLOSED: family, sport, saddr4 | saddr6 A PM listener
-- *   is closed.
-+ * @MPTCP_EVENT_CREATED: A new MPTCP connection has been created. It is the
-+ *   good time to allocate memory and send ADD_ADDR if needed. Depending on the
-+ *   traffic-patterns it can take a long time until the MPTCP_EVENT_ESTABLISHED
-+ *   is sent. Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
-+ *   sport, dport, server-side.
-+ * @MPTCP_EVENT_ESTABLISHED: A MPTCP connection is established (can start new
-+ *   subflows). Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
-+ *   sport, dport, server-side.
-+ * @MPTCP_EVENT_CLOSED: A MPTCP connection has stopped. Attribute: token.
-+ * @MPTCP_EVENT_ANNOUNCED: A new address has been announced by the peer.
-+ *   Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
-+ * @MPTCP_EVENT_REMOVED: An address has been lost by the peer. Attributes:
-+ *   token, rem_id.
-+ * @MPTCP_EVENT_SUB_ESTABLISHED: A new subflow has been established. 'error'
-+ *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
-+ *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
-+ * @MPTCP_EVENT_SUB_CLOSED: A subflow has been closed. An error (copy of
-+ *   sk_err) could be set if an error has been detected for this subflow.
-+ *   Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
-+ *   daddr6, sport, dport, backup, if_idx [, error].
-+ * @MPTCP_EVENT_SUB_PRIORITY: The priority of a subflow has changed. 'error'
-+ *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
-+ *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
-+ * @MPTCP_EVENT_LISTENER_CREATED: A new PM listener is created. Attributes:
-+ *   family, sport, saddr4 | saddr6.
-+ * @MPTCP_EVENT_LISTENER_CLOSED: A PM listener is closed. Attributes: family,
-+ *   sport, saddr4 | saddr6.
-  */
- enum mptcp_event_type {
- 	MPTCP_EVENT_UNSPEC,
+ 	if (fl1->mirror_array_cnt != fl2->mirror_array_cnt)
+-- 
+2.51.0
+
 
 
 
