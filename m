@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-180291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61152B7F081
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:12:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C5DB7EF6D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AFF1C261D4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8520316D059
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3DE333AA3;
-	Wed, 17 Sep 2025 12:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC79A2EBBB2;
+	Wed, 17 Sep 2025 12:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWlldLq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fys+dozH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BBB333A9F;
-	Wed, 17 Sep 2025 12:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB3572602;
+	Wed, 17 Sep 2025 12:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113990; cv=none; b=miyhoyIcst5hH3SYXbfw6NtjG0kU/kcQ3eHPFAe8k0szjEkC+lyKtfNcAPaQ9kMrnNBiwOX5kwiAig7VymLM51t34jOrDerngP45Laov1n3DuKCfqtWyg5l3guRfCeqIOHIjWkQ4GeETYGLoghxqLe+Prlry8iWgcIARXnw8a6Q=
+	t=1758113789; cv=none; b=KWMMnuFN4alhdeBKGQRAqBiiGaecK4ixVyEfpZyphrkMQvpLom4C2ETI9c4vVXlinSSq5pGQhhNjL1hE+Rs2m8MVZZa5YXcekHgk/pLn+Z+mD5gupDUepf+5gJfXD6xtlSGOchB/uqAzd/b7kkSEvQzVjqy0T2vdICSmWUPpFhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113990; c=relaxed/simple;
-	bh=YTSPhMCkD9NsRv3ot8YUikNJHMGr4W8/fMp/zLvhHac=;
+	s=arc-20240116; t=1758113789; c=relaxed/simple;
+	bh=gqMK87WtcRSDc0RZaXYkxKYJeama7l7cchXVpdWX650=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4V1goYESWdtXfRmBWVgc42+v0ddf+FrLMVEed8+pIARc4ApT3mP58mQSGCi3uJPK5UmWe2NXK5zFqWc7L3QpTAU5FYDs4JCDnT9WEcyAW0xrp9Xe3r5XthcyMteTZiAfxUDxutQjhtnc7MHMg02Sf6YBmGEbup37o6lW/fY7fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWlldLq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45ECC4CEF5;
-	Wed, 17 Sep 2025 12:59:49 +0000 (UTC)
+	 MIME-Version; b=n+X68PB9QehDe8E8PpZ3heY0/3VimsozQhTIuRoMdbJD//nHHbeBhWy9C2MzHFXCfHQoGUCcnF3bdXNHaAWE570zLiZ84NJ72BX71wscGs6UM3Ro7hS/XIbmqXMF2/tL+vyorXYtTytMMFkn4loFohJ9zqedGMhED1U7sAxJlFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fys+dozH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2424C4CEF5;
+	Wed, 17 Sep 2025 12:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113990;
-	bh=YTSPhMCkD9NsRv3ot8YUikNJHMGr4W8/fMp/zLvhHac=;
+	s=korg; t=1758113789;
+	bh=gqMK87WtcRSDc0RZaXYkxKYJeama7l7cchXVpdWX650=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWlldLq4UlbRjUWOe/owj/1n/XB+0Utbgqd/pTKFe+IhC2XECz1GnZxoT07IzJ7jq
-	 6mexFX5DMknLQaHTlnajhoe6wor7SLmw4rD3iSia1hSSzKghIlvT1JFovuYhCR/fLE
-	 HbUD3PI2g+lQIh2kEnYh8lRb0xtHaAgDwwM857hs=
+	b=Fys+dozHVSwN2RSBKRMbi0SlhU4Wkf3XmccTw0Q3AlIAfwAaQbNBI229GuYIQCig/
+	 p5cmLVngw0V3Dv8ZlxprekjlO20yOZ72Ioc4aDjfeAPhlz+Uizh0UMEI9q9Na1kdk1
+	 xtv0XzGycPg8aqMt9uCHWZb4292uZwIwKY8cNRuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/78] ftrace/samples: Fix function size computation
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	SeongJae Park <sj@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	ze zuo <zuoze1@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 052/101] mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
 Date: Wed, 17 Sep 2025 14:34:35 +0200
-Message-ID: <20250917123329.916686583@linuxfoundation.org>
+Message-ID: <20250917123338.100857133@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Quanmin Yan <yanquanmin1@huawei.com>
 
-[ Upstream commit 80d03a40837a9b26750a25122b906c052cc846c9 ]
+commit 711f19dfd783ffb37ca4324388b9c4cb87e71363 upstream.
 
-In my_tramp1 function .size directive was placed above
-ASM_RET instruction, leading to a wrong function size.
+Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
+application".
 
-Link: https://lore.kernel.org/aK3d7vxNcO52kEmg@vova-pc
-Fixes: 9d907f1ae80b ("samples/ftrace: Fix asm function ELF annotations")
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+DAMON's RECLAIM and LRU_SORT modules perform no validation on
+user-configured parameters during application, which may lead to
+division-by-zero errors.
+
+Avoid the divide-by-zero by adding validation checks when DAMON modules
+attempt to apply the parameters.
+
+
+This patch (of 2):
+
+During the calculation of 'hot_thres' and 'cold_thres', either
+'sample_interval' or 'aggr_interval' is used as the divisor, which may
+lead to division-by-zero errors.  Fix it by directly returning -EINVAL
+when such a case occurs.  Additionally, since 'aggr_interval' is already
+required to be set no smaller than 'sample_interval' in damon_set_attrs(),
+only the case where 'sample_interval' is zero needs to be checked.
+
+Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.0+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/ftrace/ftrace-direct-modify.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/lru_sort.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/samples/ftrace/ftrace-direct-modify.c b/samples/ftrace/ftrace-direct-modify.c
-index 39146fa83e20b..cbef49649ce01 100644
---- a/samples/ftrace/ftrace-direct-modify.c
-+++ b/samples/ftrace/ftrace-direct-modify.c
-@@ -36,8 +36,8 @@ asm (
- "	movq %rsp, %rbp\n"
- "	call my_direct_func1\n"
- "	leave\n"
--"	.size		my_tramp1, .-my_tramp1\n"
- 	ASM_RET
-+"	.size		my_tramp1, .-my_tramp1\n"
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -203,6 +203,9 @@ static int damon_lru_sort_apply_paramete
+ 	unsigned int hot_thres, cold_thres;
+ 	int err = 0;
  
- "	.type		my_tramp2, @function\n"
- "	.globl		my_tramp2\n"
--- 
-2.51.0
-
++	if (!damon_lru_sort_mon_attrs.sample_interval)
++		return -EINVAL;
++
+ 	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
+ 	if (err)
+ 		return err;
 
 
 
