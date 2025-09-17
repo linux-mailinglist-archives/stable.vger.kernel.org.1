@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-179996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE900B7E372
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F1BB7E8D3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F5361B24480
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:44:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C3C62212A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8AF283FE9;
-	Wed, 17 Sep 2025 12:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BF034F481;
+	Wed, 17 Sep 2025 12:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iw7wGZYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siPL3Cu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1EE1F3BA2;
-	Wed, 17 Sep 2025 12:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD0C31A812;
+	Wed, 17 Sep 2025 12:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113053; cv=none; b=g1i//9Smb1lWtuH9F6qZHs8bepyKHVaMmh6kzFq1wIR+gRQzvcbcwHM+J1kdGixqaFkvqeqCCNHh33b5dVikeBIzm2TEMhE8K6NLxlK8VkxYeeKI/rz4TLmwnXVSnrA6hPV7eJVP+dX2ILh0W0bvk/i+MXqljgB6BtITRLR+qpQ=
+	t=1758113286; cv=none; b=H/Zjv5R1MjI6BgHIGv/6nfxQTh5VEnwoH1fckF5KNBeysZN8zrXfp57JANCL2cgKzr1lU/lHcNwN6K/dy38YhWp2DlgP/ePcN1M4OdcL3/xaEnaWbCpghwodwBes2AwVrN8SQ2FeBs9UAg4Rxz45TOhCWkzjGSwikeVbeGb2nKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113053; c=relaxed/simple;
-	bh=EeOig5+j15B66zIS0aRrUUkHDiOYt6pSpW6NaHB3L54=;
+	s=arc-20240116; t=1758113286; c=relaxed/simple;
+	bh=p5Lvkzc29n2cbQfepdPz9KN1mXq23Jtk+qCM1/kEb/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iIXtEiMKGtNhVEnW+07y7Q7IsHz505Ah0e1k/xANQTurEVmSTpNUyDk5kLTw9MXa3zCIX6mwRSmOYF3mYKbyYYnEme3rw/dmV3pLd/OeqOoWP4ECYRLDmjZdxj0Js5LGycv6diPBY/D/dgEe8GU/1bNVf7a3z/Q34iLblQ2yF0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iw7wGZYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F168C4CEF0;
-	Wed, 17 Sep 2025 12:44:12 +0000 (UTC)
+	 MIME-Version; b=HALhsQq/sdg61Eor2ROdOkn7kvIQNwN5xACtf5jclpbGNEq+gXZdsEoaI76LJtBPR2/f+Vci1apXNsNdF9SP9F+RV3j/UsFlulCRJqb4+HKHWsuAhJK5GxGlOJZLEiIZs7f9vp835UCO5+HS2Ao5h6hToGwOa4pU3Ec0m586i5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siPL3Cu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D58EC4CEF0;
+	Wed, 17 Sep 2025 12:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113053;
-	bh=EeOig5+j15B66zIS0aRrUUkHDiOYt6pSpW6NaHB3L54=;
+	s=korg; t=1758113285;
+	bh=p5Lvkzc29n2cbQfepdPz9KN1mXq23Jtk+qCM1/kEb/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iw7wGZYlPEWteIoZeF/LlKDJ1LMmelmRSf0JyvR1MmfY5EKvuKk1fIbVbrYE3jUNt
-	 yjjx3hsuuPWfELdLDD5F5bfYKTrHnT4EeK68IScpExGnpOPqDtcmjV1kvcHbzP6YBO
-	 o+P7ZkiRcXKt6zsfmYM/z4VYv6fqF2drNfBbOxt8=
+	b=siPL3Cu+5+AgBwx4B3c6+5+b3wmcsCgJ6xIRY7td4leo7vOOzbSLKLQVmmYjTJeMy
+	 cwm2EycHzoI30v2Y6L9GjZVjKKXSoIGr1WicDRNXdrmxYNDRxIGDaIFAqsGgsHFZ29
+	 +q4+DiS1cHVz/dJAhfxxpjj7GHbmCZu5UENZb9DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.16 102/189] ceph: fix race condition where r_parent becomes stale before sending message
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 040/140] s390/pai: Deny all events not handled by this PMU
 Date: Wed, 17 Sep 2025 14:33:32 +0200
-Message-ID: <20250917123354.357078552@linuxfoundation.org>
+Message-ID: <20250917123345.286052132@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,200 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Markuze <amarkuze@redhat.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit bec324f33d1ed346394b2eee25bf6dbf3511f727 upstream.
+[ Upstream commit 85941afd2c404247e583c827fae0a45da1c1d92c ]
 
-When the parent directory's i_rwsem is not locked, req->r_parent may become
-stale due to concurrent operations (e.g. rename) between dentry lookup and
-message creation. Validate that r_parent matches the encoded parent inode
-and update to the correct inode if a mismatch is detected.
+Each PAI PMU device driver returns -EINVAL when an event is out of
+its accepted range. This return value aborts the search for an
+alternative PMU device driver to handle this event.
+Change the return value to -ENOENT. This return value is used to
+try other PMUs instead.  This makes the PMUs more robust when
+the sequence of PMU device driver initialization changes (at boot time)
+or by using modules.
 
-[ idryomov: folded a follow-up fix from Alex to drop extra reference
-  from ceph_get_reply_dir() in ceph_fill_trace():
-
-  ceph_get_reply_dir() may return a different, referenced inode when
-  r_parent is stale and the parent directory lock is not held.
-  ceph_fill_trace() used that inode but failed to drop the reference
-  when it differed from req->r_parent, leaking an inode reference.
-
-  Keep the directory inode in a local variable and iput() it at
-  function end if it does not match req->r_parent. ]
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Markuze <amarkuze@redhat.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 39d62336f5c12 ("s390/pai: add support for cryptography counters")
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/inode.c |   81 +++++++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 69 insertions(+), 12 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 4 ++--
+ arch/s390/kernel/perf_pai_ext.c    | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -55,6 +55,52 @@ static int ceph_set_ino_cb(struct inode
- 	return 0;
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index 10725f5a6f0fd..11200880a96c1 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -286,10 +286,10 @@ static int paicrypt_event_init(struct perf_event *event)
+ 	/* PAI crypto PMU registered as PERF_TYPE_RAW, check event type */
+ 	if (a->type != PERF_TYPE_RAW && event->pmu->type != a->type)
+ 		return -ENOENT;
+-	/* PAI crypto event must be in valid range */
++	/* PAI crypto event must be in valid range, try others if not */
+ 	if (a->config < PAI_CRYPTO_BASE ||
+ 	    a->config > PAI_CRYPTO_BASE + paicrypt_cnt)
+-		return -EINVAL;
++		return -ENOENT;
+ 	/* Allow only CRYPTO_ALL for sampling */
+ 	if (a->sample_period && a->config != PAI_CRYPTO_BASE)
+ 		return -EINVAL;
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index a8f0bad99cf04..28398e313b58d 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -266,7 +266,7 @@ static int paiext_event_valid(struct perf_event *event)
+ 		event->hw.config_base = offsetof(struct paiext_cb, acc);
+ 		return 0;
+ 	}
+-	return -EINVAL;
++	return -ENOENT;
  }
  
-+/*
-+ * Check if the parent inode matches the vino from directory reply info
-+ */
-+static inline bool ceph_vino_matches_parent(struct inode *parent,
-+					    struct ceph_vino vino)
-+{
-+	return ceph_ino(parent) == vino.ino && ceph_snap(parent) == vino.snap;
-+}
-+
-+/*
-+ * Validate that the directory inode referenced by @req->r_parent matches the
-+ * inode number and snapshot id contained in the reply's directory record.  If
-+ * they do not match – which can theoretically happen if the parent dentry was
-+ * moved between the time the request was issued and the reply arrived – fall
-+ * back to looking up the correct inode in the inode cache.
-+ *
-+ * A reference is *always* returned.  Callers that receive a different inode
-+ * than the original @parent are responsible for dropping the extra reference
-+ * once the reply has been processed.
-+ */
-+static struct inode *ceph_get_reply_dir(struct super_block *sb,
-+					struct inode *parent,
-+					struct ceph_mds_reply_info_parsed *rinfo)
-+{
-+	struct ceph_vino vino;
-+
-+	if (unlikely(!rinfo->diri.in))
-+		return parent; /* nothing to compare against */
-+
-+	/* If we didn't have a cached parent inode to begin with, just bail out. */
-+	if (!parent)
-+		return NULL;
-+
-+	vino.ino  = le64_to_cpu(rinfo->diri.in->ino);
-+	vino.snap = le64_to_cpu(rinfo->diri.in->snapid);
-+
-+	if (likely(ceph_vino_matches_parent(parent, vino)))
-+		return parent; /* matches – use the original reference */
-+
-+	/* Mismatch – this should be rare.  Emit a WARN and obtain the correct inode. */
-+	WARN_ONCE(1, "ceph: reply dir mismatch (parent valid %llx.%llx reply %llx.%llx)\n",
-+		  ceph_ino(parent), ceph_snap(parent), vino.ino, vino.snap);
-+
-+	return ceph_get_inode(sb, vino, NULL);
-+}
-+
- /**
-  * ceph_new_inode - allocate a new inode in advance of an expected create
-  * @dir: parent directory for new inode
-@@ -1523,6 +1569,7 @@ int ceph_fill_trace(struct super_block *
- 	struct ceph_vino tvino, dvino;
- 	struct ceph_fs_client *fsc = ceph_sb_to_fs_client(sb);
- 	struct ceph_client *cl = fsc->client;
-+	struct inode *parent_dir = NULL;
- 	int err = 0;
- 
- 	doutc(cl, "%p is_dentry %d is_target %d\n", req,
-@@ -1536,10 +1583,17 @@ int ceph_fill_trace(struct super_block *
- 	}
- 
- 	if (rinfo->head->is_dentry) {
--		struct inode *dir = req->r_parent;
--
--		if (dir) {
--			err = ceph_fill_inode(dir, NULL, &rinfo->diri,
-+		/*
-+		 * r_parent may be stale, in cases when R_PARENT_LOCKED is not set,
-+		 * so we need to get the correct inode
-+		 */
-+		parent_dir = ceph_get_reply_dir(sb, req->r_parent, rinfo);
-+		if (unlikely(IS_ERR(parent_dir))) {
-+			err = PTR_ERR(parent_dir);
-+			goto done;
-+		}
-+		if (parent_dir) {
-+			err = ceph_fill_inode(parent_dir, NULL, &rinfo->diri,
- 					      rinfo->dirfrag, session, -1,
- 					      &req->r_caps_reservation);
- 			if (err < 0)
-@@ -1548,14 +1602,14 @@ int ceph_fill_trace(struct super_block *
- 			WARN_ON_ONCE(1);
- 		}
- 
--		if (dir && req->r_op == CEPH_MDS_OP_LOOKUPNAME &&
-+		if (parent_dir && req->r_op == CEPH_MDS_OP_LOOKUPNAME &&
- 		    test_bit(CEPH_MDS_R_PARENT_LOCKED, &req->r_req_flags) &&
- 		    !test_bit(CEPH_MDS_R_ABORTED, &req->r_req_flags)) {
- 			bool is_nokey = false;
- 			struct qstr dname;
- 			struct dentry *dn, *parent;
- 			struct fscrypt_str oname = FSTR_INIT(NULL, 0);
--			struct ceph_fname fname = { .dir	= dir,
-+			struct ceph_fname fname = { .dir	= parent_dir,
- 						    .name	= rinfo->dname,
- 						    .ctext	= rinfo->altname,
- 						    .name_len	= rinfo->dname_len,
-@@ -1564,10 +1618,10 @@ int ceph_fill_trace(struct super_block *
- 			BUG_ON(!rinfo->head->is_target);
- 			BUG_ON(req->r_dentry);
- 
--			parent = d_find_any_alias(dir);
-+			parent = d_find_any_alias(parent_dir);
- 			BUG_ON(!parent);
- 
--			err = ceph_fname_alloc_buffer(dir, &oname);
-+			err = ceph_fname_alloc_buffer(parent_dir, &oname);
- 			if (err < 0) {
- 				dput(parent);
- 				goto done;
-@@ -1576,7 +1630,7 @@ int ceph_fill_trace(struct super_block *
- 			err = ceph_fname_to_usr(&fname, NULL, &oname, &is_nokey);
- 			if (err < 0) {
- 				dput(parent);
--				ceph_fname_free_buffer(dir, &oname);
-+				ceph_fname_free_buffer(parent_dir, &oname);
- 				goto done;
- 			}
- 			dname.name = oname.name;
-@@ -1595,7 +1649,7 @@ retry_lookup:
- 				      dname.len, dname.name, dn);
- 				if (!dn) {
- 					dput(parent);
--					ceph_fname_free_buffer(dir, &oname);
-+					ceph_fname_free_buffer(parent_dir, &oname);
- 					err = -ENOMEM;
- 					goto done;
- 				}
-@@ -1610,12 +1664,12 @@ retry_lookup:
- 				    ceph_snap(d_inode(dn)) != tvino.snap)) {
- 				doutc(cl, " dn %p points to wrong inode %p\n",
- 				      dn, d_inode(dn));
--				ceph_dir_clear_ordered(dir);
-+				ceph_dir_clear_ordered(parent_dir);
- 				d_delete(dn);
- 				dput(dn);
- 				goto retry_lookup;
- 			}
--			ceph_fname_free_buffer(dir, &oname);
-+			ceph_fname_free_buffer(parent_dir, &oname);
- 
- 			req->r_dentry = dn;
- 			dput(parent);
-@@ -1794,6 +1848,9 @@ retry_lookup:
- 					    &dvino, ptvino);
- 	}
- done:
-+	/* Drop extra ref from ceph_get_reply_dir() if it returned a new inode */
-+	if (unlikely(!IS_ERR_OR_NULL(parent_dir) && parent_dir != req->r_parent))
-+		iput(parent_dir);
- 	doutc(cl, "done err=%d\n", err);
- 	return err;
- }
+ /* Might be called on different CPU than the one the event is intended for. */
+-- 
+2.51.0
+
 
 
 
