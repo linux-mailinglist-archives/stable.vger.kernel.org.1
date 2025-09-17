@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-179820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEBFB7F421
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:28:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6448B7CB6F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC8C9527F4C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 10:38:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D7477A6083
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 10:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B9A2F83CD;
-	Wed, 17 Sep 2025 10:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88622C0F6E;
+	Wed, 17 Sep 2025 10:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gjBwbsd5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AekO0TGn"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A332356B9
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A7A29B795
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758105519; cv=none; b=pum3ovevwEwrTRc6+hFc5j4dutsh77MJ2v8i0DiX9FlnfZLcSYm24C0rwUcXusCJBm+1AyA1S/yR6YgCAQQhKYpWQDga+J+ASDlMgb+U53dekb/S2uDdqaLLBwbrztiiDbqBc0dxjNw/V15V8mp4rWB9aKKHA4GwYjxVznlBZcc=
+	t=1758106383; cv=none; b=QzeZNzQ62QnRAa6mCYbrh5XDHdaPJxYMd1B28HsdUp6Ntfh+3slZBXH7gZY/C1kaZZeWcV5EJCZ95X/XiEHaOYyRmmfhmm3iqsk224fiHsqiEWnNbaeseekBKxSlY7+pq6bXxmTjqeEbaMHDcp1eNqEb94LBy2PT8b9g7Ga3Vms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758105519; c=relaxed/simple;
-	bh=uys/W2sJ8/JPqZgfhzw7G25uk132Iw0CP8xM8xaTQLo=;
+	s=arc-20240116; t=1758106383; c=relaxed/simple;
+	bh=Ikb0ULTLN47O661rXEoFttNyAecoMC7wAc2tvgvurUo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s8N4wPhod7hRMSnHr4RTuvl4dMOrY42kyRDSBS7GpZJuBsMAdtplcRO4z57zgl50rJOsOmbrIwj7ZkfOkN9/pyIdurQaYAdxIc4UJMIjuBnkTJCXT0jvG68fRjEecl1Mzjr+zKP3eZTWODMDkZM2So3RaN8vwwnOeDZLEDqJjlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gjBwbsd5; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=k+rQPra9ljmUiVrY0sQj548dkdmH1RCUvDtlgoVLYBnA1qe8WO5uEl6W7sJnVHZLG+iZ9aYndjR9x30kfQF0F6cUUZGMtVJ3bEXWYRMw+NbjCmGLpVamvuWyLdOnZngEll7hKyJYZ1yvLnh00KlTp1qN4KuBMi5WOnkwGIT8PxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AekO0TGn; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758105517;
+	s=mimecast20190719; t=1758106381;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=soTuum+uvrVdwH4G5wCW13aWL0UwyqwjoUoslGSKOfc=;
-	b=gjBwbsd5gWAunocqcOPHXf81BJwpAaEqfIXjXBpY++IogrMk/f0P0BS7rBdhA37TCJcan6
-	XizEiCefOHtpR9T3HGXZX8Sl4NQBRfTEYW583vm8+DwW4/yDBBhHNu/6ORKRxdqcp7IJk2
-	ldjQNPiHCMESYgvhpRKXawavZGp+K+4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=h6j8Nz2GipAO+d9sYeGusBaesKR+rSO74MbWDuoA0aU=;
+	b=AekO0TGnAKk4Qhsghxz+teX4yavJrWHvnxaHHu2i66Q2YlAU8P+fPOAAW/sj9V8kMt4nCj
+	U8WvShyja7vgp/BxIeSJuMBNNk7AbEs85zsD98BvDdB1R/Y1GHKsWMfZNV8lrf87RJVMJ9
+	seyJSIUjBm9WVmUD1d7jI/IGpJg7ZAQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-zQQDjx3TNJS3KHdbk3Dazw-1; Wed, 17 Sep 2025 06:38:35 -0400
-X-MC-Unique: zQQDjx3TNJS3KHdbk3Dazw-1
-X-Mimecast-MFC-AGG-ID: zQQDjx3TNJS3KHdbk3Dazw_1758105515
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ccd58af2bbso274745f8f.0
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 03:38:35 -0700 (PDT)
+ us-mta-82-T3wVwZ7gMMeoBC5ujrjvtg-1; Wed, 17 Sep 2025 06:52:59 -0400
+X-MC-Unique: T3wVwZ7gMMeoBC5ujrjvtg-1
+X-Mimecast-MFC-AGG-ID: T3wVwZ7gMMeoBC5ujrjvtg_1758106378
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45de27bf706so36922275e9.0
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 03:52:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758105515; x=1758710315;
+        d=1e100.net; s=20230601; t=1758106378; x=1758711178;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=soTuum+uvrVdwH4G5wCW13aWL0UwyqwjoUoslGSKOfc=;
-        b=MUAwkqNWRoawM3SoWqjYCWIl+qVtp0m7P0QWxgs59m64lQakG3o5j9xLSnjNklyir3
-         GRnZOhxcwcGBq06n5oQ0Ve+0Ibr+dJQ3xVjrsfsUwR7Px9RXOCljtpwydupKVykIKFmp
-         d2vhbSvk0g9opwnCHRPdxXUFT+dylSoSE71neNg4UM1qf8HkCF/xtnDSqql5zk6sBdje
-         C0WP9uee14GZFf47K38CLctIgeHsxrSqqGzfqhhXYaje/El8fnqHLewU5dIhxVKrD9Tu
-         XyrHugTPbGUTmIYWAPskuhhCo14q0M5gkGBWb5yvZ9idliK2crCcOhilHuXFXWoivqEt
-         Y69w==
-X-Forwarded-Encrypted: i=1; AJvYcCUbmulZ3Tkdd+GEswyZZlKzAQAvKoJZah4rFUE4ejENZLa3aDwfv1c+FYZm9Ut4zyk3SArYcyk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6SKkt/3jEjvK55XUEHM/MqOBmq7JCOsJY8eT+R2wxOiAdZKz7
-	X50dHlli7/1P1gCmszOubtEqIiZLxs/WzQmRYKVKeS13dxgKWPoLBSvCRsA4coyZev7IF9IIlz8
-	IiGvxXLuz/pvQgZiSHlIX5WWLk+EVVP2gs5DLnAdFXMGMBV3VAw5zG+oEKQ==
-X-Gm-Gg: ASbGnctK85+ziFqtKP8KDsRTSFTw4oKv6kcMiUGgeTdnuDMK5Kb9Y2raraCPoLsIpMU
-	I4B4dG7LAYVUjPhfi0UK8TdIIlzfo60zKflWdeVVWoJErmb/UP80j6f9oN5V0rBhFCS8GSwdhUZ
-	7MZ4gS52SsN5YZcHgntFR/jYKakuOok1or/2RbYgUzJw45ZT2Uetr7PRsYLrKf2Vne1U1q9mg4h
-	eJ+vBd0LySQToyEKekqBWhPAmidlOJl9JrkUFD5jY4je9SDXnOxLI9PGPCuPqeU3eiXLT27WHBB
-	q8AIlfuWO0gAZChCHFI/iVkjeBysjrfypr/Sy4Mg8FrBB9O2Zlfb/4ibjTu6rN6/IYk2Qxy5bnt
-	KYLp0UY1ywi3+yX7X8soM+7j6iWsKLRXcLMXkGtPyFHK6W6vbVjCMKGc+sMhGDTsK
-X-Received: by 2002:a05:6000:4009:b0:3ea:c893:95b6 with SMTP id ffacd0b85a97d-3eca04743f7mr5153577f8f.27.1758105514581;
-        Wed, 17 Sep 2025 03:38:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8tKIbcNk5D2bluX7BbsWlrG22DyI/8RTeAIZckT7d1/mvHIE0aGsiKEPHwv0/JBjR38b5Xg==
-X-Received: by 2002:a05:6000:4009:b0:3ea:c893:95b6 with SMTP id ffacd0b85a97d-3eca04743f7mr5153552f8f.27.1758105514108;
-        Wed, 17 Sep 2025 03:38:34 -0700 (PDT)
+        bh=h6j8Nz2GipAO+d9sYeGusBaesKR+rSO74MbWDuoA0aU=;
+        b=odVe5nqb/9JDRHkkfYVk65JXK3QqtLyUn++5TsTqpDFPlyYBDqWkDfHJyq1ewkupBl
+         +YyAB8XsjGiwfEItvuCI11QGQiKcJOPgNOGs8huXe7Ti64Q7958zg/w3zC0N/sL1wEvk
+         lcwm8eozUWowUuzy1cdO4G8PfvH5Sjrcx6t+LHu+2ZuJ96eyiG5t+HtMoMn84EWFvfZu
+         XeMcnzsz7hFZLOCKc+n0j5mnzrek8YvF8d66h6e9tnOBrnwDuK7XWjdbfqtlgiesLPvy
+         aykw957filLobahDsrMDLrCNSvOMusfx1nd27UfXRbHt/MzcIkzqt2rLR/SzaF53eD+3
+         Rrnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnNqdGUgpVSp4LBNbG04zJWmpmmgKpNKSHj/9hklqxnv5uyBmC3pPzX7ZX/NARrN+a2wh+EJ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEp/f8VWB4B0qBNh0HkG97sF6pW8rPPUMGnRkXYPWGfhCAh4U3
+	qZGAwpYJn++tGqR2HOo+A4MMMA8Rw77AsZYNODVO4VhMV3pYFaj8HVhLbNo6nxhZ9jj076+HIYl
+	9mD5YTiu1boGqKWCwkbfubXk1JEP4oZlRqtNyULXGzF9VEJl/qWjd6qBdUw==
+X-Gm-Gg: ASbGncs+Qh8w11FNxYUwxYQoKSyH4BUIoBDGORlS0K8vIhKHORgQaVcw/mhoQUnDPHa
+	L0uSy7z7AVDL2upK7xX+XKBmq/8ZNjmtGr7xtIaOBTxEZxRwhUUPwN34hfwWok/BDKjrlvGw/ii
+	nymjetByY2puwEQpNE5aiv0IF/SVkz5ymbWdTCKr23yAbTA+kLIVQsizTCsdgKzErmJpBuWRL14
+	MNJWO8XZzOn40swmh7/Fa8WbvsDxCZgxqA5nMDPwqm8o7jKP/pJn8H4aHotj0KEudHDG4uyYbeu
+	bDJ2I4EkNsvZKx+lq9CjqEreIW6yTQUuD+QLBzqTmCJfKx8hn7qwM5bhWe7AqKk6+LzK0Ns3LaD
+	3lwpg8LE2X7dPEURRTH1a8fx2UOSUZ56sJbmPnG16mqHYGKAmKn5sT0/1oejIfAv5
+X-Received: by 2002:a05:600c:3b09:b0:45f:2d2a:e323 with SMTP id 5b1f17b1804b1-461fc6674f9mr17284025e9.0.1758106377763;
+        Wed, 17 Sep 2025 03:52:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESkIdDmkpsYOdBEK8Vy0LYg2yM7axrrebxRGyM0x90xAENdINMOVuiRGc5rue0jgcFRLjsmA==
+X-Received: by 2002:a05:600c:3b09:b0:45f:2d2a:e323 with SMTP id 5b1f17b1804b1-461fc6674f9mr17283645e9.0.1758106377323;
+        Wed, 17 Sep 2025 03:52:57 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f27:6d00:7b96:afc9:83d0:5bd? (p200300d82f276d007b96afc983d005bd.dip0.t-ipconnect.de. [2003:d8:2f27:6d00:7b96:afc9:83d0:5bd])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e95b111b68sm15518054f8f.32.2025.09.17.03.38.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613d33633bsm32518195e9.11.2025.09.17.03.52.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 03:38:33 -0700 (PDT)
-Message-ID: <6dde7c50-a222-4984-bb69-07ace724f161@redhat.com>
-Date: Wed, 17 Sep 2025 12:38:32 +0200
+        Wed, 17 Sep 2025 03:52:56 -0700 (PDT)
+Message-ID: <ad019c14-5211-4261-bfb8-c4e0dd3b2535@redhat.com>
+Date: Wed, 17 Sep 2025 12:52:54 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,19 +90,28 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in
- mm_struct during fork
-To: Donet Tom <donettom@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Wei Yang <richard.weiyang@gmail.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
- stable@vger.kernel.org
-References: <cover.1757946863.git.donettom@linux.ibm.com>
- <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
+To: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org,
+ minchan@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, pfalcato@suse.de
+Cc: kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+ Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>,
+ Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915163838.631445-2-kaleshsingh@google.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -149,68 +158,39 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 15.09.25 17:03, Donet Tom wrote:
-> Currently, the KSM-related counters in `mm_struct`, such as
-> `ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are
-> inherited by the child process during fork. This results in inconsistent
-> accounting.
+On 15.09.25 18:36, Kalesh Singh wrote:
+> The VMA count limit check in do_mmap() and do_brk_flags() uses a
+> strict inequality (>), which allows a process's VMA count to exceed
+> the configured sysctl_max_map_count limit by one.
 > 
-> When a process uses KSM, identical pages are merged and an rmap item is
-> created for each merged page. The `ksm_merging_pages` and
-> `ksm_rmap_items` counters are updated accordingly. However, after a
-> fork, these counters are copied to the child while the corresponding
-> rmap items are not. As a result, when the child later triggers an
-> unmerge, there are no rmap items present in the child, so the counters
-> remain stale, leading to incorrect accounting.
+> A process with mm->map_count == sysctl_max_map_count will incorrectly
+> pass this check and then exceed the limit upon allocation of a new VMA
+> when its map_count is incremented.
 > 
-> A similar issue exists with `ksm_zero_pages`, which maintains both a
-> global counter and a per-process counter. During fork, the per-process
-> counter is inherited by the child, but the global counter is not
-> incremented. Since the child also references zero pages, the global
-> counter should be updated as well. Otherwise, during zero-page unmerge,
-> both the global and per-process counters are decremented, causing the
-> global counter to become inconsistent.
+> Other VMA allocation paths, such as split_vma(), already use the
+> correct, inclusive (>=) comparison.
 > 
-> To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0
-> during fork, and the global ksm_zero_pages counter is updated with the
-> per-process ksm_zero_pages value inherited by the child. This ensures
-> that KSM statistics remain accurate and reflect the activity of each
-> process correctly.
+> Fix this bug by changing the comparison to be inclusive in do_mmap()
+> and do_brk_flags(), bringing them in line with the correct behavior
+> of other allocation paths.
 > 
-> Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
-> Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
-> Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
-> cc: stable@vger.kernel.org # v6.6
-> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: <stable@vger.kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 > ---
->   include/linux/ksm.h | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-> index 22e67ca7cba3..067538fc4d58 100644
-> --- a/include/linux/ksm.h
-> +++ b/include/linux/ksm.h
-> @@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
->   static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
->   {
->   	/* Adding mm to ksm is best effort on fork. */
-> -	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
-> +	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
-> +		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
-> +
-> +		mm->ksm_merging_pages = 0;
-> +		mm->ksm_rmap_items = 0;
-> +		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
->   		__ksm_enter(mm);
 
-That LGTM. KSM is all weird in combination with fork(), but that's 
-something for another day to improve I guess.
-
-Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
