@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-180127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812B0B7EA51
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FAAB7EE38
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4670188BA94
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4A86188CD0D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15AE2F39DC;
-	Wed, 17 Sep 2025 12:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30962393DE1;
+	Wed, 17 Sep 2025 12:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugGPpBHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qqn2ftc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2FF30CB29;
-	Wed, 17 Sep 2025 12:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B7B393DCF;
+	Wed, 17 Sep 2025 12:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113468; cv=none; b=iPQNTfZ8nlfRbCQDjiRmOid34ODQs93AhEtoX8xl1qCM68fY9faOnDQxxtVHg1wRgmY8rPNAJT0ZG/1d8evXdPTuCp537QNGMVvrc2Fx785oQao/vR/apDEde6mw/ITHLc3WJbL/Cafr1W4aH5vKuLwRrl8tBq+cwSW2EmQIiyU=
+	t=1758113702; cv=none; b=rW11cds5p1XaZLV2ZrZNYwObMTF2Yc9suNS7JKcFKJxdKl5r8pMn101YGBvxHuqh7v1L4YoNL/RhzEY3+Suvuls3PhVWeXokw7qF4j+58INrwCiu3oX+speemQwAqAYB4FuUCEztHJRyc0RVpV18EWrsM07SsQNtnKX9S0K/8a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113468; c=relaxed/simple;
-	bh=VFmLMmOMs2sm0FdFo6YFJbpF9VMRdzibWj9BX0g5yHg=;
+	s=arc-20240116; t=1758113702; c=relaxed/simple;
+	bh=uULbrCLYaeZ0WX6ar1719C0fJAAQyY/193keGBzx+aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E2HWWOA+GX0PrXgCTgVoWdt6HRzERO7Xd4jnorCAJhVUZvdV/PMjEmspC0wgaCdKP0zIHqHMjby5OscIe5ZADvLvq9fp/R7mnEN4Ie1kpK1xRwz0Dxd94ZoAHuC5BZyJnQp2cVLDiegbRGYMCNfOi0pwP0PrJktNdLSlhR4Tsic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugGPpBHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0818C4CEF0;
-	Wed, 17 Sep 2025 12:51:07 +0000 (UTC)
+	 MIME-Version; b=Xr7+X4zfYsHq6ti4vSti29VWSzvVSYQUTWjCrv7uGvtM3VeNOuCAZzRnLdV/EZQ4M0gs31P/vQ7XALXHTDNKfbzrLo3LqIFZp+bKXnreHdoOofiXtO4TRWqG2tTo6LsEprXijyvGFwnrqfGe/ExfRrJDqKrdafCfCB2o6rnyHk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qqn2ftc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6266DC4CEF0;
+	Wed, 17 Sep 2025 12:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113468;
-	bh=VFmLMmOMs2sm0FdFo6YFJbpF9VMRdzibWj9BX0g5yHg=;
+	s=korg; t=1758113701;
+	bh=uULbrCLYaeZ0WX6ar1719C0fJAAQyY/193keGBzx+aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugGPpBHbrLetiLib58FZzcXbII+Armrr2v1yq73erfCFZYmrIPECsoo1/G89gRuJ8
-	 bOUrNM8clta7RxaqBusqRRy1xIDznw08L22HMMedamfbbHxHnMmv7Ugw8V+XQSkYr6
-	 jynwQ3Dv4ftWZlIu1O7tXuAgqDuluplKLmsf594Q=
+	b=Qqn2ftc7twBiNvU7ZAF7aKeIARmG26tHkRJAEIrqFEsPSuI91ctj4z9t3YMIkDQJn
+	 fIsQG0LQ8r80sfMfJ51dvKBikMhXikSnTGFuys7e6zDqorWmOvzSoitGSirR3ivT+P
+	 vEWC4+5RrKhR2hxXCnrPwyot0+cabX5+fK1IcBS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 078/140] ceph: fix race condition where r_parent becomes stale before sending message
+	Chen Zhongjin <chenzhongjin@huawei.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Tahera Fahimi <taherafahimi@linux.microsoft.com>
+Subject: [PATCH 6.6 027/101] rcu-tasks: Maintain lists to eliminate RCU-tasks/do_exit() deadlocks
 Date: Wed, 17 Sep 2025 14:34:10 +0200
-Message-ID: <20250917123346.217417729@linuxfoundation.org>
+Message-ID: <20250917123337.512507812@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,200 +63,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Markuze <amarkuze@redhat.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-commit bec324f33d1ed346394b2eee25bf6dbf3511f727 upstream.
+commit 6b70399f9ef3809f6e308fd99dd78b072c1bd05c upstream.
 
-When the parent directory's i_rwsem is not locked, req->r_parent may become
-stale due to concurrent operations (e.g. rename) between dentry lookup and
-message creation. Validate that r_parent matches the encoded parent inode
-and update to the correct inode if a mismatch is detected.
+This commit continues the elimination of deadlocks involving do_exit()
+and RCU tasks by causing exit_tasks_rcu_start() to add the current
+task to a per-CPU list and causing exit_tasks_rcu_stop() to remove the
+current task from whatever list it is on.  These lists will be used to
+track tasks that are exiting, while still accounting for any RCU-tasks
+quiescent states that these tasks pass though.
 
-[ idryomov: folded a follow-up fix from Alex to drop extra reference
-  from ceph_get_reply_dir() in ceph_fill_trace():
+[ paulmck: Apply Frederic Weisbecker feedback. ]
 
-  ceph_get_reply_dir() may return a different, referenced inode when
-  r_parent is stale and the parent directory lock is not held.
-  ceph_fill_trace() used that inode but failed to drop the reference
-  when it differed from req->r_parent, leaking an inode reference.
+Link: https://lore.kernel.org/all/20240118021842.290665-1-chenzhongjin@huawei.com/
 
-  Keep the directory inode in a local variable and iput() it at
-  function end if it does not match req->r_parent. ]
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Markuze <amarkuze@redhat.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Reported-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Yang Jihong <yangjihong1@huawei.com>
+Tested-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Cc: Tahera Fahimi <taherafahimi@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/inode.c |   81 +++++++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 69 insertions(+), 12 deletions(-)
+ kernel/rcu/tasks.h |   43 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 33 insertions(+), 10 deletions(-)
 
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -55,6 +55,52 @@ static int ceph_set_ino_cb(struct inode
- 	return 0;
- }
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -1175,25 +1175,48 @@ struct task_struct *get_rcu_tasks_gp_kth
+ EXPORT_SYMBOL_GPL(get_rcu_tasks_gp_kthread);
  
-+/*
-+ * Check if the parent inode matches the vino from directory reply info
-+ */
-+static inline bool ceph_vino_matches_parent(struct inode *parent,
-+					    struct ceph_vino vino)
-+{
-+	return ceph_ino(parent) == vino.ino && ceph_snap(parent) == vino.snap;
-+}
-+
-+/*
-+ * Validate that the directory inode referenced by @req->r_parent matches the
-+ * inode number and snapshot id contained in the reply's directory record.  If
-+ * they do not match – which can theoretically happen if the parent dentry was
-+ * moved between the time the request was issued and the reply arrived – fall
-+ * back to looking up the correct inode in the inode cache.
+ /*
+- * Contribute to protect against tasklist scan blind spot while the
+- * task is exiting and may be removed from the tasklist. See
+- * corresponding synchronize_srcu() for further details.
++ * Protect against tasklist scan blind spot while the task is exiting and
++ * may be removed from the tasklist.  Do this by adding the task to yet
++ * another list.
 + *
-+ * A reference is *always* returned.  Callers that receive a different inode
-+ * than the original @parent are responsible for dropping the extra reference
-+ * once the reply has been processed.
-+ */
-+static struct inode *ceph_get_reply_dir(struct super_block *sb,
-+					struct inode *parent,
-+					struct ceph_mds_reply_info_parsed *rinfo)
-+{
-+	struct ceph_vino vino;
++ * Note that the task will remove itself from this list, so there is no
++ * need for get_task_struct(), except in the case where rcu_tasks_pertask()
++ * adds it to the holdout list, in which case rcu_tasks_pertask() supplies
++ * the needed get_task_struct().
+  */
+-void exit_tasks_rcu_start(void) __acquires(&tasks_rcu_exit_srcu)
++void exit_tasks_rcu_start(void)
+ {
+-	current->rcu_tasks_idx = __srcu_read_lock(&tasks_rcu_exit_srcu);
++	unsigned long flags;
++	struct rcu_tasks_percpu *rtpcp;
++	struct task_struct *t = current;
 +
-+	if (unlikely(!rinfo->diri.in))
-+		return parent; /* nothing to compare against */
-+
-+	/* If we didn't have a cached parent inode to begin with, just bail out. */
-+	if (!parent)
-+		return NULL;
-+
-+	vino.ino  = le64_to_cpu(rinfo->diri.in->ino);
-+	vino.snap = le64_to_cpu(rinfo->diri.in->snapid);
-+
-+	if (likely(ceph_vino_matches_parent(parent, vino)))
-+		return parent; /* matches – use the original reference */
-+
-+	/* Mismatch – this should be rare.  Emit a WARN and obtain the correct inode. */
-+	WARN_ONCE(1, "ceph: reply dir mismatch (parent valid %llx.%llx reply %llx.%llx)\n",
-+		  ceph_ino(parent), ceph_snap(parent), vino.ino, vino.snap);
-+
-+	return ceph_get_inode(sb, vino, NULL);
-+}
-+
- /**
-  * ceph_new_inode - allocate a new inode in advance of an expected create
-  * @dir: parent directory for new inode
-@@ -1523,6 +1569,7 @@ int ceph_fill_trace(struct super_block *
- 	struct ceph_vino tvino, dvino;
- 	struct ceph_fs_client *fsc = ceph_sb_to_fs_client(sb);
- 	struct ceph_client *cl = fsc->client;
-+	struct inode *parent_dir = NULL;
- 	int err = 0;
- 
- 	doutc(cl, "%p is_dentry %d is_target %d\n", req,
-@@ -1536,10 +1583,17 @@ int ceph_fill_trace(struct super_block *
- 	}
- 
- 	if (rinfo->head->is_dentry) {
--		struct inode *dir = req->r_parent;
--
--		if (dir) {
--			err = ceph_fill_inode(dir, NULL, &rinfo->diri,
-+		/*
-+		 * r_parent may be stale, in cases when R_PARENT_LOCKED is not set,
-+		 * so we need to get the correct inode
-+		 */
-+		parent_dir = ceph_get_reply_dir(sb, req->r_parent, rinfo);
-+		if (unlikely(IS_ERR(parent_dir))) {
-+			err = PTR_ERR(parent_dir);
-+			goto done;
-+		}
-+		if (parent_dir) {
-+			err = ceph_fill_inode(parent_dir, NULL, &rinfo->diri,
- 					      rinfo->dirfrag, session, -1,
- 					      &req->r_caps_reservation);
- 			if (err < 0)
-@@ -1548,14 +1602,14 @@ int ceph_fill_trace(struct super_block *
- 			WARN_ON_ONCE(1);
- 		}
- 
--		if (dir && req->r_op == CEPH_MDS_OP_LOOKUPNAME &&
-+		if (parent_dir && req->r_op == CEPH_MDS_OP_LOOKUPNAME &&
- 		    test_bit(CEPH_MDS_R_PARENT_LOCKED, &req->r_req_flags) &&
- 		    !test_bit(CEPH_MDS_R_ABORTED, &req->r_req_flags)) {
- 			bool is_nokey = false;
- 			struct qstr dname;
- 			struct dentry *dn, *parent;
- 			struct fscrypt_str oname = FSTR_INIT(NULL, 0);
--			struct ceph_fname fname = { .dir	= dir,
-+			struct ceph_fname fname = { .dir	= parent_dir,
- 						    .name	= rinfo->dname,
- 						    .ctext	= rinfo->altname,
- 						    .name_len	= rinfo->dname_len,
-@@ -1564,10 +1618,10 @@ int ceph_fill_trace(struct super_block *
- 			BUG_ON(!rinfo->head->is_target);
- 			BUG_ON(req->r_dentry);
- 
--			parent = d_find_any_alias(dir);
-+			parent = d_find_any_alias(parent_dir);
- 			BUG_ON(!parent);
- 
--			err = ceph_fname_alloc_buffer(dir, &oname);
-+			err = ceph_fname_alloc_buffer(parent_dir, &oname);
- 			if (err < 0) {
- 				dput(parent);
- 				goto done;
-@@ -1576,7 +1630,7 @@ int ceph_fill_trace(struct super_block *
- 			err = ceph_fname_to_usr(&fname, NULL, &oname, &is_nokey);
- 			if (err < 0) {
- 				dput(parent);
--				ceph_fname_free_buffer(dir, &oname);
-+				ceph_fname_free_buffer(parent_dir, &oname);
- 				goto done;
- 			}
- 			dname.name = oname.name;
-@@ -1595,7 +1649,7 @@ retry_lookup:
- 				      dname.len, dname.name, dn);
- 				if (!dn) {
- 					dput(parent);
--					ceph_fname_free_buffer(dir, &oname);
-+					ceph_fname_free_buffer(parent_dir, &oname);
- 					err = -ENOMEM;
- 					goto done;
- 				}
-@@ -1610,12 +1664,12 @@ retry_lookup:
- 				    ceph_snap(d_inode(dn)) != tvino.snap)) {
- 				doutc(cl, " dn %p points to wrong inode %p\n",
- 				      dn, d_inode(dn));
--				ceph_dir_clear_ordered(dir);
-+				ceph_dir_clear_ordered(parent_dir);
- 				d_delete(dn);
- 				dput(dn);
- 				goto retry_lookup;
- 			}
--			ceph_fname_free_buffer(dir, &oname);
-+			ceph_fname_free_buffer(parent_dir, &oname);
- 
- 			req->r_dentry = dn;
- 			dput(parent);
-@@ -1794,6 +1848,9 @@ retry_lookup:
- 					    &dvino, ptvino);
- 	}
- done:
-+	/* Drop extra ref from ceph_get_reply_dir() if it returned a new inode */
-+	if (unlikely(!IS_ERR_OR_NULL(parent_dir) && parent_dir != req->r_parent))
-+		iput(parent_dir);
- 	doutc(cl, "done err=%d\n", err);
- 	return err;
++	WARN_ON_ONCE(!list_empty(&t->rcu_tasks_exit_list));
++	preempt_disable();
++	rtpcp = this_cpu_ptr(rcu_tasks.rtpcpu);
++	t->rcu_tasks_exit_cpu = smp_processor_id();
++	raw_spin_lock_irqsave_rcu_node(rtpcp, flags);
++	if (!rtpcp->rtp_exit_list.next)
++		INIT_LIST_HEAD(&rtpcp->rtp_exit_list);
++	list_add(&t->rcu_tasks_exit_list, &rtpcp->rtp_exit_list);
++	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
++	preempt_enable();
  }
+ 
+ /*
+- * Contribute to protect against tasklist scan blind spot while the
+- * task is exiting and may be removed from the tasklist. See
+- * corresponding synchronize_srcu() for further details.
++ * Remove the task from the "yet another list" because do_exit() is now
++ * non-preemptible, allowing synchronize_rcu() to wait beyond this point.
+  */
+-void exit_tasks_rcu_stop(void) __releases(&tasks_rcu_exit_srcu)
++void exit_tasks_rcu_stop(void)
+ {
++	unsigned long flags;
++	struct rcu_tasks_percpu *rtpcp;
+ 	struct task_struct *t = current;
+ 
+-	__srcu_read_unlock(&tasks_rcu_exit_srcu, t->rcu_tasks_idx);
++	WARN_ON_ONCE(list_empty(&t->rcu_tasks_exit_list));
++	rtpcp = per_cpu_ptr(rcu_tasks.rtpcpu, t->rcu_tasks_exit_cpu);
++	raw_spin_lock_irqsave_rcu_node(rtpcp, flags);
++	list_del_init(&t->rcu_tasks_exit_list);
++	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
+ }
+ 
+ /*
 
 
 
