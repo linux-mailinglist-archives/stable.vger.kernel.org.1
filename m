@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-180339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFB8B7EFAF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BADB7F033
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 225A87B0113
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85571C25AD0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EC331619B;
-	Wed, 17 Sep 2025 13:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E28932E72D;
+	Wed, 17 Sep 2025 12:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzzIJlSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhTl8/Qh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CB62FBE1D;
-	Wed, 17 Sep 2025 13:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDB732BBE6;
+	Wed, 17 Sep 2025 12:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114150; cv=none; b=cxWqn7WfXnKXGthDMck1wKdOI/WFspRGMsCNl9A8komayZkIzcl8B2PyTlGK8kLMRbzJqmZTXLEJVmTa4PgUxRP0mDV4pzmtUIIEiEx+1EwrVhXJG2ibRBH3Zt2u8YCri3h+yEoE26otuVwfaAo3so++IsHAcFeYh8do4whECk0=
+	t=1758113938; cv=none; b=VVv9RhzsHuBpj9LJ0XbJyYwCwEXbO4I+AF3ce2aLxSLPIIEBrJZIEy50h79D0bmLwKO9Y85B8oauyAyVw+v8AipWIM+0R/lujPOzc/eoTTCrZJqL++4u0j+UKhysoh2MhaLlL208csw3co8GOOc+/o1TQheOMYXInV/jtMGMpIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114150; c=relaxed/simple;
-	bh=jowV962RF+QJkeE/eKvhnuheKnjQ1RUDYc2jdDwgv8U=;
+	s=arc-20240116; t=1758113938; c=relaxed/simple;
+	bh=u9HFUDLDjn6pcMMMmoBevd3aLuR5V4pMK/jc7BBqCM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6r0m+nqJBnR8fFfI/v21YzoJsFtH2q3GwwiN5F6DuFqWMT2ZwkdH/KuKeZfK2JXpqeXmVsnNxcf6R7PWVip/KTEMKH1K7N6ZfqMm4jeqZJeNvG1hl1rBoGkwWHoSXNyTLtx21szLhASv+TD3jn/NjQZA8ohKHpfd5cJrTsJr40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzzIJlSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D393C4CEF0;
-	Wed, 17 Sep 2025 13:02:29 +0000 (UTC)
+	 MIME-Version; b=Moa7LS0Eh0fYE/eExLclgjFVhmV8Em99Z6++rrHWLSTyt7P5CoabERRNKrj8iJkMusf8uY5L6ZmPpnJBSSetAOY7kw8VSmYZJB4D7HGUDpinyjOq5UosnzBiXbZjzrcdJ02wDquQVz0Sv33zj/Ogien/9n6HkEDOZdw4Agy4r0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhTl8/Qh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2422DC4CEF0;
+	Wed, 17 Sep 2025 12:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114149;
-	bh=jowV962RF+QJkeE/eKvhnuheKnjQ1RUDYc2jdDwgv8U=;
+	s=korg; t=1758113937;
+	bh=u9HFUDLDjn6pcMMMmoBevd3aLuR5V4pMK/jc7BBqCM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzzIJlSJDTJCt4PJHV/vknqrgPBxC+DjbzvUxqO4j4LBBSnG9ODWnlaAmSjzVpWUF
-	 2AwUenI96bHfeIqv+WeAbm66yl8qsIqRPe5owwkl9xGkHCoP266tU+wLzvtPedTBXP
-	 eEZJu5enPknk9BTLBowLJeVHrKfT4eK0aEnXYbpg=
+	b=dhTl8/QhWR6IB+/paqYRCj/PzhZ1McHpfLAsNM1A4oIt98ip3MWM/cgNlU9ZCaWaH
+	 CdvgUkq5bw3W4GNVCNBuaHK8NktNUsRkuEc9OHQPAMtp+y3cuck8YmVE0QSsLIRLMA
+	 YvfDh+1oLr7nxrevSjLSg1FMewps0OZMdpsslooo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murali Karicheri <m-karicheri2@ti.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 60/78] net: hsr: Add support for MC filtering at the slave device
+	Steve French <stfrench@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Jan Alexander Preissler <akendo@akendo.eu>,
+	Sujana Subramaniam <sujana.subramaniam@sap.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.6 098/101] ksmbd: fix null pointer dereference in alloc_preauth_hash()
 Date: Wed, 17 Sep 2025 14:35:21 +0200
-Message-ID: <20250917123331.036734105@linuxfoundation.org>
+Message-ID: <20250917123339.200639716@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +64,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murali Karicheri <m-karicheri2@ti.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 36b20fcdd9663ced36d3aef96f0eff8eb79de4b8 ]
+commit c8b5b7c5da7d0c31c9b7190b4a7bba5281fc4780 upstream.
 
-When MC (multicast) list is updated by the networking layer due to a
-user command and as well as when allmulti flag is set, it needs to be
-passed to the enslaved Ethernet devices. This patch allows this
-to happen by implementing ndo_change_rx_flags() and ndo_set_rx_mode()
-API calls that in turns pass it to the slave devices using
-existing API calls.
+The Client send malformed smb2 negotiate request. ksmbd return error
+response. Subsequently, the client can send smb2 session setup even
+thought conn->preauth_info is not allocated.
+This patch add KSMBD_SESS_NEED_SETUP status of connection to ignore
+session setup request if smb2 negotiate phase is not complete.
 
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 8884c6939913 ("hsr: use rtnl lock when iterating over ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Steve French <stfrench@microsoft.com>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-26505
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Jan Alexander Preissler <akendo@akendo.eu>
+Signed-off-by: Sujana Subramaniam <sujana.subramaniam@sap.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_device.c | 67 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 66 insertions(+), 1 deletion(-)
+ fs/smb/server/connection.h        |   11 +++++++++++
+ fs/smb/server/mgmt/user_session.c |    4 ++--
+ fs/smb/server/smb2pdu.c           |   14 +++++++++++---
+ 3 files changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 511407df49151..e9a1a5cf120dd 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -170,7 +170,24 @@ static int hsr_dev_open(struct net_device *dev)
- 
- static int hsr_dev_close(struct net_device *dev)
- {
--	/* Nothing to do here. */
-+	struct hsr_port *port;
-+	struct hsr_priv *hsr;
-+
-+	hsr = netdev_priv(dev);
-+	hsr_for_each_port(hsr, port) {
-+		if (port->type == HSR_PT_MASTER)
-+			continue;
-+		switch (port->type) {
-+		case HSR_PT_SLAVE_A:
-+		case HSR_PT_SLAVE_B:
-+			dev_uc_unsync(port->dev, dev);
-+			dev_mc_unsync(port->dev, dev);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -401,12 +418,60 @@ void hsr_del_ports(struct hsr_priv *hsr)
- 		hsr_del_port(port);
- }
- 
-+static void hsr_set_rx_mode(struct net_device *dev)
-+{
-+	struct hsr_port *port;
-+	struct hsr_priv *hsr;
-+
-+	hsr = netdev_priv(dev);
-+
-+	hsr_for_each_port(hsr, port) {
-+		if (port->type == HSR_PT_MASTER)
-+			continue;
-+		switch (port->type) {
-+		case HSR_PT_SLAVE_A:
-+		case HSR_PT_SLAVE_B:
-+			dev_mc_sync_multiple(port->dev, dev);
-+			dev_uc_sync_multiple(port->dev, dev);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
-+static void hsr_change_rx_flags(struct net_device *dev, int change)
-+{
-+	struct hsr_port *port;
-+	struct hsr_priv *hsr;
-+
-+	hsr = netdev_priv(dev);
-+
-+	hsr_for_each_port(hsr, port) {
-+		if (port->type == HSR_PT_MASTER)
-+			continue;
-+		switch (port->type) {
-+		case HSR_PT_SLAVE_A:
-+		case HSR_PT_SLAVE_B:
-+			if (change & IFF_ALLMULTI)
-+				dev_set_allmulti(port->dev,
-+						 dev->flags &
-+						 IFF_ALLMULTI ? 1 : -1);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
- static const struct net_device_ops hsr_device_ops = {
- 	.ndo_change_mtu = hsr_dev_change_mtu,
- 	.ndo_open = hsr_dev_open,
- 	.ndo_stop = hsr_dev_close,
- 	.ndo_start_xmit = hsr_dev_xmit,
-+	.ndo_change_rx_flags = hsr_change_rx_flags,
- 	.ndo_fix_features = hsr_fix_features,
-+	.ndo_set_rx_mode = hsr_set_rx_mode,
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -27,6 +27,7 @@ enum {
+ 	KSMBD_SESS_EXITING,
+ 	KSMBD_SESS_NEED_RECONNECT,
+ 	KSMBD_SESS_NEED_NEGOTIATE,
++	KSMBD_SESS_NEED_SETUP,
+ 	KSMBD_SESS_RELEASING
  };
  
- static struct device_type hsr_type = {
--- 
-2.51.0
-
+@@ -195,6 +196,11 @@ static inline bool ksmbd_conn_need_negot
+ 	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_NEGOTIATE;
+ }
+ 
++static inline bool ksmbd_conn_need_setup(struct ksmbd_conn *conn)
++{
++	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_SETUP;
++}
++
+ static inline bool ksmbd_conn_need_reconnect(struct ksmbd_conn *conn)
+ {
+ 	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_RECONNECT;
+@@ -225,6 +231,11 @@ static inline void ksmbd_conn_set_need_n
+ 	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_NEGOTIATE);
+ }
+ 
++static inline void ksmbd_conn_set_need_setup(struct ksmbd_conn *conn)
++{
++	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_SETUP);
++}
++
+ static inline void ksmbd_conn_set_need_reconnect(struct ksmbd_conn *conn)
+ {
+ 	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_RECONNECT);
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -373,12 +373,12 @@ void destroy_previous_session(struct ksm
+ 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_RECONNECT);
+ 	err = ksmbd_conn_wait_idle_sess_id(conn, id);
+ 	if (err) {
+-		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
++		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 		goto out;
+ 	}
+ 	ksmbd_destroy_file_table(&prev_sess->file_table);
+ 	prev_sess->state = SMB2_SESSION_EXPIRED;
+-	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
++	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ out:
+ 	up_write(&conn->session_lock);
+ 	up_write(&sessions_table_lock);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1252,7 +1252,7 @@ int smb2_handle_negotiate(struct ksmbd_w
+ 	}
+ 
+ 	conn->srv_sec_mode = le16_to_cpu(rsp->SecurityMode);
+-	ksmbd_conn_set_need_negotiate(conn);
++	ksmbd_conn_set_need_setup(conn);
+ 
+ err_out:
+ 	if (rc)
+@@ -1273,6 +1273,9 @@ static int alloc_preauth_hash(struct ksm
+ 	if (sess->Preauth_HashValue)
+ 		return 0;
+ 
++	if (!conn->preauth_info)
++		return -ENOMEM;
++
+ 	sess->Preauth_HashValue = kmemdup(conn->preauth_info->Preauth_HashValue,
+ 					  PREAUTH_HASHVALUE_SIZE, GFP_KERNEL);
+ 	if (!sess->Preauth_HashValue)
+@@ -1688,6 +1691,11 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 
+ 	ksmbd_debug(SMB, "Received request for session setup\n");
+ 
++	if (!ksmbd_conn_need_setup(conn) && !ksmbd_conn_good(conn)) {
++		work->send_no_response = 1;
++		return rc;
++	}
++
+ 	WORK_BUFFERS(work, req, rsp);
+ 
+ 	rsp->StructureSize = cpu_to_le16(9);
+@@ -1919,7 +1927,7 @@ out_err:
+ 			if (try_delay) {
+ 				ksmbd_conn_set_need_reconnect(conn);
+ 				ssleep(5);
+-				ksmbd_conn_set_need_negotiate(conn);
++				ksmbd_conn_set_need_setup(conn);
+ 			}
+ 		}
+ 		smb2_set_err_rsp(work);
+@@ -2249,7 +2257,7 @@ int smb2_session_logoff(struct ksmbd_wor
+ 		ksmbd_free_user(sess->user);
+ 		sess->user = NULL;
+ 	}
+-	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
++	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_SETUP);
+ 
+ 	rsp->StructureSize = cpu_to_le16(4);
+ 	err = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_logoff_rsp));
 
 
 
