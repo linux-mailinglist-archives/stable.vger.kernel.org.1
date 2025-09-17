@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-180182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3447B7ED3E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59383B7F079
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D530189C66D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:57:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 823B91C25D78
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C0D306B01;
-	Wed, 17 Sep 2025 12:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD7D33593A;
+	Wed, 17 Sep 2025 12:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgJq2LiZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3QAH3Za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808533233FF;
-	Wed, 17 Sep 2025 12:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0DD33592B;
+	Wed, 17 Sep 2025 12:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113639; cv=none; b=FVvXTWLrZP+pQQoBAfqL+KJtOs7ah4z/Zeyd5PPQauCdQVNhHRyiONHHo03KoiGQMIYVUa12ZLXchAtzwwiQ9wdjWKDTL42nXjpTqEp2+Mb71SOgaLD/LiHceheyfofDcecL0j2gPCODP6QaJEjSW/DhzlQmM/efixuess27dys=
+	t=1758113957; cv=none; b=CauKgLFcvqKEEt3lvcu3ztvV6lOqm62aetrg0l7jJ/u6MGW5fgAfXZGkl067CGuZlxds1Kc6v4t96UOL7Ww0Cy/dmJbKXFjSp4s5KSywi1ccKPssVEHFJfUimOgekOZ9Hiux37qQV2b9RP2bowniha6e3LJ8ECtrFbsqcy5xrWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113639; c=relaxed/simple;
-	bh=aGPenueTMCTuq8T0pCrpkIczcYaiy3a2R3qUucPv+dc=;
+	s=arc-20240116; t=1758113957; c=relaxed/simple;
+	bh=/DMrBEVkt98kLGt26a1gMl8BFsaH60dyKwpZNhzdVi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4pX8Z62tY4COlgri0JfRt4/xcQD6QwyZ0IcHNyh0LkMSAOeJJdnxfl/5M2qPYR8kddzsGWJpsRdNWZ4FB2/A2lrlYR1I23M5emg5Td1d92J0k4Olm4A4UKbhCfwmG5SvxYCV4Cp61emIy9sS5ngbre6O1KfEdku9ZVG63xqIGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgJq2LiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009F3C4CEF0;
-	Wed, 17 Sep 2025 12:53:58 +0000 (UTC)
+	 MIME-Version; b=UJp3B5F8wVFixp3ZBhuv6Hft30x/idU/tjKyHnp5f3DQAgjZFnfscQpxEUqA2BXPo+qQZ4B6Y3xlCbNxSNPMlsQTDj3eI5tcQPT81HpCPPHv2hflXa/g3mSSoNnxRieb2C5Wc+aKs55++zRmmL/qP29kzJ0LzWJMzZkHVsrTPpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3QAH3Za; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FB3C4CEF0;
+	Wed, 17 Sep 2025 12:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113639;
-	bh=aGPenueTMCTuq8T0pCrpkIczcYaiy3a2R3qUucPv+dc=;
+	s=korg; t=1758113957;
+	bh=/DMrBEVkt98kLGt26a1gMl8BFsaH60dyKwpZNhzdVi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgJq2LiZQ+8qdDE7D4BkzdrPR5vZ3vWhp3xBHsRE5C/IXYcI+SrJTwIDyMjzRR1Lt
-	 a16caSlE104s02kW06K57lrgTmQtY63yODH7rg54L7AIhAW0QCN1tF51xjNeEvvi4E
-	 dBCRuR/5SwYRsOXAw7H+/VQ98QYlE+mOQfcKXMdI=
+	b=d3QAH3Za9SBz0uZQeFrhrITeyhVl93CpN33PcN520Ddv9FHRa5nAkhJyrg1AI5HF1
+	 Nvkav0ene/Vr1pA2x1ZY/ZKXtGuVPwno85DNSEf/O2jKhNQa06eYe2W6MN9iKacbJz
+	 U+tm1jZ6qjVwP7PPkwUiM6kqmlLDZxGMG153TxpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@intel.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Alex Tran <alex.t.tran@gmail.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/140] dmaengine: idxd: Fix refcount underflow on module unload
+Subject: [PATCH 6.6 071/101] docs: networking: can: change bcm_msg_head frames member to support flexible array
 Date: Wed, 17 Sep 2025 14:34:54 +0200
-Message-ID: <20250917123347.291744471@linuxfoundation.org>
+Message-ID: <20250917123338.556907318@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Sun <yi.sun@intel.com>
+From: Alex Tran <alex.t.tran@gmail.com>
 
-[ Upstream commit b7cb9a034305d52222433fad10c3de10204f29e7 ]
+[ Upstream commit 641427d5bf90af0625081bf27555418b101274cd ]
 
-A recent refactor introduced a misplaced put_device() call, resulting in a
-reference count underflow during module unload.
+The documentation of the 'bcm_msg_head' struct does not match how
+it is defined in 'bcm.h'. Changed the frames member to a flexible array,
+matching the definition in the header file.
 
-There is no need to add additional put_device() calls for idxd groups,
-engines, or workqueues. Although the commit claims: "Note, this also
-fixes the missing put_device() for idxd groups, engines, and wqs."
+See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+flexible-array members")
 
-It appears no such omission actually existed. The required cleanup is
-already handled by the call chain:
-idxd_unregister_devices() -> device_unregister() -> put_device()
-
-Extend idxd_cleanup() to handle the remaining necessary cleanup and
-remove idxd_cleanup_internals(), which duplicates deallocation logic
-for idxd, engines, groups, and workqueues. Memory management is also
-properly handled through the Linux device model.
-
-Fixes: a409e919ca32 ("dmaengine: idxd: Refactor remove call with idxd_cleanup() helper")
-Signed-off-by: Yi Sun <yi.sun@intel.com>
-Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-
-Link: https://lore.kernel.org/r/20250729150313.1934101-3-yi.sun@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250904031709.1426895-1-alex.t.tran@gmail.com
+Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217783
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/init.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/networking/can.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index d6308adc4eeb9..a7344aac8dd98 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -918,7 +918,10 @@ static void idxd_remove(struct pci_dev *pdev)
- 	device_unregister(idxd_confdev(idxd));
- 	idxd_shutdown(pdev);
- 	idxd_device_remove_debugfs(idxd);
--	idxd_cleanup(idxd);
-+	perfmon_pmu_remove(idxd);
-+	idxd_cleanup_interrupts(idxd);
-+	if (device_pasid_enabled(idxd))
-+		idxd_disable_system_pasid(idxd);
- 	pci_iounmap(pdev, idxd->reg_base);
- 	put_device(idxd_confdev(idxd));
- 	pci_disable_device(pdev);
+diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
+index d7e1ada905b2d..3bdd155838105 100644
+--- a/Documentation/networking/can.rst
++++ b/Documentation/networking/can.rst
+@@ -740,7 +740,7 @@ The broadcast manager sends responses to user space in the same form:
+             struct timeval ival1, ival2;    /* count and subsequent interval */
+             canid_t can_id;                 /* unique can_id for task */
+             __u32 nframes;                  /* number of can_frames following */
+-            struct can_frame frames[0];
++            struct can_frame frames[];
+     };
+ 
+ The aligned payload 'frames' uses the same basic CAN frame structure defined
 -- 
 2.51.0
 
