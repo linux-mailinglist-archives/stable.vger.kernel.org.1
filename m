@@ -1,181 +1,125 @@
-Return-Path: <stable+bounces-180421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C4EB80F14
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 18:21:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD13B80EC7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 18:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F133F16458B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:16:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AE9C1C81D28
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EAD2F9DBB;
-	Wed, 17 Sep 2025 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47A42FAC0A;
+	Wed, 17 Sep 2025 16:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FPlhM44i"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pg9mz5oO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E813E34BA46
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 16:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44732F7ADC
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 16:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758125124; cv=none; b=UOc+Fq2EwTG/onwBG/dc43SZUDuWunB+II3o6tWZoJ/eP8JLYKeZZx1lB8a/XxbziI7K91iFw0oI1ft8XBscU1WCAzIpfr2KFFE9mfl5yV68od0w9sgmrm7CN21qzSsyX5+FnHsMKINg0SYNNKFHAttDi6ZEL/SFKNd8opxjP9U=
+	t=1758125161; cv=none; b=YofHRBmZf1NsyLoL3Ri5rJGI+6fBNE6cbeslSjhZ1cAXb1Oa1D+2NQO1khdQ9nMG/MMwSjgaBsvMOOMGSxNnBta/aMnKTNO5+z5uzo/bT+vcrxh9SH4aGUEXuUXuEdzRiT6taDwUh0kpaPTLFG0WSEmyYsLb3ZOT5yi9kjhREkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758125124; c=relaxed/simple;
-	bh=83FVdwNnxqEbYW3PgFyOSJc0vbgnfeTmYkwtMxfNscE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PAgPiud5PwZk1/GXSkcXWsHJZsj7Wod5vjidmejWeAXb45WedBxzRJK9WVfGdSUgTPBGweecmhFZVrYZQEm/dVmrPUPVEUMwDM4EFJJvIj69nvYmNw+blfgORNb9daSdCxqfFycNvKbkXBma6pSnyAwKFlI6ubVjTKerVumD/Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FPlhM44i; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3ecde0be34eso625260f8f.1
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 09:05:21 -0700 (PDT)
+	s=arc-20240116; t=1758125161; c=relaxed/simple;
+	bh=rGzvhCSSZAHHlEpBZeE52UHASucCX8HP2pf4IkNCfN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sf1UiO85/mXqj6WJV0aa39e0zjRB3ddJD30tk8mFKdglg8Z93AqDCu8W0qo83QPDYw94Rmrwdi+Dl+i/DJuvsxzbIcaA8DuenlewcYNYfxYGae5Ee1H/T8La0YDJcoTAb4a/Bj/ymDvCYAorOElc6cnmD3jT5JJuC1NOGno7z2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pg9mz5oO; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b0418f6fc27so1172892766b.3
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 09:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758125120; x=1758729920; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZfZwmKXTX8HZnh5vO2cl8cRtebuw3nAGYKhbz9bcrEc=;
-        b=FPlhM44izJgKtPAMIOHzlNf/52KXm3YvTZx5MIg1RJRXuSXR55CCj3MiJsbPPkbt1H
-         2Yo0CqLaa5hTo9HK6X6O2ZT6G/OkUuWpv1E9iedPO5get+LXQAdxSDEP4Rq+Rh7L8U8R
-         RKI/RCnmIxxWso5Db0YwApXuRLyQGg2bPruNjE2rYJIFuSQ4q18s38+sUV4enXFoDrXS
-         AUiv3t5AgPl8PnehGSfBCFrnGtMRKYkNSS5Shz7bG7VS5j9sKsLRFnSwOJuVhigQJNNY
-         deqCqxq6RNgwtdNDEo04/hxij5i7u5Tk2EUptSXnTqlScDn7/op7KRKCaEuVByIz+b4a
-         1niQ==
+        d=gmail.com; s=20230601; t=1758125158; x=1758729958; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rGzvhCSSZAHHlEpBZeE52UHASucCX8HP2pf4IkNCfN0=;
+        b=Pg9mz5oO17M4GNGPldc3IhFzUXqJWy9wSeR+MmlYeEbktn5ysWSNDU2u0AIFsN0Ljz
+         Av0oVsifY04GhEcEzqh1lfFXvvUMnHjqmo3rKS8tNQUzhnE2iwdL1lZN/LJXzwbemiaa
+         1mYBCF+28XvM56G5asW9dUzjcKKAIIlx6n+DasqmbqijROCigyjVcr7vT90u1Uci0w1H
+         2TYfEb+jvGfmizkZwUHyXNr2fzzDeH7wsW245K1FTB8Uc4A4TLUQe5TGxH5MFzQGi5oH
+         0nD/03MFop7QdnS4B94oqaG8ciUkcTlQUUrH2YJC1dMIYsSKlOIN/hv/IxpAWipUjqCc
+         3BRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758125120; x=1758729920;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZfZwmKXTX8HZnh5vO2cl8cRtebuw3nAGYKhbz9bcrEc=;
-        b=ilbQ39I4/BA3RrVczh8rSYKECyOPDVg8lYKBKtiQeYivKDBH0XrI9qnxZCl33GeJqX
-         8JWvRvrm0yL0MnNhsT24ozFq++gj8XQ8TjCCIA2z0GShoT1uL2DUMvDGT8UBUa3UvBd/
-         d+FtyX6ocb/hF/BEeIHbE4sgYhh006NYyR1/m3Uq4WhApvIRuMWkxJNFVO7paE8y77ue
-         x+D5y7UAMrophYd9egIED3uGmx6AonQJ6BSeIu8bwX5soiiN1f5AfAKPvRd19j845GHU
-         qdpmerjugg1YXhVnqs3unu6zBZhawkrnmLzZc2MBKi3DbiwIDYzBfdJgiGr8kuAF7xi0
-         sGRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEFff9sgu+oRclMP3VG6xoeuWvu2SSuJM1mc/XOHbF8BWujnlXRISVf2HjfxKXpiMptwxXUy8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzudVU82Hm9nC01YlavQiL6C5NDdGWQY2VqF4j/ajt8+cpFHd0/
-	J10SALXUKjNlj0KU+1rRFDdvlJhlQt1ESqefOqZ6kZ3PDAsHqnTbx5kOq2tU8G/HIFy1uNoT7ty
-	jAwvy
-X-Gm-Gg: ASbGncsThUdeBSqgT0bz8eEdh2bsLnPpEiVHi57g0FczMQCYuD3mgvrQRjKOhifUi5Y
-	7ABJUAplGhcLjybOX5/v5+u1ESrvohMU29nJ3JueyTGK+SXx1UEEh16r1IS+sdohOfdu2gVksOZ
-	W9QgigNr5d3JBoLX9JjUCYQbw2HJ1RR7HSOBgxmk7GF7R5HLCiXTv0j2CW7U1c0HSAvFQSIueoQ
-	mARfGVFxXmkyEk1BQ5uNQmnaE/ZOcYLdNW6A8X65gP7kSZcCnK5JNHHbd+O7ZYRMbQklkGxdQTE
-	5tExoXdPrpsSCP2V/wOFvOdfZ38maCxNbLf/idM0hE9WqwlQmqnL5rSPNmN0HErvryfySP9xUiH
-	yQKOm1yrq+Hcpal+nL0ojVdklgWBncwsv4KiUJyaEOuURk6DsYvPOs0MpSW+Y6h6O3Ky01qPZ7V
-	X4hA==
-X-Google-Smtp-Source: AGHT+IG6PSOFrqglzlkWA1zO7CzKciVLMfMhjWHI8hR2vQYQuR0qyFq5Nrbski70IDPQSjM3RHc8/w==
-X-Received: by 2002:a05:6000:220e:b0:3ec:98fb:d75e with SMTP id ffacd0b85a97d-3ede1b73345mr111009f8f.16.1758125120170;
-        Wed, 17 Sep 2025 09:05:20 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:37e6:ed62:3c8b:2621? ([2a05:6e02:1041:c10:37e6:ed62:3c8b:2621])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4613186e5c7sm48392715e9.0.2025.09.17.09.05.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 09:05:19 -0700 (PDT)
-Message-ID: <80564613-d935-4ad0-ba00-4ed23a0f9cef@linaro.org>
-Date: Wed, 17 Sep 2025 18:05:19 +0200
+        d=1e100.net; s=20230601; t=1758125158; x=1758729958;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rGzvhCSSZAHHlEpBZeE52UHASucCX8HP2pf4IkNCfN0=;
+        b=N7+kXBfNOn/k2QJNT2usYXtupx/PhPYa8e5ZiqukwQzsi477VlsPlCHAyuU+gek7VL
+         HQbAk0DBCDCsam6CBIyCubCHd6jMDvbgIsDIYPJLKP4GBm62DAl9tFAakHwk5puLFvPD
+         Ym6E8LE6ORqyO2/RKZKR8BKCU+PfYyMKZZJGwQaBPXrmGq06hMhaY0iJNYCmUaUmkGes
+         lqZZJkDTidqXj3yx28sBqj+NqqOwEw4Lc8C8bOO1MaH9zVXEFFCMf48uj3Stu4yOFFoH
+         0WIA8LW+j85PqaVRAsOCzgtnz4gJxiQrd2VEtUCNATmRGAWKnpQUYaeOozlMYyqGF4tk
+         unsA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIwq/wCJAz8LsjMTgSxlLp6UOV+zln1DLDuQ2zCKVyd2EGtr5rdNKIXy9v6UO/ClFGYAW2U4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlNh1nwCfaqOawS5YPyPA53s2rAPoDscoqqet4sB+gri8V8AlZ
+	1ZQeqtQ3LJN1YizAFsN7PUCxurAUHUmwJNgln/Qax0Yi2Q/5EKBvu5/lHEhIoG5LfdxA8GSMXVU
+	fGbYfsGULoJOu9ukv8Zz7lZEpiEbO4mo=
+X-Gm-Gg: ASbGncsusGbl87uOrVbs1XaAsiMlMFCL3E5VH2DFVNMJp1roBIIRS48wi44RPj6H+x/
+	aCaaoxFy/58k6K7WRDBYh/ZWCOyEVQsGEztbA1v+xTvM7l+nr3znzkHWu/HJROdEyfxl1yADIKm
+	O66pEABPrG3nSN7QKkup2RyZyPsXp46hqSgQwoqfEtaOad0vVkmq7nfUvwZEt4roe5SsCdZpqk9
+	djssolIkgs9XgUVomdL2tPnblc6+jixMXbTdXw=
+X-Google-Smtp-Source: AGHT+IFYdSGvI+uA61yyZkwt50Ad23ev1FWqCOSE8kh6RNPVGA/Gis8pt6U0TfAHwkQbkeFce5QBPD3rY+N2cvqSbLg=
+X-Received: by 2002:a17:907:c15:b0:b04:5b0a:5850 with SMTP id
+ a640c23a62f3a-b1bbbe51dcbmr310348066b.40.1758125157798; Wed, 17 Sep 2025
+ 09:05:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] clocksource: clps711x: Fix resource leaks in error
- paths
-To: Zhen Ni <zhen.ni@easystack.cn>, tglx@linutronix.de
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250804123619.78282-1-zhen.ni@easystack.cn>
- <20250814123324.1516495-1-zhen.ni@easystack.cn>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20250814123324.1516495-1-zhen.ni@easystack.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <cover.1752824628.git.namcao@linutronix.de> <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+ <aflo53gea7i6cyy22avn7mqxb3xboakgjwnmj4bqmjp6oafejj@owgv35lly7zq> <87zfat19i7.fsf@yellow.woof>
+In-Reply-To: <87zfat19i7.fsf@yellow.woof>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Wed, 17 Sep 2025 18:05:45 +0200
+X-Gm-Features: AS18NWCZPfFFjmQOs9cr5KbbP9wMx9RwhnFf7m9BDXKCe0S4-642QEnnMrWwHTY
+Message-ID: <CAGudoHFLrkk_FBgFJ_ppr60ARSoJT7JLji4soLdKbrKBOxTR1Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
+To: Nam Cao <namcao@linutronix.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Shuah Khan <shuah@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Soheil Hassas Yeganeh <soheil@google.com>, Khazhismel Kumykov <khazhy@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Eric Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 14/08/2025 14:33, Zhen Ni wrote:
-> The current implementation of clps711x_timer_init() has multiple error
-> paths that directly return without releasing the base I/O memory mapped
-> via of_iomap(). Fix of_iomap leaks in error paths.
-> 
-> Fixes: 04410efbb6bc ("clocksource/drivers/clps711x: Convert init function to return error")
-> Fixes: 2a6a8e2d9004 ("clocksource/drivers/clps711x: Remove board support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> ---
-> changes in v3:
-> - Change "err" to "error" in the commit message.
-> changes in v2:
-> - Add tags of 'Fixes' and 'Cc'
-> - Reduce detailed enumeration of err paths
-> - Omit a pointer check before iounmap()
-> - Change goto target from out to unmap_io
-> ---
->   drivers/clocksource/clps711x-timer.c | 23 ++++++++++++++++-------
->   1 file changed, 16 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/clocksource/clps711x-timer.c b/drivers/clocksource/clps711x-timer.c
-> index e95fdc49c226..bbceb0289d45 100644
-> --- a/drivers/clocksource/clps711x-timer.c
-> +++ b/drivers/clocksource/clps711x-timer.c
-> @@ -78,24 +78,33 @@ static int __init clps711x_timer_init(struct device_node *np)
->   	unsigned int irq = irq_of_parse_and_map(np, 0);
->   	struct clk *clock = of_clk_get(np, 0);
->   	void __iomem *base = of_iomap(np, 0);
-> +	int ret = 0;
+On Wed, Sep 17, 2025 at 3:41=E2=80=AFPM Nam Cao <namcao@linutronix.de> wrot=
+e:
+> My question is whether the performance of epoll_wait() with zero
+> timeout is really that important that we have to complicate
+> things. If epoll_wait() with zero timeout is called repeatedly in a loop
+> but there is no event, I'm sure there will be measurabled performance
+> drop. But sane user would just use timeout in that case.
+>
+> epoll's data is protected by a lock. Therefore I think the most
+> straightforward solution is just taking the lock before reading the
+> data.
+>
 
-	int ret = -EINVAL;
+I have no idea what the original use case is. I see the author of the
+patch is cc'ed, so hopefully they will answer.
 
->   	if (!base)
->   		return -ENOMEM;
-> -	if (!irq)
-> -		return -EINVAL;
-> -	if (IS_ERR(clock))
-> -		return PTR_ERR(clock);
-> +	if (!irq) {
-> +		ret = -EINVAL;
+> Lockless is hard to get right and may cause hard-to-debug problems. So
+> unless this performance drop somehow bothers someone, I would prefer
+> "keep it simple, stupid".
+>
 
-Remove the above
+Well epoll is known to suffer from lock contention, so I would like to
+think the lockless games were motivated by a real-world need, but I'm
+not going peruse the history to find out.
 
-> +		goto unmap_io;
-> +	}
-> +	if (IS_ERR(clock)) {
-> +		ret = PTR_ERR(clock);
-> +		goto unmap_io;
-> +	}
->   
->   	switch (of_alias_get_id(np, "timer")) {
->   	case CLPS711X_CLKSRC_CLOCKSOURCE:
->   		clps711x_clksrc_init(clock, base);
->   		break;
->   	case CLPS711X_CLKSRC_CLOCKEVENT:
-> -		return _clps711x_clkevt_init(clock, base, irq);
-> +		ret =  _clps711x_clkevt_init(clock, base, irq);
-> +		break;
->   	default:
-> -		return -EINVAL;
-> +		ret = -EINVAL;
-
-Remove the above
-
-> +		break;
->   	}
->   
-> -	return 0;
-> +unmap_io:
-> +	iounmap(base);
-> +	return ret;
->   }
->   TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+I can agree the current state concerning ep_events_available() is
+avoidably error prone and something(tm) should be done. fwiw the
+refcount thing is almost free on amd64, I have no idea how this pans
+out on arm64.
 
