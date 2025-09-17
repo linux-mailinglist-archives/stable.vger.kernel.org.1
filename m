@@ -1,170 +1,134 @@
-Return-Path: <stable+bounces-179836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524F1B7D9B9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:31:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7865DB7D9C3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 622F5168CDE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:27:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 639E61C009D0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09E131A7FC;
-	Wed, 17 Sep 2025 12:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F47C337EA6;
+	Wed, 17 Sep 2025 12:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HkvugRbS"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wgryn0H3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B81A2FBE0C
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 12:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB2C337E88
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 12:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758111928; cv=none; b=ZUcGGwSp4ERsUUEw3UVT5V3VKdiLa/i+MTaJ/ntTNnQKQgBPBdgUWtPGy/L7GAWahrzN/90c5gqZ5XmLbwsgH8LoWMbhNCA9ZxomwKDV10lF/r89edbUlJ/NqexFcGj74/4ec9FOU6eC75msxde8SO8UllyoSgxaP7hVMyLLiLQ=
+	t=1758112067; cv=none; b=VopVE/XE2pe1JKZ+PjLIj1SNRrgxigJCROsJtYeh94iDocTMpqRC/Hw4jiGGgHThChsmlLaKTkQyNWXQGfO2/IwbaCKb+hAhxfZfdXNLy3wpe+7OhuFDa8lRKRCSUrXX0ZjyNy60iHUmiW0P1KRrPogNZLgV+a7b0LpxJuAUuLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758111928; c=relaxed/simple;
-	bh=hfGHEKj+Li5C+SsyBXQ5+0EUnOsVD4wRyx9sD6DmIzE=;
+	s=arc-20240116; t=1758112067; c=relaxed/simple;
+	bh=DXFEV0L75NK8DITxIbJ6qV1/IjtmIINM9eo+5QDAZHw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E/i269W103g8ADbYSSkIIh0BzCQWdSkbHRDDnqTtks7XknrKtUF3/HjtR3qY6k4WmeHdoGaDlu1co9CjDzDrnzGH/XYndeylwJBJkFyvLV5eTPhjfbt2a8LYSBBnrpyJbopLalO0QhPgcsRsim0+YDLxkVbUSgefuAKDUjZtp3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HkvugRbS; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b0b6bf0097aso682391166b.1
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 05:25:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1758111925; x=1758716725; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RGupZmSqqolDV3fFqfn3WPsHK/Y+Gx2I+5ncY0SDOWM=;
-        b=HkvugRbSmQmsWNuWVrAIphvTAX3krdROP5+PXI5WRJcjaLKIqKeq11+pC8XtbO+A6t
-         V+1clxw0GB+epCvnHcel8Lc4rw2OJouRl/biHaZJ8D4WIlzbZbKvNiGNWU7Qmcz3UwOu
-         dQh4lAmSfzYWwB40jY2LsMtGsfN+YME+lR4VuzjezFYN1VbQ5XUbPs4n+XCwDqPoNSJk
-         BEl6bLpDtpaqOKpuYSUktVkk+PdUZZCQMRtAe4TZ7fddhBYwl6klQQD8GnRNii5LzmoC
-         zK+w2rbylUl3m63IR4lNSV+g75AiwgsON8A+OJHv6VNFXeP4vkwMKAEipZePkgOmx7od
-         dg6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758111925; x=1758716725;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RGupZmSqqolDV3fFqfn3WPsHK/Y+Gx2I+5ncY0SDOWM=;
-        b=w+roEs0NNtPNdRZdpg5UufxvXEcjOyUTE/zxPdU2ptw3eSFh9ilV8fUG0kfbNeLvAq
-         Cwj4XCuUBjjDkvI/n1l9491tANKSyghjActd+3GTNjRsI5nA11r2AayYU1UZa7tt4Ba4
-         cyOOp1bkdg3cUp/QpVhKnh4Epucbb/jYPcUcEr0dNuLwbE+st5p16+5oxRsTCfRkkqE6
-         zLiGUWy/2BjBTJHpGTFlH2LGt6/g+9e11kHEZZ3yJ9txe3uyqPIuGuZBCrbhdHDeVkiS
-         gM+w8/8RtkNe2m4rPK+obR6UL61fPXSA2WE94/8loPlVUoGXh3mz2OowqFwE4O3kHmnA
-         Xsfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWvu0EmZrMlkj1/OlxwxKPIcF9oWyPFnOdC8q4WxV7+pah8R+uX1HHpc1Lh+TjQHD9p1jK6Ms=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywzkGv2imjHg2Sf8IvpqYI+qydFIH/hPVRgO17+EFShhCQmsGu
-	H8P1Xl9XhPtXPX5WaRUf/Gbr4CSuttxEjL4xVOgDCZWi3RR6Gn9fAi86d8LteGiHkN4=
-X-Gm-Gg: ASbGncuc2/dOy5gooDV4O7Qe9c4XpErpeJ8T1JU3PaXauTU6WvcEhF54Ufg6/FrytE/
-	RBsDsnKFbXJPVMTXU389cYDE+E/pgRjBDfkgCsFFPA/bEC2wm0bBwr0fqI1DBK1sqKttocH4eAB
-	M2rhwmDQQuPmI8T2h0FKoQAxrzeMBaAM2y9h0or4Zf0sDwTQ58ktZrDw0JqVGU3NTLutofaQpAJ
-	xBDJNCmQpZ0NsHqLZYRKh4PQfWSo/zljwLMaDHFA+eP8n5XRoJ0JGz2r7d0WGRUZOuMdBA5UEXg
-	nOaLPch21Ko++y1p6VsnswSth04g6wJhZoI3jXUl4pdhq5Bc97oLaENw8CGVBcZn8DGIaZULK5F
-	VFnEihSBlyBAYZPzUhlghzjSaY8VDdMkehs+VLaLxwXcH9n4sLl52JnOXO8HsQkw1
-X-Google-Smtp-Source: AGHT+IEMHO2+mrGwehsjHQd9adkafh7FOklixGAh9piZ10AcM2OldRJUtx+VWHX506OwdEOot1gHeQ==
-X-Received: by 2002:a17:907:3da0:b0:b07:b645:e5b8 with SMTP id a640c23a62f3a-b1bbfa2bb35mr217910766b.30.1758111924771;
-        Wed, 17 Sep 2025 05:25:24 -0700 (PDT)
-Received: from ?IPV6:2001:a61:133d:ff01:f29d:4e4:f043:caa2? ([2001:a61:133d:ff01:f29d:4e4:f043:caa2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62f1989123fsm8515308a12.37.2025.09.17.05.25.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 05:25:24 -0700 (PDT)
-Message-ID: <cae31224-95f2-4c62-bdb5-1e1e81f2b726@suse.com>
-Date: Wed, 17 Sep 2025 14:25:23 +0200
+	 In-Reply-To:Content-Type; b=hLREk2HJgvFj3fYA/COlEGdQLTcwuIpQaRI+jK+1ygRHkNboueZGuGrTvGVMASZhanVeg/ddbTBCrHo6A7PE3YhrUXZrCkyATfZDB4f1scdfEzhUUtOnmaojKJW0ONtObslG0pBV1/P1NOHC/WoofRVmbYIg1B0SeBDDDkRRmHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wgryn0H3; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <bc91d995-b964-4eb7-8b4d-c11c9f00eaef@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758112052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9qjlcBWvXVjLJDUhAtJSvzuP30qgjG2/ZCnjDSBqbMg=;
+	b=Wgryn0H33P8UysTg54ZpjWuLjfWsAt4PmDSksu+LiEiB2saOKADDVoBwCCc+kNyuc/nEt8
+	LsB1ToI91cgwN6UQmtQq/H4IxUN2RZUHfshkkq/Q7Hyr/jVnFlQNGxd3T72V153HtuaDUB
+	brbJyccBio7DwPP7qAJb51BOasuNk/o=
+Date: Wed, 17 Sep 2025 20:27:15 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
- PM/MDIO + RTNL deadlock
-To: Oleksij Rempel <o.rempel@pengutronix.de>, Oliver Neukum <oneukum@suse.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- =?UTF-8?Q?Hubert_Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
- kernel@pengutronix.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>, Russell King <linux@armlinux.org.uk>,
- Xu Yang <xu.yang_2@nxp.com>, linux-usb@vger.kernel.org
-References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
- <0f2fe17b-89bb-4464-890d-0b73ed1cf117@suse.com>
- <aMqhBsH-zaDdO3q8@pengutronix.de>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <aMqhBsH-zaDdO3q8@pengutronix.de>
+Subject: Re: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in
+ mm_struct during fork
+To: Donet Tom <donettom@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Wei Yang <richard.weiyang@gmail.com>,
+ Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
+ stable@vger.kernel.org
+References: <cover.1757946863.git.donettom@linux.ibm.com>
+ <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-
-
-On 17.09.25 13:52, Oleksij Rempel wrote:
-> Hi Oliver,
+On 2025/9/15 23:03, Donet Tom wrote:
+> Currently, the KSM-related counters in `mm_struct`, such as
+> `ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are
+> inherited by the child process during fork. This results in inconsistent
+> accounting.
 > 
-> On Wed, Sep 17, 2025 at 12:10:48PM +0200, Oliver Neukum wrote:
->> Hi,
->>
->> On 17.09.25 11:54, Oleksij Rempel wrote:
->>
->>> With autosuspend active, resume paths may require calling phylink/phylib
->>> (caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
+> When a process uses KSM, identical pages are merged and an rmap item is
+> created for each merged page. The `ksm_merging_pages` and
+> `ksm_rmap_items` counters are updated accordingly. However, after a
+> fork, these counters are copied to the child while the corresponding
+> rmap items are not. As a result, when the child later triggers an
+> unmerge, there are no rmap items present in the child, so the counters
+> remain stale, leading to incorrect accounting.
+> 
+> A similar issue exists with `ksm_zero_pages`, which maintains both a
+> global counter and a per-process counter. During fork, the per-process
+> counter is inherited by the child, but the global counter is not
+> incremented. Since the child also references zero pages, the global
+> counter should be updated as well. Otherwise, during zero-page unmerge,
+> both the global and per-process counters are decremented, causing the
+> global counter to become inconsistent.
+> 
+> To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0
+> during fork, and the global ksm_zero_pages counter is updated with the
+> per-process ksm_zero_pages value inherited by the child. This ensures
+> that KSM statistics remain accurate and reflect the activity of each
+> process correctly.
+> 
+> Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+> Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+> Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+> cc: stable@vger.kernel.org # v6.6
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 
-This very strongly suggested that the conditional call is the issue.
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
 
->>> resume can deadlock (RTNL may already be held), and MDIO can attempt a
->>> runtime-wake while the USB PM lock is held. Given the lack of benefit
->>> and poor test coverage (autosuspend is usually disabled by default in
->>> distros), forbid runtime PM here to avoid these hazards.
->>
->> This reasoning depends on netif_running() returning false during system resume.
->> Is that guaranteed?
-> 
-> You’re right - there is no guarantee that netif_running() is false
-> during system resume. This change does not rely on that. If my wording
-> suggested otherwise, I’ll reword the commit message to make it explicit.
-> 
-> 1) Runtime PM (autosuspend/autoresume)
-> 
-> Typical chain when user does ip link set dev <if> up while autosuspended:
-> rtnl_newlink (RTNL held)
->    -> __dev_open -> usbnet_open
->       -> usb_autopm_get_interface -> __pm_runtime_resume
->          -> usb_resume_interface -> asix_resume
-> 
-> Here resume happens synchronously under RTNL (and with USB PM locking). If the
-> driver then calls phylink/phylib from resume (caller must hold RTNL; MDIO I/O),
-> we can deadlock or hit PM-lock vs MDIO wake issues.
-> 
-> Patch effect:
-> I forbid runtime PM per-interface in ax88772_bind(). This removes the
-> synchronous autoresume path.
-> 
-> 2) System suspend/resume
-> 
-> Typical chain:
-> ... dpm_run_callback (workqueue)
->   -> usb_resume_interface -> asix_resume
-> 
-> This is not under RTNL, and no pm_runtime locking is involved. The patch does
-> not change this path and makes no assumption about netif_running() here.
-> 
-> If helpful, I can rework the commit message.
+Thanks.
 
-It would maybe good to include a wording like:
-
-With runtime PM, the driver is forced to resume its device while
-holding RTNL, if it happens to be suspended. The methods needed
-to resume the device take RTNL themselves. Thus runtime PM will deadlock.
-
-
-	Regards
-		Oliver
-
-
+> ---
+>   include/linux/ksm.h | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+> index 22e67ca7cba3..067538fc4d58 100644
+> --- a/include/linux/ksm.h
+> +++ b/include/linux/ksm.h
+> @@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
+>   static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>   {
+>   	/* Adding mm to ksm is best effort on fork. */
+> -	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
+> +	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
+> +		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
+> +
+> +		mm->ksm_merging_pages = 0;
+> +		mm->ksm_rmap_items = 0;
+> +		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+>   		__ksm_enter(mm);
+> +	}
+>   }
+>   
+>   static inline int ksm_execve(struct mm_struct *mm)
 
