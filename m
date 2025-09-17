@@ -1,128 +1,138 @@
-Return-Path: <stable+bounces-180384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EC0B7F886
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39003B7F958
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7A53BAB26
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:46:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50603A42E3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D5A3397CC;
-	Wed, 17 Sep 2025 13:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D302332A45;
+	Wed, 17 Sep 2025 13:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cXn5m+wJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MIdBY3Z1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OtTJ71C2"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C890D33594B;
-	Wed, 17 Sep 2025 13:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6413333A93
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 13:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758116518; cv=none; b=M+RpSGFCSTZ7h0v7CLAgP80o6HumG37YOk9frTtmcGId7HnLRCZqBHbaHlzRISMwKElpI+2QF3eswPDYkcqYGkUvNrJOKM3KHhoLXMQs95UKQJZ6y7Y45Q+J+Zn7PlabhAHEGCRaNS5FV6R35Xp3T2DPb/MLRe+28DcMxC83Y/M=
+	t=1758116732; cv=none; b=kulUdP55jrKJb/18FdPkbvpNCFvtbPjeF6OxmBKsqDpB/VqwykobYtRzgVRavBTTzy2jPxmkOtpjWT1n5yhYgYnek+KaL+6bJzhQ90dWF83k0P8OfECqMAeJud5ibj06AzOj/XjPXQS2SrNsLQ39S9wrBnfV/4ukkJzoMQrXTuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758116518; c=relaxed/simple;
-	bh=eAM7emcnF0+KyTwHDruGIDalO4MkhIrArjiMVGnxXd8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=C9RH/ShvZuhZtrRz21Bih5LVKI7pcOPjO7EhI5HtlpTwY4LNxKDtCi9edrolfgJEEKHI8nVFaSgyA2ZyCT1VroHhqwpkaetuqRIbG/pCki+weLH12/mw6p9pWFtqUEoIm8mICLo1kdarvayTYWRt44SaJ567ykX53u+dIuWJ9Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cXn5m+wJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MIdBY3Z1; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758116513;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eAM7emcnF0+KyTwHDruGIDalO4MkhIrArjiMVGnxXd8=;
-	b=cXn5m+wJdSnDJcufV3fK/n5bCG13Z0iLUJXoStYyxkW9w1euLJ6/Xr6DlWUpMOH11+WXWo
-	tTVxGBkkef4Nf9gcjecTrrU+427mz6qL/iGJ56qjJkJScNSOSOtq+iLzf/GefzsXuGq5se
-	CZE0TaoHSTcK1lIq4tGJGoh/0flh6neP1TQq6nCdZkd5gK2v8RggwHP8b7OqEHiiZ6oay5
-	ovUFq7F60GNjkSAWl0pi//aJ7yqxGrSlwgXuVxuTXjqvLEBxBGYmG7xlVS0wuicWVuhW7S
-	XmAJXYQNaMPz8iuaphUpZrhrMfdYkF4e2dUM+cb7lTCz09k54u7EpB6eAF4+oQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758116513;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eAM7emcnF0+KyTwHDruGIDalO4MkhIrArjiMVGnxXd8=;
-	b=MIdBY3Z1wIvhd4Xt2SRaWEpUMvEK+HhdABZClqhIvz548Y1F9LEFAA9AjvjNwdfDYvSP8f
-	+9OanZ/JfH/rlbDQ==
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Shuah Khan
- <shuah@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Soheil Hassas
- Yeganeh <soheil@google.com>, Khazhismel Kumykov <khazhy@google.com>,
- Willem de Bruijn <willemb@google.com>, Eric Dumazet <edumazet@google.com>,
- Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
-In-Reply-To: <aflo53gea7i6cyy22avn7mqxb3xboakgjwnmj4bqmjp6oafejj@owgv35lly7zq>
-References: <cover.1752824628.git.namcao@linutronix.de>
- <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
- <aflo53gea7i6cyy22avn7mqxb3xboakgjwnmj4bqmjp6oafejj@owgv35lly7zq>
-Date: Wed, 17 Sep 2025 15:41:52 +0200
-Message-ID: <87zfat19i7.fsf@yellow.woof>
+	s=arc-20240116; t=1758116732; c=relaxed/simple;
+	bh=4rCjPUqBe5hDzKQsNZsZO0Si8lwcnSgwqoA91a8w/qA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PMY9ZkWU7q5U5ZHtgwZADpg6129I/yjdjROvGho//+QOS2vZSmEI/ZyQlUf1aOadXhJHxxAdQtDYud6RGU/Q3shRvAd4HskXa9t92Z2V3jsbTb3U9FxFdVnNGMGAQE8cnP0GZQ0laUAFgmOm8yvYDUD7qWtfmbo4iAKK18Sam+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OtTJ71C2; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61cc281171cso11304490a12.0
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 06:45:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758116729; x=1758721529; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4rCjPUqBe5hDzKQsNZsZO0Si8lwcnSgwqoA91a8w/qA=;
+        b=OtTJ71C2+f60SZTiEhIWHBQ4o7kLP6xIlRwXDOQmyb2tfI7Ixqe3jdodyDCZ6I/pci
+         VrYugBtsM39gl26uU6q8zCgyF3duHSoLIBD9gl91+nd7Px5uTUgcH93KyfqjILZ45oob
+         2hyQT1b5NVbgDk8Otqi+IB+ja1semJyZPKvQsfEAC7hIng7aXqM1XAr15ts6n9oJs0l/
+         gNxXp4EOLAnzzRWO/qH2GU7yPe4BIjcYQBgQAwknAMvNqZL7IxAeaJvAQQmxzrM6U+58
+         Kh1khv7J8EK+n1DRN18PQrohtPa6NfRFhGUeWL6KmBB8uCPW5EUPeAG+sA/Av8BLTks9
+         vfxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758116729; x=1758721529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4rCjPUqBe5hDzKQsNZsZO0Si8lwcnSgwqoA91a8w/qA=;
+        b=O/PyYT8vdiAB4rSXU5PX1LNOb9PqH2n7B+B01azsTUjCdiV3vLY0WNnYiibQF5qG8m
+         Cib6sz+T+4YrNb2lKknby06/Ys4WK6XAgTPR0zJcKkkV0gLLcmaf7qnul06S4rhaJTYi
+         Zr/BiRDNWf3SNYkFSk45DXNryDkvWcaTDS1xBrrCBLJij6C7FmMYexFpy8tOR0DGZl0d
+         Dc+DN9C18CrVMZjnHFpDuh/HzsVx5zHBa2ZK2Y8a59+HpgBRAwouf/dppw52WZ9WP52M
+         TscRRhnrIh9hM6um4c2m9R3cj6hRSqQ4Dm9pSv9hOCph4zQ02XN5C1+p2KS3UDB28cvf
+         l6xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhrIovn/czNXzXKt+0ldcfDdezPEGiewPFtwJfBZgx/L9h07jaHb5jIQZves9HPsGaauMUBaY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7xz6U8VyVdECIxlH1UhbsW0Ijud4llMZKnkCTbOM4EDiuQT7h
+	S2iePdMnN0yTmpduVFKAH7DwljgcUyhWBWVrwKv8CTKmV8E3IoDG+skmlkM4fSKhk78sjmFdQHL
+	ECr5Hp0wTqxHxBOP1sPG/Wk9KAy5GEME=
+X-Gm-Gg: ASbGncu8lPGuXbP2HRUDIrM7Rm/m/nUGsgs26BjoV2qQkpsjNQhUMClvh83KxPX8rKw
+	thiFwd1hNe2l9gwgrwrTVJWjK8e7gKh8z9SQn5/e8g8JPGlHEIlL1lwCkOdImHkwwnrPtg7ZEFb
+	MRLliyNHxihifKaclPaYn426WB26+Zc/Lsy1kmO2WZK8L9EKzKtYICEymMMMjqSHMdOoNyHn3FE
+	BLBxfob/lEoR2/dqL1hNQA2KyWyU5AoOGd2njyRKg/gAr/x8Q==
+X-Google-Smtp-Source: AGHT+IHJjSAqFzQR7vsvzpBHIle/SM7pkbfcfwBMTr+P1896d+alN/SQihemXVKbkiSRCNaNWJtZu6qP46KZEuNFGWc=
+X-Received: by 2002:a17:907:3c8b:b0:b04:aadd:b8d7 with SMTP id
+ a640c23a62f3a-b1bb5e56d85mr276690166b.13.1758116728681; Wed, 17 Sep 2025
+ 06:45:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250917124404.2207918-1-max.kellermann@ionos.com>
+ <CAGudoHHSpP_x8MN5wS+e6Ea9UhOfF0PHii=hAx9XwFLbv2EJsg@mail.gmail.com> <CAKPOu+9nLUhtVBuMtsTP=7cUR29kY01VedUvzo=GMRez0ZX9rw@mail.gmail.com>
+In-Reply-To: <CAKPOu+9nLUhtVBuMtsTP=7cUR29kY01VedUvzo=GMRez0ZX9rw@mail.gmail.com>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Wed, 17 Sep 2025 15:45:16 +0200
+X-Gm-Features: AS18NWBMJGX1M7gmLnyGCZI8UTIw8c6hYUtKDGdB2cO4qtZ9mDWgO1MIhRf_XYA
+Message-ID: <CAGudoHEhvNyQhHG516a6R+vz3b69d-5dCU=_8JpXdRdGnGsjew@mail.gmail.com>
+Subject: Re: [PATCH] ceph: fix deadlock bugs by making iput() calls asynchronous
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: slava.dubeyko@ibm.com, xiubli@redhat.com, idryomov@gmail.com, 
+	amarkuze@redhat.com, ceph-devel@vger.kernel.org, netfs@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Mateusz Guzik <mjguzik@gmail.com> writes:
-> I'll say upfront I'm not an epoll person, just looked here out of
-> curiosity.
-
-Feedbacks always welcomed.
-
-> I can agree there is a bug. The event is generated before any of the
-> threads even exist and they only poll for it, none of them consume it.
+On Wed, Sep 17, 2025 at 3:39=E2=80=AFPM Max Kellermann <max.kellermann@iono=
+s.com> wrote:
 >
-> However, the commit message fails to explain why the change fixes
-> anything and I think your patch de facto reverts e59d3c64cba6 ("epoll:
-> eliminate unnecessary lock for zero timeout"). Looking at that diff
-> the point was to avoid the expensive lock trip if timeout == 0 and there
-> are no events.
+> On Wed, Sep 17, 2025 at 3:14=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com>=
+ wrote:
+> > Does the patch convert literally all iput calls within ceph into the
+> > async variant? I would be worried that mandatory deferral of literally
+> > all final iputs may be a regression from perf standpoint.
 >
-> As for the bug is, from my reading the ep_start_scan()/ep_done_scan()
-> pair transiently disturbs the state checked by ep_events_available(),
-> resulting in false-negatives. Then the locked check works because by the
-> time you acquire it, the damage is undone.
 
-Exactly so. I can add this into the description.
+ok, in that case i have no further commentary
 
-> Given the commits referenced in Fixes:, I suspect the real fix would be
-> to stop destroying that state of course.
+> I don't think this affects performance at all. It almost never happens
+> that the last reference gets dropped by somebody other than dcache
+> (which only happens under memory pressure).
+
+Well only changing the problematic consumers as opposed *everyone*
+should be the end of it.
+
+> (Forgot to reply to this part)
+> No, I changed just the ones that are called from Writeback+Messenger.
 >
-> But if that's not feasible, I would check if a sequence counter around
-> this would do the trick -- then the racy ep_events_available(ep) upfront
-> would become safe with smaller overhead than with your proposal for the
-> no-event case, but with higher overhead when there is something.
+> I don't think this affects performance at all. It almost never happens
+> that the last reference gets dropped by somebody other than dcache
+> (which only happens under memory pressure).
+> It was very difficult to reproduce this bug:
+> - "echo 2 >drop_caches" in a loop
+> - a kernel patch that adds msleep() to several functions
+> - another kernel patch that allows me to disconnect the Ceph server via i=
+octl
+> The latter was to free inode references that are held by Ceph caps.
+> For this deadlock to occur, all references other than
+> writeback/messenger must be gone already.
+> (It did happen on our production servers, crashing all of them a few
+> days ago causing a major service outage, but apparently in all these
+> years we're the first ones to observe this deadlock bug.)
 >
-> My proposal is trivial to implement, I have no idea if it will get a
-> buy-in though.
 
-My question is whether the performance of epoll_wait() with zero
-timeout is really that important that we have to complicate
-things. If epoll_wait() with zero timeout is called repeatedly in a loop
-but there is no event, I'm sure there will be measurabled performance
-drop. But sane user would just use timeout in that case.
+This makes sense to me.
 
-epoll's data is protected by a lock. Therefore I think the most
-straightforward solution is just taking the lock before reading the
-data.
-
-Lockless is hard to get right and may cause hard-to-debug problems. So
-unless this performance drop somehow bothers someone, I would prefer
-"keep it simple, stupid".
-
-Best regards,
-Nam
+The VFS layer is hopefully going to get significantly better assert
+coverage, so I expect this kind of trouble will be reported on without
+having to actually run into it. Presumably including
+yet-to-be-discovered deadlocks. ;)
 
