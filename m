@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-179989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E83B7E389
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC56B7EEF2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 209CC62334D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:44:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE1B31884DD6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298FC1F873B;
-	Wed, 17 Sep 2025 12:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46A2330D24;
+	Wed, 17 Sep 2025 12:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEZ1u3CS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yhp+kEJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF67337EB9;
-	Wed, 17 Sep 2025 12:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6146B333A81;
+	Wed, 17 Sep 2025 12:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113030; cv=none; b=TRYPN0I5JHt6UQk0iglZMOBYEF/FwwSBoe0Q8cgW7ORaSKjdXFYSMCD16Axt9nT0mp7T0mlvwQLyRxkjBGdiEYk/GpWPtu+7CyDXQa66tztbGbpoMNjgpdkyknAalhpsyDT9pJ7mesuENwEl2+fAoZ6qRAckeCYuaiDvG9sfqng=
+	t=1758113727; cv=none; b=piUSONe+XFjYrzfE122+tmyD/1KvI2g9ecWimXnUB7cQjdQ62bq7qbvXnc88VItxHdK/4qcmmOk3QBWnJnGOQRszIPvueoC4CsyVf2DRWrIZ3q+eKG1RHesuxpigY5D4uP7q0rcTDkOUCrxlUhY9UzNJwKGDu8FZ1gxtdk7ZJPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113030; c=relaxed/simple;
-	bh=yAdYhg3OuqKNLIPHUQOtHZQS5seraVXClQxMlq6Vwnc=;
+	s=arc-20240116; t=1758113727; c=relaxed/simple;
+	bh=KdERYY7V/ZgXU2nu5lR390V7UvtwjitfQS38AqnvFdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aP+Il0vUcJZ+j+vi5PXbAIGLoXMQ8a8RRAM9HctQq9p7UQZSX7wNOsFJRIN/QZlc0WAReFQB4dEasTNkhMgZP46AR9KidP2QIELXO/3ZQ3F5ue37eex1hJVC5bE5Z3B8M1luWnNQEGmYBrOQLLFKypaPBW4sRegcV9cyNvAig64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEZ1u3CS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EE5C4CEF5;
-	Wed, 17 Sep 2025 12:43:50 +0000 (UTC)
+	 MIME-Version; b=L+RyKEsFLA1evj7BMg+9dLLRxKHEm60uWN999sfzRZcbBH+P4DgEy4JqsvhJcmWyjFnSlKBftiyYz2DCCd2f/j8VYyITFuI0nyUmOle49O1KWOal3OHeRSCPkNdekKveSg8BDYfJa9xTmmm3nMZUKsXDmVE/Kr3YWqaMRmimF84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yhp+kEJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF778C4CEF0;
+	Wed, 17 Sep 2025 12:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113030;
-	bh=yAdYhg3OuqKNLIPHUQOtHZQS5seraVXClQxMlq6Vwnc=;
+	s=korg; t=1758113727;
+	bh=KdERYY7V/ZgXU2nu5lR390V7UvtwjitfQS38AqnvFdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KEZ1u3CSVSI9oqovlkoSGzBWkECTwpXX/x/RWPoXLDqyQS7JY6W/Y7bKm4+91gJPU
-	 XsLxn2iQXJBwFVgAUs3/Xzw1VsxCeMva2laYylNw11sAMsLrX4O7s/6G81xhbDRuPZ
-	 peBsyoQlqEtOHu3QY6XtNao/V4vhJ2z0/pKO+Z3Y=
+	b=Yhp+kEJduNY1Q2ArZqD56vIDjqLyRb9DTXgMg4j7EUR2PZCV17vDcrasxdHx1k485
+	 3cwfvmmCoDKM8g+ADq74QYmkKfzOHffO0tGd1UgT+b236FTSxVJeZFz0LWT4SOblqu
+	 G4XDoLmgZTwcvQMzZwUAdct4PvxMTgUvReFu+2g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 148/189] can: j1939: implement NETDEV_UNREGISTER notification handler
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 035/101] ocfs2: fix recursive semaphore deadlock in fiemap call
 Date: Wed, 17 Sep 2025 14:34:18 +0200
-Message-ID: <20250917123355.486230337@linuxfoundation.org>
+Message-ID: <20250917123337.695920473@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +68,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Mark Tinguely <mark.tinguely@oracle.com>
 
-[ Upstream commit 7fcbe5b2c6a4b5407bf2241fdb71e0a390f6ab9a ]
+commit 04100f775c2ea501927f508f17ad824ad1f23c8d upstream.
 
-syzbot is reporting
+syzbot detected a OCFS2 hang due to a recursive semaphore on a
+FS_IOC_FIEMAP of the extent list on a specially crafted mmap file.
 
-  unregister_netdevice: waiting for vcan0 to become free. Usage count = 2
+context_switch kernel/sched/core.c:5357 [inline]
+   __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
+   __schedule_loop kernel/sched/core.c:7043 [inline]
+   schedule+0x165/0x360 kernel/sched/core.c:7058
+   schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7115
+   rwsem_down_write_slowpath+0x872/0xfe0 kernel/locking/rwsem.c:1185
+   __down_write_common kernel/locking/rwsem.c:1317 [inline]
+   __down_write kernel/locking/rwsem.c:1326 [inline]
+   down_write+0x1ab/0x1f0 kernel/locking/rwsem.c:1591
+   ocfs2_page_mkwrite+0x2ff/0xc40 fs/ocfs2/mmap.c:142
+   do_page_mkwrite+0x14d/0x310 mm/memory.c:3361
+   wp_page_shared mm/memory.c:3762 [inline]
+   do_wp_page+0x268d/0x5800 mm/memory.c:3981
+   handle_pte_fault mm/memory.c:6068 [inline]
+   __handle_mm_fault+0x1033/0x5440 mm/memory.c:6195
+   handle_mm_fault+0x40a/0x8e0 mm/memory.c:6364
+   do_user_addr_fault+0x764/0x1390 arch/x86/mm/fault.c:1387
+   handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+   exc_page_fault+0x76/0xf0 arch/x86/mm/fault.c:1532
+   asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:623
+RIP: 0010:copy_user_generic arch/x86/include/asm/uaccess_64.h:126 [inline]
+RIP: 0010:raw_copy_to_user arch/x86/include/asm/uaccess_64.h:147 [inline]
+RIP: 0010:_inline_copy_to_user include/linux/uaccess.h:197 [inline]
+RIP: 0010:_copy_to_user+0x85/0xb0 lib/usercopy.c:26
+Code: e8 00 bc f7 fc 4d 39 fc 72 3d 4d 39 ec 77 38 e8 91 b9 f7 fc 4c 89
+f7 89 de e8 47 25 5b fd 0f 01 cb 4c 89 ff 48 89 d9 4c 89 f6 <f3> a4 0f
+1f 00 48 89 cb 0f 01 ca 48 89 d8 5b 41 5c 41 5d 41 5e 41
+RSP: 0018:ffffc9000403f950 EFLAGS: 00050256
+RAX: ffffffff84c7f101 RBX: 0000000000000038 RCX: 0000000000000038
+RDX: 0000000000000000 RSI: ffffc9000403f9e0 RDI: 0000200000000060
+RBP: ffffc9000403fa90 R08: ffffc9000403fa17 R09: 1ffff92000807f42
+R10: dffffc0000000000 R11: fffff52000807f43 R12: 0000200000000098
+R13: 00007ffffffff000 R14: ffffc9000403f9e0 R15: 0000200000000060
+   copy_to_user include/linux/uaccess.h:225 [inline]
+   fiemap_fill_next_extent+0x1c0/0x390 fs/ioctl.c:145
+   ocfs2_fiemap+0x888/0xc90 fs/ocfs2/extent_map.c:806
+   ioctl_fiemap fs/ioctl.c:220 [inline]
+   do_vfs_ioctl+0x1173/0x1430 fs/ioctl.c:532
+   __do_sys_ioctl fs/ioctl.c:596 [inline]
+   __se_sys_ioctl+0x82/0x170 fs/ioctl.c:584
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5f13850fd9
+RSP: 002b:00007ffe3b3518b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000200000000000 RCX: 00007f5f13850fd9
+RDX: 0000200000000040 RSI: 00000000c020660b RDI: 0000000000000004
+RBP: 6165627472616568 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe3b3518f0
+R13: 00007ffe3b351b18 R14: 431bde82d7b634db R15: 00007f5f1389a03b
 
-problem, for j1939 protocol did not have NETDEV_UNREGISTER notification
-handler for undoing changes made by j1939_sk_bind().
+ocfs2_fiemap() takes a read lock of the ip_alloc_sem semaphore (since
+v2.6.22-527-g7307de80510a) and calls fiemap_fill_next_extent() to read the
+extent list of this running mmap executable.  The user supplied buffer to
+hold the fiemap information page faults calling ocfs2_page_mkwrite() which
+will take a write lock (since v2.6.27-38-g00dc417fa3e7) of the same
+semaphore.  This recursive semaphore will hold filesystem locks and causes
+a hang of the fileystem.
 
-Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
-callback") expects that a call to j1939_priv_put() can be unconditionally
-delayed until j1939_sk_sock_destruct() is called. But we need to call
-j1939_priv_put() against an extra ref held by j1939_sk_bind() call
-(as a part of undoing changes made by j1939_sk_bind()) as soon as
-NETDEV_UNREGISTER notification fires (i.e. before j1939_sk_sock_destruct()
-is called via j1939_sk_release()). Otherwise, the extra ref on "struct
-j1939_priv" held by j1939_sk_bind() call prevents "struct net_device" from
-dropping the usage count to 1; making it impossible for
-unregister_netdevice() to continue.
+The ip_alloc_sem protects the inode extent list and size.  Release the
+read semphore before calling fiemap_fill_next_extent() in ocfs2_fiemap()
+and ocfs2_fiemap_inline().  This does an unnecessary semaphore lock/unlock
+on the last extent but simplifies the error path.
 
-Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Tested-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/ac9db9a4-6c30-416e-8b94-96e6559d55b2@I-love.SAKURA.ne.jp
-[mkl: remove space in front of label]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/61d1a62b-2631-4f12-81e2-cd689914360b@oracle.com
+Fixes: 00dc417fa3e7 ("ocfs2: fiemap support")
+Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
+Reported-by: syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=541dcc6ee768f77103e7
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/j1939-priv.h |  1 +
- net/can/j1939/main.c       |  3 +++
- net/can/j1939/socket.c     | 49 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
+ fs/ocfs2/extent_map.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/can/j1939/j1939-priv.h b/net/can/j1939/j1939-priv.h
-index 31a93cae5111b..81f58924b4acd 100644
---- a/net/can/j1939/j1939-priv.h
-+++ b/net/can/j1939/j1939-priv.h
-@@ -212,6 +212,7 @@ void j1939_priv_get(struct j1939_priv *priv);
+--- a/fs/ocfs2/extent_map.c
++++ b/fs/ocfs2/extent_map.c
+@@ -696,6 +696,8 @@ out:
+  * it not only handles the fiemap for inlined files, but also deals
+  * with the fast symlink, cause they have no difference for extent
+  * mapping per se.
++ *
++ * Must be called with ip_alloc_sem semaphore held.
+  */
+ static int ocfs2_fiemap_inline(struct inode *inode, struct buffer_head *di_bh,
+ 			       struct fiemap_extent_info *fieinfo,
+@@ -707,6 +709,7 @@ static int ocfs2_fiemap_inline(struct in
+ 	u64 phys;
+ 	u32 flags = FIEMAP_EXTENT_DATA_INLINE|FIEMAP_EXTENT_LAST;
+ 	struct ocfs2_inode_info *oi = OCFS2_I(inode);
++	lockdep_assert_held_read(&oi->ip_alloc_sem);
  
- /* notify/alert all j1939 sockets bound to ifindex */
- void j1939_sk_netdev_event_netdown(struct j1939_priv *priv);
-+void j1939_sk_netdev_event_unregister(struct j1939_priv *priv);
- int j1939_cancel_active_session(struct j1939_priv *priv, struct sock *sk);
- void j1939_tp_init(struct j1939_priv *priv);
+ 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 	if (ocfs2_inode_is_fast_symlink(inode))
+@@ -722,8 +725,11 @@ static int ocfs2_fiemap_inline(struct in
+ 			phys += offsetof(struct ocfs2_dinode,
+ 					 id2.i_data.id_data);
  
-diff --git a/net/can/j1939/main.c b/net/can/j1939/main.c
-index 7e8a20f2fc42b..3706a872ecafd 100644
---- a/net/can/j1939/main.c
-+++ b/net/can/j1939/main.c
-@@ -377,6 +377,9 @@ static int j1939_netdev_notify(struct notifier_block *nb,
- 		j1939_sk_netdev_event_netdown(priv);
- 		j1939_ecu_unmap_all(priv);
- 		break;
-+	case NETDEV_UNREGISTER:
-+		j1939_sk_netdev_event_unregister(priv);
-+		break;
++		/* Release the ip_alloc_sem to prevent deadlock on page fault */
++		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		ret = fiemap_fill_next_extent(fieinfo, 0, phys, id_count,
+ 					      flags);
++		down_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		if (ret < 0)
+ 			return ret;
  	}
+@@ -792,9 +798,11 @@ int ocfs2_fiemap(struct inode *inode, st
+ 		len_bytes = (u64)le16_to_cpu(rec.e_leaf_clusters) << osb->s_clustersize_bits;
+ 		phys_bytes = le64_to_cpu(rec.e_blkno) << osb->sb->s_blocksize_bits;
+ 		virt_bytes = (u64)le32_to_cpu(rec.e_cpos) << osb->s_clustersize_bits;
+-
++		/* Release the ip_alloc_sem to prevent deadlock on page fault */
++		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		ret = fiemap_fill_next_extent(fieinfo, virt_bytes, phys_bytes,
+ 					      len_bytes, fe_flags);
++		down_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		if (ret)
+ 			break;
  
- 	j1939_priv_put(priv);
-diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
-index 6fefe7a687611..b3a45aa70cf2f 100644
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -1299,6 +1299,55 @@ void j1939_sk_netdev_event_netdown(struct j1939_priv *priv)
- 	read_unlock_bh(&priv->j1939_socks_lock);
- }
- 
-+void j1939_sk_netdev_event_unregister(struct j1939_priv *priv)
-+{
-+	struct sock *sk;
-+	struct j1939_sock *jsk;
-+	bool wait_rcu = false;
-+
-+rescan: /* The caller is holding a ref on this "priv" via j1939_priv_get_by_ndev(). */
-+	read_lock_bh(&priv->j1939_socks_lock);
-+	list_for_each_entry(jsk, &priv->j1939_socks, list) {
-+		/* Skip if j1939_jsk_add() is not called on this socket. */
-+		if (!(jsk->state & J1939_SOCK_BOUND))
-+			continue;
-+		sk = &jsk->sk;
-+		sock_hold(sk);
-+		read_unlock_bh(&priv->j1939_socks_lock);
-+		/* Check if j1939_jsk_del() is not yet called on this socket after holding
-+		 * socket's lock, for both j1939_sk_bind() and j1939_sk_release() call
-+		 * j1939_jsk_del() with socket's lock held.
-+		 */
-+		lock_sock(sk);
-+		if (jsk->state & J1939_SOCK_BOUND) {
-+			/* Neither j1939_sk_bind() nor j1939_sk_release() called j1939_jsk_del().
-+			 * Make this socket no longer bound, by pretending as if j1939_sk_bind()
-+			 * dropped old references but did not get new references.
-+			 */
-+			j1939_jsk_del(priv, jsk);
-+			j1939_local_ecu_put(priv, jsk->addr.src_name, jsk->addr.sa);
-+			j1939_netdev_stop(priv);
-+			/* Call j1939_priv_put() now and prevent j1939_sk_sock_destruct() from
-+			 * calling the corresponding j1939_priv_put().
-+			 *
-+			 * j1939_sk_sock_destruct() is supposed to call j1939_priv_put() after
-+			 * an RCU grace period. But since the caller is holding a ref on this
-+			 * "priv", we can defer synchronize_rcu() until immediately before
-+			 * the caller calls j1939_priv_put().
-+			 */
-+			j1939_priv_put(priv);
-+			jsk->priv = NULL;
-+			wait_rcu = true;
-+		}
-+		release_sock(sk);
-+		sock_put(sk);
-+		goto rescan;
-+	}
-+	read_unlock_bh(&priv->j1939_socks_lock);
-+	if (wait_rcu)
-+		synchronize_rcu();
-+}
-+
- static int j1939_sk_no_ioctlcmd(struct socket *sock, unsigned int cmd,
- 				unsigned long arg)
- {
--- 
-2.51.0
-
 
 
 
