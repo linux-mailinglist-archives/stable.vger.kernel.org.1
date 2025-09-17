@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-180157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F277AB7EC48
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8695B7E654
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 914BE3BB4EF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66F1B3B227D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403D8330D4B;
-	Wed, 17 Sep 2025 12:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5922B302CDE;
+	Wed, 17 Sep 2025 12:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vM9s5PY3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQpGpSKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3CC330D3E;
-	Wed, 17 Sep 2025 12:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159832F7ABF;
+	Wed, 17 Sep 2025 12:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113559; cv=none; b=DMwmhmIyrU0+wro88X3BC+2rPrwfLj1wa+DP2RoRpD8cFhy20AXCMKZ+VM5WsQwh8Mlnwbmzz4ej5yEXI5J2EllRPJ3VnYRApsGyFdwY8syiBidlMt8JXEPSc3FLpEeVKsyxmfvjnjWqqldAbWAbiCQob7pwzk+6a5LwCddhsxA=
+	t=1758113140; cv=none; b=rpRA3fwPd6tMPUnonTJU2CLcu2uE/nPYVU3Nfzn2Wj3drTRcAwmXoSjV+x0qILo4h6aZj3ETD5JvZK9Z3j2a1BpbsVdhjbJyuckzg03DcfustFJczvi4D33jeKksXh6S0gVEPQHSxx7BIn9fCV0ZRDTZOrJlo+pB1r/6DWrDYJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113559; c=relaxed/simple;
-	bh=TDQ4H1FhoYaW2LkNoP5F+gj8HNCKdjqBXOV4Tis2ZeQ=;
+	s=arc-20240116; t=1758113140; c=relaxed/simple;
+	bh=hs/k+72bLtmksldb3RMNX2CNcccByoWMTCPpBb1THx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+kMqqzVD0IQ+eQqR4jTDl3aJe+QNPgYv25k8y7q8+s0nkbkFwTabS768/dwOs99O5Lbv/HkSTQk3RBL41hRdrhweHR+CyJmyfCSatYq/6p0tvRWAP3ssXwHicAhkyZkQs1vlVcZOAyuMTXTT1V1Xfi8iw2N+NEJS9RbywILwWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vM9s5PY3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A00CC4CEF0;
-	Wed, 17 Sep 2025 12:52:38 +0000 (UTC)
+	 MIME-Version; b=P4mM44rsSXDJ56m0Ta3Uh9wuP2FjVy10jU0OgUZJkDgzIPn0cGEqOOuJPaTSLqbmGpF9ge51nkn2nt9jVTsa8mS5b4naIYNFKRXEOXXrwTA1yCrVGyP7hY0Jh5mNfTcr4Qj/M7Wl0OaBbCfj+SIiJr/Zl/7jEgogsD3kh7WdeQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQpGpSKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A46EC4CEF0;
+	Wed, 17 Sep 2025 12:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113558;
-	bh=TDQ4H1FhoYaW2LkNoP5F+gj8HNCKdjqBXOV4Tis2ZeQ=;
+	s=korg; t=1758113140;
+	bh=hs/k+72bLtmksldb3RMNX2CNcccByoWMTCPpBb1THx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vM9s5PY35gPTHuST5zo4rEiNs57AlJ9tf6POHoHj9l2ucEg6lBo1VSq3Y71zIZigC
-	 OA8kH7Ce3LAu4zDRtLbOi3q/bkgIeVSAdD0/MpZplx7n4wGrv6yseZz8QGzXXIDxPs
-	 jC9JWE44CnWzRVtsEq7lpiPSwVqFOadYTnqfr8qM=
+	b=vQpGpSKTjiriEEG+XxQEBung9HgUN3Lb5V8v0bAt1ILh9PaTjCj/091/aUeBMJLZK
+	 yvz1hMIjdrK2rr1O5EUdtPSdNQ+o3T78Qz9M+ycvOKAlHe8X4XEfIZI0faBdtmqcnf
+	 ZoDY0WSUx7LPBEjoVVS9D98BSK50gGKynIYLxmc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@intel.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/140] dmaengine: idxd: Remove improper idxd_free
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.16 183/189] usb: gadget: midi2: Fix MIDI2 IN EP max packet size
 Date: Wed, 17 Sep 2025 14:34:53 +0200
-Message-ID: <20250917123347.266177023@linuxfoundation.org>
+Message-ID: <20250917123356.358763733@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Sun <yi.sun@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit f41c538881eec4dcf5961a242097d447f848cda6 ]
+commit 116e79c679a1530cf833d0ff3007061d7a716bd9 upstream.
 
-The call to idxd_free() introduces a duplicate put_device() leading to a
-reference count underflow:
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 15 PID: 4428 at lib/refcount.c:28 refcount_warn_saturate+0xbe/0x110
-...
-Call Trace:
- <TASK>
-  idxd_remove+0xe4/0x120 [idxd]
-  pci_device_remove+0x3f/0xb0
-  device_release_driver_internal+0x197/0x200
-  driver_detach+0x48/0x90
-  bus_remove_driver+0x74/0xf0
-  pci_unregister_driver+0x2e/0xb0
-  idxd_exit_module+0x34/0x7a0 [idxd]
-  __do_sys_delete_module.constprop.0+0x183/0x280
-  do_syscall_64+0x54/0xd70
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+The EP-IN of MIDI2 (altset 1) wasn't initialized in
+f_midi2_create_usb_configs() as it's an INT EP unlike others BULK
+EPs.  But this leaves rather the max packet size unchanged no matter
+which speed is used, resulting in the very slow access.
+And the wMaxPacketSize values set there look legit for INT EPs, so
+let's initialize the MIDI2 EP-IN there for achieving the equivalent
+speed as well.
 
-The idxd_unregister_devices() which is invoked at the very beginning of
-idxd_remove(), already takes care of the necessary put_device() through the
-following call path:
-idxd_unregister_devices() -> device_unregister() -> put_device()
-
-In addition, when CONFIG_DEBUG_KOBJECT_RELEASE is enabled, put_device() may
-trigger asynchronous cleanup via schedule_delayed_work(). If idxd_free() is
-called immediately after, it can result in a use-after-free.
-
-Remove the improper idxd_free() to avoid both the refcount underflow and
-potential memory corruption during module unload.
-
-Fixes: d5449ff1b04d ("dmaengine: idxd: Add missing idxd cleanup to fix memory leak in remove call")
-Signed-off-by: Yi Sun <yi.sun@intel.com>
-Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-
-Link: https://lore.kernel.org/r/20250729150313.1934101-2-yi.sun@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20250905133240.20966-1-tiwai@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/init.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/gadget/function/f_midi2.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index 18997f80bdc97..d6308adc4eeb9 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -921,7 +921,6 @@ static void idxd_remove(struct pci_dev *pdev)
- 	idxd_cleanup(idxd);
- 	pci_iounmap(pdev, idxd->reg_base);
- 	put_device(idxd_confdev(idxd));
--	idxd_free(idxd);
- 	pci_disable_device(pdev);
- }
- 
--- 
-2.51.0
-
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -1737,9 +1737,12 @@ static int f_midi2_create_usb_configs(st
+ 	case USB_SPEED_HIGH:
+ 		midi2_midi1_ep_out_desc.wMaxPacketSize = cpu_to_le16(512);
+ 		midi2_midi1_ep_in_desc.wMaxPacketSize = cpu_to_le16(512);
+-		for (i = 0; i < midi2->num_eps; i++)
++		for (i = 0; i < midi2->num_eps; i++) {
+ 			midi2_midi2_ep_out_desc[i].wMaxPacketSize =
+ 				cpu_to_le16(512);
++			midi2_midi2_ep_in_desc[i].wMaxPacketSize =
++				cpu_to_le16(512);
++		}
+ 		fallthrough;
+ 	case USB_SPEED_FULL:
+ 		midi1_in_eps = midi2_midi1_ep_in_descs;
+@@ -1748,9 +1751,12 @@ static int f_midi2_create_usb_configs(st
+ 	case USB_SPEED_SUPER:
+ 		midi2_midi1_ep_out_desc.wMaxPacketSize = cpu_to_le16(1024);
+ 		midi2_midi1_ep_in_desc.wMaxPacketSize = cpu_to_le16(1024);
+-		for (i = 0; i < midi2->num_eps; i++)
++		for (i = 0; i < midi2->num_eps; i++) {
+ 			midi2_midi2_ep_out_desc[i].wMaxPacketSize =
+ 				cpu_to_le16(1024);
++			midi2_midi2_ep_in_desc[i].wMaxPacketSize =
++				cpu_to_le16(1024);
++		}
+ 		midi1_in_eps = midi2_midi1_ep_in_ss_descs;
+ 		midi1_out_eps = midi2_midi1_ep_out_ss_descs;
+ 		break;
 
 
 
