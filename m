@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-179887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43011B7E06D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31098B7E2B8
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F95588485
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850322A6600
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D3C30CB2D;
-	Wed, 17 Sep 2025 12:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A1A1F460B;
+	Wed, 17 Sep 2025 12:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHew81U0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyRJiso6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010D430CB41;
-	Wed, 17 Sep 2025 12:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AF5337EB4;
+	Wed, 17 Sep 2025 12:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112720; cv=none; b=FyGO8Sl7O3mIsYviA5LjJAPRXttzKI09lmlc0MNt6gX+4diPXl+fnkzEQx203bcbOKI0Ys9Zo4v4miW0mvpZx1IMFh/bPR4tnxG3ZqoUoEbUiK++YzByKUwJ4Mf6+A8jzKZPX0E8eNOlr2UfBV11M7RjnLz3qPzHM2l1sDI9Zis=
+	t=1758112897; cv=none; b=IuwkmAcAlnRu3VpaCN5YoSKzPrckh1wfM4Wwf66tPewjebWSfSMpp/NWV/TUPiFDCQbi/4G/YtQogETZjHB1BsqrluO03SfhJ4NFNBgYvRVw8sZWKe3XPqr+g/yVeS5LdJu/bvY8H06mHQrrkrXuPS7Y3o52P2CUajp1BWS9k6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112720; c=relaxed/simple;
-	bh=9wGb2OKF8v0sPyFpPAc61mZb5TYMhwMtkxAdDUcaRxk=;
+	s=arc-20240116; t=1758112897; c=relaxed/simple;
+	bh=xljqGnbEnHQeGlRQlU/pEGKgZQ5V97I2XriO4kLuMi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQOD4lrExkiHVQEm1q19YsFRH3wLtu4SJJUCkzQcL7LJ8oSeOj9i5eFSFhKriP643roH9k8ofsDyV5/dikWxt4J2sFGzSN4WkHTuqkCJ5vtzoFeBIP5uhSgFb3Mh583hzPoXQQrKj2HHYZUx9XbScK20rSnMrgHgmkVc7ttwojY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHew81U0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428BAC4CEF7;
-	Wed, 17 Sep 2025 12:38:39 +0000 (UTC)
+	 MIME-Version; b=eCzNDSsD6Ej6l++28+THHaOxbxVSex199OSlf4qnQQ7H8GJEeKLhiZIuKcbkiQF/ejYFccf6E2rINi6ji4sogn6nsVXibMj0lhni9ugwSfY70RlHDZgl1PUtpZcU1z4gHgRh7njras9cQhnXsYUX3n2XTU4O8wt1MTpQNN8UFOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyRJiso6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0E6C4CEF0;
+	Wed, 17 Sep 2025 12:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112719;
-	bh=9wGb2OKF8v0sPyFpPAc61mZb5TYMhwMtkxAdDUcaRxk=;
+	s=korg; t=1758112897;
+	bh=xljqGnbEnHQeGlRQlU/pEGKgZQ5V97I2XriO4kLuMi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHew81U0+QdaeBZi0Hae7hI3HqO7SQZOnYrvBU4RF8R1UvDG1CBCJutCmyTy5LQ7P
-	 x4SPW0uFxVcBoPKtY/dr9KJNS/4YZJnDUjmbAx1ehvmkfWZy0Nwpen1i+IpSAJw1/2
-	 rqBNwmgwfpdtFaOvBF3197BZGr+MLdebi2rv2B1Q=
+	b=VyRJiso6SMz8AzOXeMVW840zETd3hYPXPWpWgCpVLnLkn1HUj79GR63bddVRstPaz
+	 qkVP0e66anceOi/G0DiIyEiS9TRDokqmyALoEs1ZcXbwolHH4jdDEZOkIN7qHTn5+B
+	 S1F3zA93BjqUicZ6EiWUYOTcUIeUhn+2TsR6x51g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Geliang Tang <geliang@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 054/189] doc: mptcp: net.mptcp.pm_type is deprecated
-Date: Wed, 17 Sep 2025 14:32:44 +0200
-Message-ID: <20250917123353.184685080@linuxfoundation.org>
+Subject: [PATCH 6.16 055/189] netlink: specs: mptcp: fix if-idx attribute type
+Date: Wed, 17 Sep 2025 14:32:45 +0200
+Message-ID: <20250917123353.209144772@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
 References: <20250917123351.839989757@linuxfoundation.org>
@@ -69,43 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 6f021e95d0828edc8ed104a294594c2f9569383a upstream.
+commit 7094b84863e5832cb1cd9c4b9d648904775b6bd9 upstream.
 
-The net.mptcp.pm_type sysctl knob has been deprecated in v6.15,
-net.mptcp.path_manager should be used instead.
+This attribute is used as a signed number in the code in pm_netlink.c:
 
-Adapt the section about path managers to suggest using the new sysctl
-knob instead of the deprecated one.
+  nla_put_s32(skb, MPTCP_ATTR_IF_IDX, ssk->sk_bound_dev_if))
 
-Fixes: 595c26d122d1 ("mptcp: sysctl: set path manager by name")
+The specs should then reflect that. Note that other 'if-idx' attributes
+from the same .yaml file use a signed number as well.
+
+Fixes: bc8aeb2045e2 ("Documentation: netlink: add a YAML spec for mptcp")
 Cc: stable@vger.kernel.org
 Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250908-net-mptcp-misc-fixes-6-17-rc5-v1-2-5f2168a66079@kernel.org
+Link: https://patch.msgid.link/20250908-net-mptcp-misc-fixes-6-17-rc5-v1-1-5f2168a66079@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/mptcp.rst |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/netlink/specs/mptcp_pm.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/networking/mptcp.rst
-+++ b/Documentation/networking/mptcp.rst
-@@ -60,10 +60,10 @@ address announcements. Typically, it is
- and the server side that announces additional addresses via the ``ADD_ADDR`` and
- ``REMOVE_ADDR`` options.
- 
--Path managers are controlled by the ``net.mptcp.pm_type`` sysctl knob -- see
--mptcp-sysctl.rst. There are two types: the in-kernel one (type ``0``) where the
--same rules are applied for all the connections (see: ``ip mptcp``) ; and the
--userspace one (type ``1``), controlled by a userspace daemon (i.e. `mptcpd
-+Path managers are controlled by the ``net.mptcp.path_manager`` sysctl knob --
-+see mptcp-sysctl.rst. There are two types: the in-kernel one (``kernel``) where
-+the same rules are applied for all the connections (see: ``ip mptcp``) ; and the
-+userspace one (``userspace``), controlled by a userspace daemon (i.e. `mptcpd
- <https://mptcpd.mptcp.dev/>`_) where different rules can be applied for each
- connection. The path managers can be controlled via a Netlink API; see
- netlink_spec/mptcp_pm.rst.
+--- a/Documentation/netlink/specs/mptcp_pm.yaml
++++ b/Documentation/netlink/specs/mptcp_pm.yaml
+@@ -256,7 +256,7 @@ attribute-sets:
+         type: u32
+       -
+         name: if-idx
+-        type: u32
++        type: s32
+       -
+         name: reset-reason
+         type: u32
 
 
 
