@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-180279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9522B7F14A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A806B7F202
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ECC44604D6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BE7D524F10
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68152335935;
-	Wed, 17 Sep 2025 12:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0043195E5;
+	Wed, 17 Sep 2025 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4O1lWlw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPLyMgE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256D5335931;
-	Wed, 17 Sep 2025 12:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AF717BB21;
+	Wed, 17 Sep 2025 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113951; cv=none; b=p74D1UYkspTrpNSHuJTew+ZRPyMEKRDSjyAEuWujootEpfYld+3nqpiiykw1WYup4FkH2cAGwIbUShbpovpSDRxnFIZqjxC3/wpB/N2rUmAjup+KtOf5mHe0YRzpcO79gS9AyreP4BlMgXlcPReQk/MmDRiytBWYBwQFF9TG4/M=
+	t=1758114199; cv=none; b=T8XTP7ygktY0EGYkU4S9cBXvmuTASxpouAqJNI6DrUDPLZ/FgEHKO92gKXUiv+qxHwNgwbJf5UoYzGFW9x99+ElUZcL+CR/AXIvI/FTEitH5yuKZPFlCWYvOdGX53mixVpB0NVcUR/VCyJ6kSqFccaZTcl89beHKeMzLehuWFOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113951; c=relaxed/simple;
-	bh=wxZ0xA/rzyp3A+tiMcQBmWSOjkDc6Rx7M2Hp02SRReI=;
+	s=arc-20240116; t=1758114199; c=relaxed/simple;
+	bh=mhDb/LgS86DA42tiT9Z9vNVaZ1gTfy5qBbhgPa6083g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfQ40sN7bqgcwb+7ZIysp9P5zOqS2VLcXxui2OuxLMjuAf0gjqoaDJboAwZbRc93f6fuoZ22s3uZoAaAfDqcCiMjY/LMRaMq2gjS2BQRum9jul93X7xZVDB+0ktGDlQOBzUSpCRsOmrOX5e23Ue8+FnPdU2+dJ2KCB3wje8COik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4O1lWlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0B6C4CEF7;
-	Wed, 17 Sep 2025 12:59:10 +0000 (UTC)
+	 MIME-Version; b=NHN/XYkt1ZamFCLR5mI5u0SFTuI60cGB2/PejpHEr2D0ijua8n7l/bDZq+hm2VLp6jq9gr5CyhzXCP7EbXjkMZ21vJnXyv0B4IhMXwfl/ADDn081q3jRPCDFQJOi9BrIlfzG1XUedmZ7GhJq6whTyZIfgk+X1o9HnO3IPdX4JMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPLyMgE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA57C4CEF0;
+	Wed, 17 Sep 2025 13:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113950;
-	bh=wxZ0xA/rzyp3A+tiMcQBmWSOjkDc6Rx7M2Hp02SRReI=;
+	s=korg; t=1758114199;
+	bh=mhDb/LgS86DA42tiT9Z9vNVaZ1gTfy5qBbhgPa6083g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4O1lWlwkQLenFOqyn7d7EWPpb6Vwrodn/XXRJLEFsUh80mFQ/zeRSyDReX8Dkcrg
-	 v0LMFVkXjyO/At/FTArI+PvBmoZUMRGs/lPzAMcFYhi0SzNnK4YDdLX3zTdZDC3aA8
-	 D7OoGbhPVi0r+Sx921vOSUueMLaeQk98UQNmYkWM=
+	b=GPLyMgE8Ao1dlgbtu6f6/FLQMSslNvPNObdQOkVNZn4p2oL1VCskXizfyICzXZu9z
+	 eneG/HFuaQvWIwIJOxPuG/jfts/uVAks+if+x5dJnFatsAArVyBSBwS9v7RV6gIHoi
+	 5ApCjnmWI4TjgThAGFm6yVa7Wy+mbjZYwv6xOB2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/101] net: bridge: Bounce invalid boolopts
+	Chunsheng Luo <luochunsheng@ustc.edu>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.1 31/78] fuse: check if copy_file_range() returns larger than requested size
 Date: Wed, 17 Sep 2025 14:34:52 +0200
-Message-ID: <20250917123338.508670635@linuxfoundation.org>
+Message-ID: <20250917123330.323435071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 8625f5748fea960d2af4f3c3e9891ee8f6f80906 ]
+commit e5203209b3935041dac541bc5b37efb44220cc0b upstream.
 
-The bridge driver currently tolerates options that it does not recognize.
-Instead, it should bounce them.
+Just like write(), copy_file_range() should check if the return value is
+less or equal to the requested number of bytes.
 
-Fixes: a428afe82f98 ("net: bridge: add support for user-controlled bool options")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/e6fdca3b5a8d54183fbda075daffef38bdd7ddce.1757070067.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
+Closes: https://lore.kernel.org/all/20250807062425.694-1-luochunsheng@ustc.edu/
+Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
+Cc: <stable@vger.kernel.org> # v4.20
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/fuse/file.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/bridge/br.c b/net/bridge/br.c
-index a6e94ceb7c9a0..a45db67197226 100644
---- a/net/bridge/br.c
-+++ b/net/bridge/br.c
-@@ -312,6 +312,13 @@ int br_boolopt_multi_toggle(struct net_bridge *br,
- 	int err = 0;
- 	int opt_id;
- 
-+	opt_id = find_next_bit(&bitmap, BITS_PER_LONG, BR_BOOLOPT_MAX);
-+	if (opt_id != BITS_PER_LONG) {
-+		NL_SET_ERR_MSG_FMT_MOD(extack, "Unknown boolean option %d",
-+				       opt_id);
-+		return -EINVAL;
-+	}
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -3169,6 +3169,9 @@ static ssize_t __fuse_copy_file_range(st
+ 		fc->no_copy_file_range = 1;
+ 		err = -EOPNOTSUPP;
+ 	}
++	if (!err && outarg.size > len)
++		err = -EIO;
 +
- 	for_each_set_bit(opt_id, &bitmap, BR_BOOLOPT_MAX) {
- 		bool on = !!(bm->optval & BIT(opt_id));
+ 	if (err)
+ 		goto out;
  
--- 
-2.51.0
-
 
 
 
