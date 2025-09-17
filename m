@@ -1,195 +1,139 @@
-Return-Path: <stable+bounces-179827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EC9B7C624
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:00:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCACFB7C6DD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8111B279D0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 11:37:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8149016C6A1
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 11:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846C636C06E;
-	Wed, 17 Sep 2025 11:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="J7W0TKO9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8F93705B5;
+	Wed, 17 Sep 2025 11:52:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F862EB5D5;
-	Wed, 17 Sep 2025 11:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EA02D5427
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 11:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758108996; cv=none; b=iqT5kqZylJcWoHiS2bCZFNIHVpo9ucUIx6HT2Zer0Wm74SlAFEEphFn+2kMyQE7Oe88HZE0Nz6x5wtPJj7KEAselwLwjUq5A62z7PUbHSLy6Tu8B1xiV/NJ8pZtD5s8IiVEGwQ02CO2y4nxUf8519ElzmKupCTZx4oMFNvFuB2w=
+	t=1758109974; cv=none; b=hbKDxpggy9ij3r7RU08qG9l1vsTtb0hT2NwqB475wf/QvE9OTOXDVB5ERddTgC8hac21QKLw5mPLs3ovfh8rU24YhOSiXs+0vmHwFQGBmSt2anSeBZcle3ZRGsOxl0IGpLoTABBPXXprZp6+jOpn1wgkMILppIFz+SIJmgnpOmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758108996; c=relaxed/simple;
-	bh=wRXgDn7HywfAgrTjrDN0yqYd57MJsiJj40hGha2SdgA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cEAUdPxDYuK7SJxoaxPVR9+musAETjQpNd9JyzeCdXBBAh89pNl3C4YDyr1eRnNtmkmmiAUWBddrLiTilLOgOp8sfVAc+sCrhVajzinpsItiZbuJ1UZo6CAkocuUrDy/L5SUT0L/jg2MqfOf0GGl84zQUcYEUbCGR3YuFMpw+X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=J7W0TKO9; arc=none smtp.client-ip=52.34.181.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1758108994; x=1789644994;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dWbPeUw7wRMdj3193lZI9i/Wb7Z9FK8CyLLo3CIDTyU=;
-  b=J7W0TKO9JJbtwzA/KDWqDK0oSH7h8b6rDkysJ29/nwBk/k/r5pNoat1e
-   7MIiLQxSt4djiCdB9ZXVTEfCVT6GV1QaHwF69P/zrLnAKU937F2TGSIPy
-   FKtHtrBvzqiwJnE05uBWJHorC+8PrZmvjeUKgWsmpQDuHaCYYS/MP9lTI
-   z1ooHGTk8EXOVg4wn9qcnDVcmnRq8yFaOX/9KoODiwI9yeJIt7s4ujdOe
-   QPBzne+lkpuM+OJc9n/KoDi/xPO3EvkZU5ITE2d0I8mnAqqMl9OFPEGz6
-   e9FqmhhCKM8KbbV1sucbMrU1Jd5gEVWCdW1r9uLN5LkFCHb0cgUwmkgqv
-   g==;
-X-CSE-ConnectionGUID: 3Vojkt4tS96bxJte7xtpaw==
-X-CSE-MsgGUID: OVp1OPtcR5+yogFIzkg6NQ==
-X-IronPort-AV: E=Sophos;i="6.18,263,1751241600"; 
-   d="scan'208";a="3150228"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 11:36:32 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:33744]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.9.60:2525] with esmtp (Farcaster)
- id 7ed5f850-98bb-4f32-9e4d-0ddd3fe41eee; Wed, 17 Sep 2025 11:36:31 +0000 (UTC)
-X-Farcaster-Flow-ID: 7ed5f850-98bb-4f32-9e4d-0ddd3fe41eee
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 17 Sep 2025 11:36:31 +0000
-Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
- (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 17 Sep 2025
- 11:36:30 +0000
-Date: Wed, 17 Sep 2025 11:36:27 +0000
-From: Jakub Acs <acsjakub@amazon.de>
-To: Amir Goldstein <amir73il@gmail.com>
-CC: Jan Kara <jack@suse.cz>, <linux-unionfs@vger.kernel.org>, Miklos Szeredi
-	<miklos@szeredi.hu>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Subject: Re: [PATCH] ovl: check before dereferencing s_root field
-Message-ID: <20250917113627.GA51799@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
-References: <20250915101510.7994-1-acsjakub@amazon.de>
- <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
- <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
- <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
- <gdovf4egsaqighoig3xg4r2ddwthk2rujenkloqep5kdub75d4@7wkvfnp4xlxx>
- <CAOQ4uxhOMcaVupVVGXV2Srz_pAG+BzDc9Gb4hFdwKUtk45QypQ@mail.gmail.com>
- <scmyycf2trich22v25s6gpe3ib6ejawflwf76znxg7sedqablp@ejfycd34xvpa>
- <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
+	s=arc-20240116; t=1758109974; c=relaxed/simple;
+	bh=uqaJ1Aj4tgRkY2VxqYrivb+JAi9VHqoNbdDpXMjZ9oU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mam2L2siZTBCAMxT4A4BcXwBe1nLPzg+y3L8eCP6wGwwI0aYo3dWLVXm/4hV9G6ugZqJcoVMQyuS8reodqCXzHyZQ40cM7f6qYW04SmpKQcEVU4eC2wCObZ+xHy/LTGP+yjKu/ZHgS6XUFGX2J862AojQUr7OREEGKlKm6qweGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uyqiG-0007bg-Rh; Wed, 17 Sep 2025 13:52:40 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uyqiE-001kqb-0v;
+	Wed, 17 Sep 2025 13:52:38 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uyqiE-00Dh2D-0U;
+	Wed, 17 Sep 2025 13:52:38 +0200
+Date: Wed, 17 Sep 2025 13:52:38 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Hubert =?utf-8?Q?Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
+	Russell King <linux@armlinux.org.uk>, Xu Yang <xu.yang_2@nxp.com>,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
+ PM/MDIO + RTNL deadlock
+Message-ID: <aMqhBsH-zaDdO3q8@pengutronix.de>
+References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
+ <0f2fe17b-89bb-4464-890d-0b73ed1cf117@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-ClientProxiedBy: EX19D033UWA001.ant.amazon.com (10.13.139.103) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0f2fe17b-89bb-4464-890d-0b73ed1cf117@suse.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Wed, Sep 17, 2025 at 01:07:45PM +0200, Amir Goldstein wrote:
-> Might something naive as this be enough?
+Hi Oliver,
+
+On Wed, Sep 17, 2025 at 12:10:48PM +0200, Oliver Neukum wrote:
+> Hi,
 > 
-> Thanks,
-> Amir.
+> On 17.09.25 11:54, Oleksij Rempel wrote:
 > 
-> diff --git a/fs/dcache.c b/fs/dcache.c
-> index 60046ae23d514..8c9d0d6bb0045 100644
-> --- a/fs/dcache.c
-> +++ b/fs/dcache.c
-> @@ -1999,10 +1999,12 @@ struct dentry *d_make_root(struct inode *root_inode)
+> > With autosuspend active, resume paths may require calling phylink/phylib
+> > (caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
+> > resume can deadlock (RTNL may already be held), and MDIO can attempt a
+> > runtime-wake while the USB PM lock is held. Given the lack of benefit
+> > and poor test coverage (autosuspend is usually disabled by default in
+> > distros), forbid runtime PM here to avoid these hazards.
 > 
->         if (root_inode) {
->                 res = d_alloc_anon(root_inode->i_sb);
-> -               if (res)
-> +               if (res) {
-> +                       root_inode->i_opflags |= IOP_ROOT;
->                         d_instantiate(res, root_inode);
-> -               else
-> +               } else {
->                         iput(root_inode);
-> +               }
->         }
->         return res;
->  }
-> diff --git a/fs/gfs2/export.c b/fs/gfs2/export.c
-> index 3334c394ce9cb..809a09c6a89e0 100644
-> --- a/fs/gfs2/export.c
-> +++ b/fs/gfs2/export.c
-> @@ -46,7 +46,7 @@ static int gfs2_encode_fh(struct inode *inode, __u32
-> *p, int *len,
->         fh[3] = cpu_to_be32(ip->i_no_addr & 0xFFFFFFFF);
->         *len = GFS2_SMALL_FH_SIZE;
-> 
-> -       if (!parent || inode == d_inode(sb->s_root))
-> +       if (!parent || is_root_inode(inode))
->                 return *len;
-> 
->         ip = GFS2_I(parent);
-> diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-> index 83f80fdb15674..7827c63354ad5 100644
-> --- a/fs/overlayfs/export.c
-> +++ b/fs/overlayfs/export.c
-> @@ -199,7 +199,7 @@ static int ovl_check_encode_origin(struct inode *inode)
->          * Root is never indexed, so if there's an upper layer, encode upper for
->          * root.
->          */
-> -       if (inode == d_inode(inode->i_sb->s_root))
-> +       if (is_root_inode(inode))
->                 return 0;
-> 
->         /*
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index ec867f112fd5f..ed84379aa06ca 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -665,6 +665,7 @@ is_uncached_acl(struct posix_acl *acl)
->  #define IOP_DEFAULT_READLINK   0x0010
->  #define IOP_MGTIME     0x0020
->  #define IOP_CACHED_LINK        0x0040
-> +#define IOP_ROOT       0x0080
->   /*
->   * Keep mostly read-only and often accessed (especially for
-> @@ -2713,6 +2714,11 @@ static inline bool is_mgtime(const struct inode *inode)
->         return inode->i_opflags & IOP_MGTIME;
->  }
-> 
-> +static inline bool is_root_inode(const struct inode *inode)
-> +{
-> +       return inode->i_opflags & IOP_ROOT;
-> +}
-> +
->  extern struct dentry *mount_bdev(struct file_system_type *fs_type,
->         int flags, const char *dev_name, void *data,
->         int (*fill_super)(struct super_block *, void *, int));
-> 
+> This reasoning depends on netif_running() returning false during system resume.
+> Is that guaranteed?
 
-This would prevent the null-ptr-deref, but the encoding procedure would
-continue (for non-root inode), potentially reaching other code paths
-that assume fs is still mounted - could that maybe be a problem?
+You’re right - there is no guarantee that netif_running() is false
+during system resume. This change does not rely on that. If my wording
+suggested otherwise, I’ll reword the commit message to make it explicit.
 
-I had considered similar direction initially, too, but then decided I'm
-unable to verify the paths and that it's safer to just fail if we detect
-no root (or cannot take the lock).
+1) Runtime PM (autosuspend/autoresume)
 
-Am I thinking wrong?
+Typical chain when user does ip link set dev <if> up while autosuspended:
+rtnl_newlink (RTNL held)
+  -> __dev_open -> usbnet_open
+     -> usb_autopm_get_interface -> __pm_runtime_resume
+        -> usb_resume_interface -> asix_resume
 
-Jakub
+Here resume happens synchronously under RTNL (and with USB PM locking). If the
+driver then calls phylink/phylib from resume (caller must hold RTNL; MDIO I/O),
+we can deadlock or hit PM-lock vs MDIO wake issues.
 
+Patch effect:
+I forbid runtime PM per-interface in ax88772_bind(). This removes the
+synchronous autoresume path.
 
+2) System suspend/resume
 
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+Typical chain:
+... dpm_run_callback (workqueue)
+ -> usb_resume_interface -> asix_resume
 
+This is not under RTNL, and no pm_runtime locking is involved. The patch does
+not change this path and makes no assumption about netif_running() here.
+
+If helpful, I can rework the commit message.
+
+Best Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
