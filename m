@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-180282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB51B7F060
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05EBAB7ECA5
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 893CC3B6C34
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 132D83BD853
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408D0335943;
-	Wed, 17 Sep 2025 12:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77A837428C;
+	Wed, 17 Sep 2025 12:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfXMxLnQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJDlz9hR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E472533593B;
-	Wed, 17 Sep 2025 12:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E5B3728B6;
+	Wed, 17 Sep 2025 12:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113961; cv=none; b=g0I+qRJPoY6a7eqZPGOPTRXBeIjBaQK+2QZV7M9iPJCP+2Auiq8BR+s8CH+IU5c3yGHDNHfkXAyJlB19epvQg9UiBLYTmMcRj3L5cEy1CDqeif+khtJY7XRJJn2P3j4iNVXmV2/qjkYGCyILbFvy5iyU6i1WroIgbuJbEzVZUEg=
+	t=1758113613; cv=none; b=S0NAK3N3XeVJOn/arWiMHP5gpJPCI5Q0SCwEdvque6sg5m5q/tyTjrHdfpkpGL0clBGtfbv6BSUn6i1/V4MlQVC9Q1Oxr6rKRCItkjzph/CVwaZATtIcbFQWRMqKecMcZsgFgMySD1QLef/vHdzPIV7ZtyJ47+qajTUK3sg80JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113961; c=relaxed/simple;
-	bh=pYcr2H2/a6QthGHLgGzll/XLsE1RZLLuBSwsIPyUzBY=;
+	s=arc-20240116; t=1758113613; c=relaxed/simple;
+	bh=mAK3+zf5rGadXuJJyUbX9of389vcrhpG+MMxyvUdzps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0/c4rV1Es1lLOyfeTZFqpanUa1R23CNDvj8wQnaWATSIxqU7pDT6XZpo+fV4lJ+3uR9Y9yXOYHz/J5PNQ4+tf1qNrOJ4Yb79wFbrnf/oBUcrP+WK3xD5GAYRlfJrxRYl6DAKeyABsKENsJRj/NlpILrPAoWRvlRzhMmtzGOFec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfXMxLnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07009C4CEF0;
-	Wed, 17 Sep 2025 12:59:19 +0000 (UTC)
+	 MIME-Version; b=eeFoFEff3iJvZy/3xmDlbJiHTMZu5m4nkKRd4vk5qak1dmHy2v2n6zwbGVklPDksah2A4GqhaYtsTLrotslG/BNojBzxhmINz2Ffj39ERzzi7XQF8T3THSu6CLYzqHP1gM0T61CXkTjv4jrgXMSKoNq+ZjycjB/qo9Xq8zdDfTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJDlz9hR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA85C4CEF7;
+	Wed, 17 Sep 2025 12:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113960;
-	bh=pYcr2H2/a6QthGHLgGzll/XLsE1RZLLuBSwsIPyUzBY=;
+	s=korg; t=1758113613;
+	bh=mAK3+zf5rGadXuJJyUbX9of389vcrhpG+MMxyvUdzps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfXMxLnQSiWy3CxTuT4TzOWj1Oea1SKB8s7Ukv3fPKVbpMH9vTEjHfy11t4IKjZ59
-	 qlB3zIsTY5ZxhugLkn46LVKWJRGnXCg/QDX0VAahgm1QIWIj8jg4PGNrOXZHMEiU3o
-	 uIPxCKswmfRt8JbCePE36JtaYVYRW7BVURF7nSXQ=
+	b=bJDlz9hRZatZN9gwky8Ho8+zTpn7O03LuJzOPo4ID54JpoyenIPlwBUE6GZ+BBEwz
+	 RvpiQsoLjjbqMfodRlGGAgc3vnsw/9DOiomotnqrgVyPVzl9ricAbb0IIPnNeMZ3zO
+	 BEPl5whvlMpmp8iqxF63vSH1GpsF2e6LpAWCVcJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.6 072/101] igb: fix link test skipping when interface is admin down
-Date: Wed, 17 Sep 2025 14:34:55 +0200
-Message-ID: <20250917123338.579728527@linuxfoundation.org>
+	Anders Roxell <anders.roxell@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 124/140] dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
+Date: Wed, 17 Sep 2025 14:34:56 +0200
+Message-ID: <20250917123347.339953845@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Anders Roxell <anders.roxell@linaro.org>
 
-[ Upstream commit d709f178abca22a4d3642513df29afe4323a594b ]
+[ Upstream commit e63419dbf2ceb083c1651852209c7f048089ac0f ]
 
-The igb driver incorrectly skips the link test when the network
-interface is admin down (if_running == false), causing the test to
-always report PASS regardless of the actual physical link state.
+Fix a critical memory allocation bug in edma_setup_from_hw() where
+queue_priority_map was allocated with insufficient memory. The code
+declared queue_priority_map as s8 (*)[2] (pointer to array of 2 s8),
+but allocated memory using sizeof(s8) instead of the correct size.
 
-This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe,
-etc.) which correctly test the physical link state regardless of admin
-state.
-Remove the if_running check to ensure link test always reflects the
-physical link state.
+This caused out-of-bounds memory writes when accessing:
+  queue_priority_map[i][0] = i;
+  queue_priority_map[i][1] = i;
 
-Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is down")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The bug manifested as kernel crashes with "Oops - undefined instruction"
+on ARM platforms (BeagleBoard-X15) during EDMA driver probe, as the
+memory corruption triggered kernel hardening features on Clang.
+
+Change the allocation to use sizeof(*queue_priority_map) which
+automatically gets the correct size for the 2D array structure.
+
+Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+Link: https://lore.kernel.org/r/20250830094953.3038012-1-anders.roxell@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/dma/ti/edma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index 92b2be06a6e93..f11cba65e5d85 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -2081,11 +2081,8 @@ static void igb_diag_test(struct net_device *netdev,
- 	} else {
- 		dev_info(&adapter->pdev->dev, "online testing starting\n");
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index 7f861fb07cb83..6333426b4c96c 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -2063,8 +2063,8 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
+ 	 * priority. So Q0 is the highest priority queue and the last queue has
+ 	 * the lowest priority.
+ 	 */
+-	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1, sizeof(s8),
+-					  GFP_KERNEL);
++	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1,
++					  sizeof(*queue_priority_map), GFP_KERNEL);
+ 	if (!queue_priority_map)
+ 		return -ENOMEM;
  
--		/* PHY is powered down when interface is down */
--		if (if_running && igb_link_test(adapter, &data[TEST_LINK]))
-+		if (igb_link_test(adapter, &data[TEST_LINK]))
- 			eth_test->flags |= ETH_TEST_FL_FAILED;
--		else
--			data[TEST_LINK] = 0;
- 
- 		/* Online tests aren't run; pass by default */
- 		data[TEST_REG] = 0;
 -- 
 2.51.0
 
