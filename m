@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-180391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54121B7FA39
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:58:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC839B7FA93
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B930E620562
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:57:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5271F189D5DF
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FB931B12A;
-	Wed, 17 Sep 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CB332E729;
+	Wed, 17 Sep 2025 13:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzeRIOXc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtkRFSIm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FD91C6FFA
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546D31C6FFA
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 13:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758117308; cv=none; b=tpkUdDgcy+PEZvmRolo2TWzvrof+fpGF/1Ws5+rrs20AiwNXLwzCm85vmE4wsU0RgxmlsoMASHFtlhg8Otv8DKOJW03XCSBxFDsgMR0548+LToFsRibEdPpJYSOgDNFzkMKfjM+9NiBElc7lgYmDMrJWHGXyQPbeA9IPCzIBgW4=
+	t=1758117309; cv=none; b=Y7twNd0Dw6CPmZyO4lHqQ/44VokbfBhEpULawQZ8ejhO2zh7XN+AWhuIdMwtOl8GNvM29xm6XvnFOZ8hI7zLnb4zgePBtVdUcyPutwUIB/cEj4Qku5v7pxfkXAWuazPcYehVcdb7df6OfRWhB+bWst1/CnzKarUQruY+lAn8GWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758117308; c=relaxed/simple;
-	bh=w+F1EXrLY3bHWfsBhS0Ckf55ivdw59ZWLltaXUK8JF0=;
+	s=arc-20240116; t=1758117309; c=relaxed/simple;
+	bh=+fsEiaB/+64UX2R3atClirU9bNKipMlpKUNX3g8FRP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LCsgbaHoMM0sJqT2r19U+fDFZCROz0tSi8YggnCVVShP2UW2xSkRycKvV589LsRSxAACJy6/dqTbDf8FzrZgmpDjgrYJJUUWUYeFq076CSGQWjPbMKNCCnGvd5lxJI7TkMeRdZdZq3wuAKXDZY5M/oRCm1xUO8WNbFkqHfPOFxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzeRIOXc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788BAC4CEE7;
-	Wed, 17 Sep 2025 13:55:07 +0000 (UTC)
+	 MIME-Version; b=aN27rU/OnZYMMTtQFF74uQRVKQXugUURDL7/PPtuHAEWLqgVqUAcOraSliHuaRP4sHbl35TTBOsdD1ZGYmKs202WpAGVPzoExmWqho9U6QArs1rhnkKRMcG6EJlXgpaR+cwJJCUtx1a6p91URSPnomc+dWsHFj29p7h8X7wRkus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtkRFSIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4CBC4CEF0;
+	Wed, 17 Sep 2025 13:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758117308;
-	bh=w+F1EXrLY3bHWfsBhS0Ckf55ivdw59ZWLltaXUK8JF0=;
+	bh=+fsEiaB/+64UX2R3atClirU9bNKipMlpKUNX3g8FRP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzeRIOXcpkzY0sZDt47bs17+YdTTXZbDa8V5dkNiA+lxwMFhMevjqjgWp3/Wqnrid
-	 epn8MZSbcvRAdcIYzAuaOVS3FZT7m3mTp6guiHCD4b8MJNilwPVmXnLAN8fgofyZr0
-	 3II6M6JiWqYVeioq7PQR2fZLS/xo6EWCS8Q0Pe2PVlc2t4JHNE30VvQ79mmvb3GRGl
-	 8zik/buQ0QOZqlWO875n6+B8lhtESp8Pkml5GFg2niJBShoO2MywvqNMzQtmHX4lsm
-	 PIOPqFzwtrw6XBQzVCPKRT0xLvHDGQGRCC/Gy3GDOV8Ccp/+EMzR+QyUzEkxwlMEsd
-	 +WsDO8+AvBpaQ==
+	b=YtkRFSIm5ae4OmYH32VfrGHRPAOfJMDSrA6GuNdnrhROdTHDwSAWsIy4bnnh7nuSQ
+	 8AvnYe6vQJ1uDYahXtkGGo8uX+aEHhdbb8Jm53KKDYEgCu4doW3U2uznzdoPEmIySO
+	 xRSBwoUBUz/EqHQuVe6E0SNz2FVgNOI4o2OkvXk7vi0W3VzGx8An2mxqjIYaynuNWa
+	 ZS3QK92ACkN8xFM+OhHrY9BGofnu2rnLpf4UE5nZwpVCN/6MljuqWoNcDB+Oew3Nra
+	 J1a6bBflIOZnOugrmK0aH/jiO2CuFAeqtBk3ZLA6KRYa+5GRlgCh4jSNWIYfZa50KU
+	 3s6C/suXXuOrg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Florian Fainelli <f.fainelli@gmail.com>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/6] phy: phy-bcm-ns-usb3: drop support for deprecated DT binding
-Date: Wed, 17 Sep 2025 09:54:59 -0400
-Message-ID: <20250917135502.565547-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y 4/6] phy: broadcom: ns-usb3: fix Wvoid-pointer-to-enum-cast warning
+Date: Wed, 17 Sep 2025 09:55:00 -0400
+Message-ID: <20250917135502.565547-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250917135502.565547-1-sashal@kernel.org>
 References: <2025091752-daycare-art-9e78@gregkh>
@@ -60,238 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 36a94760c98954e50ea621f7a9603fee3621deb7 ]
+[ Upstream commit bd6e74a2f0a0c76dda8e44d26f9b91a797586c3b ]
 
-Initially this PHY driver was implementing MDIO access on its own. It
-was caused by lack of proper hardware design understanding.
+'family' is an enum, thus cast of pointer on 64-bit compile test with
+W=1 causes:
 
-It has been changed back in 2017. DT bindings were changed and driver
-was updated to use MDIO layer.
+  drivers/phy/broadcom/phy-bcm-ns-usb3.c:209:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-It should be really safe now to drop the old deprecated code. All Linux
-stored DT files don't use it for 3,5 year. There is close to 0 chance
-there is any bootloader with its own DTB using old the binding.
-
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/20201113113423.9466-1-zajec5@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230810111958.205705-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns-usb3.c | 156 +------------------------
- 1 file changed, 5 insertions(+), 151 deletions(-)
+ drivers/phy/broadcom/phy-bcm-ns-usb3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/phy/broadcom/phy-bcm-ns-usb3.c b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-index 42baf4d6dd5d9..eb10ffa13a62e 100644
+index eb10ffa13a62e..3b017f20d1742 100644
 --- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
 +++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-@@ -22,8 +22,6 @@
- #include <linux/phy/phy.h>
- #include <linux/slab.h>
- 
--#define BCM_NS_USB3_MII_MNG_TIMEOUT_US	1000	/* usecs */
--
- #define BCM_NS_USB3_PHY_BASE_ADDR_REG	0x1f
- #define BCM_NS_USB3_PHY_PLL30_BLOCK	0x8000
- #define BCM_NS_USB3_PHY_TX_PMD_BLOCK	0x8040
-@@ -51,11 +49,8 @@ struct bcm_ns_usb3 {
- 	struct device *dev;
- 	enum bcm_ns_family family;
- 	void __iomem *dmp;
--	void __iomem *ccb_mii;
- 	struct mdio_device *mdiodev;
- 	struct phy *phy;
--
--	int (*phy_write)(struct bcm_ns_usb3 *usb3, u16 reg, u16 value);
- };
- 
- static const struct of_device_id bcm_ns_usb3_id_table[] = {
-@@ -69,13 +64,9 @@ static const struct of_device_id bcm_ns_usb3_id_table[] = {
- 	},
- 	{},
- };
--MODULE_DEVICE_TABLE(of, bcm_ns_usb3_id_table);
- 
- static int bcm_ns_usb3_mdio_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
--				      u16 value)
--{
--	return usb3->phy_write(usb3, reg, value);
--}
-+				      u16 value);
- 
- static int bcm_ns_usb3_phy_init_ns_bx(struct bcm_ns_usb3 *usb3)
- {
-@@ -187,8 +178,8 @@ static const struct phy_ops ops = {
-  * MDIO driver code
-  **************************************************/
- 
--static int bcm_ns_usb3_mdiodev_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
--					 u16 value)
-+static int bcm_ns_usb3_mdio_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
-+				      u16 value)
- {
- 	struct mdio_device *mdiodev = usb3->mdiodev;
- 
-@@ -229,8 +220,6 @@ static int bcm_ns_usb3_mdio_probe(struct mdio_device *mdiodev)
- 		return PTR_ERR(usb3->dmp);
- 	}
- 
--	usb3->phy_write = bcm_ns_usb3_mdiodev_phy_write;
--
- 	usb3->phy = devm_phy_create(dev, NULL, &ops);
- 	if (IS_ERR(usb3->phy)) {
- 		dev_err(dev, "Failed to create PHY\n");
-@@ -254,142 +243,7 @@ static struct mdio_driver bcm_ns_usb3_mdio_driver = {
- 	.probe = bcm_ns_usb3_mdio_probe,
- };
- 
--/**************************************************
-- * Platform driver code
-- **************************************************/
--
--static int bcm_ns_usb3_wait_reg(struct bcm_ns_usb3 *usb3, void __iomem *addr,
--				u32 mask, u32 value, int usec)
--{
--	u32 val;
--	int ret;
--
--	ret = readl_poll_timeout_atomic(addr, val, ((val & mask) == value),
--					10, usec);
--	if (ret)
--		dev_err(usb3->dev, "Timeout waiting for register %p\n", addr);
--
--	return ret;
--}
--
--static inline int bcm_ns_usb3_mii_mng_wait_idle(struct bcm_ns_usb3 *usb3)
--{
--	return bcm_ns_usb3_wait_reg(usb3, usb3->ccb_mii + BCMA_CCB_MII_MNG_CTL,
--				    0x0100, 0x0000,
--				    BCM_NS_USB3_MII_MNG_TIMEOUT_US);
--}
--
--static int bcm_ns_usb3_platform_phy_write(struct bcm_ns_usb3 *usb3, u16 reg,
--					  u16 value)
--{
--	u32 tmp = 0;
--	int err;
--
--	err = bcm_ns_usb3_mii_mng_wait_idle(usb3);
--	if (err < 0) {
--		dev_err(usb3->dev, "Couldn't write 0x%08x value\n", value);
--		return err;
--	}
--
--	/* TODO: Use a proper MDIO bus layer */
--	tmp |= 0x58020000; /* Magic value for MDIO PHY write */
--	tmp |= reg << 18;
--	tmp |= value;
--	writel(tmp, usb3->ccb_mii + BCMA_CCB_MII_MNG_CMD_DATA);
--
--	return bcm_ns_usb3_mii_mng_wait_idle(usb3);
--}
--
--static int bcm_ns_usb3_probe(struct platform_device *pdev)
--{
--	struct device *dev = &pdev->dev;
--	const struct of_device_id *of_id;
--	struct bcm_ns_usb3 *usb3;
--	struct phy_provider *phy_provider;
--
--	usb3 = devm_kzalloc(dev, sizeof(*usb3), GFP_KERNEL);
--	if (!usb3)
--		return -ENOMEM;
--
--	usb3->dev = dev;
--
--	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
--	if (!of_id)
--		return -EINVAL;
+@@ -206,7 +206,7 @@ static int bcm_ns_usb3_mdio_probe(struct mdio_device *mdiodev)
+ 	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
+ 	if (!of_id)
+ 		return -EINVAL;
 -	usb3->family = (enum bcm_ns_family)of_id->data;
--
--	usb3->dmp = devm_platform_ioremap_resource_byname(pdev, "dmp");
--	if (IS_ERR(usb3->dmp)) {
--		dev_err(dev, "Failed to map DMP regs\n");
--		return PTR_ERR(usb3->dmp);
--	}
--
--	usb3->ccb_mii = devm_platform_ioremap_resource_byname(pdev, "ccb-mii");
--	if (IS_ERR(usb3->ccb_mii)) {
--		dev_err(dev, "Failed to map ChipCommon B MII regs\n");
--		return PTR_ERR(usb3->ccb_mii);
--	}
--
--	/* Enable MDIO. Setting MDCDIV as 26  */
--	writel(0x0000009a, usb3->ccb_mii + BCMA_CCB_MII_MNG_CTL);
--
--	/* Wait for MDIO? */
--	udelay(2);
--
--	usb3->phy_write = bcm_ns_usb3_platform_phy_write;
--
--	usb3->phy = devm_phy_create(dev, NULL, &ops);
--	if (IS_ERR(usb3->phy)) {
--		dev_err(dev, "Failed to create PHY\n");
--		return PTR_ERR(usb3->phy);
--	}
--
--	phy_set_drvdata(usb3->phy, usb3);
--	platform_set_drvdata(pdev, usb3);
--
--	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
--	if (!IS_ERR(phy_provider))
--		dev_info(dev, "Registered Broadcom Northstar USB 3.0 PHY driver\n");
--
--	return PTR_ERR_OR_ZERO(phy_provider);
--}
--
--static struct platform_driver bcm_ns_usb3_driver = {
--	.probe		= bcm_ns_usb3_probe,
--	.driver = {
--		.name = "bcm_ns_usb3",
--		.of_match_table = bcm_ns_usb3_id_table,
--	},
--};
--
--static int __init bcm_ns_usb3_module_init(void)
--{
--	int err;
--
--	/*
--	 * For backward compatibility we register as MDIO and platform driver.
--	 * After getting MDIO binding commonly used (e.g. switching all DT files
--	 * to use it) we should deprecate the old binding and eventually drop
--	 * support for it.
--	 */
--
--	err = mdio_driver_register(&bcm_ns_usb3_mdio_driver);
--	if (err)
--		return err;
--
--	err = platform_driver_register(&bcm_ns_usb3_driver);
--	if (err)
--		mdio_driver_unregister(&bcm_ns_usb3_mdio_driver);
--
--	return err;
--}
--module_init(bcm_ns_usb3_module_init);
--
--static void __exit bcm_ns_usb3_module_exit(void)
--{
--	platform_driver_unregister(&bcm_ns_usb3_driver);
--	mdio_driver_unregister(&bcm_ns_usb3_mdio_driver);
--}
--module_exit(bcm_ns_usb3_module_exit)
-+mdio_module_driver(bcm_ns_usb3_mdio_driver);
++	usb3->family = (uintptr_t)of_id->data;
  
- MODULE_LICENSE("GPL v2");
-+MODULE_DEVICE_TABLE(of, bcm_ns_usb3_id_table);
+ 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
+ 	err = of_address_to_resource(syscon_np, 0, &res);
 -- 
 2.51.0
 
