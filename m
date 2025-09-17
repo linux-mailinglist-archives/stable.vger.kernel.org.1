@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-180365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6018B7F21A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:18:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1637B7F1BC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E94D4A3233
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:10:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BFB81BC49B5
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00930328983;
-	Wed, 17 Sep 2025 13:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C674431960B;
+	Wed, 17 Sep 2025 13:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4z6FXWI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuxiUFJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33F6328977;
-	Wed, 17 Sep 2025 13:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FA630CB39;
+	Wed, 17 Sep 2025 13:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114231; cv=none; b=QcPI751EdoeQ7X0WcqGK8K87MzLsUbw3OSYzRnGKWeR4zo4xI17v7EwUq/iCBOXB+esRANu229B2vsox3P4+iUcWmSHoL3FMzqQZMFsbap7gaOYsGewv2/9sAHPNAik9EXDyZOPRdGoOF2wwglp6tgxlZDvxbbyvHElTgu6iUz4=
+	t=1758114218; cv=none; b=k0kTnI2FhbJU/yTecz+WI1MqCTJ8cat7DE8sJ8Jwz2Jg8g34oyJQCHgTrNReSJOEQJ5RMgIHyUrIHUooec3IV9tg5uF0eZ2H1aAzx7T91dnqZd/O3tFd46zgyVZnlJEzBzMF6zSUPQOUlUZCE3lhOiyGHykWcZS1+GqvY8XRnv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114231; c=relaxed/simple;
-	bh=HSf1B5Z5cr2GR4iFS5pFjwISLvJopgYAdVu2orj0vng=;
+	s=arc-20240116; t=1758114218; c=relaxed/simple;
+	bh=BIqZLJju64m1tTSKnQAE1ZaNu5spdrWiAcFvWtsrMjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ql2sGYgFSz0hgRkZ6BQVrvsM9XPxkdV+R0KPgg8KiB/8C72bU34xxQNLoE0ILSu5fC7Nn9lbINPu2VcLecFBrg8sb/g6/k/rjFV/LojlHRsRHO7RSfaQlwTh9MRj++2H0HEelceCO+OcO9HGbgCYrW/d5LVqpveEAe3rjycAakE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4z6FXWI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285BAC4CEF5;
-	Wed, 17 Sep 2025 13:03:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y+kPriLqOxRgFNqMXLFUBlwHPnr342cA81K/kg9dOk3XeDQzAva7TC3SuYoD5uB233RIANWk2wKlUjJ4o0STAfDuGpCuW341CTFYOVWjyQrme6RflLJYkhRzrt5/arFNohR3ETDo2kBxg465gMbxxRP+PDDOLjDpQw+05yZ5v0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuxiUFJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54ADC4CEF0;
+	Wed, 17 Sep 2025 13:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114231;
-	bh=HSf1B5Z5cr2GR4iFS5pFjwISLvJopgYAdVu2orj0vng=;
+	s=korg; t=1758114218;
+	bh=BIqZLJju64m1tTSKnQAE1ZaNu5spdrWiAcFvWtsrMjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4z6FXWI8MFml/Gnkc0KJboTv8JYcVB/aUr3tvTxozaGP86X+ouWv9/RqbDZ4p1a6
-	 EtvipYTcHkkHea6xrReNWHtih75eVR5dA+TW0S0GpMH2326qcP4gyAEcnblc2GQUZw
-	 B/ccrZo3v3P4GyE3aTzGqeKaZLOpJFfHkh5YMp1g=
+	b=TuxiUFJHAvd66bxOlGwz/CjIuiLtDOpZ0u39yuQ7Fd+PJfbnJ/h9s+HQSmqyAN64C
+	 eQjqAgsBIqfbJBvwHquofOYj9MPIxMs38l1UEfBB/emk5EmCsJq1HWDIMMFlKZ2wkx
+	 zvJJmDVNhQlJomQEOdV18l7e/7qMl10ClQdY0HS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 74/78] phy: ti-pipe3: fix device leak at unbind
-Date: Wed, 17 Sep 2025 14:35:35 +0200
-Message-ID: <20250917123331.389336690@linuxfoundation.org>
+	"Lin.Cao" <lincao12@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 75/78] drm/amdgpu: fix a memory leak in fence cleanup when unloading
+Date: Wed, 17 Sep 2025 14:35:36 +0200
+Message-ID: <20250917123331.416162682@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
 References: <20250917123329.576087662@linuxfoundation.org>
@@ -60,65 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit e19bcea99749ce8e8f1d359f68ae03210694ad56 upstream.
+[ Upstream commit 7838fb5f119191403560eca2e23613380c0e425e ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+Commit b61badd20b44 ("drm/amdgpu: fix usage slab after free")
+reordered when amdgpu_fence_driver_sw_fini() was called after
+that patch, amdgpu_fence_driver_sw_fini() effectively became
+a no-op as the sched entities we never freed because the
+ring pointers were already set to NULL.  Remove the NULL
+setting.
 
-Fixes: 918ee0d21ba4 ("usb: phy: omap-usb3: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-4-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reported-by: Lin.Cao <lincao12@amd.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Fixes: b61badd20b44 ("drm/amdgpu: fix usage slab after free")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a525fa37aac36c4591cc8b07ae8957862415fbd5)
+Cc: stable@vger.kernel.org
+[ Adapt to conditional check ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-ti-pipe3.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/phy/ti/phy-ti-pipe3.c
-+++ b/drivers/phy/ti/phy-ti-pipe3.c
-@@ -666,12 +666,20 @@ static int ti_pipe3_get_clk(struct ti_pi
- 	return 0;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -368,9 +368,6 @@ void amdgpu_ring_fini(struct amdgpu_ring
+ 	dma_fence_put(ring->vmid_wait);
+ 	ring->vmid_wait = NULL;
+ 	ring->me = 0;
+-
+-	if (!ring->is_mes_queue)
+-		ring->adev->rings[ring->idx] = NULL;
  }
  
-+static void ti_pipe3_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int ti_pipe3_get_sysctrl(struct ti_pipe3 *phy)
- {
- 	struct device *dev = phy->dev;
- 	struct device_node *node = dev->of_node;
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
-+	int ret;
- 
- 	phy->phy_power_syscon = syscon_regmap_lookup_by_phandle(node,
- 							"syscon-phy-power");
-@@ -703,6 +711,11 @@ static int ti_pipe3_get_sysctrl(struct t
- 		}
- 
- 		phy->control_dev = &control_pdev->dev;
-+
-+		ret = devm_add_action_or_reset(dev, ti_pipe3_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	if (phy->mode == PIPE3_MODE_PCIE) {
+ /**
 
 
 
