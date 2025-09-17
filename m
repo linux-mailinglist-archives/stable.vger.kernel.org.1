@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-180101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B143AB7E8D6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3BBB7E269
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5562188DD71
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E1251B2621E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592752D7DF2;
-	Wed, 17 Sep 2025 12:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7447A2EBBB2;
+	Wed, 17 Sep 2025 12:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFstNYfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDEiiQY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164CF1EB1AA;
-	Wed, 17 Sep 2025 12:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B6A1F3BA2;
+	Wed, 17 Sep 2025 12:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113388; cv=none; b=uSoV9YIN0LCVKqUL/idstByv5gWQnVA/Y5TeDWn0cjieDZC7we5RM/ahwRcP1tWhhfcJymNdqkOk+S+y9Vlos1c98xeEMYNOC+MptlhKxm6sK/FyEWlpsyrCv7ff2vkk+IP57d/KL8N4yOAIE55qRQSXXXrFkiod3/7GgtW00Qk=
+	t=1758112854; cv=none; b=NEOO3GcznoijrojN4h2MM2iP6Rcd3TrE55Wk7pmpvp0/z1Alg57IN9D/2o55/rhnjqI8id/goonim7ZTu3r6QJW0DMGBuQXiwTKGDCWCuPbkSR8aSNeP9bsrsYwK5hSEsldkt18PqeA2uhv0qrgFjMvKDiCJ0SVaN2zYr/LLaBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113388; c=relaxed/simple;
-	bh=G2KnKmRUNFofYRem/YZ6s2zfLs8+ReJFpl3sTbk7uZw=;
+	s=arc-20240116; t=1758112854; c=relaxed/simple;
+	bh=j904dOCUeD3aSsTsq7vz/bHsxJMCZdtTBs5YPnCjR+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/Des4Uxfgvhktv4OBfVYENdZ/JU+vv235Km06/jvOAnC8idWLbhFeWb8MnUb1H3mqXmTH0xqLLtG4cnsrQTAO2wXGJ38Bc5c9g0fLXuO0U85I1ILJCvx6ONZVc9qzYReuUqw6nMVxYti7ebVMMEPMr0BCFx9Y8No5Id3MelyGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFstNYfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F71C4CEF0;
-	Wed, 17 Sep 2025 12:49:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sCIAUnSLe0wYqtXbtN5GcGIi3L1x//1M2q/miCiUST8DcJ9f/5kOktNECGwyXvhbbQWjLy0QjFQDU3yWIMm4xfD9wCIS1wztXMhIwbGRc/M7BB02GVw6VmvohleNw8TwXkihvQbZ0WGpj/RSb0NO0U+TmHBy6h8ftK5E3gp336Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDEiiQY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C7AC4AF09;
+	Wed, 17 Sep 2025 12:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113387;
-	bh=G2KnKmRUNFofYRem/YZ6s2zfLs8+ReJFpl3sTbk7uZw=;
+	s=korg; t=1758112854;
+	bh=j904dOCUeD3aSsTsq7vz/bHsxJMCZdtTBs5YPnCjR+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uFstNYfMyIrZKKUsQhtJ0lyhs3+OpeRCsivAP8Rl7p2CNjttvRssik5X+FIJjix2G
-	 yI8cEuwfDl94oaQFQWYNVzrBs5SvXohQJc3/qMhr1jO52Hydjx5/2gWRIfw2OM/MFk
-	 A2urxc4TvIXggOolquRKzQQP4G/qy/1VuzhuNxy4=
+	b=TDEiiQY+gg9h4G3NgtySBjguqa9zmNzGTEmJkdclTvx32jGAU3YAsrZWKkh/YX5TS
+	 gI+Cc2llPixbQyffRBlHigzv4SDZgIXx8QDcBSRGBrApMPjjHeHyDc4N+ZX+eljbKi
+	 fKW+wT5ohX53JbCW0k452A+BE702Sw1chYwBenZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/140] NFS: Serialise O_DIRECT i/o and truncate()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.16 095/189] drm/dp: Add an EDID quirk for the DPCD register access probe
 Date: Wed, 17 Sep 2025 14:33:25 +0200
-Message-ID: <20250917123345.118798706@linuxfoundation.org>
+Message-ID: <20250917123354.176186541@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,107 +61,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 9eb90f435415c7da4800974ed943e39b5578ee7f ]
+commit b87ed522b3643f096ef183ed0ccf2d2b90ddd513 upstream.
 
-Ensure that all O_DIRECT reads and writes are complete, and prevent the
-initiation of new i/o until the setattr operation that will truncate the
-file is complete.
+Reading DPCD registers has side-effects and some of these can cause a
+problem for instance during link training. Based on this it's better to
+avoid the probing quirk done before each DPCD register read, limiting
+this to the monitor which requires it. Add an EDID quirk for this. Leave
+the quirk enabled by default, allowing it to be disabled after the
+monitor is detected.
 
-Fixes: a5864c999de6 ("NFS: Do not serialise O_DIRECT reads and writes")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: Fix lockdep wrt. drm_dp_aux::hw_mutex when calling
+    drm_dp_dpcd_set_probe_quirk() with a dependent lock already held.
+v3: Add a helper for determining if DPCD probing is needed. (Jani)
+v4:
+- s/drm_dp_dpcd_set_probe_quirk/drm_dp_dpcd_set_probe (Jani)
+- Fix documentation of drm_dp_dpcd_set_probe().
+- Add comment at the end of internal quirk entries.
+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250609125556.109538-1-imre.deak@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c    |  4 +++-
- fs/nfs/internal.h | 10 ++++++++++
- fs/nfs/io.c       | 13 ++-----------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/display/drm_dp_helper.c |   42 ++++++++++++++++++++++----------
+ drivers/gpu/drm/drm_edid.c              |    8 ++++++
+ include/drm/display/drm_dp_helper.h     |    6 ++++
+ include/drm/drm_edid.h                  |    3 ++
+ 4 files changed, 46 insertions(+), 13 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 8827cb00f86d5..5bf5fb5ddd34c 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -761,8 +761,10 @@ nfs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	trace_nfs_setattr_enter(inode);
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -692,6 +692,34 @@ void drm_dp_dpcd_set_powered(struct drm_
+ EXPORT_SYMBOL(drm_dp_dpcd_set_powered);
  
- 	/* Write all dirty data */
--	if (S_ISREG(inode->i_mode))
-+	if (S_ISREG(inode->i_mode)) {
-+		nfs_file_block_o_direct(NFS_I(inode));
- 		nfs_sync_inode(inode);
-+	}
- 
- 	fattr = nfs_alloc_fattr_with_label(NFS_SERVER(inode));
- 	if (fattr == NULL) {
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 4860270f1be04..456b423402814 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -529,6 +529,16 @@ static inline bool nfs_file_io_is_buffered(struct nfs_inode *nfsi)
- 	return test_bit(NFS_INO_ODIRECT, &nfsi->flags) == 0;
- }
- 
-+/* Must be called with exclusively locked inode->i_rwsem */
-+static inline void nfs_file_block_o_direct(struct nfs_inode *nfsi)
+ /**
++ * drm_dp_dpcd_set_probe() - Set whether a probing before DPCD access is done
++ * @aux: DisplayPort AUX channel
++ * @enable: Enable the probing if required
++ */
++void drm_dp_dpcd_set_probe(struct drm_dp_aux *aux, bool enable)
 +{
-+	if (test_bit(NFS_INO_ODIRECT, &nfsi->flags)) {
-+		clear_bit(NFS_INO_ODIRECT, &nfsi->flags);
-+		inode_dio_wait(&nfsi->vfs_inode);
-+	}
++	WRITE_ONCE(aux->dpcd_probe_disabled, !enable);
++}
++EXPORT_SYMBOL(drm_dp_dpcd_set_probe);
++
++static bool dpcd_access_needs_probe(struct drm_dp_aux *aux)
++{
++	/*
++	 * HP ZR24w corrupts the first DPCD access after entering power save
++	 * mode. Eg. on a read, the entire buffer will be filled with the same
++	 * byte. Do a throw away read to avoid corrupting anything we care
++	 * about. Afterwards things will work correctly until the monitor
++	 * gets woken up and subsequently re-enters power save mode.
++	 *
++	 * The user pressing any button on the monitor is enough to wake it
++	 * up, so there is no particularly good place to do the workaround.
++	 * We just have to do it before any DPCD access and hope that the
++	 * monitor doesn't power down exactly after the throw away read.
++	 */
++	return !aux->is_remote && !READ_ONCE(aux->dpcd_probe_disabled);
 +}
 +
++/**
+  * drm_dp_dpcd_read() - read a series of bytes from the DPCD
+  * @aux: DisplayPort AUX channel (SST or MST)
+  * @offset: address of the (first) register to read
+@@ -712,19 +740,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ {
+ 	int ret;
+ 
+-	/*
+-	 * HP ZR24w corrupts the first DPCD access after entering power save
+-	 * mode. Eg. on a read, the entire buffer will be filled with the same
+-	 * byte. Do a throw away read to avoid corrupting anything we care
+-	 * about. Afterwards things will work correctly until the monitor
+-	 * gets woken up and subsequently re-enters power save mode.
+-	 *
+-	 * The user pressing any button on the monitor is enough to wake it
+-	 * up, so there is no particularly good place to do the workaround.
+-	 * We just have to do it before any DPCD access and hope that the
+-	 * monitor doesn't power down exactly after the throw away read.
+-	 */
+-	if (!aux->is_remote) {
++	if (dpcd_access_needs_probe(aux)) {
+ 		ret = drm_dp_dpcd_probe(aux, DP_TRAINING_PATTERN_SET);
+ 		if (ret < 0)
+ 			return ret;
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -248,6 +248,14 @@ static const struct edid_quirk {
+ 	/* OSVR HDK and HDK2 VR Headsets */
+ 	EDID_QUIRK('S', 'V', 'R', 0x1019, BIT(EDID_QUIRK_NON_DESKTOP)),
+ 	EDID_QUIRK('A', 'U', 'O', 0x1111, BIT(EDID_QUIRK_NON_DESKTOP)),
 +
- /* namespace.c */
- #define NFS_PATH_CANONICAL 1
- extern char *nfs_path(char **p, struct dentry *dentry,
-diff --git a/fs/nfs/io.c b/fs/nfs/io.c
-index 3388faf2acb9f..d275b0a250bf3 100644
---- a/fs/nfs/io.c
-+++ b/fs/nfs/io.c
-@@ -14,15 +14,6 @@
++	/*
++	 * @drm_edid_internal_quirk entries end here, following with the
++	 * @drm_edid_quirk entries.
++	 */
++
++	/* HP ZR24w DP AUX DPCD access requires probing to prevent corruption. */
++	EDID_QUIRK('H', 'W', 'P', 0x2869, BIT(DRM_EDID_QUIRK_DP_DPCD_PROBE)),
+ };
  
- #include "internal.h"
+ /*
+--- a/include/drm/display/drm_dp_helper.h
++++ b/include/drm/display/drm_dp_helper.h
+@@ -523,10 +523,16 @@ struct drm_dp_aux {
+ 	 * @no_zero_sized: If the hw can't use zero sized transfers (NVIDIA)
+ 	 */
+ 	bool no_zero_sized;
++
++	/**
++	 * @dpcd_probe_disabled: If probing before a DPCD access is disabled.
++	 */
++	bool dpcd_probe_disabled;
+ };
  
--/* Call with exclusively locked inode->i_rwsem */
--static void nfs_block_o_direct(struct nfs_inode *nfsi, struct inode *inode)
--{
--	if (test_bit(NFS_INO_ODIRECT, &nfsi->flags)) {
--		clear_bit(NFS_INO_ODIRECT, &nfsi->flags);
--		inode_dio_wait(inode);
--	}
--}
--
- /**
-  * nfs_start_io_read - declare the file is being used for buffered reads
-  * @inode: file inode
-@@ -57,7 +48,7 @@ nfs_start_io_read(struct inode *inode)
- 	err = down_write_killable(&inode->i_rwsem);
- 	if (err)
- 		return err;
--	nfs_block_o_direct(nfsi, inode);
-+	nfs_file_block_o_direct(nfsi);
- 	downgrade_write(&inode->i_rwsem);
+ int drm_dp_dpcd_probe(struct drm_dp_aux *aux, unsigned int offset);
+ void drm_dp_dpcd_set_powered(struct drm_dp_aux *aux, bool powered);
++void drm_dp_dpcd_set_probe(struct drm_dp_aux *aux, bool enable);
+ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
+ 			 void *buffer, size_t size);
+ ssize_t drm_dp_dpcd_write(struct drm_dp_aux *aux, unsigned int offset,
+--- a/include/drm/drm_edid.h
++++ b/include/drm/drm_edid.h
+@@ -110,6 +110,9 @@ struct detailed_data_string {
+ #define DRM_EDID_CVT_FLAGS_REDUCED_BLANKING  (1 << 4)
  
- 	return 0;
-@@ -90,7 +81,7 @@ nfs_start_io_write(struct inode *inode)
+ enum drm_edid_quirk {
++	/* Do a dummy read before DPCD accesses, to prevent corruption. */
++	DRM_EDID_QUIRK_DP_DPCD_PROBE,
++
+ 	DRM_EDID_QUIRK_NUM,
+ };
  
- 	err = down_write_killable(&inode->i_rwsem);
- 	if (!err)
--		nfs_block_o_direct(NFS_I(inode), inode);
-+		nfs_file_block_o_direct(NFS_I(inode));
- 	return err;
- }
- 
--- 
-2.51.0
-
 
 
 
