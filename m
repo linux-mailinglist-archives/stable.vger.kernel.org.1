@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-180273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F38BB7F045
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFB8B7EFAF
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6506F1884B03
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 225A87B0113
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E109832E72B;
-	Wed, 17 Sep 2025 12:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EC331619B;
+	Wed, 17 Sep 2025 13:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB99JV3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzzIJlSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4B531960F;
-	Wed, 17 Sep 2025 12:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CB62FBE1D;
+	Wed, 17 Sep 2025 13:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113934; cv=none; b=oVyMAXgk0mnHCoxTEbvsOPZdkA+hDBcPtrB0vQlyoCo/heg5eQqcDz2no4Mlia30JVJAbFSwGlG4dWYo6PzYKI+tSvX48bF+UVWM91a70IG9ehvamz5rSKbRxjzwJhRlMEqOO6XG8DV3mo/EXtzRldghjLEIebO2lAln9R4D+vk=
+	t=1758114150; cv=none; b=cxWqn7WfXnKXGthDMck1wKdOI/WFspRGMsCNl9A8komayZkIzcl8B2PyTlGK8kLMRbzJqmZTXLEJVmTa4PgUxRP0mDV4pzmtUIIEiEx+1EwrVhXJG2ibRBH3Zt2u8YCri3h+yEoE26otuVwfaAo3so++IsHAcFeYh8do4whECk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113934; c=relaxed/simple;
-	bh=ANAz07hjRaNWzOtVTUj+yDWLu1IAmgXhCZoE2RszcYU=;
+	s=arc-20240116; t=1758114150; c=relaxed/simple;
+	bh=jowV962RF+QJkeE/eKvhnuheKnjQ1RUDYc2jdDwgv8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LnJn3L3XxTNQpIy6RyY8ECt5AjMvy3dU80QkdRW35enCPM1arHyKfcPFE/E5wfJbTGOVDMsl7rE1JV7EgiOvF8lBWin6hVSqmINCOO7gsOU/4L74r6g3gvooYzggechgKy9vjd1mu+IECy/8LiipjgCgPF0P7+Ne1GIyq4wpbc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB99JV3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37F9C4CEF0;
-	Wed, 17 Sep 2025 12:58:53 +0000 (UTC)
+	 MIME-Version; b=M6r0m+nqJBnR8fFfI/v21YzoJsFtH2q3GwwiN5F6DuFqWMT2ZwkdH/KuKeZfK2JXpqeXmVsnNxcf6R7PWVip/KTEMKH1K7N6ZfqMm4jeqZJeNvG1hl1rBoGkwWHoSXNyTLtx21szLhASv+TD3jn/NjQZA8ohKHpfd5cJrTsJr40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzzIJlSJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D393C4CEF0;
+	Wed, 17 Sep 2025 13:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113934;
-	bh=ANAz07hjRaNWzOtVTUj+yDWLu1IAmgXhCZoE2RszcYU=;
+	s=korg; t=1758114149;
+	bh=jowV962RF+QJkeE/eKvhnuheKnjQ1RUDYc2jdDwgv8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JB99JV3+EvaI45l/gtM2DWhczsNGVPT71C4u0TTvAHYTZNnxxRS8GNPme4MrR0MtK
-	 zlVq80YzD3piy0NY9/+OVFarZoCu+xP2HvFVxPA7ALxseHltb0zq3ylKdeWiZFt+6r
-	 7LuVQC+ZOnKP1FbYLcj0Yu7TaIrE5rAsHrtG8Tso=
+	b=wzzIJlSJDTJCt4PJHV/vknqrgPBxC+DjbzvUxqO4j4LBBSnG9ODWnlaAmSjzVpWUF
+	 2AwUenI96bHfeIqv+WeAbm66yl8qsIqRPe5owwkl9xGkHCoP266tU+wLzvtPedTBXP
+	 eEZJu5enPknk9BTLBowLJeVHrKfT4eK0aEnXYbpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 097/101] phy: ti-pipe3: fix device leak at unbind
-Date: Wed, 17 Sep 2025 14:35:20 +0200
-Message-ID: <20250917123339.178088026@linuxfoundation.org>
+	Murali Karicheri <m-karicheri2@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 60/78] net: hsr: Add support for MC filtering at the slave device
+Date: Wed, 17 Sep 2025 14:35:21 +0200
+Message-ID: <20250917123331.036734105@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +65,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Murali Karicheri <m-karicheri2@ti.com>
 
-commit e19bcea99749ce8e8f1d359f68ae03210694ad56 upstream.
+[ Upstream commit 36b20fcdd9663ced36d3aef96f0eff8eb79de4b8 ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+When MC (multicast) list is updated by the networking layer due to a
+user command and as well as when allmulti flag is set, it needs to be
+passed to the enslaved Ethernet devices. This patch allows this
+to happen by implementing ndo_change_rx_flags() and ndo_set_rx_mode()
+API calls that in turns pass it to the slave devices using
+existing API calls.
 
-Fixes: 918ee0d21ba4 ("usb: phy: omap-usb3: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-4-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 8884c6939913 ("hsr: use rtnl lock when iterating over ports")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-ti-pipe3.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/hsr/hsr_device.c | 67 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/ti/phy-ti-pipe3.c
-+++ b/drivers/phy/ti/phy-ti-pipe3.c
-@@ -666,12 +666,20 @@ static int ti_pipe3_get_clk(struct ti_pi
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 511407df49151..e9a1a5cf120dd 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -170,7 +170,24 @@ static int hsr_dev_open(struct net_device *dev)
+ 
+ static int hsr_dev_close(struct net_device *dev)
+ {
+-	/* Nothing to do here. */
++	struct hsr_port *port;
++	struct hsr_priv *hsr;
++
++	hsr = netdev_priv(dev);
++	hsr_for_each_port(hsr, port) {
++		if (port->type == HSR_PT_MASTER)
++			continue;
++		switch (port->type) {
++		case HSR_PT_SLAVE_A:
++		case HSR_PT_SLAVE_B:
++			dev_uc_unsync(port->dev, dev);
++			dev_mc_unsync(port->dev, dev);
++			break;
++		default:
++			break;
++		}
++	}
++
  	return 0;
  }
  
-+static void ti_pipe3_put_device(void *_dev)
+@@ -401,12 +418,60 @@ void hsr_del_ports(struct hsr_priv *hsr)
+ 		hsr_del_port(port);
+ }
+ 
++static void hsr_set_rx_mode(struct net_device *dev)
 +{
-+	struct device *dev = _dev;
++	struct hsr_port *port;
++	struct hsr_priv *hsr;
 +
-+	put_device(dev);
++	hsr = netdev_priv(dev);
++
++	hsr_for_each_port(hsr, port) {
++		if (port->type == HSR_PT_MASTER)
++			continue;
++		switch (port->type) {
++		case HSR_PT_SLAVE_A:
++		case HSR_PT_SLAVE_B:
++			dev_mc_sync_multiple(port->dev, dev);
++			dev_uc_sync_multiple(port->dev, dev);
++			break;
++		default:
++			break;
++		}
++	}
 +}
 +
- static int ti_pipe3_get_sysctrl(struct ti_pipe3 *phy)
- {
- 	struct device *dev = phy->dev;
- 	struct device_node *node = dev->of_node;
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
-+	int ret;
- 
- 	phy->phy_power_syscon = syscon_regmap_lookup_by_phandle(node,
- 							"syscon-phy-power");
-@@ -703,6 +711,11 @@ static int ti_pipe3_get_sysctrl(struct t
- 		}
- 
- 		phy->control_dev = &control_pdev->dev;
++static void hsr_change_rx_flags(struct net_device *dev, int change)
++{
++	struct hsr_port *port;
++	struct hsr_priv *hsr;
 +
-+		ret = devm_add_action_or_reset(dev, ti_pipe3_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
- 	}
++	hsr = netdev_priv(dev);
++
++	hsr_for_each_port(hsr, port) {
++		if (port->type == HSR_PT_MASTER)
++			continue;
++		switch (port->type) {
++		case HSR_PT_SLAVE_A:
++		case HSR_PT_SLAVE_B:
++			if (change & IFF_ALLMULTI)
++				dev_set_allmulti(port->dev,
++						 dev->flags &
++						 IFF_ALLMULTI ? 1 : -1);
++			break;
++		default:
++			break;
++		}
++	}
++}
++
+ static const struct net_device_ops hsr_device_ops = {
+ 	.ndo_change_mtu = hsr_dev_change_mtu,
+ 	.ndo_open = hsr_dev_open,
+ 	.ndo_stop = hsr_dev_close,
+ 	.ndo_start_xmit = hsr_dev_xmit,
++	.ndo_change_rx_flags = hsr_change_rx_flags,
+ 	.ndo_fix_features = hsr_fix_features,
++	.ndo_set_rx_mode = hsr_set_rx_mode,
+ };
  
- 	if (phy->mode == PIPE3_MODE_PCIE) {
+ static struct device_type hsr_type = {
+-- 
+2.51.0
+
 
 
 
