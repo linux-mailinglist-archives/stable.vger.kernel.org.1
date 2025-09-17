@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-180020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB77B7E63F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08CFB7E525
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A493AE844
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0986189F9F3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD5E30CB38;
-	Wed, 17 Sep 2025 12:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55872F5A08;
+	Wed, 17 Sep 2025 12:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL3tvuUm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJxyneET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083BF30CB24;
-	Wed, 17 Sep 2025 12:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8272C284888;
+	Wed, 17 Sep 2025 12:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113124; cv=none; b=RqwFlvw6PCJeXbwA4rTQF7i9PHFOb4dIVvlLKwtGQMsSfqGlBdPlLf+via6f88sb8rYK9XZFLTCDpF6PlCpxwQvXS2Yjsjcqul6YMXN3OETFXaQUD/8WQyUNNx+xX9keV4Afn46HHFbk8rbS0T60E1OFuCoUONCmOC9Xua8C0H0=
+	t=1758113130; cv=none; b=Ah9aTp99rPQXx05ZAlggWtEzzqiz1S8Qtk/lz8/nvm1NvnvOZOoNR7boVJS1n3+rWw79x6tsMnnROC0IDmPrYWFo5AvKOOpiuZWIM4V9zs/t8t3ec1bfmda4YT3dhh+Iyi7cfatsVGkdRkMfJgoKDBKcntCLg/ON3rOTeeOUrl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113124; c=relaxed/simple;
-	bh=AXNU05eRhL4DXLxT/ID5GSfD785TxE9Sxi3w9odhz8w=;
+	s=arc-20240116; t=1758113130; c=relaxed/simple;
+	bh=N6SFljDXq7pTHvbJiyOsF0Wi++07kERlao+y0HpgZzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7uVQChRhLKsO1mdv3JNef5XZY201ScwdzhSzEB6mXDCPnBscJA6MoIRuar6x4UmRRDquGoRCFw0cx0QhYL5oa++fkIJ3pJzgXtYNjQjhnNipy0A+nlx0pXX9LG3CvaAdHdeQarWI2ZhVPSFyXE+lO4gWOqKr4xJJ/DfNmWJDMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL3tvuUm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FB3C4CEF0;
-	Wed, 17 Sep 2025 12:45:23 +0000 (UTC)
+	 MIME-Version; b=GxP89dwImteuvD5j4J/vQhCEWJjPD3zMFnHjXSp0zl9punKvu7ML1+tIxIa18KIvpY2mQFOd3UkNPCZjF7g60YXUVPUtpZlot8OtTj6Z5y8IqYYEWkQHh+38WgWqwQTRFbeuiBroMmTlBfLc39VC6mjngyCCq7eLous06UkE12M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJxyneET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AF6C4CEF7;
+	Wed, 17 Sep 2025 12:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113123;
-	bh=AXNU05eRhL4DXLxT/ID5GSfD785TxE9Sxi3w9odhz8w=;
+	s=korg; t=1758113130;
+	bh=N6SFljDXq7pTHvbJiyOsF0Wi++07kERlao+y0HpgZzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cL3tvuUmEB2EMKCLciCItyY3AT12Wp1dG3wlYVIMvz19Q/c6zGiWh8MfmvB2A8nre
-	 cLSbqEe9M4AmMWqOh+Ki2z2yaypmzbEzVL0i6nJROpr81zyHz7+pu99d2AWqwou7E6
-	 g2OFbZlQb2Q49C+Z7sBi0+ZicQFc04B09IU2etEg=
+	b=MJxyneETOo2w+B2/N1F29Ou8l8cSwFO5tt5iDo1WsKyP1hp80dCL6DH8Xm6VZwiAd
+	 zUmVqWpiuNvvCu2cM+LSHdHzqrulKnWW0t0HtvSOQ3pbDmE5ooVuiSlbi12zyLQoMw
+	 yu58Swjr8qRDYiez0eMQswyFYKbre/6hUyZZLXQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.16 179/189] xhci: fix memory leak regression when freeing xhci vdev devices depth first
-Date: Wed, 17 Sep 2025 14:34:49 +0200
-Message-ID: <20250917123356.258651275@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	stable <stable@kernel.org>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.16 180/189] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
+Date: Wed, 17 Sep 2025 14:34:50 +0200
+Message-ID: <20250917123356.282579054@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
 References: <20250917123351.839989757@linuxfoundation.org>
@@ -66,47 +68,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit edcbe06453ddfde21f6aa763f7cab655f26133cc upstream.
+commit 8d63c83d8eb922f6c316320f50c82fa88d099bea upstream.
 
-Suspend-resume cycle test revealed a memory leak in 6.17-rc3
+Yunseong Kim and the syzbot fuzzer both reported a problem in
+RT-enabled kernels caused by the way dummy-hcd mixes interrupt
+management and spin-locking.  The pattern was:
 
-Turns out the slot_id race fix changes accidentally ends up calling
-xhci_free_virt_device() with an incorrect vdev parameter.
-The vdev variable was reused for temporary purposes right before calling
-xhci_free_virt_device().
+	local_irq_save(flags);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock(&dum->lock);
+	...		// calls usb_gadget_giveback_request()
+	local_irq_restore(flags);
 
-Fix this by passing the correct vdev parameter.
+The code was written this way because usb_gadget_giveback_request()
+needs to be called with interrupts disabled and the private lock not
+held.
 
-The slot_id race fix that caused this regression was targeted for stable,
-so this needs to be applied there as well.
+While this pattern works fine in non-RT kernels, it's not good when RT
+is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
+spin_lock() may sleep.  But sleeping is not allowed while local
+interrupts are disabled.
 
-Fixes: 2eb03376151b ("usb: xhci: Fix slot_id resource race conflict")
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/linux-usb/20250829181354.4450-1-00107082@163.com
-Suggested-by: Michal Pecio <michal.pecio@gmail.com>
-Suggested-by: David Wang <00107082@163.com>
-Cc: stable@vger.kernel.org
-Tested-by: David Wang <00107082@163.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-4-mathias.nyman@linux.intel.com
+To fix the problem, rewrite the code to conform to the pattern used
+elsewhere in dummy-hcd and other UDC drivers:
+
+	spin_lock_irqsave(&dum->lock, flags);
+	...
+	spin_unlock(&dum->lock);
+	usb_gadget_giveback_request(...);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock_irqrestore(&dum->lock, flags);
+
+This approach satisfies the RT requirements.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable <stable@kernel.org>
+Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
+Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
+Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
+Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC: stable@vger.kernel.org
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -962,7 +962,7 @@ static void xhci_free_virt_devices_depth
- out:
- 	/* we are now at a leaf device */
- 	xhci_debugfs_remove_slot(xhci, slot_id);
--	xhci_free_virt_device(xhci, vdev, slot_id);
-+	xhci_free_virt_device(xhci, xhci->devs[slot_id], slot_id);
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -765,8 +765,7 @@ static int dummy_dequeue(struct usb_ep *
+ 	if (!dum->driver)
+ 		return -ESHUTDOWN;
+ 
+-	local_irq_save(flags);
+-	spin_lock(&dum->lock);
++	spin_lock_irqsave(&dum->lock, flags);
+ 	list_for_each_entry(iter, &ep->queue, queue) {
+ 		if (&iter->req != _req)
+ 			continue;
+@@ -776,15 +775,16 @@ static int dummy_dequeue(struct usb_ep *
+ 		retval = 0;
+ 		break;
+ 	}
+-	spin_unlock(&dum->lock);
+ 
+ 	if (retval == 0) {
+ 		dev_dbg(udc_dev(dum),
+ 				"dequeued req %p from %s, len %d buf %p\n",
+ 				req, _ep->name, _req->length, _req->buf);
++		spin_unlock(&dum->lock);
+ 		usb_gadget_giveback_request(_ep, _req);
++		spin_lock(&dum->lock);
+ 	}
+-	local_irq_restore(flags);
++	spin_unlock_irqrestore(&dum->lock, flags);
+ 	return retval;
  }
  
- int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
 
 
 
