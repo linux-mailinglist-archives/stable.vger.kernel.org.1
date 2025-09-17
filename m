@@ -1,181 +1,142 @@
-Return-Path: <stable+bounces-179816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827DFB7D449
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:23:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA0BB7DD12
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EED10178E4B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 09:55:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBB1189CF78
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 10:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5DC34AAEE;
-	Wed, 17 Sep 2025 09:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76452343D92;
+	Wed, 17 Sep 2025 10:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gJ5DJzue"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E8326B2DB
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 09:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADDC309EE4
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758102916; cv=none; b=AZMSVUz6qsWbDBMZNR1p6l0ZwJZ9kXU/dyZq5kRqV2yg3NlVYXQ4OV143SR3lVfJ5PZX1Yx+5hSKFNuhvT+V7US8Qjc2wddH2GyioO5zdC3UEbc9kdiK+r1dQwPbgucupqhyNCasVG4OdueoucDJczCcMmn6EUBrKgvwsvHscsE=
+	t=1758103661; cv=none; b=u8NZn84L/ybqEI8euz6LAA/81fzwBbRQxPo0YVQOsXAwpwuX2L0xk34VK+QUJxWqnRIDhR0RrAIE/8LesvVhTh5zqUKNT8b08R3hx8SIGXMUj60LEe/G9DPJDuFfpUnlX1ZLLtIRm/LCiY2y8HxzXUR4PItYOTQFELvMz5pVn3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758102916; c=relaxed/simple;
-	bh=kMPNSqfXiTA47FxCKgCB2/oJ9gSc4/KzV97yHyY8Ha4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NqkSG0bPZXssNfxwqrCNvbzICvl1O+RodPiv7slh6vps3k9dbLt53gmphKO7WLpZ9s9Q7IZ4ErMGFWK3Mqs5wd0LwTLqb1zRL+9yqbxUgL9ySmRU3J0IKMrMXS4TZUtuLJ++2O2QKQvWtkYbQnE/7AUUUtE9p0wK6NHrOXheM/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uyosO-0002zq-En; Wed, 17 Sep 2025 11:55:00 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uyosM-001jx6-32;
-	Wed, 17 Sep 2025 11:54:58 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uyosM-00000008pAy-3bgU;
-	Wed, 17 Sep 2025 11:54:58 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	stable@vger.kernel.org,
-	kernel@pengutronix.de,
+	s=arc-20240116; t=1758103661; c=relaxed/simple;
+	bh=79XxpwCu3fVL4v7JYlGHjCi3NPeqcX6mf5J7x6f3YwU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MquOKAgBJs+y9fwA/3K9DT4yqgjjzQAh4MaToMEAAX2o6L7mkb/rdjygVC6zCZ4U0ahbk3o+Alk1wlpgo/Z5FvfsjVYphIp/spNugGAHIbIOCxSzUsbxuT4Ysl7Okm1tpEpxGAmPNPVWu1cOylXXwJfuPK2V/PFX8Nuxz4YkQZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gJ5DJzue; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7723f0924a3so7885450b3a.2
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 03:07:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758103659; x=1758708459; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PWKk+L+NgCa/CznAlFierH4EX24Xz9GhhvirFRfuiOk=;
+        b=gJ5DJzue+GpiW6zYJkTRyOIFd8VFq4TL1fJDtQVv+D8L1pTBk8J0WAbZW8PfHwuMsY
+         TMQ6ExinwYOzNjw13XKeM81GCNxSHGe1JTMz3ObPjJIg6H+qH43FjBCT7O3gdYF/HKUS
+         6qciQAWqKMKp9kEu0Gqi5N4Z6WFn91u0VlD9wBB+vRgtlzgGuc60cK1Ce97LLO0Vhdqy
+         vNJUhRe5XczyMEFj7JBNtA3ovTd1BIjGRhabZjY9O0i2h4yG7DS6V0mSSJSAwtodBrla
+         jhnoqgVc6BBduahNVctkgJkmri/5+lHO+ZWM9EUynjuZapdrfac2W0OIUYsEZ415v/HH
+         GtJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758103659; x=1758708459;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PWKk+L+NgCa/CznAlFierH4EX24Xz9GhhvirFRfuiOk=;
+        b=bORzOFAO45huSBYea/cfO1VfrOWX9WEalD5gt/patQA5lRDyY/MVRwynhyIqUziUoc
+         XIsY5YFElkfMmjsQOdm9H9zWH/DnvKQXn3E0jlO0029kdERRznbYpTKNnQbMeRYKOHp3
+         3VbBr8em35OW3bdlbQJPPARYmhK5o0bC30js4jn6q1H/H9bwqF3vvrbsY5Ule3efTns2
+         PN9jByBrn8R3mVh6GX8iWUkPcv9ehlXxk5H7K/NMgzR7BMK8gT+sGKsAyjWHGf602SQR
+         58ix1c+5LDw4QyX+nn8yXOw+RPUO2wL1Shb3MSWRIbrw8gZ5F3tE5BVzrFN5dM2uJ/YI
+         altw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVhzam3QQ4DmUuBIH1ukthyIaNS/3gX2J4vHyQyhDyeS7RPxr6OP48pEHxt61DTy8rnqY4xGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4P6QYkYgGHzU4Bq0uohsLK+sOm5NM0CgXFTG9peJGKbLE8tR2
+	Jm9aSt07iZJliO+6xUhefPGi3i0LlOPxRyrTmt1zLxqz0EP+gN+hNTCd
+X-Gm-Gg: ASbGnctiJLXMKpT1eYp1mtuohyppMwMrEfHZMEcewhWyJ7Yl8/3YYwxe6Zm1B7tNzcW
+	sQYFiRD2+szam1Op5z5GYsHTG2C75y+BsoSTYjsXtE0yGBfZIuJIFfzx331n7Ur7dADqzdON8ru
+	HhoW0/FNDesV3N9iZlPJpCve/IyqZpjHWGWAHEBusHCBsJWch0ADJZiwmWfeM2SdR+6Zfs1qquB
+	r+F2nac21FCImKJnGMXxJaboKTKJ4abAcUQv/aBGuJVNNmNxCGjvjTy1o43/ixP7T9aTUcKDt4O
+	ujIdL7OHT8K7KYv8nNRPYLZH/DSBJITcedpi4tPKF7du+O3ua9MtXpXKJN3rvEVtZ+AHNq+/IvN
+	QXZwLlvGMDpIU9DkM3MkqQZ3U1ussAE7y7RdHxySJRaR3FA==
+X-Google-Smtp-Source: AGHT+IF9K3dVlb8ccRBiSP5pGnBRvctukZ7RbjT4DoZUseVEPPY5yGUGZzfk2a28zPdCsJkcLZP4uQ==
+X-Received: by 2002:a05:6a20:431c:b0:250:9175:96e8 with SMTP id adf61e73a8af0-27ab36d0dc4mr2205624637.45.1758103659082;
+        Wed, 17 Sep 2025 03:07:39 -0700 (PDT)
+Received: from localhost.localdomain ([115.42.62.9])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54a398d26asm16652750a12.45.2025.09.17.03.07.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Sep 2025 03:07:38 -0700 (PDT)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: zyjzyj2000@gmail.com,
+	jgg@ziepe.ca,
+	leon@kernel.org
+Cc: linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	linux-usb@vger.kernel.org
-Subject: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid PM/MDIO + RTNL deadlock
-Date: Wed, 17 Sep 2025 11:54:57 +0200
-Message-ID: <20250917095457.2103318-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	baijiaju1990@gmail.com,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] RDMA/rxe: Fix race in do_task() when draining
+Date: Wed, 17 Sep 2025 10:06:57 +0000
+Message-Id: <20250917100657.1535424-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Forbid USB runtime PM (autosuspend) for AX88772* in bind.
+When do_task() exhausts its RXE_MAX_ITERATIONS budget, it unconditionally
+sets the task state to TASK_STATE_IDLE to reschedule. This overwrites
+the TASK_STATE_DRAINING state that may have been concurrently set by
+rxe_cleanup_task() or rxe_disable_task().
 
-usbnet enables runtime PM by default in probe, so disabling it via the
-usb_driver flag is ineffective. For AX88772B, autosuspend shows no
-measurable power saving in my tests (no link partner, admin up/down).
-The ~0.453 W -> ~0.248 W reduction on 6.1 comes from phylib powering
-the PHY off on admin-down, not from USB autosuspend.
+This race condition breaks the cleanup and disable logic, which expects
+the task to stop processing new work. The cleanup code may proceed while
+do_task() reschedules itself, leading to a potential use-after-free.
 
-With autosuspend active, resume paths may require calling phylink/phylib
-(caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
-resume can deadlock (RTNL may already be held), and MDIO can attempt a
-runtime-wake while the USB PM lock is held. Given the lack of benefit
-and poor test coverage (autosuspend is usually disabled by default in
-distros), forbid runtime PM here to avoid these hazards.
+This bug was introduced during the migration from tasklets to workqueues,
+where the special handling for the draining case was lost.
 
-This affects only AX88772* devices (per-interface in bind). System
-sleep/resume is unchanged.
+Fix this by restoring the original behavior. If the state is
+TASK_STATE_DRAINING when iterations are exhausted, continue the loop by
+setting cont to 1. This allows new iterations to finish the remaining
+work and reach the switch statement, which properly transitions the
+state to TASK_STATE_DRAINED and stops the task as intended.
 
-Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
-Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Closes: https://lore.kernel.org/all/20220622141638.GE930160@montezuma.acc.umu.se
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com
+Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
 ---
-Link to the measurement results:
-https://lore.kernel.org/all/aMkPMa650kfKfmF4@pengutronix.de/
----
- drivers/net/usb/asix_devices.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 792ddda1ad49..0d341d7e6154 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -625,6 +625,22 @@ static void ax88772_suspend(struct usbnet *dev)
- 		   asix_read_medium_status(dev, 1));
- }
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 6f8f353e9583..f522820b950c 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
+ 		 * yield the cpu and reschedule the task
+ 		 */
+ 		if (!ret) {
+-			task->state = TASK_STATE_IDLE;
+-			resched = 1;
++			if (task->state != TASK_STATE_DRAINING) {
++				task->state = TASK_STATE_IDLE;
++				resched = 1;
++			} else {
++				cont = 1;
++			}
+ 			goto exit;
+ 		}
  
-+/*
-+ * Notes on PM callbacks and locking context:
-+ *
-+ * - asix_suspend()/asix_resume() are invoked for both runtime PM and
-+ *   system-wide suspend/resume. For struct usb_driver the ->resume()
-+ *   callback does not receive pm_message_t, so the resume type cannot
-+ *   be distinguished here.
-+ *
-+ * - The MAC driver must hold RTNL when calling phylink interfaces such as
-+ *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
-+ *
-+ * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
-+ *   the USB PM lock is held) is fragile. Since autosuspend brings no
-+ *   measurable power saving for this device with current driver version, it is
-+ *   disabled below.
-+ */
- static int asix_suspend(struct usb_interface *intf, pm_message_t message)
- {
- 	struct usbnet *dev = usb_get_intfdata(intf);
-@@ -919,6 +935,16 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
- 	if (ret)
- 		goto initphy_err;
- 
-+	/* Disable USB runtime PM (autosuspend) for this interface.
-+	 * Rationale:
-+	 * - No measurable power saving from autosuspend for this device.
-+	 * - phylink/phylib calls require caller-held RTNL and do MDIO I/O,
-+	 *   which is unsafe from USB PM resume paths (possible RTNL already
-+	 *   held, USB PM lock held).
-+	 * System suspend/resume is unaffected.
-+	 */
-+	pm_runtime_forbid(&intf->dev);
-+
- 	return 0;
- 
- initphy_err:
-@@ -948,6 +974,10 @@ static void ax88772_unbind(struct usbnet *dev, struct usb_interface *intf)
- 	phylink_destroy(priv->phylink);
- 	ax88772_mdio_unregister(priv);
- 	asix_rx_fixup_common_free(dev->driver_priv);
-+	/* Re-allow runtime PM on disconnect for tidiness. The interface
-+	 * goes away anyway, but this balances forbid for debug sanity.
-+	 */
-+	pm_runtime_allow(&intf->dev);
- }
- 
- static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
-@@ -1600,6 +1630,10 @@ static struct usb_driver asix_driver = {
- 	.resume =	asix_resume,
- 	.reset_resume =	asix_resume,
- 	.disconnect =	usbnet_disconnect,
-+	/* usbnet will force supports_autosuspend=1; we explicitly forbid RPM
-+	 * per-interface in bind to keep autosuspend disabled for this driver
-+	 * by using pm_runtime_forbid().
-+	 */
- 	.supports_autosuspend = 1,
- 	.disable_hub_initiated_lpm = 1,
- };
 -- 
-2.47.3
+2.25.1
 
 
