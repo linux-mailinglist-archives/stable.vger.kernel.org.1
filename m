@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470D5B7E612
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FBBB7F226
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01F66466B7B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E34E4A4791
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E258E2F7ABF;
-	Wed, 17 Sep 2025 12:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC573328978;
+	Wed, 17 Sep 2025 13:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTQS6e+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/e3GyA6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB3E31A807;
-	Wed, 17 Sep 2025 12:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A45518FDBD;
+	Wed, 17 Sep 2025 13:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113114; cv=none; b=jcHzTqIwhrKTdTWzmmJ72CTOXCeCF9il30tla220pvW4DIQKCajbQO+EwLs7Vj1cpy6apiT1SMHBkVH68u3tagcQWE9fUVilMaNlLIZAOncKsFiysIkfq13pzu3ITsquLGIR+mVlYvGKyh6PUE0CM6+lZqJIKclryGyPlfzXdgk=
+	t=1758114215; cv=none; b=jhRyR0JzpZCPyjGp8MDQWZfD9iCe2KtwmOBmKBw/t+CL9wGbrYutrV9VlmcnllhoqTnLzJGq70ZI8P4R2LD7i7Vyauz1S2OGQKj64IsuoeJRTHEO4l/YArmIxYIrkoeQfW5J3F/yE3A6ReUkjABRBawTcUikxkXek/FsXg+Tuc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113114; c=relaxed/simple;
-	bh=8iG1EWRjpwLC4EV3nWdGxBVMNN/g4ZbZauqtBrN/tbs=;
+	s=arc-20240116; t=1758114215; c=relaxed/simple;
+	bh=JlntoDesyhZq9cnCAEmgSlprw7eg4psbv6LP4I/3zl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAs9FPWdOmpALNZ0XSWGLIZTqxGry8q6Y2lbznzOq97GAKCLEpvdowZFFqqKWcM1doehO+f8I7PHvjdfnIZ37sN1l3UocmlfAc5qyGJjKAIyuq2G9+B44/DcPleV6vz/jcU+5ygqMI2mHrLd+DRlXGe/oB2IifSxYODuVIwQDyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTQS6e+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1BEC4CEF0;
-	Wed, 17 Sep 2025 12:45:13 +0000 (UTC)
+	 MIME-Version; b=R6odvLtPhy+X/EYTeVnIjgGUxIsPTj2EtuAac/wrOrGyGm3NxMxMur38NK4YyU6otH3NT3zVuYft5FYVQcrm5/cuKni0a6iKwLe0xQrWJCadO6P3WCFhQkwbv8zwc+RIW0BSWa2SjcFGSkYwaE/DgtUH9eSj6AXfItn4/KV1lJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/e3GyA6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D3BC4CEF5;
+	Wed, 17 Sep 2025 13:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113114;
-	bh=8iG1EWRjpwLC4EV3nWdGxBVMNN/g4ZbZauqtBrN/tbs=;
+	s=korg; t=1758114215;
+	bh=JlntoDesyhZq9cnCAEmgSlprw7eg4psbv6LP4I/3zl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTQS6e+Rcv4s2fdkQDtObhpFmpopQ0rkHk187w7EvF6f4u/qad1XxCcywukS6QJmE
-	 VXJh8vq9eyK1LnpbmLgoR2716nATMD9Ilq5lAa2AobnLbkD1PZKB2osB07Thq1DPsZ
-	 661zC/dEwu/egDUsSVt6dw2C9tOrgm606nJoc45U=
+	b=r/e3GyA6sIxk8TyKmGJ68aTyl7k6QjuCOweWIoG5/1ohfhHdlzWXF733kwYhrBBL0
+	 u0SvtD9/ZRp4zdG0WrGlzFUU3OQy56yvSC2v9Ni1qNmnEghv6A4RmNQzBOA5sKoC7P
+	 FT4hHF8OGWAThidIb7MkTa8mz4xQ8AVRHeTASXCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Friendy Su <friendy.su@sony.com>,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 176/189] erofs: fix runtime warning on truncate_folio_batch_exceptionals()
-Date: Wed, 17 Sep 2025 14:34:46 +0200
-Message-ID: <20250917123356.184101517@linuxfoundation.org>
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 26/78] mptcp: sockopt: make sync_socket_options propagate SOCK_KEEPOPEN
+Date: Wed, 17 Sep 2025 14:34:47 +0200
+Message-ID: <20250917123330.202164820@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-[ Upstream commit 181993bb0d626cf88cc803f4356ce5c5abe86278 ]
+commit 648de37416b301f046f62f1b65715c7fa8ebaa67 upstream.
 
-Commit 0e2f80afcfa6("fs/dax: ensure all pages are idle prior to
-filesystem unmount") introduced the WARN_ON_ONCE to capture whether
-the filesystem has removed all DAX entries or not and applied the
-fix to xfs and ext4.
+Users reported a scenario where MPTCP connections that were configured
+with SO_KEEPALIVE prior to connect would fail to enable their keepalives
+if MTPCP fell back to TCP mode.
 
-Apply the missed fix on erofs to fix the runtime warning:
+After investigating, this affects keepalives for any connection where
+sync_socket_options is called on a socket that is in the closed or
+listening state.  Joins are handled properly. For connects,
+sync_socket_options is called when the socket is still in the closed
+state.  The tcp_set_keepalive() function does not act on sockets that
+are closed or listening, hence keepalive is not immediately enabled.
+Since the SO_KEEPOPEN flag is absent, it is not enabled later in the
+connect sequence via tcp_finish_connect.  Setting the keepalive via
+sockopt after connect does work, but would not address any subsequently
+created flows.
 
-[  5.266254] ------------[ cut here ]------------
-[  5.266274] WARNING: CPU: 6 PID: 3109 at mm/truncate.c:89 truncate_folio_batch_exceptionals+0xff/0x260
-[  5.266294] Modules linked in:
-[  5.266999] CPU: 6 UID: 0 PID: 3109 Comm: umount Tainted: G S                  6.16.0+ #6 PREEMPT(voluntary)
-[  5.267012] Tainted: [S]=CPU_OUT_OF_SPEC
-[  5.267017] Hardware name: Dell Inc. OptiPlex 5000/05WXFV, BIOS 1.5.1 08/24/2022
-[  5.267024] RIP: 0010:truncate_folio_batch_exceptionals+0xff/0x260
-[  5.267076] Code: 00 00 41 39 df 7f 11 eb 78 83 c3 01 49 83 c4 08 41 39 df 74 6c 48 63 f3 48 83 fe 1f 0f 83 3c 01 00 00 43 f6 44 26 08 01 74 df <0f> 0b 4a 8b 34 22 4c 89 ef 48 89 55 90 e8 ff 54 1f 00 48 8b 55 90
-[  5.267083] RSP: 0018:ffffc900013f36c8 EFLAGS: 00010202
-[  5.267095] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[  5.267101] RDX: ffffc900013f3790 RSI: 0000000000000000 RDI: ffff8882a1407898
-[  5.267108] RBP: ffffc900013f3740 R08: 0000000000000000 R09: 0000000000000000
-[  5.267113] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-[  5.267119] R13: ffff8882a1407ab8 R14: ffffc900013f3888 R15: 0000000000000001
-[  5.267125] FS:  00007aaa8b437800(0000) GS:ffff88850025b000(0000) knlGS:0000000000000000
-[  5.267132] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  5.267138] CR2: 00007aaa8b3aac10 CR3: 000000024f764000 CR4: 0000000000f52ef0
-[  5.267144] PKRU: 55555554
-[  5.267150] Call Trace:
-[  5.267154]  <TASK>
-[  5.267181]  truncate_inode_pages_range+0x118/0x5e0
-[  5.267193]  ? save_trace+0x54/0x390
-[  5.267296]  truncate_inode_pages_final+0x43/0x60
-[  5.267309]  evict+0x2a4/0x2c0
-[  5.267339]  dispose_list+0x39/0x80
-[  5.267352]  evict_inodes+0x150/0x1b0
-[  5.267376]  generic_shutdown_super+0x41/0x180
-[  5.267390]  kill_block_super+0x1b/0x50
-[  5.267402]  erofs_kill_sb+0x81/0x90 [erofs]
-[  5.267436]  deactivate_locked_super+0x32/0xb0
-[  5.267450]  deactivate_super+0x46/0x60
-[  5.267460]  cleanup_mnt+0xc3/0x170
-[  5.267475]  __cleanup_mnt+0x12/0x20
-[  5.267485]  task_work_run+0x5d/0xb0
-[  5.267499]  exit_to_user_mode_loop+0x144/0x170
-[  5.267512]  do_syscall_64+0x2b9/0x7c0
-[  5.267523]  ? __lock_acquire+0x665/0x2ce0
-[  5.267535]  ? __lock_acquire+0x665/0x2ce0
-[  5.267560]  ? lock_acquire+0xcd/0x300
-[  5.267573]  ? find_held_lock+0x31/0x90
-[  5.267582]  ? mntput_no_expire+0x97/0x4e0
-[  5.267606]  ? mntput_no_expire+0xa1/0x4e0
-[  5.267625]  ? mntput+0x24/0x50
-[  5.267634]  ? path_put+0x1e/0x30
-[  5.267647]  ? do_faccessat+0x120/0x2f0
-[  5.267677]  ? do_syscall_64+0x1a2/0x7c0
-[  5.267686]  ? from_kgid_munged+0x17/0x30
-[  5.267703]  ? from_kuid_munged+0x13/0x30
-[  5.267711]  ? __do_sys_getuid+0x3d/0x50
-[  5.267724]  ? do_syscall_64+0x1a2/0x7c0
-[  5.267732]  ? irqentry_exit+0x77/0xb0
-[  5.267743]  ? clear_bhb_loop+0x30/0x80
-[  5.267752]  ? clear_bhb_loop+0x30/0x80
-[  5.267765]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  5.267772] RIP: 0033:0x7aaa8b32a9fb
-[  5.267781] Code: c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 f3 0f 1e fa 31 f6 e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 05 c3 0f 1f 40 00 48 8b 15 e9 83 0d 00 f7 d8
-[  5.267787] RSP: 002b:00007ffd7c4c9468 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-[  5.267796] RAX: 0000000000000000 RBX: 00005a61592a8b00 RCX: 00007aaa8b32a9fb
-[  5.267802] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00005a61592b2080
-[  5.267806] RBP: 00007ffd7c4c9540 R08: 00007aaa8b403b20 R09: 0000000000000020
-[  5.267812] R10: 0000000000000001 R11: 0000000000000246 R12: 00005a61592a8c00
-[  5.267817] R13: 0000000000000000 R14: 00005a61592b2080 R15: 00005a61592a8f10
-[  5.267849]  </TASK>
-[  5.267854] irq event stamp: 4721
-[  5.267859] hardirqs last  enabled at (4727): [<ffffffff814abf50>] __up_console_sem+0x90/0xa0
-[  5.267873] hardirqs last disabled at (4732): [<ffffffff814abf35>] __up_console_sem+0x75/0xa0
-[  5.267884] softirqs last  enabled at (3044): [<ffffffff8132adb3>] kernel_fpu_end+0x53/0x70
-[  5.267895] softirqs last disabled at (3042): [<ffffffff8132b5f4>] kernel_fpu_begin_mask+0xc4/0x120
-[  5.267905] ---[ end trace 0000000000000000 ]---
+Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on the
+subflow when calling sync_socket_options.
 
-Fixes: bde708f1a65d ("fs/dax: always remove DAX page-cache entries when breaking layouts")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Friendy Su <friendy.su@sony.com>
-Reviewed-by: Daniel Palmer <daniel.palmer@sony.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix was valdidated both by using tcpdump to observe keepalive
+packets not being sent before the fix, and being sent after the fix.  It
+was also possible to observe via ss that the keepalive timer was not
+enabled on these sockets before the fix, but was enabled afterwards.
+
+Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/aL8dYfPZrwedCIh9@templeofstupid.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/super.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/mptcp/sockopt.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index 7cc74ef4be031..06c8981eea7f8 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -999,10 +999,22 @@ static int erofs_show_options(struct seq_file *seq, struct dentry *root)
- 	return 0;
- }
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1347,13 +1347,12 @@ static void sync_socket_options(struct m
+ {
+ 	static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
+ 	struct sock *sk = (struct sock *)msk;
++	bool keep_open;
  
-+static void erofs_evict_inode(struct inode *inode)
-+{
-+#ifdef CONFIG_FS_DAX
-+	if (IS_DAX(inode))
-+		dax_break_layout_final(inode);
-+#endif
-+
-+	truncate_inode_pages_final(&inode->i_data);
-+	clear_inode(inode);
-+}
-+
- const struct super_operations erofs_sops = {
- 	.put_super = erofs_put_super,
- 	.alloc_inode = erofs_alloc_inode,
- 	.free_inode = erofs_free_inode,
-+	.evict_inode = erofs_evict_inode,
- 	.statfs = erofs_statfs,
- 	.show_options = erofs_show_options,
- };
--- 
-2.51.0
-
+-	if (ssk->sk_prot->keepalive) {
+-		if (sock_flag(sk, SOCK_KEEPOPEN))
+-			ssk->sk_prot->keepalive(ssk, 1);
+-		else
+-			ssk->sk_prot->keepalive(ssk, 0);
+-	}
++	keep_open = sock_flag(sk, SOCK_KEEPOPEN);
++	if (ssk->sk_prot->keepalive)
++		ssk->sk_prot->keepalive(ssk, keep_open);
++	sock_valbool_flag(ssk, SOCK_KEEPOPEN, keep_open);
+ 
+ 	ssk->sk_priority = sk->sk_priority;
+ 	ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
 
 
 
