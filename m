@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-180145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603E2B7EB29
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:58:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE232B7E636
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 542492A3EB5
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30F43AB2F2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B339E2EC0B6;
-	Wed, 17 Sep 2025 12:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958E531A812;
+	Wed, 17 Sep 2025 12:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZ6GpAiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yo5eeOo1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F16C29B76F;
-	Wed, 17 Sep 2025 12:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532DA31A80D;
+	Wed, 17 Sep 2025 12:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113526; cv=none; b=lrt2XKM+Gt6HGzOs4V7PSLe2V6y6BiKx046zb4U8wp0Gq64Ez6IE6j6dUgmCY+JJQeMSySgMHoNAGKH/LR6c5xTwwZf3Vl2cuIDuZ4bnKcLWmQzMoT+cDxp+2LaWTvkL4u7CXz1MBU9L8WaEMmBkMSIhYNaOG5scIB02AlzT2YE=
+	t=1758113111; cv=none; b=THFni5yHzO6hlYeGLeGGPT/lT6SWINAhz/uIzlbe9WmwefuGoD6L0vRcl+rCdr753aAtwu/z2iDM58QjKiYeA9uh0EMzKowbJA8f7ZI2uDQhanyacgpRsFUbCPgmoYFa9J10fOFW58ac4GSY94gk0kflb84MqKpfu628glHymZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113526; c=relaxed/simple;
-	bh=cHjxHAUb6+Ox/S7z5InjfelfgwOTydLNWYtrYz53oVA=;
+	s=arc-20240116; t=1758113111; c=relaxed/simple;
+	bh=oAbErMeYVWrXq1Wrp5xd1I4Wd28sfZTHxlwog0mKBCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuyBdV4YNXoW1sg5Ww7z8Vkrj4SmejdqpiM6u7zm2wWTyCQuaY9k9wfalq+MojR+VzPIYrJMqaIM04gHSQooPV9O4+fB4G1twD26uYnj6qzWOYS53dyDgyWrUJDmld9epDgD7AD8M60MKruyxj9RRl3zoWRVQ6HgiwWDPeAeMs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZ6GpAiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE3BC4CEF0;
-	Wed, 17 Sep 2025 12:52:05 +0000 (UTC)
+	 MIME-Version; b=KvAGN4pZHdQOR3gzM8vbdK2UCecBizQM6QDu4yDtS318TGFzzDfMqAeD1wxYr+fZoxbdsvbxl9sNDV1562INIeH2ClEXqnTU2TXzRi1hNvTdf7GUfftRiCnmOwUdxH1g8RKku+BACQ7K4XD00N7XhCHYVu67cs/KBt785S7jsTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yo5eeOo1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F2C4CEF0;
+	Wed, 17 Sep 2025 12:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113526;
-	bh=cHjxHAUb6+Ox/S7z5InjfelfgwOTydLNWYtrYz53oVA=;
+	s=korg; t=1758113111;
+	bh=oAbErMeYVWrXq1Wrp5xd1I4Wd28sfZTHxlwog0mKBCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZ6GpAiI+2CztjYWpfD4Fx7PzMs9pOc7+9ZY2nW4JvRYmsIj3HwlLcF2ESpiZZdTF
-	 hV6p5njYTFvMiE2+tEGiFUyRaz+rp0UJ36HJnnxg36QUYj3wtdjGMwGS/Sr3Nw/Nb9
-	 rZI75xpbqaPpy82QW9ToCdisQj0y5wtHeI5s4tvg=
+	b=yo5eeOo18svzYcBcdDyT2yfSY/QZwpV9FFuGwfpNkti51GeLyH6Stgu7kzUVNy0qE
+	 vlvgc7Q1pnC9sFSQyfeXI0y+i9iHsoFmaCoOckU6M18vdVMXCWOC2JPCq83GCSfXpa
+	 5nPJAnSR1wUrlNGyDydtW1gPlM56yBlo8AZ2B1SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Hanreich <s.hanreich@proxmox.com>,
-	Florian Westphal <fw@strlen.de>,
+	Andreas Kemnade <akemnade@kernel.org>,
+	Alistair Francis <alistair@alistair23.me>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/140] netfilter: nft_set_rbtree: continue traversal if element is inactive
-Date: Wed, 17 Sep 2025 14:34:44 +0200
-Message-ID: <20250917123347.044833495@linuxfoundation.org>
+Subject: [PATCH 6.16 175/189] regulator: sy7636a: fix lifecycle of power good gpio
+Date: Wed, 17 Sep 2025 14:34:45 +0200
+Message-ID: <20250917123356.158713352@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Andreas Kemnade <akemnade@kernel.org>
 
-[ Upstream commit a60f7bf4a1524d8896b76ba89623080aebf44272 ]
+[ Upstream commit c05d0b32eebadc8be6e53196e99c64cf2bed1d99 ]
 
-When the rbtree lookup function finds a match in the rbtree, it sets the
-range start interval to a potentially inactive element.
+Attach the power good gpio to the regulator device devres instead of the
+parent device to fix problems if probe is run multiple times
+(rmmod/insmod or some deferral).
 
-Then, after tree lookup, if the matching element is inactive, it returns
-NULL and suppresses a matching result.
-
-This is wrong and leads to false negative matches when a transaction has
-already entered the commit phase.
-
-cpu0					cpu1
-  has added new elements to clone
-  has marked elements as being
-  inactive in new generation
-					perform lookup in the set
-  enters commit phase:
-I) increments the genbit
-					A) observes new genbit
-					B) finds matching range
-					C) returns no match: found
-					range invalid in new generation
-II) removes old elements from the tree
-					C New nft_lookup happening now
-				       	  will find matching element,
-					  because it is no longer
-					  obscured by old, inactive one.
-
-Consider a packet matching range r1-r2:
-
-cpu0 processes following transaction:
-1. remove r1-r2
-2. add r1-r3
-
-P is contained in both ranges. Therefore, cpu1 should always find a match
-for P.  Due to above race, this is not the case:
-
-cpu1 does find r1-r2, but then ignores it due to the genbit indicating
-the range has been removed.  It does NOT test for further matches.
-
-The situation persists for all lookups until after cpu0 hits II) after
-which r1-r3 range start node is tested for the first time.
-
-Move the "interval start is valid" check ahead so that tree traversal
-continues if the starting interval is not valid in this generation.
-
-Thanks to Stefan Hanreich for providing an initial reproducer for this
-bug.
-
-Reported-by: Stefan Hanreich <s.hanreich@proxmox.com>
-Fixes: c1eda3c6394f ("netfilter: nft_rbtree: ignore inactive matching element with no descendants")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 8c485bedfb785 ("regulator: sy7636a: Initial commit")
+Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+Reviewed-by: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Message-ID: <20250906-sy7636-rsrc-v1-2-e2886a9763a7@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/regulator/sy7636a-regulator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 938a257c069e2..b1f04168ec937 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -77,7 +77,9 @@ __nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
- 			    nft_rbtree_interval_end(rbe) &&
- 			    nft_rbtree_interval_start(interval))
- 				continue;
--			interval = rbe;
-+			if (nft_set_elem_active(&rbe->ext, genmask) &&
-+			    !nft_rbtree_elem_expired(rbe))
-+				interval = rbe;
- 		} else if (d > 0)
- 			parent = rcu_dereference_raw(parent->rb_right);
- 		else {
-@@ -102,8 +104,6 @@ __nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
+diff --git a/drivers/regulator/sy7636a-regulator.c b/drivers/regulator/sy7636a-regulator.c
+index d1e7ba1fb3e1a..27e3d939b7bb9 100644
+--- a/drivers/regulator/sy7636a-regulator.c
++++ b/drivers/regulator/sy7636a-regulator.c
+@@ -83,9 +83,11 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
+ 	if (!regmap)
+ 		return -EPROBE_DEFER;
+ 
+-	gdp = devm_gpiod_get(pdev->dev.parent, "epd-pwr-good", GPIOD_IN);
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
++	gdp = devm_gpiod_get(&pdev->dev, "epd-pwr-good", GPIOD_IN);
+ 	if (IS_ERR(gdp)) {
+-		dev_err(pdev->dev.parent, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
++		dev_err(&pdev->dev, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
+ 		return PTR_ERR(gdp);
  	}
  
- 	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
--	    nft_set_elem_active(&interval->ext, genmask) &&
--	    !nft_rbtree_elem_expired(interval) &&
- 	    nft_rbtree_interval_start(interval))
- 		return &interval->ext;
+@@ -105,7 +107,6 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
+ 	}
  
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.regmap = regmap;
+ 
+ 	rdev = devm_regulator_register(&pdev->dev, &desc, &config);
 -- 
 2.51.0
 
