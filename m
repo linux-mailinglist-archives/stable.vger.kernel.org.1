@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40F6B7E8FD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084F8B7E2A2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D638623088
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9E501B221ED
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31BF3233F4;
-	Wed, 17 Sep 2025 12:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529272638B2;
+	Wed, 17 Sep 2025 12:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfE+dEiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEYj212c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8A032340B;
-	Wed, 17 Sep 2025 12:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E760337EB4;
+	Wed, 17 Sep 2025 12:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113321; cv=none; b=XuiJtW0UP6w1DxSVcX2px/1LfFS7N3DMDXFXO6xPnTBqou+tJrZDUb2AY9a0PR+RELTC1hRy5t11mRLjKyDvnTRfdZGF2hJSOjK6Cj7fS9KuIq0BZqamg5igp6l7JmKsCXZHFVnD6NUQgQBHlZxJ6jFTv2fzCdjHSS6y27B095c=
+	t=1758112908; cv=none; b=uU582jdFPY/P9FpGSPqmQiH5TnT2xwBs+K9ZmsIdZ6RRVJMd4JtF1/ImU3IixjsSTZj1VwAJ+ZSygk1aQLKbeYTYzIOU1mj2bbw1DWxN5m6z2sxlYZGmiwlySvvzte70O148at3a5cHCsCv/V8RHeX9Ub5eAdZBT+yub8RfjFX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113321; c=relaxed/simple;
-	bh=gym7gca1rCKUk2qjKw3/C+7EvcYJk6j+nHjnzHVH6gM=;
+	s=arc-20240116; t=1758112908; c=relaxed/simple;
+	bh=z9jxRQHP0VxLiRMHYHhJ4fOSdNPE0ydf74rxxiNnYx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqBvICDA3iRG7wcsxDzqr5GWsEcI4taJ+EIIoqFJUliWt3ky5+EymrqQ7oApnYMztXe7k1lKbb5wy0Sglxxe2KuMuv5Q3kdZNQtxWGc+Mc/K9U5Ds/MY4tNVH04P1GJv3KJRvn5z8SQmU+PZkLeakuaI6DDTqXHhXaBv0hf/49c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfE+dEiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E56C4CEF0;
-	Wed, 17 Sep 2025 12:48:40 +0000 (UTC)
+	 MIME-Version; b=u3a4n0fvay0cyEcjp5t+woO3KMLRIh16e7YnnlGSsq788Nh02tg0x4jv5gogpowEtecZS//Rp2ucvIJ8sxD0UIq5GEzd/JVLOiKI/aeOlxW+NWHEIfTyJKMdXN/az9XlE84Xdjnp557Tse/jHxviOxvVrDUGsAq6x10fL+dEqPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEYj212c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812AFC4CEF0;
+	Wed, 17 Sep 2025 12:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113321;
-	bh=gym7gca1rCKUk2qjKw3/C+7EvcYJk6j+nHjnzHVH6gM=;
+	s=korg; t=1758112907;
+	bh=z9jxRQHP0VxLiRMHYHhJ4fOSdNPE0ydf74rxxiNnYx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfE+dEiD/ynbf7iQLQ0Tzp3BxBqUIzHB+0Alfh+tKd93oF8xYmaSYs9FKXmEbG/H/
-	 eU+U1AOb9b1GZ+ESuobk9re3gu3zzDH0QUgE57yxcE9PQANp7HAqeT+tlaAWELRD+g
-	 tww5/x/ZOsXe9lFoYkotv6g0KQgAQBPQP6d6Bvs4=
+	b=mEYj212cvaQkYFAuAnCjIGFOclY6xUpQljxmJJijSmYa3FHA61OL2gk5KAbUfsc/b
+	 FfaUb2KDRu1Er6SMKCPpCdZ+zmZg+WTnLMjRpMeWnGn4gy5db8u8qlA+d4ElekiOZ7
+	 /3ppFyqSvMrpgtNbVNWAPg6uSIqtrSvkrVQFuL98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 050/140] mptcp: sockopt: make sync_socket_options propagate SOCK_KEEPOPEN
-Date: Wed, 17 Sep 2025 14:33:42 +0200
-Message-ID: <20250917123345.530142069@linuxfoundation.org>
+	Frederic Weisbecker <frederic@kernel.org>,
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.16 113/189] hrtimers: Unconditionally update target CPU base after offline timer migration
+Date: Wed, 17 Sep 2025 14:33:43 +0200
+Message-ID: <20250917123354.628268748@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-commit 648de37416b301f046f62f1b65715c7fa8ebaa67 upstream.
+commit e895f8e29119c8c966ea794af9e9100b10becb88 upstream.
 
-Users reported a scenario where MPTCP connections that were configured
-with SO_KEEPALIVE prior to connect would fail to enable their keepalives
-if MTPCP fell back to TCP mode.
+When testing softirq based hrtimers on an ARM32 board, with high resolution
+mode and NOHZ inactive, softirq based hrtimers fail to expire after being
+moved away from an offline CPU:
 
-After investigating, this affects keepalives for any connection where
-sync_socket_options is called on a socket that is in the closed or
-listening state.  Joins are handled properly. For connects,
-sync_socket_options is called when the socket is still in the closed
-state.  The tcp_set_keepalive() function does not act on sockets that
-are closed or listening, hence keepalive is not immediately enabled.
-Since the SO_KEEPOPEN flag is absent, it is not enabled later in the
-connect sequence via tcp_finish_connect.  Setting the keepalive via
-sockopt after connect does work, but would not address any subsequently
-created flows.
+CPU0				CPU1
+				hrtimer_start(..., HRTIMER_MODE_SOFT);
+cpu_down(CPU1)			...
+				hrtimers_cpu_dying()
+				  // Migrate timers to CPU0
+				  smp_call_function_single(CPU0, returgger_next_event);
+  retrigger_next_event()
+    if (!highres && !nohz)
+        return;
 
-Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on the
-subflow when calling sync_socket_options.
+As retrigger_next_event() is a NOOP when both high resolution timers and
+NOHZ are inactive CPU0's hrtimer_cpu_base::softirq_expires_next is not
+updated and the migrated softirq timers never expire unless there is a
+softirq based hrtimer queued on CPU0 later.
 
-The fix was valdidated both by using tcpdump to observe keepalive
-packets not being sent before the fix, and being sent after the fix.  It
-was also possible to observe via ss that the keepalive timer was not
-enabled on these sockets before the fix, but was enabled afterwards.
+Fix this by removing the hrtimer_hres_active() and tick_nohz_active() check
+in retrigger_next_event(), which enforces a full update of the CPU base.
+As this is not a fast path the extra cost does not matter.
 
-Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/aL8dYfPZrwedCIh9@templeofstupid.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ tglx: Massaged change log ]
+
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Co-developed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250805081025.54235-1-wangxiongfeng2@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ kernel/time/hrtimer.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1508,13 +1508,12 @@ static void sync_socket_options(struct m
- {
- 	static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
- 	struct sock *sk = (struct sock *)msk;
-+	bool keep_open;
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -787,10 +787,10 @@ static void retrigger_next_event(void *a
+ 	 * of the next expiring timer is enough. The return from the SMP
+ 	 * function call will take care of the reprogramming in case the
+ 	 * CPU was in a NOHZ idle sleep.
++	 *
++	 * In periodic low resolution mode, the next softirq expiration
++	 * must also be updated.
+ 	 */
+-	if (!hrtimer_hres_active(base) && !tick_nohz_active)
+-		return;
+-
+ 	raw_spin_lock(&base->lock);
+ 	hrtimer_update_base(base);
+ 	if (hrtimer_hres_active(base))
+@@ -2295,11 +2295,6 @@ int hrtimers_cpu_dying(unsigned int dyin
+ 				     &new_base->clock_base[i]);
+ 	}
  
--	if (ssk->sk_prot->keepalive) {
--		if (sock_flag(sk, SOCK_KEEPOPEN))
--			ssk->sk_prot->keepalive(ssk, 1);
--		else
--			ssk->sk_prot->keepalive(ssk, 0);
--	}
-+	keep_open = sock_flag(sk, SOCK_KEEPOPEN);
-+	if (ssk->sk_prot->keepalive)
-+		ssk->sk_prot->keepalive(ssk, keep_open);
-+	sock_valbool_flag(ssk, SOCK_KEEPOPEN, keep_open);
+-	/*
+-	 * The migration might have changed the first expiring softirq
+-	 * timer on this CPU. Update it.
+-	 */
+-	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
+ 	/* Tell the other CPU to retrigger the next event */
+ 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
  
- 	ssk->sk_priority = sk->sk_priority;
- 	ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
 
 
 
