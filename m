@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-180296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D66CB7F0C0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C20B7EF1D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C7DA623234
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D17B5623A24
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA86433AE88;
-	Wed, 17 Sep 2025 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE110332A3A;
+	Wed, 17 Sep 2025 12:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nykwoJK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOTQFZkI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73A0333ABF;
-	Wed, 17 Sep 2025 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD15332A41;
+	Wed, 17 Sep 2025 12:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114007; cv=none; b=KAnOU4mFRUusHKI2eg06axfH3fsjWKfA1qzSx5OmhHXl244a7mWPCS2bOf2CvgiOb6Jjg7EnQuvFaZO/u57V7F0bhWDJXp6B7yzNnCGpnMCGXWkG8I+803sK5kyvdSQSnm6r5wM0Lvq/JFZ61oQM1Y7xx6Wpm3j4r76ldhk4mYk=
+	t=1758113808; cv=none; b=f/AdlvhlO1u0jVanKBgJIcGvIBJbSdlm5fO3JTaEt98G1+xFwDSjIMv0InY10S+eJychnudBC/H0Koa7vw7ZuaVXX3VuxBuVNNsdUJZPKbBbmteWoHKRCVVTqkDHojg98QzgEN/494GSkJJJLNigJoBnmbHsyyHSk6dXBvcH5B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114007; c=relaxed/simple;
-	bh=aKeNmVSeKw2xod3X8OCEFlbMiGelejJD+aq/6JZqT5Q=;
+	s=arc-20240116; t=1758113808; c=relaxed/simple;
+	bh=mbEsAKDiV8RtcQylCZeJ17O74Eet0PPIg4QqHJuJ/jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3AJ/hSStmfAAaixzNk3azvWdYcuSsmuPJHPz96tv9bqgKSpsf1jdz/+NAaW4fzUGPcOB/NcjNxdnzdpQOo/3EhsS98Ltd8oa+s3m8S5RdsXBapHC4dJSSlPcynu+DtRjmXrTtRfA/pbtvnNG5j2jfV2CXMgf0e//OZilHeN0N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nykwoJK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20814C4CEF0;
-	Wed, 17 Sep 2025 13:00:06 +0000 (UTC)
+	 MIME-Version; b=G0XlQte423uUUtJ7bpOoKpFLdZWRBdm6wl/YSjXNrFDT0PK8/sxULEsJcC2Sj4bSRchF45bHwLmXWLmoZXWqpRIH7B5HbGD6u5UWUf7/cyYcEvinTslHsfBAV4qMBsigBPKK5hgGIHwOZC3bVYJPTCgaKg4mvr8Ilw9tBwSLkcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOTQFZkI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1600C4CEFA;
+	Wed, 17 Sep 2025 12:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114007;
-	bh=aKeNmVSeKw2xod3X8OCEFlbMiGelejJD+aq/6JZqT5Q=;
+	s=korg; t=1758113808;
+	bh=mbEsAKDiV8RtcQylCZeJ17O74Eet0PPIg4QqHJuJ/jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nykwoJK7UZDEst+up9EmAgpdG/IIUUv3L2o0oldGIkgHaztGP9HiFXxXxfS+b2g1x
-	 1HkAl3s9CBMgnJwAL5FMtafO9D5EMI8YFdFhvSfG40Pq/pimQlk/85KxaNJtf1gfuG
-	 0K9AbUOerrzwequVkgXLrm/1OEafxWpVy6b3nDqQ=
+	b=HOTQFZkIGFrsXPqOjWhebhWrNzC00swjlvDWqJvSYB3VnVKjEbrasIVbtIXXDbOD0
+	 FWzrfQRGNAx9J7KCgbA41hXyJ6kg8CCR75cnC3sQJkrDlPlt+c8ZZMRIR/c/N2hQyY
+	 OA85r7Ixoo9nDIKGNpXfY+vOTsJnlDhTt1fBPcwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Brad Spengler <spender@grsecurity.net>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/78] proc: fix type confusion in pde_set_flags()
+	Steve French <stfrench@microsoft.com>,
+	David Howells <dhowells@redhat.com>,
+	Yang Erkun <yangerkun@huawei.com>,
+	stable@kernel.org
+Subject: [PATCH 6.6 057/101] cifs: fix pagecache leak when do writepages
 Date: Wed, 17 Sep 2025 14:34:40 +0200
-Message-ID: <20250917123330.033876063@linuxfoundation.org>
+Message-ID: <20250917123338.220970948@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,61 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 0ce9398aa0830f15f92bbed73853f9861c3e74ff ]
+After commit f3dc1bdb6b0b("cifs: Fix writeback data corruption"), the
+writepages for cifs will find all folio needed writepage with two phase.
+The first folio will be found in cifs_writepages_begin, and the latter
+various folios will be found in cifs_extend_writeback.
 
-Commit 2ce3d282bd50 ("proc: fix missing pde_set_flags() for net proc
-files") missed a key part in the definition of proc_dir_entry:
+All those will first get folio, and for normal case, once we set page
+writeback and after do really write, we should put the reference, folio
+found in cifs_extend_writeback do this with folio_batch_release. But the
+folio found in cifs_writepages_begin never get the chance do it. And
+every writepages call, we will leak a folio(found this problem while do
+xfstests over cifs, the latter show that we will leak about 600M+ every
+we run generic/074).
 
-union {
-	const struct proc_ops *proc_ops;
-	const struct file_operations *proc_dir_ops;
-};
+echo 3 > /proc/sys/vm/drop_caches ; cat /proc/meminfo | grep file
+Active(file):      34092 kB
+Inactive(file):   176192 kB
+./check generic/074 (smb v1)
+...
+generic/074 50s ...  53s
+Ran: generic/074
+Passed all 1 tests
 
-So dereference of ->proc_ops assumes it is a proc_ops structure results in
-type confusion and make NULL check for 'proc_ops' not work for proc dir.
+echo 3 > /proc/sys/vm/drop_caches ; cat /proc/meminfo | grep file
+Active(file):      35036 kB
+Inactive(file):   854708 kB
 
-Add !S_ISDIR(dp->mode) test before calling pde_set_flags() to fix it.
+Besides, the exist path seem never handle this folio correctly, fix it too
+with this patch. All issue does not occur in the mainline because the
+writepages path for CIFS was changed to netfs (commit 3ee1a1fc3981,
+titled "cifs: Cut over to using netfslib") as part of a major refactor.
+After discussing with the CIFS maintainer, we believe that this single
+patch is safer for the stable branch [1].
 
-Link: https://lkml.kernel.org/r/20250904135715.3972782-1-wangzijie1@honor.com
-Fixes: 2ce3d282bd50 ("proc: fix missing pde_set_flags() for net proc files")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Closes: https://lore.kernel.org/all/20250903065758.3678537-1-wangzijie1@honor.com/
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Stefano Brivio <sbrivio@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Steve said:
+"""
+David and I discussed this today and this patch is MUCH safer than
+backporting the later (6.10) netfs changes which would be much larger
+and riskier to include (and presumably could affect code outside
+cifs.ko as well where this patch is narrowly targeted).
+
+I am fine with this patch.from Yang for 6.6 stable
+"""
+
+David said:
+"""
+Backporting the massive amount of changes to netfslib, fscache, cifs,
+afs, 9p, ceph and nfs would kind of diminish the notion that this is a
+stable kernel;-).
+"""
+
+Fixes: f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
+Cc: stable@kernel.org # v6.6~v6.9
+Link: https://lore.kernel.org/all/20250911030120.1076413-1-yangerkun@huawei.com/ [1]
+Acked-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/generic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/file.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index c96c884208a98..21820c729b4bd 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -389,7 +389,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 	if (proc_alloc_inum(&dp->low_ino))
- 		goto out_free_entry;
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -2884,17 +2884,21 @@ static ssize_t cifs_write_back_from_lock
+ 	rc = cifs_get_writable_file(CIFS_I(inode), FIND_WR_ANY, &cfile);
+ 	if (rc) {
+ 		cifs_dbg(VFS, "No writable handle in writepages rc=%d\n", rc);
++		folio_unlock(folio);
+ 		goto err_xid;
+ 	}
  
--	pde_set_flags(dp);
-+	if (!S_ISDIR(dp->mode))
-+		pde_set_flags(dp);
+ 	rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->wsize,
+ 					   &wsize, credits);
+-	if (rc != 0)
++	if (rc != 0) {
++		folio_unlock(folio);
+ 		goto err_close;
++	}
  
- 	write_lock(&proc_subdir_lock);
- 	dp->parent = dir;
--- 
-2.51.0
-
+ 	wdata = cifs_writedata_alloc(cifs_writev_complete);
+ 	if (!wdata) {
+ 		rc = -ENOMEM;
++		folio_unlock(folio);
+ 		goto err_uncredit;
+ 	}
+ 
+@@ -3041,17 +3045,22 @@ search_again:
+ lock_again:
+ 	if (wbc->sync_mode != WB_SYNC_NONE) {
+ 		ret = folio_lock_killable(folio);
+-		if (ret < 0)
++		if (ret < 0) {
++			folio_put(folio);
+ 			return ret;
++		}
+ 	} else {
+-		if (!folio_trylock(folio))
++		if (!folio_trylock(folio)) {
++			folio_put(folio);
+ 			goto search_again;
++		}
+ 	}
+ 
+ 	if (folio->mapping != mapping ||
+ 	    !folio_test_dirty(folio)) {
+ 		start += folio_size(folio);
+ 		folio_unlock(folio);
++		folio_put(folio);
+ 		goto search_again;
+ 	}
+ 
+@@ -3081,6 +3090,7 @@ lock_again:
+ out:
+ 	if (ret > 0)
+ 		*_start = start + ret;
++	folio_put(folio);
+ 	return ret;
+ }
+ 
 
 
 
