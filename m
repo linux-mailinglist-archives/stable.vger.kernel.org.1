@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-179909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF4CB7E16C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C93B7E760
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D3466220BF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFC99520660
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A223233E1;
-	Wed, 17 Sep 2025 12:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B40308F18;
+	Wed, 17 Sep 2025 12:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VulEXuy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiGOgzkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5E218A6CF;
-	Wed, 17 Sep 2025 12:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05D82F260C;
+	Wed, 17 Sep 2025 12:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112769; cv=none; b=m0WatkjYl3dO+A8UzjacJ1dbZE5vqPVeMKl2jYDWFLf/eOKFcJeBs/pnUQpRWPlbNxtAGuBeK3YZSix/9t5nuG+e260YZyAK7ZKzLyzLoayMl3ednkqvNiCSHCdLk3FtomMBqG1e99LGTgjH6mEZP6ZtWnlYEIaCEXNrtrOq60c=
+	t=1758113189; cv=none; b=i4oVufS49oCPjv5zNzHhIYsrdn66uhU2jYys1fviH4I30ex6vDYfqGmntt15DLaoz8pmsgACrCyE94YLNOhljAZZck93ArHggN2M4VFLoIf2ec3PmW156cpkuLnxqob2/U4TlpaltJ1BWu9IDouo6kdz8AFjxU6nHyqv1PEzU4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112769; c=relaxed/simple;
-	bh=6xNcal+DbnP9qQ3z8fMXEl+MKUBT283kRCqMulhH4C0=;
+	s=arc-20240116; t=1758113189; c=relaxed/simple;
+	bh=RpqOWrPvv3tFu1Rk2JCVGKoRcB+8L6JGUUIwglfb4fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeZlfzf/Yx0yGf33UdG160pD20B5J8uh8o84jZ/SAaqYAR4+wzjbFNa3AvRscS+BlJmb15h+znn3RSxMQD6m3Nb9sw2z7zkkv3Hac+deL4ouuxfJ/tOqR+miJU4nlOE4Pem6PWfYng5RmEOZdxYqOO1MkIpye877i9VeedLrCNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VulEXuy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAA8C4CEF0;
-	Wed, 17 Sep 2025 12:39:28 +0000 (UTC)
+	 MIME-Version; b=VEo2rjg9ucN1deu97zziGuzK/V/GIKFIRpKWffQq938uH1XD/fmZ5I/nVt3qwe661j9KXB8y8LJiwVe8ErvJGNTArZk4SlzoG5Zm2O0n42Kugcv0pgYuWL5oQWZfFNrrfThp4/mO1ki2Cf0ZyZDh2HLL2nJHQu4MjBP3qq+tPm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiGOgzkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6888BC4CEF0;
+	Wed, 17 Sep 2025 12:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112769;
-	bh=6xNcal+DbnP9qQ3z8fMXEl+MKUBT283kRCqMulhH4C0=;
+	s=korg; t=1758113188;
+	bh=RpqOWrPvv3tFu1Rk2JCVGKoRcB+8L6JGUUIwglfb4fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VulEXuy8wwXvkUyL+yyySh2sUzC3ytm4XbGagd5v5PSD/F6hkh3VK434/nKxhN0LZ
-	 jHYzUpYQKhJn3KgMy5AXm0WjFeC0WkV5Y0Hi4/DJxBL+BL7BTqkc7uk2vr8u5IC8Gr
-	 yih9HNmyBSv2OI03/Xwo65XIiH+N1mjHl4fkzyaY=
+	b=NiGOgzkYlmZeN6EYLLe2p9g+a62RIuI6pcJ5jvrsDsvT7CibCjy9tAT9gKex9oLKG
+	 BvQMC+nOASMMwtgouoKvfGQbkKhhASKJzvS/Y97O5F02aTCpEzSyHsfJUngXNPtFh3
+	 22JzEEmvy3EBcVYK/98A5ciauMXt4mpUaZ6I3BH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.16 072/189] mtd: rawnand: stm32_fmc2: fix ECC overwrite
+	Sean Anderson <sean.anderson@linux.dev>,
+	kernel test robot <lkp@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 010/140] dma-mapping: fix swapped dir/flags arguments to trace_dma_alloc_sgt_err
 Date: Wed, 17 Sep 2025 14:33:02 +0200
-Message-ID: <20250917123353.630417575@linuxfoundation.org>
+Message-ID: <20250917123344.570775046@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit 811c0da4542df3c065f6cb843ced68780e27bb44 upstream.
+[ Upstream commit d5bbfbad58ec0ccd187282f0e171bc763efa6828 ]
 
-In case OOB write is requested during a data write, ECC is currently
-lost. Avoid this issue by only writing in the free spare area.
-This issue has been seen with a YAFFS2 file system.
+trace_dma_alloc_sgt_err was called with the dir and flags arguments
+swapped. Fix this.
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Cc: stable@vger.kernel.org
-Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 68b6dbf1f441 ("dma-mapping: trace more error paths")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410302243.1wnTlPk3-lkp@intel.com/
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/stm32_fmc2_nand.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ kernel/dma/mapping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-+++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-@@ -985,9 +985,21 @@ static int stm32_fmc2_nfc_seq_write(stru
- 
- 	/* Write oob */
- 	if (oob_required) {
--		ret = nand_change_write_column_op(chip, mtd->writesize,
--						  chip->oob_poi, mtd->oobsize,
--						  false);
-+		unsigned int offset_in_page = mtd->writesize;
-+		const void *buf = chip->oob_poi;
-+		unsigned int len = mtd->oobsize;
-+
-+		if (!raw) {
-+			struct mtd_oob_region oob_free;
-+
-+			mtd_ooblayout_free(mtd, 0, &oob_free);
-+			offset_in_page += oob_free.offset;
-+			buf += oob_free.offset;
-+			len = oob_free.length;
-+		}
-+
-+		ret = nand_change_write_column_op(chip, offset_in_page,
-+						  buf, len, false);
- 		if (ret)
- 			return ret;
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index c12c62ad8a6bf..c7cc4e33ec6e0 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -782,7 +782,7 @@ struct sg_table *dma_alloc_noncontiguous(struct device *dev, size_t size,
+ 		trace_dma_alloc_sgt(dev, sgt, size, dir, gfp, attrs);
+ 		debug_dma_map_sg(dev, sgt->sgl, sgt->orig_nents, 1, dir, attrs);
+ 	} else {
+-		trace_dma_alloc_sgt_err(dev, NULL, 0, size, gfp, dir, attrs);
++		trace_dma_alloc_sgt_err(dev, NULL, 0, size, dir, gfp, attrs);
  	}
+ 	return sgt;
+ }
+-- 
+2.51.0
+
 
 
 
