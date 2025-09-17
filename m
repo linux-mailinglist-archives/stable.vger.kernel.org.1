@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-180148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06C6B7EB1B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:58:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FCEB7EF7C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A07524AFB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7116F18945CC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1DF323411;
-	Wed, 17 Sep 2025 12:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846BB17BB21;
+	Wed, 17 Sep 2025 12:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nluAs7Dl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buhGS2jZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5708718FDBD;
-	Wed, 17 Sep 2025 12:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D1C1B3925;
+	Wed, 17 Sep 2025 12:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113536; cv=none; b=L6MUEJV/J0LrkLsFBl5t8xaLDtAnmhrcLiGXYGwIB2+UrM86onK7nJsSzYsVpo/6aMB782VI41C1+A7w+h9Rw2HIA6rL34/3gwsb2yMkrYyUM4ZtJeyCljK89KXZaiQHC1BFpvvTlF+GsWhB5ICEDHwvZ7hAiztX9ILJFOXxBY0=
+	t=1758113831; cv=none; b=WtxOqNt5CvWBE/23dcZpWqHteIznuFLNUA6+QFoWfjNC6vc6tchlIsCYanMMZW5Hm0qTOG9NlVOtQ5VczZ3xZ7+LY/aRcoCnYnymVCd4owf9OA1dddKs7kItBbM+hVesjPcpmGhWmkU498PazhMMiS28Uiokqofjk/YT5VgZnmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113536; c=relaxed/simple;
-	bh=/QxmnS2pJWa1DVAJz375UDoDzrbyYO4vvY09Y5ob26Q=;
+	s=arc-20240116; t=1758113831; c=relaxed/simple;
+	bh=6rMBVZFJ0CCcEl+vY4LEQlO/itRgcHW5X7EP7yd7xTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnTgP0+u+LwfwnosOU2z9S5im3WeNArCC+zcPoPmI3iEzEzjz4+EWNoOdD/fsEai/vQxuWYx6dtVp8I0lcGFGKob+VPlgkoAt+MGze23bC/bSnBgpnmrPICJ5s0h3JWLoLsYolsZxlI2Pmt6gK5bQjIDjjyQGhBEgTWR1LpPDMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nluAs7Dl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BA8C4CEFB;
-	Wed, 17 Sep 2025 12:52:15 +0000 (UTC)
+	 MIME-Version; b=JC8Kjg6PI8qhaWRO9PHhotiiHqWet8Dwmm4/vSeduJ2xrD3JrUmi1o5R+2xYrti7nhIbW13DqLYdEBTD9zGhdW680dEK6PCKMDvp+A4qnMYGanUUGeVLAIHZEle9AToT8GbLzPRT1GEeWP9neYfYeNkbsgtFVjSfPaWtT5T/yFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buhGS2jZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A434EC4CEF0;
+	Wed, 17 Sep 2025 12:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113536;
-	bh=/QxmnS2pJWa1DVAJz375UDoDzrbyYO4vvY09Y5ob26Q=;
+	s=korg; t=1758113831;
+	bh=6rMBVZFJ0CCcEl+vY4LEQlO/itRgcHW5X7EP7yd7xTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nluAs7Dl71YEPVnvELKqZ0NA48YS72tZiPZisUBclzkrfAx0WpUqLM+wb+K+X8eZB
-	 r49ydJU0+7h8xJGcL3s5a864wDd/Ie/8DcWTp4NYCHmTrZrk4l0QZw/uvZocg/zOla
-	 oKudQeX6CQpUFni7IXLhkzKZgK7GooTZoPviEDSI=
+	b=buhGS2jZbGNINT1cpuKaR1+A+cdv1FX3xZuAl7ug4p6LMbqb4HfbwihoujHeke9Q0
+	 iDwVFdMx222Z99WkfKfRZMKD17pPUdluOMkBOlWQuesXnRABGUz5+cPJLTQztt9JH0
+	 cdAdWd8A3fZ+sOADawwiV0+GlaRUu2yQap5to7e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/140] netfilter: nf_tables: make nft_set_do_lookup available unconditionally
+	stable <stable@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.6 064/101] dt-bindings: serial: brcm,bcm7271-uart: Constrain clocks
 Date: Wed, 17 Sep 2025 14:34:47 +0200
-Message-ID: <20250917123347.115710916@linuxfoundation.org>
+Message-ID: <20250917123338.390050451@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 11fe5a82e53ac3581a80c88e0e35fb8a80e15f48 ]
+commit ee047e1d85d73496541c54bd4f432c9464e13e65 upstream.
 
-This function was added for retpoline mitigation and is replaced by a
-static inline helper if mitigations are not enabled.
+Lists should have fixed constraints, because binding must be specific in
+respect to hardware, thus add missing constraints to number of clocks.
 
-Enable this helper function unconditionally so next patch can add a lookup
-restart mechanism to fix possible false negatives while transactions are
-in progress.
-
-Adding lookup restarts in nft_lookup_eval doesn't work as nft_objref would
-then need the same copypaste loop.
-
-This patch is separate to ease review of the actual bug fix.
-
-Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: b2f742c846ca ("netfilter: nf_tables: restart set lookup on base_seq change")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 88a499cd70d4 ("dt-bindings: Add support for the Broadcom UART driver")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250812121630.67072-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables_core.h | 10 ++--------
- net/netfilter/nft_lookup.c             | 17 ++++++++++++-----
- 2 files changed, 14 insertions(+), 13 deletions(-)
+ Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_tables_core.h b/include/net/netfilter/nf_tables_core.h
-index 6a52fb97b8443..04699eac5b524 100644
---- a/include/net/netfilter/nf_tables_core.h
-+++ b/include/net/netfilter/nf_tables_core.h
-@@ -109,17 +109,11 @@ nft_hash_lookup_fast(const struct net *net, const struct nft_set *set,
- const struct nft_set_ext *
- nft_hash_lookup(const struct net *net, const struct nft_set *set,
- 		const u32 *key);
-+#endif
-+
- const struct nft_set_ext *
- nft_set_do_lookup(const struct net *net, const struct nft_set *set,
- 		  const u32 *key);
--#else
--static inline const struct nft_set_ext *
--nft_set_do_lookup(const struct net *net, const struct nft_set *set,
--		  const u32 *key)
--{
--	return set->ops->lookup(net, set, key);
--}
--#endif
+--- a/Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml
++++ b/Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml
+@@ -41,7 +41,7 @@ properties:
+           - const: dma_intr2
  
- /* called from nft_pipapo_avx2.c */
- const struct nft_set_ext *
-diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
-index 40c602ffbcba7..2c6909bf1b407 100644
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -24,11 +24,11 @@ struct nft_lookup {
- 	struct nft_set_binding		binding;
- };
+   clocks:
+-    minItems: 1
++    maxItems: 1
  
--#ifdef CONFIG_MITIGATION_RETPOLINE
--const struct nft_set_ext *
--nft_set_do_lookup(const struct net *net, const struct nft_set *set,
--		  const u32 *key)
-+static const struct nft_set_ext *
-+__nft_set_do_lookup(const struct net *net, const struct nft_set *set,
-+		    const u32 *key)
- {
-+#ifdef CONFIG_MITIGATION_RETPOLINE
- 	if (set->ops == &nft_set_hash_fast_type.ops)
- 		return nft_hash_lookup_fast(net, set, key);
- 	if (set->ops == &nft_set_hash_type.ops)
-@@ -51,10 +51,17 @@ nft_set_do_lookup(const struct net *net, const struct nft_set *set,
- 		return nft_rbtree_lookup(net, set, key);
- 
- 	WARN_ON_ONCE(1);
-+#endif
- 	return set->ops->lookup(net, set, key);
- }
-+
-+const struct nft_set_ext *
-+nft_set_do_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key)
-+{
-+	return __nft_set_do_lookup(net, set, key);
-+}
- EXPORT_SYMBOL_GPL(nft_set_do_lookup);
--#endif
- 
- void nft_lookup_eval(const struct nft_expr *expr,
- 		     struct nft_regs *regs,
--- 
-2.51.0
-
+   clock-names:
+     const: sw_baud
 
 
 
