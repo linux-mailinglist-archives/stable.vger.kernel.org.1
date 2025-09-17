@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-180021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68382B7E642
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77634B7EEC2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77DE3AF579
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3406F622C93
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7080630F933;
-	Wed, 17 Sep 2025 12:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8FF22D78A;
+	Wed, 17 Sep 2025 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bV657U8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOMVrOok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CECD30CB22;
-	Wed, 17 Sep 2025 12:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03A13B2A4;
+	Wed, 17 Sep 2025 12:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113127; cv=none; b=GeALNqm8XCiGyL0NvuixMD8SxGtWrhex6HEsnq8Ijvh3m230mLnsbUqdVf/UV73dNF/okiKKqjuSdYqkzfcJCOaJM0BM4jd/nEGozO611TTD5bqTA0hBtg1CzjHkqTO4FeZFrYELmnI8rxQtwREXKRBro1BX+WMZxOPbSa/wu5E=
+	t=1758113748; cv=none; b=by1h7n9RLIJ607bCpELXJBfy27VYemcbcovrbsUuer4PWKBMuS1hTIx7wo+zw9angeTMfaO0/vtu/m4ynyazt9RSIC4bQjtSUj3wZXwamEdQ5oZgUDxQR6QSAXyRwVG/yQbXz0Y0T+yfkhhpHc/gVWK7UgX6h6CAaL9RK3SnDAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113127; c=relaxed/simple;
-	bh=gR4vRnDjcsH+fx/jimiyfJveNQcwThqdI0Oy5zExopI=;
+	s=arc-20240116; t=1758113748; c=relaxed/simple;
+	bh=fBPrxqricr63iwKLnQloDxjNhI4NLCICt4RHyyqnTEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRhBx+WvEGy8kF5IZNRKy5uCPiNCkcCcJtxghVwa5xOHESj+D4jirrxQnmA7arnoQwxKo3jtY2P2DfKgmnjpsBKi7VaWH3zyS85497lumiUkO3FPcBgdvoervs56SiRwzyidqfWuaGQxUQjXFgCrErmin1ADYjz27wIE2xKr/IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bV657U8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30F6C4CEF0;
-	Wed, 17 Sep 2025 12:45:26 +0000 (UTC)
+	 MIME-Version; b=H3CNyofcgZ+VG/qPTZVsy3m5rlpdHoBsLlbpSvHZyKWxgUhyEnsRAY8D2A82eUM6sH14JqsxbiFifGqKdCKwfg+i0IaFZRvC1tTrf0uS7OqeT3kTOCsaLkySg0s1DGGwrkeWC2xL/lQqSLh/nTJJnFozhlHpmFIa2uVzLSxHfDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOMVrOok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768E4C4CEF0;
+	Wed, 17 Sep 2025 12:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113127;
-	bh=gR4vRnDjcsH+fx/jimiyfJveNQcwThqdI0Oy5zExopI=;
+	s=korg; t=1758113747;
+	bh=fBPrxqricr63iwKLnQloDxjNhI4NLCICt4RHyyqnTEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bV657U8LnJg8vHuAfkHr5qFNHWaH4MaSBZopQGssOZzmqhesGpeh82GMwFkDolr7d
-	 ZViHY/k5Lmt17EfOSCXYfUQIRXgOh3XeVxbVHE9jmCC+MZNfShiB//aoFDRUt/QAsP
-	 zqhC4MaTskUiog5tXYJXXbjs6jJdvSxLQ2hiQ5fc=
+	b=dOMVrOokOERbZcC18I5CqJpQOFrV3+bwz2pl4oBW2C6xuiWtid9NfyYRf45xhf72/
+	 PdpuhnsuW7iOF6aiAvMVZ6bKlnlno4LoB9s6+zZA6JzycIBKf96VQ7cafU7W1dWl7P
+	 x3+0wz5+PFzM1/LVvP7W/EwJ4sTyi3KhjG8LC9TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 153/189] netfilter: nft_set_pipapo: remove unused arguments
+	Chunsheng Luo <luochunsheng@ustc.edu>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.6 040/101] fuse: check if copy_file_range() returns larger than requested size
 Date: Wed, 17 Sep 2025 14:34:23 +0200
-Message-ID: <20250917123355.606211174@linuxfoundation.org>
+Message-ID: <20250917123337.814708067@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 7792c1e03054440c60d4bce0c06a31c134601997 ]
+commit e5203209b3935041dac541bc5b37efb44220cc0b upstream.
 
-They are not used anymore, so remove them.
+Just like write(), copy_file_range() should check if the return value is
+less or equal to the requested number of bytes.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: c4eaca2e1052 ("netfilter: nft_set_pipapo: don't check genbit from packetpath lookups")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
+Closes: https://lore.kernel.org/all/20250807062425.694-1-luochunsheng@ustc.edu/
+Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
+Cc: <stable@vger.kernel.org> # v4.20
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ fs/fuse/file.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 9e4e25f2458f9..9ac48e6b4332c 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -502,8 +502,6 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
- 
- /**
-  * pipapo_get() - Get matching element reference given key data
-- * @net:	Network namespace
-- * @set:	nftables API set representation
-  * @m:		storage containing active/existing elements
-  * @data:	Key data to be matched against existing elements
-  * @genmask:	If set, check that element is active in given genmask
-@@ -516,9 +514,7 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
-  *
-  * Return: pointer to &struct nft_pipapo_elem on match, error pointer otherwise.
-  */
--static struct nft_pipapo_elem *pipapo_get(const struct net *net,
--					  const struct nft_set *set,
--					  const struct nft_pipapo_match *m,
-+static struct nft_pipapo_elem *pipapo_get(const struct nft_pipapo_match *m,
- 					  const u8 *data, u8 genmask,
- 					  u64 tstamp, gfp_t gfp)
- {
-@@ -615,7 +611,7 @@ nft_pipapo_get(const struct net *net, const struct nft_set *set,
- 	struct nft_pipapo_match *m = rcu_dereference(priv->match);
- 	struct nft_pipapo_elem *e;
- 
--	e = pipapo_get(net, set, m, (const u8 *)elem->key.val.data,
-+	e = pipapo_get(m, (const u8 *)elem->key.val.data,
- 		       nft_genmask_cur(net), get_jiffies_64(),
- 		       GFP_ATOMIC);
- 	if (IS_ERR(e))
-@@ -1344,7 +1340,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 	else
- 		end = start;
- 
--	dup = pipapo_get(net, set, m, start, genmask, tstamp, GFP_KERNEL);
-+	dup = pipapo_get(m, start, genmask, tstamp, GFP_KERNEL);
- 	if (!IS_ERR(dup)) {
- 		/* Check if we already have the same exact entry */
- 		const struct nft_data *dup_key, *dup_end;
-@@ -1366,7 +1362,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 
- 	if (PTR_ERR(dup) == -ENOENT) {
- 		/* Look for partially overlapping entries */
--		dup = pipapo_get(net, set, m, end, nft_genmask_next(net), tstamp,
-+		dup = pipapo_get(m, end, nft_genmask_next(net), tstamp,
- 				 GFP_KERNEL);
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -3172,6 +3172,9 @@ static ssize_t __fuse_copy_file_range(st
+ 		fc->no_copy_file_range = 1;
+ 		err = -EOPNOTSUPP;
  	}
++	if (!err && outarg.size > len)
++		err = -EIO;
++
+ 	if (err)
+ 		goto out;
  
-@@ -1913,7 +1909,7 @@ nft_pipapo_deactivate(const struct net *net, const struct nft_set *set,
- 	if (!m)
- 		return NULL;
- 
--	e = pipapo_get(net, set, m, (const u8 *)elem->key.val.data,
-+	e = pipapo_get(m, (const u8 *)elem->key.val.data,
- 		       nft_genmask_next(net), nft_net_tstamp(net), GFP_KERNEL);
- 	if (IS_ERR(e))
- 		return NULL;
--- 
-2.51.0
-
 
 
 
