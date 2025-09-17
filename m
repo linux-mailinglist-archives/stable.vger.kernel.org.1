@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-179985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007C4B7E4C0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:46:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75CBB7EBFD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 163B47AC185
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F6E4188BC62
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB461F09A5;
-	Wed, 17 Sep 2025 12:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0FD330D4E;
+	Wed, 17 Sep 2025 12:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5zRKxNj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybeXdx32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABB41E489;
-	Wed, 17 Sep 2025 12:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78790330D39;
+	Wed, 17 Sep 2025 12:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113018; cv=none; b=GTrprwpTCWQaxNG0viNj39z4Pspbj5cGE8gmqI1l6jM1eCQ3J2J7G9BEm+ifLGw9+3+BDfjbwFt9cTAQwii3X9/C/cgVaDxHitDIKXrbFWIuXjQLSwlozI00xW7JXHuoGuzMwqpH/Iw3SvIE6+YmiVbcC2M7LaGdabHLC2J0CRo=
+	t=1758113565; cv=none; b=YK5mcp/qfUHaq+E5HxKfKnNW5kDHHrJH3zjjVtbbBCr7Ukw0HSJ/3ECqwoOG1WR5GUzbnUPUnXZvzroyVsBhElzgD4YsyIpXcY4K9KU4dfyE3zoPCZF3NYj89tswOA18M5YoybNXurQsndpYXJrlcku4cpgVjK8isYftQ99UxHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113018; c=relaxed/simple;
-	bh=Nb5NIsLt3rO6Hj5WH1g3l6VnDQKP/quFU7TY6uSo3VQ=;
+	s=arc-20240116; t=1758113565; c=relaxed/simple;
+	bh=Ms4lgE9LI13RbzWgX+YPYY46Rm+YSOeKO62tMe7yTaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSeJuyfr1hcHiNIDLA5rYKRTzBKYVlK4WohYYemokHYOPE2HnQayYz6GK7mktw8AkurOOt4eruYWw2ZEYg84g8FaGaRT9uBhIZEtaLn4fooXxJ4Kcp3iqxRIPKANtQDYuLdRj2OaiUZf/mCnWkUjPPW8Eyf3ybISjslTSUB8tR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5zRKxNj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846F2C4CEF0;
-	Wed, 17 Sep 2025 12:43:37 +0000 (UTC)
+	 MIME-Version; b=HbI0cc4RWUGAxiwUhinvTd1+RXIUkIm6/oyiCh6U8VmHEA3F/kTYfNHJTFEDuHdVMKUL0EL9VLOlPNY3SBEV9fZrpM1CpxvrxcCCm83xchduWow691yVyU26lBpgIGaLm2Hp4N9MT4OzOH5vSPkhchoISXe+kaWp8fh9aERPTe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybeXdx32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6484C4CEF5;
+	Wed, 17 Sep 2025 12:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113017;
-	bh=Nb5NIsLt3rO6Hj5WH1g3l6VnDQKP/quFU7TY6uSo3VQ=;
+	s=korg; t=1758113565;
+	bh=Ms4lgE9LI13RbzWgX+YPYY46Rm+YSOeKO62tMe7yTaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5zRKxNjxucFUKnH3kc68DDIJ4Sqn0NUYkgD8YF59X4zewu1b6nw42506tNb4fojf
-	 abQw7T3XCB4FLwtWJafT37Xn9gsGZk9IkUvfmX4GDylsNs6Ad+VzmnHrAsMe8hUvex
-	 kD2v3WwdOTwG886sIYqvqiKeq+mVfcLXutEeg578=
+	b=ybeXdx32ltte1PLeHpkgDvrR7o57y7niNxJ0Jx6XLHt3WORlj3wuyxi83G5QHow3r
+	 KNz0gmoIoCFXEWhjYl6XBJ5shBajAuudV5L9TTez+wddo+iGyb1dwP7ig9j/0+uObV
+	 x06/ZS+ICFOO8lim1U6lgjPWnCWp0GT/vGHeXJKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Chen <Wen.Chen3@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sridharan S N <quic_sridsn@quicinc.com>,
+	Santhosh Kumar K <s-k6@ti.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 144/189] drm/amd/display: use udelay rather than fsleep
+Subject: [PATCH 6.12 082/140] mtd: spinand: winbond: Fix oob_layout for W25N01JW
 Date: Wed, 17 Sep 2025 14:34:14 +0200
-Message-ID: <20250917123355.385711821@linuxfoundation.org>
+Message-ID: <20250917123346.314333959@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Santhosh Kumar K <s-k6@ti.com>
 
-[ Upstream commit 1d66c3f2b8c0b5c51f3f4fe29b362c9851190c5a ]
+[ Upstream commit 4550d33e18112a11a740424c4eec063cd58e918c ]
 
-This function can be called from an atomic context so we can't use
-fsleep().
+Fix the W25N01JW's oob_layout according to the datasheet [1]
 
-Fixes: 01f60348d8fb ("drm/amd/display: Fix 'failed to blank crtc!'")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4549
-Cc: Wen Chen <Wen.Chen3@amd.com>
-Cc: Fangzhi Zuo <jerry.zuo@amd.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 27e4dc2c0543fd1808cc52bd888ee1e0533c4a2e)
+[1] https://www.winbond.com/hq/product/code-storage-flash-memory/qspinand-flash/?__locale=en&partNo=W25N01JW
+
+Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
+Cc: Sridharan S N <quic_sridsn@quicinc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/spi/winbond.c |   37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index cdb8685ae7d71..454e362ff096a 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -955,7 +955,7 @@ enum dc_status dcn20_enable_stream_timing(
- 		return DC_ERROR_UNEXPECTED;
- 	}
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -122,6 +122,41 @@ static const struct mtd_ooblayout_ops w2
+ 	.free = w25n02kv_ooblayout_free,
+ };
  
--	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
-+	udelay(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
- 
- 	params.vertical_total_min = stream->adjust.v_total_min;
- 	params.vertical_total_max = stream->adjust.v_total_max;
--- 
-2.51.0
-
++static int w25n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 12;
++	region->length = 4;
++
++	return 0;
++}
++
++static int w25n01jw_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section);
++	region->length = 12;
++
++	/* Extract BBM */
++	if (!section) {
++		region->offset += 2;
++		region->length -= 2;
++	}
++
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops w25n01jw_ooblayout = {
++	.ecc = w25n01jw_ooblayout_ecc,
++	.free = w25n01jw_ooblayout_free,
++};
++
+ static int w25n02kv_ecc_get_status(struct spinand_device *spinand,
+ 				   u8 status)
+ {
+@@ -206,7 +241,7 @@ static const struct spinand_info winbond
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL)),
+ 	SPINAND_INFO("W25N02JWZEIF",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbf, 0x22),
+ 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 2, 1),
 
 
 
