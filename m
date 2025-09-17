@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-179892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99ACDB7E0F3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87F8B7DEBD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65B632A49AB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CCE7189B2E6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE20831A80B;
-	Wed, 17 Sep 2025 12:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E8E1F1932;
+	Wed, 17 Sep 2025 12:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Snn/acy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq+1HL4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649F231A7EE;
-	Wed, 17 Sep 2025 12:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CF21F09A5;
+	Wed, 17 Sep 2025 12:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112736; cv=none; b=gGIGflM/FQjOv2YjzN0qZ1XzR48441Yr9Qfglqgavqsp1dsbiRNpzqqje3Opm+3rAXS4crv9ubSKjDymfPOkI2wYU/WN7D0l+uzSVISQxUHhSbFq1lTt/rc2gnmHSPbqAcSrW12vIkvrydL/0pGTsnOzrE1ZcolqeB07iJhcBlg=
+	t=1758112590; cv=none; b=BK9NZ44YzXTn0HB6kjQUvIGa2Gy9zyhGnfNuIEDTXwA6sMg1e+z7wLLedq//1M8HuQ423buuHtlnE+q1SLUoYoUpbHq3vk0IqCm+ZiIW7+2of/6dS+NIIWp3bv/EIjrWt4FGSynOl8rUOnvTp32jyyspK0ddz2sYjqLeDWx4dxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112736; c=relaxed/simple;
-	bh=Jf2If6eJZBDphR0eNd3UI0hQ8Pa2YTvvcvQA/vIVkkc=;
+	s=arc-20240116; t=1758112590; c=relaxed/simple;
+	bh=BaZ6hsZS6zCTFxR2HBwUr0Q5cwm7n8BD3O+PcuUmACE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkYz0KnW74YldO3WJybCyCQ5g58hKDK3URacdoo0dFWOE8FotgLJva3mTHpW2qFawq2dxJFmDKkXpR9vjlRHUykfvlPnT0b5RXKX2E8rGHp+AHSuiu+S8kDo4DltFIxEpAsqhZ1mA8Pb2vT6vo9wtMsatG/Fuzil3zBMVfsA/rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Snn/acy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2D1C4CEF0;
-	Wed, 17 Sep 2025 12:38:55 +0000 (UTC)
+	 MIME-Version; b=UHaGFH5tlVO96HFllYA0MXz1QTC1sn8XFoPWm5c552t/w+FYhUC1fNYVTxhGPNY855piZvKnpKzYw+wmfC63xeoIKaYRZjsFkZgUy3YdeZ81aaulcu231WBSDMCxtpWZ0wxZezsETlX6ANFb0PrhxlVbm+4e9Vab9bT9mi4kTnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq+1HL4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F3FC4CEF0;
+	Wed, 17 Sep 2025 12:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112736;
-	bh=Jf2If6eJZBDphR0eNd3UI0hQ8Pa2YTvvcvQA/vIVkkc=;
+	s=korg; t=1758112590;
+	bh=BaZ6hsZS6zCTFxR2HBwUr0Q5cwm7n8BD3O+PcuUmACE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Snn/acy8r0eKLDin86zzDST8jqShlsc/Pu7ZTPV29Yh/uUPpzHULg2l+05tuO4+sW
-	 glxB3ynxtgWhgua76TaSCAu2gE+kKuTDrcB4vEJ2Xv6PBs306uZ6THtw/oiP0U6ifK
-	 ElRw7x7q7H2MQCQ+NlYvmx5p6wyfN3NNupRiiKO8=
+	b=cq+1HL4/91dA5kSSjIo2WuKtUJKIzFYW2fmYCdQzYtUtA5dF3VoII6oWr1DyOassh
+	 8DRt8b04h926eL+Rz0L8ovBIjyeRn5oxwb3zfu5+Rzfqn8PIHVpbshL62v8NDAPpaO
+	 p8vBJUaMzPGzgXXzalx/wffrvzN3ae4bwTF4LDR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 016/189] Revert "drm/amdgpu: Add more checks to PSP mailbox"
-Date: Wed, 17 Sep 2025 14:32:06 +0200
-Message-ID: <20250917123352.245948687@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 017/189] flexfiles/pNFS: fix NULL checks on result of ff_layout_choose_ds_for_read
+Date: Wed, 17 Sep 2025 14:32:07 +0200
+Message-ID: <20250917123352.272969398@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
 References: <20250917123351.839989757@linuxfoundation.org>
@@ -64,436 +67,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
 
-This reverts commit 165a69a87d6bde85cac2c051fa6da611ca4524f6 which is
-commit 8345a71fc54b28e4d13a759c45ce2664d8540d28 upstream.
+[ Upstream commit 5a46d2339a5ae268ede53a221f20433d8ea4f2f9 ]
 
-This commit is not applicable for stable kernels and results in the
-driver failing to load on some chips on kernel 6.16.x.  Revert from
-6.16.x.
+Recent commit f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS
+errors") has changed the error return type of ff_layout_choose_ds_for_read() from
+NULL to an error pointer. However, not all code paths have been updated
+to match the change. Thus, some non-NULL checks will accept error pointers
+as a valid return value.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.16.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS errors")
+Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c  |    4 ----
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h  |   11 -----------
- drivers/gpu/drm/amd/amdgpu/psp_v10_0.c   |    4 ++--
- drivers/gpu/drm/amd/amdgpu/psp_v11_0.c   |   31 ++++++++++++-------------------
- drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c |   25 ++++++++++---------------
- drivers/gpu/drm/amd/amdgpu/psp_v12_0.c   |   18 +++++++-----------
- drivers/gpu/drm/amd/amdgpu/psp_v13_0.c   |   25 ++++++++++---------------
- drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c |   25 ++++++++++---------------
- drivers/gpu/drm/amd/amdgpu/psp_v14_0.c   |   25 ++++++++++---------------
- 9 files changed, 61 insertions(+), 107 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -596,10 +596,6 @@ int psp_wait_for(struct psp_context *psp
- 		udelay(1);
- 	}
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 8dc921d835388..f8ab7b4e09e7e 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -773,8 +773,11 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
+ 			continue;
  
--	dev_err(adev->dev,
--		"psp reg (0x%x) wait timed out, mask: %x, read: %x exp: %x",
--		reg_index, mask, val, reg_val);
--
- 	return -ETIME;
+ 		if (check_device &&
+-		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node))
++		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node)) {
++			// reinitialize the error state in case if this is the last iteration
++			ds = ERR_PTR(-EINVAL);
+ 			continue;
++		}
+ 
+ 		*best_idx = idx;
+ 		break;
+@@ -804,7 +807,7 @@ ff_layout_choose_best_ds_for_read(struct pnfs_layout_segment *lseg,
+ 	struct nfs4_pnfs_ds *ds;
+ 
+ 	ds = ff_layout_choose_valid_ds_for_read(lseg, start_idx, best_idx);
+-	if (ds)
++	if (!IS_ERR(ds))
+ 		return ds;
+ 	return ff_layout_choose_any_ds_for_read(lseg, start_idx, best_idx);
+ }
+@@ -818,7 +821,7 @@ ff_layout_get_ds_for_read(struct nfs_pageio_descriptor *pgio,
+ 
+ 	ds = ff_layout_choose_best_ds_for_read(lseg, pgio->pg_mirror_idx,
+ 					       best_idx);
+-	if (ds || !pgio->pg_mirror_idx)
++	if (!IS_ERR(ds) || !pgio->pg_mirror_idx)
+ 		return ds;
+ 	return ff_layout_choose_best_ds_for_read(lseg, 0, best_idx);
+ }
+@@ -868,7 +871,7 @@ ff_layout_pg_init_read(struct nfs_pageio_descriptor *pgio,
+ 	req->wb_nio = 0;
+ 
+ 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
+-	if (!ds) {
++	if (IS_ERR(ds)) {
+ 		if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
+ 			goto out_mds;
+ 		pnfs_generic_pg_cleanup(pgio);
+@@ -1072,11 +1075,13 @@ static void ff_layout_resend_pnfs_read(struct nfs_pgio_header *hdr)
+ {
+ 	u32 idx = hdr->pgio_mirror_idx + 1;
+ 	u32 new_idx = 0;
++	struct nfs4_pnfs_ds *ds;
+ 
+-	if (ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx))
+-		ff_layout_send_layouterror(hdr->lseg);
+-	else
++	ds = ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx);
++	if (IS_ERR(ds))
+ 		pnfs_error_mark_layout_for_return(hdr->inode, hdr->lseg);
++	else
++		ff_layout_send_layouterror(hdr->lseg);
+ 	pnfs_read_resend_pnfs(hdr, new_idx);
  }
  
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h
-@@ -51,17 +51,6 @@
- #define C2PMSG_CMD_SPI_GET_ROM_IMAGE_ADDR_HI 0x10
- #define C2PMSG_CMD_SPI_GET_FLASH_IMAGE 0x11
- 
--/* Command register bit 31 set to indicate readiness */
--#define MBOX_TOS_READY_FLAG (GFX_FLAG_RESPONSE)
--#define MBOX_TOS_READY_MASK (GFX_CMD_RESPONSE_MASK | GFX_CMD_STATUS_MASK)
--
--/* Values to check for a successful GFX_CMD response wait. Check against
-- * both status bits and response state - helps to detect a command failure
-- * or other unexpected cases like a device drop reading all 0xFFs
-- */
--#define MBOX_TOS_RESP_FLAG (GFX_FLAG_RESPONSE)
--#define MBOX_TOS_RESP_MASK (GFX_CMD_RESPONSE_MASK | GFX_CMD_STATUS_MASK)
--
- extern const struct attribute_group amdgpu_flash_attr_group;
- 
- enum psp_shared_mem_size {
---- a/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c
-@@ -94,7 +94,7 @@ static int psp_v10_0_ring_create(struct
- 
- 	/* Wait for response flag (bit 31) in C2PMSG_64 */
- 	ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			   MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+			   0x80000000, 0x8000FFFF, false);
- 
- 	return ret;
- }
-@@ -115,7 +115,7 @@ static int psp_v10_0_ring_stop(struct ps
- 
- 	/* Wait for response flag (bit 31) in C2PMSG_64 */
- 	ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			   MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+			   0x80000000, 0x80000000, false);
- 
- 	return ret;
- }
---- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-@@ -277,13 +277,11 @@ static int psp_v11_0_ring_stop(struct ps
- 
- 	/* Wait for response flag (bit 31) */
- 	if (amdgpu_sriov_vf(adev))
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x80000000, false);
- 	else
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 
- 	return ret;
- }
-@@ -319,15 +317,13 @@ static int psp_v11_0_ring_create(struct
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_101 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x8000FFFF, false);
- 
- 	} else {
- 		/* Wait for sOS ready for ring creation */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 		if (ret) {
- 			DRM_ERROR("Failed to wait for sOS ready for ring creation\n");
- 			return ret;
-@@ -351,9 +347,8 @@ static int psp_v11_0_ring_create(struct
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_64 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x8000FFFF, false);
- 	}
- 
- 	return ret;
-@@ -386,8 +381,7 @@ static int psp_v11_0_mode1_reset(struct
- 
- 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64);
- 
--	ret = psp_wait_for(psp, offset, MBOX_TOS_READY_FLAG,
--			   MBOX_TOS_READY_MASK, false);
-+	ret = psp_wait_for(psp, offset, 0x80000000, 0x8000FFFF, false);
- 
- 	if (ret) {
- 		DRM_INFO("psp is not working correctly before mode1 reset!\n");
-@@ -401,8 +395,7 @@ static int psp_v11_0_mode1_reset(struct
- 
- 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_33);
- 
--	ret = psp_wait_for(psp, offset, MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK,
--			   false);
-+	ret = psp_wait_for(psp, offset, 0x80000000, 0x80000000, false);
- 
- 	if (ret) {
- 		DRM_INFO("psp mode 1 reset failed!\n");
---- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c
-@@ -41,9 +41,8 @@ static int psp_v11_0_8_ring_stop(struct
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x80000000, false);
- 	} else {
- 		/* Write the ring destroy command*/
- 		WREG32_SOC15(MP0, 0, mmMP0_SMN_C2PMSG_64,
-@@ -51,9 +50,8 @@ static int psp_v11_0_8_ring_stop(struct
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 	}
- 
- 	return ret;
-@@ -89,15 +87,13 @@ static int psp_v11_0_8_ring_create(struc
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_101 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x8000FFFF, false);
- 
- 	} else {
- 		/* Wait for sOS ready for ring creation */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 		if (ret) {
- 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
- 			return ret;
-@@ -121,9 +117,8 @@ static int psp_v11_0_8_ring_create(struc
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_64 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x8000FFFF, false);
- 	}
- 
- 	return ret;
---- a/drivers/gpu/drm/amd/amdgpu/psp_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v12_0.c
-@@ -163,7 +163,7 @@ static int psp_v12_0_ring_create(struct
- 
- 	/* Wait for response flag (bit 31) in C2PMSG_64 */
- 	ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			   MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+			   0x80000000, 0x8000FFFF, false);
- 
- 	return ret;
- }
-@@ -184,13 +184,11 @@ static int psp_v12_0_ring_stop(struct ps
- 
- 	/* Wait for response flag (bit 31) */
- 	if (amdgpu_sriov_vf(adev))
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x80000000, false);
- 	else
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 
- 	return ret;
- }
-@@ -221,8 +219,7 @@ static int psp_v12_0_mode1_reset(struct
- 
- 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64);
- 
--	ret = psp_wait_for(psp, offset, MBOX_TOS_READY_FLAG,
--			   MBOX_TOS_READY_MASK, false);
-+	ret = psp_wait_for(psp, offset, 0x80000000, 0x8000FFFF, false);
- 
- 	if (ret) {
- 		DRM_INFO("psp is not working correctly before mode1 reset!\n");
-@@ -236,8 +233,7 @@ static int psp_v12_0_mode1_reset(struct
- 
- 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_33);
- 
--	ret = psp_wait_for(psp, offset, MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK,
--			   false);
-+	ret = psp_wait_for(psp, offset, 0x80000000, 0x80000000, false);
- 
- 	if (ret) {
- 		DRM_INFO("psp mode 1 reset failed!\n");
---- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-@@ -384,9 +384,8 @@ static int psp_v13_0_ring_stop(struct ps
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x80000000, false);
- 	} else {
- 		/* Write the ring destroy command*/
- 		WREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_64,
-@@ -394,9 +393,8 @@ static int psp_v13_0_ring_stop(struct ps
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 	}
- 
- 	return ret;
-@@ -432,15 +430,13 @@ static int psp_v13_0_ring_create(struct
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_101 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x8000FFFF, false);
- 
- 	} else {
- 		/* Wait for sOS ready for ring creation */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
--			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 		if (ret) {
- 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
- 			return ret;
-@@ -464,9 +460,8 @@ static int psp_v13_0_ring_create(struct
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_64 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x8000FFFF, false);
- 	}
- 
- 	return ret;
---- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c
-@@ -204,9 +204,8 @@ static int psp_v13_0_4_ring_stop(struct
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x80000000, false);
- 	} else {
- 		/* Write the ring destroy command*/
- 		WREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_64,
-@@ -214,9 +213,8 @@ static int psp_v13_0_4_ring_stop(struct
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 	}
- 
- 	return ret;
-@@ -252,15 +250,13 @@ static int psp_v13_0_4_ring_create(struc
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_101 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
-+				   0x80000000, 0x8000FFFF, false);
- 
- 	} else {
- 		/* Wait for sOS ready for ring creation */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
--			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 		if (ret) {
- 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
- 			return ret;
-@@ -284,9 +280,8 @@ static int psp_v13_0_4_ring_create(struc
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_64 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
-+				   0x80000000, 0x8000FFFF, false);
- 	}
- 
- 	return ret;
---- a/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-@@ -250,9 +250,8 @@ static int psp_v14_0_ring_stop(struct ps
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
-+				   0x80000000, 0x80000000, false);
- 	} else {
- 		/* Write the ring destroy command*/
- 		WREG32_SOC15(MP0, 0, regMPASP_SMN_C2PMSG_64,
-@@ -260,9 +259,8 @@ static int psp_v14_0_ring_stop(struct ps
- 		/* there might be handshake issue with hardware which needs delay */
- 		mdelay(20);
- 		/* Wait for response flag (bit 31) */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 	}
- 
- 	return ret;
-@@ -298,15 +296,13 @@ static int psp_v14_0_ring_create(struct
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_101 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
-+				   0x80000000, 0x8000FFFF, false);
- 
- 	} else {
- 		/* Wait for sOS ready for ring creation */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
--			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
-+				   0x80000000, 0x80000000, false);
- 		if (ret) {
- 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
- 			return ret;
-@@ -330,9 +326,8 @@ static int psp_v14_0_ring_create(struct
- 		mdelay(20);
- 
- 		/* Wait for response flag (bit 31) in C2PMSG_64 */
--		ret = psp_wait_for(
--			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
--			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
-+		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
-+				   0x80000000, 0x8000FFFF, false);
- 	}
- 
- 	return ret;
+-- 
+2.51.0
+
 
 
 
