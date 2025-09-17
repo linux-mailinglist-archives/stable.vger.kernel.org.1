@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-180317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8291CB7F15C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C844AB7EAB3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70C556279D4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ECAA7ACFD0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0138430CB31;
-	Wed, 17 Sep 2025 13:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4584316188;
+	Wed, 17 Sep 2025 12:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1Dzjyxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6KxFZP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3143303A05;
-	Wed, 17 Sep 2025 13:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21BF31618E;
+	Wed, 17 Sep 2025 12:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114077; cv=none; b=nK2qWdK/5qYRX6X3WgyDNvZHI2dDwiajiBmHsK4bk9GRGzJxLPErdX2vltAi5dN+GDlaWTNJrDfHn8gh/0do1FrmkcS+n2WQoXMQmE7NfKX5jE6PZH9ejtTnEE+ighZBtKZFaoqsjsUZv7xR/YERKj/YJib7WoC4j0TUVQzyZ6I=
+	t=1758113629; cv=none; b=tznDWEgkbRZaUfrAHZacW27WEnilTZbgjyHqMKIWSs/HmMsqZeniXZGy3M3WyjvBQjWSJnEQl9gzpwfe1cQxcdpJn2sw3wB+ntFFmkRMXv5k/FB4E1NdJdZyWdVxJpHE1yz4TDmFbpdV+BTSZEMBJVVk5E9yV8TxUNDgejWKqCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114077; c=relaxed/simple;
-	bh=LXqchSRQlYqzBF5ZeMwoOLOLe6hargq48JTVrMQHWpQ=;
+	s=arc-20240116; t=1758113629; c=relaxed/simple;
+	bh=gHEGUYuzvgUwYuBEVLnJ8AByNWGgvtuH5IHhhu7yEX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcQDI1qz24WqXIMcMQNPNLdx94vWSoXKOizn5yy9goEubEYE02zmKsltjiiacQ17HQny+fKZU0D3Jao7nxtVg8mWh9g/qbff5tXCLBymL4g68pKTZo6UpwYrbxbr1IA2WimeBjdPKCRxKuU/TKY9FfdBEV8caFwwHkkF2r/cM7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1Dzjyxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3D7C4CEF0;
-	Wed, 17 Sep 2025 13:01:16 +0000 (UTC)
+	 MIME-Version; b=PIsXwFB7Q5qQL+YHG78QTexnZ9+duupF+SxfxJfCuExgr/c728ND2E93awQwyNL3dq7M6qeWyb++ZVBJCwGq4SUVlEWp+7aNgHK9e4hJHY1IGAg8CRHu3z+OyhOaU6uABuBJ/9okaE4hIuHEVPJiaCVFLDAy4xKGaG6H2OMyr0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6KxFZP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C531C4CEF5;
+	Wed, 17 Sep 2025 12:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114077;
-	bh=LXqchSRQlYqzBF5ZeMwoOLOLe6hargq48JTVrMQHWpQ=;
+	s=korg; t=1758113629;
+	bh=gHEGUYuzvgUwYuBEVLnJ8AByNWGgvtuH5IHhhu7yEX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1DzjyxpC7IWENd9VMELsYpG3C4CJtVOmRll6S8ciOCVPK+zuIAv9vzhUZ+Onnsf3
-	 +8FuwllLit890YPq3ZdNO2xgeQC+ib4k1TwN3/wA71viWrpwTM+6trAGQSRjfdeLUM
-	 +/pfzFTF0S2ahgUMdBgx9dab+P8rztT+QpA4pWAg=
+	b=O6KxFZP5FT8aNor4oaX3aNMqrwmYKB2418BFAkf2KAD2qfDizWosAdkv5eYgBLiZA
+	 25kO2zNqk5f8lEh/+rFtKZDhAyLgrB5OPBai7bEfFzLQp6WnA5tjYurvUwDPPXq2iE
+	 CDN90KTa/Z+oaBudsjJggg1Qze7RDcp9K+i/3j1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 40/78] mm/khugepaged: fix the address passed to notifier on testing young
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 129/140] usb: typec: tcpm: properly deliver cable vdms to altmode drivers
 Date: Wed, 17 Sep 2025 14:35:01 +0200
-Message-ID: <20250917123330.539290871@linuxfoundation.org>
+Message-ID: <20250917123347.467202182@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,55 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf ]
+commit f34bfcc77b18375a87091c289c2eb53c249787b4 upstream.
 
-Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
-mmu_notifier_test_young(), but we are passing the wrong address.
-In xxx_scan_pmd(), the actual iteration address is "_address" not
-"address".  We seem to misuse the variable on the very beginning.
+tcpm_handle_vdm_request delivers messages to the partner altmode or the
+cable altmode depending on the SVDM response type, which is incorrect.
+The partner or cable should be chosen based on the received message type
+instead.
 
-Change it to the right one.
+Also add this filter to ADEV_NOTIFY_USB_AND_QUEUE_VDM, which is used when
+the Enter Mode command is responded to by a NAK on SOP or SOP' and when
+the Exit Mode command is responded to by an ACK on SOP.
 
-[akpm@linux-foundation.org fix whitespace, per everyone]
-Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
-Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7e7877c55eb1 ("usb: typec: tcpm: add alt mode enter/exit/vdm support for sop'")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250821203759.1720841-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/khugepaged.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1276,8 +1276,8 @@ static int hpage_collapse_scan_pmd(struc
- 		 */
- 		if (cc->is_khugepaged &&
- 		    (pte_young(pteval) || folio_test_young(folio) ||
--		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
--								     address)))
-+		     folio_test_referenced(folio) ||
-+		     mmu_notifier_test_young(vma->vm_mm, _address)))
- 			referenced++;
- 	}
- 	if (!writable) {
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2375,17 +2375,21 @@ static void tcpm_handle_vdm_request(stru
+ 		case ADEV_NONE:
+ 			break;
+ 		case ADEV_NOTIFY_USB_AND_QUEUE_VDM:
+-			WARN_ON(typec_altmode_notify(adev, TYPEC_STATE_USB, NULL));
+-			typec_altmode_vdm(adev, p[0], &p[1], cnt);
++			if (rx_sop_type == TCPC_TX_SOP_PRIME) {
++				typec_cable_altmode_vdm(adev, TYPEC_PLUG_SOP_P, p[0], &p[1], cnt);
++			} else {
++				WARN_ON(typec_altmode_notify(adev, TYPEC_STATE_USB, NULL));
++				typec_altmode_vdm(adev, p[0], &p[1], cnt);
++			}
+ 			break;
+ 		case ADEV_QUEUE_VDM:
+-			if (response_tx_sop_type == TCPC_TX_SOP_PRIME)
++			if (rx_sop_type == TCPC_TX_SOP_PRIME)
+ 				typec_cable_altmode_vdm(adev, TYPEC_PLUG_SOP_P, p[0], &p[1], cnt);
+ 			else
+ 				typec_altmode_vdm(adev, p[0], &p[1], cnt);
+ 			break;
+ 		case ADEV_QUEUE_VDM_SEND_EXIT_MODE_ON_FAIL:
+-			if (response_tx_sop_type == TCPC_TX_SOP_PRIME) {
++			if (rx_sop_type == TCPC_TX_SOP_PRIME) {
+ 				if (typec_cable_altmode_vdm(adev, TYPEC_PLUG_SOP_P,
+ 							    p[0], &p[1], cnt)) {
+ 					int svdm_version = typec_get_cable_svdm_version(
 
 
 
