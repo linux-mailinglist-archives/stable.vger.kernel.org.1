@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05A7B7F1B9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE255B7E730
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4198B169C47
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:07:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F2994850B2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897FE330D38;
-	Wed, 17 Sep 2025 13:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204A63074B7;
+	Wed, 17 Sep 2025 12:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2sX2Iyd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOF60dS3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A3731A7F4;
-	Wed, 17 Sep 2025 13:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDED2F7ABF;
+	Wed, 17 Sep 2025 12:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114037; cv=none; b=RdhOyNpT655wrirK7ioXFPbX9tZ+QqW1YBXtirsmBt91ianzU2Vb7J7C8CWCvdUcZkOwvMxDXBfvW8EcxCMmEcsFuRUsa0jjgDDwoCjmda0gwQEurSMKnITefwdrjvBQjgdvxVcTvsY3sJNVrp9596azBE/3gwvSi2Qg+vZ8UFU=
+	t=1758113165; cv=none; b=GPON+kchoDufDWCfTgf32hma4tH3Rlsinxj61cVjaf7EXMIUYtdKC6z7FcQ4cvocXhEZ42TGvD3r+DJs8qPxhSsZIf98fgYylQJdtpWVBEFz5EpPfHZw92yGjr6El5XYrylPBlzv6yLYm8kGEjeBFHREnRUq6VVh6pPdVh8Qx6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114037; c=relaxed/simple;
-	bh=MnDwYjDnJtf+LbwdSVbNORiLIxyrl4x/7eaEUsZMOb0=;
+	s=arc-20240116; t=1758113165; c=relaxed/simple;
+	bh=FLdyxzYT6QkVFulpvtDdWUPWL+N27FDQQZlzD7ncGlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWweiDHoOqZpO/4AS5TZZimnsMfC5lsm9yy8oPKv8V9EU0tzJa9MKgboeMloHlx3t/zYzwftAl0u8oyusCBZqtHD2qEmpnmOp42y66QchaaqFLn7iFKrY/dxwpTck1dlQ+htARTtsMjh+CsVAOcPsCGvFExasxfd2d2HDAKP7Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2sX2Iyd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1A8C4CEF0;
-	Wed, 17 Sep 2025 13:00:36 +0000 (UTC)
+	 MIME-Version; b=bTQ1i9A9AVBzCzM9W9MFfSSTp9nGYgUgSumfQEnmPln4m+SmlxLq7jOSayjrDkqJPaxwEjypNyuYkalJWeLu1G+4RXZ7AHWmDSgKGwVFIUgb2qiBwsTODyujnN3EV9zy03T57GuJr8y8AVgZQnT9/jk9lIPuflyKl+vK0UgapaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOF60dS3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F17C4CEF0;
+	Wed, 17 Sep 2025 12:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114037;
-	bh=MnDwYjDnJtf+LbwdSVbNORiLIxyrl4x/7eaEUsZMOb0=;
+	s=korg; t=1758113165;
+	bh=FLdyxzYT6QkVFulpvtDdWUPWL+N27FDQQZlzD7ncGlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2sX2IydT5pWky2UOw4XyPC6sV2YWJxJ+vnOctovNyQBnlwqAgDbDIDtpcV4HZRUr
-	 xfgzvNUmMSIihgoOdVGfsZi6HaYevQ/kwjbDwJ8+KSCCh60f334xk0bVnsER4uReuC
-	 vgrhU9wBl/tunvwCCGD66z7DXQOU8vLqur+T+l3E=
+	b=KOF60dS3dqXVm9pNHn2nv+v65wJ8tMEHzT0GK58P9g8MC1+1jF3mq59ezhDpTyjUP
+	 WyLWkhRfzFM2jTQYPL125sd4q40IdhDQrR+Tfn9xrgfa3kLt0AbQuQLOKABPghMBUX
+	 +tU8Ds4tGVHXmOU12jnS6MXZVB8k4oRHxIB7m9KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Courbot <acourbot@google.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/78] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
+Subject: [PATCH 6.16 155/189] netfilter: nft_set_pipapo: merge pipapo_get/lookup
 Date: Wed, 17 Sep 2025 14:34:25 +0200
-Message-ID: <20250917123329.685372059@linuxfoundation.org>
+Message-ID: <20250917123355.659812105@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,329 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 ]
+[ Upstream commit d8d871a35ca9ee4881d34995444ed1cb826d01db ]
 
-This is one of three clang warnings about incompatible enum types
-in a conditional expression:
+The matching algorithm has implemented thrice:
+1. data path lookup, generic version
+2. data path lookup, avx2 version
+3. control plane lookup
 
-drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
-  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
+Merge 1 and 3 by refactoring pipapo_get as a common helper, then make
+nft_pipapo_lookup and nft_pipapo_get both call the common helper.
 
-The code is correct, so just rework it to avoid the warning.
+Aside from the code savings this has the benefit that we no longer allocate
+temporary scratch maps for each control plane get and insertion operation.
 
-Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@google.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ Adjust file paths ]
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: c4eaca2e1052 ("netfilter: nft_set_pipapo: don't check genbit from packetpath lookups")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/venc/venc_h264_if.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo.c | 188 ++++++++++-----------------------
+ 1 file changed, 58 insertions(+), 130 deletions(-)
 
---- a/drivers/media/platform/mediatek/vcodec/venc/venc_h264_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/venc/venc_h264_if.c
-@@ -611,7 +611,11 @@ static int h264_enc_init(struct mtk_vcod
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index a844b33fa6002..1a19649c28511 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -397,35 +397,36 @@ int pipapo_refill(unsigned long *map, unsigned int len, unsigned int rules,
+ }
  
- 	inst->ctx = ctx;
- 	inst->vpu_inst.ctx = ctx;
--	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-+	if (is_ext)
-+		inst->vpu_inst.id = SCP_IPI_VENC_H264;
-+	else
-+		inst->vpu_inst.id = IPI_VENC_H264;
-+
- 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx, VENC_SYS);
+ /**
+- * nft_pipapo_lookup() - Lookup function
+- * @net:	Network namespace
+- * @set:	nftables API set representation
+- * @key:	nftables API element representation containing key data
+- * @ext:	nftables API extension pointer, filled with matching reference
++ * pipapo_get() - Get matching element reference given key data
++ * @m:		storage containing the set elements
++ * @data:	Key data to be matched against existing elements
++ * @genmask:	If set, check that element is active in given genmask
++ * @tstamp:	timestamp to check for expired elements
+  *
+  * For more details, see DOC: Theory of Operation.
+  *
+- * Return: true on match, false otherwise.
++ * This is the main lookup function.  It matches key data against either
++ * the working match set or the uncommitted copy, depending on what the
++ * caller passed to us.
++ * nft_pipapo_get (lookup from userspace/control plane) and nft_pipapo_lookup
++ * (datapath lookup) pass the active copy.
++ * The insertion path will pass the uncommitted working copy.
++ *
++ * Return: pointer to &struct nft_pipapo_elem on match, NULL otherwise.
+  */
+-const struct nft_set_ext *
+-nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+-		  const u32 *key)
++static struct nft_pipapo_elem *pipapo_get(const struct nft_pipapo_match *m,
++					  const u8 *data, u8 genmask,
++					  u64 tstamp)
+ {
+-	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct nft_pipapo_scratch *scratch;
+ 	unsigned long *res_map, *fill_map;
+-	u8 genmask = nft_genmask_cur(net);
+-	const struct nft_pipapo_match *m;
+ 	const struct nft_pipapo_field *f;
+-	const u8 *rp = (const u8 *)key;
+ 	bool map_index;
+ 	int i;
  
- 	mtk_vcodec_debug_enter(inst);
+ 	local_bh_disable();
+ 
+-	m = rcu_dereference(priv->match);
+-
+-	if (unlikely(!m || !*raw_cpu_ptr(m->scratch)))
++	if (unlikely(!raw_cpu_ptr(m->scratch)))
+ 		goto out;
+ 
+ 	scratch = *raw_cpu_ptr(m->scratch);
+@@ -445,12 +446,12 @@ nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+ 		 * packet bytes value, then AND bucket value
+ 		 */
+ 		if (likely(f->bb == 8))
+-			pipapo_and_field_buckets_8bit(f, res_map, rp);
++			pipapo_and_field_buckets_8bit(f, res_map, data);
+ 		else
+-			pipapo_and_field_buckets_4bit(f, res_map, rp);
++			pipapo_and_field_buckets_4bit(f, res_map, data);
+ 		NFT_PIPAPO_GROUP_BITS_ARE_8_OR_4;
+ 
+-		rp += f->groups / NFT_PIPAPO_GROUPS_PER_BYTE(f);
++		data += f->groups / NFT_PIPAPO_GROUPS_PER_BYTE(f);
+ 
+ 		/* Now populate the bitmap for the next field, unless this is
+ 		 * the last field, in which case return the matched 'ext'
+@@ -470,11 +471,11 @@ nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+ 		}
+ 
+ 		if (last) {
+-			const struct nft_set_ext *ext;
++			struct nft_pipapo_elem *e;
+ 
+-			ext = &f->mt[b].e->ext;
+-			if (unlikely(nft_set_elem_expired(ext) ||
+-				     !nft_set_elem_active(ext, genmask)))
++			e = f->mt[b].e;
++			if (unlikely(__nft_set_elem_expired(&e->ext, tstamp) ||
++				     !nft_set_elem_active(&e->ext, genmask)))
+ 				goto next_match;
+ 
+ 			/* Last field: we're just returning the key without
+@@ -484,8 +485,7 @@ nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+ 			 */
+ 			scratch->map_index = map_index;
+ 			local_bh_enable();
+-
+-			return ext;
++			return e;
+ 		}
+ 
+ 		/* Swap bitmap indices: res_map is the initial bitmap for the
+@@ -495,7 +495,7 @@ nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+ 		map_index = !map_index;
+ 		swap(res_map, fill_map);
+ 
+-		rp += NFT_PIPAPO_GROUPS_PADDING(f);
++		data += NFT_PIPAPO_GROUPS_PADDING(f);
+ 	}
+ 
+ out:
+@@ -504,99 +504,29 @@ nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+ }
+ 
+ /**
+- * pipapo_get() - Get matching element reference given key data
+- * @m:		storage containing active/existing elements
+- * @data:	Key data to be matched against existing elements
+- * @genmask:	If set, check that element is active in given genmask
+- * @tstamp:	timestamp to check for expired elements
+- * @gfp:	the type of memory to allocate (see kmalloc).
++ * nft_pipapo_lookup() - Dataplane fronted for main lookup function
++ * @net:	Network namespace
++ * @set:	nftables API set representation
++ * @key:	pointer to nft registers containing key data
+  *
+- * This is essentially the same as the lookup function, except that it matches
+- * key data against the uncommitted copy and doesn't use preallocated maps for
+- * bitmap results.
++ * This function is called from the data path.  It will search for
++ * an element matching the given key in the current active copy.
+  *
+- * Return: pointer to &struct nft_pipapo_elem on match, error pointer otherwise.
++ * Return: ntables API extension pointer or NULL if no match.
+  */
+-static struct nft_pipapo_elem *pipapo_get(const struct nft_pipapo_match *m,
+-					  const u8 *data, u8 genmask,
+-					  u64 tstamp, gfp_t gfp)
++const struct nft_set_ext *
++nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
++		  const u32 *key)
+ {
+-	struct nft_pipapo_elem *ret = ERR_PTR(-ENOENT);
+-	unsigned long *res_map, *fill_map = NULL;
+-	const struct nft_pipapo_field *f;
+-	int i;
+-
+-	if (m->bsize_max == 0)
+-		return ret;
+-
+-	res_map = kmalloc_array(m->bsize_max, sizeof(*res_map), gfp);
+-	if (!res_map) {
+-		ret = ERR_PTR(-ENOMEM);
+-		goto out;
+-	}
+-
+-	fill_map = kcalloc(m->bsize_max, sizeof(*res_map), gfp);
+-	if (!fill_map) {
+-		ret = ERR_PTR(-ENOMEM);
+-		goto out;
+-	}
+-
+-	pipapo_resmap_init(m, res_map);
+-
+-	nft_pipapo_for_each_field(f, i, m) {
+-		bool last = i == m->field_count - 1;
+-		int b;
+-
+-		/* For each bit group: select lookup table bucket depending on
+-		 * packet bytes value, then AND bucket value
+-		 */
+-		if (f->bb == 8)
+-			pipapo_and_field_buckets_8bit(f, res_map, data);
+-		else if (f->bb == 4)
+-			pipapo_and_field_buckets_4bit(f, res_map, data);
+-		else
+-			BUG();
+-
+-		data += f->groups / NFT_PIPAPO_GROUPS_PER_BYTE(f);
+-
+-		/* Now populate the bitmap for the next field, unless this is
+-		 * the last field, in which case return the matched 'ext'
+-		 * pointer if any.
+-		 *
+-		 * Now res_map contains the matching bitmap, and fill_map is the
+-		 * bitmap for the next field.
+-		 */
+-next_match:
+-		b = pipapo_refill(res_map, f->bsize, f->rules, fill_map, f->mt,
+-				  last);
+-		if (b < 0)
+-			goto out;
+-
+-		if (last) {
+-			if (__nft_set_elem_expired(&f->mt[b].e->ext, tstamp))
+-				goto next_match;
+-			if ((genmask &&
+-			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
+-				goto next_match;
+-
+-			ret = f->mt[b].e;
+-			goto out;
+-		}
+-
+-		data += NFT_PIPAPO_GROUPS_PADDING(f);
++	struct nft_pipapo *priv = nft_set_priv(set);
++	u8 genmask = nft_genmask_cur(net);
++	const struct nft_pipapo_match *m;
++	const struct nft_pipapo_elem *e;
+ 
+-		/* Swap bitmap indices: fill_map will be the initial bitmap for
+-		 * the next field (i.e. the new res_map), and res_map is
+-		 * guaranteed to be all-zeroes at this point, ready to be filled
+-		 * according to the next mapping table.
+-		 */
+-		swap(res_map, fill_map);
+-	}
++	m = rcu_dereference(priv->match);
++	e = pipapo_get(m, (const u8 *)key, genmask, get_jiffies_64());
+ 
+-out:
+-	kfree(fill_map);
+-	kfree(res_map);
+-	return ret;
++	return e ? &e->ext : NULL;
+ }
+ 
+ /**
+@@ -605,6 +535,11 @@ static struct nft_pipapo_elem *pipapo_get(const struct nft_pipapo_match *m,
+  * @set:	nftables API set representation
+  * @elem:	nftables API element representation containing key data
+  * @flags:	Unused
++ *
++ * This function is called from the control plane path under
++ * RCU read lock.
++ *
++ * Return: set element private pointer or ERR_PTR(-ENOENT).
+  */
+ static struct nft_elem_priv *
+ nft_pipapo_get(const struct net *net, const struct nft_set *set,
+@@ -615,10 +550,9 @@ nft_pipapo_get(const struct net *net, const struct nft_set *set,
+ 	struct nft_pipapo_elem *e;
+ 
+ 	e = pipapo_get(m, (const u8 *)elem->key.val.data,
+-		       nft_genmask_cur(net), get_jiffies_64(),
+-		       GFP_ATOMIC);
+-	if (IS_ERR(e))
+-		return ERR_CAST(e);
++		       nft_genmask_cur(net), get_jiffies_64());
++	if (!e)
++		return ERR_PTR(-ENOENT);
+ 
+ 	return &e->priv;
+ }
+@@ -1343,8 +1277,8 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
+ 	else
+ 		end = start;
+ 
+-	dup = pipapo_get(m, start, genmask, tstamp, GFP_KERNEL);
+-	if (!IS_ERR(dup)) {
++	dup = pipapo_get(m, start, genmask, tstamp);
++	if (dup) {
+ 		/* Check if we already have the same exact entry */
+ 		const struct nft_data *dup_key, *dup_end;
+ 
+@@ -1363,15 +1297,9 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
+ 		return -ENOTEMPTY;
+ 	}
+ 
+-	if (PTR_ERR(dup) == -ENOENT) {
+-		/* Look for partially overlapping entries */
+-		dup = pipapo_get(m, end, nft_genmask_next(net), tstamp,
+-				 GFP_KERNEL);
+-	}
+-
+-	if (PTR_ERR(dup) != -ENOENT) {
+-		if (IS_ERR(dup))
+-			return PTR_ERR(dup);
++	/* Look for partially overlapping entries */
++	dup = pipapo_get(m, end, nft_genmask_next(net), tstamp);
++	if (dup) {
+ 		*elem_priv = &dup->priv;
+ 		return -ENOTEMPTY;
+ 	}
+@@ -1913,8 +1841,8 @@ nft_pipapo_deactivate(const struct net *net, const struct nft_set *set,
+ 		return NULL;
+ 
+ 	e = pipapo_get(m, (const u8 *)elem->key.val.data,
+-		       nft_genmask_next(net), nft_net_tstamp(net), GFP_KERNEL);
+-	if (IS_ERR(e))
++		       nft_genmask_next(net), nft_net_tstamp(net));
++	if (!e)
+ 		return NULL;
+ 
+ 	nft_set_elem_change_active(net, set, &e->ext);
+-- 
+2.51.0
+
 
 
 
