@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-179960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A50B7E2BD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCFEB7E7E3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8072C188480C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAF2B1C01880
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F02337EBE;
-	Wed, 17 Sep 2025 12:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D101E31A812;
+	Wed, 17 Sep 2025 12:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrGJCG1I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V16N8lrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C691F09B6;
-	Wed, 17 Sep 2025 12:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F05731A7E9;
+	Wed, 17 Sep 2025 12:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112937; cv=none; b=r7bhHKthIJpOtl2pxOZkc7XJrsm1xd4YWRkkAUr1ulMVmRPAnbmYtT+D4tXYjSZLPK2nKlAVyytdoB97Of+V/Py6aGs08ho2RMiyFc1OLCgVjfwZLgywlGEKWr6CSIrW1ZdRsZICuFat/+Wc2Z8rM6ZpC61g47xWD/uHFYBXhek=
+	t=1758113292; cv=none; b=SKXFhNADryGOqYjxq6E9olxv/JsAIkiMBf2x59LSamNroKn2rZl4ZsP/Wmw93XNdVg4Q4IeSV/3IHpH1CYAJ/R0GrI7q3rs3MS1gotXdTBFQdRsM72r2GhNxQLJ+Ptw13aW6PIt1W6F+gqLK7E4UOMoLQSr4o1JIs94ZLDjP50g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112937; c=relaxed/simple;
-	bh=0BL/g2Bq+dUO0aKqZFyb7f3V925BTw/zxWQm98r8U78=;
+	s=arc-20240116; t=1758113292; c=relaxed/simple;
+	bh=phg9I8u7yzqBAaqn27JlMy555nhsEXchaoX6RvYO22A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOo5gATpfGXF5UXeQd2641bU/UpJkHkxhe6klaJ/WlIFtiQdsc+0B90FRTKt2pr222CNtlL8nH8TMfcvBvjCBeFHrrkOYxiXy94MSotleaEuzBb8knNuS7oXKOvidotRzUtmxH6FYvGvWKyct/JaSM+JK5DDlmtYHY4gQBmAeWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrGJCG1I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220ECC4CEF0;
-	Wed, 17 Sep 2025 12:42:16 +0000 (UTC)
+	 MIME-Version; b=dMiCapTbdn2JBYIvCBdnhZNCnTzm92CMYrMBhBOQ/aoILrQTI8c0+VU6DioTGfiVQpTUJ6z4gurrlB0DY1BjXEc1uNUbT5daIfHL/MBORijNDufxxuuGWC2I33czWq8mJ+ycfExmxOKo3J8QW0oM7C8YuPu6TCzLyrmLHwp8Zwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V16N8lrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D73C4CEF0;
+	Wed, 17 Sep 2025 12:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112937;
-	bh=0BL/g2Bq+dUO0aKqZFyb7f3V925BTw/zxWQm98r8U78=;
+	s=korg; t=1758113292;
+	bh=phg9I8u7yzqBAaqn27JlMy555nhsEXchaoX6RvYO22A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GrGJCG1I9uLMPGIkv+sAh5PvRaD/eV7OoH1aaYNm10fzov0QVaIyvjiTXLDFZmROA
-	 6+7UYB1ekOa9p5EOUT03anwNCw9tu53NyviXhRJC0xupApCVk6mBhXwNmYBoMtkDLh
-	 OV5uJD96vRc4top8S6HMJyaOTjXzSkxjNAcsSX3Q=
+	b=V16N8lrwdunUJx12XEKkISZKs5EvMX5AbmoQ2X09G9jiaMNfekaJyszb9Ln7aCqQj
+	 5Wy45N05z5HyeNXMUAqi5oVba2B53LX8QqQI+LKx8dD9sQWjYHArlqYtZ4bvmzeAO7
+	 5iIXi2Y3c3s5Sl9kWF/1dyVz81C50Hnb2DFZstIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.16 104/189] ceph: fix crash after fscrypt_encrypt_pagecache_blocks() error
+	Stanislav Fort <disclosure@aisle.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 042/140] bpf: Fix out-of-bounds dynptr write in bpf_crypto_crypt
 Date: Wed, 17 Sep 2025 14:33:34 +0200
-Message-ID: <20250917123354.405538447@linuxfoundation.org>
+Message-ID: <20250917123345.333172747@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 249e0a47cdb46bb9eae65511c569044bd8698d7d upstream.
+[ Upstream commit f9bb6ffa7f5ad0f8ee0f53fc4a10655872ee4a14 ]
 
-The function move_dirty_folio_in_page_array() was created by commit
-ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method") by
-moving code from ceph_writepages_start() to this function.
+Stanislav reported that in bpf_crypto_crypt() the destination dynptr's
+size is not validated to be at least as large as the source dynptr's
+size before calling into the crypto backend with 'len = src_len'. This
+can result in an OOB write when the destination is smaller than the
+source.
 
-This new function is supposed to return an error code which is checked
-by the caller (now ceph_process_folio_batch()), and on error, the
-caller invokes redirty_page_for_writepage() and then breaks from the
-loop.
+Concretely, in mentioned function, psrc and pdst are both linear
+buffers fetched from each dynptr:
 
-However, the refactoring commit has gone wrong, and it by accident, it
-always returns 0 (= success) because it first NULLs the pointer and
-then returns PTR_ERR(NULL) which is always 0.  This means errors are
-silently ignored, leaving NULL entries in the page array, which may
-later crash the kernel.
+  psrc = __bpf_dynptr_data(src, src_len);
+  [...]
+  pdst = __bpf_dynptr_data_rw(dst, dst_len);
+  [...]
+  err = decrypt ?
+        ctx->type->decrypt(ctx->tfm, psrc, pdst, src_len, piv) :
+        ctx->type->encrypt(ctx->tfm, psrc, pdst, src_len, piv);
 
-The simple solution is to call PTR_ERR() before clearing the pointer.
+The crypto backend expects pdst to be large enough with a src_len length
+that can be written. Add an additional src_len > dst_len check and bail
+out if it's the case. Note that these kfuncs are accessible under root
+privileges only.
 
-Cc: stable@vger.kernel.org
-Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
-Link: https://lore.kernel.org/ceph-devel/aK4v548CId5GIKG1@swift.blarg.de/
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3e1c6f35409f ("bpf: make common crypto API for TC/XDP programs")
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://lore.kernel.org/r/20250829143657.318524-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/addr.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/bpf/crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 8bc66b45dade..322ed268f14a 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -1264,7 +1264,9 @@ static inline int move_dirty_folio_in_page_array(struct address_space *mapping,
- 								0,
- 								gfp_flags);
- 		if (IS_ERR(pages[index])) {
--			if (PTR_ERR(pages[index]) == -EINVAL) {
-+			int err = PTR_ERR(pages[index]);
-+
-+			if (err == -EINVAL) {
- 				pr_err_client(cl, "inode->i_blkbits=%hhu\n",
- 						inode->i_blkbits);
- 			}
-@@ -1273,7 +1275,7 @@ static inline int move_dirty_folio_in_page_array(struct address_space *mapping,
- 			BUG_ON(ceph_wbc->locked_pages == 0);
+diff --git a/kernel/bpf/crypto.c b/kernel/bpf/crypto.c
+index 94854cd9c4cc3..83c4d9943084b 100644
+--- a/kernel/bpf/crypto.c
++++ b/kernel/bpf/crypto.c
+@@ -278,7 +278,7 @@ static int bpf_crypto_crypt(const struct bpf_crypto_ctx *ctx,
+ 	siv_len = siv ? __bpf_dynptr_size(siv) : 0;
+ 	src_len = __bpf_dynptr_size(src);
+ 	dst_len = __bpf_dynptr_size(dst);
+-	if (!src_len || !dst_len)
++	if (!src_len || !dst_len || src_len > dst_len)
+ 		return -EINVAL;
  
- 			pages[index] = NULL;
--			return PTR_ERR(pages[index]);
-+			return err;
- 		}
- 	} else {
- 		pages[index] = &folio->page;
+ 	if (siv_len != ctx->siv_len)
 -- 
 2.51.0
 
