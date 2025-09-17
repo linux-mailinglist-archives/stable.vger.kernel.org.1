@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-179913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FAFB7E2C2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FE2B7E789
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 275EA7B0982
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:39:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99A8E5208BD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A95B1F583D;
-	Wed, 17 Sep 2025 12:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DCC30CB29;
+	Wed, 17 Sep 2025 12:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUNFAAI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNTDqqIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB264189B84;
-	Wed, 17 Sep 2025 12:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDD62F7ABF;
+	Wed, 17 Sep 2025 12:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112782; cv=none; b=NDgQ6FhB8mVsi7lZA2vkXEstzaOb79Us7UgyHFSgTe5gC6EFMc/wc8AOtNkfg1DgVSfq5eXsIWKth1I7fm20zMp41bRxi8p767g2FCzJuZTkZwwbjIiXO6pN59gaA4UGICRSYJo3kdSP3P34p2bRjS5gazwXpkWMnYMejDhAbkg=
+	t=1758113198; cv=none; b=D8glskFCpMulc1SEr/sDiWKA+FFCbFj5n612tAdrNwPdDysTixOmuJLy4aYQinTHMCDJnRAdDCoT71rClThOjKSKvDWc8tZvVbXb8iN/up33QyuY5knMObYKX6Wdjne7rwgsvPFnE2K52LBgzjNcZ7P5tbEJttqFjPWdQmFcWmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112782; c=relaxed/simple;
-	bh=ls2qqCKcD8OQuAK5mEUDWGksOtpYg5qsqn1A0WCl7Jw=;
+	s=arc-20240116; t=1758113198; c=relaxed/simple;
+	bh=wo/GE1SJ32GXEVYrkDJSwgkYJyTw2KY1/RkDE6TqajU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4zVk0uvArK2j2+sUlOoeMtwmPbuO1EoxkqaniwmZWYD/37Q9pkq+kxkm7n5X+n2JZiLV0NwRlt5gjjKAuYwx5jl98WJ/fhhMYXZLmEOUSw7wsqlj/FlU46YwI+uPQ0ghsIzL8lY13DGv30wTSGrLES0mq14oav0EObHQJksJeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUNFAAI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6D6C4CEF0;
-	Wed, 17 Sep 2025 12:39:41 +0000 (UTC)
+	 MIME-Version; b=PJDF/2QEhAFYE9A0BBVAJku4Ej6AUMwbGHt0y6ZOnOLDZaUTaQrFaqQrWxfs4myVcoS+BAK3HJw79voVppmHY1D9imZVTPKrSA2lSVvA9k5ZU7o1WnHYKQqy2zKg7XDfeoLi7FrDVWWdJAXiAIcD8VJW4YGTlTkIDhRJb7X4obU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNTDqqIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD75C4CEF5;
+	Wed, 17 Sep 2025 12:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112782;
-	bh=ls2qqCKcD8OQuAK5mEUDWGksOtpYg5qsqn1A0WCl7Jw=;
+	s=korg; t=1758113198;
+	bh=wo/GE1SJ32GXEVYrkDJSwgkYJyTw2KY1/RkDE6TqajU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUNFAAI9OXxpDjApnZu/E0proxFT7o+jCQ8P/0DLJERuo3fIyVugIM+qv3EYWMc8T
-	 AfiX1aXgZkSrGSJBnVuLtStBxhNY/2RhdfM1EZPAKO30I0RxqbDdk3c/abfv7WQ8GF
-	 cDF9K1inISxEeG6DxaQqjHRuQ/VbpSjjEPXCCkaM=
+	b=tNTDqqIreT1gOK2w12+4OOR7i0+wzEcNkUBo0HJaV2dORWmgeGyk/u/wMxEuynnL5
+	 xr8mEQzN34rcZr6dPPOzL8dfgujine+FzMbPiO4j3hEBIT17WqvlLD5KGi2lZH6V5/
+	 BcnVuIG/dr4AlmhlG55sMwaiabxKbqQzmqoVxJlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Weimer <fweimer@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.16 075/189] fuse: prevent overflow in copy_file_range return value
+	Huan Yang <link@vivo.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Bingbu Cao <bingbu.cao@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 013/140] Revert "udmabuf: fix vmap_udmabuf error page set"
 Date: Wed, 17 Sep 2025 14:33:05 +0200
-Message-ID: <20250917123353.700372460@linuxfoundation.org>
+Message-ID: <20250917123344.639004775@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Huan Yang <link@vivo.com>
 
-commit 1e08938c3694f707bb165535df352ac97a8c75c9 upstream.
+[ Upstream commit ceb7b62eaaaacfcf87473bd2e99ac73a758620cb ]
 
-The FUSE protocol uses struct fuse_write_out to convey the return value of
-copy_file_range, which is restricted to uint32_t.  But the COPY_FILE_RANGE
-interface supports a 64-bit size copies.
+This reverts commit 18d7de823b7150344d242c3677e65d68c5271b04.
 
-Currently the number of bytes copied is silently truncated to 32-bit, which
-may result in poor performance or even failure to copy in case of
-truncation to zero.
+We cannot use vmap_pfn() in vmap_udmabuf() as it would fail the pfn_valid()
+check in vmap_pfn_apply(). This is because vmap_pfn() is intended to be
+used for mapping non-struct-page memory such as PCIe BARs. Since, udmabuf
+mostly works with pages/folios backed by shmem/hugetlbfs/THP, vmap_pfn()
+is not the right tool or API to invoke for implementing vmap.
 
-Reported-by: Florian Weimer <fweimer@redhat.com>
-Closes: https://lore.kernel.org/all/lhuh5ynl8z5.fsf@oldenburg.str.redhat.com/
-Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
-Cc: <stable@vger.kernel.org> # v4.20
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Huan Yang <link@vivo.com>
+Suggested-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Reported-by: Bingbu Cao <bingbu.cao@linux.intel.com>
+Closes: https://lore.kernel.org/dri-devel/eb7e0137-3508-4287-98c4-816c5fd98e10@vivo.com/T/#mbda4f64a3532b32e061f4e8763bc8e307bea3ca8
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Link: https://lore.kernel.org/r/20250428073831.19942-2-link@vivo.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma-buf/Kconfig   |  1 -
+ drivers/dma-buf/udmabuf.c | 22 +++++++---------------
+ 2 files changed, 7 insertions(+), 16 deletions(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3013,7 +3013,7 @@ static ssize_t __fuse_copy_file_range(st
- 		.nodeid_out = ff_out->nodeid,
- 		.fh_out = ff_out->fh,
- 		.off_out = pos_out,
--		.len = len,
-+		.len = min_t(size_t, len, UINT_MAX & PAGE_MASK),
- 		.flags = flags
- 	};
- 	struct fuse_write_out outarg;
+diff --git a/drivers/dma-buf/Kconfig b/drivers/dma-buf/Kconfig
+index fee04fdb08220..b46eb8a552d7b 100644
+--- a/drivers/dma-buf/Kconfig
++++ b/drivers/dma-buf/Kconfig
+@@ -36,7 +36,6 @@ config UDMABUF
+ 	depends on DMA_SHARED_BUFFER
+ 	depends on MEMFD_CREATE || COMPILE_TEST
+ 	depends on MMU
+-	select VMAP_PFN
+ 	help
+ 	  A driver to let userspace turn memfd regions into dma-bufs.
+ 	  Qemu can use this to create host dmabufs for guest framebuffers.
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index 959f690b12260..0e127a9109e75 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -74,29 +74,21 @@ static int mmap_udmabuf(struct dma_buf *buf, struct vm_area_struct *vma)
+ static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
+ {
+ 	struct udmabuf *ubuf = buf->priv;
+-	unsigned long *pfns;
++	struct page **pages;
+ 	void *vaddr;
+ 	pgoff_t pg;
+ 
+ 	dma_resv_assert_held(buf->resv);
+ 
+-	/**
+-	 * HVO may free tail pages, so just use pfn to map each folio
+-	 * into vmalloc area.
+-	 */
+-	pfns = kvmalloc_array(ubuf->pagecount, sizeof(*pfns), GFP_KERNEL);
+-	if (!pfns)
++	pages = kvmalloc_array(ubuf->pagecount, sizeof(*pages), GFP_KERNEL);
++	if (!pages)
+ 		return -ENOMEM;
+ 
+-	for (pg = 0; pg < ubuf->pagecount; pg++) {
+-		unsigned long pfn = folio_pfn(ubuf->folios[pg]);
+-
+-		pfn += ubuf->offsets[pg] >> PAGE_SHIFT;
+-		pfns[pg] = pfn;
+-	}
++	for (pg = 0; pg < ubuf->pagecount; pg++)
++		pages[pg] = &ubuf->folios[pg]->page;
+ 
+-	vaddr = vmap_pfn(pfns, ubuf->pagecount, PAGE_KERNEL);
+-	kvfree(pfns);
++	vaddr = vm_map_ram(pages, ubuf->pagecount, -1);
++	kvfree(pages);
+ 	if (!vaddr)
+ 		return -EINVAL;
+ 
+-- 
+2.51.0
+
 
 
 
