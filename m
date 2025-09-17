@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-179990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079A2B7E38A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B44B7E8E8
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE80623ABD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:44:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 992DF7BAF70
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F4C283FE9;
-	Wed, 17 Sep 2025 12:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B702F1FF6;
+	Wed, 17 Sep 2025 12:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5uw6mF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KH9+u3/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E36337EB9;
-	Wed, 17 Sep 2025 12:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4713B2A4;
+	Wed, 17 Sep 2025 12:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113034; cv=none; b=tbMGVl55IcU5rG19jO4iMG0424aMrxHvGx7Dctya2X8ra9VUW9AE+2o9446h3Ujjs626uLroKPLARGlv69MhLLQCcrVEpAJ8DE51VO3B4moPEBMIxJ86caPlIwD1GyMLNbiOLr7ZY8nxhcVkTqfGaZJVYNP87Zsa1jBV0VoR14E=
+	t=1758113443; cv=none; b=mHH7Iiv/TfQrl6kP3kK59mgpRBX/mSN2KveWs/SPM30hdCCUzKtib2JT0BpEVWXhooiIJMhtb20+M5yCRiNi4Sgg/wh/qIpFZMVKVlODOTYINLHzd7rS1Wqd9mqpoGJ8sj2SL9CGIRyVHhZoT6WT3/i85d9IQDtGOPQF2l+BwaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113034; c=relaxed/simple;
-	bh=23TNJUGxj52Tda96FciMTwBSNtmc8pPSE+uKP7qhfN8=;
+	s=arc-20240116; t=1758113443; c=relaxed/simple;
+	bh=f3q97DFLoUk7ZVl2uSf9oMNoIUH14CSF25bbuoqV6bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InYoIamaZxm9PV0H3ZUT+Bx+pMoWtJnWsNtQv9N4XcYx8ly2pcKIP1ZtcmVHqoH3DCqXpixap9PXNn0BAEe8AMJgu/tYWQ2OaIcFD4Xf0SvJsClrYInetQaEh25m8Fj/zH+adyhtF4c3dyfAm7KjmzvGXAl9rMGH0AZ9/sHOlAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5uw6mF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BC4C4CEF0;
-	Wed, 17 Sep 2025 12:43:53 +0000 (UTC)
+	 MIME-Version; b=rJGEKKn50v4mYsKN/MtZvsR3bKraZdzlahEqbKQ5Y0ZSNNOgSZaFdhXwFhi5Qm7VEdozUBLX2fBFVRZpmkVXi0gRhh3/U5JkaQEkg9xGQULepU1ksFY+4Sz3/rB2qfm1z/XP4/3BNNXLqGubBOQXugOfLBfB+F3h5HoCebK6xHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KH9+u3/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45669C4CEF0;
+	Wed, 17 Sep 2025 12:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113033;
-	bh=23TNJUGxj52Tda96FciMTwBSNtmc8pPSE+uKP7qhfN8=;
+	s=korg; t=1758113442;
+	bh=f3q97DFLoUk7ZVl2uSf9oMNoIUH14CSF25bbuoqV6bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5uw6mF6uvqef1bfkGAEnHX0m4e7BktB+0ge5+HNwD3TZV8YiYj30yPJ/u0KuPkb0
-	 jB6tebMw6dE2RNHA0PauVtUkIpDGLTp4SpA496Xbr9m5Ad4Mqk5tOQH6f8Xs8FbJEg
-	 hyKyFs5y5d5IGin2xaACtozSHwIk3GOz6hN8JrPM=
+	b=KH9+u3/b4wHPAAxO3TFTeWOySYWo4wPPBL2Vhdk4zJruCtRJTi+nRRA3imwH+5Ezf
+	 Av2f421TxfzAU51H80kWQbXb9Ni7BxB2EqYS4r7cdF7e87mHtcdzspTTgqxVCo2zNp
+	 tH4oxrLYZhfsmSNtxU+t5ilj3J+6wlQqQiimQAvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 149/189] can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
-Date: Wed, 17 Sep 2025 14:34:19 +0200
-Message-ID: <20250917123355.509037299@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 088/140] Revert "net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups"
+Date: Wed, 17 Sep 2025 14:34:20 +0200
+Message-ID: <20250917123346.457930313@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit f214744c8a27c3c1da6b538c232da22cd027530e ]
+commit 63a796558bc22ec699e4193d5c75534757ddf2e6 upstream.
 
-Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
-callback") expects that a call to j1939_priv_put() can be unconditionally
-delayed until j1939_sk_sock_destruct() is called. But a refcount leak will
-happen when j1939_sk_bind() is called again after j1939_local_ecu_get()
- from previous j1939_sk_bind() call returned an error. We need to call
-j1939_priv_put() before j1939_sk_bind() returns an error.
+This reverts commit 5537a4679403 ("net: usb: asix: ax88772: drop
+phylink use in PM to avoid MDIO runtime PM wakeups"), it breaks
+operation of asix ethernet usb dongle after system suspend-resume
+cycle.
 
-Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/4f49a1bc-a528-42ad-86c0-187268ab6535@I-love.SAKURA.ne.jp
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com/
+Fixes: 5537a4679403 ("net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/2945b9dbadb8ee1fee058b19554a5cb14f1763c1.1757601118.git.pabeni@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/socket.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/asix_devices.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
-index b3a45aa70cf2f..785b883a1319d 100644
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -520,6 +520,9 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr *uaddr, int len)
- 	ret = j1939_local_ecu_get(priv, jsk->addr.src_name, jsk->addr.sa);
- 	if (ret) {
- 		j1939_netdev_stop(priv);
-+		jsk->priv = NULL;
-+		synchronize_rcu();
-+		j1939_priv_put(priv);
- 		goto out_release_sock;
- 	}
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -607,8 +607,15 @@ static const struct net_device_ops ax887
  
--- 
-2.51.0
-
+ static void ax88772_suspend(struct usbnet *dev)
+ {
++	struct asix_common_private *priv = dev->driver_priv;
+ 	u16 medium;
+ 
++	if (netif_running(dev->net)) {
++		rtnl_lock();
++		phylink_suspend(priv->phylink, false);
++		rtnl_unlock();
++	}
++
+ 	/* Stop MAC operation */
+ 	medium = asix_read_medium_status(dev, 1);
+ 	medium &= ~AX_MEDIUM_RE;
+@@ -637,6 +644,12 @@ static void ax88772_resume(struct usbnet
+ 	for (i = 0; i < 3; i++)
+ 		if (!priv->reset(dev, 1))
+ 			break;
++
++	if (netif_running(dev->net)) {
++		rtnl_lock();
++		phylink_resume(priv->phylink);
++		rtnl_unlock();
++	}
+ }
+ 
+ static int asix_resume(struct usb_interface *intf)
 
 
 
