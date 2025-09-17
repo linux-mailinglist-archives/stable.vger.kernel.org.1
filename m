@@ -1,130 +1,211 @@
-Return-Path: <stable+bounces-179774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E0AB7D905
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:30:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB08B7D510
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AD0B3ADB53
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:40:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E90DF7AAD3C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CEB29E116;
-	Wed, 17 Sep 2025 07:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83349302170;
+	Wed, 17 Sep 2025 07:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4bvdTzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewcqck9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3790B284682
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F332877D8
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758094839; cv=none; b=Qo8xIJ8DCezO1dwkf5JRdlexiGkPTGmE54lsavqpujNoNZo1+NtdRgUzH9QQT/1Ep2K80zsWV9csbZSu4aCgHEGlbPO0c0ibGBWvK5LDTSSgKSv5u5J1Zt+m1FkUxnmFnGLflQF5tCAESvptvz8QwFs1STMJ1iZgwt3Zet09keM=
+	t=1758094991; cv=none; b=AAp9yFHvwPocoeumo+pwe6hrcGjqy64VTHrEwUnpP8QmNKvUPvWsRpUEaNjVZFHcwO/ugdZagzBQFWAsFcKUalVg4ozfvzLbkcNj8S6aQ3qcV9b76BzjIOgHyn4BMGnRlJg2FZwc4E5DJP8CgKeWiruOeImd1HbrrC+BJC4p9PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758094839; c=relaxed/simple;
-	bh=qmIu/kSHPMaZ0Sb2VKPPv4ZxNstZQwTSRpHYbfclKdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FOgBgp3/xWBc1xTPYyh4GnSHTwk+lcuzKH6ad+RMjMfZArLGFC3MpQIQImG+pOY72KE9fwrlsclB6Hki86N7zTCCyzjQm+EEoa1NLGlqHRVu1kxKhrOdjPME5l70ZJ/mWL28gvbT7YrwoKjfIz6pCqiAiuV6eOlI81WN9Qag0ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4bvdTzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0DDC4CEF0;
-	Wed, 17 Sep 2025 07:40:37 +0000 (UTC)
+	s=arc-20240116; t=1758094991; c=relaxed/simple;
+	bh=FOaxFVMSuRTCqxsAibSwslRP1ia+HRgZgoahnm0MIy8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P7mdlWWGv4243zwDoS6xIZg8EJdz5BeKs+sj34aqvxQ0VwrMq0ttwQXf7a9Z61O2mKihvnJsNIpd9TCYS220aH0e40/EqKoRN3swOe8aqpv+TVQTo+BUP2fIIsa99hIfu5UsJl2NMD/ch6eZQoyaEL9FQSBOPjX9OGF7DICMnS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewcqck9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5922DC4CEF0;
+	Wed, 17 Sep 2025 07:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758094837;
-	bh=qmIu/kSHPMaZ0Sb2VKPPv4ZxNstZQwTSRpHYbfclKdw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f4bvdTzQVinwtj9+rD/nW+uYG2XdEZhCQV/nmcw0x5vJ32iNN5UJ7j9MFho2Ff1gJ
-	 KdyYDZvR+vVf9hqwlW7p2hWQliDV6Nn2JfTySjDRDd5GrRmxFCmT3k16kOkydXyU8c
-	 0AZXj3uipigxhn6UwEgQKxFLqwYajq6PfzD/P4wc=
-Date: Wed, 17 Sep 2025 09:40:34 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: "Jitindar Singh, Suraj" <surajjs@amazon.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 5.10 0/4] x86/speculation: Make {JMP, CALL}_NOSPEC
- Consistent
-Message-ID: <2025091712-gizzard-patrol-e59d@gregkh>
-References: <20250903225003.50346-1-surajjs@amazon.com>
- <2025090450-plaster-shadiness-1283@gregkh>
- <ecfff771b6fdd3f5bcca3c29019dafb28d20abe1.camel@amazon.com>
+	s=korg; t=1758094990;
+	bh=FOaxFVMSuRTCqxsAibSwslRP1ia+HRgZgoahnm0MIy8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ewcqck9vRHdFsXMuClvfXcDAtMcQmsBbXmIQH8axMBWy2uFSNCsF+yhiBwylIPVmw
+	 NPu4Ywn4f1VJBHWj/bOiiFM+Eca7O9LumxKaEcSupTV4S9TpUwZjOKg/y6TW59UOBt
+	 hQkLThtEwRk8s1SDcNEbgrkjvGa4vC0KNAaXEPEI=
+Subject: FAILED: patch "[PATCH] xhci: dbc: decouple endpoint allocation from initialization" failed to apply to 6.12-stable tree
+To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 17 Sep 2025 09:43:07 +0200
+Message-ID: <2025091707-blip-kilometer-4c4c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ecfff771b6fdd3f5bcca3c29019dafb28d20abe1.camel@amazon.com>
 
-On Tue, Sep 16, 2025 at 08:41:33PM +0000, Jitindar Singh, Suraj wrote:
-> On Thu, 2025-09-04 at 14:00 +0200, Greg KH wrote:
-> > On Wed, Sep 03, 2025 at 03:49:59PM -0700, Suraj Jitindar Singh wrote:
-> > > The 4 patches in this series make the JMP_NOSPEC and CALL_NOSPEC
-> > > macros used
-> > > in the kernel consistent with what is generated by the compiler.
-> > > 
-> > > ("x86,nospec: Simplify {JMP,CALL}_NOSPEC") was merged in v6.0 and
-> > > the remaining
-> > > 3 patches in this series were merged in v6.15. All 4 were included
-> > > in kernels
-> > > v5.15+ as prerequisites for the backport of the ITS mitigations
-> > > [1].
-> > > 
-> > > None of these patches were included in the backport of the ITS
-> > > mitigations to
-> > > the 5.10 kernel [2]. They all apply cleanly and are applicable to
-> > > the 5.10
-> > > kernel. Thus I see no reason that they weren't applied here, unless
-> > > someone can
-> > > correct me?
-> > 
-> > Do they actually fix anything?
-> 
-> They do not, no.
-> 
-> > 
-> > > I am sending them for inclusion in the 5.10 kernel as this kernel
-> > > is still
-> > > actively maintained for these kind of vulnerability mitigations and
-> > > as such
-> > > having these patches will unify the handling of these cases with
-> > > subsequent
-> > > kernel versions easing code understanding and the ease of backports
-> > > in the
-> > > future.
-> > 
-> > Does this actually allow this to happen?  I think there are a few
-> > speculation fixes that have not been backported to this kernel tree,
-> > so
-> > why not just make this as a part of that work instead?  Just adding
-> > infastructure that doesn't do anything isn't usually a good idea.
-> > 
-> 
-> In my case at least, it does. I had to spend time working out why this
-> code was different compared to newer stable and upstream, and
-> determining if this required special handling - which would not have
-> been necessary if this code was the same. Other speculation fixes don't
-> touch this path which is why it was included in the ITS mitigation
-> patch series for other stable versions. It does do something, any where
-> the macros are used this does something and is then rewritten by the
-> alternatives code.
-> 
-> Trying to save my own (and anyone elses) sanity for having to work out
-> why this is different in the future in an area which does still get
-> regularly touched for these old kernels. Understand it doesn't fit the
-> regular stable patch mold but wanted to help in case these were just
-> unintentionally missed in this stable stream. But I acknowledge as you
-> point out that they are not fixing anything.
 
-If you want to include this as part of a patch series that does add
-additional speculation bugfixes, as it would make that series work
-easier, that's great, but on its own, it wouldn't make much sense to do
-this for no reason.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-good luck with keeping this alive, that's not an easy task.
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 220a0ffde02f962c13bc752b01aa570b8c65a37b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091707-blip-kilometer-4c4c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 220a0ffde02f962c13bc752b01aa570b8c65a37b Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Tue, 2 Sep 2025 13:53:04 +0300
+Subject: [PATCH] xhci: dbc: decouple endpoint allocation from initialization
+
+Decouple allocation of endpoint ring buffer from initialization
+of the buffer, and initialization of endpoint context parts from
+from the rest of the contexts.
+
+It allows driver to clear up and reinitialize endpoint rings
+after disconnect without reallocating everything.
+
+This is a prerequisite for the next patch that prevents the transfer
+ring from filling up with cancelled (no-op) TRBs if a debug cable is
+reconnected several times without transferring anything.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 06a2edb9e86e..d0faff233e3e 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -101,13 +101,34 @@ static u32 xhci_dbc_populate_strings(struct dbc_str_descs *strings)
+ 	return string_length;
+ }
+ 
++static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
++{
++	struct xhci_ep_ctx      *ep_ctx;
++	unsigned int		max_burst;
++	dma_addr_t		deq;
++
++	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
++
++	/* Populate bulk out endpoint context: */
++	ep_ctx                  = dbc_bulkout_ctx(dbc);
++	deq                     = dbc_bulkout_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
++
++	/* Populate bulk in endpoint context: */
++	ep_ctx                  = dbc_bulkin_ctx(dbc);
++	deq                     = dbc_bulkin_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
++}
++
+ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ {
+ 	struct dbc_info_context	*info;
+-	struct xhci_ep_ctx	*ep_ctx;
+ 	u32			dev_info;
+-	dma_addr_t		deq, dma;
+-	unsigned int		max_burst;
++	dma_addr_t		dma;
+ 
+ 	if (!dbc)
+ 		return;
+@@ -121,20 +142,8 @@ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
+ 	info->length		= cpu_to_le32(string_length);
+ 
+-	/* Populate bulk out endpoint context: */
+-	ep_ctx			= dbc_bulkout_ctx(dbc);
+-	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
+-	deq			= dbc_bulkout_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
+-
+-	/* Populate bulk in endpoint context: */
+-	ep_ctx			= dbc_bulkin_ctx(dbc);
+-	deq			= dbc_bulkin_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
++	/* Populate bulk in and out endpoint contexts: */
++	xhci_dbc_init_ep_contexts(dbc);
+ 
+ 	/* Set DbC context and info registers: */
+ 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
+@@ -436,6 +445,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t flags)
+ 	return ctx;
+ }
+ 
++static void xhci_dbc_ring_init(struct xhci_ring *ring)
++{
++	struct xhci_segment *seg = ring->first_seg;
++
++	/* clear all trbs on ring in case of old ring */
++	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
++
++	/* Only event ring does not use link TRB */
++	if (ring->type != TYPE_EVENT) {
++		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
++
++		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
++		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
++	}
++	xhci_initialize_ring_info(ring);
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -464,15 +490,10 @@ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ 
+ 	seg->dma = dma;
+ 
+-	/* Only event ring does not use link TRB */
+-	if (type != TYPE_EVENT) {
+-		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
+-
+-		trb->link.segment_ptr = cpu_to_le64(dma);
+-		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
+-	}
+ 	INIT_LIST_HEAD(&ring->td_list);
+-	xhci_initialize_ring_info(ring);
++
++	xhci_dbc_ring_init(ring);
++
+ 	return ring;
+ dma_fail:
+ 	kfree(seg);
+
 
