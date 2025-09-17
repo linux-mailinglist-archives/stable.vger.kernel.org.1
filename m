@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDDBB7F10B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:13:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA4AB7E651
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29E06188E265
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4CA4677DC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4CC393DC2;
-	Wed, 17 Sep 2025 13:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603E7302774;
+	Wed, 17 Sep 2025 12:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RuBkoVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKDsHxcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6973A330D51;
-	Wed, 17 Sep 2025 13:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDFF2F7ABF;
+	Wed, 17 Sep 2025 12:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114040; cv=none; b=IxuluzTnTTQ3CZeKQzE18BZogyXJYbb3rNyS1wirXM8FbdkieJELAiVJAr11/CYV1jp2oDDaX2hbGJrckn7HOvpiTaXghO+MIBShVvbKRcTo60gYGZ5ApIeRQ4kCoPRS7Oxdg0qVAZY7n2ASXYiTkUWV1fU/TH/OVQUERXenFH4=
+	t=1758113169; cv=none; b=Ls1zTVz66XuLqFxCQ4HXFATjQeR5zTPu6UXalIatwyShs82fcCwEoHc0HD7iFt9rM8NwFvS5NR2gB6g8JOAy25vmpNF8yrm+Tp/ErDPWxA208bw4nY7MWIhN9Y93rFrol94+7JzTCOecw9t5S9e8twbCxp9SSeNYfygKCA7r+D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114040; c=relaxed/simple;
-	bh=dRma89Xuc1BJ+t/OMeL6BrqPf67AwBzl51EzW6b61SM=;
+	s=arc-20240116; t=1758113169; c=relaxed/simple;
+	bh=79hCcZEEq6rqIG+onGhDvDvFipKxkqyLegp4boJyqVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UlMrKrlin9zSdx2WZCXdNQjY/9aSoo+VaG+SMTVMTv7ayUHPBq9Af6lKteOMMGsCCYSelWm3sp5KKFRodFbQ+JBpTDkhXFo4g8wuJ1tXgYgeYh0uSvGv/+l6g+kyAonA3TATBgEw83Otj9z5qWk42ADFGGvXJUWhHXCLWnMRPlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RuBkoVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9086C4CEF5;
-	Wed, 17 Sep 2025 13:00:39 +0000 (UTC)
+	 MIME-Version; b=H6MTTjvbDvJQif4UYAzu+/3nxHEfpVQBUwFH40y3fi7MMCG+KRqxN/TMGwHHZAqFUMPP8ixj/yyxFyLRrbsDGTNjfMgPf0XVRd9XD3N6b0zVGRw5RgDvfDB6w3+TQPANu/908vHbBNXMixDuHubHcim7yP1HYX1PqbKYnPfJpGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKDsHxcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFD4C4CEFA;
+	Wed, 17 Sep 2025 12:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114040;
-	bh=dRma89Xuc1BJ+t/OMeL6BrqPf67AwBzl51EzW6b61SM=;
+	s=korg; t=1758113169;
+	bh=79hCcZEEq6rqIG+onGhDvDvFipKxkqyLegp4boJyqVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0RuBkoVF1ed8SafBMnub+o2Yl+gMJPjKGt2sJYUEiMHmPN49+jRmChSPm5rZAh3tm
-	 r6D3obHX6X4B4lzdQBDjK1H+dWGMQ6aIZPkmu1ZvyqTe8Nnmm+BuXRACKAiO6b4Y+C
-	 3OIzLsB82USfQcCMXaNuDIDy5iUyn9ZvSXNIi38Q=
+	b=AKDsHxcTN+p+ZmcOKjWl8DSeDE1l478M4TX0nG/lzdyyE6PL1UlcNLCPQu92Ky8Ap
+	 brGkmt+Cw98GZ360nNHpvBjbUm3H8Lz7NMOhfjXz/52O0VshXXEe5Vtq/VIgQEJTVm
+	 x9g3PExZAv+UMawYkZELP61YkXrDVxWZeuxns6a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 05/78] media: i2c: imx214: Fix link frequency validation
+Subject: [PATCH 6.16 156/189] netfilter: nft_set_pipapo: dont return bogus extension pointer
 Date: Wed, 17 Sep 2025 14:34:26 +0200
-Message-ID: <20250917123329.708093535@linuxfoundation.org>
+Message-ID: <20250917123355.685751180@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit acc294519f1749041e1b8c74d46bbf6c57d8b061 ]
+[ Upstream commit c8a7c2c608180f3b4e51dc958b3861242dcdd76d ]
 
-The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
-IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
-which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
+Dan Carpenter says:
+Commit 17a20e09f086 ("netfilter: nft_set: remove one argument from
+lookup and update functions") [..] leads to the following Smatch
+static checker warning:
 
-Parsing the PLL registers with the defined 24MHz input. We're in single
-PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
-up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
-"Frame rate calculation formula" says "Pixel rate
-[pixels/s] = VTPXCK [MHz] * 4", so 120 * 4 = 480MPix/s, which basically
-agrees with my number above.
+ net/netfilter/nft_set_pipapo_avx2.c:1269 nft_pipapo_avx2_lookup()
+ error: uninitialized symbol 'ext'.
 
-3.1.4. MIPI global timing setting says "Output bitrate = OPPXCK * reg
-0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
-frequency of 600MHz due to DDR.
-That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
+Fix this by initing ext to NULL and set it only once we've found
+a match.
 
-Keep the previous link frequency for backward compatibility.
-
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Fixes: 436190596241 ("media: imx214: Add imx214 camera sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ changed dev_err() to dev_err_probe() for the final error case ]
+Fixes: 17a20e09f086 ("netfilter: nft_set: remove one argument from lookup and update functions")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/netfilter-devel/aJBzc3V5wk-yPOnH@stanley.mountain/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: c4eaca2e1052 ("netfilter: nft_set_pipapo: don't check genbit from packetpath lookups")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx214.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -20,7 +20,9 @@
- #include <media/v4l2-subdev.h>
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index 6c441e2dc8af3..2155c7f345c21 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1151,12 +1151,12 @@ nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 		       const u32 *key)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
++	const struct nft_set_ext *ext = NULL;
+ 	struct nft_pipapo_scratch *scratch;
+ 	u8 genmask = nft_genmask_cur(net);
+ 	const struct nft_pipapo_match *m;
+ 	const struct nft_pipapo_field *f;
+ 	const u8 *rp = (const u8 *)key;
+-	const struct nft_set_ext *ext;
+ 	unsigned long *res, *fill;
+ 	bool map_index;
+ 	int i;
+@@ -1247,13 +1247,13 @@ nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 			goto out;
  
- #define IMX214_DEFAULT_CLK_FREQ	24000000
--#define IMX214_DEFAULT_LINK_FREQ 480000000
-+#define IMX214_DEFAULT_LINK_FREQ	600000000
-+/* Keep wrong link frequency for backward compatibility */
-+#define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
- #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10)
- #define IMX214_FPS 30
- #define IMX214_MBUS_CODE MEDIA_BUS_FMT_SRGGB10_1X10
-@@ -892,17 +894,26 @@ static int imx214_parse_fwnode(struct de
- 		goto done;
- 	}
- 
--	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
-+	if (bus_cfg.nr_of_link_frequencies != 1)
-+		dev_warn(dev, "Only one link-frequency supported, please review your DT. Continuing anyway\n");
+ 		if (last) {
+-			ext = &f->mt[ret].e->ext;
+-			if (unlikely(nft_set_elem_expired(ext) ||
+-				     !nft_set_elem_active(ext, genmask))) {
+-				ext = NULL;
++			const struct nft_set_ext *e = &f->mt[ret].e->ext;
 +
-+	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
- 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
- 			break;
--
--	if (i == bus_cfg.nr_of_link_frequencies) {
--		dev_err(dev, "link-frequencies %d not supported, Please review your DT\n",
--			IMX214_DEFAULT_LINK_FREQ);
--		ret = -EINVAL;
--		goto done;
-+		if (bus_cfg.link_frequencies[i] ==
-+		    IMX214_DEFAULT_LINK_FREQ_LEGACY) {
-+			dev_warn(dev,
-+				 "link-frequencies %d not supported, please review your DT. Continuing anyway\n",
-+				 IMX214_DEFAULT_LINK_FREQ);
-+			break;
-+		}
- 	}
++			if (unlikely(nft_set_elem_expired(e) ||
++				     !nft_set_elem_active(e, genmask)))
+ 				goto next_match;
+-			}
  
-+	if (i == bus_cfg.nr_of_link_frequencies)
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "link-frequencies %d not supported, please review your DT\n",
-+				    IMX214_DEFAULT_LINK_FREQ);
-+
- done:
- 	v4l2_fwnode_endpoint_free(&bus_cfg);
- 	fwnode_handle_put(endpoint);
++			ext = e;
+ 			goto out;
+ 		}
+ 
+-- 
+2.51.0
+
 
 
 
