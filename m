@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-180138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7488B7EA62
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1AEB7E348
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8101F1C23A2C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F2A81B26A85
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE7D8632B;
-	Wed, 17 Sep 2025 12:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957DB1F09A5;
+	Wed, 17 Sep 2025 12:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8sVIRvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvPLHNKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06D7328962;
-	Wed, 17 Sep 2025 12:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E6D337EB9;
+	Wed, 17 Sep 2025 12:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113504; cv=none; b=Ux80wGEn1evHKS30XUYlCMdf3FWEQZb0xnIFzvT6zRUrRqyy9vOzPOM3CgH6+817kOz1PrgQvelpW5iexB/2AfvJRUxOTdSWxWUPEDCzupKcSoNZ9BYddRHn9Jv4aC1npbvyN00vbFEMe7g4P3I16abkNDOdULCXSHSO7dnST6w=
+	t=1758113005; cv=none; b=JA/Wh6rc+BFBVBhR7e5w2Dl4iZGo069LdStnC+jLHlsiaQvbSHVSjf20zV59Nd9TbJQlSq5uSdJJyrhY8SyMUJ2EtfiIeTZC0kXNyT57WgLN0C2/gRpA0p6kDBi1SZsR259GTBjxPdrv3OJv3rf5tNG4WqQTZlMZW5x9hXqpsyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113504; c=relaxed/simple;
-	bh=8NVYAF6zj//8wvg5xieFe0vOnsuahi2XblobE2byolE=;
+	s=arc-20240116; t=1758113005; c=relaxed/simple;
+	bh=670QNZkS7lygJmBv3ENOXGEETYeSgkHOYsWTol1toew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=De+ATnKyMviFopWAGKNgOQPuSYh5cyWiutUu1qwGQ6GPULNwPpd3d1WNErGC/4HXVn5Zlg+rhMxPbF9uuPazcWAnm0BJ0g6svWECxUQWoTf62S40ENCxD1lA9kifFq6dOIxjscQSBmxquI7IJjURc0c3+bv0hfXfj97s5l+EMhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8sVIRvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E47EC4CEF0;
-	Wed, 17 Sep 2025 12:51:42 +0000 (UTC)
+	 MIME-Version; b=alsaIo2o5LXcvKJRNOTElGRnjyKdHHaZZ70+csdtvDHaSOrGkY94Hn8TYcqUUchTf7Elk0fucMU86wNmHI830RCN80fMP4xv4JZWF9A9+VPa9b+vQ104JW5KewDzmi6BhLZXsHYG7IkpiUOjU12s9DXlDmaBfnWOmEJFRxABmrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvPLHNKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65A7C4CEF0;
+	Wed, 17 Sep 2025 12:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113503;
-	bh=8NVYAF6zj//8wvg5xieFe0vOnsuahi2XblobE2byolE=;
+	s=korg; t=1758113005;
+	bh=670QNZkS7lygJmBv3ENOXGEETYeSgkHOYsWTol1toew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8sVIRvRAeN+KjQJqOeq/LS+mKPBf1Rbie8DLjytI0qwEuJmiCBUFHa8y9hVQ4J0f
-	 6wzGzUkXsMQ3EXLkgOFT+yKRh2VbK0mlbpSQWQrACR7ibN5tn9S4bY6P7S1fcv8zWr
-	 BMU1wgJyyxvMpAZFyPS2wPNERkR5CiO6hfaLYvMY=
+	b=wvPLHNKVjAW+dzWQhXU8HV/MQIDXzIK4Hxx0RENs6d/YOzOP/qoRGqQBFtsPZMhcR
+	 JNZ+l0WvBWht1kWhKmXH+2yGDicNCRXQStHqe3hb9V0uC1oN62/hL3trJiiFbeVpDG
+	 KD8y82NX2uZ8iCOSmtAOyUA8FcnfsPfb+vNcBT3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fort <disclosure@aisle.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 079/140] mm/damon/sysfs: fix use-after-free in state_show()
+	Kohei Enju <enjuk@amazon.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.16 141/189] igb: fix link test skipping when interface is admin down
 Date: Wed, 17 Sep 2025 14:34:11 +0200
-Message-ID: <20250917123346.242393899@linuxfoundation.org>
+Message-ID: <20250917123355.308991667@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fort <stanislav.fort@aisle.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-commit 3260a3f0828e06f5f13fac69fb1999a6d60d9cff upstream.
+[ Upstream commit d709f178abca22a4d3642513df29afe4323a594b ]
 
-state_show() reads kdamond->damon_ctx without holding damon_sysfs_lock.
-This allows a use-after-free race:
+The igb driver incorrectly skips the link test when the network
+interface is admin down (if_running == false), causing the test to
+always report PASS regardless of the actual physical link state.
 
-CPU 0                         CPU 1
------                         -----
-state_show()                  damon_sysfs_turn_damon_on()
-ctx = kdamond->damon_ctx;     mutex_lock(&damon_sysfs_lock);
-                              damon_destroy_ctx(kdamond->damon_ctx);
-                              kdamond->damon_ctx = NULL;
-                              mutex_unlock(&damon_sysfs_lock);
-damon_is_running(ctx);        /* ctx is freed */
-mutex_lock(&ctx->kdamond_lock); /* UAF */
+This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe,
+etc.) which correctly test the physical link state regardless of admin
+state.
+Remove the if_running check to ensure link test always reflects the
+physical link state.
 
-(The race can also occur with damon_sysfs_kdamonds_rm_dirs() and
-damon_sysfs_kdamond_release(), which free or replace the context under
-damon_sysfs_lock.)
-
-Fix by taking damon_sysfs_lock before dereferencing the context, mirroring
-the locking used in pid_show().
-
-The bug has existed since state_show() first accessed kdamond->damon_ctx.
-
-Link: https://lkml.kernel.org/r/20250905101046.2288-1-disclosure@aisle.com
-Fixes: a61ea561c871 ("mm/damon/sysfs: link DAMON for virtual address spaces monitoring")
-Signed-off-by: Stanislav Fort <disclosure@aisle.com>
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is down")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/sysfs.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1067,14 +1067,18 @@ static ssize_t state_show(struct kobject
- {
- 	struct damon_sysfs_kdamond *kdamond = container_of(kobj,
- 			struct damon_sysfs_kdamond, kobj);
--	struct damon_ctx *ctx = kdamond->damon_ctx;
--	bool running;
-+	struct damon_ctx *ctx;
-+	bool running = false;
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index ca6ccbc139548..6412c84e2d17d 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2081,11 +2081,8 @@ static void igb_diag_test(struct net_device *netdev,
+ 	} else {
+ 		dev_info(&adapter->pdev->dev, "online testing starting\n");
  
--	if (!ctx)
--		running = false;
--	else
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+
-+	ctx = kdamond->damon_ctx;
-+	if (ctx)
- 		running = damon_sysfs_ctx_running(ctx);
+-		/* PHY is powered down when interface is down */
+-		if (if_running && igb_link_test(adapter, &data[TEST_LINK]))
++		if (igb_link_test(adapter, &data[TEST_LINK]))
+ 			eth_test->flags |= ETH_TEST_FL_FAILED;
+-		else
+-			data[TEST_LINK] = 0;
  
-+	mutex_unlock(&damon_sysfs_lock);
-+
- 	return sysfs_emit(buf, "%s\n", running ?
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_ON] :
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_OFF]);
+ 		/* Online tests aren't run; pass by default */
+ 		data[TEST_REG] = 0;
+-- 
+2.51.0
+
 
 
 
