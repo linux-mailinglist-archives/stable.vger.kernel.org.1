@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74F1B7E9B1
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:54:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04744B7E257
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 714B33A46B2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:50:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78B2C1B2400E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8433332BC02;
-	Wed, 17 Sep 2025 12:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB2031BC88;
+	Wed, 17 Sep 2025 12:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWz5RJ4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYeQBR1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD311B3925;
-	Wed, 17 Sep 2025 12:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1E829B775;
+	Wed, 17 Sep 2025 12:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113351; cv=none; b=qvO1JrqI/KFu2hqAd2jUdcO1+HyvE0vOWGaGUXr7h5YqSf6a9qoyoct/4HRFL7TpdTLT/mUJBknBKEcl/r+7Ub1gYus0NQVO2GQMUZsknfuYAPSSpTWjGVgh3dqjKDdtsA8FdRiCEzgqQxSUjESTuwTkMJ/em0b+PCUDrljCgtI=
+	t=1758112847; cv=none; b=Fb+HNU3eMZnkctXDAgTcyxj2GNwz2DhhTC4AQh7dgLPpPOgjynB75+lVAxxuttjwdh7angWTxKNr6CdajCJSIHipU+CtXnIUrbVN8OePR5hSRxf1g2aDnNpdXSg7DSQ8/M8gqAqnLHMVQHCpwtJVzkTlVK/7+PGReet2r8fmVIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113351; c=relaxed/simple;
-	bh=xCMzzOjHQKQMIu/vejdYHDG+azu9Wi5N9xm9i3ZA9I8=;
+	s=arc-20240116; t=1758112847; c=relaxed/simple;
+	bh=XLNH/zPmyNATGkYUHP0OQYbDTkKCzVIVGiw2l/c6J9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYvwEX7PO9QTfAKgTSYkCvLEnSYqkvWrKJjkyjLWKXaanzJhjdMs8asDecXx1OVmg2MpmYIBJMJeqXBaaga72D3ldXaeiOtZYVazxgY88cu8VgfRLhhRDAhPFKKKjoPGOT7zI+HQZeMNlvsnwr2iJNKEW0Y2luhJQsiDKjYESNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWz5RJ4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB61C4CEF0;
-	Wed, 17 Sep 2025 12:49:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mem4oSl1VvVAIFGZDmMl9FGAi4wLSqENmpZr0QExbq3/hHaT51Dh8c7zYfftKrx+NmuPBZslIrS2VEn9XvxAETQf6ryQwQpSJLkn/jxtyCuny466Byo+ORrnuABhWosyawUWveLVd8d3sc5tOSngoQsuFEcgnGUCqMcTSxh+HV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYeQBR1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179CBC4CEF0;
+	Wed, 17 Sep 2025 12:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113351;
-	bh=xCMzzOjHQKQMIu/vejdYHDG+azu9Wi5N9xm9i3ZA9I8=;
+	s=korg; t=1758112847;
+	bh=XLNH/zPmyNATGkYUHP0OQYbDTkKCzVIVGiw2l/c6J9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWz5RJ4RvOKUTMOs8HGucXABogsdOv2Gz2fQ/FQBjXfgIMNhmf2K4SNAVvaNGuJ9f
-	 wG0VrpTkjRF5TljwG8ZJHdyGhh+yoSAOLh0oNVLYjR2wAx7ICaviaiS4TK/Xxyu9ks
-	 zjFhQPd/XS2sGIGsa+U88EJySswJn1edh2NbFkF4=
+	b=GYeQBR1hDFjyNgX5AUgEUup9ROL2K4v1q9NDe9G+8i2UozwQK9cpVQiTHaxsTk1Pc
+	 BhL65sm8ZujSjP+lWvUeGtHornruOJOgKIBjNBp3bbQ1WMmKNAE/wxgm6M5A/oKqn5
+	 N1dfsTeMyJA0I9GJmPkTCLtMALIJtfFCRpjZGsfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/140] fs/nfs/io: make nfs_start_io_*() killable
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.16 094/189] drm/edid: Add support for quirks visible to DRM core and drivers
 Date: Wed, 17 Sep 2025 14:33:24 +0200
-Message-ID: <20250917123345.095341100@linuxfoundation.org>
+Message-ID: <20250917123354.152198209@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,229 +61,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 38a125b31504f91bf6fdd3cfc3a3e9a721e6c97a ]
+commit 0b4aa85e8981198e23a68d50ee3c490ccd7f8311 upstream.
 
-This allows killing processes that wait for a lock when one process is
-stuck waiting for the NFS server.  This aims to complete the coverage
-of NFS operations being killable, like nfs_direct_wait() does, for
-example.
+Add support for EDID based quirks which can be queried outside of the
+EDID parser iteself by DRM core and drivers. There are at least two such
+quirks applicable to all drivers: the DPCD register access probe quirk
+and the 128b/132b DPRX Lane Count Conversion quirk (see 3.5.2.16.3 in
+the v2.1a DP Standard). The latter quirk applies to panels with specific
+EDID panel names, support for defining a quirk this way will be added as
+a follow-up.
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 9eb90f435415 ("NFS: Serialise O_DIRECT i/o and truncate()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: Reset global_quirks in drm_reset_display_info().
+v3: (Jani)
+- Use one list for both the global and internal quirks.
+- Drop change for panel name specific quirks.
+- Add comment about the way quirks should be queried.
+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://lore.kernel.org/r/20250605082850.65136-4-imre.deak@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/direct.c   | 21 ++++++++++++++++++---
- fs/nfs/file.c     | 14 +++++++++++---
- fs/nfs/internal.h |  7 ++++---
- fs/nfs/io.c       | 44 +++++++++++++++++++++++++++++++++-----------
- 4 files changed, 66 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/drm_edid.c  |    8 +++++++-
+ include/drm/drm_connector.h |    4 +++-
+ include/drm/drm_edid.h      |    5 +++++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index f159cfc125adc..f32f8d7c9122b 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -472,8 +472,16 @@ ssize_t nfs_file_direct_read(struct kiocb *iocb, struct iov_iter *iter,
- 	if (user_backed_iter(iter))
- 		dreq->flags = NFS_ODIRECT_SHOULD_DIRTY;
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -68,7 +68,7 @@ static int oui(u8 first, u8 second, u8 t
  
--	if (!swap)
--		nfs_start_io_direct(inode);
-+	if (!swap) {
-+		result = nfs_start_io_direct(inode);
-+		if (result) {
-+			/* release the reference that would usually be
-+			 * consumed by nfs_direct_read_schedule_iovec()
-+			 */
-+			nfs_direct_req_release(dreq);
-+			goto out_release;
-+		}
-+	}
- 
- 	NFS_I(inode)->read_io += count;
- 	requested = nfs_direct_read_schedule_iovec(dreq, iter, iocb->ki_pos);
-@@ -1031,7 +1039,14 @@ ssize_t nfs_file_direct_write(struct kiocb *iocb, struct iov_iter *iter,
- 		requested = nfs_direct_write_schedule_iovec(dreq, iter, pos,
- 							    FLUSH_STABLE);
- 	} else {
--		nfs_start_io_direct(inode);
-+		result = nfs_start_io_direct(inode);
-+		if (result) {
-+			/* release the reference that would usually be
-+			 * consumed by nfs_direct_write_schedule_iovec()
-+			 */
-+			nfs_direct_req_release(dreq);
-+			goto out_release;
-+		}
- 
- 		requested = nfs_direct_write_schedule_iovec(dreq, iter, pos,
- 							    FLUSH_COND_STABLE);
-diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-index 153d25d4b810c..033feeab8c346 100644
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -167,7 +167,10 @@ nfs_file_read(struct kiocb *iocb, struct iov_iter *to)
- 		iocb->ki_filp,
- 		iov_iter_count(to), (unsigned long) iocb->ki_pos);
- 
--	nfs_start_io_read(inode);
-+	result = nfs_start_io_read(inode);
-+	if (result)
-+		return result;
-+
- 	result = nfs_revalidate_mapping(inode, iocb->ki_filp->f_mapping);
- 	if (!result) {
- 		result = generic_file_read_iter(iocb, to);
-@@ -188,7 +191,10 @@ nfs_file_splice_read(struct file *in, loff_t *ppos, struct pipe_inode_info *pipe
- 
- 	dprintk("NFS: splice_read(%pD2, %zu@%llu)\n", in, len, *ppos);
- 
--	nfs_start_io_read(inode);
-+	result = nfs_start_io_read(inode);
-+	if (result)
-+		return result;
-+
- 	result = nfs_revalidate_mapping(inode, in->f_mapping);
- 	if (!result) {
- 		result = filemap_splice_read(in, ppos, pipe, len, flags);
-@@ -669,7 +675,9 @@ ssize_t nfs_file_write(struct kiocb *iocb, struct iov_iter *from)
- 	nfs_clear_invalid_mapping(file->f_mapping);
- 
- 	since = filemap_sample_wb_err(file->f_mapping);
--	nfs_start_io_write(inode);
-+	error = nfs_start_io_write(inode);
-+	if (error)
-+		return error;
- 	result = generic_write_checks(iocb, from);
- 	if (result > 0)
- 		result = generic_perform_write(iocb, from);
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 882d804089add..4860270f1be04 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -6,6 +6,7 @@
- #include "nfs4_fs.h"
- #include <linux/fs_context.h>
- #include <linux/security.h>
-+#include <linux/compiler_attributes.h>
- #include <linux/crc32.h>
- #include <linux/sunrpc/addr.h>
- #include <linux/nfs_page.h>
-@@ -516,11 +517,11 @@ extern const struct netfs_request_ops nfs_netfs_ops;
- #endif
- 
- /* io.c */
--extern void nfs_start_io_read(struct inode *inode);
-+extern __must_check int nfs_start_io_read(struct inode *inode);
- extern void nfs_end_io_read(struct inode *inode);
--extern void nfs_start_io_write(struct inode *inode);
-+extern  __must_check int nfs_start_io_write(struct inode *inode);
- extern void nfs_end_io_write(struct inode *inode);
--extern void nfs_start_io_direct(struct inode *inode);
-+extern __must_check int nfs_start_io_direct(struct inode *inode);
- extern void nfs_end_io_direct(struct inode *inode);
- 
- static inline bool nfs_file_io_is_buffered(struct nfs_inode *nfsi)
-diff --git a/fs/nfs/io.c b/fs/nfs/io.c
-index b5551ed8f648b..3388faf2acb9f 100644
---- a/fs/nfs/io.c
-+++ b/fs/nfs/io.c
-@@ -39,19 +39,28 @@ static void nfs_block_o_direct(struct nfs_inode *nfsi, struct inode *inode)
-  * Note that buffered writes and truncates both take a write lock on
-  * inode->i_rwsem, meaning that those are serialised w.r.t. the reads.
-  */
--void
-+int
- nfs_start_io_read(struct inode *inode)
- {
- 	struct nfs_inode *nfsi = NFS_I(inode);
-+	int err;
-+
- 	/* Be an optimist! */
--	down_read(&inode->i_rwsem);
-+	err = down_read_killable(&inode->i_rwsem);
-+	if (err)
-+		return err;
- 	if (test_bit(NFS_INO_ODIRECT, &nfsi->flags) == 0)
--		return;
-+		return 0;
- 	up_read(&inode->i_rwsem);
-+
- 	/* Slow path.... */
--	down_write(&inode->i_rwsem);
-+	err = down_write_killable(&inode->i_rwsem);
-+	if (err)
-+		return err;
- 	nfs_block_o_direct(nfsi, inode);
- 	downgrade_write(&inode->i_rwsem);
-+
-+	return 0;
+ enum drm_edid_internal_quirk {
+ 	/* First detailed mode wrong, use largest 60Hz mode */
+-	EDID_QUIRK_PREFER_LARGE_60,
++	EDID_QUIRK_PREFER_LARGE_60 = DRM_EDID_QUIRK_NUM,
+ 	/* Reported 135MHz pixel clock is too high, needs adjustment */
+ 	EDID_QUIRK_135_CLOCK_TOO_HIGH,
+ 	/* Prefer the largest mode at 75 Hz */
+@@ -2959,6 +2959,12 @@ static bool drm_edid_has_internal_quirk(
+ 	return connector->display_info.quirks & BIT(quirk);
  }
  
- /**
-@@ -74,11 +83,15 @@ nfs_end_io_read(struct inode *inode)
-  * Declare that a buffered read operation is about to start, and ensure
-  * that we block all direct I/O.
-  */
--void
-+int
- nfs_start_io_write(struct inode *inode)
- {
--	down_write(&inode->i_rwsem);
--	nfs_block_o_direct(NFS_I(inode), inode);
-+	int err;
++bool drm_edid_has_quirk(struct drm_connector *connector, enum drm_edid_quirk quirk)
++{
++	return connector->display_info.quirks & BIT(quirk);
++}
++EXPORT_SYMBOL(drm_edid_has_quirk);
 +
-+	err = down_write_killable(&inode->i_rwsem);
-+	if (!err)
-+		nfs_block_o_direct(NFS_I(inode), inode);
-+	return err;
- }
+ #define MODE_SIZE(m) ((m)->hdisplay * (m)->vdisplay)
+ #define MODE_REFRESH_DIFF(c,t) (abs((c) - (t)))
  
- /**
-@@ -119,19 +132,28 @@ static void nfs_block_buffered(struct nfs_inode *nfsi, struct inode *inode)
-  * Note that buffered writes and truncates both take a write lock on
-  * inode->i_rwsem, meaning that those are serialised w.r.t. O_DIRECT.
-  */
--void
-+int
- nfs_start_io_direct(struct inode *inode)
- {
- 	struct nfs_inode *nfsi = NFS_I(inode);
-+	int err;
-+
- 	/* Be an optimist! */
--	down_read(&inode->i_rwsem);
-+	err = down_read_killable(&inode->i_rwsem);
-+	if (err)
-+		return err;
- 	if (test_bit(NFS_INO_ODIRECT, &nfsi->flags) != 0)
--		return;
-+		return 0;
- 	up_read(&inode->i_rwsem);
-+
- 	/* Slow path.... */
--	down_write(&inode->i_rwsem);
-+	err = down_write_killable(&inode->i_rwsem);
-+	if (err)
-+		return err;
- 	nfs_block_buffered(nfsi, inode);
- 	downgrade_write(&inode->i_rwsem);
-+
-+	return 0;
- }
+--- a/include/drm/drm_connector.h
++++ b/include/drm/drm_connector.h
+@@ -843,7 +843,9 @@ struct drm_display_info {
+ 	int vics_len;
  
- /**
--- 
-2.51.0
-
+ 	/**
+-	 * @quirks: EDID based quirks. Internal to EDID parsing.
++	 * @quirks: EDID based quirks. DRM core and drivers can query the
++	 * @drm_edid_quirk quirks using drm_edid_has_quirk(), the rest of
++	 * the quirks also tracked here are internal to EDID parsing.
+ 	 */
+ 	u32 quirks;
+ 
+--- a/include/drm/drm_edid.h
++++ b/include/drm/drm_edid.h
+@@ -109,6 +109,10 @@ struct detailed_data_string {
+ #define DRM_EDID_CVT_FLAGS_STANDARD_BLANKING (1 << 3)
+ #define DRM_EDID_CVT_FLAGS_REDUCED_BLANKING  (1 << 4)
+ 
++enum drm_edid_quirk {
++	DRM_EDID_QUIRK_NUM,
++};
++
+ struct detailed_data_monitor_range {
+ 	u8 min_vfreq;
+ 	u8 max_vfreq;
+@@ -476,5 +480,6 @@ void drm_edid_print_product_id(struct dr
+ u32 drm_edid_get_panel_id(const struct drm_edid *drm_edid);
+ bool drm_edid_match(const struct drm_edid *drm_edid,
+ 		    const struct drm_edid_ident *ident);
++bool drm_edid_has_quirk(struct drm_connector *connector, enum drm_edid_quirk quirk);
+ 
+ #endif /* __DRM_EDID_H__ */
 
 
 
