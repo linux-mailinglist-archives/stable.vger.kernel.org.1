@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-180158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9878BB7EBF3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A12B7E369
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BECBB188BA3A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAB5A621E3B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707D9330D43;
-	Wed, 17 Sep 2025 12:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296D61EBA07;
+	Wed, 17 Sep 2025 12:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDLGWMnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kijPvpex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C263330D39;
-	Wed, 17 Sep 2025 12:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB02E337EB9;
+	Wed, 17 Sep 2025 12:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113562; cv=none; b=DybNBI99LtcEpjjA2enZ2YGafnMIMWnS3ZtxT77PrsSNt6T0mxi5SYrgbEEluf6xzNJeDJsoZMjXTTAhwDP/KPrPWp/cGfOgi+oLuvfcv2IMJIYaN8Q/HfQy6pXEu4SYuoVBSl2xWSjIjK0/u4zAXRoqRKg9sBdV2Aq8zadhWTk=
+	t=1758113014; cv=none; b=mK7glXOtbuHGtdkZpSY03FF5xDSdehvsv/VJ0vYLAOb5Za0KvP1yXuoRiZn80vz8f0rtrd09XBv+xER8N7qzVEZpDNGUTRTpb+ZhDwPp6ZT54N2BzE7048G8Ir2pJzbZUmj5YnQDGi0H1CPDUIxnnxs6F6sFtJk5anZjTzg4CJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113562; c=relaxed/simple;
-	bh=gPgVoiwBMCKhfmEVTATk8UJ4v6sWz+EcBF00SG0nt3A=;
+	s=arc-20240116; t=1758113014; c=relaxed/simple;
+	bh=a173u39txA8CIJuYov26t6tlsRg+24z1UAfKVRp65Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6LoxC8mDWcAicUYKMZCMY5XAgWFPmFIYuHvrducYZ7/DprhQ86hjjesSClxgqqtc1qNztP6J2pec1tnKMgkXH8ZZQtB+Y4+qou/RKpbqw5npSXrCFl21t35xMRfaYVZIxt1v5BQUm8rSftfg3YR9x/gqGqMOHkbOawd+ZipLJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDLGWMnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E508C4CEF0;
-	Wed, 17 Sep 2025 12:52:41 +0000 (UTC)
+	 MIME-Version; b=qJNo7lNq8KbGSabZ1cE45xBAJ85jrKLESnaK2dU+iCrEv3GuRqpfpQfNUp/faRlTw89DhqaHP6uaXBBYGAqg/XNXonmqd6KTf1IHGWXo5LR+zGgotSTKxQ6ukZ1iqSbXsQqvWQqNOCL77D4Yig3vnmYP/02ELSHwVtalXzLUOFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kijPvpex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B43C4CEF0;
+	Wed, 17 Sep 2025 12:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113562;
-	bh=gPgVoiwBMCKhfmEVTATk8UJ4v6sWz+EcBF00SG0nt3A=;
+	s=korg; t=1758113014;
+	bh=a173u39txA8CIJuYov26t6tlsRg+24z1UAfKVRp65Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PDLGWMnMogC87/z8GN4V79wZ37afmBHkTmKmueaEAAKAqr2IL9hCjiQaO921aHUq5
-	 FqHEFR4EfceyBCaX/7ze3UbOX/r/CxSGqMxjW9bYZ2hPrUGcqeovtx8qdjDsuOhZkP
-	 eDV3EJoU6Hkd4Qd9csufQTp7RjfDpisSAl4MUt1A=
+	b=kijPvpexx6uLBiRoJBPWUxZunfA5vT0Hc7N7GsW9toWbBS1sLbUOCcDNDxYR7pt+J
+	 1jPe5IYOKZalg8ARJg+1WY4TTzpC1RCYSRlPDbshRJxmP3Jg8rlYJHyU79F4W0XxnA
+	 RDnXh2GaZNSGSU06kUZ0oQrn/NLEWf2Qz409DHvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Breno Leitao <leitao@debian.org>,
-	David Hildenbrand <david@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Riana Tauro <riana.tauro@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/140] mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
+Subject: [PATCH 6.16 143/189] drm/xe/configfs: Dont touch survivability_mode on fini
 Date: Wed, 17 Sep 2025 14:34:13 +0200
-Message-ID: <20250917123346.291198113@linuxfoundation.org>
+Message-ID: <20250917123355.362429937@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,91 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 21cc2b5c5062a256ae9064442d37ebbc23f5aef7 ]
+[ Upstream commit 7934fdc25ad642ab3dbc16d734ab58638520ea60 ]
 
-When restoring a reservation for an anonymous page, we need to check to
-freeing a surplus.  However, __unmap_hugepage_range() causes data race
-because it reads h->surplus_huge_pages without the protection of
-hugetlb_lock.
+This is a user controlled configfs attribute, we should not
+modify that outside the configfs attr.store() implementation.
 
-And adjust_reservation is a boolean variable that indicates whether
-reservations for anonymous pages in each folio should be restored.
-Therefore, it should be initialized to false for each round of the loop.
-However, this variable is not initialized to false except when defining
-the current adjust_reservation variable.
-
-This means that once adjust_reservation is set to true even once within
-the loop, reservations for anonymous pages will be restored
-unconditionally in all subsequent rounds, regardless of the folio's state.
-
-To fix this, we need to add the missing hugetlb_lock, unlock the
-page_table_lock earlier so that we don't lock the hugetlb_lock inside the
-page_table_lock lock, and initialize adjust_reservation to false on each
-round within the loop.
-
-Link: https://lkml.kernel.org/r/20250823182115.1193563-1-aha310510@gmail.com
-Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=417aeb05fd190f3a6da9
-Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Page vs folio differences ]
+Fixes: bc417e54e24b ("drm/xe: Enable configfs support for survivability mode")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250904103521.7130-1-michal.wajdeczko@intel.com
+(cherry picked from commit 079a5c83dbd23db7a6eed8f558cf75e264d8a17b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_survivability_mode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5512,7 +5512,7 @@ void __unmap_hugepage_range(struct mmu_g
- 	struct page *page;
- 	struct hstate *h = hstate_vma(vma);
- 	unsigned long sz = huge_page_size(h);
--	bool adjust_reservation = false;
-+	bool adjust_reservation;
- 	unsigned long last_addr_mask;
- 	bool force_flush = false;
+diff --git a/drivers/gpu/drm/xe/xe_survivability_mode.c b/drivers/gpu/drm/xe/xe_survivability_mode.c
+index 1f710b3fc599b..5ae3d70e45167 100644
+--- a/drivers/gpu/drm/xe/xe_survivability_mode.c
++++ b/drivers/gpu/drm/xe/xe_survivability_mode.c
+@@ -40,6 +40,8 @@
+  *
+  *	# echo 1 > /sys/kernel/config/xe/0000:03:00.0/survivability_mode
+  *
++ * It is the responsibility of the user to clear the mode once firmware flash is complete.
++ *
+  * Refer :ref:`xe_configfs` for more details on how to use configfs
+  *
+  * Survivability mode is indicated by the below admin-only readable sysfs which provides additional
+@@ -146,7 +148,6 @@ static void xe_survivability_mode_fini(void *arg)
+ 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
+ 	struct device *dev = &pdev->dev;
  
-@@ -5604,6 +5604,7 @@ void __unmap_hugepage_range(struct mmu_g
- 					sz);
- 		hugetlb_count_sub(pages_per_huge_page(h), mm);
- 		hugetlb_remove_rmap(page_folio(page));
-+		spin_unlock(ptl);
+-	xe_configfs_clear_survivability_mode(pdev);
+ 	sysfs_remove_file(&dev->kobj, &dev_attr_survivability_mode.attr);
+ }
  
- 		/*
- 		 * Restore the reservation for anonymous page, otherwise the
-@@ -5611,14 +5612,16 @@ void __unmap_hugepage_range(struct mmu_g
- 		 * If there we are freeing a surplus, do not set the restore
- 		 * reservation bit.
- 		 */
-+		adjust_reservation = false;
-+
-+		spin_lock_irq(&hugetlb_lock);
- 		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
- 		    folio_test_anon(page_folio(page))) {
- 			folio_set_hugetlb_restore_reserve(page_folio(page));
- 			/* Reservation to be adjusted after the spin lock */
- 			adjust_reservation = true;
- 		}
--
--		spin_unlock(ptl);
-+		spin_unlock_irq(&hugetlb_lock);
- 
- 		/*
- 		 * Adjust the reservation for the region that will have the
+-- 
+2.51.0
+
 
 
 
