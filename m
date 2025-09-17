@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-180188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E6AB7EB91
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:58:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F54B7E9BE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 220D67B3652
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0F2A3B4EED
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFCD3195E8;
-	Wed, 17 Sep 2025 12:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6378313B2A4;
+	Wed, 17 Sep 2025 12:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRCQ3x35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXD8o1E3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECB03195EE;
-	Wed, 17 Sep 2025 12:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DC41EB1AA;
+	Wed, 17 Sep 2025 12:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113658; cv=none; b=WA1cwd/qSrYz2bYv5+CGjn/PE33EIOUf4vcJgSLz0piZv0uU1BBunJzH5sYP6C01JJeIUZmHZwyCmEn0qUUGduaRATmz3kDGAvPxFGBOvsXwXNLIUcbFTP4F+yCQavNkjLIQgRYr0iJj6coRnbSPaO+NQTd2mbik2T8LqzYGfwU=
+	t=1758113377; cv=none; b=kPS3DMX+L+Y7g+Nbkr1Hjk0Non69woocC/IgIdB9CYD1WahLlJEFqGyupE7h2LMw+CEMDaIJWCs5CoyMKgk+KdDabw35Ji9EQ6494w+s1NB9VLK9TD7sBzsNYfd5heTlwAQRMymKJn7K6+8Q+O8uW5tezSl8TbFmCgM+TBm7zEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113658; c=relaxed/simple;
-	bh=GNNkt9T7Uv4ElLikpk5v3ty5aQ4fSlTZC5W2m0RwEss=;
+	s=arc-20240116; t=1758113377; c=relaxed/simple;
+	bh=58NEyvoIVLq+5VzqkxJRAvHI6YXKcAFA8kdO5ObMViM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4q673VTBkUawckWx2xBzYbM0718WsUjLqdMuwgSsGvV/2yjCNL35kx17pRybUgcQWUG0BelPndfKTuaNJGX86PJbZ//TyOtcz0qbDrVD4Ds2ee7QoR8GhgWQVKPJRxr7o9kcz592epLFvM8dGsg4M10RUJommgkJ7BJqSA8Mj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRCQ3x35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC6BC4CEF0;
-	Wed, 17 Sep 2025 12:54:18 +0000 (UTC)
+	 MIME-Version; b=NijYS5f7FSzQrlZr5jbk4n2DveSQ2no7R8s8/Sp6IoWvAhzmm/BsEzOARX1D/8C/L0TjIN5ywO16I72C+qOE1/B/ELJWpTZIbW3iLbhqVbFpQoUYrndBSGPbuhMnK9Ij5NXWxHVyC7BK17wcYxi0SGdxY3NVEKFocUiq3DwZSDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXD8o1E3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785D2C4CEF0;
+	Wed, 17 Sep 2025 12:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113658;
-	bh=GNNkt9T7Uv4ElLikpk5v3ty5aQ4fSlTZC5W2m0RwEss=;
+	s=korg; t=1758113377;
+	bh=58NEyvoIVLq+5VzqkxJRAvHI6YXKcAFA8kdO5ObMViM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRCQ3x3503s6I6JUS1nWnCVVQwyYgW25qLtVq90wwQ84g+3s2ItRjhiH5+ckou5Nk
-	 SAZiq9TU5uCuCTs3FZE7weHP8EaYcPkf2V3gJ4hEzBWq7MQV1/nXtWNpyAOyQb7fUe
-	 f/G4W9lDPH8mWOpQMsgiaRc1KCB+bydlTr+gtpc8=
+	b=dXD8o1E33dVK3Eg+jF5/qAidM3MFClY3ZvzR1zGsbl73MFyD3PNsvulrEfUWvZ69y
+	 xnXObCjlsYaN0fajdWNQBfCcLgNIqEf/xQVFItbKWdlrb6x3wlmwdQRoQh3O42v7a8
+	 06qah8X/IQaRAm+KEC18vqnm4XD/PWKAUXEQKKew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/101] tracing: Fix tracing_marker may trigger page fault during preempt_disable
-Date: Wed, 17 Sep 2025 14:33:57 +0200
-Message-ID: <20250917123337.208888725@linuxfoundation.org>
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	SeongJae Park <sj@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	ze zuo <zuoze1@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 066/140] mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
+Date: Wed, 17 Sep 2025 14:33:58 +0200
+Message-ID: <20250917123345.918036138@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Quanmin Yan <yanquanmin1@huawei.com>
 
-[ Upstream commit 3d62ab32df065e4a7797204a918f6489ddb8a237 ]
+commit 711f19dfd783ffb37ca4324388b9c4cb87e71363 upstream.
 
-Both tracing_mark_write and tracing_mark_raw_write call
-__copy_from_user_inatomic during preempt_disable. But in some case,
-__copy_from_user_inatomic may trigger page fault, and will call schedule()
-subtly. And if a task is migrated to other cpu, the following warning will
-be trigger:
-        if (RB_WARN_ON(cpu_buffer,
-                       !local_read(&cpu_buffer->committing)))
+Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
+application".
 
-An example can illustrate this issue:
+DAMON's RECLAIM and LRU_SORT modules perform no validation on
+user-configured parameters during application, which may lead to
+division-by-zero errors.
 
-process flow						CPU
----------------------------------------------------------------------
+Avoid the divide-by-zero by adding validation checks when DAMON modules
+attempt to apply the parameters.
 
-tracing_mark_raw_write():				cpu:0
-   ...
-   ring_buffer_lock_reserve():				cpu:0
-      ...
-      cpu = raw_smp_processor_id()			cpu:0
-      cpu_buffer = buffer->buffers[cpu]			cpu:0
-      ...
-   ...
-   __copy_from_user_inatomic():				cpu:0
-      ...
-      # page fault
-      do_mem_abort():					cpu:0
-         ...
-         # Call schedule
-         schedule()					cpu:0
-	 ...
-   # the task schedule to cpu1
-   __buffer_unlock_commit():				cpu:1
-      ...
-      ring_buffer_unlock_commit():			cpu:1
-	 ...
-	 cpu = raw_smp_processor_id()			cpu:1
-	 cpu_buffer = buffer->buffers[cpu]		cpu:1
 
-As shown above, the process will acquire cpuid twice and the return values
-are not the same.
+This patch (of 2):
 
-To fix this problem using copy_from_user_nofault instead of
-__copy_from_user_inatomic, as the former performs 'access_ok' before
-copying.
+During the calculation of 'hot_thres' and 'cold_thres', either
+'sample_interval' or 'aggr_interval' is used as the divisor, which may
+lead to division-by-zero errors.  Fix it by directly returning -EINVAL
+when such a case occurs.  Additionally, since 'aggr_interval' is already
+required to be set no smaller than 'sample_interval' in damon_set_attrs(),
+only the case where 'sample_interval' is zero needs to be checked.
 
-Link: https://lore.kernel.org/20250819105152.2766363-1-luogengkun@huaweicloud.com
-Fixes: 656c7f0d2d2b ("tracing: Replace kmap with copy_from_user() in trace_marker writing")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.0+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/lru_sort.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index a32c8637503d1..baa87876cee47 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7226,7 +7226,7 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
- 	entry = ring_buffer_event_data(event);
- 	entry->ip = _THIS_IP_;
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -198,6 +198,11 @@ static int damon_lru_sort_apply_paramete
+ 	if (err)
+ 		return err;
  
--	len = __copy_from_user_inatomic(&entry->buf, ubuf, cnt);
-+	len = copy_from_user_nofault(&entry->buf, ubuf, cnt);
- 	if (len) {
- 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
- 		cnt = FAULTED_SIZE;
-@@ -7301,7 +7301,7 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
- 
- 	entry = ring_buffer_event_data(event);
- 
--	len = __copy_from_user_inatomic(&entry->id, ubuf, cnt);
-+	len = copy_from_user_nofault(&entry->id, ubuf, cnt);
- 	if (len) {
- 		entry->id = -1;
- 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
--- 
-2.51.0
-
++	if (!damon_lru_sort_mon_attrs.sample_interval) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
+ 	if (err)
+ 		goto out;
 
 
 
