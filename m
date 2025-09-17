@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-180178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C012FB7ED63
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:03:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F147B7ED7B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 868E317F3E6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 763C54E235A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7DF316194;
-	Wed, 17 Sep 2025 12:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7294328963;
+	Wed, 17 Sep 2025 12:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkFU42AH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr0eJrzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E96431618E;
-	Wed, 17 Sep 2025 12:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8530B32BC13;
+	Wed, 17 Sep 2025 12:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113626; cv=none; b=FPUk+RcuD+HcsuMkN7zwtSHNuEJEOXaTuXvip6Yxc5p5nopgPmeJ47l/3RpnEKE5th8HX4EkuqUtvK2qIsnuxqxfvGAJeEzx+CmFR9i+FYKBZ1L8MUlmUzFXc7M/8GORLlOGuXosM407FBdhJf2UwsXKvztVqFpzhZhk410C9ho=
+	t=1758113863; cv=none; b=ZbhG49VqHGI8/2Udr7TGJRyeXGBC4eZBLYmQSxC+OlH7afKVWlZbpvBJOWQZELJNYnq+4ZYL6tu9IE/Nd8nFqLUxdD0/CPXqWq2eND18kFz/eDdAy4vcltfjl/eYWiFdJ91/Jjk/N3aLez+Os3081o70mTNThNzoxRNJeZB8jGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113626; c=relaxed/simple;
-	bh=hWhbcExPoD26hAUhkXN55UVqIXVR07C4uw+EIifzJVM=;
+	s=arc-20240116; t=1758113863; c=relaxed/simple;
+	bh=EEfKpmJwfuBrGTrd0/uvQTp/RnZWPv1dcqb80ApLDRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t59ICtoIKOm1gbwF5K3hFywyPBsV96Yx8uoIUCXZFdmikRzVT3b3EGnDjO9P9Dz8hZfVmxyj4MOSd68PqOCU0g1ZjndOy+Q6PQTZBPMtV4KDR1H1PLrWwKKdAr96JOLf5hICxlrZONGi5qC9DvxRXbWNfbfkSlFKDH6QMhCJVYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkFU42AH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC83BC4CEF0;
-	Wed, 17 Sep 2025 12:53:45 +0000 (UTC)
+	 MIME-Version; b=Vve60peaBVWfQFFjDWkmJQw7jZYHJ0q9YjZAdtgExHF2Qpc8teSsgmbey2fkBttiq8UMx6RhwV+ZPfzxezUO6ISiadeh+l13Dk3u50r1G4U//o4t/EBW73L1v15olZIZip7o/mES/sS2deGhLCotXR8soHq3rvoN1b5R9Bte+j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr0eJrzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F91C4CEFB;
+	Wed, 17 Sep 2025 12:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113626;
-	bh=hWhbcExPoD26hAUhkXN55UVqIXVR07C4uw+EIifzJVM=;
+	s=korg; t=1758113863;
+	bh=EEfKpmJwfuBrGTrd0/uvQTp/RnZWPv1dcqb80ApLDRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkFU42AH6Npf8VEIsGs3p2Bm+LgMwa4qC4COarmuYCJQo/OJQV3ufUYcoV8Nr4EYW
-	 no1xUjxZNZBJ/X3JPwNG7yHdPlQFEN8JIL3Gxc+0nOD/CW3ZoZjlSLr7a3Y9ELW362
-	 P0aSszTrZyO58nQ3q+gjo5vo3G9w+xNLa4IE+I48=
+	b=qr0eJrzlLWnFA9tWTUl7k/JsbqBPlEVsd2zNxlwU/a7D+5OHlrBYxVemF4j2imVXO
+	 pVHWEhOaHOmULnK1BklPPDBbqAGuwJhRa1Kofl86FRD8p8aGNWXBWulIcal2FAtx2F
+	 lr8TacUgWf0RZt93zfOo4sHXb4EsDopKgAz8Uwjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.12 128/140] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
+	Murali Karicheri <m-karicheri2@ti.com>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 077/101] net: hsr: Add support for MC filtering at the slave device
 Date: Wed, 17 Sep 2025 14:35:00 +0200
-Message-ID: <20250917123347.443080873@linuxfoundation.org>
+Message-ID: <20250917123338.698628915@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +65,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Murali Karicheri <m-karicheri2@ti.com>
 
-commit 8d63c83d8eb922f6c316320f50c82fa88d099bea upstream.
+[ Upstream commit 36b20fcdd9663ced36d3aef96f0eff8eb79de4b8 ]
 
-Yunseong Kim and the syzbot fuzzer both reported a problem in
-RT-enabled kernels caused by the way dummy-hcd mixes interrupt
-management and spin-locking.  The pattern was:
+When MC (multicast) list is updated by the networking layer due to a
+user command and as well as when allmulti flag is set, it needs to be
+passed to the enslaved Ethernet devices. This patch allows this
+to happen by implementing ndo_change_rx_flags() and ndo_set_rx_mode()
+API calls that in turns pass it to the slave devices using
+existing API calls.
 
-	local_irq_save(flags);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock(&dum->lock);
-	...		// calls usb_gadget_giveback_request()
-	local_irq_restore(flags);
-
-The code was written this way because usb_gadget_giveback_request()
-needs to be called with interrupts disabled and the private lock not
-held.
-
-While this pattern works fine in non-RT kernels, it's not good when RT
-is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
-spin_lock() may sleep.  But sleeping is not allowed while local
-interrupts are disabled.
-
-To fix the problem, rewrite the code to conform to the pattern used
-elsewhere in dummy-hcd and other UDC drivers:
-
-	spin_lock_irqsave(&dum->lock, flags);
-	...
-	spin_unlock(&dum->lock);
-	usb_gadget_giveback_request(...);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock_irqrestore(&dum->lock, flags);
-
-This approach satisfies the RT requirements.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
-Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
-Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: stable@vger.kernel.org
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 8884c6939913 ("hsr: use rtnl lock when iterating over ports")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/hsr/hsr_device.c | 67 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -764,8 +764,7 @@ static int dummy_dequeue(struct usb_ep *
- 	if (!dum->driver)
- 		return -ESHUTDOWN;
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 906c38b9d66ff..cff37637c96d3 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -170,7 +170,24 @@ static int hsr_dev_open(struct net_device *dev)
  
--	local_irq_save(flags);
--	spin_lock(&dum->lock);
-+	spin_lock_irqsave(&dum->lock, flags);
- 	list_for_each_entry(iter, &ep->queue, queue) {
- 		if (&iter->req != _req)
- 			continue;
-@@ -775,15 +774,16 @@ static int dummy_dequeue(struct usb_ep *
- 		retval = 0;
- 		break;
- 	}
--	spin_unlock(&dum->lock);
- 
- 	if (retval == 0) {
- 		dev_dbg(udc_dev(dum),
- 				"dequeued req %p from %s, len %d buf %p\n",
- 				req, _ep->name, _req->length, _req->buf);
-+		spin_unlock(&dum->lock);
- 		usb_gadget_giveback_request(_ep, _req);
-+		spin_lock(&dum->lock);
- 	}
--	local_irq_restore(flags);
-+	spin_unlock_irqrestore(&dum->lock, flags);
- 	return retval;
+ static int hsr_dev_close(struct net_device *dev)
+ {
+-	/* Nothing to do here. */
++	struct hsr_port *port;
++	struct hsr_priv *hsr;
++
++	hsr = netdev_priv(dev);
++	hsr_for_each_port(hsr, port) {
++		if (port->type == HSR_PT_MASTER)
++			continue;
++		switch (port->type) {
++		case HSR_PT_SLAVE_A:
++		case HSR_PT_SLAVE_B:
++			dev_uc_unsync(port->dev, dev);
++			dev_mc_unsync(port->dev, dev);
++			break;
++		default:
++			break;
++		}
++	}
++
+ 	return 0;
  }
  
+@@ -401,12 +418,60 @@ void hsr_del_ports(struct hsr_priv *hsr)
+ 		hsr_del_port(port);
+ }
+ 
++static void hsr_set_rx_mode(struct net_device *dev)
++{
++	struct hsr_port *port;
++	struct hsr_priv *hsr;
++
++	hsr = netdev_priv(dev);
++
++	hsr_for_each_port(hsr, port) {
++		if (port->type == HSR_PT_MASTER)
++			continue;
++		switch (port->type) {
++		case HSR_PT_SLAVE_A:
++		case HSR_PT_SLAVE_B:
++			dev_mc_sync_multiple(port->dev, dev);
++			dev_uc_sync_multiple(port->dev, dev);
++			break;
++		default:
++			break;
++		}
++	}
++}
++
++static void hsr_change_rx_flags(struct net_device *dev, int change)
++{
++	struct hsr_port *port;
++	struct hsr_priv *hsr;
++
++	hsr = netdev_priv(dev);
++
++	hsr_for_each_port(hsr, port) {
++		if (port->type == HSR_PT_MASTER)
++			continue;
++		switch (port->type) {
++		case HSR_PT_SLAVE_A:
++		case HSR_PT_SLAVE_B:
++			if (change & IFF_ALLMULTI)
++				dev_set_allmulti(port->dev,
++						 dev->flags &
++						 IFF_ALLMULTI ? 1 : -1);
++			break;
++		default:
++			break;
++		}
++	}
++}
++
+ static const struct net_device_ops hsr_device_ops = {
+ 	.ndo_change_mtu = hsr_dev_change_mtu,
+ 	.ndo_open = hsr_dev_open,
+ 	.ndo_stop = hsr_dev_close,
+ 	.ndo_start_xmit = hsr_dev_xmit,
++	.ndo_change_rx_flags = hsr_change_rx_flags,
+ 	.ndo_fix_features = hsr_fix_features,
++	.ndo_set_rx_mode = hsr_set_rx_mode,
+ };
+ 
+ static struct device_type hsr_type = {
+-- 
+2.51.0
+
 
 
 
