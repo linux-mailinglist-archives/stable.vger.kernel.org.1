@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-180135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F62B7EACB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E479B7E5F7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42EFC17B82C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE3977B97A6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9431F72602;
-	Wed, 17 Sep 2025 12:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4B9301465;
+	Wed, 17 Sep 2025 12:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UddIn3Of"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Upj/QTuM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C70323419;
-	Wed, 17 Sep 2025 12:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386022FBE19;
+	Wed, 17 Sep 2025 12:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113494; cv=none; b=iuKBxHXgcaexh8WVwWOYckaKTbg88c/R7/dEkB9ydH5Y0F/lhTjLvmGSqCzbuPgeWPplzfl1wcysmlCXX1Agdkh+BX1iJ0HjLBaW+z753K9Rez7hQGrATMiyj3H5XwIvSLcphXDgXWqPaRZ406Tc0JZedB0S89Y54PA69V7eTto=
+	t=1758113076; cv=none; b=eyIkvGv+MpszqT0S0LWNr9d7LDPYqM0c25hLO8o8J5EkjNQN/fr034fdNMaJ78aUi0BftDsXs4OEGBX3ykkzqBy9UMD1mGb88OrPvqG3a/3hYHrhkXAiX6nsv0oN6oa4DhmCFVw98mXX7K0eOJ/QKn68k/Lj0yybZ0GeLoEnuu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113494; c=relaxed/simple;
-	bh=de+4cVKpdiv3uiUUH7wVsmix0O52BZYDVm9+rHgLZyw=;
+	s=arc-20240116; t=1758113076; c=relaxed/simple;
+	bh=chNlZdPQrP0qlBj0EhAjyBNJgKixF0+OjeynNy4ETOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3phpmPrIhavjuBtJ+ehzdlPnOpdHVyfSmLa5GAWgvU8hvKh1YH+yz0oY7HaIt0MR7soN0u0AIyjxBQ/Nc/nLqr3hg2uFCQtFs80/d6lkd3pYvwBBtleCzwpA7zOPK0ggQbCuJiKZ2AxXzjZGc6sTglp0Is0E6Bx/3yclcPH3gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UddIn3Of; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34D8C4CEF0;
-	Wed, 17 Sep 2025 12:51:33 +0000 (UTC)
+	 MIME-Version; b=ZxGKP0/7Z4/RODu4Uj8ch0poAi8MtC45BIYb2WLYszhxC90PuExp+tj5eq3mA2osIm9q4d2RaMc57WX/1G/iFWE0ZfB030Ey/tPDed43auYA3CbrQFtQ9tKo2dfdX/74WFy+YM/ACPOQDReDcAavGS71BOITnOesDUMMC9Lf/kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upj/QTuM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44D7C4CEF0;
+	Wed, 17 Sep 2025 12:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113494;
-	bh=de+4cVKpdiv3uiUUH7wVsmix0O52BZYDVm9+rHgLZyw=;
+	s=korg; t=1758113076;
+	bh=chNlZdPQrP0qlBj0EhAjyBNJgKixF0+OjeynNy4ETOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UddIn3OfwA0tqaV33bB8KXpHfiQgzhSKN1r9UjajTTIFVCwE9HgXbIM451Qlrk5XY
-	 WVF4iQ2g+wvzvGpUTLMsLbdDoivVTIHDcYgLVnlYf5ZB6LQz7rYf+gFaxLtI1sVJ5e
-	 WGZ3590thKa1bq4bvRA3Adnu1hwaQ9EeMPKqhKqI=
+	b=Upj/QTuMdJyIebRkEv6qotTWAhd4zT/N1nQwdlZUYYL5Y6kZXFMd1CEZdJXbRoegB
+	 yo4ccGfpNGRL0AHNpyiFabj0x9n5f9/WDorM66T61ibHdsYC9CmW3Zaei/rGGEQL4+
+	 PiASdP5AxwTD45JB0PN8IjshjS7lOF4VZzQQkmVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Chen <Wen.Chen3@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/140] drm/amd/display: use udelay rather than fsleep
+Subject: [PATCH 6.16 165/189] hsr: hold rcu and dev lock for hsr_get_port_ndev
 Date: Wed, 17 Sep 2025 14:34:35 +0200
-Message-ID: <20250917123346.822098445@linuxfoundation.org>
+Message-ID: <20250917123355.908335442@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 1d66c3f2b8c0b5c51f3f4fe29b362c9851190c5a ]
+[ Upstream commit 847748fc66d08a89135a74e29362a66ba4e3ab15 ]
 
-This function can be called from an atomic context so we can't use
-fsleep().
+hsr_get_port_ndev calls hsr_for_each_port, which need to hold rcu lock.
+On the other hand, before return the port device, we need to hold the
+device reference to avoid UaF in the caller function.
 
-Fixes: 01f60348d8fb ("drm/amd/display: Fix 'failed to blank crtc!'")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4549
-Cc: Wen Chen <Wen.Chen3@amd.com>
-Cc: Fangzhi Zuo <jerry.zuo@amd.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 27e4dc2c0543fd1808cc52bd888ee1e0533c4a2e)
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9c10dd8eed74 ("net: hsr: Create and export hsr_get_port_ndev()")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250905091533.377443-4-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 20 ++++++++++++++------
+ net/hsr/hsr_device.c                         |  7 ++++++-
+ 2 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index 08fc2a2c399f6..d96f52a551940 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -945,7 +945,7 @@ enum dc_status dcn20_enable_stream_timing(
- 		return DC_ERROR_UNEXPECTED;
- 	}
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index f436d7cf565a1..1a9cc8206430b 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -691,7 +691,7 @@ static void icssg_prueth_hsr_fdb_add_del(struct prueth_emac *emac,
  
--	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
-+	udelay(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
+ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
+ {
+-	struct net_device *real_dev;
++	struct net_device *real_dev, *port_dev;
+ 	struct prueth_emac *emac;
+ 	u8 vlan_id, i;
  
- 	params.vertical_total_min = stream->adjust.v_total_min;
- 	params.vertical_total_max = stream->adjust.v_total_max;
+@@ -700,11 +700,15 @@ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
+ 
+ 	if (is_hsr_master(real_dev)) {
+ 		for (i = HSR_PT_SLAVE_A; i < HSR_PT_INTERLINK; i++) {
+-			emac = netdev_priv(hsr_get_port_ndev(real_dev, i));
+-			if (!emac)
++			port_dev = hsr_get_port_ndev(real_dev, i);
++			emac = netdev_priv(port_dev);
++			if (!emac) {
++				dev_put(port_dev);
+ 				return -EINVAL;
++			}
+ 			icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
+ 						     true);
++			dev_put(port_dev);
+ 		}
+ 	} else {
+ 		emac = netdev_priv(real_dev);
+@@ -716,7 +720,7 @@ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
+ 
+ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
+ {
+-	struct net_device *real_dev;
++	struct net_device *real_dev, *port_dev;
+ 	struct prueth_emac *emac;
+ 	u8 vlan_id, i;
+ 
+@@ -725,11 +729,15 @@ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
+ 
+ 	if (is_hsr_master(real_dev)) {
+ 		for (i = HSR_PT_SLAVE_A; i < HSR_PT_INTERLINK; i++) {
+-			emac = netdev_priv(hsr_get_port_ndev(real_dev, i));
+-			if (!emac)
++			port_dev = hsr_get_port_ndev(real_dev, i);
++			emac = netdev_priv(port_dev);
++			if (!emac) {
++				dev_put(port_dev);
+ 				return -EINVAL;
++			}
+ 			icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
+ 						     false);
++			dev_put(port_dev);
+ 		}
+ 	} else {
+ 		emac = netdev_priv(real_dev);
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 702da1f9aaa90..fbbc3ccf9df64 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -675,9 +675,14 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ 	struct hsr_priv *hsr = netdev_priv(ndev);
+ 	struct hsr_port *port;
+ 
++	rcu_read_lock();
+ 	hsr_for_each_port(hsr, port)
+-		if (port->type == pt)
++		if (port->type == pt) {
++			dev_hold(port->dev);
++			rcu_read_unlock();
+ 			return port->dev;
++		}
++	rcu_read_unlock();
+ 	return NULL;
+ }
+ EXPORT_SYMBOL(hsr_get_port_ndev);
 -- 
 2.51.0
 
