@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-180240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BC1B7EFF4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 470D5B7E612
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7345163740
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01F66466B7B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3A5316196;
-	Wed, 17 Sep 2025 12:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E258E2F7ABF;
+	Wed, 17 Sep 2025 12:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fm2kJMze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTQS6e+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABDD316191;
-	Wed, 17 Sep 2025 12:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB3E31A807;
+	Wed, 17 Sep 2025 12:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113828; cv=none; b=ncYiSyN/GPsGeJpjnbBkINmxwRYVCwIMRJnyfKq+bY+gEJLoEKfYnQESkoFjVcIYo+cUYVuLUrY4EY8KxuYcqXCIf8cVPfE38OXp60sl21ZTVBI2/v7w3FDN8BZ5cVCNNwWG7AtDfVy9q3B1wHQI2ANs+aVAm9RB8q+/ouV6k60=
+	t=1758113114; cv=none; b=jcHzTqIwhrKTdTWzmmJ72CTOXCeCF9il30tla220pvW4DIQKCajbQO+EwLs7Vj1cpy6apiT1SMHBkVH68u3tagcQWE9fUVilMaNlLIZAOncKsFiysIkfq13pzu3ITsquLGIR+mVlYvGKyh6PUE0CM6+lZqJIKclryGyPlfzXdgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113828; c=relaxed/simple;
-	bh=oTg8UztC8UC5dmj/f2A5CrcyEm76TENTGNIXFemhPJI=;
+	s=arc-20240116; t=1758113114; c=relaxed/simple;
+	bh=8iG1EWRjpwLC4EV3nWdGxBVMNN/g4ZbZauqtBrN/tbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/MHtANipL8OPAdBiOCL1YMv+bsKEt5U0TSzmWQaYr9d89Qino7d+HUrGDziq+eO80gkkpzCwbt/iT7HONAvdh8433CfEvajGwgtAr6eGFigrPXpY7uIpvQ8nnDX3Bxeml8hkvQZQDtc2t2xTaVj1QC4E6oE7JGuto9VWkR2kkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fm2kJMze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A53C4CEF0;
-	Wed, 17 Sep 2025 12:57:07 +0000 (UTC)
+	 MIME-Version; b=JAs9FPWdOmpALNZ0XSWGLIZTqxGry8q6Y2lbznzOq97GAKCLEpvdowZFFqqKWcM1doehO+f8I7PHvjdfnIZ37sN1l3UocmlfAc5qyGJjKAIyuq2G9+B44/DcPleV6vz/jcU+5ygqMI2mHrLd+DRlXGe/oB2IifSxYODuVIwQDyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTQS6e+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1BEC4CEF0;
+	Wed, 17 Sep 2025 12:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113827;
-	bh=oTg8UztC8UC5dmj/f2A5CrcyEm76TENTGNIXFemhPJI=;
+	s=korg; t=1758113114;
+	bh=8iG1EWRjpwLC4EV3nWdGxBVMNN/g4ZbZauqtBrN/tbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fm2kJMzec7e+FPyIU4d7x47FuttUwPZdmwv5sO3K8XZ58KVW5fDCH6HeRqkbGycC8
-	 xjVh2Jdaia9swZpNM3ouVHWN8sV6U2iZWt1KCjomQO5olOaGikL7U5gIKunYzzDdsL
-	 YxPabhEBRTpBbyjxtcAVRuApr4Asj37u3n+QyLsk=
+	b=HTQS6e+Rcv4s2fdkQDtObhpFmpopQ0rkHk187w7EvF6f4u/qad1XxCcywukS6QJmE
+	 VXJh8vq9eyK1LnpbmLgoR2716nATMD9Ilq5lAa2AobnLbkD1PZKB2osB07Thq1DPsZ
+	 661zC/dEwu/egDUsSVt6dw2C9tOrgm606nJoc45U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 063/101] serial: sc16is7xx: fix bug in flow control levels init
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Friendy Su <friendy.su@sony.com>,
+	Daniel Palmer <daniel.palmer@sony.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 176/189] erofs: fix runtime warning on truncate_folio_batch_exceptionals()
 Date: Wed, 17 Sep 2025 14:34:46 +0200
-Message-ID: <20250917123338.365836532@linuxfoundation.org>
+Message-ID: <20250917123356.184101517@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-commit 535fd4c98452c87537a40610abba45daf5761ec6 upstream.
+[ Upstream commit 181993bb0d626cf88cc803f4356ce5c5abe86278 ]
 
-When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
-writing to the TCR register to configure flow control levels, we are
-incorrectly writing to the MSR register. The default value of $00 is then
-used for TCR, which means that selectable trigger levels in FCR are used
-in place of TCR.
+Commit 0e2f80afcfa6("fs/dax: ensure all pages are idle prior to
+filesystem unmount") introduced the WARN_ON_ONCE to capture whether
+the filesystem has removed all DAX entries or not and applied the
+fix to xfs and ext4.
 
-TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
-to be set. EFR[4] is already set in probe().
+Apply the missed fix on erofs to fix the runtime warning:
 
-MCR access requires LCR[7] to be zero.
+[  5.266254] ------------[ cut here ]------------
+[  5.266274] WARNING: CPU: 6 PID: 3109 at mm/truncate.c:89 truncate_folio_batch_exceptionals+0xff/0x260
+[  5.266294] Modules linked in:
+[  5.266999] CPU: 6 UID: 0 PID: 3109 Comm: umount Tainted: G S                  6.16.0+ #6 PREEMPT(voluntary)
+[  5.267012] Tainted: [S]=CPU_OUT_OF_SPEC
+[  5.267017] Hardware name: Dell Inc. OptiPlex 5000/05WXFV, BIOS 1.5.1 08/24/2022
+[  5.267024] RIP: 0010:truncate_folio_batch_exceptionals+0xff/0x260
+[  5.267076] Code: 00 00 41 39 df 7f 11 eb 78 83 c3 01 49 83 c4 08 41 39 df 74 6c 48 63 f3 48 83 fe 1f 0f 83 3c 01 00 00 43 f6 44 26 08 01 74 df <0f> 0b 4a 8b 34 22 4c 89 ef 48 89 55 90 e8 ff 54 1f 00 48 8b 55 90
+[  5.267083] RSP: 0018:ffffc900013f36c8 EFLAGS: 00010202
+[  5.267095] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[  5.267101] RDX: ffffc900013f3790 RSI: 0000000000000000 RDI: ffff8882a1407898
+[  5.267108] RBP: ffffc900013f3740 R08: 0000000000000000 R09: 0000000000000000
+[  5.267113] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  5.267119] R13: ffff8882a1407ab8 R14: ffffc900013f3888 R15: 0000000000000001
+[  5.267125] FS:  00007aaa8b437800(0000) GS:ffff88850025b000(0000) knlGS:0000000000000000
+[  5.267132] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  5.267138] CR2: 00007aaa8b3aac10 CR3: 000000024f764000 CR4: 0000000000f52ef0
+[  5.267144] PKRU: 55555554
+[  5.267150] Call Trace:
+[  5.267154]  <TASK>
+[  5.267181]  truncate_inode_pages_range+0x118/0x5e0
+[  5.267193]  ? save_trace+0x54/0x390
+[  5.267296]  truncate_inode_pages_final+0x43/0x60
+[  5.267309]  evict+0x2a4/0x2c0
+[  5.267339]  dispose_list+0x39/0x80
+[  5.267352]  evict_inodes+0x150/0x1b0
+[  5.267376]  generic_shutdown_super+0x41/0x180
+[  5.267390]  kill_block_super+0x1b/0x50
+[  5.267402]  erofs_kill_sb+0x81/0x90 [erofs]
+[  5.267436]  deactivate_locked_super+0x32/0xb0
+[  5.267450]  deactivate_super+0x46/0x60
+[  5.267460]  cleanup_mnt+0xc3/0x170
+[  5.267475]  __cleanup_mnt+0x12/0x20
+[  5.267485]  task_work_run+0x5d/0xb0
+[  5.267499]  exit_to_user_mode_loop+0x144/0x170
+[  5.267512]  do_syscall_64+0x2b9/0x7c0
+[  5.267523]  ? __lock_acquire+0x665/0x2ce0
+[  5.267535]  ? __lock_acquire+0x665/0x2ce0
+[  5.267560]  ? lock_acquire+0xcd/0x300
+[  5.267573]  ? find_held_lock+0x31/0x90
+[  5.267582]  ? mntput_no_expire+0x97/0x4e0
+[  5.267606]  ? mntput_no_expire+0xa1/0x4e0
+[  5.267625]  ? mntput+0x24/0x50
+[  5.267634]  ? path_put+0x1e/0x30
+[  5.267647]  ? do_faccessat+0x120/0x2f0
+[  5.267677]  ? do_syscall_64+0x1a2/0x7c0
+[  5.267686]  ? from_kgid_munged+0x17/0x30
+[  5.267703]  ? from_kuid_munged+0x13/0x30
+[  5.267711]  ? __do_sys_getuid+0x3d/0x50
+[  5.267724]  ? do_syscall_64+0x1a2/0x7c0
+[  5.267732]  ? irqentry_exit+0x77/0xb0
+[  5.267743]  ? clear_bhb_loop+0x30/0x80
+[  5.267752]  ? clear_bhb_loop+0x30/0x80
+[  5.267765]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  5.267772] RIP: 0033:0x7aaa8b32a9fb
+[  5.267781] Code: c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 f3 0f 1e fa 31 f6 e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8 a6 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 05 c3 0f 1f 40 00 48 8b 15 e9 83 0d 00 f7 d8
+[  5.267787] RSP: 002b:00007ffd7c4c9468 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+[  5.267796] RAX: 0000000000000000 RBX: 00005a61592a8b00 RCX: 00007aaa8b32a9fb
+[  5.267802] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00005a61592b2080
+[  5.267806] RBP: 00007ffd7c4c9540 R08: 00007aaa8b403b20 R09: 0000000000000020
+[  5.267812] R10: 0000000000000001 R11: 0000000000000246 R12: 00005a61592a8c00
+[  5.267817] R13: 0000000000000000 R14: 00005a61592b2080 R15: 00005a61592a8f10
+[  5.267849]  </TASK>
+[  5.267854] irq event stamp: 4721
+[  5.267859] hardirqs last  enabled at (4727): [<ffffffff814abf50>] __up_console_sem+0x90/0xa0
+[  5.267873] hardirqs last disabled at (4732): [<ffffffff814abf35>] __up_console_sem+0x75/0xa0
+[  5.267884] softirqs last  enabled at (3044): [<ffffffff8132adb3>] kernel_fpu_end+0x53/0x70
+[  5.267895] softirqs last disabled at (3042): [<ffffffff8132b5f4>] kernel_fpu_begin_mask+0xc4/0x120
+[  5.267905] ---[ end trace 0000000000000000 ]---
 
-Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
-accessed instead because MCR shares the same address space as XON1.
-
-Since MCR[2] is unmodified and still zero, when writing to TCR we are in
-fact writing to MSR because TCR/TLR registers share the same address space
-as MSR/SPR.
-
-Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
-functions), as it is already enabled in sc16is7xx_probe() since commit
-43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
-Now LCR is $00, which means that MCR access is enabled.
-
-Also remove regcache_cache_bypass() calls since we no longer access the
-enhanced registers set, and TCR is already declared as volatile (in fact
-by declaring MSR as volatile, which shares the same address).
-
-Finally disable access to TCR/TLR registers after modifying them by
-clearing MCR[2].
-
-Note: the comment about "... and internal clock div" is wrong and can be
-      ignored/removed as access to internal clock div registers (DLL/DLH)
-      is permitted only when LCR[7] is logic 1, not when enhanced features
-      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bde708f1a65d ("fs/dax: always remove DAX page-cache entries when breaking layouts")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Friendy Su <friendy.su@sony.com>
+Reviewed-by: Daniel Palmer <daniel.palmer@sony.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ fs/erofs/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1163,17 +1163,6 @@ static int sc16is7xx_startup(struct uart
- 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
- 			     SC16IS7XX_FCR_FIFO_BIT);
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index 7cc74ef4be031..06c8981eea7f8 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -999,10 +999,22 @@ static int erofs_show_options(struct seq_file *seq, struct dentry *root)
+ 	return 0;
+ }
  
--	/* Enable EFR */
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--			     SC16IS7XX_LCR_CONF_MODE_B);
--
--	regcache_cache_bypass(one->regmap, true);
--
--	/* Enable write access to enhanced features and internal clock div */
--	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_ENABLE_BIT,
--			      SC16IS7XX_EFR_ENABLE_BIT);
--
- 	/* Enable TCR/TLR */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_TCRTLR_BIT,
-@@ -1185,7 +1174,8 @@ static int sc16is7xx_startup(struct uart
- 			     SC16IS7XX_TCR_RX_RESUME(24) |
- 			     SC16IS7XX_TCR_RX_HALT(48));
- 
--	regcache_cache_bypass(one->regmap, false);
-+	/* Disable TCR/TLR access */
-+	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
- 
- 	/* Now, initialize the UART */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
++static void erofs_evict_inode(struct inode *inode)
++{
++#ifdef CONFIG_FS_DAX
++	if (IS_DAX(inode))
++		dax_break_layout_final(inode);
++#endif
++
++	truncate_inode_pages_final(&inode->i_data);
++	clear_inode(inode);
++}
++
+ const struct super_operations erofs_sops = {
+ 	.put_super = erofs_put_super,
+ 	.alloc_inode = erofs_alloc_inode,
+ 	.free_inode = erofs_free_inode,
++	.evict_inode = erofs_evict_inode,
+ 	.statfs = erofs_statfs,
+ 	.show_options = erofs_show_options,
+ };
+-- 
+2.51.0
+
 
 
 
