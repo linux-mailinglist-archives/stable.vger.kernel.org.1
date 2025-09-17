@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-180236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78540B7EF79
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4F3B7EEF5
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A17A41893DF0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23B6A7B8914
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780AD316183;
-	Wed, 17 Sep 2025 12:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BB2323400;
+	Wed, 17 Sep 2025 13:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYoBKlIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reZwpULg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336CE31618A;
-	Wed, 17 Sep 2025 12:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A5533AEBA;
+	Wed, 17 Sep 2025 13:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113815; cv=none; b=G5sQtB/YzbzJfS/Wr8kN38WZ4vWfP/AnrZUzChp6AmB8MLlpjwkATyBgdFBSUNBzTpKMTIuVMbgTG3gBemHujgivHOgDRx02zPVpC/8/y04tIWeHxxjCOMx5mf7r0Z/N5ag5agF1WCU0UlTnZ3yp6I4Mki4BKVyQputJcfH3AvM=
+	t=1758114017; cv=none; b=E88gHZPPtlxRc2TaqKBaD85tANVa7t257kbqWuSebjodJlsLbU23NoSkEdIYZYfxbuzl9RCHKuXLGHNg6s8aZaUOh8+Kn93B4RwCqvhT94CcMgSWh/Jf7fMIX/cARuPsm5XPDoib2414ChGZrETVfqTrA6I08kGljhv78JMBJ/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113815; c=relaxed/simple;
-	bh=KUq72v93eMSsA6ng1gWaKRnPviHFJ8ERVXiKgrFOQ7g=;
+	s=arc-20240116; t=1758114017; c=relaxed/simple;
+	bh=Q9iqw20X7DAbdM3ok1CaB8lMhDl4LmAHQsMkpz2Ureo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JN55v16763oHumiVG56LltM+zyiu6XyKCn/3A9Li8bm+0k/FjN8lCyLdQqAxV65d3lFjKKWf0vSFXdDTGXLjCT9sCzo0CQe5aW3I3yUa2dvJf2BFH7srxPOeTTxnMR265n4kSbqyNDZqvXlc6KwTc4eY2RvtZuWpRh/vrJkXJp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYoBKlIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1FBC4CEF0;
-	Wed, 17 Sep 2025 12:56:54 +0000 (UTC)
+	 MIME-Version; b=J6RHY1G6gjgHchRq/fz3l2mWvd4xBRXErdMuHDbea7T+k/qtTPHNUYGWU2SPORi9Ke8WvTHah9qpZJ5DYHKfF6IR+m6alK47bypdbJmh/K7K9NnIFrdyCVrnNlZf3qR2rZOvORvy/65+RWSXCYEnuRthJvk48A6O8CrDkOkefw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reZwpULg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22226C4CEF0;
+	Wed, 17 Sep 2025 13:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113814;
-	bh=KUq72v93eMSsA6ng1gWaKRnPviHFJ8ERVXiKgrFOQ7g=;
+	s=korg; t=1758114017;
+	bh=Q9iqw20X7DAbdM3ok1CaB8lMhDl4LmAHQsMkpz2Ureo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYoBKlIu1V+uJqEVJ56rEpC3cPk2CNexkRP2pZwyiJRjgfbBSNg8jLN3/5ZEUyl1C
-	 rUoKyHFkjknd6eyRuFF2R8o3yyu1D2Oi5ioY4bVGGkRoAOlnHv7Ghba8xvlgrbuT0c
-	 /GWX9LnlTjMQ7bPwZijzUnhBpiUDk9Os/Se8fg60=
+	b=reZwpULg6F1imXF7QPW68Hh6F6Bs0AzkbQJtQqVbdFmFm3XmaBWhlTZ/aABGjjIgZ
+	 A8mDMDuzlbfDz4Rz03t5883IryRwo/7ENyxNtmdQpcctMjZ6L1lHtxb0d1wOMHGzRe
+	 M7SpH6WU2//V7umspF3r4KCQFbBTU1D9Zfq1YFcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff LaBundy <jeff@labundy.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 059/101] Input: iqs7222 - avoid enabling unused interrupts
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Subject: [PATCH 6.1 21/78] KVM: SVM: Return TSA_SQ_NO and TSA_L1_NO bits in __do_cpuid_func()
 Date: Wed, 17 Sep 2025 14:34:42 +0200
-Message-ID: <20250917123338.270802182@linuxfoundation.org>
+Message-ID: <20250917123330.081828979@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff LaBundy <jeff@labundy.com>
+From: Boris Ostrovsky <boris.ostrovsky@oracle.com>
 
-commit c9ddc41cdd522f2db5d492eda3df8994d928be34 upstream.
+Commit c334ae4a545a ("KVM: SVM: Advertise TSA CPUID bits to guests")
+set VERW_CLEAR, TSA_SQ_NO and TSA_L1_NO kvm_caps bits that are
+supposed to be provided to guest when it requests CPUID 0x80000021.
+However, the latter two (in the %ecx register) are instead returned as
+zeroes in __do_cpuid_func().
 
-If a proximity event node is defined so as to specify the wake-up
-properties of the touch surface, the proximity event interrupt is
-enabled unconditionally. This may result in unwanted interrupts.
+Return values of TSA_SQ_NO and TSA_L1_NO as set in the kvm_cpu_caps.
 
-Solve this problem by enabling the interrupt only if the event is
-mapped to a key or switch code.
+This fix is stable-only.
 
-Signed-off-by: Jeff LaBundy <jeff@labundy.com>
-Link: https://lore.kernel.org/r/aKJxxgEWpNaNcUaW@nixie71
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: <stable@vger.kernel.org> # 6.1.y
+Fixes: c334ae4a545a ("KVM: SVM: Advertise TSA CPUID bits to guests")
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/iqs7222.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/cpuid.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/input/misc/iqs7222.c
-+++ b/drivers/input/misc/iqs7222.c
-@@ -2430,6 +2430,9 @@ static int iqs7222_parse_chan(struct iqs
- 		if (error)
- 			return error;
- 
-+		if (!iqs7222->kp_type[chan_index][i])
-+			continue;
-+
- 		if (!dev_desc->event_offset)
- 			continue;
- 
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1259,8 +1259,9 @@ static inline int __do_cpuid_func(struct
+ 		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
+ 		break;
+ 	case 0x80000021:
+-		entry->ebx = entry->ecx = entry->edx = 0;
++		entry->ebx = entry->edx = 0;
+ 		cpuid_entry_override(entry, CPUID_8000_0021_EAX);
++		cpuid_entry_override(entry, CPUID_8000_0021_ECX);
+ 		break;
+ 	/*Add support for Centaur's CPUID instruction*/
+ 	case 0xC0000000:
 
 
 
