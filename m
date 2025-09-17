@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-179912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399CFB7E157
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3D4B7E19D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E2962A63E0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2743622C03
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7763F31A7F7;
-	Wed, 17 Sep 2025 12:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BB42FBDFF;
+	Wed, 17 Sep 2025 12:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0Eh8U4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05v8Fzm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BAC2C3278;
-	Wed, 17 Sep 2025 12:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9C3263F34;
+	Wed, 17 Sep 2025 12:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112779; cv=none; b=f/NbqrV+BCZsf1PS/5lO9o5dfO+qw/kEVvNtq0puNvVCKbxvXjf3jYaGc0DxxXJ27KuFm64UFleRL5XzgjFBXTNCD0o20JB9DXUuKs3TcCV+5zkkTjzA6xdXUx3n2TI2iMpC+YMhpo/RNbt7FOU9KPUmrZ/hCjc6XUH/BvgxDCA=
+	t=1758112814; cv=none; b=YmXAysBar6rtTGg0R6Z0YD98dogCXy4lkbplD5dtKgC2u5bgwX33uFlyseFpD/7iWTc6tozKLoJRCCpjpP7OtIGy7lj/P89T4oPRy4QH77gB1Qh/if/RBiWgdHpo/bHZ9ihnMqCTXXGcL9kWpDNMN9Ed9ltYHMt2JbpMG4H1hIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112779; c=relaxed/simple;
-	bh=DSzPAd3e0MM8rTXEAtRk8NUIcJyo8zXdoEG9XdKpNgM=;
+	s=arc-20240116; t=1758112814; c=relaxed/simple;
+	bh=NV3tlWV3nDZ6nD9X0VXLGEcpve7WuYAYYIfuSCA53zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/v7vRE8aflxtJvl+KV2HHFf5WOXO4ctWxLmRchNpwsBkRamN5xWQM4Om3SwjfdfklMdyMtfu7cF4INtsR5ptD2i9FIYbGuMm46msGRCXmdtl4/wZbD0vZmnyNrcyML/L0/jZOqirtkDdTsdu6Mxm1/FAUoutjTkQZ4vLq4s1ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0Eh8U4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A88C4CEF0;
-	Wed, 17 Sep 2025 12:39:38 +0000 (UTC)
+	 MIME-Version; b=Lu9ogay8v+GLzCvyfy8ata4UDa6VntiCy4pyg94d9RSd186RIYMwQ7JBngn9lvSd/52h3D8cl3h07bYfARnzGxy0fIqeRO9MYTIC6sokUJVcQKjgnB5bD6MuO9Gq6+w0r8UU1+r2Y54bTgv4jR32PyQ3flZipYi5RdKjsJDCc50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05v8Fzm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3982AC4CEF0;
+	Wed, 17 Sep 2025 12:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112779;
-	bh=DSzPAd3e0MM8rTXEAtRk8NUIcJyo8zXdoEG9XdKpNgM=;
+	s=korg; t=1758112814;
+	bh=NV3tlWV3nDZ6nD9X0VXLGEcpve7WuYAYYIfuSCA53zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0Eh8U4bQF634gtZ2mP7oewmn7XTptvuMr53yWeojj4QClCzY1X0tImJ7KmzwZbsG
-	 ugegG8/XJXCqLv9sRbF+BrE3/iyHl+Vw2yIQ7i9S1MNm0CdOQjXRS46y1b3GqW85jL
-	 BL0GbPQ1scVfta+lV00k1D1DJH+6I4D3CQabFo6k=
+	b=05v8Fzm2KXiwl7r3yAoz8VFwBasD3sIMHRw//NWZ8N+0Zj8fh7eEPILUivijdRrWm
+	 RWjX1VzEWm1owMz7g55QENVQh/SwLe90NDgBJe+WOHPD+fNxqBq9OVSCF/Y7CJ1750
+	 OvS8EAfEyfaYqX4xqXP9OV618Ibv6ztl6CX/xdKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Leo Martins <loemra.dev@gmail.com>,
+	Omar Sandoval <osandov@fb.com>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.16 057/189] btrfs: fix squota compressed stats leak
-Date: Wed, 17 Sep 2025 14:32:47 +0200
-Message-ID: <20250917123353.257502559@linuxfoundation.org>
+Subject: [PATCH 6.16 058/189] btrfs: fix subvolume deletion lockup caused by inodes xarray race
+Date: Wed, 17 Sep 2025 14:32:48 +0200
+Message-ID: <20250917123353.282095229@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
 References: <20250917123351.839989757@linuxfoundation.org>
@@ -66,71 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Omar Sandoval <osandov@fb.com>
 
-commit de134cb54c3a67644ff95b1c9bffe545e752c912 upstream.
+commit f6a6c280059c4ddc23e12e3de1b01098e240036f upstream.
 
-The following workload on a squota enabled fs:
+There is a race condition between inode eviction and inode caching that
+can cause a live struct btrfs_inode to be missing from the root->inodes
+xarray. Specifically, there is a window during evict() between the inode
+being unhashed and deleted from the xarray. If btrfs_iget() is called
+for the same inode in that window, it will be recreated and inserted
+into the xarray, but then eviction will delete the new entry, leaving
+nothing in the xarray:
 
-  btrfs subvol create mnt/subvol
+Thread 1                          Thread 2
+---------------------------------------------------------------
+evict()
+  remove_inode_hash()
+                                  btrfs_iget_path()
+                                    btrfs_iget_locked()
+                                    btrfs_read_locked_inode()
+                                      btrfs_add_inode_to_root()
+  destroy_inode()
+    btrfs_destroy_inode()
+      btrfs_del_inode_from_root()
+        __xa_erase
 
-  # ensure subvol extents get accounted
-  sync
-  btrfs qgroup create 1/1 mnt
-  btrfs qgroup assign mnt/subvol 1/1 mnt
-  btrfs qgroup delete mnt/subvol
+In turn, this can cause issues for subvolume deletion. Specifically, if
+an inode is in this lost state, and all other inodes are evicted, then
+btrfs_del_inode_from_root() will call btrfs_add_dead_root() prematurely.
+If the lost inode has a delayed_node attached to it, then when
+btrfs_clean_one_deleted_snapshot() calls btrfs_kill_all_delayed_nodes(),
+it will loop forever because the delayed_nodes xarray will never become
+empty (unless memory pressure forces the inode out). We saw this
+manifest as soft lockups in production.
 
-  # make the cleaner thread run
-  btrfs filesystem sync mnt
-  sleep 1
-  btrfs filesystem sync mnt
-  btrfs qgroup destroy 1/1 mnt
+Fix it by only deleting the xarray entry if it matches the given inode
+(using __xa_cmpxchg()).
 
-will fail with EBUSY. The reason is that 1/1 does the quick accounting
-when we assign subvol to it, gaining its exclusive usage as excl and
-excl_cmpr. But then when we delete subvol, the decrement happens via
-record_squota_delta() which does not update excl_cmpr, as squotas does
-not make any distinction between compressed and normal extents. Thus,
-we increment excl_cmpr but never decrement it, and are unable to delete
-1/1. The two possible fixes are to make squota always mirror excl and
-excl_cmpr or to make the fast accounting separately track the plain and
-cmpr numbers. The latter felt cleaner to me so that is what I opted for.
-
-Fixes: 1e0e9d5771c3 ("btrfs: add helper for recording simple quota deltas")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
+Fixes: 310b2f5d5a94 ("btrfs: use an xarray to track open inodes in a root")
+Cc: stable@vger.kernel.org # 6.11+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Co-authored-by: Leo Martins <loemra.dev@gmail.com>
+Signed-off-by: Leo Martins <loemra.dev@gmail.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1483,6 +1483,7 @@ static int __qgroup_excl_accounting(stru
- 	struct btrfs_qgroup *qgroup;
- 	LIST_HEAD(qgroup_list);
- 	u64 num_bytes = src->excl;
-+	u64 num_bytes_cmpr = src->excl_cmpr;
- 	int ret = 0;
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -5685,7 +5685,17 @@ static void btrfs_del_inode_from_root(st
+ 	bool empty = false;
  
- 	qgroup = find_qgroup_rb(fs_info, ref_root);
-@@ -1494,11 +1495,12 @@ static int __qgroup_excl_accounting(stru
- 		struct btrfs_qgroup_list *glist;
- 
- 		qgroup->rfer += sign * num_bytes;
--		qgroup->rfer_cmpr += sign * num_bytes;
-+		qgroup->rfer_cmpr += sign * num_bytes_cmpr;
- 
- 		WARN_ON(sign < 0 && qgroup->excl < num_bytes);
-+		WARN_ON(sign < 0 && qgroup->excl_cmpr < num_bytes_cmpr);
- 		qgroup->excl += sign * num_bytes;
--		qgroup->excl_cmpr += sign * num_bytes;
-+		qgroup->excl_cmpr += sign * num_bytes_cmpr;
- 
- 		if (sign > 0)
- 			qgroup_rsv_add_by_qgroup(fs_info, qgroup, src);
+ 	xa_lock(&root->inodes);
+-	entry = __xa_erase(&root->inodes, btrfs_ino(inode));
++	/*
++	 * This btrfs_inode is being freed and has already been unhashed at this
++	 * point. It's possible that another btrfs_inode has already been
++	 * allocated for the same inode and inserted itself into the root, so
++	 * don't delete it in that case.
++	 *
++	 * Note that this shouldn't need to allocate memory, so the gfp flags
++	 * don't really matter.
++	 */
++	entry = __xa_cmpxchg(&root->inodes, btrfs_ino(inode), inode, NULL,
++			     GFP_ATOMIC);
+ 	if (entry == inode)
+ 		empty = xa_empty(&root->inodes);
+ 	xa_unlock(&root->inodes);
 
 
 
