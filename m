@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60ADCB7E7DA
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:50:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22350B7E2FB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A85EF1896480
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32F87B2C61
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA63932BC1C;
-	Wed, 17 Sep 2025 12:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A00337EB4;
+	Wed, 17 Sep 2025 12:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7vgEgWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6ODE2Gp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3332BC1A;
-	Wed, 17 Sep 2025 12:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211011E1E19;
+	Wed, 17 Sep 2025 12:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113279; cv=none; b=K9Iq30CzbTpIbCzPHFALbPeqvoFktYhvIvFN7Ea1RNW8s/DbglM4zn+nwJqY57nhGMA1HxkYr1++Pz6TmRqRHP8Ys6xtX1SvBjIjZ/utbrCfnN3HpUV9uktcuOce5Y23C3S5XtcON4/n9Br5z/796ay6nYd7z8nWnze2prITs5U=
+	t=1758112841; cv=none; b=EOZeGuDqaFNxoyMIqxbv0NUy5Dq8Fy8EFBg/3ccdRWjXWmKOQFu5hmX8GhPotTfIlERk+BxDilWAoicHmPcUEGWIh+Ic2XlqaqZyquaxjXNUeYM0i8cx6di5/xGuzAfpWreroC6+TwaEbAuUgW9kPXpqfxOlp8c5NqbA/jOCC/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113279; c=relaxed/simple;
-	bh=S5EYKO6O8JHNuAa7NZdNQj1p/bWO8GdPWjINnS+FgeE=;
+	s=arc-20240116; t=1758112841; c=relaxed/simple;
+	bh=0NkWdR6poVkEyyTLtJPjja/gvh02+hR0uVrT6f99THg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anR+Ea/u5z/xyeJqRp9Dbo+9VcRGfPNbTttO0Bg1m0jZG/SER8ziC6IQi/bpWfxWwmpG+ktf6d0s4MArObQuP60DrPvurvMNDkyRURpf8J1Dcf+0DYQrh2TeoJ8lyGZYnzjQIzLNT1JYqAwYSe4JYKt75+fVDM6RzQbKVJitE4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7vgEgWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092CBC4CEF5;
-	Wed, 17 Sep 2025 12:47:58 +0000 (UTC)
+	 MIME-Version; b=mIZkhu8dLG9ch7su9MxPeW1oLGR7QidW19cjmMwTKb8EotaDDfjIefRSmtQGY1ep/s1DD5mwBzh5LVAZlyDzygj25Ljg1dzrrB70I28Bf/i5VCyntfIn0fS6OIXvjUpUl4CbAV+D6S2KI0PdOeS3IGx1M9ha7bs+GNrRADfWF94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6ODE2Gp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902DBC4CEF0;
+	Wed, 17 Sep 2025 12:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113279;
-	bh=S5EYKO6O8JHNuAa7NZdNQj1p/bWO8GdPWjINnS+FgeE=;
+	s=korg; t=1758112841;
+	bh=0NkWdR6poVkEyyTLtJPjja/gvh02+hR0uVrT6f99THg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7vgEgWs0kakCZqkgv3fYHgvVjT4+Sz5Nmqvhw0eckO2VWh58fx9svIzSXBVPjEHI
-	 V3DFu06CI3d7RBToYNNOI3EOFOQ/CH01Wu0Tr/VPhfE+Jig0Q/rXLAAFZeiRbpLYol
-	 Yy8Wv+FCRKVcFuSv0tUb/PzTklqvk8Xiuvr/q/1A=
+	b=s6ODE2Gp26ayRo2vPOP19VW/C5VrM/8lJbJ4FlJMH76jCb5P3+9EatvcQpkgqqU2R
+	 IlvrMyzCoSuOcjhzAjiuXEzRgPdv7AMivIClZdNz0G2EzHQa7a9BJ7s2xQupdoJq7W
+	 vLDGyJvnN2ioj4vTC9M6V1+8/aZzE/PlzM3Mie5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/140] nfs/localio: restore creds before releasing pageio data
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Geoffrey McRae <geoffrey.mcrae@amd.com>
+Subject: [PATCH 6.16 092/189] drm/amd/display: remove oem i2c adapter on finish
 Date: Wed, 17 Sep 2025 14:33:22 +0200
-Message-ID: <20250917123345.043955682@linuxfoundation.org>
+Message-ID: <20250917123354.102813402@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Geoffrey McRae <geoffrey.mcrae@amd.com>
 
-[ Upstream commit 992203a1fba51b025c60ec0c8b0d9223343dea95 ]
+commit 1dfd2864a1c4909147663e5a27c055f50f7c2796 upstream.
 
-Otherwise if the nfsd filecache code releases the nfsd_file
-immediately, it can trigger the BUG_ON(cred == current->cred) in
-__put_cred() when it puts the nfsd_file->nf_file->f-cred.
+Fixes a bug where unbinding of the GPU would leave the oem i2c adapter
+registered resulting in a null pointer dereference when applications try
+to access the invalid device.
 
-Fixes: b9f5dd57f4a5 ("nfs/localio: use dedicated workqueues for filesystem read and write")
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Link: https://lore.kernel.org/r/20250807164938.2395136-1-smayhew@redhat.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d5470c97314 ("drm/amd/display/dm: add support for OEM i2c bus")
+Cc: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 89923fb7ead4fdd37b78dd49962d9bb5892403e6)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/localio.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
-index 8fb145124e93b..82a053304ad59 100644
---- a/fs/nfs/localio.c
-+++ b/fs/nfs/localio.c
-@@ -425,12 +425,13 @@ static void nfs_local_call_read(struct work_struct *work)
- 	nfs_local_iter_init(&iter, iocb, READ);
- 
- 	status = filp->f_op->read_iter(&iocb->kiocb, &iter);
-+
-+	revert_creds(save_cred);
-+
- 	if (status != -EIOCBQUEUED) {
- 		nfs_local_read_done(iocb, status);
- 		nfs_local_pgio_release(iocb);
- 	}
--
--	revert_creds(save_cred);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2910,6 +2910,17 @@ static int dm_oem_i2c_hw_init(struct amd
+ 	return 0;
  }
  
- static int
-@@ -626,14 +627,15 @@ static void nfs_local_call_write(struct work_struct *work)
- 	file_start_write(filp);
- 	status = filp->f_op->write_iter(&iocb->kiocb, &iter);
- 	file_end_write(filp);
++static void dm_oem_i2c_hw_fini(struct amdgpu_device *adev)
++{
++	struct amdgpu_display_manager *dm = &adev->dm;
 +
-+	revert_creds(save_cred);
-+	current->flags = old_flags;
++	if (dm->oem_i2c) {
++		i2c_del_adapter(&dm->oem_i2c->base);
++		kfree(dm->oem_i2c);
++		dm->oem_i2c = NULL;
++	}
++}
 +
- 	if (status != -EIOCBQUEUED) {
- 		nfs_local_write_done(iocb, status);
- 		nfs_local_vfs_getattr(iocb);
- 		nfs_local_pgio_release(iocb);
- 	}
--
--	revert_creds(save_cred);
--	current->flags = old_flags;
- }
+ /**
+  * dm_hw_init() - Initialize DC device
+  * @ip_block: Pointer to the amdgpu_ip_block for this hw instance.
+@@ -2960,7 +2971,7 @@ static int dm_hw_fini(struct amdgpu_ip_b
+ {
+ 	struct amdgpu_device *adev = ip_block->adev;
  
- static int
--- 
-2.51.0
-
+-	kfree(adev->dm.oem_i2c);
++	dm_oem_i2c_hw_fini(adev);
+ 
+ 	amdgpu_dm_hpd_fini(adev);
+ 
 
 
 
