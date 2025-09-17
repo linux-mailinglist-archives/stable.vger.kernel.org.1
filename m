@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-179955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F80FB7E2C0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F27B7EDD6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77416211B7
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27C7A1C25B5D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B87A2EC0A8;
-	Wed, 17 Sep 2025 12:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A0732E737;
+	Wed, 17 Sep 2025 12:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sbJUr2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4zHlbWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191B9238140;
-	Wed, 17 Sep 2025 12:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09D732E733;
+	Wed, 17 Sep 2025 12:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112921; cv=none; b=k1F/eKMNpjlmKIR4UlXv9st0yeMG6rl0f+7IkuiK9fB8aq8vXLF6l2iRxvC4WfZkr4boB5kVdVs9FW1QAG6hs6A0b2QnpHiMPvD+wUva5ySM9nISut5STIVg+P/e3cjuaz++F0t7GN0AYGjVlZWa+6kXPQgmZeLJ/yz/x44Khzk=
+	t=1758113675; cv=none; b=h4T2T+tBpBYpJzl8ZSRPde/YRv4mZtfLQ3sVCTthDfU9B/QQjDOnRwe+b3Qs621yp7siTyYbgJwiCOigtgc4ZszPKlaYCmKy5MyBrXu78Ij8cBwiNjg6UMMgn5M+DlIoWTDKe9hkdoIkpioHxb2FxAj+c3qfHxRmgdTcrd6Zlsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112921; c=relaxed/simple;
-	bh=L4jUCx7uAg34A5izBZABJ+FxN+VthiSHpc8kQwKVs5Q=;
+	s=arc-20240116; t=1758113675; c=relaxed/simple;
+	bh=sr/I3R4yNAJV10EYPkNVuZ3qPb2vnTiPbQZUBB6Kn+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=msaFZ9MaVLUCkC1TytYAHAPwqADpX3ADfWawGqthMiCfbGf/oyGKmoCd3nXybedTEqBwWbKsiuSH9R6voCQH44KpUAT4WEvZnSTpFMh65c3S2GDMbN+bPwJFC4XIHGQAzbTJ2ODPa98wk/nuKD+1gj2po/hZZk0SnlpLKu7MdWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sbJUr2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D56DC4CEF0;
-	Wed, 17 Sep 2025 12:42:00 +0000 (UTC)
+	 MIME-Version; b=d7oYZnmE3rUkVdi5o/eYAraJ8YqMrn5IG4VrOJwWeVYSJ1amJw0YSJAvfo52c0/SxJjfix+lmyfo+j5ADSkfD/0WL6g6bncdvTLVY/UORgJNRjBEd2lexowUWpx5USaDGhECLGdmOMJquRsaCYzTfhV1SFNanj8QeEc/ClOwO2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4zHlbWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710CDC4CEF0;
+	Wed, 17 Sep 2025 12:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112921;
-	bh=L4jUCx7uAg34A5izBZABJ+FxN+VthiSHpc8kQwKVs5Q=;
+	s=korg; t=1758113674;
+	bh=sr/I3R4yNAJV10EYPkNVuZ3qPb2vnTiPbQZUBB6Kn+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sbJUr2BG3DRUff+sBh6IrlkRzqcstJRtQDKlZaadCcnXXPHcq0Zt5rQ4QwSfQgd3
-	 fDXAALYyc345+aYwj5jM+Aii56UBay9WEnIVtorZJIukvPZt2foFXP4X/o2YnjW9OL
-	 TRZcndAoOE7gSHog8DlANt4XDVqi6ML/jLjpj8y4=
+	b=S4zHlbWQxLyj+LSU6weQGkXHmhpZlZnsVaulyc1Clc4OAxEbJim9mBVeSb3skwfPH
+	 obPXtPC4zypHpcGvIMkJmveq3WJ5FqsJMqFcD/vETlf3DoJW6pvyNm/TG+3XLG6Ew6
+	 xhkl3QLC1mtvAMbYrjbMATlcfbdJCyPbCYJP/KCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.16 117/189] Input: i8042 - add TUXEDO InfinityBook Pro Gen10 AMD to i8042 quirk table
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 004/101] nfsd: Fix a regression in nfsd_setattr()
 Date: Wed, 17 Sep 2025 14:33:47 +0200
-Message-ID: <20250917123354.723394521@linuxfoundation.org>
+Message-ID: <20250917123336.973574167@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 1939a9fcb80353dd8b111aa1e79c691afbde08b4 upstream.
+[ Upstream commit 6412e44c40aaf8f1d7320b2099c5bdd6cb9126ac ]
 
-Occasionally wakes up from suspend with missing input on the internal
-keyboard. Setting the quirks appears to fix the issue for this device as
-well.
+Commit bb4d53d66e4b ("NFSD: use (un)lock_inode instead of
+fh_(un)lock for file operations") broke the NFSv3 pre/post op
+attributes behaviour when doing a SETATTR rpc call by stripping out
+the calls to fh_fill_pre_attrs() and fh_fill_post_attrs().
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250826142646.13516-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: bb4d53d66e4b ("NFSD: use (un)lock_inode instead of fh_(un)lock for file operations")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Message-ID: <20240216012451.22725-1-trondmy@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: d7d8e3169b56 ("NFSD: nfsd_unlink() clobbers non-zero status returned from fh_fill_pre_attrs()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/nfsd/nfs4proc.c |    4 ++++
+ fs/nfsd/vfs.c      |    9 +++++++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1155,6 +1155,20 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with the forcenorestore quirk.
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1131,6 +1131,7 @@ nfsd4_setattr(struct svc_rqst *rqstp, st
+ 	};
+ 	struct inode *inode;
+ 	__be32 status = nfs_ok;
++	bool save_no_wcc;
+ 	int err;
+ 
+ 	if (setattr->sa_iattr.ia_valid & ATTR_SIZE) {
+@@ -1156,8 +1157,11 @@ nfsd4_setattr(struct svc_rqst *rqstp, st
+ 
+ 	if (status)
+ 		goto out;
++	save_no_wcc = cstate->current_fh.fh_no_wcc;
++	cstate->current_fh.fh_no_wcc = true;
+ 	status = nfsd_setattr(rqstp, &cstate->current_fh, &attrs,
+ 				0, (time64_t)0);
++	cstate->current_fh.fh_no_wcc = save_no_wcc;
+ 	if (!status)
+ 		status = nfserrno(attrs.na_labelerr);
+ 	if (!status)
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -480,7 +480,7 @@ nfsd_setattr(struct svc_rqst *rqstp, str
+ 	int		accmode = NFSD_MAY_SATTR;
+ 	umode_t		ftype = 0;
+ 	__be32		err;
+-	int		host_err;
++	int		host_err = 0;
+ 	bool		get_write_count;
+ 	bool		size_change = (iap->ia_valid & ATTR_SIZE);
+ 	int		retries;
+@@ -538,6 +538,9 @@ nfsd_setattr(struct svc_rqst *rqstp, str
+ 	}
+ 
+ 	inode_lock(inode);
++	err = fh_fill_pre_attrs(fhp);
++	if (err)
++		goto out_unlock;
+ 	for (retries = 1;;) {
+ 		struct iattr attrs;
+ 
+@@ -565,13 +568,15 @@ nfsd_setattr(struct svc_rqst *rqstp, str
+ 		attr->na_aclerr = set_posix_acl(&nop_mnt_idmap,
+ 						dentry, ACL_TYPE_DEFAULT,
+ 						attr->na_dpacl);
++	fh_fill_post_attrs(fhp);
++out_unlock:
+ 	inode_unlock(inode);
+ 	if (size_change)
+ 		put_write_access(inode);
+ out:
+ 	if (!host_err)
+ 		host_err = commit_metadata(fhp);
+-	return nfserrno(host_err);
++	return err != 0 ? err : nfserrno(host_err);
+ }
+ 
+ #if defined(CONFIG_NFSD_V4)
 
 
 
