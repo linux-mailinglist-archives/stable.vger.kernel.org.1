@@ -1,511 +1,210 @@
-Return-Path: <stable+bounces-180199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD94B7EC0C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7298EB7E8EB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61C3C7BABAD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:57:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F0682A13CC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0106937C115;
-	Wed, 17 Sep 2025 12:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D9E32896B;
+	Wed, 17 Sep 2025 12:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6ACOout"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRztV1xb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD5F32E738;
-	Wed, 17 Sep 2025 12:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE7C323404;
+	Wed, 17 Sep 2025 12:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113695; cv=none; b=d5bgRQ/w0enn8ZDYxyG45WsV2XRVUguQM6rxhXSoSKYZzfdWoLiFTe9r6MFJ9Lsp/o1qbzmtiEEXY7Djq6DosMKY1U1EABDjVaZbze5mAHxXsKQG7TYgSJJyLIYZ6co6ApasWlvs/44PcGUjQC+yPCwEA4biUMFypqy+vJT+AW4=
+	t=1758113324; cv=none; b=NaTMoWbJeh2A0ALN1cqdc8ZvtfUxdiqY7bI+XaSJpIb21VomzptASOP7YQGCMbqHF+tusHey0yywvxURnaZVw1CcJAsxdml2RzhpMawKsNTXfvc4mhC/TV7JXZIT4whsE7ZHHlgJCW6vYsOSnpSpjDM3M4Y7Qtc+7+94KKjpcYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113695; c=relaxed/simple;
-	bh=QyU5aWByYkc13FSV3+YDMwpk5CKOuEzw/gp6Hu0yddw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j9cFCvCIuBoSMD8IfGOFYmV59GQJ5VdciUyS4jktlw+OutSs+gC+BirNR76qUtbjRX5ckuIiXQSALmWCccb4RNboT95yqiBlzzN3YStgHMG4iOZLdMbuHgMoZlNyHnJiWst4O/1DOPCxgm/Ux3oycAdManB5k5Qx0iOutnMLKHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6ACOout; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC22FC4CEF0;
-	Wed, 17 Sep 2025 12:54:54 +0000 (UTC)
+	s=arc-20240116; t=1758113324; c=relaxed/simple;
+	bh=Uy5RYDbHWf3cCtBO7zUjd6zHE60qkxBW9rypM8jUv/E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Lfoei5H3q63E15hXg0NTqixObe0Ea86Wgmxaaf+T6TUaj2GAZuJfZOWg660M9iTkrLTtsD7oV7f8QQrPwPDal7y0E+mp+bLLwNTLUJdk338mgAoWSPi3fp7Bn3yo990qkfkE1IPTXw5WBRukM9iQWNed3v1AbblioFUBO14Agd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRztV1xb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A831C4CEF0;
+	Wed, 17 Sep 2025 12:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113695;
-	bh=QyU5aWByYkc13FSV3+YDMwpk5CKOuEzw/gp6Hu0yddw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R6ACOout8k3LOJqPqgPpJwfDPVGqtnc/0DUPLfczyvVq9bUaOv9wuzn1yuyhWtrWL
-	 UvKsgyPtXagkr7yg8sOzoh3infO6E2er4RhO2HeerZayaLfRzX0kjs3XEsk1fBqggh
-	 1iIk2WjeQtt7EQb+AkVtJfJcAQmVWRqoPUZHZaL0=
+	s=korg; t=1758113324;
+	bh=Uy5RYDbHWf3cCtBO7zUjd6zHE60qkxBW9rypM8jUv/E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qRztV1xbsbTvftuA1MFjKemAfynsMWr2DAEiA+E8ecedgygcZuaDB6dmqFYJZDnOa
+	 86iKMN/HdYhQWFfB9VHbwwyfxoeNBTNxKTQ3rYj8afPuih5ykteZEg7mTprz1vXgFm
+	 11uhOYNTNR8mdg/b6S9gFVjXXOHOkQ2P4bgMEiPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org
-Subject: [PATCH 6.6 000/101] 6.6.107-rc1 review
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 051/140] ocfs2: fix recursive semaphore deadlock in fiemap call
 Date: Wed, 17 Sep 2025 14:33:43 +0200
-Message-ID: <20250917123336.863698492@linuxfoundation.org>
+Message-ID: <20250917123345.554199264@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.107-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.6.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.6.107-rc1
-X-KernelTest-Deadline: 2025-09-19T12:33+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.6.107 release.
-There are 101 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Fri, 19 Sep 2025 12:32:53 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.107-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.6.107-rc1
-
-Jani Nikula <jani.nikula@intel.com>
-    drm/i915/power: fix size for for_each_set_bit() in abox iteration
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu: fix a memory leak in fence cleanup when unloading
-
-Buday Csaba <buday.csaba@prolan.hu>
-    net: mdiobus: release reset_gpio in mdiobus_unregister_device()
-
-Namjae Jeon <linkinjeon@kernel.org>
-    ksmbd: fix null pointer dereference in alloc_preauth_hash()
-
-Johan Hovold <johan@kernel.org>
-    phy: ti-pipe3: fix device leak at unbind
-
-Johan Hovold <johan@kernel.org>
-    phy: tegra: xusb: fix device and OF node leak at probe
-
-Miaoqian Lin <linmq006@gmail.com>
-    dmaengine: dw: dmamux: Fix device reference leak in rzn1_dmamux_route_allocate
-
-Stephan Gerhold <stephan.gerhold@linaro.org>
-    dmaengine: qcom: bam_dma: Fix DT error handling for num-channels/ees
-
-Takashi Iwai <tiwai@suse.de>
-    usb: gadget: midi2: Fix MIDI2 IN EP max packet size
-
-Takashi Iwai <tiwai@suse.de>
-    usb: gadget: midi2: Fix missing UMP group attributes initialization
-
-Alan Stern <stern@rowland.harvard.edu>
-    USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
-
-Mathias Nyman <mathias.nyman@linux.intel.com>
-    xhci: fix memory leak regression when freeing xhci vdev devices depth first
-
-Palmer Dabbelt <palmer@rivosinc.com>
-    RISC-V: Remove unnecessary include from compat.h
-
-Xiongfeng Wang <wangxiongfeng2@huawei.com>
-    hrtimers: Unconditionally update target CPU base after offline timer migration
-
-Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-    hrtimer: Rename __hrtimer_hres_active() to hrtimer_hres_active()
-
-Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-    hrtimer: Remove unused function
-
-Andreas Kemnade <akemnade@kernel.org>
-    regulator: sy7636a: fix lifecycle of power good gpio
-
-Anders Roxell <anders.roxell@linaro.org>
-    dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    dmaengine: idxd: Fix double free in idxd_setup_wqs()
-
-Yi Sun <yi.sun@intel.com>
-    dmaengine: idxd: Fix refcount underflow on module unload
-
-Yi Sun <yi.sun@intel.com>
-    dmaengine: idxd: Remove improper idxd_free
-
-Hangbin Liu <liuhangbin@gmail.com>
-    hsr: use hsr_for_each_port_rtnl in hsr_port_get_hsr
-
-Hangbin Liu <liuhangbin@gmail.com>
-    hsr: use rtnl lock when iterating over ports
-
-Murali Karicheri <m-karicheri2@ti.com>
-    net: hsr: Add VLAN CTAG filter support
-
-Murali Karicheri <m-karicheri2@ti.com>
-    net: hsr: Add support for MC filtering at the slave device
-
-Anssi Hannula <anssi.hannula@bitwise.fi>
-    can: xilinx_can: xcan_write_frame(): fix use-after-free of transmitted SKB
-
-Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-    can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
-
-Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-    can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
-
-Michal Schmidt <mschmidt@redhat.com>
-    i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path
-
-Kohei Enju <enjuk@amazon.com>
-    igb: fix link test skipping when interface is admin down
-
-Alex Tran <alex.t.tran@gmail.com>
-    docs: networking: can: change bcm_msg_head frames member to support flexible array
-
-Antoine Tenart <atenart@kernel.org>
-    tunnels: reset the GSO metadata before reusing the skb
-
-Petr Machata <petrm@nvidia.com>
-    net: bridge: Bounce invalid boolopts
-
-Stefan Wahren <wahrenst@gmx.net>
-    net: fec: Fix possible NPD in fec_enet_phy_reset_after_clk_enable()
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    Disable SLUB_TINY for build testing
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: add Telit Cinterion LE910C4-WWX new compositions
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: add Telit Cinterion FN990A w/audio compositions
-
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-    dt-bindings: serial: brcm,bcm7271-uart: Constrain clocks
-
-Hugo Villeneuve <hvilleneuve@dimonoff.com>
-    serial: sc16is7xx: fix bug in flow control levels init
-
-Fabian Vogt <fvogt@suse.de>
-    tty: hvc_console: Call hvc_kick in hvc_write unconditionally
-
-Paolo Abeni <pabeni@redhat.com>
-    Revert "net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups"
-
-Christoffer Sandberg <cs@tuxedo.de>
-    Input: i8042 - add TUXEDO InfinityBook Pro Gen10 AMD to i8042 quirk table
-
-Jeff LaBundy <jeff@labundy.com>
-    Input: iqs7222 - avoid enabling unused interrupts
-
-Chen Ridong <chenridong@huawei.com>
-    kernfs: Fix UAF in polling when open file is released
-
-Yang Erkun <yangerkun@huawei.com>
-    cifs: fix pagecache leak when do writepages
-
-Wei Yang <richard.weiyang@gmail.com>
-    mm/khugepaged: fix the address passed to notifier on testing young
-
-Vishal Moola (Oracle) <vishal.moola@gmail.com>
-    mm/khugepaged: convert hpage_collapse_scan_pmd() to use folios
-
-Qu Wenruo <wqu@suse.com>
-    btrfs: fix corruption reading compressed range when block size is smaller than page size
-
-Boris Burkov <boris@bur.io>
-    btrfs: use readahead_expand() on compressed extents
-
-Quanmin Yan <yanquanmin1@huawei.com>
-    mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
-
-Quanmin Yan <yanquanmin1@huawei.com>
-    mm/damon/reclaim: avoid divide-by-zero in damon_reclaim_apply_parameters()
-
-Stanislav Fort <stanislav.fort@aisle.com>
-    mm/damon/sysfs: fix use-after-free in state_show()
-
-Ilya Dryomov <idryomov@gmail.com>
-    libceph: fix invalid accesses to ceph_connection_v1_info
-
-Alexander Sverdlin <alexander.sverdlin@siemens.com>
-    mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
-
-Alexander Dahl <ada@thorsis.com>
-    mtd: nand: raw: atmel: Fix comment in timings preparation
-
-David Rosca <david.rosca@amd.com>
-    drm/amdgpu/vcn4: Fix IB parsing with multiple engine info packages
-
-David Rosca <david.rosca@amd.com>
-    drm/amdgpu/vcn: Allow limiting ctx to instance 0 for AV1 at any time
-
-Johan Hovold <johan@kernel.org>
-    drm/mediatek: fix potential OF node use-after-free
-
-Sang-Heon Jeon <ekffu200098@gmail.com>
-    mm/damon/core: set quota->charged_from to jiffies at first charge window
-
-Miaohe Lin <linmiaohe@huawei.com>
-    mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
-
-Miklos Szeredi <mszeredi@redhat.com>
-    fuse: prevent overflow in copy_file_range return value
-
-Miklos Szeredi <mszeredi@redhat.com>
-    fuse: check if copy_file_range() returns larger than requested size
-
-Christophe Kerello <christophe.kerello@foss.st.com>
-    mtd: rawnand: stm32_fmc2: fix ECC overwrite
-
-Christophe Kerello <christophe.kerello@foss.st.com>
-    mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer
-
-Oleksij Rempel <o.rempel@pengutronix.de>
-    net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups
-
-Chiasheng Lee <chiasheng.lee@linux.intel.com>
-    i2c: i801: Hide Intel Birch Stream SoC TCO WDT
-
-Mark Tinguely <mark.tinguely@oracle.com>
-    ocfs2: fix recursive semaphore deadlock in fiemap call
-
-Krister Johansen <kjlx@templeofstupid.com>
-    mptcp: sockopt: make sync_socket_options propagate SOCK_KEEPOPEN
-
-Nathan Chancellor <nathan@kernel.org>
-    compiler-clang.h: define __SANITIZE_*__ macros only when undefined
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    Revert "SUNRPC: Don't allow waiting for exiting tasks"
-
-Salah Triki <salah.triki@gmail.com>
-    EDAC/altera: Delete an inappropriate dma_free_coherent() call
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    KVM: SVM: Set synthesized TSA CPUID flags
-
-Paul E. McKenney <paulmck@kernel.org>
-    rcu-tasks: Maintain real-time response in rcu_tasks_postscan()
-
-Paul E. McKenney <paulmck@kernel.org>
-    rcu-tasks: Eliminate deadlocks involving do_exit() and RCU tasks
-
-Paul E. McKenney <paulmck@kernel.org>
-    rcu-tasks: Maintain lists to eliminate RCU-tasks/do_exit() deadlocks
-
-wangzijie <wangzijie1@honor.com>
-    proc: fix type confusion in pde_set_flags()
-
-Kuniyuki Iwashima <kuniyu@google.com>
-    tcp_bpf: Call sk_msg_free() when tcp_bpf_send_verdict() fails to allocate psock->cork.
-
-Peilin Ye <yepeilin@google.com>
-    bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()
-
-Thomas Richter <tmricht@linux.ibm.com>
-    s390/cpum_cf: Deny all sampling events by counter PMU
-
-Pu Lehui <pulehui@huawei.com>
-    tracing: Silence warning when chunk allocation fails in trace_pid_write
-
-Jonathan Curley <jcurley@purestorage.com>
-    NFSv4/flexfiles: Fix layout merge mirror check.
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFSv4.2: Serialise O_DIRECT i/o and copy range
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFSv4.2: Serialise O_DIRECT i/o and clone range
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFSv4.2: Serialise O_DIRECT i/o and fallocate()
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFS: Serialise O_DIRECT i/o and truncate()
-
-Max Kellermann <max.kellermann@ionos.com>
-    fs/nfs/io: make nfs_start_io_*() killable
-
-Vladimir Riabchun <ferr.lambarginio@gmail.com>
-    ftrace/samples: Fix function size computation
-
-Luo Gengkun <luogengkun@huaweicloud.com>
-    tracing: Fix tracing_marker may trigger page fault during preempt_disable
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFSv4: Clear the NFS_CAP_XATTR flag if not supported by the server
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFSv4: Clear the NFS_CAP_FS_LOCATIONS flag if it is not set
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFSv4: Don't clear capabilities that won't be reset
-
-Justin Worrell <jworrell@gmail.com>
-    SUNRPC: call xs_sock_process_cmsg for all cmsg
-
-Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-    flexfiles/pNFS: fix NULL checks on result of ff_layout_choose_ds_for_read
-
-Mimi Zohar <zohar@linux.ibm.com>
-    ima: limit the number of ToMToU integrity violations
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
-
-André Apitzsch <git@apitzsch.eu>
-    media: i2c: imx214: Fix link frequency validation
-
-Chuck Lever <chuck.lever@oracle.com>
-    NFSD: nfsd_unlink() clobbers non-zero status returned from fh_fill_pre_attrs()
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    nfsd: Fix a regression in nfsd_setattr()
-
-Ada Couprie Diaz <ada.coupriediaz@arm.com>
-    kasan: fix GCC mem-intrinsic prefix with sw tags
-
-Harry Yoo <harry.yoo@oracle.com>
-    mm: introduce and use {pgd,p4d}_populate_kernel()
-
-Yeoreum Yun <yeoreum.yun@arm.com>
-    kunit: kasan_test: disable fortify string checker on kasan_strings() test
-
-
--------------
-
-Diffstat:
-
- .../bindings/serial/brcm,bcm7271-uart.yaml         |   2 +-
- Documentation/networking/can.rst                   |   2 +-
- Makefile                                           |   4 +-
- arch/riscv/include/asm/compat.h                    |   1 -
- arch/s390/kernel/perf_cpum_cf.c                    |   4 +-
- arch/x86/kvm/cpuid.c                               |   5 +
- drivers/dma/dw/rzn1-dmamux.c                       |  15 +-
- drivers/dma/idxd/init.c                            |  39 ++---
- drivers/dma/qcom/bam_dma.c                         |   8 +-
- drivers/dma/ti/edma.c                              |   4 +-
- drivers/edac/altera_edac.c                         |   1 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c           |   3 -
- drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c              |  12 +-
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c              |  60 ++++----
- drivers/gpu/drm/i915/display/intel_display_power.c |   6 +-
- drivers/gpu/drm/mediatek/mtk_drm_drv.c             |  11 +-
- drivers/i2c/busses/i2c-i801.c                      |   2 +-
- drivers/input/misc/iqs7222.c                       |   3 +
- drivers/input/serio/i8042-acpipnpio.h              |  14 ++
- drivers/media/i2c/imx214.c                         |  27 ++--
- drivers/mtd/nand/raw/atmel/nand-controller.c       |  18 ++-
- drivers/mtd/nand/raw/stm32_fmc2_nand.c             |  46 +++---
- drivers/net/can/xilinx_can.c                       |  16 +--
- drivers/net/ethernet/freescale/fec_main.c          |   3 +-
- drivers/net/ethernet/intel/i40e/i40e_main.c        |   2 +-
- drivers/net/ethernet/intel/igb/igb_ethtool.c       |   5 +-
- drivers/net/phy/mdio_bus.c                         |   4 +-
- drivers/phy/tegra/xusb-tegra210.c                  |   6 +-
- drivers/phy/ti/phy-ti-pipe3.c                      |  13 ++
- drivers/regulator/sy7636a-regulator.c              |   7 +-
- drivers/tty/hvc/hvc_console.c                      |   6 +-
- drivers/tty/serial/sc16is7xx.c                     |  14 +-
- drivers/usb/gadget/function/f_midi2.c              |  11 +-
- drivers/usb/gadget/udc/dummy_hcd.c                 |   8 +-
- drivers/usb/host/xhci-mem.c                        |   2 +-
- drivers/usb/serial/option.c                        |  17 +++
- fs/btrfs/extent_io.c                               |  78 ++++++++--
- fs/fuse/file.c                                     |   5 +-
- fs/kernfs/file.c                                   |  54 ++++---
- fs/nfs/client.c                                    |   2 +
- fs/nfs/direct.c                                    |  21 ++-
- fs/nfs/file.c                                      |  14 +-
- fs/nfs/flexfilelayout/flexfilelayout.c             |  21 +--
- fs/nfs/inode.c                                     |   4 +-
- fs/nfs/internal.h                                  |  17 ++-
- fs/nfs/io.c                                        |  55 ++++---
- fs/nfs/nfs42proc.c                                 |   2 +
- fs/nfs/nfs4file.c                                  |   2 +
- fs/nfs/nfs4proc.c                                  |   6 +-
- fs/nfsd/nfs4proc.c                                 |   4 +
- fs/nfsd/vfs.c                                      |  13 +-
- fs/ocfs2/extent_map.c                              |  10 +-
- fs/proc/generic.c                                  |   3 +-
- fs/smb/client/file.c                               |  16 ++-
- fs/smb/server/connection.h                         |  11 ++
- fs/smb/server/mgmt/user_session.c                  |   4 +-
- fs/smb/server/smb2pdu.c                            |  14 +-
- include/linux/compiler-clang.h                     |  31 +++-
- include/linux/pgalloc.h                            |  29 ++++
- include/linux/pgtable.h                            |  13 +-
- include/net/sock.h                                 |  40 +++++-
- kernel/bpf/helpers.c                               |   7 +-
- kernel/rcu/tasks.h                                 | 107 ++++++++++----
- kernel/time/hrtimer.c                              |  50 ++-----
- kernel/trace/trace.c                               |  10 +-
- mm/Kconfig                                         |   2 +-
- mm/damon/core.c                                    |   4 +
- mm/damon/lru_sort.c                                |   3 +
- mm/damon/reclaim.c                                 |   3 +
- mm/damon/sysfs.c                                   |  14 +-
- mm/kasan/init.c                                    |  12 +-
- mm/kasan/kasan_test.c                              |   1 +
- mm/khugepaged.c                                    |  22 +--
- mm/memory-failure.c                                |   7 +-
- mm/percpu.c                                        |   6 +-
- mm/sparse-vmemmap.c                                |   6 +-
- net/bridge/br.c                                    |   7 +
- net/can/j1939/bus.c                                |   5 +-
- net/can/j1939/socket.c                             |   3 +
- net/ceph/messenger.c                               |   7 +-
- net/core/sock.c                                    |   5 +
- net/hsr/hsr_device.c                               | 158 ++++++++++++++++++++-
- net/hsr/hsr_main.c                                 |   4 +-
- net/hsr/hsr_main.h                                 |   3 +
- net/ipv4/ip_tunnel_core.c                          |   6 +
- net/ipv4/tcp_bpf.c                                 |   5 +-
- net/mptcp/sockopt.c                                |  11 +-
- net/sunrpc/sched.c                                 |   2 -
- net/sunrpc/xprtsock.c                              |   6 +-
- samples/ftrace/ftrace-direct-modify.c              |   2 +-
- scripts/Makefile.kasan                             |  12 +-
- security/integrity/ima/ima_main.c                  |  16 ++-
- security/integrity/integrity.h                     |   3 +-
- 93 files changed, 976 insertions(+), 403 deletions(-)
+6.12-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Mark Tinguely <mark.tinguely@oracle.com>
+
+commit 04100f775c2ea501927f508f17ad824ad1f23c8d upstream.
+
+syzbot detected a OCFS2 hang due to a recursive semaphore on a
+FS_IOC_FIEMAP of the extent list on a specially crafted mmap file.
+
+context_switch kernel/sched/core.c:5357 [inline]
+   __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
+   __schedule_loop kernel/sched/core.c:7043 [inline]
+   schedule+0x165/0x360 kernel/sched/core.c:7058
+   schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7115
+   rwsem_down_write_slowpath+0x872/0xfe0 kernel/locking/rwsem.c:1185
+   __down_write_common kernel/locking/rwsem.c:1317 [inline]
+   __down_write kernel/locking/rwsem.c:1326 [inline]
+   down_write+0x1ab/0x1f0 kernel/locking/rwsem.c:1591
+   ocfs2_page_mkwrite+0x2ff/0xc40 fs/ocfs2/mmap.c:142
+   do_page_mkwrite+0x14d/0x310 mm/memory.c:3361
+   wp_page_shared mm/memory.c:3762 [inline]
+   do_wp_page+0x268d/0x5800 mm/memory.c:3981
+   handle_pte_fault mm/memory.c:6068 [inline]
+   __handle_mm_fault+0x1033/0x5440 mm/memory.c:6195
+   handle_mm_fault+0x40a/0x8e0 mm/memory.c:6364
+   do_user_addr_fault+0x764/0x1390 arch/x86/mm/fault.c:1387
+   handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+   exc_page_fault+0x76/0xf0 arch/x86/mm/fault.c:1532
+   asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:623
+RIP: 0010:copy_user_generic arch/x86/include/asm/uaccess_64.h:126 [inline]
+RIP: 0010:raw_copy_to_user arch/x86/include/asm/uaccess_64.h:147 [inline]
+RIP: 0010:_inline_copy_to_user include/linux/uaccess.h:197 [inline]
+RIP: 0010:_copy_to_user+0x85/0xb0 lib/usercopy.c:26
+Code: e8 00 bc f7 fc 4d 39 fc 72 3d 4d 39 ec 77 38 e8 91 b9 f7 fc 4c 89
+f7 89 de e8 47 25 5b fd 0f 01 cb 4c 89 ff 48 89 d9 4c 89 f6 <f3> a4 0f
+1f 00 48 89 cb 0f 01 ca 48 89 d8 5b 41 5c 41 5d 41 5e 41
+RSP: 0018:ffffc9000403f950 EFLAGS: 00050256
+RAX: ffffffff84c7f101 RBX: 0000000000000038 RCX: 0000000000000038
+RDX: 0000000000000000 RSI: ffffc9000403f9e0 RDI: 0000200000000060
+RBP: ffffc9000403fa90 R08: ffffc9000403fa17 R09: 1ffff92000807f42
+R10: dffffc0000000000 R11: fffff52000807f43 R12: 0000200000000098
+R13: 00007ffffffff000 R14: ffffc9000403f9e0 R15: 0000200000000060
+   copy_to_user include/linux/uaccess.h:225 [inline]
+   fiemap_fill_next_extent+0x1c0/0x390 fs/ioctl.c:145
+   ocfs2_fiemap+0x888/0xc90 fs/ocfs2/extent_map.c:806
+   ioctl_fiemap fs/ioctl.c:220 [inline]
+   do_vfs_ioctl+0x1173/0x1430 fs/ioctl.c:532
+   __do_sys_ioctl fs/ioctl.c:596 [inline]
+   __se_sys_ioctl+0x82/0x170 fs/ioctl.c:584
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5f13850fd9
+RSP: 002b:00007ffe3b3518b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000200000000000 RCX: 00007f5f13850fd9
+RDX: 0000200000000040 RSI: 00000000c020660b RDI: 0000000000000004
+RBP: 6165627472616568 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe3b3518f0
+R13: 00007ffe3b351b18 R14: 431bde82d7b634db R15: 00007f5f1389a03b
+
+ocfs2_fiemap() takes a read lock of the ip_alloc_sem semaphore (since
+v2.6.22-527-g7307de80510a) and calls fiemap_fill_next_extent() to read the
+extent list of this running mmap executable.  The user supplied buffer to
+hold the fiemap information page faults calling ocfs2_page_mkwrite() which
+will take a write lock (since v2.6.27-38-g00dc417fa3e7) of the same
+semaphore.  This recursive semaphore will hold filesystem locks and causes
+a hang of the fileystem.
+
+The ip_alloc_sem protects the inode extent list and size.  Release the
+read semphore before calling fiemap_fill_next_extent() in ocfs2_fiemap()
+and ocfs2_fiemap_inline().  This does an unnecessary semaphore lock/unlock
+on the last extent but simplifies the error path.
+
+Link: https://lkml.kernel.org/r/61d1a62b-2631-4f12-81e2-cd689914360b@oracle.com
+Fixes: 00dc417fa3e7 ("ocfs2: fiemap support")
+Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
+Reported-by: syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=541dcc6ee768f77103e7
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/ocfs2/extent_map.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+--- a/fs/ocfs2/extent_map.c
++++ b/fs/ocfs2/extent_map.c
+@@ -696,6 +696,8 @@ out:
+  * it not only handles the fiemap for inlined files, but also deals
+  * with the fast symlink, cause they have no difference for extent
+  * mapping per se.
++ *
++ * Must be called with ip_alloc_sem semaphore held.
+  */
+ static int ocfs2_fiemap_inline(struct inode *inode, struct buffer_head *di_bh,
+ 			       struct fiemap_extent_info *fieinfo,
+@@ -707,6 +709,7 @@ static int ocfs2_fiemap_inline(struct in
+ 	u64 phys;
+ 	u32 flags = FIEMAP_EXTENT_DATA_INLINE|FIEMAP_EXTENT_LAST;
+ 	struct ocfs2_inode_info *oi = OCFS2_I(inode);
++	lockdep_assert_held_read(&oi->ip_alloc_sem);
+ 
+ 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 	if (ocfs2_inode_is_fast_symlink(inode))
+@@ -722,8 +725,11 @@ static int ocfs2_fiemap_inline(struct in
+ 			phys += offsetof(struct ocfs2_dinode,
+ 					 id2.i_data.id_data);
+ 
++		/* Release the ip_alloc_sem to prevent deadlock on page fault */
++		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		ret = fiemap_fill_next_extent(fieinfo, 0, phys, id_count,
+ 					      flags);
++		down_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+@@ -792,9 +798,11 @@ int ocfs2_fiemap(struct inode *inode, st
+ 		len_bytes = (u64)le16_to_cpu(rec.e_leaf_clusters) << osb->s_clustersize_bits;
+ 		phys_bytes = le64_to_cpu(rec.e_blkno) << osb->sb->s_blocksize_bits;
+ 		virt_bytes = (u64)le32_to_cpu(rec.e_cpos) << osb->s_clustersize_bits;
+-
++		/* Release the ip_alloc_sem to prevent deadlock on page fault */
++		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		ret = fiemap_fill_next_extent(fieinfo, virt_bytes, phys_bytes,
+ 					      len_bytes, fe_flags);
++		down_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		if (ret)
+ 			break;
+ 
 
 
 
