@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-179812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B3EB7D47B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:23:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188E3B7D26E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCEAC178DDA
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 09:52:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DBC5485599
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 09:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9188343D8D;
-	Wed, 17 Sep 2025 09:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A190634DCDD;
+	Wed, 17 Sep 2025 09:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="sW/61vUw"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="DDv1eha7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588B0274676;
-	Wed, 17 Sep 2025 09:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7D3345722;
+	Wed, 17 Sep 2025 09:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758102724; cv=none; b=kJiImC8Vy8LCLDW26mAqVLNCN3zTXDfpOA+MyA8tgxfSOvXLi1RjWqu+Ur8AtSfCygUFM32JERFivw+upq9cbw/akqo402sIuTEEJTKACGpkftb2CpOYHAtooM5/Kt5IU69lwefkBQXLgB2rcXwOD9DC/J2olBnW/a+NrBcpCEk=
+	t=1758102808; cv=none; b=UqLFQsIE5fEsO94PWq0Uz96yTCjsel1m3SxGLNlFXze8idWj+xyCi/yotD6ir8HhMfKBLyIp29j3cMpnvw5XVi56lLeBuabxzczi2vy/3SkkLynIYQsiABHAC7rDucgWokwIV/kJisAJMGAsNlra0M9K5cfxcNVGxOSddyCSsDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758102724; c=relaxed/simple;
-	bh=CqkSmY22reWJwLvbv91mw4eVE3WvCe5UpKSTu3Dy0/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mAod6OCyedqkTl1j5kMxTTuSkbIXhvVr5DKJAFhqRtURFfKZWjFgJKM0IdLb84Qt18ZEL8qkXmuUfwIE5X8cm/QR+ckAAt7a5/yiQLbbrggHKOU8VR7UsjNwaaKtLdMnRvFKnrp+LgfPS7aqfUV0ki2Y54VjZ2dkkltfjH6LzUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=sW/61vUw; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1758102308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7I+wQC6r4aGT6IUipkDw6NXltnUcu+fPOmWjt4D3DIA=;
-	b=sW/61vUwNpqq9vz6wmonAvMZxUq5uaM/YLhwd+vH4PWhU/3VTkH7gh6B3IVr39hxNDeE9P
-	MZ+tMHd4icypTwQUZl1psfs7h3ukDuNAOt+xF1iii8/nOHnSSJaodtrpSTPDQKq0r0yYnd
-	vo7fvQq/NmD6+AVvbyo1SFWYbGxdlBs=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Chris Mason <clm@fb.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	linux-btrfs@vger.kernel.org,
+	s=arc-20240116; t=1758102808; c=relaxed/simple;
+	bh=nFYdUD8hxwveRPx/11IH6Ldbj8w06iSVVu8yciDCEXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DhqYtMHA8cEM843nDbDul3MJ6dszF9ukT+k5V7hob8tlJu4TdvzrvSKcBGXR7lajAN96DYqlZ/miB/LhbTXbKe4u9/lI7KRm22n0QsBTP3ykDCK+d5uk5s0VqDc3re6JhE0lUYCd1M2A/Hh+j3Ko+aA3XcURw2HY1KyNUnLXN0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=DDv1eha7; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from debian (unknown [5.228.116.177])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 88F6640762F5;
+	Wed, 17 Sep 2025 09:53:22 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 88F6640762F5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1758102802;
+	bh=PhgbBl+RmloLVBxOCWxMXnp5F/B+9ExaiLddN3mWJtQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DDv1eha7BiLRmJ6agVFgtiQa02PC3WYhWQ02YfI+6tUn4Mj1OtsCnDwURZLrdPHAL
+	 5xs8jCt9EcOgGX8EA0EmNaozE57rvZN92p62B71dWrJfRwrYpJ+7/oQhq5wlJ/HeFI
+	 3YzoAjfeCI5owDTmXzFId+LxobvzNbO0NfBXbmQI=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Po-Hao Huang <phhuang@realtek.com>,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org,
-	Filipe Manana <fdmanana@suse.com>
-Subject: [PATCH 5.10] btrfs: free exchange changeset on failures
-Date: Wed, 17 Sep 2025 12:45:06 +0300
-Message-ID: <20250917094507.18690-1-arefev@swemel.ru>
+	stable@vger.kernel.org
+Subject: [PATCH rtw v4 1/4] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+Date: Wed, 17 Sep 2025 12:52:52 +0300
+Message-ID: <20250917095302.2908617-2-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250917095302.2908617-1-pchelkin@ispras.ru>
+References: <20250917095302.2908617-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,94 +66,337 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+There is a bug observed when rtw89_core_tx_kick_off_and_wait() tries to
+access already freed skb_data:
 
-commit da5e817d9d75422eaaa05490d0b9a5e328fc1a51 upstream.
+ BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.c:1110
 
-Fstests runs on my VMs have show several kmemleak reports like the following.
+ CPU: 6 UID: 0 PID: 41377 Comm: kworker/u64:24 Not tainted  6.17.0-rc1+ #1 PREEMPT(lazy)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523-14.fc42 05/23/2025
+ Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
 
-  unreferenced object 0xffff88811ae59080 (size 64):
-    comm "xfs_io", pid 12124, jiffies 4294987392 (age 6.368s)
-    hex dump (first 32 bytes):
-      00 c0 1c 00 00 00 00 00 ff cf 1c 00 00 00 00 00  ................
-      90 97 e5 1a 81 88 ff ff 90 97 e5 1a 81 88 ff ff  ................
-    backtrace:
-      [<00000000ac0176d2>] ulist_add_merge+0x60/0x150 [btrfs]
-      [<0000000076e9f312>] set_state_bits+0x86/0xc0 [btrfs]
-      [<0000000014fe73d6>] set_extent_bit+0x270/0x690 [btrfs]
-      [<000000004f675208>] set_record_extent_bits+0x19/0x20 [btrfs]
-      [<00000000b96137b1>] qgroup_reserve_data+0x274/0x310 [btrfs]
-      [<0000000057e9dcbb>] btrfs_check_data_free_space+0x5c/0xa0 [btrfs]
-      [<0000000019c4511d>] btrfs_delalloc_reserve_space+0x1b/0xa0 [btrfs]
-      [<000000006d37e007>] btrfs_dio_iomap_begin+0x415/0x970 [btrfs]
-      [<00000000fb8a74b8>] iomap_iter+0x161/0x1e0
-      [<0000000071dff6ff>] __iomap_dio_rw+0x1df/0x700
-      [<000000002567ba53>] iomap_dio_rw+0x5/0x20
-      [<0000000072e555f8>] btrfs_file_write_iter+0x290/0x530 [btrfs]
-      [<000000005eb3d845>] new_sync_write+0x106/0x180
-      [<000000003fb505bf>] vfs_write+0x24d/0x2f0
-      [<000000009bb57d37>] __x64_sys_pwrite64+0x69/0xa0
-      [<000000003eba3fdf>] do_syscall_64+0x43/0x90
+ Use-after-free write at 0x0000000020309d9d (in kfence-#251):
+ rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.c:1110
+ rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+ rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+ rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+ rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.h:141
+ rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+ rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+ rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+ process_one_work kernel/workqueue.c:3241
+ worker_thread kernel/workqueue.c:3400
+ kthread kernel/kthread.c:463
+ ret_from_fork arch/x86/kernel/process.c:154
+ ret_from_fork_asm arch/x86/entry/entry_64.S:258
 
-In case brtfs_qgroup_reserve_data() or btrfs_delalloc_reserve_metadata()
-fail the allocated extent_changeset will not be freed.
+ kfence-#251: 0x0000000056e2393d-0x000000009943cb62, size=232, cache=skbuff_head_cache
 
-So in btrfs_check_data_free_space() and btrfs_delalloc_reserve_space()
-free the allocated extent_changeset to get rid of the allocated memory.
+ allocated by task 41377 on cpu 6 at 77869.159548s (0.009551s ago):
+ __alloc_skb net/core/skbuff.c:659
+ __netdev_alloc_skb net/core/skbuff.c:734
+ ieee80211_nullfunc_get net/mac80211/tx.c:5844
+ rtw89_core_send_nullfunc drivers/net/wireless/realtek/rtw89/core.c:3431
+ rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+ rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+ rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+ rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.c:3194
+ rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+ rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+ rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+ process_one_work kernel/workqueue.c:3241
+ worker_thread kernel/workqueue.c:3400
+ kthread kernel/kthread.c:463
+ ret_from_fork arch/x86/kernel/process.c:154
+ ret_from_fork_asm arch/x86/entry/entry_64.S:258
 
-The issue currently only happens in the direct IO write path, but only
-after 65b3c08606e5 ("btrfs: fix ENOSPC failure when attempting direct IO
-write into NOCOW range"), and also at defrag_one_locked_target(). Every
-other place is always calling extent_changeset_free() even if its call
-to btrfs_delalloc_reserve_space() or btrfs_check_data_free_space() has
-failed.
+ freed by task 1045 on cpu 9 at 77869.168393s (0.001557s ago):
+ ieee80211_tx_status_skb net/mac80211/status.c:1117
+ rtw89_pci_release_txwd_skb drivers/net/wireless/realtek/rtw89/pci.c:564
+ rtw89_pci_release_tx_skbs.isra.0 drivers/net/wireless/realtek/rtw89/pci.c:651
+ rtw89_pci_release_tx drivers/net/wireless/realtek/rtw89/pci.c:676
+ rtw89_pci_napi_poll drivers/net/wireless/realtek/rtw89/pci.c:4238
+ __napi_poll net/core/dev.c:7495
+ net_rx_action net/core/dev.c:7557 net/core/dev.c:7684
+ handle_softirqs kernel/softirq.c:580
+ do_softirq.part.0 kernel/softirq.c:480
+ __local_bh_enable_ip kernel/softirq.c:407
+ rtw89_pci_interrupt_threadfn drivers/net/wireless/realtek/rtw89/pci.c:927
+ irq_thread_fn kernel/irq/manage.c:1133
+ irq_thread kernel/irq/manage.c:1257
+ kthread kernel/kthread.c:463
+ ret_from_fork arch/x86/kernel/process.c:154
+ ret_from_fork_asm arch/x86/entry/entry_64.S:258
 
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
+It is a consequence of a race between the waiting and the signaling side
+of the completion:
+
+            Waiting thread                            Completing thread
+
+rtw89_core_tx_kick_off_and_wait()
+  rcu_assign_pointer(skb_data->wait, wait)
+  /* start waiting */
+  wait_for_completion_timeout()
+                                                rtw89_pci_tx_status()
+                                                  rtw89_core_tx_wait_complete()
+                                                    rcu_read_lock()
+                                                    /* signals completion and
+                                                     * proceeds further
+                                                     */
+                                                    complete(&wait->completion)
+                                                    rcu_read_unlock()
+                                                  ...
+                                                  /* frees skb_data */
+                                                  ieee80211_tx_status_ni()
+  /* returns (exit status doesn't matter) */
+  wait_for_completion_timeout()
+  ...
+  /* accesses the already freed skb_data */
+  rcu_assign_pointer(skb_data->wait, NULL)
+
+The completing side might proceed and free the underlying skb even before
+the waiting side is fully awoken and run to execution.  Actually the race
+happens regardless of wait_for_completion_timeout() exit status, e.g.
+the waiting side may hit a timeout and the concurrent completing side is
+still able to free the skb.
+
+Skbs which are sent by rtw89_core_tx_kick_off_and_wait() are owned by the
+driver.  They don't come from core ieee80211 stack so no need to pass them
+to ieee80211_tx_status_ni() on completing side.
+
+Introduce a work function which will act as a garbage collector for
+rtw89_tx_wait_info objects and the associated skbs.  Thus no potentially
+heavy locks are required on the completing side.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of TX skbs")
+Cc: stable@vger.kernel.org
+Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
-Backport fix for CVE-2021-47508
-Link: https://nvd.nist.gov/vuln/detail/cve-2021-47508
----
- fs/btrfs/delalloc-space.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/delalloc-space.c b/fs/btrfs/delalloc-space.c
-index 45b2a5ecd63a..cd12226c3220 100644
---- a/fs/btrfs/delalloc-space.c
-+++ b/fs/btrfs/delalloc-space.c
-@@ -143,10 +143,13 @@ int btrfs_check_data_free_space(struct btrfs_inode *inode,
+v4: - fill wait's fields before publishing (Zong-Zhe)
+    - leave dev_kfree_skb_any + kfree_rcu for tx_wait release (Zong-Zhe)
+
+v3: - decrease waiting timeout in rtw89_tx_wait_work() (Zong-Zhe)
+    - clear tx_waits list from rtw89_hci_reset(), too (Zong-Zhe)
+    - keep RCU updating for skb_data->wait (Zong-Zhe)
+    - keep the old order of calls in rtw89_pci_tx_status() (Zong-Zhe)
+    - drop wait->finished as complete_all() would make the completion be
+      done permanently
+
+v2: - use a work function to manage release of tx_waits and associated skbs (Zong-Zhe)
+
+ drivers/net/wireless/realtek/rtw89/core.c | 29 ++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/core.h | 36 +++++++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/pci.c  |  3 +-
+ drivers/net/wireless/realtek/rtw89/ser.c  |  2 ++
+ 4 files changed, 61 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 57590f5577a3..438930b65631 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1073,6 +1073,14 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
+ 	}
+ }
  
- 	/* Use new btrfs_qgroup_reserve_data to reserve precious data space. */
- 	ret = btrfs_qgroup_reserve_data(inode, reserved, start, len);
--	if (ret < 0)
-+	if (ret < 0) {
- 		btrfs_free_reserved_data_space_noquota(fs_info, len);
--	else
-+		extent_changeset_free(*reserved);
-+		*reserved = NULL;
++static void rtw89_tx_wait_work(struct wiphy *wiphy, struct wiphy_work *work)
++{
++	struct rtw89_dev *rtwdev = container_of(work, struct rtw89_dev,
++						tx_wait_work);
++
++	rtw89_tx_wait_list_clear(rtwdev);
++}
++
+ void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)
+ {
+ 	u8 ch_dma;
+@@ -1090,6 +1098,8 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *sk
+ 	unsigned long time_left;
+ 	int ret = 0;
+ 
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
++
+ 	wait = kzalloc(sizeof(*wait), GFP_KERNEL);
+ 	if (!wait) {
+ 		rtw89_core_tx_kick_off(rtwdev, qsel);
+@@ -1097,18 +1107,22 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *sk
+ 	}
+ 
+ 	init_completion(&wait->completion);
++	wait->skb = skb;
+ 	rcu_assign_pointer(skb_data->wait, wait);
+ 
+ 	rtw89_core_tx_kick_off(rtwdev, qsel);
+ 	time_left = wait_for_completion_timeout(&wait->completion,
+ 						msecs_to_jiffies(timeout));
+-	if (time_left == 0)
+-		ret = -ETIMEDOUT;
+-	else if (!wait->tx_done)
+-		ret = -EAGAIN;
+ 
+-	rcu_assign_pointer(skb_data->wait, NULL);
+-	kfree_rcu(wait, rcu_head);
++	if (time_left == 0) {
++		ret = -ETIMEDOUT;
++		list_add_tail(&wait->list, &rtwdev->tx_waits);
++		wiphy_work_queue(rtwdev->hw->wiphy, &rtwdev->tx_wait_work);
 +	} else {
- 		ret = 0;
++		if (!wait->tx_done)
++			ret = -EAGAIN;
++		rtw89_tx_wait_release(wait);
 +	}
+ 
  	return ret;
  }
+@@ -4972,6 +4986,7 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
+ 	clear_bit(RTW89_FLAG_RUNNING, rtwdev->flags);
  
-@@ -446,8 +449,11 @@ int btrfs_delalloc_reserve_space(struct btrfs_inode *inode,
- 	if (ret < 0)
- 		return ret;
- 	ret = btrfs_delalloc_reserve_metadata(inode, len);
--	if (ret < 0)
-+	if (ret < 0) {
- 		btrfs_free_reserved_data_space(inode, *reserved, start, len);
-+		extent_changeset_free(*reserved);
-+		*reserved = NULL;
+ 	wiphy_work_cancel(wiphy, &rtwdev->c2h_work);
++	wiphy_work_cancel(wiphy, &rtwdev->tx_wait_work);
+ 	wiphy_work_cancel(wiphy, &rtwdev->cancel_6ghz_probe_work);
+ 	wiphy_work_cancel(wiphy, &btc->eapol_notify_work);
+ 	wiphy_work_cancel(wiphy, &btc->arp_notify_work);
+@@ -5203,6 +5218,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 		INIT_LIST_HEAD(&rtwdev->scan_info.pkt_list[band]);
+ 	}
+ 	INIT_LIST_HEAD(&rtwdev->scan_info.chan_list);
++	INIT_LIST_HEAD(&rtwdev->tx_waits);
+ 	INIT_WORK(&rtwdev->ba_work, rtw89_core_ba_work);
+ 	INIT_WORK(&rtwdev->txq_work, rtw89_core_txq_work);
+ 	INIT_DELAYED_WORK(&rtwdev->txq_reinvoke_work, rtw89_core_txq_reinvoke_work);
+@@ -5233,6 +5249,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 	wiphy_work_init(&rtwdev->c2h_work, rtw89_fw_c2h_work);
+ 	wiphy_work_init(&rtwdev->ips_work, rtw89_ips_work);
+ 	wiphy_work_init(&rtwdev->cancel_6ghz_probe_work, rtw89_cancel_6ghz_probe_work);
++	wiphy_work_init(&rtwdev->tx_wait_work, rtw89_tx_wait_work);
+ 	INIT_WORK(&rtwdev->load_firmware_work, rtw89_load_firmware_work);
+ 
+ 	skb_queue_head_init(&rtwdev->c2h_queue);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 43e10278e14d..b5586603f027 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3506,9 +3506,12 @@ struct rtw89_phy_rate_pattern {
+ 	bool enable;
+ };
+ 
++#define RTW89_TX_WAIT_DEFAULT_TIMEOUT msecs_to_jiffies(10)
+ struct rtw89_tx_wait_info {
+ 	struct rcu_head rcu_head;
++	struct list_head list;
+ 	struct completion completion;
++	struct sk_buff *skb;
+ 	bool tx_done;
+ };
+ 
+@@ -5925,6 +5928,9 @@ struct rtw89_dev {
+ 	/* used to protect rpwm */
+ 	spinlock_t rpwm_lock;
+ 
++	struct list_head tx_waits;
++	struct wiphy_work tx_wait_work;
++
+ 	struct rtw89_cam_info cam_info;
+ 
+ 	struct sk_buff_head c2h_queue;
+@@ -6181,6 +6187,27 @@ rtw89_assoc_link_rcu_dereference(struct rtw89_dev *rtwdev, u8 macid)
+ 	list_first_entry_or_null(&p->dlink_pool, typeof(*p->links_inst), dlink_schd); \
+ })
+ 
++static inline void rtw89_tx_wait_release(struct rtw89_tx_wait_info *wait)
++{
++	dev_kfree_skb_any(wait->skb);
++	kfree_rcu(wait, rcu_head);
++}
++
++static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_tx_wait_info *wait, *tmp;
++
++	lockdep_assert_wiphy(rtwdev->hw->wiphy);
++
++	list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
++		if (!wait_for_completion_timeout(&wait->completion,
++						 RTW89_TX_WAIT_DEFAULT_TIMEOUT))
++			continue;
++		list_del(&wait->list);
++		rtw89_tx_wait_release(wait);
 +	}
- 	return ret;
++}
++
+ static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
+ 				     struct rtw89_core_tx_request *tx_req)
+ {
+@@ -6190,6 +6217,7 @@ static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
+ static inline void rtw89_hci_reset(struct rtw89_dev *rtwdev)
+ {
+ 	rtwdev->hci.ops->reset(rtwdev);
++	rtw89_tx_wait_list_clear(rtwdev);
  }
  
+ static inline int rtw89_hci_start(struct rtw89_dev *rtwdev)
+@@ -7258,11 +7286,12 @@ static inline struct sk_buff *rtw89_alloc_skb_for_rx(struct rtw89_dev *rtwdev,
+ 	return dev_alloc_skb(length);
+ }
+ 
+-static inline void rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
++static inline bool rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
+ 					       struct rtw89_tx_skb_data *skb_data,
+ 					       bool tx_done)
+ {
+ 	struct rtw89_tx_wait_info *wait;
++	bool ret = false;
+ 
+ 	rcu_read_lock();
+ 
+@@ -7270,11 +7299,14 @@ static inline void rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
+ 	if (!wait)
+ 		goto out;
+ 
++	ret = true;
+ 	wait->tx_done = tx_done;
+-	complete(&wait->completion);
++	/* Don't access skb anymore after completion */
++	complete_all(&wait->completion);
+ 
+ out:
+ 	rcu_read_unlock();
++	return ret;
+ }
+ 
+ static inline bool rtw89_is_mlo_1_1(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index a669f2f843aa..4e3034b44f56 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -464,7 +464,8 @@ static void rtw89_pci_tx_status(struct rtw89_dev *rtwdev,
+ 	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
+ 	struct ieee80211_tx_info *info;
+ 
+-	rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status == RTW89_TX_DONE);
++	if (rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status == RTW89_TX_DONE))
++		return;
+ 
+ 	info = IEEE80211_SKB_CB(skb);
+ 	ieee80211_tx_info_clear_status(info);
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index bb39fdbcba0d..fe7beff8c424 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -502,7 +502,9 @@ static void ser_reset_trx_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 		}
+ 
+ 		drv_stop_rx(ser);
++		wiphy_lock(wiphy);
+ 		drv_trx_reset(ser);
++		wiphy_unlock(wiphy);
+ 
+ 		/* wait m3 */
+ 		hal_send_m2_event(ser);
 -- 
-2.43.0
+2.51.0
 
 
