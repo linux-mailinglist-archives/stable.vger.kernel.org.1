@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-180247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA7EB7F0D3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:13:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30767B7E309
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 442764A6044
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29FF21BC0B3E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8F32E7BA0;
-	Wed, 17 Sep 2025 12:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D60F2C0263;
+	Wed, 17 Sep 2025 12:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKFlSxRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd4nNtON"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACCF1E9B19;
-	Wed, 17 Sep 2025 12:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0C41F873B;
+	Wed, 17 Sep 2025 12:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113850; cv=none; b=smQz1zdiYIkRBQE6k5iGBrGXZVRmUkVkpMQvg9G5yMA4RHcEp2zoMeIQ8h2OJGRNsmAg0OfomFQKNd+HTJvvdOmoBF4hLQT/AMuUwZ5mwHyIooXlTRf9Oh9AiDW//y30B3zZj4j5S19gMIuvI86UiM3zIO9dQAUnUHdG7J/Ti84=
+	t=1758112967; cv=none; b=DFPxj00CADgfcluk/MDG+w58XxJutLdJ0CvrKSdUi8P3OoFTY1K0sQCGyUgnPfPMtBzTaHQoebO0vmI6BzuPaUApXFNQ6qM2m2IraTnxUOhXcD2Edh+8sk+hzHW5Y6XJfQntTtmvdeYIG8EkAsmmq492pvlHrWJsCWRq7TAXSvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113850; c=relaxed/simple;
-	bh=SnrqYQnqjfFu4l2q99QVO8SDyUDU1XOnwkZKNE759IM=;
+	s=arc-20240116; t=1758112967; c=relaxed/simple;
+	bh=MKHA8LP7mnZoE6azn+IwX2T/OXRpnr8aBWtzSojzs+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btoXIGfEIcbMJ2XC2nvAsPic0RYThHNS8pEZoW38ka/OL7nwirkTvgjX4cuEc45NZQQTigawj4heJB7cxqAoY5gOOj50gtbVKmd3/Akyk4ES97iNlknkQvsQ3C1iB4z1FEbQ5i2buQMybqnk+dg2bUi5igeiD56L03NWvIWeW/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKFlSxRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03252C4CEF0;
-	Wed, 17 Sep 2025 12:57:29 +0000 (UTC)
+	 MIME-Version; b=fq4/NThqgOltwINxU5lOWILDh93g/JpUr+R5EDPre/Mo2S6glJEMDFejsQ8tDiTE+yJVPzdofCAN853cCX79xvpIxjRx6K/BCKhnUWUXgq/8pGkCDrd1uQ5Yj+9luCvacTparO+ZwDqjofUB9OhYfmQ3siw17bqgjWMqOjNZ99s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd4nNtON; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A8DC4CEF0;
+	Wed, 17 Sep 2025 12:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113850;
-	bh=SnrqYQnqjfFu4l2q99QVO8SDyUDU1XOnwkZKNE759IM=;
+	s=korg; t=1758112966;
+	bh=MKHA8LP7mnZoE6azn+IwX2T/OXRpnr8aBWtzSojzs+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKFlSxRVT59o7g8h5V5mGxBqWVvbEGxrhT4ltm36CuGFbXZuCNNfAG2xLUwIie2w9
-	 96yumBYeo34cIQEHJ+A8nHvEZQlfYnrz9aHtJ/XXYLq1QGDg1ed1/5p3aJ7N8VMfd4
-	 Ila4fmSvC49CI/JCpdGjWqUgXMeRiBleZ2VJ6tjE=
+	b=jd4nNtONiqxV3n18aQRWt4yBeLNUMGiyLwMAZ9oO1il//CHKPskhVpdsm5ZV3Y0Yj
+	 VP/9caR3q2wgLwjo8iPbHAZ+2V31E+WeZdgyHZiRO7cxCZbrxXVCzsr+zRfc8eaQK8
+	 qbtlL6bjGgH6T4WYm54UQq6cxyGT59NfssizcoIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/101] NFS: Serialise O_DIRECT i/o and truncate()
+Subject: [PATCH 6.16 130/189] wifi: ath12k: Fix missing station power save configuration
 Date: Wed, 17 Sep 2025 14:34:00 +0200
-Message-ID: <20250917123337.277113704@linuxfoundation.org>
+Message-ID: <20250917123355.033918979@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +63,203 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 
-[ Upstream commit 9eb90f435415c7da4800974ed943e39b5578ee7f ]
+[ Upstream commit 4b66d18918f8e4d85e51974a9e3ce9abad5c7c3d ]
 
-Ensure that all O_DIRECT reads and writes are complete, and prevent the
-initiation of new i/o until the setattr operation that will truncate the
-file is complete.
+Commit afbab6e4e88d ("wifi: ath12k: modify ath12k_mac_op_bss_info_changed()
+for MLO") replaced the bss_info_changed() callback with vif_cfg_changed()
+and link_info_changed() to support Multi-Link Operation (MLO). As a result,
+the station power save configuration is no longer correctly applied in
+ath12k_mac_bss_info_changed().
 
-Fixes: a5864c999de6 ("NFS: Do not serialise O_DIRECT reads and writes")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Move the handling of 'BSS_CHANGED_PS' into ath12k_mac_op_vif_cfg_changed()
+to align with the updated callback structure introduced for MLO, ensuring
+proper power-save behavior for station interfaces.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00011-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Fixes: afbab6e4e88d ("wifi: ath12k: modify ath12k_mac_op_bss_info_changed() for MLO")
+Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250908015025.1301398-1-miaoqing.pan@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c    |  4 +++-
- fs/nfs/internal.h | 10 ++++++++++
- fs/nfs/io.c       | 13 ++-----------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 122 ++++++++++++++------------
+ 1 file changed, 67 insertions(+), 55 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 7e7dd2aab449d..5cd5e4226db36 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -645,8 +645,10 @@ nfs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	trace_nfs_setattr_enter(inode);
- 
- 	/* Write all dirty data */
--	if (S_ISREG(inode->i_mode))
-+	if (S_ISREG(inode->i_mode)) {
-+		nfs_file_block_o_direct(NFS_I(inode));
- 		nfs_sync_inode(inode);
-+	}
- 
- 	fattr = nfs_alloc_fattr_with_label(NFS_SERVER(inode));
- 	if (fattr == NULL) {
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index e78f43a137231..bde81e0abf0ae 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -474,6 +474,16 @@ static inline bool nfs_file_io_is_buffered(struct nfs_inode *nfsi)
- 	return test_bit(NFS_INO_ODIRECT, &nfsi->flags) == 0;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index a885dd168a372..87944e4467050 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -3650,12 +3650,68 @@ static int ath12k_mac_fils_discovery(struct ath12k_link_vif *arvif,
+ 	return ret;
  }
  
-+/* Must be called with exclusively locked inode->i_rwsem */
-+static inline void nfs_file_block_o_direct(struct nfs_inode *nfsi)
++static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
 +{
-+	if (test_bit(NFS_INO_ODIRECT, &nfsi->flags)) {
-+		clear_bit(NFS_INO_ODIRECT, &nfsi->flags);
-+		inode_dio_wait(&nfsi->vfs_inode);
++	struct ath12k *ar = arvif->ar;
++	struct ieee80211_vif *vif = arvif->ahvif->vif;
++	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
++	enum wmi_sta_powersave_param param;
++	struct ieee80211_bss_conf *info;
++	enum wmi_sta_ps_mode psmode;
++	int ret;
++	int timeout;
++	bool enable_ps;
++
++	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
++
++	if (vif->type != NL80211_IFTYPE_STATION)
++		return;
++
++	enable_ps = arvif->ahvif->ps;
++	if (enable_ps) {
++		psmode = WMI_STA_PS_MODE_ENABLED;
++		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
++
++		timeout = conf->dynamic_ps_timeout;
++		if (timeout == 0) {
++			info = ath12k_mac_get_link_bss_conf(arvif);
++			if (!info) {
++				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
++					    vif->addr, arvif->link_id);
++				return;
++			}
++
++			/* firmware doesn't like 0 */
++			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
++		}
++
++		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
++						  timeout);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
++				    arvif->vdev_id, ret);
++			return;
++		}
++	} else {
++		psmode = WMI_STA_PS_MODE_DISABLED;
 +	}
++
++	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
++		   arvif->vdev_id, psmode ? "enable" : "disable");
++
++	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
++	if (ret)
++		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
++			    psmode, arvif->vdev_id, ret);
 +}
 +
-+
- /* namespace.c */
- #define NFS_PATH_CANONICAL 1
- extern char *nfs_path(char **p, struct dentry *dentry,
-diff --git a/fs/nfs/io.c b/fs/nfs/io.c
-index 3388faf2acb9f..d275b0a250bf3 100644
---- a/fs/nfs/io.c
-+++ b/fs/nfs/io.c
-@@ -14,15 +14,6 @@
- 
- #include "internal.h"
- 
--/* Call with exclusively locked inode->i_rwsem */
--static void nfs_block_o_direct(struct nfs_inode *nfsi, struct inode *inode)
--{
--	if (test_bit(NFS_INO_ODIRECT, &nfsi->flags)) {
--		clear_bit(NFS_INO_ODIRECT, &nfsi->flags);
--		inode_dio_wait(inode);
--	}
+ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
+ 					  struct ieee80211_vif *vif,
+ 					  u64 changed)
+ {
+ 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+ 	unsigned long links = ahvif->links_map;
++	struct ieee80211_vif_cfg *vif_cfg;
+ 	struct ieee80211_bss_conf *info;
+ 	struct ath12k_link_vif *arvif;
+ 	struct ieee80211_sta *sta;
+@@ -3719,61 +3775,24 @@ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
+ 			}
+ 		}
+ 	}
 -}
 -
- /**
-  * nfs_start_io_read - declare the file is being used for buffered reads
-  * @inode: file inode
-@@ -57,7 +48,7 @@ nfs_start_io_read(struct inode *inode)
- 	err = down_write_killable(&inode->i_rwsem);
- 	if (err)
- 		return err;
--	nfs_block_o_direct(nfsi, inode);
-+	nfs_file_block_o_direct(nfsi);
- 	downgrade_write(&inode->i_rwsem);
+-static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
+-{
+-	struct ath12k *ar = arvif->ar;
+-	struct ieee80211_vif *vif = arvif->ahvif->vif;
+-	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
+-	enum wmi_sta_powersave_param param;
+-	struct ieee80211_bss_conf *info;
+-	enum wmi_sta_ps_mode psmode;
+-	int ret;
+-	int timeout;
+-	bool enable_ps;
  
- 	return 0;
-@@ -90,7 +81,7 @@ nfs_start_io_write(struct inode *inode)
+-	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
++	if (changed & BSS_CHANGED_PS) {
++		links = ahvif->links_map;
++		vif_cfg = &vif->cfg;
  
- 	err = down_write_killable(&inode->i_rwsem);
- 	if (!err)
--		nfs_block_o_direct(NFS_I(inode), inode);
-+		nfs_file_block_o_direct(NFS_I(inode));
- 	return err;
+-	if (vif->type != NL80211_IFTYPE_STATION)
+-		return;
++		for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
++			arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
++			if (!arvif || !arvif->ar)
++				continue;
+ 
+-	enable_ps = arvif->ahvif->ps;
+-	if (enable_ps) {
+-		psmode = WMI_STA_PS_MODE_ENABLED;
+-		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
++			ar = arvif->ar;
+ 
+-		timeout = conf->dynamic_ps_timeout;
+-		if (timeout == 0) {
+-			info = ath12k_mac_get_link_bss_conf(arvif);
+-			if (!info) {
+-				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
+-					    vif->addr, arvif->link_id);
+-				return;
++			if (ar->ab->hw_params->supports_sta_ps) {
++				ahvif->ps = vif_cfg->ps;
++				ath12k_mac_vif_setup_ps(arvif);
+ 			}
+-
+-			/* firmware doesn't like 0 */
+-			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
+ 		}
+-
+-		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
+-						  timeout);
+-		if (ret) {
+-			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
+-				    arvif->vdev_id, ret);
+-			return;
+-		}
+-	} else {
+-		psmode = WMI_STA_PS_MODE_DISABLED;
+ 	}
+-
+-	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
+-		   arvif->vdev_id, psmode ? "enable" : "disable");
+-
+-	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
+-	if (ret)
+-		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
+-			    psmode, arvif->vdev_id, ret);
  }
  
+ static bool ath12k_mac_supports_station_tpc(struct ath12k *ar,
+@@ -3795,7 +3814,6 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+ {
+ 	struct ath12k_vif *ahvif = arvif->ahvif;
+ 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
+-	struct ieee80211_vif_cfg *vif_cfg = &vif->cfg;
+ 	struct cfg80211_chan_def def;
+ 	u32 param_id, param_value;
+ 	enum nl80211_band band;
+@@ -4069,12 +4087,6 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+ 	}
+ 
+ 	ath12k_mac_fils_discovery(arvif, info);
+-
+-	if (changed & BSS_CHANGED_PS &&
+-	    ar->ab->hw_params->supports_sta_ps) {
+-		ahvif->ps = vif_cfg->ps;
+-		ath12k_mac_vif_setup_ps(arvif);
+-	}
+ }
+ 
+ static struct ath12k_vif_cache *ath12k_ahvif_get_link_cache(struct ath12k_vif *ahvif,
 -- 
 2.51.0
 
