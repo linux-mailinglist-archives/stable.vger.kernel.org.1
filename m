@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-179916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2B3B7E17B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB59B7E77D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D4EF62261E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACF717A6C6A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8872EBBB2;
-	Wed, 17 Sep 2025 12:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9173730F933;
+	Wed, 17 Sep 2025 12:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUQRq3qF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjTU9QCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59153189B84;
-	Wed, 17 Sep 2025 12:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6D931A7E9;
+	Wed, 17 Sep 2025 12:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112792; cv=none; b=qhmkGXBEZfX6vn6Q4RcBFdoXsl77tZNFoF8Cgp6XgC/HTZZGtDvEoSg/ezsqvuACNw3ZrSQBldeOn/3fFD1A1vQIdEsZDxTrz97gR0HdYr++W6vKrK+8CZhc5dqOhz2vpIOz+uV88kGTnRQUCChjS44A8AzvC0gBDkFnJYkDhq8=
+	t=1758113208; cv=none; b=e/ir2QydLpUb56c2cGA2EwultW8pqw8X4ZVvHM+ZODFzIWIdWJOhD98B1WBptH8Ai7yCmCRvMtR68It17Keu3/gWoX8XKN8s6n+qrzLAf3VYa8AdrWASW4XTD54fGEL1UPKHQ7Hzxgz73WR0fxA1ihidXkGqkFBebbBq+euh5Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112792; c=relaxed/simple;
-	bh=71trf2QGg2VevWv6NOWlyOFa1dl3z4lVD/8BUoZlSz4=;
+	s=arc-20240116; t=1758113208; c=relaxed/simple;
+	bh=1mTEV11PdbruyZdklBkadoEqaRu2ZhDOEUmYFuDVtm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iD0plfUukIG2pSPJGeA/+l7zvuUu8d0oorjPuFdvpuSngb/bcNsWgusd386wWuDhln7WHSBgL8im4TQu+6fNTWymaRvQO49HA/rzY35/OpIPitMviwaA5W+R+dukuaXezRHfg0oMvy3WYIBpRSJofFwInXTQhqEYqLurI7mb9vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUQRq3qF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734E8C4CEF0;
-	Wed, 17 Sep 2025 12:39:51 +0000 (UTC)
+	 MIME-Version; b=i+rM7Ez4tc8iAnwdydMGPjEX8j6tQSjq3VYWo9rbPMRDVC6Zi2XTPM3vVkSMNnootBUk0LYU20woUyd/4KD3q2foxXWbGLF1NQZOtsMCARLlagVQcyNgKOp29s/WgNYmog8UMxcdvWtNLQukHGSuIKfsV8JX86iPqE4Pp0DNNYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjTU9QCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7A2C4CEF0;
+	Wed, 17 Sep 2025 12:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112792;
-	bh=71trf2QGg2VevWv6NOWlyOFa1dl3z4lVD/8BUoZlSz4=;
+	s=korg; t=1758113208;
+	bh=1mTEV11PdbruyZdklBkadoEqaRu2ZhDOEUmYFuDVtm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUQRq3qFphlYwcd8iA/fv8a5oHCL+WDNEapB6ZblwVWWTLFSDZXvFGCkib84POyEm
-	 he7tW9lkT94bCE8fZDWd5DCp3tk+E/1XQ/80YGzDxhLyaNMB1uiappeyaShHgrUeFy
-	 Xgwpmr3vhDqHBT4IJRlG5B6t3X69xbvz/0avQXr4=
+	b=QjTU9QCWbA9CGqh1tRHxQ6JQ//Lzkv5qlIH89zm1EQOPR0R4JQKK39LMKa3M/W2ch
+	 lW2E3d+wawq8h5Mw9KBEe+oYKeSDBIjKVfvHiMZsXaqjMDOzPc8axM+16oEEsMFmlx
+	 YJfrnaKuNEirn5y69lJMzr6Fx3PiJLH9spVqG938=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	syzbot+3470c9ffee63e4abafeb@syzkaller.appspotmail.com,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 078/189] mm/vmalloc, mm/kasan: respect gfp mask in kasan_populate_vmalloc()
+	Leo Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 016/140] drm/amd/display: Fix error pointers in amdgpu_dm_crtc_mem_type_changed
 Date: Wed, 17 Sep 2025 14:33:08 +0200
-Message-ID: <20250917123353.774735811@linuxfoundation.org>
+Message-ID: <20250917123344.709273108@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,205 +71,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 79357cd06d41d0f5a11b17d7c86176e395d10ef2 upstream.
+[ Upstream commit da29abe71e164f10917ea6da02f5d9c192ccdeb7 ]
 
-kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask and
-always allocate memory using the hardcoded GFP_KERNEL flag.  This makes
-them inconsistent with vmalloc(), which was recently extended to support
-GFP_NOFS and GFP_NOIO allocations.
+The function amdgpu_dm_crtc_mem_type_changed was dereferencing pointers
+returned by drm_atomic_get_plane_state without checking for errors. This
+could lead to undefined behavior if the function returns an error pointer.
 
-Page table allocations performed during shadow population also ignore the
-external gfp_mask.  To preserve the intended semantics of GFP_NOFS and
-GFP_NOIO, wrap the apply_to_page_range() calls into the appropriate
-memalloc scope.
+This commit adds checks using IS_ERR to ensure that new_plane_state and
+old_plane_state are valid before dereferencing them.
 
-xfs calls vmalloc with GFP_NOFS, so this bug could lead to deadlock.
+Fixes the below:
 
-There was a report here
-https://lkml.kernel.org/r/686ea951.050a0220.385921.0016.GAE@google.com
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:11486 amdgpu_dm_crtc_mem_type_changed()
+error: 'new_plane_state' dereferencing possible ERR_PTR()
 
-This patch:
- - Extends kasan_populate_vmalloc() and helpers to take gfp_mask;
- - Passes gfp_mask down to alloc_pages_bulk() and __get_free_page();
- - Enforces GFP_NOFS/NOIO semantics with memalloc_*_save()/restore()
-   around apply_to_page_range();
- - Updates vmalloc.c and percpu allocator call sites accordingly.
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c
+    11475 static bool amdgpu_dm_crtc_mem_type_changed(struct drm_device *dev,
+    11476                                             struct drm_atomic_state *state,
+    11477                                             struct drm_crtc_state *crtc_state)
+    11478 {
+    11479         struct drm_plane *plane;
+    11480         struct drm_plane_state *new_plane_state, *old_plane_state;
+    11481
+    11482         drm_for_each_plane_mask(plane, dev, crtc_state->plane_mask) {
+    11483                 new_plane_state = drm_atomic_get_plane_state(state, plane);
+    11484                 old_plane_state = drm_atomic_get_plane_state(state, plane);
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^ These functions can fail.
 
-Link: https://lkml.kernel.org/r/20250831121058.92971-1-urezki@gmail.com
-Fixes: 451769ebb7e7 ("mm/vmalloc: alloc GFP_NO{FS,IO} for vmalloc")
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reported-by: syzbot+3470c9ffee63e4abafeb@syzkaller.appspotmail.com
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    11485
+--> 11486                 if (old_plane_state->fb && new_plane_state->fb &&
+    11487                     get_mem_type(old_plane_state->fb) != get_mem_type(new_plane_state->fb))
+    11488                         return true;
+    11489         }
+    11490
+    11491         return false;
+    11492 }
+
+Fixes: 4caacd1671b7 ("drm/amd/display: Do not elevate mem_type change to full update")
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kasan.h |    6 +++---
- mm/kasan/shadow.c     |   31 ++++++++++++++++++++++++-------
- mm/vmalloc.c          |    8 ++++----
- 3 files changed, 31 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -562,7 +562,7 @@ static inline void kasan_init_hw_tags(vo
- #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 9763752cf5cde..b585c321d3454 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -11483,6 +11483,11 @@ static bool amdgpu_dm_crtc_mem_type_changed(struct drm_device *dev,
+ 		new_plane_state = drm_atomic_get_plane_state(state, plane);
+ 		old_plane_state = drm_atomic_get_plane_state(state, plane);
  
- void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
--int kasan_populate_vmalloc(unsigned long addr, unsigned long size);
-+int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask);
- void kasan_release_vmalloc(unsigned long start, unsigned long end,
- 			   unsigned long free_region_start,
- 			   unsigned long free_region_end,
-@@ -574,7 +574,7 @@ static inline void kasan_populate_early_
- 						       unsigned long size)
- { }
- static inline int kasan_populate_vmalloc(unsigned long start,
--					unsigned long size)
-+					unsigned long size, gfp_t gfp_mask)
- {
- 	return 0;
- }
-@@ -610,7 +610,7 @@ static __always_inline void kasan_poison
- static inline void kasan_populate_early_vm_area_shadow(void *start,
- 						       unsigned long size) { }
- static inline int kasan_populate_vmalloc(unsigned long start,
--					unsigned long size)
-+					unsigned long size, gfp_t gfp_mask)
- {
- 	return 0;
- }
---- a/mm/kasan/shadow.c
-+++ b/mm/kasan/shadow.c
-@@ -335,13 +335,13 @@ static void ___free_pages_bulk(struct pa
- 	}
- }
- 
--static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
-+static int ___alloc_pages_bulk(struct page **pages, int nr_pages, gfp_t gfp_mask)
- {
- 	unsigned long nr_populated, nr_total = nr_pages;
- 	struct page **page_array = pages;
- 
- 	while (nr_pages) {
--		nr_populated = alloc_pages_bulk(GFP_KERNEL, nr_pages, pages);
-+		nr_populated = alloc_pages_bulk(gfp_mask, nr_pages, pages);
- 		if (!nr_populated) {
- 			___free_pages_bulk(page_array, nr_total - nr_pages);
- 			return -ENOMEM;
-@@ -353,25 +353,42 @@ static int ___alloc_pages_bulk(struct pa
- 	return 0;
- }
- 
--static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
-+static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_t gfp_mask)
- {
- 	unsigned long nr_pages, nr_total = PFN_UP(end - start);
- 	struct vmalloc_populate_data data;
-+	unsigned int flags;
- 	int ret = 0;
- 
--	data.pages = (struct page **)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-+	data.pages = (struct page **)__get_free_page(gfp_mask | __GFP_ZERO);
- 	if (!data.pages)
- 		return -ENOMEM;
- 
- 	while (nr_total) {
- 		nr_pages = min(nr_total, PAGE_SIZE / sizeof(data.pages[0]));
--		ret = ___alloc_pages_bulk(data.pages, nr_pages);
-+		ret = ___alloc_pages_bulk(data.pages, nr_pages, gfp_mask);
- 		if (ret)
- 			break;
- 
- 		data.start = start;
++		if (IS_ERR(new_plane_state) || IS_ERR(old_plane_state)) {
++			DRM_ERROR("Failed to get plane state for plane %s\n", plane->name);
++			return false;
++		}
 +
-+		/*
-+		 * page tables allocations ignore external gfp mask, enforce it
-+		 * by the scope API
-+		 */
-+		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-+			flags = memalloc_nofs_save();
-+		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-+			flags = memalloc_noio_save();
-+
- 		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
- 					  kasan_populate_vmalloc_pte, &data);
-+
-+		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-+			memalloc_nofs_restore(flags);
-+		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-+			memalloc_noio_restore(flags);
-+
- 		___free_pages_bulk(data.pages, nr_pages);
- 		if (ret)
- 			break;
-@@ -385,7 +402,7 @@ static int __kasan_populate_vmalloc(unsi
- 	return ret;
- }
- 
--int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
-+int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask)
- {
- 	unsigned long shadow_start, shadow_end;
- 	int ret;
-@@ -414,7 +431,7 @@ int kasan_populate_vmalloc(unsigned long
- 	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
- 	shadow_end = PAGE_ALIGN(shadow_end);
- 
--	ret = __kasan_populate_vmalloc(shadow_start, shadow_end);
-+	ret = __kasan_populate_vmalloc(shadow_start, shadow_end, gfp_mask);
- 	if (ret)
- 		return ret;
- 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2026,6 +2026,8 @@ static struct vmap_area *alloc_vmap_area
- 	if (unlikely(!vmap_initialized))
- 		return ERR_PTR(-EBUSY);
- 
-+	/* Only reclaim behaviour flags are relevant. */
-+	gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
- 	might_sleep();
- 
- 	/*
-@@ -2038,8 +2040,6 @@ static struct vmap_area *alloc_vmap_area
- 	 */
- 	va = node_alloc(size, align, vstart, vend, &addr, &vn_id);
- 	if (!va) {
--		gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
--
- 		va = kmem_cache_alloc_node(vmap_area_cachep, gfp_mask, node);
- 		if (unlikely(!va))
- 			return ERR_PTR(-ENOMEM);
-@@ -2089,7 +2089,7 @@ retry:
- 	BUG_ON(va->va_start < vstart);
- 	BUG_ON(va->va_end > vend);
- 
--	ret = kasan_populate_vmalloc(addr, size);
-+	ret = kasan_populate_vmalloc(addr, size, gfp_mask);
- 	if (ret) {
- 		free_vmap_area(va);
- 		return ERR_PTR(ret);
-@@ -4826,7 +4826,7 @@ retry:
- 
- 	/* populate the kasan shadow space */
- 	for (area = 0; area < nr_vms; area++) {
--		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area]))
-+		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], GFP_KERNEL))
- 			goto err_free_shadow;
- 	}
- 
+ 		if (old_plane_state->fb && new_plane_state->fb &&
+ 		    get_mem_type(old_plane_state->fb) != get_mem_type(new_plane_state->fb))
+ 			return true;
+-- 
+2.51.0
+
 
 
 
