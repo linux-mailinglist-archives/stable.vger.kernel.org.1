@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-179958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136E8B7E2D3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 972B9B7E942
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12B4B621E2C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EDC74A246E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE7F1F460B;
-	Wed, 17 Sep 2025 12:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1811F462C;
+	Wed, 17 Sep 2025 12:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gbp8rkvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYi9Te+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2351F09A5;
-	Wed, 17 Sep 2025 12:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09D21B3925;
+	Wed, 17 Sep 2025 12:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112931; cv=none; b=Sy7DUf9dp0AVPujJVDs2y7LTP4BWOnSNM6I+msbjW+ZVoW9x9CFn2TUVGNwObObgQLF3T2eREsfBGgkUm2g+DmWBqTjgCpUPp8jH9J0xdn1KgA2VJjctGeFtRr/vpxq1CavNf5qOuaPhq/K4bTwxQ404iCHUFVkJXq1go6tTfyw=
+	t=1758113348; cv=none; b=bRwzIygy6t5Lf4mXAzFmU0b5A7puYq8cs2RxVoY9TOSQ8JWnGOj++G9cWWI8Ye0JVY2qLXiF4zJnYLFcPxuqOF43q8llBP/q6tBZ3vBhwfZQOMj9b2+NOSAwgjY1XwqvoyCYIA3hE1Fu4en0yWOkUeYYm8EW1oUC6MUdfcoyHek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112931; c=relaxed/simple;
-	bh=akJJuQJfReEojc8noYa2E0Z/xnB+94jSb1qgeAdDwJU=;
+	s=arc-20240116; t=1758113348; c=relaxed/simple;
+	bh=ODZnXfLm9VI2YBUfUbR9bE2QcGeUchDE3o0zqlBID8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uarMEi7FTNm5OGdJ6nVX2O5tRFn+MxAW5k+uruasiyb6SGu1QU2zB85FGRvMhNlxjx62t4ofDJvVnSxnZurSn7Eh3xIq59ZKyzusYq7V1W3y8b2KjzCn/jBLKPbxkVmabt3rwTPL7IPDgpNxrfOvdtrHf/tNrrLDvuA2yTdIoeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gbp8rkvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32AEC4CEF0;
-	Wed, 17 Sep 2025 12:42:10 +0000 (UTC)
+	 MIME-Version; b=agqPXZeLavYK//sGY2c+OqGpjfSg6v7CxPKqkA6O0gj8DrhimnEN8CJoW6xitrWde4nrDm8JOXwFsmS1BgdRSTdqmPE66BWZEhIbVE5obA4vKL0ZYrMLotCcJB7AM6V3mrKBRehNxWD46OERbxwPXRxANd1hRFXD2dk5wAPuD3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYi9Te+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704B8C4CEF0;
+	Wed, 17 Sep 2025 12:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112931;
-	bh=akJJuQJfReEojc8noYa2E0Z/xnB+94jSb1qgeAdDwJU=;
+	s=korg; t=1758113347;
+	bh=ODZnXfLm9VI2YBUfUbR9bE2QcGeUchDE3o0zqlBID8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gbp8rkvCFqEnvmgrw+7jYRWT3vS+zn8/MbuednHZCjc8H/NO25KOhoTOfVs7LofSU
-	 Ih/7eVDctDtHTFArDEXGYL4BL824X9L3mTXHF8VMS6FrQ2EwyhgshlvO2ieSQg3amD
-	 F/7O0vl7N/nwh0JCECWKyQwO4AOFg7aFRQHkizWA=
+	b=xYi9Te+zS30EMEuCedVF6ic0SxlO+O/vTzPCmTAsDdKQJMvHuH76wsLxb0kKsgE9w
+	 dbVgWU7iCS4sjkt/La92pRkqUnJLL+/mVaBArQJ50pRNRidvUtUPpROc9jwr4OtDTJ
+	 hNvwRV69rn++SxGeIT4HCeLIvnGJnj3dtW+8fg0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabian Vogt <fvogt@suse.de>
-Subject: [PATCH 6.16 120/189] tty: hvc_console: Call hvc_kick in hvc_write unconditionally
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 058/140] mtd: rawnand: stm32_fmc2: fix ECC overwrite
 Date: Wed, 17 Sep 2025 14:33:50 +0200
-Message-ID: <20250917123354.794127090@linuxfoundation.org>
+Message-ID: <20250917123345.723444990@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fvogt@suse.de>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
 
-commit cfd956dcb101aa3d25bac321fae923323a47c607 upstream.
+commit 811c0da4542df3c065f6cb843ced68780e27bb44 upstream.
 
-After hvc_write completes, call hvc_kick also in the case the output
-buffer has been drained, to ensure tty_wakeup gets called.
+In case OOB write is requested during a data write, ECC is currently
+lost. Avoid this issue by only writing in the free spare area.
+This issue has been seen with a YAFFS2 file system.
 
-This fixes that functions which wait for a drained buffer got stuck
-occasionally.
-
-Cc: stable <stable@kernel.org>
-Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1230062
-Signed-off-by: Fabian Vogt <fvogt@suse.de>
-Link: https://lore.kernel.org/r/2011735.PYKUYFuaPT@fvogt-thinkpad
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: stable@vger.kernel.org
+Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/hvc/hvc_console.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/hvc/hvc_console.c
-+++ b/drivers/tty/hvc/hvc_console.c
-@@ -543,10 +543,10 @@ static ssize_t hvc_write(struct tty_stru
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -985,9 +985,21 @@ static int stm32_fmc2_nfc_seq_write(stru
+ 
+ 	/* Write oob */
+ 	if (oob_required) {
+-		ret = nand_change_write_column_op(chip, mtd->writesize,
+-						  chip->oob_poi, mtd->oobsize,
+-						  false);
++		unsigned int offset_in_page = mtd->writesize;
++		const void *buf = chip->oob_poi;
++		unsigned int len = mtd->oobsize;
++
++		if (!raw) {
++			struct mtd_oob_region oob_free;
++
++			mtd_ooblayout_free(mtd, 0, &oob_free);
++			offset_in_page += oob_free.offset;
++			buf += oob_free.offset;
++			len = oob_free.length;
++		}
++
++		ret = nand_change_write_column_op(chip, offset_in_page,
++						  buf, len, false);
+ 		if (ret)
+ 			return ret;
  	}
- 
- 	/*
--	 * Racy, but harmless, kick thread if there is still pending data.
-+	 * Kick thread to flush if there's still pending data
-+	 * or to wakeup the write queue.
- 	 */
--	if (hp->n_outbuf)
--		hvc_kick();
-+	hvc_kick();
- 
- 	return written;
- }
 
 
 
