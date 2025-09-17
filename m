@@ -1,213 +1,111 @@
-Return-Path: <stable+bounces-180458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0B5B82297
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 00:31:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C85B822C0
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 00:38:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77C0F1C80AFC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 22:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AFEB4A3BE2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 22:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C78261B76;
-	Wed, 17 Sep 2025 22:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6019830F954;
+	Wed, 17 Sep 2025 22:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FHUpHJ/q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jo40RZj8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D6727B328;
-	Wed, 17 Sep 2025 22:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F20930F54C
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 22:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758148277; cv=none; b=PCr8nwEGzsVhiuoOx3Cp/uOy2K82lSB5dg8KITL7Vx3Zm2p653L9IUwx0YoCoGTRBttAKN20kYFGyD2pFyVUzxV7sCg+tMG6DH430GGjitqNP1nBLe881TLIXZT6b+DAOFJ87lviTDokQyrSpe75R3biy3BqjeOpDv2GqERJo/w=
+	t=1758148722; cv=none; b=AWE3vQX2c2INSsIKRSzMCNRFq6eQ3KzYBGNzHAFlUQ9kPT4tyjIYg8Nq9Rh2jiOybwWaxV4z8vBjpnWRWRjCNohK/YdBFyyyjZ/FEWxbsINQ69MqCE7HlB+bvevwx4pcsCAuzSRGeBicPQRoSVn99pmu+cKosgIN+0Y1t1WUeGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758148277; c=relaxed/simple;
-	bh=jcz2bedhP+luopgsdMLmEGjgZvawm0Ycx4QlSiLfpMc=;
-	h=Date:To:From:Subject:Message-Id; b=fsLl/KQyrEv1ici6xpNdk4nWSjrXiW5JUZ+OWO2JswqtwRg8657WPL2E/QQvXWovhUH4iKFTOHRNpJww/yXyIBvG3BxMO/CNP1OwJ6L8dDNltEKRzmLfq2aJsUL06LYsz7QlA+TIlQOYAz9eMiSp+Q57Lkn+OXRPXv1pTMeVQBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FHUpHJ/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2D7C4CEE7;
-	Wed, 17 Sep 2025 22:31:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758148276;
-	bh=jcz2bedhP+luopgsdMLmEGjgZvawm0Ycx4QlSiLfpMc=;
-	h=Date:To:From:Subject:From;
-	b=FHUpHJ/qpuOpQLeCBVIA9zqpVG/aVkjBebYofE0wnpOQ7r1Bir70294HtGC5lZUAi
-	 UdngtyhKkSZd6SuARvCZc84wQYeTeOOh6+N5OhzLN4bEcvwr4IWrv5rfYH2DW/kP9M
-	 lKm+lztUoFORePZ9PTGp5Mx4MYChqCEz+tRvs9rk=
-Date: Wed, 17 Sep 2025 15:31:15 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,lorenzo.stoakes@oracle.com,krisman@collabora.com,david@redhat.com,lance.yang@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled.patch added to mm-new branch
-Message-Id: <20250917223115.DF2D7C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1758148722; c=relaxed/simple;
+	bh=/ThNkGr+ZEjqTZAQF+vgJk0idxNVNcO73FYaVFQDEHs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qteIHMYPEbtQBs8BZugeX0XPmCgzOdmro8Hx3wxWxDduqwpZ9Xb8YGirTM9WX7Ra8/OyOuAoURqgJo3eE+SAl4mJnE6R3nMHRN/uN80WGMuMOhnCeWGJYL4VaiWpQPdEzzxVD914WpeFxzRj8A4Y2WKkOxLUPgW0DqWYPgGVh6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jo40RZj8; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-62f7bcde405so445356a12.2
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:38:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758148719; x=1758753519; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/ThNkGr+ZEjqTZAQF+vgJk0idxNVNcO73FYaVFQDEHs=;
+        b=Jo40RZj8Y+fSh8WxQwb4kkcp03yvJIUpOWA9cdy7FWTd6uFBhU1hZS90MJGxe9XEoc
+         yAOJ547sKIMtJgLajvQ1VkSS9XqPlLkkbrg7/U4iSkFFJ8vW1tK91wcUTyfwsjTGqHZl
+         7/4pbwhK/iReSUvORozQL71GgfoNSOm7T9+8hK5vYa0Fj9SsyWmlVhb60xVUH9209Zu6
+         Mb6ka2sT1xRD7SquiptIIRE5CHOYNWld0RMeEG8EPN8whZU7Ob7Xd8R7/ibvDS2cCR1z
+         UpeQBYc/XWZuiNOp9viNOYHbFLLoe/sPmIfsrhLrIWTob0MfH3E9+S4LgcKZcapAq6Tj
+         twRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758148719; x=1758753519;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/ThNkGr+ZEjqTZAQF+vgJk0idxNVNcO73FYaVFQDEHs=;
+        b=G8oS1tJlEyU8QS8etP5KR2ljhSwlM8LXhPu4pW8UvShW0yD2I2AuQRLL4HVTqxQWn8
+         NvvoXOhQLvlM/3M2oVGaC7SiYyDzeqr8SwIS9atz+vSAdwJvSAGIotGqk00I6DMIr+M6
+         iRwdkgTPPaIUJ2ggutYf3KQ0QnJi4Frk3Z/ZWR+ipvaIMOBmncfe1T/ZGCokiGPkFYPC
+         5GELfBJXZzvdKkXmW4YEchptJFviqUsVlQa5FNZWRFDNPuOh36oIJNLZcLskHHL7pwHH
+         RlrXT0VoskA+Cif1YOV6MJ1PCKxMu+PKEG7miCJWVe7MK0YQXkSiMS8tO+7RGZETU8DX
+         og/A==
+X-Forwarded-Encrypted: i=1; AJvYcCX29YvobFmhXHYAiZ7QzKHVFEqHG3/pmUFtBGdPVO4wADkT+7U2E3n/Z05RvoMPaNT2GH0px/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuaCCoz0OSj1g7OuKCtcqWB8tCMkURsrQcOb8mZTY3peX4FuEa
+	3upM1R7q3m4mwmKg16ERoY9QU3OK30RicwUvbh+/cFU/OuO1S7snbMHlQwq86L1oPCsFN/3l0TT
+	r3jO4ECnI49AfmOsAIT3tMM6SX+Ej2Ss=
+X-Gm-Gg: ASbGnctYxeEuF704eeQN+TRbLEbWmWvCKNAGb6+Dh8ApQQTGuMHkyFdQSKqEizH2ep8
+	mxTrq3nDBAtuv6sLwxtGjGSrNjlmw07VmGBmIepvFahaDKFF+aP4Plb7hqEVpm/B+NCKT0GdQjH
+	4SgP5kFNdksY3D2QbVw2ObLrFsoIcxtX8dAXn7UbVfmTJh9Na6zK296/AKYlENGu7k7LJDxWLiz
+	YYKVkXDVy0jLXFK0Y92axPVIq5iori6Voem84l2hx2b2akoOlyGgcaPdA==
+X-Google-Smtp-Source: AGHT+IEfSJAKNHpWgZVUf8o+j/Jls/Qpg0S3h5SUv32JXiLjp2fei3IxBHlxD5hh5CStRz/jkhZR5P7q7aYPIS20EDs=
+X-Received: by 2002:a17:907:7b8d:b0:b04:3623:a9fc with SMTP id
+ a640c23a62f3a-b1bbd3a68ffmr460226666b.30.1758148718744; Wed, 17 Sep 2025
+ 15:38:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <cover.1752824628.git.namcao@linutronix.de> <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+ <aflo53gea7i6cyy22avn7mqxb3xboakgjwnmj4bqmjp6oafejj@owgv35lly7zq>
+ <87zfat19i7.fsf@yellow.woof> <CAGudoHFLrkk_FBgFJ_ppr60ARSoJT7JLji4soLdKbrKBOxTR1Q@mail.gmail.com>
+ <CAGudoHE=iaZp66pTBYTpgcqis25rU--wFJecJP-fq78hmPViCg@mail.gmail.com>
+ <CACGdZYKcQmJtEVt8xoO9Gk53Rq1nmdginH4o5CmS4Kp3yVyM-Q@mail.gmail.com> <CACGdZYLByXsRruwv+BNWG-EqK+-f6V0inki+6gg31PGw5oa90A@mail.gmail.com>
+In-Reply-To: <CACGdZYLByXsRruwv+BNWG-EqK+-f6V0inki+6gg31PGw5oa90A@mail.gmail.com>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Thu, 18 Sep 2025 00:38:25 +0200
+X-Gm-Features: AS18NWA4pOwDUosllJlj4H9gooia92TA6PwJgeXuzaDepx3vHsHzDeL6mCXiLr0
+Message-ID: <CAGudoHF8pKE3ODqY-WnbV=ZpjC9hH+U+COq_KE=aH7mEW8fsKQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
+To: Khazhy Kumykov <khazhy@chromium.org>
+Cc: Nam Cao <namcao@linutronix.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Shuah Khan <shuah@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Soheil Hassas Yeganeh <soheil@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Eric Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Sep 18, 2025 at 12:34=E2=80=AFAM Khazhy Kumykov <khazhy@chromium.or=
+g> wrote:
+>
+> On Wed, Sep 17, 2025 at 11:03=E2=80=AFAM Khazhy Kumykov <khazhy@chromium.=
+org> wrote:
+> >
+> > One ordering thing that sticks out to me is
+> (ordering can't help here since we'll rapidly be flapping between
+> ovflist in use and inactive... right)
 
-The patch titled
-     Subject: selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-has been added to the -mm mm-new branch.  Its filename is
-     selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled.patch
-
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Lance Yang <lance.yang@linux.dev>
-Subject: selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-Date: Wed, 17 Sep 2025 21:31:37 +0800
-
-The madv_populate and soft-dirty kselftests currently fail on systems
-where CONFIG_MEM_SOFT_DIRTY is disabled.
-
-Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
-tests are properly skipped when the feature is not enabled.
-
-Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
-Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/madv_populate.c |   21 +------------------
- tools/testing/selftests/mm/soft-dirty.c    |    5 +++-
- tools/testing/selftests/mm/vm_util.c       |   17 +++++++++++++++
- tools/testing/selftests/mm/vm_util.h       |    1 
- 4 files changed, 24 insertions(+), 20 deletions(-)
-
---- a/tools/testing/selftests/mm/madv_populate.c~selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled
-+++ a/tools/testing/selftests/mm/madv_populate.c
-@@ -264,23 +264,6 @@ static void test_softdirty(void)
- 	munmap(addr, SIZE);
- }
- 
--static int system_has_softdirty(void)
--{
--	/*
--	 * There is no way to check if the kernel supports soft-dirty, other
--	 * than by writing to a page and seeing if the bit was set. But the
--	 * tests are intended to check that the bit gets set when it should, so
--	 * doing that check would turn a potentially legitimate fail into a
--	 * skip. Fortunately, we know for sure that arm64 does not support
--	 * soft-dirty. So for now, let's just use the arch as a corse guide.
--	 */
--#if defined(__aarch64__)
--	return 0;
--#else
--	return 1;
--#endif
--}
--
- int main(int argc, char **argv)
- {
- 	int nr_tests = 16;
-@@ -288,7 +271,7 @@ int main(int argc, char **argv)
- 
- 	pagesize = getpagesize();
- 
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		nr_tests += 5;
- 
- 	ksft_print_header();
-@@ -300,7 +283,7 @@ int main(int argc, char **argv)
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
--	if (system_has_softdirty())
-+	if (softdirty_supported())
- 		test_softdirty();
- 
- 	err = ksft_get_fail_cnt();
---- a/tools/testing/selftests/mm/soft-dirty.c~selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled
-+++ a/tools/testing/selftests/mm/soft-dirty.c
-@@ -200,8 +200,11 @@ int main(int argc, char **argv)
- 	int pagesize;
- 
- 	ksft_print_header();
--	ksft_set_plan(15);
- 
-+	if (!softdirty_supported())
-+		ksft_exit_skip("soft-dirty is not support\n");
-+
-+	ksft_set_plan(15);
- 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
---- a/tools/testing/selftests/mm/vm_util.c~selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled
-+++ a/tools/testing/selftests/mm/vm_util.c
-@@ -449,6 +449,23 @@ bool check_vmflag_pfnmap(void *addr)
- 	return check_vmflag(addr, "pf");
- }
- 
-+bool softdirty_supported(void)
-+{
-+	char *addr;
-+	bool supported = false;
-+	const size_t pagesize = getpagesize();
-+
-+	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	supported = check_vmflag(addr, "sd");
-+	munmap(addr, pagesize);
-+	return supported;
-+}
-+
- /*
-  * Open an fd at /proc/$pid/maps and configure procmap_out ready for
-  * PROCMAP_QUERY query. Returns 0 on success, or an error code otherwise.
---- a/tools/testing/selftests/mm/vm_util.h~selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled
-+++ a/tools/testing/selftests/mm/vm_util.h
-@@ -104,6 +104,7 @@ bool find_vma_procmap(struct procmap_fd
- int close_procmap(struct procmap_fd *procmap);
- int write_sysfs(const char *file_path, unsigned long val);
- int read_sysfs(const char *file_path, unsigned long *val);
-+bool softdirty_supported(void);
- 
- static inline int open_self_procmap(struct procmap_fd *procmap_out)
- {
-_
-
-Patches currently in -mm which might be from lance.yang@linux.dev are
-
-hung_task-fix-warnings-caused-by-unaligned-lock-pointers.patch
-mm-skip-mlocked-thps-that-are-underused-early-in-deferred_split_scan.patch
-selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled.patch
-
+a sequence counter around shenanigans will sort it out, but I don't
+know if it is worth it and don't really want to investigate myself.
 
