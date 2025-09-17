@@ -1,127 +1,176 @@
-Return-Path: <stable+bounces-180412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FAD5B80537
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:01:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8424B807AC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56CDC7BB20F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62DD7525183
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D29033B490;
-	Wed, 17 Sep 2025 14:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B800333AB5;
+	Wed, 17 Sep 2025 15:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="iyOk5hTd"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="rIR3dU3S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510AB33B482
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 14:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359571C3314
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758121049; cv=none; b=EM/KyynaWIaElCjhmS4bVBh4bRvVWTRo2PZVUH9UOQJ0FzeShHrxeFslPPWI8TRg9p3TtoJP0YOyRUqh0I+kbHzOaMR9FNcsXJBL7p0LYdcp9ae5eNhGjDrfDNLtBiETuXWngS/Rqsd88wtOcCZF0MTidw45UkvblosyCmBbQsY=
+	t=1758122364; cv=none; b=ifZZXSTbY7aWgUa17fZyKlb3p8gV46QCWPofQwVQ9apkABqAsfpktSkQOIaai9ucv11+FtLbefvOjZUkxgfT8oC90ELOQGPfKKF6l+oSjH9Y4/j21oSvK2HrrxaUg+LlMVF5fuN4bqJOYNfATx0I3nxhJe4+BuA9ylbk58OrSrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758121049; c=relaxed/simple;
-	bh=9OJQZq6bHCOGv02hQ9NPzIP7qKBnKi5yAR5CrQuWy6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TRVB9PY6jcEdmAeeP3HAHYARwpfm9sjTUOLPnNyLtUGnu17GC3cqaRpDsqXR4+u2/6mMruyoRldqz6A/Pzd8UWId7GaliU3SPvUsbSJtGT1Rv3giP/rGPkmqm2oTu8jxCU71+SQnW3G7FzOinVFmxPBwOv6NpWp6pD5n9iKw2CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=iyOk5hTd; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8127215a4c6so101695285a.0
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1758121046; x=1758725846; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=W8HN1UTZvELIwcpsDbtiuDd2WLyYOA0zppT13Ez3H28=;
-        b=iyOk5hTd0RGR9IJYHKGcrhnycmh/4ftPLUaqp3uwYYz6uA9kAqIbgGODrL6+WBffg0
-         ASlqAudM790xLRDtuWWVwGyscKIBeOCecYaxuipegTHgeE3O2ZwrmDYwfAcZmOhtrYQs
-         gfKdsmskHqq3krQtsNfAaxiEd3Hyp41ZR6lsxwJBmigCoKmRuSdQChvKcyJjfMq4K4WV
-         hK30HKK/+ZfvEEt4CWApkQQB5nEMOCD3uJYt57jUsnemEI1SeaoBf8fSVBslYFyb4zJ/
-         qKaDohT80/SXOdXnCUU+ZFDXbAaoyRjUz6d3wNqDRh7pDiGVCollGDl+dZzXX1RK185h
-         9o8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758121046; x=1758725846;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W8HN1UTZvELIwcpsDbtiuDd2WLyYOA0zppT13Ez3H28=;
-        b=TTVrBswYLu7UScMGhN+w8bCgFijqkswVxYl2GM8XBUqPmYUvyYGumm9kg8JXUyD/+p
-         3TVmkKf2S2UoSX9+g4BCyXOsYTHEy43EEgy9jMHCm4fvbZAOrOZs2CI1JgigwQUj+mq2
-         naYgM5BQ5vqZ9Mo2GMDx/DXl7Lk2tpzNwZvs9nowzG/Lv5vm0bxrNwgf+16tM4yP5gZu
-         CWkSFwfdhlR3spQrcHvOiepGPMxZ6ELpTIlD4oIGxIDgU7s95K1VEPAZLGeafgcXbuXd
-         2UJKKACSR4Ftv6qdYUbvPuEeX/LII5KACI9Oyxp11Bml2I4N/bAZH1PolBsxRoLaSB54
-         n5yw==
-X-Forwarded-Encrypted: i=1; AJvYcCWr0R4tJmHyJp9ZfgQ1+lRzfky29aE9hfY0ajgq4FmG473COdrqg7yokLteuxP7BAiNKEppwpY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyk9KmkAjBUOryJfsCwHWuTorqt5d8VgteEYWLCbwJh+ujo1eXE
-	1Yt1bzjfZVK80zwuO6/O0PrGw6U4PNxDC0mRDb57/fv3MivFSDSkKvO9yUUyvhV1NQ==
-X-Gm-Gg: ASbGnct2bORED8xdb9IRqqLOQX3mOKN9qapTLISPnHhbiaK+8ZMYycY0aAr6b0VDwuq
-	kbau1MqtnhR0r1fCxm++HSJGOJJ4+Qkx+6AsIfuQ/i+5qWYOFU7BHmQECNlyBs9tynNEurvWoNA
-	Y6sGaaIAJ4+ppXtsUmVdqHLhYq+iaU3Ci2zyEQAQq4lLiB1jYEny6moqamocUwEEtkfyej7+nxo
-	pElu3NnHEko5tD0/VwVYFsSa0/tAH+HZnZt3UG8vIRCA4rFj0ZT8OhvcwfMrXyvmzMqfN3owUtl
-	eNEZmvo0ceTGCBORipsYmJsU0xD8qxhGMoZt8CPJthjBTAuAIQe+/alYubXV38SICaGmWnT8K1x
-	Y8bCj+l3W5Nm8HPbL01EaqIYQcV38DbKU4RohfWIsNoMLkVsO5ZuD5KRIjp/ztMs2QV89ReaNYz
-	kf/N4K/LVAgDGfFemotgkK
-X-Google-Smtp-Source: AGHT+IHSha0l2uy8bY+NcvRiDKKxmDF7lfi4/yLSRxZTDI+PO2c2F0E2cv/USSjdeL4NWU7Va2vk2w==
-X-Received: by 2002:a05:620a:4713:b0:828:b2ab:a50e with SMTP id af79cd13be357-82b9e38f41bmr799576585a.31.1758121045894;
-        Wed, 17 Sep 2025 07:57:25 -0700 (PDT)
-Received: from rowland.harvard.edu (nat-65-112-8-24.harvard-secure.wrls.harvard.edu. [65.112.8.24])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-820c974dbbbsm1145829885a.21.2025.09.17.07.57.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 07:57:25 -0700 (PDT)
-Date: Wed, 17 Sep 2025 10:57:23 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Hubert =?utf-8?Q?Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
-	Russell King <linux@armlinux.org.uk>, Xu Yang <xu.yang_2@nxp.com>,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
- PM/MDIO + RTNL deadlock
-Message-ID: <ccfd7d48-401b-4f25-ac8e-aa6aa9654956@rowland.harvard.edu>
-References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
- <c94af0e9-dc67-432e-a853-e41bfa59e863@rowland.harvard.edu>
- <DCV5CKKQTTMV.GA825CXM0H9F@gmail.com>
+	s=arc-20240116; t=1758122364; c=relaxed/simple;
+	bh=c+qN09KBoyy2uLIlCQ59dshprkNFcWqZ397Ne8yAWUs=;
+	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
+	 Content-Type:Subject; b=eAyFFJk4r7UBF44TT43YwCMVcIrYNSXZJYhQVgkdPCRGJ0do9reA17/Pk9dPZYLHCOrqI8oN9RqMmdZsquSTYjdh0wWzq1R5YAdpgFpZhUM/PSIiLbD0Bvch8jrUY7Fmds7fHkqmWVVyDeuOlN0QP5s5JKjA438J6MNv6i9RCmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=rIR3dU3S; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=lOHcYRecEqu8jC94oVR4a7p/iArv5PODunbEknSvmok=; b=rIR3dU3SFPQDa3cZhQQpy+sTtg
+	6OBTHUcNLlGmGFDzmm1xj+DmTxybmYv0n31DU7186pnVRUQFgcCUP2q3rpQPQbwvFFOnhAr/3P0hH
+	R9XzbO/zp7C8lyyUeTo98ojXb6tpwoQycenzqWKwRx6fi3oFH6il0ytuLEVh1b2DI4FQ=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:40194 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1uytdo-0001ZO-M6; Wed, 17 Sep 2025 11:00:17 -0400
+Date: Wed, 17 Sep 2025 11:00:15 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-Id: <20250917110015.1fe9b6d91da419d44cd9315a@hugovil.com>
+In-Reply-To: <20250917123957.515161-1-sashal@kernel.org>
+References: <2025091721-moonwalk-barrack-423e@gregkh>
+	<20250917123957.515161-1-sashal@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DCV5CKKQTTMV.GA825CXM0H9F@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -3.3 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH 5.15.y] serial: sc16is7xx: fix bug in flow control
+ levels init
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On Wed, Sep 17, 2025 at 04:31:40PM +0200, Hubert Wiśniewski wrote:
-> On Wed Sep 17, 2025 at 3:54 PM CEST, Alan Stern wrote:
-> > Are you aware that the action of pm_runtime_forbid() can be reversed by 
-> > the user (by writing "auto" to the .../power/control sysfs file)?
+On Wed, 17 Sep 2025 08:39:57 -0400
+Sasha Levin <sashal@kernel.org> wrote:
+
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 > 
-> I have tested this. With this patch, it seems that writing "auto" to
-> power/control has no effect -- power/runtime_status remains "active" and
-> the device does not get suspended. But maybe there is a way to force the
-> suspension anyway?
+> [ Upstream commit 535fd4c98452c87537a40610abba45daf5761ec6 ]
+> 
+> When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
+> writing to the TCR register to configure flow control levels, we are
+> incorrectly writing to the MSR register. The default value of $00 is then
+> used for TCR, which means that selectable trigger levels in FCR are used
+> in place of TCR.
+> 
+> TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
+> to be set. EFR[4] is already set in probe().
+> 
+> MCR access requires LCR[7] to be zero.
+> 
+> Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
+> accessed instead because MCR shares the same address space as XON1.
+> 
+> Since MCR[2] is unmodified and still zero, when writing to TCR we are in
+> fact writing to MSR because TCR/TLR registers share the same address space
+> as MSR/SPR.
+> 
+> Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
+> functions), as it is already enabled in sc16is7xx_probe() since commit
+> 43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
+> Now LCR is $00, which means that MCR access is enabled.
+> 
+> Also remove regcache_cache_bypass() calls since we no longer access the
+> enhanced registers set, and TCR is already declared as volatile (in fact
+> by declaring MSR as volatile, which shares the same address).
+> 
+> Finally disable access to TCR/TLR registers after modifying them by
+> clearing MCR[2].
+> 
+> Note: the comment about "... and internal clock div" is wrong and can be
+>       ignored/removed as access to internal clock div registers (DLL/DLH)
+>       is permitted only when LCR[7] is logic 1, not when enhanced features
+>       is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
+> 
+> Fixes: dfeae619d781 ("serial: sc16is7xx")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> [ changed regmap variable from one->regmap to s->regmap ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-I don't know exactly what's going on in your particular case.  However, 
-if you read the source code for control_store() in 
-drivers/base/power/sysfs.c, you'll see that writing "auto" to the 
-attribute file causes the function to call pm_runtime_allow().
+Acked-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-If you turn on CONFIG_PM_ADVANCED_DEBUG there will be extra files in the 
-.../power/ directory, showing some of the other runtime PM values.  
-Perhaps they will help you to figure out what's happening.
 
-Alan Stern
+> ---
+>  drivers/tty/serial/sc16is7xx.c | 14 ++------------
+>  1 file changed, 2 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> index d274a847c6ab3..3623d3167950d 100644
+> --- a/drivers/tty/serial/sc16is7xx.c
+> +++ b/drivers/tty/serial/sc16is7xx.c
+> @@ -1018,7 +1018,6 @@ static int sc16is7xx_config_rs485(struct uart_port *port,
+>  static int sc16is7xx_startup(struct uart_port *port)
+>  {
+>  	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+> -	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+>  	unsigned int val;
+>  
+>  	sc16is7xx_power(port, 1);
+> @@ -1030,16 +1029,6 @@ static int sc16is7xx_startup(struct uart_port *port)
+>  	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
+>  			     SC16IS7XX_FCR_FIFO_BIT);
+>  
+> -	/* Enable EFR */
+> -	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+> -			     SC16IS7XX_LCR_CONF_MODE_B);
+> -
+> -	regcache_cache_bypass(s->regmap, true);
+> -
+> -	/* Enable write access to enhanced features and internal clock div */
+> -	sc16is7xx_port_write(port, SC16IS7XX_EFR_REG,
+> -			     SC16IS7XX_EFR_ENABLE_BIT);
+> -
+>  	/* Enable TCR/TLR */
+>  	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+>  			      SC16IS7XX_MCR_TCRTLR_BIT,
+> @@ -1051,7 +1040,8 @@ static int sc16is7xx_startup(struct uart_port *port)
+>  			     SC16IS7XX_TCR_RX_RESUME(24) |
+>  			     SC16IS7XX_TCR_RX_HALT(48));
+>  
+> -	regcache_cache_bypass(s->regmap, false);
+> +	/* Disable TCR/TLR access */
+> +	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
+>  
+>  	/* Now, initialize the UART */
+>  	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
+> -- 
+> 2.51.0
+> 
+
+
+-- 
+Hugo Villeneuve
 
