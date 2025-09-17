@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B96B7ECAB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:01:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A681BB7EF55
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6BB482496
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B708152426D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14225316183;
-	Wed, 17 Sep 2025 12:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A053161BB;
+	Wed, 17 Sep 2025 12:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0Inwc6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hac/Crut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4166316189;
-	Wed, 17 Sep 2025 12:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759C53161B3;
+	Wed, 17 Sep 2025 12:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113616; cv=none; b=t/LcCfhEO+SOcLlIXQ77FurErnYDUkZys0zanXJuWRkbA7vc3A5T7EHELm7Lg+OSXb2KVCJUUztDmZ2G36BdudXdrNgmv/lzTqz2qGKsLN7rpkbzGnGnIEHJdDYGOnfUMq9SDARQUK/88aLjyU9HamGAzJ9FeuH3rN2ySAD+RYM=
+	t=1758113857; cv=none; b=dVYylnaeyCLmosy8uc7mHQvEDlJrDd28f/zRPAPWOprbpq1wDuQK23J058AclzTFF8axc/1TphgiogEi4Fp60cXMT7PpKUYMX0vn4EvwSutYP73zaA8EHSf4GBzsKyIyK4/drg8ssyE2D8BXkUDSu10mnY4lAzlENqfXKxrGMW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113616; c=relaxed/simple;
-	bh=zobPbxIR+5e/SuG4F13gFk04gGCurz+h+YivVRfJYO4=;
+	s=arc-20240116; t=1758113857; c=relaxed/simple;
+	bh=Xd+6U6ui5hOJJfZIZpNWunJPw4siGdHmb39QW969vZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDnIpsrs0yxGpxKJmY449OqTQj+yfXJCEt4RSLwE2vu2cQyRMhgVABc5CeZiYS+9patlJYREdc6bWifsHbzyuGYYwif3Ydpe2KJoYXBhN7yk2bVHKXG7+CZVvd2glMRIGZ4C49gFOZSoCnbGM9jS9FJFyIPqLLVhoJBhA6n7lS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0Inwc6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4204DC4CEF0;
-	Wed, 17 Sep 2025 12:53:36 +0000 (UTC)
+	 MIME-Version; b=TZti+sIVcorPlM2+ktj+VWtm6zeQUHiB5GMXjZU8uv1l17fSWS7zPDwVZJKP6rlcg7ll3/M8UpVsC5YnPhIO7s2xY0bi09RWqLLp698tJYJsgZtsCK2dPMLnLBG3fmPQb9wgS84X7bL8/pBiu5WMBlVm49CE8spCaMzYsNLW5NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hac/Crut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5C8C4CEF5;
+	Wed, 17 Sep 2025 12:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113616;
-	bh=zobPbxIR+5e/SuG4F13gFk04gGCurz+h+YivVRfJYO4=;
+	s=korg; t=1758113857;
+	bh=Xd+6U6ui5hOJJfZIZpNWunJPw4siGdHmb39QW969vZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0Inwc6jCpDFivVi6bhBdUVXbVIoL2VMM/LUncfKl4MBy9l3x2PA6cD1LMiOvN+Pz
-	 uMoWnbPiC9cSudy3b8yjXdX8d2Gi/2Mp9Ki2WR4Jysc8BoRqtQx/1sj0SSl+0jIu2g
-	 hmHk9lWd3vfopI+1u8tDQ2gK9Mhjm43NKdMHtVhY=
+	b=Hac/CrutAnhD2tI3BaL2zaZhCPMfKjwd4mkKcQqMooh+ZU9jmexb0f8QQKNoZ+Z8d
+	 1BdS+uourmGIisZRJu+oAcLQUhSMfLAcYB8qDv9cQ5KYx0EYB8r55/bSYFhK5oV/sO
+	 CKAdJ5jGRiJ3Xplw7MhV5zVYppQlVZVMSGn8Hnek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <akemnade@kernel.org>,
-	Alistair Francis <alistair@alistair23.me>,
-	Peng Fan <peng.fan@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/140] regulator: sy7636a: fix lifecycle of power good gpio
-Date: Wed, 17 Sep 2025 14:34:57 +0200
-Message-ID: <20250917123347.362397491@linuxfoundation.org>
+Subject: [PATCH 6.6 075/101] can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
+Date: Wed, 17 Sep 2025 14:34:58 +0200
+Message-ID: <20250917123338.650343553@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <akemnade@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit c05d0b32eebadc8be6e53196e99c64cf2bed1d99 ]
+[ Upstream commit 06e02da29f6f1a45fc07bd60c7eaf172dc21e334 ]
 
-Attach the power good gpio to the regulator device devres instead of the
-parent device to fix problems if probe is run multiple times
-(rmmod/insmod or some deferral).
+Since j1939_sk_bind() and j1939_sk_release() call j1939_local_ecu_put()
+when J1939_SOCK_BOUND was already set, but the error handling path for
+j1939_sk_bind() will not set J1939_SOCK_BOUND when j1939_local_ecu_get()
+fails, j1939_local_ecu_get() needs to undo priv->ents[sa].nusers++ when
+j1939_local_ecu_get() returns an error.
 
-Fixes: 8c485bedfb785 ("regulator: sy7636a: Initial commit")
-Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
-Reviewed-by: Alistair Francis <alistair@alistair23.me>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Message-ID: <20250906-sy7636-rsrc-v1-2-e2886a9763a7@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/e7f80046-4ff7-4ce2-8ad8-7c3c678a42c9@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/sy7636a-regulator.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/can/j1939/bus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/sy7636a-regulator.c b/drivers/regulator/sy7636a-regulator.c
-index d1e7ba1fb3e1a..27e3d939b7bb9 100644
---- a/drivers/regulator/sy7636a-regulator.c
-+++ b/drivers/regulator/sy7636a-regulator.c
-@@ -83,9 +83,11 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
- 	if (!regmap)
- 		return -EPROBE_DEFER;
+diff --git a/net/can/j1939/bus.c b/net/can/j1939/bus.c
+index 4866879016021..e0b966c2517cf 100644
+--- a/net/can/j1939/bus.c
++++ b/net/can/j1939/bus.c
+@@ -290,8 +290,11 @@ int j1939_local_ecu_get(struct j1939_priv *priv, name_t name, u8 sa)
+ 	if (!ecu)
+ 		ecu = j1939_ecu_create_locked(priv, name);
+ 	err = PTR_ERR_OR_ZERO(ecu);
+-	if (err)
++	if (err) {
++		if (j1939_address_is_unicast(sa))
++			priv->ents[sa].nusers--;
+ 		goto done;
++	}
  
--	gdp = devm_gpiod_get(pdev->dev.parent, "epd-pwr-good", GPIOD_IN);
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
-+
-+	gdp = devm_gpiod_get(&pdev->dev, "epd-pwr-good", GPIOD_IN);
- 	if (IS_ERR(gdp)) {
--		dev_err(pdev->dev.parent, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
-+		dev_err(&pdev->dev, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
- 		return PTR_ERR(gdp);
- 	}
- 
-@@ -105,7 +107,6 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
- 	}
- 
- 	config.dev = &pdev->dev;
--	config.dev->of_node = pdev->dev.parent->of_node;
- 	config.regmap = regmap;
- 
- 	rdev = devm_regulator_register(&pdev->dev, &desc, &config);
+ 	ecu->nusers++;
+ 	/* TODO: do we care if ecu->addr != sa? */
 -- 
 2.51.0
 
