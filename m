@@ -1,55 +1,70 @@
-Return-Path: <stable+bounces-180048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3ADB7E781
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03EF3B7E181
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 164A87A250C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B274F622784
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1AB31A81D;
-	Wed, 17 Sep 2025 12:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73CE2EC563;
+	Wed, 17 Sep 2025 12:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADGEJ/AB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWMHR+xc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C043E3016F8;
-	Wed, 17 Sep 2025 12:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A441E2BE622;
+	Wed, 17 Sep 2025 12:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113214; cv=none; b=Ee+xP+qe+H4L0Sx8QwxIM7Ami9ecgGSZIluBCUZXnzu3IOUU8YC3c/0Uutgxq+6GnO0vZ/wmZr5TEf1VGiZsmLjnEV1Atm4EEZx90/DVjVjU5oxOy61eGyp8WMAuCDOZd8X+a1JroXKgjd+O9e25GlfBPcfjlUpnjuvaLPlmgz8=
+	t=1758112798; cv=none; b=nmurbyFjgkWi3r0jzMWXnI47sw+guE1K0UmCHnwZ2BWkxIySrqQtA0ZyC9AKhVyPT1k3WWkGBGC32C3VeRT2rj068R33Vj4EesLUt+mI3lC3bwES6UPwGunWHBdZoJfQGPkUegK9A2ziCtOH8sfOL9lZw9IMYFz/w7NNhr63p7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113214; c=relaxed/simple;
-	bh=xy4RDdvfh68AwXx27hjLgDvko+0pzwtFjQTxewgfl/E=;
+	s=arc-20240116; t=1758112798; c=relaxed/simple;
+	bh=WX/QXgYMWhA3OVWfGOw3ii3dVCc9yNWDUsq219szXPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYpW1kTg/IdYnaarQd9OhJ3vDSoyw+wbIQSAc7K2/gDTYHY1DNAZoLE7bYZaW9A8jZz/zosQSgZqIY6lzJdKQb0jiFGkaNIu1XocCMbXQpYaTKTAvZXNIXzsBdPVJI0BcDTrGdF+PkjUTt8PsBKAPgdHf5ozcakO6DEvEQqtKYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADGEJ/AB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7C2C4CEF0;
-	Wed, 17 Sep 2025 12:46:54 +0000 (UTC)
+	 MIME-Version; b=NpW3CU90FBwZOHuJFuF6HmDbCyL7RsKuaMKd+hWmhiY7uAiTTx+xpKNxgsqbguJsLKXfeBjtIHwhpHZkOiLLY0MWcOzcnMnBGOUF7r6q8j4aD7F/kosAi6dx0xVrPX4qxA7ASDYGuooqgL+LcdFgJO2gwXFcEAO0jV10BQ7n1Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWMHR+xc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C4CC4CEF0;
+	Wed, 17 Sep 2025 12:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113214;
-	bh=xy4RDdvfh68AwXx27hjLgDvko+0pzwtFjQTxewgfl/E=;
+	s=korg; t=1758112798;
+	bh=WX/QXgYMWhA3OVWfGOw3ii3dVCc9yNWDUsq219szXPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADGEJ/ABA7pNPyyjAVFAjvADpZLhuB4IdcbzRP3edJAG7QCP5xVOASk7dP1vVAfCD
-	 4/pYJVjrWMp2DSFJ2pWf6eNpwLvspnIyJd1aDOAtsuGEvA48dAfAjgG04wfpHb+rAO
-	 /5iZ1NGk/nW8QfDCSKkJJk//Xy2Z84OCV2lJ1BI8=
+	b=pWMHR+xcAqjRkRz6EjZeBpLOJuODv6zXWyQHecCte90EGowlCvKdCO8EYca6Wey6y
+	 aiLf6MXkeM1yzpZZoTj43PfXRaUdFb2/yb6D1LJiBlAVW8LGfevCKOIhtN7g5lNPCS
+	 GDJOVgxS2Zab63sFc9MipZMUdg/TRSRPfA+CJIoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/140] ALSA: hda/realtek: Fix built-in mic assignment on ASUS VivoBook X515UA
+	Kyle Meyer <kyle.meyer@hpe.com>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Luck, Tony" <tony.luck@intel.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Russ Anderson <russ.anderson@hpe.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 080/189] mm/memory-failure: fix redundant updates for already poisoned pages
 Date: Wed, 17 Sep 2025 14:33:10 +0200
-Message-ID: <20250917123344.756968379@linuxfoundation.org>
+Message-ID: <20250917123353.821582158@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +76,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Kyle Meyer <kyle.meyer@hpe.com>
 
-[ Upstream commit 829ee558f3527fd602c6e2e9f270959d1de09fe0 ]
+commit 3be306cccdccede13e3cefd0c14e430cc2b7c9c7 upstream.
 
-ASUS VivoBook X515UA with PCI SSID 1043:106f had a default quirk
-pickup via pin table that applies ALC256_FIXUP_ASUS_MIC, but this adds
-a bogus built-in mic pin 0x13 enabled.  This was no big problem
-because the pin 0x13 was assigned as the secondary mic, but the recent
-fix made the entries sorted, hence this bogus pin appeared now as the
-primary input and it broke.
+Duplicate memory errors can be reported by multiple sources.
 
-For fixing the bug, put the right quirk entry for this device pointing
-to ALC256_FIXUP_ASUS_MIC_NO_PRESENCE.
+Passing an already poisoned page to action_result() causes issues:
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219897
-Link: https://patch.msgid.link/20250324153233.21195-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* The amount of hardware corrupted memory is incorrectly updated.
+* Per NUMA node MF stats are incorrectly updated.
+* Redundant "already poisoned" messages are printed.
+
+Avoid those issues by:
+
+* Skipping hardware corrupted memory updates for already poisoned pages.
+* Skipping per NUMA node MF stats updates for already poisoned pages.
+* Dropping redundant "already poisoned" messages.
+
+Make MF_MSG_ALREADY_POISONED consistent with other action_page_types and
+make calls to action_result() consistent for already poisoned normal pages
+and huge pages.
+
+Link: https://lkml.kernel.org/r/aLCiHMy12Ck3ouwC@hpe.com
+Fixes: b8b9488d50b7 ("mm/memory-failure: improve memory failure action_result messages")
+Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+Reviewed-by: Jiaqi Yan <jiaqiyan@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Kyle Meyer <kyle.meyer@hpe.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Russ Anderson <russ.anderson@hpe.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/memory-failure.c |   13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index a28a59926adad..eb0e404c17841 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10857,6 +10857,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x1043, 0x106f, "ASUS VivoBook X515UA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1074, "ASUS G614PH/PM/PP", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10a4, "ASUS TP3407SA", ALC287_FIXUP_TAS2781_I2C),
--- 
-2.51.0
-
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -950,7 +950,7 @@ static const char * const action_page_ty
+ 	[MF_MSG_BUDDY]			= "free buddy page",
+ 	[MF_MSG_DAX]			= "dax page",
+ 	[MF_MSG_UNSPLIT_THP]		= "unsplit thp",
+-	[MF_MSG_ALREADY_POISONED]	= "already poisoned",
++	[MF_MSG_ALREADY_POISONED]	= "already poisoned page",
+ 	[MF_MSG_UNKNOWN]		= "unknown page",
+ };
+ 
+@@ -1343,9 +1343,10 @@ static int action_result(unsigned long p
+ {
+ 	trace_memory_failure_event(pfn, type, result);
+ 
+-	num_poisoned_pages_inc(pfn);
+-
+-	update_per_node_mf_stats(pfn, result);
++	if (type != MF_MSG_ALREADY_POISONED) {
++		num_poisoned_pages_inc(pfn);
++		update_per_node_mf_stats(pfn, result);
++	}
+ 
+ 	pr_err("%#lx: recovery action for %s: %s\n",
+ 		pfn, action_page_types[type], action_name[result]);
+@@ -2088,12 +2089,11 @@ retry:
+ 		*hugetlb = 0;
+ 		return 0;
+ 	} else if (res == -EHWPOISON) {
+-		pr_err("%#lx: already hardware poisoned\n", pfn);
+ 		if (flags & MF_ACTION_REQUIRED) {
+ 			folio = page_folio(p);
+ 			res = kill_accessing_process(current, folio_pfn(folio), flags);
+-			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+ 		}
++		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+ 		return res;
+ 	} else if (res == -EBUSY) {
+ 		if (!(flags & MF_NO_RETRY)) {
+@@ -2279,7 +2279,6 @@ try_again:
+ 		goto unlock_mutex;
+ 
+ 	if (TestSetPageHWPoison(p)) {
+-		pr_err("%#lx: already hardware poisoned\n", pfn);
+ 		res = -EHWPOISON;
+ 		if (flags & MF_ACTION_REQUIRED)
+ 			res = kill_accessing_process(current, pfn, flags);
 
 
 
