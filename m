@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-180029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF29B7E603
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B96B7ECAB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02F451BC2A03
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6BB482496
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668DA2FBDFF;
-	Wed, 17 Sep 2025 12:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14225316183;
+	Wed, 17 Sep 2025 12:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pivlFraP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0Inwc6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241832F260C;
-	Wed, 17 Sep 2025 12:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4166316189;
+	Wed, 17 Sep 2025 12:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113153; cv=none; b=O76B/lLFytx0FBS2bTsEZ0IJqmoPKZvBE9/lxhsrVeNhypCFYdoEC+VSHclr7d7I79l3Cu24Uxb6HYvCjq5nTj0/97N8hRfGFHeb13ejCJZWoAHaFXIVEgvZ1ry9N1tkHgKrX/Uvqxu55/KGeZbM3xkgySQawb9+mPEHcudVp2Q=
+	t=1758113616; cv=none; b=t/LcCfhEO+SOcLlIXQ77FurErnYDUkZys0zanXJuWRkbA7vc3A5T7EHELm7Lg+OSXb2KVCJUUztDmZ2G36BdudXdrNgmv/lzTqz2qGKsLN7rpkbzGnGnIEHJdDYGOnfUMq9SDARQUK/88aLjyU9HamGAzJ9FeuH3rN2ySAD+RYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113153; c=relaxed/simple;
-	bh=s2iJ7Gn65jBcJCp5K9xcgwRk6xnRZXSlQ0CcqRkfeqI=;
+	s=arc-20240116; t=1758113616; c=relaxed/simple;
+	bh=zobPbxIR+5e/SuG4F13gFk04gGCurz+h+YivVRfJYO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmTuaIzry1e8GT4dS3Owwy07Msyo9QFPAOZO+Iz6Zy70sSugRqRz28UXPXCh1+9nA7COFoSy9QS4BPmyd+NZsL34duqEsFz4d3Rica7onB8eEU/ue+UYfAFO/FsEQ2N444fZgzFnYK/aRfsN3KohbAtvfa+V6i5UDLWWOP/tZYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pivlFraP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D819C4CEF0;
-	Wed, 17 Sep 2025 12:45:52 +0000 (UTC)
+	 MIME-Version; b=hDnIpsrs0yxGpxKJmY449OqTQj+yfXJCEt4RSLwE2vu2cQyRMhgVABc5CeZiYS+9patlJYREdc6bWifsHbzyuGYYwif3Ydpe2KJoYXBhN7yk2bVHKXG7+CZVvd2glMRIGZ4C49gFOZSoCnbGM9jS9FJFyIPqLLVhoJBhA6n7lS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0Inwc6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4204DC4CEF0;
+	Wed, 17 Sep 2025 12:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113153;
-	bh=s2iJ7Gn65jBcJCp5K9xcgwRk6xnRZXSlQ0CcqRkfeqI=;
+	s=korg; t=1758113616;
+	bh=zobPbxIR+5e/SuG4F13gFk04gGCurz+h+YivVRfJYO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pivlFraP8QmHHH3M/kavroSbYyyb+Woj7It5NqnZOcVYAQzALNaLPLNZKkuiWR5Zo
-	 Lr7lWGwIAk7ITrbc0OCJpT1+OWMRnhefgm50xyebUyimncW0vXC2IAvqnGw7m2WtdK
-	 9kA075F2nPVPpznhBmA4+0c/eS+LRvngj2zKN6Gc=
+	b=z0Inwc6jCpDFivVi6bhBdUVXbVIoL2VMM/LUncfKl4MBy9l3x2PA6cD1LMiOvN+Pz
+	 uMoWnbPiC9cSudy3b8yjXdX8d2Gi/2Mp9Ki2WR4Jysc8BoRqtQx/1sj0SSl+0jIu2g
+	 hmHk9lWd3vfopI+1u8tDQ2gK9Mhjm43NKdMHtVhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JC Kuo <jckuo@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.16 187/189] phy: tegra: xusb: fix device and OF node leak at probe
+	Andreas Kemnade <akemnade@kernel.org>,
+	Alistair Francis <alistair@alistair23.me>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 125/140] regulator: sy7636a: fix lifecycle of power good gpio
 Date: Wed, 17 Sep 2025 14:34:57 +0200
-Message-ID: <20250917123356.459501901@linuxfoundation.org>
+Message-ID: <20250917123347.362397491@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Andreas Kemnade <akemnade@kernel.org>
 
-commit bca065733afd1e3a89a02f05ffe14e966cd5f78e upstream.
+[ Upstream commit c05d0b32eebadc8be6e53196e99c64cf2bed1d99 ]
 
-Make sure to drop the references taken to the PMC OF node and device by
-of_parse_phandle() and of_find_device_by_node() during probe.
+Attach the power good gpio to the regulator device devres instead of the
+parent device to fix problems if probe is run multiple times
+(rmmod/insmod or some deferral).
 
-Note the holding a reference to the PMC device does not prevent the
-PMC regmap from going away (e.g. if the PMC driver is unbound) so there
-is no need to keep the reference.
-
-Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
-Cc: stable@vger.kernel.org	# 5.14
-Cc: JC Kuo <jckuo@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-2-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8c485bedfb785 ("regulator: sy7636a: Initial commit")
+Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+Reviewed-by: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Message-ID: <20250906-sy7636-rsrc-v1-2-e2886a9763a7@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb-tegra210.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/regulator/sy7636a-regulator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra210.c
-+++ b/drivers/phy/tegra/xusb-tegra210.c
-@@ -3164,18 +3164,22 @@ tegra210_xusb_padctl_probe(struct device
+diff --git a/drivers/regulator/sy7636a-regulator.c b/drivers/regulator/sy7636a-regulator.c
+index d1e7ba1fb3e1a..27e3d939b7bb9 100644
+--- a/drivers/regulator/sy7636a-regulator.c
++++ b/drivers/regulator/sy7636a-regulator.c
+@@ -83,9 +83,11 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
+ 	if (!regmap)
+ 		return -EPROBE_DEFER;
+ 
+-	gdp = devm_gpiod_get(pdev->dev.parent, "epd-pwr-good", GPIOD_IN);
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
++	gdp = devm_gpiod_get(&pdev->dev, "epd-pwr-good", GPIOD_IN);
+ 	if (IS_ERR(gdp)) {
+-		dev_err(pdev->dev.parent, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
++		dev_err(&pdev->dev, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
+ 		return PTR_ERR(gdp);
  	}
  
- 	pdev = of_find_device_by_node(np);
-+	of_node_put(np);
- 	if (!pdev) {
- 		dev_warn(dev, "PMC device is not available\n");
- 		goto out;
+@@ -105,7 +107,6 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
  	}
  
--	if (!platform_get_drvdata(pdev))
-+	if (!platform_get_drvdata(pdev)) {
-+		put_device(&pdev->dev);
- 		return ERR_PTR(-EPROBE_DEFER);
-+	}
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.regmap = regmap;
  
- 	padctl->regmap = dev_get_regmap(&pdev->dev, "usb_sleepwalk");
- 	if (!padctl->regmap)
- 		dev_info(dev, "failed to find PMC regmap\n");
- 
-+	put_device(&pdev->dev);
- out:
- 	return &padctl->base;
- }
+ 	rdev = devm_regulator_register(&pdev->dev, &desc, &config);
+-- 
+2.51.0
+
 
 
 
