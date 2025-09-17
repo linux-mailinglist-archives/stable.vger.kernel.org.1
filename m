@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F952B7F135
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5001B7EF31
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:07:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA8744A7CFF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:06:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF13F520566
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E5D1C4A0A;
-	Wed, 17 Sep 2025 13:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F3E31618D;
+	Wed, 17 Sep 2025 12:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpBp/oPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg5uhkjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EA4301712;
-	Wed, 17 Sep 2025 13:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B89288DA;
+	Wed, 17 Sep 2025 12:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114020; cv=none; b=pWT2LKMXlDpmWkhbCMvMFow3HlGSVsaGlCsTyaXYd+m1ys9f7fsoz0WUflTO/2RZr96h6Z4iBWIT1NiAehISrRhx2XhWuo/vT9Pd5nmnEzjviacE3fRCmQwmrD2cNGxrDbpL6Wf+CHTtNy2UD/Dz63lyxOaVj8ZVMlouUH7723A=
+	t=1758113818; cv=none; b=aaN7Q4HpuY9Eu9Gk47PR2l0cIEVtkkTa6/s2MVsamErAArdEKiH0j6GjTXbYzoMh9UaWTjetC4g1PNFnDzfu6Cs5ePOScNUETZZ9N5oJCfrlus2KXXrH0goHF0Txlyf/1D80l01Dyqz0CKkg2CiChUzSp8AL+Qk3P9MCPem1wgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114020; c=relaxed/simple;
-	bh=AhrhwMa38YCGoUatGp7dfW3YAeQhZe6Cf7Ykpd2sPaQ=;
+	s=arc-20240116; t=1758113818; c=relaxed/simple;
+	bh=VO6CZAcPZjW48sDobai5jMLynoV15jpuWAc6H/L4HDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/ufeRCuUPYVcB/BJEEv41OalIGuTcFRYU8r1n5GisEcg8FcnYCBCe4rh3JrIcFyNIRH/TrP5Xlo8nHkFhzbZ6a7ROu5SBosl5+IYeHcZT3M3f2IU6fmRiO3j0isQESFOFV+PxDtVBxqQpUqYejczebLmi6dMJPUsrd4YOC+qCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpBp/oPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E771C4CEF0;
-	Wed, 17 Sep 2025 13:00:20 +0000 (UTC)
+	 MIME-Version; b=r9cL3Fs5pV0gfMNYg3aSVwidkDnqfkwRwkQSet3idVZQ0GB/oe02WVtqlc2BqB7fhvKjAq8OZNdcb3hmBZkTSch0IpDXJYm4swJW2Kmch87rIyEQq9gHvAHADY8gb5VwuxxORuai3/EBAPFgalyJv3cl4NDGvAKgXo3pZrjjKAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qg5uhkjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A27C4CEF0;
+	Wed, 17 Sep 2025 12:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114020;
-	bh=AhrhwMa38YCGoUatGp7dfW3YAeQhZe6Cf7Ykpd2sPaQ=;
+	s=korg; t=1758113817;
+	bh=VO6CZAcPZjW48sDobai5jMLynoV15jpuWAc6H/L4HDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NpBp/oPeDQqlFHj2Pzb4hj58Kd5Px91Unlx7Jq6IulNz2PbeA3Si4qBNDeQLw3iWW
-	 8aGrDECTWh/z+u0jZJ3GEJv9yygmNTaLPIQXNUW53MHTwQKL+xZZHYS2Go1+DoHXqJ
-	 A8A2PBLgOR0xTosnYHg8VMm/RRqw45ioZvI2d4yo=
+	b=Qg5uhkjN6L+Ym4gYcdlJc8NBOoNa4Z54hkmTHddgm0zJVbAqB2LfBWTnGOyZlb76P
+	 6JKYURhzH773HXdrwxd2o7m0BqXH2XlzaqPbMkswLVicCoioeXq9I0Mx1JLBhmw8av
+	 ecYRXLX1eAJkySutLKMlUpDWQMfcVJR73DJQXc/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinpu Wang <jinpu.wang@ionos.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Subject: [PATCH 6.1 22/78] KVM: SVM: Set synthesized TSA CPUID flags
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 060/101] Input: i8042 - add TUXEDO InfinityBook Pro Gen10 AMD to i8042 quirk table
 Date: Wed, 17 Sep 2025 14:34:43 +0200
-Message-ID: <20250917123330.108366456@linuxfoundation.org>
+Message-ID: <20250917123338.294164803@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-Commit f3f9deccfc68a6b7c8c1cc51e902edba23d309d4 in the LTS tree.
+commit 1939a9fcb80353dd8b111aa1e79c691afbde08b4 upstream.
 
-VERW_CLEAR is supposed to be set only by the hypervisor to denote TSA
-mitigation support to a guest. SQ_NO and L1_NO are both synthesizable,
-and are going to be set by hw CPUID on future machines.
+Occasionally wakes up from suspend with missing input on the internal
+keyboard. Setting the quirks appears to fix the issue for this device as
+well.
 
-So keep the kvm_cpu_cap_init_kvm_defined() invocation *and* set them
-when synthesized.
-
-This fix is stable-only.
-
-Co-developed-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org> # 6.1.y
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250826142646.13516-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/input/serio/i8042-acpipnpio.h |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -770,10 +770,15 @@ void kvm_set_cpu_caps(void)
- 	if (cpu_feature_enabled(X86_FEATURE_SRSO_NO))
- 		kvm_cpu_cap_set(X86_FEATURE_SRSO_NO);
- 
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_VERW_CLEAR);
-+
- 	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
- 		F(TSA_SQ_NO) | F(TSA_L1_NO)
- 	);
- 
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_SQ_NO);
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_L1_NO);
-+
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1155,6 +1155,20 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
  	/*
- 	 * Hide RDTSCP and RDPID if either feature is reported as supported but
- 	 * probing MSR_TSC_AUX failed.  This is purely a sanity check and
+ 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
+ 	 * after suspend fixable with the forcenorestore quirk.
 
 
 
