@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-180187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A18B7ED4E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784CAB7E300
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2B01BC2897
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:58:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28432169441
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42753DAC02;
-	Wed, 17 Sep 2025 12:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BA52ECD0E;
+	Wed, 17 Sep 2025 12:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJDb2eAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DK4FvDuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9265336998C;
-	Wed, 17 Sep 2025 12:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3AB29B795;
+	Wed, 17 Sep 2025 12:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113655; cv=none; b=kL3JrMfJKLT09n7dIsLUxnH05mF0vS2Z4zEmpZ00zcxIDDPhQVCRAwgBz/8awIJ0PV7ubVoecsBaWE1bsCVVLo6akw0pkV8xm+Kfth6NBiMdx94YlCOk9LOvu2jUkj/TrP5lXN6L7Q/kuyP4sy/m8bX58PlLjIHgmty/vLC8LJQ=
+	t=1758112957; cv=none; b=YsHns8jpHeGpjYsbvF92q6NwZtDMDhC6/a51nEBBanLZfPY0uC0JI6W2PtBU+NEhiUBLYpoz3COn0nGAiLuHbNihg8Srg6OpFBEbP+S8kXMeJZyqhvqggGFX/mHKQBHfYe0a6JmNE6Onp0ldi+Elo/R9EPSgPSvKZ4gJtq/Yy5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113655; c=relaxed/simple;
-	bh=5oU/XkthF9zIRS9TKbK1tky24rjccHutCepCcOQy8PE=;
+	s=arc-20240116; t=1758112957; c=relaxed/simple;
+	bh=78bEsefXFXYkAGYJlFSn+fpve5onxg9EoyyraJp9wgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7dol41wqgWR9IEJf6oKSF95CCxofXmy31/xHLv+4Gd12Gkd8r+TZEbfSIzg9Ys8XuZT2Ol9/sFtgK6Y5UoKZ33A+cUclzOaZrVM2gWkwKmK2ebbxkoODP5lInBWG9bTz+Y7k530+rI41ohaOaNRPSykd585QvD7uPaAGv6Rg6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJDb2eAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4DBC4CEF5;
-	Wed, 17 Sep 2025 12:54:14 +0000 (UTC)
+	 MIME-Version; b=SjgpewGm8PcZrTpgU0e6JTUFEylHEIMbdmdLOhbNqwp7zgMPVfDX7uV2yBK8ecNZQI59/BNje3ipH3xAgkJDeUBBcsh9NToDNxKtbadc1M6znrU+NqWdTW/jkN6ySF3dElN3XwmAloI929eyBNEbs4llbzu0ArRUis2WFD5s6ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DK4FvDuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2C5C4CEF0;
+	Wed, 17 Sep 2025 12:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113655;
-	bh=5oU/XkthF9zIRS9TKbK1tky24rjccHutCepCcOQy8PE=;
+	s=korg; t=1758112957;
+	bh=78bEsefXFXYkAGYJlFSn+fpve5onxg9EoyyraJp9wgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJDb2eAWLk1YDHdMLeK6YlO8/Ifz9MZSCt3OGXjrKD2r9HQWNGIYgLeuxfv/KzWZ6
-	 u/3tD3E4XtyKr+Qo59MsxJC3eHi59YhfawCWiPCT5omjVZVTqij4au5ZKbBuJSSO3r
-	 BHoDAJ6MZXVIgLWCbxendUvApT7ZADd/uEydkTC0=
+	b=DK4FvDuoof+7Cjajr8/Yx1s1nnxa4OFu+ANkUJTawSU0WWUbtNw6OhqTkiTkd8hqj
+	 3u5Wx+1wnkl9SqFTFJX5ATZi/5buoYEhtvq7FTPJrIp6JaerLUUFkVtWB/jN2/PYJx
+	 p6K4ko7qsEKGFY241Ikl7mpbxbeV5ND2JzI4kP4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Richard Leitner <richard.leitner@skidata.com>,
+	Simon Horman <horms@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/101] NFSv4: Clear the NFS_CAP_XATTR flag if not supported by the server
-Date: Wed, 17 Sep 2025 14:33:56 +0200
-Message-ID: <20250917123337.186883195@linuxfoundation.org>
+Subject: [PATCH 6.16 127/189] net: fec: Fix possible NPD in fec_enet_phy_reset_after_clk_enable()
+Date: Wed, 17 Sep 2025 14:33:57 +0200
+Message-ID: <20250917123354.963294454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +66,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 4fb2b677fc1f70ee642c0beecc3cabf226ef5707 ]
+[ Upstream commit 03e79de4608bdd48ad6eec272e196124cefaf798 ]
 
-nfs_server_set_fsinfo() shouldn't assume that NFS_CAP_XATTR is unset
-on entry to the function.
+The function of_phy_find_device may return NULL, so we need to take
+care before dereferencing phy_dev.
 
-Fixes: b78ef845c35d ("NFSv4.2: query the server for extended attribute support")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 64a632da538a ("net: fec: Fix phy_device lookup for phy_reset_after_clk_enable()")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Cc: Richard Leitner <richard.leitner@skidata.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250904091334.53965-1-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index cc764da581c43..1bcdaee7e856f 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -873,6 +873,8 @@ static void nfs_server_set_fsinfo(struct nfs_server *server,
- 
- 	if (fsinfo->xattr_support)
- 		server->caps |= NFS_CAP_XATTR;
-+	else
-+		server->caps &= ~NFS_CAP_XATTR;
- #endif
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 651b73163b6ee..5f15f42070c53 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2358,7 +2358,8 @@ static void fec_enet_phy_reset_after_clk_enable(struct net_device *ndev)
+ 		 */
+ 		phy_dev = of_phy_find_device(fep->phy_node);
+ 		phy_reset_after_clk_enable(phy_dev);
+-		put_device(&phy_dev->mdio.dev);
++		if (phy_dev)
++			put_device(&phy_dev->mdio.dev);
+ 	}
  }
  
 -- 
