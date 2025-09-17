@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-179950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A7DB7E2BF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B40F6B7E8FD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B252C177789
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D638623088
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172BE1F151C;
-	Wed, 17 Sep 2025 12:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31BF3233F4;
+	Wed, 17 Sep 2025 12:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mf3sIGo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfE+dEiD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77C217BB21;
-	Wed, 17 Sep 2025 12:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8A032340B;
+	Wed, 17 Sep 2025 12:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112904; cv=none; b=YFcUUQVZ5yS9tfpOQwVO61yhJGFZAYymX5ks+4ctwTypDWEroih0DN+0gT2c8kcX6SKtt8dURq7P7KQ/KYlFgh2T1Pv3igucuTu8T8/PPJRITbeSZY7ilIMGU1Q6qed8aXstUcIbq4nQHH78PMsxfj/LZR6hjDSqq7CwHfMYXs0=
+	t=1758113321; cv=none; b=XuiJtW0UP6w1DxSVcX2px/1LfFS7N3DMDXFXO6xPnTBqou+tJrZDUb2AY9a0PR+RELTC1hRy5t11mRLjKyDvnTRfdZGF2hJSOjK6Cj7fS9KuIq0BZqamg5igp6l7JmKsCXZHFVnD6NUQgQBHlZxJ6jFTv2fzCdjHSS6y27B095c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112904; c=relaxed/simple;
-	bh=nReBixn6Tmav4gkMi/fx0PRuu+W2Q8mdHk1JimIg5lY=;
+	s=arc-20240116; t=1758113321; c=relaxed/simple;
+	bh=gym7gca1rCKUk2qjKw3/C+7EvcYJk6j+nHjnzHVH6gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaKfTCyVSIPfqnwXH8ZOZnR6EU/vmtCSf8LoDQVnZUjpvCgVwVc1VYdj0i0pz9ZICQB1+9H8LFbXJGYN5nZ87q/K5UZIW+daqiH9PGkT8iPX9nJHH+btNEAiNGLn6Z76sJcWaWiAhJsf7/r92F7yLphGkK6BJlReLquVq871UH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mf3sIGo6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E78BC4CEF0;
-	Wed, 17 Sep 2025 12:41:43 +0000 (UTC)
+	 MIME-Version; b=bqBvICDA3iRG7wcsxDzqr5GWsEcI4taJ+EIIoqFJUliWt3ky5+EymrqQ7oApnYMztXe7k1lKbb5wy0Sglxxe2KuMuv5Q3kdZNQtxWGc+Mc/K9U5Ds/MY4tNVH04P1GJv3KJRvn5z8SQmU+PZkLeakuaI6DDTqXHhXaBv0hf/49c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfE+dEiD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E56C4CEF0;
+	Wed, 17 Sep 2025 12:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112904;
-	bh=nReBixn6Tmav4gkMi/fx0PRuu+W2Q8mdHk1JimIg5lY=;
+	s=korg; t=1758113321;
+	bh=gym7gca1rCKUk2qjKw3/C+7EvcYJk6j+nHjnzHVH6gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mf3sIGo6/yrk02md5VVXuDcq+VdwfsmFllK749Fvy14OrbTBRYHh80JEWx8vj1+FO
-	 e63VLt83ajMPGdFg+MDgVVL/xG/A9SSb+uvPIcF5H90p68xZlc8NaPe+cMssW/2pK2
-	 O64qTYFh9a2Vdk74sYA15hNkuCEDc7X7RpbpOQ/k=
+	b=QfE+dEiD/ynbf7iQLQ0Tzp3BxBqUIzHB+0Alfh+tKd93oF8xYmaSYs9FKXmEbG/H/
+	 eU+U1AOb9b1GZ+ESuobk9re3gu3zzDH0QUgE57yxcE9PQANp7HAqeT+tlaAWELRD+g
+	 tww5/x/ZOsXe9lFoYkotv6g0KQgAQBPQP6d6Bvs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Zagorodnikov <xglooom@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Pratap Nirujogi <pratap.nirujogi@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 112/189] drm/amd/amdgpu: Declare isp firmware binary file
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 050/140] mptcp: sockopt: make sync_socket_options propagate SOCK_KEEPOPEN
 Date: Wed, 17 Sep 2025 14:33:42 +0200
-Message-ID: <20250917123354.604497694@linuxfoundation.org>
+Message-ID: <20250917123345.530142069@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratap Nirujogi <pratap.nirujogi@amd.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-commit 857ccfc19f9be1269716f3d681650c1bd149a656 upstream.
+commit 648de37416b301f046f62f1b65715c7fa8ebaa67 upstream.
 
-Declare isp firmware file isp_4_1_1.bin required by isp4.1.1 device.
+Users reported a scenario where MPTCP connections that were configured
+with SO_KEEPALIVE prior to connect would fail to enable their keepalives
+if MTPCP fell back to TCP mode.
 
-Suggested-by: Alexey Zagorodnikov <xglooom@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Pratap Nirujogi <pratap.nirujogi@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d97b74a833eba1f4f69f67198fd98ef036c0e5f9)
+After investigating, this affects keepalives for any connection where
+sync_socket_options is called on a socket that is in the closed or
+listening state.  Joins are handled properly. For connects,
+sync_socket_options is called when the socket is still in the closed
+state.  The tcp_set_keepalive() function does not act on sockets that
+are closed or listening, hence keepalive is not immediately enabled.
+Since the SO_KEEPOPEN flag is absent, it is not enabled later in the
+connect sequence via tcp_finish_connect.  Setting the keepalive via
+sockopt after connect does work, but would not address any subsequently
+created flows.
+
+Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on the
+subflow when calling sync_socket_options.
+
+The fix was valdidated both by using tcpdump to observe keepalive
+packets not being sent before the fix, and being sent after the fix.  It
+was also possible to observe via ss that the keepalive timer was not
+enabled on these sockets before the fix, but was enabled afterwards.
+
+Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
 Cc: stable@vger.kernel.org
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/aL8dYfPZrwedCIh9@templeofstupid.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/sockopt.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/isp_v4_1_1.c
-@@ -29,6 +29,8 @@
- #include "amdgpu.h"
- #include "isp_v4_1_1.h"
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1508,13 +1508,12 @@ static void sync_socket_options(struct m
+ {
+ 	static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
+ 	struct sock *sk = (struct sock *)msk;
++	bool keep_open;
  
-+MODULE_FIRMWARE("amdgpu/isp_4_1_1.bin");
-+
- static const unsigned int isp_4_1_1_int_srcid[MAX_ISP411_INT_SRC] = {
- 	ISP_4_1__SRCID__ISP_RINGBUFFER_WPT9,
- 	ISP_4_1__SRCID__ISP_RINGBUFFER_WPT10,
+-	if (ssk->sk_prot->keepalive) {
+-		if (sock_flag(sk, SOCK_KEEPOPEN))
+-			ssk->sk_prot->keepalive(ssk, 1);
+-		else
+-			ssk->sk_prot->keepalive(ssk, 0);
+-	}
++	keep_open = sock_flag(sk, SOCK_KEEPOPEN);
++	if (ssk->sk_prot->keepalive)
++		ssk->sk_prot->keepalive(ssk, keep_open);
++	sock_valbool_flag(ssk, SOCK_KEEPOPEN, keep_open);
+ 
+ 	ssk->sk_priority = sk->sk_priority;
+ 	ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
 
 
 
