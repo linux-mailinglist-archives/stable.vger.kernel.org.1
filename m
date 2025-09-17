@@ -1,119 +1,101 @@
-Return-Path: <stable+bounces-180448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F2FB81C17
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 22:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D794B81CFB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 22:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7718E7B99D6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 20:26:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB9847BC4C5
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 20:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E14629BD88;
-	Wed, 17 Sep 2025 20:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AC62C0F92;
+	Wed, 17 Sep 2025 20:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="agoz5p2l"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="NNss7U4D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3331A9F86
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 20:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E635B34BA47;
+	Wed, 17 Sep 2025 20:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758140877; cv=none; b=dkwqTaqMJpwBRKjBmYO5xlQCwsSPBArqOyJtakZ4ooHTcJiRdjjCb/fnrwLSiosMu8aL6pB02lHxylefzW0nkD51LXULiJFltYEVvKaBBV7rHAp0uGnP0JgAYl/CzSwRUm/YT4AFLp1tn7pqwVWwPDnuqz7ewHWgbanzn/jvM1E=
+	t=1758141724; cv=none; b=nM0OcTMaEhYKwT2y1PHHq9I7zteg3KRLZ8zIrJs7jSRBvJxab05gUGC35CQXiLxWCDS5m3PfU5WWR9AEmZdtPWKrfeQWkwZz+mHfKn/RRV7SmOoPq/J7xMHHeOmzBTeAurwdms1cSDG0V5KoZnE92tsV3Jc8I2j78F6W5pEbh0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758140877; c=relaxed/simple;
-	bh=7ftGvN/R/Ps0GPIX85RpurbPLiXS1I3fprN0bjaLYGU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fC0utrr9Mgrqe3yC1t3VauA4f8ncoSWiHfVXwMnmIQ1WpWJ4WelZ5eqqAyAksKr3+wbC8uBA0wh3TDVRK02kO7cvuid0ZdGrtH54efJIcU7QSsLlzAwb0r1u3v/RFlvotr3DBsOHnfmMfe1UctLO/BQ1iiJktiftfsmgEAcKkSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=agoz5p2l; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b04770a25f2so34357266b.2
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 13:27:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1758140874; x=1758745674; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z4mlHJ7N2GtjpEnD9iNY8gv7p0x+AwcaIWO1wg2Altw=;
-        b=agoz5p2lO+XoTPQ7Zg4tde1jUMGrm1CG/PinADYgfLY/uup0E54BFjrUKl179+uZul
-         vCZCD5S/b1zLgFYMMl1rZnMR5D92TmfZGfhoOxuHyN19OBKicPHS/vFusG+MbBR8Lctt
-         Yb56njz0jtkPxVtWEtG2EErvFTneR1bsyTlXc20Cnw2DlsqqIAUTBTrMPIjze56qtkcD
-         gbtx5vRdK2w1k51QBJP6q05jQxhl2Vk5grH0M5RGL5+eJTbQuCstt95+CL9hp/hb8s5V
-         aFGUnneQk2rSJIr3YREy+zgPRyg/fceIh0hvup4/HPfUF7gJq4Fu28L2sPa2cEeUNr7B
-         BDXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758140874; x=1758745674;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z4mlHJ7N2GtjpEnD9iNY8gv7p0x+AwcaIWO1wg2Altw=;
-        b=oFDcR4BZtzruFSgpqNzVK32BSuPDDQxY0EIH5jFt8Nbp4RNFNw55VjzZX8hDyqK/gP
-         FR5TO2CUdZ2gTjz25Qbly4yiU7WEHVC2y1SdMNmR3oyiXIB2ziys9JQ5Om1JRxJ6WuwO
-         RVHg2D+wIzAD9cDmS2dy3MUU/MQTxWlGBJgbKpfZ3A34ZmERpr32/zV4o0Rs8uOw/m+m
-         CuW/H5C56v49pGKlfPNRJbP5WhIKMwCnpsetgjRk3YPVrMy40c9ahaKQ8cZBi0uG2BxF
-         1ECegb/vOXM9sUS21eomuE25aquV0TjabZSu8/HQlWvSvF5sJJzRSe/5KyuU3DBpdLco
-         qQHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUifFDzwAXZjeXFBHi+Qr9Vnv/iA39ZnyJQKUHFgBtjFI3gJ1BhNgVey3wLY9FZTKqJrYCj+RE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBah0QL+9p3niZ/uxjCfIFUo3d8I6l7QTO41KAdUlM2yoKWkpi
-	Qt3m6MVvVgscWUrdHKOcMt6+Z8jgyYse31mMEYRsLGkyXyV8Rh26Dx25DEoXRA29A2uCYSPZpqC
-	suOnoqlUXTLQSTcCx0YbfAn3SnWGYjoVcaiDrexurzg==
-X-Gm-Gg: ASbGnctoygJ89T+sImgLOlAXC+YIWMd7RoQkzdx/7n0I4VUC0Fbc9Shy1qJq8WvWFoJ
-	VlnUQWG6PHVuUZYDP0i3HfSuasTA/vaibLAFuYfD8ghC1MGPbd7XLV40i5k+OtkbE4MrNdO+u0V
-	vSbSLiRuafJABi5kVcv4zJvJLLW9RxsCV8vhCj27QZ7S3bljKljSgkv2SQiKXctf7PYAIT+S1v3
-	9HpOaCBphpFmMOrEPszn19IRDMJgdU1LbrsWEP5maPYShernSQ1cs4=
-X-Google-Smtp-Source: AGHT+IHTHtpXLrzOlNF8ItBS1Dao3rHs8rUuADCH4WTPP8QnLumlzZRuwQZByHIaY7Yr6edfpyVLQ1M4x0U8xNNPnIY=
-X-Received: by 2002:a17:907:7b8c:b0:b04:6338:c95a with SMTP id
- a640c23a62f3a-b1bbc5490a6mr373843166b.45.1758140873916; Wed, 17 Sep 2025
- 13:27:53 -0700 (PDT)
+	s=arc-20240116; t=1758141724; c=relaxed/simple;
+	bh=GkCmDPW/1syrsYw1G+YvayDwOfOwzuCS/5C5ZTGXcbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DDWGR9Pr+G9Xn5BsuUGv2RuKJlkBf8xnuveUYJnZnKRz/+INDxpRmJUWOQgyO1HXMpaQauarnnTvDAW4jCDAABNFirizmUuZhIp9J/76ohx/8etj/MIAMnjkHiuvcqVPv2rYJdPNdUaMGPpY5VT41uC357sRvkYygml91n/j8SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=NNss7U4D; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=rNKB4VtExzuPbc4Hd37NwogNpAaP97VYa9OnljT/b9E=; b=NNss7U4DEBakFnvQygITpcjDWe
+	12Ciy5WVlrHsRsn5cI32Mba/U4Z9Rbntizwj0kkYXgGSWcLQo6+zchYqjpsrAzdczp09xuT7oolf5
+	gzkhmdrW/Yr2LXKjEQtC+uQ+PtHtZtfk7RDX22uyyNpyYLAodm2UZiC92b2GJ9STuuZ9D7z+dlpnz
+	umGb7+gGwvjPzi92nuT08LPP/oL+1m1/PoUwoWcq6mhCtWh11QcB+i9H6YnIED7zLvkIpmkI1RFwG
+	dkzqPG7hRkICMHY57abE/CYGb7BfvsN7WRXgoQ4CjgRRd8OicK9TQtwfz0uXZ7nSGZcc77IUGIjjD
+	ifEixOGg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uyyyW-000000084Iv-1L50;
+	Wed, 17 Sep 2025 20:42:00 +0000
+Date: Wed, 17 Sep 2025 21:42:00 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Jakub Acs <acsjakub@amazon.de>,
+	linux-unionfs@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH] ovl: check before dereferencing s_root field
+Message-ID: <20250917204200.GB39973@ZenIV>
+References: <20250915101510.7994-1-acsjakub@amazon.de>
+ <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
+ <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
+ <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
+ <gdovf4egsaqighoig3xg4r2ddwthk2rujenkloqep5kdub75d4@7wkvfnp4xlxx>
+ <CAOQ4uxhOMcaVupVVGXV2Srz_pAG+BzDc9Gb4hFdwKUtk45QypQ@mail.gmail.com>
+ <scmyycf2trich22v25s6gpe3ib6ejawflwf76znxg7sedqablp@ejfycd34xvpa>
+ <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250917135907.2218073-1-max.kellermann@ionos.com>
- <20250917202033.GY39973@ZenIV> <CAKPOu+8eEQ6VjTHamxZRgdUM8E7z_yd3buK2jvCiG1m3k-x_0A@mail.gmail.com>
-In-Reply-To: <CAKPOu+8eEQ6VjTHamxZRgdUM8E7z_yd3buK2jvCiG1m3k-x_0A@mail.gmail.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Wed, 17 Sep 2025 22:27:42 +0200
-X-Gm-Features: AS18NWD_SzRUSSGY7GiasnnPbKogXv5-_s8RWyt66I7bKnW_Disajb-Bt-pl0Fc
-Message-ID: <CAKPOu+8vf5DbR=cJ5dArut=QamTu-EdpJVta_Dsk+dQDpY68UQ@mail.gmail.com>
-Subject: Re: [PATCH v2] ceph: fix deadlock bugs by making iput() calls asynchronous
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: slava.dubeyko@ibm.com, xiubli@redhat.com, idryomov@gmail.com, 
-	amarkuze@redhat.com, ceph-devel@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Mateusz Guzik <mjguzik@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Wed, Sep 17, 2025 at 10:25=E2=80=AFPM Max Kellermann
-<max.kellermann@ionos.com> wrote:
->
-> On Wed, Sep 17, 2025 at 10:20=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk=
-> wrote:
-> >
-> > On Wed, Sep 17, 2025 at 03:59:07PM +0200, Max Kellermann wrote:
-> >
-> > > After advice from Mateusz Guzik, I decided to do the latter.  The
-> > > implementation is simple because it piggybacks on the existing
-> > > work_struct for ceph_queue_inode_work() - ceph_inode_work() calls
-> > > iput() at the end which means we can donate the last reference to it.
-> > >
-> > > This patch adds ceph_iput_async() and converts lots of iput() calls t=
-o
-> > > it - at least those that may come through writeback and the messenger=
-.
-> >
-> > What would force those delayed calls through at fs shutdown time?
->
-> I was wondering the same a few days ago, but found no code to enforce
-> wait for work completion during shutdown
+On Wed, Sep 17, 2025 at 01:07:45PM +0200, Amir Goldstein wrote:
 
-What about flush_fs_workqueues() in fs/ceph/super.c? Is this what
-you're looking for, Al?
+> diff --git a/fs/dcache.c b/fs/dcache.c
+> index 60046ae23d514..8c9d0d6bb0045 100644
+> --- a/fs/dcache.c
+> +++ b/fs/dcache.c
+> @@ -1999,10 +1999,12 @@ struct dentry *d_make_root(struct inode *root_inode)
+> 
+>         if (root_inode) {
+>                 res = d_alloc_anon(root_inode->i_sb);
+> -               if (res)
+> +               if (res) {
+> +                       root_inode->i_opflags |= IOP_ROOT;
+>                         d_instantiate(res, root_inode);
+
+Umm...  Not a good idea - if nothing else, root may end up
+being attached someplace (normal with nfs, for example).
+
+But more fundamentally, once we are into ->kill_sb(), let alone
+generic_shutdown_super(), nobody should be playing silly buggers
+with the filesystem.  Sure, RCU accesses are possible, but messing
+around with fhandles?  ->s_root is not the only thing that might
+be no longer there.
+
+What the fuck is fsnotify playing at?
 
