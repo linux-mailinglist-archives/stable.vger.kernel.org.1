@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-180280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E204B7F16B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C765B7F1F6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D9E2A7AB1
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C095586B86
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6262B33593C;
-	Wed, 17 Sep 2025 12:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB7E3195F7;
+	Wed, 17 Sep 2025 13:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loy5mlzy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATMFdKRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DACA33593A;
-	Wed, 17 Sep 2025 12:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC3133C75C;
+	Wed, 17 Sep 2025 13:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113954; cv=none; b=BQP0sZok4qbhQ5BLzFBZg8+AwKLwel1rQjMtGjSYds+XBy4GPeSfJGX8IkSOV5MDFcpkBOQj16hCBwwBirjOUFvXaNqHJSqP9phkduBcFxqygH5nJWBpC/dqrMnEm1xsQhc/FldHflzM48QSwZDlvVMt7yXLmC4G6CrP3MtW8KU=
+	t=1758114204; cv=none; b=tTFaQTRy/lxcvdt8OEf6IGJc6gC35g60+lxmAU5xgX1lbyQQqOC6TsuKIidg48FqpXR2fjLN6DDYGp59ckWlA9c4GKDJRVPkJxzOHDX0ZIShyXJv/C9liEI/mD5CAmi3ZtjeZCXTLTVffsOhFkkCwKmfYHgCKe8B0E5mCI2ptoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113954; c=relaxed/simple;
-	bh=1zUy/tod0LFUZL3xqafKboo77fqMni8UEXcZgt5IzrI=;
+	s=arc-20240116; t=1758114204; c=relaxed/simple;
+	bh=X3f9ruGyPDpU55htK2x8aLLhyfjh4wCDthEB1bHOzA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBllxiMv8SmUnE2rrBLM88mopnI9qKHJBPLvRpw7gHKOUs95ahMCPaz/CQ8LpY4uGA0unVc4WcS8Ubn1wc+CmIAY3hLWz9I/zulJmSzcEJthkagKzzc7dhRrGHhMGwW4gVbltTmOcPoUZ7jCkq1PVxjaJvP0f46WUkLadg5t94E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loy5mlzy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9A1C4CEF0;
-	Wed, 17 Sep 2025 12:59:13 +0000 (UTC)
+	 MIME-Version; b=Igm2KdKWLXg9idYsIMGWsWXJpsbbbEDfLlFZl/SY8CzrfMLF6j5Cg2O3WQk3+SZuxmVnDMij0BlnL7P0O5psaY85DbBqXzEMaCBc/Ht7GQiQojZkin8WQe6DTD9PaoPug6lG2tDn3ZwJBuwNiiy4vAX/5TGl6pRCOLVqrJhDOUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATMFdKRU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B57BC4CEF5;
+	Wed, 17 Sep 2025 13:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113954;
-	bh=1zUy/tod0LFUZL3xqafKboo77fqMni8UEXcZgt5IzrI=;
+	s=korg; t=1758114202;
+	bh=X3f9ruGyPDpU55htK2x8aLLhyfjh4wCDthEB1bHOzA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=loy5mlzyJNrwQ4QPchN/RHfGiQ8wrFjy35eNIw2enT4C2kfuFnCqKGBI70E/ni30C
-	 8ko8E2XBgKPwHMjU3/jSb/9AekHOPNG8i5vxcAvlb8Bxz8ZQ3wD2AGDPHeJYFcKbKn
-	 c2Oe4kB3vdr4Wp1augzICocZqYG6ZUcIswiVj05I=
+	b=ATMFdKRUPX48B+6pYnMpfrwh2ztXXZ/qzhhiZDOr1zHIig97mBQzi84+GQLhslEjt
+	 WGcXuJ13yJ0xumVMa6x+qquzIrocouMXAa2990JpMhZpGD/i7vJjzRhyxNSWUAvCEv
+	 C8ZaSUH4NAo60KuY04py8B+ia3Xv48k/xHj+2NY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/101] tunnels: reset the GSO metadata before reusing the skb
+	Florian Weimer <fweimer@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.1 32/78] fuse: prevent overflow in copy_file_range return value
 Date: Wed, 17 Sep 2025 14:34:53 +0200
-Message-ID: <20250917123338.532955793@linuxfoundation.org>
+Message-ID: <20250917123330.347159821@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit e3c674db356c4303804b2415e7c2b11776cdd8c3 ]
+commit 1e08938c3694f707bb165535df352ac97a8c75c9 upstream.
 
-If a GSO skb is sent through a Geneve tunnel and if Geneve options are
-added, the split GSO skb might not fit in the MTU anymore and an ICMP
-frag needed packet can be generated. In such case the ICMP packet might
-go through the segmentation logic (and dropped) later if it reaches a
-path were the GSO status is checked and segmentation is required.
+The FUSE protocol uses struct fuse_write_out to convey the return value of
+copy_file_range, which is restricted to uint32_t.  But the COPY_FILE_RANGE
+interface supports a 64-bit size copies.
 
-This is especially true when an OvS bridge is used with a Geneve tunnel
-attached to it. The following set of actions could lead to the ICMP
-packet being wrongfully segmented:
+Currently the number of bytes copied is silently truncated to 32-bit, which
+may result in poor performance or even failure to copy in case of
+truncation to zero.
 
-1. An skb is constructed by the TCP layer (e.g. gso_type SKB_GSO_TCPV4,
-   segs >= 2).
-
-2. The skb hits the OvS bridge where Geneve options are added by an OvS
-   action before being sent through the tunnel.
-
-3. When the skb is xmited in the tunnel, the split skb does not fit
-   anymore in the MTU and iptunnel_pmtud_build_icmp is called to
-   generate an ICMP fragmentation needed packet. This is done by reusing
-   the original (GSO!) skb. The GSO metadata is not cleared.
-
-4. The ICMP packet being sent back hits the OvS bridge again and because
-   skb_is_gso returns true, it goes through queue_gso_packets...
-
-5. ...where __skb_gso_segment is called. The skb is then dropped.
-
-6. Note that in the above example on re-transmission the skb won't be a
-   GSO one as it would be segmented (len > MSS) and the ICMP packet
-   should go through.
-
-Fix this by resetting the GSO information before reusing an skb in
-iptunnel_pmtud_build_icmp and iptunnel_pmtud_build_icmpv6.
-
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Reported-by: Adrian Moreno <amorenoz@redhat.com>
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20250904125351.159740-1-atenart@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Florian Weimer <fweimer@redhat.com>
+Closes: https://lore.kernel.org/all/lhuh5ynl8z5.fsf@oldenburg.str.redhat.com/
+Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
+Cc: <stable@vger.kernel.org> # v4.20
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_tunnel_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/fuse/file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index deb08cab44640..75e3d7501752d 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -203,6 +203,9 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
- 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct iphdr)))
- 		return -EINVAL;
- 
-+	if (skb_is_gso(skb))
-+		skb_gso_reset(skb);
-+
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
- 	skb_reset_network_header(skb);
-@@ -297,6 +300,9 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct ipv6hdr)))
- 		return -EINVAL;
- 
-+	if (skb_is_gso(skb))
-+		skb_gso_reset(skb);
-+
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
- 	skb_reset_network_header(skb);
--- 
-2.51.0
-
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -3103,7 +3103,7 @@ static ssize_t __fuse_copy_file_range(st
+ 		.nodeid_out = ff_out->nodeid,
+ 		.fh_out = ff_out->fh,
+ 		.off_out = pos_out,
+-		.len = len,
++		.len = min_t(size_t, len, UINT_MAX & PAGE_MASK),
+ 		.flags = flags
+ 	};
+ 	struct fuse_write_out outarg;
 
 
 
