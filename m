@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351BEB7EFB8
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DF5B7EC87
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D211C079D0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:03:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B0914A2C32
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DADB3195F0;
-	Wed, 17 Sep 2025 12:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3083285073;
+	Wed, 17 Sep 2025 12:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BJtVxQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cy+MEHTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7BC3195E5;
-	Wed, 17 Sep 2025 12:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A035A330D39;
+	Wed, 17 Sep 2025 12:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113886; cv=none; b=ndDEpi3Pz1G3a5YtDQ96shk98P/PdsyJa24yUqn8wCZeu0ctyCY6RvnZtUqAy/G0ZnfKrMSxJ1uwOzoubMCjvplAmWnSpnefngEP4lMre2rqGS6qrMSfyge7YoV75DHhL/Il1ERyHkAPxVhVZgpK1+JbSTl9KBHZYL/LDvDXN6c=
+	t=1758113594; cv=none; b=LOVN6TG9Vp7/XydvyNaSTiSlpyGk8KlnpPHpmwKph4e+VF5n8VAlhCZ4dEavf5vOFpvWOn1+f/2t7pp2hJ0v+6ReqM8ukWxAakd6LYQionsZfxtiK9Xp0pUorCKEiEKRoCHTrOYAm+FOSQAeVIJsf+BzYfgvip/Jh8831Xhon2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113886; c=relaxed/simple;
-	bh=236ZVXxd1JtJWG8CkGvYCDrS/vzdK18qnDi8My27t9g=;
+	s=arc-20240116; t=1758113594; c=relaxed/simple;
+	bh=lagShViF+x3joBMRfOfT3iY1aYSfGL40qfNkn/kfTls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeaNhYleDexPH/bQTRWLPJNlAj4xp+MBp2cUex6Idoydllug9uRybzjhVkTUmCmBLXBqlsC5muWto9zru6Sf1AOToMO+pUO9HvYm7Ws1kPR9gebysmZtoqa0thulHEwsDFhnKh6N3pul/QQveybRek9dklJKst0goaF5/I6uEw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BJtVxQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93531C4CEF0;
-	Wed, 17 Sep 2025 12:58:05 +0000 (UTC)
+	 MIME-Version; b=PhItN17iczXzJY481sbNIjszCe7RHH/+av+Gdmf04lIq3IHOnq6Ns57q05SArK630RZEarlsLLomrdaP349JatuVHjPSkmYuuTJMd2NxCe+UATp/hRi8SyLsn9GY+ZVpjrahuEGbx8VqhDebLQZCf9IgQwYn/STKv8/P34tf00I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cy+MEHTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0B6C4CEF0;
+	Wed, 17 Sep 2025 12:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113886;
-	bh=236ZVXxd1JtJWG8CkGvYCDrS/vzdK18qnDi8My27t9g=;
+	s=korg; t=1758113594;
+	bh=lagShViF+x3joBMRfOfT3iY1aYSfGL40qfNkn/kfTls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BJtVxQ1gIBn06eyy7zQgJgLqh4wwZ9FqOk39TKCsrjFB+9mIk4W+jYyq/UQI/W1S
-	 J1eM7Q2nJPe06Qhk0HUvaerokd43unXI4kMI0abMy/jYkrCUHZ9V+2eKZ3mh0MYhjG
-	 ceHuravDGErHD+xCUDjj15+LztuytOyRNPsvh5dk=
+	b=cy+MEHTqnwQ3KPdSZy9uYmxcx34al4ezfJT4PEf4ykazp5a07gOQoK61NbFcwANe7
+	 9pe7HhwexCUs2EFlfSv4c94VCplKPzP/y6Fz3hTFtEI+P86E46XPDIVllnFG0gOKdR
+	 mmu2yK5uvGM+HrhUjUq2bnNKeWHppN7DUWYXrW8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/101] dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 135/140] phy: ti: omap-usb2: fix device leak at unbind
 Date: Wed, 17 Sep 2025 14:35:07 +0200
-Message-ID: <20250917123338.869729213@linuxfoundation.org>
+Message-ID: <20250917123347.618600324@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anders Roxell <anders.roxell@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e63419dbf2ceb083c1651852209c7f048089ac0f ]
+commit 64961557efa1b98f375c0579779e7eeda1a02c42 upstream.
 
-Fix a critical memory allocation bug in edma_setup_from_hw() where
-queue_priority_map was allocated with insufficient memory. The code
-declared queue_priority_map as s8 (*)[2] (pointer to array of 2 s8),
-but allocated memory using sizeof(s8) instead of the correct size.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-This caused out-of-bounds memory writes when accessing:
-  queue_priority_map[i][0] = i;
-  queue_priority_map[i][1] = i;
-
-The bug manifested as kernel crashes with "Oops - undefined instruction"
-on ARM platforms (BeagleBoard-X15) during EDMA driver probe, as the
-memory corruption triggered kernel hardening features on Clang.
-
-Change the allocation to use sizeof(*queue_priority_map) which
-automatically gets the correct size for the 2D array structure.
-
-Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-Link: https://lore.kernel.org/r/20250830094953.3038012-1-anders.roxell@linaro.org
+Fixes: 478b6c7436c2 ("usb: phy: omap-usb2: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724131206.2211-3-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/edma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/ti/phy-omap-usb2.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index c0fa541324675..f7ddf588b7f9b 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -2063,8 +2063,8 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
- 	 * priority. So Q0 is the highest priority queue and the last queue has
- 	 * the lowest priority.
- 	 */
--	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1, sizeof(s8),
--					  GFP_KERNEL);
-+	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1,
-+					  sizeof(*queue_priority_map), GFP_KERNEL);
- 	if (!queue_priority_map)
- 		return -ENOMEM;
+--- a/drivers/phy/ti/phy-omap-usb2.c
++++ b/drivers/phy/ti/phy-omap-usb2.c
+@@ -363,6 +363,13 @@ static void omap_usb2_init_errata(struct
+ 		phy->flags |= OMAP_USB2_DISABLE_CHRG_DET;
+ }
  
--- 
-2.51.0
-
++static void omap_usb2_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int omap_usb2_probe(struct platform_device *pdev)
+ {
+ 	struct omap_usb	*phy;
+@@ -373,6 +380,7 @@ static int omap_usb2_probe(struct platfo
+ 	struct device_node *control_node;
+ 	struct platform_device *control_pdev;
+ 	const struct usb_phy_data *phy_data;
++	int ret;
+ 
+ 	phy_data = device_get_match_data(&pdev->dev);
+ 	if (!phy_data)
+@@ -423,6 +431,11 @@ static int omap_usb2_probe(struct platfo
+ 			return -EINVAL;
+ 		}
+ 		phy->control_dev = &control_pdev->dev;
++
++		ret = devm_add_action_or_reset(&pdev->dev, omap_usb2_put_device,
++					       phy->control_dev);
++		if (ret)
++			return ret;
+ 	} else {
+ 		if (of_property_read_u32_index(node,
+ 					       "syscon-phy-power", 1,
 
 
 
