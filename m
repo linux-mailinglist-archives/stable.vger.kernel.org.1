@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15353B7E633
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DC8B7ED30
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE9813AAAD7
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FC8E7B3BF0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05C31A818;
-	Wed, 17 Sep 2025 12:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B59316190;
+	Wed, 17 Sep 2025 12:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJnoiMhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVHvx5YY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF2631A7E5;
-	Wed, 17 Sep 2025 12:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEBF316185;
+	Wed, 17 Sep 2025 12:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113108; cv=none; b=PA6+F2CIxiWk21i9cDTJcxT+1V3iDJXAaSKKUd2d8eFG+XoJIhmNB87kUkhWPNVDW+V3u3k81VyDFjThVe7DE0RU37flpRNNbAT6ZhfVMjJyVkZzozRjQVNaP26hNcBX2VPprFDFZMuc9USZgMagIBM2i0CiecDKbzRZ6UJOwSY=
+	t=1758113821; cv=none; b=OR06ZSiKC0MekuiO3UFXMB3JDCSewgWm7Uq+Z4xWtyNN8DPEfqjWmOL4REeuoL0AWJxXIVPpZnOUOHb9d2Q0mRyVp6yuWwVx5BZGV1MhoJvQ2XGVbOcoAdc899RLI7NNo3XZAhCjaxkw8wNIFM/0KwaCA6wEqru6BivOsp2U61Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113108; c=relaxed/simple;
-	bh=B2u3clmvsbvUO0XFFeznwjs7gTXE3rkInqkir8DsVC4=;
+	s=arc-20240116; t=1758113821; c=relaxed/simple;
+	bh=3W6Fhrru1qSC7Z6QaBptcb90itJ7GPL8N+2yc6oaw+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leuuEK8Et4oKmsX8cxHPWoBSA7vfvANTKTo54s8FKzYsKQxe6mljAsgXB3n8mfTPMCG29d3Sd/nm9sSPbVKVJTSeef/GKQOeVoBlcKDn/2Ri1bkrfGOyN+BdnuM1/qtpT0unxIbyHHtmvxJz0FoAes1GXwBmxWWcSlNsb6rOrP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJnoiMhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD56C4CEF0;
-	Wed, 17 Sep 2025 12:45:07 +0000 (UTC)
+	 MIME-Version; b=f36K4TZ39QOzthiL+UIs9CrMfIqtNqDgrVkpzAAOr9oeIGzbmHAwKXcjaZSXZ/Ql2CROqr38pIUsZ27+tGhQEom7i0kjqngoAi6eJ8Mj6+qmmtp5oJdYsq6WHjDHF2RmDZW8JTC7Q9dyg2LSceztf/YoYQJWsSaJGBceXCRM2Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVHvx5YY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E1C4CEF0;
+	Wed, 17 Sep 2025 12:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113108;
-	bh=B2u3clmvsbvUO0XFFeznwjs7gTXE3rkInqkir8DsVC4=;
+	s=korg; t=1758113821;
+	bh=3W6Fhrru1qSC7Z6QaBptcb90itJ7GPL8N+2yc6oaw+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJnoiMhNI9JOAmp1rVkefR3kqGCM+FSLdTebMJIimwaAeodpeWXJR8D228lzB8Ifs
-	 EBuOkgqj5QQ+n6BizpSrUEqbhNcQ+JO491NFHj/+eYfuCqrNMJS0o8JUZkVQLRPDqk
-	 gxqPbsuLhvLagVVyFMQ/n0X+7ilIxTYoCgGrC9bk=
+	b=wVHvx5YYDautqO/vrLLNSQnloYVHllD6Wmb2sDspdxVtspSbFj1lfyf8041e3i9od
+	 Gc57e87JMIdQ8qfcFRdvuheFhOGlU588FoSIP8L1oN7pNMo00m/GhzTFjPV2F5fI8B
+	 kwP0nJGNkJnq2GFybuuBM6019Sy8w1ZgzyjrI8U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 174/189] dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 061/101] Revert "net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups"
 Date: Wed, 17 Sep 2025 14:34:44 +0200
-Message-ID: <20250917123356.133338247@linuxfoundation.org>
+Message-ID: <20250917123338.318812089@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anders Roxell <anders.roxell@linaro.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit e63419dbf2ceb083c1651852209c7f048089ac0f ]
+commit 63a796558bc22ec699e4193d5c75534757ddf2e6 upstream.
 
-Fix a critical memory allocation bug in edma_setup_from_hw() where
-queue_priority_map was allocated with insufficient memory. The code
-declared queue_priority_map as s8 (*)[2] (pointer to array of 2 s8),
-but allocated memory using sizeof(s8) instead of the correct size.
+This reverts commit 5537a4679403 ("net: usb: asix: ax88772: drop
+phylink use in PM to avoid MDIO runtime PM wakeups"), it breaks
+operation of asix ethernet usb dongle after system suspend-resume
+cycle.
 
-This caused out-of-bounds memory writes when accessing:
-  queue_priority_map[i][0] = i;
-  queue_priority_map[i][1] = i;
-
-The bug manifested as kernel crashes with "Oops - undefined instruction"
-on ARM platforms (BeagleBoard-X15) during EDMA driver probe, as the
-memory corruption triggered kernel hardening features on Clang.
-
-Change the allocation to use sizeof(*queue_priority_map) which
-automatically gets the correct size for the 2D array structure.
-
-Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-Link: https://lore.kernel.org/r/20250830094953.3038012-1-anders.roxell@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com/
+Fixes: 5537a4679403 ("net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/2945b9dbadb8ee1fee058b19554a5cb14f1763c1.1757601118.git.pabeni@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/edma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/asix_devices.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 3ed406f08c442..552be71db6c47 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -2064,8 +2064,8 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
- 	 * priority. So Q0 is the highest priority queue and the last queue has
- 	 * the lowest priority.
- 	 */
--	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1, sizeof(s8),
--					  GFP_KERNEL);
-+	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1,
-+					  sizeof(*queue_priority_map), GFP_KERNEL);
- 	if (!queue_priority_map)
- 		return -ENOMEM;
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -607,8 +607,15 @@ static const struct net_device_ops ax887
  
--- 
-2.51.0
-
+ static void ax88772_suspend(struct usbnet *dev)
+ {
++	struct asix_common_private *priv = dev->driver_priv;
+ 	u16 medium;
+ 
++	if (netif_running(dev->net)) {
++		rtnl_lock();
++		phylink_suspend(priv->phylink, false);
++		rtnl_unlock();
++	}
++
+ 	/* Stop MAC operation */
+ 	medium = asix_read_medium_status(dev, 1);
+ 	medium &= ~AX_MEDIUM_RE;
+@@ -637,6 +644,12 @@ static void ax88772_resume(struct usbnet
+ 	for (i = 0; i < 3; i++)
+ 		if (!priv->reset(dev, 1))
+ 			break;
++
++	if (netif_running(dev->net)) {
++		rtnl_lock();
++		phylink_resume(priv->phylink);
++		rtnl_unlock();
++	}
+ }
+ 
+ static int asix_resume(struct usb_interface *intf)
 
 
 
