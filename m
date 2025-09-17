@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DC8B7ED30
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AD5B7F171
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FC8E7B3BF0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F9946815B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B59316190;
-	Wed, 17 Sep 2025 12:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC0B3090F5;
+	Wed, 17 Sep 2025 13:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVHvx5YY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fng3aIq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEBF316185;
-	Wed, 17 Sep 2025 12:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AA6330D20;
+	Wed, 17 Sep 2025 13:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113821; cv=none; b=OR06ZSiKC0MekuiO3UFXMB3JDCSewgWm7Uq+Z4xWtyNN8DPEfqjWmOL4REeuoL0AWJxXIVPpZnOUOHb9d2Q0mRyVp6yuWwVx5BZGV1MhoJvQ2XGVbOcoAdc899RLI7NNo3XZAhCjaxkw8wNIFM/0KwaCA6wEqru6BivOsp2U61Q=
+	t=1758114024; cv=none; b=nMktsOuZVxADbfwIz0GYPjkQjOtM9uaVPFQJLgGa4lFELhQBiMz+IQktxICHFsMW92POi5piyyB08IPamT2tit607Pw2BU/cDnpMLbEVRDp1fARt4+Pfy/VhIdVEk7270NPY0Nsb96Fs+dof694cEppHvEwJWJU+Ctb9XlGDK4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113821; c=relaxed/simple;
-	bh=3W6Fhrru1qSC7Z6QaBptcb90itJ7GPL8N+2yc6oaw+k=;
+	s=arc-20240116; t=1758114024; c=relaxed/simple;
+	bh=U0ylFEHAtGkSj7A/hHgd6FyS4/MnRR8dSj1fFw3peJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f36K4TZ39QOzthiL+UIs9CrMfIqtNqDgrVkpzAAOr9oeIGzbmHAwKXcjaZSXZ/Ql2CROqr38pIUsZ27+tGhQEom7i0kjqngoAi6eJ8Mj6+qmmtp5oJdYsq6WHjDHF2RmDZW8JTC7Q9dyg2LSceztf/YoYQJWsSaJGBceXCRM2Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVHvx5YY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E1C4CEF0;
-	Wed, 17 Sep 2025 12:57:00 +0000 (UTC)
+	 MIME-Version; b=lhcF2tuBUkE2z6DaEdRDVA9/cCeEyLclSgVVDPQWuY+3K8CYYS0+pfL4oM0QNDJWA2xmkX8SPVLWvo9rrBd6QKV7xi2VUoKYa5fcauImrvDizmGmE+E9Pcj0SyXu9jJQ9k69dKN2qspvWKR200Yq3rpmU4RJcJC8b2AamF0B6SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fng3aIq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A54EC4CEF5;
+	Wed, 17 Sep 2025 13:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113821;
-	bh=3W6Fhrru1qSC7Z6QaBptcb90itJ7GPL8N+2yc6oaw+k=;
+	s=korg; t=1758114023;
+	bh=U0ylFEHAtGkSj7A/hHgd6FyS4/MnRR8dSj1fFw3peJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVHvx5YYDautqO/vrLLNSQnloYVHllD6Wmb2sDspdxVtspSbFj1lfyf8041e3i9od
-	 Gc57e87JMIdQ8qfcFRdvuheFhOGlU588FoSIP8L1oN7pNMo00m/GhzTFjPV2F5fI8B
-	 kwP0nJGNkJnq2GFybuuBM6019Sy8w1ZgzyjrI8U4=
+	b=Fng3aIq4TUQBkdKpGHJRjF5Q/oZlRKXP7bYSmh7DCkZh3g7sFG+vSYbEer0pExq1j
+	 2OL/9UvXOmHMUoIFWGgr4enhnMc4/UlolwXoe98Bga7LR+uvHnINwnlWz9+ZQhQ9cw
+	 mkb4UXrDGDlrOWPTdn5EwDqaH7PAtj2KAS7i/13I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 061/101] Revert "net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups"
+	Salah Triki <salah.triki@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.1 23/78] EDAC/altera: Delete an inappropriate dma_free_coherent() call
 Date: Wed, 17 Sep 2025 14:34:44 +0200
-Message-ID: <20250917123338.318812089@linuxfoundation.org>
+Message-ID: <20250917123330.132206374@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Salah Triki <salah.triki@gmail.com>
 
-commit 63a796558bc22ec699e4193d5c75534757ddf2e6 upstream.
+commit ff2a66d21fd2364ed9396d151115eec59612b200 upstream.
 
-This reverts commit 5537a4679403 ("net: usb: asix: ax88772: drop
-phylink use in PM to avoid MDIO runtime PM wakeups"), it breaks
-operation of asix ethernet usb dongle after system suspend-resume
-cycle.
+dma_free_coherent() must only be called if the corresponding
+dma_alloc_coherent() call has succeeded. Calling it when the allocation fails
+leads to undefined behavior.
 
-Link: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com/
-Fixes: 5537a4679403 ("net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/2945b9dbadb8ee1fee058b19554a5cb14f1763c1.1757601118.git.pabeni@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Delete the wrong call.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 71bcada88b0f3 ("edac: altera: Add Altera SDRAM EDAC support")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/aIrfzzqh4IzYtDVC@pc
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix_devices.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/edac/altera_edac.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -607,8 +607,15 @@ static const struct net_device_ops ax887
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -127,7 +127,6 @@ static ssize_t altr_sdr_mc_err_inject_wr
  
- static void ax88772_suspend(struct usbnet *dev)
- {
-+	struct asix_common_private *priv = dev->driver_priv;
- 	u16 medium;
- 
-+	if (netif_running(dev->net)) {
-+		rtnl_lock();
-+		phylink_suspend(priv->phylink, false);
-+		rtnl_unlock();
-+	}
-+
- 	/* Stop MAC operation */
- 	medium = asix_read_medium_status(dev, 1);
- 	medium &= ~AX_MEDIUM_RE;
-@@ -637,6 +644,12 @@ static void ax88772_resume(struct usbnet
- 	for (i = 0; i < 3; i++)
- 		if (!priv->reset(dev, 1))
- 			break;
-+
-+	if (netif_running(dev->net)) {
-+		rtnl_lock();
-+		phylink_resume(priv->phylink);
-+		rtnl_unlock();
-+	}
- }
- 
- static int asix_resume(struct usb_interface *intf)
+ 	ptemp = dma_alloc_coherent(mci->pdev, 16, &dma_handle, GFP_KERNEL);
+ 	if (!ptemp) {
+-		dma_free_coherent(mci->pdev, 16, ptemp, dma_handle);
+ 		edac_printk(KERN_ERR, EDAC_MC,
+ 			    "Inject: Buffer Allocation error\n");
+ 		return -ENOMEM;
 
 
 
