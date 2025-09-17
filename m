@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-179975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48878B7E324
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205B1B7EA0E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12A811BC11AD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EECE13A4B75
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A61D1F3BA2;
-	Wed, 17 Sep 2025 12:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEA732340B;
+	Wed, 17 Sep 2025 12:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ogu8AlNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wh2sJDXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EDF337EB9;
-	Wed, 17 Sep 2025 12:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06122323406;
+	Wed, 17 Sep 2025 12:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112986; cv=none; b=OAfNKq9ZdehuZKesIZq9M371kU8dvi3CXhgjGdjlxH25afw0jH1f5V7ndbJP2CWPNHv9UJ+unjzPkdwkFRDsBn0sWly+GhcltcmxBc3qNagJHmPPS6DIMu838lAvv3RtUiBVZGOg+FO3Y6mUxwFmmIi25C/xF0jeK8XwG20Xw1E=
+	t=1758113404; cv=none; b=JbJpgrMa71wGmS59p4FjNc7CTSLX4LTci2mRA4UF/hkvkzucHnAU+fDhAyKaKhDl2Kf+QlhwGwNNeWBIH7sXAnGj29TTxAAhGkRWhote2DY/DkGU3rTMFKLnebzbaIpNRVIQbcWmfUKj8MrhTOSpWXgxSQnB1/Mga6r67I4lJkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112986; c=relaxed/simple;
-	bh=t+o5DmSH//lhFndqnBKUTy9kGl1cI/79pBUwk3HSPaQ=;
+	s=arc-20240116; t=1758113404; c=relaxed/simple;
+	bh=NaHMlCTef6N4owQHSYgMw9xv8EBopN9f085Vw3H5Rhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p06fJUCsEu3/BPDyHKxlPZcaRw2Jm4mzW/99owXo5zDxR6CM9KltFB6xDaacBVKaLpom9zy8I4WVIfAAigHxmvfaceinfTxNVm40AqlCIcU07dvTGzgkCjUeFCe/qtX8/ama4YmNyKGGheULi7VCngJpy9yvs7PZZJfaS/GIEEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ogu8AlNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F707C4CEF0;
-	Wed, 17 Sep 2025 12:43:05 +0000 (UTC)
+	 MIME-Version; b=TzWqYwaoXmlT1AraE4DZMsLlswDRbreDI3wGTETt2LPfWegvDfNHGVvmzBr8ngyl+/lCthV8ywigfVOvP9e7l/2G6B+mMohfPkwcnDqHTY8QdPwUsGmKEpSqWRJBgW1/hlStJXbCGWOs/+z9CYCUoUM5cU+TtGN2b77ed9hGUGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wh2sJDXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE33C4CEF0;
+	Wed, 17 Sep 2025 12:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112985;
-	bh=t+o5DmSH//lhFndqnBKUTy9kGl1cI/79pBUwk3HSPaQ=;
+	s=korg; t=1758113403;
+	bh=NaHMlCTef6N4owQHSYgMw9xv8EBopN9f085Vw3H5Rhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ogu8AlNCFZn2/JLtvb7DC/NENnuXMiHBkvNHzU0BBVBiev9Yca0KIz4w+Elnr1ma/
-	 n9NG/Wi5UMujGw7eOSW/58PSZR47eeq0hvVbGrm5C0W10gB88UszQsTp+tlJ9neFWS
-	 dQ8161LxvRPiAkxoVXVurX9a02f6sGNHq8kvtHjA=
+	b=Wh2sJDXLEAxaKUz1SIXwM0ZNrJHFEnWOdHowImrLxDcHb+ZI5KFzrzFn/7P46NtN+
+	 oJzIFGwhg4wJ2n3dV0WvWI8E3iKmCd+zEQP65f/pl7IEwA9+fOUl7AvPEpuUxEbcmD
+	 bi8dETpgiBz1JSE+L8nKDTPJpJDqv7tzMBSEST78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 135/189] genetlink: fix genl_bind() invoking bind() after -EPERM
+Subject: [PATCH 6.12 073/140] netlink: specs: mptcp: replace underscores with dashes in names
 Date: Wed, 17 Sep 2025 14:34:05 +0200
-Message-ID: <20250917123355.158949429@linuxfoundation.org>
+Message-ID: <20250917123346.094503059@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 1dbfb0363224f6da56f6655d596dc5097308d6f5 ]
+[ Upstream commit 9e6dd4c256d0774701637b958ba682eff4991277 ]
 
-Per family bind/unbind callbacks were introduced to allow families
-to track multicast group consumer presence, e.g. to start or stop
-producing events depending on listeners.
+We're trying to add a strict regexp for the name format in the spec.
+Underscores will not be allowed, dashes should be used instead.
+This makes no difference to C (codegen, if used, replaces special
+chars in names) but it gives more uniform naming in Python.
 
-However, in genl_bind() the bind() callback was invoked even if
-capability checks failed and ret was set to -EPERM. This means that
-callbacks could run on behalf of unauthorized callers while the
-syscall still returned failure to user space.
-
-Fix this by only invoking bind() after "if (ret) break;" check
-i.e. after permission checks have succeeded.
-
-Fixes: 3de21a8990d3 ("genetlink: Add per family bind/unbind callbacks")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250905135731.3026965-1-alok.a.tiwari@oracle.com
+Fixes: bc8aeb2045e2 ("Documentation: netlink: add a YAML spec for mptcp")
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250624211002.3475021-8-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7094b84863e5 ("netlink: specs: mptcp: fix if-idx attribute type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/genetlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/netlink/specs/mptcp_pm.yaml |    8 ++++----
+ include/uapi/linux/mptcp_pm.h             |    6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 104732d345434..978c129c60950 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1836,6 +1836,9 @@ static int genl_bind(struct net *net, int group)
- 		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
- 			ret = -EPERM;
- 
-+		if (ret)
-+			break;
-+
- 		if (family->bind)
- 			family->bind(i);
- 
--- 
-2.51.0
-
+--- a/Documentation/netlink/specs/mptcp_pm.yaml
++++ b/Documentation/netlink/specs/mptcp_pm.yaml
+@@ -57,21 +57,21 @@ definitions:
+       doc: >-
+         A new subflow has been established. 'error' should not be set.
+         Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
+-        daddr6, sport, dport, backup, if_idx [, error].
++        daddr6, sport, dport, backup, if-idx [, error].
+      -
+       name: sub-closed
+       doc: >-
+         A subflow has been closed. An error (copy of sk_err) could be set if an
+         error has been detected for this subflow.
+         Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
+-        daddr6, sport, dport, backup, if_idx [, error].
++        daddr6, sport, dport, backup, if-idx [, error].
+      -
+       name: sub-priority
+       value: 13
+       doc: >-
+         The priority of a subflow has changed. 'error' should not be set.
+         Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
+-        daddr6, sport, dport, backup, if_idx [, error].
++        daddr6, sport, dport, backup, if-idx [, error].
+      -
+       name: listener-created
+       value: 15
+@@ -255,7 +255,7 @@ attribute-sets:
+         name: timeout
+         type: u32
+       -
+-        name: if_idx
++        name: if-idx
+         type: u32
+       -
+         name: reset-reason
+--- a/include/uapi/linux/mptcp_pm.h
++++ b/include/uapi/linux/mptcp_pm.h
+@@ -27,14 +27,14 @@
+  *   token, rem_id.
+  * @MPTCP_EVENT_SUB_ESTABLISHED: A new subflow has been established. 'error'
+  *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
+- *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
++ *   saddr6, daddr4 | daddr6, sport, dport, backup, if-idx [, error].
+  * @MPTCP_EVENT_SUB_CLOSED: A subflow has been closed. An error (copy of
+  *   sk_err) could be set if an error has been detected for this subflow.
+  *   Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
+- *   daddr6, sport, dport, backup, if_idx [, error].
++ *   daddr6, sport, dport, backup, if-idx [, error].
+  * @MPTCP_EVENT_SUB_PRIORITY: The priority of a subflow has changed. 'error'
+  *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
+- *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
++ *   saddr6, daddr4 | daddr6, sport, dport, backup, if-idx [, error].
+  * @MPTCP_EVENT_LISTENER_CREATED: A new PM listener is created. Attributes:
+  *   family, sport, saddr4 | saddr6.
+  * @MPTCP_EVENT_LISTENER_CLOSED: A PM listener is closed. Attributes: family,
 
 
 
