@@ -1,178 +1,138 @@
-Return-Path: <stable+bounces-180151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E26B7E9C6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 063F5B7EDF6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C25167A7259
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:52:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C424A7B6E52
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5913132BC18;
-	Wed, 17 Sep 2025 12:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D482332E755;
+	Wed, 17 Sep 2025 12:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="CbpBsi6L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10B8328970
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 12:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED80232E737
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 12:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113540; cv=none; b=ikZ3WZNElnIYG2qNkUOWejXobRpwAkGYH//7qxPA1FMbSX6+N5bCegkQRQ4gFF/5rXNZ7WncjQ2C2LzyCtTsXqHWatpOFyyDew0QILTClEZeH+gonnYyQJcdPBGIj/xVsyp4onkDQfnFCKGYZDTJSB3qT8ZWxBhQXLM7utjVF7E=
+	t=1758113947; cv=none; b=GLGDI9scD4WNLgwspNznEEG8/sR1hipsuVkIU4R1D/RkTLXSEEiGc6zLVlIgVpjMMSqMaw/0hCPiRHGo9SAdwpbQ41NdGgz88Gb9SRvur+4U9Np15bq1JjNinXyB0DVGnCCJqc2zA2MZ+GZN006X+EXSqmkH9oP8FPkLN7/dZdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113540; c=relaxed/simple;
-	bh=0qblMs7pvAvukMaqH1XZzSc/HsAgRmJmnlAnkCtcl+M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=btoiXhI/pL0ngrvaTxrMZK90OYHABNACCEdS7ejFFglBbfr3Z7AwpHpcWULjEIAyeaDoSnmYBpj6cqChyVA0hCB3+lD8/SnRFNVZtQTw1Hp/R/Wc7W7an4+CytgC09wKr00QJAvxKMBRYqkhaRusgCueMj2DApy+7YTbobVDfNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-62f28b8e12cso7062946a12.1
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 05:52:16 -0700 (PDT)
+	s=arc-20240116; t=1758113947; c=relaxed/simple;
+	bh=Air/bp0B/kMxFdT5bSdyNaTpY9QsI75z3whDOdBy2iU=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=Kn0EFEgrFqfGfnW0Xrfy2CGR8D9uI6wvtYLQ2EgGmcvcduSg5Za3DVUTSII3wIx6uB0RoydEdd1d+ft/rujDAsC79RM0NZ3d31lK8HzhM5g3PQqmA8AD/kZqstboNgJogjcM3RNbpqi1A0e0qleckhwDVUXhKyuwWeAAv5eTkz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=CbpBsi6L; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-26060bcc5c8so44323755ad.1
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 05:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1758113945; x=1758718745; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zJlDguzYhQST0flrPd7Kckb+lS7WHHs1Zm4hNS3XuIE=;
+        b=CbpBsi6LezYPkSFKE/LeDFiIbDUyrXunS68hm4blMm8kHcxaUBLZ885UU79clHLg8E
+         Ykkxh2rZLl+XJb8wC6g93ZKfOLs4+MxNTPS4KT/UHqTzwDX5GG6D51HF5c+Qjw/fTplM
+         WJJ+gjqCxydrUOsR4kurnxpnYIeeXeBZxjU+/pQqwPE6VSKwocmoM9Cq8yzA+t2tq6gh
+         W3AJBxP56OahrAS+jzRVWdnnJG5zD44f9ZglqdCwnCoOlvqMHah5gnuU9BTSgMAOJtOf
+         HyFVlBKaW/67Tabmzxl9WP+cdnVyohfrH9EVswGb4y1ofsomLv+If1zW9pT+lIJSAlNe
+         SrNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758113535; x=1758718335;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9cRw8y8aLRwmgMXJrfhUT0H+SQQUEvdJ4IqhIR3aLXE=;
-        b=kMFOfECmEGMbT6gJaZxwz6AGxHwQCDOaaqk9Dr+XFLbXyMJMyR/8nlOecLWR10ZJhW
-         U66R93fmTbdMQp/pZAdskD33VYIWdW8kurBI2pvAToqfolsxaCbE0KzuqWEpXiBP1pb8
-         21bN9xx3ELjjEF9CNP8sh6pDJQe2++8szZlUk36wtftRh90iUgusXf7mFtJST1VupoOJ
-         HXb5DuHnIij2vHdz0aOrcmIvlWyLPZ4jDHrxuahjzGXY2rV2Di0iipChASyZyK4DwrAH
-         6/IrfNz9kvnUy5xwWbP77+d23rkKknvioxqCQsYCNgBXGyMEQYOmRLPuUgi8JnyfcZcN
-         SZzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUafi8olHUK+pjXDdYxgO1UPjiLt8lpjxCUpO9fRfgrOKki8Pk6E1IaydMv6TU9XUl/X6Km7X0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7lGt6K+Q7pyR9OoD/yZ9srUnNTSHLcxy4CdtYySBt9OB/NUWB
-	FbLmtr/uOg6AEoZNksxnBrPPGzJbPm1DQKKrmgnVMnlAjoTlcepuGfgz
-X-Gm-Gg: ASbGncsL9fCBk8WWAaS+McOLhr7mnElMlM4yLXns5MnKM6XagzoRh2pULjxmpGwC7TW
-	77ZuArlPArRCFDZiQOvPSUYrFXajWxrLXH3yZUUOshs7iwnlKK4J4aPeDhw7/ksgchdkXB8PqpU
-	9fExjVEKguVmE70pkd+GMza5Lwk0F2T6GwVWdO4OwlbvzgP1X9ja7VLTGs3Z5gkcbpn+hKlHe4e
-	5MbHHQSRYJ+86xYE7sH7PwMq+D/8hN7uVh0Ssu8elWhCLg6iF9J3ig+fFme6pWce0EBQow1NlFd
-	xCakDkHa2MTjHJLVvI720jZSqeWzrepYgAvDMcgX19RUS6kBp87XILqOuC0ua2AYY6icnAAlHB+
-	SVFhDqfLTfynucQ==
-X-Google-Smtp-Source: AGHT+IGcKNDtBC4IjzRF3C/1A9WDY4PVAXhCw25GqLowT2AP0xhnCrLG2vPouzAemnf5ULAz3hkDMA==
-X-Received: by 2002:a17:907:9444:b0:afe:b311:a274 with SMTP id a640c23a62f3a-b1bc106eff5mr256536266b.46.1758113534737;
-        Wed, 17 Sep 2025 05:52:14 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:41::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1c11d45587sm114087366b.12.2025.09.17.05.52.14
+        d=1e100.net; s=20230601; t=1758113945; x=1758718745;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zJlDguzYhQST0flrPd7Kckb+lS7WHHs1Zm4hNS3XuIE=;
+        b=rrnSipIB/rDcDYUWdc9IwHXNRnOusH8s5D9gn5veXxji5kDiyMyf4QJx/QDIkzcqGt
+         PsO0jMA987DPkZvDIFRiA4+pgKsWM0Mzc9iQLwren1q/l9hAwQd48Q0TrOZMOXUgyALo
+         XltNAddaIHfOLxHLQBURj3qDj0E1FPgzJ/Eg/6kND1eGmE9yBZsSBnXTUZ81bQA9LQwZ
+         2zplRw+6hA75jMYG2LR0xL1kmRI2/Nu6iJU9zdPGMxnmILiW67VpF83bU1G/XBLcI7wt
+         j0+Y6XMWU7ynSYLGWR4odaUkygs4KdWmp7WekiQWG0doLDb5p3OT0w+2ZdgJQAFsYLP6
+         Rn0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXiGwoy46EEXYwuJfT0vTwDq7Hzupjzbj4AfmJwqSVC5r6g9aRruLHP6G3uMPj20zYszkpCeQQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5e2rAoMVmfHIz5NdXIZnV3SDYTHM5dmRLOt0Kz8+7LRJbOlXD
+	Lmm4jZK19ARg5AoBPubHfVmN71EYhyjk9LZy9brF45YqnDvbh6S66lM05b2rm+AVEKLYY78A1WI
+	IMtyc
+X-Gm-Gg: ASbGnctznzJm0zV5GoXXFrhf/joxgcwA6eD+Axp1KzOhvvSAeL+Egv6NHiA6lxT9hWu
+	LHxJpyQUVLa/9LWcVJ9inDT3Ka//+MaBIqP6YZ08E15KDQjwRuJzV3vj3VWg6WqeChYZSvMHDcu
+	6dx4RLp9+uMMIwClTImWo6FCdrw/v4geINMP9gwB9m7/4CBDQzgh/INnTFojwelTdwZ8iRwjwh8
+	/RJr/OLd1NPmML4GWf9u3DHabFf6mjaL9hQa5i8STFQ/D8mkWv+fyjX7TlrGtiYmsxLV/k235L2
+	CCaVp+MrZCJzBMn8BxQ0jutTgDZUrT/2aqb4CVR/iQSALXcGZ5yh10iF03XosJ/5pAFPplsJsLM
+	O+DM36Dj0cdAQC3EFyakzBru5e9k=
+X-Google-Smtp-Source: AGHT+IFg9nl7CiAJEMuq0+SPK+NvNpcjg7lN4TC4sw3/v6kQ7WCj8GUHdKtFFwzvBCtMcYLqvwu6lg==
+X-Received: by 2002:a17:903:183:b0:24d:64bc:1494 with SMTP id d9443c01a7336-26812169a13mr30543235ad.18.1758113945094;
+        Wed, 17 Sep 2025 05:59:05 -0700 (PDT)
+Received: from 325ff4dc0e06 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2623fd4d163sm123998765ad.80.2025.09.17.05.59.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 05:52:14 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 17 Sep 2025 05:51:42 -0700
-Subject: [PATCH net v4 1/4] net: netpoll: fix incorrect refcount handling
- causing incorrect cleanup
+        Wed, 17 Sep 2025 05:59:04 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-netconsole_torture-v4-1-0a5b3b8f81ce@debian.org>
-References: <20250917-netconsole_torture-v4-0-0a5b3b8f81ce@debian.org>
-In-Reply-To: <20250917-netconsole_torture-v4-0-0a5b3b8f81ce@debian.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
- david decotigny <decot@googlers.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
- calvin@wbinvd.org, kernel-team@meta.com, calvin@wbinvd.org, 
- jv@jvosburgh.net, Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2686; i=leitao@debian.org;
- h=from:subject:message-id; bh=0qblMs7pvAvukMaqH1XZzSc/HsAgRmJmnlAnkCtcl+M=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoyq77ikqYfP1RsaQ1IywqQvoCiFOi9x4LHFf3b
- bZdGzWOyqiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaMqu+wAKCRA1o5Of/Hh3
- bSuvEACZOgjHa9YCJXRrUCYSe7rbbAYJhxe8eWRbe/mAXDcoBW+xpoh1HUdkdE1BAw7KwCch3f7
- Cvf/tCZ1PG9v+NXgAL8A1R9jwarbT2vNayZo3f9ynePau6EOLiptAvpyqr/RoNvmoF7GvF4ELz9
- wLx8oNvpTzgSNv6K2o3SEGxewOQweLFfIo+9BOHlJvlXvtm6J4f0MaMcgHiGz77YxM3BYKfNlIj
- 8RY0q/NZCmalRYOMAvonH0AJkLXJvwGKVEH/k1rgFTK7PEE9ayZV4sfcjBE74CUOAjQWam4FFIg
- 2mDTwda3SsxX6zzrNx5FPuQmMYhFCWDHqPwTm8dqatgr3VYnOCOrNRHmICT+S6g7W2CSOdveycJ
- ttTlVgfnzb5nskzsZCipFeIx3K133loOfy2StaLgIcGcx6XM4vE4vH43DF1Wj+uzzJiLm/E3wzp
- sMjRFKKqgwBxYZizTWVnwRWcax3N7iMHLyA4e7wkwX68w8EEnqzUKpBdVNcFYaALDTo4eR1LvDj
- klGCoybhLWEBaAlEwohhAInLBwj/lJeg7lln5Y3DkWaU8z8DPCBcvc0i3y18oSW4L/rii7zaa+b
- Nhd262M16Gx8Xt1rG4YQB0qi3HzB0GrqDifWCYwgFIaSYRaXi8ilp1/xfkZmrx9IvLnSojLcDbU
- 2eehCEHIH6FtR0g==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) stack frame size (2336)
+ exceeds
+ limit (2048) in 'curve25519_generi...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Wed, 17 Sep 2025 12:59:04 -0000
+Message-ID: <175811394383.195.538224235436151216@325ff4dc0e06>
 
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
 
-Scenario causing lack of proper cleanup:
 
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
 
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
 
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
+Hello,
 
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
+New build issue found on stable-rc/linux-6.12.y:
 
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: <stable@vger.kernel.org> # 3.17.x
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- net/core/netpoll.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ stack frame size (2336) exceeds limit (2048) in 'curve25519_generic' [-Werror,-Wframe-larger-than] in lib/crypto/curve25519-hacl64.o (lib/crypto/curve25519-hacl64.c) [logspec:kbuild,kbuild.compiler.error]
+---
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 5f65b62346d4e..19676cd379640 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -815,6 +815,10 @@ static void __netpoll_cleanup(struct netpoll *np)
- 	if (!npinfo)
- 		return;
- 
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
- 
-@@ -824,8 +828,7 @@ static void __netpoll_cleanup(struct netpoll *np)
- 
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
- 
- 	skb_pool_flush(np);
- }
+- dashboard: https://d.kernelci.org/i/maestro:5256d3cef2bb7857d77cf7592fbc192694c82574
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  ad180b51566ec6fdcff4394cfe479231ace38992
 
--- 
-2.47.3
 
+
+Log excerpt:
+=====================================================
+lib/crypto/curve25519-hacl64.c:757:6: error: stack frame size (2336) exceeds limit (2048) in 'curve25519_generic' [-Werror,-Wframe-larger-than]
+  757 | void curve25519_generic(u8 mypublic[CURVE25519_KEY_SIZE],
+      |      ^
+1 error generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig on (arm64):
+- compiler: clang-17
+- dashboard: https://d.kernelci.org/build/maestro:68ca878075b320799d28fdce
+
+
+#kernelci issue maestro:5256d3cef2bb7857d77cf7592fbc192694c82574
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
