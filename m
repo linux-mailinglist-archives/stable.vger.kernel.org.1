@@ -1,143 +1,199 @@
-Return-Path: <stable+bounces-180386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33E2B7FA78
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:01:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CD4B7FA27
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E5F5B619F0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:55:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D13D622813
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C0132E735;
-	Wed, 17 Sep 2025 13:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9FA23507E;
+	Wed, 17 Sep 2025 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="fmGapKok"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1291zIw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173B32BBF9
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 13:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A152223DEF
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 13:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758117249; cv=none; b=Inu90ZzrCZFPBYER+uq0PXChK7egc86RXPwmiv8MQSG1mXL2g4U4vDyHeEZW2RQzKA/Ki11E3x5viwyuAakT7x4NWwe7gLL/6z5c2UrxLHMOPGf3QqzpYFomsb8qcbV/tQoTdTG22xlwFxp1kRLnE3ku0ZG0AneJJSj2Cl5NT6U=
+	t=1758117301; cv=none; b=iWj4I11o5hY1ONv97+nTeBlI3psE32JtacwqBT0+0l60b8XfEr0zQoJr5glq0I9zdADGUWql4mj+sW/JLQjF0883WXDkfspF0xzzpBJxVi8QBpI3WIjfuYErGGf5hhQl+c991dgumJpsOwPy+HZI00BWlJs3wGwp1nh+3ptnuBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758117249; c=relaxed/simple;
-	bh=nV1QrshvRehJ/eXBSMMeuT6hGEcacS/VSfv5Aahy3qc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UYty0OYvzI4TRWLGd4C69PlcKPT8BvPAVWbjK1hvpP5Qx/CUfaGUYGXobGvtZ9wsfmKVT9j/ZdFWAsplHLS6DFhb1ef7kqNIbvFGQqoSgkF1MoULJjjA/Qi7dLBKiny/HmVESnnZW1dhJgawK8fCYC0D9yjUn7dlmHyyqZhglWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=fmGapKok; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-827ec18434aso436153985a.0
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 06:54:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1758117246; x=1758722046; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=to4BXgFyFuRjiSPORVXGshM37diVDi0cjrsHXYAgKmw=;
-        b=fmGapKokLz9Fcmrm+nnUjiBmvailZKN+eXBViNgThFZcWW19Vmx7mlOTKESzUXi37B
-         bs07Bfpv0vPwxX87e0/CVX7SE+rfHLbUu5LhZfHHxpBsWZxqJzUD7T1FQKiYBcELbr/3
-         tycxPy/BbxgZyi/OBh0MXs0wciy4FKRW0kBEXz6oAralAR8S31KhPOUKqNhM2flGyjZM
-         mXgAR0E2WSV7g6k3isAoALB1kzYFjlEA3OCIW6LBLdyOdKzDLffiipLxAO6PbpeHufyJ
-         vNbUOvar8vSc+A/xmQAycFDBypO9mTF1YRVvfp7sTLCP9qeXVh5hmitRiypaZHStkKYg
-         zQ7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758117246; x=1758722046;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=to4BXgFyFuRjiSPORVXGshM37diVDi0cjrsHXYAgKmw=;
-        b=lZfy3VEKjLs9jiPG8p2Elvcewi4MbsGDQLYhYcor7737QrZJC9JQI/WMlMiRAiDGKL
-         mbFMy3HINEA/tDp7SnNS7EeKJhQmXIEsBKtdoJGbp4nK31c4zxIS7xlUqMwtKiYfvH5x
-         qFqYZo8Wzl8mC06J8C+5kSLgE48t7ylP/KaPCfmGBAMYZIHg9RTGZFZOrf2RHBztbtEN
-         kdVJ/sKJjUgyHWn4QaIxf0aBmwEqXYjhejubty4lq3SfJVc3+SJa7OfDt9FJ/70NKA0j
-         GyVrSvk4nK99ZzfIypjQeLN+4wf8b+ojrB96LIWpsEbOr99p7ProX2f/TeF2hdLAeaPE
-         bEJw==
-X-Forwarded-Encrypted: i=1; AJvYcCW29fo1D8GVx3iJ2pfpC2xrFy7pRIlYfx+mH1hDKa+u4fpFEHxenbhcFhdS8ZYhCFnAf+eKEDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvTS8K7bmYuHvn5+vUdrUyrl8AdZjqFuXbiurC6yIAZnnlq1GP
-	VfHpSRwL+KeuuoVyDaTUPVPmTUWx6RhSdIzT1TTE8Expz2t3qjCo1xJKs7nO3InvAw==
-X-Gm-Gg: ASbGncu5eo5CMuu6TTLehDjpArORFVVF+aP/8LgceSmxQP88tZLJwpdFjkKqo59j/iW
-	iLAfjFQrY8gEBZESOAnua7nUkhnYxYTWTIYAz7y2nFBL2HJVGrwP4EJCMlEChkCO4oZs7bktooY
-	qw7G4Qd8227FWSBjYYC7Gl/65uqYdQwx0fsri58tDWypt8Nytuk5hIMzkZzFesinhcTy6MRk1fn
-	ogOK5OfVnl6qxf93fTKQmG6Tu2YFno0VjJ5U6CTMmxzwybzLLOFVQM1RPxqLbJkyIOjSsqO12pW
-	yCt5BGPW03ceicKArZ07+Gq3QhKQJi5sIYNLVKQppf3+7m9+8VT0+Onqn8mh0XAfjVOcBivP7cX
-	UNSM0PM3UGFf0vtDQIk7wm0sLtEy+3thu8BAdMQUw9zwaMNkjQvm5c5hD
-X-Google-Smtp-Source: AGHT+IGRBja0r5jLJ3qHXTLicrQ5EPV+1Dbg2srLDJPVrFlUWF3hlqL5YtcEGgwOtuhZt3aFjNDHDA==
-X-Received: by 2002:a05:620a:4009:b0:817:6fe8:dabd with SMTP id af79cd13be357-8310b59ae28mr257079385a.28.1758117245776;
-        Wed, 17 Sep 2025 06:54:05 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-82b15c2202dsm372471385a.55.2025.09.17.06.54.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 06:54:05 -0700 (PDT)
-Date: Wed, 17 Sep 2025 09:54:01 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Hubert =?utf-8?Q?Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
-	Russell King <linux@armlinux.org.uk>, Xu Yang <xu.yang_2@nxp.com>,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
- PM/MDIO + RTNL deadlock
-Message-ID: <c94af0e9-dc67-432e-a853-e41bfa59e863@rowland.harvard.edu>
-References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1758117301; c=relaxed/simple;
+	bh=DOFpDlg5FMx8jTMqpqMwnip7UugdR0HE/k9EqZMJhRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Rs9/wlsgCuAcP5WUqHSO78v+K3E7DHgBMb8JoNTXiuWJAPFN8mQ5H0yUh177SpmyYtDi27GBlQadU+pv87D2+Ac+9fNYrvbrSJGM71pn8Xga2QyLiwSJhC6wpCoOTEpbVqz1w9r09FvdSXp+asyGijAPJKWarBIr+qVTWAM3F9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1291zIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271ECC4CEE7;
+	Wed, 17 Sep 2025 13:55:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758117300;
+	bh=DOFpDlg5FMx8jTMqpqMwnip7UugdR0HE/k9EqZMJhRA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=g1291zIwd6milGzWexE6ca1KGJZYQ4iyTwtebPo9eydppBrTi2PSymmRfWZZC/QJW
+	 4BzgiESV/8n1b0SF4SBKBEaZ7kR1ocAjat04xvdOlhgM1LVQW269iAzrh7TEEyYGU1
+	 KlqrEhdYzr5w1v/Wr0RZ9Rx2IY7sHcDPYAsXCkeFuvT+02WHJMQcO3Qx1irlO6FxPG
+	 MSyqFB9KdqZTucEg96MwmQqX3zYWyjXVeW+QRNMC8U32lLg2t3/1MBoeKc2Qvw8/1x
+	 MKPqUv0ye1/bN1bYy65eTbludGajFk9L1aKlT7V/8HN79KOUSn03j+dfv1+ad3QvBz
+	 5jKdoHGXxyQsA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] xhci: dbc: decouple endpoint allocation from initialization
+Date: Wed, 17 Sep 2025 09:54:56 -0400
+Message-ID: <20250917135457.565439-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025091739-chaste-kilometer-da82@gregkh>
+References: <2025091739-chaste-kilometer-da82@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917095457.2103318-1-o.rempel@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 17, 2025 at 11:54:57AM +0200, Oleksij Rempel wrote:
-> Forbid USB runtime PM (autosuspend) for AX88772* in bind.
-> 
-> usbnet enables runtime PM by default in probe, so disabling it via the
-> usb_driver flag is ineffective. For AX88772B, autosuspend shows no
-> measurable power saving in my tests (no link partner, admin up/down).
-> The ~0.453 W -> ~0.248 W reduction on 6.1 comes from phylib powering
-> the PHY off on admin-down, not from USB autosuspend.
-> 
-> With autosuspend active, resume paths may require calling phylink/phylib
-> (caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
-> resume can deadlock (RTNL may already be held), and MDIO can attempt a
-> runtime-wake while the USB PM lock is held. Given the lack of benefit
-> and poor test coverage (autosuspend is usually disabled by default in
-> distros), forbid runtime PM here to avoid these hazards.
-> 
-> This affects only AX88772* devices (per-interface in bind). System
-> sleep/resume is unchanged.
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-> @@ -919,6 +935,16 @@ static int ax88772_bind(struct usbnet *dev, struct usb_interface *intf)
->  	if (ret)
->  		goto initphy_err;
->  
-> +	/* Disable USB runtime PM (autosuspend) for this interface.
-> +	 * Rationale:
-> +	 * - No measurable power saving from autosuspend for this device.
-> +	 * - phylink/phylib calls require caller-held RTNL and do MDIO I/O,
-> +	 *   which is unsafe from USB PM resume paths (possible RTNL already
-> +	 *   held, USB PM lock held).
-> +	 * System suspend/resume is unaffected.
-> +	 */
-> +	pm_runtime_forbid(&intf->dev);
+[ Upstream commit 220a0ffde02f962c13bc752b01aa570b8c65a37b ]
 
-Are you aware that the action of pm_runtime_forbid() can be reversed by 
-the user (by writing "auto" to the .../power/control sysfs file)?
+Decouple allocation of endpoint ring buffer from initialization
+of the buffer, and initialization of endpoint context parts from
+from the rest of the contexts.
 
-To prevent the user from re-enabling runtime PM, you should call 
-pm_runtime_get_noresume() (and then of course pm_runtime_put() or 
-equivalent while unbinding).
+It allows driver to clear up and reinitialize endpoint rings
+after disconnect without reallocating everything.
 
-Alan Stern
+This is a prerequisite for the next patch that prevents the transfer
+ring from filling up with cancelled (no-op) TRBs if a debug cable is
+reconnected several times without transferring anything.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/host/xhci-dbgcap.c | 71 ++++++++++++++++++++++------------
+ 1 file changed, 46 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 2cd8c757c6534..0f921df7a09e4 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -86,13 +86,34 @@ static u32 xhci_dbc_populate_strings(struct dbc_str_descs *strings)
+ 	return string_length;
+ }
+ 
++static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
++{
++	struct xhci_ep_ctx      *ep_ctx;
++	unsigned int		max_burst;
++	dma_addr_t		deq;
++
++	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
++
++	/* Populate bulk out endpoint context: */
++	ep_ctx                  = dbc_bulkout_ctx(dbc);
++	deq                     = dbc_bulkout_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
++
++	/* Populate bulk in endpoint context: */
++	ep_ctx                  = dbc_bulkin_ctx(dbc);
++	deq                     = dbc_bulkin_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
++}
++
+ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ {
+ 	struct dbc_info_context	*info;
+-	struct xhci_ep_ctx	*ep_ctx;
+ 	u32			dev_info;
+-	dma_addr_t		deq, dma;
+-	unsigned int		max_burst;
++	dma_addr_t		dma;
+ 
+ 	if (!dbc)
+ 		return;
+@@ -106,20 +127,8 @@ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
+ 	info->length		= cpu_to_le32(string_length);
+ 
+-	/* Populate bulk out endpoint context: */
+-	ep_ctx			= dbc_bulkout_ctx(dbc);
+-	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
+-	deq			= dbc_bulkout_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
+-
+-	/* Populate bulk in endpoint context: */
+-	ep_ctx			= dbc_bulkin_ctx(dbc);
+-	deq			= dbc_bulkin_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
++	/* Populate bulk in and out endpoint contexts: */
++	xhci_dbc_init_ep_contexts(dbc);
+ 
+ 	/* Set DbC context and info registers: */
+ 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
+@@ -421,6 +430,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t flags)
+ 	return ctx;
+ }
+ 
++static void xhci_dbc_ring_init(struct xhci_ring *ring)
++{
++	struct xhci_segment *seg = ring->first_seg;
++
++	/* clear all trbs on ring in case of old ring */
++	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
++
++	/* Only event ring does not use link TRB */
++	if (ring->type != TYPE_EVENT) {
++		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
++
++		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
++		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
++	}
++	xhci_initialize_ring_info(ring, 1);
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -449,15 +475,10 @@ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ 
+ 	seg->dma = dma;
+ 
+-	/* Only event ring does not use link TRB */
+-	if (type != TYPE_EVENT) {
+-		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
+-
+-		trb->link.segment_ptr = cpu_to_le64(dma);
+-		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
+-	}
+ 	INIT_LIST_HEAD(&ring->td_list);
+-	xhci_initialize_ring_info(ring, 1);
++
++	xhci_dbc_ring_init(ring);
++
+ 	return ring;
+ dma_fail:
+ 	kfree(seg);
+-- 
+2.51.0
+
 
