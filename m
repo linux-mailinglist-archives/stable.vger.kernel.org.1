@@ -1,234 +1,119 @@
-Return-Path: <stable+bounces-180460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876D5B82310
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 00:51:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22619B823CA
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 01:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CDF517B37D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 22:51:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7354626A96
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 23:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9AA30B500;
-	Wed, 17 Sep 2025 22:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC7730DEDD;
+	Wed, 17 Sep 2025 23:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="TAU1Xqlv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a3GfjjVD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A79E30BB8C
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 22:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BEB2FFDF7
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 23:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758149470; cv=none; b=TB11AFyTDnTomJxBLQjkGcDrw8UA3HQHKCkipt2ThAPnlg1cP6j12KLsvePdvtqDsxxcVcREL41ADidGLcDHNWnkAcHs/DK7/3CkJcL9enrJp8Q209BBQ0nFk53KQJCrofi8A2AGNIJB19uIicXoMQP2ldHE6CWtkA39VTAfw6Q=
+	t=1758150526; cv=none; b=IgJScNchLEslDgwJnZLnwNxVkRUMhFJSOelEu79Tik0/mAge1i1zhxC2qbtWcgzCoyJogGMIaJHRzszcO/xFeOZZwGjTzfbDnmzNcFc+7TAPl9fZkYuCOtPcIW7iJ6wjOTZsQ/ZLAWQ5QY3uw5KEDYoqwQesTENiyVV9dFPQ5sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758149470; c=relaxed/simple;
-	bh=uXQN6FSQJnpjKMExP2GtxNzt35X+QqvTVhfhqwNmWL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IyswBoH45v6F7vbHA81zwQkQqMI3mK3/fheTKXC5QAopEzP++d3YgOmuHFk+fQ+oFPOCrcvh5FAH5H35C/qZNabxzAZMNFw8D4XXhBcQ4KZrE4D1+VZdnFObUWFd+4SIde0kv7zIM621VdeN37xrkD/SR3QG0TwVbaiztH4o1aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=TAU1Xqlv; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-77ce812f200so286083b3a.1
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:51:08 -0700 (PDT)
+	s=arc-20240116; t=1758150526; c=relaxed/simple;
+	bh=fiHidarY3es8NBA+LEW3pv6bjjvuMZYa+mJzlo0B1L4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lAWTN5hOQD/tV5w4ZJyB9H0Nkq5oX8wlT0vhKdWy1UrivBmd7cd90fM/45aqWsDDkwmd827zjvBcdWnplObnjlUI1COICxdb1g+CMLYtGmNgqJyR44Zx6MMLYaGacnf/0R5XPwmCJplX66vQRJwfnh4go6/efzmkcx+gXDM0A5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a3GfjjVD; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b0473327e70so55966666b.3
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 16:08:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1758149468; x=1758754268; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KiBmD6NJZU/wz6ZMowNVOrSIvY548tKi0Wxl6W6YNg4=;
-        b=TAU1XqlvofEukbAmjo+VEdU5Mnx4ijqoqqVdK4YJmfIgs3W3oZ9Va28Y3p5GNmQqaP
-         2eCsNtv73V9mqG8Vz4tGT1eaI04u3D6rgyZkkjQyadATFjWgJpvN162qHscx5AwDYfui
-         5HVJQrD1tChDcQYEkpQaSnmLyxuBN5TH+oZ9tATUKM69Ydmtq1eFB0cWbAPqOm2eaUNc
-         KBKxlO0assKAZ9UinfpobX+W7PxzbxLBVtlGeV5DH5I75vtlw2E2IKaDc6CBbVJAxQ1c
-         ALFl3Hy7QQNzg96L5iWPxGBF6zCDv0gklfw8kJ33gJvlSO2eVl20VgOthX7j+YIpjpYO
-         nB9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758149468; x=1758754268;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1758150522; x=1758755322; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KiBmD6NJZU/wz6ZMowNVOrSIvY548tKi0Wxl6W6YNg4=;
-        b=MGEvF/LE05NNuZV79X/pJcx0wHXhc9XtRV4VARO8Uw+RDJ9AowjvOk1rdv41cYg3zU
-         k4hXX0hvXOp02XYDklV8u2yvII37Vgy+NatqzDTO0gOCRpdRsAvDtdjbC/CCIYc09T5c
-         yd0QP3+Zdrv0DRmwcCrC7GU2Bv6SoWElrSlWFh6yY3IH/LVBh1TcpsPaKDiIlZGtsiIK
-         pATqYxmL1vNu5Ev++4eEwHtGUhOgJRF1RHyaGmIT9WVLRUvuRcpJfKcDS+FMp6ziEBGi
-         NXOWkxNricWe2OsNj6S1xjI/CrVKzgtl6OwL7sWfheAJBluGbX6iSWfgWb4SLL3GjB3c
-         aCbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVL4lsYj6nXxqNBNcBwBVctY2Gryr7Keuldh8LmrfPhiRqheMnAaCz5JPiX/Fr/j/Q+xJsQaNQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuoWj8B8D/QWHh81oq385VJaXQRXO1uywGURAKf8HX4XYnwETW
-	G3c+O/WWoZNMdD5e55GaqzbBm77ogvlsFCbrYS36HVxQ4lSzOTxD0jb/C7ktE8q67OM=
-X-Gm-Gg: ASbGncvtLGeHXW6wbRbeLjAjcTTIt0Z5zBt83MP+CdaocwSHMJ5ehYM5O346xN0Z0b3
-	IK4SnCAYCb+PLTB9yz6/ynIU60JdNRphQR4LQr7PzSgZ8Q3K4yrs12JHoxF7EmujnoM9giJjmTZ
-	urG0/6x01LsaqtvK8zWi0u0vUDKiuUzTKdl5mBtFmylaCalEek+hnNSZD1i8zdSgyBCeUiqJiQ9
-	U0sqsnWF9IJQ44UfxtKXNizxDpVgVHWPGHTWNssPtGHke3I262xe5HQEUOq5oSNsttTod0+33pK
-	f5sUh2ppTp3cmfZ9fHTaE5UQyW5E8GJOvsTsG+PPy2AHoQP0LmXgxJWwhPFV+gP5iMe0lkhP4r8
-	T5QjT8EfjRPc2ptRpi6cAvsGUziOFLJb7TzM43tU1XKbvqM0fr0nCPDJm2/Up3w+t38XfqNg17M
-	ERE5DtJg==
-X-Google-Smtp-Source: AGHT+IFwfCQkVNjD6CXMbnqb6iNxIizQ9+fDYixTv2KRx6v3UbkFCsyowVxUeZhQg3zfx+PNmkXznA==
-X-Received: by 2002:a05:6a20:a127:b0:24d:d206:69ac with SMTP id adf61e73a8af0-284522d3d4fmr1738503637.14.1758149468140;
-        Wed, 17 Sep 2025 15:51:08 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cfc248fa0sm454091b3a.30.2025.09.17.15.51.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 15:51:07 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.98.2)
-	(envelope-from <david@fromorbit.com>)
-	id 1uz0zR-00000003IYr-0zrK;
-	Thu, 18 Sep 2025 08:51:05 +1000
-Date: Thu, 18 Sep 2025 08:51:05 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: slava.dubeyko@ibm.com, xiubli@redhat.com, idryomov@gmail.com,
-	amarkuze@redhat.com, ceph-devel@vger.kernel.org,
-	netfs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, Mateusz Guzik <mjguzik@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ceph: fix deadlock bugs by making iput() calls
- asynchronous
-Message-ID: <aMs7WYubsgGrcSXB@dread.disaster.area>
-References: <20250917124404.2207918-1-max.kellermann@ionos.com>
+        bh=hRGj/ILyJWi2Bsgex4Gvbo4N7e1wLDw4WJvnSHlYoZY=;
+        b=a3GfjjVDOZloiF3VHg1fDTK/uGAjwoqZxrDmljLKWUYqeFDkG4puWSop+iNpdtY33S
+         NdJ/cP+klOKHxsi6s4nCGtkbcYEDAr91Zn8tCT7GSnFwGfC6ggfa2Q5GgWRsLQpgHBpM
+         EpHymmtQJ0Lf27fTlyD1EBlsqIOChVPhkRy9Lf+4/l3T5KNkiTqz6hMJeKiwi5b3DZrB
+         AYGyHTdN5Je9sN4jCvevyClImXvu8bsCKeLyPITDphDybU3LBlBAkM1rHHfFUagqm+EG
+         iIJWJWDWxzZn54aHP90ddn90W5Mz38hCIIC1IFhAfEdK5vwq35TO1TBkGVofSdTYJNs0
+         2l7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758150522; x=1758755322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hRGj/ILyJWi2Bsgex4Gvbo4N7e1wLDw4WJvnSHlYoZY=;
+        b=jB8chA+v6FsDHJTLB0scVuSr/PoTeXJPFxYqRysBMkBSlbFuRRGyhbQlu04ziWCuNa
+         dv5jNM0zaVSJGiSDfZX9C37WAe+LYF/NoE9F/kuhldWwTBEkEUD/41ZEJHQMe9rXOOsJ
+         4rIyIbECkjsbxVBoO2uJF0K1hbhmCx+Tj7+dDNwrfdbkpEoZmYqFjReQioyNkpKzdmp3
+         d6e8H1Bcp/6E4RCXQ8kDbGKUuSplyZL8sT14Fr/us2R45rwuolRJTXidz1XFYnCGSUty
+         z47Ga8Bw7z/jE+/nhMv6XUawXvwVo7DHg4f+3k68yFap4MxH+A53qQkkZlLwztV5ebRO
+         g83g==
+X-Forwarded-Encrypted: i=1; AJvYcCWD95eCB07+usIhMgWooo5fRR5yvaKIm3gAJxB5/6kngAdIZixoWZguRVxYxcrJHQVV0fAkN/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcDyxCiERm7AbW207kLWC4uTkXIyLMwVDMqn00z6tQ5OBteOtY
+	dnl/TSPHK+q+DyB5LVwbtIapUMbhj9PWhsoowwW2K/0akoE+jKcoEb+UTEMzkiuOgADKyo/YXpI
+	nBkPF2ydyWa5mzr3cNgD4epGWnS9+yT/LVdXd0MM=
+X-Gm-Gg: ASbGncs8ZGepzrX34pQcY3ZHndyZ5bFt8PYmhAa+Diu6jrdPkJAti+Qt8q/NCPd8bgA
+	mKVjKOTW+u0Yr2ReNQ7D8KXkacvNsXzx733t7BHxxyp4VBhueHdGqBolNOP9YR+gfbKEe6NYRfZ
+	FuTo9fYwOGZnaxKQ1g1FZkIC1KoeRqC0UouZh4QZ081V4iEe5KFcR8mjTMPvPWVTt+sIqnbEWlp
+	8knKiiz0SBkZ8aoJS2TOn2hteU3FAyjwJ+uG+saWFXh8MJGa+P95J4DZA==
+X-Google-Smtp-Source: AGHT+IFTShsh8t7nrREG3sNteTvvDWCztpJ0irdoYHone0kblikor9dVjpl7/+XtSzyEetSqaaCdKn/NmlZEPTV0vhE=
+X-Received: by 2002:a17:907:6093:b0:afd:d994:7d1a with SMTP id
+ a640c23a62f3a-b1bbc545b99mr380535666b.63.1758150522536; Wed, 17 Sep 2025
+ 16:08:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917124404.2207918-1-max.kellermann@ionos.com>
+References: <20250917124404.2207918-1-max.kellermann@ionos.com> <aMs7WYubsgGrcSXB@dread.disaster.area>
+In-Reply-To: <aMs7WYubsgGrcSXB@dread.disaster.area>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Thu, 18 Sep 2025 01:08:29 +0200
+X-Gm-Features: AS18NWAPWaGTXxRYRzp3XafBT13uBoehIcp4zLeoIa2AaJjHnaVuMpyaFs-UzhE
+Message-ID: <CAGudoHHb38eeqPdwjBpkweEwsa6_DTvdrXr2jYmcJ7h2EpMyQg@mail.gmail.com>
+Subject: Re: [PATCH] ceph: fix deadlock bugs by making iput() calls asynchronous
+To: Dave Chinner <david@fromorbit.com>
+Cc: Max Kellermann <max.kellermann@ionos.com>, slava.dubeyko@ibm.com, xiubli@redhat.com, 
+	idryomov@gmail.com, amarkuze@redhat.com, ceph-devel@vger.kernel.org, 
+	netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 17, 2025 at 02:44:04PM +0200, Max Kellermann wrote:
-> The iput() function is a dangerous one - if the reference counter goes
-> to zero, the function may block for a long time due to:
-> 
-> - inode_wait_for_writeback() waits until writeback on this inode
->   completes
-> 
-> - the filesystem-specific "evict_inode" callback can do similar
->   things; e.g. all netfs-based filesystems will call
->   netfs_wait_for_outstanding_io() which is similar to
->   inode_wait_for_writeback()
-> 
-> Therefore, callers must carefully evaluate the context they're in and
-> check whether invoking iput() is a good idea at all.
-> 
-> Most of the time, this is not a problem because the dcache holds
-> references to all inodes, and the dcache is usually the one to release
-> the last reference.  But this assumption is fragile.  For example,
-> under (memcg) memory pressure, the dcache shrinker is more likely to
-> release inode references, moving the inode eviction to contexts where
-> that was extremely unlikely to occur.
-> 
-> Our production servers "found" at least two deadlock bugs in the Ceph
-> filesystem that were caused by this iput() behavior:
-> 
-> 1. Writeback may lead to iput() calls in Ceph (e.g. from
->    ceph_put_wrbuffer_cap_refs()) which deadlocks in
->    inode_wait_for_writeback().  Waiting for writeback completion from
->    within writeback will obviously never be able to make any progress.
->    This leads to blocked kworkers like this:
-> 
->     INFO: task kworker/u777:6:1270802 blocked for more than 122 seconds.
->           Not tainted 6.16.7-i1-es #773
->     task:kworker/u777:6  state:D stack:0 pid:1270802 tgid:1270802 ppid:2
->           task_flags:0x4208060 flags:0x00004000
->     Workqueue: writeback wb_workfn (flush-ceph-3)
->     Call Trace:
->      <TASK>
->      __schedule+0x4ea/0x17d0
->      schedule+0x1c/0xc0
->      inode_wait_for_writeback+0x71/0xb0
->      evict+0xcf/0x200
->      ceph_put_wrbuffer_cap_refs+0xdd/0x220
->      ceph_invalidate_folio+0x97/0xc0
->      ceph_writepages_start+0x127b/0x14d0
->      do_writepages+0xba/0x150
->      __writeback_single_inode+0x34/0x290
->      writeback_sb_inodes+0x203/0x470
->      __writeback_inodes_wb+0x4c/0xe0
->      wb_writeback+0x189/0x2b0
->      wb_workfn+0x30b/0x3d0
->      process_one_work+0x143/0x2b0
->      worker_thread+0x30a/0x450
-> 
-> 2. In the Ceph messenger thread (net/ceph/messenger*.c), any iput()
->    call may invoke ceph_evict_inode() which will deadlock in
->    netfs_wait_for_outstanding_io(); since this blocks the messenger
->    thread, completions from the Ceph servers will not ever be received
->    and handled.
-> 
-> It looks like these deadlock bugs have been in the Ceph filesystem
-> code since forever (therefore no "Fixes" tag in this patch).  There
-> may be various ways to solve this:
-> 
-> - make iput() asynchronous and defer the actual eviction like fput()
->   (may add overhead)
-> 
-> - make iput() only asynchronous if I_SYNC is set (doesn't solve random
->   things happening inside the "evict_inode" callback)
-> 
-> - add iput_deferred() to make this asynchronous behavior/overhead
->   optional and explicit
-> 
-> - refactor Ceph to avoid iput() calls from within writeback and
->   messenger (if that is even possible)
-> 
-> - add a Ceph-specific workaround
+On Thu, Sep 18, 2025 at 12:51=E2=80=AFAM Dave Chinner <david@fromorbit.com>=
+ wrote:
+> - wait for Josef to finish his inode refcount rework patchset that
+>   gets rid of this whole "writeback doesn't hold an inode reference"
+>   problem that is the root cause of this the deadlock.
+>
+> All that adding a whacky async iput work around does right now is
+> make it harder for Josef to land the patchset that makes this
+> problem go away entirely....
+>
 
-- wait for Josef to finish his inode refcount rework patchset that
-  gets rid of this whole "writeback doesn't hold an inode reference"
-  problem that is the root cause of this the deadlock.
+Per Max this is a problem present on older kernels as well, something
+of this sort is needed to cover it regardless of what happens in
+mainline.
 
-All that adding a whacky async iput work around does right now is
-make it harder for Josef to land the patchset that makes this
-problem go away entirely....
+As for mainline, I don't believe Josef's patchset addresses the problem.
 
-> diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-> index f67025465de0..385d5261632d 100644
-> --- a/fs/ceph/inode.c
-> +++ b/fs/ceph/inode.c
-> @@ -2191,6 +2191,48 @@ void ceph_queue_inode_work(struct inode *inode, int work_bit)
->  	}
->  }
->  
-> +/**
-> + * Queue an asynchronous iput() call in a worker thread.  Use this
-> + * instead of iput() in contexts where evicting the inode is unsafe.
-> + * For example, inode eviction may cause deadlocks in
-> + * inode_wait_for_writeback() (when called from within writeback) or
-> + * in netfs_wait_for_outstanding_io() (when called from within the
-> + * Ceph messenger).
-> + *
-> + * @n: how many references to put
-> + */
-> +void ceph_iput_n_async(struct inode *inode, int n)
-> +{
-> +	if (unlikely(!inode))
-> +		return;
-> +
-> +	if (likely(atomic_sub_return(n, &inode->i_count) > 0))
-> +		/* somebody else is holding another reference -
-> +		 * nothing left to do for us
-> +		 */
-> +		return;
-> +
-> +	doutc(ceph_inode_to_fs_client(inode)->client, "%p %llx.%llx\n", inode, ceph_vinop(inode));
-> +
-> +	/* the reference counter is now 0, i.e. nobody else is holding
-> +	 * a reference to this inode; restore it to 1 and donate it to
-> +	 * ceph_inode_work() which will call iput() at the end
-> +	 */
-> +	atomic_set(&inode->i_count, 1);
+The newly added refcount now taken by writeback et al only gates the
+inode getting freed, it does not gate almost any of iput/evict
+processing. As in with the patchset writeback does not hold a real
+reference.
 
-If you must do this, please have a look at how
-btrfs_add_delayed_iput() handles detecting the last inode reference
-and punting it to an async queue without needing to drop the last
-reference at all.
-
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+So ceph can still iput from writeback and find itself waiting in
+inode_wait_for_writeback, unless the filesystem can be converted to
+use the weaker refcounts and iobj_put instead (but that's not
+something I would be betting on).
 
