@@ -1,171 +1,130 @@
-Return-Path: <stable+bounces-179773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B13B7D47F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:23:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E0AB7D905
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4E7C1657A9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:26:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AD0B3ADB53
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5303233721;
-	Wed, 17 Sep 2025 07:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CEB29E116;
+	Wed, 17 Sep 2025 07:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZ3gOzYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4bvdTzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE41226CF7
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3790B284682
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758093904; cv=none; b=UywVP7QZg+nKV9pQSzQ4q3OROANTM83mE5QOuWQdPIfyL8nYfGP02TNalNLKZ7Ha0YRAbJ9XD0kAQ2/65Ig570DblNtWptW5qPis/bpxOLOG8eO4G8XKP3Lps/ics1Zd6DC96W5lAwLOtzFfMtbbbE7J06p3cWT1x7y+q9oL8J8=
+	t=1758094839; cv=none; b=Qo8xIJ8DCezO1dwkf5JRdlexiGkPTGmE54lsavqpujNoNZo1+NtdRgUzH9QQT/1Ep2K80zsWV9csbZSu4aCgHEGlbPO0c0ibGBWvK5LDTSSgKSv5u5J1Zt+m1FkUxnmFnGLflQF5tCAESvptvz8QwFs1STMJ1iZgwt3Zet09keM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758093904; c=relaxed/simple;
-	bh=/M2oF+iVxNC0+OmxyvJPnmr0l6yG29erPuRAvEgQ9M4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RJ4Ka75whpqE+bU+QW6QniB+xjPsO8Os6E36hstxFWeuSlctD8ojs6hawKHMjJLnWVrzgP0h39mhUCSkOcwKe43iyFAMs9xo6jwKRdPYlMekjNPkUeX/ce1yjiXan9WJ4avBTZIeyJrt8qQUfzgqQXdEk6LASVF5IS5X/t2kLn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZ3gOzYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FDCC4CEF0;
-	Wed, 17 Sep 2025 07:25:02 +0000 (UTC)
+	s=arc-20240116; t=1758094839; c=relaxed/simple;
+	bh=qmIu/kSHPMaZ0Sb2VKPPv4ZxNstZQwTSRpHYbfclKdw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FOgBgp3/xWBc1xTPYyh4GnSHTwk+lcuzKH6ad+RMjMfZArLGFC3MpQIQImG+pOY72KE9fwrlsclB6Hki86N7zTCCyzjQm+EEoa1NLGlqHRVu1kxKhrOdjPME5l70ZJ/mWL28gvbT7YrwoKjfIz6pCqiAiuV6eOlI81WN9Qag0ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4bvdTzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0DDC4CEF0;
+	Wed, 17 Sep 2025 07:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758093903;
-	bh=/M2oF+iVxNC0+OmxyvJPnmr0l6yG29erPuRAvEgQ9M4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yZ3gOzYoQU8Mm04Zp4Jt2CLibskm+enogpjY8b9mv04uabk1EtK0LW8rgxDRExlFi
-	 NFFLndZHMT+mrRxdS4WfUIZcJ48jDfwwqx8JGPBk2JZlYYPf1zNvO7ggWyH/5hvPkA
-	 1rlDWMybTleAdmCA77011CKj+V+K2S/kfF1v8RmQ=
-Subject: FAILED: patch "[PATCH] dt-bindings: serial: 8250: move a constraint" failed to apply to 6.16-stable tree
-To: elder@riscstar.com,conor.dooley@microchip.com,conor@kernel.org,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 17 Sep 2025 09:24:59 +0200
-Message-ID: <2025091759-buddy-verdict-96be@gregkh>
+	s=korg; t=1758094837;
+	bh=qmIu/kSHPMaZ0Sb2VKPPv4ZxNstZQwTSRpHYbfclKdw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f4bvdTzQVinwtj9+rD/nW+uYG2XdEZhCQV/nmcw0x5vJ32iNN5UJ7j9MFho2Ff1gJ
+	 KdyYDZvR+vVf9hqwlW7p2hWQliDV6Nn2JfTySjDRDd5GrRmxFCmT3k16kOkydXyU8c
+	 0AZXj3uipigxhn6UwEgQKxFLqwYajq6PfzD/P4wc=
+Date: Wed, 17 Sep 2025 09:40:34 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Jitindar Singh, Suraj" <surajjs@amazon.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.10 0/4] x86/speculation: Make {JMP, CALL}_NOSPEC
+ Consistent
+Message-ID: <2025091712-gizzard-patrol-e59d@gregkh>
+References: <20250903225003.50346-1-surajjs@amazon.com>
+ <2025090450-plaster-shadiness-1283@gregkh>
+ <ecfff771b6fdd3f5bcca3c29019dafb28d20abe1.camel@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ecfff771b6fdd3f5bcca3c29019dafb28d20abe1.camel@amazon.com>
 
+On Tue, Sep 16, 2025 at 08:41:33PM +0000, Jitindar Singh, Suraj wrote:
+> On Thu, 2025-09-04 at 14:00 +0200, Greg KH wrote:
+> > On Wed, Sep 03, 2025 at 03:49:59PM -0700, Suraj Jitindar Singh wrote:
+> > > The 4 patches in this series make the JMP_NOSPEC and CALL_NOSPEC
+> > > macros used
+> > > in the kernel consistent with what is generated by the compiler.
+> > > 
+> > > ("x86,nospec: Simplify {JMP,CALL}_NOSPEC") was merged in v6.0 and
+> > > the remaining
+> > > 3 patches in this series were merged in v6.15. All 4 were included
+> > > in kernels
+> > > v5.15+ as prerequisites for the backport of the ITS mitigations
+> > > [1].
+> > > 
+> > > None of these patches were included in the backport of the ITS
+> > > mitigations to
+> > > the 5.10 kernel [2]. They all apply cleanly and are applicable to
+> > > the 5.10
+> > > kernel. Thus I see no reason that they weren't applied here, unless
+> > > someone can
+> > > correct me?
+> > 
+> > Do they actually fix anything?
+> 
+> They do not, no.
+> 
+> > 
+> > > I am sending them for inclusion in the 5.10 kernel as this kernel
+> > > is still
+> > > actively maintained for these kind of vulnerability mitigations and
+> > > as such
+> > > having these patches will unify the handling of these cases with
+> > > subsequent
+> > > kernel versions easing code understanding and the ease of backports
+> > > in the
+> > > future.
+> > 
+> > Does this actually allow this to happen?  I think there are a few
+> > speculation fixes that have not been backported to this kernel tree,
+> > so
+> > why not just make this as a part of that work instead?  Just adding
+> > infastructure that doesn't do anything isn't usually a good idea.
+> > 
+> 
+> In my case at least, it does. I had to spend time working out why this
+> code was different compared to newer stable and upstream, and
+> determining if this required special handling - which would not have
+> been necessary if this code was the same. Other speculation fixes don't
+> touch this path which is why it was included in the ITS mitigation
+> patch series for other stable versions. It does do something, any where
+> the macros are used this does something and is then rewritten by the
+> alternatives code.
+> 
+> Trying to save my own (and anyone elses) sanity for having to work out
+> why this is different in the future in an area which does still get
+> regularly touched for these old kernels. Understand it doesn't fit the
+> regular stable patch mold but wanted to help in case these were just
+> unintentionally missed in this stable stream. But I acknowledge as you
+> point out that they are not fixing anything.
 
-The patch below does not apply to the 6.16-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+If you want to include this as part of a patch series that does add
+additional speculation bugfixes, as it would make that series work
+easier, that's great, but on its own, it wouldn't make much sense to do
+this for no reason.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
-git checkout FETCH_HEAD
-git cherry-pick -x 387d00028cccee7575f6416953bef62f849d83e3
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091759-buddy-verdict-96be@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+good luck with keeping this alive, that's not an easy task.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 387d00028cccee7575f6416953bef62f849d83e3 Mon Sep 17 00:00:00 2001
-From: Alex Elder <elder@riscstar.com>
-Date: Tue, 12 Aug 2025 22:21:50 -0500
-Subject: [PATCH] dt-bindings: serial: 8250: move a constraint
-
-A block that required a "spacemit,k1-uart" compatible node to
-specify two clocks was placed in the wrong spot in the binding.
-Conor Dooley pointed out it belongs earlier in the file, as part
-of the initial "allOf".
-
-Fixes: 2c0594f9f0629 ("dt-bindings: serial: 8250: support an optional second clock")
-Cc: stable <stable@kernel.org>
-Reported-by: Conor Dooley <conor@kernel.org>
-Closes: https://lore.kernel.org/lkml/20250729-reshuffle-contented-e6def76b540b@spud/
-Signed-off-by: Alex Elder <elder@riscstar.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250813032151.2330616-1-elder@riscstar.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/Documentation/devicetree/bindings/serial/8250.yaml b/Documentation/devicetree/bindings/serial/8250.yaml
-index e46bee8d25bf..f59c0b37e8eb 100644
---- a/Documentation/devicetree/bindings/serial/8250.yaml
-+++ b/Documentation/devicetree/bindings/serial/8250.yaml
-@@ -48,7 +48,6 @@ allOf:
-       oneOf:
-         - required: [ clock-frequency ]
-         - required: [ clocks ]
--
-   - if:
-       properties:
-         compatible:
-@@ -66,6 +65,28 @@ allOf:
-           items:
-             - const: core
-             - const: bus
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - spacemit,k1-uart
-+              - nxp,lpc1850-uart
-+    then:
-+      required:
-+        - clocks
-+        - clock-names
-+      properties:
-+        clocks:
-+          minItems: 2
-+        clock-names:
-+          minItems: 2
-+    else:
-+      properties:
-+        clocks:
-+          maxItems: 1
-+        clock-names:
-+          maxItems: 1
- 
- properties:
-   compatible:
-@@ -264,29 +285,6 @@ required:
-   - reg
-   - interrupts
- 
--if:
--  properties:
--    compatible:
--      contains:
--        enum:
--          - spacemit,k1-uart
--          - nxp,lpc1850-uart
--then:
--  required:
--    - clocks
--    - clock-names
--  properties:
--    clocks:
--      minItems: 2
--    clock-names:
--      minItems: 2
--else:
--  properties:
--    clocks:
--      maxItems: 1
--    clock-names:
--      maxItems: 1
--
- unevaluatedProperties: false
- 
- examples:
-
 
