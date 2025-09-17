@@ -1,123 +1,131 @@
-Return-Path: <stable+bounces-179785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF52B7D860
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:30:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF37B7DF9D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB8983BE5CE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:44:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D1B07A41DE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF352882DB;
-	Wed, 17 Sep 2025 07:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BE2303A12;
+	Wed, 17 Sep 2025 07:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxNDESgt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbSauEvn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC9D248F68
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F50248F68;
+	Wed, 17 Sep 2025 07:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758095055; cv=none; b=YsoChq1VRB3jF4nU8GQZWj+FaSwbVqrqpNevfCtPxcU0ud8OipISyUchalUiFppp+fF79Sf+P3BN4oGm3uupwmUS12Ab65jCn6llzIeNWedbG4CQuEGFcyWTluvfwTCH2jYE6de6w+JEBl2tkyQ8HLnQGT0kDUzoiqbz6EtAnvw=
+	t=1758095056; cv=none; b=jRGTW24+OEvvbIJxW9Zu9kQ0Wnz8jyb1rUKRi42lm9DzCBuBh/tE0yxoE3kleQ6tn2n+30MjP/AGFO68STJYqDb+z7iDekgB05+B7XlphGTDGIEnAQBqg2WnlJeJA4YQvb2emXbpaxs5IA5sHMJATUIv/oqtoDjPoxRfynwHGfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758095055; c=relaxed/simple;
-	bh=Q6+QunKasEwuK3ytT8G5UPuxodiFy0OywXzYw2+UbNI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AHY9+GlROkVOn4SjVCUZrhLD7EFoOwUujJqc23Izy5LWHMa/lOcrfO59QswB7HaJGjwDEZx+SYVGjW8c+I4hc3mX7ocQLafkmpOff8LkQ1mAlTXX0dnXHxerX6ZETdiHiNLXRmWeBxa6XVoO4mvAlPRwiHiGYXzm/ySzfLygCqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxNDESgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45705C4CEF0;
-	Wed, 17 Sep 2025 07:44:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758095054;
-	bh=Q6+QunKasEwuK3ytT8G5UPuxodiFy0OywXzYw2+UbNI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=VxNDESgt7pwH6ufKkfDxICUwgWc/7awTqQUmSs8dfLpmHxMTYXAkdaLLkRIRP444e
-	 0u2V9NFCEB/vvqRNNnCM0rZZLEyF/DBfq5bfVNrrdKCFYb5Zzp9oS9lIo4UubvoymC
-	 5pADtmHQPjpD3e5zo8z4BkbYrETCoTUbg1o2jmy0=
-Subject: FAILED: patch "[PATCH] xhci: fix memory leak regression when freeing xhci vdev" failed to apply to 5.4-stable tree
-To: mathias.nyman@linux.intel.com,00107082@163.com,gregkh@linuxfoundation.org,michal.pecio@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 17 Sep 2025 09:43:58 +0200
-Message-ID: <2025091758-flask-diligence-4c70@gregkh>
+	s=arc-20240116; t=1758095056; c=relaxed/simple;
+	bh=O32d9nMpfCjkvZmQj+LHF+wrVeinQYtykhIahUtbw28=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iSJtplyrVDTCqp4EoHbm5Xf1zECwq4gsCit9yZfw6SiScHAIFj9dvMVNXu5Gf2ezcqTyQ9B/scqsA5QgeFSX0zGxb5Pait72TtjDcLCg7BqzssbfgzNv8QmbHu3xugoQTHpQ9GfVo7KoU3O06TGYcRabTnHD62X4GbZgL/geado=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbSauEvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E97C4CEF0;
+	Wed, 17 Sep 2025 07:44:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758095055;
+	bh=O32d9nMpfCjkvZmQj+LHF+wrVeinQYtykhIahUtbw28=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hbSauEvn8Wn3EmtIF1IR8j8PX6fACuh6JMywy6s8FmmriFeqeH4xYjv3rsgkiiCHw
+	 UyXW6ZCZNvyZE6RGZMkRkFVYho1qOiCrBlbKLbvA3DYc3eG5k5Z3b3t4Ah6Vut8N9F
+	 mz9Od2K/Zjhb48M5Pz2QeuVL8vkMb1oj5uZE9k+U3z9YRyXC2W/V4Q1Rs0QQvxv6oI
+	 TuhwBy01nl82bA0BWe24Tay45kPxpRH5HoKH4BQiwqA0cpTdkVZWobrGlHTzenVrMv
+	 tcbISR9d3OsZQnCUcEViB7xZ1G39ye6jJ1F7RiGRvM7WXqTvJfZlKNBNHAG6K+b2bD
+	 GaMy0M7pskqyA==
+From: SeongJae Park <sj@kernel.org>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	minchan@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	david@redhat.com,
+	Liam.Howlett@oracle.com,
+	rppt@kernel.org,
+	pfalcato@suse.de,
+	kernel-team@android.com,
+	android-mm@google.com,
+	stable@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
+Date: Wed, 17 Sep 2025 00:44:13 -0700
+Message-Id: <20250917074413.58886-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+On Mon, 15 Sep 2025 09:36:32 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> The VMA count limit check in do_mmap() and do_brk_flags() uses a
+> strict inequality (>), which allows a process's VMA count to exceed
+> the configured sysctl_max_map_count limit by one.
+> 
+> A process with mm->map_count == sysctl_max_map_count will incorrectly
+> pass this check and then exceed the limit upon allocation of a new VMA
+> when its map_count is incremented.
+> 
+> Other VMA allocation paths, such as split_vma(), already use the
+> correct, inclusive (>=) comparison.
+> 
+> Fix this bug by changing the comparison to be inclusive in do_mmap()
+> and do_brk_flags(), bringing them in line with the correct behavior
+> of other allocation paths.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: <stable@vger.kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x edcbe06453ddfde21f6aa763f7cab655f26133cc
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091758-flask-diligence-4c70@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
+Acked-by: SeongJae Park <sj@kernel.org>
 
 
+Thanks,
+SJ
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From edcbe06453ddfde21f6aa763f7cab655f26133cc Mon Sep 17 00:00:00 2001
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-Date: Tue, 2 Sep 2025 13:53:06 +0300
-Subject: [PATCH] xhci: fix memory leak regression when freeing xhci vdev
- devices depth first
-
-Suspend-resume cycle test revealed a memory leak in 6.17-rc3
-
-Turns out the slot_id race fix changes accidentally ends up calling
-xhci_free_virt_device() with an incorrect vdev parameter.
-The vdev variable was reused for temporary purposes right before calling
-xhci_free_virt_device().
-
-Fix this by passing the correct vdev parameter.
-
-The slot_id race fix that caused this regression was targeted for stable,
-so this needs to be applied there as well.
-
-Fixes: 2eb03376151b ("usb: xhci: Fix slot_id resource race conflict")
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/linux-usb/20250829181354.4450-1-00107082@163.com
-Suggested-by: Michal Pecio <michal.pecio@gmail.com>
-Suggested-by: David Wang <00107082@163.com>
-Cc: stable@vger.kernel.org
-Tested-by: David Wang <00107082@163.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 81eaad87a3d9..c4a6544aa107 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -962,7 +962,7 @@ static void xhci_free_virt_devices_depth_first(struct xhci_hcd *xhci, int slot_i
- out:
- 	/* we are now at a leaf device */
- 	xhci_debugfs_remove_slot(xhci, slot_id);
--	xhci_free_virt_device(xhci, vdev, slot_id);
-+	xhci_free_virt_device(xhci, xhci->devs[slot_id], slot_id);
- }
- 
- int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
-
+[...]
 
