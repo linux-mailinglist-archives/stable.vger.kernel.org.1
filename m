@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-179831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4DADB7C892
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:05:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F20B7C880
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5503A48328B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 11:56:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5410E580C73
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 11:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FB737426F;
-	Wed, 17 Sep 2025 11:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68EC3728A3;
+	Wed, 17 Sep 2025 11:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/JSOo1f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2wjnyTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DD7371EAF
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 11:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E7E371E83
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 11:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758110160; cv=none; b=JPGUHQ6XKHJlhBUmM0oG69h7n9SB/rKBg5H87AEWK++emqxpzpwSkp0p8RkpRg4FfDA9WvuMCdL3ypWWR+PxM1RbQtldiQyrBGUy9r2Pcr9vzT9LFwOilfaJ0KS2dRDNMOrW4MZLoYVPeMmxU51Xnw9yAO1cwofIak/ftfeqW5Q=
+	t=1758110269; cv=none; b=M93HveFipwYzUcwzWayJlF1r/81Lm2zemOglrNx1xqy3mpKYJ+LCyoQOaPh4KdkfMs3BVjLXa268wnE2r1pboJbrwtoA/J4d4HsIqApxdO7yUixE6CajCL6cmNRjQKBv2ryF6k6y8eQOZoprh0xP9YTRKeQ3rOmw39m7ifQ0EEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758110160; c=relaxed/simple;
-	bh=BuiJZY9t/av0THi/vREJ1zGYOtXvHmNENR5eKUxXMXg=;
+	s=arc-20240116; t=1758110269; c=relaxed/simple;
+	bh=Vl2YtEdIMi6cNAhh8vL6qXidRyXiJCWsjCjLptnUIdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrFwXCAaADdxn4OP0mT3opQX0XzUU8d/ik7vb8yQnd9aXN3dAo7NFCz3qcpHG3NdzjWXSSY1JH8VkZnBU8rcAL9sefqq0E5kRaEnMTyJenXfF8qNNUFRjU8jjTVdYAYJSoi32ztCaIBg4dE86wQERNQ3sIPH8l83MGc11qTtd3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/JSOo1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DF6C19422;
-	Wed, 17 Sep 2025 11:55:58 +0000 (UTC)
+	 MIME-Version; b=JuY9ukn6cdUG5N48xiL+Rl9k8FHhouqGzJvbvBaInkGN00pPvlkdYy5PSLaqxW+nd54Tm5UbmlCbeVImXGkf13pw4GFUfZx9kKJYC5OJsVuy4s+gjkJ+vYgWq1pb94IIE5+3r+e67fK6cBzcUTIIoDxHUVWggEQNBk7/RkfSnss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2wjnyTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718CBC4CEF0;
+	Wed, 17 Sep 2025 11:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758110159;
-	bh=BuiJZY9t/av0THi/vREJ1zGYOtXvHmNENR5eKUxXMXg=;
+	s=k20201202; t=1758110269;
+	bh=Vl2YtEdIMi6cNAhh8vL6qXidRyXiJCWsjCjLptnUIdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/JSOo1fMkYmM8LJl3E7SpbuHMlmGnUy7FT2HNEY0LZlnnQ1RfyoaCrjM0EpOjnDy
-	 L+jnO+NKgjyPmYc/PwE/wZEd20rjciQj8EAcr6WS5PyrH7PJQbe1t4+jTNdHZefsa2
-	 QkKmy6uyv5pHhrodzwSuePfDSkrh1yhMfpdGdJ/SML8c1daDGovAtuGD5AVtb+OuSD
-	 JIah/SXjXQoCHZE0GAyMAwfmXqIAV3RQ6yGaykF5YeuMtkxdG21keQHXoUNm3W3C6Y
-	 oUqivS8LccxyKuaqYQflLmwFQ2/ETQTOGUtrvsKnZOm43P5J5zpb0QFVbr0kQ18Bqo
-	 qwO4eA1BAHMvg==
+	b=b2wjnyTc7YfPrCifhpbjzFC0d6ncGHPVh8RAOOy8BhGzaEHgJwyE4rawWPeLI4sRv
+	 8c23u5VyjYOAuYaAuSDKoYWPNVkxxX5idPrpMAHdu3gpj3V4P5RD3m9mx90KES4PrH
+	 Z3yZXRz1Qrv9/KtZXyYcYIP47nYQNe0M51PGFOzkZNV3A03O+bdPWkBulRl4NC3/yQ
+	 amj5Gv3w8RvnlfrX99G/2TpzDx2hC6QOqpuEDGOIHyfWUP3K9rPumMHqeIjgQuAQ1V
+	 RGGVpBLxjtLd010gOw4gPbTuIAP4pg/+E7/THpmWhY4JQeKwpWbhwcMJ4gdeJWzXmQ
+	 Gwh31NoTZ10Zg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alex Elder <elder@riscstar.com>,
-	stable <stable@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+Cc: Frank Li <Frank.Li@nxp.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 2/2] dt-bindings: serial: 8250: allow "main" and "uart" as clock names
-Date: Wed, 17 Sep 2025 07:55:54 -0400
-Message-ID: <20250917115554.481057-2-sashal@kernel.org>
+Subject: [PATCH 6.16.y 1/3] dt-bindings: serial: 8250: allow clock 'uartclk' and 'reg' for nxp,lpc1850-uart
+Date: Wed, 17 Sep 2025 07:57:44 -0400
+Message-ID: <20250917115746.482046-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917115554.481057-1-sashal@kernel.org>
-References: <2025091753-raider-wake-9e9d@gregkh>
- <20250917115554.481057-1-sashal@kernel.org>
+In-Reply-To: <2025091759-buddy-verdict-96be@gregkh>
+References: <2025091759-buddy-verdict-96be@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,75 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alex Elder <elder@riscstar.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit a1b51534b532dd4f0499907865553ee9251bebc3 ]
+[ Upstream commit d2db0d78154442fb89165edf8836bf2644c6c58d ]
 
-There are two compatible strings defined in "8250.yaml" that require
-two clocks to be specified, along with their names:
-  - "spacemit,k1-uart", used in "spacemit/k1.dtsi"
-  - "nxp,lpc1850-uart", used in "lpc/lpc18xx.dtsi"
+Allow clock 'uartclk' and 'reg' for nxp,lpc1850-uart to align existed
+driver and dts. It is really old platform. Keep the same restriction for
+others.
 
-When only one clock is used, the name is not required.  However there
-are two places that do specify a name:
-  - In "mediatek/mt7623.dtsi", the clock for the "mediatek,mtk-btif"
-    compatible serial device is named "main"
-  - In "qca/ar9132.dtsi", the clock for the "ns8250" compatible
-    serial device is named "uart"
+Allow dmas and dma-names property, which allow maxItems 4 because very old
+platform (arch/arm/boot/dts/nxp/lpc/lpc18xx.dtsi) use duplicate "tx", "rx",
+"tx", "rx" as dma-names.
 
-In commit d2db0d7815444 ("dt-bindings: serial: 8250: allow clock
-'uartclk' and 'reg' for nxp,lpc1850-uart"), Frank Li added the
-restriction that two named clocks be used for the NXP platform
-mentioned above.
+Fix below CHECK_DTB warnings:
+  arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: serial@40081000 (nxp,lpc1850-uart): clock-names: ['uartclk', 'reg'] is too long
 
-Change that logic, so that an additional condition for (only) the
-SpacemiT platform similarly restricts the two clocks to have the
-names "core" and "bus".
-
-Finally, add "main" and "uart" as allowed names when a single clock is
-specified.
-
-Fixes: 2c0594f9f0629 ("dt-bindings: serial: 8250: support an optional second clock")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507160314.wrC51lXX-lkp@intel.com/
-Signed-off-by: Alex Elder <elder@riscstar.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250813031338.2328392-1-elder@riscstar.com
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: "Rob Herring (Arm)" <robh@kernel.org>
+Link: https://lore.kernel.org/r/20250602142745.942568-1-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 387d00028ccc ("dt-bindings: serial: 8250: move a constraint")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/8250.yaml | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/serial/8250.yaml      | 41 +++++++++++++++++--
+ 1 file changed, 37 insertions(+), 4 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/serial/8250.yaml b/Documentation/devicetree/bindings/serial/8250.yaml
-index 2766bb6ff2d1b..c1c8bd8e8dde6 100644
+index c6bc27709bf72..2766bb6ff2d1b 100644
 --- a/Documentation/devicetree/bindings/serial/8250.yaml
 +++ b/Documentation/devicetree/bindings/serial/8250.yaml
-@@ -60,7 +60,12 @@ allOf:
-           items:
-             - const: uartclk
-             - const: reg
--    else:
+@@ -49,6 +49,24 @@ allOf:
+         - required: [ clock-frequency ]
+         - required: [ clocks ]
+ 
 +  - if:
 +      properties:
 +        compatible:
 +          contains:
-+            const: spacemit,k1-uart
++            const: nxp,lpc1850-uart
 +    then:
-       properties:
-         clock-names:
-           items:
-@@ -162,6 +167,9 @@ properties:
-     minItems: 1
-     maxItems: 2
++      properties:
++        clock-names:
++          items:
++            - const: uartclk
++            - const: reg
++    else:
++      properties:
++        clock-names:
++          items:
++            - const: core
++            - const: bus
++
+ properties:
+   compatible:
      oneOf:
-+      - enum:
-+          - main
-+          - uart
-       - items:
-           - const: core
-           - const: bus
+@@ -142,9 +160,22 @@ properties:
+ 
+   clock-names:
+     minItems: 1
+-    items:
+-      - const: core
+-      - const: bus
++    maxItems: 2
++    oneOf:
++      - items:
++          - const: core
++          - const: bus
++      - items:
++          - const: uartclk
++          - const: reg
++
++  dmas:
++    minItems: 1
++    maxItems: 4
++
++  dma-names:
++    minItems: 1
++    maxItems: 4
+ 
+   resets:
+     maxItems: 1
+@@ -237,7 +268,9 @@ if:
+   properties:
+     compatible:
+       contains:
+-        const: spacemit,k1-uart
++        enum:
++          - spacemit,k1-uart
++          - nxp,lpc1850-uart
+ then:
+   required: [clock-names]
+   properties:
 -- 
 2.51.0
 
