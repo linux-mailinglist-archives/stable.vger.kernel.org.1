@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-179917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16253B7E17E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7DDB7E780
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE7DF6226F0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 119427A2215
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC5C2F361A;
-	Wed, 17 Sep 2025 12:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450752E7BA0;
+	Wed, 17 Sep 2025 12:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khhaTqGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIH5NlpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5992F238140;
-	Wed, 17 Sep 2025 12:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80CC31A802;
+	Wed, 17 Sep 2025 12:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112795; cv=none; b=FWtP98iEgyv4wcfJ6eHu7FOT5gcxLGV415lnQx1L29NNQEQa1ZczM1MADf31qHj8MLvz2UTUlWnVWQOvZsLicvFRyX5pw3AqWVRkj1sdvGb9fDKczAsHsXc+LkBTNQ2qJHZKaHBnKokIVqLY7uZv6qKWRAVWlrGmkqNzJoB1rCg=
+	t=1758113212; cv=none; b=u8h+jXCXdqHkRAfp7GO0VoVdLIfx5T14/mOui49T+xrtTLK6GgNB8S9UuJFVJi2ZAgQvC21eLWFqiG1tc1NKFym6DOEHfuWUBzAxDwD1WEEwBo0snecWZjIHYSZrRWS30CEX/V8tddu7HU4cUd+1pQtTsiUkyeVA4PchOedE8kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112795; c=relaxed/simple;
-	bh=JDcl0dEB4p5EuEAEyNVlq7pU75BeM6L7Vv+pfHPn9Rs=;
+	s=arc-20240116; t=1758113212; c=relaxed/simple;
+	bh=HB2YCYPtKMRMCvP4YeOgWE0TjCPlvadPJEy2h/ABODo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsRID35U9i4WLkSyJCHt429A0jE9jtksEeXzFqwJTo5tR88ly5DFyMYgYgBwBr2Bizl855YsxstGa8+/gU6vluxgSrq99wyN4l7P3FUFu2ZOilWL5111QG5dLb0ElmxwK3pWaE7x6Em3A5AzQD6uds19u+os8gdToraiRfQNrt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khhaTqGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8895C4CEF0;
-	Wed, 17 Sep 2025 12:39:54 +0000 (UTC)
+	 MIME-Version; b=kFmF8syuL1Img4pv6RTf6duiX7ZAE8xdDSZRcrAwl4Tz/LjltYuSJTLR7kGlCn1aFzqjXPY4oDH7G4JWFitldxs2seOxpQxjgUWn1SvQVWDfi6gD5WSyMw0SK/InHtb94cwRH76nMjJ+bVZ63jSlnKDxvJSNUhb5qtqJxesQc5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIH5NlpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B88DC4CEF0;
+	Wed, 17 Sep 2025 12:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112795;
-	bh=JDcl0dEB4p5EuEAEyNVlq7pU75BeM6L7Vv+pfHPn9Rs=;
+	s=korg; t=1758113211;
+	bh=HB2YCYPtKMRMCvP4YeOgWE0TjCPlvadPJEy2h/ABODo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khhaTqGc4wfI6YOMpu8+sU6s0iuEV1VwDm/TeLPq7/udDZ5KLkWtVCkYXcnM1xCWx
-	 DqEavnculH2gka+12W0w6FWw08Ac2tPk9GepbCBXfwVwwb4j16Ht08/2BW5hOY7m64
-	 W6hqBSlxJXc6vaAIKO28pesPlHqYUN8fHoXlXJGY=
+	b=sIH5NlpV8dAhpIH62tSP1UC1HKDSfNunsD2aGoEVaeiYm83k0BsMzDpwNzSmU7InX
+	 MIduP9tAIY/VhrWcBlJRiewXFLXW1D11P68cX3gV+iJl81b5YbPqef2ZyS5niK+B7X
+	 D7bll7J10EG0WQd+DFJoCe29dO653gBvc6G0AE0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 079/189] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 017/140] Revert "drm/amd/display: Optimize cursor position updates"
 Date: Wed, 17 Sep 2025 14:33:09 +0200
-Message-ID: <20250917123353.799368850@linuxfoundation.org>
+Message-ID: <20250917123344.732913558@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-commit d613f53c83ec47089c4e25859d5e8e0359f6f8da upstream.
+[ Upstream commit a5d258a00b41143d9c64880eed35799d093c4782 ]
 
-When I did memory failure tests, below panic occurs:
+This reverts commit 88c7c56d07c108ed4de319c8dba44aa4b8a38dd1.
 
-page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
-kernel BUG at include/linux/page-flags.h:616!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- unpoison_memory+0x2f3/0x590
- simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
- debugfs_attr_write+0x42/0x60
- full_proxy_write+0x5b/0x80
- vfs_write+0xd5/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f0314887
-RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
-RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
-RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
- </TASK>
-Modules linked in: hwpoison_inject
----[ end trace 0000000000000000 ]---
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: Fatal exception ]---
+SW and HW state are not always matching in some cases causing cursor to
+be disabled.
 
-The root cause is that unpoison_memory() tries to check the PG_HWPoison
-flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
-triggered.  This can be reproduced by below steps:
-
-1.Offline memory block:
-
- echo offline > /sys/devices/system/memory/memory12/state
-
-2.Get offlined memory pfn:
-
- page-types -b n -rlN
-
-3.Write pfn to unpoison-pfn
-
- echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
-
-This scenario can be identified by pfn_to_online_page() returning NULL.
-And ZONE_DEVICE pages are never expected, so we can simply fail if
-pfn_to_online_page() == NULL to fix the bug.
-
-Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
-Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory-failure.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c   |  7 +++----
+ .../gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c  |  6 ++----
+ drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c |  8 +++-----
+ .../gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c   | 10 ++++------
+ 4 files changed, 12 insertions(+), 19 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2576,10 +2576,9 @@ int unpoison_memory(unsigned long pfn)
- 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
- 					DEFAULT_RATELIMIT_BURST);
+diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+index 01480a04f85ef..9a3be1dd352b6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+@@ -483,11 +483,10 @@ void dpp1_set_cursor_position(
+ 	if (src_y_offset + cursor_height <= 0)
+ 		cur_en = 0;  /* not visible beyond top edge*/
  
--	if (!pfn_valid(pfn))
--		return -ENXIO;
--
--	p = pfn_to_page(pfn);
-+	p = pfn_to_online_page(pfn);
-+	if (!p)
-+		return -EIO;
- 	folio = page_folio(p);
+-	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
+-		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
++	REG_UPDATE(CURSOR0_CONTROL,
++			CUR0_ENABLE, cur_en);
  
- 	mutex_lock(&mf_mutex);
+-		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
+-	}
++	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
+ }
+ 
+ void dpp1_cnv_set_optional_cursor_attributes(
+diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
+index 712aff7e17f7a..92b34fe47f740 100644
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
+@@ -155,11 +155,9 @@ void dpp401_set_cursor_position(
+ 	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
+ 	uint32_t cur_en = pos->enable ? 1 : 0;
+ 
+-	if (dpp_base->pos.cur0_ctl.bits.cur0_enable != cur_en) {
+-		REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
++	REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, cur_en);
+ 
+-		dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
+-	}
++	dpp_base->pos.cur0_ctl.bits.cur0_enable = cur_en;
+ }
+ 
+ void dpp401_set_optional_cursor_attributes(
+diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
+index c74ee2d50a699..b405fa22f87a9 100644
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
+@@ -1044,13 +1044,11 @@ void hubp2_cursor_set_position(
+ 	if (src_y_offset + cursor_height <= 0)
+ 		cur_en = 0;  /* not visible beyond top edge*/
+ 
+-	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
+-		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
+-			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
++	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
++		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
+ 
+-		REG_UPDATE(CURSOR_CONTROL,
++	REG_UPDATE(CURSOR_CONTROL,
+ 			CURSOR_ENABLE, cur_en);
+-	}
+ 
+ 	REG_SET_2(CURSOR_POSITION, 0,
+ 			CURSOR_X_POSITION, pos->x,
+diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+index 7013c124efcff..2d52100510f05 100644
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+@@ -718,13 +718,11 @@ void hubp401_cursor_set_position(
+ 			dc_fixpt_from_int(dst_x_offset),
+ 			param->h_scale_ratio));
+ 
+-	if (hubp->pos.cur_ctl.bits.cur_enable != cur_en) {
+-		if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
+-			hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
++	if (cur_en && REG_READ(CURSOR_SURFACE_ADDRESS) == 0)
++		hubp->funcs->set_cursor_attributes(hubp, &hubp->curs_attr);
+ 
+-		REG_UPDATE(CURSOR_CONTROL,
+-			CURSOR_ENABLE, cur_en);
+-	}
++	REG_UPDATE(CURSOR_CONTROL,
++		CURSOR_ENABLE, cur_en);
+ 
+ 	REG_SET_2(CURSOR_POSITION, 0,
+ 		CURSOR_X_POSITION, x_pos,
+-- 
+2.51.0
+
 
 
 
