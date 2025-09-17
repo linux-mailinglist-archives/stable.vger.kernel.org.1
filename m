@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-180331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585DDB7F16D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9160B7F075
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 381D9524ABD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AF402A2AA6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1ED32E72A;
-	Wed, 17 Sep 2025 13:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F60A36CE0E;
+	Wed, 17 Sep 2025 12:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alRrG3Lb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxijME/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA885296BCC;
-	Wed, 17 Sep 2025 13:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EE0330D27;
+	Wed, 17 Sep 2025 12:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114124; cv=none; b=eT0/+QpBf7csJxzQsck80+R7O/SYJrH8Hm3IssqvlRjA2i9/mY1tQjd7KQNHOWpd+10XU/NH07guV42s9S/aNVf/yO8Yn9DeAkxfnuLrLd48lj/ioaLdQY4/dqIAW/s2fU00Moh6IIh0liABDCt9Cm3Fz9bnwXLhHEc8t8c+WGY=
+	t=1758113911; cv=none; b=nIgkL3H96y5VZhfWa1owohciNki1EwdW8sorVa2bidFkZSLg290dq1X2PKR8i+4sVd9I8eJKmxvAmYFjSp1aXNrbKiGPYBuA6rs1fdhhkhR5NIBOW+eIEbnQ8lt8fqWqPKLIbJ/Pm7PF+vyFJ0y5cHxBaJ9wD5SlEbW3HkI5ChQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114124; c=relaxed/simple;
-	bh=P2GjAKDCJJablRkGzxm6xae9PqW326BCJTcjrv9nr0E=;
+	s=arc-20240116; t=1758113911; c=relaxed/simple;
+	bh=racLd7OPC5cCP9pkqs+CwP3oBl92GueOAXRVUioCeSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQbL0ckxAPaP7FxBH3OqTfTodisEwvb4/goVS88RomOjXKtwaeBNrDRzmbcKJMjWPX+DuNa7W2zvAsnhAwmbI+SL6aNgngyw05ODs9htb6s56Mtyv3EjpLo8Ut9CcYBOLiu0F6lZ6FE2sO7O4rPuMN9eY59MXo4Naejvk8CWUC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alRrG3Lb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E369EC4CEF5;
-	Wed, 17 Sep 2025 13:02:02 +0000 (UTC)
+	 MIME-Version; b=m0sNQlTqViaoiXUsIWXQ3J/AR17pyZ2g+cgtj7HjCFy4cCKQVOameJxZE/T6zYxgYfeXkzQ3UABzOGlgbjltfgOn+WtjorTUuk5UX4V6S3K65GReOHZjSBI1Q8IEQPFrAvlOnSxvJATOJczuzL6LD+OWYqn3ZAczkOnhCruN8So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxijME/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0334CC4CEF0;
+	Wed, 17 Sep 2025 12:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114123;
-	bh=P2GjAKDCJJablRkGzxm6xae9PqW326BCJTcjrv9nr0E=;
+	s=korg; t=1758113911;
+	bh=racLd7OPC5cCP9pkqs+CwP3oBl92GueOAXRVUioCeSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alRrG3Lb/5VFtdJAMLqUI1aAEKuxElyziOzzPFiR9VYGwthMIBza45YmPNm0xTcmA
-	 xazn7uJWdJjMN7yL8Fm7aEqqLhFa1GaoPoQlUMwAUKDorcsUvO5oGZTMi9Gxu/cP9C
-	 rDpYEIFOHVKJafb8ac+upDfVKdrZpMmSAKrEb5VE=
+	b=bxijME/O+A4SVx2j7u2K8A6CiYz1HXJRc0SngqEOAUUXJ0aobLl8e7kT8QTfL5WzK
+	 02GTyfXmr5NcQMSRfDYYs/3kl5FEXpS6ylMLhQJibhE/mNPNenvAcL5xzcIhyMJz3I
+	 MpEiYH+OMG2geepMn2LHgMvJB/Ylnkmunj/TuZfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Tran <alex.t.tran@gmail.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/78] docs: networking: can: change bcm_msg_head frames member to support flexible array
+	Alan Stern <stern@rowland.harvard.edu>,
+	stable <stable@kernel.org>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.6 091/101] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
 Date: Wed, 17 Sep 2025 14:35:14 +0200
-Message-ID: <20250917123330.860834716@linuxfoundation.org>
+Message-ID: <20250917123339.039606586@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Tran <alex.t.tran@gmail.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 641427d5bf90af0625081bf27555418b101274cd ]
+commit 8d63c83d8eb922f6c316320f50c82fa88d099bea upstream.
 
-The documentation of the 'bcm_msg_head' struct does not match how
-it is defined in 'bcm.h'. Changed the frames member to a flexible array,
-matching the definition in the header file.
+Yunseong Kim and the syzbot fuzzer both reported a problem in
+RT-enabled kernels caused by the way dummy-hcd mixes interrupt
+management and spin-locking.  The pattern was:
 
-See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-flexible-array members")
+	local_irq_save(flags);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock(&dum->lock);
+	...		// calls usb_gadget_giveback_request()
+	local_irq_restore(flags);
 
-Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250904031709.1426895-1-alex.t.tran@gmail.com
-Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217783
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The code was written this way because usb_gadget_giveback_request()
+needs to be called with interrupts disabled and the private lock not
+held.
+
+While this pattern works fine in non-RT kernels, it's not good when RT
+is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
+spin_lock() may sleep.  But sleeping is not allowed while local
+interrupts are disabled.
+
+To fix the problem, rewrite the code to conform to the pattern used
+elsewhere in dummy-hcd and other UDC drivers:
+
+	spin_lock_irqsave(&dum->lock, flags);
+	...
+	spin_unlock(&dum->lock);
+	usb_gadget_giveback_request(...);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock_irqrestore(&dum->lock, flags);
+
+This approach satisfies the RT requirements.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable <stable@kernel.org>
+Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
+Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
+Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
+Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC: stable@vger.kernel.org
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/can.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
-index ebc822e605f55..9ac6d3973ad58 100644
---- a/Documentation/networking/can.rst
-+++ b/Documentation/networking/can.rst
-@@ -740,7 +740,7 @@ The broadcast manager sends responses to user space in the same form:
-             struct timeval ival1, ival2;    /* count and subsequent interval */
-             canid_t can_id;                 /* unique can_id for task */
-             __u32 nframes;                  /* number of can_frames following */
--            struct can_frame frames[0];
-+            struct can_frame frames[];
-     };
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -764,8 +764,7 @@ static int dummy_dequeue(struct usb_ep *
+ 	if (!dum->driver)
+ 		return -ESHUTDOWN;
  
- The aligned payload 'frames' uses the same basic CAN frame structure defined
--- 
-2.51.0
-
+-	local_irq_save(flags);
+-	spin_lock(&dum->lock);
++	spin_lock_irqsave(&dum->lock, flags);
+ 	list_for_each_entry(iter, &ep->queue, queue) {
+ 		if (&iter->req != _req)
+ 			continue;
+@@ -775,15 +774,16 @@ static int dummy_dequeue(struct usb_ep *
+ 		retval = 0;
+ 		break;
+ 	}
+-	spin_unlock(&dum->lock);
+ 
+ 	if (retval == 0) {
+ 		dev_dbg(udc_dev(dum),
+ 				"dequeued req %p from %s, len %d buf %p\n",
+ 				req, _ep->name, _req->length, _req->buf);
++		spin_unlock(&dum->lock);
+ 		usb_gadget_giveback_request(_ep, _req);
++		spin_lock(&dum->lock);
+ 	}
+-	local_irq_restore(flags);
++	spin_unlock_irqrestore(&dum->lock, flags);
+ 	return retval;
+ }
+ 
 
 
 
