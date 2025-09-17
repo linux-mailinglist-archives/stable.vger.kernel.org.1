@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-180046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB59B7E77D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16253B7E17E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACF717A6C6A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE7DF6226F0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9173730F933;
-	Wed, 17 Sep 2025 12:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC5C2F361A;
+	Wed, 17 Sep 2025 12:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjTU9QCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khhaTqGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6D931A7E9;
-	Wed, 17 Sep 2025 12:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5992F238140;
+	Wed, 17 Sep 2025 12:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113208; cv=none; b=e/ir2QydLpUb56c2cGA2EwultW8pqw8X4ZVvHM+ZODFzIWIdWJOhD98B1WBptH8Ai7yCmCRvMtR68It17Keu3/gWoX8XKN8s6n+qrzLAf3VYa8AdrWASW4XTD54fGEL1UPKHQ7Hzxgz73WR0fxA1ihidXkGqkFBebbBq+euh5Vw=
+	t=1758112795; cv=none; b=FWtP98iEgyv4wcfJ6eHu7FOT5gcxLGV415lnQx1L29NNQEQa1ZczM1MADf31qHj8MLvz2UTUlWnVWQOvZsLicvFRyX5pw3AqWVRkj1sdvGb9fDKczAsHsXc+LkBTNQ2qJHZKaHBnKokIVqLY7uZv6qKWRAVWlrGmkqNzJoB1rCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113208; c=relaxed/simple;
-	bh=1mTEV11PdbruyZdklBkadoEqaRu2ZhDOEUmYFuDVtm0=;
+	s=arc-20240116; t=1758112795; c=relaxed/simple;
+	bh=JDcl0dEB4p5EuEAEyNVlq7pU75BeM6L7Vv+pfHPn9Rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+rM7Ez4tc8iAnwdydMGPjEX8j6tQSjq3VYWo9rbPMRDVC6Zi2XTPM3vVkSMNnootBUk0LYU20woUyd/4KD3q2foxXWbGLF1NQZOtsMCARLlagVQcyNgKOp29s/WgNYmog8UMxcdvWtNLQukHGSuIKfsV8JX86iPqE4Pp0DNNYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjTU9QCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7A2C4CEF0;
-	Wed, 17 Sep 2025 12:46:47 +0000 (UTC)
+	 MIME-Version; b=tsRID35U9i4WLkSyJCHt429A0jE9jtksEeXzFqwJTo5tR88ly5DFyMYgYgBwBr2Bizl855YsxstGa8+/gU6vluxgSrq99wyN4l7P3FUFu2ZOilWL5111QG5dLb0ElmxwK3pWaE7x6Em3A5AzQD6uds19u+os8gdToraiRfQNrt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khhaTqGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8895C4CEF0;
+	Wed, 17 Sep 2025 12:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113208;
-	bh=1mTEV11PdbruyZdklBkadoEqaRu2ZhDOEUmYFuDVtm0=;
+	s=korg; t=1758112795;
+	bh=JDcl0dEB4p5EuEAEyNVlq7pU75BeM6L7Vv+pfHPn9Rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QjTU9QCWbA9CGqh1tRHxQ6JQ//Lzkv5qlIH89zm1EQOPR0R4JQKK39LMKa3M/W2ch
-	 lW2E3d+wawq8h5Mw9KBEe+oYKeSDBIjKVfvHiMZsXaqjMDOzPc8axM+16oEEsMFmlx
-	 YJfrnaKuNEirn5y69lJMzr6Fx3PiJLH9spVqG938=
+	b=khhaTqGc4wfI6YOMpu8+sU6s0iuEV1VwDm/TeLPq7/udDZ5KLkWtVCkYXcnM1xCWx
+	 DqEavnculH2gka+12W0w6FWw08Ac2tPk9GepbCBXfwVwwb4j16Ht08/2BW5hOY7m64
+	 W6hqBSlxJXc6vaAIKO28pesPlHqYUN8fHoXlXJGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/140] drm/amd/display: Fix error pointers in amdgpu_dm_crtc_mem_type_changed
-Date: Wed, 17 Sep 2025 14:33:08 +0200
-Message-ID: <20250917123344.709273108@linuxfoundation.org>
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 079/189] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Date: Wed, 17 Sep 2025 14:33:09 +0200
+Message-ID: <20250917123353.799368850@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,85 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit da29abe71e164f10917ea6da02f5d9c192ccdeb7 ]
+commit d613f53c83ec47089c4e25859d5e8e0359f6f8da upstream.
 
-The function amdgpu_dm_crtc_mem_type_changed was dereferencing pointers
-returned by drm_atomic_get_plane_state without checking for errors. This
-could lead to undefined behavior if the function returns an error pointer.
+When I did memory failure tests, below panic occurs:
 
-This commit adds checks using IS_ERR to ensure that new_plane_state and
-old_plane_state are valid before dereferencing them.
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
 
-Fixes the below:
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered.  This can be reproduced by below steps:
 
-drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:11486 amdgpu_dm_crtc_mem_type_changed()
-error: 'new_plane_state' dereferencing possible ERR_PTR()
+1.Offline memory block:
 
-drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c
-    11475 static bool amdgpu_dm_crtc_mem_type_changed(struct drm_device *dev,
-    11476                                             struct drm_atomic_state *state,
-    11477                                             struct drm_crtc_state *crtc_state)
-    11478 {
-    11479         struct drm_plane *plane;
-    11480         struct drm_plane_state *new_plane_state, *old_plane_state;
-    11481
-    11482         drm_for_each_plane_mask(plane, dev, crtc_state->plane_mask) {
-    11483                 new_plane_state = drm_atomic_get_plane_state(state, plane);
-    11484                 old_plane_state = drm_atomic_get_plane_state(state, plane);
-                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^ These functions can fail.
+ echo offline > /sys/devices/system/memory/memory12/state
 
-    11485
---> 11486                 if (old_plane_state->fb && new_plane_state->fb &&
-    11487                     get_mem_type(old_plane_state->fb) != get_mem_type(new_plane_state->fb))
-    11488                         return true;
-    11489         }
-    11490
-    11491         return false;
-    11492 }
+2.Get offlined memory pfn:
 
-Fixes: 4caacd1671b7 ("drm/amd/display: Do not elevate mem_type change to full update")
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ page-types -b n -rlN
+
+3.Write pfn to unpoison-pfn
+
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+
+This scenario can be identified by pfn_to_online_page() returning NULL.
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
+Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ mm/memory-failure.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 9763752cf5cde..b585c321d3454 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -11483,6 +11483,11 @@ static bool amdgpu_dm_crtc_mem_type_changed(struct drm_device *dev,
- 		new_plane_state = drm_atomic_get_plane_state(state, plane);
- 		old_plane_state = drm_atomic_get_plane_state(state, plane);
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2576,10 +2576,9 @@ int unpoison_memory(unsigned long pfn)
+ 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					DEFAULT_RATELIMIT_BURST);
  
-+		if (IS_ERR(new_plane_state) || IS_ERR(old_plane_state)) {
-+			DRM_ERROR("Failed to get plane state for plane %s\n", plane->name);
-+			return false;
-+		}
-+
- 		if (old_plane_state->fb && new_plane_state->fb &&
- 		    get_mem_type(old_plane_state->fb) != get_mem_type(new_plane_state->fb))
- 			return true;
--- 
-2.51.0
-
+-	if (!pfn_valid(pfn))
+-		return -ENXIO;
+-
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	folio = page_folio(p);
+ 
+ 	mutex_lock(&mf_mutex);
 
 
 
