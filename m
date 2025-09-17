@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF9FB7F1F7
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45AEB7EFD6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97525540298
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1539C1BC279B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A203016F4;
-	Wed, 17 Sep 2025 13:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B44232BC19;
+	Wed, 17 Sep 2025 12:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHogvX6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9z5acY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E84183CA6;
-	Wed, 17 Sep 2025 13:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3BF32BC16;
+	Wed, 17 Sep 2025 12:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114080; cv=none; b=gOj4Ci5kZnqcxNLYTOSz1KfbXecgtLJP2W4nFxBqRUpkFaszs+EWNZVgKF11Q+nEFXO2DH6P/zRfQ8ppomz0Idt4iL7TwQO4X3E3ipbNv81ZAc7YDCNgrcViOc6H1fK7ZV4vhWxQP9eOg11i7gVqmVW2o6RZHcbZ64RWzuK137g=
+	t=1758113870; cv=none; b=sbnBsJhhLOKM3q/GgzHlJVnGSxNyW/mK8QUmcvHTBeAtnjq2q6IeyCcHaUTwA14CChZwbT1K1tTgza1hfwKyrV1OUploiX4Hzr5s3uLpRZxY62Oxx/U4bAiYbk7D3IhN9MmjKG9b+bS1NBkDIMoQO3deRxHSgUdu8LQXhXulFzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114080; c=relaxed/simple;
-	bh=UCbPAk2BP2TuLzrN3mOsg4KOk3QTIOtwkNtM1Ws83D8=;
+	s=arc-20240116; t=1758113870; c=relaxed/simple;
+	bh=axOSnKsdy2Jpw1q2APrJT+8QycTHCY6uAX8Xbtp3oYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flWpQGaquA/un/FhWUqOBhpZGNcgZxDCDPcwNUYVTHok+yAwvpnmQNj7dOe0HvS/YY6OJvQVTakx2+9C2/4mu5gbv4HiUUrq2ogGsXJ1xYSOUlduAGnZSUfY4y3mUzUbyK5IhUnI594B9wu+52G/+jEe8RE7fyBxJjqEI71lQxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHogvX6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC0CC4CEF0;
-	Wed, 17 Sep 2025 13:01:20 +0000 (UTC)
+	 MIME-Version; b=PyEO7C2TnVfSWIEglmE6jjFoo5Tt7FyOgKpfUdC3qqj+K+apNrxt5yz9wi006JSVYr6OznbBaoAFQoD9Dl//fzXKu8eFLc9SHpT6P8BQhR0MUdXn0x+LGRcDC8HNdH3zclCWat6TSF7p5RJf1WOrD9ImCc63TjDKW9yP+DQT5ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9z5acY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633A5C4CEF0;
+	Wed, 17 Sep 2025 12:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114080;
-	bh=UCbPAk2BP2TuLzrN3mOsg4KOk3QTIOtwkNtM1Ws83D8=;
+	s=korg; t=1758113869;
+	bh=axOSnKsdy2Jpw1q2APrJT+8QycTHCY6uAX8Xbtp3oYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHogvX6FrGk0DaYtzPNq5B1RX1nPXodRRJpwbEHeU+esr6UXE089wS9waH1HjHzin
-	 IwgbR3SkxsN5fI+NlKnLcXKca8l+u1YM2ox2vuwx8Etu5NTP+E3wWdZtYTIsNLVTCL
-	 mPvmHto9QRPcwusIICJbFJDte4cu/uf+3OzHnL4A=
+	b=u9z5acY9Etlmz5B0IC0s44+xTB4ukLs9gxTPYvcGS0sB7BsgQSQH/jAfNLUex5AUo
+	 tbJIe/Y1a3rzIbVJ/6t24jpjFMbbYDybekez2hd9nbv6ynGeepRlkG3dNd264DBQBf
+	 bsJQkQXYRShVPy1fdNFyHI7RjTzNAnesOoxdhasA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zhang Zhaotian <zhangzhaotian@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/78] kernfs: Fix UAF in polling when open file is released
+Subject: [PATCH 6.6 079/101] hsr: use rtnl lock when iterating over ports
 Date: Wed, 17 Sep 2025 14:35:02 +0200
-Message-ID: <20250917123330.567029901@linuxfoundation.org>
+Message-ID: <20250917123338.744521855@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,285 +63,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f upstream.
+[ Upstream commit 8884c693991333ae065830554b9b0c96590b1bb2 ]
 
-A use-after-free (UAF) vulnerability was identified in the PSI (Pressure
-Stall Information) monitoring mechanism:
+hsr_for_each_port is called in many places without holding the RCU read
+lock, this may trigger warnings on debug kernels. Most of the callers
+are actually hold rtnl lock. So add a new helper hsr_for_each_port_rtnl
+to allow callers in suitable contexts to iterate ports safely without
+explicit RCU locking.
 
-BUG: KASAN: slab-use-after-free in psi_trigger_poll+0x3c/0x140
-Read of size 8 at addr ffff3de3d50bd308 by task systemd/1
+This patch only fixed the callers that is hold rtnl lock. Other caller
+issues will be fixed in later patches.
 
-psi_trigger_poll+0x3c/0x140
-cgroup_pressure_poll+0x70/0xa0
-cgroup_file_poll+0x8c/0x100
-kernfs_fop_poll+0x11c/0x1c0
-ep_item_poll.isra.0+0x188/0x2c0
-
-Allocated by task 1:
-cgroup_file_open+0x88/0x388
-kernfs_fop_open+0x73c/0xaf0
-do_dentry_open+0x5fc/0x1200
-vfs_open+0xa0/0x3f0
-do_open+0x7e8/0xd08
-path_openat+0x2fc/0x6b0
-do_filp_open+0x174/0x368
-
-Freed by task 8462:
-cgroup_file_release+0x130/0x1f8
-kernfs_drain_open_files+0x17c/0x440
-kernfs_drain+0x2dc/0x360
-kernfs_show+0x1b8/0x288
-cgroup_file_show+0x150/0x268
-cgroup_pressure_write+0x1dc/0x340
-cgroup_file_write+0x274/0x548
-
-Reproduction Steps:
-1. Open test/cpu.pressure and establish epoll monitoring
-2. Disable monitoring: echo 0 > test/cgroup.pressure
-3. Re-enable monitoring: echo 1 > test/cgroup.pressure
-
-The race condition occurs because:
-1. When cgroup.pressure is disabled (echo 0 > cgroup.pressure), it:
-   - Releases PSI triggers via cgroup_file_release()
-   - Frees of->priv through kernfs_drain_open_files()
-2. While epoll still holds reference to the file and continues polling
-3. Re-enabling (echo 1 > cgroup.pressure) accesses freed of->priv
-
-epolling			disable/enable cgroup.pressure
-fd=open(cpu.pressure)
-while(1)
-...
-epoll_wait
-kernfs_fop_poll
-kernfs_get_active = true	echo 0 > cgroup.pressure
-...				cgroup_file_show
-				kernfs_show
-				// inactive kn
-				kernfs_drain_open_files
-				cft->release(of);
-				kfree(ctx);
-				...
-kernfs_get_active = false
-				echo 1 > cgroup.pressure
-				kernfs_show
-				kernfs_activate_one(kn);
-kernfs_fop_poll
-kernfs_get_active = true
-cgroup_file_poll
-psi_trigger_poll
-// UAF
-...
-end: close(fd)
-
-To address this issue, introduce kernfs_get_active_of() for kernfs open
-files to obtain active references. This function will fail if the open file
-has been released. Replace kernfs_get_active() with kernfs_get_active_of()
-to prevent further operations on released file descriptors.
-
-Fixes: 34f26a15611a ("sched/psi: Per-cgroup PSI accounting disable/re-enable interface")
-Cc: stable <stable@kernel.org>
-Reported-by: Zhang Zhaotian <zhangzhaotian@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20250822070715.1565236-2-chenridong@huaweicloud.com
-[ Drop llseek bits ]
+Fixes: c5a759117210 ("net/hsr: Use list_head (and rcu) instead of array for slave devices.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250905091533.377443-2-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/kernfs/file.c |   54 ++++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 18 deletions(-)
+ net/hsr/hsr_device.c | 18 +++++++++---------
+ net/hsr/hsr_main.c   |  2 +-
+ net/hsr/hsr_main.h   |  3 +++
+ 3 files changed, 13 insertions(+), 10 deletions(-)
 
---- a/fs/kernfs/file.c
-+++ b/fs/kernfs/file.c
-@@ -70,6 +70,24 @@ static struct kernfs_open_node *of_on(st
- 					 !list_empty(&of->list));
- }
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 69f6c704352de..a6fc3d7b02224 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -59,7 +59,7 @@ static bool hsr_check_carrier(struct hsr_port *master)
  
-+/* Get active reference to kernfs node for an open file */
-+static struct kernfs_open_file *kernfs_get_active_of(struct kernfs_open_file *of)
-+{
-+	/* Skip if file was already released */
-+	if (unlikely(of->released))
-+		return NULL;
-+
-+	if (!kernfs_get_active(of->kn))
-+		return NULL;
-+
-+	return of;
-+}
-+
-+static void kernfs_put_active_of(struct kernfs_open_file *of)
-+{
-+	return kernfs_put_active(of->kn);
-+}
-+
- /**
-  * kernfs_deref_open_node_locked - Get kernfs_open_node corresponding to @kn
-  *
-@@ -139,7 +157,7 @@ static void kernfs_seq_stop_active(struc
+ 	ASSERT_RTNL();
  
- 	if (ops->seq_stop)
- 		ops->seq_stop(sf, v);
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- }
+-	hsr_for_each_port(master->hsr, port) {
++	hsr_for_each_port_rtnl(master->hsr, port) {
+ 		if (port->type != HSR_PT_MASTER && is_slave_up(port->dev)) {
+ 			netif_carrier_on(master->dev);
+ 			return true;
+@@ -109,7 +109,7 @@ int hsr_get_max_mtu(struct hsr_priv *hsr)
+ 	struct hsr_port *port;
  
- static void *kernfs_seq_start(struct seq_file *sf, loff_t *ppos)
-@@ -152,7 +170,7 @@ static void *kernfs_seq_start(struct seq
- 	 * the ops aren't called concurrently for the same open file.
+ 	mtu_max = ETH_DATA_LEN;
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		if (port->type != HSR_PT_MASTER)
+ 			mtu_max = min(port->dev->mtu, mtu_max);
+ 
+@@ -144,7 +144,7 @@ static int hsr_dev_open(struct net_device *dev)
+ 	hsr = netdev_priv(dev);
+ 	designation = '\0';
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -174,7 +174,7 @@ static int hsr_dev_close(struct net_device *dev)
+ 	struct hsr_priv *hsr;
+ 
+ 	hsr = netdev_priv(dev);
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -207,7 +207,7 @@ static netdev_features_t hsr_features_recompute(struct hsr_priv *hsr,
+ 	 * may become enabled.
  	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return ERR_PTR(-ENODEV);
+ 	features &= ~NETIF_F_ONE_FOR_ALL;
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		features = netdev_increment_features(features,
+ 						     port->dev->features,
+ 						     mask);
+@@ -425,7 +425,7 @@ static void hsr_set_rx_mode(struct net_device *dev)
  
- 	ops = kernfs_ops(of->kn);
-@@ -238,7 +256,7 @@ static ssize_t kernfs_file_read_iter(str
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		len = -ENODEV;
- 		mutex_unlock(&of->mutex);
- 		goto out_free;
-@@ -252,7 +270,7 @@ static ssize_t kernfs_file_read_iter(str
- 	else
- 		len = -EINVAL;
+ 	hsr = netdev_priv(dev);
  
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -447,7 +447,7 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
  
- 	if (len < 0)
-@@ -323,7 +341,7 @@ static ssize_t kernfs_fop_write_iter(str
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		mutex_unlock(&of->mutex);
- 		len = -ENODEV;
- 		goto out_free;
-@@ -335,7 +353,7 @@ static ssize_t kernfs_fop_write_iter(str
- 	else
- 		len = -EINVAL;
+ 	hsr = netdev_priv(dev);
  
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -475,7 +475,7 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
  
- 	if (len > 0)
-@@ -357,13 +375,13 @@ static void kernfs_vma_open(struct vm_ar
- 	if (!of->vm_ops)
- 		return;
+ 	hsr = netdev_priv(dev);
  
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return;
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER ||
+ 		    port->type == HSR_PT_INTERLINK)
+ 			continue;
+@@ -521,7 +521,7 @@ static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
  
- 	if (of->vm_ops->open)
- 		of->vm_ops->open(vma);
+ 	hsr = netdev_priv(dev);
  
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- }
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		switch (port->type) {
+ 		case HSR_PT_SLAVE_A:
+ 		case HSR_PT_SLAVE_B:
+diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
+index 257b50124cee5..c325ddad539a7 100644
+--- a/net/hsr/hsr_main.c
++++ b/net/hsr/hsr_main.c
+@@ -22,7 +22,7 @@ static bool hsr_slave_empty(struct hsr_priv *hsr)
+ {
+ 	struct hsr_port *port;
  
- static vm_fault_t kernfs_vma_fault(struct vm_fault *vmf)
-@@ -375,14 +393,14 @@ static vm_fault_t kernfs_vma_fault(struc
- 	if (!of->vm_ops)
- 		return VM_FAULT_SIGBUS;
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		if (port->type != HSR_PT_MASTER)
+ 			return false;
+ 	return true;
+diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
+index 18e01791ad799..2fcabe39e61f4 100644
+--- a/net/hsr/hsr_main.h
++++ b/net/hsr/hsr_main.h
+@@ -221,6 +221,9 @@ struct hsr_priv {
+ #define hsr_for_each_port(hsr, port) \
+ 	list_for_each_entry_rcu((port), &(hsr)->ports, port_list)
  
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return VM_FAULT_SIGBUS;
++#define hsr_for_each_port_rtnl(hsr, port) \
++	list_for_each_entry_rcu((port), &(hsr)->ports, port_list, lockdep_rtnl_is_held())
++
+ struct hsr_port *hsr_port_get_hsr(struct hsr_priv *hsr, enum hsr_port_type pt);
  
- 	ret = VM_FAULT_SIGBUS;
- 	if (of->vm_ops->fault)
- 		ret = of->vm_ops->fault(vmf);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -395,7 +413,7 @@ static vm_fault_t kernfs_vma_page_mkwrit
- 	if (!of->vm_ops)
- 		return VM_FAULT_SIGBUS;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return VM_FAULT_SIGBUS;
- 
- 	ret = 0;
-@@ -404,7 +422,7 @@ static vm_fault_t kernfs_vma_page_mkwrit
- 	else
- 		file_update_time(file);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -418,14 +436,14 @@ static int kernfs_vma_access(struct vm_a
- 	if (!of->vm_ops)
- 		return -EINVAL;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return -EINVAL;
- 
- 	ret = -EINVAL;
- 	if (of->vm_ops->access)
- 		ret = of->vm_ops->access(vma, addr, buf, len, write);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -504,7 +522,7 @@ static int kernfs_fop_mmap(struct file *
- 	mutex_lock(&of->mutex);
- 
- 	rc = -ENODEV;
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		goto out_unlock;
- 
- 	ops = kernfs_ops(of->kn);
-@@ -539,7 +557,7 @@ static int kernfs_fop_mmap(struct file *
- 	}
- 	vma->vm_ops = &kernfs_vm_ops;
- out_put:
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- out_unlock:
- 	mutex_unlock(&of->mutex);
- 
-@@ -894,7 +912,7 @@ static __poll_t kernfs_fop_poll(struct f
- 	struct kernfs_node *kn = kernfs_dentry_node(filp->f_path.dentry);
- 	__poll_t ret;
- 
--	if (!kernfs_get_active(kn))
-+	if (!kernfs_get_active_of(of))
- 		return DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
- 
- 	if (kn->attr.ops->poll)
-@@ -902,7 +920,7 @@ static __poll_t kernfs_fop_poll(struct f
- 	else
- 		ret = kernfs_generic_poll(of, wait);
- 
--	kernfs_put_active(kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
+ /* Caller must ensure skb is a valid HSR frame */
+-- 
+2.51.0
+
 
 
 
