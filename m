@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-180215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77634B7EEC2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:06:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8D3B7E9D2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3406F622C93
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AEE9188CDC6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8FF22D78A;
-	Wed, 17 Sep 2025 12:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF8A302774;
+	Wed, 17 Sep 2025 12:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOMVrOok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z11O2N22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03A13B2A4;
-	Wed, 17 Sep 2025 12:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C038922D78A;
+	Wed, 17 Sep 2025 12:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113748; cv=none; b=by1h7n9RLIJ607bCpELXJBfy27VYemcbcovrbsUuer4PWKBMuS1hTIx7wo+zw9angeTMfaO0/vtu/m4ynyazt9RSIC4bQjtSUj3wZXwamEdQ5oZgUDxQR6QSAXyRwVG/yQbXz0Y0T+yfkhhpHc/gVWK7UgX6h6CAaL9RK3SnDAg=
+	t=1758113452; cv=none; b=GPatWTQl0f7wvWyEfGOVnlli16NHXTV3JgNm5M17409YwysMo1+pDK38IX3HBLgE86R1C0p96WWAsNkeXfXq7FEwhy4dqWpsS1cvFEs3dWZgeKm+XDM+bVOL0yV4GExXkrxXb+39wbPTd9Q1HIZ5wu7FOqWJ6Nq4HvsgIDyfCvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113748; c=relaxed/simple;
-	bh=fBPrxqricr63iwKLnQloDxjNhI4NLCICt4RHyyqnTEw=;
+	s=arc-20240116; t=1758113452; c=relaxed/simple;
+	bh=H5lcQSqiO1RFzI9GUpRPiA9DGlpmFSi0BuxDQDgRm9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3CNyofcgZ+VG/qPTZVsy3m5rlpdHoBsLlbpSvHZyKWxgUhyEnsRAY8D2A82eUM6sH14JqsxbiFifGqKdCKwfg+i0IaFZRvC1tTrf0uS7OqeT3kTOCsaLkySg0s1DGGwrkeWC2xL/lQqSLh/nTJJnFozhlHpmFIa2uVzLSxHfDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOMVrOok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768E4C4CEF0;
-	Wed, 17 Sep 2025 12:55:47 +0000 (UTC)
+	 MIME-Version; b=PmppJ9MNTSchTXQjnaseV9VDHtvsyU0sMeRah72JCpMQdNsGiU/46txphFP8/Raa1+d1hPfddctJ9Jb21+U/KUunqT+Zc7UpuKQt4HukN3Oqi96gaUeJ5PHcgD9YTjjZqwhN2L9JZFp3cSFpzcZ59J+MvCHEcR42mkvO1s2wMio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z11O2N22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E999CC4CEF0;
+	Wed, 17 Sep 2025 12:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113747;
-	bh=fBPrxqricr63iwKLnQloDxjNhI4NLCICt4RHyyqnTEw=;
+	s=korg; t=1758113452;
+	bh=H5lcQSqiO1RFzI9GUpRPiA9DGlpmFSi0BuxDQDgRm9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dOMVrOokOERbZcC18I5CqJpQOFrV3+bwz2pl4oBW2C6xuiWtid9NfyYRf45xhf72/
-	 PdpuhnsuW7iOF6aiAvMVZ6bKlnlno4LoB9s6+zZA6JzycIBKf96VQ7cafU7W1dWl7P
-	 x3+0wz5+PFzM1/LVvP7W/EwJ4sTyi3KhjG8LC9TY=
+	b=Z11O2N22/WCj6EKEFjyGLqJj4l+o3RDi8PgZqkiCxkDkYVkq3Zkufdc1MCxOtiOTc
+	 iQGeswQON4+jxS9rPzzigGLfXQHPjPNKjD2x3v6f5AeUSzC0cXCd/RzuNwQ872ZNvv
+	 PHDAhIFUJ0THwxLaPgGEwYGVYNPAhhUh52A6Db+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunsheng Luo <luochunsheng@ustc.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.6 040/101] fuse: check if copy_file_range() returns larger than requested size
+	stable <stable@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.12 091/140] dt-bindings: serial: brcm,bcm7271-uart: Constrain clocks
 Date: Wed, 17 Sep 2025 14:34:23 +0200
-Message-ID: <20250917123337.814708067@linuxfoundation.org>
+Message-ID: <20250917123346.527258299@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit e5203209b3935041dac541bc5b37efb44220cc0b upstream.
+commit ee047e1d85d73496541c54bd4f432c9464e13e65 upstream.
 
-Just like write(), copy_file_range() should check if the return value is
-less or equal to the requested number of bytes.
+Lists should have fixed constraints, because binding must be specific in
+respect to hardware, thus add missing constraints to number of clocks.
 
-Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
-Closes: https://lore.kernel.org/all/20250807062425.694-1-luochunsheng@ustc.edu/
-Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
-Cc: <stable@vger.kernel.org> # v4.20
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Cc: stable <stable@kernel.org>
+Fixes: 88a499cd70d4 ("dt-bindings: Add support for the Broadcom UART driver")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250812121630.67072-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3172,6 +3172,9 @@ static ssize_t __fuse_copy_file_range(st
- 		fc->no_copy_file_range = 1;
- 		err = -EOPNOTSUPP;
- 	}
-+	if (!err && outarg.size > len)
-+		err = -EIO;
-+
- 	if (err)
- 		goto out;
+--- a/Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml
++++ b/Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml
+@@ -41,7 +41,7 @@ properties:
+           - const: dma_intr2
  
+   clocks:
+-    minItems: 1
++    maxItems: 1
+ 
+   clock-names:
+     const: sw_baud
 
 
 
