@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-180146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B7AB7EA7A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5452CB7ED34
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B48AC1891789
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:54:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D363E7B578E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8AD2FBE1D;
-	Wed, 17 Sep 2025 12:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E16316189;
+	Wed, 17 Sep 2025 12:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtwxeWV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBpa5yGF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C39E1F462C;
-	Wed, 17 Sep 2025 12:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520F332A5D;
+	Wed, 17 Sep 2025 12:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113531; cv=none; b=BEkZU0E8V5EWeyyF0AVXr+Ig1jlbTc570Op1NTDw4N1jiqktFK1Iy+SAf7ShgNs45lvlu2p6+mCLNRm/5DfvIgHEQXafONfph/catdRl2rij+7FaXdBpaPSLAKTkXhSlE/kMy4CinPnpu97w7r8+rKkkCAdlMuvldDlylkHV4jk=
+	t=1758113824; cv=none; b=IvpZkxOAJCwcSbgikx+fhbYpvGxgYznADDi9F7PYm5oXQx1bvxkh+n6s6j8y7NJ/NyodFYCLfv7SWR3PmC3QvB4U1rPc2gyrGTVV3s2T74fybSF57kZJMfwz0Y1d2eJTANZV/MSTK4aerU3EsH/uaikY2fpC3eQfLQDj3JHe5cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113531; c=relaxed/simple;
-	bh=+iBSfQxsyKWhpFk+uYG1A9hAGZKQEeXeJrFgQOGkrhs=;
+	s=arc-20240116; t=1758113824; c=relaxed/simple;
+	bh=xoJzmeOqib0g3Cu+8MPaWTpgDO68YMhZut2T6+vE6fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZdOi1myLgv1y+ib++4H7sQvvFf6YCQB6jNUO8le0ZOD2YLJ0iDdvTOt+xIVZHHymQmZpbvAENQEUT2z37wemEVekYchisoaG4tXo2fkM590RnadGqnWmK2e5YwQHQfL1PveCwRcrKltEiA7HODTcGO+qRbjTroF39tdTxtx/Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtwxeWV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BD1C4CEF0;
-	Wed, 17 Sep 2025 12:52:08 +0000 (UTC)
+	 MIME-Version; b=RgdM3zLf7cuBceqvN2u2MG4vEw/rtOjg425VrzuS1fIo3Zsu0aqJ6cUQzexC/awEixA90XvGsJpqNEuCOvtElWvq+15Hfs/EKyBCmJoNFYXREsZ0UnIg+UvI38lo3nmZwoxiiBZKzLdGdvvhsO4iTotpaKgVrWtHmwCb9KxfYE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBpa5yGF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D87C4CEF0;
+	Wed, 17 Sep 2025 12:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113529;
-	bh=+iBSfQxsyKWhpFk+uYG1A9hAGZKQEeXeJrFgQOGkrhs=;
+	s=korg; t=1758113824;
+	bh=xoJzmeOqib0g3Cu+8MPaWTpgDO68YMhZut2T6+vE6fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtwxeWV6wt8K/sN6d9YS+NfZS+9E2Yb1PPYN4MIfYWcIzITas/EJtQtyvaqAO1I13
-	 +PKt888B3p56kUohjWje+w1K2nwaKDUXBoOyPrXrKvVNqDmb+vKTposagT+kp9TWVG
-	 CcDfuh5qhSIMtEl/CW1qQlchy5xuS9LSLb4AV/F8=
+	b=GBpa5yGFk9WG9K4qb6Q8U1MKGtqWjkgnODBug+1RPZh6sj2L2FbsqBhjlw8S9MNfb
+	 EJIrmQeStHNbT6Nbi70sGmFdPtirJncUC/VNPFNYjhV8fP0xMuzz8EzIvlRwNMScLl
+	 Gx41red/RGpxgVJajOdn/WbukBS4kT2CBCgmp4Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/140] netfilter: nf_tables: Reintroduce shortened deletion notifications
+	stable <stable@kernel.org>,
+	Fabian Vogt <fvogt@suse.de>
+Subject: [PATCH 6.6 062/101] tty: hvc_console: Call hvc_kick in hvc_write unconditionally
 Date: Wed, 17 Sep 2025 14:34:45 +0200
-Message-ID: <20250917123347.067172658@linuxfoundation.org>
+Message-ID: <20250917123338.342148589@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,177 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Fabian Vogt <fvogt@suse.de>
 
-[ Upstream commit a1050dd071682d2c9d8d6d5c96119f8f401b62f0 ]
+commit cfd956dcb101aa3d25bac321fae923323a47c607 upstream.
 
-Restore commit 28339b21a365 ("netfilter: nf_tables: do not send complete
-notification of deletions") and fix it:
+After hvc_write completes, call hvc_kick also in the case the output
+buffer has been drained, to ensure tty_wakeup gets called.
 
-- Avoid upfront modification of 'event' variable so the conditionals
-  become effective.
-- Always include NFTA_OBJ_TYPE attribute in object notifications, user
-  space requires it for proper deserialisation.
-- Catch DESTROY events, too.
+This fixes that functions which wait for a drained buffer got stuck
+occasionally.
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: b2f742c846ca ("netfilter: nf_tables: restart set lookup on base_seq change")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1230062
+Signed-off-by: Fabian Vogt <fvogt@suse.de>
+Link: https://lore.kernel.org/r/2011735.PYKUYFuaPT@fvogt-thinkpad
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 67 ++++++++++++++++++++++++++---------
- 1 file changed, 50 insertions(+), 17 deletions(-)
+ drivers/tty/hvc/hvc_console.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3743e4249dc8c..4430bfa34a993 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1017,9 +1017,9 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
- {
- 	struct nlmsghdr *nlh;
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -543,10 +543,10 @@ static ssize_t hvc_write(struct tty_stru
+ 	}
  
--	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
--	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
--			   NFNETLINK_V0, nft_base_seq(net));
-+	nlh = nfnl_msg_put(skb, portid, seq,
-+			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
-+			   flags, family, NFNETLINK_V0, nft_base_seq(net));
- 	if (!nlh)
- 		goto nla_put_failure;
+ 	/*
+-	 * Racy, but harmless, kick thread if there is still pending data.
++	 * Kick thread to flush if there's still pending data
++	 * or to wakeup the write queue.
+ 	 */
+-	if (hp->n_outbuf)
+-		hvc_kick();
++	hvc_kick();
  
-@@ -1029,6 +1029,12 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_TABLE_PAD))
- 		goto nla_put_failure;
- 
-+	if (event == NFT_MSG_DELTABLE ||
-+	    event == NFT_MSG_DESTROYTABLE) {
-+		nlmsg_end(skb, nlh);
-+		return 0;
-+	}
-+
- 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
- 			 htonl(table->flags & NFT_TABLE_F_MASK)))
- 		goto nla_put_failure;
-@@ -1872,9 +1878,9 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
- {
- 	struct nlmsghdr *nlh;
- 
--	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
--	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
--			   NFNETLINK_V0, nft_base_seq(net));
-+	nlh = nfnl_msg_put(skb, portid, seq,
-+			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
-+			   flags, family, NFNETLINK_V0, nft_base_seq(net));
- 	if (!nlh)
- 		goto nla_put_failure;
- 
-@@ -1884,6 +1890,13 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_CHAIN_PAD))
- 		goto nla_put_failure;
- 
-+	if (!hook_list &&
-+	    (event == NFT_MSG_DELCHAIN ||
-+	     event == NFT_MSG_DESTROYCHAIN)) {
-+		nlmsg_end(skb, nlh);
-+		return 0;
-+	}
-+
- 	if (nft_is_base_chain(chain)) {
- 		const struct nft_base_chain *basechain = nft_base_chain(chain);
- 		struct nft_stats __percpu *stats;
-@@ -4654,9 +4667,10 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
- 	u32 seq = ctx->seq;
- 	int i;
- 
--	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
--	nlh = nfnl_msg_put(skb, portid, seq, event, flags, ctx->family,
--			   NFNETLINK_V0, nft_base_seq(ctx->net));
-+	nlh = nfnl_msg_put(skb, portid, seq,
-+			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
-+			   flags, ctx->family, NFNETLINK_V0,
-+			   nft_base_seq(ctx->net));
- 	if (!nlh)
- 		goto nla_put_failure;
- 
-@@ -4668,6 +4682,12 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
- 			 NFTA_SET_PAD))
- 		goto nla_put_failure;
- 
-+	if (event == NFT_MSG_DELSET ||
-+	    event == NFT_MSG_DESTROYSET) {
-+		nlmsg_end(skb, nlh);
-+		return 0;
-+	}
-+
- 	if (set->flags != 0)
- 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
- 			goto nla_put_failure;
-@@ -7990,20 +8010,26 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
- {
- 	struct nlmsghdr *nlh;
- 
--	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
--	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
--			   NFNETLINK_V0, nft_base_seq(net));
-+	nlh = nfnl_msg_put(skb, portid, seq,
-+			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
-+			   flags, family, NFNETLINK_V0, nft_base_seq(net));
- 	if (!nlh)
- 		goto nla_put_failure;
- 
- 	if (nla_put_string(skb, NFTA_OBJ_TABLE, table->name) ||
- 	    nla_put_string(skb, NFTA_OBJ_NAME, obj->key.name) ||
-+	    nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
- 	    nla_put_be64(skb, NFTA_OBJ_HANDLE, cpu_to_be64(obj->handle),
- 			 NFTA_OBJ_PAD))
- 		goto nla_put_failure;
- 
--	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
--	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
-+	if (event == NFT_MSG_DELOBJ ||
-+	    event == NFT_MSG_DESTROYOBJ) {
-+		nlmsg_end(skb, nlh);
-+		return 0;
-+	}
-+
-+	if (nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
- 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
- 		goto nla_put_failure;
- 
-@@ -9008,9 +9034,9 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
- 	struct nft_hook *hook;
- 	struct nlmsghdr *nlh;
- 
--	event = nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event);
--	nlh = nfnl_msg_put(skb, portid, seq, event, flags, family,
--			   NFNETLINK_V0, nft_base_seq(net));
-+	nlh = nfnl_msg_put(skb, portid, seq,
-+			   nfnl_msg_type(NFNL_SUBSYS_NFTABLES, event),
-+			   flags, family, NFNETLINK_V0, nft_base_seq(net));
- 	if (!nlh)
- 		goto nla_put_failure;
- 
-@@ -9020,6 +9046,13 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
- 			 NFTA_FLOWTABLE_PAD))
- 		goto nla_put_failure;
- 
-+	if (!hook_list &&
-+	    (event == NFT_MSG_DELFLOWTABLE ||
-+	     event == NFT_MSG_DESTROYFLOWTABLE)) {
-+		nlmsg_end(skb, nlh);
-+		return 0;
-+	}
-+
- 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
- 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
- 		goto nla_put_failure;
--- 
-2.51.0
-
+ 	return written;
+ }
 
 
 
