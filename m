@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-179930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8568B7E1A0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:42:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5A5B7E882
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4559862311C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56338527E1D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5C531A7E0;
-	Wed, 17 Sep 2025 12:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064A313B2A4;
+	Wed, 17 Sep 2025 12:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gx9UaAo9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqgA8IUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C45E1E25EF;
-	Wed, 17 Sep 2025 12:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48FB3233FC;
+	Wed, 17 Sep 2025 12:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112834; cv=none; b=bpmRHiDiy2ILUecR+dTYxLHpfG/Sd4r0gBh9wNFdDpNzOgodQr/rH7GLY2yIZoIURdjdpADuWui7IYigXW85K1iEW3yj4ZFLWDq35OjE1bCaz2nyQTv4O99SjT8mPnhuaoEx+TJKt4SUm9l7yyb9m3LeebLvEdPNtnI3MrKXLbM=
+	t=1758113250; cv=none; b=NXmygdJAj0WAWk1XpKYthnP6CvE73Dxqbxpv7NX7RpEg2P5ZksWEKbhtir9aMN84xHD3KEYJab7wqZgN24Ty77TGYZQGy0TQ7+VbTYpslsNA3abPf7+Z44N9JXgvC/bvh2wME9EtPgVmosvP7uisieNePyFsLByT6bQIdWHv+Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112834; c=relaxed/simple;
-	bh=pOGOqfnTzxm34IHtdPtiQnBJjrMsokurYnRSiZCTEC0=;
+	s=arc-20240116; t=1758113250; c=relaxed/simple;
+	bh=0JqWGvFj9oxCzZ+L+BuAhFPBnx6vKP6vdokmciKXfEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJhiL+QJQmH1UmtbrW3XmMuiIIWZTrUNIS5/j4HyowVm2VgrCTnkNkUwLL1jmhdB4J1QKgVSJ/7OHwgNJN/N7LJ3E/og98/th8uZfJ/+UfiEdN/G0rcB7P29ccXv0Dftf3lywdqePnWSQPr5tCPwVJZ0z+vUB+s6iPalJvo7MG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gx9UaAo9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7C1C4CEF0;
-	Wed, 17 Sep 2025 12:40:33 +0000 (UTC)
+	 MIME-Version; b=t4xrC1rC4q0ft+zsg1xnMg/VVHAKoVHYAunp1gCmtcs8/PsTJKeJsjGkvn2lkdsjwSPqMoXAY49qe+vyDbd/laVTip7MRdyZkH5f8JNR08udHjtue7iazij6w4GY59MkcZoW5g9D7PhihVvRehQ99nAYHUN38lrMMDNV4WnqtKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqgA8IUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4D2C4CEFF;
+	Wed, 17 Sep 2025 12:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112834;
-	bh=pOGOqfnTzxm34IHtdPtiQnBJjrMsokurYnRSiZCTEC0=;
+	s=korg; t=1758113250;
+	bh=0JqWGvFj9oxCzZ+L+BuAhFPBnx6vKP6vdokmciKXfEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gx9UaAo9iVgDX7xIDrzeZHc71tTVEslY0at/C553e6QtoRTGzD0ms+sIJAD/Tt7JK
-	 9cLlKuJEKw/FCD6JWVOnj80fmo7gwicRDS8wYz4K3gObeDD+PXnW/jjKcrTkWzJmAe
-	 2Uk2SfvQrDkY68pLBh3nlFhJ+Lw1HrUYmHxRmQfw=
+	b=gqgA8IUYi+BPpxBLvVHJflfTz+At7+FTFCuXqeGFfR0L4/6+Go+A3f0mx0NKOh3Y0
+	 U89aAExNFKYQJ1nMnTOMhJ9ewadE2GLR4Vt7PNkTByVh/H989IcmzLWm6odweCC9Ef
+	 8F1dcNTANqWB/ib9JF54LQboVaJDsNYYknYVA1ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 090/189] drm/amdgpu/vcn4: Fix IB parsing with multiple engine info packages
+	Mike Snitzer <snitzer@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 028/140] nfs/localio: remove extra indirect nfs_to call to check {read,write}_iter
 Date: Wed, 17 Sep 2025 14:33:20 +0200
-Message-ID: <20250917123354.054528040@linuxfoundation.org>
+Message-ID: <20250917123344.995022051@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit 2b10cb58d7a3fd621ec9b2ba765a092e562ef998 upstream.
+[ Upstream commit 0978e5b85fc0867f53c5f4e5b7d2a5536a623e16 ]
 
-There can be multiple engine info packages in one IB and the first one
-may be common engine, not decode/encode.
-We need to parse the entire IB instead of stopping after finding first
-engine info.
+Push the read_iter and write_iter availability checks down to
+nfs_do_local_read and nfs_do_local_write respectively.
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit dc8f9f0f45166a6b37864e7a031c726981d6e5fc)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This eliminates a redundant nfs_to->nfsd_file_file() call.
+
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 992203a1fba5 ("nfs/localio: restore creds before releasing pageio data")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |   52 +++++++++++++---------------------
- 1 file changed, 21 insertions(+), 31 deletions(-)
+ fs/nfs/localio.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-@@ -1910,22 +1910,16 @@ out:
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index 21b2b38fae9f3..ab305dfc71269 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -274,7 +274,7 @@ nfs_local_iocb_free(struct nfs_local_kiocb *iocb)
  
- #define RADEON_VCN_ENGINE_TYPE_ENCODE			(0x00000002)
- #define RADEON_VCN_ENGINE_TYPE_DECODE			(0x00000003)
--
- #define RADEON_VCN_ENGINE_INFO				(0x30000001)
--#define RADEON_VCN_ENGINE_INFO_MAX_OFFSET		16
--
- #define RENCODE_ENCODE_STANDARD_AV1			2
- #define RENCODE_IB_PARAM_SESSION_INIT			0x00000003
--#define RENCODE_IB_PARAM_SESSION_INIT_MAX_OFFSET	64
- 
--/* return the offset in ib if id is found, -1 otherwise
-- * to speed up the searching we only search upto max_offset
-- */
--static int vcn_v4_0_enc_find_ib_param(struct amdgpu_ib *ib, uint32_t id, int max_offset)
-+/* return the offset in ib if id is found, -1 otherwise */
-+static int vcn_v4_0_enc_find_ib_param(struct amdgpu_ib *ib, uint32_t id, int start)
+ static struct nfs_local_kiocb *
+ nfs_local_iocb_alloc(struct nfs_pgio_header *hdr,
+-		     struct nfsd_file *localio, gfp_t flags)
++		     struct file *file, gfp_t flags)
  {
- 	int i;
+ 	struct nfs_local_kiocb *iocb;
  
--	for (i = 0; i < ib->length_dw && i < max_offset && ib->ptr[i] >= 8; i += ib->ptr[i]/4) {
-+	for (i = start; i < ib->length_dw && ib->ptr[i] >= 8; i += ib->ptr[i] / 4) {
- 		if (ib->ptr[i + 1] == id)
- 			return i;
+@@ -287,9 +287,8 @@ nfs_local_iocb_alloc(struct nfs_pgio_header *hdr,
+ 		kfree(iocb);
+ 		return NULL;
  	}
-@@ -1940,33 +1934,29 @@ static int vcn_v4_0_ring_patch_cs_in_pla
- 	struct amdgpu_vcn_decode_buffer *decode_buffer;
- 	uint64_t addr;
- 	uint32_t val;
--	int idx;
-+	int idx = 0, sidx;
+-	init_sync_kiocb(&iocb->kiocb, nfs_to->nfsd_file_file(localio));
++	init_sync_kiocb(&iocb->kiocb, file);
+ 	iocb->kiocb.ki_pos = hdr->args.offset;
+-	iocb->localio = localio;
+ 	iocb->hdr = hdr;
+ 	iocb->kiocb.ki_flags &= ~IOCB_APPEND;
+ 	return iocb;
+@@ -396,13 +395,19 @@ nfs_do_local_read(struct nfs_pgio_header *hdr,
+ 		  const struct rpc_call_ops *call_ops)
+ {
+ 	struct nfs_local_kiocb *iocb;
++	struct file *file = nfs_to->nfsd_file_file(localio);
++
++	/* Don't support filesystems without read_iter */
++	if (!file->f_op->read_iter)
++		return -EAGAIN;
  
- 	/* The first instance can decode anything */
- 	if (!ring->me)
+ 	dprintk("%s: vfs_read count=%u pos=%llu\n",
+ 		__func__, hdr->args.count, hdr->args.offset);
+ 
+-	iocb = nfs_local_iocb_alloc(hdr, localio, GFP_KERNEL);
++	iocb = nfs_local_iocb_alloc(hdr, file, GFP_KERNEL);
+ 	if (iocb == NULL)
+ 		return -ENOMEM;
++	iocb->localio = localio;
+ 
+ 	nfs_local_pgio_init(hdr, call_ops);
+ 	hdr->res.eof = false;
+@@ -570,14 +575,20 @@ nfs_do_local_write(struct nfs_pgio_header *hdr,
+ 		   const struct rpc_call_ops *call_ops)
+ {
+ 	struct nfs_local_kiocb *iocb;
++	struct file *file = nfs_to->nfsd_file_file(localio);
++
++	/* Don't support filesystems without write_iter */
++	if (!file->f_op->write_iter)
++		return -EAGAIN;
+ 
+ 	dprintk("%s: vfs_write count=%u pos=%llu %s\n",
+ 		__func__, hdr->args.count, hdr->args.offset,
+ 		(hdr->args.stable == NFS_UNSTABLE) ?  "unstable" : "stable");
+ 
+-	iocb = nfs_local_iocb_alloc(hdr, localio, GFP_NOIO);
++	iocb = nfs_local_iocb_alloc(hdr, file, GFP_NOIO);
+ 	if (iocb == NULL)
+ 		return -ENOMEM;
++	iocb->localio = localio;
+ 
+ 	switch (hdr->args.stable) {
+ 	default:
+@@ -603,16 +614,9 @@ int nfs_local_doio(struct nfs_client *clp, struct nfsd_file *localio,
+ 		   const struct rpc_call_ops *call_ops)
+ {
+ 	int status = 0;
+-	struct file *filp = nfs_to->nfsd_file_file(localio);
+ 
+ 	if (!hdr->args.count)
  		return 0;
+-	/* Don't support filesystems without read_iter/write_iter */
+-	if (!filp->f_op->read_iter || !filp->f_op->write_iter) {
+-		nfs_local_disable(clp);
+-		status = -EAGAIN;
+-		goto out;
+-	}
  
--	/* RADEON_VCN_ENGINE_INFO is at the top of ib block */
--	idx = vcn_v4_0_enc_find_ib_param(ib, RADEON_VCN_ENGINE_INFO,
--			RADEON_VCN_ENGINE_INFO_MAX_OFFSET);
--	if (idx < 0) /* engine info is missing */
--		return 0;
--
--	val = amdgpu_ib_get_value(ib, idx + 2); /* RADEON_VCN_ENGINE_TYPE */
--	if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {
--		decode_buffer = (struct amdgpu_vcn_decode_buffer *)&ib->ptr[idx + 6];
--
--		if (!(decode_buffer->valid_buf_flag  & 0x1))
--			return 0;
--
--		addr = ((u64)decode_buffer->msg_buffer_address_hi) << 32 |
--			decode_buffer->msg_buffer_address_lo;
--		return vcn_v4_0_dec_msg(p, job, addr);
--	} else if (val == RADEON_VCN_ENGINE_TYPE_ENCODE) {
--		idx = vcn_v4_0_enc_find_ib_param(ib, RENCODE_IB_PARAM_SESSION_INIT,
--			RENCODE_IB_PARAM_SESSION_INIT_MAX_OFFSET);
--		if (idx >= 0 && ib->ptr[idx + 2] == RENCODE_ENCODE_STANDARD_AV1)
--			return vcn_v4_0_limit_sched(p, job);
-+	while ((idx = vcn_v4_0_enc_find_ib_param(ib, RADEON_VCN_ENGINE_INFO, idx)) >= 0) {
-+		val = amdgpu_ib_get_value(ib, idx + 2); /* RADEON_VCN_ENGINE_TYPE */
-+		if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {
-+			decode_buffer = (struct amdgpu_vcn_decode_buffer *)&ib->ptr[idx + 6];
-+
-+			if (!(decode_buffer->valid_buf_flag & 0x1))
-+				return 0;
-+
-+			addr = ((u64)decode_buffer->msg_buffer_address_hi) << 32 |
-+				decode_buffer->msg_buffer_address_lo;
-+			return vcn_v4_0_dec_msg(p, job, addr);
-+		} else if (val == RADEON_VCN_ENGINE_TYPE_ENCODE) {
-+			sidx = vcn_v4_0_enc_find_ib_param(ib, RENCODE_IB_PARAM_SESSION_INIT, idx);
-+			if (sidx >= 0 && ib->ptr[sidx + 2] == RENCODE_ENCODE_STANDARD_AV1)
-+				return vcn_v4_0_limit_sched(p, job);
-+		}
-+		idx += ib->ptr[idx] / 4;
+ 	switch (hdr->rw_mode) {
+ 	case FMODE_READ:
+@@ -626,8 +630,10 @@ int nfs_local_doio(struct nfs_client *clp, struct nfsd_file *localio,
+ 			hdr->rw_mode);
+ 		status = -EINVAL;
  	}
- 	return 0;
- }
+-out:
++
+ 	if (status != 0) {
++		if (status == -EAGAIN)
++			nfs_local_disable(clp);
+ 		nfs_to_nfsd_file_put_local(localio);
+ 		hdr->task.tk_status = status;
+ 		nfs_local_hdr_release(hdr, call_ops);
+-- 
+2.51.0
+
 
 
 
