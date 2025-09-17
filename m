@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-180275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71449B7EFDC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D2BB7F1EE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E279625458
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981DE586BB6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C5132E739;
-	Wed, 17 Sep 2025 12:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A063161A8;
+	Wed, 17 Sep 2025 13:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aITjZHNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSQmxa0Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F98F32E731;
-	Wed, 17 Sep 2025 12:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4682F3161A1;
+	Wed, 17 Sep 2025 13:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113941; cv=none; b=hsjsUoGSLVYxpRrs8JT58PdnCROpOo4f3DwO/6yenQYhB0K0T3BP9zFO3dVgtQ3aTudn+zkUvYwnEQ+mVZEN29xEZKfLacXY3UGoEvrT2QXAGeZdNalJUmWK2o9Ne4uI0412BxhxZyqr5jjB7IIZ4Adja4CatLsyUZDfn0BHYEA=
+	t=1758114156; cv=none; b=YQpkfIOR/nzc3HjqN7uOM8YYQTdopq8jGZk90XzRY5a6PNFj58/FVNym86hDixTe9U/TRi/4SobvmvdFGX9SkNFMN2CdtJQ95dBWAkIghDuasXkv2vRuEvrCDtqHBdeG+Jm5OrBhiWVns0eUZfKM5zUwJiDH1hjGw84Z91J6/9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113941; c=relaxed/simple;
-	bh=lvxTkHGz+oj5xft//XOR+kusE+FfSOPH2CIXsEYfjc0=;
+	s=arc-20240116; t=1758114156; c=relaxed/simple;
+	bh=dC9NtWqcdf0+gf09pCOO9jG/7iKkOP8eXTMryIff5FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V9Oj7vlq+hfCoDY6xfN8vfqJTPVDJPNsTWbtBATJ3aqlIhSRmGVWA2vSMhpzD7czNVdkKfxHQ2G56nuQEiCSyq/L58Q9yDga80gMzWCfADG9Q+FKE6J61kn5TlAGTSjS0UkMpmvmsKAmcANH9wrEIbaAt2aJ3Pvfxg2q7HbKKPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aITjZHNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8EBC4CEF0;
-	Wed, 17 Sep 2025 12:59:00 +0000 (UTC)
+	 MIME-Version; b=rS702wJZiDB8wpUi9wvIbqB1O9hqnQS/Zp7Z7Duz5FmBPOTihYpq06cIP/hdypc2H4iwDUwHo292+gD6uvy/6yImcuUT8vwPKS5q5Ge4klyRL0O6wfj+qjA3Cm+NVOZCd+CpJBUjF2A97ZGQ0+EdZV9PbJIr+TNGstobTVrSAWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSQmxa0Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B981EC4CEF0;
+	Wed, 17 Sep 2025 13:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113941;
-	bh=lvxTkHGz+oj5xft//XOR+kusE+FfSOPH2CIXsEYfjc0=;
+	s=korg; t=1758114156;
+	bh=dC9NtWqcdf0+gf09pCOO9jG/7iKkOP8eXTMryIff5FA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aITjZHNgGBV/jpPChHShLih5tSuSt1GFNoWeHGgzbcHHvQeoDs33urxRPhaqlX9+w
-	 dFAKadccakt/A1jJ/5wQ/fnSi3cKQRLt0E7PMtH1Z74EfZXuBYRbvUdtPVX0nnS/24
-	 sf8zpW/k/aDEN6TA6f21LRzcl7jOtCFP6RXEJeaE=
+	b=SSQmxa0ZRijHRri3A7LWfeQLc6y2OEXjaYRxF89JG5a1QcATIuD0dCFesor0E25wm
+	 3RlrCerVwwdk0uqI41t1dsoJ4bOe1GGa5bo/bEZz37uPqczYlfIz1CMSCvcaD/EVAh
+	 Ju7jnxDJ6+Fixj/Q6O8G7E4aNJOnHdxdTRS76Zlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	Buday Csaba <buday.csaba@prolan.hu>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 099/101] net: mdiobus: release reset_gpio in mdiobus_unregister_device()
-Date: Wed, 17 Sep 2025 14:35:22 +0200
-Message-ID: <20250917123339.223063178@linuxfoundation.org>
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 62/78] hsr: use rtnl lock when iterating over ports
+Date: Wed, 17 Sep 2025 14:35:23 +0200
+Message-ID: <20250917123331.087984170@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 8ea25274ebaf2f6be8be374633b2ed8348ec0e70 upstream.
+[ Upstream commit 8884c693991333ae065830554b9b0c96590b1bb2 ]
 
-reset_gpio is claimed in mdiobus_register_device(), but it is not
-released in mdiobus_unregister_device(). It is instead only
-released when the whole MDIO bus is unregistered.
-When a device uses the reset_gpio property, it becomes impossible
-to unregister it and register it again, because the GPIO remains
-claimed.
-This patch resolves that issue.
+hsr_for_each_port is called in many places without holding the RCU read
+lock, this may trigger warnings on debug kernels. Most of the callers
+are actually hold rtnl lock. So add a new helper hsr_for_each_port_rtnl
+to allow callers in suitable contexts to iterate ports safely without
+explicit RCU locking.
 
-Fixes: bafbdd527d56 ("phylib: Add device reset GPIO support") # see notes
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Cc: Csókás Bence <csokas.bence@prolan.hu>
-[ csokas.bence: Resolve rebase conflict and clarify msg ]
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Link: https://patch.msgid.link/20250807135449.254254-2-csokas.bence@prolan.hu
+This patch only fixed the callers that is hold rtnl lock. Other caller
+issues will be fixed in later patches.
+
+Fixes: c5a759117210 ("net/hsr: Use list_head (and rcu) instead of array for slave devices.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250905091533.377443-2-liuhangbin@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ csokas.bence: Use the v1 patch on top of 6.6, as specified in notes ]
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/hsr/hsr_device.c | 18 +++++++++---------
+ net/hsr/hsr_main.c   |  2 +-
+ net/hsr/hsr_main.h   |  3 +++
+ 3 files changed, 13 insertions(+), 10 deletions(-)
 
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -99,6 +99,7 @@ int mdiobus_unregister_device(struct mdi
- 	if (mdiodev->bus->mdio_map[mdiodev->addr] != mdiodev)
- 		return -EINVAL;
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index cb4787327c66b..8b98b3f3b71d9 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -59,7 +59,7 @@ static bool hsr_check_carrier(struct hsr_port *master)
  
-+	gpiod_put(mdiodev->reset_gpio);
- 	reset_control_put(mdiodev->reset_ctrl);
+ 	ASSERT_RTNL();
  
- 	mdiodev->bus->mdio_map[mdiodev->addr] = NULL;
-@@ -775,9 +776,6 @@ void mdiobus_unregister(struct mii_bus *
- 		if (!mdiodev)
+-	hsr_for_each_port(master->hsr, port) {
++	hsr_for_each_port_rtnl(master->hsr, port) {
+ 		if (port->type != HSR_PT_MASTER && is_slave_up(port->dev)) {
+ 			netif_carrier_on(master->dev);
+ 			return true;
+@@ -109,7 +109,7 @@ int hsr_get_max_mtu(struct hsr_priv *hsr)
+ 	struct hsr_port *port;
+ 
+ 	mtu_max = ETH_DATA_LEN;
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		if (port->type != HSR_PT_MASTER)
+ 			mtu_max = min(port->dev->mtu, mtu_max);
+ 
+@@ -144,7 +144,7 @@ static int hsr_dev_open(struct net_device *dev)
+ 	hsr = netdev_priv(dev);
+ 	designation = '\0';
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
  			continue;
+ 		switch (port->type) {
+@@ -174,7 +174,7 @@ static int hsr_dev_close(struct net_device *dev)
+ 	struct hsr_priv *hsr;
  
--		if (mdiodev->reset_gpio)
--			gpiod_put(mdiodev->reset_gpio);
--
- 		mdiodev->device_remove(mdiodev);
- 		mdiodev->device_free(mdiodev);
- 	}
+ 	hsr = netdev_priv(dev);
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -207,7 +207,7 @@ static netdev_features_t hsr_features_recompute(struct hsr_priv *hsr,
+ 	 * may become enabled.
+ 	 */
+ 	features &= ~NETIF_F_ONE_FOR_ALL;
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		features = netdev_increment_features(features,
+ 						     port->dev->features,
+ 						     mask);
+@@ -425,7 +425,7 @@ static void hsr_set_rx_mode(struct net_device *dev)
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -447,7 +447,7 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -475,7 +475,7 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER ||
+ 		    port->type == HSR_PT_INTERLINK)
+ 			continue;
+@@ -521,7 +521,7 @@ static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		switch (port->type) {
+ 		case HSR_PT_SLAVE_A:
+ 		case HSR_PT_SLAVE_B:
+diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
+index 257b50124cee5..c325ddad539a7 100644
+--- a/net/hsr/hsr_main.c
++++ b/net/hsr/hsr_main.c
+@@ -22,7 +22,7 @@ static bool hsr_slave_empty(struct hsr_priv *hsr)
+ {
+ 	struct hsr_port *port;
+ 
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		if (port->type != HSR_PT_MASTER)
+ 			return false;
+ 	return true;
+diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
+index 044e0b456fcfb..8c011b113411f 100644
+--- a/net/hsr/hsr_main.h
++++ b/net/hsr/hsr_main.h
+@@ -215,6 +215,9 @@ struct hsr_priv {
+ #define hsr_for_each_port(hsr, port) \
+ 	list_for_each_entry_rcu((port), &(hsr)->ports, port_list)
+ 
++#define hsr_for_each_port_rtnl(hsr, port) \
++	list_for_each_entry_rcu((port), &(hsr)->ports, port_list, lockdep_rtnl_is_held())
++
+ struct hsr_port *hsr_port_get_hsr(struct hsr_priv *hsr, enum hsr_port_type pt);
+ 
+ /* Caller must ensure skb is a valid HSR frame */
+-- 
+2.51.0
+
 
 
 
