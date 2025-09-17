@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-180028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA9CB7E63C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6963B7F1B0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 982194A0AB0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5EEC2A7B66
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF48630CB28;
-	Wed, 17 Sep 2025 12:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B83C335940;
+	Wed, 17 Sep 2025 12:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkmTarCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weTF7gUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980102FBDFF;
-	Wed, 17 Sep 2025 12:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7FA335937;
+	Wed, 17 Sep 2025 12:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113149; cv=none; b=NHluC+s6W14VQxuuwxtB+ZOviVNMjiAo3OJ1ZUtsjR07kxOTRyrbOkWG7GMei1l7vY5NtQKIHPJ4a/osqQW+ClbMqaCEXrHamL92dGg6aGMo5W4o0D0LgyildR6xFw15xHGXvlmbRMKssXAE6lqWZv6XW0IaRjbwzpI4IMQ42K8=
+	t=1758113964; cv=none; b=PIf8hKgzEo9LCl7G2sZWvAny/061iQae69I5cekEBcTWc31F6tpGVPZMY9djK5IW+zUdvfcYEQR9cczcNDvW/GFOunxgGK0HHUSYkuDTv3AN1v5MIy+GvW5uka/opes87Dt3TbuPmkSiKyB69ZZa1Bd+jnQFruMCR0C1nDiEGl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113149; c=relaxed/simple;
-	bh=k/CIizbZn1ZhFpI47ZH/7njPccPugscBOElRJRdffOE=;
+	s=arc-20240116; t=1758113964; c=relaxed/simple;
+	bh=7IzDdyM+9WCHjB1wCnfrJ9RZGbtHabE+UjT0NeBtkxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRcfFPltYgrzlRXVHo45O3Bf8jpa0rZ5aTrUJPo98Eebcd9uy4M/v9wVFyjfXXdYljUArY1bY9k2kIuLhAUYltcXcJQYJzMJVQnefIQNvmZ1zOTY3hv2kioN7QavCgLlucz2VKlxX/YHnw5Zqz0OS22tqQ8evvpJIwIy9HuD9wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkmTarCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCD3C4CEF0;
-	Wed, 17 Sep 2025 12:45:48 +0000 (UTC)
+	 MIME-Version; b=KixYdLe0omQFjkfHijbR2+CSahCv1x/ZgUyTeAeUQQvvX4tHikj4hQJ0xDiUIjvuWtBje3Pb5O+lsY2yZoDH7mRtOOF1IwfBIbGY5N5YPjZe5/1NHS/PCzQ8of3PB1wHVuopoNo0XqHrhuyfVe+pNS55p5Viz+CeSPhL6nVUecQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weTF7gUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57261C4CEF0;
+	Wed, 17 Sep 2025 12:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113149;
-	bh=k/CIizbZn1ZhFpI47ZH/7njPccPugscBOElRJRdffOE=;
+	s=korg; t=1758113963;
+	bh=7IzDdyM+9WCHjB1wCnfrJ9RZGbtHabE+UjT0NeBtkxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkmTarCPYv/y0uuk0AaRhb6IwOAO28GEDkfbijmxKqDC2UmyQzeaYvB3i7fRvjMri
-	 MYGt0BYmyadw+MknCDeCbaoHbKoXk19WTw/n3AiOIS16M9jCpK3eYmnCB20a1m16Yx
-	 aHMiw1lEvLxbCazXq5O7dtQN5PVjqvVntrpQArt4=
+	b=weTF7gUmQa0qAuoCrabKHXvQv17Mm5VHE7DQ8SWHKQxDuHslmNEjjuipt7XN5bYjp
+	 Kj3arnAC8ZgkfgQoDIW2Bqmus+OaBLh2AodL26DtsByFcYVXkWuDU85am4aXpKSiKY
+	 Je0JhwnlUOyN6gzce972v9FjrPIkWrXiIvJBozEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.16 186/189] phy: qcom: qmp-pcie: Fix PHY initialization when powered down by firmware
+	Michal Schmidt <mschmidt@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 073/101] i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path
 Date: Wed, 17 Sep 2025 14:34:56 +0200
-Message-ID: <20250917123356.432992919@linuxfoundation.org>
+Message-ID: <20250917123338.602731394@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-commit 6cb8c1f957f674ca20b7d7c96b1f1bb11b83b679 upstream.
+[ Upstream commit 915470e1b44e71d1dd07ee067276f003c3521ee3 ]
 
-Commit 0cc22f5a861c ("phy: qcom: qmp-pcie: Add PHY register retention
-support") added support for using the "no_csr" reset to skip configuration
-of the PHY if the init sequence was already applied by the boot firmware.
-The expectation is that the PHY is only turned on/off by using the "no_csr"
-reset, instead of powering it down and re-programming it after a full
-reset.
+If request_irq() in i40e_vsi_request_irq_msix() fails in an iteration
+later than the first, the error path wants to free the IRQs requested
+so far. However, it uses the wrong dev_id argument for free_irq(), so
+it does not free the IRQs correctly and instead triggers the warning:
 
-The boot firmware on X1E does not fully conform to this expectation: If the
-PCIe3 link fails to come up (e.g. because no PCIe card is inserted), the
-firmware powers down the PHY using the QPHY_PCS_POWER_DOWN_CONTROL
-register. The QPHY_START_CTRL register is kept as-is, so the driver assumes
-the PHY is already initialized and skips the configuration/power up
-sequence. The PHY won't come up again without clearing the
-QPHY_PCS_POWER_DOWN_CONTROL, so eventually initialization fails:
+ Trying to free already-free IRQ 173
+ WARNING: CPU: 25 PID: 1091 at kernel/irq/manage.c:1829 __free_irq+0x192/0x2c0
+ Modules linked in: i40e(+) [...]
+ CPU: 25 UID: 0 PID: 1091 Comm: NetworkManager Not tainted 6.17.0-rc1+ #1 PREEMPT(lazy)
+ Hardware name: [...]
+ RIP: 0010:__free_irq+0x192/0x2c0
+ [...]
+ Call Trace:
+  <TASK>
+  free_irq+0x32/0x70
+  i40e_vsi_request_irq_msix.cold+0x63/0x8b [i40e]
+  i40e_vsi_request_irq+0x79/0x80 [i40e]
+  i40e_vsi_open+0x21f/0x2f0 [i40e]
+  i40e_open+0x63/0x130 [i40e]
+  __dev_open+0xfc/0x210
+  __dev_change_flags+0x1fc/0x240
+  netif_change_flags+0x27/0x70
+  do_setlink.isra.0+0x341/0xc70
+  rtnl_newlink+0x468/0x860
+  rtnetlink_rcv_msg+0x375/0x450
+  netlink_rcv_skb+0x5c/0x110
+  netlink_unicast+0x288/0x3c0
+  netlink_sendmsg+0x20d/0x430
+  ____sys_sendmsg+0x3a2/0x3d0
+  ___sys_sendmsg+0x99/0xe0
+  __sys_sendmsg+0x8a/0xf0
+  do_syscall_64+0x82/0x2c0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [...]
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
 
-  qcom-qmp-pcie-phy 1be0000.phy: phy initialization timed-out
-  phy phy-1be0000.phy.0: phy poweron failed --> -110
-  qcom-pcie 1bd0000.pcie: cannot initialize host
-  qcom-pcie 1bd0000.pcie: probe with driver qcom-pcie failed with error -110
+Use the same dev_id for free_irq() as for request_irq().
 
-This can be reliably reproduced on the X1E CRD, QCP and Devkit when no card
-is inserted for PCIe3.
+I tested this with inserting code to fail intentionally.
 
-Fix this by checking the QPHY_PCS_POWER_DOWN_CONTROL register in addition
-to QPHY_START_CTRL. If the PHY is powered down with the register, it
-doesn't conform to the expectations for using the "no_csr" reset, so we
-fully re-initialize with the normal reset sequence.
-
-Also check the register more carefully to ensure all of the bits we expect
-are actually set. A simple !!(readl()) is not enough, because the PHY might
-be only partially set up with some of the expected bits set.
-
-Cc: stable@vger.kernel.org
-Fixes: 0cc22f5a861c ("phy: qcom: qmp-pcie: Add PHY register retention support")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250821-phy-qcom-qmp-pcie-nocsr-fix-v3-1-4898db0cc07c@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 493fb30011b3 ("i40e: Move q_vectors from pointer to array to array of pointers")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-pcie.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
-@@ -3064,6 +3064,14 @@ struct qmp_pcie {
- 	struct clk_fixed_rate aux_clk_fixed;
- };
- 
-+static bool qphy_checkbits(const void __iomem *base, u32 offset, u32 val)
-+{
-+	u32 reg;
-+
-+	reg = readl(base + offset);
-+	return (reg & val) == val;
-+}
-+
- static inline void qphy_setbits(void __iomem *base, u32 offset, u32 val)
- {
- 	u32 reg;
-@@ -4332,16 +4340,21 @@ static int qmp_pcie_init(struct phy *phy
- 	struct qmp_pcie *qmp = phy_get_drvdata(phy);
- 	const struct qmp_phy_cfg *cfg = qmp->cfg;
- 	void __iomem *pcs = qmp->pcs;
--	bool phy_initialized = !!(readl(pcs + cfg->regs[QPHY_START_CTRL]));
- 	int ret;
- 
--	qmp->skip_init = qmp->nocsr_reset && phy_initialized;
- 	/*
--	 * We need to check the existence of init sequences in two cases:
--	 * 1. The PHY doesn't support no_csr reset.
--	 * 2. The PHY supports no_csr reset but isn't initialized by bootloader.
--	 * As we can't skip init in these two cases.
-+	 * We can skip PHY initialization if all of the following conditions
-+	 * are met:
-+	 *  1. The PHY supports the nocsr_reset that preserves the PHY config.
-+	 *  2. The PHY was started (and not powered down again) by the
-+	 *     bootloader, with all of the expected bits set correctly.
-+	 * In this case, we can continue without having the init sequence
-+	 * defined in the driver.
- 	 */
-+	qmp->skip_init = qmp->nocsr_reset &&
-+		qphy_checkbits(pcs, cfg->regs[QPHY_START_CTRL], SERDES_START | PCS_START) &&
-+		qphy_checkbits(pcs, cfg->regs[QPHY_PCS_POWER_DOWN_CONTROL], cfg->pwrdn_ctrl);
-+
- 	if (!qmp->skip_init && !cfg->tbls.serdes_num) {
- 		dev_err(qmp->dev, "Init sequence not available\n");
- 		return -ENODATA;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index b749aa3e783ff..72869336e3a9a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -4210,7 +4210,7 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
+ 		irq_num = pf->msix_entries[base + vector].vector;
+ 		irq_set_affinity_notifier(irq_num, NULL);
+ 		irq_update_affinity_hint(irq_num, NULL);
+-		free_irq(irq_num, &vsi->q_vectors[vector]);
++		free_irq(irq_num, vsi->q_vectors[vector]);
+ 	}
+ 	return err;
+ }
+-- 
+2.51.0
+
 
 
 
