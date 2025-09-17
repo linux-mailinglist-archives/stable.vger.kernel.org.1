@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-180072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCFEB7E7E3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:50:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3807B7E34B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAF2B1C01880
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4555C467E77
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D101E31A812;
-	Wed, 17 Sep 2025 12:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17672EC0B3;
+	Wed, 17 Sep 2025 12:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V16N8lrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGDpsLB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F05731A7E9;
-	Wed, 17 Sep 2025 12:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA5F1F4192;
+	Wed, 17 Sep 2025 12:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113292; cv=none; b=SKXFhNADryGOqYjxq6E9olxv/JsAIkiMBf2x59LSamNroKn2rZl4ZsP/Wmw93XNdVg4Q4IeSV/3IHpH1CYAJ/R0GrI7q3rs3MS1gotXdTBFQdRsM72r2GhNxQLJ+Ptw13aW6PIt1W6F+gqLK7E4UOMoLQSr4o1JIs94ZLDjP50g=
+	t=1758112973; cv=none; b=gDNdZHSUKtV9v9078ViYOm8DudpreSt8Wgv4iuBHi/Pv66jWe7JIXwpD7C2GGgnPxMXJJFylHBBRhnrQZpwQimfy4zj8u7qfgD8reVlcXHpZL/eJ012gtyb+EUX2lz7oMTQl9iKODmRjrmxYPynd59vldnvKXIFvzPUhSoUsvbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113292; c=relaxed/simple;
-	bh=phg9I8u7yzqBAaqn27JlMy555nhsEXchaoX6RvYO22A=;
+	s=arc-20240116; t=1758112973; c=relaxed/simple;
+	bh=nk/e64xq/KVqMjTHl8Fgte/8w9J9JdFTy0T5XZ0pzr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMiCapTbdn2JBYIvCBdnhZNCnTzm92CMYrMBhBOQ/aoILrQTI8c0+VU6DioTGfiVQpTUJ6z4gurrlB0DY1BjXEc1uNUbT5daIfHL/MBORijNDufxxuuGWC2I33czWq8mJ+ycfExmxOKo3J8QW0oM7C8YuPu6TCzLyrmLHwp8Zwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V16N8lrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D73C4CEF0;
-	Wed, 17 Sep 2025 12:48:11 +0000 (UTC)
+	 MIME-Version; b=UmUeYBCsGoKpCVNjtiy8iNi3489i3OaGRj/FEtzVkl8ojO2tWZ5/7UP3pGsMj/8TMR016MV63a0FhTr/ztDUj1w6LqAyLKiSem434NW5v4oEd3ZKF8Ik13NrMaJ0X+T1z+WYaqLpPsj3VDG9z11W/dYJYudcYmsMhg2ucRpDqmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGDpsLB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2083C4CEF0;
+	Wed, 17 Sep 2025 12:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113292;
-	bh=phg9I8u7yzqBAaqn27JlMy555nhsEXchaoX6RvYO22A=;
+	s=korg; t=1758112973;
+	bh=nk/e64xq/KVqMjTHl8Fgte/8w9J9JdFTy0T5XZ0pzr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V16N8lrwdunUJx12XEKkISZKs5EvMX5AbmoQ2X09G9jiaMNfekaJyszb9Ln7aCqQj
-	 5Wy45N05z5HyeNXMUAqi5oVba2B53LX8QqQI+LKx8dD9sQWjYHArlqYtZ4bvmzeAO7
-	 5iIXi2Y3c3s5Sl9kWF/1dyVz81C50Hnb2DFZstIg=
+	b=QGDpsLB68tOA5RqDzBvAccX0toA8ogE74FIaAMfSbR9cvBuZFPFtydfcPYHB0czl8
+	 Oa0hTE5IOJU9gZiM3qscPpFvAgPpLRVqzyUgjQDuF0YHcS8OmgPAZEsjVxj1nMFK2/
+	 q3K4U33Q2LkinRVEpYqTNzYRT5XmjeI7ZKrjJ2Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fort <disclosure@aisle.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/140] bpf: Fix out-of-bounds dynptr write in bpf_crypto_crypt
-Date: Wed, 17 Sep 2025 14:33:34 +0200
-Message-ID: <20250917123345.333172747@linuxfoundation.org>
+Subject: [PATCH 6.16 105/189] mtd: spinand: Add a ->configure_chip() hook
+Date: Wed, 17 Sep 2025 14:33:35 +0200
+Message-ID: <20250917123354.429037608@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit f9bb6ffa7f5ad0f8ee0f53fc4a10655872ee4a14 ]
+[ Upstream commit da55809ebb45d1d80b7a388ffef841ed683e1a6f ]
 
-Stanislav reported that in bpf_crypto_crypt() the destination dynptr's
-size is not validated to be at least as large as the source dynptr's
-size before calling into the crypto backend with 'len = src_len'. This
-can result in an OOB write when the destination is smaller than the
-source.
+There is already a manufacturer hook, which is manufacturer specific but
+not chip specific. We no longer have access to the actual NAND identity
+at this stage so let's add a per-chip configuration hook to align the
+chip configuration (if any) with the core's setting.
 
-Concretely, in mentioned function, psrc and pdst are both linear
-buffers fetched from each dynptr:
-
-  psrc = __bpf_dynptr_data(src, src_len);
-  [...]
-  pdst = __bpf_dynptr_data_rw(dst, dst_len);
-  [...]
-  err = decrypt ?
-        ctx->type->decrypt(ctx->tfm, psrc, pdst, src_len, piv) :
-        ctx->type->encrypt(ctx->tfm, psrc, pdst, src_len, piv);
-
-The crypto backend expects pdst to be large enough with a src_len length
-that can be written. Add an additional src_len > dst_len check and bail
-out if it's the case. Note that these kfuncs are accessible under root
-privileges only.
-
-Fixes: 3e1c6f35409f ("bpf: make common crypto API for TC/XDP programs")
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://lore.kernel.org/r/20250829143657.318524-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Stable-dep-of: 4550d33e1811 ("mtd: spinand: winbond: Fix oob_layout for W25N01JW")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/crypto.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/spi/core.c |   16 ++++++++++++++--
+ include/linux/mtd/spinand.h |    7 +++++++
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/crypto.c b/kernel/bpf/crypto.c
-index 94854cd9c4cc3..83c4d9943084b 100644
---- a/kernel/bpf/crypto.c
-+++ b/kernel/bpf/crypto.c
-@@ -278,7 +278,7 @@ static int bpf_crypto_crypt(const struct bpf_crypto_ctx *ctx,
- 	siv_len = siv ? __bpf_dynptr_size(siv) : 0;
- 	src_len = __bpf_dynptr_size(src);
- 	dst_len = __bpf_dynptr_size(dst);
--	if (!src_len || !dst_len)
-+	if (!src_len || !dst_len || src_len > dst_len)
- 		return -EINVAL;
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1253,8 +1253,19 @@ static int spinand_id_detect(struct spin
  
- 	if (siv_len != ctx->siv_len)
--- 
-2.51.0
-
+ static int spinand_manufacturer_init(struct spinand_device *spinand)
+ {
+-	if (spinand->manufacturer->ops->init)
+-		return spinand->manufacturer->ops->init(spinand);
++	int ret;
++
++	if (spinand->manufacturer->ops->init) {
++		ret = spinand->manufacturer->ops->init(spinand);
++		if (ret)
++			return ret;
++	}
++
++	if (spinand->configure_chip) {
++		ret = spinand->configure_chip(spinand);
++		if (ret)
++			return ret;
++	}
+ 
+ 	return 0;
+ }
+@@ -1349,6 +1360,7 @@ int spinand_match_and_init(struct spinan
+ 		spinand->flags = table[i].flags;
+ 		spinand->id.len = 1 + table[i].devid.len;
+ 		spinand->select_target = table[i].select_target;
++		spinand->configure_chip = table[i].configure_chip;
+ 		spinand->set_cont_read = table[i].set_cont_read;
+ 		spinand->fact_otp = &table[i].fact_otp;
+ 		spinand->user_otp = &table[i].user_otp;
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -484,6 +484,7 @@ struct spinand_user_otp {
+  * @op_variants.update_cache: variants of the update-cache operation
+  * @select_target: function used to select a target/die. Required only for
+  *		   multi-die chips
++ * @configure_chip: Align the chip configuration with the core settings
+  * @set_cont_read: enable/disable continuous cached reads
+  * @fact_otp: SPI NAND factory OTP info.
+  * @user_otp: SPI NAND user OTP info.
+@@ -507,6 +508,7 @@ struct spinand_info {
+ 	} op_variants;
+ 	int (*select_target)(struct spinand_device *spinand,
+ 			     unsigned int target);
++	int (*configure_chip)(struct spinand_device *spinand);
+ 	int (*set_cont_read)(struct spinand_device *spinand,
+ 			     bool enable);
+ 	struct spinand_fact_otp fact_otp;
+@@ -539,6 +541,9 @@ struct spinand_info {
+ #define SPINAND_SELECT_TARGET(__func)					\
+ 	.select_target = __func
+ 
++#define SPINAND_CONFIGURE_CHIP(__configure_chip)			\
++	.configure_chip = __configure_chip
++
+ #define SPINAND_CONT_READ(__set_cont_read)				\
+ 	.set_cont_read = __set_cont_read
+ 
+@@ -607,6 +612,7 @@ struct spinand_dirmap {
+  *		passed in spi_mem_op be DMA-able, so we can't based the bufs on
+  *		the stack
+  * @manufacturer: SPI NAND manufacturer information
++ * @configure_chip: Align the chip configuration with the core settings
+  * @cont_read_possible: Field filled by the core once the whole system
+  *		configuration is known to tell whether continuous reads are
+  *		suitable to use or not in general with this chip/configuration.
+@@ -647,6 +653,7 @@ struct spinand_device {
+ 	const struct spinand_manufacturer *manufacturer;
+ 	void *priv;
+ 
++	int (*configure_chip)(struct spinand_device *spinand);
+ 	bool cont_read_possible;
+ 	int (*set_cont_read)(struct spinand_device *spinand,
+ 			     bool enable);
 
 
 
