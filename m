@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-179965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129CCB7E2F4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A18B7ED4E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0831163844
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2B01BC2897
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CBA1F09B6;
-	Wed, 17 Sep 2025 12:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42753DAC02;
+	Wed, 17 Sep 2025 12:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPQtIJl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJDb2eAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF581EE033;
-	Wed, 17 Sep 2025 12:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9265336998C;
+	Wed, 17 Sep 2025 12:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112954; cv=none; b=jjYqzwBzCnVRkG9X44ywFQBnEGPZslEWFxsoCl3SqmzCckrEWo0Sirmmi/12GzyWjhduB7rrw71X45NzM0xl0FGMHsGMTfwxbwtnfLC8tpfwkt3oAjyaZLyxjgDmoqHTc3GimhlMeSts18aY5XQhnoLb9t5znMDS6ql1zkrmQwE=
+	t=1758113655; cv=none; b=kL3JrMfJKLT09n7dIsLUxnH05mF0vS2Z4zEmpZ00zcxIDDPhQVCRAwgBz/8awIJ0PV7ubVoecsBaWE1bsCVVLo6akw0pkV8xm+Kfth6NBiMdx94YlCOk9LOvu2jUkj/TrP5lXN6L7Q/kuyP4sy/m8bX58PlLjIHgmty/vLC8LJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112954; c=relaxed/simple;
-	bh=yMTyQ/OtBTkuGgaYrMVVKnGneT9B/c9u3QoQMbEkaLw=;
+	s=arc-20240116; t=1758113655; c=relaxed/simple;
+	bh=5oU/XkthF9zIRS9TKbK1tky24rjccHutCepCcOQy8PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeLvooh+m8P14ILHqWnkwFWIeX0QWBpNjoZLWVYJA9mAAklW9ZJKNVW8a/UeOR2C6kbj4lVhNmc0du5Q+08YTDp172iiQv/1didb/aqcNcceKZ7UAt7V2PIKIkQyZeKNEr66apwrK0Lm8l0AOPJFrnBUKv3HKuoxBXSLEbKl9d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPQtIJl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F95C4CEF0;
-	Wed, 17 Sep 2025 12:42:33 +0000 (UTC)
+	 MIME-Version; b=j7dol41wqgWR9IEJf6oKSF95CCxofXmy31/xHLv+4Gd12Gkd8r+TZEbfSIzg9Ys8XuZT2Ol9/sFtgK6Y5UoKZ33A+cUclzOaZrVM2gWkwKmK2ebbxkoODP5lInBWG9bTz+Y7k530+rI41ohaOaNRPSykd585QvD7uPaAGv6Rg6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJDb2eAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4DBC4CEF5;
+	Wed, 17 Sep 2025 12:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112953;
-	bh=yMTyQ/OtBTkuGgaYrMVVKnGneT9B/c9u3QoQMbEkaLw=;
+	s=korg; t=1758113655;
+	bh=5oU/XkthF9zIRS9TKbK1tky24rjccHutCepCcOQy8PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPQtIJl1qYvin/1U/9xGn+VFDN52uz2ThqjghgRmIBxflYcpvfZd8OlNC4kGObsMz
-	 Idj9AKq0e/qMJrmnMTzlCo/cNKPhu5fGtPkBNPDAvLhIHwg5KrPjOv6crzLPRLYNmv
-	 uqBMheXP3Da9oEljUNjl/rfzaiXQ3GuU2U1XvLys=
+	b=VJDb2eAWLk1YDHdMLeK6YlO8/Ifz9MZSCt3OGXjrKD2r9HQWNGIYgLeuxfv/KzWZ6
+	 u/3tD3E4XtyKr+Qo59MsxJC3eHi59YhfawCWiPCT5omjVZVTqij4au5ZKbBuJSSO3r
+	 BHoDAJ6MZXVIgLWCbxendUvApT7ZADd/uEydkTC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Steven Price <steven.price@arm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>
-Subject: [PATCH 6.16 126/189] drm/panthor: validate group queue count
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 013/101] NFSv4: Clear the NFS_CAP_XATTR flag if not supported by the server
 Date: Wed, 17 Sep 2025 14:33:56 +0200
-Message-ID: <20250917123354.937446802@linuxfoundation.org>
+Message-ID: <20250917123337.186883195@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit a00f2015acdbd8a4b3d2382eaeebe11db1925fad ]
+[ Upstream commit 4fb2b677fc1f70ee642c0beecc3cabf226ef5707 ]
 
-A panthor group can have at most MAX_CS_PER_CSG panthor queues.
+nfs_server_set_fsinfo() shouldn't assume that NFS_CAP_XATTR is unset
+on entry to the function.
 
-Fixes: 4bdca11507928 ("drm/panthor: Add the driver frontend block")
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com> # v1
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250903192133.288477-1-olvaffe@gmail.com
+Fixes: b78ef845c35d ("NFSv4.2: query the server for extended attribute support")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/client.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-index 6200cad22563a..0f4ab9e5ef95c 100644
---- a/drivers/gpu/drm/panthor/panthor_drv.c
-+++ b/drivers/gpu/drm/panthor/panthor_drv.c
-@@ -1093,7 +1093,7 @@ static int panthor_ioctl_group_create(struct drm_device *ddev, void *data,
- 	struct drm_panthor_queue_create *queue_args;
- 	int ret;
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index cc764da581c43..1bcdaee7e856f 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -873,6 +873,8 @@ static void nfs_server_set_fsinfo(struct nfs_server *server,
  
--	if (!args->queues.count)
-+	if (!args->queues.count || args->queues.count > MAX_CS_PER_CSG)
- 		return -EINVAL;
+ 	if (fsinfo->xattr_support)
+ 		server->caps |= NFS_CAP_XATTR;
++	else
++		server->caps &= ~NFS_CAP_XATTR;
+ #endif
+ }
  
- 	ret = PANTHOR_UOBJ_GET_ARRAY(queue_args, &args->queues);
 -- 
 2.51.0
 
