@@ -1,224 +1,353 @@
-Return-Path: <stable+bounces-180406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C94AB8016D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:39:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D091B80237
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069DC188A24F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:37:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1487A8599
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB542F0C48;
-	Wed, 17 Sep 2025 14:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC23D2F5498;
+	Wed, 17 Sep 2025 14:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="e75DNwT1"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Y3v7Y7pb";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="uJJS36Ku";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CCQiHQNN";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TgzzG1is"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012041.outbound.protection.outlook.com [40.93.195.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B66C54673
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 14:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758119799; cv=fail; b=ajzTZRSs6U9v4ong5SsMhl+D7rhTXrVj3FQdGh/Gd9Q42vAlaC3rpP7miXmDh+GthOudTTeHVJc3GOoQkogI1sO4aMNI4cCLEbtvawX9n2ufZnSLkTcjC/BM+5cm2es2EVvXEkI15Q4xSVHKeiVKfC/7JywJ7dkYaVsRaAf6WjA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758119799; c=relaxed/simple;
-	bh=Bqno6KSxu5C+IDuiGKKTcxOoNlm8j3MTfmXYbOhXRhg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nKFbMFQ0wrIjPUHxRlnkgwp5x+3GKZXqmwuLR4X+kNg/TIAvlY1rgbzw6iVlf0GSNbp19QU6uQhNtnFSRbuebCn6gTCClI5nwlMON0Ob8pwfbgybwmKYntUkanc1rvMh2pZ14dxeMFuL6TGnHu1EWkRA0+0r62UYi8WX/aLZ+nw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=e75DNwT1; arc=fail smtp.client-ip=40.93.195.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D7EUruwDYvyS2qVfRPJm+7JzjXKepbNosTnKGw5TOtvlg9jrvdnhZ/KglQMbhnj4njOruBlbynrBJ9QrYLQwWtOnYmnBO0af43FHn6l/z4jnpcrcinGjY6eowhC+tzKV/Nl/AOnSwtHLH1fqiM1ptEeXb7VbtX0Ckhvt/zJYW3Jt5iJaIu9bigqx3zyqt+z7rzAmoP1IKVUuXLvUIZfVwVdIeSHeMFiq65SxRmVqEZowNZJG64xKUjqWaQ1A7X1SKJ3CV6W96awqxahuqPUwDFxmPy89XJar1DPY0hmpSyiCNIs/RCMLlaDiirrqk5XhBHIVukkSkILjpliPt8VAIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Bqno6KSxu5C+IDuiGKKTcxOoNlm8j3MTfmXYbOhXRhg=;
- b=wEhv0PygEKZXZiNGug1Amgzk2rkOihW3K68n7RpilimbD/tHGAmBWxOY7syZDp1r0j+1G5qhn8ZoU2e/T+wFvd0g4DmqYD4+0W8bxhAEgU1I/WvgkWDpbDc98wQ6f1aA+yYhlzV0PV/GV5t7VkHoridlmOk9Jts2KHDamjV2XL9tHnyYbZhjBN50YBngUAfSYL0J/0TbA2RGpD3UqFWU/+VgxiSEaI4TrI7x1Z/1HoHpEzXJsXdAgGir9ga5FeIkCdSbpOurozWCefk94mRsLSmqxeJ49/8txNv/KnoQ8acVCUkA0hQcIaSvTjDjwfIQiLPbA56dR7FM6v8NW/LR+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Bqno6KSxu5C+IDuiGKKTcxOoNlm8j3MTfmXYbOhXRhg=;
- b=e75DNwT1CjdxyYMUizcQ86zEAgDh7A81T2XsBKGWWp9wc2DC41qb/GwdDRy1eZtMn4OqYd0Tzo12oTwWgHuIidexChKJOEvcqWCOunQHNdtUmwiXf7ekCJL2G4xEwyhcE9ZfEBF0alsFjiD3QiHDPnUYd9kWsY/luaFuvsRaoGE=
-Received: from BL1PR12MB5144.namprd12.prod.outlook.com (2603:10b6:208:316::6)
- by DS7PR12MB8202.namprd12.prod.outlook.com (2603:10b6:8:e1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Wed, 17 Sep
- 2025 14:36:32 +0000
-Received: from BL1PR12MB5144.namprd12.prod.outlook.com
- ([fe80::491a:cce3:e531:3c42]) by BL1PR12MB5144.namprd12.prod.outlook.com
- ([fe80::491a:cce3:e531:3c42%7]) with mapi id 15.20.9115.022; Wed, 17 Sep 2025
- 14:36:32 +0000
-From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: "patches@lists.linux.dev" <patches@lists.linux.dev>, "cao, lin"
-	<lin.cao@amd.com>, "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, Sasha Levin <sashal@kernel.org>
-Subject: RE: [PATCH 6.12 140/140] drm/amdgpu: fix a memory leak in fence
- cleanup when unloading
-Thread-Topic: [PATCH 6.12 140/140] drm/amdgpu: fix a memory leak in fence
- cleanup when unloading
-Thread-Index: AQHcJ9ITf72eJF2pgU+VOw+q7TTqmLSXcSVw
-Date: Wed, 17 Sep 2025 14:36:32 +0000
-Message-ID:
- <BL1PR12MB5144DD691B4246E3F70302BCF717A@BL1PR12MB5144.namprd12.prod.outlook.com>
-References: <20250917123344.315037637@linuxfoundation.org>
- <20250917123347.745396297@linuxfoundation.org>
-In-Reply-To: <20250917123347.745396297@linuxfoundation.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=True;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-09-17T14:36:09.0000000Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
- Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=3;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR12MB5144:EE_|DS7PR12MB8202:EE_
-x-ms-office365-filtering-correlation-id: cec504f0-3527-4570-0c8f-08ddf5f798ce
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?OUZhbUN4SXhnWkFFd0RXaFdENWlZVXhNTGRjeVNMYkVPOGVyYXhhbEtCYXpP?=
- =?utf-8?B?MC84TnZHazE3MmpZMk9Ec0NaUG1EVkI4Z0M5KzNMa04vRFBPaXRvYzNlcTVi?=
- =?utf-8?B?TjhQSlV4SThOL1pyM2hlYi9FLzY3S3dOTHJ2eEpOamdNYUNQWEtnd0xhdHFT?=
- =?utf-8?B?OE96Q3hPUUNmendSOExmbzg3dDJMRG0rZDc5b2R2T25LcVhFOW13U1V6ZjVL?=
- =?utf-8?B?V2NrRDVNeHNnYUN1WEVPb1JvczRiY1BPckVrREFKRGJJZzI1RWFSKzlwdHhZ?=
- =?utf-8?B?R1UrZSt3aG1UVXZ2d1AzQ3ZzOGY0RmRRRUpjaTJTVW50MVc0R1RPUXZsSFhU?=
- =?utf-8?B?QU9NTmlwdWVhN2wwelN3SE1XaGpzWmxBMFRIaVo5RUlPZXRGRElpOXBheXNJ?=
- =?utf-8?B?S3FCWG1CMzJBZk80YlhMZ2dMdFh5OUhoUFZTOEtTWmcrZ2dPdzczRmRYaVlR?=
- =?utf-8?B?L2dVT0k1aU4rMGJ0ZmRGZTlqaEpOcVZ1bEVKS2tEditvd3hmb2Y0WXAxTFBs?=
- =?utf-8?B?bmFZakdXVUQwa2JyTDNFU1ZJNUU1WTd3Q3NRZmR2ZUI1b3lrT2o1SWdpaUdO?=
- =?utf-8?B?Q0RPSVZYZU1sYko1TUQ4QWRqYktzSW95cVBEUjYxT0tHUTV5VGF0WWkzaGpN?=
- =?utf-8?B?amZNQlJ2NFROMy9wekloWmUyOVV3dkdkY0JOSWdsRm4yLzY3M0ZJUUFaVUQv?=
- =?utf-8?B?cGhKRys0UnQwaS9DbFd6RkRnZVpVOVlZTTVDWlNYeUMxQUNBcVc5VVVIMU9X?=
- =?utf-8?B?TEhETzB1TFBzdXZXc0JaSmdIYWUyVmFvZ3B6aUVVZitkbFA5czk2aFR1ZmJ6?=
- =?utf-8?B?d3R5S1hnMnNUc2E3K1I3YTlCcml4d1RCWjVOV1ROeEJDM2d4bHV3ZTJOdFpm?=
- =?utf-8?B?aGRwR2F2VGJoTVFDYURoblJ2Ti9XQmtaK1Y3bVlob2V6WDI4aDRwZEpGWWhE?=
- =?utf-8?B?Q3k0QWNONVl0ZUNTMkJSblh4UnAyR1hlcXluenh4V3VIdkxkVld2Ti9vN0t2?=
- =?utf-8?B?ZVVaUGc0Qjc2aHVuSHFQalpCZWZIbllTYnVmSnBwQkF1c0g1LzlsdW5GUDAr?=
- =?utf-8?B?TFltVVZTTG1RS1NtVGtEL2QxdmVoTE1BZmdkeURBZGxnRjN5OENXSjVhVmE3?=
- =?utf-8?B?ckQ4NEF3bGMrY2c3dTNoNFhnMUZXOWxvNGV4bSttU2R6OHo0a0Y2ZUkrRXhC?=
- =?utf-8?B?ZlpBVzEwSGYxR0kzVUs3NHI4WFovbnJFYW5ZT25iUEZtUUkyZlkya2U0YTJt?=
- =?utf-8?B?RkMyeDBqSHBOQ3lGUE85RFlKTkluUFRpS3FOUFE0bmdpL052U0pRdEtOWEJU?=
- =?utf-8?B?WlZQZmpiNVVlT0pncEphUW9VVzVMNHB4VG1ZSVVQbWY3bHlHQlYwSlJrbjhV?=
- =?utf-8?B?OXRxZVpMM2dhVE5oaW1Cc0x3Skh6cG5YZmdBQjhTMkh1Tkl6QmdGVDVQQzhm?=
- =?utf-8?B?ak9Iek5WQXZzeWVBT0FJMThNUGt0aHJYYWxIZ1lXUWZLV0tjMWJnaTUzZnJC?=
- =?utf-8?B?MG0zVGRtUm02VmpJa0V3YkRMOC9WTjJmREVmcXIrbkZIV0RCb3hmMzFuVG10?=
- =?utf-8?B?WkZvekVvbkhTRkZiZm9mRmgzUnB6Q1lGSCtISWw4bXZFdTVOa2NFQWFxTkFz?=
- =?utf-8?B?QlRCV0J0ejU2S0pqNUpjZzIxSnZWTGFwa0pGeFVXWHVGeVdLZUNZWitPV2Nq?=
- =?utf-8?B?SzNna2c3ejlVQWE2T3lGYkNNYjVYV1ZvRW9aNHlKSjdDb0dhdE9pd21YamNw?=
- =?utf-8?B?T1FtbVhTTHdmc0pMVkx5S3l3T0Z6NjZKOWp0cFlhRWtjUDhrNDF2eS9DaEpn?=
- =?utf-8?B?VVZuU21XVVZtWnoyN3FyQ0JwRUFRQ2lPenNCTzVtemwzODE4SzBPQmxiL0xC?=
- =?utf-8?B?OExSSFVFbG1CN1daeVIyNlNMcUtFZTlmRTI0MGllREhocXVhcHVVSXlLd1dS?=
- =?utf-8?B?UE1pZGRkblBZZkI4M0hXcHJkNmEvcnVSa1l0Q05VT3BxSTFVNmtZU0FXd01B?=
- =?utf-8?B?ak9tT3BUODR3PT0=?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5144.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?TWE4eDJDQkJ1SWwrVGZaNmNWeWpDeFNHc084MVYwNndYOThsdzV3c0dObER1?=
- =?utf-8?B?Si84dmlCOWV0MzR6WEVtdklqaTV2SDUzdGhUVDdpaUtlMkpvR1RXVmd6S1BF?=
- =?utf-8?B?QlRmc245K1pNOElWRFhYVmE5YzkxUVpKTnY1eFBUL1c1U0lOUVRPUTJEdWo2?=
- =?utf-8?B?SXlKVEpGMFRGUTNSNXFmWG4vT0h5WVppVVVhM1JQaFNNcm9zK3M0RHBNSGZ3?=
- =?utf-8?B?dWIwNHNxN2FiY2p2ekVrMUFsWFYyMEdzalM0SHhORk1pUjZpNE84QTF0RmF6?=
- =?utf-8?B?eXZ6anEvZFNuT0o3SnRkb3pNUlVxUFNKdHdhSDFHamUwTE9YU29Wa0trL3Q1?=
- =?utf-8?B?TlM0Z3k2U25RRjZhNlpKQTlDOXJVOFdyRENjeGVpU1AvZTRhWUpCRkZiamhy?=
- =?utf-8?B?YTNNaG9zSnFERjVLeTVwTEpkNjZFWlVpNEo3eGJwYVl1eVRDRzI1Rm1ESzl5?=
- =?utf-8?B?K3VibkVrb2hVb0J5SGh4UXNWSkhXM25DOTJMYmJmZnllYlNSZFl1TUFUN0pv?=
- =?utf-8?B?NzZraENHYlFweVZCQm1KMGxtVWlHSmljN3cwMm9HTzI4S2VndTRrVzIxNDVT?=
- =?utf-8?B?U3BTdXJITEFwVzZEMkxPaEdGK1dVaXp3WlU3dExwRjZoeG9udHpCU0tBbmlT?=
- =?utf-8?B?RDFhTm8vN2prbGQwLyt6Q2RqUWpmRmlOTk5mdlYzNzYrSG5vVm15OHMyMWFC?=
- =?utf-8?B?dDdMbnp2czZQMjZqT0FTRUh4UUVVMW9MM3hHK1V0d0VqSENqc2owL1FWYUNn?=
- =?utf-8?B?ZytocEdYZ1hWZjR2Wk5hemRZek9zZUs0eUt6MHFGNERNYTFxTEdjenBRc2Qz?=
- =?utf-8?B?amtuSVZmaG1OcEtNNmwvaXBobGl4ZjA4YzE2U3BZeXZkcWJvaEdpWGJzb0xn?=
- =?utf-8?B?dDlNNzRHQjNLVnhlQ25Ycjc4Y2gyZDd2d1E1T3MxZ2xtSER4N042VmZqUUEr?=
- =?utf-8?B?SmxPdG5heDV5U25DbWxTK0xFQlpDbUhXL2Ewb1FIQ21iZ0JzeFVBR1lpTXZ4?=
- =?utf-8?B?TjlLeVo1Y3pPY1pMR0hUNnYxNDZ1cDR1VWZ4eCtoOUZTZ1RLVmFOZVZsNlUr?=
- =?utf-8?B?TVpUSUZ5Ti8wUHY5ak5ZY2ZteTRBUlhLRys5K2lzMUtZUTFFZi93Sm9KZU94?=
- =?utf-8?B?Y3FDbVl0WTFXakViaE5kOVhXYVVtdWkwVkpLMGFYWVQzdjN0WkhUYXp0TU4r?=
- =?utf-8?B?Zy9qb0ZoWHZubXh0Y01CSnRhdlFZQ2FHc0hyTmJEZmErcW5jWmhmd2xPZnBy?=
- =?utf-8?B?R1JJVHV4RVkrUVBPSXdPb0JPcGRXN2hLcXh2Q29ka0orNXJkNUJsWnVObWEv?=
- =?utf-8?B?bHgyOXlMK2dPWHNyUFA5MGROd2p2V2RONFZiQzNEb20reVRBYi96U1UvNzV5?=
- =?utf-8?B?S0VNcEFOakFibXFlL1Fxc0FwMkQyeFVaWllmdVBQdS82eHhQUjh4S2ljR2hE?=
- =?utf-8?B?dXhnUU11ZVQrV0l2cGhKSWQrQzRJRkhBM0d2ZHArUG9VOW5STEZaSWU2ZEZT?=
- =?utf-8?B?Z0hqZktTbnlpemt1ZS9MUS84MjFmeXM5TEtlOUIwT1daMEF4TGJVUmNNSmxi?=
- =?utf-8?B?VmZ5Tis1M1kwMUFNeDFwV3FxZnB4bk9Pd09Dd2dadHhjVWE2TWVJNklKcG8w?=
- =?utf-8?B?SGdRQkd5S0JtalpmTFY3Y2h0RTl1V3ovb1NMK01mcEdvZWRieXZpVHZsY1BK?=
- =?utf-8?B?Z3ZhQXVDWFB5YmFGK1lQRFdOb3Q3RVd5ZUpReGRzSVNqYmlqTnRjYjlSL0Nw?=
- =?utf-8?B?SlZNMks4RG4yR3VmeDhkeFozNUhsN2ErYnlzQ0NCY1JVbEhWY1kydjlqdDJm?=
- =?utf-8?B?aWZlVytnUmhuNitmeFBaaG9IRUJmQmhVSFNDd1lRbExsSWtmSkFBYzkvcDdP?=
- =?utf-8?B?TzJ6LytNUkZNVytGY1NSeUVwVmpndDZYcmVOZUlCd1M2enBuN2poeWpOS3lU?=
- =?utf-8?B?YTdzakgwenkwcXp4d3RyYjc0cXZxWlhVbjFFZlhQYzU5RFNzZ1hmYnNWay9s?=
- =?utf-8?B?MDNsYk1reTVGY2I3RDJzbVlnemZ2aFUrT0ZLWXJCNys3cmtZR21jdGk0aFR4?=
- =?utf-8?B?aHpETWl0S3l6Mk1TdWlRYVR4NnZJS3BNODRaZTNaRjRJcndvRm5kMjRkVXNz?=
- =?utf-8?Q?jpf4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97D12F3C14
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 14:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758120140; cv=none; b=IKoMhc+PHwKUCwG2iPfpTNZZ1rUdrlQjKqvCsYmV/3Vb9CwDw+5yixYvs9gUF/j/nAzGa6Q0QoI3fq/pCXXWlDNzRVzgb8mWXsasYYnEmttLALAW5DB5zUDXNZlnEoGVp87uISK2FaOzuH2XXZ+CEflD1VD8dgKDNtfbZdkiLbE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758120140; c=relaxed/simple;
+	bh=saoZ45JmpjgnTY0sEqow5fI9WFXZe3qIhs+MuwngoNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n56ZceI4faK2IXTX75n+JYa8p/fvmWqfcpUiGPo0+4MNLxPNQDFqSC9ORKSTCsAzLhTdp62lgCeZRf6Mnj78jqweHw2+Ebv71vC9IBQU29KVFUhuiKqmAdR+Tbh6fx7n9eVyUyCnvqgTS6g4BCyvjxoy91LMfNT9SNI5UQG/58A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Y3v7Y7pb; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=uJJS36Ku; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CCQiHQNN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=TgzzG1is; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EB51B20666;
+	Wed, 17 Sep 2025 14:42:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758120137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
+	b=Y3v7Y7pbbEFF/dy+wzVe4lMKO0184VEQ4ApgLie4fFOJHh+EiERumamZBTZKb0HE+QnqYO
+	8KUbQB9c9amCO3MgxkjYfBPIM+m3a8yriPn+NANwQizYO4lR6YA8wh8yb6cRqxt8BGbgo1
+	DT4t0MOcf6A7o3rNZ3SNzwB2RsKmVJk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758120137;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
+	b=uJJS36KuHnov3QHFokbyUQ2Vn66jSq2D/XK7Qp0dOXOVIpgIecoeCK5MCJ56tWJQcEKKOT
+	mGH3C0f6CeuKcCBg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758120136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
+	b=CCQiHQNNS/e6fqSbka2yHa7EUh/GFLWoBZ7yXum2W9aoZsCZDubeALVY0RB8to/p6gJTSv
+	qKO3kpUttwfU78nariaMlN0HbQl4wvO0AKpK8hJEYjWkx/xHK4ZsPFb2XYnTRwOt/uj6jP
+	IYtfVHt0QBGBWHrkb5fy4c+gDj0ktSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758120136;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
+	b=TgzzG1is3agIUeOMtTIgdvTGyqTvV0ufxVqS8WdSEhhb9a4xDXsGgXwP9RykBr1ALk/oSX
+	ea4RXdRFjVX3C6CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D15191368D;
+	Wed, 17 Sep 2025 14:42:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GTcRM8jIymgyDwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 17 Sep 2025 14:42:16 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 44845A077E; Wed, 17 Sep 2025 16:42:08 +0200 (CEST)
+Date: Wed, 17 Sep 2025 16:42:08 +0200
+From: Jan Kara <jack@suse.cz>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Jakub Acs <acsjakub@amazon.de>, 
+	linux-unionfs@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH] ovl: check before dereferencing s_root field
+Message-ID: <3gpfceywinbzsbgslwsywzv4qqubab6gcftlzag6drhl5vhmb6@iupru3v7wsey>
+References: <20250915101510.7994-1-acsjakub@amazon.de>
+ <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
+ <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
+ <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
+ <gdovf4egsaqighoig3xg4r2ddwthk2rujenkloqep5kdub75d4@7wkvfnp4xlxx>
+ <CAOQ4uxhOMcaVupVVGXV2Srz_pAG+BzDc9Gb4hFdwKUtk45QypQ@mail.gmail.com>
+ <scmyycf2trich22v25s6gpe3ib6ejawflwf76znxg7sedqablp@ejfycd34xvpa>
+ <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5144.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cec504f0-3527-4570-0c8f-08ddf5f798ce
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2025 14:36:32.3506
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8jnUAnmUUO6cbgiUudUPE3adSEUOdru3XS6a9t8cmAJVqLLc5OI5a69voFsjXkElCKetXa3pWequl81YIkK3ZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8202
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -3.80
 
-W1B1YmxpY10NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBHcmVnIEty
-b2FoLUhhcnRtYW4gPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPg0KPiBTZW50OiBXZWRuZXNk
-YXksIFNlcHRlbWJlciAxNywgMjAyNSA4OjM1IEFNDQo+IFRvOiBzdGFibGVAdmdlci5rZXJuZWwu
-b3JnDQo+IENjOiBHcmVnIEtyb2FoLUhhcnRtYW4gPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3Jn
-PjsgcGF0Y2hlc0BsaXN0cy5saW51eC5kZXY7DQo+IGNhbywgbGluIDxsaW4uY2FvQGFtZC5jb20+
-OyBQcm9zeWFrLCBWaXRhbHkgPFZpdGFseS5Qcm9zeWFrQGFtZC5jb20+OyBLb2VuaWcsDQo+IENo
-cmlzdGlhbiA8Q2hyaXN0aWFuLktvZW5pZ0BhbWQuY29tPjsgRGV1Y2hlciwgQWxleGFuZGVyDQo+
-IDxBbGV4YW5kZXIuRGV1Y2hlckBhbWQuY29tPjsgU2FzaGEgTGV2aW4gPHNhc2hhbEBrZXJuZWwu
-b3JnPg0KPiBTdWJqZWN0OiBbUEFUQ0ggNi4xMiAxNDAvMTQwXSBkcm0vYW1kZ3B1OiBmaXggYSBt
-ZW1vcnkgbGVhayBpbiBmZW5jZSBjbGVhbnVwDQo+IHdoZW4gdW5sb2FkaW5nDQo+DQo+IDYuMTIt
-c3RhYmxlIHJldmlldyBwYXRjaC4gIElmIGFueW9uZSBoYXMgYW55IG9iamVjdGlvbnMsIHBsZWFz
-ZSBsZXQgbWUga25vdy4NCj4NCj4gLS0tLS0tLS0tLS0tLS0tLS0tDQo+DQo+IEZyb206IEFsZXgg
-RGV1Y2hlciA8YWxleGFuZGVyLmRldWNoZXJAYW1kLmNvbT4NCj4NCj4gY29tbWl0IDc4MzhmYjVm
-MTE5MTkxNDAzNTYwZWNhMmUyMzYxMzM4MGMwZTQyNWUgdXBzdHJlYW0uDQo+DQo+IENvbW1pdCBi
-NjFiYWRkMjBiNDQgKCJkcm0vYW1kZ3B1OiBmaXggdXNhZ2Ugc2xhYiBhZnRlciBmcmVlIikgcmVv
-cmRlcmVkIHdoZW4NCj4gYW1kZ3B1X2ZlbmNlX2RyaXZlcl9zd19maW5pKCkgd2FzIGNhbGxlZCBh
-ZnRlciB0aGF0IHBhdGNoLA0KPiBhbWRncHVfZmVuY2VfZHJpdmVyX3N3X2ZpbmkoKSBlZmZlY3Rp
-dmVseSBiZWNhbWUgYSBuby1vcCBhcyB0aGUgc2NoZWQgZW50aXRpZXMNCj4gd2UgbmV2ZXIgZnJl
-ZWQgYmVjYXVzZSB0aGUgcmluZyBwb2ludGVycyB3ZXJlIGFscmVhZHkgc2V0IHRvIE5VTEwuICBS
-ZW1vdmUgdGhlDQo+IE5VTEwgc2V0dGluZy4NCj4NCj4gUmVwb3J0ZWQtYnk6IExpbi5DYW8gPGxp
-bmNhbzEyQGFtZC5jb20+DQo+IENjOiBWaXRhbHkgUHJvc3lhayA8dml0YWx5LnByb3N5YWtAYW1k
-LmNvbT4NCj4gQ2M6IENocmlzdGlhbiBLw7ZuaWcgPGNocmlzdGlhbi5rb2VuaWdAYW1kLmNvbT4N
-Cj4gRml4ZXM6IGI2MWJhZGQyMGI0NCAoImRybS9hbWRncHU6IGZpeCB1c2FnZSBzbGFiIGFmdGVy
-IGZyZWUiKQ0KDQoNCkRvZXMgNi4xMiBjb250YWluIGI2MWJhZGQyMGI0NCBvciBhIGJhY2twb3J0
-IG9mIGl0PyAgSWYgbm90LCB0aGVuIHRoaXMgcGF0Y2ggaXMgbm90IGFwcGxpY2FibGUuDQoNCkFs
-ZXgNCg0KPiBSZXZpZXdlZC1ieTogQ2hyaXN0aWFuIEvDtm5pZyA8Y2hyaXN0aWFuLmtvZW5pZ0Bh
-bWQuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBBbGV4IERldWNoZXIgPGFsZXhhbmRlci5kZXVjaGVy
-QGFtZC5jb20+IChjaGVycnkgcGlja2VkIGZyb20NCj4gY29tbWl0IGE1MjVmYTM3YWFjMzZjNDU5
-MWNjOGIwN2FlODk1Nzg2MjQxNWZiZDUpDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+
-IFsgQWRhcHQgdG8gY29uZGl0aW9uYWwgY2hlY2sgXQ0KPiBTaWduZWQtb2ZmLWJ5OiBTYXNoYSBM
-ZXZpbiA8c2FzaGFsQGtlcm5lbC5vcmc+DQo+IFNpZ25lZC1vZmYtYnk6IEdyZWcgS3JvYWgtSGFy
-dG1hbiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+DQo+IC0tLQ0KPiAgZHJpdmVycy9ncHUv
-ZHJtL2FtZC9hbWRncHUvYW1kZ3B1X3JpbmcuYyB8ICAgIDMgLS0tDQo+ICAxIGZpbGUgY2hhbmdl
-ZCwgMyBkZWxldGlvbnMoLSkNCj4NCj4gLS0tIGEvZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRncHUv
-YW1kZ3B1X3JpbmcuYw0KPiArKysgYi9kcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRncHVf
-cmluZy5jDQo+IEBAIC00MDAsOSArNDAwLDYgQEAgdm9pZCBhbWRncHVfcmluZ19maW5pKHN0cnVj
-dCBhbWRncHVfcmluZw0KPiAgICAgICBkbWFfZmVuY2VfcHV0KHJpbmctPnZtaWRfd2FpdCk7DQo+
-ICAgICAgIHJpbmctPnZtaWRfd2FpdCA9IE5VTEw7DQo+ICAgICAgIHJpbmctPm1lID0gMDsNCj4g
-LQ0KPiAtICAgICBpZiAoIXJpbmctPmlzX21lc19xdWV1ZSkNCj4gLSAgICAgICAgICAgICByaW5n
-LT5hZGV2LT5yaW5nc1tyaW5nLT5pZHhdID0gTlVMTDsNCj4gIH0NCj4NCj4gIC8qKg0KPg0KDQo=
+On Wed 17-09-25 13:07:45, Amir Goldstein wrote:
+> On Wed, Sep 17, 2025 at 11:25 AM Jan Kara <jack@suse.cz> wrote:
+> > On Tue 16-09-25 15:29:35, Amir Goldstein wrote:
+> > > On Tue, Sep 16, 2025 at 1:30 PM Jan Kara <jack@suse.cz> wrote:
+> > > >
+> > > > On Mon 15-09-25 17:29:40, Amir Goldstein wrote:
+> > > > > On Mon, Sep 15, 2025 at 4:07 PM Jan Kara <jack@suse.cz> wrote:
+> > > > > > > > diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+> > > > > > > > index 83f80fdb1567..424c73188e06 100644
+> > > > > > > > --- a/fs/overlayfs/export.c
+> > > > > > > > +++ b/fs/overlayfs/export.c
+> > > > > > > > @@ -195,6 +195,8 @@ static int ovl_check_encode_origin(struct inode *inode)
+> > > > > > > >         if (!ovl_inode_lower(inode))
+> > > > > > > >                 return 0;
+> > > > > > > >
+> > > > > > > > +       if (!inode->i_sb->s_root)
+> > > > > > > > +               return -ENOENT;
+> > > > > > >
+> > > > > > > For a filesystem method to have to check that its own root is still alive sounds
+> > > > > > > like the wrong way to me.
+> > > > > > > That's one of the things that should be taken for granted by fs code.
+> > > > > > >
+> > > > > > > I don't think this is an overlayfs specific issue, because other fs would be
+> > > > > > > happy if encode_fh() would be called with NULL sb->s_root.
+> > > > > >
+> > > > > > Actually, I don't see where that would blow up? Generally references to
+> > > > > > sb->s_root in filesystems outside of mount / remount code are pretty rare.
+> > > > > > Also most of the code should be unreachable by the time we set sb->s_root
+> > > > > > to NULL because there are no open files at that moment, no exports etc. But
+> > > > > > as this report shows, there are occasional surprises (I remember similar
+> > > > > > issue with ext4 sysfs files handlers using s_root without checking couple
+> > > > > > years back).
+> > > > > >
+> > > > >
+> > > > > I am not sure that I understand what you are arguing for.
+> > > > > I did a very naive grep s_root fs/*/export.c and quickly found:
+> > > >
+> > > > You're better with grep than me ;). I was grepping for '->s_root' as well
+> > > > but all the hits I had looked into were related to mounting and similar and
+> > > > eventually I got bored. Restricting the grep to export ops indeed shows
+> > > > ceph, gfs2 and overlayfs are vulnerable to this kind of problem.
+> 
+> As far as I can tell, ceph uses s_root only in decode_fh methods.
+
+True. But ceph also uses d_find_alias() in ceph_encode_snapfh() which could
+race with shrink_dcache_for_umount()->do_one_tree() and trigger:
+
+        WARN(1, "BUG: Dentry %p{i=%lx,n=%pd} "
+                        " still in use (%d) [unmount of %s %s]\n",
+
+> ovl and gfs2 only want to know for an inode if it is the root inode,
+> they do not strictly need to dereference s_root for that purpose.
+> (see patch below)
+> 
+> > So there are not many cases where this can happen but enough that I'd say
+> > that handling some events specially to avoid encoding fh on fs while it is
+> > unmounted is fragile and prone to breaking again sooner or later.
+> >
+> > > How about skipping fsnotify_inoderemove() in case sb is in shutdown?
+> >
+> > Also how would you like to handle that in a race-free manner? We'd need to
+> > hold s_umount for that which we cannot really afford in that context. But
+> > maybe you have some better idea...
+> >
+> 
+> I was only thinking about this code path:
+> 
+> generic_shutdown_super()
+>   shrink_dcache_for_umount()
+>     ...
+>       __dentry_kill()
+>         dentry_unlink_inode()
+> 
+> This is supposed to be the last dput of all remaining dentries
+> and I don't think a deferred unlink should be expected in that case.
+
+I see.
+ 
+> But I realize now that you mean delayed unlink from another context
+> which races with shutdown.
+
+Yes, I've meant that.
+
+> > > > > > > Can we change the order of generic_shutdown_super() so that
+> > > > > > > fsnotify_sb_delete(sb) is called before setting s_root to NULL?
+> > > > > > >
+> > > > > > > Or is there a better solution for this race?
+> > > > > >
+> > > > > > Regarding calling fsnotify_sb_delete() before setting s_root to NULL:
+> > > > > > In 2019 (commit 1edc8eb2e9313 ("fs: call fsnotify_sb_delete after
+> > > > > > evict_inodes")) we've moved the call after evict_inodes() because otherwise
+> > > > > > we were just wasting cycles scanning many inodes without watches. So moving
+> > > > > > it earlier wouldn't be great...
+> > > > >
+> > > > > Yes, I noticed that and I figured there were subtleties.
+> > > >
+> > > > Right. After thinking more about it I think calling fsnotify_sb_delete()
+> > > > earlier is the only practical choice we have (not clearing sb->s_root isn't
+> > > > much of an option - we need to prune all dentries to quiesce the filesystem
+> > > > and leaving s_root alive would create odd corner cases). But you don't want
+> > > > to be iterating millions of inodes just to clear couple of marks so we'll
+> > > > have to figure out something more clever there.
+> > >
+> > > I think we only need to suppress the fsnotify_inoderemove() call.
+> > > It sounds doable and very local to fs/super.c.
+> > >
+> > > Regarding show_mark_fhandle() WDYT about my suggestion to
+> > > guard it with super_trylock_shared()?
+> >
+> > Yes, super_trylock_shared() for that callsite looks like a fine solution
+> > for that call site. Occasional random failures in encoding fh because the
+> > trylock fails are unlikely to have any bad consequences there. But I think
+> > we need to figure out other possibly racing call-sites as well first.
+> >
+> 
+> Might something naive as this be enough?
+
+It looks like it should be good for the problems with gfs2 & overlayfs but
+it doesn't solve the problem with ceph and as Jakub writes there's a question
+whether we won't hit more problems later.
+
+I'm sorry for poking holes into your solutions. The more I look into this
+the more problems I find :-|
+
+As I'm thinking about it I'm slowly leaning towards implementing a list of
+connectors per sb (so that we can quickly reclaim on umount). It seems
+stupid just for these corner cases but longer term we can also implement
+what Dave once suggested [1] so that fsnotify doesn't need to pin inodes in
+memory at all which should more that make up for the additional memory for
+inode connector members.
+
+								Honza
+
+[1] https://lore.kernel.org/linux-fsdevel/ZwXDzKGj6Bp28kYe@dread.disaster.area/
+
+> diff --git a/fs/dcache.c b/fs/dcache.c
+> index 60046ae23d514..8c9d0d6bb0045 100644
+> --- a/fs/dcache.c
+> +++ b/fs/dcache.c
+> @@ -1999,10 +1999,12 @@ struct dentry *d_make_root(struct inode *root_inode)
+> 
+>         if (root_inode) {
+>                 res = d_alloc_anon(root_inode->i_sb);
+> -               if (res)
+> +               if (res) {
+> +                       root_inode->i_opflags |= IOP_ROOT;
+>                         d_instantiate(res, root_inode);
+> -               else
+> +               } else {
+>                         iput(root_inode);
+> +               }
+>         }
+>         return res;
+>  }
+> diff --git a/fs/gfs2/export.c b/fs/gfs2/export.c
+> index 3334c394ce9cb..809a09c6a89e0 100644
+> --- a/fs/gfs2/export.c
+> +++ b/fs/gfs2/export.c
+> @@ -46,7 +46,7 @@ static int gfs2_encode_fh(struct inode *inode, __u32
+> *p, int *len,
+>         fh[3] = cpu_to_be32(ip->i_no_addr & 0xFFFFFFFF);
+>         *len = GFS2_SMALL_FH_SIZE;
+> 
+> -       if (!parent || inode == d_inode(sb->s_root))
+> +       if (!parent || is_root_inode(inode))
+>                 return *len;
+> 
+>         ip = GFS2_I(parent);
+> diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+> index 83f80fdb15674..7827c63354ad5 100644
+> --- a/fs/overlayfs/export.c
+> +++ b/fs/overlayfs/export.c
+> @@ -199,7 +199,7 @@ static int ovl_check_encode_origin(struct inode *inode)
+>          * Root is never indexed, so if there's an upper layer, encode upper for
+>          * root.
+>          */
+> -       if (inode == d_inode(inode->i_sb->s_root))
+> +       if (is_root_inode(inode))
+>                 return 0;
+> 
+>         /*
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index ec867f112fd5f..ed84379aa06ca 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -665,6 +665,7 @@ is_uncached_acl(struct posix_acl *acl)
+>  #define IOP_DEFAULT_READLINK   0x0010
+>  #define IOP_MGTIME     0x0020
+>  #define IOP_CACHED_LINK        0x0040
+> +#define IOP_ROOT       0x0080
+>   /*
+>   * Keep mostly read-only and often accessed (especially for
+> @@ -2713,6 +2714,11 @@ static inline bool is_mgtime(const struct inode *inode)
+>         return inode->i_opflags & IOP_MGTIME;
+>  }
+> 
+> +static inline bool is_root_inode(const struct inode *inode)
+> +{
+> +       return inode->i_opflags & IOP_ROOT;
+> +}
+> +
+>  extern struct dentry *mount_bdev(struct file_system_type *fs_type,
+>         int flags, const char *dev_name, void *data,
+>         int (*fill_super)(struct super_block *, void *, int));
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
