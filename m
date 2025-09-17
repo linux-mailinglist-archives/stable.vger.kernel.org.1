@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-180314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EAAB7EF61
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016AAB7ED61
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF4D27B663F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:07:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC2D17DA66
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E462FBE0C;
-	Wed, 17 Sep 2025 13:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B95E316189;
+	Wed, 17 Sep 2025 12:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHyES7bE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9EFaEnX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3BD183CA6;
-	Wed, 17 Sep 2025 13:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEE2316186;
+	Wed, 17 Sep 2025 12:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114068; cv=none; b=j/E6TfYEjxwIRkrLM+QJCYmWEu7LyYvMubao+Y0L6kQbW1oim5VMVE5o/fBd0gImHkHDs49nk71VYZiiTW4dmKzst76pgd9PxKMQUDsu34753d90WTrfEcDnWOCnmtTcRatcwP5mIn1gBazc1t2zJv0v/TSqeqK+n4zoellMs0E=
+	t=1758113620; cv=none; b=dcEKv9xRdjEUb+bEfQh7wqdW+CkyoEJUX0i96e8TB4TchXXcF5ho2ZJMvmCqj9/6Y7phs9T0LReASWNM3NlnVk4QKshpPf5nMmH9OtarYdpguTprPTCrwDz9tOsWj31uoRkuqHxV52/7ojQyM15lpLrT1JVQXtyWUEFY6eHF4W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114068; c=relaxed/simple;
-	bh=C3o4St71A+SsCIfz0O8IbEPdk1B2kUt5HTLWcW6YtFU=;
+	s=arc-20240116; t=1758113620; c=relaxed/simple;
+	bh=vrWltyQ1UfaxoR7WwObSfKKLIxNFrN3C3rf87Fdmrsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYslNRk4PYfeqxcwEf07V5WkkMF5UOI2CYatsLzeevmZfP0qEFGNnzo/BmdRG78wxcu1q8awvdsGg3ekgcaV5w2XVaxYpKKnjjrIDUMspmsE/5MpVuHlRAbEV+7yd14hYP6yUhqv857u9elms7LFL7VwPK9hMIfRw+aKTeqlQ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHyES7bE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3724AC4CEF0;
-	Wed, 17 Sep 2025 13:01:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y7aUaQCDpKg49+0/RhzobgeaZP0MglIlXE4ktiD/WmS4pLAFEDcjAsTzxf2uR69xCdnyrUOdZZ8NtjQlwSDwGTt1Z1GDuTmjsAyr9AvKWTQ4oJFfXKips9M7jGL1iIKEYeAbYVQO5hAr/PCCTrxDI0nLyxEIynOPx+g4R91miRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9EFaEnX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAADC4CEF0;
+	Wed, 17 Sep 2025 12:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114067;
-	bh=C3o4St71A+SsCIfz0O8IbEPdk1B2kUt5HTLWcW6YtFU=;
+	s=korg; t=1758113619;
+	bh=vrWltyQ1UfaxoR7WwObSfKKLIxNFrN3C3rf87Fdmrsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHyES7bEp0Se9YtWKOgnxT4NEoQF8sS3eTuo9xncPZF/IWVGmo5rNDoqP0mL7VwOj
-	 xhTXwaaw5pwffx/OpV866+uzZ5IrhCXXTvOh8XPPLVOg+N8jVHMc2G1Xf0gJfTu0Xi
-	 FMtGNhi98ZUmxnQCBs0UNROYMAixOQxXVF4wvq3c=
+	b=u9EFaEnXthPjG79GB52SpTha+Hj6ULmKF84jxkYz/I/rFH2TcZJh/Kx4Wm/ZHcCMs
+	 vWG5N6GFMfz6U6kJ3/x1+yeeYQP0ABJheyg3It3gTVxbjRuMIvg0+4bgH7tabYZnHv
+	 +WxMD1K2b6EW7ErzJZz8i8LdJxa4M5Cm50moyJ/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/78] mtd: nand: raw: atmel: Fix comment in timings preparation
+Subject: [PATCH 6.12 126/140] RISC-V: Remove unnecessary include from compat.h
 Date: Wed, 17 Sep 2025 14:34:58 +0200
-Message-ID: <20250917123330.465730138@linuxfoundation.org>
+Message-ID: <20250917123347.388002933@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-[ Upstream commit 1c60e027ffdebd36f4da766d9c9abbd1ea4dd8f9 ]
+[ Upstream commit 8d4f1e05ff821a5d59116ab8c3a30fcae81d8597 ]
 
-Looks like a copy'n'paste mistake introduced when initially adding the
-dynamic timings feature with commit f9ce2eddf176 ("mtd: nand: atmel: Add
-->setup_data_interface() hooks").  The context around this and
-especially the code itself suggests 'read' is meant instead of write.
+Without this I get a bunch of build errors like
 
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240226122537.75097-1-ada@thorsis.com
-Stable-dep-of: fd779eac2d65 ("mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing")
+    In file included from ./include/linux/sched/task_stack.h:12,
+                     from ./arch/riscv/include/asm/compat.h:12,
+                     from ./arch/riscv/include/asm/pgtable.h:115,
+                     from ./include/linux/pgtable.h:6,
+                     from ./include/linux/mm.h:30,
+                     from arch/riscv/kernel/asm-offsets.c:8:
+    ./include/linux/kasan.h:50:37: error: ‘MAX_PTRS_PER_PTE’ undeclared here (not in a function); did you mean ‘PTRS_PER_PTE’?
+       50 | extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS];
+          |                                     ^~~~~~~~~~~~~~~~
+          |                                     PTRS_PER_PTE
+    ./include/linux/kasan.h:51:8: error: unknown type name ‘pmd_t’; did you mean ‘pgd_t’?
+       51 | extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
+          |        ^~~~~
+          |        pgd_t
+    ./include/linux/kasan.h:51:37: error: ‘MAX_PTRS_PER_PMD’ undeclared here (not in a function); did you mean ‘PTRS_PER_PGD’?
+       51 | extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
+          |                                     ^~~~~~~~~~~~~~~~
+          |                                     PTRS_PER_PGD
+    ./include/linux/kasan.h:52:8: error: unknown type name ‘pud_t’; did you mean ‘pgd_t’?
+       52 | extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
+          |        ^~~~~
+          |        pgd_t
+    ./include/linux/kasan.h:52:37: error: ‘MAX_PTRS_PER_PUD’ undeclared here (not in a function); did you mean ‘PTRS_PER_PGD’?
+       52 | extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
+          |                                     ^~~~~~~~~~~~~~~~
+          |                                     PTRS_PER_PGD
+    ./include/linux/kasan.h:53:8: error: unknown type name ‘p4d_t’; did you mean ‘pgd_t’?
+       53 | extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
+          |        ^~~~~
+          |        pgd_t
+    ./include/linux/kasan.h:53:37: error: ‘MAX_PTRS_PER_P4D’ undeclared here (not in a function); did you mean ‘PTRS_PER_PGD’?
+       53 | extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
+          |                                     ^~~~~~~~~~~~~~~~
+          |                                     PTRS_PER_PGD
+
+Link: https://lore.kernel.org/r/20241126143250.29708-1-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/compat.h | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1378,7 +1378,7 @@ static int atmel_smc_nand_prepare_smccon
- 		return ret;
+diff --git a/arch/riscv/include/asm/compat.h b/arch/riscv/include/asm/compat.h
+index aa103530a5c83..6081327e55f5b 100644
+--- a/arch/riscv/include/asm/compat.h
++++ b/arch/riscv/include/asm/compat.h
+@@ -9,7 +9,6 @@
+  */
+ #include <linux/types.h>
+ #include <linux/sched.h>
+-#include <linux/sched/task_stack.h>
+ #include <asm-generic/compat.h>
  
- 	/*
--	 * The write cycle timing is directly matching tWC, but is also
-+	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
+ static inline int is_compat_task(void)
+-- 
+2.51.0
+
 
 
 
