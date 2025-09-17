@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-180316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3374B7F13B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C012FB7ED63
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:03:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3501E1891541
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 868E317F3E6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E7130CB21;
-	Wed, 17 Sep 2025 13:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7DF316194;
+	Wed, 17 Sep 2025 12:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBh1D5/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkFU42AH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BA5303A05;
-	Wed, 17 Sep 2025 13:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E96431618E;
+	Wed, 17 Sep 2025 12:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114076; cv=none; b=PUInUOtftEsiu+mMblJEeqYcGh9QekK10Jablqr4hY8/rQYdTfhSgmtloXNQ77ofasj0SGgEkw13yq6hPXiwcj+SgriSBbJkidIPkGaxCQuXrj4URaT4YXwq2+X4H3ZUyBJU3opd626om9ThrgUW4hyPCGY+kPd6GhwoJ36VzHU=
+	t=1758113626; cv=none; b=FPUk+RcuD+HcsuMkN7zwtSHNuEJEOXaTuXvip6Yxc5p5nopgPmeJ47l/3RpnEKE5th8HX4EkuqUtvK2qIsnuxqxfvGAJeEzx+CmFR9i+FYKBZ1L8MUlmUzFXc7M/8GORLlOGuXosM407FBdhJf2UwsXKvztVqFpzhZhk410C9ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114076; c=relaxed/simple;
-	bh=sfufQgHXtEAGL76+UV2beUiV8QfCYovXkfihxbBOvwc=;
+	s=arc-20240116; t=1758113626; c=relaxed/simple;
+	bh=hWhbcExPoD26hAUhkXN55UVqIXVR07C4uw+EIifzJVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaTY9vIEdmXm8CVbeGKmEIHinKQ1Z3RrXNJsuqQ5TZ0cwxZooKUW2lpxH2Fq7JyeQesCLvG3/F61oIGLcrTP3auvP+ERkUSHEhN8asc9bTVUgnwdI05l7tMH0kZdfofHtXCp5l93rwjANKXqL0o/NtWdqkZkE5nU7lFLE8DFfYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBh1D5/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD76AC4CEF5;
-	Wed, 17 Sep 2025 13:01:13 +0000 (UTC)
+	 MIME-Version; b=t59ICtoIKOm1gbwF5K3hFywyPBsV96Yx8uoIUCXZFdmikRzVT3b3EGnDjO9P9Dz8hZfVmxyj4MOSd68PqOCU0g1ZjndOy+Q6PQTZBPMtV4KDR1H1PLrWwKKdAr96JOLf5hICxlrZONGi5qC9DvxRXbWNfbfkSlFKDH6QMhCJVYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkFU42AH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC83BC4CEF0;
+	Wed, 17 Sep 2025 12:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114074;
-	bh=sfufQgHXtEAGL76+UV2beUiV8QfCYovXkfihxbBOvwc=;
+	s=korg; t=1758113626;
+	bh=hWhbcExPoD26hAUhkXN55UVqIXVR07C4uw+EIifzJVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBh1D5/YE611TyzVBUDW5ROF3ZJnBQTcpecdflBA1HqjcUvoTpZfhDDqOMYVWzg+a
-	 A/8qKsv4/d25qNGHpu7RkHN1yYPtLY0qmp5fxyy5eVdFCBrp2vZkC5caOVYz/6GrSX
-	 cc2ofq2tuuEkq9ouMMEgaleYcvP1lmy5lGeDPLQo=
+	b=JkFU42AH6Npf8VEIsGs3p2Bm+LgMwa4qC4COarmuYCJQo/OJQV3ufUYcoV8Nr4EYW
+	 no1xUjxZNZBJ/X3JPwNG7yHdPlQFEN8JIL3Gxc+0nOD/CW3ZoZjlSLr7a3Y9ELW362
+	 P0aSszTrZyO58nQ3q+gjo5vo3G9w+xNLa4IE+I48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Rik van Riel <riel@surriel.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/78] mm/khugepaged: convert hpage_collapse_scan_pmd() to use folios
+	Alan Stern <stern@rowland.harvard.edu>,
+	stable <stable@kernel.org>,
+	Yunseong Kim <ysk@kzalloc.com>,
+	syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.12 128/140] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
 Date: Wed, 17 Sep 2025 14:35:00 +0200
-Message-ID: <20250917123330.513677117@linuxfoundation.org>
+Message-ID: <20250917123347.443080873@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 5c07ebb372d66423e508ecfb8e00324f8797f072 ]
+commit 8d63c83d8eb922f6c316320f50c82fa88d099bea upstream.
 
-Replaces 5 calls to compound_head(), and removes 1385 bytes of kernel
-text.
+Yunseong Kim and the syzbot fuzzer both reported a problem in
+RT-enabled kernels caused by the way dummy-hcd mixes interrupt
+management and spin-locking.  The pattern was:
 
-Link: https://lkml.kernel.org/r/20231020183331.10770-3-vishal.moola@gmail.com
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 394bfac1c7f7 ("mm/khugepaged: fix the address passed to notifier on testing young")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	local_irq_save(flags);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock(&dum->lock);
+	...		// calls usb_gadget_giveback_request()
+	local_irq_restore(flags);
+
+The code was written this way because usb_gadget_giveback_request()
+needs to be called with interrupts disabled and the private lock not
+held.
+
+While this pattern works fine in non-RT kernels, it's not good when RT
+is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
+spin_lock() may sleep.  But sleeping is not allowed while local
+interrupts are disabled.
+
+To fix the problem, rewrite the code to conform to the pattern used
+elsewhere in dummy-hcd and other UDC drivers:
+
+	spin_lock_irqsave(&dum->lock, flags);
+	...
+	spin_unlock(&dum->lock);
+	usb_gadget_giveback_request(...);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock_irqrestore(&dum->lock, flags);
+
+This approach satisfies the RT requirements.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable <stable@kernel.org>
+Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
+Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
+Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
+Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC: stable@vger.kernel.org
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/khugepaged.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1140,6 +1140,7 @@ static int hpage_collapse_scan_pmd(struc
- 	int result = SCAN_FAIL, referenced = 0;
- 	int none_or_zero = 0, shared = 0;
- 	struct page *page = NULL;
-+	struct folio *folio = NULL;
- 	unsigned long _address;
- 	spinlock_t *ptl;
- 	int node = NUMA_NO_NODE, unmapped = 0;
-@@ -1221,29 +1222,28 @@ static int hpage_collapse_scan_pmd(struc
- 			}
- 		}
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -764,8 +764,7 @@ static int dummy_dequeue(struct usb_ep *
+ 	if (!dum->driver)
+ 		return -ESHUTDOWN;
  
--		page = compound_head(page);
--
-+		folio = page_folio(page);
- 		/*
- 		 * Record which node the original page is from and save this
- 		 * information to cc->node_load[].
- 		 * Khugepaged will allocate hugepage from the node has the max
- 		 * hit record.
- 		 */
--		node = page_to_nid(page);
-+		node = folio_nid(folio);
- 		if (hpage_collapse_scan_abort(node, cc)) {
- 			result = SCAN_SCAN_ABORT;
- 			goto out_unmap;
- 		}
- 		cc->node_load[node]++;
--		if (!PageLRU(page)) {
-+		if (!folio_test_lru(folio)) {
- 			result = SCAN_PAGE_LRU;
- 			goto out_unmap;
- 		}
--		if (PageLocked(page)) {
-+		if (folio_test_locked(folio)) {
- 			result = SCAN_PAGE_LOCK;
- 			goto out_unmap;
- 		}
--		if (!PageAnon(page)) {
-+		if (!folio_test_anon(folio)) {
- 			result = SCAN_PAGE_ANON;
- 			goto out_unmap;
- 		}
-@@ -1265,7 +1265,7 @@ static int hpage_collapse_scan_pmd(struc
- 		 * has excessive GUP pins (i.e. 512).  Anyway the same check
- 		 * will be done again later the risk seems low.
- 		 */
--		if (!is_refcount_suitable(page)) {
-+		if (!is_refcount_suitable(&folio->page)) {
- 			result = SCAN_PAGE_COUNT;
- 			goto out_unmap;
- 		}
-@@ -1275,8 +1275,8 @@ static int hpage_collapse_scan_pmd(struc
- 		 * enough young pte to justify collapsing the page
- 		 */
- 		if (cc->is_khugepaged &&
--		    (pte_young(pteval) || page_is_young(page) ||
--		     PageReferenced(page) || mmu_notifier_test_young(vma->vm_mm,
-+		    (pte_young(pteval) || folio_test_young(folio) ||
-+		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
- 								     address)))
- 			referenced++;
+-	local_irq_save(flags);
+-	spin_lock(&dum->lock);
++	spin_lock_irqsave(&dum->lock, flags);
+ 	list_for_each_entry(iter, &ep->queue, queue) {
+ 		if (&iter->req != _req)
+ 			continue;
+@@ -775,15 +774,16 @@ static int dummy_dequeue(struct usb_ep *
+ 		retval = 0;
+ 		break;
  	}
-@@ -1298,7 +1298,7 @@ out_unmap:
- 		*mmap_locked = false;
+-	spin_unlock(&dum->lock);
+ 
+ 	if (retval == 0) {
+ 		dev_dbg(udc_dev(dum),
+ 				"dequeued req %p from %s, len %d buf %p\n",
+ 				req, _ep->name, _req->length, _req->buf);
++		spin_unlock(&dum->lock);
+ 		usb_gadget_giveback_request(_ep, _req);
++		spin_lock(&dum->lock);
  	}
- out:
--	trace_mm_khugepaged_scan_pmd(mm, page, writable, referenced,
-+	trace_mm_khugepaged_scan_pmd(mm, &folio->page, writable, referenced,
- 				     none_or_zero, result, unmapped);
- 	return result;
+-	local_irq_restore(flags);
++	spin_unlock_irqrestore(&dum->lock, flags);
+ 	return retval;
  }
+ 
 
 
 
