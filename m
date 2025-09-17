@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C20B7EF1D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:07:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDDCB7E609
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D17B5623A24
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 673777ACCA9
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE110332A3A;
-	Wed, 17 Sep 2025 12:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C505530CB5A;
+	Wed, 17 Sep 2025 12:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOTQFZkI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpS3HaFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD15332A41;
-	Wed, 17 Sep 2025 12:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CA21E489;
+	Wed, 17 Sep 2025 12:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113808; cv=none; b=f/AdlvhlO1u0jVanKBgJIcGvIBJbSdlm5fO3JTaEt98G1+xFwDSjIMv0InY10S+eJychnudBC/H0Koa7vw7ZuaVXX3VuxBuVNNsdUJZPKbBbmteWoHKRCVVTqkDHojg98QzgEN/494GSkJJJLNigJoBnmbHsyyHSk6dXBvcH5B8=
+	t=1758113098; cv=none; b=L95Ck8opSBz8XeqhxXj/1JbOJ1lFctPSANYqM5mnVbcjsHmvd+soB7aPKsfKO1a2v99g/GjU/b0jCn4hzSUUFqnvdhyUG/Fvcxl0JFf6tBpOr1ootMqOLdAPvGU5G3iFOWuNx1YN0a/d90mMNbv5dOddvlbl6fiQKIsrB4TZ8Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113808; c=relaxed/simple;
-	bh=mbEsAKDiV8RtcQylCZeJ17O74Eet0PPIg4QqHJuJ/jg=;
+	s=arc-20240116; t=1758113098; c=relaxed/simple;
+	bh=Jnviv4qP5HFqL0TrbfKCNz925SDwufFATZnjeNAq68E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0XlQte423uUUtJ7bpOoKpFLdZWRBdm6wl/YSjXNrFDT0PK8/sxULEsJcC2Sj4bSRchF45bHwLmXWLmoZXWqpRIH7B5HbGD6u5UWUf7/cyYcEvinTslHsfBAV4qMBsigBPKK5hgGIHwOZC3bVYJPTCgaKg4mvr8Ilw9tBwSLkcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOTQFZkI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1600C4CEFA;
-	Wed, 17 Sep 2025 12:56:47 +0000 (UTC)
+	 MIME-Version; b=ue/2Pmsu5clcME6vzC9kDqiAtXJ2wB3l0sbG8AT78qjdBroaaDNRMMMaSG1T47IdxINQisYrZbJo7l+GPyaJ9KYSpDausNXkxX57nGOd31Gvjdl1rRJP16U8NiVoBnaxLJxWk3AQABxzAGMN/dx9VPo+YK4ORl8Ov5jUj1vLLnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpS3HaFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5C0C4CEF0;
+	Wed, 17 Sep 2025 12:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113808;
-	bh=mbEsAKDiV8RtcQylCZeJ17O74Eet0PPIg4QqHJuJ/jg=;
+	s=korg; t=1758113098;
+	bh=Jnviv4qP5HFqL0TrbfKCNz925SDwufFATZnjeNAq68E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOTQFZkIGFrsXPqOjWhebhWrNzC00swjlvDWqJvSYB3VnVKjEbrasIVbtIXXDbOD0
-	 FWzrfQRGNAx9J7KCgbA41hXyJ6kg8CCR75cnC3sQJkrDlPlt+c8ZZMRIR/c/N2hQyY
-	 OA85r7Ixoo9nDIKGNpXfY+vOTsJnlDhTt1fBPcwE=
+	b=DpS3HaFVEwxeYqAvM6Hg6BDtpnt3nHgcK8t5geaObNIcr7hVwG2CXHL2hnbPL3A6S
+	 lBvVgngQFXQ0CQBIkc74EhIzdX3CWT3Gou14tQgsxRLhW0wqyK6c9dr345FDe+KzEV
+	 O66p8qUEpZBlh8Zq6ylHmgQo6Xl8SJD0Ksy63GqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>,
-	David Howells <dhowells@redhat.com>,
-	Yang Erkun <yangerkun@huawei.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 057/101] cifs: fix pagecache leak when do writepages
-Date: Wed, 17 Sep 2025 14:34:40 +0200
-Message-ID: <20250917123338.220970948@linuxfoundation.org>
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 171/189] erofs: remove need_kmap in erofs_read_metabuf()
+Date: Wed, 17 Sep 2025 14:34:41 +0200
+Message-ID: <20250917123356.057730599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +62,241 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-After commit f3dc1bdb6b0b("cifs: Fix writeback data corruption"), the
-writepages for cifs will find all folio needed writepage with two phase.
-The first folio will be found in cifs_writepages_begin, and the latter
-various folios will be found in cifs_extend_writeback.
+[ Upstream commit 5e744cb61536bb4e37caca9c5e84feef638782be ]
 
-All those will first get folio, and for normal case, once we set page
-writeback and after do really write, we should put the reference, folio
-found in cifs_extend_writeback do this with folio_batch_release. But the
-folio found in cifs_writepages_begin never get the chance do it. And
-every writepages call, we will leak a folio(found this problem while do
-xfstests over cifs, the latter show that we will leak about 600M+ every
-we run generic/074).
+ - need_kmap is always true except for a ztailpacking case; thus, just
+   open-code that one;
 
-echo 3 > /proc/sys/vm/drop_caches ; cat /proc/meminfo | grep file
-Active(file):      34092 kB
-Inactive(file):   176192 kB
-./check generic/074 (smb v1)
-...
-generic/074 50s ...  53s
-Ran: generic/074
-Passed all 1 tests
+ - The upcoming metadata compression will add a new boolean, so simplify
+   this first.
 
-echo 3 > /proc/sys/vm/drop_caches ; cat /proc/meminfo | grep file
-Active(file):      35036 kB
-Inactive(file):   854708 kB
-
-Besides, the exist path seem never handle this folio correctly, fix it too
-with this patch. All issue does not occur in the mainline because the
-writepages path for CIFS was changed to netfs (commit 3ee1a1fc3981,
-titled "cifs: Cut over to using netfslib") as part of a major refactor.
-After discussing with the CIFS maintainer, we believe that this single
-patch is safer for the stable branch [1].
-
-Steve said:
-"""
-David and I discussed this today and this patch is MUCH safer than
-backporting the later (6.10) netfs changes which would be much larger
-and riskier to include (and presumably could affect code outside
-cifs.ko as well where this patch is narrowly targeted).
-
-I am fine with this patch.from Yang for 6.6 stable
-"""
-
-David said:
-"""
-Backporting the massive amount of changes to netfslib, fscache, cifs,
-afs, 9p, ceph and nfs would kind of diminish the notion that this is a
-stable kernel;-).
-"""
-
-Fixes: f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
-Cc: stable@kernel.org # v6.6~v6.9
-Link: https://lore.kernel.org/all/20250911030120.1076413-1-yangerkun@huawei.com/ [1]
-Acked-by: Steve French <stfrench@microsoft.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20250714090907.4095645-1-hsiangkao@linux.alibaba.com
+Stable-dep-of: 131897c65e2b ("erofs: fix invalid algorithm for encoded extents")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/file.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/erofs/data.c     |  8 ++++----
+ fs/erofs/fileio.c   |  2 +-
+ fs/erofs/fscache.c  |  2 +-
+ fs/erofs/inode.c    |  8 ++++----
+ fs/erofs/internal.h |  2 +-
+ fs/erofs/super.c    |  4 ++--
+ fs/erofs/zdata.c    |  5 +++--
+ fs/erofs/zmap.c     | 12 ++++++------
+ 8 files changed, 22 insertions(+), 21 deletions(-)
 
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -2884,17 +2884,21 @@ static ssize_t cifs_write_back_from_lock
- 	rc = cifs_get_writable_file(CIFS_I(inode), FIND_WR_ANY, &cfile);
- 	if (rc) {
- 		cifs_dbg(VFS, "No writable handle in writepages rc=%d\n", rc);
-+		folio_unlock(folio);
- 		goto err_xid;
- 	}
- 
- 	rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->wsize,
- 					   &wsize, credits);
--	if (rc != 0)
-+	if (rc != 0) {
-+		folio_unlock(folio);
- 		goto err_close;
-+	}
- 
- 	wdata = cifs_writedata_alloc(cifs_writev_complete);
- 	if (!wdata) {
- 		rc = -ENOMEM;
-+		folio_unlock(folio);
- 		goto err_uncredit;
- 	}
- 
-@@ -3041,17 +3045,22 @@ search_again:
- lock_again:
- 	if (wbc->sync_mode != WB_SYNC_NONE) {
- 		ret = folio_lock_killable(folio);
--		if (ret < 0)
-+		if (ret < 0) {
-+			folio_put(folio);
- 			return ret;
-+		}
- 	} else {
--		if (!folio_trylock(folio))
-+		if (!folio_trylock(folio)) {
-+			folio_put(folio);
- 			goto search_again;
-+		}
- 	}
- 
- 	if (folio->mapping != mapping ||
- 	    !folio_test_dirty(folio)) {
- 		start += folio_size(folio);
- 		folio_unlock(folio);
-+		folio_put(folio);
- 		goto search_again;
- 	}
- 
-@@ -3081,6 +3090,7 @@ lock_again:
- out:
- 	if (ret > 0)
- 		*_start = start + ret;
-+	folio_put(folio);
- 	return ret;
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 16e4a6bd9b973..dd7d86809c188 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -65,10 +65,10 @@ void erofs_init_metabuf(struct erofs_buf *buf, struct super_block *sb)
  }
  
+ void *erofs_read_metabuf(struct erofs_buf *buf, struct super_block *sb,
+-			 erofs_off_t offset, bool need_kmap)
++			 erofs_off_t offset)
+ {
+ 	erofs_init_metabuf(buf, sb);
+-	return erofs_bread(buf, offset, need_kmap);
++	return erofs_bread(buf, offset, true);
+ }
+ 
+ int erofs_map_blocks(struct inode *inode, struct erofs_map_blocks *map)
+@@ -118,7 +118,7 @@ int erofs_map_blocks(struct inode *inode, struct erofs_map_blocks *map)
+ 	pos = ALIGN(erofs_iloc(inode) + vi->inode_isize +
+ 		    vi->xattr_isize, unit) + unit * chunknr;
+ 
+-	idx = erofs_read_metabuf(&buf, sb, pos, true);
++	idx = erofs_read_metabuf(&buf, sb, pos);
+ 	if (IS_ERR(idx)) {
+ 		err = PTR_ERR(idx);
+ 		goto out;
+@@ -299,7 +299,7 @@ static int erofs_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
+ 		struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
+ 
+ 		iomap->type = IOMAP_INLINE;
+-		ptr = erofs_read_metabuf(&buf, sb, mdev.m_pa, true);
++		ptr = erofs_read_metabuf(&buf, sb, mdev.m_pa);
+ 		if (IS_ERR(ptr))
+ 			return PTR_ERR(ptr);
+ 		iomap->inline_data = ptr;
+diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
+index 91781718199e2..3ee082476c8c5 100644
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -115,7 +115,7 @@ static int erofs_fileio_scan_folio(struct erofs_fileio *io, struct folio *folio)
+ 			void *src;
+ 
+ 			src = erofs_read_metabuf(&buf, inode->i_sb,
+-						 map->m_pa + ofs, true);
++						 map->m_pa + ofs);
+ 			if (IS_ERR(src)) {
+ 				err = PTR_ERR(src);
+ 				break;
+diff --git a/fs/erofs/fscache.c b/fs/erofs/fscache.c
+index 34517ca9df915..9a8ee646e51d9 100644
+--- a/fs/erofs/fscache.c
++++ b/fs/erofs/fscache.c
+@@ -274,7 +274,7 @@ static int erofs_fscache_data_read_slice(struct erofs_fscache_rq *req)
+ 		size_t size = map.m_llen;
+ 		void *src;
+ 
+-		src = erofs_read_metabuf(&buf, sb, map.m_pa, true);
++		src = erofs_read_metabuf(&buf, sb, map.m_pa);
+ 		if (IS_ERR(src))
+ 			return PTR_ERR(src);
+ 
+diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
+index a0ae0b4f7b012..47215c5e33855 100644
+--- a/fs/erofs/inode.c
++++ b/fs/erofs/inode.c
+@@ -39,10 +39,10 @@ static int erofs_read_inode(struct inode *inode)
+ 	void *ptr;
+ 	int err = 0;
+ 
+-	ptr = erofs_read_metabuf(&buf, sb, erofs_pos(sb, blkaddr), true);
++	ptr = erofs_read_metabuf(&buf, sb, erofs_pos(sb, blkaddr));
+ 	if (IS_ERR(ptr)) {
+ 		err = PTR_ERR(ptr);
+-		erofs_err(sb, "failed to get inode (nid: %llu) page, err %d",
++		erofs_err(sb, "failed to read inode meta block (nid: %llu): %d",
+ 			  vi->nid, err);
+ 		goto err_out;
+ 	}
+@@ -78,10 +78,10 @@ static int erofs_read_inode(struct inode *inode)
+ 
+ 			memcpy(&copied, dic, gotten);
+ 			ptr = erofs_read_metabuf(&buf, sb,
+-					erofs_pos(sb, blkaddr + 1), true);
++					erofs_pos(sb, blkaddr + 1));
+ 			if (IS_ERR(ptr)) {
+ 				err = PTR_ERR(ptr);
+-				erofs_err(sb, "failed to get inode payload block (nid: %llu), err %d",
++				erofs_err(sb, "failed to read inode payload block (nid: %llu): %d",
+ 					  vi->nid, err);
+ 				goto err_out;
+ 			}
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index 06b867d2fc3b7..a7699114f6fe6 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -385,7 +385,7 @@ void erofs_put_metabuf(struct erofs_buf *buf);
+ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset, bool need_kmap);
+ void erofs_init_metabuf(struct erofs_buf *buf, struct super_block *sb);
+ void *erofs_read_metabuf(struct erofs_buf *buf, struct super_block *sb,
+-			 erofs_off_t offset, bool need_kmap);
++			 erofs_off_t offset);
+ int erofs_map_dev(struct super_block *sb, struct erofs_map_dev *dev);
+ int erofs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		 u64 start, u64 len);
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index cad87e4d66943..7cc74ef4be031 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -141,7 +141,7 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
+ 	struct erofs_deviceslot *dis;
+ 	struct file *file;
+ 
+-	dis = erofs_read_metabuf(buf, sb, *pos, true);
++	dis = erofs_read_metabuf(buf, sb, *pos);
+ 	if (IS_ERR(dis))
+ 		return PTR_ERR(dis);
+ 
+@@ -268,7 +268,7 @@ static int erofs_read_superblock(struct super_block *sb)
+ 	void *data;
+ 	int ret;
+ 
+-	data = erofs_read_metabuf(&buf, sb, 0, true);
++	data = erofs_read_metabuf(&buf, sb, 0);
+ 	if (IS_ERR(data)) {
+ 		erofs_err(sb, "cannot read erofs superblock");
+ 		return PTR_ERR(data);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 33c61f3b667c3..e8f30eee29b44 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -855,10 +855,11 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+ 		/* bind cache first when cached decompression is preferred */
+ 		z_erofs_bind_cache(fe);
+ 	} else {
+-		ptr = erofs_read_metabuf(&map->buf, sb, map->m_pa, false);
++		erofs_init_metabuf(&map->buf, sb);
++		ptr = erofs_bread(&map->buf, map->m_pa, false);
+ 		if (IS_ERR(ptr)) {
+ 			ret = PTR_ERR(ptr);
+-			erofs_err(sb, "failed to get inline data %d", ret);
++			erofs_err(sb, "failed to get inline folio %d", ret);
+ 			return ret;
+ 		}
+ 		folio_get(page_folio(map->buf.page));
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index f1a15ff22147b..301afd9be4e30 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -31,7 +31,7 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
+ 	struct z_erofs_lcluster_index *di;
+ 	unsigned int advise;
+ 
+-	di = erofs_read_metabuf(&m->map->buf, inode->i_sb, pos, true);
++	di = erofs_read_metabuf(&m->map->buf, inode->i_sb, pos);
+ 	if (IS_ERR(di))
+ 		return PTR_ERR(di);
+ 	m->lcn = lcn;
+@@ -146,7 +146,7 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
+ 	else
+ 		return -EOPNOTSUPP;
+ 
+-	in = erofs_read_metabuf(&m->map->buf, m->inode->i_sb, pos, true);
++	in = erofs_read_metabuf(&m->map->buf, m->inode->i_sb, pos);
+ 	if (IS_ERR(in))
+ 		return PTR_ERR(in);
+ 
+@@ -551,7 +551,7 @@ static int z_erofs_map_blocks_ext(struct inode *inode,
+ 	map->m_flags = 0;
+ 	if (recsz <= offsetof(struct z_erofs_extent, pstart_hi)) {
+ 		if (recsz <= offsetof(struct z_erofs_extent, pstart_lo)) {
+-			ext = erofs_read_metabuf(&map->buf, sb, pos, true);
++			ext = erofs_read_metabuf(&map->buf, sb, pos);
+ 			if (IS_ERR(ext))
+ 				return PTR_ERR(ext);
+ 			pa = le64_to_cpu(*(__le64 *)ext);
+@@ -564,7 +564,7 @@ static int z_erofs_map_blocks_ext(struct inode *inode,
+ 		}
+ 
+ 		for (; lstart <= map->m_la; lstart += 1 << vi->z_lclusterbits) {
+-			ext = erofs_read_metabuf(&map->buf, sb, pos, true);
++			ext = erofs_read_metabuf(&map->buf, sb, pos);
+ 			if (IS_ERR(ext))
+ 				return PTR_ERR(ext);
+ 			map->m_plen = le32_to_cpu(ext->plen);
+@@ -584,7 +584,7 @@ static int z_erofs_map_blocks_ext(struct inode *inode,
+ 		for (l = 0, r = vi->z_extents; l < r; ) {
+ 			mid = l + (r - l) / 2;
+ 			ext = erofs_read_metabuf(&map->buf, sb,
+-						 pos + mid * recsz, true);
++						 pos + mid * recsz);
+ 			if (IS_ERR(ext))
+ 				return PTR_ERR(ext);
+ 
+@@ -667,7 +667,7 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 		goto out_unlock;
+ 
+ 	pos = ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
+-	h = erofs_read_metabuf(&buf, sb, pos, true);
++	h = erofs_read_metabuf(&buf, sb, pos);
+ 	if (IS_ERR(h)) {
+ 		err = PTR_ERR(h);
+ 		goto out_unlock;
+-- 
+2.51.0
+
 
 
 
