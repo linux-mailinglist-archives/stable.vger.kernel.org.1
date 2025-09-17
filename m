@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-180204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCFFB7EEFE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:06:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9878BB7EBF3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B62294A0474
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:59:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BECBB188BA3A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64EF333A80;
-	Wed, 17 Sep 2025 12:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707D9330D43;
+	Wed, 17 Sep 2025 12:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH2RkwR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDLGWMnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A430B333A81;
-	Wed, 17 Sep 2025 12:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C263330D39;
+	Wed, 17 Sep 2025 12:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113711; cv=none; b=IYjoVPSXABxVRdN30VFw4MgVuX9TVOmndtKxPpTpArTvp7RjNUZtkP5kre9Q7Wi74Z9AJAFlNrFmyx2SS9JlDwVKKCCOt1+Dctn+bZpTG3tVO6frl0jORuyoXmqbqu8Xx+WZSmPPDuvJ2TP2me7JaT3LLYZ5lOB744ho9K/XGxs=
+	t=1758113562; cv=none; b=DybNBI99LtcEpjjA2enZ2YGafnMIMWnS3ZtxT77PrsSNt6T0mxi5SYrgbEEluf6xzNJeDJsoZMjXTTAhwDP/KPrPWp/cGfOgi+oLuvfcv2IMJIYaN8Q/HfQy6pXEu4SYuoVBSl2xWSjIjK0/u4zAXRoqRKg9sBdV2Aq8zadhWTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113711; c=relaxed/simple;
-	bh=p2YpnbW9VWLbHQJsguagyLUMyjz/i0YpaNHGLUb4Ebw=;
+	s=arc-20240116; t=1758113562; c=relaxed/simple;
+	bh=gPgVoiwBMCKhfmEVTATk8UJ4v6sWz+EcBF00SG0nt3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xyv/k6h3go1Chv8B2x0b/BjpspiCDJeD9S0ZB3qSJNYWopbkrLP//S9534z35QGuIYWw06P3o0BgaGO6EuYoWwqFdX0vPNIPtQ46Td1lAj1rjpCYGFZehu9HSUABGxKWJXJUQy9jxWMU94MZo8YkAOcEK3ofLje8UbpE287FMDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH2RkwR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7B5C4CEF5;
-	Wed, 17 Sep 2025 12:55:10 +0000 (UTC)
+	 MIME-Version; b=N6LoxC8mDWcAicUYKMZCMY5XAgWFPmFIYuHvrducYZ7/DprhQ86hjjesSClxgqqtc1qNztP6J2pec1tnKMgkXH8ZZQtB+Y4+qou/RKpbqw5npSXrCFl21t35xMRfaYVZIxt1v5BQUm8rSftfg3YR9x/gqGqMOHkbOawd+ZipLJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDLGWMnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E508C4CEF0;
+	Wed, 17 Sep 2025 12:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113711;
-	bh=p2YpnbW9VWLbHQJsguagyLUMyjz/i0YpaNHGLUb4Ebw=;
+	s=korg; t=1758113562;
+	bh=gPgVoiwBMCKhfmEVTATk8UJ4v6sWz+EcBF00SG0nt3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UH2RkwR/ygkU+LKcJQGBAWWv2/p8HvAb362rVh+A3x+tkdrXJhnlZoA9ydfReB+Uu
-	 F1F6NMi0HrcVoAhXM6dd/sxae3suFLW8vVhQednWKy3pjfzqmN5r5FzyZztBmX4lO8
-	 9iCaYiTQ8riUQojPRelF0f6TuZ5gvt7cE4WmQqxE=
+	b=PDLGWMnMogC87/z8GN4V79wZ37afmBHkTmKmueaEAAKAqr2IL9hCjiQaO921aHUq5
+	 FqHEFR4EfceyBCaX/7ze3UbOX/r/CxSGqMxjW9bYZ2hPrUGcqeovtx8qdjDsuOhZkP
+	 eDV3EJoU6Hkd4Qd9csufQTp7RjfDpisSAl4MUt1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinpu Wang <jinpu.wang@ionos.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Subject: [PATCH 6.6 030/101] KVM: SVM: Set synthesized TSA CPUID flags
+	Jeongjun Park <aha310510@gmail.com>,
+	syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Breno Leitao <leitao@debian.org>,
+	David Hildenbrand <david@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 081/140] mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
 Date: Wed, 17 Sep 2025 14:34:13 +0200
-Message-ID: <20250917123337.580789782@linuxfoundation.org>
+Message-ID: <20250917123346.291198113@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +68,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit f3f9deccfc68a6b7c8c1cc51e902edba23d309d4 upstream.
+[ Upstream commit 21cc2b5c5062a256ae9064442d37ebbc23f5aef7 ]
 
-VERW_CLEAR is supposed to be set only by the hypervisor to denote TSA
-mitigation support to a guest. SQ_NO and L1_NO are both synthesizable,
-and are going to be set by hw CPUID on future machines.
+When restoring a reservation for an anonymous page, we need to check to
+freeing a surplus.  However, __unmap_hugepage_range() causes data race
+because it reads h->surplus_huge_pages without the protection of
+hugetlb_lock.
 
-So keep the kvm_cpu_cap_init_kvm_defined() invocation *and* set them
-when synthesized.
+And adjust_reservation is a boolean variable that indicates whether
+reservations for anonymous pages in each folio should be restored.
+Therefore, it should be initialized to false for each round of the loop.
+However, this variable is not initialized to false except when defining
+the current adjust_reservation variable.
 
-This fix is stable-only.
+This means that once adjust_reservation is set to true even once within
+the loop, reservations for anonymous pages will be restored
+unconditionally in all subsequent rounds, regardless of the folio's state.
 
-Co-developed-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+To fix this, we need to add the missing hugetlb_lock, unlock the
+page_table_lock earlier so that we don't lock the hugetlb_lock inside the
+page_table_lock lock, and initialize adjust_reservation to false on each
+round within the loop.
+
+Link: https://lkml.kernel.org/r/20250823182115.1193563-1-aha310510@gmail.com
+Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=417aeb05fd190f3a6da9
+Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Page vs folio differences ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
----
- arch/x86/kvm/cpuid.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ mm/hugetlb.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -791,10 +791,15 @@ void kvm_set_cpu_caps(void)
- 		F(PERFMON_V2)
- 	);
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5512,7 +5512,7 @@ void __unmap_hugepage_range(struct mmu_g
+ 	struct page *page;
+ 	struct hstate *h = hstate_vma(vma);
+ 	unsigned long sz = huge_page_size(h);
+-	bool adjust_reservation = false;
++	bool adjust_reservation;
+ 	unsigned long last_addr_mask;
+ 	bool force_flush = false;
  
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_VERW_CLEAR);
-+
- 	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
- 		F(TSA_SQ_NO) | F(TSA_L1_NO)
- 	);
+@@ -5604,6 +5604,7 @@ void __unmap_hugepage_range(struct mmu_g
+ 					sz);
+ 		hugetlb_count_sub(pages_per_huge_page(h), mm);
+ 		hugetlb_remove_rmap(page_folio(page));
++		spin_unlock(ptl);
  
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_SQ_NO);
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_L1_NO);
+ 		/*
+ 		 * Restore the reservation for anonymous page, otherwise the
+@@ -5611,14 +5612,16 @@ void __unmap_hugepage_range(struct mmu_g
+ 		 * If there we are freeing a surplus, do not set the restore
+ 		 * reservation bit.
+ 		 */
++		adjust_reservation = false;
 +
- 	/*
- 	 * Synthesize "LFENCE is serializing" into the AMD-defined entry in
- 	 * KVM's supported CPUID if the feature is reported as supported by the
++		spin_lock_irq(&hugetlb_lock);
+ 		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
+ 		    folio_test_anon(page_folio(page))) {
+ 			folio_set_hugetlb_restore_reserve(page_folio(page));
+ 			/* Reservation to be adjusted after the spin lock */
+ 			adjust_reservation = true;
+ 		}
+-
+-		spin_unlock(ptl);
++		spin_unlock_irq(&hugetlb_lock);
+ 
+ 		/*
+ 		 * Adjust the reservation for the region that will have the
 
 
 
