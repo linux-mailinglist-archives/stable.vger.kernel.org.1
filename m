@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-179932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22350B7E2FB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B156B7E8D9
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32F87B2C61
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:39:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDFC917B616
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A00337EB4;
-	Wed, 17 Sep 2025 12:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AE13233FC;
+	Wed, 17 Sep 2025 12:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6ODE2Gp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olfDr3a7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211011E1E19;
-	Wed, 17 Sep 2025 12:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465B22C029C;
+	Wed, 17 Sep 2025 12:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112841; cv=none; b=EOZeGuDqaFNxoyMIqxbv0NUy5Dq8Fy8EFBg/3ccdRWjXWmKOQFu5hmX8GhPotTfIlERk+BxDilWAoicHmPcUEGWIh+Ic2XlqaqZyquaxjXNUeYM0i8cx6di5/xGuzAfpWreroC6+TwaEbAuUgW9kPXpqfxOlp8c5NqbA/jOCC/0=
+	t=1758113315; cv=none; b=M+NCr3I96MEyZTmh7A0Q5z3DJBOiV1sQjX0SW9bN+q9dn4NifZRilVveCm5ElSc2N5pFwU/OqDOHn9sRGgsXhmniUiVlL3svlD6yWmoHXQf8mPbU4c6Rr3wD7LAAV7fgoQuwTTlE0LZgGKfBdZWOQBTb3k3Uvbsp1/QNlLEptws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112841; c=relaxed/simple;
-	bh=0NkWdR6poVkEyyTLtJPjja/gvh02+hR0uVrT6f99THg=;
+	s=arc-20240116; t=1758113315; c=relaxed/simple;
+	bh=cPjbg17bWBwZdy5vrPkHcI8xYcNWNuRTT3/ycvFgqNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIZkhu8dLG9ch7su9MxPeW1oLGR7QidW19cjmMwTKb8EotaDDfjIefRSmtQGY1ep/s1DD5mwBzh5LVAZlyDzygj25Ljg1dzrrB70I28Bf/i5VCyntfIn0fS6OIXvjUpUl4CbAV+D6S2KI0PdOeS3IGx1M9ha7bs+GNrRADfWF94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6ODE2Gp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902DBC4CEF0;
-	Wed, 17 Sep 2025 12:40:40 +0000 (UTC)
+	 MIME-Version; b=tq5yMV4EgGYNe8DPr7zJ/Ijb1C61v1WEo9BeCzFE3H/NJf2Qe5QEjw2sHfTt0FA0AfMVNAzfihCTmDX7im+so2sIwWDHNmmaK/szOhtRxHitzAxQwbmXyiZSLglIKpDHiVJrmjPaVJtjgDKRjwiYnfYeMI725cZzGuGTg0mtcWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olfDr3a7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B7CC4CEF0;
+	Wed, 17 Sep 2025 12:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112841;
-	bh=0NkWdR6poVkEyyTLtJPjja/gvh02+hR0uVrT6f99THg=;
+	s=korg; t=1758113314;
+	bh=cPjbg17bWBwZdy5vrPkHcI8xYcNWNuRTT3/ycvFgqNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6ODE2Gp26ayRo2vPOP19VW/C5VrM/8lJbJ4FlJMH76jCb5P3+9EatvcQpkgqqU2R
-	 IlvrMyzCoSuOcjhzAjiuXEzRgPdv7AMivIClZdNz0G2EzHQa7a9BJ7s2xQupdoJq7W
-	 vLDGyJvnN2ioj4vTC9M6V1+8/aZzE/PlzM3Mie5Q=
+	b=olfDr3a7Rn25JR0Op0q0HuRaUBRd2ef3MjY3uylmeuiesdBagQtwsQ1qb2pFb8yaA
+	 bUUaJN73Dc8TIlAkKYn0MosqgbgEhObAvalwa/HN9zuc9pN9wQfrdxWvNMyjaZWlRI
+	 9EeFbme1gAUGqbZgg4QnJi9nJOUADAOOP5b0Y8Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Geoffrey McRae <geoffrey.mcrae@amd.com>
-Subject: [PATCH 6.16 092/189] drm/amd/display: remove oem i2c adapter on finish
-Date: Wed, 17 Sep 2025 14:33:22 +0200
-Message-ID: <20250917123354.102813402@linuxfoundation.org>
+	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 031/140] ftrace/samples: Fix function size computation
+Date: Wed, 17 Sep 2025 14:33:23 +0200
+Message-ID: <20250917123345.070326937@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey McRae <geoffrey.mcrae@amd.com>
+From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
 
-commit 1dfd2864a1c4909147663e5a27c055f50f7c2796 upstream.
+[ Upstream commit 80d03a40837a9b26750a25122b906c052cc846c9 ]
 
-Fixes a bug where unbinding of the GPU would leave the oem i2c adapter
-registered resulting in a null pointer dereference when applications try
-to access the invalid device.
+In my_tramp1 function .size directive was placed above
+ASM_RET instruction, leading to a wrong function size.
 
-Fixes: 3d5470c97314 ("drm/amd/display/dm: add support for OEM i2c bus")
-Cc: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 89923fb7ead4fdd37b78dd49962d9bb5892403e6)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/aK3d7vxNcO52kEmg@vova-pc
+Fixes: 9d907f1ae80b ("samples/ftrace: Fix asm function ELF annotations")
+Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ samples/ftrace/ftrace-direct-modify.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2910,6 +2910,17 @@ static int dm_oem_i2c_hw_init(struct amd
- 	return 0;
- }
+diff --git a/samples/ftrace/ftrace-direct-modify.c b/samples/ftrace/ftrace-direct-modify.c
+index 81220390851a3..328c6e60f024b 100644
+--- a/samples/ftrace/ftrace-direct-modify.c
++++ b/samples/ftrace/ftrace-direct-modify.c
+@@ -75,8 +75,8 @@ asm (
+ 	CALL_DEPTH_ACCOUNT
+ "	call my_direct_func1\n"
+ "	leave\n"
+-"	.size		my_tramp1, .-my_tramp1\n"
+ 	ASM_RET
++"	.size		my_tramp1, .-my_tramp1\n"
  
-+static void dm_oem_i2c_hw_fini(struct amdgpu_device *adev)
-+{
-+	struct amdgpu_display_manager *dm = &adev->dm;
-+
-+	if (dm->oem_i2c) {
-+		i2c_del_adapter(&dm->oem_i2c->base);
-+		kfree(dm->oem_i2c);
-+		dm->oem_i2c = NULL;
-+	}
-+}
-+
- /**
-  * dm_hw_init() - Initialize DC device
-  * @ip_block: Pointer to the amdgpu_ip_block for this hw instance.
-@@ -2960,7 +2971,7 @@ static int dm_hw_fini(struct amdgpu_ip_b
- {
- 	struct amdgpu_device *adev = ip_block->adev;
- 
--	kfree(adev->dm.oem_i2c);
-+	dm_oem_i2c_hw_fini(adev);
- 
- 	amdgpu_dm_hpd_fini(adev);
- 
+ "	.type		my_tramp2, @function\n"
+ "	.globl		my_tramp2\n"
+-- 
+2.51.0
+
 
 
 
