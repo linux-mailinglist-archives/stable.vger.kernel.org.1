@@ -1,134 +1,124 @@
-Return-Path: <stable+bounces-179791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B612B7DCE3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:34:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC56B7E10F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 437F01BC5AE8
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3E0E5821F5
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B282C1595;
-	Wed, 17 Sep 2025 07:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904D62F6195;
+	Wed, 17 Sep 2025 07:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAQn6Wuk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TX8KGuB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEF52F25E9
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5292E2DFC
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 07:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758095204; cv=none; b=Ptwwk99equfA//K/Vk8sWmLnG4TCBs9abQpXw15A3LHD8F7FAO8CG82m3Q2WKA0PmkXlv6XK38Z67iLDrwBAJPIrYUoar1z4y9NQiVOetnqd5HMXrv7huQGVqL30m1h226JgVKpJkkzL1GMFqCT7KMddzt/aI32elDRzgrSB+9Y=
+	t=1758095597; cv=none; b=ffrylmZSrCqb3QkWMBwXBNqA8uF+R5RYA5nciJIUUmLSCSqGity3oe7S/57Elkge08LctFhpfNOJkPIYdgluO3SPr43dDDnYsyP7CeK77YkiwAqAfnzACKQX/Dfm24ASssyGLqo5xUgD4zz8fezsQHD+dURLoWehGqMmifcvq7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758095204; c=relaxed/simple;
-	bh=d2rTZKy2nGXZqsoNGkeqj761u36PZsHYuwthBTkC81M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F6aZiwQGuJGBaLfcFn4GqSFb6LJ+n+sO88Ur3qGODdjS8R4pmMKf2lmx0HRWVK8K1BC05BC1rzLg+7pObR2QQEAkAaIgix/b2RFhhx3VDrhsfs8CQjrSi86QY9KdkmgmnEKL0UTR/etinSn5dP+7AIjhBXjP42l1OKqwlreDm9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAQn6Wuk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B8EC4CEF0;
-	Wed, 17 Sep 2025 07:46:42 +0000 (UTC)
+	s=arc-20240116; t=1758095597; c=relaxed/simple;
+	bh=FjRxMrIvUmF7FBe73e1flmsNQqKzJKImm3ZA8/+0swM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fj47wEJtjcroVl6NKP6OfKr3cwqmSO49lO6B4EqpN9uunr9lVmcb5f92v+3o8ya13Hv8ukG81Ac8Wu5f6qbPEQcfUFoGT8UN4oZb5aph1WPGhzPSiJBw/YgjxpitX1HN9cws0vUMJBcH58Y4F6tJoiYUuREgzubhQSZn8Y5v4Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TX8KGuB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C450C4CEF0;
+	Wed, 17 Sep 2025 07:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758095203;
-	bh=d2rTZKy2nGXZqsoNGkeqj761u36PZsHYuwthBTkC81M=;
-	h=Subject:To:Cc:From:Date:From;
-	b=SAQn6Wuk/fJJnikh8iKit4D75T+8aJoPAAXXaec6MGZ2CSV5DmYCLvDemzHCxNlQ6
-	 3j6nvudw55de9FPCVnYPlDBQQqlXUbnU4Q7kFesEQNTrbdeLbxx3CIk5TIL5sx+plR
-	 aqgYNum4KPUkO0oMdVn7p4uVsN6sQMFmigI5ZJQE=
-Subject: FAILED: patch "[PATCH] phy: ti: omap-usb2: fix device leak at unbind" failed to apply to 5.15-stable tree
-To: johan@kernel.org,rogerq@kernel.org,vkoul@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 17 Sep 2025 09:45:52 +0200
-Message-ID: <2025091751-nuzzle-jolt-dcac@gregkh>
+	s=korg; t=1758095597;
+	bh=FjRxMrIvUmF7FBe73e1flmsNQqKzJKImm3ZA8/+0swM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TX8KGuB0xFCwUduVoulyTV+wqNH13xEL2+4tvkHsZVFRsJ+wGIBoE7qqHRTK6hOJ5
+	 8Nj9dV30KUgri+3Ljhhi+12nFnYCAHYFb+1Hb+ItkyhtNagVi+9cnXEv30AatdcYv0
+	 LsAMU9sxiAaDEZgYwJN+I5beWgVaZmDOwL2zRmuY=
+Date: Wed, 17 Sep 2025 09:52:56 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Jitindar Singh, Suraj" <surajjs@amazon.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.10 0/4] x86/speculation: Make {JMP, CALL}_NOSPEC
+ Consistent
+Message-ID: <2025091745-armadillo-feline-40f1@gregkh>
+References: <20250903225003.50346-1-surajjs@amazon.com>
+ <2025090447-rectangle-dastardly-b689@gregkh>
+ <4e344301c6c8d3eeb67c5de1a2d5be8f3fe19eb4.camel@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <4e344301c6c8d3eeb67c5de1a2d5be8f3fe19eb4.camel@amazon.com>
 
+On Tue, Sep 16, 2025 at 08:44:03PM +0000, Jitindar Singh, Suraj wrote:
+> On Thu, 2025-09-04 at 14:01 +0200, Greg KH wrote:
+> > CAUTION: This email originated from outside of the organization. Do
+> > not click links or open attachments unless you can confirm the sender
+> > and know the content is safe.
+> > 
+> > 
+> > 
+> > On Wed, Sep 03, 2025 at 03:49:59PM -0700, Suraj Jitindar Singh wrote:
+> > > The 4 patches in this series make the JMP_NOSPEC and CALL_NOSPEC
+> > > macros used
+> > > in the kernel consistent with what is generated by the compiler.
+> > > 
+> > > ("x86,nospec: Simplify {JMP,CALL}_NOSPEC") was merged in v6.0 and
+> > > the remaining
+> > > 3 patches in this series were merged in v6.15. All 4 were included
+> > > in kernels
+> > > v5.15+ as prerequisites for the backport of the ITS mitigations
+> > > [1].
+> > > 
+> > > None of these patches were included in the backport of the ITS
+> > > mitigations to
+> > > the 5.10 kernel [2]. They all apply cleanly and are applicable to
+> > > the 5.10
+> > > kernel. Thus I see no reason that they weren't applied here, unless
+> > > someone can
+> > > correct me?
+> > > 
+> > > I am sending them for inclusion in the 5.10 kernel as this kernel
+> > > is still
+> > > actively maintained for these kind of vulnerability mitigations and
+> > > as such
+> > > having these patches will unify the handling of these cases with
+> > > subsequent
+> > > kernel versions easing code understanding and the ease of backports
+> > > in the
+> > > future.
+> > 
+> > Also, you only really have about 1 more year left for this kernel
+> > version, why not take the time to move any systems that are somehow
+> > still using this to a more modern kernel instead?  What's preventing
+> > that from happening?
+> 
+> You can lead a horse to water but you can't make it drink.
+> 
+> > 
+> > Running any x86 systems on this old kernel right now is probably not
+> > a
+> > good idea given the huge number of unfixed bugs in it...
+> > 
+> 
+> Aware of that and agree.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+We have the tools that show just how many unfixed CVEs are in the
+current 5.10.y tree, doesn't that make anyone a bit nervous:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+$ ./scripts/strak v5.10.244 | wc -l
+1096
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 64961557efa1b98f375c0579779e7eeda1a02c42
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091751-nuzzle-jolt-dcac@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+good luck!
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 64961557efa1b98f375c0579779e7eeda1a02c42 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Thu, 24 Jul 2025 15:12:05 +0200
-Subject: [PATCH] phy: ti: omap-usb2: fix device leak at unbind
-
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
-
-Fixes: 478b6c7436c2 ("usb: phy: omap-usb2: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-3-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-
-diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
-index c1a0ef979142..c444bb2530ca 100644
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -363,6 +363,13 @@ static void omap_usb2_init_errata(struct omap_usb *phy)
- 		phy->flags |= OMAP_USB2_DISABLE_CHRG_DET;
- }
- 
-+static void omap_usb2_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int omap_usb2_probe(struct platform_device *pdev)
- {
- 	struct omap_usb	*phy;
-@@ -373,6 +380,7 @@ static int omap_usb2_probe(struct platform_device *pdev)
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
- 	const struct usb_phy_data *phy_data;
-+	int ret;
- 
- 	phy_data = device_get_match_data(&pdev->dev);
- 	if (!phy_data)
-@@ -423,6 +431,11 @@ static int omap_usb2_probe(struct platform_device *pdev)
- 			return -EINVAL;
- 		}
- 		phy->control_dev = &control_pdev->dev;
-+
-+		ret = devm_add_action_or_reset(&pdev->dev, omap_usb2_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
- 	} else {
- 		if (of_property_read_u32_index(node,
- 					       "syscon-phy-power", 1,
-
 
