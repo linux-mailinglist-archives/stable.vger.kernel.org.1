@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-180287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF51AB7F195
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7E1B7EAE7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D4C34A7348
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0006B17927D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401A137C101;
-	Wed, 17 Sep 2025 12:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4472FBDF1;
+	Wed, 17 Sep 2025 12:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dYU9N7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBgRYq5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0D7335957;
-	Wed, 17 Sep 2025 12:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA4130CB29;
+	Wed, 17 Sep 2025 12:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113978; cv=none; b=QI71m4BUmO9pXq5NlHniwZcs7WXG2nfQ05uB8V+bsthB4wzEi9BlnuH57XKDblUBm75ChzYtrEkqQHQ+6XTQAsLjsVTEokT/BAvKOeXXrie/4vVmIhd1K77zqxQ4V6SSIsmruRGNa3r0RRg0Ngi1oCWbqtYie+NLq/HFkVElHzI=
+	t=1758113482; cv=none; b=Nq/I+PbqebHl5Ro/hmDQAB6zV1APJHq0WZBqWVSLYbq097qC0MQoVZhyyYucpTLbOeGJyw5ckPkvr1geoHtJmnRd4otiGRFWqzyymt74h6M4oeN00On2qxLjFe12cGeAgjoZ173SHV0sDg6R+sx6Q1QT0V5MHlr21bGEKH8/shQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113978; c=relaxed/simple;
-	bh=WOri9CPEspaHYvq0r2M8epBJ3Gd24wovBUVyyELI9CI=;
+	s=arc-20240116; t=1758113482; c=relaxed/simple;
+	bh=Ioc+Ji2mp5ANTtEyuOxr26hHQwIrpEIY6m2mkd3swEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5xb0U54LaT1SCW7u9KfegWQ9TuI9wfeVntYqGjAaFaym5m4FhfzgJ7bjKeWtBMPftMqWtSLJlwLLRhEQ90UhAA+xhvq8BOwsPGjyVL3E3ia+9bq1kCuYP1wSUKxlhejVUUmPHSbLF1koNRmmqIOP9GaBfM/LDwMvCQ7olC9N5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dYU9N7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27086C4CEF0;
-	Wed, 17 Sep 2025 12:59:36 +0000 (UTC)
+	 MIME-Version; b=lz5AklbL/vROTrMYcDPnOAAI7eWHuyBTFfX4UzpZ3v/OpxzxCCEDEqZ9gXvijFgAwUNfvq+MdFnvyphINu8Akr/Ko7ifgoJJx1pMUatK2gekv4jgEJjz9btzbuVVcZVr8JYUxq5TD3PqsDRJrFvS1pqYfy/UX1oRGMnsf1VyjNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBgRYq5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF953C4CEF0;
+	Wed, 17 Sep 2025 12:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113977;
-	bh=WOri9CPEspaHYvq0r2M8epBJ3Gd24wovBUVyyELI9CI=;
+	s=korg; t=1758113481;
+	bh=Ioc+Ji2mp5ANTtEyuOxr26hHQwIrpEIY6m2mkd3swEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0dYU9N7aN2fpiiPWC3cCP3lg+K11TKtSn8zcDaNKZup54iwtMBvUupFgxfvof0xng
-	 ze1+EC6sQOZ6i+yCHq8Vua84Z+0qF6d28pMgIUPPAtLLN90DbMc2AII92ELzmfUgMd
-	 ZKKB7W0DDKa52U7ml2O/RpajSnGFezYS7k/RQDfU=
+	b=dBgRYq5s7m9TILowb/n1SnnyKMa/C9mLrt2Yk1bTT3CYR9IlpdysxyNNW8KSWKGbu
+	 v278adjZYSAhCSeVq+xDSTHTOqLQJCFIBPdzXMWKET7ZYW4rIM2PJUGvK0PHnVX5fW
+	 Pt6jSUrd6TXWqPSmjKN7g4TbqbSHNUujkx/QLmko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Haiden <scott.b.haiden@gmail.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/78] NFSv4: Dont clear capabilities that wont be reset
+Subject: [PATCH 6.12 099/140] tunnels: reset the GSO metadata before reusing the skb
 Date: Wed, 17 Sep 2025 14:34:31 +0200
-Message-ID: <20250917123329.821830329@linuxfoundation.org>
+Message-ID: <20250917123346.721879130@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 31f1a960ad1a14def94fa0b8c25d62b4c032813f ]
+[ Upstream commit e3c674db356c4303804b2415e7c2b11776cdd8c3 ]
 
-Don't clear the capabilities that are not going to get reset by the call
-to _nfs4_server_capabilities().
+If a GSO skb is sent through a Geneve tunnel and if Geneve options are
+added, the split GSO skb might not fit in the MTU anymore and an ICMP
+frag needed packet can be generated. In such case the ICMP packet might
+go through the segmentation logic (and dropped) later if it reaches a
+path were the GSO status is checked and segmentation is required.
 
-Reported-by: Scott Haiden <scott.b.haiden@gmail.com>
-Fixes: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+This is especially true when an OvS bridge is used with a Geneve tunnel
+attached to it. The following set of actions could lead to the ICMP
+packet being wrongfully segmented:
+
+1. An skb is constructed by the TCP layer (e.g. gso_type SKB_GSO_TCPV4,
+   segs >= 2).
+
+2. The skb hits the OvS bridge where Geneve options are added by an OvS
+   action before being sent through the tunnel.
+
+3. When the skb is xmited in the tunnel, the split skb does not fit
+   anymore in the MTU and iptunnel_pmtud_build_icmp is called to
+   generate an ICMP fragmentation needed packet. This is done by reusing
+   the original (GSO!) skb. The GSO metadata is not cleared.
+
+4. The ICMP packet being sent back hits the OvS bridge again and because
+   skb_is_gso returns true, it goes through queue_gso_packets...
+
+5. ...where __skb_gso_segment is called. The skb is then dropped.
+
+6. Note that in the above example on re-transmission the skb won't be a
+   GSO one as it would be segmented (len > MSS) and the ICMP packet
+   should go through.
+
+Fix this by resetting the GSO information before reusing an skb in
+iptunnel_pmtud_build_icmp and iptunnel_pmtud_build_icmpv6.
+
+Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
+Reported-by: Adrian Moreno <amorenoz@redhat.com>
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Link: https://patch.msgid.link/20250904125351.159740-1-atenart@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/ipv4/ip_tunnel_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 71e96fddc6cb5..29f189dc334fd 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3957,7 +3957,6 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
- 	};
- 	int err;
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index f65d2f7273813..8392d304a72eb 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -204,6 +204,9 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+ 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct iphdr)))
+ 		return -EINVAL;
  
--	nfs_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
++	if (skb_is_gso(skb))
++		skb_gso_reset(skb);
++
+ 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
+ 	pskb_pull(skb, ETH_HLEN);
+ 	skb_reset_network_header(skb);
+@@ -298,6 +301,9 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	if (!pskb_may_pull(skb, ETH_HLEN + sizeof(struct ipv6hdr)))
+ 		return -EINVAL;
+ 
++	if (skb_is_gso(skb))
++		skb_gso_reset(skb);
++
+ 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
+ 	pskb_pull(skb, ETH_HLEN);
+ 	skb_reset_network_header(skb);
 -- 
 2.51.0
 
