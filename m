@@ -1,353 +1,234 @@
-Return-Path: <stable+bounces-180407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D091B80237
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:42:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424C8B8028D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1487A8599
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169113A27E6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC23D2F5498;
-	Wed, 17 Sep 2025 14:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3975730CB36;
+	Wed, 17 Sep 2025 14:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Y3v7Y7pb";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="uJJS36Ku";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CCQiHQNN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TgzzG1is"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S1jyxVtQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010043.outbound.protection.outlook.com [52.101.69.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97D12F3C14
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 14:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758120140; cv=none; b=IKoMhc+PHwKUCwG2iPfpTNZZ1rUdrlQjKqvCsYmV/3Vb9CwDw+5yixYvs9gUF/j/nAzGa6Q0QoI3fq/pCXXWlDNzRVzgb8mWXsasYYnEmttLALAW5DB5zUDXNZlnEoGVp87uISK2FaOzuH2XXZ+CEflD1VD8dgKDNtfbZdkiLbE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758120140; c=relaxed/simple;
-	bh=saoZ45JmpjgnTY0sEqow5fI9WFXZe3qIhs+MuwngoNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n56ZceI4faK2IXTX75n+JYa8p/fvmWqfcpUiGPo0+4MNLxPNQDFqSC9ORKSTCsAzLhTdp62lgCeZRf6Mnj78jqweHw2+Ebv71vC9IBQU29KVFUhuiKqmAdR+Tbh6fx7n9eVyUyCnvqgTS6g4BCyvjxoy91LMfNT9SNI5UQG/58A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Y3v7Y7pb; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=uJJS36Ku; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CCQiHQNN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=TgzzG1is; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EB51B20666;
-	Wed, 17 Sep 2025 14:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758120137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
-	b=Y3v7Y7pbbEFF/dy+wzVe4lMKO0184VEQ4ApgLie4fFOJHh+EiERumamZBTZKb0HE+QnqYO
-	8KUbQB9c9amCO3MgxkjYfBPIM+m3a8yriPn+NANwQizYO4lR6YA8wh8yb6cRqxt8BGbgo1
-	DT4t0MOcf6A7o3rNZ3SNzwB2RsKmVJk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758120137;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
-	b=uJJS36KuHnov3QHFokbyUQ2Vn66jSq2D/XK7Qp0dOXOVIpgIecoeCK5MCJ56tWJQcEKKOT
-	mGH3C0f6CeuKcCBg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758120136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
-	b=CCQiHQNNS/e6fqSbka2yHa7EUh/GFLWoBZ7yXum2W9aoZsCZDubeALVY0RB8to/p6gJTSv
-	qKO3kpUttwfU78nariaMlN0HbQl4wvO0AKpK8hJEYjWkx/xHK4ZsPFb2XYnTRwOt/uj6jP
-	IYtfVHt0QBGBWHrkb5fy4c+gDj0ktSk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758120136;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zw02+LDZHli2japWiKyMvW3fDuB+Hk0zuhBagtt5G8I=;
-	b=TgzzG1is3agIUeOMtTIgdvTGyqTvV0ufxVqS8WdSEhhb9a4xDXsGgXwP9RykBr1ALk/oSX
-	ea4RXdRFjVX3C6CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D15191368D;
-	Wed, 17 Sep 2025 14:42:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GTcRM8jIymgyDwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 17 Sep 2025 14:42:16 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 44845A077E; Wed, 17 Sep 2025 16:42:08 +0200 (CEST)
-Date: Wed, 17 Sep 2025 16:42:08 +0200
-From: Jan Kara <jack@suse.cz>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Jakub Acs <acsjakub@amazon.de>, 
-	linux-unionfs@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Subject: Re: [PATCH] ovl: check before dereferencing s_root field
-Message-ID: <3gpfceywinbzsbgslwsywzv4qqubab6gcftlzag6drhl5vhmb6@iupru3v7wsey>
-References: <20250915101510.7994-1-acsjakub@amazon.de>
- <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
- <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
- <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
- <gdovf4egsaqighoig3xg4r2ddwthk2rujenkloqep5kdub75d4@7wkvfnp4xlxx>
- <CAOQ4uxhOMcaVupVVGXV2Srz_pAG+BzDc9Gb4hFdwKUtk45QypQ@mail.gmail.com>
- <scmyycf2trich22v25s6gpe3ib6ejawflwf76znxg7sedqablp@ejfycd34xvpa>
- <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F123016EC;
+	Wed, 17 Sep 2025 14:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758120167; cv=fail; b=Q1iH3mh03vuKni9Ax5u0rujCESTRcouCCMzNQuu79BEOSF1OK1oAmsQJvrsE3uoyztVs/VmYa9usWv8mV6mc2aXEE1fBb9FwFwv7ivmDmF/VIVFUlFc7TuRd08W3y/G2kp/0jNY4nT0OHiDGoMnnq1ccpBYwerR7wfHvZndpZeo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758120167; c=relaxed/simple;
+	bh=uPPrE6OHYrioJblA0uQ5p4rNytwk0w07R3ABGKt53kw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tZgRppw8DY8KHpDTM3vc/VTdE6fu7vXv8I5NPljlxtuytS6HAE5mCbKOZKdq68M7Da4jGkbtImiuw+eTSZbpAvhRf8qtGSTdO+ZuEP5GhWkReCJWiAcCi7aFetzpx7qgFwGyzVIoKtxQ2b6UtrvjWaGxP1XGrbOLizVjyP4Zids=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S1jyxVtQ; arc=fail smtp.client-ip=52.101.69.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XfKM3WjTB2JTGXJDHD8BD1MXIIv/1jVsZfE/dP/Dcnmh7HLU9wwCoPcmsces4rmyIUir4iI4eIlNbs+/oMSECNAzLTnNS5oUp26pj3kapNrYZi3eiiddYjzpglUSEwCJK5dmMfwnjyE3sHiSuSIFeymkm3Q1O1qPrOOsjg2zPi8Cdm6NS1zRqrdntjsp7auUbNCJEtwTkbAk/FExl723ppXbhOtOKjpgyHa2rpcCo+AOoOvQJ694BkYGPgOOP1cWP8ZobhOeoBi76BBLZcbQQE7NmotyYyRT/A4LKMNFh2d4bit3dSfFnDD+YA/5aKpRTuYC94IlUEYjjq3tZjPQrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CzMUln5VrUZShnuk6+LzVVndpQcO6LeAhrKeVrp3QAI=;
+ b=o/WwhD2TSWjhr7Jzgu4zx2sPo46Wz218o8zTATWDDevlnFUq3r3hrr0vz8cufUBETiYOpef/FCtrJWHXpCg78B3+2Fko3io8qrCe7HLuCRqbnRcxuxth8I078uLnfzOweB/nIz9o6zS9zELnsNMH0VdbZ1FO1VfZLgsqU4T+1Y/xQ6gbuI3HR8NMOaCQI9D7ctLeXuGTwnq0Jen6ulhb0sC6THAkhPOhSoFPZDLpP9j/1dPYrG4e3t931hGgbmJW0w8jf9NuOORwvPmVy8Rn58z2Aot+kBBlluv5f57HCasVGFd4JdROIHzSSigIRQ4An3k2r3GsvgCyHZkUHX7W2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CzMUln5VrUZShnuk6+LzVVndpQcO6LeAhrKeVrp3QAI=;
+ b=S1jyxVtQT0a+8qTagTNYPKMN8A+2KeOgGyoMsaj6sZTFp2Fe+n1ehrbZBIJr1WGrZjh6/FwWMi6bzhZzeNfLBS9uYIIVAYpxHnEqPKczyvIigjcWmCtsy/izM1kpMD2rTbbjvs/1ZAEBmqsJ1g4Y3dsQDDobrwRMovka07QpOHfzzL6w4aNTerFfu2EOZHKZU8yxFJAjtTpxZJF9tHfEuYUR6D876ESCrbct200/xQKFBoH8xl2besnv+SVY/ip7ufro5dyNDxtbNNbX763haU15ilsL/qmafkc1A4X/3Q9n1fmPaOTAiUQn1Ht5PZkvG5DkG/ib7M6p7PRERZGk0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by AS8PR04MB9175.eurprd04.prod.outlook.com (2603:10a6:20b:44a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.12; Wed, 17 Sep
+ 2025 14:42:39 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9137.012; Wed, 17 Sep 2025
+ 14:42:39 +0000
+Date: Wed, 17 Sep 2025 10:42:33 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: fsl-edma: fix channel parameter config for
+ fixed channel requests
+Message-ID: <aMrI2ZEz6Zdoj6iy@lizhi-Precision-Tower-5810>
+References: <20250917-b4-edma-chanconf-v1-1-886486e02e91@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917-b4-edma-chanconf-v1-1-886486e02e91@nxp.com>
+X-ClientProxiedBy: PH8P221CA0061.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:349::17) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.com:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -3.80
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB9175:EE_
+X-MS-Office365-Filtering-Correlation-Id: d890d8ca-083f-481e-2a06-08ddf5f87399
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|19092799006|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?8HCEdJDZaEeTxWKOlTv5+L+CzhF46RB0nDbYaSwSv/vKUEpLGqssekkacsbg?=
+ =?us-ascii?Q?brvqLDGsnmlQZmtpjIrOUl4m5Ci2+ESG45XdGQx6UbLz4w3iRaRb7wARzkdq?=
+ =?us-ascii?Q?m/0yozVlsTKEy6nVvkD0dp73BQWyJBOF+KocMpo1lqVyiGT1fMDVs0pdcZ4m?=
+ =?us-ascii?Q?q3QjN+oGvxm0+gzY/FJuA7UWIs3p/ivIj3l5LEYl9dTRK9jT5kyq2kwa86F0?=
+ =?us-ascii?Q?mpaA847WMzI11hTSq+7d2mEo40rZuV5CerPQZT4bWKs3P0kxBWjb3OXuVNKB?=
+ =?us-ascii?Q?mOAkyeK2ie4hKJl+NYUplsfXhTH8kpvNdb3oPJ/PpIz3tGp3O8IIxEZjmwNH?=
+ =?us-ascii?Q?MlBOGNwkjpBIGR4QToY/Bk32GmVcM/HFRBwlNWMxQ1Yv6T940p9GU5hozaio?=
+ =?us-ascii?Q?/mma/RMpek96aMVc3X1ZqVu3xHyd0f7JvIo//X+hilMkwNnRgnWzgxfmccHz?=
+ =?us-ascii?Q?ZrzxytwLlDPAq0QEiEJqopg/YRGfNtrvxUwtD6JCSA60U/ahPc9JZK3lXMJk?=
+ =?us-ascii?Q?zR/TpF8jleepjyRkhBWXoScXvBOLt2gpiWQM0bjbqYcyPXfbE4SPDdPvAOCd?=
+ =?us-ascii?Q?MY7mmLpAlkJRJq5TDTcE7g/wdlTw/jHahSAp0iA9Vfa3qMF+5gvheSJMaNmX?=
+ =?us-ascii?Q?HWhxENOzcpMLTCLhAal95I1IkpdgUB1XXCu3i59nRZ/0szdoPnw78LMdoxCJ?=
+ =?us-ascii?Q?Rp8Lirio+6aa2rSuIbL9300S4V5ZaCC35SlPd0cNuldywlRXPVHiIECH4mdQ?=
+ =?us-ascii?Q?BkLur5nnCH/btdpchGzoH1WWigZTbhMjv8mHBn3nO9Q1NUTbyPGmj2f2/m6k?=
+ =?us-ascii?Q?WJQ4nx/qkx6YZSnE6jX61BLS450NTI05lQSVBf7J1jVRy6Vh6JdpelZe3o2S?=
+ =?us-ascii?Q?4v/Dom2+mCefxRr/Xd21yiiRm0UMr1AHiz7Vdm4I7Nv2hBWmyiFTep6FZizO?=
+ =?us-ascii?Q?1iYKJ1SCYc0x8t+4FwX5Dho1zWCXceDbuGOp1b5nn/4wltEJVmWohTfUn0Hq?=
+ =?us-ascii?Q?7ATp4xk7QUtiMLKbEE3LCjNvVFng9YoQIhaJFrN74+LQBvV7uzgGewFmSX4e?=
+ =?us-ascii?Q?+zt6lIEhKpVoZh6b1VhuN/7t6yrqlUtRbIuhs/nwaQBK+Lmq2aQHJ5eZnj9m?=
+ =?us-ascii?Q?0aBJ0ECpozqFsPLhw6wvXAjjob1nVZFsNlcBGwOYGaCKhpGewbYrHifRPL6V?=
+ =?us-ascii?Q?v7DCjO2Ul6TfQcZgDQ9fCnCmqYqBuw5Z4AyZKlj7eJB33Ier8BsTHNxne50H?=
+ =?us-ascii?Q?wS3v6btKW4aQqOrWOXTcGdD/ukHq5ShWgmbT8TJneR2sWFmglgnhmXkWwkNZ?=
+ =?us-ascii?Q?2/rWG5ouyagxozGunIyoiCpC1B698nYGXJFLxmYUCcB+YwPr6xfxDJ8I2Cfp?=
+ =?us-ascii?Q?hCnTm49I0AgnQ/2FrkNARpVUpGul3hnu8SmAeBa8R2PDgRxnL4F6hIVOE6nr?=
+ =?us-ascii?Q?N8Y8fiS+NRYbwmqDkqpt3tHKAs1yDZwruV5EnMKmpIWS1sXISnFU7w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MBS+B1bSr3bpXBJwBJ/WrrLpdSlm8V64O4ORZiVXiQj2Tp2JJ5FgQmLVYByW?=
+ =?us-ascii?Q?Wb3v27lhj90oi5ZtcFaVDhJtaC8bFxpGHy/DuQKtAHWb0lJC0BYIzNqV37Ji?=
+ =?us-ascii?Q?uiJYosSeM9sHVEj6a2j2P6ERS9Jzfzfz2Z9XDjJexAyGJ01RPKBibBU7E5uL?=
+ =?us-ascii?Q?UByG2CT+eaZ4c7PwTggnaxHSZ0vu4bcMIy1J5OKWX1gEaEVLXyAa1dJ+GS/I?=
+ =?us-ascii?Q?w1LX/ejEZGXuySSjRFkEGabriwBoj8pqA7RrZYAbLVhInNLilEh9r2/udRu7?=
+ =?us-ascii?Q?PLnepBOpJkqglq2hYwSvRUL4hXiJDLbdHK0sPYVC6YL3BPZ/1ge3/exC1QZH?=
+ =?us-ascii?Q?q5iU9/0ruO/6YQqjGPO2gLozjYOy4S5UMMP6v+M8E4N4SVit1ss0HYjzgtQJ?=
+ =?us-ascii?Q?5rsbuazLaSJUVLIL13E/TQLnMs42k1leHttT5G14yn2le0NSSP7Wewiqewao?=
+ =?us-ascii?Q?DmyTKup/NWZwnNpRCoqYd3rhSx4ejAJiVVMl5ao+22z+/s9drG17HR/ihSCF?=
+ =?us-ascii?Q?TTAxESQF4pGlgk6djat3D5fhaJ9/BHN+t0MrP2Kg+X/KYgc9VyviyualpvUU?=
+ =?us-ascii?Q?broZb0+CTIVR5d25PO0c8X2xeaKo0ZdsRj8m788bUXb9v1dkO+ZQitD6AcDu?=
+ =?us-ascii?Q?G0mi+lk/3MzVUF53jmY2fpSRVITO3pN/up8p5bsNl0eu90rEe4uLvUa1P8ZH?=
+ =?us-ascii?Q?5W6+etV3QAI+LodTCORsYzZwgnRZGD2MZMZxXTCRLG5gEurV+RcEadWqVXV7?=
+ =?us-ascii?Q?NiddMWUbZyHBVppTMHfotam/ekbvRocAtGHMIQS+br15VqmII2jWh4DZRRVh?=
+ =?us-ascii?Q?BRMw/2a9sLncha9U3OTKfSUVVZ8szxiDV8ElWUbZShwT+jMRK9PmBlzsVvkY?=
+ =?us-ascii?Q?mwUjRKc7+v/t56uf+n+PCDkEil4wCaTZnfEv8mCuzVe8kMR27KFB22NplN7M?=
+ =?us-ascii?Q?9tjA37nxdxdmu5v9+6In4STSGenskXqSy3ipLLkLt06OwxRvjbFIkOdmpqsp?=
+ =?us-ascii?Q?R5IZOHDozfUzRodmGCa8unGtJOovd/TStJhnGZVek4f92qdvUYREjxkdwjS4?=
+ =?us-ascii?Q?cbymwqCDNVqLnbunPSxlA7Mvc3hEQkgReSA40KM7fr6xoYnve4e5pJHPm2on?=
+ =?us-ascii?Q?QYvyFLcXxCjTOgElk3cnyevVBYOcjXgGJ0FVKqCIb9ZnjZJcQ//ytat2T3o2?=
+ =?us-ascii?Q?nh/yEAIt4f97NneRXtnVCh34BU+Vz9GVjt5hyySlWl3FJVfkk5C17qTVv9Jc?=
+ =?us-ascii?Q?ERZZ9FX1qBvTYE7/wZarr/ZtvzBGiKYHeA5JlFQj9xFDTg1SP/7PRDEtY231?=
+ =?us-ascii?Q?3E1FdupIm6rj6IPhjZnM3zSY0ypQ/xF2SAAYFq0gQ6jZ3rWgPuJt4/BVbg9Z?=
+ =?us-ascii?Q?kLBXBVg5f1touwr+LehzUJm7KMq8vQaIs77lc3cMbZu79TayUjuKdxUT4Gmz?=
+ =?us-ascii?Q?ryBjkKQP4So9vrBNTARZ8//LBlB9RSjw8ZR2KYGXCk9cGecfnJ6Ew3FX7QCj?=
+ =?us-ascii?Q?tLSfygu7fc0i4Ap8a9jN4Pw/tcZN/U30L6rDjL0cLXyfNm6+0Q5nWmmSmAMl?=
+ =?us-ascii?Q?Nl69eWbEgGDM/stmrWnFCwJnH+twq0KsYdd+PkIX?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d890d8ca-083f-481e-2a06-08ddf5f87399
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 14:42:39.7489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EF6DyPC0R9yvkD5x3RiGAW2J/PB8Oze3BngwLdJUmFraxjO8kGhM8at/0lPYrQf2Pksw/W4brGI1AJn19QLK1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9175
 
-On Wed 17-09-25 13:07:45, Amir Goldstein wrote:
-> On Wed, Sep 17, 2025 at 11:25 AM Jan Kara <jack@suse.cz> wrote:
-> > On Tue 16-09-25 15:29:35, Amir Goldstein wrote:
-> > > On Tue, Sep 16, 2025 at 1:30 PM Jan Kara <jack@suse.cz> wrote:
-> > > >
-> > > > On Mon 15-09-25 17:29:40, Amir Goldstein wrote:
-> > > > > On Mon, Sep 15, 2025 at 4:07 PM Jan Kara <jack@suse.cz> wrote:
-> > > > > > > > diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-> > > > > > > > index 83f80fdb1567..424c73188e06 100644
-> > > > > > > > --- a/fs/overlayfs/export.c
-> > > > > > > > +++ b/fs/overlayfs/export.c
-> > > > > > > > @@ -195,6 +195,8 @@ static int ovl_check_encode_origin(struct inode *inode)
-> > > > > > > >         if (!ovl_inode_lower(inode))
-> > > > > > > >                 return 0;
-> > > > > > > >
-> > > > > > > > +       if (!inode->i_sb->s_root)
-> > > > > > > > +               return -ENOENT;
-> > > > > > >
-> > > > > > > For a filesystem method to have to check that its own root is still alive sounds
-> > > > > > > like the wrong way to me.
-> > > > > > > That's one of the things that should be taken for granted by fs code.
-> > > > > > >
-> > > > > > > I don't think this is an overlayfs specific issue, because other fs would be
-> > > > > > > happy if encode_fh() would be called with NULL sb->s_root.
-> > > > > >
-> > > > > > Actually, I don't see where that would blow up? Generally references to
-> > > > > > sb->s_root in filesystems outside of mount / remount code are pretty rare.
-> > > > > > Also most of the code should be unreachable by the time we set sb->s_root
-> > > > > > to NULL because there are no open files at that moment, no exports etc. But
-> > > > > > as this report shows, there are occasional surprises (I remember similar
-> > > > > > issue with ext4 sysfs files handlers using s_root without checking couple
-> > > > > > years back).
-> > > > > >
-> > > > >
-> > > > > I am not sure that I understand what you are arguing for.
-> > > > > I did a very naive grep s_root fs/*/export.c and quickly found:
-> > > >
-> > > > You're better with grep than me ;). I was grepping for '->s_root' as well
-> > > > but all the hits I had looked into were related to mounting and similar and
-> > > > eventually I got bored. Restricting the grep to export ops indeed shows
-> > > > ceph, gfs2 and overlayfs are vulnerable to this kind of problem.
-> 
-> As far as I can tell, ceph uses s_root only in decode_fh methods.
+On Wed, Sep 17, 2025 at 05:53:42PM +0800, Joy Zou wrote:
+> Configure only the requested channel when a fixed channel is specified
+> to avoid modifying other channels unintentionally.
+>
+> Fix parameter configuration when a fixed DMA channel is requested on
+> i.MX9 AON domain and i.MX8QM/QXP/DXL platforms. When a client requests
+> a fixed channel (e.g., channel 6), the driver traverses channels 0-5
+> and may unintentionally modify their configuration if they are unused.
+>
+> This leads to issues such as setting the `is_multi_fifo` flag unexpectedly,
+> causing memcpy tests to fail when using the dmatest tool.
+>
+> Only affect edma memcpy test when the channel is fixed.
+>
+> Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> Cc: stable@vger.kernel.org
 
-True. But ceph also uses d_find_alias() in ceph_encode_snapfh() which could
-race with shrink_dcache_for_umount()->do_one_tree() and trigger:
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-        WARN(1, "BUG: Dentry %p{i=%lx,n=%pd} "
-                        " still in use (%d) [unmount of %s %s]\n",
-
-> ovl and gfs2 only want to know for an inode if it is the root inode,
-> they do not strictly need to dereference s_root for that purpose.
-> (see patch below)
-> 
-> > So there are not many cases where this can happen but enough that I'd say
-> > that handling some events specially to avoid encoding fh on fs while it is
-> > unmounted is fragile and prone to breaking again sooner or later.
-> >
-> > > How about skipping fsnotify_inoderemove() in case sb is in shutdown?
-> >
-> > Also how would you like to handle that in a race-free manner? We'd need to
-> > hold s_umount for that which we cannot really afford in that context. But
-> > maybe you have some better idea...
-> >
-> 
-> I was only thinking about this code path:
-> 
-> generic_shutdown_super()
->   shrink_dcache_for_umount()
->     ...
->       __dentry_kill()
->         dentry_unlink_inode()
-> 
-> This is supposed to be the last dput of all remaining dentries
-> and I don't think a deferred unlink should be expected in that case.
-
-I see.
- 
-> But I realize now that you mean delayed unlink from another context
-> which races with shutdown.
-
-Yes, I've meant that.
-
-> > > > > > > Can we change the order of generic_shutdown_super() so that
-> > > > > > > fsnotify_sb_delete(sb) is called before setting s_root to NULL?
-> > > > > > >
-> > > > > > > Or is there a better solution for this race?
-> > > > > >
-> > > > > > Regarding calling fsnotify_sb_delete() before setting s_root to NULL:
-> > > > > > In 2019 (commit 1edc8eb2e9313 ("fs: call fsnotify_sb_delete after
-> > > > > > evict_inodes")) we've moved the call after evict_inodes() because otherwise
-> > > > > > we were just wasting cycles scanning many inodes without watches. So moving
-> > > > > > it earlier wouldn't be great...
-> > > > >
-> > > > > Yes, I noticed that and I figured there were subtleties.
-> > > >
-> > > > Right. After thinking more about it I think calling fsnotify_sb_delete()
-> > > > earlier is the only practical choice we have (not clearing sb->s_root isn't
-> > > > much of an option - we need to prune all dentries to quiesce the filesystem
-> > > > and leaving s_root alive would create odd corner cases). But you don't want
-> > > > to be iterating millions of inodes just to clear couple of marks so we'll
-> > > > have to figure out something more clever there.
-> > >
-> > > I think we only need to suppress the fsnotify_inoderemove() call.
-> > > It sounds doable and very local to fs/super.c.
-> > >
-> > > Regarding show_mark_fhandle() WDYT about my suggestion to
-> > > guard it with super_trylock_shared()?
-> >
-> > Yes, super_trylock_shared() for that callsite looks like a fine solution
-> > for that call site. Occasional random failures in encoding fh because the
-> > trylock fails are unlikely to have any bad consequences there. But I think
-> > we need to figure out other possibly racing call-sites as well first.
-> >
-> 
-> Might something naive as this be enough?
-
-It looks like it should be good for the problems with gfs2 & overlayfs but
-it doesn't solve the problem with ceph and as Jakub writes there's a question
-whether we won't hit more problems later.
-
-I'm sorry for poking holes into your solutions. The more I look into this
-the more problems I find :-|
-
-As I'm thinking about it I'm slowly leaning towards implementing a list of
-connectors per sb (so that we can quickly reclaim on umount). It seems
-stupid just for these corner cases but longer term we can also implement
-what Dave once suggested [1] so that fsnotify doesn't need to pin inodes in
-memory at all which should more that make up for the additional memory for
-inode connector members.
-
-								Honza
-
-[1] https://lore.kernel.org/linux-fsdevel/ZwXDzKGj6Bp28kYe@dread.disaster.area/
-
-> diff --git a/fs/dcache.c b/fs/dcache.c
-> index 60046ae23d514..8c9d0d6bb0045 100644
-> --- a/fs/dcache.c
-> +++ b/fs/dcache.c
-> @@ -1999,10 +1999,12 @@ struct dentry *d_make_root(struct inode *root_inode)
-> 
->         if (root_inode) {
->                 res = d_alloc_anon(root_inode->i_sb);
-> -               if (res)
-> +               if (res) {
-> +                       root_inode->i_opflags |= IOP_ROOT;
->                         d_instantiate(res, root_inode);
-> -               else
-> +               } else {
->                         iput(root_inode);
-> +               }
->         }
->         return res;
->  }
-> diff --git a/fs/gfs2/export.c b/fs/gfs2/export.c
-> index 3334c394ce9cb..809a09c6a89e0 100644
-> --- a/fs/gfs2/export.c
-> +++ b/fs/gfs2/export.c
-> @@ -46,7 +46,7 @@ static int gfs2_encode_fh(struct inode *inode, __u32
-> *p, int *len,
->         fh[3] = cpu_to_be32(ip->i_no_addr & 0xFFFFFFFF);
->         *len = GFS2_SMALL_FH_SIZE;
-> 
-> -       if (!parent || inode == d_inode(sb->s_root))
-> +       if (!parent || is_root_inode(inode))
->                 return *len;
-> 
->         ip = GFS2_I(parent);
-> diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-> index 83f80fdb15674..7827c63354ad5 100644
-> --- a/fs/overlayfs/export.c
-> +++ b/fs/overlayfs/export.c
-> @@ -199,7 +199,7 @@ static int ovl_check_encode_origin(struct inode *inode)
->          * Root is never indexed, so if there's an upper layer, encode upper for
->          * root.
->          */
-> -       if (inode == d_inode(inode->i_sb->s_root))
-> +       if (is_root_inode(inode))
->                 return 0;
-> 
->         /*
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index ec867f112fd5f..ed84379aa06ca 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -665,6 +665,7 @@ is_uncached_acl(struct posix_acl *acl)
->  #define IOP_DEFAULT_READLINK   0x0010
->  #define IOP_MGTIME     0x0020
->  #define IOP_CACHED_LINK        0x0040
-> +#define IOP_ROOT       0x0080
->   /*
->   * Keep mostly read-only and often accessed (especially for
-> @@ -2713,6 +2714,11 @@ static inline bool is_mgtime(const struct inode *inode)
->         return inode->i_opflags & IOP_MGTIME;
->  }
-> 
-> +static inline bool is_root_inode(const struct inode *inode)
-> +{
-> +       return inode->i_opflags & IOP_ROOT;
-> +}
+> ---
+>  drivers/dma/fsl-edma-main.c | 26 +++++++++++---------------
+>  1 file changed, 11 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> index 97583c7d51a2e8e7a50c7eb4f5ff0582ac95798d..f0c1a2a3fd26e663b3f0b918ff979a68af510fbf 100644
+> --- a/drivers/dma/fsl-edma-main.c
+> +++ b/drivers/dma/fsl-edma-main.c
+> @@ -317,10 +317,8 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
+>  			return NULL;
+>  		i = fsl_chan - fsl_edma->chans;
+>
+> -		fsl_chan->priority = dma_spec->args[1];
+> -		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
+> -		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
+> -		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
+> +		if (!b_chmux && i != dma_spec->args[0])
+> +			continue;
+>
+>  		if ((dma_spec->args[2] & FSL_EDMA_EVEN_CH) && (i & 0x1))
+>  			continue;
+> @@ -328,17 +326,15 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
+>  		if ((dma_spec->args[2] & FSL_EDMA_ODD_CH) && !(i & 0x1))
+>  			continue;
+>
+> -		if (!b_chmux && i == dma_spec->args[0]) {
+> -			chan = dma_get_slave_channel(chan);
+> -			chan->device->privatecnt++;
+> -			return chan;
+> -		} else if (b_chmux && !fsl_chan->srcid) {
+> -			/* if controller support channel mux, choose a free channel */
+> -			chan = dma_get_slave_channel(chan);
+> -			chan->device->privatecnt++;
+> -			fsl_chan->srcid = dma_spec->args[0];
+> -			return chan;
+> -		}
+> +		fsl_chan->srcid = dma_spec->args[0];
+> +		fsl_chan->priority = dma_spec->args[1];
+> +		fsl_chan->is_rxchan = dma_spec->args[2] & FSL_EDMA_RX;
+> +		fsl_chan->is_remote = dma_spec->args[2] & FSL_EDMA_REMOTE;
+> +		fsl_chan->is_multi_fifo = dma_spec->args[2] & FSL_EDMA_MULTI_FIFO;
 > +
->  extern struct dentry *mount_bdev(struct file_system_type *fs_type,
->         int flags, const char *dev_name, void *data,
->         int (*fill_super)(struct super_block *, void *, int));
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> +		chan = dma_get_slave_channel(chan);
+> +		chan->device->privatecnt++;
+> +		return chan;
+>  	}
+>  	return NULL;
+>  }
+>
+> ---
+> base-commit: 05af764719214d6568adb55c8749dec295228da8
+> change-id: 20250917-b4-edma-chanconf-da616503f29f
+>
+> Best regards,
+> --
+> Joy Zou <joy.zou@nxp.com>
+>
 
