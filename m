@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78F5B7E6E9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EAAB7EF61
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7461482EDD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF4D27B663F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10DC30C63E;
-	Wed, 17 Sep 2025 12:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E462FBE0C;
+	Wed, 17 Sep 2025 13:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y22sxYtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHyES7bE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA963074B7;
-	Wed, 17 Sep 2025 12:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3BD183CA6;
+	Wed, 17 Sep 2025 13:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113156; cv=none; b=VDEB0GawvBN4LSpaHo2P6Avt3fabtT9F14sRBrZZHAX1UXwB5J28ZnDm0z7P5DNMNO1CiV3kySxK9RhJEXd8Umtpe4FGvwWrEn43LwuIrt+4hveeTpimQIftUka+sasEIpqVDdVh9rh9yzs/z3ETdSzgROCWYQ+CuruuoWpllEc=
+	t=1758114068; cv=none; b=j/E6TfYEjxwIRkrLM+QJCYmWEu7LyYvMubao+Y0L6kQbW1oim5VMVE5o/fBd0gImHkHDs49nk71VYZiiTW4dmKzst76pgd9PxKMQUDsu34753d90WTrfEcDnWOCnmtTcRatcwP5mIn1gBazc1t2zJv0v/TSqeqK+n4zoellMs0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113156; c=relaxed/simple;
-	bh=MSukoovXzAyFirFVJc3pbcNA6NmzBNOJxUaMbQRT6Ck=;
+	s=arc-20240116; t=1758114068; c=relaxed/simple;
+	bh=C3o4St71A+SsCIfz0O8IbEPdk1B2kUt5HTLWcW6YtFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9u1/W5luYcrZOuueZuxqcZEMhTG13LkER3IgghJulkBFGQDQXnreKdgGZzPfzH54T1bJI14LefLnxSyktun9FgWi7UNZs5hvVK8ybQ29fLei3Vcp2DmQOyNH3LOhybe8wM165miMRIebq21WfLqHki3aIIi54sevrRZhB5ieeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y22sxYtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB469C4CEF0;
-	Wed, 17 Sep 2025 12:45:55 +0000 (UTC)
+	 MIME-Version; b=RYslNRk4PYfeqxcwEf07V5WkkMF5UOI2CYatsLzeevmZfP0qEFGNnzo/BmdRG78wxcu1q8awvdsGg3ekgcaV5w2XVaxYpKKnjjrIDUMspmsE/5MpVuHlRAbEV+7yd14hYP6yUhqv857u9elms7LFL7VwPK9hMIfRw+aKTeqlQ5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHyES7bE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3724AC4CEF0;
+	Wed, 17 Sep 2025 13:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113156;
-	bh=MSukoovXzAyFirFVJc3pbcNA6NmzBNOJxUaMbQRT6Ck=;
+	s=korg; t=1758114067;
+	bh=C3o4St71A+SsCIfz0O8IbEPdk1B2kUt5HTLWcW6YtFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y22sxYtVck9i2W4w98alOX4I1HWHl3aSymUt+WPcRYBeoMoy5AF9vKby7zL6a5UMz
-	 ihjhlGFNlVfjRs9MxLdNr8TiughiH8/3fdqRbzXvts0EMH3kKiZJK0J+XlMCb4bK+7
-	 jXX7Uq8eHqG8z7Fj3Jk9tdtgMPyUIqdQnYwHp6Co=
+	b=fHyES7bEp0Se9YtWKOgnxT4NEoQF8sS3eTuo9xncPZF/IWVGmo5rNDoqP0mL7VwOj
+	 xhTXwaaw5pwffx/OpV866+uzZ5IrhCXXTvOh8XPPLVOg+N8jVHMc2G1Xf0gJfTu0Xi
+	 FMtGNhi98ZUmxnQCBs0UNROYMAixOQxXVF4wvq3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.16 188/189] phy: ti: omap-usb2: fix device leak at unbind
+	Alexander Dahl <ada@thorsis.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 37/78] mtd: nand: raw: atmel: Fix comment in timings preparation
 Date: Wed, 17 Sep 2025 14:34:58 +0200
-Message-ID: <20250917123356.486108242@linuxfoundation.org>
+Message-ID: <20250917123330.465730138@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alexander Dahl <ada@thorsis.com>
 
-commit 64961557efa1b98f375c0579779e7eeda1a02c42 upstream.
+[ Upstream commit 1c60e027ffdebd36f4da766d9c9abbd1ea4dd8f9 ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+Looks like a copy'n'paste mistake introduced when initially adding the
+dynamic timings feature with commit f9ce2eddf176 ("mtd: nand: atmel: Add
+->setup_data_interface() hooks").  The context around this and
+especially the code itself suggests 'read' is meant instead of write.
 
-Fixes: 478b6c7436c2 ("usb: phy: omap-usb2: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-3-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240226122537.75097-1-ada@thorsis.com
+Stable-dep-of: fd779eac2d65 ("mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/mtd/nand/raw/atmel/nand-controller.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -363,6 +363,13 @@ static void omap_usb2_init_errata(struct
- 		phy->flags |= OMAP_USB2_DISABLE_CHRG_DET;
- }
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1378,7 +1378,7 @@ static int atmel_smc_nand_prepare_smccon
+ 		return ret;
  
-+static void omap_usb2_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int omap_usb2_probe(struct platform_device *pdev)
- {
- 	struct omap_usb	*phy;
-@@ -373,6 +380,7 @@ static int omap_usb2_probe(struct platfo
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
- 	const struct usb_phy_data *phy_data;
-+	int ret;
- 
- 	phy_data = device_get_match_data(&pdev->dev);
- 	if (!phy_data)
-@@ -423,6 +431,11 @@ static int omap_usb2_probe(struct platfo
- 			return -EINVAL;
- 		}
- 		phy->control_dev = &control_pdev->dev;
-+
-+		ret = devm_add_action_or_reset(&pdev->dev, omap_usb2_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
- 	} else {
- 		if (of_property_read_u32_index(node,
- 					       "syscon-phy-power", 1,
+ 	/*
+-	 * The write cycle timing is directly matching tWC, but is also
++	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
 
 
 
