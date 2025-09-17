@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-180022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08CFB7E525
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513A1B7F214
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0986189F9F3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFB1B4A46A1
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55872F5A08;
-	Wed, 17 Sep 2025 12:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCD832BBF5;
+	Wed, 17 Sep 2025 13:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJxyneET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2gN1SGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8272C284888;
-	Wed, 17 Sep 2025 12:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFB9316182;
+	Wed, 17 Sep 2025 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113130; cv=none; b=Ah9aTp99rPQXx05ZAlggWtEzzqiz1S8Qtk/lz8/nvm1NvnvOZOoNR7boVJS1n3+rWw79x6tsMnnROC0IDmPrYWFo5AvKOOpiuZWIM4V9zs/t8t3ec1bfmda4YT3dhh+Iyi7cfatsVGkdRkMfJgoKDBKcntCLg/ON3rOTeeOUrl0=
+	t=1758114133; cv=none; b=YKWtcJeBSCV0wGUJNgnzB8bQV+jQDVaNLt+KUQKsOAi9PRL7w7zc930RT3MUQPDcJWZjNSgTO9mFCzEesTqwOtUEU6+PK5k61kNjn9b97BxzBfBz2QGwoIvQ4cLpSGUHUQlauz95bTDO2SJ6666uWq5IFE+Ac+8ojn1gGA23bzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113130; c=relaxed/simple;
-	bh=N6SFljDXq7pTHvbJiyOsF0Wi++07kERlao+y0HpgZzM=;
+	s=arc-20240116; t=1758114133; c=relaxed/simple;
+	bh=bPonyE1KmvTA9OQthIdZ8EmJp0J0uCBGVHHDpgSjhpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GxP89dwImteuvD5j4J/vQhCEWJjPD3zMFnHjXSp0zl9punKvu7ML1+tIxIa18KIvpY2mQFOd3UkNPCZjF7g60YXUVPUtpZlot8OtTj6Z5y8IqYYEWkQHh+38WgWqwQTRFbeuiBroMmTlBfLc39VC6mjngyCCq7eLous06UkE12M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJxyneET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AF6C4CEF7;
-	Wed, 17 Sep 2025 12:45:29 +0000 (UTC)
+	 MIME-Version; b=Wwvpt8IRAijmk6yvoUId/+xpORxJoP2zRovDiT0IHrM7+mycnPCQJK4OOHSwLUCE3R5idu8CHL0f/jbOMRZCPIYYjdojoKLDIl1uSYSITi4EjwfOfkatFiD2xf4WecO37hjoVmTyogTzIlATTK5Hw/BMFTFI5eOD0btsLepdM7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2gN1SGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E559BC4CEF0;
+	Wed, 17 Sep 2025 13:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113130;
-	bh=N6SFljDXq7pTHvbJiyOsF0Wi++07kERlao+y0HpgZzM=;
+	s=korg; t=1758114133;
+	bh=bPonyE1KmvTA9OQthIdZ8EmJp0J0uCBGVHHDpgSjhpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJxyneETOo2w+B2/N1F29Ou8l8cSwFO5tt5iDo1WsKyP1hp80dCL6DH8Xm6VZwiAd
-	 zUmVqWpiuNvvCu2cM+LSHdHzqrulKnWW0t0HtvSOQ3pbDmE5ooVuiSlbi12zyLQoMw
-	 yu58Swjr8qRDYiez0eMQswyFYKbre/6hUyZZLXQc=
+	b=D2gN1SGuusJDaYEiMhAtqnJbwg+fls9DP2GWM/z2wGkP5EsR+hHWO+MmOQR29J2ux
+	 22N5z4chCK4hJlGuHJdPT/9tCrgt4Rp0A/9OhBzDnNBNlddu7f57Cq5vZRCXzAtuHZ
+	 BHGAZ8zxMc2LO+zRewjQNkLjrIpIgqTrkFIwqO04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.16 180/189] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 29/78] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer
 Date: Wed, 17 Sep 2025 14:34:50 +0200
-Message-ID: <20250917123356.282579054@linuxfoundation.org>
+Message-ID: <20250917123330.273677450@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +61,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
 
-commit 8d63c83d8eb922f6c316320f50c82fa88d099bea upstream.
+commit 513c40e59d5a414ab763a9c84797534b5e8c208d upstream.
 
-Yunseong Kim and the syzbot fuzzer both reported a problem in
-RT-enabled kernels caused by the way dummy-hcd mixes interrupt
-management and spin-locking.  The pattern was:
+Avoid below overlapping mappings by using a contiguous
+non-cacheable buffer.
 
-	local_irq_save(flags);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock(&dum->lock);
-	...		// calls usb_gadget_giveback_request()
-	local_irq_restore(flags);
+[    4.077708] DMA-API: stm32_fmc2_nfc 48810000.nand-controller: cacheline tracking EEXIST,
+overlapping mappings aren't supported
+[    4.089103] WARNING: CPU: 1 PID: 44 at kernel/dma/debug.c:568 add_dma_entry+0x23c/0x300
+[    4.097071] Modules linked in:
+[    4.100101] CPU: 1 PID: 44 Comm: kworker/u4:2 Not tainted 6.1.82 #1
+[    4.106346] Hardware name: STMicroelectronics STM32MP257F VALID1 SNOR / MB1704 (LPDDR4 Power discrete) + MB1703 + MB1708 (SNOR MB1730) (DT)
+[    4.118824] Workqueue: events_unbound deferred_probe_work_func
+[    4.124674] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    4.131624] pc : add_dma_entry+0x23c/0x300
+[    4.135658] lr : add_dma_entry+0x23c/0x300
+[    4.139792] sp : ffff800009dbb490
+[    4.143016] x29: ffff800009dbb4a0 x28: 0000000004008022 x27: ffff8000098a6000
+[    4.150174] x26: 0000000000000000 x25: ffff8000099e7000 x24: ffff8000099e7de8
+[    4.157231] x23: 00000000ffffffff x22: 0000000000000000 x21: ffff8000098a6a20
+[    4.164388] x20: ffff000080964180 x19: ffff800009819ba0 x18: 0000000000000006
+[    4.171545] x17: 6361727420656e69 x16: 6c6568636163203a x15: 72656c6c6f72746e
+[    4.178602] x14: 6f632d646e616e2e x13: ffff800009832f58 x12: 00000000000004ec
+[    4.185759] x11: 00000000000001a4 x10: ffff80000988af58 x9 : ffff800009832f58
+[    4.192916] x8 : 00000000ffffefff x7 : ffff80000988af58 x6 : 80000000fffff000
+[    4.199972] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
+[    4.207128] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000812d2c40
+[    4.214185] Call trace:
+[    4.216605]  add_dma_entry+0x23c/0x300
+[    4.220338]  debug_dma_map_sg+0x198/0x350
+[    4.224373]  __dma_map_sg_attrs+0xa0/0x110
+[    4.228411]  dma_map_sg_attrs+0x10/0x2c
+[    4.232247]  stm32_fmc2_nfc_xfer.isra.0+0x1c8/0x3fc
+[    4.237088]  stm32_fmc2_nfc_seq_read_page+0xc8/0x174
+[    4.242127]  nand_read_oob+0x1d4/0x8e0
+[    4.245861]  mtd_read_oob_std+0x58/0x84
+[    4.249596]  mtd_read_oob+0x90/0x150
+[    4.253231]  mtd_read+0x68/0xac
 
-The code was written this way because usb_gadget_giveback_request()
-needs to be called with interrupts disabled and the private lock not
-held.
-
-While this pattern works fine in non-RT kernels, it's not good when RT
-is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
-spin_lock() may sleep.  But sleeping is not allowed while local
-interrupts are disabled.
-
-To fix the problem, rewrite the code to conform to the pattern used
-elsewhere in dummy-hcd and other UDC drivers:
-
-	spin_lock_irqsave(&dum->lock, flags);
-	...
-	spin_unlock(&dum->lock);
-	usb_gadget_giveback_request(...);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock_irqrestore(&dum->lock, flags);
-
-This approach satisfies the RT requirements.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
-Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
-Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: stable@vger.kernel.org
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: stable@vger.kernel.org
+Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c |   28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -765,8 +765,7 @@ static int dummy_dequeue(struct usb_ep *
- 	if (!dum->driver)
- 		return -ESHUTDOWN;
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -263,6 +263,7 @@ struct stm32_fmc2_nfc {
+ 	struct sg_table dma_data_sg;
+ 	struct sg_table dma_ecc_sg;
+ 	u8 *ecc_buf;
++	dma_addr_t dma_ecc_addr;
+ 	int dma_ecc_len;
  
--	local_irq_save(flags);
--	spin_lock(&dum->lock);
-+	spin_lock_irqsave(&dum->lock, flags);
- 	list_for_each_entry(iter, &ep->queue, queue) {
- 		if (&iter->req != _req)
- 			continue;
-@@ -776,15 +775,16 @@ static int dummy_dequeue(struct usb_ep *
- 		retval = 0;
- 		break;
- 	}
--	spin_unlock(&dum->lock);
+ 	struct completion complete;
+@@ -885,17 +886,10 @@ static int stm32_fmc2_nfc_xfer(struct na
  
- 	if (retval == 0) {
- 		dev_dbg(udc_dev(dum),
- 				"dequeued req %p from %s, len %d buf %p\n",
- 				req, _ep->name, _req->length, _req->buf);
-+		spin_unlock(&dum->lock);
- 		usb_gadget_giveback_request(_ep, _req);
-+		spin_lock(&dum->lock);
+ 	if (!write_data && !raw) {
+ 		/* Configure DMA ECC status */
+-		p = nfc->ecc_buf;
+ 		for_each_sg(nfc->dma_ecc_sg.sgl, sg, eccsteps, s) {
+-			sg_set_buf(sg, p, nfc->dma_ecc_len);
+-			p += nfc->dma_ecc_len;
+-		}
+-
+-		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+-				 eccsteps, dma_data_dir);
+-		if (!ret) {
+-			ret = -EIO;
+-			goto err_unmap_data;
++			sg_dma_address(sg) = nfc->dma_ecc_addr +
++					     s * nfc->dma_ecc_len;
++			sg_dma_len(sg) = nfc->dma_ecc_len;
+ 		}
+ 
+ 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
+@@ -904,7 +898,7 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 						   DMA_PREP_INTERRUPT);
+ 		if (!desc_ecc) {
+ 			ret = -ENOMEM;
+-			goto err_unmap_ecc;
++			goto err_unmap_data;
+ 		}
+ 
+ 		reinit_completion(&nfc->dma_ecc_complete);
+@@ -912,7 +906,7 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 		desc_ecc->callback_param = &nfc->dma_ecc_complete;
+ 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
+ 		if (ret)
+-			goto err_unmap_ecc;
++			goto err_unmap_data;
+ 
+ 		dma_async_issue_pending(nfc->dma_ecc_ch);
  	}
--	local_irq_restore(flags);
-+	spin_unlock_irqrestore(&dum->lock, flags);
- 	return retval;
- }
+@@ -932,7 +926,7 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 		if (!write_data && !raw)
+ 			dmaengine_terminate_all(nfc->dma_ecc_ch);
+ 		ret = -ETIMEDOUT;
+-		goto err_unmap_ecc;
++		goto err_unmap_data;
+ 	}
+ 
+ 	/* Wait DMA data transfer completion */
+@@ -952,11 +946,6 @@ static int stm32_fmc2_nfc_xfer(struct na
+ 		}
+ 	}
+ 
+-err_unmap_ecc:
+-	if (!write_data && !raw)
+-		dma_unmap_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
+-			     eccsteps, dma_data_dir);
+-
+ err_unmap_data:
+ 	dma_unmap_sg(nfc->dev, nfc->dma_data_sg.sgl, eccsteps, dma_data_dir);
+ 
+@@ -1582,7 +1571,8 @@ static int stm32_fmc2_nfc_dma_setup(stru
+ 		return ret;
+ 
+ 	/* Allocate a buffer to store ECC status registers */
+-	nfc->ecc_buf = devm_kzalloc(nfc->dev, FMC2_MAX_ECC_BUF_LEN, GFP_KERNEL);
++	nfc->ecc_buf = dmam_alloc_coherent(nfc->dev, FMC2_MAX_ECC_BUF_LEN,
++					   &nfc->dma_ecc_addr, GFP_KERNEL);
+ 	if (!nfc->ecc_buf)
+ 		return -ENOMEM;
  
 
 
