@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-179974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC00B7E317
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF83B7E8DC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03A501B24BBE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63131890197
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AF81F462C;
-	Wed, 17 Sep 2025 12:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E29A1F460B;
+	Wed, 17 Sep 2025 12:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCqgX6Tt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yx4tsWOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5138818A6CF;
-	Wed, 17 Sep 2025 12:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF53731BC88;
+	Wed, 17 Sep 2025 12:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112983; cv=none; b=F9PualjGbZb+IO2kHg15y9hzadmLOeWxSnZS7aTHNL7Hds2g2uBs4cW8c1hcVzkRouEV+UqmDtkNP8n9JA1NwwJYuifsDVEW8Z9iKJbnhT+sHfBMOoSpNdj7jBW44cwYGfYOaD70HvYHq8Vc6tuXom7+WJb2xJlG5oPQjKtN7r4=
+	t=1758113400; cv=none; b=Ozyz2hBocpp+3AsVCHuNbAuoYQ2MlS3alD0qIonbX/nSHu+2JnpjmRCSV3iQsd9pwPKFwlkwzSnznSUpV2NhUNriyTRYa189DYWHzu+SqR5OJqe9+4SJ8oZ4a/auVkNM9ITvw/dQJHkjDzra1wM65e4MinoL3umtpfKzSwl6qrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112983; c=relaxed/simple;
-	bh=COgEk5K3pVHP4sn9pRfGi7ZKXbpG6W+na3fgae1Wxws=;
+	s=arc-20240116; t=1758113400; c=relaxed/simple;
+	bh=muIZj2gD+w8vQIJ5LagQD+PeVxbFNLid7tCgANVIsnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QL0oemZ2S31k6MkaXNiNjXmjghKjzTpPMr9jL5VJugVyFWHExM1xYifpCK5nA0s2Kd3eS1A9+UXJq1gGzbRHDiRsVyFEHeTDbleF9/SSxz2Pn6P9XyP9qVX4IXpgeJCJ5sIqxNO6FXOLU9Dw1SZ5Q1pIw293z9gZwI5S/6iYUi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCqgX6Tt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF6DC4CEF0;
-	Wed, 17 Sep 2025 12:43:02 +0000 (UTC)
+	 MIME-Version; b=h39IuC+Pa2LDLxamjRcY06rU/Bno4y9pd76BBDKABrL6/nQ07k0OmrUGjE+PnV9y0rDed9b478GsK1fnq4XLq+BU1bJ878nJshBZJQ9qrhFYiWgbtdUCdXUI/kgMTr8ur8Hs7Pq6y9IUIe1PDJ4efWmg7HXNvSVh7MN05Mb+04U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yx4tsWOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B955C4CEF0;
+	Wed, 17 Sep 2025 12:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112982;
-	bh=COgEk5K3pVHP4sn9pRfGi7ZKXbpG6W+na3fgae1Wxws=;
+	s=korg; t=1758113400;
+	bh=muIZj2gD+w8vQIJ5LagQD+PeVxbFNLid7tCgANVIsnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCqgX6TtBapnaPCjUut4fJ7kn7cF+3eaiK79hjUaL3vLRn3Qrxv+k8LayjZDciIgZ
-	 GzMen1alk8VFX0TWuMiXUGsKCHSVF+ryapOZufmjc8Rn1+Uk6qPG0A6FZmmX9FaWc5
-	 wFOPhLxf+N+EPanR43krNmBEEIiff9EECkiqU1HI=
+	b=yx4tsWOb7Oby2oB4nMfB+2cmGVEO4iVasMv+KPL/E8cRo6l89N4BT2JPn3N4nvfc6
+	 ajmZNSvZx5egR2H92FobPITh/qFexo1D6pyR+8xT34VloreCxxXXwGdviAlvgfvuKl
+	 vT44fcckiQb368+bYsLG2gZHu4gklErXi3bjCiUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Palus <jpalus@fastmail.com>,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Tony Dinh <mibodhi@gmail.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 134/189] PCI: mvebu: Fix use of for_each_of_range() iterator
+Subject: [PATCH 6.12 072/140] netlink: specs: mptcp: clearly mention attributes
 Date: Wed, 17 Sep 2025 14:34:04 +0200
-Message-ID: <20250917123355.134137107@linuxfoundation.org>
+Message-ID: <20250917123346.067951334@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Klaus Kudielka <klaus.kudielka@gmail.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit b816265396daf1beb915e0ffbfd7f3906c2bf4a4 ]
+[ Upstream commit bea87657b5ee8e6f18af2833ee4b88212ef52d28 ]
 
-5da3d94a23c6 ("PCI: mvebu: Use for_each_of_range() iterator for parsing
-"ranges"") simplified code by using the for_each_of_range() iterator, but
-it broke PCI enumeration on Turris Omnia (and probably other mvebu
-targets).
+The rendered version of the MPTCP events [1] looked strange, because the
+whole content of the 'doc' was displayed in the same block.
 
-Issue #1:
+It was then not clear that the first words, not even ended by a period,
+were the attributes that are defined when such events are emitted. These
+attributes have now been moved to the end, prefixed by 'Attributes:' and
+ended with a period. Note that '>-' has been added after 'doc:' to allow
+':' in the text below.
 
-To determine range.flags, of_pci_range_parser_one() uses bus->get_flags(),
-which resolves to of_bus_pci_get_flags(), which already returns an
-IORESOURCE bit field, and NOT the original flags from the "ranges"
-resource.
+The documentation in the UAPI header has been auto-generated by:
 
-Then mvebu_get_tgt_attr() attempts the very same conversion again.  Remove
-the misinterpretation of range.flags in mvebu_get_tgt_attr(), to restore
-the intended behavior.
+  ./tools/net/ynl/ynl-regen.sh
 
-Issue #2:
-
-The driver needs target and attributes, which are encoded in the raw
-address values of the "/soc/pcie/ranges" resource. According to
-of_pci_range_parser_one(), the raw values are stored in range.bus_addr and
-range.parent_bus_addr, respectively. range.cpu_addr is a translated version
-of range.parent_bus_addr, and not relevant here.
-
-Use the correct range structure member, to extract target and attributes.
-This restores the intended behavior.
-
-Fixes: 5da3d94a23c6 ("PCI: mvebu: Use for_each_of_range() iterator for parsing "ranges"")
-Reported-by: Jan Palus <jpalus@fastmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220479
-Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Tony Dinh <mibodhi@gmail.com>
-Tested-by: Jan Palus <jpalus@fastmail.com>
-Link: https://patch.msgid.link/20250907102303.29735-1-klaus.kudielka@gmail.com
+Link: https://docs.kernel.org/networking/netlink_spec/mptcp_pm.html#event-type [1]
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-2-e54f2db3f844@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7094b84863e5 ("netlink: specs: mptcp: fix if-idx attribute type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-mvebu.c | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
+ Documentation/netlink/specs/mptcp_pm.yaml |   50 ++++++++++++++--------------
+ include/uapi/linux/mptcp_pm.h             |   53 +++++++++++++++---------------
+ 2 files changed, 52 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/pci/controller/pci-mvebu.c b/drivers/pci/controller/pci-mvebu.c
-index a4a2bac4f4b27..2f8d0223c1a6d 100644
---- a/drivers/pci/controller/pci-mvebu.c
-+++ b/drivers/pci/controller/pci-mvebu.c
-@@ -1168,12 +1168,6 @@ static void __iomem *mvebu_pcie_map_registers(struct platform_device *pdev,
- 	return devm_ioremap_resource(&pdev->dev, &port->regs);
- }
+--- a/Documentation/netlink/specs/mptcp_pm.yaml
++++ b/Documentation/netlink/specs/mptcp_pm.yaml
+@@ -22,67 +22,67 @@ definitions:
+       doc: unused event
+      -
+       name: created
+-      doc:
+-        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
+-        server-side
++      doc: >-
+         A new MPTCP connection has been created. It is the good time to
+         allocate memory and send ADD_ADDR if needed. Depending on the
+         traffic-patterns it can take a long time until the
+         MPTCP_EVENT_ESTABLISHED is sent.
++        Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
++        dport, server-side.
+      -
+       name: established
+-      doc:
+-        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
+-        server-side
++      doc: >-
+         A MPTCP connection is established (can start new subflows).
++        Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
++        dport, server-side.
+      -
+       name: closed
+-      doc:
+-        token
++      doc: >-
+         A MPTCP connection has stopped.
++        Attribute: token.
+      -
+       name: announced
+       value: 6
+-      doc:
+-        token, rem_id, family, daddr4 | daddr6 [, dport]
++      doc: >-
+         A new address has been announced by the peer.
++        Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
+      -
+       name: removed
+-      doc:
+-        token, rem_id
++      doc: >-
+         An address has been lost by the peer.
++        Attributes: token, rem_id.
+      -
+       name: sub-established
+       value: 10
+-      doc:
+-        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, backup, if_idx [, error]
++      doc: >-
+         A new subflow has been established. 'error' should not be set.
++        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++        daddr6, sport, dport, backup, if_idx [, error].
+      -
+       name: sub-closed
+-      doc:
+-        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, backup, if_idx [, error]
++      doc: >-
+         A subflow has been closed. An error (copy of sk_err) could be set if an
+         error has been detected for this subflow.
++        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++        daddr6, sport, dport, backup, if_idx [, error].
+      -
+       name: sub-priority
+       value: 13
+-      doc:
+-        token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, backup, if_idx [, error]
++      doc: >-
+         The priority of a subflow has changed. 'error' should not be set.
++        Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++        daddr6, sport, dport, backup, if_idx [, error].
+      -
+       name: listener-created
+       value: 15
+-      doc:
+-        family, sport, saddr4 | saddr6
++      doc: >-
+         A new PM listener is created.
++        Attributes: family, sport, saddr4 | saddr6.
+      -
+       name: listener-closed
+-      doc:
+-        family, sport, saddr4 | saddr6
++      doc: >-
+         A PM listener is closed.
++        Attributes: family, sport, saddr4 | saddr6.
  
--#define DT_FLAGS_TO_TYPE(flags)       (((flags) >> 24) & 0x03)
--#define    DT_TYPE_IO                 0x1
--#define    DT_TYPE_MEM32              0x2
--#define DT_CPUADDR_TO_TARGET(cpuaddr) (((cpuaddr) >> 56) & 0xFF)
--#define DT_CPUADDR_TO_ATTR(cpuaddr)   (((cpuaddr) >> 48) & 0xFF)
--
- static int mvebu_get_tgt_attr(struct device_node *np, int devfn,
- 			      unsigned long type,
- 			      unsigned int *tgt,
-@@ -1189,19 +1183,12 @@ static int mvebu_get_tgt_attr(struct device_node *np, int devfn,
- 		return -EINVAL;
- 
- 	for_each_of_range(&parser, &range) {
--		unsigned long rtype;
- 		u32 slot = upper_32_bits(range.bus_addr);
- 
--		if (DT_FLAGS_TO_TYPE(range.flags) == DT_TYPE_IO)
--			rtype = IORESOURCE_IO;
--		else if (DT_FLAGS_TO_TYPE(range.flags) == DT_TYPE_MEM32)
--			rtype = IORESOURCE_MEM;
--		else
--			continue;
--
--		if (slot == PCI_SLOT(devfn) && type == rtype) {
--			*tgt = DT_CPUADDR_TO_TARGET(range.cpu_addr);
--			*attr = DT_CPUADDR_TO_ATTR(range.cpu_addr);
-+		if (slot == PCI_SLOT(devfn) &&
-+		    type == (range.flags & IORESOURCE_TYPE_BITS)) {
-+			*tgt = (range.parent_bus_addr >> 56) & 0xFF;
-+			*attr = (range.parent_bus_addr >> 48) & 0xFF;
- 			return 0;
- 		}
- 	}
--- 
-2.51.0
-
+ attribute-sets:
+   -
+--- a/include/uapi/linux/mptcp_pm.h
++++ b/include/uapi/linux/mptcp_pm.h
+@@ -12,32 +12,33 @@
+ /**
+  * enum mptcp_event_type
+  * @MPTCP_EVENT_UNSPEC: unused event
+- * @MPTCP_EVENT_CREATED: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side A new MPTCP connection has been created. It is
+- *   the good time to allocate memory and send ADD_ADDR if needed. Depending on
+- *   the traffic-patterns it can take a long time until the
+- *   MPTCP_EVENT_ESTABLISHED is sent.
+- * @MPTCP_EVENT_ESTABLISHED: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side A MPTCP connection is established (can start new
+- *   subflows).
+- * @MPTCP_EVENT_CLOSED: token A MPTCP connection has stopped.
+- * @MPTCP_EVENT_ANNOUNCED: token, rem_id, family, daddr4 | daddr6 [, dport] A
+- *   new address has been announced by the peer.
+- * @MPTCP_EVENT_REMOVED: token, rem_id An address has been lost by the peer.
+- * @MPTCP_EVENT_SUB_ESTABLISHED: token, family, loc_id, rem_id, saddr4 |
+- *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error] A new
+- *   subflow has been established. 'error' should not be set.
+- * @MPTCP_EVENT_SUB_CLOSED: token, family, loc_id, rem_id, saddr4 | saddr6,
+- *   daddr4 | daddr6, sport, dport, backup, if_idx [, error] A subflow has been
+- *   closed. An error (copy of sk_err) could be set if an error has been
+- *   detected for this subflow.
+- * @MPTCP_EVENT_SUB_PRIORITY: token, family, loc_id, rem_id, saddr4 | saddr6,
+- *   daddr4 | daddr6, sport, dport, backup, if_idx [, error] The priority of a
+- *   subflow has changed. 'error' should not be set.
+- * @MPTCP_EVENT_LISTENER_CREATED: family, sport, saddr4 | saddr6 A new PM
+- *   listener is created.
+- * @MPTCP_EVENT_LISTENER_CLOSED: family, sport, saddr4 | saddr6 A PM listener
+- *   is closed.
++ * @MPTCP_EVENT_CREATED: A new MPTCP connection has been created. It is the
++ *   good time to allocate memory and send ADD_ADDR if needed. Depending on the
++ *   traffic-patterns it can take a long time until the MPTCP_EVENT_ESTABLISHED
++ *   is sent. Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
++ *   sport, dport, server-side.
++ * @MPTCP_EVENT_ESTABLISHED: A MPTCP connection is established (can start new
++ *   subflows). Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
++ *   sport, dport, server-side.
++ * @MPTCP_EVENT_CLOSED: A MPTCP connection has stopped. Attribute: token.
++ * @MPTCP_EVENT_ANNOUNCED: A new address has been announced by the peer.
++ *   Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
++ * @MPTCP_EVENT_REMOVED: An address has been lost by the peer. Attributes:
++ *   token, rem_id.
++ * @MPTCP_EVENT_SUB_ESTABLISHED: A new subflow has been established. 'error'
++ *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
++ *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
++ * @MPTCP_EVENT_SUB_CLOSED: A subflow has been closed. An error (copy of
++ *   sk_err) could be set if an error has been detected for this subflow.
++ *   Attributes: token, family, loc_id, rem_id, saddr4 | saddr6, daddr4 |
++ *   daddr6, sport, dport, backup, if_idx [, error].
++ * @MPTCP_EVENT_SUB_PRIORITY: The priority of a subflow has changed. 'error'
++ *   should not be set. Attributes: token, family, loc_id, rem_id, saddr4 |
++ *   saddr6, daddr4 | daddr6, sport, dport, backup, if_idx [, error].
++ * @MPTCP_EVENT_LISTENER_CREATED: A new PM listener is created. Attributes:
++ *   family, sport, saddr4 | saddr6.
++ * @MPTCP_EVENT_LISTENER_CLOSED: A PM listener is closed. Attributes: family,
++ *   sport, saddr4 | saddr6.
+  */
+ enum mptcp_event_type {
+ 	MPTCP_EVENT_UNSPEC,
 
 
 
