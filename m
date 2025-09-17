@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-180239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5452CB7ED34
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:02:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A15B7F0E0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D363E7B578E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86321C27BAB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E16316189;
-	Wed, 17 Sep 2025 12:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FD4330D4B;
+	Wed, 17 Sep 2025 13:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBpa5yGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0fFHifn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520F332A5D;
-	Wed, 17 Sep 2025 12:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4782B333AB8;
+	Wed, 17 Sep 2025 13:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113824; cv=none; b=IvpZkxOAJCwcSbgikx+fhbYpvGxgYznADDi9F7PYm5oXQx1bvxkh+n6s6j8y7NJ/NyodFYCLfv7SWR3PmC3QvB4U1rPc2gyrGTVV3s2T74fybSF57kZJMfwz0Y1d2eJTANZV/MSTK4aerU3EsH/uaikY2fpC3eQfLQDj3JHe5cQ=
+	t=1758114027; cv=none; b=bC/KXwgjyiOK1maTiaDobP/oaLh/bqmGMKUWfu6VgZZrn3T4+mD08oBfOyaP3yCn8iysn+lVSWUB0gRNjJhYEna9R2HYEUm9JvEN1Q90kQAL6XhL2mvMEQQqEswHLrKzK/5vIlJnleDoOPNGsD3AIu/ISjVOs+93q2QdfNetXgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113824; c=relaxed/simple;
-	bh=xoJzmeOqib0g3Cu+8MPaWTpgDO68YMhZut2T6+vE6fg=;
+	s=arc-20240116; t=1758114027; c=relaxed/simple;
+	bh=ogHgRuEkL1PK6kKOcXC7THJ3ZUYQs+Yli9pF7sHrDcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgdM3zLf7cuBceqvN2u2MG4vEw/rtOjg425VrzuS1fIo3Zsu0aqJ6cUQzexC/awEixA90XvGsJpqNEuCOvtElWvq+15Hfs/EKyBCmJoNFYXREsZ0UnIg+UvI38lo3nmZwoxiiBZKzLdGdvvhsO4iTotpaKgVrWtHmwCb9KxfYE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBpa5yGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D87C4CEF0;
-	Wed, 17 Sep 2025 12:57:03 +0000 (UTC)
+	 MIME-Version; b=sCEDu6kmz1oS+8msTDEEzoevoDZ+qCzZsAIxAnTI+Xt5/7ZyBucQAuZVc/GXg2oWm4GXAZjauVXCpj4DMtNP8N0RqeGDUxDHSxrBVWKyJmwkU2GClCkuxVC44exynUcHPJ+gqCNwpk/LY0wdlZUcP3UXLHOcCA4waDhR8zzA4U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0fFHifn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CC0C4CEF0;
+	Wed, 17 Sep 2025 13:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113824;
-	bh=xoJzmeOqib0g3Cu+8MPaWTpgDO68YMhZut2T6+vE6fg=;
+	s=korg; t=1758114027;
+	bh=ogHgRuEkL1PK6kKOcXC7THJ3ZUYQs+Yli9pF7sHrDcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBpa5yGFk9WG9K4qb6Q8U1MKGtqWjkgnODBug+1RPZh6sj2L2FbsqBhjlw8S9MNfb
-	 EJIrmQeStHNbT6Nbi70sGmFdPtirJncUC/VNPFNYjhV8fP0xMuzz8EzIvlRwNMScLl
-	 Gx41red/RGpxgVJajOdn/WbukBS4kT2CBCgmp4Ig=
+	b=A0fFHifn67ooB0z2XLk97jfcuen7L+cnaxB8ko8/HaUk0vK3hSCqoqkLStc8WY+w4
+	 /wLo06p/TbHdRdKYgkn72myYCSAm8RzoQ1WvJh5dTijPjg/O3soG13H/WVTkhh3F1J
+	 o6mbxM/NVWbNVhh+ftPb9LJhPwguEYjEvOnIKVNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabian Vogt <fvogt@suse.de>
-Subject: [PATCH 6.6 062/101] tty: hvc_console: Call hvc_kick in hvc_write unconditionally
+	Mark Brown <broonie@kernel.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 6.1 24/78] Revert "SUNRPC: Dont allow waiting for exiting tasks"
 Date: Wed, 17 Sep 2025 14:34:45 +0200
-Message-ID: <20250917123338.342148589@linuxfoundation.org>
+Message-ID: <20250917123330.155736405@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fvogt@suse.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit cfd956dcb101aa3d25bac321fae923323a47c607 upstream.
+commit 199cd9e8d14bc14bdbd1fa3031ce26dac9781507 upstream.
 
-After hvc_write completes, call hvc_kick also in the case the output
-buffer has been drained, to ensure tty_wakeup gets called.
+This reverts commit 14e41b16e8cb677bb440dca2edba8b041646c742.
 
-This fixes that functions which wait for a drained buffer got stuck
-occasionally.
+This patch breaks the LTP acct02 test, so let's revert and look for a
+better solution.
 
-Cc: stable <stable@kernel.org>
-Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1230062
-Signed-off-by: Fabian Vogt <fvogt@suse.de>
-Link: https://lore.kernel.org/r/2011735.PYKUYFuaPT@fvogt-thinkpad
+Reported-by: Mark Brown <broonie@kernel.org>
+Reported-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Link: https://lore.kernel.org/linux-nfs/7d4d57b0-39a3-49f1-8ada-60364743e3b4@sirena.org.uk/
+Cc: stable@vger.kernel.org # 6.15.x
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/hvc/hvc_console.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sunrpc/sched.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/tty/hvc/hvc_console.c
-+++ b/drivers/tty/hvc/hvc_console.c
-@@ -543,10 +543,10 @@ static ssize_t hvc_write(struct tty_stru
- 	}
+--- a/net/sunrpc/sched.c
++++ b/net/sunrpc/sched.c
+@@ -276,8 +276,6 @@ EXPORT_SYMBOL_GPL(rpc_destroy_wait_queue
  
- 	/*
--	 * Racy, but harmless, kick thread if there is still pending data.
-+	 * Kick thread to flush if there's still pending data
-+	 * or to wakeup the write queue.
- 	 */
--	if (hp->n_outbuf)
--		hvc_kick();
-+	hvc_kick();
- 
- 	return written;
- }
+ static int rpc_wait_bit_killable(struct wait_bit_key *key, int mode)
+ {
+-	if (unlikely(current->flags & PF_EXITING))
+-		return -EINTR;
+ 	schedule();
+ 	if (signal_pending_state(mode, current))
+ 		return -ERESTARTSYS;
 
 
 
