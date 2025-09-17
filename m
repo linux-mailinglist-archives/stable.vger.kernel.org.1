@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59383B7F079
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:11:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B03B7E5F8
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 823B91C25D78
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A752D1B2527C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD7D33593A;
-	Wed, 17 Sep 2025 12:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AA130F933;
+	Wed, 17 Sep 2025 12:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3QAH3Za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjzoKy1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0DD33592B;
-	Wed, 17 Sep 2025 12:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32ECA2E7BA0;
+	Wed, 17 Sep 2025 12:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113957; cv=none; b=CauKgLFcvqKEEt3lvcu3ztvV6lOqm62aetrg0l7jJ/u6MGW5fgAfXZGkl067CGuZlxds1Kc6v4t96UOL7Ww0Cy/dmJbKXFjSp4s5KSywi1ccKPssVEHFJfUimOgekOZ9Hiux37qQV2b9RP2bowniha6e3LJ8ECtrFbsqcy5xrWM=
+	t=1758113143; cv=none; b=Y0ftE3vxr9gTC/hHEgQW8hqPyjvkrlwK77DN2WP4tXfpp4j+guwyxfD9zF8AJeiWSQA8rK/GJqJRHXnWWXzOefDBRxcHuzRLq51gq3QOd915Ei21VG7LjihUuK4AidKkVf1XZrzxphrPpSFrNvlGb/CjqrTOGh17TFfJNhL+qnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113957; c=relaxed/simple;
-	bh=/DMrBEVkt98kLGt26a1gMl8BFsaH60dyKwpZNhzdVi4=;
+	s=arc-20240116; t=1758113143; c=relaxed/simple;
+	bh=i4T00KYiikiXxV4t2HoKpWRQWbWJC2FlMGleVAyeRKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJp3B5F8wVFixp3ZBhuv6Hft30x/idU/tjKyHnp5f3DQAgjZFnfscQpxEUqA2BXPo+qQZ4B6Y3xlCbNxSNPMlsQTDj3eI5tcQPT81HpCPPHv2hflXa/g3mSSoNnxRieb2C5Wc+aKs55++zRmmL/qP29kzJ0LzWJMzZkHVsrTPpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3QAH3Za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FB3C4CEF0;
-	Wed, 17 Sep 2025 12:59:16 +0000 (UTC)
+	 MIME-Version; b=FI+648mTcbX288Bgg9v/9Vbdhc3/oGGoRftootQfQjOWGG/px41c8o23ukoCuyvp88mHGjuPJpQ62FueG/1xLZxR32KAn6r62FE2H/3UATdYpiFzqGrQ3s98yDm+YBvD8YOgVtwIbxh1tQPNe1+CuubPM2LgJnj+uWdW0E7W5Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjzoKy1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A885CC4CEF0;
+	Wed, 17 Sep 2025 12:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113957;
-	bh=/DMrBEVkt98kLGt26a1gMl8BFsaH60dyKwpZNhzdVi4=;
+	s=korg; t=1758113143;
+	bh=i4T00KYiikiXxV4t2HoKpWRQWbWJC2FlMGleVAyeRKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3QAH3Za9SBz0uZQeFrhrITeyhVl93CpN33PcN520Ddv9FHRa5nAkhJyrg1AI5HF1
-	 Nvkav0ene/Vr1pA2x1ZY/ZKXtGuVPwno85DNSEf/O2jKhNQa06eYe2W6MN9iKacbJz
-	 U+tm1jZ6qjVwP7PPkwUiM6kqmlLDZxGMG153TxpE=
+	b=hjzoKy1QvlXf3xpn7J4y9jSFewxXlTWz5/nknEcH40zVA0ZvODF5xqSPJ2pz6j7D0
+	 aiGEt+8rBMke4tLzyKY+6IfznFjce+oGY2taT9XSqiEPLR4tvj/PVRYTj4pXGuH/Lg
+	 7OBzF/299ZJIceJMiiiyG2hdBxj3lTqZ3mq0DBfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Tran <alex.t.tran@gmail.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/101] docs: networking: can: change bcm_msg_head frames member to support flexible array
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.16 184/189] dmaengine: qcom: bam_dma: Fix DT error handling for num-channels/ees
 Date: Wed, 17 Sep 2025 14:34:54 +0200
-Message-ID: <20250917123338.556907318@linuxfoundation.org>
+Message-ID: <20250917123356.382928973@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Tran <alex.t.tran@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 641427d5bf90af0625081bf27555418b101274cd ]
+commit 5068b5254812433e841a40886e695633148d362d upstream.
 
-The documentation of the 'bcm_msg_head' struct does not match how
-it is defined in 'bcm.h'. Changed the frames member to a flexible array,
-matching the definition in the header file.
+When we don't have a clock specified in the device tree, we have no way to
+ensure the BAM is on. This is often the case for remotely-controlled or
+remotely-powered BAM instances. In this case, we need to read num-channels
+from the DT to have all the necessary information to complete probing.
 
-See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-flexible-array members")
+However, at the moment invalid device trees without clock and without
+num-channels still continue probing, because the error handling is missing
+return statements. The driver will then later try to read the number of
+channels from the registers. This is unsafe, because it relies on boot
+firmware and lucky timing to succeed. Unfortunately, the lack of proper
+error handling here has been abused for several Qualcomm SoCs upstream,
+causing early boot crashes in several situations [1, 2].
 
-Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250904031709.1426895-1-alex.t.tran@gmail.com
-Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217783
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid these early crashes by erroring out when any of the required DT
+properties are missing. Note that this will break some of the existing DTs
+upstream (mainly BAM instances related to the crypto engine). However,
+clearly these DTs have never been tested properly, since the error in the
+kernel log was just ignored. It's safer to disable the crypto engine for
+these broken DTBs.
+
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
+
+Cc: stable@vger.kernel.org
+Fixes: 48d163b1aa6e ("dmaengine: qcom: bam_dma: get num-channels and num-ees from dt")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-8-f560889e65d8@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/can.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/qcom/bam_dma.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
-index d7e1ada905b2d..3bdd155838105 100644
---- a/Documentation/networking/can.rst
-+++ b/Documentation/networking/can.rst
-@@ -740,7 +740,7 @@ The broadcast manager sends responses to user space in the same form:
-             struct timeval ival1, ival2;    /* count and subsequent interval */
-             canid_t can_id;                 /* unique can_id for task */
-             __u32 nframes;                  /* number of can_frames following */
--            struct can_frame frames[0];
-+            struct can_frame frames[];
-     };
+--- a/drivers/dma/qcom/bam_dma.c
++++ b/drivers/dma/qcom/bam_dma.c
+@@ -1283,13 +1283,17 @@ static int bam_dma_probe(struct platform
+ 	if (!bdev->bamclk) {
+ 		ret = of_property_read_u32(pdev->dev.of_node, "num-channels",
+ 					   &bdev->num_channels);
+-		if (ret)
++		if (ret) {
+ 			dev_err(bdev->dev, "num-channels unspecified in dt\n");
++			return ret;
++		}
  
- The aligned payload 'frames' uses the same basic CAN frame structure defined
--- 
-2.51.0
-
+ 		ret = of_property_read_u32(pdev->dev.of_node, "qcom,num-ees",
+ 					   &bdev->num_ees);
+-		if (ret)
++		if (ret) {
+ 			dev_err(bdev->dev, "num-ees unspecified in dt\n");
++			return ret;
++		}
+ 	}
+ 
+ 	ret = clk_prepare_enable(bdev->bamclk);
 
 
 
