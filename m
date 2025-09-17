@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83442B7F1EA
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71449B7EFDC
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 349F3627FD6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E279625458
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADC43161A3;
-	Wed, 17 Sep 2025 13:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C5132E739;
+	Wed, 17 Sep 2025 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHBDidyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aITjZHNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C512FBE1D;
-	Wed, 17 Sep 2025 13:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F98F32E731;
+	Wed, 17 Sep 2025 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114153; cv=none; b=W7lAfC45WV3DAs9xWwoeCXT0cQ6YoOUKUQ486XeBrKBT7I/Aennfwb1RpgcWVHTxZ2XMEBUR3wyPn6deZKP1KxImrgMlK0j4oGF5mRwtdhfpuN6GdLpoYBcOpcJyfBDIpKfJBwfvPolcLSkuzRXTCNpSDbQTm2EqdCV+WUX9zHs=
+	t=1758113941; cv=none; b=hsjsUoGSLVYxpRrs8JT58PdnCROpOo4f3DwO/6yenQYhB0K0T3BP9zFO3dVgtQ3aTudn+zkUvYwnEQ+mVZEN29xEZKfLacXY3UGoEvrT2QXAGeZdNalJUmWK2o9Ne4uI0412BxhxZyqr5jjB7IIZ4Adja4CatLsyUZDfn0BHYEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114153; c=relaxed/simple;
-	bh=WNxL7YFfnQAg8O5rOSUMOcPr6XNyYs2arnL3eYYmMHI=;
+	s=arc-20240116; t=1758113941; c=relaxed/simple;
+	bh=lvxTkHGz+oj5xft//XOR+kusE+FfSOPH2CIXsEYfjc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/H8vdVEoWeZUGIh56TBKpxxBpODakmW6aV71JXekXZRtBVSn7wa11gNRvW66Kn1eRT+Wt0mowzFRx+zMnr01WCf6+ZNLQo55dtKXGI9nJ4b4ghLfXUSWhxeCgQteHaVA1Mm2SmnsIJJLP3n7HSzhjWAaZSGSyP72Sjxwd3nr+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHBDidyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F11BC4CEF0;
-	Wed, 17 Sep 2025 13:02:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V9Oj7vlq+hfCoDY6xfN8vfqJTPVDJPNsTWbtBATJ3aqlIhSRmGVWA2vSMhpzD7czNVdkKfxHQ2G56nuQEiCSyq/L58Q9yDga80gMzWCfADG9Q+FKE6J61kn5TlAGTSjS0UkMpmvmsKAmcANH9wrEIbaAt2aJ3Pvfxg2q7HbKKPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aITjZHNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8EBC4CEF0;
+	Wed, 17 Sep 2025 12:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114153;
-	bh=WNxL7YFfnQAg8O5rOSUMOcPr6XNyYs2arnL3eYYmMHI=;
+	s=korg; t=1758113941;
+	bh=lvxTkHGz+oj5xft//XOR+kusE+FfSOPH2CIXsEYfjc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHBDidyYe0IauUOSwT8IF9PpgdOjQG2zNJx+u3rDzuysvnsGvMnTUhGrvGLJjYEeQ
-	 QQbHKeO107TuRgYHUtc4B54M5hktUf3zMvql6HuorV+qQUhvUFF9UFiQC5uVepDA1X
-	 vA+9ze1Mf1o6ZAy3qrGY5UOHEZw3nrzB+pgDhheA=
+	b=aITjZHNgGBV/jpPChHShLih5tSuSt1GFNoWeHGgzbcHHvQeoDs33urxRPhaqlX9+w
+	 dFAKadccakt/A1jJ/5wQ/fnSi3cKQRLt0E7PMtH1Z74EfZXuBYRbvUdtPVX0nnS/24
+	 sf8zpW/k/aDEN6TA6f21LRzcl7jOtCFP6RXEJeaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murali Karicheri <m-karicheri2@ti.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 61/78] net: hsr: Add VLAN CTAG filter support
+	Andrew Lunn <andrew@lunn.ch>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Buday Csaba <buday.csaba@prolan.hu>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 099/101] net: mdiobus: release reset_gpio in mdiobus_unregister_device()
 Date: Wed, 17 Sep 2025 14:35:22 +0200
-Message-ID: <20250917123331.062851276@linuxfoundation.org>
+Message-ID: <20250917123339.223063178@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murali Karicheri <m-karicheri2@ti.com>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-[ Upstream commit 1a8a63a5305e95519de6f941922dfcd8179f82e5 ]
+commit 8ea25274ebaf2f6be8be374633b2ed8348ec0e70 upstream.
 
-This patch adds support for VLAN ctag based filtering at slave devices.
-The slave ethernet device may be capable of filtering ethernet packets
-based on VLAN ID. This requires that when the VLAN interface is created
-over an HSR/PRP interface, it passes the VID information to the
-associated slave ethernet devices so that it updates the hardware
-filters to filter ethernet frames based on VID. This patch adds the
-required functions to propagate the vid information to the slave
-devices.
+reset_gpio is claimed in mdiobus_register_device(), but it is not
+released in mdiobus_unregister_device(). It is instead only
+released when the whole MDIO bus is unregistered.
+When a device uses the reset_gpio property, it becomes impossible
+to unregister it and register it again, because the GPIO remains
+claimed.
+This patch resolves that issue.
 
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20241106091710.3308519-3-danishanwar@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8884c6939913 ("hsr: use rtnl lock when iterating over ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bafbdd527d56 ("phylib: Add device reset GPIO support") # see notes
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+[ csokas.bence: Resolve rebase conflict and clarify msg ]
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Link: https://patch.msgid.link/20250807135449.254254-2-csokas.bence@prolan.hu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ csokas.bence: Use the v1 patch on top of 6.6, as specified in notes ]
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_device.c | 80 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 79 insertions(+), 1 deletion(-)
+ drivers/net/phy/mdio_bus.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index e9a1a5cf120dd..cb4787327c66b 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -464,6 +464,77 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -99,6 +99,7 @@ int mdiobus_unregister_device(struct mdi
+ 	if (mdiodev->bus->mdio_map[mdiodev->addr] != mdiodev)
+ 		return -EINVAL;
+ 
++	gpiod_put(mdiodev->reset_gpio);
+ 	reset_control_put(mdiodev->reset_ctrl);
+ 
+ 	mdiodev->bus->mdio_map[mdiodev->addr] = NULL;
+@@ -775,9 +776,6 @@ void mdiobus_unregister(struct mii_bus *
+ 		if (!mdiodev)
+ 			continue;
+ 
+-		if (mdiodev->reset_gpio)
+-			gpiod_put(mdiodev->reset_gpio);
+-
+ 		mdiodev->device_remove(mdiodev);
+ 		mdiodev->device_free(mdiodev);
  	}
- }
- 
-+static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
-+				   __be16 proto, u16 vid)
-+{
-+	bool is_slave_a_added = false;
-+	bool is_slave_b_added = false;
-+	struct hsr_port *port;
-+	struct hsr_priv *hsr;
-+	int ret = 0;
-+
-+	hsr = netdev_priv(dev);
-+
-+	hsr_for_each_port(hsr, port) {
-+		if (port->type == HSR_PT_MASTER ||
-+		    port->type == HSR_PT_INTERLINK)
-+			continue;
-+
-+		ret = vlan_vid_add(port->dev, proto, vid);
-+		switch (port->type) {
-+		case HSR_PT_SLAVE_A:
-+			if (ret) {
-+				/* clean up Slave-B */
-+				netdev_err(dev, "add vid failed for Slave-A\n");
-+				if (is_slave_b_added)
-+					vlan_vid_del(port->dev, proto, vid);
-+				return ret;
-+			}
-+
-+			is_slave_a_added = true;
-+			break;
-+
-+		case HSR_PT_SLAVE_B:
-+			if (ret) {
-+				/* clean up Slave-A */
-+				netdev_err(dev, "add vid failed for Slave-B\n");
-+				if (is_slave_a_added)
-+					vlan_vid_del(port->dev, proto, vid);
-+				return ret;
-+			}
-+
-+			is_slave_b_added = true;
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
-+				    __be16 proto, u16 vid)
-+{
-+	struct hsr_port *port;
-+	struct hsr_priv *hsr;
-+
-+	hsr = netdev_priv(dev);
-+
-+	hsr_for_each_port(hsr, port) {
-+		switch (port->type) {
-+		case HSR_PT_SLAVE_A:
-+		case HSR_PT_SLAVE_B:
-+			vlan_vid_del(port->dev, proto, vid);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static const struct net_device_ops hsr_device_ops = {
- 	.ndo_change_mtu = hsr_dev_change_mtu,
- 	.ndo_open = hsr_dev_open,
-@@ -472,6 +543,8 @@ static const struct net_device_ops hsr_device_ops = {
- 	.ndo_change_rx_flags = hsr_change_rx_flags,
- 	.ndo_fix_features = hsr_fix_features,
- 	.ndo_set_rx_mode = hsr_set_rx_mode,
-+	.ndo_vlan_rx_add_vid = hsr_ndo_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid = hsr_ndo_vlan_rx_kill_vid,
- };
- 
- static struct device_type hsr_type = {
-@@ -512,7 +585,8 @@ void hsr_dev_setup(struct net_device *dev)
- 
- 	dev->hw_features = NETIF_F_SG | NETIF_F_FRAGLIST | NETIF_F_HIGHDMA |
- 			   NETIF_F_GSO_MASK | NETIF_F_HW_CSUM |
--			   NETIF_F_HW_VLAN_CTAG_TX;
-+			   NETIF_F_HW_VLAN_CTAG_TX |
-+			   NETIF_F_HW_VLAN_CTAG_FILTER;
- 
- 	dev->features = dev->hw_features;
- 
-@@ -599,6 +673,10 @@ int hsr_dev_finalize(struct net_device *hsr_dev, struct net_device *slave[2],
- 	    (slave[1]->features & NETIF_F_HW_HSR_FWD))
- 		hsr->fwd_offloaded = true;
- 
-+	if ((slave[0]->features & NETIF_F_HW_VLAN_CTAG_FILTER) &&
-+	    (slave[1]->features & NETIF_F_HW_VLAN_CTAG_FILTER))
-+		hsr_dev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
-+
- 	res = register_netdevice(hsr_dev);
- 	if (res)
- 		goto err_unregister;
--- 
-2.51.0
-
 
 
 
