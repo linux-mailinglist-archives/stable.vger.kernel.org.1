@@ -1,105 +1,162 @@
-Return-Path: <stable+bounces-180417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28CFB80B20
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:46:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3D7B80C2C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 362EB3BB6B2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:45:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376087BD9CB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DC8314D1A;
-	Wed, 17 Sep 2025 15:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE1A2FAC06;
+	Wed, 17 Sep 2025 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="ZBiiUnVa"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ZxCiBCFb";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ApZ95ZUh";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ZxCiBCFb";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ApZ95ZUh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B3B2E228D
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DEB341373
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758123618; cv=none; b=WgfuH2MkW/ilQP2AQoOjOHBCdrV6ccjMSfHJramqbPOg2nlrfG2wYg1veITD71UwKNxSumkruSruExoMWjDLZkuSJnxIV+6hC7Xv1dT3ROGkd7hO46X9VOQMzJ+J6J/7POZBJfAUTHN0JeU5INd6dSxHwAXxpa2tazeuWecinHE=
+	t=1758124041; cv=none; b=IJpSedg9w525Y5yzteyUU8LPOlqgFQlyHQlSW6SEYeK7oemZTtaDUdgDeNJL77cmy5e0VR38kM1rm4vMtoM9atb0+Oa1nXgNuGpMynM7B3edr6eeZEYEOqsgycnGk3DpS9vciRdbnaYLqS3WgGLq//iedvbNMVDC4qjc0ZhtEuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758123618; c=relaxed/simple;
-	bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ffFdkqn8Jmo154ru/6sbYWvMKWLQEPZpZgHPnt0P/D3gfjy4pQt/enMvzbZ5x5e/02KPay06OixiM6UoAV8ZlsGKv/MvDo2+kuQHisfoQa5K3iy+4vSk2qSBXGCRamBMIclUh4aU5zS5l/Ae3HMFkcLAIC3tCElk41RZS/xbLx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=ZBiiUnVa; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id BF93A1C127B
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 18:31:22 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1758123081; x=
-	1758987082; bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=; b=Z
-	BiiUnVaI6vLZjymUDuFgCXZ3jG+cidW+H0VlpfQWgMME89/Uxx/R3T4xfrf53Nxe
-	ON1BkHyPnLzTrwt2rzuIoBCxW91HlHpFLu2T8yJwwbwLaCmfpTV1x++3P/QG1kOB
-	uEEBZPrttiy49qHbQFt02q/88Z0meUhY5fU0VKz0/Y=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2XsYiC4QNvIe for <stable@vger.kernel.org>;
-	Wed, 17 Sep 2025 18:31:21 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 024D61C0CC1;
-	Wed, 17 Sep 2025 18:31:18 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] net: liquidio: fix overflow in octeon_init_instr_queue()
-Date: Wed, 17 Sep 2025 15:30:58 +0000
-Message-ID: <20250917153105.562563-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1758124041; c=relaxed/simple;
+	bh=cttM0v4zr5UNmhmHqv5SD5wQCkXQF56FU/HufKxbH78=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bkKWqdijGlcaFpNSUfi+xSWXUxR+q4tzB3PH0HB2CH4aybrDTEUclKaEE55cSB//3wdSZNuGEGt9uqUnhtr16WzEy0g1Y4QeBkgA9RhrxgFhyMpxqpPDzKhpUzWKYPkGEkYPIlR93XbPMFe8TDVuZWwOSAmYFWEXzc5xf28EHL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ZxCiBCFb; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ApZ95ZUh; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ZxCiBCFb; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ApZ95ZUh; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7298133A8E;
+	Wed, 17 Sep 2025 15:47:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758124037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ObyAi+/F9+MMCsMrv10KnpuSCq3LxR/g0Z6JsD2IEsk=;
+	b=ZxCiBCFbUGn/1SfPra2LEUQc0PkfdqM6bTEdP1p9HGlL+swm77EvWXfsfmiMz/APHEBt2M
+	jzSQIcaSaibsxiGPblZjcv7ejxpHSKc/vbARNuRyoCkpM7l/QZr6QWXYPcMAQlVsJdlKlJ
+	RKu/6P2eq03iV6HZxBLeE38gDjiIEoU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758124037;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ObyAi+/F9+MMCsMrv10KnpuSCq3LxR/g0Z6JsD2IEsk=;
+	b=ApZ95ZUhdS1WG7O0c2snLsxvNvIYIGU5mkOjVSpGMxWJsmlTcN0u8K5OEFsfFabWFdBzXc
+	6E12gs4kNlVMfyCA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758124037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ObyAi+/F9+MMCsMrv10KnpuSCq3LxR/g0Z6JsD2IEsk=;
+	b=ZxCiBCFbUGn/1SfPra2LEUQc0PkfdqM6bTEdP1p9HGlL+swm77EvWXfsfmiMz/APHEBt2M
+	jzSQIcaSaibsxiGPblZjcv7ejxpHSKc/vbARNuRyoCkpM7l/QZr6QWXYPcMAQlVsJdlKlJ
+	RKu/6P2eq03iV6HZxBLeE38gDjiIEoU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758124037;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ObyAi+/F9+MMCsMrv10KnpuSCq3LxR/g0Z6JsD2IEsk=;
+	b=ApZ95ZUhdS1WG7O0c2snLsxvNvIYIGU5mkOjVSpGMxWJsmlTcN0u8K5OEFsfFabWFdBzXc
+	6E12gs4kNlVMfyCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 65541137C3;
+	Wed, 17 Sep 2025 15:47:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cYB1GAXYymjqJAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 17 Sep 2025 15:47:17 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 09F81A083B; Wed, 17 Sep 2025 17:47:17 +0200 (CEST)
+Date: Wed, 17 Sep 2025 17:47:16 +0200
+From: Jan Kara <jack@suse.cz>
+To: Eric Hagberg <ehagberg@janestreet.com>
+Cc: Jan Kara <jack@suse.cz>, stable@vger.kernel.org
+Subject: Re: "loop: Avoid updating block size under exclusive owner" breaks
+ on 6.6.103
+Message-ID: <oqe6w7pmfwzzxaqyaebdzrfi63atoudeaayvebmnemngum4vmi@dwd6d4cs3blx>
+References: <CAAH4uRA=wJ1W65PUYpv=bdGFdfvXp7BFEg+=F1g3w-JFRrbpBw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAH4uRA=wJ1W65PUYpv=bdGFdfvXp7BFEg+=F1g3w-JFRrbpBw@mail.gmail.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.998];
+	MIME_GOOD(-0.10)[text/plain];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
 
-The expression `(conf->instr_type == 64) << iq_no` can overflow because
-`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
-operand to `u64` ensures correct 64-bit arithmetic.
+On Wed 17-09-25 11:18:50, Eric Hagberg wrote:
+> I stumbled across a problem where the 6.6.103 kernel will fail when
+> running the ioctl_loop06 test from the LTP test suite... and worse
+> than failing the test, it leaves the system in a state where you can't
+> run "losetup -a" again because the /dev/loopN device that the test
+> created and failed the test on... hangs in a LOOP_GET_STATUS64 ioctl.
+> 
+> It also leaves the system in a state where you can't re-kexec into a
+> copy of the kernel as it gets completely hung at the point where it
+> says "starting Reboot via kexec"...
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Thanks for the report! Please report issues with stable kernels to
+stable@vger.kernel.org (CCed now) because they can act on them.
 
-Cc: stable@vger.kernel.org # v4.2+
-Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> If I revert just that patch from 6.6.103 (or newer) kernels, then the
+> test succeeds and doesn't leave the host in a bad state. The patch
+> applied to 6.12 doesn't cause this problem, but I also see that there
+> are quite a few other changes to the loop subsystem in 6.12 that never
+> made it to 6.6.
+> 
+> For now, I'll probably just revert your patch in my 6.6 kernel builds,
+> but I wouldn't be surprised if others stumble across this issue as
+> well, so maybe it should be reverted or fixed some other way.
 
-diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-index de8a6ce86ad7..12105ffb5dac 100644
---- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
-+++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-@@ -126,7 +126,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
- 	oct->io_qmask.iq |= BIT_ULL(iq_no);
- 
- 	/* Set the 32B/64B mode for each input queue */
--	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
-+	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
- 	iq->iqcmd_64B = (conf->instr_type == 64);
- 
- 	oct->fn_list.setup_iq_regs(oct, iq_no);
+Yes, I think revert from 6.6 stable kernel is warranted (unless somebody
+has time to figure out what else is missing to make the patch work with
+that stable branch).
+
+							Honza
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
