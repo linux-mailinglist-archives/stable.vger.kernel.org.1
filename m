@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68810B7F147
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB77B7E63F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C124362424A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A493AE844
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4479831A7E5;
-	Wed, 17 Sep 2025 13:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD5E30CB38;
+	Wed, 17 Sep 2025 12:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npLT0p+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL3tvuUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F308632B;
-	Wed, 17 Sep 2025 13:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083BF30CB24;
+	Wed, 17 Sep 2025 12:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114097; cv=none; b=GhnNwma/BcjIU1UIcYw6FAKzM2uAr1eY+i9+voslcXEdKsXk47RHtp8e65o1y9T/cr3VZnMJUqr5kDexW5TvjK9Vs1OTh9st/Rwmoy2VV/LWAPcPgXU1RlqpjYBZc5h3I1kV0Yg70EbvKJWKVgjMCOnTD1IPeymEsi135/iMO7Y=
+	t=1758113124; cv=none; b=RqwFlvw6PCJeXbwA4rTQF7i9PHFOb4dIVvlLKwtGQMsSfqGlBdPlLf+via6f88sb8rYK9XZFLTCDpF6PlCpxwQvXS2Yjsjcqul6YMXN3OETFXaQUD/8WQyUNNx+xX9keV4Afn46HHFbk8rbS0T60E1OFuCoUONCmOC9Xua8C0H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114097; c=relaxed/simple;
-	bh=ATObmO7rJXKzz7yiX8iMzM9Kd86L9ixzway9rIdpqxw=;
+	s=arc-20240116; t=1758113124; c=relaxed/simple;
+	bh=AXNU05eRhL4DXLxT/ID5GSfD785TxE9Sxi3w9odhz8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LZ1Bv2nJRh5Lv6yV4EJ1pzC94FnNpyGLlvkxJgByBR1v0LNf0/k2oscLfICVZyc9aOsihV4+cfDWqoz9jl7iafmmlmxKQJViVF6TIO2KJ+dOVqh35uP+ZoT9UBzSczx1ETrj7WxDIwgNpxBSgXtxEaI5BH31ar911LdIJSSXMGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npLT0p+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B85C4CEF0;
-	Wed, 17 Sep 2025 13:01:36 +0000 (UTC)
+	 MIME-Version; b=b7uVQChRhLKsO1mdv3JNef5XZY201ScwdzhSzEB6mXDCPnBscJA6MoIRuar6x4UmRRDquGoRCFw0cx0QhYL5oa++fkIJ3pJzgXtYNjQjhnNipy0A+nlx0pXX9LG3CvaAdHdeQarWI2ZhVPSFyXE+lO4gWOqKr4xJJ/DfNmWJDMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL3tvuUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FB3C4CEF0;
+	Wed, 17 Sep 2025 12:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114096;
-	bh=ATObmO7rJXKzz7yiX8iMzM9Kd86L9ixzway9rIdpqxw=;
+	s=korg; t=1758113123;
+	bh=AXNU05eRhL4DXLxT/ID5GSfD785TxE9Sxi3w9odhz8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npLT0p+JJWyeWJnu0Cu1nckgnCp7RabqvyYo4tuf+MguLZEn5Olhqry/eKZBnIYRr
-	 hwsID/jxK51dBO9GN1z+hpJdEd0Ec4XUMDwLd2GypCW1MVxZ+k1bzs6zXfq57tZSaC
-	 IZZrRw3zQDFlfeGBzy5SaYFr8MGNrAyQ4KejdHps=
+	b=cL3tvuUmEB2EMKCLciCItyY3AT12Wp1dG3wlYVIMvz19Q/c6zGiWh8MfmvB2A8nre
+	 cLSbqEe9M4AmMWqOh+Ki2z2yaypmzbEzVL0i6nJROpr81zyHz7+pu99d2AWqwou7E6
+	 g2OFbZlQb2Q49C+Z7sBi0+ZicQFc04B09IU2etEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 28/78] net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups
+	David Wang <00107082@163.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.16 179/189] xhci: fix memory leak regression when freeing xhci vdev devices depth first
 Date: Wed, 17 Sep 2025 14:34:49 +0200
-Message-ID: <20250917123330.249664186@linuxfoundation.org>
+Message-ID: <20250917123356.258651275@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 5537a4679403423e0b49c95b619983a4583d69c5 upstream.
+commit edcbe06453ddfde21f6aa763f7cab655f26133cc upstream.
 
-Drop phylink_{suspend,resume}() from ax88772 PM callbacks.
+Suspend-resume cycle test revealed a memory leak in 6.17-rc3
 
-MDIO bus accesses have their own runtime-PM handling and will try to
-wake the device if it is suspended. Such wake attempts must not happen
-from PM callbacks while the device PM lock is held. Since phylink
-{sus|re}sume may trigger MDIO, it must not be called in PM context.
+Turns out the slot_id race fix changes accidentally ends up calling
+xhci_free_virt_device() with an incorrect vdev parameter.
+The vdev variable was reused for temporary purposes right before calling
+xhci_free_virt_device().
 
-No extra phylink PM handling is required for this driver:
-- .ndo_open/.ndo_stop control the phylink start/stop lifecycle.
-- ethtool/phylib entry points run in process context, not PM.
-- phylink MAC ops program the MAC on link changes after resume.
+Fix this by passing the correct vdev parameter.
 
-Fixes: e0bffe3e6894 ("net: asix: ax88772: migrate to phylink")
-Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+The slot_id race fix that caused this regression was targeted for stable,
+so this needs to be applied there as well.
+
+Fixes: 2eb03376151b ("usb: xhci: Fix slot_id resource race conflict")
+Reported-by: David Wang <00107082@163.com>
+Closes: https://lore.kernel.org/linux-usb/20250829181354.4450-1-00107082@163.com
+Suggested-by: Michal Pecio <michal.pecio@gmail.com>
+Suggested-by: David Wang <00107082@163.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Tested-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20250908112619.2900723-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: David Wang <00107082@163.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix_devices.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/usb/host/xhci-mem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 792ddda1ad49..1e8f7089f5e8 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -607,15 +607,8 @@ static const struct net_device_ops ax88772_netdev_ops = {
- 
- static void ax88772_suspend(struct usbnet *dev)
- {
--	struct asix_common_private *priv = dev->driver_priv;
- 	u16 medium;
- 
--	if (netif_running(dev->net)) {
--		rtnl_lock();
--		phylink_suspend(priv->phylink, false);
--		rtnl_unlock();
--	}
--
- 	/* Stop MAC operation */
- 	medium = asix_read_medium_status(dev, 1);
- 	medium &= ~AX_MEDIUM_RE;
-@@ -644,12 +637,6 @@ static void ax88772_resume(struct usbnet *dev)
- 	for (i = 0; i < 3; i++)
- 		if (!priv->reset(dev, 1))
- 			break;
--
--	if (netif_running(dev->net)) {
--		rtnl_lock();
--		phylink_resume(priv->phylink);
--		rtnl_unlock();
--	}
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -962,7 +962,7 @@ static void xhci_free_virt_devices_depth
+ out:
+ 	/* we are now at a leaf device */
+ 	xhci_debugfs_remove_slot(xhci, slot_id);
+-	xhci_free_virt_device(xhci, vdev, slot_id);
++	xhci_free_virt_device(xhci, xhci->devs[slot_id], slot_id);
  }
  
- static int asix_resume(struct usb_interface *intf)
--- 
-2.51.0
-
+ int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
 
 
 
