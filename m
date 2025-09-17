@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-180143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3860B7EA68
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B227CB7E606
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CC37189290B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 344AE4681EB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2132132341A;
-	Wed, 17 Sep 2025 12:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BD731A7EE;
+	Wed, 17 Sep 2025 12:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jW0BtLiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbxAxGy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D562DC33F;
-	Wed, 17 Sep 2025 12:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB4930CB51;
+	Wed, 17 Sep 2025 12:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113519; cv=none; b=Qz8zJt2JJ3wsuC9/ww3mOiwPov2CEoiWr1rTZfo41bfgWOQNMZFewYR0k1GCK4qjG2DplPjPm5q1D8YXk16/7XK6op9W6Dov/j1VZ/TahGQKzWBCzJ8ULCOX+d1qZsXCkF0WWUfKRIQ0797+2JKTFHw3qBTCNkqEOYv96wgnz5Q=
+	t=1758113101; cv=none; b=rzFt2sJSvYpDAP8O969NQrSZ5hcO16zMZHjWuWj/ccgGn8XGarWA/xbB4y0qwCx6b3o6fyJ0WEldOgxy7nwBxbHgb4qhg4c3IHZijNu5CTiXTxEEy2uYAkYtDqqWqS0jvd8LEP2g24lclp6b+PlN7t+QzgwDYu6+/nF6ja9/RRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113519; c=relaxed/simple;
-	bh=WU6YsAk9KnCyvb0rRu339O2O9i0V2/v8KHI9A353vTE=;
+	s=arc-20240116; t=1758113101; c=relaxed/simple;
+	bh=EI1G9mB/M03txTvR6kFjiE4cBrp3VB2yrqXjo9uBuPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3W19V2lplT9GwozvtMGgKTnZnEztM9F2OsOdN2MZt7Bp0Ad5KzrpzGbtLxF4lUF/+YJcYzqJzjWALiJHk8PmgSlX/1XMsOGqm/RQA/qNJZV5RTzXjKGXpYNro70jWcvJr+eMQ5O+ChfdNSaA71pLSBvhJZCjTiquZC7FFt8OA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jW0BtLiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57497C4CEF0;
-	Wed, 17 Sep 2025 12:51:59 +0000 (UTC)
+	 MIME-Version; b=t1x76vZym6b4gkg+htC5CBegds+D3oJQ/e6EOIjorwMiq8B4DzBlZjb/D6lJuxf/sVUQ2/+I/H7FObh2FvHaJyqdejVQdQZ4DTAtZWHrlUd3AiwRM8NlIzUdiItsKWlBtQoCoc9kCvrRfeCB/mCJABNxHQwSzWHXYDC/Xg3O5eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbxAxGy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7CBC4CEF0;
+	Wed, 17 Sep 2025 12:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113519;
-	bh=WU6YsAk9KnCyvb0rRu339O2O9i0V2/v8KHI9A353vTE=;
+	s=korg; t=1758113101;
+	bh=EI1G9mB/M03txTvR6kFjiE4cBrp3VB2yrqXjo9uBuPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jW0BtLiSr5UCGVt56RTxjSo3VGuGPZhrAAP7A1whdOkYcLQdG+bOSmBAnOCXdoX7N
-	 Ob7hjEWYpIc6ZfiRIVgxtDYGGhxyuBtFdWbWuUhbsbDwGmux62WvWRL/HHF8aw2CtB
-	 x/79uyVyaKtTThAkH0b8c1Yf2MIH+GE+b/aAUmdE=
+	b=JbxAxGy5Dxh4LNq9nwS/n/u6P6L+d+kvoxRiYGmYS2OrGdOT0wdVbc0q/bQu5rmZK
+	 SpezYqHPHlupUATwkwxX+vRwfJpdoTlkxT1SxnAwdoQXbhw5oe1WznxZDYZUn9PRF0
+	 dAXuprHZLFaprtVq2OYTX1RVPibV3136eawq7zf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/140] netfilter: nft_set_pipapo: dont return bogus extension pointer
+Subject: [PATCH 6.16 172/189] erofs: unify meta buffers in z_erofs_fill_inode()
 Date: Wed, 17 Sep 2025 14:34:42 +0200
-Message-ID: <20250917123346.995849998@linuxfoundation.org>
+Message-ID: <20250917123356.082582101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit c8a7c2c608180f3b4e51dc958b3861242dcdd76d ]
+[ Upstream commit df50848bcd9f17e4e60e6d5823d0e8fe8982bbab ]
 
-Dan Carpenter says:
-Commit 17a20e09f086 ("netfilter: nft_set: remove one argument from
-lookup and update functions") [..] leads to the following Smatch
-static checker warning:
+There is no need to keep additional local metabufs since we already
+have one in `struct erofs_map_blocks`.
 
- net/netfilter/nft_set_pipapo_avx2.c:1269 nft_pipapo_avx2_lookup()
- error: uninitialized symbol 'ext'.
+This was actually a leftover when applying meta buffers to zmap
+operations, see commit 09c543798c3c ("erofs: use meta buffers for
+zmap operations").
 
-Fix this by initing ext to NULL and set it only once we've found
-a match.
-
-Fixes: 17a20e09f086 ("netfilter: nft_set: remove one argument from lookup and update functions")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/netfilter-devel/aJBzc3V5wk-yPOnH@stanley.mountain/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: c4eaca2e1052 ("netfilter: nft_set_pipapo: don't check genbit from packetpath lookups")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250716064152.3537457-1-hsiangkao@linux.alibaba.com
+Stable-dep-of: 131897c65e2b ("erofs: fix invalid algorithm for encoded extents")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/erofs/zmap.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index 6c441e2dc8af3..2155c7f345c21 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1151,12 +1151,12 @@ nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 		       const u32 *key)
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index 301afd9be4e30..cd33a5d29406c 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -641,13 +641,12 @@ static int z_erofs_map_blocks_ext(struct inode *inode,
+ 	return 0;
+ }
+ 
+-static int z_erofs_fill_inode_lazy(struct inode *inode)
++static int z_erofs_fill_inode(struct inode *inode, struct erofs_map_blocks *map)
  {
- 	struct nft_pipapo *priv = nft_set_priv(set);
-+	const struct nft_set_ext *ext = NULL;
- 	struct nft_pipapo_scratch *scratch;
- 	u8 genmask = nft_genmask_cur(net);
- 	const struct nft_pipapo_match *m;
- 	const struct nft_pipapo_field *f;
- 	const u8 *rp = (const u8 *)key;
--	const struct nft_set_ext *ext;
- 	unsigned long *res, *fill;
- 	bool map_index;
- 	int i;
-@@ -1247,13 +1247,13 @@ nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 			goto out;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+ 	struct super_block *const sb = inode->i_sb;
+ 	int err, headnr;
+ 	erofs_off_t pos;
+-	struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
+ 	struct z_erofs_map_header *h;
  
- 		if (last) {
--			ext = &f->mt[ret].e->ext;
--			if (unlikely(nft_set_elem_expired(ext) ||
--				     !nft_set_elem_active(ext, genmask))) {
--				ext = NULL;
-+			const struct nft_set_ext *e = &f->mt[ret].e->ext;
-+
-+			if (unlikely(nft_set_elem_expired(e) ||
-+				     !nft_set_elem_active(e, genmask)))
- 				goto next_match;
--			}
+ 	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags)) {
+@@ -667,7 +666,7 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 		goto out_unlock;
  
-+			ext = e;
- 			goto out;
- 		}
+ 	pos = ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
+-	h = erofs_read_metabuf(&buf, sb, pos);
++	h = erofs_read_metabuf(&map->buf, sb, pos);
+ 	if (IS_ERR(h)) {
+ 		err = PTR_ERR(h);
+ 		goto out_unlock;
+@@ -705,7 +704,7 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 		erofs_err(sb, "unknown HEAD%u format %u for nid %llu, please upgrade kernel",
+ 			  headnr + 1, vi->z_algorithmtype[headnr], vi->nid);
+ 		err = -EOPNOTSUPP;
+-		goto out_put_metabuf;
++		goto out_unlock;
+ 	}
  
+ 	if (!erofs_sb_has_big_pcluster(EROFS_SB(sb)) &&
+@@ -714,7 +713,7 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 		erofs_err(sb, "per-inode big pcluster without sb feature for nid %llu",
+ 			  vi->nid);
+ 		err = -EFSCORRUPTED;
+-		goto out_put_metabuf;
++		goto out_unlock;
+ 	}
+ 	if (vi->datalayout == EROFS_INODE_COMPRESSED_COMPACT &&
+ 	    !(vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1) ^
+@@ -722,27 +721,25 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 		erofs_err(sb, "big pcluster head1/2 of compact indexes should be consistent for nid %llu",
+ 			  vi->nid);
+ 		err = -EFSCORRUPTED;
+-		goto out_put_metabuf;
++		goto out_unlock;
+ 	}
+ 
+ 	if (vi->z_idata_size ||
+ 	    (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER)) {
+-		struct erofs_map_blocks map = {
++		struct erofs_map_blocks tm = {
+ 			.buf = __EROFS_BUF_INITIALIZER
+ 		};
+ 
+-		err = z_erofs_map_blocks_fo(inode, &map,
++		err = z_erofs_map_blocks_fo(inode, &tm,
+ 					    EROFS_GET_BLOCKS_FINDTAIL);
+-		erofs_put_metabuf(&map.buf);
++		erofs_put_metabuf(&tm.buf);
+ 		if (err < 0)
+-			goto out_put_metabuf;
++			goto out_unlock;
+ 	}
+ done:
+ 	/* paired with smp_mb() at the beginning of the function */
+ 	smp_mb();
+ 	set_bit(EROFS_I_Z_INITED_BIT, &vi->flags);
+-out_put_metabuf:
+-	erofs_put_metabuf(&buf);
+ out_unlock:
+ 	clear_and_wake_up_bit(EROFS_I_BL_Z_BIT, &vi->flags);
+ 	return err;
+@@ -760,7 +757,7 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
+ 		map->m_la = inode->i_size;
+ 		map->m_flags = 0;
+ 	} else {
+-		err = z_erofs_fill_inode_lazy(inode);
++		err = z_erofs_fill_inode(inode, map);
+ 		if (!err) {
+ 			if (vi->datalayout == EROFS_INODE_COMPRESSED_FULL &&
+ 			    (vi->z_advise & Z_EROFS_ADVISE_EXTENTS))
 -- 
 2.51.0
 
