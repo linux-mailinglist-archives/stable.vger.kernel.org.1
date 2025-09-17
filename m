@@ -1,165 +1,163 @@
-Return-Path: <stable+bounces-179798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872A0B7F4AE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:30:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93823B7C6C3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089183B63B9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 08:17:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 063672A6AA0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 08:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA53B306D50;
-	Wed, 17 Sep 2025 08:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98B13093AE;
+	Wed, 17 Sep 2025 08:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XoKeeMTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMY4oXcl"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED6C305E02
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 08:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8995D21CA0D
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 08:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758096964; cv=none; b=hilEA1jPLvxYE5lIabwNGRwy00XK0GU9It21ldD+38DultCPPk0DQXsMcchzvlptIBQb2W3xvtyXP1FehKgKU62/cms0CM/2AjsKxOb0BDIz0I+uqGaXEkmlIcrS4uFpSc/8eXeRirWN0S6telOfV6MBsacq8ZG8Ya3ghY3bUA8=
+	t=1758097535; cv=none; b=HIghUQJp5VrWL+VKZ3ET9MIRBpVHPWv/hs6OBW8OfmrQWuAJ2+qb55kuRar4KOJ0TZEM2VismUWf+2VDo1xmwpi6ApWjO1Msra8/AJG3qHQilnjuwSDMoY+0K9hFpXQ3MB3/0dy+vKtzfzgIH/8Gg7GiVL5vZFMri5on0utuSuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758096964; c=relaxed/simple;
-	bh=DZJjEilvh8soI1BKTSfA4Ey5iDL2dw9rLc+r+sxOjtU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EE1TjKJEErvoIaYtT3O7+tYnePlZgPEdttQ6xcr8V9YMIsZQ9eZ5WJIy7sCjkuJ211vGCv/wNPS/A3+bjvzmXWDDb6zh6OmrpSgTr7IEPeCSyWA3SYUECPpsbfigDYCckJ+l/DMWtqsV3KVqXPHey2G31yfpyRn726J6D7/bEak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XoKeeMTK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758096961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eedUNpaU5+NqwyQ8eXKTY11TfX3TYBW7jRyqO48Q8K4=;
-	b=XoKeeMTKu0gpgfJHuLWswxJAGqCjjKpuINRBQraqSY9q8vgpNcBVtjXiFhSYkG8W4YN65/
-	4No2q9FHPyuJunUXhi+DU1IrMASJ8MZbKZ05kGdhWhR4jesmx7GqtO92rXF0vz9CIUef5g
-	2e0YdnswDRE6uKV5HwS3Q7hKbtluozk=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-KrG6Ng6FNTGbIDO-PhNClw-1; Wed, 17 Sep 2025 04:16:00 -0400
-X-MC-Unique: KrG6Ng6FNTGbIDO-PhNClw-1
-X-Mimecast-MFC-AGG-ID: KrG6Ng6FNTGbIDO-PhNClw_1758096960
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-73894444cebso3778907b3.3
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 01:16:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758096960; x=1758701760;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eedUNpaU5+NqwyQ8eXKTY11TfX3TYBW7jRyqO48Q8K4=;
-        b=VtCFQ+4hBGWQyPWkVuJb00+9Ue3ngoQntF8hE+hlwmW5qn4GDHyDviG7r/2cwCgjRs
-         m08S/CcT95RgY04Q66B7Nn3ttueQnNxvtAdXFu0PQUm+xwTrxXDVWIdXB9di+vJBsIuM
-         dEKIMXCH6kEaZ9fOV/xsiYNBpGG8vf9mr4ZEyCEWppCu898V3Yqb8SVht1hWwLCunhvY
-         0l9GyUP4gyskCHQDvm3GUSpNjcIiebwTIQ7i8hTIcLTV61FkvcPhLlszpB5NqC/wGqra
-         Oj3nhQfKFpEHp3I6GypiUPB9+BSA8vA6fZqpiKqKsNX5R7xhmzurYxeCHbsTu8O8r2uC
-         kjuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBo1VIlZ3YIrN98qxWquoyHNKaqt/7p1beB6N4v6HrL4s5/FFNZoObQlWkfqMQaACvOYO1mzk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKqOW1pv6v9KuIuKiYwoeFGeGx0cM5kYe0zkh64YBj3syNPjdG
-	ZzFjX01Iw7bXPAEV+fu+j/XtPh0pKoCvt0Clvu7jRLz0jOkxpIjlSYJIPgZcSA0PQUAwnwNvmNz
-	QG1Z01h//xJmUxdyX97/3FcAKJp4dCrf/SQgzo1Ec0lxuwNxubJxUHJbV/5CZ2WjMpHNIv6lMTR
-	H/RV0+79QGXdPEf6XduccbqjnFfAR5yHGp
-X-Gm-Gg: ASbGncvUlZnANusJgjXXxL8AZZvtL6bBnZe+dlfSrKzkLGGLCbSYrAb6JcKND5y1qUv
-	adj7IghGE4JTycnrZpG47AFNH1ydhdhOez5MT1sU826bHIPGbFuusRy4GynNZWWiG4gABZsBWyw
-	h4nROUqDpdAuez0y/BV2ELBZ2qx1lRaat9sr5dPqsTSKQw4WtoaNGk36XOT9QrbNc+XciXVHQ67
-	fwQkhNq
-X-Received: by 2002:a05:690c:6c86:b0:723:b37b:f75f with SMTP id 00721157ae682-73891b87784mr10853817b3.26.1758096959687;
-        Wed, 17 Sep 2025 01:15:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyEE0NjY/G5cvHcAfaFUYZLAJa4QZLLCvZPWadjWH10jQVSkAeb7QCxJDkVvvAIV4aZoNVgVWuy6Xs42oRk5I=
-X-Received: by 2002:a05:690c:6c86:b0:723:b37b:f75f with SMTP id
- 00721157ae682-73891b87784mr10853617b3.26.1758096959304; Wed, 17 Sep 2025
- 01:15:59 -0700 (PDT)
+	s=arc-20240116; t=1758097535; c=relaxed/simple;
+	bh=cKNwfhkoJdrP7TJpermbdUy+qupoRp2tstVzumPow5I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ll66PP+w+WUw1IRjqk/bF3C8UDsWaUmN3pnfYgqSmoH7AqfjGRPuBC1ePX4V+O5d/LzYsZdOOoWXanDa+vwB9LpqELA1vUCpAaNGDSWYHjLfZaBLKfn+7WD2uoDdBm6A53i5VSNeuj3kg3++6d4C1QjsmsduM+1xrHvkwd5u+Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMY4oXcl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944B3C4CEF0;
+	Wed, 17 Sep 2025 08:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758097535;
+	bh=cKNwfhkoJdrP7TJpermbdUy+qupoRp2tstVzumPow5I=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xMY4oXclk1Yb8T0KmcfI6v7V1f7nCBelE3K8Hwgwpv06lB4DLvWLo6CvTIbi3VAuQ
+	 i13soep6xYYIJYJ2KaX4twxrxujOk41Xem7yEQ6PrPr7xkbOrm+65xJj108BY14tBt
+	 8P9ioBD9lLOpOw4pwdEu6Ay3SD9jiZJAj/UsVJRE=
+Subject: FAILED: patch "[PATCH] xhci: dbc: Fix full DbC transfer ring after several" failed to apply to 5.10-stable tree
+To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 17 Sep 2025 10:25:31 +0200
+Message-ID: <2025091731-subtotal-outcome-6092@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250917063045.2042-1-jasowang@redhat.com>
-In-Reply-To: <20250917063045.2042-1-jasowang@redhat.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 17 Sep 2025 10:15:22 +0200
-X-Gm-Features: AS18NWDDF_GZcJeZupVOj5tO-bkVG3qVNzTBHe2X19uvGqJmtk3QOixi1mHlzhU
-Message-ID: <CAJaqyWdoLiXJ8Skgwp14Ov66WP1wjnJkR0wwUdmcziSAFJoxCA@mail.gmail.com>
-Subject: Re: [PATCH vhost 1/3] vhost-net: unbreak busy polling
-To: Jason Wang <jasowang@redhat.com>
-Cc: mst@redhat.com, jonah.palmer@oracle.com, kuba@kernel.org, jon@nutanix.com, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 17, 2025 at 8:31=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> Commit 67a873df0c41 ("vhost: basic in order support") pass the number
-> of used elem to vhost_net_rx_peek_head_len() to make sure it can
-> signal the used correctly before trying to do busy polling. But it
-> forgets to clear the count, this would cause the count run out of sync
-> with handle_rx() and break the busy polling.
->
-> Fixing this by passing the pointer of the count and clearing it after
-> the signaling the used.
->
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> Cc: stable@vger.kernel.org
-> Fixes: 67a873df0c41 ("vhost: basic in order support")
-> Signed-off-by: Jason Wang <jasowang@redhat.com>
-> ---
->  drivers/vhost/net.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> index c6508fe0d5c8..16e39f3ab956 100644
-> --- a/drivers/vhost/net.c
-> +++ b/drivers/vhost/net.c
-> @@ -1014,7 +1014,7 @@ static int peek_head_len(struct vhost_net_virtqueue=
- *rvq, struct sock *sk)
->  }
->
->  static int vhost_net_rx_peek_head_len(struct vhost_net *net, struct sock=
- *sk,
-> -                                     bool *busyloop_intr, unsigned int c=
-ount)
-> +                                     bool *busyloop_intr, unsigned int *=
-count)
->  {
->         struct vhost_net_virtqueue *rnvq =3D &net->vqs[VHOST_NET_VQ_RX];
->         struct vhost_net_virtqueue *tnvq =3D &net->vqs[VHOST_NET_VQ_TX];
-> @@ -1024,7 +1024,8 @@ static int vhost_net_rx_peek_head_len(struct vhost_=
-net *net, struct sock *sk,
->
->         if (!len && rvq->busyloop_timeout) {
->                 /* Flush batched heads first */
-> -               vhost_net_signal_used(rnvq, count);
-> +               vhost_net_signal_used(rnvq, *count);
-> +               *count =3D 0;
->                 /* Both tx vq and rx socket were polled here */
->                 vhost_net_busy_poll(net, rvq, tvq, busyloop_intr, true);
->
-> @@ -1180,7 +1181,7 @@ static void handle_rx(struct vhost_net *net)
->
->         do {
->                 sock_len =3D vhost_net_rx_peek_head_len(net, sock->sk,
-> -                                                     &busyloop_intr, cou=
-nt);
-> +                                                     &busyloop_intr, &co=
-unt);
->                 if (!sock_len)
->                         break;
->                 sock_len +=3D sock_hlen;
-> --
-> 2.34.1
->
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x a5c98e8b1398534ae1feb6e95e2d3ee5215538ed
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091731-subtotal-outcome-6092@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a5c98e8b1398534ae1feb6e95e2d3ee5215538ed Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Tue, 2 Sep 2025 13:53:05 +0300
+Subject: [PATCH] xhci: dbc: Fix full DbC transfer ring after several
+ reconnects
+
+Pending requests will be flushed on disconnect, and the corresponding
+TRBs will be turned into No-op TRBs, which are ignored by the xHC
+controller once it starts processing the ring.
+
+If the USB debug cable repeatedly disconnects before ring is started
+then the ring will eventually be filled with No-op TRBs.
+No new transfers can be queued when the ring is full, and driver will
+print the following error message:
+
+    "xhci_hcd 0000:00:14.0: failed to queue trbs"
+
+This is a normal case for 'in' transfers where TRBs are always enqueued
+in advance, ready to take on incoming data. If no data arrives, and
+device is disconnected, then ring dequeue will remain at beginning of
+the ring while enqueue points to first free TRB after last cancelled
+No-op TRB.
+s
+Solve this by reinitializing the rings when the debug cable disconnects
+and DbC is leaving the configured state.
+Clear the whole ring buffer and set enqueue and dequeue to the beginning
+of ring, and set cycle bit to its initial state.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index d0faff233e3e..63edf2d8f245 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -462,6 +462,25 @@ static void xhci_dbc_ring_init(struct xhci_ring *ring)
+ 	xhci_initialize_ring_info(ring);
+ }
+ 
++static int xhci_dbc_reinit_ep_rings(struct xhci_dbc *dbc)
++{
++	struct xhci_ring *in_ring = dbc->eps[BULK_IN].ring;
++	struct xhci_ring *out_ring = dbc->eps[BULK_OUT].ring;
++
++	if (!in_ring || !out_ring || !dbc->ctx) {
++		dev_warn(dbc->dev, "Can't re-init unallocated endpoints\n");
++		return -ENODEV;
++	}
++
++	xhci_dbc_ring_init(in_ring);
++	xhci_dbc_ring_init(out_ring);
++
++	/* set ep context enqueue, dequeue, and cycle to initial values */
++	xhci_dbc_init_ep_contexts(dbc);
++
++	return 0;
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -885,7 +904,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			dev_info(dbc->dev, "DbC cable unplugged\n");
+ 			dbc->state = DS_ENABLED;
+ 			xhci_dbc_flush_requests(dbc);
+-
++			xhci_dbc_reinit_ep_rings(dbc);
+ 			return EVT_DISC;
+ 		}
+ 
+@@ -895,7 +914,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			writel(portsc, &dbc->regs->portsc);
+ 			dbc->state = DS_ENABLED;
+ 			xhci_dbc_flush_requests(dbc);
+-
++			xhci_dbc_reinit_ep_rings(dbc);
+ 			return EVT_DISC;
+ 		}
+ 
 
 
