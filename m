@@ -1,88 +1,148 @@
-Return-Path: <stable+bounces-179838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1E6B7DC64
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:34:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB21B7E36F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA14D3AE61B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:34:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3928F3251D1
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC2F1E1E1E;
-	Wed, 17 Sep 2025 12:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5751F3BA2;
+	Wed, 17 Sep 2025 12:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzJBOb3c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDracnVy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EC6189F5C;
-	Wed, 17 Sep 2025 12:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3221E489;
+	Wed, 17 Sep 2025 12:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112461; cv=none; b=Bc8/nW0wipwP/9R3/KNCpmjuIU0UhNOyfp2udRP/76ROC+75mDsMfzM7WhhUPq6nU9fljYMQYWh33scB3FwUPUmiV2pV0PcMAzDwyQIxnxXiTSi+Sg2ITom75Dq6AqrT772JKIBiLJyJzMsg6f7G1+uH/bo92DJFdgheUJM7Zu4=
+	t=1758113024; cv=none; b=HajP/i54MKiN2O0i3mxIyedSVH+aJoWE4fqvOA2W/lNaf3Vg0EPyCDeisI9Z61b8U37LKHkmGBz3UluvNIHE4+mZqAu2hxPAMoUkG9M4UUtTsk/xrQTxVSIL54g8pFtcPpc9HgGXIug916m16ppuzjg8U6u3YzuaFGUUTix8bkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112461; c=relaxed/simple;
-	bh=qkAtnr0sXMw+0SYUV0AuKKz3iXuu15biXIdQ4ivHAto=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gSh/utS/1HdR6uIhkIXfkcajEnK0wrBixtRS4q+Dp57EpcjCkLTbEnQARifd3KUtYH5C99LDo0hpCmkABUE6lmVr0YYdWleRtkTFekGrVUyC7KPzEHKY35WqUPGylXoCyfWFqErSvyS+q7zCp2xM1ufTay6D1uTg7pjj+Q87WhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzJBOb3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4D2C4CEF0;
-	Wed, 17 Sep 2025 12:34:19 +0000 (UTC)
+	s=arc-20240116; t=1758113024; c=relaxed/simple;
+	bh=I7gifj+nZ+xPqtpd+ID89J/D+Xb8Q5YUs5X02csJiTI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=G9hwzKgg/ES/hsA83Lu138FptWW97Ft0KFB2WyNMG4VFiXp5YYICyVjJBGbcPNUdmyp0pcQQrC2yRx2QivdCDtjRn5KA4dupzH8WrHUHYF7W+IB9OSSuDplfk5m6LU2P5SNFB6bl3LfQMDTPjl/22uPUrNK25oXSGbB2S3CyePc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDracnVy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64B4C4CEF0;
+	Wed, 17 Sep 2025 12:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112460;
-	bh=qkAtnr0sXMw+0SYUV0AuKKz3iXuu15biXIdQ4ivHAto=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yzJBOb3clMLW1DnjyuAltcSKa6aIShyw6FLuTIc6s9c28mAWLzkJyUL5EajkgW6VG
-	 3OL6Q4WleVFV+kNpoylsQ992Ck/DkT4B0EoGdrRiMVFW/hchFHV3cUGWK9jYk96ORf
-	 vROwAcNoVKiMhg3kEYpCmMD+QYczkwQT9+6zoq7E=
-Date: Wed, 17 Sep 2025 14:34:15 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Vivian Wang <wangruikang@iscas.ac.cn>
-Cc: stable@vger.kernel.org, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Yangyu Chen <cyy@cyyself.name>, Han Gao <rabenda.cn@gmail.com>,
-	Icenowy Zheng <uwu@icenowy.me>, Inochi Amaoto <inochiama@gmail.com>,
-	Yao Zi <ziyao@disroot.org>
-Subject: Re: riscv: Backport request for mmap address space fixes to 6.6
-Message-ID: <2025091739-roundish-dropper-c4f6@gregkh>
-References: <b68478db-5a8c-4b5f-a4d1-f4202ca1f062@iscas.ac.cn>
+	s=korg; t=1758113024;
+	bh=I7gifj+nZ+xPqtpd+ID89J/D+Xb8Q5YUs5X02csJiTI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jDracnVywLySpkqcHHIHRbgPYZ0d3nGGc0d/enMOgT4lGrDVz6jpApOCezyRYbiK3
+	 u5tdauvd8hvvWbGQsl0gEvBTISgV9tIUYfzHQIM5eVd/9gWGzzDVXXmGRgiJf+Hl6M
+	 I8YID94gzJ7onxKYABqyahgevVecJ1V9QO5jOzOA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	syzbot+7e0f89fb6cae5d002de0@syzkaller.appspotmail.com,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 146/189] macsec: sync features on RTM_NEWLINK
+Date: Wed, 17 Sep 2025 14:34:16 +0200
+Message-ID: <20250917123355.435193987@linuxfoundation.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b68478db-5a8c-4b5f-a4d1-f4202ca1f062@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 17, 2025 at 08:03:08PM +0800, Vivian Wang wrote:
-> Hi,
-> 
-> I would like to request backport of these two commits to 6.6.y:
-> 
-> b5b4287accd702f562a49a60b10dbfaf7d40270f ("riscv: mm: Use hint address in mmap if available")
-> 2116988d5372aec51f8c4fb85bf8e305ecda47a0 ("riscv: mm: Do not restrict mmap address based on hint")
-> 
-> Together, they amount to disabling arch_get_mmap_end and
-> arch_get_mmap_base for riscv.
-> 
-> I would like to note that the first patch conflicts with commit
-> 724103429a2d ("riscv: mm: Fixup compat arch_get_mmap_end") in the stable
-> linux-6.6.y branch. STACK_TOP_MAX should end up as TASK_SIZE, *not*
-> TASK_SIZE_64.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
-Please submit a backported set of patches that you have properly fixed
-up and tested to ensure that we get the backport correct, and we will be
-glad to take them.
+------------------
 
-thanks,
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-greg k-h
+[ Upstream commit 0f82c3ba66c6b2e3cde0f255156a753b108ee9dc ]
+
+Syzkaller managed to lock the lower device via ETHTOOL_SFEATURES:
+
+ netdev_lock include/linux/netdevice.h:2761 [inline]
+ netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+ netdev_sync_lower_features net/core/dev.c:10649 [inline]
+ __netdev_update_features+0xcb1/0x1be0 net/core/dev.c:10819
+ netdev_update_features+0x6d/0xe0 net/core/dev.c:10876
+ macsec_notify+0x2f5/0x660 drivers/net/macsec.c:4533
+ notifier_call_chain+0x1b3/0x3e0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
+ call_netdevice_notifiers net/core/dev.c:2281 [inline]
+ netdev_features_change+0x85/0xc0 net/core/dev.c:1570
+ __dev_ethtool net/ethtool/ioctl.c:3469 [inline]
+ dev_ethtool+0x1536/0x19b0 net/ethtool/ioctl.c:3502
+ dev_ioctl+0x392/0x1150 net/core/dev_ioctl.c:759
+
+It happens because lower features are out of sync with the upper:
+
+  __dev_ethtool (real_dev)
+    netdev_lock_ops(real_dev)
+    ETHTOOL_SFEATURES
+      __netdev_features_change
+        netdev_sync_upper_features
+          disable LRO on the lower
+    if (old_features != dev->features)
+      netdev_features_change
+        fires NETDEV_FEAT_CHANGE
+	macsec_notify
+	  NETDEV_FEAT_CHANGE
+	    netdev_update_features (for each macsec dev)
+	      netdev_sync_lower_features
+	        if (upper_features != lower_features)
+	          netdev_lock_ops(lower) # lower == real_dev
+		  stuck
+		  ...
+
+    netdev_unlock_ops(real_dev)
+
+Per commit af5f54b0ef9e ("net: Lock lower level devices when updating
+features"), we elide the lock/unlock when the upper and lower features
+are synced. Makes sure the lower (real_dev) has proper features after
+the macsec link has been created. This makes sure we never hit the
+situation where we need to sync upper flags to the lower.
+
+Reported-by: syzbot+7e0f89fb6cae5d002de0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7e0f89fb6cae5d002de0
+Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250908173614.3358264-1-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/macsec.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 01329fe7451a1..0eca96eeed58a 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -4286,6 +4286,7 @@ static int macsec_newlink(struct net_device *dev,
+ 	if (err < 0)
+ 		goto del_dev;
+ 
++	netdev_update_features(dev);
+ 	netif_stacked_transfer_operstate(real_dev, dev);
+ 	linkwatch_fire_event(dev);
+ 
+-- 
+2.51.0
+
+
+
 
