@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-180045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AFAB7E7D4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:50:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E14B7E15D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68C773255A4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:47:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49FF61B23629
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D301E25EF;
-	Wed, 17 Sep 2025 12:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E83D2E03EF;
+	Wed, 17 Sep 2025 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+PpKXJv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ot/HZU3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAFF32BBF8;
-	Wed, 17 Sep 2025 12:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE56A189B84;
+	Wed, 17 Sep 2025 12:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113205; cv=none; b=iHT8edndcJ1mb5/yvpkn/Jn7Rgtgq0Nkb+PVuY0vO7Tiq8VGsY9yaHQ51RsZ1GCQ9OzwWlcclejN0HUCROH0vlvJOV9MEn8SzvhgJEBURSP9WLWzZorrlM4QhxW4jVa3Y2di1nhuROjO5wVJ6QPKxhqb/3UyHZIrZGpxn5wVUn0=
+	t=1758112789; cv=none; b=IniViuEzXnPtqQLsmu58F6Q3xm0WHPr47FsZoAI+MlMZcgh0EImHuSR5kDnbaOvVqPUzQmro6xP5NpF0CcOaiqriwYk0b0ak449MiY8CzXk7MRPFhAzOmj5N1rcXqvynawpuMfinwzfrAxph4HGLzsE01I0yazvuNDYEGwMqxiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113205; c=relaxed/simple;
-	bh=3+i7EVaGglIQfByuGwItOSDoGoZxS83bumqli1EDNlE=;
+	s=arc-20240116; t=1758112789; c=relaxed/simple;
+	bh=U69dU552F3ieZ1706+BVyApAz76sxBpD6S4nyuHvd9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I99MM9xHQBuqG/H5KwqUjcMlD8spSGpMukgSncFzXZ/vRTBYT1/IYtJ4Pw5b4beo+pEb6NpV7wy5cGjE/mK21fQiZTVTJMfiwfiKDuzsDj1DDF5OUQ1+eyxEMjsKfVtGC16IlMahO1v+5QHRZYkGuTB8odHqYE5DDk1FXrtDzhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+PpKXJv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83322C4CEF5;
-	Wed, 17 Sep 2025 12:46:44 +0000 (UTC)
+	 MIME-Version; b=HWthOGh2K4hWDPb50U7sOX7jiVHm7R8hKVmfItIninZtnqupDIXCyEuTidMZ/IjxSowjBt9eF16ZQbPcAhH+rgv3iNUQe8iSKSo4kb438eCXI2rY5dLMhZDIyAo48EJk1qlqMoXC1XoUgrZfQPXq0779jDCCNMjGbF3eUtsBSms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ot/HZU3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AFBC4CEF0;
+	Wed, 17 Sep 2025 12:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113205;
-	bh=3+i7EVaGglIQfByuGwItOSDoGoZxS83bumqli1EDNlE=;
+	s=korg; t=1758112788;
+	bh=U69dU552F3ieZ1706+BVyApAz76sxBpD6S4nyuHvd9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+PpKXJvffNSoSJLN7Mv3cbaTA0m+TZMSXCU19KcilBNSofKAwfmksFiLYVhr2Vb/
-	 Goo/+c53qB+BogM2bGVZHdJ++J5BNXsKjNhtuqUV416fiYw0yC01SQefOc2jp3mYW5
-	 ib1julKxpW35ZhvjUSgRL2eSTO2xkEv1P5RzHNNA=
+	b=ot/HZU3LNfaX59bHJob6Oz/7Sh35t9PROQdMLWfT6TW/9c4UfF4XKuZ6EDAmtrArm
+	 ZdRI58pBVyJQUijsu5OZes+Wq90mCG5FpaScSDziCgBK4hvQaYzHdiCvTnwKfDJvsr
+	 629o6wVueaWbjPD3VNB82IQZp40NJs55GGhY1WHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/140] drm/i915/pmu: Fix zero delta busyness issue
+	Wei Yang <richard.weiyang@gmail.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 077/189] mm/khugepaged: fix the address passed to notifier on testing young
 Date: Wed, 17 Sep 2025 14:33:07 +0200
-Message-ID: <20250917123344.685318021@linuxfoundation.org>
+Message-ID: <20250917123353.750157389@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +70,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit cb5fab2afd906307876d79537ef0329033c40dd3 ]
+commit 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf upstream.
 
-When running igt@gem_exec_balancer@individual for multiple iterations,
-it is seen that the delta busyness returned by PMU is 0. The issue stems
-from a combination of 2 implementation specific details:
+Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
+mmu_notifier_test_young(), but we are passing the wrong address.
+In xxx_scan_pmd(), the actual iteration address is "_address" not
+"address".  We seem to misuse the variable on the very beginning.
 
-1) gt_park is throttling __update_guc_busyness_stats() so that it does
-not hog PCI bandwidth for some use cases. (Ref: 59bcdb564b3ba)
+Change it to the right one.
 
-2) busyness implementation always returns monotonically increasing
-counters. (Ref: cf907f6d29421)
-
-If an application queried an engine while it was active,
-engine->stats.guc.running is set to true. Following that, if all PM
-wakeref's are released, then gt is parked. At this time the throttling
-of __update_guc_busyness_stats() may result in a missed update to the
-running state of the engine (due to (1) above). This means subsequent
-calls to guc_engine_busyness() will think that the engine is still
-running and they will keep updating the cached counter (stats->total).
-This results in an inflated cached counter.
-
-Later when the application runs a workload and queries for busyness, we
-return the cached value since it is larger than the actual value (due to
-(2) above)
-
-All subsequent queries will return the same large (inflated) value, so
-the application sees a delta busyness of zero.
-
-Fix the issue by resetting the running state of engines each time
-intel_guc_busyness_park() is called.
-
-v2: (Rodrigo)
-- Use the correct tag in commit message
-- Drop the redundant wakeref check in guc_engine_busyness() and update
-  commit message
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13366
-Fixes: cf907f6d2942 ("i915/guc: Ensure busyness counter increases motonically")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250123193839.2394694-1-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 431b742e2bfc9f6dd713f261629741980996d001)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[akpm@linux-foundation.org fix whitespace, per everyone]
+Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
+Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/i915/gt/uc/intel_guc_submission.c    | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ mm/khugepaged.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index b48373b166779..355a21eb48443 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -1469,6 +1469,19 @@ static void __reset_guc_busyness_stats(struct intel_guc *guc)
- 	spin_unlock_irqrestore(&guc->timestamp.lock, flags);
- }
- 
-+static void __update_guc_busyness_running_state(struct intel_guc *guc)
-+{
-+	struct intel_gt *gt = guc_to_gt(guc);
-+	struct intel_engine_cs *engine;
-+	enum intel_engine_id id;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&guc->timestamp.lock, flags);
-+	for_each_engine(engine, gt, id)
-+		engine->stats.guc.running = false;
-+	spin_unlock_irqrestore(&guc->timestamp.lock, flags);
-+}
-+
- static void __update_guc_busyness_stats(struct intel_guc *guc)
- {
- 	struct intel_gt *gt = guc_to_gt(guc);
-@@ -1619,6 +1632,9 @@ void intel_guc_busyness_park(struct intel_gt *gt)
- 	if (!guc_submission_initialized(guc))
- 		return;
- 
-+	/* Assume no engines are running and set running state to false */
-+	__update_guc_busyness_running_state(guc);
-+
- 	/*
- 	 * There is a race with suspend flow where the worker runs after suspend
- 	 * and causes an unclaimed register access warning. Cancel the worker
--- 
-2.51.0
-
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1400,8 +1400,8 @@ static int hpage_collapse_scan_pmd(struc
+ 		 */
+ 		if (cc->is_khugepaged &&
+ 		    (pte_young(pteval) || folio_test_young(folio) ||
+-		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+-								     address)))
++		     folio_test_referenced(folio) ||
++		     mmu_notifier_test_young(vma->vm_mm, _address)))
+ 			referenced++;
+ 	}
+ 	if (!writable) {
 
 
 
