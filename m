@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-180082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7298EB7E8EB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B12B7E2A5
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F0682A13CC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F2D71B20E61
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D9E32896B;
-	Wed, 17 Sep 2025 12:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C918301465;
+	Wed, 17 Sep 2025 12:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRztV1xb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXpbNGNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE7C323404;
-	Wed, 17 Sep 2025 12:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C39B2C3278;
+	Wed, 17 Sep 2025 12:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113324; cv=none; b=NaTMoWbJeh2A0ALN1cqdc8ZvtfUxdiqY7bI+XaSJpIb21VomzptASOP7YQGCMbqHF+tusHey0yywvxURnaZVw1CcJAsxdml2RzhpMawKsNTXfvc4mhC/TV7JXZIT4whsE7ZHHlgJCW6vYsOSnpSpjDM3M4Y7Qtc+7+94KKjpcYs=
+	t=1758112911; cv=none; b=d+Srkdy3gmRtEti3JPnR30i/Sfm3yk1gxxx6qpAuN0/vdpLxT/vckmjr+WKnSbOFd1glqh2EJZQELL9FD+X6BvhT4p/v/toKDXhBBF717JAcu272p9sQ82/nPwTJfyWrtQ8QYAEjIM4Hf+jSvj9kkXSMvE4+ZWTSHtXTalAF5gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113324; c=relaxed/simple;
-	bh=Uy5RYDbHWf3cCtBO7zUjd6zHE60qkxBW9rypM8jUv/E=;
+	s=arc-20240116; t=1758112911; c=relaxed/simple;
+	bh=IDYd2H3kn7VQuHWvMfT+zbJWEzMbPtqRPKsEi787NGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lfoei5H3q63E15hXg0NTqixObe0Ea86Wgmxaaf+T6TUaj2GAZuJfZOWg660M9iTkrLTtsD7oV7f8QQrPwPDal7y0E+mp+bLLwNTLUJdk338mgAoWSPi3fp7Bn3yo990qkfkE1IPTXw5WBRukM9iQWNed3v1AbblioFUBO14Agd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRztV1xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A831C4CEF0;
-	Wed, 17 Sep 2025 12:48:43 +0000 (UTC)
+	 MIME-Version; b=eoxvc7YvHsulTVPF2D9rC6hKQVjHVbFUHr9ptszUBmcY94Icbhkkwbji9QQWUEVrBloGJYGKGcdQvW1MoS0dl2wPipIFmumA20y3qcMmUvHvq3OtAwr24feRRYPIJbpvFBihlev2YnbcnlcY2SY4v34KAgEVd57n7Eqmc/7vBDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXpbNGNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C25C4CEF0;
+	Wed, 17 Sep 2025 12:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113324;
-	bh=Uy5RYDbHWf3cCtBO7zUjd6zHE60qkxBW9rypM8jUv/E=;
+	s=korg; t=1758112911;
+	bh=IDYd2H3kn7VQuHWvMfT+zbJWEzMbPtqRPKsEi787NGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRztV1xbsbTvftuA1MFjKemAfynsMWr2DAEiA+E8ecedgygcZuaDB6dmqFYJZDnOa
-	 86iKMN/HdYhQWFfB9VHbwwyfxoeNBTNxKTQ3rYj8afPuih5ykteZEg7mTprz1vXgFm
-	 11uhOYNTNR8mdg/b6S9gFVjXXOHOkQ2P4bgMEiPY=
+	b=WXpbNGNokk+lf/yH8eTHEGvqljfQ/x9P0VO82wIRCuMs6wmQNU030kmIrN4wGnZIw
+	 lCUBYc+vyKlJSPkojB4aNi0GxNobQDJrzPxmRqVgFg6hJlxkC1KTL0UxEaef/og1WI
+	 9eTNGwNNjmz4x97UP6CZSwxbvclvtpu3d3V6jIJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Tinguely <mark.tinguely@oracle.com>,
-	syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 051/140] ocfs2: fix recursive semaphore deadlock in fiemap call
-Date: Wed, 17 Sep 2025 14:33:43 +0200
-Message-ID: <20250917123345.554199264@linuxfoundation.org>
+	Reinette Chatre <reinette.chatre@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.16 114/189] fs/resctrl: Eliminate false positive lockdep warning when reading SNC counters
+Date: Wed, 17 Sep 2025 14:33:44 +0200
+Message-ID: <20250917123354.652448236@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,143 +61,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Tinguely <mark.tinguely@oracle.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-commit 04100f775c2ea501927f508f17ad824ad1f23c8d upstream.
+commit d2e1b84c5141ff2ad465279acfc3cf943c960b78 upstream.
 
-syzbot detected a OCFS2 hang due to a recursive semaphore on a
-FS_IOC_FIEMAP of the extent list on a specially crafted mmap file.
+Running resctrl_tests on an SNC-2 system with lockdep debugging enabled
+triggers several warnings with following trace:
 
-context_switch kernel/sched/core.c:5357 [inline]
-   __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
-   __schedule_loop kernel/sched/core.c:7043 [inline]
-   schedule+0x165/0x360 kernel/sched/core.c:7058
-   schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7115
-   rwsem_down_write_slowpath+0x872/0xfe0 kernel/locking/rwsem.c:1185
-   __down_write_common kernel/locking/rwsem.c:1317 [inline]
-   __down_write kernel/locking/rwsem.c:1326 [inline]
-   down_write+0x1ab/0x1f0 kernel/locking/rwsem.c:1591
-   ocfs2_page_mkwrite+0x2ff/0xc40 fs/ocfs2/mmap.c:142
-   do_page_mkwrite+0x14d/0x310 mm/memory.c:3361
-   wp_page_shared mm/memory.c:3762 [inline]
-   do_wp_page+0x268d/0x5800 mm/memory.c:3981
-   handle_pte_fault mm/memory.c:6068 [inline]
-   __handle_mm_fault+0x1033/0x5440 mm/memory.c:6195
-   handle_mm_fault+0x40a/0x8e0 mm/memory.c:6364
-   do_user_addr_fault+0x764/0x1390 arch/x86/mm/fault.c:1387
-   handle_page_fault arch/x86/mm/fault.c:1476 [inline]
-   exc_page_fault+0x76/0xf0 arch/x86/mm/fault.c:1532
-   asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:623
-RIP: 0010:copy_user_generic arch/x86/include/asm/uaccess_64.h:126 [inline]
-RIP: 0010:raw_copy_to_user arch/x86/include/asm/uaccess_64.h:147 [inline]
-RIP: 0010:_inline_copy_to_user include/linux/uaccess.h:197 [inline]
-RIP: 0010:_copy_to_user+0x85/0xb0 lib/usercopy.c:26
-Code: e8 00 bc f7 fc 4d 39 fc 72 3d 4d 39 ec 77 38 e8 91 b9 f7 fc 4c 89
-f7 89 de e8 47 25 5b fd 0f 01 cb 4c 89 ff 48 89 d9 4c 89 f6 <f3> a4 0f
-1f 00 48 89 cb 0f 01 ca 48 89 d8 5b 41 5c 41 5d 41 5e 41
-RSP: 0018:ffffc9000403f950 EFLAGS: 00050256
-RAX: ffffffff84c7f101 RBX: 0000000000000038 RCX: 0000000000000038
-RDX: 0000000000000000 RSI: ffffc9000403f9e0 RDI: 0000200000000060
-RBP: ffffc9000403fa90 R08: ffffc9000403fa17 R09: 1ffff92000807f42
-R10: dffffc0000000000 R11: fffff52000807f43 R12: 0000200000000098
-R13: 00007ffffffff000 R14: ffffc9000403f9e0 R15: 0000200000000060
-   copy_to_user include/linux/uaccess.h:225 [inline]
-   fiemap_fill_next_extent+0x1c0/0x390 fs/ioctl.c:145
-   ocfs2_fiemap+0x888/0xc90 fs/ocfs2/extent_map.c:806
-   ioctl_fiemap fs/ioctl.c:220 [inline]
-   do_vfs_ioctl+0x1173/0x1430 fs/ioctl.c:532
-   __do_sys_ioctl fs/ioctl.c:596 [inline]
-   __se_sys_ioctl+0x82/0x170 fs/ioctl.c:584
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f5f13850fd9
-RSP: 002b:00007ffe3b3518b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000200000000000 RCX: 00007f5f13850fd9
-RDX: 0000200000000040 RSI: 00000000c020660b RDI: 0000000000000004
-RBP: 6165627472616568 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe3b3518f0
-R13: 00007ffe3b351b18 R14: 431bde82d7b634db R15: 00007f5f1389a03b
+  WARNING: CPU: 0 PID: 1914 at kernel/cpu.c:528 lockdep_assert_cpus_held
+  ...
+  Call Trace:
+  __mon_event_count
+  ? __lock_acquire
+  ? __pfx___mon_event_count
+  mon_event_count
+  ? __pfx_smp_mon_event_count
+  smp_mon_event_count
+  smp_call_on_cpu_callback
 
-ocfs2_fiemap() takes a read lock of the ip_alloc_sem semaphore (since
-v2.6.22-527-g7307de80510a) and calls fiemap_fill_next_extent() to read the
-extent list of this running mmap executable.  The user supplied buffer to
-hold the fiemap information page faults calling ocfs2_page_mkwrite() which
-will take a write lock (since v2.6.27-38-g00dc417fa3e7) of the same
-semaphore.  This recursive semaphore will hold filesystem locks and causes
-a hang of the fileystem.
+get_cpu_cacheinfo_level() called from __mon_event_count() requires CPU hotplug
+lock to be held. The hotplug lock is indeed held during this time, as
+confirmed by the lockdep_assert_cpus_held() within mon_event_read() that calls
+mon_event_count() via IPI, but the lockdep tracking is not able to follow the
+IPI.
 
-The ip_alloc_sem protects the inode extent list and size.  Release the
-read semphore before calling fiemap_fill_next_extent() in ocfs2_fiemap()
-and ocfs2_fiemap_inline().  This does an unnecessary semaphore lock/unlock
-on the last extent but simplifies the error path.
+Fresh CPU cache information via get_cpu_cacheinfo_level() from
+__mon_event_count() was added to support the fix for the issue where resctrl
+inappropriately maintained links to L3 cache information that will be stale in
+the case when the associated CPU goes offline.
 
-Link: https://lkml.kernel.org/r/61d1a62b-2631-4f12-81e2-cd689914360b@oracle.com
-Fixes: 00dc417fa3e7 ("ocfs2: fiemap support")
-Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
-Reported-by: syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=541dcc6ee768f77103e7
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Keep the cacheinfo ID in struct rdt_mon_domain to ensure that resctrl does not
+maintain stale cache information while CPUs can go offline. Return to using
+a pointer to the L3 cache information (struct cacheinfo) in struct rmid_read,
+rmid_read::ci. Initialize rmid_read::ci before the IPI where it is used. CPU
+hotplug lock is held across rmid_read::ci initialization and use to ensure
+that it points to accurate cache information.
+
+Fixes: 594902c986e2 ("x86,fs/resctrl: Remove inappropriate references to cacheinfo in the resctrl subsystem")
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/extent_map.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/resctrl/ctrlmondata.c | 2 +-
+ fs/resctrl/internal.h    | 4 ++--
+ fs/resctrl/monitor.c     | 6 ++----
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
---- a/fs/ocfs2/extent_map.c
-+++ b/fs/ocfs2/extent_map.c
-@@ -696,6 +696,8 @@ out:
-  * it not only handles the fiemap for inlined files, but also deals
-  * with the fast symlink, cause they have no difference for extent
-  * mapping per se.
-+ *
-+ * Must be called with ip_alloc_sem semaphore held.
-  */
- static int ocfs2_fiemap_inline(struct inode *inode, struct buffer_head *di_bh,
- 			       struct fiemap_extent_info *fieinfo,
-@@ -707,6 +709,7 @@ static int ocfs2_fiemap_inline(struct in
- 	u64 phys;
- 	u32 flags = FIEMAP_EXTENT_DATA_INLINE|FIEMAP_EXTENT_LAST;
- 	struct ocfs2_inode_info *oi = OCFS2_I(inode);
-+	lockdep_assert_held_read(&oi->ip_alloc_sem);
- 
- 	di = (struct ocfs2_dinode *)di_bh->b_data;
- 	if (ocfs2_inode_is_fast_symlink(inode))
-@@ -722,8 +725,11 @@ static int ocfs2_fiemap_inline(struct in
- 			phys += offsetof(struct ocfs2_dinode,
- 					 id2.i_data.id_data);
- 
-+		/* Release the ip_alloc_sem to prevent deadlock on page fault */
-+		up_read(&OCFS2_I(inode)->ip_alloc_sem);
- 		ret = fiemap_fill_next_extent(fieinfo, 0, phys, id_count,
- 					      flags);
-+		down_read(&OCFS2_I(inode)->ip_alloc_sem);
- 		if (ret < 0)
- 			return ret;
+diff --git a/fs/resctrl/ctrlmondata.c b/fs/resctrl/ctrlmondata.c
+index d98e0d2de09f..3c39cfacb251 100644
+--- a/fs/resctrl/ctrlmondata.c
++++ b/fs/resctrl/ctrlmondata.c
+@@ -625,11 +625,11 @@ int rdtgroup_mondata_show(struct seq_file *m, void *arg)
+ 		 */
+ 		list_for_each_entry(d, &r->mon_domains, hdr.list) {
+ 			if (d->ci_id == domid) {
+-				rr.ci_id = d->ci_id;
+ 				cpu = cpumask_any(&d->hdr.cpu_mask);
+ 				ci = get_cpu_cacheinfo_level(cpu, RESCTRL_L3_CACHE);
+ 				if (!ci)
+ 					continue;
++				rr.ci = ci;
+ 				mon_event_read(&rr, r, NULL, rdtgrp,
+ 					       &ci->shared_cpu_map, evtid, false);
+ 				goto checkresult;
+diff --git a/fs/resctrl/internal.h b/fs/resctrl/internal.h
+index 0a1eedba2b03..9a8cf6f11151 100644
+--- a/fs/resctrl/internal.h
++++ b/fs/resctrl/internal.h
+@@ -98,7 +98,7 @@ struct mon_data {
+  *	   domains in @r sharing L3 @ci.id
+  * @evtid: Which monitor event to read.
+  * @first: Initialize MBM counter when true.
+- * @ci_id: Cacheinfo id for L3. Only set when @d is NULL. Used when summing domains.
++ * @ci:    Cacheinfo for L3. Only set when @d is NULL. Used when summing domains.
+  * @err:   Error encountered when reading counter.
+  * @val:   Returned value of event counter. If @rgrp is a parent resource group,
+  *	   @val includes the sum of event counts from its child resource groups.
+@@ -112,7 +112,7 @@ struct rmid_read {
+ 	struct rdt_mon_domain	*d;
+ 	enum resctrl_event_id	evtid;
+ 	bool			first;
+-	unsigned int		ci_id;
++	struct cacheinfo	*ci;
+ 	int			err;
+ 	u64			val;
+ 	void			*arch_mon_ctx;
+diff --git a/fs/resctrl/monitor.c b/fs/resctrl/monitor.c
+index f5637855c3ac..7326c28a7908 100644
+--- a/fs/resctrl/monitor.c
++++ b/fs/resctrl/monitor.c
+@@ -361,7 +361,6 @@ static int __mon_event_count(u32 closid, u32 rmid, struct rmid_read *rr)
+ {
+ 	int cpu = smp_processor_id();
+ 	struct rdt_mon_domain *d;
+-	struct cacheinfo *ci;
+ 	struct mbm_state *m;
+ 	int err, ret;
+ 	u64 tval = 0;
+@@ -389,8 +388,7 @@ static int __mon_event_count(u32 closid, u32 rmid, struct rmid_read *rr)
  	}
-@@ -792,9 +798,11 @@ int ocfs2_fiemap(struct inode *inode, st
- 		len_bytes = (u64)le16_to_cpu(rec.e_leaf_clusters) << osb->s_clustersize_bits;
- 		phys_bytes = le64_to_cpu(rec.e_blkno) << osb->sb->s_blocksize_bits;
- 		virt_bytes = (u64)le32_to_cpu(rec.e_cpos) << osb->s_clustersize_bits;
--
-+		/* Release the ip_alloc_sem to prevent deadlock on page fault */
-+		up_read(&OCFS2_I(inode)->ip_alloc_sem);
- 		ret = fiemap_fill_next_extent(fieinfo, virt_bytes, phys_bytes,
- 					      len_bytes, fe_flags);
-+		down_read(&OCFS2_I(inode)->ip_alloc_sem);
- 		if (ret)
- 			break;
  
+ 	/* Summing domains that share a cache, must be on a CPU for that cache. */
+-	ci = get_cpu_cacheinfo_level(cpu, RESCTRL_L3_CACHE);
+-	if (!ci || ci->id != rr->ci_id)
++	if (!cpumask_test_cpu(cpu, &rr->ci->shared_cpu_map))
+ 		return -EINVAL;
+ 
+ 	/*
+@@ -402,7 +400,7 @@ static int __mon_event_count(u32 closid, u32 rmid, struct rmid_read *rr)
+ 	 */
+ 	ret = -EINVAL;
+ 	list_for_each_entry(d, &rr->r->mon_domains, hdr.list) {
+-		if (d->ci_id != rr->ci_id)
++		if (d->ci_id != rr->ci->id)
+ 			continue;
+ 		err = resctrl_arch_rmid_read(rr->r, d, closid, rmid,
+ 					     rr->evtid, &tval, rr->arch_mon_ctx);
+-- 
+2.51.0
+
 
 
 
