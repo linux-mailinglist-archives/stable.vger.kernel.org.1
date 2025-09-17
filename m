@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-180119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32C7B7EA9B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5EAB7E61E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76DAB52361B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:52:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDB723A74C5
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC862FBDE4;
-	Wed, 17 Sep 2025 12:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674152F5A3F;
+	Wed, 17 Sep 2025 12:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTz+NFny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU8+Z5/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2D32D7DF2;
-	Wed, 17 Sep 2025 12:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182B51E489;
+	Wed, 17 Sep 2025 12:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113446; cv=none; b=FtdJmxj0H8d54JDFchWEguVO67TLjJAxTQODbsKXkbQnvla/G4J824xug3RcxWRPyINSN/eEfVsHe3CsmFzQGChA7CKh3QttBW5kXYXL3VyQZwyhOTeI55XfbKIaShe/S7O1aitZcg6YsQTjJVy0+c7SHipQIzi+3p4T90Jj76g=
+	t=1758113092; cv=none; b=cxoufEym3Dyw38AEpuCUFBaGtr2uL4YNRsoafqm7uQtXW1TDN3rVckp/9c7YngRNOkoLCUjoBqgRvl/DrrNCrlcK/p9ZKylTEMnFz8zd6F+7AxsdNfoUqjCMi8jjYQOprwzKJ/y7eexxm0N/sBHXM+0TID9Jw/AnTHUhSjnr3F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113446; c=relaxed/simple;
-	bh=Ke6DPWOLfoyJHvDDhUuDlUgdpbrHKhOPFesvz/7duqo=;
+	s=arc-20240116; t=1758113092; c=relaxed/simple;
+	bh=CrRAy6a2JOpMBwH7yOBXkZ+V9q/czkIlZmhvPwaSBG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MT5gWzF+oHf3cDkfAFtzjWftA9RzajXe8/AxzE0KoScM4mBoNSJT4xMHOzbCE70drPxdMmkSGIUOpSgC5515VqQKDgbhF1fYCZfK6A/V23PIWUZYk2oiZ5jHHJ7la/R3CcWQGOVo+waGe14/oFT24nEOsxEUb+qHgcxrIApTeRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTz+NFny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874FBC4CEF0;
-	Wed, 17 Sep 2025 12:50:45 +0000 (UTC)
+	 MIME-Version; b=XDbOzb5V3BfaFlUbERjBqClYf4B3KPXzXWZDvPipoph4d0r6uXGlHavmSgOfCxz4FThfWqBU3bbmIAsQIuRzkWuSI87i/NL3IAWeWZ8087jlel+or8HjU+NI/5nieeqv7NTPO5DeqSJUh2/G91QAxYEbV99IwtcZfBZmecI7gic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU8+Z5/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897A1C4CEF0;
+	Wed, 17 Sep 2025 12:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113446;
-	bh=Ke6DPWOLfoyJHvDDhUuDlUgdpbrHKhOPFesvz/7duqo=;
+	s=korg; t=1758113092;
+	bh=CrRAy6a2JOpMBwH7yOBXkZ+V9q/czkIlZmhvPwaSBG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTz+NFnyw7FFfl1H3QcJV4qJPSEtGrv/GTnMkvs4QvacEs7USXKNtKI6u1oeBCQHa
-	 alGyjyrs/Isqg0ur37J4wAOn25pqfolVjdQtgd+jmxvcWGXsfVNF8ARYwbLAqsJf2a
-	 OcFHs3IXNC7lZs7K75pmPZu1yNM6xlZH7kquKKS0=
+	b=UU8+Z5/N0whWXKmDPPYmKLlQcf35kBLdIoO7bWVgSOJW9DVNtfG5KWUFMvQU5KyEB
+	 a4pEVGWZ4iWjFCtjnoyZ6hmG+q9vaVRVfPL3LC2EZURh7aHX0jLAKc4UrRspUot1VK
+	 bTIHXJbN9KP2tKHN6j9BiFifTejamTNED6aQl2u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabian Vogt <fvogt@suse.de>
-Subject: [PATCH 6.12 089/140] tty: hvc_console: Call hvc_kick in hvc_write unconditionally
-Date: Wed, 17 Sep 2025 14:34:21 +0200
-Message-ID: <20250917123346.481623004@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 152/189] netfilter: nft_set_bitmap: fix lockdep splat due to missing annotation
+Date: Wed, 17 Sep 2025 14:34:22 +0200
+Message-ID: <20250917123355.582996966@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fvogt@suse.de>
+From: Florian Westphal <fw@strlen.de>
 
-commit cfd956dcb101aa3d25bac321fae923323a47c607 upstream.
+[ Upstream commit 5e13f2c491a4100d208e77e92fe577fe3dbad6c2 ]
 
-After hvc_write completes, call hvc_kick also in the case the output
-buffer has been drained, to ensure tty_wakeup gets called.
+Running new 'set_flush_add_atomic_bitmap' test case for nftables.git
+with CONFIG_PROVE_RCU_LIST=y yields:
 
-This fixes that functions which wait for a drained buffer got stuck
-occasionally.
+net/netfilter/nft_set_bitmap.c:231 RCU-list traversed in non-reader section!!
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by nft/4008:
+ #0: ffff888147f79cd8 (&nft_net->commit_mutex){+.+.}-{4:4}, at: nf_tables_valid_genid+0x2f/0xd0
 
-Cc: stable <stable@kernel.org>
-Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1230062
-Signed-off-by: Fabian Vogt <fvogt@suse.de>
-Link: https://lore.kernel.org/r/2011735.PYKUYFuaPT@fvogt-thinkpad
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ lockdep_rcu_suspicious+0x116/0x160
+ nft_bitmap_walk+0x22d/0x240
+ nf_tables_delsetelem+0x1010/0x1a00
+ ..
+
+This is a false positive, the list cannot be altered while the
+transaction mutex is held, so pass the relevant argument to the iterator.
+
+Fixes tag intentionally wrong; no point in picking this up if earlier
+false-positive-fixups were not applied.
+
+Fixes: 28b7a6b84c0a ("netfilter: nf_tables: avoid false-positive lockdep splats in set walker")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_console.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nft_set_bitmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/hvc/hvc_console.c
-+++ b/drivers/tty/hvc/hvc_console.c
-@@ -543,10 +543,10 @@ static ssize_t hvc_write(struct tty_stru
- 	}
+diff --git a/net/netfilter/nft_set_bitmap.c b/net/netfilter/nft_set_bitmap.c
+index 12390d2e994fc..8a435cc0e98c4 100644
+--- a/net/netfilter/nft_set_bitmap.c
++++ b/net/netfilter/nft_set_bitmap.c
+@@ -221,7 +221,8 @@ static void nft_bitmap_walk(const struct nft_ctx *ctx,
+ 	const struct nft_bitmap *priv = nft_set_priv(set);
+ 	struct nft_bitmap_elem *be;
  
- 	/*
--	 * Racy, but harmless, kick thread if there is still pending data.
-+	 * Kick thread to flush if there's still pending data
-+	 * or to wakeup the write queue.
- 	 */
--	if (hp->n_outbuf)
--		hvc_kick();
-+	hvc_kick();
+-	list_for_each_entry_rcu(be, &priv->list, head) {
++	list_for_each_entry_rcu(be, &priv->list, head,
++				lockdep_is_held(&nft_pernet(ctx->net)->commit_mutex)) {
+ 		if (iter->count < iter->skip)
+ 			goto cont;
  
- 	return written;
- }
+-- 
+2.51.0
+
 
 
 
