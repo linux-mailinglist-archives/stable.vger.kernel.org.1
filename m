@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-180156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C26B7EC45
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9522B7F14A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61ACF3BB1E2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ECC44604D6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DBB330D45;
-	Wed, 17 Sep 2025 12:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68152335935;
+	Wed, 17 Sep 2025 12:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIg6HPG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4O1lWlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E24330D39;
-	Wed, 17 Sep 2025 12:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256D5335931;
+	Wed, 17 Sep 2025 12:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113555; cv=none; b=ix+XsDgdkB6N//fpTRljLCjmijRwPUpoz0r0fwGIwzrShLBawNVV6JxkgdYUklS8N1/f7LJFSYBiCMjzamecxQaT4T41IU5Y9tSCl4LgOD+9dPBP5EKjv+YEq3ecE/PmciDVqxBBwVe5Qf/ZQFNqMowXJcOY/M+o6c3SEBjGXyo=
+	t=1758113951; cv=none; b=p74D1UYkspTrpNSHuJTew+ZRPyMEKRDSjyAEuWujootEpfYld+3nqpiiykw1WYup4FkH2cAGwIbUShbpovpSDRxnFIZqjxC3/wpB/N2rUmAjup+KtOf5mHe0YRzpcO79gS9AyreP4BlMgXlcPReQk/MmDRiytBWYBwQFF9TG4/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113555; c=relaxed/simple;
-	bh=mXbB54AtO5FpaEoxUhp0Feaz0rySCnsNEXXA8kJTEJQ=;
+	s=arc-20240116; t=1758113951; c=relaxed/simple;
+	bh=wxZ0xA/rzyp3A+tiMcQBmWSOjkDc6Rx7M2Hp02SRReI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaeocGl454qag2CcAGsTmFunRcIlE87T1ie5KWNle6ePoVJFD7fKgcWYu95shx3PVG9+dIroBpQWSfeG49RAvpupZTzIur844Tc8c8MvHDyLauKKm7sQFG1VxCgzfNw4Z3RAt4nFzMmZe37SSnWNoVzPw1siH028Mcu+EW9tCXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIg6HPG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B17C4CEF5;
-	Wed, 17 Sep 2025 12:52:35 +0000 (UTC)
+	 MIME-Version; b=bfQ40sN7bqgcwb+7ZIysp9P5zOqS2VLcXxui2OuxLMjuAf0gjqoaDJboAwZbRc93f6fuoZ22s3uZoAaAfDqcCiMjY/LMRaMq2gjS2BQRum9jul93X7xZVDB+0ktGDlQOBzUSpCRsOmrOX5e23Ue8+FnPdU2+dJ2KCB3wje8COik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4O1lWlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0B6C4CEF7;
+	Wed, 17 Sep 2025 12:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113555;
-	bh=mXbB54AtO5FpaEoxUhp0Feaz0rySCnsNEXXA8kJTEJQ=;
+	s=korg; t=1758113950;
+	bh=wxZ0xA/rzyp3A+tiMcQBmWSOjkDc6Rx7M2Hp02SRReI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIg6HPG7mZc14r3+3zhLVR2Kpm49BR5ozmWq0zDgfw3wkML1KZZ/hgzwTQZe8opGw
-	 o0DqWTb3L6nkBFRlSv9R2aGCIV2tjWYDpA2Yepnua6vLjwgzonGvG6ZxGD+ezHtcGc
-	 qcni4wzc8hqwDv8qAqJ3k03m7I299HOwXMoJQe1s=
+	b=l4O1lWlwkQLenFOqyn7d7EWPpb6Vwrodn/XXRJLEFsUh80mFQ/zeRSyDReX8Dkcrg
+	 v0LMFVkXjyO/At/FTArI+PvBmoZUMRGs/lPzAMcFYhi0SzNnK4YDdLX3zTdZDC3aA8
+	 D7OoGbhPVi0r+Sx921vOSUueMLaeQk98UQNmYkWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/140] phy: qualcomm: phy-qcom-eusb2-repeater: fix override properties
+Subject: [PATCH 6.6 069/101] net: bridge: Bounce invalid boolopts
 Date: Wed, 17 Sep 2025 14:34:52 +0200
-Message-ID: <20250917123347.236607166@linuxfoundation.org>
+Message-ID: <20250917123338.508670635@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 942e47ab228c7dd27c2ae043c17e7aab2028082c ]
+[ Upstream commit 8625f5748fea960d2af4f3c3e9891ee8f6f80906 ]
 
-property "qcom,tune-usb2-preem" is for EUSB2_TUNE_USB2_PREEM
-property "qcom,tune-usb2-amplitude" is for EUSB2_TUNE_IUSB2
+The bridge driver currently tolerates options that it does not recognize.
+Instead, it should bounce them.
 
-The downstream correspondence is as follows:
-EUSB2_TUNE_USB2_PREEM: Tx pre-emphasis tuning
-EUSB2_TUNE_IUSB2: HS trasmit amplitude
-EUSB2_TUNE_SQUELCH_U: Squelch detection threshold
-EUSB2_TUNE_HSDISC: HS disconnect threshold
-EUSB2_TUNE_EUSB_SLEW: slew rate
-
-Fixes: 31bc94de7602 ("phy: qualcomm: phy-qcom-eusb2-repeater: Don't zero-out registers")
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Luca Weiss <luca.weiss@fairphone.com>
-Link: https://lore.kernel.org/r/20250812093957.32235-1-mitltlatltl@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: a428afe82f98 ("net: bridge: add support for user-controlled bool options")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/e6fdca3b5a8d54183fbda075daffef38bdd7ddce.1757070067.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/br.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-index 163950e16dbe1..c173c6244d9e5 100644
---- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-+++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-@@ -127,13 +127,13 @@ static int eusb2_repeater_init(struct phy *phy)
- 			     rptr->cfg->init_tbl[i].value);
+diff --git a/net/bridge/br.c b/net/bridge/br.c
+index a6e94ceb7c9a0..a45db67197226 100644
+--- a/net/bridge/br.c
++++ b/net/bridge/br.c
+@@ -312,6 +312,13 @@ int br_boolopt_multi_toggle(struct net_bridge *br,
+ 	int err = 0;
+ 	int opt_id;
  
- 	/* Override registers from devicetree values */
--	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
-+	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
- 		regmap_write(regmap, base + EUSB2_TUNE_USB2_PREEM, val);
++	opt_id = find_next_bit(&bitmap, BITS_PER_LONG, BR_BOOLOPT_MAX);
++	if (opt_id != BITS_PER_LONG) {
++		NL_SET_ERR_MSG_FMT_MOD(extack, "Unknown boolean option %d",
++				       opt_id);
++		return -EINVAL;
++	}
++
+ 	for_each_set_bit(opt_id, &bitmap, BR_BOOLOPT_MAX) {
+ 		bool on = !!(bm->optval & BIT(opt_id));
  
- 	if (!of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &val))
- 		regmap_write(regmap, base + EUSB2_TUNE_HSDISC, val);
- 
--	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
-+	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
- 		regmap_write(regmap, base + EUSB2_TUNE_IUSB2, val);
- 
- 	/* Wait for status OK */
 -- 
 2.51.0
 
