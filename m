@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-180310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DDE8B7F12C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F9FB7EF67
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC7F9188F1B6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D10D316A70A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471602F39DC;
-	Wed, 17 Sep 2025 13:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0265A308F18;
+	Wed, 17 Sep 2025 12:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSxXNS00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0FPiXEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B642FBE0C;
-	Wed, 17 Sep 2025 13:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C881A3167;
+	Wed, 17 Sep 2025 12:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114054; cv=none; b=tRis3GFN0t8BOiLCGPHgA0gFOBEpKFNzv2DVVUL4T2G39+XJuhBJ15Awom6m6EkhYDMB67vQBC3+ZwHdzn1v0NXQTZeo1Crd49HOEkyjDgiuJmde6o8q6vBK52qwwQmBE77u/qhSjk03MkTM7WRBakNCRZ1CFfA3PAg+vKEyWGM=
+	t=1758113776; cv=none; b=QerXKhrRhwRHx0uvkbKLVI0t3uLc+MzsF2rqqV9pwWCyRYj6LURDiQ6Y++1D4bO6yW70CnJGBtggLx+Ypc4ssIVhMfoD8XrIjG9z4fgT+TUFtM3ZJMtRaQDbc0av9knFNOy/Rt1yTxiahH6bfyTZjsbdSh/azOnxEZ79AjTVsbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114054; c=relaxed/simple;
-	bh=E2sOjk8A5sUyl+xJhcSgD7RLx0dTrart8Q+oeRu4hn0=;
+	s=arc-20240116; t=1758113776; c=relaxed/simple;
+	bh=yiH9/gd1V6+SQDNJG23vZ9fnvy2uYrKvNqnJI2NxPC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7JgVo9Ki9KTI/f255H/YjxQTp+KxwdgwEdm1sNzLjjkyJ82WVl3d+Oky2avoDqvR6wgGHIpP8AABkUyYnOFmPWGZQR4P12heHulWyJzUD0LDlbgheDjAK9AUrH1wWyUykVWlGHePET37+wF5O2VkbXarbMBhvUg87KxV5vnG94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSxXNS00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23242C4CEF0;
-	Wed, 17 Sep 2025 13:00:52 +0000 (UTC)
+	 MIME-Version; b=g+w1BVAX5CREBWtHA4m+nevUZ+CG8OtG8cyO9ZXWpF/ieN+mW0nstY5XGhsqgEcqhs2opXZrAJz2+9AR7wBSuwo//fj++PFvo+9POPUv+nMQTfIOztoI54AroQSwLc15gnB0JCWu6CXNEfSBe/w3Ev3s5/gX/qdZs4BOYiy8cfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0FPiXEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F73C4CEF0;
+	Wed, 17 Sep 2025 12:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114053;
-	bh=E2sOjk8A5sUyl+xJhcSgD7RLx0dTrart8Q+oeRu4hn0=;
+	s=korg; t=1758113776;
+	bh=yiH9/gd1V6+SQDNJG23vZ9fnvy2uYrKvNqnJI2NxPC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSxXNS00SKuq/lH4RnowJjrYoFmiZ+K9WQ1nf4xK6o4i47rKBl8qAQ740mwlzUe7y
-	 axioWs2cnfpO45RGlVVcsptr1FHWTh/O652X0HUZU6CTHJscKYReGtPy8lfYTldM2R
-	 um9SmyJui9mD8ZU+BxJXGlJc8C5YlFZYC0Bx5diQ=
+	b=j0FPiXEhZsdP7bJt8kGMtB09whpV2aKWb1BXD1pY/QCkoJ0lP5YoOL+w1eGqtwJng
+	 Y5WuH8El82rb6EvqDnFLCc/8F1GxkxE80l+sZpRWC4A+OGIlvZrwD855yunQxQ469B
+	 1WI8POmYsMt3+k2lwQdH9KyICnjSXXrzBgaZqmc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Alexander Dahl <ada@thorsis.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/78] flexfiles/pNFS: fix NULL checks on result of ff_layout_choose_ds_for_read
-Date: Wed, 17 Sep 2025 14:34:30 +0200
-Message-ID: <20250917123329.799771370@linuxfoundation.org>
+Subject: [PATCH 6.6 048/101] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
+Date: Wed, 17 Sep 2025 14:34:31 +0200
+Message-ID: <20250917123338.004395642@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 5a46d2339a5ae268ede53a221f20433d8ea4f2f9 ]
+[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
 
-Recent commit f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS
-errors") has changed the error return type of ff_layout_choose_ds_for_read() from
-NULL to an error pointer. However, not all code paths have been updated
-to match the change. Thus, some non-NULL checks will accept error pointers
-as a valid return value.
+Having setup time 0 violates tAR, tCLR of some chips, for instance
+TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
+being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
+98 dc 90 15 76 ...).
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS errors")
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
+[1], but it looks more appropriate to just calculate setup time properly.
+
+[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
+
+Cc: stable@vger.kernel.org
+Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/mtd/nand/raw/atmel/nand-controller.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 5dd16f4ae74d1..21016ee2eafc8 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -756,8 +756,11 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
- 			continue;
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1378,13 +1378,23 @@ static int atmel_smc_nand_prepare_smccon
+ 		return ret;
  
- 		if (check_device &&
--		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node))
-+		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node)) {
-+			// reinitialize the error state in case if this is the last iteration
-+			ds = ERR_PTR(-EINVAL);
- 			continue;
-+		}
- 
- 		*best_idx = idx;
- 		break;
-@@ -787,7 +790,7 @@ ff_layout_choose_best_ds_for_read(struct pnfs_layout_segment *lseg,
- 	struct nfs4_pnfs_ds *ds;
- 
- 	ds = ff_layout_choose_valid_ds_for_read(lseg, start_idx, best_idx);
--	if (ds)
-+	if (!IS_ERR(ds))
- 		return ds;
- 	return ff_layout_choose_any_ds_for_read(lseg, start_idx, best_idx);
- }
-@@ -801,7 +804,7 @@ ff_layout_get_ds_for_read(struct nfs_pageio_descriptor *pgio,
- 
- 	ds = ff_layout_choose_best_ds_for_read(lseg, pgio->pg_mirror_idx,
- 					       best_idx);
--	if (ds || !pgio->pg_mirror_idx)
-+	if (!IS_ERR(ds) || !pgio->pg_mirror_idx)
- 		return ds;
- 	return ff_layout_choose_best_ds_for_read(lseg, 0, best_idx);
- }
-@@ -859,7 +862,7 @@ ff_layout_pg_init_read(struct nfs_pageio_descriptor *pgio,
- 	req->wb_nio = 0;
- 
- 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
--	if (!ds) {
-+	if (IS_ERR(ds)) {
- 		if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
- 			goto out_mds;
- 		pnfs_generic_pg_cleanup(pgio);
-@@ -1063,11 +1066,13 @@ static void ff_layout_resend_pnfs_read(struct nfs_pgio_header *hdr)
- {
- 	u32 idx = hdr->pgio_mirror_idx + 1;
- 	u32 new_idx = 0;
-+	struct nfs4_pnfs_ds *ds;
- 
--	if (ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx))
--		ff_layout_send_layouterror(hdr->lseg);
--	else
-+	ds = ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx);
-+	if (IS_ERR(ds))
- 		pnfs_error_mark_layout_for_return(hdr->inode, hdr->lseg);
-+	else
-+		ff_layout_send_layouterror(hdr->lseg);
- 	pnfs_read_resend_pnfs(hdr, new_idx);
- }
- 
--- 
-2.51.0
-
+ 	/*
++	 * Read setup timing depends on the operation done on the NAND:
++	 *
++	 * NRD_SETUP = max(tAR, tCLR)
++	 */
++	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
++	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
++	totalcycles += ncycles;
++	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
++	if (ret)
++		return ret;
++
++	/*
+ 	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
+-	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
+-	 *
+-	 * NRD_SETUP is always 0.
++	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
+ 	 */
+ 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
+ 	ncycles = max(totalcycles, ncycles);
 
 
 
