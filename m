@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-179976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7FBB7E352
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EA0B7EA3E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089D5623EAE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E27D3BD145
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA2F1EE033;
-	Wed, 17 Sep 2025 12:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06AB323414;
+	Wed, 17 Sep 2025 12:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FUp1twS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kNYgo1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5791E489;
-	Wed, 17 Sep 2025 12:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8B832340F;
+	Wed, 17 Sep 2025 12:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112989; cv=none; b=gqZfJM0OWlAPK69lWSce47LwNPS/5TzqMDtEtpTzYGYQhxvuySi3RwBiEZ3IHo2O+7VBX84WW0OF3LduXLv/V9RrJdMOw7eZ71KfffqGQKlN/MahZiKDd4zRnvIbhi3os+blFz16/SYff8MhIW006NWKF70kiA4ewm+8aLnNzUE=
+	t=1758113410; cv=none; b=HaO3JyNNgbpDLBwWb7uh55a+JFB1ltO13CDibDtRxONQT4OyHj7K68LrKiQz8ZwQ9N7zdwHG2RYBKHM3W79y/hU6ybuJ7YI8A4LQovhqWhx7PYk9CNK0SvqapVSzcoNhwM/1O52iV0VLWPV5v+7f2FDkJ8D7Jcmm2GaTzGZlEQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112989; c=relaxed/simple;
-	bh=sTPMpxYKwKQc9/cp5I+GdhWTOw9QJ+cHLa9g2ADLc2Y=;
+	s=arc-20240116; t=1758113410; c=relaxed/simple;
+	bh=9saPuyV2pwM229ecWdprAKYe8Qs97bC7ReZl7mr+eZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdqLIud9RobeBHzI326SHkwyCH0pGsk5rs67eojbSX16otgsjr9ynObAuGc19fz1ODP9xzQt9VFloymg4nvy3SHiXIuH81iYlq35r9nS53eyZ8HLSkol9EH8rsxJuGrB85q3S9ifXuqFFTp3eMv6oG0nZUNqQUfjhQGDKooXKmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FUp1twS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94592C4CEF7;
-	Wed, 17 Sep 2025 12:43:08 +0000 (UTC)
+	 MIME-Version; b=bMDR+zgEFebYwm8ZN+q9WkjY6k7VYcrD+pESSt4mF+LM3PL2ZYGvrIhR3fKnxL3jUp479LADWl2oc/5UKPNpPw7vw9hmLhUoYlkhv/gmlNUXjbwEDVFRW+ZYDk3f+bdl0k2MTtP96agcR4xKOliFs+3loHLIUgZcUIGIMPvRDuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kNYgo1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05237C4CEF0;
+	Wed, 17 Sep 2025 12:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112989;
-	bh=sTPMpxYKwKQc9/cp5I+GdhWTOw9QJ+cHLa9g2ADLc2Y=;
+	s=korg; t=1758113410;
+	bh=9saPuyV2pwM229ecWdprAKYe8Qs97bC7ReZl7mr+eZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FUp1twSV2IllreY6iAGe7sa+SElJqGKTm+1rV4o0E41036tagfcliO5T7cs6RtgK
-	 j/Da8ke/NCgVJV/2M7GtoG8kHVYwheqIKbyGLxCYykszI1NQXFJht6oq+vC+6DdL9q
-	 IJTY9aH9foGSqiGQr8BUrgP3SP0M+36COhyDmy3Q=
+	b=2kNYgo1cGyzZqaamNEy6LA/ZuQMKOBSlWnjF+zcQW6MmjbdASKCgeJ0omtiD5TcGp
+	 qSEP9RI2SxJgbNp1WxE8m2bUknt6O9aVbzHhvLPiRMikLRSmhjIY1qduRrFdrVetzz
+	 JjTneAn6LvLoZI0SFMedbKr0GxIbtMbe7ENfqHQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 136/189] net: dsa: b53: fix ageing time for BCM53101
-Date: Wed, 17 Sep 2025 14:34:06 +0200
-Message-ID: <20250917123355.186158921@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Zhang Zhaotian <zhangzhaotian@huawei.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.12 075/140] kernfs: Fix UAF in polling when open file is released
+Date: Wed, 17 Sep 2025 14:34:07 +0200
+Message-ID: <20250917123346.146185303@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,301 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 674b34c4c770551e916ae707829c7faea4782d3a ]
+commit 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f upstream.
 
-For some reason Broadcom decided that BCM53101 uses 0.5s increments for
-the ageing time register, but kept the field width the same [1]. Due to
-this, the actual ageing time was always half of what was configured.
+A use-after-free (UAF) vulnerability was identified in the PSI (Pressure
+Stall Information) monitoring mechanism:
 
-Fix this by adapting the limits and value calculation for BCM53101.
+BUG: KASAN: slab-use-after-free in psi_trigger_poll+0x3c/0x140
+Read of size 8 at addr ffff3de3d50bd308 by task systemd/1
 
-So far it looks like this is the only chip with the increased tick
-speed:
+psi_trigger_poll+0x3c/0x140
+cgroup_pressure_poll+0x70/0xa0
+cgroup_file_poll+0x8c/0x100
+kernfs_fop_poll+0x11c/0x1c0
+ep_item_poll.isra.0+0x188/0x2c0
 
-$ grep -l -r "Specifies the aging time in 0.5 seconds" cdk/PKG/chip | sort
-cdk/PKG/chip/bcm53101/bcm53101_a0_defs.h
+Allocated by task 1:
+cgroup_file_open+0x88/0x388
+kernfs_fop_open+0x73c/0xaf0
+do_dentry_open+0x5fc/0x1200
+vfs_open+0xa0/0x3f0
+do_open+0x7e8/0xd08
+path_openat+0x2fc/0x6b0
+do_filp_open+0x174/0x368
 
-$ grep -l -r "Specifies the aging time in seconds" cdk/PKG/chip | sort
-cdk/PKG/chip/bcm53010/bcm53010_a0_defs.h
-cdk/PKG/chip/bcm53020/bcm53020_a0_defs.h
-cdk/PKG/chip/bcm53084/bcm53084_a0_defs.h
-cdk/PKG/chip/bcm53115/bcm53115_a0_defs.h
-cdk/PKG/chip/bcm53118/bcm53118_a0_defs.h
-cdk/PKG/chip/bcm53125/bcm53125_a0_defs.h
-cdk/PKG/chip/bcm53128/bcm53128_a0_defs.h
-cdk/PKG/chip/bcm53134/bcm53134_a0_defs.h
-cdk/PKG/chip/bcm53242/bcm53242_a0_defs.h
-cdk/PKG/chip/bcm53262/bcm53262_a0_defs.h
-cdk/PKG/chip/bcm53280/bcm53280_a0_defs.h
-cdk/PKG/chip/bcm53280/bcm53280_b0_defs.h
-cdk/PKG/chip/bcm53600/bcm53600_a0_defs.h
-cdk/PKG/chip/bcm89500/bcm89500_a0_defs.h
+Freed by task 8462:
+cgroup_file_release+0x130/0x1f8
+kernfs_drain_open_files+0x17c/0x440
+kernfs_drain+0x2dc/0x360
+kernfs_show+0x1b8/0x288
+cgroup_file_show+0x150/0x268
+cgroup_pressure_write+0x1dc/0x340
+cgroup_file_write+0x274/0x548
 
-[1] https://github.com/Broadcom/OpenMDK/blob/a5d3fc9b12af3eeb68f2ca0ce7ec4056cd14d6c2/cdk/PKG/chip/bcm53101/bcm53101_a0_defs.h#L28966
+Reproduction Steps:
+1. Open test/cpu.pressure and establish epoll monitoring
+2. Disable monitoring: echo 0 > test/cgroup.pressure
+3. Re-enable monitoring: echo 1 > test/cgroup.pressure
 
-Fixes: e39d14a760c0 ("net: dsa: b53: implement setting ageing time")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250905124507.59186-1-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The race condition occurs because:
+1. When cgroup.pressure is disabled (echo 0 > cgroup.pressure), it:
+   - Releases PSI triggers via cgroup_file_release()
+   - Frees of->priv through kernfs_drain_open_files()
+2. While epoll still holds reference to the file and continues polling
+3. Re-enabling (echo 1 > cgroup.pressure) accesses freed of->priv
+
+epolling			disable/enable cgroup.pressure
+fd=open(cpu.pressure)
+while(1)
+...
+epoll_wait
+kernfs_fop_poll
+kernfs_get_active = true	echo 0 > cgroup.pressure
+...				cgroup_file_show
+				kernfs_show
+				// inactive kn
+				kernfs_drain_open_files
+				cft->release(of);
+				kfree(ctx);
+				...
+kernfs_get_active = false
+				echo 1 > cgroup.pressure
+				kernfs_show
+				kernfs_activate_one(kn);
+kernfs_fop_poll
+kernfs_get_active = true
+cgroup_file_poll
+psi_trigger_poll
+// UAF
+...
+end: close(fd)
+
+To address this issue, introduce kernfs_get_active_of() for kernfs open
+files to obtain active references. This function will fail if the open file
+has been released. Replace kernfs_get_active() with kernfs_get_active_of()
+to prevent further operations on released file descriptors.
+
+Fixes: 34f26a15611a ("sched/psi: Per-cgroup PSI accounting disable/re-enable interface")
+Cc: stable <stable@kernel.org>
+Reported-by: Zhang Zhaotian <zhangzhaotian@huawei.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20250822070715.1565236-2-chenridong@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ fs/kernfs/file.c |   58 ++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index d15d912690c40..073d20241a4c9 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1229,9 +1229,15 @@ static int b53_setup(struct dsa_switch *ds)
+--- a/fs/kernfs/file.c
++++ b/fs/kernfs/file.c
+@@ -70,6 +70,24 @@ static struct kernfs_open_node *of_on(st
+ 					 !list_empty(&of->list));
+ }
+ 
++/* Get active reference to kernfs node for an open file */
++static struct kernfs_open_file *kernfs_get_active_of(struct kernfs_open_file *of)
++{
++	/* Skip if file was already released */
++	if (unlikely(of->released))
++		return NULL;
++
++	if (!kernfs_get_active(of->kn))
++		return NULL;
++
++	return of;
++}
++
++static void kernfs_put_active_of(struct kernfs_open_file *of)
++{
++	return kernfs_put_active(of->kn);
++}
++
+ /**
+  * kernfs_deref_open_node_locked - Get kernfs_open_node corresponding to @kn
+  *
+@@ -139,7 +157,7 @@ static void kernfs_seq_stop_active(struc
+ 
+ 	if (ops->seq_stop)
+ 		ops->seq_stop(sf, v);
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ }
+ 
+ static void *kernfs_seq_start(struct seq_file *sf, loff_t *ppos)
+@@ -152,7 +170,7 @@ static void *kernfs_seq_start(struct seq
+ 	 * the ops aren't called concurrently for the same open file.
  	 */
- 	ds->untag_vlan_aware_bridge_pvid = true;
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return ERR_PTR(-ENODEV);
  
--	/* Ageing time is set in seconds */
--	ds->ageing_time_min = 1 * 1000;
--	ds->ageing_time_max = AGE_TIME_MAX * 1000;
-+	if (dev->chip_id == BCM53101_DEVICE_ID) {
-+		/* BCM53101 uses 0.5 second increments */
-+		ds->ageing_time_min = 1 * 500;
-+		ds->ageing_time_max = AGE_TIME_MAX * 500;
-+	} else {
-+		/* Everything else uses 1 second increments */
-+		ds->ageing_time_min = 1 * 1000;
-+		ds->ageing_time_max = AGE_TIME_MAX * 1000;
-+	}
- 
- 	ret = b53_reset_switch(dev);
- 	if (ret) {
-@@ -2448,7 +2454,10 @@ int b53_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
+ 	ops = kernfs_ops(of->kn);
+@@ -238,7 +256,7 @@ static ssize_t kernfs_file_read_iter(str
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn)) {
++	if (!kernfs_get_active_of(of)) {
+ 		len = -ENODEV;
+ 		mutex_unlock(&of->mutex);
+ 		goto out_free;
+@@ -252,7 +270,7 @@ static ssize_t kernfs_file_read_iter(str
  	else
- 		reg = B53_AGING_TIME_CONTROL;
+ 		len = -EINVAL;
  
--	atc = DIV_ROUND_CLOSEST(msecs, 1000);
-+	if (dev->chip_id == BCM53101_DEVICE_ID)
-+		atc = DIV_ROUND_CLOSEST(msecs, 500);
-+	else
-+		atc = DIV_ROUND_CLOSEST(msecs, 1000);
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	mutex_unlock(&of->mutex);
  
- 	if (!is5325(dev) && !is5365(dev))
- 		atc |= AGE_CHANGE;
--- 
-2.51.0
-
+ 	if (len < 0)
+@@ -323,7 +341,7 @@ static ssize_t kernfs_fop_write_iter(str
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn)) {
++	if (!kernfs_get_active_of(of)) {
+ 		mutex_unlock(&of->mutex);
+ 		len = -ENODEV;
+ 		goto out_free;
+@@ -335,7 +353,7 @@ static ssize_t kernfs_fop_write_iter(str
+ 	else
+ 		len = -EINVAL;
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	mutex_unlock(&of->mutex);
+ 
+ 	if (len > 0)
+@@ -357,13 +375,13 @@ static void kernfs_vma_open(struct vm_ar
+ 	if (!of->vm_ops)
+ 		return;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return;
+ 
+ 	if (of->vm_ops->open)
+ 		of->vm_ops->open(vma);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ }
+ 
+ static vm_fault_t kernfs_vma_fault(struct vm_fault *vmf)
+@@ -375,14 +393,14 @@ static vm_fault_t kernfs_vma_fault(struc
+ 	if (!of->vm_ops)
+ 		return VM_FAULT_SIGBUS;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	ret = VM_FAULT_SIGBUS;
+ 	if (of->vm_ops->fault)
+ 		ret = of->vm_ops->fault(vmf);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+@@ -395,7 +413,7 @@ static vm_fault_t kernfs_vma_page_mkwrit
+ 	if (!of->vm_ops)
+ 		return VM_FAULT_SIGBUS;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	ret = 0;
+@@ -404,7 +422,7 @@ static vm_fault_t kernfs_vma_page_mkwrit
+ 	else
+ 		file_update_time(file);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+@@ -418,14 +436,14 @@ static int kernfs_vma_access(struct vm_a
+ 	if (!of->vm_ops)
+ 		return -EINVAL;
+ 
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		return -EINVAL;
+ 
+ 	ret = -EINVAL;
+ 	if (of->vm_ops->access)
+ 		ret = of->vm_ops->access(vma, addr, buf, len, write);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+@@ -455,7 +473,7 @@ static int kernfs_fop_mmap(struct file *
+ 	mutex_lock(&of->mutex);
+ 
+ 	rc = -ENODEV;
+-	if (!kernfs_get_active(of->kn))
++	if (!kernfs_get_active_of(of))
+ 		goto out_unlock;
+ 
+ 	ops = kernfs_ops(of->kn);
+@@ -490,7 +508,7 @@ static int kernfs_fop_mmap(struct file *
+ 	}
+ 	vma->vm_ops = &kernfs_vm_ops;
+ out_put:
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ out_unlock:
+ 	mutex_unlock(&of->mutex);
+ 
+@@ -852,7 +870,7 @@ static __poll_t kernfs_fop_poll(struct f
+ 	struct kernfs_node *kn = kernfs_dentry_node(filp->f_path.dentry);
+ 	__poll_t ret;
+ 
+-	if (!kernfs_get_active(kn))
++	if (!kernfs_get_active_of(of))
+ 		return DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
+ 
+ 	if (kn->attr.ops->poll)
+@@ -860,7 +878,7 @@ static __poll_t kernfs_fop_poll(struct f
+ 	else
+ 		ret = kernfs_generic_poll(of, wait);
+ 
+-	kernfs_put_active(kn);
++	kernfs_put_active_of(of);
+ 	return ret;
+ }
+ 
+@@ -875,7 +893,7 @@ static loff_t kernfs_fop_llseek(struct f
+ 	 * the ops aren't called concurrently for the same open file.
+ 	 */
+ 	mutex_lock(&of->mutex);
+-	if (!kernfs_get_active(of->kn)) {
++	if (!kernfs_get_active_of(of)) {
+ 		mutex_unlock(&of->mutex);
+ 		return -ENODEV;
+ 	}
+@@ -886,7 +904,7 @@ static loff_t kernfs_fop_llseek(struct f
+ 	else
+ 		ret = generic_file_llseek(file, offset, whence);
+ 
+-	kernfs_put_active(of->kn);
++	kernfs_put_active_of(of);
+ 	mutex_unlock(&of->mutex);
+ 	return ret;
+ }
 
 
 
