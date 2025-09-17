@@ -1,163 +1,93 @@
-Return-Path: <stable+bounces-179834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54068B7C54F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:58:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F52B7C783
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43A51461590
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 11:58:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9D6E16343F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE097371E9A;
-	Wed, 17 Sep 2025 11:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Th88gu7U"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB413431FA;
+	Wed, 17 Sep 2025 12:03:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1AF371E82
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 11:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9167E1B394F;
+	Wed, 17 Sep 2025 12:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758110273; cv=none; b=dLG+D7levpJWZdZA2QvPobf3BycRuHgeX00UmPjeQFEJhNRTHewD1g8b2jnZooPHKqmAQ+FDtPnlUMZ4wGKm0pJwnPJaebUTcW48S4qJhlR9h6F6OpE94V/gJPi6r7ZkMIv3RTkKO60k5rgCNfMM8hmOvqYpUqByNoYRlRtV1AA=
+	t=1758110605; cv=none; b=ofI6JcY1n2BtOTIX+2YO7N/ynDqLmo3wXwGIYlBsgGjkcH9/B/91N+lFzI6b3yl8uoHVoX4giRNtuVtEPP9QYKTdVyCNzvknWyNBUaSjoKFgk3eUp7FOYSPf/Gl42q88Ltv66t3Vku6GrYrmQam5aSOFQdK2YIFyE/AcuO+9GPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758110273; c=relaxed/simple;
-	bh=tLhhj2lLyQQgreVxKhewCkhknQgvHFQyySY/yKocu0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBuHtZCJxJoJyGFo8bF+lXAHSQ+ssIJFp2klWL5w38SBbzqVAdDzjyTwX38R5r7vKBfJWauZc/tEtLmMKizVtZV5Wfiycx0a/2qOw/MP8Gb4w/td6TTXO5KqkLTuv3mYKfs6TC9vYHnj4TKyswH35D3Ww/AtDQXmLMkgMMcN+lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Th88gu7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A98C4CEFB;
-	Wed, 17 Sep 2025 11:57:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758110271;
-	bh=tLhhj2lLyQQgreVxKhewCkhknQgvHFQyySY/yKocu0Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Th88gu7UWbudmc44/pRXLxZTgf1w2AKt0hya6fmKlNzOIF9n+FXw1z2qBd7zSNYqI
-	 aWfqMqHJhSQbh3LwU+W00Tl9tCg0Za+c2ecb+UIaJhk9FW8wuT+gQgEfy7d527zQ89
-	 NGhWrcJO7TSJemSElHydu7TkWGGQdRmv7b/DPP8vnES5hxCYVDd3E+Z9QHHeR+ukoW
-	 +ibvXbCEmeujNTEetjexmDX/ARIzTV8mdp30riqi5Gby8UI8Z/E0nfpP2SBxOHmAc9
-	 GbBdeQf0NOKe+r83EVTT7UExGSaiQCVs12bHSX1J8Fq1w7BjBWrmdav7KxLlgJKEAT
-	 aIAH+XQy8IKXA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Alex Elder <elder@riscstar.com>,
-	stable <stable@kernel.org>,
-	Conor Dooley <conor@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 3/3] dt-bindings: serial: 8250: move a constraint
-Date: Wed, 17 Sep 2025 07:57:46 -0400
-Message-ID: <20250917115746.482046-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917115746.482046-1-sashal@kernel.org>
-References: <2025091759-buddy-verdict-96be@gregkh>
- <20250917115746.482046-1-sashal@kernel.org>
+	s=arc-20240116; t=1758110605; c=relaxed/simple;
+	bh=PeD5ipKnqWAnoXCl9DWjmZnd/4y6h3z7ghiA+7tKM60=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=g0miAzJznsIKgj93G0tSrkd1w1GJmV7GlcOGFmIkVRqUw3zMFIPL5+1iyseJvgxmoFIMkRXgml2OEkM+piWhIgiN7Jl62RgOEilE3tTW3yXlY17DM9/pMj45LwMdMzs4FTahNI/vKtwqVeOk8YxmRHgoCkpoc3FL7fSJQIbi8B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.0.107] (unknown [114.241.87.235])
+	by APP-05 (Coremail) with SMTP id zQCowADnhxF7o8poUhdeAw--.4222S2;
+	Wed, 17 Sep 2025 20:03:08 +0800 (CST)
+Message-ID: <b68478db-5a8c-4b5f-a4d1-f4202ca1f062@iscas.ac.cn>
+Date: Wed, 17 Sep 2025 20:03:08 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Charlie Jenkins <charlie@rivosinc.com>, Yangyu Chen <cyy@cyyself.name>,
+ Han Gao <rabenda.cn@gmail.com>, Icenowy Zheng <uwu@icenowy.me>,
+ Inochi Amaoto <inochiama@gmail.com>, Vivian Wang <wangruikang@iscas.ac.cn>,
+ Yao Zi <ziyao@disroot.org>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Subject: riscv: Backport request for mmap address space fixes to 6.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:zQCowADnhxF7o8poUhdeAw--.4222S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrJrWfur1kAw1xCFyxAry5Jwb_yoWxXrg_GF
+	1UJrWxJa4UXFWUWFWUKrWrArn5CaykZ3y3Jrs7Ww4IyF4UC3W7Ga1vkry8CwsrAF47AF93
+	t3WIya4Svr12qjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkI
+	wI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+	73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-From: Alex Elder <elder@riscstar.com>
+Hi,
 
-[ Upstream commit 387d00028cccee7575f6416953bef62f849d83e3 ]
+I would like to request backport of these two commits to 6.6.y:
 
-A block that required a "spacemit,k1-uart" compatible node to
-specify two clocks was placed in the wrong spot in the binding.
-Conor Dooley pointed out it belongs earlier in the file, as part
-of the initial "allOf".
+b5b4287accd702f562a49a60b10dbfaf7d40270f ("riscv: mm: Use hint address in mmap if available")
+2116988d5372aec51f8c4fb85bf8e305ecda47a0 ("riscv: mm: Do not restrict mmap address based on hint")
 
-Fixes: 2c0594f9f0629 ("dt-bindings: serial: 8250: support an optional second clock")
-Cc: stable <stable@kernel.org>
-Reported-by: Conor Dooley <conor@kernel.org>
-Closes: https://lore.kernel.org/lkml/20250729-reshuffle-contented-e6def76b540b@spud/
-Signed-off-by: Alex Elder <elder@riscstar.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20250813032151.2330616-1-elder@riscstar.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../devicetree/bindings/serial/8250.yaml      | 46 +++++++++----------
- 1 file changed, 22 insertions(+), 24 deletions(-)
+Together, they amount to disabling arch_get_mmap_end and
+arch_get_mmap_base for riscv.
 
-diff --git a/Documentation/devicetree/bindings/serial/8250.yaml b/Documentation/devicetree/bindings/serial/8250.yaml
-index e46bee8d25bf0..f59c0b37e8ebb 100644
---- a/Documentation/devicetree/bindings/serial/8250.yaml
-+++ b/Documentation/devicetree/bindings/serial/8250.yaml
-@@ -48,7 +48,6 @@ allOf:
-       oneOf:
-         - required: [ clock-frequency ]
-         - required: [ clocks ]
--
-   - if:
-       properties:
-         compatible:
-@@ -66,6 +65,28 @@ allOf:
-           items:
-             - const: core
-             - const: bus
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - spacemit,k1-uart
-+              - nxp,lpc1850-uart
-+    then:
-+      required:
-+        - clocks
-+        - clock-names
-+      properties:
-+        clocks:
-+          minItems: 2
-+        clock-names:
-+          minItems: 2
-+    else:
-+      properties:
-+        clocks:
-+          maxItems: 1
-+        clock-names:
-+          maxItems: 1
- 
- properties:
-   compatible:
-@@ -264,29 +285,6 @@ required:
-   - reg
-   - interrupts
- 
--if:
--  properties:
--    compatible:
--      contains:
--        enum:
--          - spacemit,k1-uart
--          - nxp,lpc1850-uart
--then:
--  required:
--    - clocks
--    - clock-names
--  properties:
--    clocks:
--      minItems: 2
--    clock-names:
--      minItems: 2
--else:
--  properties:
--    clocks:
--      maxItems: 1
--    clock-names:
--      maxItems: 1
--
- unevaluatedProperties: false
- 
- examples:
--- 
-2.51.0
+I would like to note that the first patch conflicts with commit
+724103429a2d ("riscv: mm: Fixup compat arch_get_mmap_end") in the stable
+linux-6.6.y branch. STACK_TOP_MAX should end up as TASK_SIZE, *not*
+TASK_SIZE_64.
+
+Thanks,
+Vivian "dramforever" Wang
+
 
 
