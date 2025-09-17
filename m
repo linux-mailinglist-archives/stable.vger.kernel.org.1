@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-180356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C765B7F1F6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F277AB7EC48
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C095586B86
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:10:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 914BE3BB4EF
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB7E3195F7;
-	Wed, 17 Sep 2025 13:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403D8330D4B;
+	Wed, 17 Sep 2025 12:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATMFdKRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vM9s5PY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC3133C75C;
-	Wed, 17 Sep 2025 13:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3CC330D3E;
+	Wed, 17 Sep 2025 12:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114204; cv=none; b=tTFaQTRy/lxcvdt8OEf6IGJc6gC35g60+lxmAU5xgX1lbyQQqOC6TsuKIidg48FqpXR2fjLN6DDYGp59ckWlA9c4GKDJRVPkJxzOHDX0ZIShyXJv/C9liEI/mD5CAmi3ZtjeZCXTLTVffsOhFkkCwKmfYHgCKe8B0E5mCI2ptoo=
+	t=1758113559; cv=none; b=DMwmhmIyrU0+wro88X3BC+2rPrwfLj1wa+DP2RoRpD8cFhy20AXCMKZ+VM5WsQwh8Mlnwbmzz4ej5yEXI5J2EllRPJ3VnYRApsGyFdwY8syiBidlMt8JXEPSc3FLpEeVKsyxmfvjnjWqqldAbWAbiCQob7pwzk+6a5LwCddhsxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114204; c=relaxed/simple;
-	bh=X3f9ruGyPDpU55htK2x8aLLhyfjh4wCDthEB1bHOzA4=;
+	s=arc-20240116; t=1758113559; c=relaxed/simple;
+	bh=TDQ4H1FhoYaW2LkNoP5F+gj8HNCKdjqBXOV4Tis2ZeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Igm2KdKWLXg9idYsIMGWsWXJpsbbbEDfLlFZl/SY8CzrfMLF6j5Cg2O3WQk3+SZuxmVnDMij0BlnL7P0O5psaY85DbBqXzEMaCBc/Ht7GQiQojZkin8WQe6DTD9PaoPug6lG2tDn3ZwJBuwNiiy4vAX/5TGl6pRCOLVqrJhDOUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATMFdKRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B57BC4CEF5;
-	Wed, 17 Sep 2025 13:03:21 +0000 (UTC)
+	 MIME-Version; b=E+kMqqzVD0IQ+eQqR4jTDl3aJe+QNPgYv25k8y7q8+s0nkbkFwTabS768/dwOs99O5Lbv/HkSTQk3RBL41hRdrhweHR+CyJmyfCSatYq/6p0tvRWAP3ssXwHicAhkyZkQs1vlVcZOAyuMTXTT1V1Xfi8iw2N+NEJS9RbywILwWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vM9s5PY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A00CC4CEF0;
+	Wed, 17 Sep 2025 12:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114202;
-	bh=X3f9ruGyPDpU55htK2x8aLLhyfjh4wCDthEB1bHOzA4=;
+	s=korg; t=1758113558;
+	bh=TDQ4H1FhoYaW2LkNoP5F+gj8HNCKdjqBXOV4Tis2ZeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATMFdKRUPX48B+6pYnMpfrwh2ztXXZ/qzhhiZDOr1zHIig97mBQzi84+GQLhslEjt
-	 WGcXuJ13yJ0xumVMa6x+qquzIrocouMXAa2990JpMhZpGD/i7vJjzRhyxNSWUAvCEv
-	 C8ZaSUH4NAo60KuY04py8B+ia3Xv48k/xHj+2NY4=
+	b=vM9s5PY35gPTHuST5zo4rEiNs57AlJ9tf6POHoHj9l2ucEg6lBo1VSq3Y71zIZigC
+	 OA8kH7Ce3LAu4zDRtLbOi3q/bkgIeVSAdD0/MpZplx7n4wGrv6yseZz8QGzXXIDxPs
+	 jC9JWE44CnWzRVtsEq7lpiPSwVqFOadYTnqfr8qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Weimer <fweimer@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.1 32/78] fuse: prevent overflow in copy_file_range return value
+	Yi Sun <yi.sun@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 121/140] dmaengine: idxd: Remove improper idxd_free
 Date: Wed, 17 Sep 2025 14:34:53 +0200
-Message-ID: <20250917123330.347159821@linuxfoundation.org>
+Message-ID: <20250917123347.266177023@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Yi Sun <yi.sun@intel.com>
 
-commit 1e08938c3694f707bb165535df352ac97a8c75c9 upstream.
+[ Upstream commit f41c538881eec4dcf5961a242097d447f848cda6 ]
 
-The FUSE protocol uses struct fuse_write_out to convey the return value of
-copy_file_range, which is restricted to uint32_t.  But the COPY_FILE_RANGE
-interface supports a 64-bit size copies.
+The call to idxd_free() introduces a duplicate put_device() leading to a
+reference count underflow:
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 15 PID: 4428 at lib/refcount.c:28 refcount_warn_saturate+0xbe/0x110
+...
+Call Trace:
+ <TASK>
+  idxd_remove+0xe4/0x120 [idxd]
+  pci_device_remove+0x3f/0xb0
+  device_release_driver_internal+0x197/0x200
+  driver_detach+0x48/0x90
+  bus_remove_driver+0x74/0xf0
+  pci_unregister_driver+0x2e/0xb0
+  idxd_exit_module+0x34/0x7a0 [idxd]
+  __do_sys_delete_module.constprop.0+0x183/0x280
+  do_syscall_64+0x54/0xd70
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Currently the number of bytes copied is silently truncated to 32-bit, which
-may result in poor performance or even failure to copy in case of
-truncation to zero.
+The idxd_unregister_devices() which is invoked at the very beginning of
+idxd_remove(), already takes care of the necessary put_device() through the
+following call path:
+idxd_unregister_devices() -> device_unregister() -> put_device()
 
-Reported-by: Florian Weimer <fweimer@redhat.com>
-Closes: https://lore.kernel.org/all/lhuh5ynl8z5.fsf@oldenburg.str.redhat.com/
-Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
-Cc: <stable@vger.kernel.org> # v4.20
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In addition, when CONFIG_DEBUG_KOBJECT_RELEASE is enabled, put_device() may
+trigger asynchronous cleanup via schedule_delayed_work(). If idxd_free() is
+called immediately after, it can result in a use-after-free.
+
+Remove the improper idxd_free() to avoid both the refcount underflow and
+potential memory corruption during module unload.
+
+Fixes: d5449ff1b04d ("dmaengine: idxd: Add missing idxd cleanup to fix memory leak in remove call")
+Signed-off-by: Yi Sun <yi.sun@intel.com>
+Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+
+Link: https://lore.kernel.org/r/20250729150313.1934101-2-yi.sun@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/idxd/init.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3103,7 +3103,7 @@ static ssize_t __fuse_copy_file_range(st
- 		.nodeid_out = ff_out->nodeid,
- 		.fh_out = ff_out->fh,
- 		.off_out = pos_out,
--		.len = len,
-+		.len = min_t(size_t, len, UINT_MAX & PAGE_MASK),
- 		.flags = flags
- 	};
- 	struct fuse_write_out outarg;
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 18997f80bdc97..d6308adc4eeb9 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -921,7 +921,6 @@ static void idxd_remove(struct pci_dev *pdev)
+ 	idxd_cleanup(idxd);
+ 	pci_iounmap(pdev, idxd->reg_base);
+ 	put_device(idxd_confdev(idxd));
+-	idxd_free(idxd);
+ 	pci_disable_device(pdev);
+ }
+ 
+-- 
+2.51.0
+
 
 
 
