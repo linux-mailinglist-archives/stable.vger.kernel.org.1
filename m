@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2BEB7EF76
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A27B7E9AE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 084DA3B33FF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9BF3188682A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510A53161A1;
-	Wed, 17 Sep 2025 12:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4754531A7E6;
+	Wed, 17 Sep 2025 12:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPWpXQ7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR+nmbgT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FB61E7C2D;
-	Wed, 17 Sep 2025 12:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0423E1F3BA2;
+	Wed, 17 Sep 2025 12:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113844; cv=none; b=rBgpHELVUdg7cncGnOnY1pqw/pIy10TcDitNIUZvedcpdD0FjVR3rBqzK9E1i37rdSkrbMqYBlvVdYJ2aG5LdjeKbYz3r5GOAZG0yIiT1p6r9ns03k23vFHTrauTq4Gw5IVfx5fTy3aAthwt/g42RtBLt5NmNcByvybd36PhdTM=
+	t=1758113433; cv=none; b=YLKC58sZg/qMpczcZ4Z7KSdpqiclojaJ7j9SEJYTnZpA1pHNEQJNzn35Zes1ch5pq+zx6Vd9W0Z92vwS7pqnBzzhbMUEddW2YFtOAt2uO5kNcB085a8iKK80xe1PUIJ1pRrQq3D35b4dXpTppNwfB7a8eGG1rV11DPn2wd6k5Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113844; c=relaxed/simple;
-	bh=pbtsH8BgGjSeVwRzn3aUvVb6aEvb36lreYbkQWdES3I=;
+	s=arc-20240116; t=1758113433; c=relaxed/simple;
+	bh=3JqeerwQ/6PjT+pgr/p1gDuHGhkkfceM5eVlvSMP2NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlG3r1xiCwIz2ng469E1ua7wZPem+rmvjwT0N50AtNzeTIczv8NRzhIjTdjAdyOTredYgfbdDrrgiLH4TQWiOgAkXU6G4SSAYaDsnkDrl5hhXOfHxEvglFn5KKVz+WxER2u3qUXTRU+l4ryDOkLmQKv+Yz46kZWXZfMiX30ckaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPWpXQ7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C88C4CEF0;
-	Wed, 17 Sep 2025 12:57:23 +0000 (UTC)
+	 MIME-Version; b=n4zO2Xbf/BGYGiy+z/hD6+OrXRsog2zvdPX2SaSoU5h39wAJRMsxXQtT9s3ujxOrR93tChGN+A5S9KsGct+m2VgSvwVWOG0BxyRbgYLFNJbEE5qK/Pll3zSoEfi2aPY7XC+hZpOfF7S6kqqFb3mFuhXLjB3l6QZgTkShh9TmmPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR+nmbgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746F0C4CEF5;
+	Wed, 17 Sep 2025 12:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113843;
-	bh=pbtsH8BgGjSeVwRzn3aUvVb6aEvb36lreYbkQWdES3I=;
+	s=korg; t=1758113432;
+	bh=3JqeerwQ/6PjT+pgr/p1gDuHGhkkfceM5eVlvSMP2NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPWpXQ7FhWgliN/g4veTI6ANgaxeur1kUoRK9FJjUcXLm3NVU07ytc7Sq2cYwAObX
-	 fLP4LwxV+kR2PYn6j+gHj2dny7X/pAk/Oxr7QWiSiHNY6QNpT60SMjfZ/CfeCwMZCK
-	 Po8AODJQsvXHTwl/A2IByiTckmgISsk4dRwpMoO0=
+	b=fR+nmbgTqr+ktjYBOwSQhAtklEoPiP/TBSZb/QFPGRAFLCwwMMHs73qbDdP/SfPsa
+	 R5xd+jDRt7Xmy7KwF9wQzPc+L8DDlYZhJy5x82kQrEBVlR1P7eQNLnJ86WZCS4y0af
+	 690NVpI5ff8WP7TsP+26MbV56TEfta5kDLQHZ5qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/101] tcp_bpf: Call sk_msg_free() when tcp_bpf_send_verdict() fails to allocate psock->cork.
-Date: Wed, 17 Sep 2025 14:34:08 +0200
-Message-ID: <20250917123337.465454873@linuxfoundation.org>
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.12 077/140] ceph: fix race condition validating r_parent before applying state
+Date: Wed, 17 Sep 2025 14:34:09 +0200
+Message-ID: <20250917123346.194516970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,653 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Alex Markuze <amarkuze@redhat.com>
 
-[ Upstream commit a3967baad4d533dc254c31e0d221e51c8d223d58 ]
+commit 15f519e9f883b316d86e2bb6b767a023aafd9d83 upstream.
 
-syzbot reported the splat below. [0]
+Add validation to ensure the cached parent directory inode matches the
+directory info in MDS replies. This prevents client-side race conditions
+where concurrent operations (e.g. rename) cause r_parent to become stale
+between request initiation and reply processing, which could lead to
+applying state changes to incorrect directory inodes.
 
-The repro does the following:
+[ idryomov: folded a kerneldoc fixup and a follow-up fix from Alex to
+  move CEPH_CAP_PIN reference when r_parent is updated:
 
-  1. Load a sk_msg prog that calls bpf_msg_cork_bytes(msg, cork_bytes)
-  2. Attach the prog to a SOCKMAP
-  3. Add a socket to the SOCKMAP
-  4. Activate fault injection
-  5. Send data less than cork_bytes
+  When the parent directory lock is not held, req->r_parent can become
+  stale and is updated to point to the correct inode.  However, the
+  associated CEPH_CAP_PIN reference was not being adjusted.  The
+  CEPH_CAP_PIN is a reference on an inode that is tracked for
+  accounting purposes.  Moving this pin is important to keep the
+  accounting balanced. When the pin was not moved from the old parent
+  to the new one, it created two problems: The reference on the old,
+  stale parent was never released, causing a reference leak.
+  A reference for the new parent was never acquired, creating the risk
+  of a reference underflow later in ceph_mdsc_release_request().  This
+  patch corrects the logic by releasing the pin from the old parent and
+  acquiring it for the new parent when r_parent is switched.  This
+  ensures reference accounting stays balanced. ]
 
-At 5., the data is carried over to the next sendmsg() as it is
-smaller than the cork_bytes specified by bpf_msg_cork_bytes().
-
-Then, tcp_bpf_send_verdict() tries to allocate psock->cork to hold
-the data, but this fails silently due to fault injection + __GFP_NOWARN.
-
-If the allocation fails, we need to revert the sk->sk_forward_alloc
-change done by sk_msg_alloc().
-
-Let's call sk_msg_free() when tcp_bpf_send_verdict fails to allocate
-psock->cork.
-
-The "*copied" also needs to be updated such that a proper error can
-be returned to the caller, sendmsg. It fails to allocate psock->cork.
-Nothing has been corked so far, so this patch simply sets "*copied"
-to 0.
-
-[0]:
-WARNING: net/ipv4/af_inet.c:156 at inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156, CPU#1: syz-executor/5983
-Modules linked in:
-CPU: 1 UID: 0 PID: 5983 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156
-Code: 0f 0b 90 e9 62 fe ff ff e8 7a db b5 f7 90 0f 0b 90 e9 95 fe ff ff e8 6c db b5 f7 90 0f 0b 90 e9 bb fe ff ff e8 5e db b5 f7 90 <0f> 0b 90 e9 e1 fe ff ff 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c 9f fc
-RSP: 0018:ffffc90000a08b48 EFLAGS: 00010246
-RAX: ffffffff8a09d0b2 RBX: dffffc0000000000 RCX: ffff888024a23c80
-RDX: 0000000000000100 RSI: 0000000000000fff RDI: 0000000000000000
-RBP: 0000000000000fff R08: ffff88807e07c627 R09: 1ffff1100fc0f8c4
-R10: dffffc0000000000 R11: ffffed100fc0f8c5 R12: ffff88807e07c380
-R13: dffffc0000000000 R14: ffff88807e07c60c R15: 1ffff1100fc0f872
-FS:  00005555604c4500(0000) GS:ffff888125af1000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555604df5c8 CR3: 0000000032b06000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- __sk_destruct+0x86/0x660 net/core/sock.c:2339
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x286/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1052
- </IRQ>
-
-Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
-Reported-by: syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68c0b6b5.050a0220.3c6139.0013.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250909232623.4151337-1-kuniyu@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Markuze <amarkuze@redhat.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_bpf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ceph/debugfs.c    |   14 +---
+ fs/ceph/dir.c        |   17 ++---
+ fs/ceph/file.c       |   24 ++-----
+ fs/ceph/inode.c      |    7 --
+ fs/ceph/mds_client.c |  172 +++++++++++++++++++++++++++++++--------------------
+ fs/ceph/mds_client.h |   18 ++++-
+ 6 files changed, 145 insertions(+), 107 deletions(-)
 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 5312237e80409..7518d2af63088 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -408,8 +408,11 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
- 		if (!psock->cork) {
- 			psock->cork = kzalloc(sizeof(*psock->cork),
- 					      GFP_ATOMIC | __GFP_NOWARN);
--			if (!psock->cork)
-+			if (!psock->cork) {
-+				sk_msg_free(sk, msg);
-+				*copied = 0;
- 				return -ENOMEM;
-+			}
+--- a/fs/ceph/debugfs.c
++++ b/fs/ceph/debugfs.c
+@@ -55,8 +55,6 @@ static int mdsc_show(struct seq_file *s,
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct ceph_mds_request *req;
+ 	struct rb_node *rp;
+-	int pathlen = 0;
+-	u64 pathbase;
+ 	char *path;
+ 
+ 	mutex_lock(&mdsc->mutex);
+@@ -81,8 +79,8 @@ static int mdsc_show(struct seq_file *s,
+ 		if (req->r_inode) {
+ 			seq_printf(s, " #%llx", ceph_ino(req->r_inode));
+ 		} else if (req->r_dentry) {
+-			path = ceph_mdsc_build_path(mdsc, req->r_dentry, &pathlen,
+-						    &pathbase, 0);
++			struct ceph_path_info path_info;
++			path = ceph_mdsc_build_path(mdsc, req->r_dentry, &path_info, 0);
+ 			if (IS_ERR(path))
+ 				path = NULL;
+ 			spin_lock(&req->r_dentry->d_lock);
+@@ -91,7 +89,7 @@ static int mdsc_show(struct seq_file *s,
+ 				   req->r_dentry,
+ 				   path ? path : "");
+ 			spin_unlock(&req->r_dentry->d_lock);
+-			ceph_mdsc_free_path(path, pathlen);
++			ceph_mdsc_free_path_info(&path_info);
+ 		} else if (req->r_path1) {
+ 			seq_printf(s, " #%llx/%s", req->r_ino1.ino,
+ 				   req->r_path1);
+@@ -100,8 +98,8 @@ static int mdsc_show(struct seq_file *s,
  		}
- 		memcpy(psock->cork, msg, sizeof(*msg));
+ 
+ 		if (req->r_old_dentry) {
+-			path = ceph_mdsc_build_path(mdsc, req->r_old_dentry, &pathlen,
+-						    &pathbase, 0);
++			struct ceph_path_info path_info;
++			path = ceph_mdsc_build_path(mdsc, req->r_old_dentry, &path_info, 0);
+ 			if (IS_ERR(path))
+ 				path = NULL;
+ 			spin_lock(&req->r_old_dentry->d_lock);
+@@ -111,7 +109,7 @@ static int mdsc_show(struct seq_file *s,
+ 				   req->r_old_dentry,
+ 				   path ? path : "");
+ 			spin_unlock(&req->r_old_dentry->d_lock);
+-			ceph_mdsc_free_path(path, pathlen);
++			ceph_mdsc_free_path_info(&path_info);
+ 		} else if (req->r_path2 && req->r_op != CEPH_MDS_OP_SYMLINK) {
+ 			if (req->r_ino2.ino)
+ 				seq_printf(s, " #%llx/%s", req->r_ino2.ino,
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1263,10 +1263,8 @@ static void ceph_async_unlink_cb(struct
+ 
+ 	/* If op failed, mark everyone involved for errors */
+ 	if (result) {
+-		int pathlen = 0;
+-		u64 base = 0;
+-		char *path = ceph_mdsc_build_path(mdsc, dentry, &pathlen,
+-						  &base, 0);
++		struct ceph_path_info path_info = {0};
++		char *path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
+ 
+ 		/* mark error on parent + clear complete */
+ 		mapping_set_error(req->r_parent->i_mapping, result);
+@@ -1280,8 +1278,8 @@ static void ceph_async_unlink_cb(struct
+ 		mapping_set_error(req->r_old_inode->i_mapping, result);
+ 
+ 		pr_warn_client(cl, "failure path=(%llx)%s result=%d!\n",
+-			       base, IS_ERR(path) ? "<<bad>>" : path, result);
+-		ceph_mdsc_free_path(path, pathlen);
++			       path_info.vino.ino, IS_ERR(path) ? "<<bad>>" : path, result);
++		ceph_mdsc_free_path_info(&path_info);
+ 	}
+ out:
+ 	iput(req->r_old_inode);
+@@ -1339,8 +1337,6 @@ static int ceph_unlink(struct inode *dir
+ 	int err = -EROFS;
+ 	int op;
+ 	char *path;
+-	int pathlen;
+-	u64 pathbase;
+ 
+ 	if (ceph_snap(dir) == CEPH_SNAPDIR) {
+ 		/* rmdir .snap/foo is RMSNAP */
+@@ -1359,14 +1355,15 @@ static int ceph_unlink(struct inode *dir
+ 	if (!dn) {
+ 		try_async = false;
+ 	} else {
+-		path = ceph_mdsc_build_path(mdsc, dn, &pathlen, &pathbase, 0);
++		struct ceph_path_info path_info;
++		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			try_async = false;
+ 			err = 0;
+ 		} else {
+ 			err = ceph_mds_check_access(mdsc, path, MAY_WRITE);
+ 		}
+-		ceph_mdsc_free_path(path, pathlen);
++		ceph_mdsc_free_path_info(&path_info);
+ 		dput(dn);
+ 
+ 		/* For none EACCES cases will let the MDS do the mds auth check */
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -368,8 +368,6 @@ int ceph_open(struct inode *inode, struc
+ 	int flags, fmode, wanted;
+ 	struct dentry *dentry;
+ 	char *path;
+-	int pathlen;
+-	u64 pathbase;
+ 	bool do_sync = false;
+ 	int mask = MAY_READ;
+ 
+@@ -399,14 +397,15 @@ int ceph_open(struct inode *inode, struc
+ 	if (!dentry) {
+ 		do_sync = true;
+ 	} else {
+-		path = ceph_mdsc_build_path(mdsc, dentry, &pathlen, &pathbase, 0);
++		struct ceph_path_info path_info;
++		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			do_sync = true;
+ 			err = 0;
+ 		} else {
+ 			err = ceph_mds_check_access(mdsc, path, mask);
+ 		}
+-		ceph_mdsc_free_path(path, pathlen);
++		ceph_mdsc_free_path_info(&path_info);
+ 		dput(dentry);
+ 
+ 		/* For none EACCES cases will let the MDS do the mds auth check */
+@@ -614,15 +613,13 @@ static void ceph_async_create_cb(struct
+ 	mapping_set_error(req->r_parent->i_mapping, result);
+ 
+ 	if (result) {
+-		int pathlen = 0;
+-		u64 base = 0;
+-		char *path = ceph_mdsc_build_path(mdsc, req->r_dentry, &pathlen,
+-						  &base, 0);
++		struct ceph_path_info path_info = {0};
++		char *path = ceph_mdsc_build_path(mdsc, req->r_dentry, &path_info, 0);
+ 
+ 		pr_warn_client(cl,
+ 			"async create failure path=(%llx)%s result=%d!\n",
+-			base, IS_ERR(path) ? "<<bad>>" : path, result);
+-		ceph_mdsc_free_path(path, pathlen);
++			path_info.vino.ino, IS_ERR(path) ? "<<bad>>" : path, result);
++		ceph_mdsc_free_path_info(&path_info);
+ 
+ 		ceph_dir_clear_complete(req->r_parent);
+ 		if (!d_unhashed(dentry))
+@@ -791,8 +788,6 @@ int ceph_atomic_open(struct inode *dir,
+ 	int mask;
+ 	int err;
+ 	char *path;
+-	int pathlen;
+-	u64 pathbase;
+ 
+ 	doutc(cl, "%p %llx.%llx dentry %p '%pd' %s flags %d mode 0%o\n",
+ 	      dir, ceph_vinop(dir), dentry, dentry,
+@@ -814,7 +809,8 @@ int ceph_atomic_open(struct inode *dir,
+ 	if (!dn) {
+ 		try_async = false;
+ 	} else {
+-		path = ceph_mdsc_build_path(mdsc, dn, &pathlen, &pathbase, 0);
++		struct ceph_path_info path_info;
++		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			try_async = false;
+ 			err = 0;
+@@ -826,7 +822,7 @@ int ceph_atomic_open(struct inode *dir,
+ 				mask |= MAY_WRITE;
+ 			err = ceph_mds_check_access(mdsc, path, mask);
+ 		}
+-		ceph_mdsc_free_path(path, pathlen);
++		ceph_mdsc_free_path_info(&path_info);
+ 		dput(dn);
+ 
+ 		/* For none EACCES cases will let the MDS do the mds auth check */
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -2483,22 +2483,21 @@ int __ceph_setattr(struct mnt_idmap *idm
+ 	int truncate_retry = 20; /* The RMW will take around 50ms */
+ 	struct dentry *dentry;
+ 	char *path;
+-	int pathlen;
+-	u64 pathbase;
+ 	bool do_sync = false;
+ 
+ 	dentry = d_find_alias(inode);
+ 	if (!dentry) {
+ 		do_sync = true;
+ 	} else {
+-		path = ceph_mdsc_build_path(mdsc, dentry, &pathlen, &pathbase, 0);
++		struct ceph_path_info path_info;
++		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			do_sync = true;
+ 			err = 0;
+ 		} else {
+ 			err = ceph_mds_check_access(mdsc, path, MAY_WRITE);
+ 		}
+-		ceph_mdsc_free_path(path, pathlen);
++		ceph_mdsc_free_path_info(&path_info);
+ 		dput(dentry);
+ 
+ 		/* For none EACCES cases will let the MDS do the mds auth check */
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -2686,8 +2686,7 @@ static u8 *get_fscrypt_altname(const str
+  * ceph_mdsc_build_path - build a path string to a given dentry
+  * @mdsc: mds client
+  * @dentry: dentry to which path should be built
+- * @plen: returned length of string
+- * @pbase: returned base inode number
++ * @path_info: output path, length, base ino+snap, and freepath ownership flag
+  * @for_wire: is this path going to be sent to the MDS?
+  *
+  * Build a string that represents the path to the dentry. This is mostly called
+@@ -2705,7 +2704,7 @@ static u8 *get_fscrypt_altname(const str
+  *   foo/.snap/bar -> foo//bar
+  */
+ char *ceph_mdsc_build_path(struct ceph_mds_client *mdsc, struct dentry *dentry,
+-			   int *plen, u64 *pbase, int for_wire)
++			   struct ceph_path_info *path_info, int for_wire)
+ {
+ 	struct ceph_client *cl = mdsc->fsc->client;
+ 	struct dentry *cur;
+@@ -2815,16 +2814,28 @@ retry:
+ 		return ERR_PTR(-ENAMETOOLONG);
+ 	}
+ 
+-	*pbase = base;
+-	*plen = PATH_MAX - 1 - pos;
++	/* Initialize the output structure */
++	memset(path_info, 0, sizeof(*path_info));
++
++	path_info->vino.ino = base;
++	path_info->pathlen = PATH_MAX - 1 - pos;
++	path_info->path = path + pos;
++	path_info->freepath = true;
++
++	/* Set snap from dentry if available */
++	if (d_inode(dentry))
++		path_info->vino.snap = ceph_snap(d_inode(dentry));
++	else
++		path_info->vino.snap = CEPH_NOSNAP;
++
+ 	doutc(cl, "on %p %d built %llx '%.*s'\n", dentry, d_count(dentry),
+-	      base, *plen, path + pos);
++	      base, PATH_MAX - 1 - pos, path + pos);
+ 	return path + pos;
+ }
+ 
+ static int build_dentry_path(struct ceph_mds_client *mdsc, struct dentry *dentry,
+-			     struct inode *dir, const char **ppath, int *ppathlen,
+-			     u64 *pino, bool *pfreepath, bool parent_locked)
++			     struct inode *dir, struct ceph_path_info *path_info,
++			     bool parent_locked)
+ {
+ 	char *path;
+ 
+@@ -2833,41 +2844,47 @@ static int build_dentry_path(struct ceph
+ 		dir = d_inode_rcu(dentry->d_parent);
+ 	if (dir && parent_locked && ceph_snap(dir) == CEPH_NOSNAP &&
+ 	    !IS_ENCRYPTED(dir)) {
+-		*pino = ceph_ino(dir);
++		path_info->vino.ino = ceph_ino(dir);
++		path_info->vino.snap = ceph_snap(dir);
+ 		rcu_read_unlock();
+-		*ppath = dentry->d_name.name;
+-		*ppathlen = dentry->d_name.len;
++		path_info->path = dentry->d_name.name;
++		path_info->pathlen = dentry->d_name.len;
++		path_info->freepath = false;
  		return 0;
--- 
-2.51.0
-
+ 	}
+ 	rcu_read_unlock();
+-	path = ceph_mdsc_build_path(mdsc, dentry, ppathlen, pino, 1);
++	path = ceph_mdsc_build_path(mdsc, dentry, path_info, 1);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+-	*ppath = path;
+-	*pfreepath = true;
++	/*
++	 * ceph_mdsc_build_path already fills path_info, including snap handling.
++	 */
+ 	return 0;
+ }
+ 
+-static int build_inode_path(struct inode *inode,
+-			    const char **ppath, int *ppathlen, u64 *pino,
+-			    bool *pfreepath)
++static int build_inode_path(struct inode *inode, struct ceph_path_info *path_info)
+ {
+ 	struct ceph_mds_client *mdsc = ceph_sb_to_mdsc(inode->i_sb);
+ 	struct dentry *dentry;
+ 	char *path;
+ 
+ 	if (ceph_snap(inode) == CEPH_NOSNAP) {
+-		*pino = ceph_ino(inode);
+-		*ppathlen = 0;
++		path_info->vino.ino = ceph_ino(inode);
++		path_info->vino.snap = ceph_snap(inode);
++		path_info->pathlen = 0;
++		path_info->freepath = false;
+ 		return 0;
+ 	}
+ 	dentry = d_find_alias(inode);
+-	path = ceph_mdsc_build_path(mdsc, dentry, ppathlen, pino, 1);
++	path = ceph_mdsc_build_path(mdsc, dentry, path_info, 1);
+ 	dput(dentry);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+-	*ppath = path;
+-	*pfreepath = true;
++	/*
++	 * ceph_mdsc_build_path already fills path_info, including snap from dentry.
++	 * Override with inode's snap since that's what this function is for.
++	 */
++	path_info->vino.snap = ceph_snap(inode);
+ 	return 0;
+ }
+ 
+@@ -2877,26 +2894,32 @@ static int build_inode_path(struct inode
+  */
+ static int set_request_path_attr(struct ceph_mds_client *mdsc, struct inode *rinode,
+ 				 struct dentry *rdentry, struct inode *rdiri,
+-				 const char *rpath, u64 rino, const char **ppath,
+-				 int *pathlen, u64 *ino, bool *freepath,
++				 const char *rpath, u64 rino,
++				 struct ceph_path_info *path_info,
+ 				 bool parent_locked)
+ {
+ 	struct ceph_client *cl = mdsc->fsc->client;
+ 	int r = 0;
+ 
++	/* Initialize the output structure */
++	memset(path_info, 0, sizeof(*path_info));
++
+ 	if (rinode) {
+-		r = build_inode_path(rinode, ppath, pathlen, ino, freepath);
++		r = build_inode_path(rinode, path_info);
+ 		doutc(cl, " inode %p %llx.%llx\n", rinode, ceph_ino(rinode),
+ 		      ceph_snap(rinode));
+ 	} else if (rdentry) {
+-		r = build_dentry_path(mdsc, rdentry, rdiri, ppath, pathlen, ino,
+-					freepath, parent_locked);
+-		doutc(cl, " dentry %p %llx/%.*s\n", rdentry, *ino, *pathlen, *ppath);
++		r = build_dentry_path(mdsc, rdentry, rdiri, path_info, parent_locked);
++		doutc(cl, " dentry %p %llx/%.*s\n", rdentry, path_info->vino.ino,
++		      path_info->pathlen, path_info->path);
+ 	} else if (rpath || rino) {
+-		*ino = rino;
+-		*ppath = rpath;
+-		*pathlen = rpath ? strlen(rpath) : 0;
+-		doutc(cl, " path %.*s\n", *pathlen, rpath);
++		path_info->vino.ino = rino;
++		path_info->vino.snap = CEPH_NOSNAP;
++		path_info->path = rpath;
++		path_info->pathlen = rpath ? strlen(rpath) : 0;
++		path_info->freepath = false;
++
++		doutc(cl, " path %.*s\n", path_info->pathlen, rpath);
+ 	}
+ 
+ 	return r;
+@@ -2973,11 +2996,8 @@ static struct ceph_msg *create_request_m
+ 	struct ceph_client *cl = mdsc->fsc->client;
+ 	struct ceph_msg *msg;
+ 	struct ceph_mds_request_head_legacy *lhead;
+-	const char *path1 = NULL;
+-	const char *path2 = NULL;
+-	u64 ino1 = 0, ino2 = 0;
+-	int pathlen1 = 0, pathlen2 = 0;
+-	bool freepath1 = false, freepath2 = false;
++	struct ceph_path_info path_info1 = {0};
++	struct ceph_path_info path_info2 = {0};
+ 	struct dentry *old_dentry = NULL;
+ 	int len;
+ 	u16 releases;
+@@ -2987,25 +3007,49 @@ static struct ceph_msg *create_request_m
+ 	u16 request_head_version = mds_supported_head_version(session);
+ 	kuid_t caller_fsuid = req->r_cred->fsuid;
+ 	kgid_t caller_fsgid = req->r_cred->fsgid;
++	bool parent_locked = test_bit(CEPH_MDS_R_PARENT_LOCKED, &req->r_req_flags);
+ 
+ 	ret = set_request_path_attr(mdsc, req->r_inode, req->r_dentry,
+-			      req->r_parent, req->r_path1, req->r_ino1.ino,
+-			      &path1, &pathlen1, &ino1, &freepath1,
+-			      test_bit(CEPH_MDS_R_PARENT_LOCKED,
+-					&req->r_req_flags));
++				    req->r_parent, req->r_path1, req->r_ino1.ino,
++				    &path_info1, parent_locked);
+ 	if (ret < 0) {
+ 		msg = ERR_PTR(ret);
+ 		goto out;
+ 	}
+ 
++	/*
++	 * When the parent directory's i_rwsem is *not* locked, req->r_parent may
++	 * have become stale (e.g. after a concurrent rename) between the time the
++	 * dentry was looked up and now.  If we detect that the stored r_parent
++	 * does not match the inode number we just encoded for the request, switch
++	 * to the correct inode so that the MDS receives a valid parent reference.
++	 */
++	if (!parent_locked && req->r_parent && path_info1.vino.ino &&
++	    ceph_ino(req->r_parent) != path_info1.vino.ino) {
++		struct inode *old_parent = req->r_parent;
++		struct inode *correct_dir = ceph_get_inode(mdsc->fsc->sb, path_info1.vino, NULL);
++		if (!IS_ERR(correct_dir)) {
++			WARN_ONCE(1, "ceph: r_parent mismatch (had %llx wanted %llx) - updating\n",
++			          ceph_ino(old_parent), path_info1.vino.ino);
++			/*
++			 * Transfer CEPH_CAP_PIN from the old parent to the new one.
++			 * The pin was taken earlier in ceph_mdsc_submit_request().
++			 */
++			ceph_put_cap_refs(ceph_inode(old_parent), CEPH_CAP_PIN);
++			iput(old_parent);
++			req->r_parent = correct_dir;
++			ceph_get_cap_refs(ceph_inode(req->r_parent), CEPH_CAP_PIN);
++		}
++	}
++
+ 	/* If r_old_dentry is set, then assume that its parent is locked */
+ 	if (req->r_old_dentry &&
+ 	    !(req->r_old_dentry->d_flags & DCACHE_DISCONNECTED))
+ 		old_dentry = req->r_old_dentry;
+ 	ret = set_request_path_attr(mdsc, NULL, old_dentry,
+-			      req->r_old_dentry_dir,
+-			      req->r_path2, req->r_ino2.ino,
+-			      &path2, &pathlen2, &ino2, &freepath2, true);
++				    req->r_old_dentry_dir,
++				    req->r_path2, req->r_ino2.ino,
++				    &path_info2, true);
+ 	if (ret < 0) {
+ 		msg = ERR_PTR(ret);
+ 		goto out_free1;
+@@ -3036,7 +3080,7 @@ static struct ceph_msg *create_request_m
+ 
+ 	/* filepaths */
+ 	len += 2 * (1 + sizeof(u32) + sizeof(u64));
+-	len += pathlen1 + pathlen2;
++	len += path_info1.pathlen + path_info2.pathlen;
+ 
+ 	/* cap releases */
+ 	len += sizeof(struct ceph_mds_request_release) *
+@@ -3044,9 +3088,9 @@ static struct ceph_msg *create_request_m
+ 		 !!req->r_old_inode_drop + !!req->r_old_dentry_drop);
+ 
+ 	if (req->r_dentry_drop)
+-		len += pathlen1;
++		len += path_info1.pathlen;
+ 	if (req->r_old_dentry_drop)
+-		len += pathlen2;
++		len += path_info2.pathlen;
+ 
+ 	/* MClientRequest tail */
+ 
+@@ -3159,8 +3203,8 @@ static struct ceph_msg *create_request_m
+ 	lhead->ino = cpu_to_le64(req->r_deleg_ino);
+ 	lhead->args = req->r_args;
+ 
+-	ceph_encode_filepath(&p, end, ino1, path1);
+-	ceph_encode_filepath(&p, end, ino2, path2);
++	ceph_encode_filepath(&p, end, path_info1.vino.ino, path_info1.path);
++	ceph_encode_filepath(&p, end, path_info2.vino.ino, path_info2.path);
+ 
+ 	/* make note of release offset, in case we need to replay */
+ 	req->r_request_release_offset = p - msg->front.iov_base;
+@@ -3223,11 +3267,9 @@ static struct ceph_msg *create_request_m
+ 	msg->hdr.data_off = cpu_to_le16(0);
+ 
+ out_free2:
+-	if (freepath2)
+-		ceph_mdsc_free_path((char *)path2, pathlen2);
++	ceph_mdsc_free_path_info(&path_info2);
+ out_free1:
+-	if (freepath1)
+-		ceph_mdsc_free_path((char *)path1, pathlen1);
++	ceph_mdsc_free_path_info(&path_info1);
+ out:
+ 	return msg;
+ out_err:
+@@ -4584,24 +4626,20 @@ static int reconnect_caps_cb(struct inod
+ 	struct ceph_pagelist *pagelist = recon_state->pagelist;
+ 	struct dentry *dentry;
+ 	struct ceph_cap *cap;
+-	char *path;
+-	int pathlen = 0, err;
+-	u64 pathbase;
++	struct ceph_path_info path_info = {0};
++	int err;
+ 	u64 snap_follows;
+ 
+ 	dentry = d_find_primary(inode);
+ 	if (dentry) {
+ 		/* set pathbase to parent dir when msg_version >= 2 */
+-		path = ceph_mdsc_build_path(mdsc, dentry, &pathlen, &pathbase,
++		char *path = ceph_mdsc_build_path(mdsc, dentry, &path_info,
+ 					    recon_state->msg_version >= 2);
+ 		dput(dentry);
+ 		if (IS_ERR(path)) {
+ 			err = PTR_ERR(path);
+ 			goto out_err;
+ 		}
+-	} else {
+-		path = NULL;
+-		pathbase = 0;
+ 	}
+ 
+ 	spin_lock(&ci->i_ceph_lock);
+@@ -4634,7 +4672,7 @@ static int reconnect_caps_cb(struct inod
+ 		rec.v2.wanted = cpu_to_le32(__ceph_caps_wanted(ci));
+ 		rec.v2.issued = cpu_to_le32(cap->issued);
+ 		rec.v2.snaprealm = cpu_to_le64(ci->i_snap_realm->ino);
+-		rec.v2.pathbase = cpu_to_le64(pathbase);
++		rec.v2.pathbase = cpu_to_le64(path_info.vino.ino);
+ 		rec.v2.flock_len = (__force __le32)
+ 			((ci->i_ceph_flags & CEPH_I_ERROR_FILELOCK) ? 0 : 1);
+ 	} else {
+@@ -4649,7 +4687,7 @@ static int reconnect_caps_cb(struct inod
+ 		ts = inode_get_atime(inode);
+ 		ceph_encode_timespec64(&rec.v1.atime, &ts);
+ 		rec.v1.snaprealm = cpu_to_le64(ci->i_snap_realm->ino);
+-		rec.v1.pathbase = cpu_to_le64(pathbase);
++		rec.v1.pathbase = cpu_to_le64(path_info.vino.ino);
+ 	}
+ 
+ 	if (list_empty(&ci->i_cap_snaps)) {
+@@ -4711,7 +4749,7 @@ encode_again:
+ 			    sizeof(struct ceph_filelock);
+ 		rec.v2.flock_len = cpu_to_le32(struct_len);
+ 
+-		struct_len += sizeof(u32) + pathlen + sizeof(rec.v2);
++		struct_len += sizeof(u32) + path_info.pathlen + sizeof(rec.v2);
+ 
+ 		if (struct_v >= 2)
+ 			struct_len += sizeof(u64); /* snap_follows */
+@@ -4735,7 +4773,7 @@ encode_again:
+ 			ceph_pagelist_encode_8(pagelist, 1);
+ 			ceph_pagelist_encode_32(pagelist, struct_len);
+ 		}
+-		ceph_pagelist_encode_string(pagelist, path, pathlen);
++		ceph_pagelist_encode_string(pagelist, (char *)path_info.path, path_info.pathlen);
+ 		ceph_pagelist_append(pagelist, &rec, sizeof(rec.v2));
+ 		ceph_locks_to_pagelist(flocks, pagelist,
+ 				       num_fcntl_locks, num_flock_locks);
+@@ -4746,17 +4784,17 @@ out_freeflocks:
+ 	} else {
+ 		err = ceph_pagelist_reserve(pagelist,
+ 					    sizeof(u64) + sizeof(u32) +
+-					    pathlen + sizeof(rec.v1));
++					    path_info.pathlen + sizeof(rec.v1));
+ 		if (err)
+ 			goto out_err;
+ 
+ 		ceph_pagelist_encode_64(pagelist, ceph_ino(inode));
+-		ceph_pagelist_encode_string(pagelist, path, pathlen);
++		ceph_pagelist_encode_string(pagelist, (char *)path_info.path, path_info.pathlen);
+ 		ceph_pagelist_append(pagelist, &rec, sizeof(rec.v1));
+ 	}
+ 
+ out_err:
+-	ceph_mdsc_free_path(path, pathlen);
++	ceph_mdsc_free_path_info(&path_info);
+ 	if (!err)
+ 		recon_state->nr_caps++;
+ 	return err;
+--- a/fs/ceph/mds_client.h
++++ b/fs/ceph/mds_client.h
+@@ -612,14 +612,24 @@ extern int ceph_mds_check_access(struct
+ 
+ extern void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc);
+ 
+-static inline void ceph_mdsc_free_path(char *path, int len)
++/*
++ * Structure to group path-related output parameters for build_*_path functions
++ */
++struct ceph_path_info {
++	const char *path;
++	int pathlen;
++	struct ceph_vino vino;
++	bool freepath;
++};
++
++static inline void ceph_mdsc_free_path_info(const struct ceph_path_info *path_info)
+ {
+-	if (!IS_ERR_OR_NULL(path))
+-		__putname(path - (PATH_MAX - 1 - len));
++	if (path_info && path_info->freepath && !IS_ERR_OR_NULL(path_info->path))
++		__putname((char *)path_info->path - (PATH_MAX - 1 - path_info->pathlen));
+ }
+ 
+ extern char *ceph_mdsc_build_path(struct ceph_mds_client *mdsc,
+-				  struct dentry *dentry, int *plen, u64 *base,
++				  struct dentry *dentry, struct ceph_path_info *path_info,
+ 				  int for_wire);
+ 
+ extern void __ceph_mdsc_drop_dentry_lease(struct dentry *dentry);
 
 
 
