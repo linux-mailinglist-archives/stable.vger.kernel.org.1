@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-179897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82480B7E151
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6188B7E29D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC8FA583B50
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79A9B7B58BF
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4251EBA07;
-	Wed, 17 Sep 2025 12:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69A731A80A;
+	Wed, 17 Sep 2025 12:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+E3RGcL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6AZ0/Vx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590C031A810
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 12:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62E81E25EF
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 12:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112743; cv=none; b=KBKdMelpRfIDuuptzI/+NCCwxIAgTOciPkNrtU4CbVAMW4RxvRQeV8UPX0fiMXRUA6kou/98IsKFrMzg7CnmsYOL88sZ+Oj05PgH2ipxhJel8PhxeAUR4iQ1jgD1tbvOKs7qiwvyKHkb3MiJ+m2WE46DOAl5fFSxwDRGHfFqauQ=
+	t=1758112752; cv=none; b=S1HaXgiwxsvT0GK2WRT/jHS1codgyWgz5qLuHY1m4MR+n6o06HuX85Q5u3SvXO4AC0q9fI0Ld4uYWVJ4yGlmH35CjghJrR7Yz/aMyrPiDnELjRI96mbSAo44PtBGdJvQAPzKTfihuEiTTgWEPpU8G7KG7rZktxQlUqdPEA0ORcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112743; c=relaxed/simple;
-	bh=p8AtMOYNHOUp83/qvFSdZjkixqg/Y2U8w9ZDnx7UNzM=;
+	s=arc-20240116; t=1758112752; c=relaxed/simple;
+	bh=fEecE37pdwKslWFLT4CbMnWzKyAAMUnj887x3FAsP18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XH+4B9hpTGYVSTC2yMavNVW+3dkHEFZW1b+R+cOtvQwNbQAfTufe77fsyvGlWoLZgnsY9Y3aTHny8hi4Vs4X4cs9eAh2enf0tOurG36C2qjoqqHy4tT38s2fpcdto7tB+KaCvob/w2vjIuEeKguz6ios+NY3ZGncOtiu3x9bBiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+E3RGcL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2DAC4CEF5;
-	Wed, 17 Sep 2025 12:39:01 +0000 (UTC)
+	 MIME-Version; b=l5BJ7gQjQJw+nOASy6PkA+D71sK8lxGRTBiimr1UnsifaXcGNWXDfLaq1tyLfuIfpUKdFhbLXuvuynTI0uWQe/KV9VjkTSkt233O6BsAMeHtnzSo+s4JfrIZFWD+exV/w14z5q3ksDj+/vx6t1CYdp1dUZ9rrIFLWGUvytUtrmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6AZ0/Vx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8592C4CEF0;
+	Wed, 17 Sep 2025 12:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758112742;
-	bh=p8AtMOYNHOUp83/qvFSdZjkixqg/Y2U8w9ZDnx7UNzM=;
+	s=k20201202; t=1758112752;
+	bh=fEecE37pdwKslWFLT4CbMnWzKyAAMUnj887x3FAsP18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+E3RGcLR3kbkLYL2Kk/4ovPmw79TeG6ezweh1UHrExu34GQl+/lWP1WoxS6O6D6s
-	 z42mZ9KWtDJ9OmTf8PCmA++kN6ZWI01oPe/O8dyJdEUI7vZnlymmi6Sr5pqiz8eStJ
-	 gLJu4eVVj7XxgkXdOA2t3DErjWLeFKhwzciFjO5C7vQGK98Eb5Isxw1hcJks7oFEz4
-	 q09E2zTOMlm59qOmiCuUVlOsweT2IAoIEt4zFeJb4MyOrb4etFrq/W64pW40HVh1J9
-	 ISfJYexSs+RbjfcWqPe9nOz7w+/jflmRTEk/htbGJFkicuyfESh+NnitE0G+A5PsYi
-	 3DrUKgFPaFdVA==
+	b=R6AZ0/VxO1OuM1B5fVXoevUavxcAYfddSiIXs/6z5Ol91UXRs5Lpza3mRR/o7EjzY
+	 /rVS9CKtMC9HbJ5N9plxjOfMawjQsMb67b2xxZdl+YZy/RKfKre0xvk/6bvWqW3pYh
+	 JVAaMm9iLrWgKz5Pt2/xbs6XmJOP8oE5Jv+RewWSYqeP92FItnUYmw4XOUbEJiCban
+	 FgK2uirXYUdVoK/vc+UcVnZyUpNWwQm3wFn3Q9e3AbCvwClKMRChHkn0JnlnqK4gn7
+	 mmZCEN8df1OG/orOHBN2Du6tMemqef2ponezv81oJxOSvXY2vmN6i8E2eGYsgvIPRN
+	 rrSrvy8kQWSeA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+Cc: Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] xhci: dbc: decouple endpoint allocation from initialization
-Date: Wed, 17 Sep 2025 08:38:58 -0400
-Message-ID: <20250917123858.513814-3-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/4] usb: xhci: introduce macro for ring segment list iteration
+Date: Wed, 17 Sep 2025 08:39:06 -0400
+Message-ID: <20250917123909.514131-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123858.513814-1-sashal@kernel.org>
-References: <2025091707-blip-kilometer-4c4c@gregkh>
- <20250917123858.513814-1-sashal@kernel.org>
+In-Reply-To: <2025091756-glare-cyclic-9298@gregkh>
+References: <2025091756-glare-cyclic-9298@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,139 +62,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit 220a0ffde02f962c13bc752b01aa570b8c65a37b ]
+[ Upstream commit 3f970bd06c5295e742ef4f9cf7808a3cb74a6816 ]
 
-Decouple allocation of endpoint ring buffer from initialization
-of the buffer, and initialization of endpoint context parts from
-from the rest of the contexts.
+Add macro to streamline and standardize the iteration over ring
+segment list.
 
-It allows driver to clear up and reinitialize endpoint rings
-after disconnect without reallocating everything.
+xhci_for_each_ring_seg(): Iterates over the entire ring segment list.
 
-This is a prerequisite for the next patch that prevents the transfer
-ring from filling up with cancelled (no-op) TRBs if a debug cable is
-reconnected several times without transferring anything.
+The xhci_free_segments_for_ring() function's while loop has not been
+updated to use the new macro. This function has some underlying issues,
+and as a result, it will be handled separately in a future patch.
 
-Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20241106101459.775897-11-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: a5c98e8b1398 ("xhci: dbc: Fix full DbC transfer ring after several reconnects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgcap.c | 71 ++++++++++++++++++++++------------
- 1 file changed, 46 insertions(+), 25 deletions(-)
+ drivers/usb/host/xhci-debugfs.c |  5 +----
+ drivers/usb/host/xhci-mem.c     | 24 +++++++-----------------
+ drivers/usb/host/xhci.c         | 20 ++++++++------------
+ drivers/usb/host/xhci.h         |  3 +++
+ 4 files changed, 19 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
-index 74ba99573fd02..ac05ca1a41dd7 100644
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -101,13 +101,34 @@ static u32 xhci_dbc_populate_strings(struct dbc_str_descs *strings)
- 	return string_length;
- }
+diff --git a/drivers/usb/host/xhci-debugfs.c b/drivers/usb/host/xhci-debugfs.c
+index f8ba15e7c225c..570210e8a8e87 100644
+--- a/drivers/usb/host/xhci-debugfs.c
++++ b/drivers/usb/host/xhci-debugfs.c
+@@ -214,14 +214,11 @@ static void xhci_ring_dump_segment(struct seq_file *s,
  
-+static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
-+{
-+	struct xhci_ep_ctx      *ep_ctx;
-+	unsigned int		max_burst;
-+	dma_addr_t		deq;
-+
-+	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
-+
-+	/* Populate bulk out endpoint context: */
-+	ep_ctx                  = dbc_bulkout_ctx(dbc);
-+	deq                     = dbc_bulkout_enq(dbc);
-+	ep_ctx->ep_info         = 0;
-+	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
-+	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
-+
-+	/* Populate bulk in endpoint context: */
-+	ep_ctx                  = dbc_bulkin_ctx(dbc);
-+	deq                     = dbc_bulkin_enq(dbc);
-+	ep_ctx->ep_info         = 0;
-+	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
-+	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
-+}
-+
- static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ static int xhci_ring_trb_show(struct seq_file *s, void *unused)
  {
- 	struct dbc_info_context	*info;
--	struct xhci_ep_ctx	*ep_ctx;
- 	u32			dev_info;
--	dma_addr_t		deq, dma;
--	unsigned int		max_burst;
-+	dma_addr_t		dma;
+-	int			i;
+ 	struct xhci_ring	*ring = *(struct xhci_ring **)s->private;
+ 	struct xhci_segment	*seg = ring->first_seg;
  
- 	if (!dbc)
- 		return;
-@@ -121,20 +142,8 @@ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
- 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
- 	info->length		= cpu_to_le32(string_length);
- 
--	/* Populate bulk out endpoint context: */
--	ep_ctx			= dbc_bulkout_ctx(dbc);
--	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
--	deq			= dbc_bulkout_enq(dbc);
--	ep_ctx->ep_info		= 0;
--	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
--	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
--
--	/* Populate bulk in endpoint context: */
--	ep_ctx			= dbc_bulkin_ctx(dbc);
--	deq			= dbc_bulkin_enq(dbc);
--	ep_ctx->ep_info		= 0;
--	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
--	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
-+	/* Populate bulk in and out endpoint contexts: */
-+	xhci_dbc_init_ep_contexts(dbc);
- 
- 	/* Set DbC context and info registers: */
- 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
-@@ -435,6 +444,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t flags)
- 	return ctx;
- }
- 
-+static void xhci_dbc_ring_init(struct xhci_ring *ring)
-+{
-+	struct xhci_segment *seg = ring->first_seg;
-+
-+	/* clear all trbs on ring in case of old ring */
-+	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
-+
-+	/* Only event ring does not use link TRB */
-+	if (ring->type != TYPE_EVENT) {
-+		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
-+
-+		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
-+		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
-+	}
-+	xhci_initialize_ring_info(ring);
-+}
-+
- static struct xhci_ring *
- xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
- {
-@@ -463,15 +489,10 @@ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
- 
- 	seg->dma = dma;
- 
--	/* Only event ring does not use link TRB */
--	if (type != TYPE_EVENT) {
--		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
--
--		trb->link.segment_ptr = cpu_to_le64(dma);
--		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
+-	for (i = 0; i < ring->num_segs; i++) {
++	xhci_for_each_ring_seg(ring->first_seg, seg)
+ 		xhci_ring_dump_segment(s, seg);
+-		seg = seg->next;
 -	}
- 	INIT_LIST_HEAD(&ring->td_list);
--	xhci_initialize_ring_info(ring);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index 69188afa52666..80b2f946b59fe 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -224,7 +224,6 @@ static int xhci_update_stream_segment_mapping(
+ 		struct radix_tree_root *trb_address_map,
+ 		struct xhci_ring *ring,
+ 		struct xhci_segment *first_seg,
+-		struct xhci_segment *last_seg,
+ 		gfp_t mem_flags)
+ {
+ 	struct xhci_segment *seg;
+@@ -234,28 +233,22 @@ static int xhci_update_stream_segment_mapping(
+ 	if (WARN_ON_ONCE(trb_address_map == NULL))
+ 		return 0;
+ 
+-	seg = first_seg;
+-	do {
++	xhci_for_each_ring_seg(first_seg, seg) {
+ 		ret = xhci_insert_segment_mapping(trb_address_map,
+ 				ring, seg, mem_flags);
+ 		if (ret)
+ 			goto remove_streams;
+-		if (seg == last_seg)
+-			return 0;
+-		seg = seg->next;
+-	} while (seg != first_seg);
++	}
+ 
+ 	return 0;
+ 
+ remove_streams:
+ 	failed_seg = seg;
+-	seg = first_seg;
+-	do {
++	xhci_for_each_ring_seg(first_seg, seg) {
+ 		xhci_remove_segment_mapping(trb_address_map, seg);
+ 		if (seg == failed_seg)
+ 			return ret;
+-		seg = seg->next;
+-	} while (seg != first_seg);
++	}
+ 
+ 	return ret;
+ }
+@@ -267,17 +260,14 @@ static void xhci_remove_stream_mapping(struct xhci_ring *ring)
+ 	if (WARN_ON_ONCE(ring->trb_address_map == NULL))
+ 		return;
+ 
+-	seg = ring->first_seg;
+-	do {
++	xhci_for_each_ring_seg(ring->first_seg, seg)
+ 		xhci_remove_segment_mapping(ring->trb_address_map, seg);
+-		seg = seg->next;
+-	} while (seg != ring->first_seg);
+ }
+ 
+ static int xhci_update_stream_mapping(struct xhci_ring *ring, gfp_t mem_flags)
+ {
+ 	return xhci_update_stream_segment_mapping(ring->trb_address_map, ring,
+-			ring->first_seg, ring->last_seg, mem_flags);
++			ring->first_seg, mem_flags);
+ }
+ 
+ /* XXX: Do we need the hcd structure in all these functions? */
+@@ -438,7 +428,7 @@ int xhci_ring_expansion(struct xhci_hcd *xhci, struct xhci_ring *ring,
+ 
+ 	if (ring->type == TYPE_STREAM) {
+ 		ret = xhci_update_stream_segment_mapping(ring->trb_address_map,
+-						ring, first, last, flags);
++						ring, first, flags);
+ 		if (ret)
+ 			goto free_segments;
+ 	}
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index d5bcd5475b72b..abbf89e82d01a 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -41,15 +41,15 @@ MODULE_PARM_DESC(quirks, "Bit flags for quirks to be enabled as default");
+ 
+ static bool td_on_ring(struct xhci_td *td, struct xhci_ring *ring)
+ {
+-	struct xhci_segment *seg = ring->first_seg;
++	struct xhci_segment *seg;
+ 
+ 	if (!td || !td->start_seg)
+ 		return false;
+-	do {
 +
-+	xhci_dbc_ring_init(ring);
++	xhci_for_each_ring_seg(ring->first_seg, seg) {
+ 		if (seg == td->start_seg)
+ 			return true;
+-		seg = seg->next;
+-	} while (seg && seg != ring->first_seg);
++	}
+ 
+ 	return false;
+ }
+@@ -764,14 +764,10 @@ static void xhci_clear_command_ring(struct xhci_hcd *xhci)
+ 	struct xhci_segment *seg;
+ 
+ 	ring = xhci->cmd_ring;
+-	seg = ring->deq_seg;
+-	do {
+-		memset(seg->trbs, 0,
+-			sizeof(union xhci_trb) * (TRBS_PER_SEGMENT - 1));
+-		seg->trbs[TRBS_PER_SEGMENT - 1].link.control &=
+-			cpu_to_le32(~TRB_CYCLE);
+-		seg = seg->next;
+-	} while (seg != ring->deq_seg);
++	xhci_for_each_ring_seg(ring->deq_seg, seg) {
++		memset(seg->trbs, 0, sizeof(union xhci_trb) * (TRBS_PER_SEGMENT - 1));
++		seg->trbs[TRBS_PER_SEGMENT - 1].link.control &= cpu_to_le32(~TRB_CYCLE);
++	}
+ 
+ 	xhci_initialize_ring_info(ring, 1);
+ 	/*
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 67ee2e0499433..b4fa8e7e43763 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1263,6 +1263,9 @@ static inline const char *xhci_trb_type_string(u8 type)
+ #define AVOID_BEI_INTERVAL_MIN	8
+ #define AVOID_BEI_INTERVAL_MAX	32
+ 
++#define xhci_for_each_ring_seg(head, seg) \
++	for (seg = head; seg != NULL; seg = (seg->next != head ? seg->next : NULL))
 +
- 	return ring;
- dma_fail:
- 	kfree(seg);
+ struct xhci_segment {
+ 	union xhci_trb		*trbs;
+ 	/* private to HCD */
 -- 
 2.51.0
 
