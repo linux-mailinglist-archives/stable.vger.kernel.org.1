@@ -1,157 +1,288 @@
-Return-Path: <stable+bounces-180425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85ED2B812CB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 19:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DB9B813C7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 19:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221011C27253
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:29:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CABA1B272B9
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F6028D8E8;
-	Wed, 17 Sep 2025 17:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9265C2FF16B;
+	Wed, 17 Sep 2025 17:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yeOY82yC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jeY/UcoJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8172D2FDC35
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 17:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183632FDC5D
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 17:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758130142; cv=none; b=kn30Nf8W/2cI+T7OK6SnTRYTgoc/GN3X/QZ0iEvWCr7PwDZwJcTRGmDJHRd9zrjlwe+XhbNg2VhLpWRITigXJnl3GzUH7EPue5B4LvIgb7coXVy8EosPbjUpoJLTHnAa949btX1tgnmktMPlrZ38BkJe8jfalgCYe+8Mi5YrsnQ=
+	t=1758131502; cv=none; b=Seyp1QNK7yKrnN7A+8QoQgc67IujLLUXPmNeUbyxfi0rt01V20KNskklbb2BZZusmYPkO5k2xXdV36HphNbTeVbbjzhoLZcnnEw4CXuuzj/oFNzKM64ThvJV+QmPVQlqmZ88lw2ELqJgOdLf5vzkh9Be4uF9hEIlzzUJFDNyZ+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758130142; c=relaxed/simple;
-	bh=H0/gKaaxvlfYUtn6gGmXwBaSMrd32CreXcUAxjE7SsU=;
+	s=arc-20240116; t=1758131502; c=relaxed/simple;
+	bh=lwYM5yV+rA8wCXcb7ym8mP3byszQ5HJdrWo5ZtcFy3Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i71Ns2791KOCKFK++lxb4ZgV2FEPkCqhzUkYFowJF3RtCZtP+wC8zdBdGKoIcC0M9RGBkndvVe/NF2Ty7SiRXZcfi0rl+7sRM8NMCcwAsRbZHL2tRk1g3lpvk3C3hvdlmD9871YAT4vRzDTvqXH/p+4lzXL1vEcj5vG2cbAE0X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yeOY82yC; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-424195ca4e6so11905ab.1
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:29:00 -0700 (PDT)
+	 To:Cc:Content-Type; b=UOQ8P7GXB7zFb9k/Ow6mFtIe04UnjIL4ozmYsOm/rTw2/nD5/7b1+/fsAa3IqKezohCQj3hNNLU8CT0wDnhyYfKh/Du60GPyCYX5bOQdpiL/olaN1cprZgdGGek28NwqiZ2DCxrkJCCu6UG6wtOjnfsQdLVw5LW13Mz0xZxCVYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jeY/UcoJ; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-62f1987d4b2so23291a12.2
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:51:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758130139; x=1758734939; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758131497; x=1758736297; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RibQXdSsRsxO3CMdVMzbtMJw7Z5sCxH0F5qvTjzb6hg=;
-        b=yeOY82yCwQtC8v/dGjpal6nZpduYV8OIsTJuoWcV+BRDbHNf8vfIhwYeXQ0PBaJz6K
-         eCoBuNdVVVd4DRQCN7yuV9sR8JVezYkJRPBtqjUepGTpWA/sgIlmp4L1aMjcUnC2bAwV
-         uz1B9miYNwD8aGLE2bOvgphjRDfalVNG7rM/+vScd6cs34U9iWtqfIdEGv2PL0Y9gCkf
-         aIEd/EcGQoWnBkiYqCVcUG6SrNBNTED+JnPo/SlijUNzXkmqv37fl1i8hK76oDNCrH/J
-         KHiz/EtPg/I6DcYNYWyAFlbt8w/U3aOvd2OsIzKMglAH4t1vEI9Hk2L4SsZ17SCIGPFg
-         mfcw==
+        bh=CVZDTplKTBkx/iNe0pd5CFw6WM06GEQXThZQXf38JJY=;
+        b=jeY/UcoJpNDL7YTCpU9N5OwDJW4pIqI2bn2vQfO8dMscdsWCgZgXEK/NWv9IfjN+RG
+         o/QcXSaSCDO0na3umRmMuH+KX4RVJLSebk8t6LyZiKh+k5sBk4rJ3YZYR8mqcVujhf2P
+         jJIkT0Xxg3O0F01sao8K1Zcfhy0IUbO3UFvLF0v/IN8l68wRIMmQEAvdaYFpdpx2maef
+         OpzAdOgkdfPr7gnMx8OnmTmaXDWPEs8pVvDXs9k4VIAtJzzJLnkwWrkOP5Qv+w7krdkF
+         6+WAkVDL0mboK/Qp8Tqbxd0T6J3KHR/awQXDBFmK/ejdBEkDMG7M84jKJJDx+RuHBTJI
+         0HZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758130139; x=1758734939;
+        d=1e100.net; s=20230601; t=1758131497; x=1758736297;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RibQXdSsRsxO3CMdVMzbtMJw7Z5sCxH0F5qvTjzb6hg=;
-        b=qPJgN73MkMBTn0R5rSn5DhSDA2re6xoQhIskaG8tl0a548K1WyWZExGnoBizeNAzzH
-         utq3XEgrJz7FclAGDLRM5Kc9PzfyCXuNszA57oIYtsuns5xXnh2QaBidihk5sg5ggYob
-         FYduAU60NJn6pUe6W7crcIgDak9aZoIP6MUgGEzjiyj/owqjpBeu22FNGgzQA/ajlt8C
-         iovqMJqVG2j9N+AASvneR2CXxapSmqZf05fWWQV0/7rTcvGmwQ6AxVoJk6hUmuO08ArB
-         ktJT7GsOUsgH1JaoGbwGUbnUaawMEWe/9wANgPcpoJvA4KjDCCiLgbHaeDaW0vfxxI6a
-         AuPw==
-X-Forwarded-Encrypted: i=1; AJvYcCWAhDZ+zepJRLksQSqA6sC7SL3ALqGgIDjt4pyUbSzk3fVAsbYiCyQ7UEnUrNgB7m3+cyKcPes=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcLIpMvo15hW6ife7s53EajAplaipfbXKvZdG6MKVtg90Bv/2J
-	Q679QblEGpgCt9OZ6r/eUXfdfQeJZkwQOR5SWWI2eNnCGOQUyD/eLediGnZoxlLlJNHUwwJzner
-	5Mdd2MXkb07aHPqP19dvKNLuqbXzey25lAyid8sYG
-X-Gm-Gg: ASbGncs83XCVHmeLZElUigOd5vRBpP7hs45YrCGb4ru/H56FG+f6lIqbvqzRFJzno03
-	32WZiCp3HsHjWsMHMpeAUjXESdCnJZzRHKrXmv7nQzT95KL9T5gKM/JK8D1GomvV6qO4RRqk81p
-	/Inu7hHUNk7W23HX73LUBIxOCbqer7DR3T2aFn6xl6c2nINM44UTyS4fVrsirTZiKAeY9rjcbrz
-	aatKxCxW3TOAv6vruUSsGNL4jfCiC1yNPvdOuoPVS+t
-X-Google-Smtp-Source: AGHT+IFFGrAyXguz20mFyMKBXRRfTnkPERkiQ1wXQwdoDKL/pxWsskk/k1ikwhW0kYf3w5UWArMFVx4/etlizuFuw9Y=
-X-Received: by 2002:a05:6e02:168d:b0:422:62f8:20f9 with SMTP id
- e9e14a558f8ab-4241863c4d8mr7806975ab.8.1758130139286; Wed, 17 Sep 2025
- 10:28:59 -0700 (PDT)
+        bh=CVZDTplKTBkx/iNe0pd5CFw6WM06GEQXThZQXf38JJY=;
+        b=kcHBOa6rFRA0mo6Q93MKAEwrNJxA27ISpzqZlMxoqiGCA7qjW4CGwiiRxXLxTgzeK7
+         YXuBFTRiaUKbCbtATPVzs54N/+NX8z/BymC/DHmoGTqzVJU4rmrUrAzvyREFQ2naNsMi
+         EeVytyIo1r5nb1pvumiMFPofqLc5A2jjJpHk+/6RdT696QTCjF+vSXmc6sTygQgzJCvL
+         YGkTNikf86RC/au8LwwilaR8KGEMndU0WiU0WfBrv5YZPzPtLCYwVHyQTEjt1b1UVhck
+         1GAv8+xX2Z5gP8kuIlPwysVIB3DiaSxzjQKc4bahEbqoscfnB+9LUaD1dn7SYokez4eR
+         a88A==
+X-Forwarded-Encrypted: i=1; AJvYcCWehDuVnzAXxBt4ypkHlKZA/kGDW6N9dbEMAZgJu+zy5vdGc9rRes4CAslGI2eOwDI3xQP3tpc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTIBZBfRyRxnI/lxk3l1PeGn24h8oMjPkh7sNWs2+RX1qqs638
+	pgFR0n96DaZPiQ/E/4IR1rv2Juzjq98AM+0TfD2BFsMPmCtjFyVNttC2M0ovgq1cWYFqjxHe6aB
+	IzIEtJngFc7A4lfeRskuJ82SniQb74ZA=
+X-Gm-Gg: ASbGncvlLtDqPfbF6R2MLb3iwhDq23TCXaaNmTAx1vGM4Cb+JKVKLjJcHTGssRwHP5R
+	W4oF4GT+cuHVRJC4LkWgrHjgyaoP/b/iW1T+iCmYpCotUdpsqu8nkowQHazFkcLpGgrXpK5uMY6
+	XCgw0B2Hnh74kk1fHhLKvsS+XoUPMxausCF8twIlmqNFPg+EnIQt9NsPvNPu9A3UNkAzzkq4uWN
+	uG078hGj7L4DyQo8UYXbB3qmoMScCayeWmO+YNOEw==
+X-Google-Smtp-Source: AGHT+IFBitHHZOm1SStov4xyx1baTGuGAeg2VFBG8U3v3irN5gQcpUPB5uPmFXlYFhQzJGoh9IGLkQr9RLMPHgimrHE=
+X-Received: by 2002:a05:6402:35d5:b0:62f:5995:3c4d with SMTP id
+ 4fb4d7f45d1cf-62f8422e360mr3087992a12.17.1758131497093; Wed, 17 Sep 2025
+ 10:51:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250917135337.1736101-1-edumazet@google.com> <CAEWA0a6b5P-9_ERvh9mCWOgbH6OYdTUXWVGgA20CQ5pfDC2sYA@mail.gmail.com>
- <CANn89iLC+Gr9BbyNQq-udVY-EZjtjZxCL9sJEpaySTps0KkFyg@mail.gmail.com>
- <CAEWA0a4x4XMZKtpz_pNKruC4zwjETVxUuEMs2m_==Dpib_Jrqg@mail.gmail.com> <CANn89iKZDvL9vKbmDa4ivnrm11e0fc65A-MXs8kY4MxR0CnGTw@mail.gmail.com>
-In-Reply-To: <CANn89iKZDvL9vKbmDa4ivnrm11e0fc65A-MXs8kY4MxR0CnGTw@mail.gmail.com>
-From: Andrei Vagin <avagin@google.com>
-Date: Wed, 17 Sep 2025 10:28:48 -0700
-X-Gm-Features: AS18NWDPgb9cZN1-L4a4OUlkwPSMPcDLR2W5EDAL9vUYoqX_KqKda6HCCMD9wfE
-Message-ID: <CAEWA0a7fnv3hRJyYGkP9yjcG-dAGFbb0JjdmTF3a5kk6n3RAOg@mail.gmail.com>
-Subject: Re: [PATCH net] net: clear sk->sk_ino in sk_set_socket(sk, NULL)
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, stable <stable@vger.kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20250915101510.7994-1-acsjakub@amazon.de> <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
+ <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
+ <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
+ <gdovf4egsaqighoig3xg4r2ddwthk2rujenkloqep5kdub75d4@7wkvfnp4xlxx>
+ <CAOQ4uxhOMcaVupVVGXV2Srz_pAG+BzDc9Gb4hFdwKUtk45QypQ@mail.gmail.com>
+ <scmyycf2trich22v25s6gpe3ib6ejawflwf76znxg7sedqablp@ejfycd34xvpa>
+ <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com> <3gpfceywinbzsbgslwsywzv4qqubab6gcftlzag6drhl5vhmb6@iupru3v7wsey>
+In-Reply-To: <3gpfceywinbzsbgslwsywzv4qqubab6gcftlzag6drhl5vhmb6@iupru3v7wsey>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 17 Sep 2025 19:51:25 +0200
+X-Gm-Features: AS18NWDBsJ4C82gViL9mSQEzTDPfB5F8ZVO8437bScWXIr45-5HTnQQRw5MMdjI
+Message-ID: <CAOQ4uxg6w1JDE9ERChC80kkGsTSTx4rAj5b_ro7tNKmpQ29osA@mail.gmail.com>
+Subject: Re: [PATCH] ovl: check before dereferencing s_root field
+To: Jan Kara <jack@suse.cz>
+Cc: Jakub Acs <acsjakub@amazon.de>, linux-unionfs@vger.kernel.org, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 17, 2025 at 10:20=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
+On Wed, Sep 17, 2025 at 4:42=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
 >
-> On Wed, Sep 17, 2025 at 10:03=E2=80=AFAM Andrei Vagin <avagin@google.com>=
+> On Wed 17-09-25 13:07:45, Amir Goldstein wrote:
+> > On Wed, Sep 17, 2025 at 11:25=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> > > On Tue 16-09-25 15:29:35, Amir Goldstein wrote:
+> > > > On Tue, Sep 16, 2025 at 1:30=E2=80=AFPM Jan Kara <jack@suse.cz> wro=
+te:
+> > > > >
+> > > > > On Mon 15-09-25 17:29:40, Amir Goldstein wrote:
+> > > > > > On Mon, Sep 15, 2025 at 4:07=E2=80=AFPM Jan Kara <jack@suse.cz>=
  wrote:
+> > > > > > > > > diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.=
+c
+> > > > > > > > > index 83f80fdb1567..424c73188e06 100644
+> > > > > > > > > --- a/fs/overlayfs/export.c
+> > > > > > > > > +++ b/fs/overlayfs/export.c
+> > > > > > > > > @@ -195,6 +195,8 @@ static int ovl_check_encode_origin(st=
+ruct inode *inode)
+> > > > > > > > >         if (!ovl_inode_lower(inode))
+> > > > > > > > >                 return 0;
+> > > > > > > > >
+> > > > > > > > > +       if (!inode->i_sb->s_root)
+> > > > > > > > > +               return -ENOENT;
+> > > > > > > >
+> > > > > > > > For a filesystem method to have to check that its own root =
+is still alive sounds
+> > > > > > > > like the wrong way to me.
+> > > > > > > > That's one of the things that should be taken for granted b=
+y fs code.
+> > > > > > > >
+> > > > > > > > I don't think this is an overlayfs specific issue, because =
+other fs would be
+> > > > > > > > happy if encode_fh() would be called with NULL sb->s_root.
+> > > > > > >
+> > > > > > > Actually, I don't see where that would blow up? Generally ref=
+erences to
+> > > > > > > sb->s_root in filesystems outside of mount / remount code are=
+ pretty rare.
+> > > > > > > Also most of the code should be unreachable by the time we se=
+t sb->s_root
+> > > > > > > to NULL because there are no open files at that moment, no ex=
+ports etc. But
+> > > > > > > as this report shows, there are occasional surprises (I remem=
+ber similar
+> > > > > > > issue with ext4 sysfs files handlers using s_root without che=
+cking couple
+> > > > > > > years back).
+> > > > > > >
+> > > > > >
+> > > > > > I am not sure that I understand what you are arguing for.
+> > > > > > I did a very naive grep s_root fs/*/export.c and quickly found:
+> > > > >
+> > > > > You're better with grep than me ;). I was grepping for '->s_root'=
+ as well
+> > > > > but all the hits I had looked into were related to mounting and s=
+imilar and
+> > > > > eventually I got bored. Restricting the grep to export ops indeed=
+ shows
+> > > > > ceph, gfs2 and overlayfs are vulnerable to this kind of problem.
 > >
-> >  is
-> >
-> > On Wed, Sep 17, 2025 at 8:59=E2=80=AFAM Eric Dumazet <edumazet@google.c=
-om> wrote:
-> > >
-> > > On Wed, Sep 17, 2025 at 8:39=E2=80=AFAM Andrei Vagin <avagin@google.c=
-om> wrote:
-> > > >
-> > > > On Wed, Sep 17, 2025 at 6:53=E2=80=AFAM Eric Dumazet <edumazet@goog=
-le.com> wrote:
-> > > > >
-> > > > > Andrei Vagin reported that blamed commit broke CRIU.
-> > > > >
-> > > > > Indeed, while we want to keep sk_uid unchanged when a socket
-> > > > > is cloned, we want to clear sk->sk_ino.
-> > > > >
-> > > > > Otherwise, sock_diag might report multiple sockets sharing
-> > > > > the same inode number.
-> > > > >
-> > > > > Move the clearing part from sock_orphan() to sk_set_socket(sk, NU=
-LL),
-> > > > > called both from sock_orphan() and sk_clone_lock().
-> > > > >
-> > > > > Fixes: 5d6b58c932ec ("net: lockless sock_i_ino()")
-> > > > > Closes: https://lore.kernel.org/netdev/aMhX-VnXkYDpKd9V@google.co=
-m/
-> > > > > Closes: https://github.com/checkpoint-restore/criu/issues/2744
-> > > > > Reported-by: Andrei Vagin <avagin@google.com>
-> > > > > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > > >
-> > > > Acked-by: Andrei Vagin <avagin@google.com>
-> > > > I think we need to add `Cc: stable@vger.kernel.org`.
-> > >
-> > > I never do this. Note that the prior patch had no such CC.
-> >
-> > The original patch has been ported to the v6.16 kernels. According to t=
-he
-> > kernel documentation
-> > (https://www.kernel.org/doc/html/v6.5/process/stable-kernel-rules.html)=
-,
-> > adding Cc: stable@vger.kernel.org is required for automatic porting int=
-o
-> > stable trees. Without this tag, someone will likely need to manually re=
-quest
-> > that this patch be ported. This is my understanding of how the stable
-> > branch process works, sorry if I missed something.
+> > As far as I can tell, ceph uses s_root only in decode_fh methods.
 >
-> Andrei, I think I know pretty well what I am doing. You do not have to
-> explain to me anything.
+> True. But ceph also uses d_find_alias() in ceph_encode_snapfh() which cou=
+ld
+> race with shrink_dcache_for_umount()->do_one_tree() and trigger:
+>
+>         WARN(1, "BUG: Dentry %p{i=3D%lx,n=3D%pd} "
+>                         " still in use (%d) [unmount of %s %s]\n",
+>
+> > ovl and gfs2 only want to know for an inode if it is the root inode,
+> > they do not strictly need to dereference s_root for that purpose.
+> > (see patch below)
+> >
+> > > So there are not many cases where this can happen but enough that I'd=
+ say
+> > > that handling some events specially to avoid encoding fh on fs while =
+it is
+> > > unmounted is fragile and prone to breaking again sooner or later.
+> > >
+> > > > How about skipping fsnotify_inoderemove() in case sb is in shutdown=
+?
+> > >
+> > > Also how would you like to handle that in a race-free manner? We'd ne=
+ed to
+> > > hold s_umount for that which we cannot really afford in that context.=
+ But
+> > > maybe you have some better idea...
+> > >
+> >
+> > I was only thinking about this code path:
+> >
+> > generic_shutdown_super()
+> >   shrink_dcache_for_umount()
+> >     ...
+> >       __dentry_kill()
+> >         dentry_unlink_inode()
+> >
+> > This is supposed to be the last dput of all remaining dentries
+> > and I don't think a deferred unlink should be expected in that case.
+>
+> I see.
+>
+> > But I realize now that you mean delayed unlink from another context
+> > which races with shutdown.
+>
+> Yes, I've meant that.
+>
+> > > > > > > > Can we change the order of generic_shutdown_super() so that
+> > > > > > > > fsnotify_sb_delete(sb) is called before setting s_root to N=
+ULL?
+> > > > > > > >
+> > > > > > > > Or is there a better solution for this race?
+> > > > > > >
+> > > > > > > Regarding calling fsnotify_sb_delete() before setting s_root =
+to NULL:
+> > > > > > > In 2019 (commit 1edc8eb2e9313 ("fs: call fsnotify_sb_delete a=
+fter
+> > > > > > > evict_inodes")) we've moved the call after evict_inodes() bec=
+ause otherwise
+> > > > > > > we were just wasting cycles scanning many inodes without watc=
+hes. So moving
+> > > > > > > it earlier wouldn't be great...
+> > > > > >
+> > > > > > Yes, I noticed that and I figured there were subtleties.
+> > > > >
+> > > > > Right. After thinking more about it I think calling fsnotify_sb_d=
+elete()
+> > > > > earlier is the only practical choice we have (not clearing sb->s_=
+root isn't
+> > > > > much of an option - we need to prune all dentries to quiesce the =
+filesystem
+> > > > > and leaving s_root alive would create odd corner cases). But you =
+don't want
+> > > > > to be iterating millions of inodes just to clear couple of marks =
+so we'll
+> > > > > have to figure out something more clever there.
+> > > >
+> > > > I think we only need to suppress the fsnotify_inoderemove() call.
+> > > > It sounds doable and very local to fs/super.c.
+> > > >
+> > > > Regarding show_mark_fhandle() WDYT about my suggestion to
+> > > > guard it with super_trylock_shared()?
+> > >
+> > > Yes, super_trylock_shared() for that callsite looks like a fine solut=
+ion
+> > > for that call site. Occasional random failures in encoding fh because=
+ the
+> > > trylock fails are unlikely to have any bad consequences there. But I =
+think
+> > > we need to figure out other possibly racing call-sites as well first.
+> > >
+> >
+> > Might something naive as this be enough?
+>
+> It looks like it should be good for the problems with gfs2 & overlayfs bu=
+t
+> it doesn't solve the problem with ceph and as Jakub writes there's a ques=
+tion
+> whether we won't hit more problems later.
+>
+> I'm sorry for poking holes into your solutions. The more I look into this
+> the more problems I find :-|
+>
 
+On the contrary, Thank you for shooting down my bad ideas ;)
 
-Eric, please don't misunderstand me. I want to get this patch into the stab=
-le
-kernels as soon as possible. I appreciate your help here.
+> As I'm thinking about it I'm slowly leaning towards implementing a list o=
+f
+> connectors per sb (so that we can quickly reclaim on umount). It seems
+> stupid just for these corner cases but longer term we can also implement
+> what Dave once suggested [1] so that fsnotify doesn't need to pin inodes =
+in
+> memory at all which should more that make up for the additional memory fo=
+r
+> inode connector members.
+>
+>                                                                 Honza
+>
+> [1] https://lore.kernel.org/linux-fsdevel/ZwXDzKGj6Bp28kYe@dread.disaster=
+.area/
+>
 
-Thanks again for the fix.
+Interesting.
+I'll wait for you to think this over.
+If you think that it might take some time, maybe we should
+apply the super_trylock_shared() band aid to show_mark_fhandle()
+in the meantime. Whatever you think is right.
+
+Thanks,
+Amir.
 
