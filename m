@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-180141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B4FB7EAC3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69888B7E624
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E7EB5207F3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108DF3A7A27
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE47030CB50;
-	Wed, 17 Sep 2025 12:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C224230CB2D;
+	Wed, 17 Sep 2025 12:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUX8okic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DT9F+9vZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F392F7479;
-	Wed, 17 Sep 2025 12:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC4E1E489;
+	Wed, 17 Sep 2025 12:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113513; cv=none; b=uGZ6e1iSaPmNFiNCEBmchpBv4iNRKJ9Qajn6jVulFHAJ9MjODGNFk/W7TRyzMUuQ1D3utkNguLhhVaKYeIfHQ0hKBF2e3JKXNkJ9zf3mfRCLf0nTCYhp6XY9kJKVnO/eZNQHxN0U3SeLKI37BU8RDKOkF6zjICVPONfeoX71D/k=
+	t=1758113095; cv=none; b=NZ94LN9ZOwyRW/hjCdTY8V2FcVFFuJg/LQPqp2NRjMxG0TlgnPf7PqdFv9hTbb7Xlhdafcm8PK1i+LHzIA6RRkaCUnWgJAooU2IdcL995m00/ebp3Jhf+gFzSd05FiUmpqpSaYXNE4Syyr7jBzocm+EMiPPB/h5aCDq07jksjd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113513; c=relaxed/simple;
-	bh=/vY/JwXz23oc9yNqJJo+pOdVze/lotAyKJZFa9jPJ/o=;
+	s=arc-20240116; t=1758113095; c=relaxed/simple;
+	bh=XDL5Uw3lLfNYvyAAxutpf3yG+Bh525e+6d4IRGfgdfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMMVBcYek9yPQxGhhdsIgV2g4D7TR0z56NtsV8z2oAGs9MoMHmO0G90CpUpxsJfhxGV0IEV3ob6v53YGyEv5WIGLPCmsgqnjG6bxTvGYphHG5SrxuvhMnk2e2xnGHuS+HpBqO/mOQPyjfuI/G//9zdQVf8xkUDLiBFpwB2QvWgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUX8okic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2B3C4CEF0;
-	Wed, 17 Sep 2025 12:51:52 +0000 (UTC)
+	 MIME-Version; b=N6zx3fn/exNmpKjRNk2r2+3o9zyYLuV4uc4Cd/3fXg+45nudouh4CqarY6g1maRxrAghwl4a771hVwRRF5Xzy6LoafHpJ5xgTAuqncgkTEU8HT9v9tGP4xKEx0eXtHZvA03tCHQrwBC9rhWSAoGNE4Z8EBIbHQV17EcATB71UuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DT9F+9vZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5F4C4CEF0;
+	Wed, 17 Sep 2025 12:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113513;
-	bh=/vY/JwXz23oc9yNqJJo+pOdVze/lotAyKJZFa9jPJ/o=;
+	s=korg; t=1758113095;
+	bh=XDL5Uw3lLfNYvyAAxutpf3yG+Bh525e+6d4IRGfgdfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aUX8okic5lZW2GyFfSItImUtWGhjk9iCKh4sQireXrM2el4zTBkfymkb+Kzmi+GkG
-	 G4fGeJ6i0mc2SmJkaWK2vYu7FN58jnEOV8KtVW89j2yYRHCV8DHH17ZdEFWKRLDgas
-	 +OsrfjXK8T+eRMn48HXbxQ6XdIfzMqV/AZOR0rSw=
+	b=DT9F+9vZVoJXEvqnIgQuNqZGBo+2r+6DszGm899/05CFNUh3Q9t1d02MENnu3ylDm
+	 QIahL8ozbDHDZP1ObyQ4g3iy+CZXmVb53G2eTbDaZiSOiFnqLhK5uyAqwt/lfePTUW
+	 n320buAksMQ7+PQH4QMCYomWoc6sLNi8S5ScmQEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/140] netfilter: nft_set: remove one argument from lookup and update functions
+Subject: [PATCH 6.16 170/189] erofs: get rid of {get,put}_page() for ztailpacking data
 Date: Wed, 17 Sep 2025 14:34:40 +0200
-Message-ID: <20250917123346.947315301@linuxfoundation.org>
+Message-ID: <20250917123356.033383701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,613 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 17a20e09f086f2c574ac87f3cf6e14c4377f65f6 ]
+[ Upstream commit 96debe8c27ee2494bbd78abf3744745a84a745f1 ]
 
-Return the extension pointer instead of passing it as a function
-argument to be filled in by the callee.
+The compressed data for the ztailpacking feature is fetched from
+the metadata inode (e.g., bd_inode), which is folio-based.
 
-As-is, whenever false is returned, the extension pointer is not used.
+Therefore, the folio interface should be used instead.
 
-For all set types, when true is returned, the extension pointer was set
-to the matching element.
-
-Only exception: nft_set_bitmap doesn't support extensions.
-Return a pointer to a static const empty element extension container.
-
-return false -> return NULL
-return true -> return the elements' extension pointer.
-
-This saves one function argument.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: c4eaca2e1052 ("netfilter: nft_set_pipapo: don't check genbit from packetpath lookups")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250626085459.339830-1-hsiangkao@linux.alibaba.com
+Stable-dep-of: 131897c65e2b ("erofs: fix invalid algorithm for encoded extents")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h      | 10 ++---
- include/net/netfilter/nf_tables_core.h | 47 ++++++++++++----------
- net/netfilter/nft_dynset.c             |  5 ++-
- net/netfilter/nft_lookup.c             | 27 ++++++-------
- net/netfilter/nft_objref.c             |  5 +--
- net/netfilter/nft_set_bitmap.c         | 11 ++++--
- net/netfilter/nft_set_hash.c           | 54 ++++++++++++--------------
- net/netfilter/nft_set_pipapo.c         | 19 +++++----
- net/netfilter/nft_set_pipapo_avx2.c    | 25 ++++++------
- net/netfilter/nft_set_rbtree.c         | 40 +++++++++----------
- 10 files changed, 126 insertions(+), 117 deletions(-)
+ fs/erofs/zdata.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 757abcb54d117..bad0c6f7ed53d 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -459,19 +459,17 @@ struct nft_set_ext;
-  *	control plane functions.
-  */
- struct nft_set_ops {
--	bool				(*lookup)(const struct net *net,
-+	const struct nft_set_ext *	(*lookup)(const struct net *net,
- 						  const struct nft_set *set,
--						  const u32 *key,
--						  const struct nft_set_ext **ext);
--	bool				(*update)(struct nft_set *set,
-+						  const u32 *key);
-+	const struct nft_set_ext *	(*update)(struct nft_set *set,
- 						  const u32 *key,
- 						  struct nft_elem_priv *
- 							(*new)(struct nft_set *,
- 							       const struct nft_expr *,
- 							       struct nft_regs *),
- 						  const struct nft_expr *expr,
--						  struct nft_regs *regs,
--						  const struct nft_set_ext **ext);
-+						  struct nft_regs *regs);
- 	bool				(*delete)(const struct nft_set *set,
- 						  const u32 *key);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 9bb53f00c2c62..33c61f3b667c3 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -805,6 +805,7 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+ 	struct erofs_map_blocks *map = &fe->map;
+ 	struct super_block *sb = fe->inode->i_sb;
+ 	struct z_erofs_pcluster *pcl = NULL;
++	void *ptr;
+ 	int ret;
  
-diff --git a/include/net/netfilter/nf_tables_core.h b/include/net/netfilter/nf_tables_core.h
-index 03b6165756fc5..6a52fb97b8443 100644
---- a/include/net/netfilter/nf_tables_core.h
-+++ b/include/net/netfilter/nf_tables_core.h
-@@ -94,34 +94,41 @@ extern const struct nft_set_type nft_set_pipapo_type;
- extern const struct nft_set_type nft_set_pipapo_avx2_type;
- 
- #ifdef CONFIG_MITIGATION_RETPOLINE
--bool nft_rhash_lookup(const struct net *net, const struct nft_set *set,
--		      const u32 *key, const struct nft_set_ext **ext);
--bool nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext);
--bool nft_bitmap_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext);
--bool nft_hash_lookup_fast(const struct net *net,
--			  const struct nft_set *set,
--			  const u32 *key, const struct nft_set_ext **ext);
--bool nft_hash_lookup(const struct net *net, const struct nft_set *set,
--		     const u32 *key, const struct nft_set_ext **ext);
--bool nft_set_do_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext);
-+const struct nft_set_ext *
-+nft_rhash_lookup(const struct net *net, const struct nft_set *set,
-+		 const u32 *key);
-+const struct nft_set_ext *
-+nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key);
-+const struct nft_set_ext *
-+nft_bitmap_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key);
-+const struct nft_set_ext *
-+nft_hash_lookup_fast(const struct net *net, const struct nft_set *set,
-+		     const u32 *key);
-+const struct nft_set_ext *
-+nft_hash_lookup(const struct net *net, const struct nft_set *set,
-+		const u32 *key);
-+const struct nft_set_ext *
-+nft_set_do_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key);
- #else
--static inline bool
-+static inline const struct nft_set_ext *
- nft_set_do_lookup(const struct net *net, const struct nft_set *set,
--		  const u32 *key, const struct nft_set_ext **ext)
-+		  const u32 *key)
- {
--	return set->ops->lookup(net, set, key, ext);
-+	return set->ops->lookup(net, set, key);
- }
- #endif
- 
- /* called from nft_pipapo_avx2.c */
--bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext);
-+const struct nft_set_ext *
-+nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key);
- /* called from nft_set_pipapo.c */
--bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
--			    const u32 *key, const struct nft_set_ext **ext);
-+const struct nft_set_ext *
-+nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
-+			const u32 *key);
- 
- void nft_counter_init_seqcount(void);
- 
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index 88922e0e8e837..e24493d9e7761 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -91,8 +91,9 @@ void nft_dynset_eval(const struct nft_expr *expr,
- 		return;
- 	}
- 
--	if (set->ops->update(set, &regs->data[priv->sreg_key], nft_dynset_new,
--			     expr, regs, &ext)) {
-+	ext = set->ops->update(set, &regs->data[priv->sreg_key], nft_dynset_new,
-+			     expr, regs);
-+	if (ext) {
- 		if (priv->op == NFT_DYNSET_OP_UPDATE &&
- 		    nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT) &&
- 		    READ_ONCE(nft_set_ext_timeout(ext)->timeout) != 0) {
-diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
-index 63ef832b8aa71..40c602ffbcba7 100644
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -25,32 +25,33 @@ struct nft_lookup {
- };
- 
- #ifdef CONFIG_MITIGATION_RETPOLINE
--bool nft_set_do_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_set_do_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key)
- {
- 	if (set->ops == &nft_set_hash_fast_type.ops)
--		return nft_hash_lookup_fast(net, set, key, ext);
-+		return nft_hash_lookup_fast(net, set, key);
- 	if (set->ops == &nft_set_hash_type.ops)
--		return nft_hash_lookup(net, set, key, ext);
-+		return nft_hash_lookup(net, set, key);
- 
- 	if (set->ops == &nft_set_rhash_type.ops)
--		return nft_rhash_lookup(net, set, key, ext);
-+		return nft_rhash_lookup(net, set, key);
- 
- 	if (set->ops == &nft_set_bitmap_type.ops)
--		return nft_bitmap_lookup(net, set, key, ext);
-+		return nft_bitmap_lookup(net, set, key);
- 
- 	if (set->ops == &nft_set_pipapo_type.ops)
--		return nft_pipapo_lookup(net, set, key, ext);
-+		return nft_pipapo_lookup(net, set, key);
- #if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
- 	if (set->ops == &nft_set_pipapo_avx2_type.ops)
--		return nft_pipapo_avx2_lookup(net, set, key, ext);
-+		return nft_pipapo_avx2_lookup(net, set, key);
- #endif
- 
- 	if (set->ops == &nft_set_rbtree_type.ops)
--		return nft_rbtree_lookup(net, set, key, ext);
-+		return nft_rbtree_lookup(net, set, key);
- 
- 	WARN_ON_ONCE(1);
--	return set->ops->lookup(net, set, key, ext);
-+	return set->ops->lookup(net, set, key);
- }
- EXPORT_SYMBOL_GPL(nft_set_do_lookup);
- #endif
-@@ -61,12 +62,12 @@ void nft_lookup_eval(const struct nft_expr *expr,
- {
- 	const struct nft_lookup *priv = nft_expr_priv(expr);
- 	const struct nft_set *set = priv->set;
--	const struct nft_set_ext *ext = NULL;
- 	const struct net *net = nft_net(pkt);
-+	const struct nft_set_ext *ext;
- 	bool found;
- 
--	found =	nft_set_do_lookup(net, set, &regs->data[priv->sreg], &ext) ^
--				  priv->invert;
-+	ext = nft_set_do_lookup(net, set, &regs->data[priv->sreg]);
-+	found = !!ext ^ priv->invert;
- 	if (!found) {
- 		ext = nft_set_catchall_lookup(net, set);
- 		if (!ext) {
-diff --git a/net/netfilter/nft_objref.c b/net/netfilter/nft_objref.c
-index 09da7a3f9f967..8ee66a86c3bc7 100644
---- a/net/netfilter/nft_objref.c
-+++ b/net/netfilter/nft_objref.c
-@@ -111,10 +111,9 @@ void nft_objref_map_eval(const struct nft_expr *expr,
- 	struct net *net = nft_net(pkt);
- 	const struct nft_set_ext *ext;
- 	struct nft_object *obj;
--	bool found;
- 
--	found = nft_set_do_lookup(net, set, &regs->data[priv->sreg], &ext);
--	if (!found) {
-+	ext = nft_set_do_lookup(net, set, &regs->data[priv->sreg]);
-+	if (!ext) {
- 		ext = nft_set_catchall_lookup(net, set);
- 		if (!ext) {
- 			regs->verdict.code = NFT_BREAK;
-diff --git a/net/netfilter/nft_set_bitmap.c b/net/netfilter/nft_set_bitmap.c
-index 1caa04619dc6d..b4765fb92d727 100644
---- a/net/netfilter/nft_set_bitmap.c
-+++ b/net/netfilter/nft_set_bitmap.c
-@@ -75,16 +75,21 @@ nft_bitmap_active(const u8 *bitmap, u32 idx, u32 off, u8 genmask)
- }
- 
- INDIRECT_CALLABLE_SCOPE
--bool nft_bitmap_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_bitmap_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key)
- {
- 	const struct nft_bitmap *priv = nft_set_priv(set);
-+	static const struct nft_set_ext found;
- 	u8 genmask = nft_genmask_cur(net);
- 	u32 idx, off;
- 
- 	nft_bitmap_location(set, key, &idx, &off);
- 
--	return nft_bitmap_active(priv->bitmap, idx, off, genmask);
-+	if (nft_bitmap_active(priv->bitmap, idx, off, genmask))
-+		return &found;
-+
-+	return NULL;
- }
- 
- static struct nft_bitmap_elem *
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index 4b3452dff2ec0..900eddb93dcc8 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -81,8 +81,9 @@ static const struct rhashtable_params nft_rhash_params = {
- };
- 
- INDIRECT_CALLABLE_SCOPE
--bool nft_rhash_lookup(const struct net *net, const struct nft_set *set,
--		      const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_rhash_lookup(const struct net *net, const struct nft_set *set,
-+		 const u32 *key)
- {
- 	struct nft_rhash *priv = nft_set_priv(set);
- 	const struct nft_rhash_elem *he;
-@@ -95,9 +96,9 @@ bool nft_rhash_lookup(const struct net *net, const struct nft_set *set,
- 
- 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
- 	if (he != NULL)
--		*ext = &he->ext;
-+		return &he->ext;
- 
--	return !!he;
-+	return NULL;
- }
- 
- static struct nft_elem_priv *
-@@ -120,14 +121,11 @@ nft_rhash_get(const struct net *net, const struct nft_set *set,
- 	return ERR_PTR(-ENOENT);
- }
- 
--static bool nft_rhash_update(struct nft_set *set, const u32 *key,
--			     struct nft_elem_priv *
--				   (*new)(struct nft_set *,
--					  const struct nft_expr *,
--					  struct nft_regs *regs),
--			     const struct nft_expr *expr,
--			     struct nft_regs *regs,
--			     const struct nft_set_ext **ext)
-+static const struct nft_set_ext *
-+nft_rhash_update(struct nft_set *set, const u32 *key,
-+		 struct nft_elem_priv *(*new)(struct nft_set *, const struct nft_expr *,
-+		 struct nft_regs *regs),
-+		 const struct nft_expr *expr, struct nft_regs *regs)
- {
- 	struct nft_rhash *priv = nft_set_priv(set);
- 	struct nft_rhash_elem *he, *prev;
-@@ -161,14 +159,13 @@ static bool nft_rhash_update(struct nft_set *set, const u32 *key,
- 	}
- 
- out:
--	*ext = &he->ext;
--	return true;
-+	return &he->ext;
- 
- err2:
- 	nft_set_elem_destroy(set, &he->priv, true);
- 	atomic_dec(&set->nelems);
- err1:
--	return false;
-+	return NULL;
- }
- 
- static int nft_rhash_insert(const struct net *net, const struct nft_set *set,
-@@ -507,8 +504,9 @@ struct nft_hash_elem {
- };
- 
- INDIRECT_CALLABLE_SCOPE
--bool nft_hash_lookup(const struct net *net, const struct nft_set *set,
--		     const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_hash_lookup(const struct net *net, const struct nft_set *set,
-+		const u32 *key)
- {
- 	struct nft_hash *priv = nft_set_priv(set);
- 	u8 genmask = nft_genmask_cur(net);
-@@ -519,12 +517,10 @@ bool nft_hash_lookup(const struct net *net, const struct nft_set *set,
- 	hash = reciprocal_scale(hash, priv->buckets);
- 	hlist_for_each_entry_rcu(he, &priv->table[hash], node) {
- 		if (!memcmp(nft_set_ext_key(&he->ext), key, set->klen) &&
--		    nft_set_elem_active(&he->ext, genmask)) {
--			*ext = &he->ext;
--			return true;
--		}
-+		    nft_set_elem_active(&he->ext, genmask))
-+			return &he->ext;
- 	}
--	return false;
-+	return NULL;
- }
- 
- static struct nft_elem_priv *
-@@ -547,9 +543,9 @@ nft_hash_get(const struct net *net, const struct nft_set *set,
- }
- 
- INDIRECT_CALLABLE_SCOPE
--bool nft_hash_lookup_fast(const struct net *net,
--			  const struct nft_set *set,
--			  const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_hash_lookup_fast(const struct net *net, const struct nft_set *set,
-+		     const u32 *key)
- {
- 	struct nft_hash *priv = nft_set_priv(set);
- 	u8 genmask = nft_genmask_cur(net);
-@@ -562,12 +558,10 @@ bool nft_hash_lookup_fast(const struct net *net,
- 	hlist_for_each_entry_rcu(he, &priv->table[hash], node) {
- 		k2 = *(u32 *)nft_set_ext_key(&he->ext)->data;
- 		if (k1 == k2 &&
--		    nft_set_elem_active(&he->ext, genmask)) {
--			*ext = &he->ext;
--			return true;
--		}
-+		    nft_set_elem_active(&he->ext, genmask))
-+			return &he->ext;
- 	}
--	return false;
-+	return NULL;
- }
- 
- static u32 nft_jhash(const struct nft_set *set, const struct nft_hash *priv,
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 9ac48e6b4332c..a844b33fa6002 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -407,8 +407,9 @@ int pipapo_refill(unsigned long *map, unsigned int len, unsigned int rules,
-  *
-  * Return: true on match, false otherwise.
-  */
--bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key)
- {
- 	struct nft_pipapo *priv = nft_set_priv(set);
- 	struct nft_pipapo_scratch *scratch;
-@@ -465,13 +466,15 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
- 			scratch->map_index = map_index;
- 			local_bh_enable();
- 
--			return false;
-+			return NULL;
+ 	DBG_BUGON(fe->pcl);
+@@ -854,15 +855,13 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+ 		/* bind cache first when cached decompression is preferred */
+ 		z_erofs_bind_cache(fe);
+ 	} else {
+-		void *mptr;
+-
+-		mptr = erofs_read_metabuf(&map->buf, sb, map->m_pa, false);
+-		if (IS_ERR(mptr)) {
+-			ret = PTR_ERR(mptr);
++		ptr = erofs_read_metabuf(&map->buf, sb, map->m_pa, false);
++		if (IS_ERR(ptr)) {
++			ret = PTR_ERR(ptr);
+ 			erofs_err(sb, "failed to get inline data %d", ret);
+ 			return ret;
  		}
+-		get_page(map->buf.page);
++		folio_get(page_folio(map->buf.page));
+ 		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page, map->buf.page);
+ 		fe->pcl->pageofs_in = map->m_pa & ~PAGE_MASK;
+ 		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
+@@ -1325,9 +1324,8 @@ static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
  
- 		if (last) {
--			*ext = &f->mt[b].e->ext;
--			if (unlikely(nft_set_elem_expired(*ext) ||
--				     !nft_set_elem_active(*ext, genmask)))
-+			const struct nft_set_ext *ext;
-+
-+			ext = &f->mt[b].e->ext;
-+			if (unlikely(nft_set_elem_expired(ext) ||
-+				     !nft_set_elem_active(ext, genmask)))
- 				goto next_match;
- 
- 			/* Last field: we're just returning the key without
-@@ -482,7 +485,7 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
- 			scratch->map_index = map_index;
- 			local_bh_enable();
- 
--			return true;
-+			return ext;
- 		}
- 
- 		/* Swap bitmap indices: res_map is the initial bitmap for the
-@@ -497,7 +500,7 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
- 
- out:
- 	local_bh_enable();
--	return false;
-+	return NULL;
- }
- 
- /**
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index be7c16c79f711..6c441e2dc8af3 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1146,8 +1146,9 @@ static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, uns
-  *
-  * Return: true on match, false otherwise.
-  */
--bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
--			    const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
-+		       const u32 *key)
- {
- 	struct nft_pipapo *priv = nft_set_priv(set);
- 	struct nft_pipapo_scratch *scratch;
-@@ -1155,17 +1156,18 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	const struct nft_pipapo_match *m;
- 	const struct nft_pipapo_field *f;
- 	const u8 *rp = (const u8 *)key;
-+	const struct nft_set_ext *ext;
- 	unsigned long *res, *fill;
- 	bool map_index;
--	int i, ret = 0;
-+	int i;
- 
- 	local_bh_disable();
- 
- 	if (unlikely(!irq_fpu_usable())) {
--		bool fallback_res = nft_pipapo_lookup(net, set, key, ext);
-+		ext = nft_pipapo_lookup(net, set, key);
- 
- 		local_bh_enable();
--		return fallback_res;
-+		return ext;
- 	}
- 
- 	m = rcu_dereference(priv->match);
-@@ -1182,7 +1184,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	if (unlikely(!scratch)) {
- 		kernel_fpu_end();
- 		local_bh_enable();
--		return false;
-+		return NULL;
- 	}
- 
- 	map_index = scratch->map_index;
-@@ -1197,6 +1199,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- next_match:
- 	nft_pipapo_for_each_field(f, i, m) {
- 		bool last = i == m->field_count - 1, first = !i;
-+		int ret = 0;
- 
- #define NFT_SET_PIPAPO_AVX2_LOOKUP(b, n)				\
- 		(ret = nft_pipapo_avx2_lookup_##b##b_##n(res, fill, f,	\
-@@ -1244,10 +1247,10 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 			goto out;
- 
- 		if (last) {
--			*ext = &f->mt[ret].e->ext;
--			if (unlikely(nft_set_elem_expired(*ext) ||
--				     !nft_set_elem_active(*ext, genmask))) {
--				ret = 0;
-+			ext = &f->mt[ret].e->ext;
-+			if (unlikely(nft_set_elem_expired(ext) ||
-+				     !nft_set_elem_active(ext, genmask))) {
-+				ext = NULL;
- 				goto next_match;
- 			}
- 
-@@ -1264,5 +1267,5 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	kernel_fpu_end();
- 	local_bh_enable();
- 
--	return ret >= 0;
-+	return ext;
- }
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 2e8ef16ff191d..938a257c069e2 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -52,9 +52,9 @@ static bool nft_rbtree_elem_expired(const struct nft_rbtree_elem *rbe)
- 	return nft_set_elem_expired(&rbe->ext);
- }
- 
--static bool __nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
--				const u32 *key, const struct nft_set_ext **ext,
--				unsigned int seq)
-+static const struct nft_set_ext *
-+__nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
-+		    const u32 *key, unsigned int seq)
- {
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	const struct nft_rbtree_elem *rbe, *interval = NULL;
-@@ -65,7 +65,7 @@ static bool __nft_rbtree_lookup(const struct net *net, const struct nft_set *set
- 	parent = rcu_dereference_raw(priv->root.rb_node);
- 	while (parent != NULL) {
- 		if (read_seqcount_retry(&priv->count, seq))
--			return false;
-+			return NULL;
- 
- 		rbe = rb_entry(parent, struct nft_rbtree_elem, node);
- 
-@@ -87,50 +87,48 @@ static bool __nft_rbtree_lookup(const struct net *net, const struct nft_set *set
- 			}
- 
- 			if (nft_rbtree_elem_expired(rbe))
--				return false;
-+				return NULL;
- 
- 			if (nft_rbtree_interval_end(rbe)) {
- 				if (nft_set_is_anonymous(set))
--					return false;
-+					return NULL;
- 				parent = rcu_dereference_raw(parent->rb_left);
- 				interval = NULL;
- 				continue;
- 			}
- 
--			*ext = &rbe->ext;
--			return true;
-+			return &rbe->ext;
- 		}
- 	}
- 
- 	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
- 	    nft_set_elem_active(&interval->ext, genmask) &&
- 	    !nft_rbtree_elem_expired(interval) &&
--	    nft_rbtree_interval_start(interval)) {
--		*ext = &interval->ext;
--		return true;
--	}
-+	    nft_rbtree_interval_start(interval))
-+		return &interval->ext;
- 
--	return false;
-+	return NULL;
- }
- 
- INDIRECT_CALLABLE_SCOPE
--bool nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
--		       const u32 *key, const struct nft_set_ext **ext)
-+const struct nft_set_ext *
-+nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
-+		  const u32 *key)
- {
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	unsigned int seq = read_seqcount_begin(&priv->count);
--	bool ret;
-+	const struct nft_set_ext *ext;
- 
--	ret = __nft_rbtree_lookup(net, set, key, ext, seq);
--	if (ret || !read_seqcount_retry(&priv->count, seq))
--		return ret;
-+	ext = __nft_rbtree_lookup(net, set, key, seq);
-+	if (ext || !read_seqcount_retry(&priv->count, seq))
-+		return ext;
- 
- 	read_lock_bh(&priv->lock);
- 	seq = read_seqcount_begin(&priv->count);
--	ret = __nft_rbtree_lookup(net, set, key, ext, seq);
-+	ext = __nft_rbtree_lookup(net, set, key, seq);
- 	read_unlock_bh(&priv->lock);
- 
--	return ret;
-+	return ext;
- }
- 
- static bool __nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 	/* must handle all compressed pages before actual file pages */
+ 	if (pcl->from_meta) {
+-		page = pcl->compressed_bvecs[0].page;
++		folio_put(page_folio(pcl->compressed_bvecs[0].page));
+ 		WRITE_ONCE(pcl->compressed_bvecs[0].page, NULL);
+-		put_page(page);
+ 	} else {
+ 		/* managed folios are still left in compressed_bvecs[] */
+ 		for (i = 0; i < pclusterpages; ++i) {
 -- 
 2.51.0
 
