@@ -1,98 +1,120 @@
-Return-Path: <stable+bounces-179762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF430B7CA13
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:06:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687D6B7EA36
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94BB316D333
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 02:40:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E977324545
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 03:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCFE2F3C08;
-	Wed, 17 Sep 2025 02:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0828D2F6594;
+	Wed, 17 Sep 2025 03:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OTo0eG04"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzpLhge5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60402DF717;
-	Wed, 17 Sep 2025 02:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0D0258ED7;
+	Wed, 17 Sep 2025 03:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758076812; cv=none; b=e3IPwxndU4m8aAWftFQS7Rd9bweU0cZvJsjv1aSB+KahD8pm/pJ8E2vrIVovJBW4R49107Gv3XpYur99c7mYubW9qD/oNX9GioMsXvpzfgX0XvIRqlPDCn57oNL6djlruB6YU9N6X5fHU5obEP5lc2oHMQs0N33q3vZOriLODP0=
+	t=1758079397; cv=none; b=nfxz/RjrDWDb385jsNe32OxBddOjR1uPN+ftHnjPxjsPzxyHoc0UjKUQd7Bqp7VKgITbNWnDEU+b+K0uhrhqumM3LoQ/CMXpLBQIG4JGH9DB51XICvTnJHYr3jiUSZGM4AamXjkzJmWQGGHYiSsKsowLmbLVRBCNRg2/RBGRFkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758076812; c=relaxed/simple;
-	bh=/S2HMi3usPSz32wfGIPF+rTLYNKndealNpX9ovOTxRM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EKt3gKhHE4ToNiee8f0t/8AO6oblsApkYu+DoSxbRMLFmb1JL1+/y67zKk0OYwA4NudBrruijdC3d3lRkuCsopO7g+jpWeV9+zIOIx3wImvqf0aWSdrsswlRDwEs14Iw62r93cAaFmPWCsPuXvsEPjx2UkaeXEzfuzIHi4kJ9w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OTo0eG04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A204C4CEEB;
-	Wed, 17 Sep 2025 02:40:12 +0000 (UTC)
+	s=arc-20240116; t=1758079397; c=relaxed/simple;
+	bh=s+Ah/AAHowwzNuuce/f6c/Q+zdGsP5DuTh81rmB8SBY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EOwPCwsnQwJ83eSswwcG/cT/c9zKm48Owj6YitipNzv4b5ssmDDZDusyyx7hRiVjl0HAY6X0vRbPuAOqH1VV6a5lLq26k2tFp4FI17oUwRPbS3ZOn0uFoSG3UoL1c4cQi/S7FdcYE0uVvlzDW9a4VMtF6n8BIBoCO8ZnHJo/TBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzpLhge5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4F0FBC4CEEB;
+	Wed, 17 Sep 2025 03:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758076812;
-	bh=/S2HMi3usPSz32wfGIPF+rTLYNKndealNpX9ovOTxRM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=OTo0eG04e9twFTepVCTYzVobxe+EIJigaScEgmbcQrfCSl44NK6jgQvJrqWyq46bq
-	 UU7PHRQI7K2R8k/ltzQGTEhl1cp4VAN3sgMphvR3Iowy2mudXgw+DUxOb1YSSNCNVy
-	 Q/HA8sVuG4lmN2gjW1SRwVhpkQ3cnYAxd+g4qGFSZByMlfh72pVBfnTE4h/fF+1MjE
-	 E1tt0zKjSSVoY2z5zj0ypYribQAEWoFpjfhU8d3a3C1dLLbsygz7oTa23UUO8GhG7x
-	 DEQ9df136oEN+iAjROowKLFnubG5BVoRYyqhuRYZYU+E2BAB7lHvFChY3gN7Ekc2bg
-	 gYiYlQiByDWXw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D2639D0C1A;
-	Wed, 17 Sep 2025 02:40:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1758079397;
+	bh=s+Ah/AAHowwzNuuce/f6c/Q+zdGsP5DuTh81rmB8SBY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=kzpLhge5r2L72RZTlSC0Z4wFQ3CexEEasITaBc1BLgPmd21JW5o71p6AGXCQQ9/Nq
+	 76zoj0hNNExfPvJ+/uXeAykbrRFFfAgKqjAUVqeK1eVYccVYUo/FKzC3FVbB9qZsch
+	 fD9/H9Lo4sgbZU0d3raP19CxICiDEfun3kKOg8slkFr0rruknXsNf71eaF0zYHMLlD
+	 9NqBMbVueWVwOA0Xx7wf3ywd6uJcEV87WXIsIiEfyb66roE5OWymA36BfSkZQqfVez
+	 MQb8oB2ZCmmnPREVv35WqZGmMEulYulL4cdayYUzcIfJMI4FqjWDp0YE41I0HVeKPT
+	 03AhHKECsyJHQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C0A3CAC59A;
+	Wed, 17 Sep 2025 03:23:17 +0000 (UTC)
+From: Theodore Ts'o via B4 Relay <devnull+tytso.mit.edu@kernel.org>
+Subject: [PATCH v2 0/3] ext4: Add support for mounted updates to the
+ superblock via an ioctl
+Date: Tue, 16 Sep 2025 23:22:46 -0400
+Message-Id: <20250916-tune2fs-v2-0-d594dc7486f0@mit.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 0/2] Fix riscv sparse warnings
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <175807681324.1444719.6787626572646476134.git-patchwork-notify@kernel.org>
-Date: Wed, 17 Sep 2025 02:40:13 +0000
-References: 
- <20250903-dev-alex-sparse_warnings_v1-v1-0-7e6350beb700@rivosinc.com>
-In-Reply-To: 
- <20250903-dev-alex-sparse_warnings_v1-v1-0-7e6350beb700@rivosinc.com>
-To: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: linux-riscv@lists.infradead.org, lkp@intel.com, viro@zeniv.linux.org.uk,
- paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
- alex@ghiti.fr, cyrilbur@tenstorrent.com, jszhang@kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIYpymgC/z3MQQ6CMBCF4auQWVtTOhaoK+9hWIBMZRYW05ZGQ
+ 3p3KyYu/5eXb4NAninAudrAU+LAiyuhDhXc5sHdSfBUGpRUWnYoRVwdKRsEYtuMNLbqJBHK++n
+ J8muXrn3pmUNc/HuHU/1df4aR3d9ItZCCcGiMMhZR68uD45GmFfqc8wfvNwsPnAAAAA==
+X-Change-ID: 20250830-tune2fs-3376beb72403
+To: tytso@mit.edu
+Cc: linux-ext4@vger.kernel.org, linux-api@vger.kernel.org, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1459; i=tytso@mit.edu;
+ h=from:subject:message-id;
+ bh=s+Ah/AAHowwzNuuce/f6c/Q+zdGsP5DuTh81rmB8SBY=;
+ b=owEBbQGS/pANAwAIAfL5WVaVDYGjAcsmYgBoyimjM4Q785OEKu5sS5LIuhYhQqyZ/H7GzG6P4
+ nHx/gaBbaCJATMEAAEIAB0WIQQrablU2/4IeSiBN8ny+VlWlQ2BowUCaMopowAKCRDy+VlWlQ2B
+ o3dRB/9NpXGyTbbc0Uf8y4v3AtNFRwxLY/srg37XORX9wOm/lAn2ZpAfIWhMGSFmPLzSpJgkTen
+ 8suE4uFvY+v+NLMDq3EPOFzVETckm+rjGTXU+m9FtD/TZKTfhQUiZcItf1CmBQ23ZcQplXuq00n
+ crc4oUdEKw6ikCXCyQSQUXEVld0idq2Siknairp57zCZRIgP4pjj3HIKDNGb2ycWoTDV/nmT/lW
+ Ui8QGlDk4wHSvX1g/BqWmAR/wMi1RBdaYinnODJKmIEsoNzBU7AJzpv8Wgxr7FPzTNIHwKmJ4j7
+ PUioF0yqeJu/MG9ZvEHFcYNaP8XshrCLHQaYZJCwsS5qDACy
+X-Developer-Key: i=tytso@mit.edu; a=openpgp;
+ fpr=3AB057B7E78D945C8C5591FBD36F769BC11804F0
+X-Endpoint-Received: by B4 Relay for tytso@mit.edu/default with auth_id=517
+X-Original-From: Theodore Ts'o <tytso@mit.edu>
+Reply-To: tytso@mit.edu
 
-Hello:
+This patch series enables a future version of tune2fs to be able to
+modify certain parts of the ext4 superblock without to write to the
+block device.
 
-This series was applied to riscv/linux.git (for-next)
-by Paul Walmsley <pjw@kernel.org>:
+The first patch fixes a potential buffer overrun caused by a
+maliciously moified superblock.  The second patch adds support for
+32-bit uid and gid's which can have access to the reserved blocks pool.
+The last patch adds the ioctl's which will be used by tune2fs.
 
-On Wed, 03 Sep 2025 18:53:07 +0000 you wrote:
-> This series simply fixes 2 recently introduced sparse warnings.
-> 
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> ---
-> Alexandre Ghiti (2):
->       riscv: Fix sparse warning in __get_user_error()
->       riscv: Fix sparse warning about different address spaces
-> 
-> [...]
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+---
+Changes in v2:
+- fix bugs that were detected using sparse
+- remove tune (unsafe) ability to clear certain compat faatures
+- add the ability to set the encoding and encoding flags for case folding
+- Link to v1: https://lore.kernel.org/r/20250908-tune2fs-v1-0-e3a6929f3355@mit.edu
 
-Here is the summary with links:
-  - [1/2] riscv: Fix sparse warning in __get_user_error()
-    https://git.kernel.org/riscv/c/fef7ded169ed
-  - [2/2] riscv: Fix sparse warning about different address spaces
-    https://git.kernel.org/riscv/c/a03ee11b8f85
+---
+Theodore Ts'o (3):
+      ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
+      ext4: add support for 32-bit default reserved uid and gid values
+      ext4: implemet new ioctls to set and get superblock parameters
 
-You are awesome, thank you!
+ fs/ext4/ext4.h            |  16 +++-
+ fs/ext4/ioctl.c           | 312 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ fs/ext4/super.c           |  25 +++----
+ include/uapi/linux/ext4.h |  53 +++++++++++++
+ 4 files changed, 382 insertions(+), 24 deletions(-)
+---
+base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
+change-id: 20250830-tune2fs-3376beb72403
+
+Best regards,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Theodore Ts'o <tytso@mit.edu>
 
 
 
