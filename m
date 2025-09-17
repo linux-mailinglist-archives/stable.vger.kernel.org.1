@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F35B7ED62
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:03:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15183B7E303
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759441BC404A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81781B26588
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45133195F8;
-	Wed, 17 Sep 2025 12:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBAD30CB29;
+	Wed, 17 Sep 2025 12:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1WrpIYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBSi9Agf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606AF3195F6;
-	Wed, 17 Sep 2025 12:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C891C07C4;
+	Wed, 17 Sep 2025 12:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113663; cv=none; b=st9bR8/MlOUHql7aFSvHug7WKZGgBRh4sL7F+NSDofPWcvw/wyQ7eobUrjYY7sT/t/60GhQQ7pZx+pqK48eQtStRTvLl1va2hsqjoJ+WLWjYM50fBWDprGQYlSUYmva33S327BOPUGNh+cX2Fgry240ed0J9q7K7bkscpAlmWF4=
+	t=1758112960; cv=none; b=ut6aWsppVM2TQRMn2MRmXAkeAC7W8mkPWkImNBjgFXSzwekVdVCdZtZAqVWACLUECWnEEYadv/GUNavKuXKfM1kEKIyHsIsbohmNsVO86AL9iua3Dw4U9LJBNUi02N8gTpat3Cq+/2y8eQ4uMMrRHdRfUe/xnU/9btZTpW8ZMcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113663; c=relaxed/simple;
-	bh=dTe1guehP4lFNtxqisNPkh04cLkeeCgrJclCaa2rJGs=;
+	s=arc-20240116; t=1758112960; c=relaxed/simple;
+	bh=olrZzagAvrJhm/FSZOWj9bCa8SgPVkhwU/JQagU1f3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgjCRnUbd/oNMMz/V1vGkSG+89R3aMhyXwvYffCyCU0TDxPIE1ykJOaXzNwU2Hh8bJkpIOJnybZUD+GiGtvavvuPPBwyyVAuAnMn2rc3F5jLxW0xYQvCTsJz/5d8G5cmPQhfdD6WzfUp/mm+3Kp8qcRSa0wcfiI81P2EdND1Ln4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1WrpIYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D25FC4CEF5;
-	Wed, 17 Sep 2025 12:54:21 +0000 (UTC)
+	 MIME-Version; b=GuKoyLyFPSfZ473rSRXhakY3DTGyty3+8gxR+9r3Tm2fzb+MZLB7OsXGqPIqzxdCvakCddlBMhVBwgXAst+GZSe8e/XKiunfLW06fkh0TxOPs9DE4PMgcEmu/o27ZzqX212eC8eN9TTfcXgA6nFz6LB/MJWR+xdsrOLupVIWu0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBSi9Agf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5355C4CEF0;
+	Wed, 17 Sep 2025 12:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113661;
-	bh=dTe1guehP4lFNtxqisNPkh04cLkeeCgrJclCaa2rJGs=;
+	s=korg; t=1758112960;
+	bh=olrZzagAvrJhm/FSZOWj9bCa8SgPVkhwU/JQagU1f3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1WrpIYvnPfHvyKJJ1QT53nVcUpHoE2vT5D4xdepL1leQ5x4tfO/d71HpcSmd9c0Z
-	 N7G0t/R1q2SnayIit8AB7mKcAzH+5ZGHF+L1rtdR8Q9sSIdgTBVZYQ68Vax7rIKabT
-	 q3bNtLe+oT+mAnqsX+MjJA77vubR6npecTyTlxQw=
+	b=pBSi9AgfXhoglF8cqGPXZSraj5sQLFnBh1suBFEgeBymI/Ve9zLTzq2SG36BczsIC
+	 5EuUr7ToDSB9e6UnqGAMnPGNdbZ0aSXkLNEWapPqBSAnWe40Z50MV1nPslEgfdB8T/
+	 gLjpP68soYHhIhoQk4o9rOvTLVBAShrC+1oXD6SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/101] ftrace/samples: Fix function size computation
+Subject: [PATCH 6.16 128/189] net: phylink: add lock for serializing concurrent pl->phydev writes with resolver
 Date: Wed, 17 Sep 2025 14:33:58 +0200
-Message-ID: <20250917123337.232186044@linuxfoundation.org>
+Message-ID: <20250917123354.987806387@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 80d03a40837a9b26750a25122b906c052cc846c9 ]
+[ Upstream commit 0ba5b2f2c381dbec9ed9e4ab3ae5d3e667de0dc3 ]
 
-In my_tramp1 function .size directive was placed above
-ASM_RET instruction, leading to a wrong function size.
+Currently phylink_resolve() protects itself against concurrent
+phylink_bringup_phy() or phylink_disconnect_phy() calls which modify
+pl->phydev by relying on pl->state_mutex.
 
-Link: https://lore.kernel.org/aK3d7vxNcO52kEmg@vova-pc
-Fixes: 9d907f1ae80b ("samples/ftrace: Fix asm function ELF annotations")
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+The problem is that in phylink_resolve(), pl->state_mutex is in a lock
+inversion state with pl->phydev->lock. So pl->phydev->lock needs to be
+acquired prior to pl->state_mutex. But that requires dereferencing
+pl->phydev in the first place, and without pl->state_mutex, that is
+racy.
+
+Hence the reason for the extra lock. Currently it is redundant, but it
+will serve a functional purpose once mutex_lock(&phy->lock) will be
+moved outside of the mutex_lock(&pl->state_mutex) section.
+
+Another alternative considered would have been to let phylink_resolve()
+acquire the rtnl_mutex, which is also held when phylink_bringup_phy()
+and phylink_disconnect_phy() are called. But since phylink_disconnect_phy()
+runs under rtnl_lock(), it would deadlock with phylink_resolve() when
+calling flush_work(&pl->resolve). Additionally, it would have been
+undesirable because it would have unnecessarily blocked many other call
+paths as well in the entire kernel, so the smaller-scoped lock was
+preferred.
+
+Link: https://lore.kernel.org/netdev/aLb6puGVzR29GpPx@shell.armlinux.org.uk/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250904125238.193990-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e2a10daba849 ("net: phy: transfer phy_config_inband() locking responsibility to phylink")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/ftrace/ftrace-direct-modify.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phylink.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/samples/ftrace/ftrace-direct-modify.c b/samples/ftrace/ftrace-direct-modify.c
-index e2a6a69352dfb..b40f85e3806fc 100644
---- a/samples/ftrace/ftrace-direct-modify.c
-+++ b/samples/ftrace/ftrace-direct-modify.c
-@@ -40,8 +40,8 @@ asm (
- 	CALL_DEPTH_ACCOUNT
- "	call my_direct_func1\n"
- "	leave\n"
--"	.size		my_tramp1, .-my_tramp1\n"
- 	ASM_RET
-+"	.size		my_tramp1, .-my_tramp1\n"
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 0faa3d97e06b9..08cbb31e6dbc1 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -67,6 +67,8 @@ struct phylink {
+ 	struct timer_list link_poll;
  
- "	.type		my_tramp2, @function\n"
- "	.globl		my_tramp2\n"
+ 	struct mutex state_mutex;
++	/* Serialize updates to pl->phydev with phylink_resolve() */
++	struct mutex phydev_mutex;
+ 	struct phylink_link_state phy_state;
+ 	unsigned int phy_ib_mode;
+ 	struct work_struct resolve;
+@@ -1568,8 +1570,11 @@ static void phylink_resolve(struct work_struct *w)
+ 	struct phylink_link_state link_state;
+ 	bool mac_config = false;
+ 	bool retrigger = false;
++	struct phy_device *phy;
+ 	bool cur_link_state;
+ 
++	mutex_lock(&pl->phydev_mutex);
++	phy = pl->phydev;
+ 	mutex_lock(&pl->state_mutex);
+ 	cur_link_state = phylink_link_is_up(pl);
+ 
+@@ -1603,11 +1608,11 @@ static void phylink_resolve(struct work_struct *w)
+ 		/* If we have a phy, the "up" state is the union of both the
+ 		 * PHY and the MAC
+ 		 */
+-		if (pl->phydev)
++		if (phy)
+ 			link_state.link &= pl->phy_state.link;
+ 
+ 		/* Only update if the PHY link is up */
+-		if (pl->phydev && pl->phy_state.link) {
++		if (phy && pl->phy_state.link) {
+ 			/* If the interface has changed, force a link down
+ 			 * event if the link isn't already down, and re-resolve.
+ 			 */
+@@ -1671,6 +1676,7 @@ static void phylink_resolve(struct work_struct *w)
+ 		queue_work(system_power_efficient_wq, &pl->resolve);
+ 	}
+ 	mutex_unlock(&pl->state_mutex);
++	mutex_unlock(&pl->phydev_mutex);
+ }
+ 
+ static void phylink_run_resolve(struct phylink *pl)
+@@ -1806,6 +1812,7 @@ struct phylink *phylink_create(struct phylink_config *config,
+ 	if (!pl)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	mutex_init(&pl->phydev_mutex);
+ 	mutex_init(&pl->state_mutex);
+ 	INIT_WORK(&pl->resolve, phylink_resolve);
+ 
+@@ -2066,6 +2073,7 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+ 		     dev_name(&phy->mdio.dev), phy->drv->name, irq_str);
+ 	kfree(irq_str);
+ 
++	mutex_lock(&pl->phydev_mutex);
+ 	mutex_lock(&phy->lock);
+ 	mutex_lock(&pl->state_mutex);
+ 	pl->phydev = phy;
+@@ -2111,6 +2119,7 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+ 
+ 	mutex_unlock(&pl->state_mutex);
+ 	mutex_unlock(&phy->lock);
++	mutex_unlock(&pl->phydev_mutex);
+ 
+ 	phylink_dbg(pl,
+ 		    "phy: %s setting supported %*pb advertising %*pb\n",
+@@ -2289,6 +2298,7 @@ void phylink_disconnect_phy(struct phylink *pl)
+ 
+ 	ASSERT_RTNL();
+ 
++	mutex_lock(&pl->phydev_mutex);
+ 	phy = pl->phydev;
+ 	if (phy) {
+ 		mutex_lock(&phy->lock);
+@@ -2298,8 +2308,11 @@ void phylink_disconnect_phy(struct phylink *pl)
+ 		pl->mac_tx_clk_stop = false;
+ 		mutex_unlock(&pl->state_mutex);
+ 		mutex_unlock(&phy->lock);
+-		flush_work(&pl->resolve);
++	}
++	mutex_unlock(&pl->phydev_mutex);
+ 
++	if (phy) {
++		flush_work(&pl->resolve);
+ 		phy_disconnect(phy);
+ 	}
+ }
 -- 
 2.51.0
 
