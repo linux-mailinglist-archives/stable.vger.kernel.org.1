@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB094B7E8EE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8415CB7E3AE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AA35208A8
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F09161D92
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314B93233E9;
-	Wed, 17 Sep 2025 12:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064B21F3BA2;
+	Wed, 17 Sep 2025 12:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/lTVDcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRvJjpoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DFE309DDD;
-	Wed, 17 Sep 2025 12:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68C31EE033;
+	Wed, 17 Sep 2025 12:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113309; cv=none; b=JLPE1u8A1dfQILP7BKm4RZj7B6bFTKEgpKKoznfYes1Uls3/wsV2vyOu+qd7hEeXHQs/ixbd4YvYVemJOnf6qA7K7K/1B6194ZfO/iMpx9LIPO0u1ce/8N/Lynlb98fS2M2Vr8Wnm68jwguLROmnW3DnPRJcyLKYofhteZl9Fok=
+	t=1758113046; cv=none; b=PoP+t2u/bBhLwBgvzUtScTRkBJzZNCaK9hROYZsRP/btut2N8pylzgVm3B84qUP3F8zRRkUxRxzBBzp0/Os+iI0fdYHRMhUIsIyNHi0hRo/s9A4OdsNtM3LT+mdj1sshD/RKXHz/zje3nxi/5NDj4cHgyhGvIBvYkjSTckfUhCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113309; c=relaxed/simple;
-	bh=oilpdPs7Q+0auvYLeO/v09aU2hRo7DCF2zKBwgfspZk=;
+	s=arc-20240116; t=1758113046; c=relaxed/simple;
+	bh=EHDHnq2YSsDxcC29f0n8PU7veUhyjmA34Rna2g37L+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nXJIAaNjX+kw8CV5j1UNX+pFPKmPl2sA6ufcxkYRwsoA1RIiE3636JNkc+LPYPaV4f/duM0lmbgLDxsZFtEun//7C9ONEchEDfPFf/djGHuc/YdPsikRXIgSBbYtz0b7xjIvKvPWCWhXX5efgFLYvdI8yi+Jt9aBE3Q4LNNcdeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/lTVDcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F270AC4CEF0;
-	Wed, 17 Sep 2025 12:48:27 +0000 (UTC)
+	 MIME-Version; b=jfaNWZn0s6udGsxYXYfo6LYlAKPE7NRpDfRwY4gNLX2v1PQeO8P9m7b4NKrq9hT0bcqYE9jISX3KDxzZZiRbk9kaX0iwuajgzJmZai7zL423Honn+C9Cg04Lfw5et58GwrFzgunmIpBZIXaSZPXsmhjYIIfwgMc8fRmNFdwtxKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRvJjpoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3844FC4CEF7;
+	Wed, 17 Sep 2025 12:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113308;
-	bh=oilpdPs7Q+0auvYLeO/v09aU2hRo7DCF2zKBwgfspZk=;
+	s=korg; t=1758113046;
+	bh=EHDHnq2YSsDxcC29f0n8PU7veUhyjmA34Rna2g37L+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/lTVDccg6P7TeOkdZue1dzNmQbd0rI0KB8R8x5MubnaiYo334Iaojy0H1vFf/UWv
-	 hwz0tXrxTb5VGO85CG2BdKpu9aupLD0WqAdgOcna3gEZw2FCdoyLgsMK8bxxOxS+qv
-	 JUw1U8E4Wqfv6E1CN10MmmfacSxGRKxmCahTaKTE=
+	b=qRvJjpohQIkhr399doQYbb/EqjKOJA8Bpj1/9IT7y/iUOJyLLs+aT664yFRy9aEti
+	 a2D916hDnvgKnft4rEEE5aynoWpDCTI7r8IoeHk7y/WlK8x8e4sndQNUdtioSiXybz
+	 JRLBfWBt6PLqDC8sG4TA6Di4UlmOgWD/MWj2HN1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.12 047/140] EDAC/altera: Delete an inappropriate dma_free_coherent() call
-Date: Wed, 17 Sep 2025 14:33:39 +0200
-Message-ID: <20250917123345.450970128@linuxfoundation.org>
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 110/189] drm/amd/display: Destroy cached state in complete() callback
+Date: Wed, 17 Sep 2025 14:33:40 +0200
+Message-ID: <20250917123354.555573562@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ff2a66d21fd2364ed9396d151115eec59612b200 upstream.
+[ Upstream commit 45cc102f8e6520ac07637c7e09f61dcc3772e125 ]
 
-dma_free_coherent() must only be called if the corresponding
-dma_alloc_coherent() call has succeeded. Calling it when the allocation fails
-leads to undefined behavior.
+[Why]
+When the suspend sequence has been aborted after prepare() but
+before suspend() the resume() callback never gets called. The PM core
+will call complete() when this happens. As the state has been cached
+in prepare() it needs to be destroyed in complete() if it's still around.
 
-Delete the wrong call.
+[How]
+Create a helper for destroying cached state and call it both in resume()
+and complete() callbacks. If resume has been called the state will be
+destroyed and it's a no-op for complete().  If resume hasn't been called
+(such as an aborted suspend) then destroy the state in complete().
 
-  [ bp: Massage commit message. ]
-
-Fixes: 71bcada88b0f3 ("edac: altera: Add Altera SDRAM EDAC support")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/aIrfzzqh4IzYtDVC@pc
+Fixes: 50e0bae34fa6 ("drm/amd/display: Add and use new dm_prepare_suspend() callback")
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Link: https://lore.kernel.org/r/20250602014432.3538345-4-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 60f71f0db7b1 ("drm/amd/display: Drop dm_prepare_suspend() and dm_complete()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  100 +++++++++++++---------
+ 1 file changed, 60 insertions(+), 40 deletions(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -128,7 +128,6 @@ static ssize_t altr_sdr_mc_err_inject_wr
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3084,6 +3084,64 @@ static int dm_cache_state(struct amdgpu_
+ 	return adev->dm.cached_state ? 0 : r;
+ }
  
- 	ptemp = dma_alloc_coherent(mci->pdev, 16, &dma_handle, GFP_KERNEL);
- 	if (!ptemp) {
--		dma_free_coherent(mci->pdev, 16, ptemp, dma_handle);
- 		edac_printk(KERN_ERR, EDAC_MC,
- 			    "Inject: Buffer Allocation error\n");
- 		return -ENOMEM;
++static void dm_destroy_cached_state(struct amdgpu_device *adev)
++{
++	struct amdgpu_display_manager *dm = &adev->dm;
++	struct drm_device *ddev = adev_to_drm(adev);
++	struct dm_plane_state *dm_new_plane_state;
++	struct drm_plane_state *new_plane_state;
++	struct dm_crtc_state *dm_new_crtc_state;
++	struct drm_crtc_state *new_crtc_state;
++	struct drm_plane *plane;
++	struct drm_crtc *crtc;
++	int i;
++
++	if (!dm->cached_state)
++		return;
++
++	/* Force mode set in atomic commit */
++	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i) {
++		new_crtc_state->active_changed = true;
++		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
++		reset_freesync_config_for_crtc(dm_new_crtc_state);
++	}
++
++	/*
++	 * atomic_check is expected to create the dc states. We need to release
++	 * them here, since they were duplicated as part of the suspend
++	 * procedure.
++	 */
++	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i) {
++		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
++		if (dm_new_crtc_state->stream) {
++			WARN_ON(kref_read(&dm_new_crtc_state->stream->refcount) > 1);
++			dc_stream_release(dm_new_crtc_state->stream);
++			dm_new_crtc_state->stream = NULL;
++		}
++		dm_new_crtc_state->base.color_mgmt_changed = true;
++	}
++
++	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
++		dm_new_plane_state = to_dm_plane_state(new_plane_state);
++		if (dm_new_plane_state->dc_state) {
++			WARN_ON(kref_read(&dm_new_plane_state->dc_state->refcount) > 1);
++			dc_plane_state_release(dm_new_plane_state->dc_state);
++			dm_new_plane_state->dc_state = NULL;
++		}
++	}
++
++	drm_atomic_helper_resume(ddev, dm->cached_state);
++
++	dm->cached_state = NULL;
++}
++
++static void dm_complete(struct amdgpu_ip_block *ip_block)
++{
++	struct amdgpu_device *adev = ip_block->adev;
++
++	dm_destroy_cached_state(adev);
++}
++
+ static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
+ {
+ 	struct amdgpu_device *adev = ip_block->adev;
+@@ -3317,12 +3375,6 @@ static int dm_resume(struct amdgpu_ip_bl
+ 	struct amdgpu_dm_connector *aconnector;
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
+-	struct drm_crtc *crtc;
+-	struct drm_crtc_state *new_crtc_state;
+-	struct dm_crtc_state *dm_new_crtc_state;
+-	struct drm_plane *plane;
+-	struct drm_plane_state *new_plane_state;
+-	struct dm_plane_state *dm_new_plane_state;
+ 	struct dm_atomic_state *dm_state = to_dm_atomic_state(dm->atomic_obj.state);
+ 	enum dc_connection_type new_connection_type = dc_connection_none;
+ 	struct dc_state *dc_state;
+@@ -3481,40 +3533,7 @@ static int dm_resume(struct amdgpu_ip_bl
+ 	}
+ 	drm_connector_list_iter_end(&iter);
+ 
+-	/* Force mode set in atomic commit */
+-	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i) {
+-		new_crtc_state->active_changed = true;
+-		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
+-		reset_freesync_config_for_crtc(dm_new_crtc_state);
+-	}
+-
+-	/*
+-	 * atomic_check is expected to create the dc states. We need to release
+-	 * them here, since they were duplicated as part of the suspend
+-	 * procedure.
+-	 */
+-	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i) {
+-		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
+-		if (dm_new_crtc_state->stream) {
+-			WARN_ON(kref_read(&dm_new_crtc_state->stream->refcount) > 1);
+-			dc_stream_release(dm_new_crtc_state->stream);
+-			dm_new_crtc_state->stream = NULL;
+-		}
+-		dm_new_crtc_state->base.color_mgmt_changed = true;
+-	}
+-
+-	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
+-		dm_new_plane_state = to_dm_plane_state(new_plane_state);
+-		if (dm_new_plane_state->dc_state) {
+-			WARN_ON(kref_read(&dm_new_plane_state->dc_state->refcount) > 1);
+-			dc_plane_state_release(dm_new_plane_state->dc_state);
+-			dm_new_plane_state->dc_state = NULL;
+-		}
+-	}
+-
+-	drm_atomic_helper_resume(ddev, dm->cached_state);
+-
+-	dm->cached_state = NULL;
++	dm_destroy_cached_state(adev);
+ 
+ 	/* Do mst topology probing after resuming cached state*/
+ 	drm_connector_list_iter_begin(ddev, &iter);
+@@ -3563,6 +3582,7 @@ static const struct amd_ip_funcs amdgpu_
+ 	.prepare_suspend = dm_prepare_suspend,
+ 	.suspend = dm_suspend,
+ 	.resume = dm_resume,
++	.complete = dm_complete,
+ 	.is_idle = dm_is_idle,
+ 	.wait_for_idle = dm_wait_for_idle,
+ 	.check_soft_reset = dm_check_soft_reset,
 
 
 
