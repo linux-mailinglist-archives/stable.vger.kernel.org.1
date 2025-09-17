@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-180415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8424B807AC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:19:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA74B8073F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62DD7525183
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:19:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 766AC1885FE3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B800333AB5;
-	Wed, 17 Sep 2025 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1CE30AACA;
+	Wed, 17 Sep 2025 15:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="rIR3dU3S"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="jXDBJrYu"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359571C3314
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FF62D9EF9
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758122364; cv=none; b=ifZZXSTbY7aWgUa17fZyKlb3p8gV46QCWPofQwVQ9apkABqAsfpktSkQOIaai9ucv11+FtLbefvOjZUkxgfT8oC90ELOQGPfKKF6l+oSjH9Y4/j21oSvK2HrrxaUg+LlMVF5fuN4bqJOYNfATx0I3nxhJe4+BuA9ylbk58OrSrk=
+	t=1758121773; cv=none; b=UuIhyzOmUjQbE7fZJTf2/xFg75QCzSGIf3oVJs3BZadSVaY4ZfPKitchEe0aujywJEq8HbMhcSeFi4Bo7jAsDikhHvcTj0W2GC+5Li1uooSJKOVc3ReQnh/5A9wjYjx0hbopihOXcVg9HBiADkg2qOx/bcq6cTND48yUsp4UMf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758122364; c=relaxed/simple;
-	bh=c+qN09KBoyy2uLIlCQ59dshprkNFcWqZ397Ne8yAWUs=;
+	s=arc-20240116; t=1758121773; c=relaxed/simple;
+	bh=AjcnaQZoC6/NO4tviUQGJbZHYGPR8SYfPxy0EzR0Da4=;
 	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
-	 Content-Type:Subject; b=eAyFFJk4r7UBF44TT43YwCMVcIrYNSXZJYhQVgkdPCRGJ0do9reA17/Pk9dPZYLHCOrqI8oN9RqMmdZsquSTYjdh0wWzq1R5YAdpgFpZhUM/PSIiLbD0Bvch8jrUY7Fmds7fHkqmWVVyDeuOlN0QP5s5JKjA438J6MNv6i9RCmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=rIR3dU3S; arc=none smtp.client-ip=162.243.120.170
+	 Content-Type:Subject; b=pputtftut3oAY/Aclx0CxQjM6LExhMoRpBsxt8eCJf3Eq9bcZG7iVXTGsbq3TFjiTJppOW4zpjqT8ZI3Hs4OoHL7uRDSPXaQXoqT00CcttHxIpk7rZJaZVsnPxAYIGmqFxM/1dbHUi7+j9AmCRWS/YTUZKJ/3rvRwntOdkXIyC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=jXDBJrYu; arc=none smtp.client-ip=162.243.120.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
 	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
 	:Date:subject:date:message-id:reply-to;
-	bh=lOHcYRecEqu8jC94oVR4a7p/iArv5PODunbEknSvmok=; b=rIR3dU3SFPQDa3cZhQQpy+sTtg
-	6OBTHUcNLlGmGFDzmm1xj+DmTxybmYv0n31DU7186pnVRUQFgcCUP2q3rpQPQbwvFFOnhAr/3P0hH
-	R9XzbO/zp7C8lyyUeTo98ojXb6tpwoQycenzqWKwRx6fi3oFH6il0ytuLEVh1b2DI4FQ=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:40194 helo=pettiford)
+	bh=DKN++JI84egv2jesrdnOFTlovwanYsNFV8qWd0leQ1E=; b=jXDBJrYuRNNxxS4ENCwu8BQo9N
+	iccSJkErTZHGb/ab0MMAsuRXMmthKpDJxBtIFEmpBf3yG2Q4EatjawFG7uhGK187fl3VzCSjqFtUc
+	rKHPSiLJ9VSXwwfkY3E+7OvnASDYDv8xIhcdHy8e446aQ8plGxI7LpvjG2nXgZo4u9bs=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:49330 helo=pettiford)
 	by mail.hugovil.com with esmtpa (Exim 4.92)
 	(envelope-from <hugo@hugovil.com>)
-	id 1uytdo-0001ZO-M6; Wed, 17 Sep 2025 11:00:17 -0400
-Date: Wed, 17 Sep 2025 11:00:15 -0400
+	id 1uytmj-000329-JI; Wed, 17 Sep 2025 11:09:29 -0400
+Date: Wed, 17 Sep 2025 11:09:29 -0400
 From: Hugo Villeneuve <hugo@hugovil.com>
 To: Sasha Levin <sashal@kernel.org>
 Cc: stable@vger.kernel.org, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Greg
  Kroah-Hartman <gregkh@linuxfoundation.org>
-Message-Id: <20250917110015.1fe9b6d91da419d44cd9315a@hugovil.com>
-In-Reply-To: <20250917123957.515161-1-sashal@kernel.org>
-References: <2025091721-moonwalk-barrack-423e@gregkh>
-	<20250917123957.515161-1-sashal@kernel.org>
+Message-Id: <20250917110929.05dee0a2e149c5fe506a7c01@hugovil.com>
+In-Reply-To: <20250917124459.518238-1-sashal@kernel.org>
+References: <2025091721-speak-detoxify-e6fe@gregkh>
+	<20250917124459.518238-1-sashal@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,12 +65,12 @@ X-Spam-Level:
 X-Spam-Report: 
 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
 	* -3.3 NICE_REPLY_A Looks like a legit reply (A)
-Subject: Re: [PATCH 5.15.y] serial: sc16is7xx: fix bug in flow control
+Subject: Re: [PATCH 5.10.y] serial: sc16is7xx: fix bug in flow control
  levels init
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On Wed, 17 Sep 2025 08:39:57 -0400
+On Wed, 17 Sep 2025 08:44:59 -0400
 Sasha Levin <sashal@kernel.org> wrote:
 
 > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
@@ -128,7 +128,7 @@ Acked-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 >  1 file changed, 2 insertions(+), 12 deletions(-)
 > 
 > diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-> index d274a847c6ab3..3623d3167950d 100644
+> index 4ea52426acf9e..758537381d774 100644
 > --- a/drivers/tty/serial/sc16is7xx.c
 > +++ b/drivers/tty/serial/sc16is7xx.c
 > @@ -1018,7 +1018,6 @@ static int sc16is7xx_config_rs485(struct uart_port *port,
