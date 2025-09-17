@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-180360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FBBB7F226
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAB0B7E618
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E34E4A4791
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:10:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2966E4A0704
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC573328978;
-	Wed, 17 Sep 2025 13:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505252FBDFF;
+	Wed, 17 Sep 2025 12:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/e3GyA6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8Hp0G3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A45518FDBD;
-	Wed, 17 Sep 2025 13:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4DA30CB5B;
+	Wed, 17 Sep 2025 12:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114215; cv=none; b=jhRyR0JzpZCPyjGp8MDQWZfD9iCe2KtwmOBmKBw/t+CL9wGbrYutrV9VlmcnllhoqTnLzJGq70ZI8P4R2LD7i7Vyauz1S2OGQKj64IsuoeJRTHEO4l/YArmIxYIrkoeQfW5J3F/yE3A6ReUkjABRBawTcUikxkXek/FsXg+Tuc0=
+	t=1758113118; cv=none; b=ZM9ABxIU+rHBVSIPBTyYJ5ZwLdGlE+V8/zGJPZCVaNPJ3olKbpUUOmV8qrQ3OiV3qg28izroeI1LiGCRdM7OHijZM8nMdacZT0c5CEMWqX3jUHrZXQHELK6Su5oFHMuAZSu9LUDFNyt7/W46xQz+ChbrookKvVv27e23vEBCo2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114215; c=relaxed/simple;
-	bh=JlntoDesyhZq9cnCAEmgSlprw7eg4psbv6LP4I/3zl4=;
+	s=arc-20240116; t=1758113118; c=relaxed/simple;
+	bh=bUaUTPO+E+d5OMRGxTUdPovT9tRha0mXcxdhloLDc5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6odvLtPhy+X/EYTeVnIjgGUxIsPTj2EtuAac/wrOrGyGm3NxMxMur38NK4YyU6otH3NT3zVuYft5FYVQcrm5/cuKni0a6iKwLe0xQrWJCadO6P3WCFhQkwbv8zwc+RIW0BSWa2SjcFGSkYwaE/DgtUH9eSj6AXfItn4/KV1lJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/e3GyA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D3BC4CEF5;
-	Wed, 17 Sep 2025 13:03:34 +0000 (UTC)
+	 MIME-Version; b=gmiygjXWkhXybxBE2fMdo5n4bI1oSqVXrJzav+VQDSJAVw89saU+LqB+4lTKxLHAwvP+3aL9KeMaRgRtu6ZxOFXupnKudVPqjjsocgGRiHGWByoIkVN9vi0zVeW0/y823tiTBtRQD5aRT3jdB1sB7ddwj39ox5AgMNh5rhRVXCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8Hp0G3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEE8C4CEF0;
+	Wed, 17 Sep 2025 12:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114215;
-	bh=JlntoDesyhZq9cnCAEmgSlprw7eg4psbv6LP4I/3zl4=;
+	s=korg; t=1758113117;
+	bh=bUaUTPO+E+d5OMRGxTUdPovT9tRha0mXcxdhloLDc5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/e3GyA6sIxk8TyKmGJ68aTyl7k6QjuCOweWIoG5/1ohfhHdlzWXF733kwYhrBBL0
-	 u0SvtD9/ZRp4zdG0WrGlzFUU3OQy56yvSC2v9Ni1qNmnEghv6A4RmNQzBOA5sKoC7P
-	 FT4hHF8OGWAThidIb7MkTa8mz4xQ8AVRHeTASXCI=
+	b=o8Hp0G3ppyZttLNWWfyO0oDN1poB4kioN4X06PT1tbGXJegJVv2hge5v7MpdW6yLv
+	 YnIY8RDxO6IezWpDLb6wQXc0t7pcUmc3hvqkx2FM/NokZhMF3dUv0rOe7IH1xSQ5PM
+	 Zt63THJ7FTQogRNz6J+QjdNmNslMEGUcBBoUhQDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 26/78] mptcp: sockopt: make sync_socket_options propagate SOCK_KEEPOPEN
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.16 177/189] xhci: dbc: decouple endpoint allocation from initialization
 Date: Wed, 17 Sep 2025 14:34:47 +0200
-Message-ID: <20250917123330.202164820@linuxfoundation.org>
+Message-ID: <20250917123356.207863072@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +60,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 648de37416b301f046f62f1b65715c7fa8ebaa67 upstream.
+commit 220a0ffde02f962c13bc752b01aa570b8c65a37b upstream.
 
-Users reported a scenario where MPTCP connections that were configured
-with SO_KEEPALIVE prior to connect would fail to enable their keepalives
-if MTPCP fell back to TCP mode.
+Decouple allocation of endpoint ring buffer from initialization
+of the buffer, and initialization of endpoint context parts from
+from the rest of the contexts.
 
-After investigating, this affects keepalives for any connection where
-sync_socket_options is called on a socket that is in the closed or
-listening state.  Joins are handled properly. For connects,
-sync_socket_options is called when the socket is still in the closed
-state.  The tcp_set_keepalive() function does not act on sockets that
-are closed or listening, hence keepalive is not immediately enabled.
-Since the SO_KEEPOPEN flag is absent, it is not enabled later in the
-connect sequence via tcp_finish_connect.  Setting the keepalive via
-sockopt after connect does work, but would not address any subsequently
-created flows.
+It allows driver to clear up and reinitialize endpoint rings
+after disconnect without reallocating everything.
 
-Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on the
-subflow when calling sync_socket_options.
+This is a prerequisite for the next patch that prevents the transfer
+ring from filling up with cancelled (no-op) TRBs if a debug cable is
+reconnected several times without transferring anything.
 
-The fix was valdidated both by using tcpdump to observe keepalive
-packets not being sent before the fix, and being sent after the fix.  It
-was also possible to observe via ss that the keepalive timer was not
-enabled on these sockets before the fix, but was enabled afterwards.
-
-Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/aL8dYfPZrwedCIh9@templeofstupid.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c |   71 ++++++++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 25 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1347,13 +1347,12 @@ static void sync_socket_options(struct m
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -101,13 +101,34 @@ static u32 xhci_dbc_populate_strings(str
+ 	return string_length;
+ }
+ 
++static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
++{
++	struct xhci_ep_ctx      *ep_ctx;
++	unsigned int		max_burst;
++	dma_addr_t		deq;
++
++	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
++
++	/* Populate bulk out endpoint context: */
++	ep_ctx                  = dbc_bulkout_ctx(dbc);
++	deq                     = dbc_bulkout_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
++
++	/* Populate bulk in endpoint context: */
++	ep_ctx                  = dbc_bulkin_ctx(dbc);
++	deq                     = dbc_bulkin_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
++}
++
+ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
  {
- 	static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
- 	struct sock *sk = (struct sock *)msk;
-+	bool keep_open;
+ 	struct dbc_info_context	*info;
+-	struct xhci_ep_ctx	*ep_ctx;
+ 	u32			dev_info;
+-	dma_addr_t		deq, dma;
+-	unsigned int		max_burst;
++	dma_addr_t		dma;
  
--	if (ssk->sk_prot->keepalive) {
--		if (sock_flag(sk, SOCK_KEEPOPEN))
--			ssk->sk_prot->keepalive(ssk, 1);
--		else
--			ssk->sk_prot->keepalive(ssk, 0);
+ 	if (!dbc)
+ 		return;
+@@ -121,20 +142,8 @@ static void xhci_dbc_init_contexts(struc
+ 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
+ 	info->length		= cpu_to_le32(string_length);
+ 
+-	/* Populate bulk out endpoint context: */
+-	ep_ctx			= dbc_bulkout_ctx(dbc);
+-	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
+-	deq			= dbc_bulkout_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
+-
+-	/* Populate bulk in endpoint context: */
+-	ep_ctx			= dbc_bulkin_ctx(dbc);
+-	deq			= dbc_bulkin_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
++	/* Populate bulk in and out endpoint contexts: */
++	xhci_dbc_init_ep_contexts(dbc);
+ 
+ 	/* Set DbC context and info registers: */
+ 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
+@@ -436,6 +445,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t
+ 	return ctx;
+ }
+ 
++static void xhci_dbc_ring_init(struct xhci_ring *ring)
++{
++	struct xhci_segment *seg = ring->first_seg;
++
++	/* clear all trbs on ring in case of old ring */
++	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
++
++	/* Only event ring does not use link TRB */
++	if (ring->type != TYPE_EVENT) {
++		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
++
++		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
++		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
++	}
++	xhci_initialize_ring_info(ring);
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -464,15 +490,10 @@ xhci_dbc_ring_alloc(struct device *dev,
+ 
+ 	seg->dma = dma;
+ 
+-	/* Only event ring does not use link TRB */
+-	if (type != TYPE_EVENT) {
+-		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
+-
+-		trb->link.segment_ptr = cpu_to_le64(dma);
+-		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
 -	}
-+	keep_open = sock_flag(sk, SOCK_KEEPOPEN);
-+	if (ssk->sk_prot->keepalive)
-+		ssk->sk_prot->keepalive(ssk, keep_open);
-+	sock_valbool_flag(ssk, SOCK_KEEPOPEN, keep_open);
- 
- 	ssk->sk_priority = sk->sk_priority;
- 	ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
+ 	INIT_LIST_HEAD(&ring->td_list);
+-	xhci_initialize_ring_info(ring);
++
++	xhci_dbc_ring_init(ring);
++
+ 	return ring;
+ dma_fail:
+ 	kfree(seg);
 
 
 
