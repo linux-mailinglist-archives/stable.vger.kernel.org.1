@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-180198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0492B7EDF9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:04:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A6CB7E375
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0A10525DD4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:59:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 057F67AA1F7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146AA32E747;
-	Wed, 17 Sep 2025 12:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4158B337EB9;
+	Wed, 17 Sep 2025 12:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LY50tpMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkn6JKsm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C617737C110;
-	Wed, 17 Sep 2025 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04641DE894;
+	Wed, 17 Sep 2025 12:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113692; cv=none; b=Jk0v5H5hXt5OBTn0ufXYkF+VAOdJfNbzed2xJ9Xu9aHtMl1lXxaZlj7fyieHf8zjPL/EMK8vcgT8KXApBQp8HxukIF8RIgftpux8We20MHxeJWtlhekR0UifKKgdr37f3N5gY++ti+R+q58v1/IbDNBmr9nbm5catov3iUNw+9I=
+	t=1758112941; cv=none; b=TUHm/+8mOcAjTi6BsBG2MwHcZwAkWBpJc3AWAIUK9Hu3TiOT6dUsgwHaHgJE/l5+V9DNxeR26zUKKqol8rMf1dCjzPFgE9SVpgQ/7vs+H7RJcwJh5cbfZtMs0dIUt0FiHjInLj0Oiu+v2wO4zsnq42YJC5xClrHddLWH5BmTGiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113692; c=relaxed/simple;
-	bh=0PzziW6aDPtTpVoxESG6l1oB/9A6nvusD4ELYO7A8iE=;
+	s=arc-20240116; t=1758112941; c=relaxed/simple;
+	bh=Meglzx8el0fg/k6XUiaAp62HVZnNJGr0fIn1x0Ztu5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rViwigVTyISCK5gOQ6ms+fqWReWOo3YpTducMCxbGh2RH2hzy3ZEL3VxPyvZw3QK0hZpbDWokscIlSPIORajNXqVBOiGN9kdcaDV5+ZwV32eTqBdiokKQ4ogTVEKCEcuxMKYowEacee43AM6gJIAgLTkT3CbpCB5ZksO/DiVRJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LY50tpMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8ADC4CEF0;
-	Wed, 17 Sep 2025 12:54:51 +0000 (UTC)
+	 MIME-Version; b=BDUHjYE9vdNHhbaUKXOfVNUM0HxvFGXP0RypPZs3ulTFL7GeqmL2ncIywDfk+PKkjhByh0wPIKWdsrUP4EDjlBbXBBN609gjpXaeRaPq8UpPBu9gOJf/Ej0gT4P+01CnQZfE4Dx75shsDKzCnmQk/EoDDIC4lnr2e2ql3XXL0So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkn6JKsm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D81DC4CEF0;
+	Wed, 17 Sep 2025 12:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113692;
-	bh=0PzziW6aDPtTpVoxESG6l1oB/9A6nvusD4ELYO7A8iE=;
+	s=korg; t=1758112940;
+	bh=Meglzx8el0fg/k6XUiaAp62HVZnNJGr0fIn1x0Ztu5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LY50tpMWLvzeBEESmSMQup9qdpoXlsJcvJ/1Jo/X30DD1cDbvxwSBEFb8s8gpS8ZR
-	 cfKI+drExjU/Pv2BQLMXFyt2hd+4cuRtsp9piQqmEgRPf2huqta3P/ZY2my4jhGyJW
-	 g4UGQDmpQDRKeF0HwsTAHM/i3DnT0Y4R5enwBusc=
+	b=Vkn6JKsmwnL1TBVkgkvAWhuaq8YfTBoEwaxi0E435X+LJJGZZx/n21iuGBFaLhPih
+	 vw73eVHdffV59ZrAQc8fWmw6x0+Ic56BwCvzAOfhZLIXvnBQcDMO38G/AZZTnjagis
+	 F5MSqQJ76q7MwGBFmfvLioyp9H4e9pejnwizDmlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/101] flexfiles/pNFS: fix NULL checks on result of ff_layout_choose_ds_for_read
+	stable <stable@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.16 122/189] dt-bindings: serial: brcm,bcm7271-uart: Constrain clocks
 Date: Wed, 17 Sep 2025 14:33:52 +0200
-Message-ID: <20250917123337.095274223@linuxfoundation.org>
+Message-ID: <20250917123354.841258391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5a46d2339a5ae268ede53a221f20433d8ea4f2f9 ]
+commit ee047e1d85d73496541c54bd4f432c9464e13e65 upstream.
 
-Recent commit f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS
-errors") has changed the error return type of ff_layout_choose_ds_for_read() from
-NULL to an error pointer. However, not all code paths have been updated
-to match the change. Thus, some non-NULL checks will accept error pointers
-as a valid return value.
+Lists should have fixed constraints, because binding must be specific in
+respect to hardware, thus add missing constraints to number of clocks.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS errors")
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 88a499cd70d4 ("dt-bindings: Add support for the Broadcom UART driver")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250812121630.67072-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 7354b6b104783..b05dd4d3ed653 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -756,8 +756,11 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
- 			continue;
+--- a/Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml
++++ b/Documentation/devicetree/bindings/serial/brcm,bcm7271-uart.yaml
+@@ -41,7 +41,7 @@ properties:
+           - const: dma_intr2
  
- 		if (check_device &&
--		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node))
-+		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node)) {
-+			// reinitialize the error state in case if this is the last iteration
-+			ds = ERR_PTR(-EINVAL);
- 			continue;
-+		}
+   clocks:
+-    minItems: 1
++    maxItems: 1
  
- 		*best_idx = idx;
- 		break;
-@@ -787,7 +790,7 @@ ff_layout_choose_best_ds_for_read(struct pnfs_layout_segment *lseg,
- 	struct nfs4_pnfs_ds *ds;
- 
- 	ds = ff_layout_choose_valid_ds_for_read(lseg, start_idx, best_idx);
--	if (ds)
-+	if (!IS_ERR(ds))
- 		return ds;
- 	return ff_layout_choose_any_ds_for_read(lseg, start_idx, best_idx);
- }
-@@ -801,7 +804,7 @@ ff_layout_get_ds_for_read(struct nfs_pageio_descriptor *pgio,
- 
- 	ds = ff_layout_choose_best_ds_for_read(lseg, pgio->pg_mirror_idx,
- 					       best_idx);
--	if (ds || !pgio->pg_mirror_idx)
-+	if (!IS_ERR(ds) || !pgio->pg_mirror_idx)
- 		return ds;
- 	return ff_layout_choose_best_ds_for_read(lseg, 0, best_idx);
- }
-@@ -859,7 +862,7 @@ ff_layout_pg_init_read(struct nfs_pageio_descriptor *pgio,
- 	req->wb_nio = 0;
- 
- 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
--	if (!ds) {
-+	if (IS_ERR(ds)) {
- 		if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
- 			goto out_mds;
- 		pnfs_generic_pg_cleanup(pgio);
-@@ -1063,11 +1066,13 @@ static void ff_layout_resend_pnfs_read(struct nfs_pgio_header *hdr)
- {
- 	u32 idx = hdr->pgio_mirror_idx + 1;
- 	u32 new_idx = 0;
-+	struct nfs4_pnfs_ds *ds;
- 
--	if (ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx))
--		ff_layout_send_layouterror(hdr->lseg);
--	else
-+	ds = ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx);
-+	if (IS_ERR(ds))
- 		pnfs_error_mark_layout_for_return(hdr->inode, hdr->lseg);
-+	else
-+		ff_layout_send_layouterror(hdr->lseg);
- 	pnfs_read_resend_pnfs(hdr, new_idx);
- }
- 
--- 
-2.51.0
-
+   clock-names:
+     const: sw_baud
 
 
 
