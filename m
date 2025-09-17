@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D100CB7EFBE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F98B7EA5F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE3C81C07E1B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:03:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB9807AC141
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A53B1A3167;
-	Wed, 17 Sep 2025 12:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6F9330D3F;
+	Wed, 17 Sep 2025 12:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzuUpnqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/yq+nAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CE53195F3;
-	Wed, 17 Sep 2025 12:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59468330D3C;
+	Wed, 17 Sep 2025 12:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113889; cv=none; b=G31cFnojTugevCgJ0sXqGyZCWcDOuG9GjSJR79F3p7OzIYC2S3FRxiwaZ7CPdmmtZ7lNXmoU0K4VrPzMwLL54ObakdzBa5rxysE8CKQTsOIY8zYcmFWwgUlEhQWPm3x2RM/4Xp0zZA7vnt0eX3kOmmKK30d9Qjn+Y3KX5h7O2j0=
+	t=1758113549; cv=none; b=oNIyJJf6VXQrul+Trzg+7ZJLMcKMM4gMEdZgV8v6HHMcWTx/EWOlZ+BEzK/xPG2UFdQWt/apKAtdvuoOzZ+w5dfKx0rKXv8gmDmmbgIe9HWTFzTsHTKlEkKhZrcovejkysmHwx6vu8v+DtsjVA0wLVid1QZBPYNGww0MaPdWId4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113889; c=relaxed/simple;
-	bh=g8Gk9/xWfvrRTa5uiv03Hk+8o4eKF/lzWYPyoOnjNIA=;
+	s=arc-20240116; t=1758113549; c=relaxed/simple;
+	bh=q6A4KVoUqegyizFtFXCv2xaI8PVZs1GVltdyBscrsBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0PBfQXftDpSXj76FzJXWCeZ6GRX09PxBXQNT66n6gkMYJbuPyVxlFw2ELbnQKM6BogRX+cq6tKGIX5JDC406OKqQHZS28JtVahF7eHWcO3hOCr4scZUz3MG18j16+EvLY+DB7b3ismfQJY0RZDJkfodToMOWGjH29alRP8XM4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzuUpnqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5509C4CEF7;
-	Wed, 17 Sep 2025 12:58:08 +0000 (UTC)
+	 MIME-Version; b=Qmh+oRTeUHtRzQUbv0D1EL8r1ut0jeRtG5y8aqRVHmU4rHOAw8pEVmEBP7uoL2zdm82lWL1NaAVacsRJGMQoTLQU2W39xvNbaImNztu0R5TwtcZIAuAhjqjpxxWSxJGGFZPGlibky3CYWnDDvnfSGFKDnlKxuc8QPr9Sbd3gPHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/yq+nAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39BFC4CEF0;
+	Wed, 17 Sep 2025 12:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113889;
-	bh=g8Gk9/xWfvrRTa5uiv03Hk+8o4eKF/lzWYPyoOnjNIA=;
+	s=korg; t=1758113549;
+	bh=q6A4KVoUqegyizFtFXCv2xaI8PVZs1GVltdyBscrsBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzuUpnqMyecYFRD5L4NPgmEwNdltvmMjnByDeMnyyaEohJUy6bEfZkMujYajr8ZG5
-	 Rr6n2xfFUCPfO/byQC+NZ2eUy7Zq9du8NBGIQK78j/vRP03aJA9/XK+1T32Rx9SEWw
-	 kM7RLrZ1cvxIplzM2Aej7pZB1el9++lFcXKcRzVY=
+	b=D/yq+nArCYkHfH99gR4QIYT/LfbZfHzpQyIc8D3Nz/7SWXkhpBrAqQArIWJluiCIi
+	 swPuWavXsI5RpZGtbnHKvjBHU9vv3VSsEQeci1GrzjjU+CNCww3y54s+eI7nshgE/y
+	 7EYto1t3BpscTmPuEJprqIQ0IWFp/GH+1qMuyWqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damian Tometzki <damian@riscv-rocks.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/101] Disable SLUB_TINY for build testing
+Subject: [PATCH 6.12 118/140] hsr: use rtnl lock when iterating over ports
 Date: Wed, 17 Sep 2025 14:34:50 +0200
-Message-ID: <20250917123338.460501630@linuxfoundation.org>
+Message-ID: <20250917123347.191160653@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 6f110a5e4f9977c31ce76fefbfef6fd4eab6bfb7 ]
+[ Upstream commit 8884c693991333ae065830554b9b0c96590b1bb2 ]
 
-... and don't error out so hard on missing module descriptions.
+hsr_for_each_port is called in many places without holding the RCU read
+lock, this may trigger warnings on debug kernels. Most of the callers
+are actually hold rtnl lock. So add a new helper hsr_for_each_port_rtnl
+to allow callers in suitable contexts to iterate ports safely without
+explicit RCU locking.
 
-Before commit 6c6c1fc09de3 ("modpost: require a MODULE_DESCRIPTION()")
-we used to warn about missing module descriptions, but only when
-building with extra warnigns (ie 'W=1').
+This patch only fixed the callers that is hold rtnl lock. Other caller
+issues will be fixed in later patches.
 
-After that commit the warning became an unconditional hard error.
-
-And it turns out not all modules have been converted despite the claims
-to the contrary.  As reported by Damian Tometzki, the slub KUnit test
-didn't have a module description, and apparently nobody ever really
-noticed.
-
-The reason nobody noticed seems to be that the slub KUnit tests get
-disabled by SLUB_TINY, which also ends up disabling a lot of other code,
-both in tests and in slub itself.  And so anybody doing full build tests
-didn't actually see this failre.
-
-So let's disable SLUB_TINY for build-only tests, since it clearly ends
-up limiting build coverage.  Also turn the missing module descriptions
-error back into a warning, but let's keep it around for non-'W=1'
-builds.
-
-Reported-by: Damian Tometzki <damian@riscv-rocks.de>
-Link: https://lore.kernel.org/all/01070196099fd059-e8463438-7b1b-4ec8-816d-173874be9966-000000@eu-central-1.amazonses.com/
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Fixes: 6c6c1fc09de3 ("modpost: require a MODULE_DESCRIPTION()")
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: c5a759117210 ("net/hsr: Use list_head (and rcu) instead of array for slave devices.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250905091533.377443-2-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/hsr/hsr_device.c | 18 +++++++++---------
+ net/hsr/hsr_main.c   |  2 +-
+ net/hsr/hsr_main.h   |  3 +++
+ 3 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index c11cd01169e8d..046c32686fc4d 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -280,7 +280,7 @@ config SLAB
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 9f1106bdd4f09..56b49d477bec0 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -49,7 +49,7 @@ static bool hsr_check_carrier(struct hsr_port *master)
  
- config SLUB_TINY
- 	bool "Configure SLUB for minimal memory footprint"
--	depends on SLUB && EXPERT
-+	depends on SLUB && EXPERT && !COMPILE_TEST
- 	select SLAB_MERGE_DEFAULT
- 	help
- 	   Configures the SLUB allocator in a way to achieve minimal memory
+ 	ASSERT_RTNL();
+ 
+-	hsr_for_each_port(master->hsr, port) {
++	hsr_for_each_port_rtnl(master->hsr, port) {
+ 		if (port->type != HSR_PT_MASTER && is_slave_up(port->dev)) {
+ 			netif_carrier_on(master->dev);
+ 			return true;
+@@ -105,7 +105,7 @@ int hsr_get_max_mtu(struct hsr_priv *hsr)
+ 	struct hsr_port *port;
+ 
+ 	mtu_max = ETH_DATA_LEN;
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		if (port->type != HSR_PT_MASTER)
+ 			mtu_max = min(port->dev->mtu, mtu_max);
+ 
+@@ -139,7 +139,7 @@ static int hsr_dev_open(struct net_device *dev)
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -172,7 +172,7 @@ static int hsr_dev_close(struct net_device *dev)
+ 	struct hsr_priv *hsr;
+ 
+ 	hsr = netdev_priv(dev);
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -205,7 +205,7 @@ static netdev_features_t hsr_features_recompute(struct hsr_priv *hsr,
+ 	 * may become enabled.
+ 	 */
+ 	features &= ~NETIF_F_ONE_FOR_ALL;
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		features = netdev_increment_features(features,
+ 						     port->dev->features,
+ 						     mask);
+@@ -483,7 +483,7 @@ static void hsr_set_rx_mode(struct net_device *dev)
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -505,7 +505,7 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER)
+ 			continue;
+ 		switch (port->type) {
+@@ -533,7 +533,7 @@ static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		if (port->type == HSR_PT_MASTER ||
+ 		    port->type == HSR_PT_INTERLINK)
+ 			continue;
+@@ -579,7 +579,7 @@ static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
+ 
+ 	hsr = netdev_priv(dev);
+ 
+-	hsr_for_each_port(hsr, port) {
++	hsr_for_each_port_rtnl(hsr, port) {
+ 		switch (port->type) {
+ 		case HSR_PT_SLAVE_A:
+ 		case HSR_PT_SLAVE_B:
+diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
+index d7ae32473c41a..e1afa54b3fba8 100644
+--- a/net/hsr/hsr_main.c
++++ b/net/hsr/hsr_main.c
+@@ -22,7 +22,7 @@ static bool hsr_slave_empty(struct hsr_priv *hsr)
+ {
+ 	struct hsr_port *port;
+ 
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		if (port->type != HSR_PT_MASTER)
+ 			return false;
+ 	return true;
+diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
+index e26244456f639..f066c9c401c60 100644
+--- a/net/hsr/hsr_main.h
++++ b/net/hsr/hsr_main.h
+@@ -231,6 +231,9 @@ struct hsr_priv {
+ #define hsr_for_each_port(hsr, port) \
+ 	list_for_each_entry_rcu((port), &(hsr)->ports, port_list)
+ 
++#define hsr_for_each_port_rtnl(hsr, port) \
++	list_for_each_entry_rcu((port), &(hsr)->ports, port_list, lockdep_rtnl_is_held())
++
+ struct hsr_port *hsr_port_get_hsr(struct hsr_priv *hsr, enum hsr_port_type pt);
+ 
+ /* Caller must ensure skb is a valid HSR frame */
 -- 
 2.51.0
 
