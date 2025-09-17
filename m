@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C776BB7F02A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41249B7F241
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3196252E0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99B8216B823
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4490932BBF0;
-	Wed, 17 Sep 2025 12:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B456316194;
+	Wed, 17 Sep 2025 13:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Twh1kbX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKwrQfCr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C813161B0;
-	Wed, 17 Sep 2025 12:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C1931618F;
+	Wed, 17 Sep 2025 13:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113928; cv=none; b=kEcNl6K27OADM1Z9NX4q77P+EH3tKDmlGV3RJbhJ7ys5QgB3Wx+CcZXZJBFA6SW+WJAoWAyxcHJOcLlIla2vidwaF/i9idMnFjouEU3sO44RbjB9fmzJrT+/dbBGvoKt9Lw8cCG2C6Yhafhs9WHDMh6sGwzGKazWyCHlkcoWOJM=
+	t=1758114140; cv=none; b=Ytd1uz7UDe5dyAWBJoeLDyqBINqSVVvlG35vu6srWodHjlNZ4WsH1zIDPBme73I6Iv95bQ2Ny3c03Ac1pqLRV+LlrUAKJ8+VQT2F28/pY1630j1uUWlDzgMV4vEUOLTIHdO+qxidUvWljARf94Rfn+cRFSJoa0dtSoXRZC4+mg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113928; c=relaxed/simple;
-	bh=xGL/YZEpJjWFXkccDIBTC+Vc6jrhh3uyQ7rTJanPS9w=;
+	s=arc-20240116; t=1758114140; c=relaxed/simple;
+	bh=GPph3sYwaEoP8AWlMydlCwshtGNC6a6UuoLOCUxnPf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pw54QZfBOhvzb4tIYYSZnNMtRXzurYrvBbCpNo1nsldl05NaiEBdSZ3xBmr3Ev4PWZkmP2S0XMVLSnwu12E7WH13tS7A4b8wT/DLGijvAg7RSPAAzHVg8keGkaxCERsA/m2OC5YqJGyjNboi9YgTLh4qvRhOBus5/dticjLbh9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Twh1kbX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C93C4CEF0;
-	Wed, 17 Sep 2025 12:58:47 +0000 (UTC)
+	 MIME-Version; b=gcksRCM6KMw2DvD9u8I7UUCHznsbzKtp5tCQwR33l00zqFtzZdzAzhgHrvhGhScdKNf9swLDRsjsyMsCOrIsTLBEn8lySWde63IsXws5UdTNiZkhRdLZt7W+7RYFf+6E89pnvlrPMY6saQtYxXB5PCD239w91C3dZDR+pLRBOAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKwrQfCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67120C4CEF0;
+	Wed, 17 Sep 2025 13:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113927;
-	bh=xGL/YZEpJjWFXkccDIBTC+Vc6jrhh3uyQ7rTJanPS9w=;
+	s=korg; t=1758114139;
+	bh=GPph3sYwaEoP8AWlMydlCwshtGNC6a6UuoLOCUxnPf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Twh1kbX4iwMDFT8zvwgi0pqNjW3WKu3lARs//Upq97xuGhVzm9ViINEUI7JPdwYnl
-	 GabiBe7FHusPJd4WkrKvzPXeOB1279TR6qox5uosnAzkoawLRXC575QaozDJCzn6p1
-	 +ht+fDhlqhT6LCE6A06zUcu/87CWNXa5cmDrjqJo=
+	b=jKwrQfCrtWxZpfDlYRgKlCyHIxNns2WEzu2lzd/RCAC0CMkrUdwXmUhiSMW8EGfAt
+	 yS4yJX2t/j452MVJ1nTlP8LDtvf8jzkvwdYHTWgqJuJiguU7I4o8N9imAvRkia3RD2
+	 4aNjeDQABKTbKqCvmqfDYaxZL7tQT/Wi00Efn6+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 095/101] dmaengine: dw: dmamux: Fix device reference leak in rzn1_dmamux_route_allocate
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 57/78] can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
 Date: Wed, 17 Sep 2025 14:35:18 +0200
-Message-ID: <20250917123339.133511808@linuxfoundation.org>
+Message-ID: <20250917123330.961828155@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit aa2e1e4563d3ab689ffa86ca1412ecbf9fd3b308 upstream.
+[ Upstream commit 06e02da29f6f1a45fc07bd60c7eaf172dc21e334 ]
 
-The reference taken by of_find_device_by_node()
-must be released when not needed anymore.
-Add missing put_device() call to fix device reference leaks.
+Since j1939_sk_bind() and j1939_sk_release() call j1939_local_ecu_put()
+when J1939_SOCK_BOUND was already set, but the error handling path for
+j1939_sk_bind() will not set J1939_SOCK_BOUND when j1939_local_ecu_get()
+fails, j1939_local_ecu_get() needs to undo priv->ents[sa].nusers++ when
+j1939_local_ecu_get() returns an error.
 
-Fixes: 134d9c52fca2 ("dmaengine: dw: dmamux: Introduce RZN1 DMA router support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20250902090358.2423285-1-linmq006@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/e7f80046-4ff7-4ce2-8ad8-7c3c678a42c9@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw/rzn1-dmamux.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/can/j1939/bus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/dma/dw/rzn1-dmamux.c
-+++ b/drivers/dma/dw/rzn1-dmamux.c
-@@ -48,12 +48,16 @@ static void *rzn1_dmamux_route_allocate(
- 	u32 mask;
- 	int ret;
- 
--	if (dma_spec->args_count != RNZ1_DMAMUX_NCELLS)
--		return ERR_PTR(-EINVAL);
-+	if (dma_spec->args_count != RNZ1_DMAMUX_NCELLS) {
-+		ret = -EINVAL;
-+		goto put_device;
+diff --git a/net/can/j1939/bus.c b/net/can/j1939/bus.c
+index 4866879016021..e0b966c2517cf 100644
+--- a/net/can/j1939/bus.c
++++ b/net/can/j1939/bus.c
+@@ -290,8 +290,11 @@ int j1939_local_ecu_get(struct j1939_priv *priv, name_t name, u8 sa)
+ 	if (!ecu)
+ 		ecu = j1939_ecu_create_locked(priv, name);
+ 	err = PTR_ERR_OR_ZERO(ecu);
+-	if (err)
++	if (err) {
++		if (j1939_address_is_unicast(sa))
++			priv->ents[sa].nusers--;
+ 		goto done;
 +	}
  
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
--	if (!map)
--		return ERR_PTR(-ENOMEM);
-+	if (!map) {
-+		ret = -ENOMEM;
-+		goto put_device;
-+	}
- 
- 	chan = dma_spec->args[0];
- 	map->req_idx = dma_spec->args[4];
-@@ -94,12 +98,15 @@ static void *rzn1_dmamux_route_allocate(
- 	if (ret)
- 		goto clear_bitmap;
- 
-+	put_device(&pdev->dev);
- 	return map;
- 
- clear_bitmap:
- 	clear_bit(map->req_idx, dmamux->used_chans);
- free_map:
- 	kfree(map);
-+put_device:
-+	put_device(&pdev->dev);
- 
- 	return ERR_PTR(ret);
- }
+ 	ecu->nusers++;
+ 	/* TODO: do we care if ecu->addr != sa? */
+-- 
+2.51.0
+
 
 
 
