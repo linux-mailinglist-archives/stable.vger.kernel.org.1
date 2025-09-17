@@ -1,131 +1,166 @@
-Return-Path: <stable+bounces-179786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF37B7DF9D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:39:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E15B7EEB0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D1B07A41DE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 07:42:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE04D188F045
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 08:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BE2303A12;
-	Wed, 17 Sep 2025 07:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9B92F9DA7;
+	Wed, 17 Sep 2025 08:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbSauEvn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZos9i8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F50248F68;
-	Wed, 17 Sep 2025 07:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8353043B8
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 08:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758095056; cv=none; b=jRGTW24+OEvvbIJxW9Zu9kQ0Wnz8jyb1rUKRi42lm9DzCBuBh/tE0yxoE3kleQ6tn2n+30MjP/AGFO68STJYqDb+z7iDekgB05+B7XlphGTDGIEnAQBqg2WnlJeJA4YQvb2emXbpaxs5IA5sHMJATUIv/oqtoDjPoxRfynwHGfY=
+	t=1758096596; cv=none; b=fB8bbufJhqCQzAqQUAjRSTF1H5e5207q4gQzqe6tNUStEBszG4gEzLzUTwa7kVh4Ebb0YUveczo5b6QRPJMFPRO3LOdey91ZukVxnRLMBgkQ8zgCv/CnumwCHwGB5P0bR60e5/IIzuvszLWVCLu+3ul0MRiBH1f3P6AtZIwEkIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758095056; c=relaxed/simple;
-	bh=O32d9nMpfCjkvZmQj+LHF+wrVeinQYtykhIahUtbw28=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iSJtplyrVDTCqp4EoHbm5Xf1zECwq4gsCit9yZfw6SiScHAIFj9dvMVNXu5Gf2ezcqTyQ9B/scqsA5QgeFSX0zGxb5Pait72TtjDcLCg7BqzssbfgzNv8QmbHu3xugoQTHpQ9GfVo7KoU3O06TGYcRabTnHD62X4GbZgL/geado=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbSauEvn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E97C4CEF0;
-	Wed, 17 Sep 2025 07:44:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758095055;
-	bh=O32d9nMpfCjkvZmQj+LHF+wrVeinQYtykhIahUtbw28=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbSauEvn8Wn3EmtIF1IR8j8PX6fACuh6JMywy6s8FmmriFeqeH4xYjv3rsgkiiCHw
-	 UyXW6ZCZNvyZE6RGZMkRkFVYho1qOiCrBlbKLbvA3DYc3eG5k5Z3b3t4Ah6Vut8N9F
-	 mz9Od2K/Zjhb48M5Pz2QeuVL8vkMb1oj5uZE9k+U3z9YRyXC2W/V4Q1Rs0QQvxv6oI
-	 TuhwBy01nl82bA0BWe24Tay45kPxpRH5HoKH4BQiwqA0cpTdkVZWobrGlHTzenVrMv
-	 tcbISR9d3OsZQnCUcEViB7xZ1G39ye6jJ1F7RiGRvM7WXqTvJfZlKNBNHAG6K+b2bD
-	 GaMy0M7pskqyA==
-From: SeongJae Park <sj@kernel.org>
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	minchan@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	david@redhat.com,
-	Liam.Howlett@oracle.com,
-	rppt@kernel.org,
-	pfalcato@suse.de,
-	kernel-team@android.com,
-	android-mm@google.com,
-	stable@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
-Date: Wed, 17 Sep 2025 00:44:13 -0700
-Message-Id: <20250917074413.58886-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
-References: 
+	s=arc-20240116; t=1758096596; c=relaxed/simple;
+	bh=ikDX6oS3ifPkjP82Okrf7/e9Oo/kEo0fRcwibt21EV4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GwBaY4QdIGQFwkisodjLhjmuk66uBzm16jf+n/TALSMJ2dt2iQTAsqm066SgukgZi/ZEBD8pGM5jXq2L/jtcvbvi2LcicFGvcBEjYpae1J+azU4G2Iej2SJEsM/F8sRHpxYHzqUjjwxxagjenh3Q0WoQI/GW+jB0qv4zWQiVNWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZos9i8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327B3C4CEF0;
+	Wed, 17 Sep 2025 08:09:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758096596;
+	bh=ikDX6oS3ifPkjP82Okrf7/e9Oo/kEo0fRcwibt21EV4=;
+	h=Subject:To:Cc:From:Date:From;
+	b=SZos9i8kOWKtIa1HaoYU9OzDhKlxyF8dLu92panYTtmn3b2iQVGTKu7gVezWHVG/D
+	 5c5eSM9nI6DVMpgTGDP22FzWWDnGZo01x1W0OtnmwgWF3/GLxPg2BOm6wfMUvckrJg
+	 ++sEdiDi5VC93tAzwm3u6WKWPnIP7rBzx8XF8Vf8=
+Subject: FAILED: patch "[PATCH] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels" failed to apply to 5.15-stable tree
+To: stern@rowland.harvard.edu,bigeasy@linutronix.de,gregkh@linuxfoundation.org,stable@kernel.org,ysk@kzalloc.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 17 Sep 2025 09:44:23 +0200
+Message-ID: <2025091723-stack-cargo-2b1d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-On Mon, 15 Sep 2025 09:36:32 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
 
-> The VMA count limit check in do_mmap() and do_brk_flags() uses a
-> strict inequality (>), which allows a process's VMA count to exceed
-> the configured sysctl_max_map_count limit by one.
-> 
-> A process with mm->map_count == sysctl_max_map_count will incorrectly
-> pass this check and then exceed the limit upon allocation of a new VMA
-> when its map_count is incremented.
-> 
-> Other VMA allocation paths, such as split_vma(), already use the
-> correct, inclusive (>=) comparison.
-> 
-> Fix this bug by changing the comparison to be inclusive in do_mmap()
-> and do_brk_flags(), bringing them in line with the correct behavior
-> of other allocation paths.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: <stable@vger.kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Minchan Kim <minchan@kernel.org>
-> Cc: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Acked-by: SeongJae Park <sj@kernel.org>
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8d63c83d8eb922f6c316320f50c82fa88d099bea
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091723-stack-cargo-2b1d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
 
 
-Thanks,
-SJ
 
-[...]
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8d63c83d8eb922f6c316320f50c82fa88d099bea Mon Sep 17 00:00:00 2001
+From: Alan Stern <stern@rowland.harvard.edu>
+Date: Mon, 25 Aug 2025 12:00:22 -0400
+Subject: [PATCH] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
+
+Yunseong Kim and the syzbot fuzzer both reported a problem in
+RT-enabled kernels caused by the way dummy-hcd mixes interrupt
+management and spin-locking.  The pattern was:
+
+	local_irq_save(flags);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock(&dum->lock);
+	...		// calls usb_gadget_giveback_request()
+	local_irq_restore(flags);
+
+The code was written this way because usb_gadget_giveback_request()
+needs to be called with interrupts disabled and the private lock not
+held.
+
+While this pattern works fine in non-RT kernels, it's not good when RT
+is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
+spin_lock() may sleep.  But sleeping is not allowed while local
+interrupts are disabled.
+
+To fix the problem, rewrite the code to conform to the pattern used
+elsewhere in dummy-hcd and other UDC drivers:
+
+	spin_lock_irqsave(&dum->lock, flags);
+	...
+	spin_unlock(&dum->lock);
+	usb_gadget_giveback_request(...);
+	spin_lock(&dum->lock);
+	...
+	spin_unlock_irqrestore(&dum->lock, flags);
+
+This approach satisfies the RT requirements.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable <stable@kernel.org>
+Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
+Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
+Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
+Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
+CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC: stable@vger.kernel.org
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
+index 21dbfb0b3bac..1cefca660773 100644
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -765,8 +765,7 @@ static int dummy_dequeue(struct usb_ep *_ep, struct usb_request *_req)
+ 	if (!dum->driver)
+ 		return -ESHUTDOWN;
+ 
+-	local_irq_save(flags);
+-	spin_lock(&dum->lock);
++	spin_lock_irqsave(&dum->lock, flags);
+ 	list_for_each_entry(iter, &ep->queue, queue) {
+ 		if (&iter->req != _req)
+ 			continue;
+@@ -776,15 +775,16 @@ static int dummy_dequeue(struct usb_ep *_ep, struct usb_request *_req)
+ 		retval = 0;
+ 		break;
+ 	}
+-	spin_unlock(&dum->lock);
+ 
+ 	if (retval == 0) {
+ 		dev_dbg(udc_dev(dum),
+ 				"dequeued req %p from %s, len %d buf %p\n",
+ 				req, _ep->name, _req->length, _req->buf);
++		spin_unlock(&dum->lock);
+ 		usb_gadget_giveback_request(_ep, _req);
++		spin_lock(&dum->lock);
+ 	}
+-	local_irq_restore(flags);
++	spin_unlock_irqrestore(&dum->lock, flags);
+ 	return retval;
+ }
+ 
+
 
