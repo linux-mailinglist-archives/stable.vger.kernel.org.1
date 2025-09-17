@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-180062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A487DB7E8A0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:52:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCE1B7E141
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC2F580383
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B9A91B228B2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35108328987;
-	Wed, 17 Sep 2025 12:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108EA31A81B;
+	Wed, 17 Sep 2025 12:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e43V6IPV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZWf1di0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D34328967;
-	Wed, 17 Sep 2025 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A111EF363;
+	Wed, 17 Sep 2025 12:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113260; cv=none; b=m7tjEJGFzbX1UivmpZgCl08o3VIIyihlm0rXSNHm5BJq5eqp3zzrVeipfjotDV3gOLDCtNr6FzyHeT/ePOuRx/ZamLWYC3BZk8lBS1mZp68utod8E4lPqDIJ5u13HMpSUdxXJTWb1NVZBVAX0hIpBLXfN5bZ1ycTXL5wDf4WhbE=
+	t=1758112752; cv=none; b=Je6GTt8Enxzb/eDkpn1/Tqli1IPKWOC9Duaa2jZj5ilyrBwDhB19xSQyuj9T6zg+V8L758hy46tCuS2xpHOXvGQansJ0IRF8tkto+C2PALQ7BrdhGoSlmNYjQWMG12XRroLLI+O/APL2Xaa5pYpVMNUihdk/irGYCq6ZvsZtuN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113260; c=relaxed/simple;
-	bh=PFctZpDZ/Ii4Smbl47JQ32yetbCWdqrjouVpl87cWwo=;
+	s=arc-20240116; t=1758112752; c=relaxed/simple;
+	bh=5ffDmHzrIJgyLCAJvSWYYu/B/CWBzh+yF8+lu6roYcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFaPfnVNOhnf6/Z+mmrTvchk2YvKs0D0HXfKXTe6rwx+JAPY7ZNqQCfXa4eccphNbKF7lpgerc4FitXXqqCWXCgT7gGx+WkW2AIkB7LFE6VXFemgcAGhxyMPlTdLVSIof4XbtoZMw1P5XnCzc3k8w85nexZJyh5rQBav8JLYBIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e43V6IPV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6722AC4CEF0;
-	Wed, 17 Sep 2025 12:47:39 +0000 (UTC)
+	 MIME-Version; b=Gg/Dv5zsMk8sRpyg9kreJdtHQesIopSoubXjhfX8wnKWEqQou9pTsMCRQhpz3G723GyxplrZ7SCO49TExVuCvNIMroFRIWbEtmXzHI+AWExQ/H1PAgz2nm0JMt5hKpU8fAwx66oyW3bfveXz07hXOfZVdMYP7bB1lq3ri7rrb7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZWf1di0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03865C4CEF5;
+	Wed, 17 Sep 2025 12:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113259;
-	bh=PFctZpDZ/Ii4Smbl47JQ32yetbCWdqrjouVpl87cWwo=;
+	s=korg; t=1758112752;
+	bh=5ffDmHzrIJgyLCAJvSWYYu/B/CWBzh+yF8+lu6roYcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e43V6IPV5hlwz0DjgA+zKBNr1Ua9cwyBwo9+85cruvnVYNTVyPhfy+5Rja8j45NtQ
-	 E1qAAuCBCX+WI5EfeUd8q2RZEClK6HEIh76NZrgHZ6tm5zjfwb+ceZ30sUgs/8zti4
-	 oi0gORqTpLvYV/ZmflwIoG7TGXPVCYM+ryMQywCE=
+	b=CZWf1di0nlu6wbMHMRTGl3iNpe16L8xjev2oClkxOQqgr3Cduut0zkQpE8Xr9eSpF
+	 4C/xc18O2VlA4APi1MiP6Pqj1ZE4d1RVi8j1vSMACWgyjHOmVGDVQsGMGTxMY27wu2
+	 nHVhK968oNmpkqfpHQJ6R8PIC2LKMIFNC5KUmmBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 005/140] dma-mapping: trace more error paths
+	Breno Leitao <leitao@debian.org>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Baoquan He <bhe@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Coiby Xu <coxu@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 067/189] s390: kexec: initialize kexec_buf struct
 Date: Wed, 17 Sep 2025 14:32:57 +0200
-Message-ID: <20250917123344.449257835@linuxfoundation.org>
+Message-ID: <20250917123353.509884641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +74,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 68b6dbf1f441c4eba3b8511728a41cf9b01dca35 ]
+commit e67f0bd05519012eaabaae68618ffc4ed30ab680 upstream.
 
-It can be surprising to the user if DMA functions are only traced on
-success. On failure, it can be unclear what the source of the problem
-is. Fix this by tracing all functions even when they fail. Cases where
-we BUG/WARN are skipped, since those should be sufficiently noisy
-already.
+The kexec_buf structure was previously declared without initialization.
+commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+added a field that is always read but not consistently populated by all
+architectures. This un-initialized field will contain garbage.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Stable-dep-of: 7e2368a21741 ("dma-debug: don't enforce dma mapping check on noncoherent allocations")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is also triggering a UBSAN warning when the uninitialized data was
+accessed:
+
+	------------[ cut here ]------------
+	UBSAN: invalid-load in ./include/linux/kexec.h:210:10
+	load of value 252 is not a valid value for type '_Bool'
+
+Zero-initializing kexec_buf at declaration ensures all fields are
+cleanly set, preventing future instances of uninitialized memory being
+used.
+
+Link: https://lkml.kernel.org/r/20250827-kbuf_all-v1-3-1df9882bb01a@debian.org
+Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/dma.h | 36 ++++++++++++++++++++++++++++++++++++
- kernel/dma/mapping.c       | 25 ++++++++++++++++++-------
- 2 files changed, 54 insertions(+), 7 deletions(-)
+ arch/s390/kernel/kexec_elf.c          | 2 +-
+ arch/s390/kernel/kexec_image.c        | 2 +-
+ arch/s390/kernel/machine_kexec_file.c | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index 45cc0ca8287fe..63b55ccc4f00c 100644
---- a/include/trace/events/dma.h
-+++ b/include/trace/events/dma.h
-@@ -158,6 +158,7 @@ DEFINE_EVENT(dma_alloc_class, name, \
+diff --git a/arch/s390/kernel/kexec_elf.c b/arch/s390/kernel/kexec_elf.c
+index 4d364de43799..143e34a4eca5 100644
+--- a/arch/s390/kernel/kexec_elf.c
++++ b/arch/s390/kernel/kexec_elf.c
+@@ -16,7 +16,7 @@
+ static int kexec_file_add_kernel_elf(struct kimage *image,
+ 				     struct s390_load_data *data)
+ {
+-	struct kexec_buf buf;
++	struct kexec_buf buf = {};
+ 	const Elf_Ehdr *ehdr;
+ 	const Elf_Phdr *phdr;
+ 	Elf_Addr entry;
+diff --git a/arch/s390/kernel/kexec_image.c b/arch/s390/kernel/kexec_image.c
+index a32ce8bea745..9a439175723c 100644
+--- a/arch/s390/kernel/kexec_image.c
++++ b/arch/s390/kernel/kexec_image.c
+@@ -16,7 +16,7 @@
+ static int kexec_file_add_kernel_image(struct kimage *image,
+ 				       struct s390_load_data *data)
+ {
+-	struct kexec_buf buf;
++	struct kexec_buf buf = {};
  
- DEFINE_ALLOC_EVENT(dma_alloc);
- DEFINE_ALLOC_EVENT(dma_alloc_pages);
-+DEFINE_ALLOC_EVENT(dma_alloc_sgt_err);
+ 	buf.image = image;
  
- TRACE_EVENT(dma_alloc_sgt,
- 	TP_PROTO(struct device *dev, struct sg_table *sgt, size_t size,
-@@ -322,6 +323,41 @@ TRACE_EVENT(dma_map_sg,
- 		decode_dma_attrs(__entry->attrs))
- );
+diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
+index c2bac14dd668..a36d7311c668 100644
+--- a/arch/s390/kernel/machine_kexec_file.c
++++ b/arch/s390/kernel/machine_kexec_file.c
+@@ -129,7 +129,7 @@ static int kexec_file_update_purgatory(struct kimage *image,
+ static int kexec_file_add_purgatory(struct kimage *image,
+ 				    struct s390_load_data *data)
+ {
+-	struct kexec_buf buf;
++	struct kexec_buf buf = {};
+ 	int ret;
  
-+TRACE_EVENT(dma_map_sg_err,
-+	TP_PROTO(struct device *dev, struct scatterlist *sgl, int nents,
-+		 int err, enum dma_data_direction dir, unsigned long attrs),
-+	TP_ARGS(dev, sgl, nents, err, dir, attrs),
-+
-+	TP_STRUCT__entry(
-+		__string(device, dev_name(dev))
-+		__dynamic_array(u64, phys_addrs, nents)
-+		__field(int, err)
-+		__field(enum dma_data_direction, dir)
-+		__field(unsigned long, attrs)
-+	),
-+
-+	TP_fast_assign(
-+		struct scatterlist *sg;
-+		int i;
-+
-+		__assign_str(device);
-+		for_each_sg(sgl, sg, nents, i)
-+			((u64 *)__get_dynamic_array(phys_addrs))[i] = sg_phys(sg);
-+		__entry->err = err;
-+		__entry->dir = dir;
-+		__entry->attrs = attrs;
-+	),
-+
-+	TP_printk("%s dir=%s dma_addrs=%s err=%d attrs=%s",
-+		__get_str(device),
-+		decode_dma_data_direction(__entry->dir),
-+		__print_array(__get_dynamic_array(phys_addrs),
-+			      __get_dynamic_array_len(phys_addrs) /
-+				sizeof(u64), sizeof(u64)),
-+		__entry->err,
-+		decode_dma_attrs(__entry->attrs))
-+);
-+
- TRACE_EVENT(dma_unmap_sg,
- 	TP_PROTO(struct device *dev, struct scatterlist *sgl, int nents,
- 		 enum dma_data_direction dir, unsigned long attrs),
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 690aeda8bd7da..32dcf8492bbcd 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -223,6 +223,7 @@ static int __dma_map_sg_attrs(struct device *dev, struct scatterlist *sg,
- 		debug_dma_map_sg(dev, sg, nents, ents, dir, attrs);
- 	} else if (WARN_ON_ONCE(ents != -EINVAL && ents != -ENOMEM &&
- 				ents != -EIO && ents != -EREMOTEIO)) {
-+		trace_dma_map_sg_err(dev, sg, nents, ents, dir, attrs);
- 		return -EIO;
- 	}
+ 	buf.image = image;
+@@ -152,7 +152,7 @@ static int kexec_file_add_purgatory(struct kimage *image,
+ static int kexec_file_add_initrd(struct kimage *image,
+ 				 struct s390_load_data *data)
+ {
+-	struct kexec_buf buf;
++	struct kexec_buf buf = {};
+ 	int ret;
  
-@@ -604,20 +605,26 @@ void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	if (WARN_ON_ONCE(flag & __GFP_COMP))
- 		return NULL;
- 
--	if (dma_alloc_from_dev_coherent(dev, size, dma_handle, &cpu_addr))
-+	if (dma_alloc_from_dev_coherent(dev, size, dma_handle, &cpu_addr)) {
-+		trace_dma_alloc(dev, cpu_addr, *dma_handle, size,
-+				DMA_BIDIRECTIONAL, flag, attrs);
- 		return cpu_addr;
-+	}
- 
- 	/* let the implementation decide on the zone to allocate from: */
- 	flag &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
- 
--	if (dma_alloc_direct(dev, ops))
-+	if (dma_alloc_direct(dev, ops)) {
- 		cpu_addr = dma_direct_alloc(dev, size, dma_handle, flag, attrs);
--	else if (use_dma_iommu(dev))
-+	} else if (use_dma_iommu(dev)) {
- 		cpu_addr = iommu_dma_alloc(dev, size, dma_handle, flag, attrs);
--	else if (ops->alloc)
-+	} else if (ops->alloc) {
- 		cpu_addr = ops->alloc(dev, size, dma_handle, flag, attrs);
--	else
-+	} else {
-+		trace_dma_alloc(dev, NULL, 0, size, DMA_BIDIRECTIONAL, flag,
-+				attrs);
- 		return NULL;
-+	}
- 
- 	trace_dma_alloc(dev, cpu_addr, *dma_handle, size, DMA_BIDIRECTIONAL,
- 			flag, attrs);
-@@ -642,11 +649,11 @@ void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
- 	 */
- 	WARN_ON(irqs_disabled());
- 
-+	trace_dma_free(dev, cpu_addr, dma_handle, size, DMA_BIDIRECTIONAL,
-+		       attrs);
- 	if (!cpu_addr)
- 		return;
- 
--	trace_dma_free(dev, cpu_addr, dma_handle, size, DMA_BIDIRECTIONAL,
--		       attrs);
- 	debug_dma_free_coherent(dev, size, cpu_addr, dma_handle);
- 	if (dma_alloc_direct(dev, ops))
- 		dma_direct_free(dev, size, cpu_addr, dma_handle, attrs);
-@@ -688,6 +695,8 @@ struct page *dma_alloc_pages(struct device *dev, size_t size,
- 		trace_dma_alloc_pages(dev, page_to_virt(page), *dma_handle,
- 				      size, dir, gfp, 0);
- 		debug_dma_map_page(dev, page, 0, size, dir, *dma_handle, 0);
-+	} else {
-+		trace_dma_alloc_pages(dev, NULL, 0, size, dir, gfp, 0);
- 	}
- 	return page;
- }
-@@ -772,6 +781,8 @@ struct sg_table *dma_alloc_noncontiguous(struct device *dev, size_t size,
- 		sgt->nents = 1;
- 		trace_dma_alloc_sgt(dev, sgt, size, dir, gfp, attrs);
- 		debug_dma_map_sg(dev, sgt->sgl, sgt->orig_nents, 1, dir, attrs);
-+	} else {
-+		trace_dma_alloc_sgt_err(dev, NULL, 0, size, gfp, dir, attrs);
- 	}
- 	return sgt;
- }
+ 	buf.image = image;
+@@ -184,7 +184,7 @@ static int kexec_file_add_ipl_report(struct kimage *image,
+ {
+ 	__u32 *lc_ipl_parmblock_ptr;
+ 	unsigned int len, ncerts;
+-	struct kexec_buf buf;
++	struct kexec_buf buf = {};
+ 	unsigned long addr;
+ 	void *ptr, *end;
+ 	int ret;
 -- 
 2.51.0
 
