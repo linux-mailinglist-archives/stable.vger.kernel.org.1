@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-180112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F01BB7EA71
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2B9B7E29C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44D4B3B451A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BC7017A532
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9124337058B;
-	Wed, 17 Sep 2025 12:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CBC2ECD0E;
+	Wed, 17 Sep 2025 12:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiyBnEcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upf6zlow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA3836CDF4;
-	Wed, 17 Sep 2025 12:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011AB1EF36C;
+	Wed, 17 Sep 2025 12:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113423; cv=none; b=EEuC26GSPBnXwpnQbvrNbBI5NYbuPOdvO4joLPMltB2G2UH8i+fG6i2Uvba69lHALWI++RC0CF4KbfRHnw2onjIaYpgVY+r9/pILi+UtgkY49/uveN488xXvdipJpBPIK7pnpnCxsdFiXDV4cEKPVZif8pMF52bZhjB4icU/JK8=
+	t=1758112872; cv=none; b=MHjQyXjGZ6K3VaB02IUs5W8H4pO2OHMw7+hBoU8x6LOpm6JsJy0pepa/5t5igVOltT6dcxR9DDca7sd9IaQYIUiNbH5RQ3n3rkLb36Hq4eMGqVqOyS1j1wL/gU0Dt/PQGq+NxoCjYAvnWWPGw80DfCTNSvlocvvssypzcIn2C2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113423; c=relaxed/simple;
-	bh=yLwo7q/j+AOPa9QzPiv0KsJWB+mpAIQi0ZqJ2wqJzwY=;
+	s=arc-20240116; t=1758112872; c=relaxed/simple;
+	bh=5lvYwNdL/aNzA+RFoEDMJafT0LZTTRZf3WsrMX9Uxew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/KvWF9tlIaXkhz3S1V63LoHa3zXR/jCgxkyfWIIMrKZ5ysdfYnFrGnmcGtG6cQuBVO/0gUdI87nLtvOOltfzg+CjdpY4W96AmydLLqqazWdvgMnhrDLb4bk7yEXve8gMF6/mPpdhDumLcuWSpNgu/Q0W4qJxBNfb1A4lQA/Zcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiyBnEcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C510EC4CEF7;
-	Wed, 17 Sep 2025 12:50:22 +0000 (UTC)
+	 MIME-Version; b=lalQpcazhK5MYMPI/ktoKJBEoMvNN/Sey6kfbyfAbCKy9zQuMsU0Yie7o/aZd0k1ruBIpb3FXsp/uRlC7z7xHnaiAmARgOcQjgASuljed5Vjxr8XdMjoT3EpbcSizn6e93VpA8ezDvOGctMiQ5QPsYvI4FwiUag29svMWfLElaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upf6zlow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E352C4CEF0;
+	Wed, 17 Sep 2025 12:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113423;
-	bh=yLwo7q/j+AOPa9QzPiv0KsJWB+mpAIQi0ZqJ2wqJzwY=;
+	s=korg; t=1758112871;
+	bh=5lvYwNdL/aNzA+RFoEDMJafT0LZTTRZf3WsrMX9Uxew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiyBnEcZD/iN4klZUR9ladgB7Z0ohAwDUNf4npdgzidkl4zlKe6VPE9Fp0VtjjcZs
-	 NoQAdxLChXcQ9rFXXGGj//CCCQPyYGLf50kwIos7AyZ3YTKs7FYRG8QB45934ZQAfj
-	 bnDzBES7Ob/phzXy6TV0t4vPvCCETWdkiL8DTVZU=
+	b=upf6zlowm6iYm0+EBRokzDGqV9X3ELx7sq8RD+XgKYdQbnOrtMQSm85qoy3bPFhHh
+	 Jcjtqyth5AEFljpr8SMAHXLKx6YsecEfvkBxjlbeynYEVSWrmjJ62RWSAeAEsgPBrt
+	 6GmL8Xz5Sdn3PU55JkvSGNyeHKh6S4NdF0YszCkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/140] NFS: nfs_invalidate_folio() must observe the offset and size arguments
-Date: Wed, 17 Sep 2025 14:33:29 +0200
-Message-ID: <20250917123345.215346870@linuxfoundation.org>
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.16 100/189] libceph: fix invalid accesses to ceph_connection_v1_info
+Date: Wed, 17 Sep 2025 14:33:30 +0200
+Message-ID: <20250917123354.303472871@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit b7b8574225e9d2b5f1fb5483886ab797892f43b5 ]
+commit cdbc9836c7afadad68f374791738f118263c5371 upstream.
 
-If we're truncating part of the folio, then we need to write out the
-data on the part that is not covered by the cancellation.
+There is a place where generic code in messenger.c is reading and
+another place where it is writing to con->v1 union member without
+checking that the union member is active (i.e. msgr1 is in use).
 
-Fixes: d47992f86b30 ("mm: change invalidatepage prototype to accept length")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On 64-bit systems, con->v1.auth_retry overlaps with con->v2.out_iter,
+so such a read is almost guaranteed to return a bogus value instead of
+0 when msgr2 is in use.  This ends up being fairly benign because the
+side effect is just the invalidation of the authorizer and successive
+fetching of new tickets.
+
+con->v1.connect_seq overlaps with con->v2.conn_bufs and the fact that
+it's being written to can cause more serious consequences, but luckily
+it's not something that happens often.
+
+Cc: stable@vger.kernel.org
+Fixes: cd1a677cad99 ("libceph, ceph: implement msgr2.1 protocol (crc and secure modes)")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/file.c  | 7 ++++---
- fs/nfs/write.c | 1 +
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ net/ceph/messenger.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-index 033feeab8c346..a16a619fb8c33 100644
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -437,10 +437,11 @@ static void nfs_invalidate_folio(struct folio *folio, size_t offset,
- 	dfprintk(PAGECACHE, "NFS: invalidate_folio(%lu, %zu, %zu)\n",
- 		 folio->index, offset, length);
- 
--	if (offset != 0 || length < folio_size(folio))
--		return;
- 	/* Cancel any unstarted writes on this page */
--	nfs_wb_folio_cancel(inode, folio);
-+	if (offset != 0 || length < folio_size(folio))
-+		nfs_wb_folio(inode, folio);
-+	else
-+		nfs_wb_folio_cancel(inode, folio);
- 	folio_wait_private_2(folio); /* [DEPRECATED] */
- 	trace_nfs_invalidate_folio(inode, folio_pos(folio) + offset, length);
- }
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index 2b6b3542405c3..fd86546fafd3f 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -2058,6 +2058,7 @@ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio)
- 		 * release it */
- 		nfs_inode_remove_request(req);
- 		nfs_unlock_and_release_request(req);
-+		folio_cancel_dirty(folio);
+--- a/net/ceph/messenger.c
++++ b/net/ceph/messenger.c
+@@ -1524,7 +1524,7 @@ static void con_fault_finish(struct ceph
+ 	 * in case we faulted due to authentication, invalidate our
+ 	 * current tickets so that we can get new ones.
+ 	 */
+-	if (con->v1.auth_retry) {
++	if (!ceph_msgr2(from_msgr(con->msgr)) && con->v1.auth_retry) {
+ 		dout("auth_retry %d, invalidating\n", con->v1.auth_retry);
+ 		if (con->ops->invalidate_authorizer)
+ 			con->ops->invalidate_authorizer(con);
+@@ -1714,9 +1714,10 @@ static void clear_standby(struct ceph_co
+ {
+ 	/* come back from STANDBY? */
+ 	if (con->state == CEPH_CON_S_STANDBY) {
+-		dout("clear_standby %p and ++connect_seq\n", con);
++		dout("clear_standby %p\n", con);
+ 		con->state = CEPH_CON_S_PREOPEN;
+-		con->v1.connect_seq++;
++		if (!ceph_msgr2(from_msgr(con->msgr)))
++			con->v1.connect_seq++;
+ 		WARN_ON(ceph_con_flag_test(con, CEPH_CON_F_WRITE_PENDING));
+ 		WARN_ON(ceph_con_flag_test(con, CEPH_CON_F_KEEPALIVE_PENDING));
  	}
- 
- 	return ret;
--- 
-2.51.0
-
 
 
 
