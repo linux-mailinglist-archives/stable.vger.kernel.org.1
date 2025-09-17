@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-180024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69B4B7E562
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C26B7EC45
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3288B1B20A82
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61ACF3BB1E2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BE230AD1E;
-	Wed, 17 Sep 2025 12:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DBB330D45;
+	Wed, 17 Sep 2025 12:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGb/TJ0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIg6HPG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7231302774;
-	Wed, 17 Sep 2025 12:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E24330D39;
+	Wed, 17 Sep 2025 12:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113136; cv=none; b=Tx69lOSbq6O09Aja9xBQ94WiTno4XDd3wKZFDs58g0kmyRnQIPxXebswrPXuZmeSSLNeQpvNoScYFUbDbBsJ27ueIPKXe8xy52vMcfTc5gJM/Pe6SG3pjiwAhnsetYB00Sb2DgoYUkZ+uJrYPEqdCB4DW6IS24dxobp0FF1z9ZA=
+	t=1758113555; cv=none; b=ix+XsDgdkB6N//fpTRljLCjmijRwPUpoz0r0fwGIwzrShLBawNVV6JxkgdYUklS8N1/f7LJFSYBiCMjzamecxQaT4T41IU5Y9tSCl4LgOD+9dPBP5EKjv+YEq3ecE/PmciDVqxBBwVe5Qf/ZQFNqMowXJcOY/M+o6c3SEBjGXyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113136; c=relaxed/simple;
-	bh=U0djiQMEdOFdSpkIbY/R/RGWskIzMC0xrCK754oc4N4=;
+	s=arc-20240116; t=1758113555; c=relaxed/simple;
+	bh=mXbB54AtO5FpaEoxUhp0Feaz0rySCnsNEXXA8kJTEJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHNxIJfIb9+zEc1cNnRpOIOyaRUsICq7i643UHfTJzP7QLgNNYkQiWVsP9F3BtGuqb9R5B4eqq9E1nNEVWiaXPO+ZjCuN1X27CHg3t/30oyiMd59PomtY+1/0651f4zjHX72dgQbxNiaJIzCz89DgDVLg9UMjpiUn5EtRWRzczc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGb/TJ0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5173DC4CEF0;
-	Wed, 17 Sep 2025 12:45:36 +0000 (UTC)
+	 MIME-Version; b=TaeocGl454qag2CcAGsTmFunRcIlE87T1ie5KWNle6ePoVJFD7fKgcWYu95shx3PVG9+dIroBpQWSfeG49RAvpupZTzIur844Tc8c8MvHDyLauKKm7sQFG1VxCgzfNw4Z3RAt4nFzMmZe37SSnWNoVzPw1siH028Mcu+EW9tCXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIg6HPG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B17C4CEF5;
+	Wed, 17 Sep 2025 12:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113136;
-	bh=U0djiQMEdOFdSpkIbY/R/RGWskIzMC0xrCK754oc4N4=;
+	s=korg; t=1758113555;
+	bh=mXbB54AtO5FpaEoxUhp0Feaz0rySCnsNEXXA8kJTEJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGb/TJ0hlM7KguQTzZP6OxZFHtk8RTVylvNGTJ5LzDg/iHi5ID3ghYdjHHf0hVovx
-	 vU01v2ayF2Yo7/PBgi2UwU1dwzKwu+3yv6mpp/FYZ9edYF78629iVuOUMt0F+Mpwj9
-	 xn90LP1XxryGHuDaxftraF9sxw3JcFbu3lxnUxSc=
+	b=GIg6HPG7mZc14r3+3zhLVR2Kpm49BR5ozmWq0zDgfw3wkML1KZZ/hgzwTQZe8opGw
+	 o0DqWTb3L6nkBFRlSv9R2aGCIV2tjWYDpA2Yepnua6vLjwgzonGvG6ZxGD+ezHtcGc
+	 qcni4wzc8hqwDv8qAqJ3k03m7I299HOwXMoJQe1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.16 182/189] usb: gadget: midi2: Fix missing UMP group attributes initialization
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 120/140] phy: qualcomm: phy-qcom-eusb2-repeater: fix override properties
 Date: Wed, 17 Sep 2025 14:34:52 +0200
-Message-ID: <20250917123356.333975157@linuxfoundation.org>
+Message-ID: <20250917123347.236607166@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-commit 21d8525d2e061cde034277d518411b02eac764e2 upstream.
+[ Upstream commit 942e47ab228c7dd27c2ae043c17e7aab2028082c ]
 
-The gadget card driver forgot to call snd_ump_update_group_attrs()
-after adding FBs, and this leaves the UMP group attributes
-uninitialized.  As a result, -ENODEV error is returned at opening a
-legacy rawmidi device as an inactive group.
+property "qcom,tune-usb2-preem" is for EUSB2_TUNE_USB2_PREEM
+property "qcom,tune-usb2-amplitude" is for EUSB2_TUNE_IUSB2
 
-This patch adds the missing call to address the behavior above.
+The downstream correspondence is as follows:
+EUSB2_TUNE_USB2_PREEM: Tx pre-emphasis tuning
+EUSB2_TUNE_IUSB2: HS trasmit amplitude
+EUSB2_TUNE_SQUELCH_U: Squelch detection threshold
+EUSB2_TUNE_HSDISC: HS disconnect threshold
+EUSB2_TUNE_EUSB_SLEW: slew rate
 
-Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20250904153932.13589-1-tiwai@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 31bc94de7602 ("phy: qualcomm: phy-qcom-eusb2-repeater: Don't zero-out registers")
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Luca Weiss <luca.weiss@fairphone.com>
+Link: https://lore.kernel.org/r/20250812093957.32235-1-mitltlatltl@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi2.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -1599,6 +1599,7 @@ static int f_midi2_create_card(struct f_
- 			strscpy(fb->info.name, ump_fb_name(b),
- 				sizeof(fb->info.name));
- 		}
-+		snd_ump_update_group_attrs(ump);
- 	}
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index 163950e16dbe1..c173c6244d9e5 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -127,13 +127,13 @@ static int eusb2_repeater_init(struct phy *phy)
+ 			     rptr->cfg->init_tbl[i].value);
  
- 	for (i = 0; i < midi2->num_eps; i++) {
+ 	/* Override registers from devicetree values */
+-	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
++	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
+ 		regmap_write(regmap, base + EUSB2_TUNE_USB2_PREEM, val);
+ 
+ 	if (!of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &val))
+ 		regmap_write(regmap, base + EUSB2_TUNE_HSDISC, val);
+ 
+-	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
++	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
+ 		regmap_write(regmap, base + EUSB2_TUNE_IUSB2, val);
+ 
+ 	/* Wait for status OK */
+-- 
+2.51.0
+
 
 
 
