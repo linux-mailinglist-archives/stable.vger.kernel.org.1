@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-180057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2905FB7E7FE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:51:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5CAB7E187
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC3416A167
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91C51B20469
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A493233F3;
-	Wed, 17 Sep 2025 12:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6046013B2A4;
+	Wed, 17 Sep 2025 12:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGUV96Ba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuFRPIdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D848B2C3278;
-	Wed, 17 Sep 2025 12:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFA12C3278;
+	Wed, 17 Sep 2025 12:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113243; cv=none; b=dxDZw6fK36Ztvv1UQ4c/YwPFXeNaQiTwVJQ9s2WhYrXEyiZVj/SbxTQTwsFw7+2CMcDGlqA3iJZrWkLRvQTRCES+Qd03bXiSWfOTIJ1JOlF5kqqgA9vUNnug/akcGv6NtNQqik4QAEiKfAyxcse7NSZJoUofqM3x0QHgUfs+rZA=
+	t=1758112831; cv=none; b=fyXQohAHlwDkktHm4+sWH+OZBKd7SidnpzeGI7yMWijit5J+7T6E97WBu4e79+IxjQm1UZRrUXCo4Wguc745JvBoCFAAVpwOiWcebztsBhWjWR7tWGYut7PyMEHa2pWpl/9dMk69/852lfFe0eitckdQyfRWikQdGaPdwfeTn4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113243; c=relaxed/simple;
-	bh=Eey2G+00qhM6j8Lz9jHJ6/XJ9GNAx8cWHOP2XFbx1Hc=;
+	s=arc-20240116; t=1758112831; c=relaxed/simple;
+	bh=aRqjJFcqYbSmSJmIv2y7HZdBT8ogPR+085JXFaEeiOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IViKigzTosXsAq5r4QSusDzl61CONuaczcKvFbV/HkcvFPfnKrc55CbhWrEUTRX++9tJtZXD2ejFPf9Cq4R0j+L2Letog8UIFvxZJK2lypK2JWoYIBDu6WEObR5sF0nYU3j0IIWKOgt20Y/DoIhIxNUFrakP5IBUYVdVhZU6avs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGUV96Ba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D22C4CEFA;
-	Wed, 17 Sep 2025 12:47:23 +0000 (UTC)
+	 MIME-Version; b=uUYRwQ+GUpCG4WPd8u9JlbromgBwJbQhoF0/XBApgOMq6XrMbZDVbCvhnkhDavYIDuo8kjCgSjVtC2COyE9megDWvAU8M7H+lR2CoRPToPdixBG7038JPnxyhWRl0z8HK1qlRjwuXpdSYewgfoeBOIXwBG7wXUhuyakmYQ3HTak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuFRPIdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89987C4CEF0;
+	Wed, 17 Sep 2025 12:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113243;
-	bh=Eey2G+00qhM6j8Lz9jHJ6/XJ9GNAx8cWHOP2XFbx1Hc=;
+	s=korg; t=1758112831;
+	bh=aRqjJFcqYbSmSJmIv2y7HZdBT8ogPR+085JXFaEeiOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dGUV96BaP/WRLWzdme7WuHb/7qR7uuh/sGx4eKdT1Jx32WKVrKvALHpuOuqGoACOT
-	 drLpu+EllBl1zDPvVAaIggLv7SRQN9ly5aPdv6pam1QDi2zx6bUlORwQU7E4DoMxGH
-	 yanKbFJnzd+WzkBbkzJ7DQM4d3qg6petTzMN5//4=
+	b=JuFRPIdJnqYbGoQoOCDlmLt0Nsa2m/wjf4py26/7AHxhP5uf6rHgqMthPKsVEaIZp
+	 3W12O388LO7okP+sV/XHncV8iPz/Fin0ExQlGyeT9QLSRD6mQ4oyw9WwDgSo2T7xpS
+	 mdLA283S+qHJevDzwP4KA67VeM1mIM4y/sfzZqKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/140] NFSv4: Clear the NFS_CAP_XATTR flag if not supported by the server
-Date: Wed, 17 Sep 2025 14:33:18 +0200
-Message-ID: <20250917123344.944151924@linuxfoundation.org>
+	David Rosca <david.rosca@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 089/189] drm/amdgpu/vcn: Allow limiting ctx to instance 0 for AV1 at any time
+Date: Wed, 17 Sep 2025 14:33:19 +0200
+Message-ID: <20250917123354.030312934@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: David Rosca <david.rosca@amd.com>
 
-[ Upstream commit 4fb2b677fc1f70ee642c0beecc3cabf226ef5707 ]
+commit 3318f2d20ce48849855df5e190813826d0bc3653 upstream.
 
-nfs_server_set_fsinfo() shouldn't assume that NFS_CAP_XATTR is unset
-on entry to the function.
+There is no reason to require this to happen on first submitted IB only.
+We need to wait for the queue to be idle, but it can be done at any
+time (including when there are multiple video sessions active).
 
-Fixes: b78ef845c35d ("NFSv4.2: query the server for extended attribute support")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Rosca <david.rosca@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8908fdce0634a623404e9923ed2f536101a39db5)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/client.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c |   12 ++++++++----
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |   12 ++++++++----
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 17edc124d03f2..035474f3fb8f3 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -881,6 +881,8 @@ static void nfs_server_set_fsinfo(struct nfs_server *server,
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -1875,15 +1875,19 @@ static int vcn_v3_0_limit_sched(struct a
+ 				struct amdgpu_job *job)
+ {
+ 	struct drm_gpu_scheduler **scheds;
+-
+-	/* The create msg must be in the first IB submitted */
+-	if (atomic_read(&job->base.entity->fence_seq))
+-		return -EINVAL;
++	struct dma_fence *fence;
  
- 	if (fsinfo->xattr_support)
- 		server->caps |= NFS_CAP_XATTR;
-+	else
-+		server->caps &= ~NFS_CAP_XATTR;
- #endif
- }
+ 	/* if VCN0 is harvested, we can't support AV1 */
+ 	if (p->adev->vcn.harvest_config & AMDGPU_VCN_HARVEST_VCN0)
+ 		return -EINVAL;
  
--- 
-2.51.0
-
++	/* wait for all jobs to finish before switching to instance 0 */
++	fence = amdgpu_ctx_get_fence(p->ctx, job->base.entity, ~0ull);
++	if (fence) {
++		dma_fence_wait(fence, false);
++		dma_fence_put(fence);
++	}
++
+ 	scheds = p->adev->gpu_sched[AMDGPU_HW_IP_VCN_DEC]
+ 		[AMDGPU_RING_PRIO_DEFAULT].sched;
+ 	drm_sched_entity_modify_sched(job->base.entity, scheds, 1);
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -1807,15 +1807,19 @@ static int vcn_v4_0_limit_sched(struct a
+ 				struct amdgpu_job *job)
+ {
+ 	struct drm_gpu_scheduler **scheds;
+-
+-	/* The create msg must be in the first IB submitted */
+-	if (atomic_read(&job->base.entity->fence_seq))
+-		return -EINVAL;
++	struct dma_fence *fence;
+ 
+ 	/* if VCN0 is harvested, we can't support AV1 */
+ 	if (p->adev->vcn.harvest_config & AMDGPU_VCN_HARVEST_VCN0)
+ 		return -EINVAL;
+ 
++	/* wait for all jobs to finish before switching to instance 0 */
++	fence = amdgpu_ctx_get_fence(p->ctx, job->base.entity, ~0ull);
++	if (fence) {
++		dma_fence_wait(fence, false);
++		dma_fence_put(fence);
++	}
++
+ 	scheds = p->adev->gpu_sched[AMDGPU_HW_IP_VCN_ENC]
+ 		[AMDGPU_RING_PRIO_0].sched;
+ 	drm_sched_entity_modify_sched(job->base.entity, scheds, 1);
 
 
 
