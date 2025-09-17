@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-180210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A01B7EE32
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 079A2B7E38A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A1A63A2379
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE80623ABD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DF4330D29;
-	Wed, 17 Sep 2025 12:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F4C283FE9;
+	Wed, 17 Sep 2025 12:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqexQyn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5uw6mF6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F92330D21;
-	Wed, 17 Sep 2025 12:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E36337EB9;
+	Wed, 17 Sep 2025 12:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113730; cv=none; b=ntIwLI08WXquzMJ56T/ltbL8zMtPlMYGga2R9zzl8u6P4F1wPSJ22Mw5JsMdRql/fehuK0dBILWB9ZjkJqwzq+mqhQUqbdTZ+szbdyj8qKAKLw3diC2riFZOwy/Sm0GpedH4ZotDkvtb170lkU6xdZet8NdLY8HgEoQNRmAJKJs=
+	t=1758113034; cv=none; b=tbMGVl55IcU5rG19jO4iMG0424aMrxHvGx7Dctya2X8ra9VUW9AE+2o9446h3Ujjs626uLroKPLARGlv69MhLLQCcrVEpAJ8DE51VO3B4moPEBMIxJ86caPlIwD1GyMLNbiOLr7ZY8nxhcVkTqfGaZJVYNP87Zsa1jBV0VoR14E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113730; c=relaxed/simple;
-	bh=qXqz+MwZPaJ+o82xrYy6R6gteJJ4buX19CkCA/CfR+o=;
+	s=arc-20240116; t=1758113034; c=relaxed/simple;
+	bh=23TNJUGxj52Tda96FciMTwBSNtmc8pPSE+uKP7qhfN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9S8JbRWVE9VPtHFXJHgwIwrrKsgpTJLF+cGz7Cc+At8e3wC34jpUv0foLR9SStlaP/SfwWDIyJFelAHm7gIdY6XHkhcbx4Et7gGgVF6eyrS/U/9jBrG1QeG9L/rCO/Simc/3niZVstVC2K02tIE+gVooaYzR8nnSe5EfFGCVS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqexQyn/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C19AC4CEF0;
-	Wed, 17 Sep 2025 12:55:29 +0000 (UTC)
+	 MIME-Version; b=InYoIamaZxm9PV0H3ZUT+Bx+pMoWtJnWsNtQv9N4XcYx8ly2pcKIP1ZtcmVHqoH3DCqXpixap9PXNn0BAEe8AMJgu/tYWQ2OaIcFD4Xf0SvJsClrYInetQaEh25m8Fj/zH+adyhtF4c3dyfAm7KjmzvGXAl9rMGH0AZ9/sHOlAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5uw6mF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BC4C4CEF0;
+	Wed, 17 Sep 2025 12:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113730;
-	bh=qXqz+MwZPaJ+o82xrYy6R6gteJJ4buX19CkCA/CfR+o=;
+	s=korg; t=1758113033;
+	bh=23TNJUGxj52Tda96FciMTwBSNtmc8pPSE+uKP7qhfN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqexQyn/UQI+KAAlYt5eUXu84hwzvIydfUY+lCOTHHCjKRMv/QLypFND2va+puSgh
-	 hNrBd+9E06/YNOjg/GBZcXLQY42O4c0fDm/IjYd+dq4DTgGhcr5psZK9GjEhLuaKvw
-	 DcjZZeA9vs2M59tAh7oXdXnyc0hbg+GkUHBa/DJA=
+	b=O5uw6mF6uvqef1bfkGAEnHX0m4e7BktB+0ge5+HNwD3TZV8YiYj30yPJ/u0KuPkb0
+	 jB6tebMw6dE2RNHA0PauVtUkIpDGLTp4SpA496Xbr9m5Ad4Mqk5tOQH6f8Xs8FbJEg
+	 hyKyFs5y5d5IGin2xaACtozSHwIk3GOz6hN8JrPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiasheng Lee <chiasheng.lee@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 036/101] i2c: i801: Hide Intel Birch Stream SoC TCO WDT
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 149/189] can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
 Date: Wed, 17 Sep 2025 14:34:19 +0200
-Message-ID: <20250917123337.719408949@linuxfoundation.org>
+Message-ID: <20250917123355.509037299@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiasheng Lee <chiasheng.lee@linux.intel.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 664596bd98bb251dd417dfd3f9b615b661e1e44a upstream.
+[ Upstream commit f214744c8a27c3c1da6b538c232da22cd027530e ]
 
-Hide the Intel Birch Stream SoC TCO WDT feature since it was removed.
+Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
+callback") expects that a call to j1939_priv_put() can be unconditionally
+delayed until j1939_sk_sock_destruct() is called. But a refcount leak will
+happen when j1939_sk_bind() is called again after j1939_local_ecu_get()
+ from previous j1939_sk_bind() call returned an error. We need to call
+j1939_priv_put() before j1939_sk_bind() returns an error.
 
-On platforms with PCH TCO WDT, this redundant device might be rendering
-errors like this:
-
-[   28.144542] sysfs: cannot create duplicate filename '/bus/platform/devices/iTCO_wdt'
-
-Fixes: 8c56f9ef25a3 ("i2c: i801: Add support for Intel Birch Stream SoC")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220320
-Signed-off-by: Chiasheng Lee <chiasheng.lee@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.7+
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250901125943.916522-1-chiasheng.lee@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/4f49a1bc-a528-42ad-86c0-187268ab6535@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-i801.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/j1939/socket.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -1051,7 +1051,7 @@ static const struct pci_device_id i801_i
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_SOC_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
--	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
-+	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5)			 },
- 	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index b3a45aa70cf2f..785b883a1319d 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -520,6 +520,9 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	ret = j1939_local_ecu_get(priv, jsk->addr.src_name, jsk->addr.sa);
+ 	if (ret) {
+ 		j1939_netdev_stop(priv);
++		jsk->priv = NULL;
++		synchronize_rcu();
++		j1939_priv_put(priv);
+ 		goto out_release_sock;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
