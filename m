@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7C5B7F132
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF29B7E603
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B8A21890BF9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02F451BC2A03
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3072C3261;
-	Wed, 17 Sep 2025 13:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668DA2FBDFF;
+	Wed, 17 Sep 2025 12:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+7HWlEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pivlFraP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAFA33C77D;
-	Wed, 17 Sep 2025 13:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241832F260C;
+	Wed, 17 Sep 2025 12:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114064; cv=none; b=sWElOor0RoRT22rRi5MAZK230V1t3n9oa9vtzDJ9uspjhJ5ZSUcR/mWybq4rva0PAMucPgb7YXrn3AifOrjH9XWQBOcEeDm0mFhwTCDgm9tL4D473aElfyb79GVeiw6K8YBXsEXvI6wU7j8JSVWXsLCHmtFIJYwfv3vG7xu0Q0U=
+	t=1758113153; cv=none; b=O76B/lLFytx0FBS2bTsEZ0IJqmoPKZvBE9/lxhsrVeNhypCFYdoEC+VSHclr7d7I79l3Cu24Uxb6HYvCjq5nTj0/97N8hRfGFHeb13ejCJZWoAHaFXIVEgvZ1ry9N1tkHgKrX/Uvqxu55/KGeZbM3xkgySQawb9+mPEHcudVp2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114064; c=relaxed/simple;
-	bh=7o2nfqK5kWRFRH5jufGydSIMlPv2aOvjRbMAzH574zo=;
+	s=arc-20240116; t=1758113153; c=relaxed/simple;
+	bh=s2iJ7Gn65jBcJCp5K9xcgwRk6xnRZXSlQ0CcqRkfeqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=px7N0P+FkXnRwAAH6MJL+C9LFO7nOdJToJ7wrmuGreiAV9wLRTl2y1Gp0+SdMpOtmfz83oVx0e1aHFmZmNPWBuOyY2sMA4cTJd2K7SpTk/s2nBsj0+4nKqwouYyBTg70iHrs0EzyEw4QlZNsfLfBqLKMVtAHvSw6TjW8CVcKnnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+7HWlEH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD93C4CEF0;
-	Wed, 17 Sep 2025 13:01:03 +0000 (UTC)
+	 MIME-Version; b=gmTuaIzry1e8GT4dS3Owwy07Msyo9QFPAOZO+Iz6Zy70sSugRqRz28UXPXCh1+9nA7COFoSy9QS4BPmyd+NZsL34duqEsFz4d3Rica7onB8eEU/ue+UYfAFO/FsEQ2N444fZgzFnYK/aRfsN3KohbAtvfa+V6i5UDLWWOP/tZYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pivlFraP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D819C4CEF0;
+	Wed, 17 Sep 2025 12:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114064;
-	bh=7o2nfqK5kWRFRH5jufGydSIMlPv2aOvjRbMAzH574zo=;
+	s=korg; t=1758113153;
+	bh=s2iJ7Gn65jBcJCp5K9xcgwRk6xnRZXSlQ0CcqRkfeqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+7HWlEHTL9Yxc5dC9AB6ty/qdhvrwt1fPYbhL6GymBiAcnkvLkslZiXQ+odBFWRc
-	 LoR6SUy0gh4vydFIN260MlEO9F7sL2qtwDtcJMaVO4fI71DoCE4cKK0zG66xUgXcl1
-	 Sq655y7rNrMJW5e++C3WQXqP8h7f+ENUFbeRk5wA=
+	b=pivlFraP8QmHHH3M/kavroSbYyyb+Woj7It5NqnZOcVYAQzALNaLPLNZKkuiWR5Zo
+	 Lr7lWGwIAk7ITrbc0OCJpT1+OWMRnhefgm50xyebUyimncW0vXC2IAvqnGw7m2WtdK
+	 9kA075F2nPVPpznhBmA4+0c/eS+LRvngj2zKN6Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	SeongJae Park <sj@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	ze zuo <zuoze1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 36/78] mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
+	JC Kuo <jckuo@nvidia.com>,
+	Johan Hovold <johan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.16 187/189] phy: tegra: xusb: fix device and OF node leak at probe
 Date: Wed, 17 Sep 2025 14:34:57 +0200
-Message-ID: <20250917123330.442121745@linuxfoundation.org>
+Message-ID: <20250917123356.459501901@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quanmin Yan <yanquanmin1@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 711f19dfd783ffb37ca4324388b9c4cb87e71363 upstream.
+commit bca065733afd1e3a89a02f05ffe14e966cd5f78e upstream.
 
-Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
-application".
+Make sure to drop the references taken to the PMC OF node and device by
+of_parse_phandle() and of_find_device_by_node() during probe.
 
-DAMON's RECLAIM and LRU_SORT modules perform no validation on
-user-configured parameters during application, which may lead to
-division-by-zero errors.
+Note the holding a reference to the PMC device does not prevent the
+PMC regmap from going away (e.g. if the PMC driver is unbound) so there
+is no need to keep the reference.
 
-Avoid the divide-by-zero by adding validation checks when DAMON modules
-attempt to apply the parameters.
-
-
-This patch (of 2):
-
-During the calculation of 'hot_thres' and 'cold_thres', either
-'sample_interval' or 'aggr_interval' is used as the divisor, which may
-lead to division-by-zero errors.  Fix it by directly returning -EINVAL
-when such a case occurs.  Additionally, since 'aggr_interval' is already
-required to be set no smaller than 'sample_interval' in damon_set_attrs(),
-only the case where 'sample_interval' is zero needs to be checked.
-
-Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: ze zuo <zuoze1@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.0+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
+Cc: stable@vger.kernel.org	# 5.14
+Cc: JC Kuo <jckuo@nvidia.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250724131206.2211-2-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/lru_sort.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/phy/tegra/xusb-tegra210.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -203,6 +203,9 @@ static int damon_lru_sort_apply_paramete
- 	unsigned int hot_thres, cold_thres;
- 	int err = 0;
+--- a/drivers/phy/tegra/xusb-tegra210.c
++++ b/drivers/phy/tegra/xusb-tegra210.c
+@@ -3164,18 +3164,22 @@ tegra210_xusb_padctl_probe(struct device
+ 	}
  
-+	if (!damon_lru_sort_mon_attrs.sample_interval)
-+		return -EINVAL;
-+
- 	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
- 	if (err)
- 		return err;
+ 	pdev = of_find_device_by_node(np);
++	of_node_put(np);
+ 	if (!pdev) {
+ 		dev_warn(dev, "PMC device is not available\n");
+ 		goto out;
+ 	}
+ 
+-	if (!platform_get_drvdata(pdev))
++	if (!platform_get_drvdata(pdev)) {
++		put_device(&pdev->dev);
+ 		return ERR_PTR(-EPROBE_DEFER);
++	}
+ 
+ 	padctl->regmap = dev_get_regmap(&pdev->dev, "usb_sleepwalk");
+ 	if (!padctl->regmap)
+ 		dev_info(dev, "failed to find PMC regmap\n");
+ 
++	put_device(&pdev->dev);
+ out:
+ 	return &padctl->base;
+ }
 
 
 
