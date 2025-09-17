@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-180264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E52BB7EFE5
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479F1B7F162
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAC7A5266A1
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:03:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE2B71892DA0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764AB374285;
-	Wed, 17 Sep 2025 12:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E3E32341D;
+	Wed, 17 Sep 2025 13:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fod13F3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnqSPnws"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340BC368086;
-	Wed, 17 Sep 2025 12:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E3931A814;
+	Wed, 17 Sep 2025 13:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113905; cv=none; b=XtBLILWvkkLJJZPok979L0A6Q2c/wQXg6uk2COVe7n27C4iHoeWTx/qlObIW3OmOmKUX648dD0yckM8hs1ZGP64GdM9His2uS92biftsprDoa5gr79fwaFNxhwCgsYxM1czHu9H1x+mB8r489zhsoIkFA0XZdRq2SHzPnjfcU9s=
+	t=1758114116; cv=none; b=kOoJ8SSxPJuGiYhfw3tqmkCWISJuYczOKOgaTrNeKZyCyFHOGmRA96kr3VOYtgLs0pRMtzSgPjd1Ve0122uQsO8LbWANG6AhRHKaMeM/Ygg6GxBXqvbAQ+igiA18wYUuRzamsMDmWJkjqWbHiuzcZkq8sQkezJCymVhwCOnbdwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113905; c=relaxed/simple;
-	bh=1W3fK+bHRCz9MOoB9SEH3cVITPGahdl3G8BuhSxSRCk=;
+	s=arc-20240116; t=1758114116; c=relaxed/simple;
+	bh=aCiKQKZ4VHY5vkloJry5l5pekod3KSPgEs8jc0n7m1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YbNPMGEtYiaL2EbIFTpHKxfmVl2ViID76qtlNxXyHMEOGSO7GB8nElBxD1l+wZ+ouAKib4hEb+NyiBKeSxPEd0b2hXf+MBhU8HX6jya+RM8I9bHJcIzgj3tVyXAebQJnlLbB05LxOO49L8XCi6m4XOqULfltgzSRkSEMe9x550Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fod13F3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0518C4CEF7;
-	Wed, 17 Sep 2025 12:58:24 +0000 (UTC)
+	 MIME-Version; b=OU3DSUAODOaiPRrBqfRLxcyjTTgXjTJULI9AErJnGWjBVGvWQrjIYP808YeKj3iMaLnRY3IdICGl1qAZolNUSwCK5oGRGhZocdutrMwRS2Luoh6eTCxh5b93S7i8EJ+3+Qa0CMKVfAcIUW6i8pNdwzvWcvy2Rmr+WtqkuErndFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnqSPnws; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D27EC4CEF0;
+	Wed, 17 Sep 2025 13:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113905;
-	bh=1W3fK+bHRCz9MOoB9SEH3cVITPGahdl3G8BuhSxSRCk=;
+	s=korg; t=1758114116;
+	bh=aCiKQKZ4VHY5vkloJry5l5pekod3KSPgEs8jc0n7m1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fod13F3RUrJzLuX2IcyIslGYUXvoOD/zUx7xPIKYCLNwFZy/LpC//dMyZRJgVMne9
-	 PGkf1f3pgGo8mstDXAVkpF26XLxaRaqTRMO0YWBILt3C/kQ9RSNUgJX6EHqGnaLLsb
-	 EHx7yEHE7s5c1eu5mFZpnDc2kQobA/FEmE+t62FY=
+	b=WnqSPnwsypOuNyEd3LwBBDBWSRpd3fwo/4P4USPCJkxyPXnomqcaQ1D2QZcYv0aEb
+	 oyNQFLHDce1VQl9RHkyhKXE/7qW+M44mWPXv8ZOlM9N9BwcmHeSAUplefB2yyVeV6S
+	 OISRcQghth2JrHiiW7JaUUVbVnLmgrKFzftxHNac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Richard Leitner <richard.leitner@skidata.com>,
+	Simon Horman <horms@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/101] RISC-V: Remove unnecessary include from compat.h
+Subject: [PATCH 6.1 51/78] net: fec: Fix possible NPD in fec_enet_phy_reset_after_clk_enable()
 Date: Wed, 17 Sep 2025 14:35:12 +0200
-Message-ID: <20250917123338.988988168@linuxfoundation.org>
+Message-ID: <20250917123330.812758320@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +64,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 8d4f1e05ff821a5d59116ab8c3a30fcae81d8597 ]
+[ Upstream commit 03e79de4608bdd48ad6eec272e196124cefaf798 ]
 
-Without this I get a bunch of build errors like
+The function of_phy_find_device may return NULL, so we need to take
+care before dereferencing phy_dev.
 
-    In file included from ./include/linux/sched/task_stack.h:12,
-                     from ./arch/riscv/include/asm/compat.h:12,
-                     from ./arch/riscv/include/asm/pgtable.h:115,
-                     from ./include/linux/pgtable.h:6,
-                     from ./include/linux/mm.h:30,
-                     from arch/riscv/kernel/asm-offsets.c:8:
-    ./include/linux/kasan.h:50:37: error: ‘MAX_PTRS_PER_PTE’ undeclared here (not in a function); did you mean ‘PTRS_PER_PTE’?
-       50 | extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS];
-          |                                     ^~~~~~~~~~~~~~~~
-          |                                     PTRS_PER_PTE
-    ./include/linux/kasan.h:51:8: error: unknown type name ‘pmd_t’; did you mean ‘pgd_t’?
-       51 | extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
-          |        ^~~~~
-          |        pgd_t
-    ./include/linux/kasan.h:51:37: error: ‘MAX_PTRS_PER_PMD’ undeclared here (not in a function); did you mean ‘PTRS_PER_PGD’?
-       51 | extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
-          |                                     ^~~~~~~~~~~~~~~~
-          |                                     PTRS_PER_PGD
-    ./include/linux/kasan.h:52:8: error: unknown type name ‘pud_t’; did you mean ‘pgd_t’?
-       52 | extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
-          |        ^~~~~
-          |        pgd_t
-    ./include/linux/kasan.h:52:37: error: ‘MAX_PTRS_PER_PUD’ undeclared here (not in a function); did you mean ‘PTRS_PER_PGD’?
-       52 | extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
-          |                                     ^~~~~~~~~~~~~~~~
-          |                                     PTRS_PER_PGD
-    ./include/linux/kasan.h:53:8: error: unknown type name ‘p4d_t’; did you mean ‘pgd_t’?
-       53 | extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
-          |        ^~~~~
-          |        pgd_t
-    ./include/linux/kasan.h:53:37: error: ‘MAX_PTRS_PER_P4D’ undeclared here (not in a function); did you mean ‘PTRS_PER_PGD’?
-       53 | extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
-          |                                     ^~~~~~~~~~~~~~~~
-          |                                     PTRS_PER_PGD
-
-Link: https://lore.kernel.org/r/20241126143250.29708-1-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 64a632da538a ("net: fec: Fix phy_device lookup for phy_reset_after_clk_enable()")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Cc: Richard Leitner <richard.leitner@skidata.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250904091334.53965-1-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/compat.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/compat.h b/arch/riscv/include/asm/compat.h
-index 2ac955b51148f..6b79287baecc0 100644
---- a/arch/riscv/include/asm/compat.h
-+++ b/arch/riscv/include/asm/compat.h
-@@ -9,7 +9,6 @@
-  */
- #include <linux/types.h>
- #include <linux/sched.h>
--#include <linux/sched/task_stack.h>
- #include <asm-generic/compat.h>
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index d10db5d6d226a..ca271d7a388b4 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2137,7 +2137,8 @@ static void fec_enet_phy_reset_after_clk_enable(struct net_device *ndev)
+ 		 */
+ 		phy_dev = of_phy_find_device(fep->phy_node);
+ 		phy_reset_after_clk_enable(phy_dev);
+-		put_device(&phy_dev->mdio.dev);
++		if (phy_dev)
++			put_device(&phy_dev->mdio.dev);
+ 	}
+ }
  
- static inline int is_compat_task(void)
 -- 
 2.51.0
 
