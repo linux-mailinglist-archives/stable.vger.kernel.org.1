@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02D4B7EBDC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:58:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68810B7F147
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8D201889ABB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:55:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C124362424A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08E0330D35;
-	Wed, 17 Sep 2025 12:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4479831A7E5;
+	Wed, 17 Sep 2025 13:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mu44F8Vy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npLT0p+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B91D330D2F;
-	Wed, 17 Sep 2025 12:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F308632B;
+	Wed, 17 Sep 2025 13:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113546; cv=none; b=TVfzVrBMCaS6nMc++068kd/XCLKrq8u1Ku2e9886aGsH6KONVd71QkQbqFfucLhcEncGgDp2tVB+Z9umFxrM6ZXEKq3qsc7Il9I8XA+BzcCMRjhdo8F3JIXnvp3MuxYgJn4tMeWRqD69ex6sSCbBPlZ2eNNVDGNXvxHxFxEQ4w0=
+	t=1758114097; cv=none; b=GhnNwma/BcjIU1UIcYw6FAKzM2uAr1eY+i9+voslcXEdKsXk47RHtp8e65o1y9T/cr3VZnMJUqr5kDexW5TvjK9Vs1OTh9st/Rwmoy2VV/LWAPcPgXU1RlqpjYBZc5h3I1kV0Yg70EbvKJWKVgjMCOnTD1IPeymEsi135/iMO7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113546; c=relaxed/simple;
-	bh=Y1r8dpoycrjkcmyYGi0nRxtVWBt9F6hisivAduGEjCo=;
+	s=arc-20240116; t=1758114097; c=relaxed/simple;
+	bh=ATObmO7rJXKzz7yiX8iMzM9Kd86L9ixzway9rIdpqxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsryHA0c3ENGeCOXBBBLP7uRj6Q53QxkGZ5lL2Tak0s09Q/v1fYPXxlX9Gux79wwyRdmcyJ0K0AAuP4QcL+VSI8fv/8eKlDVSo+RDZ65MAJEizQ95kag0Ofstp/stZ2k1isuSH8XToq0LiH7NoHjYbCMtSit8MlyjGlfaZNpYuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mu44F8Vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930E2C4CEF0;
-	Wed, 17 Sep 2025 12:52:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LZ1Bv2nJRh5Lv6yV4EJ1pzC94FnNpyGLlvkxJgByBR1v0LNf0/k2oscLfICVZyc9aOsihV4+cfDWqoz9jl7iafmmlmxKQJViVF6TIO2KJ+dOVqh35uP+ZoT9UBzSczx1ETrj7WxDIwgNpxBSgXtxEaI5BH31ar911LdIJSSXMGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npLT0p+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B85C4CEF0;
+	Wed, 17 Sep 2025 13:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113546;
-	bh=Y1r8dpoycrjkcmyYGi0nRxtVWBt9F6hisivAduGEjCo=;
+	s=korg; t=1758114096;
+	bh=ATObmO7rJXKzz7yiX8iMzM9Kd86L9ixzway9rIdpqxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mu44F8Vy2JBr0Fj27P5eUr1TMj1VDbwDnWzQ26B0CJ6W49Jh+AXhcuLh95g6+mWTE
-	 l+VvgqumWLH6BMMeahMkjlcBm+tXas6RK91P/KqbB4sEK3X1v5iyFo05Gl9zSrHAUn
-	 WfMS1bHByrw+iwf7m/NXC99699BZNlP0rSYAQzP0=
+	b=npLT0p+JJWyeWJnu0Cu1nckgnCp7RabqvyYo4tuf+MguLZEn5Olhqry/eKZBnIYRr
+	 hwsID/jxK51dBO9GN1z+hpJdEd0Ec4XUMDwLd2GypCW1MVxZ+k1bzs6zXfq57tZSaC
+	 IZZrRw3zQDFlfeGBzy5SaYFr8MGNrAyQ4KejdHps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murali Karicheri <m-karicheri2@ti.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/140] net: hsr: Add VLAN CTAG filter support
+	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 28/78] net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups
 Date: Wed, 17 Sep 2025 14:34:49 +0200
-Message-ID: <20250917123347.168611337@linuxfoundation.org>
+Message-ID: <20250917123330.249664186@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murali Karicheri <m-karicheri2@ti.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 1a8a63a5305e95519de6f941922dfcd8179f82e5 ]
+commit 5537a4679403423e0b49c95b619983a4583d69c5 upstream.
 
-This patch adds support for VLAN ctag based filtering at slave devices.
-The slave ethernet device may be capable of filtering ethernet packets
-based on VLAN ID. This requires that when the VLAN interface is created
-over an HSR/PRP interface, it passes the VID information to the
-associated slave ethernet devices so that it updates the hardware
-filters to filter ethernet frames based on VID. This patch adds the
-required functions to propagate the vid information to the slave
-devices.
+Drop phylink_{suspend,resume}() from ax88772 PM callbacks.
 
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20241106091710.3308519-3-danishanwar@ti.com
+MDIO bus accesses have their own runtime-PM handling and will try to
+wake the device if it is suspended. Such wake attempts must not happen
+from PM callbacks while the device PM lock is held. Since phylink
+{sus|re}sume may trigger MDIO, it must not be called in PM context.
+
+No extra phylink PM handling is required for this driver:
+- .ndo_open/.ndo_stop control the phylink start/stop lifecycle.
+- ethtool/phylib entry points run in process context, not PM.
+- phylink MAC ops program the MAC on link changes after resume.
+
+Fixes: e0bffe3e6894 ("net: asix: ax88772: migrate to phylink")
+Reported-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Tested-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20250908112619.2900723-1-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8884c6939913 ("hsr: use rtnl lock when iterating over ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_device.c | 80 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 79 insertions(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 9d0754b3642fd..9f1106bdd4f09 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -522,6 +522,77 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
- 	}
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 792ddda1ad49..1e8f7089f5e8 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -607,15 +607,8 @@ static const struct net_device_ops ax88772_netdev_ops = {
+ 
+ static void ax88772_suspend(struct usbnet *dev)
+ {
+-	struct asix_common_private *priv = dev->driver_priv;
+ 	u16 medium;
+ 
+-	if (netif_running(dev->net)) {
+-		rtnl_lock();
+-		phylink_suspend(priv->phylink, false);
+-		rtnl_unlock();
+-	}
+-
+ 	/* Stop MAC operation */
+ 	medium = asix_read_medium_status(dev, 1);
+ 	medium &= ~AX_MEDIUM_RE;
+@@ -644,12 +637,6 @@ static void ax88772_resume(struct usbnet *dev)
+ 	for (i = 0; i < 3; i++)
+ 		if (!priv->reset(dev, 1))
+ 			break;
+-
+-	if (netif_running(dev->net)) {
+-		rtnl_lock();
+-		phylink_resume(priv->phylink);
+-		rtnl_unlock();
+-	}
  }
  
-+static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
-+				   __be16 proto, u16 vid)
-+{
-+	bool is_slave_a_added = false;
-+	bool is_slave_b_added = false;
-+	struct hsr_port *port;
-+	struct hsr_priv *hsr;
-+	int ret = 0;
-+
-+	hsr = netdev_priv(dev);
-+
-+	hsr_for_each_port(hsr, port) {
-+		if (port->type == HSR_PT_MASTER ||
-+		    port->type == HSR_PT_INTERLINK)
-+			continue;
-+
-+		ret = vlan_vid_add(port->dev, proto, vid);
-+		switch (port->type) {
-+		case HSR_PT_SLAVE_A:
-+			if (ret) {
-+				/* clean up Slave-B */
-+				netdev_err(dev, "add vid failed for Slave-A\n");
-+				if (is_slave_b_added)
-+					vlan_vid_del(port->dev, proto, vid);
-+				return ret;
-+			}
-+
-+			is_slave_a_added = true;
-+			break;
-+
-+		case HSR_PT_SLAVE_B:
-+			if (ret) {
-+				/* clean up Slave-A */
-+				netdev_err(dev, "add vid failed for Slave-B\n");
-+				if (is_slave_a_added)
-+					vlan_vid_del(port->dev, proto, vid);
-+				return ret;
-+			}
-+
-+			is_slave_b_added = true;
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
-+				    __be16 proto, u16 vid)
-+{
-+	struct hsr_port *port;
-+	struct hsr_priv *hsr;
-+
-+	hsr = netdev_priv(dev);
-+
-+	hsr_for_each_port(hsr, port) {
-+		switch (port->type) {
-+		case HSR_PT_SLAVE_A:
-+		case HSR_PT_SLAVE_B:
-+			vlan_vid_del(port->dev, proto, vid);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static const struct net_device_ops hsr_device_ops = {
- 	.ndo_change_mtu = hsr_dev_change_mtu,
- 	.ndo_open = hsr_dev_open,
-@@ -530,6 +601,8 @@ static const struct net_device_ops hsr_device_ops = {
- 	.ndo_change_rx_flags = hsr_change_rx_flags,
- 	.ndo_fix_features = hsr_fix_features,
- 	.ndo_set_rx_mode = hsr_set_rx_mode,
-+	.ndo_vlan_rx_add_vid = hsr_ndo_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid = hsr_ndo_vlan_rx_kill_vid,
- };
- 
- static const struct device_type hsr_type = {
-@@ -578,7 +651,8 @@ void hsr_dev_setup(struct net_device *dev)
- 
- 	dev->hw_features = NETIF_F_SG | NETIF_F_FRAGLIST | NETIF_F_HIGHDMA |
- 			   NETIF_F_GSO_MASK | NETIF_F_HW_CSUM |
--			   NETIF_F_HW_VLAN_CTAG_TX;
-+			   NETIF_F_HW_VLAN_CTAG_TX |
-+			   NETIF_F_HW_VLAN_CTAG_FILTER;
- 
- 	dev->features = dev->hw_features;
- 
-@@ -661,6 +735,10 @@ int hsr_dev_finalize(struct net_device *hsr_dev, struct net_device *slave[2],
- 	    (slave[1]->features & NETIF_F_HW_HSR_FWD))
- 		hsr->fwd_offloaded = true;
- 
-+	if ((slave[0]->features & NETIF_F_HW_VLAN_CTAG_FILTER) &&
-+	    (slave[1]->features & NETIF_F_HW_VLAN_CTAG_FILTER))
-+		hsr_dev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
-+
- 	res = register_netdevice(hsr_dev);
- 	if (res)
- 		goto err_unregister;
+ static int asix_resume(struct usb_interface *intf)
 -- 
 2.51.0
 
