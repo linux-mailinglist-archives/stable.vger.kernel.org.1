@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-180169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A1AB7EC5A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:00:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB41B7F18F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 959C8188EA7F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA8062416D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8350131A81E;
-	Wed, 17 Sep 2025 12:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1213B31A7F8;
+	Wed, 17 Sep 2025 13:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khQxrnyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POidMi2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41887330D39;
-	Wed, 17 Sep 2025 12:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C348C30CB5A;
+	Wed, 17 Sep 2025 13:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113599; cv=none; b=IVYcFwBU2EWuzWKfBN4IYtKzc8z7YNxAyBgPdsNJdcWLtzBxsQIE6ayYtQaRI0arikO1OI+B/2C8RTzkfZebqkcRGpYo6YZtjr9qTkzL4mbnwiBqXZJiJcYJA81bguDbDYivGTzPr0/okSAXVLJlog93tbu57SSe2kBgaXFqLbc=
+	t=1758114103; cv=none; b=a6HAdZL/Cv5vc7Ocq+zkZ6w+ZxIj8qUURNEW+cOnSLlY5n6n/p01iZ0ZutopelF+KNcTNaVxK4lWvvJa114LBFO5Wd+Af/gVBf4qUIFs4RZxfRE8ycRk7ar/qO3hpAXgxssUD6seQg5qjYw2vXwbh0ZnYYZ4e5ESapyg582dF54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113599; c=relaxed/simple;
-	bh=RQJCMOeiHPXFvgljzcNl/Elv1aR5Hv6JtNrHAzSlVCw=;
+	s=arc-20240116; t=1758114103; c=relaxed/simple;
+	bh=PEztl7FQQbA9koXQl98fPFMLj7gcoqoyPGy1CiFYtPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3A21YasvWhRQ+j/brSN1hzuVgsmBqabuR/DcOLQvL3vxgS8rT5kJgBmeGJQXNEolGKoPVZ5BcHHHbUXG5ezwBETOOFn+4QABQxGtY6N8xf7KOoFAlqL5TSWzNBtlKuVSiVFLfQZOH+hlvoDE5bs3kwGak/NE7pzogMiJ+nCYd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khQxrnyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B262C4CEF0;
-	Wed, 17 Sep 2025 12:53:17 +0000 (UTC)
+	 MIME-Version; b=ZlP9tUAw5rD9ZWiHFBmere5mbKOL/yXJmzd1v3tgK0wYHpmOf34RcKiOv8OUOzKzLQbZeCN16ZaOAUZxkCm86qnqUafTrEntA9QBkV6olrmpEVULCo/1NJumligTjHnhVRt/wIDlL8hnlUoMPHN+jlh7rYt4Y2dsR9SqKoGoIBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POidMi2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36FDC4CEF0;
+	Wed, 17 Sep 2025 13:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113597;
-	bh=RQJCMOeiHPXFvgljzcNl/Elv1aR5Hv6JtNrHAzSlVCw=;
+	s=korg; t=1758114103;
+	bh=PEztl7FQQbA9koXQl98fPFMLj7gcoqoyPGy1CiFYtPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khQxrnygt0733xGWU1jDKDAT3gsS2ktBgy6tpo1rXmMPlwsW0/nPxWeiM8MBe5Cf2
-	 /AEfXi/ZtjIluTqdi9CNaFfrZ6K3zxhlzqDVqC9BSUwcTyWV3n7MaHAcL4IsFuySqa
-	 aCkmEkJdcJZn9NvMpjPhRPojPv21e3WOSv1Zu5ig=
+	b=POidMi2i56tQCNTVWqysXYYjWZA78luWIPBI9dQ2NpgTHooJjSErkwQX/RLoA4RgA
+	 D7Vx+S2QWTkcK+QpgTEq/9sSDO6Bre39pqJTEOSsmpqqu9eaTbeNiKxMVYScDEV2Qz
+	 momTUKsIQxQ4ZD9QMUt6fWQ0tJCJYjdNmG+1b0ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 136/140] phy: ti-pipe3: fix device leak at unbind
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.1 47/78] serial: sc16is7xx: fix bug in flow control levels init
 Date: Wed, 17 Sep 2025 14:35:08 +0200
-Message-ID: <20250917123347.641553324@linuxfoundation.org>
+Message-ID: <20250917123330.714257037@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit e19bcea99749ce8e8f1d359f68ae03210694ad56 upstream.
+commit 535fd4c98452c87537a40610abba45daf5761ec6 upstream.
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
+writing to the TCR register to configure flow control levels, we are
+incorrectly writing to the MSR register. The default value of $00 is then
+used for TCR, which means that selectable trigger levels in FCR are used
+in place of TCR.
 
-Fixes: 918ee0d21ba4 ("usb: phy: omap-usb3: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-4-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
+to be set. EFR[4] is already set in probe().
+
+MCR access requires LCR[7] to be zero.
+
+Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
+accessed instead because MCR shares the same address space as XON1.
+
+Since MCR[2] is unmodified and still zero, when writing to TCR we are in
+fact writing to MSR because TCR/TLR registers share the same address space
+as MSR/SPR.
+
+Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
+functions), as it is already enabled in sc16is7xx_probe() since commit
+43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
+Now LCR is $00, which means that MCR access is enabled.
+
+Also remove regcache_cache_bypass() calls since we no longer access the
+enhanced registers set, and TCR is already declared as volatile (in fact
+by declaring MSR as volatile, which shares the same address).
+
+Finally disable access to TCR/TLR registers after modifying them by
+clearing MCR[2].
+
+Note: the comment about "... and internal clock div" is wrong and can be
+      ignored/removed as access to internal clock div registers (DLL/DLH)
+      is permitted only when LCR[7] is logic 1, not when enhanced features
+      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-ti-pipe3.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/tty/serial/sc16is7xx.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/drivers/phy/ti/phy-ti-pipe3.c
-+++ b/drivers/phy/ti/phy-ti-pipe3.c
-@@ -667,12 +667,20 @@ static int ti_pipe3_get_clk(struct ti_pi
- 	return 0;
- }
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1166,17 +1166,6 @@ static int sc16is7xx_startup(struct uart
+ 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
+ 			     SC16IS7XX_FCR_FIFO_BIT);
  
-+static void ti_pipe3_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int ti_pipe3_get_sysctrl(struct ti_pipe3 *phy)
- {
- 	struct device *dev = phy->dev;
- 	struct device_node *node = dev->of_node;
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
-+	int ret;
+-	/* Enable EFR */
+-	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+-			     SC16IS7XX_LCR_CONF_MODE_B);
+-
+-	regcache_cache_bypass(one->regmap, true);
+-
+-	/* Enable write access to enhanced features and internal clock div */
+-	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
+-			      SC16IS7XX_EFR_ENABLE_BIT,
+-			      SC16IS7XX_EFR_ENABLE_BIT);
+-
+ 	/* Enable TCR/TLR */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_TCRTLR_BIT,
+@@ -1188,7 +1177,8 @@ static int sc16is7xx_startup(struct uart
+ 			     SC16IS7XX_TCR_RX_RESUME(24) |
+ 			     SC16IS7XX_TCR_RX_HALT(48));
  
- 	phy->phy_power_syscon = syscon_regmap_lookup_by_phandle(node,
- 							"syscon-phy-power");
-@@ -704,6 +712,11 @@ static int ti_pipe3_get_sysctrl(struct t
- 		}
+-	regcache_cache_bypass(one->regmap, false);
++	/* Disable TCR/TLR access */
++	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
  
- 		phy->control_dev = &control_pdev->dev;
-+
-+		ret = devm_add_action_or_reset(dev, ti_pipe3_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	if (phy->mode == PIPE3_MODE_PCIE) {
+ 	/* Now, initialize the UART */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
 
 
 
