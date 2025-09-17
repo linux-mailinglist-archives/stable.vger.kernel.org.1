@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-179942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB39B7E293
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC35DB7E7DD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF4EE623645
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13E51C0100A
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052682F5A08;
-	Wed, 17 Sep 2025 12:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A38032CF6C;
+	Wed, 17 Sep 2025 12:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHOfyczw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF4JNLMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BA51EB1AA;
-	Wed, 17 Sep 2025 12:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7D532BC13;
+	Wed, 17 Sep 2025 12:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112875; cv=none; b=MjAX9I2KPhXsx4cYlT+HLxS3Lo1ZA6xgQzVTl8MBnUCo4KbWYgiXYJ9EQXqBh5nAO5o9b6kJhXqMrmI3aAlWs+NeeKB/dftSJ9yek8X+ZYdXT+3YLaOAgBtwZKUZH1/fYarmewKZhF+lVQy2ijFBC3HYH66JM/8buw7zPtRYxWY=
+	t=1758113282; cv=none; b=adwNaJ6GPaPaYPZEQQPDRxBPlxiSzq4D5qUnPJfvpGj/i/dY1XZSk+NPwLwWNEPeRG/+R6H9jkgCAN6FVjhp+qzFQTfezpA1uZ35Yf6RHJ6W1nbxUcBCvAMbjV0euukbYhT5hgsqb3DQbfCOlrtsH/9UVAGf894vkLPzDueslsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112875; c=relaxed/simple;
-	bh=W6nslAoHA06gkV+FgvEXopLTFbd1PHrCiBMrQFQ2Goo=;
+	s=arc-20240116; t=1758113282; c=relaxed/simple;
+	bh=86JORV4sAVTEFUSL6fJO+zYPe+8M4hV8pqoJAWX9fYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqPsojopMxLpcVaS+utgEmqIUL1srWkIvLpfqJxIhdwErtBrVZBOwJ3hukMBXVLdJlGKwy6o0Lave+AQuGc1OXxU1y/mUPFrqoRtRZsZ6YsrnLrun8LFbFWYmitu/+JmgzHBs4dmNrD0RYwcvf6seY6AD3j8mSaKWe88o2PS96Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHOfyczw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C048C4CEF0;
-	Wed, 17 Sep 2025 12:41:14 +0000 (UTC)
+	 MIME-Version; b=RGEUE/VblvFI+hBPfiAStnjc3w/0TcZdiokYJjEW95b6tiSdqNfDAQrjVPlro/oXO86OVYe8HhYd7E2NJ2c7eC3By/a7V1Eopt3V85V77V1xxNKJPmOW/Bo4MorQ/oFoI+sfg4EmYmt4cabF4YJKyaeTUl3V/5LfqwVwEEj45WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF4JNLMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B92C4CEF0;
+	Wed, 17 Sep 2025 12:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112875;
-	bh=W6nslAoHA06gkV+FgvEXopLTFbd1PHrCiBMrQFQ2Goo=;
+	s=korg; t=1758113282;
+	bh=86JORV4sAVTEFUSL6fJO+zYPe+8M4hV8pqoJAWX9fYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHOfyczwoBONrJal28FW3y8NwmWLHLq4ACyRmxzgG8j9FjojB4F2+8VATJTwXqvtv
-	 tvtz+Nstgx7RMLKRtFvFYW7nCDIlAmFMH0x+ySnfqJiyZ2MDuuSMnz7i34oVTUFLkw
-	 kTFESpjxhEbn0hrVOjhYI/tjdMqyH9m9XDxuaiTo=
+	b=JF4JNLMX6sXcAY3Wsm9+xKN5cvt0CIooxyxMJZOg3hviDPxf5C0oLzSyJ6c9j9sSb
+	 hplLQFd44d4p0DsC/ahm0poW5KtNPuiWTfpVcjug+//gkS7OGieRYK3rGcZV0vj02p
+	 IIRFWrxA4J9uCH01d9A9Ue+1033ywoffD/SvHGcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.16 101/189] ceph: fix race condition validating r_parent before applying state
+	syzbot+161412ccaeff20ce4dde@syzkaller.appspotmail.com,
+	Pu Lehui <pulehui@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 039/140] tracing: Silence warning when chunk allocation fails in trace_pid_write
 Date: Wed, 17 Sep 2025 14:33:31 +0200
-Message-ID: <20250917123354.331140664@linuxfoundation.org>
+Message-ID: <20250917123345.262300075@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,653 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Markuze <amarkuze@redhat.com>
+From: Pu Lehui <pulehui@huawei.com>
 
-commit 15f519e9f883b316d86e2bb6b767a023aafd9d83 upstream.
+[ Upstream commit cd4453c5e983cf1fd5757e9acb915adb1e4602b6 ]
 
-Add validation to ensure the cached parent directory inode matches the
-directory info in MDS replies. This prevents client-side race conditions
-where concurrent operations (e.g. rename) cause r_parent to become stale
-between request initiation and reply processing, which could lead to
-applying state changes to incorrect directory inodes.
+Syzkaller trigger a fault injection warning:
 
-[ idryomov: folded a kerneldoc fixup and a follow-up fix from Alex to
-  move CEPH_CAP_PIN reference when r_parent is updated:
+WARNING: CPU: 1 PID: 12326 at tracepoint_add_func+0xbfc/0xeb0
+Modules linked in:
+CPU: 1 UID: 0 PID: 12326 Comm: syz.6.10325 Tainted: G U 6.14.0-rc5-syzkaller #0
+Tainted: [U]=USER
+Hardware name: Google Compute Engine/Google Compute Engine
+RIP: 0010:tracepoint_add_func+0xbfc/0xeb0 kernel/tracepoint.c:294
+Code: 09 fe ff 90 0f 0b 90 0f b6 74 24 43 31 ff 41 bc ea ff ff ff
+RSP: 0018:ffffc9000414fb48 EFLAGS: 00010283
+RAX: 00000000000012a1 RBX: ffffffff8e240ae0 RCX: ffffc90014b78000
+RDX: 0000000000080000 RSI: ffffffff81bbd78b RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffffffffffffffef
+R13: 0000000000000000 R14: dffffc0000000000 R15: ffffffff81c264f0
+FS:  00007f27217f66c0(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2e80dff8 CR3: 00000000268f8000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ tracepoint_probe_register_prio+0xc0/0x110 kernel/tracepoint.c:464
+ register_trace_prio_sched_switch include/trace/events/sched.h:222 [inline]
+ register_pid_events kernel/trace/trace_events.c:2354 [inline]
+ event_pid_write.isra.0+0x439/0x7a0 kernel/trace/trace_events.c:2425
+ vfs_write+0x24c/0x1150 fs/read_write.c:677
+ ksys_write+0x12b/0x250 fs/read_write.c:731
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-  When the parent directory lock is not held, req->r_parent can become
-  stale and is updated to point to the correct inode.  However, the
-  associated CEPH_CAP_PIN reference was not being adjusted.  The
-  CEPH_CAP_PIN is a reference on an inode that is tracked for
-  accounting purposes.  Moving this pin is important to keep the
-  accounting balanced. When the pin was not moved from the old parent
-  to the new one, it created two problems: The reference on the old,
-  stale parent was never released, causing a reference leak.
-  A reference for the new parent was never acquired, creating the risk
-  of a reference underflow later in ceph_mdsc_release_request().  This
-  patch corrects the logic by releasing the pin from the old parent and
-  acquiring it for the new parent when r_parent is switched.  This
-  ensures reference accounting stays balanced. ]
+We can reproduce the warning by following the steps below:
+1. echo 8 >> set_event_notrace_pid. Let tr->filtered_pids owns one pid
+   and register sched_switch tracepoint.
+2. echo ' ' >> set_event_pid, and perform fault injection during chunk
+   allocation of trace_pid_list_alloc. Let pid_list with no pid and
+assign to tr->filtered_pids.
+3. echo ' ' >> set_event_pid. Let pid_list is NULL and assign to
+   tr->filtered_pids.
+4. echo 9 >> set_event_pid, will trigger the double register
+   sched_switch tracepoint warning.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Markuze <amarkuze@redhat.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The reason is that syzkaller injects a fault into the chunk allocation
+in trace_pid_list_alloc, causing a failure in trace_pid_list_set, which
+may trigger double register of the same tracepoint. This only occurs
+when the system is about to crash, but to suppress this warning, let's
+add failure handling logic to trace_pid_list_set.
+
+Link: https://lore.kernel.org/20250908024658.2390398-1-pulehui@huaweicloud.com
+Fixes: 8d6e90983ade ("tracing: Create a sparse bitmask for pid filtering")
+Reported-by: syzbot+161412ccaeff20ce4dde@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67cb890e.050a0220.d8275.022e.GAE@google.com
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/debugfs.c    |   14 +---
- fs/ceph/dir.c        |   17 ++---
- fs/ceph/file.c       |   24 ++-----
- fs/ceph/inode.c      |    7 --
- fs/ceph/mds_client.c |  172 +++++++++++++++++++++++++++++++--------------------
- fs/ceph/mds_client.h |   18 ++++-
- 6 files changed, 145 insertions(+), 107 deletions(-)
+ kernel/trace/trace.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/ceph/debugfs.c
-+++ b/fs/ceph/debugfs.c
-@@ -55,8 +55,6 @@ static int mdsc_show(struct seq_file *s,
- 	struct ceph_mds_client *mdsc = fsc->mdsc;
- 	struct ceph_mds_request *req;
- 	struct rb_node *rp;
--	int pathlen = 0;
--	u64 pathbase;
- 	char *path;
- 
- 	mutex_lock(&mdsc->mutex);
-@@ -81,8 +79,8 @@ static int mdsc_show(struct seq_file *s,
- 		if (req->r_inode) {
- 			seq_printf(s, " #%llx", ceph_ino(req->r_inode));
- 		} else if (req->r_dentry) {
--			path = ceph_mdsc_build_path(mdsc, req->r_dentry, &pathlen,
--						    &pathbase, 0);
-+			struct ceph_path_info path_info;
-+			path = ceph_mdsc_build_path(mdsc, req->r_dentry, &path_info, 0);
- 			if (IS_ERR(path))
- 				path = NULL;
- 			spin_lock(&req->r_dentry->d_lock);
-@@ -91,7 +89,7 @@ static int mdsc_show(struct seq_file *s,
- 				   req->r_dentry,
- 				   path ? path : "");
- 			spin_unlock(&req->r_dentry->d_lock);
--			ceph_mdsc_free_path(path, pathlen);
-+			ceph_mdsc_free_path_info(&path_info);
- 		} else if (req->r_path1) {
- 			seq_printf(s, " #%llx/%s", req->r_ino1.ino,
- 				   req->r_path1);
-@@ -100,8 +98,8 @@ static int mdsc_show(struct seq_file *s,
- 		}
- 
- 		if (req->r_old_dentry) {
--			path = ceph_mdsc_build_path(mdsc, req->r_old_dentry, &pathlen,
--						    &pathbase, 0);
-+			struct ceph_path_info path_info;
-+			path = ceph_mdsc_build_path(mdsc, req->r_old_dentry, &path_info, 0);
- 			if (IS_ERR(path))
- 				path = NULL;
- 			spin_lock(&req->r_old_dentry->d_lock);
-@@ -111,7 +109,7 @@ static int mdsc_show(struct seq_file *s,
- 				   req->r_old_dentry,
- 				   path ? path : "");
- 			spin_unlock(&req->r_old_dentry->d_lock);
--			ceph_mdsc_free_path(path, pathlen);
-+			ceph_mdsc_free_path_info(&path_info);
- 		} else if (req->r_path2 && req->r_op != CEPH_MDS_OP_SYMLINK) {
- 			if (req->r_ino2.ino)
- 				seq_printf(s, " #%llx/%s", req->r_ino2.ino,
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -1272,10 +1272,8 @@ static void ceph_async_unlink_cb(struct
- 
- 	/* If op failed, mark everyone involved for errors */
- 	if (result) {
--		int pathlen = 0;
--		u64 base = 0;
--		char *path = ceph_mdsc_build_path(mdsc, dentry, &pathlen,
--						  &base, 0);
-+		struct ceph_path_info path_info = {0};
-+		char *path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
- 
- 		/* mark error on parent + clear complete */
- 		mapping_set_error(req->r_parent->i_mapping, result);
-@@ -1289,8 +1287,8 @@ static void ceph_async_unlink_cb(struct
- 		mapping_set_error(req->r_old_inode->i_mapping, result);
- 
- 		pr_warn_client(cl, "failure path=(%llx)%s result=%d!\n",
--			       base, IS_ERR(path) ? "<<bad>>" : path, result);
--		ceph_mdsc_free_path(path, pathlen);
-+			       path_info.vino.ino, IS_ERR(path) ? "<<bad>>" : path, result);
-+		ceph_mdsc_free_path_info(&path_info);
- 	}
- out:
- 	iput(req->r_old_inode);
-@@ -1348,8 +1346,6 @@ static int ceph_unlink(struct inode *dir
- 	int err = -EROFS;
- 	int op;
- 	char *path;
--	int pathlen;
--	u64 pathbase;
- 
- 	if (ceph_snap(dir) == CEPH_SNAPDIR) {
- 		/* rmdir .snap/foo is RMSNAP */
-@@ -1368,14 +1364,15 @@ static int ceph_unlink(struct inode *dir
- 	if (!dn) {
- 		try_async = false;
- 	} else {
--		path = ceph_mdsc_build_path(mdsc, dn, &pathlen, &pathbase, 0);
-+		struct ceph_path_info path_info;
-+		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			try_async = false;
- 			err = 0;
- 		} else {
- 			err = ceph_mds_check_access(mdsc, path, MAY_WRITE);
- 		}
--		ceph_mdsc_free_path(path, pathlen);
-+		ceph_mdsc_free_path_info(&path_info);
- 		dput(dn);
- 
- 		/* For none EACCES cases will let the MDS do the mds auth check */
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -368,8 +368,6 @@ int ceph_open(struct inode *inode, struc
- 	int flags, fmode, wanted;
- 	struct dentry *dentry;
- 	char *path;
--	int pathlen;
--	u64 pathbase;
- 	bool do_sync = false;
- 	int mask = MAY_READ;
- 
-@@ -399,14 +397,15 @@ int ceph_open(struct inode *inode, struc
- 	if (!dentry) {
- 		do_sync = true;
- 	} else {
--		path = ceph_mdsc_build_path(mdsc, dentry, &pathlen, &pathbase, 0);
-+		struct ceph_path_info path_info;
-+		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			do_sync = true;
- 			err = 0;
- 		} else {
- 			err = ceph_mds_check_access(mdsc, path, mask);
- 		}
--		ceph_mdsc_free_path(path, pathlen);
-+		ceph_mdsc_free_path_info(&path_info);
- 		dput(dentry);
- 
- 		/* For none EACCES cases will let the MDS do the mds auth check */
-@@ -614,15 +613,13 @@ static void ceph_async_create_cb(struct
- 	mapping_set_error(req->r_parent->i_mapping, result);
- 
- 	if (result) {
--		int pathlen = 0;
--		u64 base = 0;
--		char *path = ceph_mdsc_build_path(mdsc, req->r_dentry, &pathlen,
--						  &base, 0);
-+		struct ceph_path_info path_info = {0};
-+		char *path = ceph_mdsc_build_path(mdsc, req->r_dentry, &path_info, 0);
- 
- 		pr_warn_client(cl,
- 			"async create failure path=(%llx)%s result=%d!\n",
--			base, IS_ERR(path) ? "<<bad>>" : path, result);
--		ceph_mdsc_free_path(path, pathlen);
-+			path_info.vino.ino, IS_ERR(path) ? "<<bad>>" : path, result);
-+		ceph_mdsc_free_path_info(&path_info);
- 
- 		ceph_dir_clear_complete(req->r_parent);
- 		if (!d_unhashed(dentry))
-@@ -791,8 +788,6 @@ int ceph_atomic_open(struct inode *dir,
- 	int mask;
- 	int err;
- 	char *path;
--	int pathlen;
--	u64 pathbase;
- 
- 	doutc(cl, "%p %llx.%llx dentry %p '%pd' %s flags %d mode 0%o\n",
- 	      dir, ceph_vinop(dir), dentry, dentry,
-@@ -814,7 +809,8 @@ int ceph_atomic_open(struct inode *dir,
- 	if (!dn) {
- 		try_async = false;
- 	} else {
--		path = ceph_mdsc_build_path(mdsc, dn, &pathlen, &pathbase, 0);
-+		struct ceph_path_info path_info;
-+		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			try_async = false;
- 			err = 0;
-@@ -826,7 +822,7 @@ int ceph_atomic_open(struct inode *dir,
- 				mask |= MAY_WRITE;
- 			err = ceph_mds_check_access(mdsc, path, mask);
- 		}
--		ceph_mdsc_free_path(path, pathlen);
-+		ceph_mdsc_free_path_info(&path_info);
- 		dput(dn);
- 
- 		/* For none EACCES cases will let the MDS do the mds auth check */
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -2488,22 +2488,21 @@ int __ceph_setattr(struct mnt_idmap *idm
- 	int truncate_retry = 20; /* The RMW will take around 50ms */
- 	struct dentry *dentry;
- 	char *path;
--	int pathlen;
--	u64 pathbase;
- 	bool do_sync = false;
- 
- 	dentry = d_find_alias(inode);
- 	if (!dentry) {
- 		do_sync = true;
- 	} else {
--		path = ceph_mdsc_build_path(mdsc, dentry, &pathlen, &pathbase, 0);
-+		struct ceph_path_info path_info;
-+		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			do_sync = true;
- 			err = 0;
- 		} else {
- 			err = ceph_mds_check_access(mdsc, path, MAY_WRITE);
- 		}
--		ceph_mdsc_free_path(path, pathlen);
-+		ceph_mdsc_free_path_info(&path_info);
- 		dput(dentry);
- 
- 		/* For none EACCES cases will let the MDS do the mds auth check */
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -2681,8 +2681,7 @@ static u8 *get_fscrypt_altname(const str
-  * ceph_mdsc_build_path - build a path string to a given dentry
-  * @mdsc: mds client
-  * @dentry: dentry to which path should be built
-- * @plen: returned length of string
-- * @pbase: returned base inode number
-+ * @path_info: output path, length, base ino+snap, and freepath ownership flag
-  * @for_wire: is this path going to be sent to the MDS?
-  *
-  * Build a string that represents the path to the dentry. This is mostly called
-@@ -2700,7 +2699,7 @@ static u8 *get_fscrypt_altname(const str
-  *   foo/.snap/bar -> foo//bar
-  */
- char *ceph_mdsc_build_path(struct ceph_mds_client *mdsc, struct dentry *dentry,
--			   int *plen, u64 *pbase, int for_wire)
-+			   struct ceph_path_info *path_info, int for_wire)
- {
- 	struct ceph_client *cl = mdsc->fsc->client;
- 	struct dentry *cur;
-@@ -2810,16 +2809,28 @@ retry:
- 		return ERR_PTR(-ENAMETOOLONG);
- 	}
- 
--	*pbase = base;
--	*plen = PATH_MAX - 1 - pos;
-+	/* Initialize the output structure */
-+	memset(path_info, 0, sizeof(*path_info));
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 87a43c0f90764..91e6bf1b101a7 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -787,7 +787,10 @@ int trace_pid_write(struct trace_pid_list *filtered_pids,
+ 		/* copy the current bits to the new max */
+ 		ret = trace_pid_list_first(filtered_pids, &pid);
+ 		while (!ret) {
+-			trace_pid_list_set(pid_list, pid);
++			ret = trace_pid_list_set(pid_list, pid);
++			if (ret < 0)
++				goto out;
 +
-+	path_info->vino.ino = base;
-+	path_info->pathlen = PATH_MAX - 1 - pos;
-+	path_info->path = path + pos;
-+	path_info->freepath = true;
-+
-+	/* Set snap from dentry if available */
-+	if (d_inode(dentry))
-+		path_info->vino.snap = ceph_snap(d_inode(dentry));
-+	else
-+		path_info->vino.snap = CEPH_NOSNAP;
-+
- 	doutc(cl, "on %p %d built %llx '%.*s'\n", dentry, d_count(dentry),
--	      base, *plen, path + pos);
-+	      base, PATH_MAX - 1 - pos, path + pos);
- 	return path + pos;
- }
- 
- static int build_dentry_path(struct ceph_mds_client *mdsc, struct dentry *dentry,
--			     struct inode *dir, const char **ppath, int *ppathlen,
--			     u64 *pino, bool *pfreepath, bool parent_locked)
-+			     struct inode *dir, struct ceph_path_info *path_info,
-+			     bool parent_locked)
- {
- 	char *path;
- 
-@@ -2828,41 +2839,47 @@ static int build_dentry_path(struct ceph
- 		dir = d_inode_rcu(dentry->d_parent);
- 	if (dir && parent_locked && ceph_snap(dir) == CEPH_NOSNAP &&
- 	    !IS_ENCRYPTED(dir)) {
--		*pino = ceph_ino(dir);
-+		path_info->vino.ino = ceph_ino(dir);
-+		path_info->vino.snap = ceph_snap(dir);
- 		rcu_read_unlock();
--		*ppath = dentry->d_name.name;
--		*ppathlen = dentry->d_name.len;
-+		path_info->path = dentry->d_name.name;
-+		path_info->pathlen = dentry->d_name.len;
-+		path_info->freepath = false;
- 		return 0;
+ 			ret = trace_pid_list_next(filtered_pids, pid + 1, &pid);
+ 			nr_pids++;
+ 		}
+@@ -824,6 +827,7 @@ int trace_pid_write(struct trace_pid_list *filtered_pids,
+ 		trace_parser_clear(&parser);
+ 		ret = 0;
  	}
- 	rcu_read_unlock();
--	path = ceph_mdsc_build_path(mdsc, dentry, ppathlen, pino, 1);
-+	path = ceph_mdsc_build_path(mdsc, dentry, path_info, 1);
- 	if (IS_ERR(path))
- 		return PTR_ERR(path);
--	*ppath = path;
--	*pfreepath = true;
-+	/*
-+	 * ceph_mdsc_build_path already fills path_info, including snap handling.
-+	 */
- 	return 0;
- }
++ out:
+ 	trace_parser_put(&parser);
  
--static int build_inode_path(struct inode *inode,
--			    const char **ppath, int *ppathlen, u64 *pino,
--			    bool *pfreepath)
-+static int build_inode_path(struct inode *inode, struct ceph_path_info *path_info)
- {
- 	struct ceph_mds_client *mdsc = ceph_sb_to_mdsc(inode->i_sb);
- 	struct dentry *dentry;
- 	char *path;
- 
- 	if (ceph_snap(inode) == CEPH_NOSNAP) {
--		*pino = ceph_ino(inode);
--		*ppathlen = 0;
-+		path_info->vino.ino = ceph_ino(inode);
-+		path_info->vino.snap = ceph_snap(inode);
-+		path_info->pathlen = 0;
-+		path_info->freepath = false;
- 		return 0;
- 	}
- 	dentry = d_find_alias(inode);
--	path = ceph_mdsc_build_path(mdsc, dentry, ppathlen, pino, 1);
-+	path = ceph_mdsc_build_path(mdsc, dentry, path_info, 1);
- 	dput(dentry);
- 	if (IS_ERR(path))
- 		return PTR_ERR(path);
--	*ppath = path;
--	*pfreepath = true;
-+	/*
-+	 * ceph_mdsc_build_path already fills path_info, including snap from dentry.
-+	 * Override with inode's snap since that's what this function is for.
-+	 */
-+	path_info->vino.snap = ceph_snap(inode);
- 	return 0;
- }
- 
-@@ -2872,26 +2889,32 @@ static int build_inode_path(struct inode
-  */
- static int set_request_path_attr(struct ceph_mds_client *mdsc, struct inode *rinode,
- 				 struct dentry *rdentry, struct inode *rdiri,
--				 const char *rpath, u64 rino, const char **ppath,
--				 int *pathlen, u64 *ino, bool *freepath,
-+				 const char *rpath, u64 rino,
-+				 struct ceph_path_info *path_info,
- 				 bool parent_locked)
- {
- 	struct ceph_client *cl = mdsc->fsc->client;
- 	int r = 0;
- 
-+	/* Initialize the output structure */
-+	memset(path_info, 0, sizeof(*path_info));
-+
- 	if (rinode) {
--		r = build_inode_path(rinode, ppath, pathlen, ino, freepath);
-+		r = build_inode_path(rinode, path_info);
- 		doutc(cl, " inode %p %llx.%llx\n", rinode, ceph_ino(rinode),
- 		      ceph_snap(rinode));
- 	} else if (rdentry) {
--		r = build_dentry_path(mdsc, rdentry, rdiri, ppath, pathlen, ino,
--					freepath, parent_locked);
--		doutc(cl, " dentry %p %llx/%.*s\n", rdentry, *ino, *pathlen, *ppath);
-+		r = build_dentry_path(mdsc, rdentry, rdiri, path_info, parent_locked);
-+		doutc(cl, " dentry %p %llx/%.*s\n", rdentry, path_info->vino.ino,
-+		      path_info->pathlen, path_info->path);
- 	} else if (rpath || rino) {
--		*ino = rino;
--		*ppath = rpath;
--		*pathlen = rpath ? strlen(rpath) : 0;
--		doutc(cl, " path %.*s\n", *pathlen, rpath);
-+		path_info->vino.ino = rino;
-+		path_info->vino.snap = CEPH_NOSNAP;
-+		path_info->path = rpath;
-+		path_info->pathlen = rpath ? strlen(rpath) : 0;
-+		path_info->freepath = false;
-+
-+		doutc(cl, " path %.*s\n", path_info->pathlen, rpath);
- 	}
- 
- 	return r;
-@@ -2968,11 +2991,8 @@ static struct ceph_msg *create_request_m
- 	struct ceph_client *cl = mdsc->fsc->client;
- 	struct ceph_msg *msg;
- 	struct ceph_mds_request_head_legacy *lhead;
--	const char *path1 = NULL;
--	const char *path2 = NULL;
--	u64 ino1 = 0, ino2 = 0;
--	int pathlen1 = 0, pathlen2 = 0;
--	bool freepath1 = false, freepath2 = false;
-+	struct ceph_path_info path_info1 = {0};
-+	struct ceph_path_info path_info2 = {0};
- 	struct dentry *old_dentry = NULL;
- 	int len;
- 	u16 releases;
-@@ -2982,25 +3002,49 @@ static struct ceph_msg *create_request_m
- 	u16 request_head_version = mds_supported_head_version(session);
- 	kuid_t caller_fsuid = req->r_cred->fsuid;
- 	kgid_t caller_fsgid = req->r_cred->fsgid;
-+	bool parent_locked = test_bit(CEPH_MDS_R_PARENT_LOCKED, &req->r_req_flags);
- 
- 	ret = set_request_path_attr(mdsc, req->r_inode, req->r_dentry,
--			      req->r_parent, req->r_path1, req->r_ino1.ino,
--			      &path1, &pathlen1, &ino1, &freepath1,
--			      test_bit(CEPH_MDS_R_PARENT_LOCKED,
--					&req->r_req_flags));
-+				    req->r_parent, req->r_path1, req->r_ino1.ino,
-+				    &path_info1, parent_locked);
  	if (ret < 0) {
- 		msg = ERR_PTR(ret);
- 		goto out;
- 	}
- 
-+	/*
-+	 * When the parent directory's i_rwsem is *not* locked, req->r_parent may
-+	 * have become stale (e.g. after a concurrent rename) between the time the
-+	 * dentry was looked up and now.  If we detect that the stored r_parent
-+	 * does not match the inode number we just encoded for the request, switch
-+	 * to the correct inode so that the MDS receives a valid parent reference.
-+	 */
-+	if (!parent_locked && req->r_parent && path_info1.vino.ino &&
-+	    ceph_ino(req->r_parent) != path_info1.vino.ino) {
-+		struct inode *old_parent = req->r_parent;
-+		struct inode *correct_dir = ceph_get_inode(mdsc->fsc->sb, path_info1.vino, NULL);
-+		if (!IS_ERR(correct_dir)) {
-+			WARN_ONCE(1, "ceph: r_parent mismatch (had %llx wanted %llx) - updating\n",
-+			          ceph_ino(old_parent), path_info1.vino.ino);
-+			/*
-+			 * Transfer CEPH_CAP_PIN from the old parent to the new one.
-+			 * The pin was taken earlier in ceph_mdsc_submit_request().
-+			 */
-+			ceph_put_cap_refs(ceph_inode(old_parent), CEPH_CAP_PIN);
-+			iput(old_parent);
-+			req->r_parent = correct_dir;
-+			ceph_get_cap_refs(ceph_inode(req->r_parent), CEPH_CAP_PIN);
-+		}
-+	}
-+
- 	/* If r_old_dentry is set, then assume that its parent is locked */
- 	if (req->r_old_dentry &&
- 	    !(req->r_old_dentry->d_flags & DCACHE_DISCONNECTED))
- 		old_dentry = req->r_old_dentry;
- 	ret = set_request_path_attr(mdsc, NULL, old_dentry,
--			      req->r_old_dentry_dir,
--			      req->r_path2, req->r_ino2.ino,
--			      &path2, &pathlen2, &ino2, &freepath2, true);
-+				    req->r_old_dentry_dir,
-+				    req->r_path2, req->r_ino2.ino,
-+				    &path_info2, true);
- 	if (ret < 0) {
- 		msg = ERR_PTR(ret);
- 		goto out_free1;
-@@ -3031,7 +3075,7 @@ static struct ceph_msg *create_request_m
- 
- 	/* filepaths */
- 	len += 2 * (1 + sizeof(u32) + sizeof(u64));
--	len += pathlen1 + pathlen2;
-+	len += path_info1.pathlen + path_info2.pathlen;
- 
- 	/* cap releases */
- 	len += sizeof(struct ceph_mds_request_release) *
-@@ -3039,9 +3083,9 @@ static struct ceph_msg *create_request_m
- 		 !!req->r_old_inode_drop + !!req->r_old_dentry_drop);
- 
- 	if (req->r_dentry_drop)
--		len += pathlen1;
-+		len += path_info1.pathlen;
- 	if (req->r_old_dentry_drop)
--		len += pathlen2;
-+		len += path_info2.pathlen;
- 
- 	/* MClientRequest tail */
- 
-@@ -3154,8 +3198,8 @@ static struct ceph_msg *create_request_m
- 	lhead->ino = cpu_to_le64(req->r_deleg_ino);
- 	lhead->args = req->r_args;
- 
--	ceph_encode_filepath(&p, end, ino1, path1);
--	ceph_encode_filepath(&p, end, ino2, path2);
-+	ceph_encode_filepath(&p, end, path_info1.vino.ino, path_info1.path);
-+	ceph_encode_filepath(&p, end, path_info2.vino.ino, path_info2.path);
- 
- 	/* make note of release offset, in case we need to replay */
- 	req->r_request_release_offset = p - msg->front.iov_base;
-@@ -3218,11 +3262,9 @@ static struct ceph_msg *create_request_m
- 	msg->hdr.data_off = cpu_to_le16(0);
- 
- out_free2:
--	if (freepath2)
--		ceph_mdsc_free_path((char *)path2, pathlen2);
-+	ceph_mdsc_free_path_info(&path_info2);
- out_free1:
--	if (freepath1)
--		ceph_mdsc_free_path((char *)path1, pathlen1);
-+	ceph_mdsc_free_path_info(&path_info1);
- out:
- 	return msg;
- out_err:
-@@ -4579,24 +4621,20 @@ static int reconnect_caps_cb(struct inod
- 	struct ceph_pagelist *pagelist = recon_state->pagelist;
- 	struct dentry *dentry;
- 	struct ceph_cap *cap;
--	char *path;
--	int pathlen = 0, err;
--	u64 pathbase;
-+	struct ceph_path_info path_info = {0};
-+	int err;
- 	u64 snap_follows;
- 
- 	dentry = d_find_primary(inode);
- 	if (dentry) {
- 		/* set pathbase to parent dir when msg_version >= 2 */
--		path = ceph_mdsc_build_path(mdsc, dentry, &pathlen, &pathbase,
-+		char *path = ceph_mdsc_build_path(mdsc, dentry, &path_info,
- 					    recon_state->msg_version >= 2);
- 		dput(dentry);
- 		if (IS_ERR(path)) {
- 			err = PTR_ERR(path);
- 			goto out_err;
- 		}
--	} else {
--		path = NULL;
--		pathbase = 0;
- 	}
- 
- 	spin_lock(&ci->i_ceph_lock);
-@@ -4629,7 +4667,7 @@ static int reconnect_caps_cb(struct inod
- 		rec.v2.wanted = cpu_to_le32(__ceph_caps_wanted(ci));
- 		rec.v2.issued = cpu_to_le32(cap->issued);
- 		rec.v2.snaprealm = cpu_to_le64(ci->i_snap_realm->ino);
--		rec.v2.pathbase = cpu_to_le64(pathbase);
-+		rec.v2.pathbase = cpu_to_le64(path_info.vino.ino);
- 		rec.v2.flock_len = (__force __le32)
- 			((ci->i_ceph_flags & CEPH_I_ERROR_FILELOCK) ? 0 : 1);
- 	} else {
-@@ -4644,7 +4682,7 @@ static int reconnect_caps_cb(struct inod
- 		ts = inode_get_atime(inode);
- 		ceph_encode_timespec64(&rec.v1.atime, &ts);
- 		rec.v1.snaprealm = cpu_to_le64(ci->i_snap_realm->ino);
--		rec.v1.pathbase = cpu_to_le64(pathbase);
-+		rec.v1.pathbase = cpu_to_le64(path_info.vino.ino);
- 	}
- 
- 	if (list_empty(&ci->i_cap_snaps)) {
-@@ -4706,7 +4744,7 @@ encode_again:
- 			    sizeof(struct ceph_filelock);
- 		rec.v2.flock_len = cpu_to_le32(struct_len);
- 
--		struct_len += sizeof(u32) + pathlen + sizeof(rec.v2);
-+		struct_len += sizeof(u32) + path_info.pathlen + sizeof(rec.v2);
- 
- 		if (struct_v >= 2)
- 			struct_len += sizeof(u64); /* snap_follows */
-@@ -4730,7 +4768,7 @@ encode_again:
- 			ceph_pagelist_encode_8(pagelist, 1);
- 			ceph_pagelist_encode_32(pagelist, struct_len);
- 		}
--		ceph_pagelist_encode_string(pagelist, path, pathlen);
-+		ceph_pagelist_encode_string(pagelist, (char *)path_info.path, path_info.pathlen);
- 		ceph_pagelist_append(pagelist, &rec, sizeof(rec.v2));
- 		ceph_locks_to_pagelist(flocks, pagelist,
- 				       num_fcntl_locks, num_flock_locks);
-@@ -4741,17 +4779,17 @@ out_freeflocks:
- 	} else {
- 		err = ceph_pagelist_reserve(pagelist,
- 					    sizeof(u64) + sizeof(u32) +
--					    pathlen + sizeof(rec.v1));
-+					    path_info.pathlen + sizeof(rec.v1));
- 		if (err)
- 			goto out_err;
- 
- 		ceph_pagelist_encode_64(pagelist, ceph_ino(inode));
--		ceph_pagelist_encode_string(pagelist, path, pathlen);
-+		ceph_pagelist_encode_string(pagelist, (char *)path_info.path, path_info.pathlen);
- 		ceph_pagelist_append(pagelist, &rec, sizeof(rec.v1));
- 	}
- 
- out_err:
--	ceph_mdsc_free_path(path, pathlen);
-+	ceph_mdsc_free_path_info(&path_info);
- 	if (!err)
- 		recon_state->nr_caps++;
- 	return err;
---- a/fs/ceph/mds_client.h
-+++ b/fs/ceph/mds_client.h
-@@ -617,14 +617,24 @@ extern int ceph_mds_check_access(struct
- 
- extern void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc);
- 
--static inline void ceph_mdsc_free_path(char *path, int len)
-+/*
-+ * Structure to group path-related output parameters for build_*_path functions
-+ */
-+struct ceph_path_info {
-+	const char *path;
-+	int pathlen;
-+	struct ceph_vino vino;
-+	bool freepath;
-+};
-+
-+static inline void ceph_mdsc_free_path_info(const struct ceph_path_info *path_info)
- {
--	if (!IS_ERR_OR_NULL(path))
--		__putname(path - (PATH_MAX - 1 - len));
-+	if (path_info && path_info->freepath && !IS_ERR_OR_NULL(path_info->path))
-+		__putname((char *)path_info->path - (PATH_MAX - 1 - path_info->pathlen));
- }
- 
- extern char *ceph_mdsc_build_path(struct ceph_mds_client *mdsc,
--				  struct dentry *dentry, int *plen, u64 *base,
-+				  struct dentry *dentry, struct ceph_path_info *path_info,
- 				  int for_wire);
- 
- extern void __ceph_mdsc_drop_dentry_lease(struct dentry *dentry);
+-- 
+2.51.0
+
 
 
 
