@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-179937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455BAB7E287
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFD2B7E927
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBF88173BC9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 772AB189CB14
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F7E2BE622;
-	Wed, 17 Sep 2025 12:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1104132BC17;
+	Wed, 17 Sep 2025 12:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYH4w+61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IUXqya4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D1C7FBA2;
-	Wed, 17 Sep 2025 12:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C454032898F;
+	Wed, 17 Sep 2025 12:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112858; cv=none; b=qko9pxsMgGdni0FXYSVaqjyRaC2GuoqVhu4poi5PkmkKxQPyI8IG6dOGTU5siLo4DzWf3muGffS4Nx73HGb6jTFVBbLZDH0XxqpEnVS3r/RuEXosafFIruc6eI809wUuvK5ZNK11dFjMMvG9lpGv3ImD8znHCM/UTFVdCPlJGNM=
+	t=1758113413; cv=none; b=J3BkzA7K2nae6yK/s8gKAO3VLhx+kfcNLdqLbdT6os8bRrXAPAdW04i+aHb+L8v6unQk6XIlWEeZTib1cMRzSVeiUIawiy4Tw9EAKRCBffq2wGb+b26DYYu+Ab6ZT0WIO4NGZqzcCpri4EloqD7e773rcsdLbsJK7Ji73LbHcRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112858; c=relaxed/simple;
-	bh=woMMoMNGbFUL9PhdERZ9V0y49qWDp43dgn5OTsxKh9I=;
+	s=arc-20240116; t=1758113413; c=relaxed/simple;
+	bh=UjV05xDIggOty3XJwQjSqAQTCFFrJQupU1YdpzDoqIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKIKXlT5uzLpD77aE4Pp5tOhx8g5IrafkUksjRoZk5r+zlncyCRnaunfvuIGH8kUOezbg2wg7si0mzBtzt3y47Rfb1YXHBKEMg7apbJDONamEUHprRlc5eaUM7qSFQDdyXsOm5DTJx0W0eJ93jRRPQK2lDLMA7CMeAqC69nQCbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYH4w+61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E2EC4CEF5;
-	Wed, 17 Sep 2025 12:40:57 +0000 (UTC)
+	 MIME-Version; b=EIThk0tliD/9/OlFLV3KyFzdgJay7UTqTTfZM+MgbmXxRWMaBgqmBycaKcuzvOZIpPeaOu/QWEwpUw/ch1MdKb6MbvwhdiG6NyMl/K34Gmea4c0b+OFw2ZjV0NW2TnZw/yrp7IWeZGJfPnjBhfapsvyCD07Oe0Qk4SoJvmFOjJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IUXqya4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC67C4CEF5;
+	Wed, 17 Sep 2025 12:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112858;
-	bh=woMMoMNGbFUL9PhdERZ9V0y49qWDp43dgn5OTsxKh9I=;
+	s=korg; t=1758113413;
+	bh=UjV05xDIggOty3XJwQjSqAQTCFFrJQupU1YdpzDoqIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYH4w+61s85mm7zpPGw4DhSMMtpPodzZBC0dpMLgqzkRU4fZg8+jFICEYe4i6Ndp0
-	 irE/Ei6eNmrzHW3Y9wOPQhgfryX9Pn732xAbcJI6pTOtfm+Pe6VhhKB18/CktNcMhT
-	 STnlkAQIzT0MJ/Pn9RgEJ3ww9K00MYbtNXSg9bos=
+	b=1IUXqya4asVIbnYCmD1BJ8GVRFEncIR/i98YwSRz3VXxv+/Xus9T2zDNvFCacIz//
+	 lghUIc4Wb6mASim4AE9ShxF8QCNO3Ah2/KfMhDvZqFn1YNC3grRrP+nStyMPvDSUiI
+	 zcFMyUg0q8PVYjklX4UJwoeroB/0E0WYTt1W/YJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 096/189] drm/amd/display: Disable DPCD Probe Quirk
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 034/140] NFSv4.2: Serialise O_DIRECT i/o and fallocate()
 Date: Wed, 17 Sep 2025 14:33:26 +0200
-Message-ID: <20250917123354.201932085@linuxfoundation.org>
+Message-ID: <20250917123345.143931600@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit f5c32370dba668c171c73684f489a3ea0b9503c5 upstream.
+[ Upstream commit b93128f29733af5d427a335978a19884c2c230e2 ]
 
-Disable dpcd probe quirk to native aux.
+Ensure that all O_DIRECT reads and writes complete before calling
+fallocate so that we don't race w.r.t. attribute updates.
 
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4500
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250904191351.746707-1-Jerry.Zuo@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c5f4fb40584ee591da9fa090c6f265d11cbb1acf)
-Cc: stable@vger.kernel.org # 6.16.y: 5281cbe0b55a
-Cc: stable@vger.kernel.org # 6.16.y: 0b4aa85e8981
-Cc: stable@vger.kernel.org # 6.16.y: b87ed522b364
-Cc: stable@vger.kernel.org # 6.16.y
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99f237832243 ("NFSv4.2: Always flush out writes in nfs42_proc_fallocate()")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    1 +
+ fs/nfs/nfs42proc.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -809,6 +809,7 @@ void amdgpu_dm_initialize_dp_connector(s
- 	drm_dp_aux_init(&aconnector->dm_dp_aux.aux);
- 	drm_dp_cec_register_connector(&aconnector->dm_dp_aux.aux,
- 				      &aconnector->base);
-+	drm_dp_dpcd_set_probe(&aconnector->dm_dp_aux.aux, false);
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index 9f0d69e652644..66fe885fc19a1 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -112,6 +112,7 @@ static int nfs42_proc_fallocate(struct rpc_message *msg, struct file *filep,
+ 	exception.inode = inode;
+ 	exception.state = lock->open_context->state;
  
- 	if (aconnector->base.connector_type == DRM_MODE_CONNECTOR_eDP)
- 		return;
++	nfs_file_block_o_direct(NFS_I(inode));
+ 	err = nfs_sync_inode(inode);
+ 	if (err)
+ 		goto out;
+-- 
+2.51.0
+
 
 
 
