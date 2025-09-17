@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-180073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15151B7E7E6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:50:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91611B7E366
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 063AD188F447
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 820EF623848
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD2C1F4181;
-	Wed, 17 Sep 2025 12:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AA11EBA07;
+	Wed, 17 Sep 2025 12:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KeJslqcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WyCP0LN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780B71DE894;
-	Wed, 17 Sep 2025 12:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823D81E489;
+	Wed, 17 Sep 2025 12:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113295; cv=none; b=oCd6Cip9woOFTR8hmsm1ilV9Odt5JsDYGevCuayIYT8MWpQ1EXzcBKxngZ6Kl6jmJa7fgRdVnkuPLnZvSlCNoK5wuZZ4XDOnJWHUh80sI9WIwWaUrM/ZgOlxjBat0ebjhIVvfb1/J9I1LtrntPpd7XwToEAeSyUe0wDbELtJ/H0=
+	t=1758113008; cv=none; b=l0OHDv/wPjJaqT17+qEUk5TxmZtz/8psjpKiGSLSLQIhjaF9IX/obZof+G3XTiwNfZSP0LSQADyBq07+511gFyA165wBlw096X2s09luAg5HVWXTisMi4dJHHrp8OZ77b41DRAH26ficsB2zOTE0Dg+K9Y5YGMYqnawcnaje/ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113295; c=relaxed/simple;
-	bh=2ADnAJnpV5EF7urWzmht0Uhs9nhvKd50Gxblt5luN0o=;
+	s=arc-20240116; t=1758113008; c=relaxed/simple;
+	bh=DbE7xEUbV8+8VbaxXx48Kv002Om9sUp294olrNPuJsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAns43SQ1XgCGbFWtlgsgGvvuX0MdY5yY+S6cCn4cNL4l7NWJlyOe/bB+bulf9FVdZ6TtuspLQkHI950aR6GzI8dPxCZ2FJuJxFD0ktZqhw7E2gTYBxp3h5ULbNaPxUELvehBJIBlxo9GiJZ0Wz8/vhnlV1ijbAKsgY7QNUGZ+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KeJslqcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC7FC4CEF0;
-	Wed, 17 Sep 2025 12:48:14 +0000 (UTC)
+	 MIME-Version; b=ZuoyNKWeSlZ0SZDOJGlCeCo1ds9Ve/IMddmiREK3jK4HlACPCKXJ9aGs0vRcSVQ5c1t0eOZIp/tf9ZsLQYpeINp5T60yBwChSl/y9sQAc1EHTv9/yFIDp0JXeQKCEyE85CpVcfPtt5metVpEmtRahSLKVrC2auLF7cyg6OkSIlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WyCP0LN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D00C4CEF0;
+	Wed, 17 Sep 2025 12:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113295;
-	bh=2ADnAJnpV5EF7urWzmht0Uhs9nhvKd50Gxblt5luN0o=;
+	s=korg; t=1758113008;
+	bh=DbE7xEUbV8+8VbaxXx48Kv002Om9sUp294olrNPuJsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KeJslqczo/Owtw98h2lqpvr2nh3KgCVcpWCSKc5jpptfWrdgWSPngpZUCNxgrYFjt
-	 7uW2Gp/HdJWvCshYY/OKedakmlcQKkh7wm6I4fZP9HGz76cAM0VBA5kVFi+2rW/JIG
-	 Zhwktx2C8HKyta38HnfAOqTluL2KFP1GJIEp03Rc=
+	b=2WyCP0LNggaQBb0MuXnOMB1Oy9GCZPP381B+sgn4GDh9DcV80agRGUE64lR3RU7D4
+	 eX4Yo2dTlK5It74W05MhYwLWO5Erd7N7hH/HwXLQX/feZy04RCZL/WQECjmbSkZQtv
+	 wOHEb5k20feP0Q7d3+PxriuKvAUdZIF3NzIU0qFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	KaFai Wan <kafai.wan@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/140] bpf: Allow fall back to interpreter for programs with stack size <= 512
-Date: Wed, 17 Sep 2025 14:33:35 +0200
-Message-ID: <20250917123345.355801612@linuxfoundation.org>
+Subject: [PATCH 6.16 106/189] mtd: spinand: winbond: Enable high-speed modes on w25n0xjw
+Date: Wed, 17 Sep 2025 14:33:36 +0200
+Message-ID: <20250917123354.453982908@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +61,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KaFai Wan <kafai.wan@linux.dev>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit df0cb5cb50bd54d3cd4d0d83417ceec6a66404aa ]
+[ Upstream commit f1a91175faaab02a45d1ceb313a315a5bfeb5416 ]
 
-OpenWRT users reported regression on ARMv6 devices after updating to latest
-HEAD, where tcpdump filter:
+w25n0xjw chips have a high-speed capability hidden in a configuration
+register. Once enabled, dual/quad SDR reads may be performed at a much
+higher frequency.
 
-tcpdump "not ether host 3c37121a2b3c and not ether host 184ecbca2a3a \
-and not ether host 14130b4d3f47 and not ether host f0f61cf440b7 \
-and not ether host a84b4dedf471 and not ether host d022be17e1d7 \
-and not ether host 5c497967208b and not ether host 706655784d5b"
+Implement the new ->configure_chip() hook for this purpose and configure
+the SR4 register accordingly.
 
-fails with warning: "Kernel filter failed: No error information"
-when using config:
- # CONFIG_BPF_JIT_ALWAYS_ON is not set
- CONFIG_BPF_JIT_DEFAULT_ON=y
-
-The issue arises because commits:
-1. "bpf: Fix array bounds error with may_goto" changed default runtime to
-   __bpf_prog_ret0_warn when jit_requested = 1
-2. "bpf: Avoid __bpf_prog_ret0_warn when jit fails" returns error when
-   jit_requested = 1 but jit fails
-
-This change restores interpreter fallback capability for BPF programs with
-stack size <= 512 bytes when jit fails.
-
-Reported-by: Felix Fietkau <nbd@nbd.name>
-Closes: https://lore.kernel.org/bpf/2e267b4b-0540-45d8-9310-e127bf95fc63@nbd.name/
-Fixes: 6ebc5030e0c5 ("bpf: Fix array bounds error with may_goto")
-Signed-off-by: KaFai Wan <kafai.wan@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20250909144614.2991253-1-kafai.wan@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Stable-dep-of: 4550d33e1811 ("mtd: spinand: winbond: Fix oob_layout for W25N01JW")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/mtd/nand/spi/core.c    |    2 -
+ drivers/mtd/nand/spi/winbond.c |   45 +++++++++++++++++++++++++++++++++++++++--
+ include/linux/mtd/spinand.h    |    1 
+ 3 files changed, 45 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 6f91e3a123e55..9380e0fd5e4af 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2299,8 +2299,7 @@ static unsigned int __bpf_prog_ret0_warn(const void *ctx,
- 					 const struct bpf_insn *insn)
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -20,7 +20,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
+ 
+-static int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
++int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
  {
- 	/* If this handler ever gets executed, then BPF_JIT_ALWAYS_ON
--	 * is not working properly, or interpreter is being used when
--	 * prog->jit_requested is not 0, so warn about it!
-+	 * is not working properly, so warn about it!
- 	 */
- 	WARN_ON_ONCE(1);
- 	return 0;
-@@ -2401,8 +2400,9 @@ static int bpf_check_tail_call(const struct bpf_prog *fp)
- 	return ret;
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_1S_1S_1S_OP(reg,
+ 						      spinand->scratchbuf);
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -18,6 +18,9 @@
+ 
+ #define W25N04KV_STATUS_ECC_5_8_BITFLIPS	(3 << 4)
+ 
++#define W25N0XJW_SR4			0xD0
++#define W25N0XJW_SR4_HS			BIT(2)
++
+ /*
+  * "X2" in the core is equivalent to "dual output" in the datasheets,
+  * "X4" in the core is equivalent to "quad output" in the datasheets.
+@@ -42,10 +45,12 @@ static SPINAND_OP_VARIANTS(update_cache_
+ static SPINAND_OP_VARIANTS(read_cache_dual_quad_dtr_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_4D_4D_OP(0, 8, NULL, 0, 80 * HZ_PER_MHZ),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_4D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 4, NULL, 0, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0, 104 * HZ_PER_MHZ),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_2D_2D_OP(0, 4, NULL, 0, 80 * HZ_PER_MHZ),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_2D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 2, NULL, 0, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0, 104 * HZ_PER_MHZ),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_1D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
+@@ -230,6 +235,40 @@ static int w25n02kv_ecc_get_status(struc
+ 	return -EINVAL;
  }
  
--static void bpf_prog_select_func(struct bpf_prog *fp)
-+static bool bpf_prog_select_interpreter(struct bpf_prog *fp)
- {
-+	bool select_interpreter = false;
- #ifndef CONFIG_BPF_JIT_ALWAYS_ON
- 	u32 stack_depth = max_t(u32, fp->aux->stack_depth, 1);
- 	u32 idx = (round_up(stack_depth, 32) / 32) - 1;
-@@ -2411,15 +2411,16 @@ static void bpf_prog_select_func(struct bpf_prog *fp)
- 	 * But for non-JITed programs, we don't need bpf_func, so no bounds
- 	 * check needed.
- 	 */
--	if (!fp->jit_requested &&
--	    !WARN_ON_ONCE(idx >= ARRAY_SIZE(interpreters))) {
-+	if (idx < ARRAY_SIZE(interpreters)) {
- 		fp->bpf_func = interpreters[idx];
-+		select_interpreter = true;
- 	} else {
- 		fp->bpf_func = __bpf_prog_ret0_warn;
- 	}
- #else
- 	fp->bpf_func = __bpf_prog_ret0_warn;
- #endif
-+	return select_interpreter;
- }
++static int w25n0xjw_hs_cfg(struct spinand_device *spinand)
++{
++	const struct spi_mem_op *op;
++	bool hs;
++	u8 sr4;
++	int ret;
++
++	op = spinand->op_templates.read_cache;
++	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
++		hs = false;
++	else if (op->cmd.buswidth == 1 && op->addr.buswidth == 1 &&
++		 op->dummy.buswidth == 1 && op->data.buswidth == 1)
++		hs = false;
++	else if (!op->max_freq)
++		hs = true;
++	else
++		hs = false;
++
++	ret = spinand_read_reg_op(spinand, W25N0XJW_SR4, &sr4);
++	if (ret)
++		return ret;
++
++	if (hs)
++		sr4 |= W25N0XJW_SR4_HS;
++	else
++		sr4 &= ~W25N0XJW_SR4_HS;
++
++	ret = spinand_write_reg_op(spinand, W25N0XJW_SR4, sr4);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
+ static const struct spinand_info winbond_spinand_table[] = {
+ 	/* 512M-bit densities */
+ 	SPINAND_INFO("W25N512GW", /* 1.8V */
+@@ -268,7 +307,8 @@ static const struct spinand_info winbond
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
+ 	SPINAND_INFO("W25N01KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
+ 		     NAND_MEMORG(1, 2048, 96, 64, 1024, 20, 1, 1, 1),
+@@ -324,7 +364,8 @@ static const struct spinand_info winbond
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
+ 	SPINAND_INFO("W25N02KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x22),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -730,6 +730,7 @@ int spinand_match_and_init(struct spinan
+ 			   enum spinand_readid_method rdid_method);
  
- /**
-@@ -2438,7 +2439,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
- 	/* In case of BPF to BPF calls, verifier did all the prep
- 	 * work with regards to JITing, etc.
- 	 */
--	bool jit_needed = fp->jit_requested;
-+	bool jit_needed = false;
+ int spinand_upd_cfg(struct spinand_device *spinand, u8 mask, u8 val);
++int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val);
+ int spinand_write_reg_op(struct spinand_device *spinand, u8 reg, u8 val);
+ int spinand_select_target(struct spinand_device *spinand, unsigned int target);
  
- 	if (fp->bpf_func)
- 		goto finalize;
-@@ -2447,7 +2448,8 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
- 	    bpf_prog_has_kfunc_call(fp))
- 		jit_needed = true;
- 
--	bpf_prog_select_func(fp);
-+	if (!bpf_prog_select_interpreter(fp))
-+		jit_needed = true;
- 
- 	/* eBPF JITs can rewrite the program in case constant
- 	 * blinding is active. However, in case of error during
--- 
-2.51.0
-
 
 
 
