@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C5DB7EF6D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1878FB7E93F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8520316D059
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C94C47A1C25
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC79A2EBBB2;
-	Wed, 17 Sep 2025 12:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA10432857B;
+	Wed, 17 Sep 2025 12:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fys+dozH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8IqCJFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB3572602;
-	Wed, 17 Sep 2025 12:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77764323419;
+	Wed, 17 Sep 2025 12:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113789; cv=none; b=KWMMnuFN4alhdeBKGQRAqBiiGaecK4ixVyEfpZyphrkMQvpLom4C2ETI9c4vVXlinSSq5pGQhhNjL1hE+Rs2m8MVZZa5YXcekHgk/pLn+Z+mD5gupDUepf+5gJfXD6xtlSGOchB/uqAzd/b7kkSEvQzVjqy0T2vdICSmWUPpFhE=
+	t=1758113497; cv=none; b=rXQiyXludCNTL/PabKP7Bi2y13F/aF0wyTnFUrz6Wadcwywpuy7N+banejtqkpxRbTuTzw8VhHL72YRN2iXl0b0+pqPuomBYb/uPe0jfoBtpBybRchg+mjmNQE525e31njESqHuHRurplO5PVtHYPX7btudg236jm9Fa0qv9lhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113789; c=relaxed/simple;
-	bh=gqMK87WtcRSDc0RZaXYkxKYJeama7l7cchXVpdWX650=;
+	s=arc-20240116; t=1758113497; c=relaxed/simple;
+	bh=MaWTAwqWMXQeR+J67IZmRkS8UDckMifA+XDz2Pqj39I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+X68PB9QehDe8E8PpZ3heY0/3VimsozQhTIuRoMdbJD//nHHbeBhWy9C2MzHFXCfHQoGUCcnF3bdXNHaAWE570zLiZ84NJ72BX71wscGs6UM3Ro7hS/XIbmqXMF2/tL+vyorXYtTytMMFkn4loFohJ9zqedGMhED1U7sAxJlFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fys+dozH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2424C4CEF5;
-	Wed, 17 Sep 2025 12:56:28 +0000 (UTC)
+	 MIME-Version; b=peFMUNF+7OFegM/0qJA8HyG2j9r6HcywdAyA8WZ08PnpfwGI1f5GC7Js2QLvZ8vKlIKLwhipEmGqPlrgp2/9wv1ka3ELtl5XtgLyEn8SbHM0CRv3UrpJOVX+bmig29fTonRfc+O9veSAh6HDzSeY6zKomirRkoJ34m5rbGj4Ydw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8IqCJFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF2EC4CEF0;
+	Wed, 17 Sep 2025 12:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113789;
-	bh=gqMK87WtcRSDc0RZaXYkxKYJeama7l7cchXVpdWX650=;
+	s=korg; t=1758113497;
+	bh=MaWTAwqWMXQeR+J67IZmRkS8UDckMifA+XDz2Pqj39I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fys+dozHVSwN2RSBKRMbi0SlhU4Wkf3XmccTw0Q3AlIAfwAaQbNBI229GuYIQCig/
-	 p5cmLVngw0V3Dv8ZlxprekjlO20yOZ72Ioc4aDjfeAPhlz+Uizh0UMEI9q9Na1kdk1
-	 xtv0XzGycPg8aqMt9uCHWZb4292uZwIwKY8cNRuU=
+	b=Q8IqCJFUPZ+647vPD8SLG5My7voZ+fOWknnEVasRyubWvVPgiWo0k6nYvGEIzJki7
+	 Pnwr+USZnwZG3JD6ffpg9d+AZM93SLjhLKSs50mNfp1eE0yTISqWQVEcihVLsQhUOX
+	 hGBhrRZrff5s4Wocp5ilj0hWMaTWVHKYeeYtwfNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	SeongJae Park <sj@kernel.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	ze zuo <zuoze1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 052/101] mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
-Date: Wed, 17 Sep 2025 14:34:35 +0200
-Message-ID: <20250917123338.100857133@linuxfoundation.org>
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 104/140] can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
+Date: Wed, 17 Sep 2025 14:34:36 +0200
+Message-ID: <20250917123346.849640383@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quanmin Yan <yanquanmin1@huawei.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 711f19dfd783ffb37ca4324388b9c4cb87e71363 upstream.
+[ Upstream commit f214744c8a27c3c1da6b538c232da22cd027530e ]
 
-Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
-application".
+Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
+callback") expects that a call to j1939_priv_put() can be unconditionally
+delayed until j1939_sk_sock_destruct() is called. But a refcount leak will
+happen when j1939_sk_bind() is called again after j1939_local_ecu_get()
+ from previous j1939_sk_bind() call returned an error. We need to call
+j1939_priv_put() before j1939_sk_bind() returns an error.
 
-DAMON's RECLAIM and LRU_SORT modules perform no validation on
-user-configured parameters during application, which may lead to
-division-by-zero errors.
-
-Avoid the divide-by-zero by adding validation checks when DAMON modules
-attempt to apply the parameters.
-
-
-This patch (of 2):
-
-During the calculation of 'hot_thres' and 'cold_thres', either
-'sample_interval' or 'aggr_interval' is used as the divisor, which may
-lead to division-by-zero errors.  Fix it by directly returning -EINVAL
-when such a case occurs.  Additionally, since 'aggr_interval' is already
-required to be set no smaller than 'sample_interval' in damon_set_attrs(),
-only the case where 'sample_interval' is zero needs to be checked.
-
-Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: ze zuo <zuoze1@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.0+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/4f49a1bc-a528-42ad-86c0-187268ab6535@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/lru_sort.c |    3 +++
+ net/can/j1939/socket.c | 3 +++
  1 file changed, 3 insertions(+)
 
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -203,6 +203,9 @@ static int damon_lru_sort_apply_paramete
- 	unsigned int hot_thres, cold_thres;
- 	int err = 0;
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index 17226b2341d03..75c2b9b233901 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -520,6 +520,9 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	ret = j1939_local_ecu_get(priv, jsk->addr.src_name, jsk->addr.sa);
+ 	if (ret) {
+ 		j1939_netdev_stop(priv);
++		jsk->priv = NULL;
++		synchronize_rcu();
++		j1939_priv_put(priv);
+ 		goto out_release_sock;
+ 	}
  
-+	if (!damon_lru_sort_mon_attrs.sample_interval)
-+		return -EINVAL;
-+
- 	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
- 	if (err)
- 		return err;
+-- 
+2.51.0
+
 
 
 
