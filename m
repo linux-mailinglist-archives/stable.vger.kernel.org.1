@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83396B7F16E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F38BB7F045
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6AB61896C34
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:10:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6506F1884B03
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A1F316187;
-	Wed, 17 Sep 2025 13:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E109832E72B;
+	Wed, 17 Sep 2025 12:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bx0SrZ05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB99JV3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF45316189;
-	Wed, 17 Sep 2025 13:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4B531960F;
+	Wed, 17 Sep 2025 12:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114148; cv=none; b=vC83kBARA+Lk4BJ29/m0CI9P236wdqegUS8Jls/1YqmsYFckdipiISHTna9GZqsVHYKfVCYeD93dBwnNmYSNb14WWECOYv2w839LIJZg0/5jIT+cQkzrHwuEq74Ek9cS532NlNhev3LtLUeV0NlO74fwOk4eVgUsHHEmU8KpR/k=
+	t=1758113934; cv=none; b=oVyMAXgk0mnHCoxTEbvsOPZdkA+hDBcPtrB0vQlyoCo/heg5eQqcDz2no4Mlia30JVJAbFSwGlG4dWYo6PzYKI+tSvX48bF+UVWM91a70IG9ehvamz5rSKbRxjzwJhRlMEqOO6XG8DV3mo/EXtzRldghjLEIebO2lAln9R4D+vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114148; c=relaxed/simple;
-	bh=nfGhTB0UbuIPnmzoqjNyJmlfXfLIUZuF3qoniN7qZ/o=;
+	s=arc-20240116; t=1758113934; c=relaxed/simple;
+	bh=ANAz07hjRaNWzOtVTUj+yDWLu1IAmgXhCZoE2RszcYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbEEWUevEl1hKk42+K9TBnMg1ceVNchSYgiqvfecaoYYeqwVLRt2oouyLSLzapD3+6M0dF0jLtvT7pXHHWwjpL2e3crW1QaHLYAnAEB7ESmhXfmcGcUjNgCi+5KFmw+hyIUZ3VeTNVY7Ov6V/SHDJxsUMYhH6BrQvDdr97rk9IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx0SrZ05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACE9C4CEF0;
-	Wed, 17 Sep 2025 13:02:25 +0000 (UTC)
+	 MIME-Version; b=LnJn3L3XxTNQpIy6RyY8ECt5AjMvy3dU80QkdRW35enCPM1arHyKfcPFE/E5wfJbTGOVDMsl7rE1JV7EgiOvF8lBWin6hVSqmINCOO7gsOU/4L74r6g3gvooYzggechgKy9vjd1mu+IECy/8LiipjgCgPF0P7+Ne1GIyq4wpbc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB99JV3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37F9C4CEF0;
+	Wed, 17 Sep 2025 12:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114146;
-	bh=nfGhTB0UbuIPnmzoqjNyJmlfXfLIUZuF3qoniN7qZ/o=;
+	s=korg; t=1758113934;
+	bh=ANAz07hjRaNWzOtVTUj+yDWLu1IAmgXhCZoE2RszcYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bx0SrZ054RSoOqnNhVPLPF2tPBXm9xYMo75C4ay1cnF5wI36lhQzAZxrbQGErGWBD
-	 wJEYdHBAimP3MxBvp+9nq5qArPWHOu00NLd9MILRLAkGKhKYPTwcZTo6N4mxnWXBuN
-	 D9t35HILugEuf1vx6mU1lJYxBmqIILWWyV4ZAX9w=
+	b=JB99JV3+EvaI45l/gtM2DWhczsNGVPT71C4u0TTvAHYTZNnxxRS8GNPme4MrR0MtK
+	 zlVq80YzD3piy0NY9/+OVFarZoCu+xP2HvFVxPA7ALxseHltb0zq3ylKdeWiZFt+6r
+	 7LuVQC+ZOnKP1FbYLcj0Yu7TaIrE5rAsHrtG8Tso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 59/78] net: hsr: Disable promiscuous mode in offload mode
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 097/101] phy: ti-pipe3: fix device leak at unbind
 Date: Wed, 17 Sep 2025 14:35:20 +0200
-Message-ID: <20250917123331.013296684@linuxfoundation.org>
+Message-ID: <20250917123339.178088026@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Gunasekaran <r-gunasekaran@ti.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e748d0fd66abc4b1c136022e4e053004fce2b792 ]
+commit e19bcea99749ce8e8f1d359f68ae03210694ad56 upstream.
 
-When port-to-port forwarding for interfaces in HSR node is enabled,
-disable promiscuous mode since L2 frame forward happens at the
-offloaded hardware.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230614114710.31400-1-r-gunasekaran@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8884c6939913 ("hsr: use rtnl lock when iterating over ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 918ee0d21ba4 ("usb: phy: omap-usb3: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724131206.2211-4-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_device.c |  5 +++++
- net/hsr/hsr_main.h   |  1 +
- net/hsr/hsr_slave.c  | 15 +++++++++++----
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/phy/ti/phy-ti-pipe3.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 6e434af189bc0..511407df49151 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -529,6 +529,11 @@ int hsr_dev_finalize(struct net_device *hsr_dev, struct net_device *slave[2],
- 	if (res)
- 		goto err_add_master;
- 
-+	/* HSR forwarding offload supported in lower device? */
-+	if ((slave[0]->features & NETIF_F_HW_HSR_FWD) &&
-+	    (slave[1]->features & NETIF_F_HW_HSR_FWD))
-+		hsr->fwd_offloaded = true;
-+
- 	res = register_netdevice(hsr_dev);
- 	if (res)
- 		goto err_unregister;
-diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
-index 58a5a8b3891ff..044e0b456fcfb 100644
---- a/net/hsr/hsr_main.h
-+++ b/net/hsr/hsr_main.h
-@@ -202,6 +202,7 @@ struct hsr_priv {
- 	u8 net_id;		/* for PRP, it occupies most significant 3 bits
- 				 * of lan_id
- 				 */
-+	bool fwd_offloaded;	/* Forwarding offloaded to HW */
- 	unsigned char		sup_multicast_addr[ETH_ALEN] __aligned(sizeof(u16));
- 				/* Align to u16 boundary to avoid unaligned access
- 				 * in ether_addr_equal
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 0e6daee488b4f..52302a0546133 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -137,9 +137,14 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
- 	struct hsr_port *master;
- 	int res;
- 
--	res = dev_set_promiscuity(dev, 1);
--	if (res)
--		return res;
-+	/* Don't use promiscuous mode for offload since L2 frame forward
-+	 * happens at the offloaded hardware.
-+	 */
-+	if (!port->hsr->fwd_offloaded) {
-+		res = dev_set_promiscuity(dev, 1);
-+		if (res)
-+			return res;
-+	}
- 
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	hsr_dev = master->dev;
-@@ -158,7 +163,9 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
- fail_rx_handler:
- 	netdev_upper_dev_unlink(dev, hsr_dev);
- fail_upper_dev_link:
--	dev_set_promiscuity(dev, -1);
-+	if (!port->hsr->fwd_offloaded)
-+		dev_set_promiscuity(dev, -1);
-+
- 	return res;
+--- a/drivers/phy/ti/phy-ti-pipe3.c
++++ b/drivers/phy/ti/phy-ti-pipe3.c
+@@ -666,12 +666,20 @@ static int ti_pipe3_get_clk(struct ti_pi
+ 	return 0;
  }
  
--- 
-2.51.0
-
++static void ti_pipe3_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int ti_pipe3_get_sysctrl(struct ti_pipe3 *phy)
+ {
+ 	struct device *dev = phy->dev;
+ 	struct device_node *node = dev->of_node;
+ 	struct device_node *control_node;
+ 	struct platform_device *control_pdev;
++	int ret;
+ 
+ 	phy->phy_power_syscon = syscon_regmap_lookup_by_phandle(node,
+ 							"syscon-phy-power");
+@@ -703,6 +711,11 @@ static int ti_pipe3_get_sysctrl(struct t
+ 		}
+ 
+ 		phy->control_dev = &control_pdev->dev;
++
++		ret = devm_add_action_or_reset(dev, ti_pipe3_put_device,
++					       phy->control_dev);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	if (phy->mode == PIPE3_MODE_PCIE) {
 
 
 
