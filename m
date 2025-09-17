@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-180088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95976B7E8A6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F12B7EDDE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F0CC188BE5D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E930A1888E5C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB79632BBF9;
-	Wed, 17 Sep 2025 12:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F7F32E735;
+	Wed, 17 Sep 2025 12:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMd/4mwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiMEhdjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FA01F462C;
-	Wed, 17 Sep 2025 12:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC66A32E740;
+	Wed, 17 Sep 2025 12:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113344; cv=none; b=bDNAAxqqoFMcjT+z0sV67u9o4SRLINKYLk5UFWUpfMuRuIWjEPeKwr4PGTanJY1gRjRayHnELKRslTbG0F+3LDxsk+2RJ1XjwZTjGngGcnlf4cicKo+wqCw1ANmqFg5QyuOEqHrPpDQMToQ65Q++cAsA2s/Sbwm/5FW9zSdvgCU=
+	t=1758113685; cv=none; b=QHGIqdC/BDzvaUGAeeNL6rM+iQZvzECKSm1dvLZorG0H4eLKVXvzIShrQPYVE/9+MWPVDOmfA19V158h1HYcA50S4t2ITtZodP8/oXCajRmGBjxXvMFqe+GbJUGaBKPXP+U+C8DAcEpHy8jq4NEOyST6Q+TjgLWfOwQRM4V5iyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113344; c=relaxed/simple;
-	bh=+yyVAI5ce9rHWdiJJDSXESwXVzX/O8n5Ybi/OG0FNUs=;
+	s=arc-20240116; t=1758113685; c=relaxed/simple;
+	bh=p8EI5koGhl6UQLtN/mxhdqrVSlVd9slv8AtM/ZDaFfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvaHzE8+bfcgFBm+wIZ0SmJiIOtVaQfVeYc71ni477SFDcbe509K/5DqVOlW1K7uNTZRcs8WMYePDZoLLneLxgW/IShou/41ENf5P2selTanNNz14eXSi9yvD6Vgtdf4g8l01YvIW8hqjfxOZ6XKM0tRjOP6O2IeeaPxAEXUYEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMd/4mwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC273C4CEF0;
-	Wed, 17 Sep 2025 12:49:03 +0000 (UTC)
+	 MIME-Version; b=ks3eeqbwm5Yz8HzTm3H0BFzxGtUhWMUodMyrKOTy88o6ImudSc0vu97xSFwifvRULINjxB0+0CvJ+wD0x4oQASHf2K2qCVrie+uWPM3K5Cjx2fj8pWZ/rX/WUuRoIqbo/YVmo5IA558zPasDoioEG3WzWSGvpuzcXL2UZil/nkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiMEhdjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36175C4CEF5;
+	Wed, 17 Sep 2025 12:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113344;
-	bh=+yyVAI5ce9rHWdiJJDSXESwXVzX/O8n5Ybi/OG0FNUs=;
+	s=korg; t=1758113685;
+	bh=p8EI5koGhl6UQLtN/mxhdqrVSlVd9slv8AtM/ZDaFfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMd/4mwfQxUVeLN6k+HWMW/mWjuhFgsB91EgS6caSXiFA1hPqyaMZyRLZETXyC2B2
-	 suG0QTHHNpsKT2hUVsRGuU6+kJ2s02fAwyuYo2eUzXBHKPIOcyCznkQlp+Mpsq9fIu
-	 7rVYZIuKwdOT4yj7PO6IFD8R55Lvvf4sg4/qdVdI=
+	b=BiMEhdjOwfpwP9G4OIZBZQq6YH1dnSnhyVNQe2pCbf4InP4gG5zFcsI+NKTIcXz9O
+	 S6G1zPKLSib5AVASSyh9Vqa7ocxSPpoy5tli/gVXEfboVfClGqIUE5wpcov2LRmZVU
+	 dwtmTsaXyqfZ1d6tn6QolPJveSK9gQgLieKwOAoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 057/140] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer
-Date: Wed, 17 Sep 2025 14:33:49 +0200
-Message-ID: <20250917123345.700489615@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 007/101] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Wed, 17 Sep 2025 14:33:50 +0200
+Message-ID: <20250917123337.046606549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,139 +62,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 513c40e59d5a414ab763a9c84797534b5e8c208d upstream.
+[ Upstream commit 0bb2f7a1ad1f11d861f58e5ee5051c8974ff9569 ]
 
-Avoid below overlapping mappings by using a contiguous
-non-cacheable buffer.
+When I ran the repro [0] and waited a few seconds, I observed two
+LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
 
-[    4.077708] DMA-API: stm32_fmc2_nfc 48810000.nand-controller: cacheline tracking EEXIST,
-overlapping mappings aren't supported
-[    4.089103] WARNING: CPU: 1 PID: 44 at kernel/dma/debug.c:568 add_dma_entry+0x23c/0x300
-[    4.097071] Modules linked in:
-[    4.100101] CPU: 1 PID: 44 Comm: kworker/u4:2 Not tainted 6.1.82 #1
-[    4.106346] Hardware name: STMicroelectronics STM32MP257F VALID1 SNOR / MB1704 (LPDDR4 Power discrete) + MB1703 + MB1708 (SNOR MB1730) (DT)
-[    4.118824] Workqueue: events_unbound deferred_probe_work_func
-[    4.124674] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.131624] pc : add_dma_entry+0x23c/0x300
-[    4.135658] lr : add_dma_entry+0x23c/0x300
-[    4.139792] sp : ffff800009dbb490
-[    4.143016] x29: ffff800009dbb4a0 x28: 0000000004008022 x27: ffff8000098a6000
-[    4.150174] x26: 0000000000000000 x25: ffff8000099e7000 x24: ffff8000099e7de8
-[    4.157231] x23: 00000000ffffffff x22: 0000000000000000 x21: ffff8000098a6a20
-[    4.164388] x20: ffff000080964180 x19: ffff800009819ba0 x18: 0000000000000006
-[    4.171545] x17: 6361727420656e69 x16: 6c6568636163203a x15: 72656c6c6f72746e
-[    4.178602] x14: 6f632d646e616e2e x13: ffff800009832f58 x12: 00000000000004ec
-[    4.185759] x11: 00000000000001a4 x10: ffff80000988af58 x9 : ffff800009832f58
-[    4.192916] x8 : 00000000ffffefff x7 : ffff80000988af58 x6 : 80000000fffff000
-[    4.199972] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
-[    4.207128] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000812d2c40
-[    4.214185] Call trace:
-[    4.216605]  add_dma_entry+0x23c/0x300
-[    4.220338]  debug_dma_map_sg+0x198/0x350
-[    4.224373]  __dma_map_sg_attrs+0xa0/0x110
-[    4.228411]  dma_map_sg_attrs+0x10/0x2c
-[    4.232247]  stm32_fmc2_nfc_xfer.isra.0+0x1c8/0x3fc
-[    4.237088]  stm32_fmc2_nfc_seq_read_page+0xc8/0x174
-[    4.242127]  nand_read_oob+0x1d4/0x8e0
-[    4.245861]  mtd_read_oob_std+0x58/0x84
-[    4.249596]  mtd_read_oob+0x90/0x150
-[    4.253231]  mtd_read+0x68/0xac
+Reproduction Steps:
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+  1) Mount CIFS
+  2) Add an iptables rule to drop incoming FIN packets for CIFS
+  3) Unmount CIFS
+  4) Unload the CIFS module
+  5) Remove the iptables rule
+
+At step 3), the CIFS module calls sock_release() for the underlying
+TCP socket, and it returns quickly.  However, the socket remains in
+FIN_WAIT_1 because incoming FIN packets are dropped.
+
+At this point, the module's refcnt is 0 while the socket is still
+alive, so the following rmmod command succeeds.
+
+  # ss -tan
+  State      Recv-Q Send-Q Local Address:Port  Peer Address:Port
+  FIN-WAIT-1 0      477        10.0.2.15:51062   10.0.0.137:445
+
+  # lsmod | grep cifs
+  cifs                 1159168  0
+
+This highlights a discrepancy between the lifetime of the CIFS module
+and the underlying TCP socket.  Even after CIFS calls sock_release()
+and it returns, the TCP socket does not die immediately in order to
+close the connection gracefully.
+
+While this is generally fine, it causes an issue with LOCKDEP because
+CIFS assigns a different lock class to the TCP socket's sk->sk_lock
+using sock_lock_init_class_and_name().
+
+Once an incoming packet is processed for the socket or a timer fires,
+sk->sk_lock is acquired.
+
+Then, LOCKDEP checks the lock context in check_wait_context(), where
+hlock_class() is called to retrieve the lock class.  However, since
+the module has already been unloaded, hlock_class() logs a warning
+and returns NULL, triggering the null-ptr-deref.
+
+If LOCKDEP is enabled, we must ensure that a module calling
+sock_lock_init_class_and_name() (CIFS, NFS, etc) cannot be unloaded
+while such a socket is still alive to prevent this issue.
+
+Let's hold the module reference in sock_lock_init_class_and_name()
+and release it when the socket is freed in sk_prot_free().
+
+Note that sock_lock_init() clears sk->sk_owner for svc_create_socket()
+that calls sock_lock_init_class_and_name() for a listening socket,
+which clones a socket by sk_clone_lock() without GFP_ZERO.
+
+[0]:
+CIFS_SERVER="10.0.0.137"
+CIFS_PATH="//${CIFS_SERVER}/Users/Administrator/Desktop/CIFS_TEST"
+DEV="enp0s3"
+CRED="/root/WindowsCredential.txt"
+
+MNT=$(mktemp -d /tmp/XXXXXX)
+mount -t cifs ${CIFS_PATH} ${MNT} -o vers=3.0,credentials=${CRED},cache=none,echo_interval=1
+
+iptables -A INPUT -s ${CIFS_SERVER} -j DROP
+
+for i in $(seq 10);
+do
+    umount ${MNT}
+    rmmod cifs
+    sleep 1
+done
+
+rm -r ${MNT}
+
+iptables -D INPUT -s ${CIFS_SERVER} -j DROP
+
+[1]:
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 10 PID: 0 at kernel/locking/lockdep.c:234 hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Not tainted 6.14.0 #36
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+...
+Call Trace:
+ <IRQ>
+ __lock_acquire (kernel/locking/lockdep.c:4853 kernel/locking/lockdep.c:5178)
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+...
+
+BUG: kernel NULL pointer dereference, address: 00000000000000c4
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0
+Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Tainted: G        W          6.14.0 #36
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire (kernel/locking/lockdep.c:4852 kernel/locking/lockdep.c:5178)
+Code: 15 41 09 c7 41 8b 44 24 20 25 ff 1f 00 00 41 09 c7 8b 84 24 a0 00 00 00 45 89 7c 24 20 41 89 44 24 24 e8 e1 bc ff ff 4c 89 e7 <44> 0f b6 b8 c4 00 00 00 e8 d1 bc ff ff 0f b6 80 c5 00 00 00 88 44
+RSP: 0018:ffa0000000468a10 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ff1100010091cc38 RCX: 0000000000000027
+RDX: ff1100081f09ca48 RSI: 0000000000000001 RDI: ff1100010091cc88
+RBP: ff1100010091c200 R08: ff1100083fe6e228 R09: 00000000ffffbfff
+R10: ff1100081eca0000 R11: ff1100083fe10dc0 R12: ff1100010091cc88
+R13: 0000000000000001 R14: 0000000000000000 R15: 00000000000424b1
+FS:  0000000000000000(0000) GS:ff1100081f080000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000000c4 CR3: 0000000002c4a003 CR4: 0000000000771ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+ ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205 (discriminator 1))
+ ip_local_deliver_finish (./include/linux/rcupdate.h:878 net/ipv4/ip_input.c:234)
+ ip_sublist_rcv_finish (net/ipv4/ip_input.c:576)
+ ip_list_rcv_finish (net/ipv4/ip_input.c:628)
+ ip_list_rcv (net/ipv4/ip_input.c:670)
+ __netif_receive_skb_list_core (net/core/dev.c:5939 net/core/dev.c:5986)
+ netif_receive_skb_list_internal (net/core/dev.c:6040 net/core/dev.c:6129)
+ napi_complete_done (./include/linux/list.h:37 ./include/net/gro.h:519 ./include/net/gro.h:514 net/core/dev.c:6496)
+ e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3815)
+ __napi_poll.constprop.0 (net/core/dev.c:7191)
+ net_rx_action (net/core/dev.c:7262 net/core/dev.c:7382)
+ handle_softirqs (kernel/softirq.c:561)
+ __irq_exit_rcu (kernel/softirq.c:596 kernel/softirq.c:435 kernel/softirq.c:662)
+ irq_exit_rcu (kernel/softirq.c:680)
+ common_interrupt (arch/x86/kernel/irq.c:280 (discriminator 14))
+  </IRQ>
+ <TASK>
+ asm_common_interrupt (./arch/x86/include/asm/idtentry.h:693)
+RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:744)
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d c3 2b 15 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffa00000000ffee8 EFLAGS: 00000202
+RAX: 000000000000640b RBX: ff1100010091c200 RCX: 0000000000061aa4
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff812f30c5
+RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000002 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ ? do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+ do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ cpu_startup_entry (kernel/sched/idle.c:422 (discriminator 1))
+ start_secondary (arch/x86/kernel/smpboot.c:315)
+ common_startup_64 (arch/x86/kernel/head_64.S:421)
+ </TASK>
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CR2: 00000000000000c4
+
+Fixes: ed07536ed673 ("[PATCH] lockdep: annotate nfs/nfsd in-kernel sockets")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Cc: stable@vger.kernel.org
-Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20250407163313.22682-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/stm32_fmc2_nand.c |   28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ include/net/sock.h |   40 ++++++++++++++++++++++++++++++++++++++--
+ net/core/sock.c    |    5 +++++
+ 2 files changed, 43 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-+++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-@@ -272,6 +272,7 @@ struct stm32_fmc2_nfc {
- 	struct sg_table dma_data_sg;
- 	struct sg_table dma_ecc_sg;
- 	u8 *ecc_buf;
-+	dma_addr_t dma_ecc_addr;
- 	int dma_ecc_len;
- 	u32 tx_dma_max_burst;
- 	u32 rx_dma_max_burst;
-@@ -902,17 +903,10 @@ static int stm32_fmc2_nfc_xfer(struct na
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -353,6 +353,8 @@ struct sk_filter;
+   *	@sk_txtime_unused: unused txtime flags
+   *	@ns_tracker: tracker for netns reference
+   *	@sk_bind2_node: bind node in the bhash2 table
++  *	@sk_owner: reference to the real owner of the socket that calls
++  *		   sock_lock_init_class_and_name().
+   */
+ struct sock {
+ 	/*
+@@ -545,6 +547,10 @@ struct sock {
+ 	struct rcu_head		sk_rcu;
+ 	netns_tracker		ns_tracker;
+ 	struct hlist_node	sk_bind2_node;
++
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++	struct module		*sk_owner;
++#endif
+ };
  
- 	if (!write_data && !raw) {
- 		/* Configure DMA ECC status */
--		p = nfc->ecc_buf;
- 		for_each_sg(nfc->dma_ecc_sg.sgl, sg, eccsteps, s) {
--			sg_set_buf(sg, p, nfc->dma_ecc_len);
--			p += nfc->dma_ecc_len;
--		}
--
--		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
--				 eccsteps, dma_data_dir);
--		if (!ret) {
--			ret = -EIO;
--			goto err_unmap_data;
-+			sg_dma_address(sg) = nfc->dma_ecc_addr +
-+					     s * nfc->dma_ecc_len;
-+			sg_dma_len(sg) = nfc->dma_ecc_len;
- 		}
+ enum sk_pacing {
+@@ -1699,6 +1705,35 @@ static inline void sk_mem_uncharge(struc
+ 	sk_mem_reclaim(sk);
+ }
  
- 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
-@@ -921,7 +915,7 @@ static int stm32_fmc2_nfc_xfer(struct na
- 						   DMA_PREP_INTERRUPT);
- 		if (!desc_ecc) {
- 			ret = -ENOMEM;
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 		}
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++	__module_get(owner);
++	sk->sk_owner = owner;
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++	sk->sk_owner = NULL;
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++	module_put(sk->sk_owner);
++}
++#else
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++}
++#endif
+ /*
+  * Macro so as to not evaluate some arguments when
+  * lockdep is not enabled.
+@@ -1708,13 +1743,14 @@ static inline void sk_mem_uncharge(struc
+  */
+ #define sock_lock_init_class_and_name(sk, sname, skey, name, key)	\
+ do {									\
++	sk_owner_set(sk, THIS_MODULE);					\
+ 	sk->sk_lock.owned = 0;						\
+ 	init_waitqueue_head(&sk->sk_lock.wq);				\
+ 	spin_lock_init(&(sk)->sk_lock.slock);				\
+ 	debug_check_no_locks_freed((void *)&(sk)->sk_lock,		\
+-			sizeof((sk)->sk_lock));				\
++				   sizeof((sk)->sk_lock));		\
+ 	lockdep_set_class_and_name(&(sk)->sk_lock.slock,		\
+-				(skey), (sname));				\
++				   (skey), (sname));			\
+ 	lockdep_init_map(&(sk)->sk_lock.dep_map, (name), (key), 0);	\
+ } while (0)
  
- 		reinit_completion(&nfc->dma_ecc_complete);
-@@ -929,7 +923,7 @@ static int stm32_fmc2_nfc_xfer(struct na
- 		desc_ecc->callback_param = &nfc->dma_ecc_complete;
- 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
- 		if (ret)
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 
- 		dma_async_issue_pending(nfc->dma_ecc_ch);
- 	}
-@@ -949,7 +943,7 @@ static int stm32_fmc2_nfc_xfer(struct na
- 		if (!write_data && !raw)
- 			dmaengine_terminate_all(nfc->dma_ecc_ch);
- 		ret = -ETIMEDOUT;
--		goto err_unmap_ecc;
-+		goto err_unmap_data;
- 	}
- 
- 	/* Wait DMA data transfer completion */
-@@ -969,11 +963,6 @@ static int stm32_fmc2_nfc_xfer(struct na
- 		}
- 	}
- 
--err_unmap_ecc:
--	if (!write_data && !raw)
--		dma_unmap_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
--			     eccsteps, dma_data_dir);
--
- err_unmap_data:
- 	dma_unmap_sg(nfc->dev, nfc->dma_data_sg.sgl, eccsteps, dma_data_dir);
- 
-@@ -1610,7 +1599,8 @@ static int stm32_fmc2_nfc_dma_setup(stru
- 		return ret;
- 
- 	/* Allocate a buffer to store ECC status registers */
--	nfc->ecc_buf = devm_kzalloc(nfc->dev, FMC2_MAX_ECC_BUF_LEN, GFP_KERNEL);
-+	nfc->ecc_buf = dmam_alloc_coherent(nfc->dev, FMC2_MAX_ECC_BUF_LEN,
-+					   &nfc->dma_ecc_addr, GFP_KERNEL);
- 	if (!nfc->ecc_buf)
- 		return -ENOMEM;
- 
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2029,6 +2029,8 @@ lenout:
+  */
+ static inline void sock_lock_init(struct sock *sk)
+ {
++	sk_owner_clear(sk);
++
+ 	if (sk->sk_kern_sock)
+ 		sock_lock_init_class_and_name(
+ 			sk,
+@@ -2124,6 +2126,9 @@ static void sk_prot_free(struct proto *p
+ 	cgroup_sk_free(&sk->sk_cgrp_data);
+ 	mem_cgroup_sk_free(sk);
+ 	security_sk_free(sk);
++
++	sk_owner_put(sk);
++
+ 	if (slab != NULL)
+ 		kmem_cache_free(slab, sk);
+ 	else
 
 
 
