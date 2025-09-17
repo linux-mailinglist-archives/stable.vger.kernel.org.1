@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-179954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D6EB7E2BE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4DCB7E88E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A44D462314C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3FF1884EE1
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5DE2C0263;
-	Wed, 17 Sep 2025 12:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D187030CB5D;
+	Wed, 17 Sep 2025 12:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv8zJYo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtjxZp6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B871F09A5;
-	Wed, 17 Sep 2025 12:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD311E25EF;
+	Wed, 17 Sep 2025 12:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112918; cv=none; b=K9KwRORAiPJvHHW3D5yIKgVKdGkn7NK4/vUUlZpMqBjgfVwHxJMGV4WBLvftRlSGmWYJE2536FUKHLC35TCrKSy9/G+nV3RMHA8XTtAhTOGoVL8wvhsARD47fb0w/wLammQsfgK+LG7iaVbe00kM4CgWzghN8pB6QnDZf4zg1Lk=
+	t=1758113334; cv=none; b=RN8ECcw1Aw0u/Mg3oFr49x16xQZOuu7PppViimn38cdVzuoYTN4EF7ViJ0U+ENhtRNC0iyg/rI8V/H84ykNeYq98YKrWo/UA+gObzcy0wZ17PXcyrDZVS1ZwjVrAQ+fsT41cG2KWBwfhtlwM8HKMueKjieo8863bzzGWJ+vRjn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112918; c=relaxed/simple;
-	bh=2N+JK+YAkfjEHoMEefJXp3eWoXjv429TzMduiNIHe90=;
+	s=arc-20240116; t=1758113334; c=relaxed/simple;
+	bh=w+HGkW1C3PyniTMLKc2xU85tTKt/1bahclJYBOaQMUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Boplkeel+UpJ+lNyPrmxf4tn2nEmkDuqduuQ7ZCURNObCXxFDy14u9ivgjsfVlL67pTqmwbY/eIsH/dL4N2CfbZ/Nq8OjI0/j8Nn+n0cGWfk/YzEBMjqWlWqKHIwi3037RwWhsNIdPqN2HhvcbD71iItnJwYC1dll64ZWR//nqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv8zJYo0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6292DC4CEF0;
-	Wed, 17 Sep 2025 12:41:57 +0000 (UTC)
+	 MIME-Version; b=h2lTB8VUEV5GsMeaCE/LEOKZLhB0UiPhOsefb9t/hTHp2/N8xpfDcepf/CvOcHRe66d1Uzvr1zN2vBpQROEuht85JoyWN745+4SVI1xNZXph4yB2s1/m71DelabBsth0GauhW8C1Ixt6AsmDD6I9WjFrl1vmwHVVGAlpJAPhmNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtjxZp6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0927DC4CEF0;
+	Wed, 17 Sep 2025 12:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112917;
-	bh=2N+JK+YAkfjEHoMEefJXp3eWoXjv429TzMduiNIHe90=;
+	s=korg; t=1758113334;
+	bh=w+HGkW1C3PyniTMLKc2xU85tTKt/1bahclJYBOaQMUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv8zJYo0UkSypu2Ebim4A2IqiZABDApuqK+NSKXnZAfKFkAJhuyZAhBEKGX6H7LAi
-	 feoKap+TJjoTnqLD/s4iBSbt1j9X/USfGvQ0ha2v+IzZvWqAAZ3N/MuFYKjthn/oZB
-	 Tu2M7dVpP0Pmx3tdG/tpd2lgQB9NfKL3eLPz9D8E=
+	b=TtjxZp6hUHWMVkKECGpxTabi94vHi2bDMDiOXrg1+9qW7GTdxZD6qBdAXDHxv0u8T
+	 EEgcOmb0NJKELcyZExI5irmvnvjwv71DpvTAG1fmdzqy7vkkHli5fI/KKII9jpuqAI
+	 MQkSZAr+G/udVqfYNxZJLqn+Crs6N3DMP2vvBqJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff LaBundy <jeff@labundy.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.16 116/189] Input: iqs7222 - avoid enabling unused interrupts
+	Chiasheng Lee <chiasheng.lee@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.12 054/140] i2c: i801: Hide Intel Birch Stream SoC TCO WDT
 Date: Wed, 17 Sep 2025 14:33:46 +0200
-Message-ID: <20250917123354.698838657@linuxfoundation.org>
+Message-ID: <20250917123345.628636228@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff LaBundy <jeff@labundy.com>
+From: Chiasheng Lee <chiasheng.lee@linux.intel.com>
 
-commit c9ddc41cdd522f2db5d492eda3df8994d928be34 upstream.
+commit 664596bd98bb251dd417dfd3f9b615b661e1e44a upstream.
 
-If a proximity event node is defined so as to specify the wake-up
-properties of the touch surface, the proximity event interrupt is
-enabled unconditionally. This may result in unwanted interrupts.
+Hide the Intel Birch Stream SoC TCO WDT feature since it was removed.
 
-Solve this problem by enabling the interrupt only if the event is
-mapped to a key or switch code.
+On platforms with PCH TCO WDT, this redundant device might be rendering
+errors like this:
 
-Signed-off-by: Jeff LaBundy <jeff@labundy.com>
-Link: https://lore.kernel.org/r/aKJxxgEWpNaNcUaW@nixie71
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[   28.144542] sysfs: cannot create duplicate filename '/bus/platform/devices/iTCO_wdt'
+
+Fixes: 8c56f9ef25a3 ("i2c: i801: Add support for Intel Birch Stream SoC")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220320
+Signed-off-by: Chiasheng Lee <chiasheng.lee@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.7+
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250901125943.916522-1-chiasheng.lee@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/iqs7222.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-i801.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/misc/iqs7222.c
-+++ b/drivers/input/misc/iqs7222.c
-@@ -2427,6 +2427,9 @@ static int iqs7222_parse_chan(struct iqs
- 		if (error)
- 			return error;
- 
-+		if (!iqs7222->kp_type[chan_index][i])
-+			continue;
-+
- 		if (!dev_desc->event_offset)
- 			continue;
- 
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1057,7 +1057,7 @@ static const struct pci_device_id i801_i
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_SOC_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+-	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
++	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5)			 },
+ 	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
 
 
 
