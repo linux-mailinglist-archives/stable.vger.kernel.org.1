@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-180325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB41B7F18F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5067EB7EDA8
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA8062416D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:08:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D0677B59E3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1213B31A7F8;
-	Wed, 17 Sep 2025 13:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD3531960E;
+	Wed, 17 Sep 2025 12:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POidMi2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MC8TfH81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C348C30CB5A;
-	Wed, 17 Sep 2025 13:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7EC3195FD;
+	Wed, 17 Sep 2025 12:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114103; cv=none; b=a6HAdZL/Cv5vc7Ocq+zkZ6w+ZxIj8qUURNEW+cOnSLlY5n6n/p01iZ0ZutopelF+KNcTNaVxK4lWvvJa114LBFO5Wd+Af/gVBf4qUIFs4RZxfRE8ycRk7ar/qO3hpAXgxssUD6seQg5qjYw2vXwbh0ZnYYZ4e5ESapyg582dF54=
+	t=1758113892; cv=none; b=qItEVzzN/Vt/LmHGe2wBY9iwAnxDOyjzU0UwFUdZKpyOPu2WoqS6kTyWz3NZsQC449CmgzXhIOoin+/lyfxKQw2BF9pI2qBopqNeoq7pCUxwPpa+zFwFErN2ShFowJ/yqJwhKmjqygR1T+x+qUNd08/ODL07AuuR6o3aQHULJI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114103; c=relaxed/simple;
-	bh=PEztl7FQQbA9koXQl98fPFMLj7gcoqoyPGy1CiFYtPY=;
+	s=arc-20240116; t=1758113892; c=relaxed/simple;
+	bh=GhQChOUaSbeDmXV79prQ1zCBgKt5FQUoZ3ciGVPYdWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlP9tUAw5rD9ZWiHFBmere5mbKOL/yXJmzd1v3tgK0wYHpmOf34RcKiOv8OUOzKzLQbZeCN16ZaOAUZxkCm86qnqUafTrEntA9QBkV6olrmpEVULCo/1NJumligTjHnhVRt/wIDlL8hnlUoMPHN+jlh7rYt4Y2dsR9SqKoGoIBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POidMi2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36FDC4CEF0;
-	Wed, 17 Sep 2025 13:01:42 +0000 (UTC)
+	 MIME-Version; b=qHzFU8ZAV5GQkw0blowG7Y1MwJHGTFpxlamveU2bDAcjzhKj6z6sE/syuQkIUk9Znf6dL4eSLWZR+o0GtgOfWwqPXTB7qDHjEBRwyd4lSHt6UDxjTB8x08G7qAF8zClbpqpF2DKBFEre0V7ntQMJk4Jb7kBqRi6DPLCIwJtB83U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MC8TfH81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBE8C4CEF0;
+	Wed, 17 Sep 2025 12:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114103;
-	bh=PEztl7FQQbA9koXQl98fPFMLj7gcoqoyPGy1CiFYtPY=;
+	s=korg; t=1758113892;
+	bh=GhQChOUaSbeDmXV79prQ1zCBgKt5FQUoZ3ciGVPYdWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POidMi2i56tQCNTVWqysXYYjWZA78luWIPBI9dQ2NpgTHooJjSErkwQX/RLoA4RgA
-	 D7Vx+S2QWTkcK+QpgTEq/9sSDO6Bre39pqJTEOSsmpqqu9eaTbeNiKxMVYScDEV2Qz
-	 momTUKsIQxQ4ZD9QMUt6fWQ0tJCJYjdNmG+1b0ZI=
+	b=MC8TfH81+5v0lU0P6NC6uqcqi3wqXqIbFk+jOpp9hlwkOX2/QBnKYMI3q6d+NF+Bh
+	 ZdFEvYNsJoy2DxCLrfASHajklr3CLNOGWgPEn3Dy0qPr/AbEvxKF5uel2jFQ6g8xmu
+	 2T2VhDlJl3gv3GOTK9FZyeNvRUFJbrzfawGW00fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 47/78] serial: sc16is7xx: fix bug in flow control levels init
+	Andreas Kemnade <akemnade@kernel.org>,
+	Alistair Francis <alistair@alistair23.me>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 085/101] regulator: sy7636a: fix lifecycle of power good gpio
 Date: Wed, 17 Sep 2025 14:35:08 +0200
-Message-ID: <20250917123330.714257037@linuxfoundation.org>
+Message-ID: <20250917123338.894146162@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Andreas Kemnade <akemnade@kernel.org>
 
-commit 535fd4c98452c87537a40610abba45daf5761ec6 upstream.
+[ Upstream commit c05d0b32eebadc8be6e53196e99c64cf2bed1d99 ]
 
-When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
-writing to the TCR register to configure flow control levels, we are
-incorrectly writing to the MSR register. The default value of $00 is then
-used for TCR, which means that selectable trigger levels in FCR are used
-in place of TCR.
+Attach the power good gpio to the regulator device devres instead of the
+parent device to fix problems if probe is run multiple times
+(rmmod/insmod or some deferral).
 
-TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
-to be set. EFR[4] is already set in probe().
-
-MCR access requires LCR[7] to be zero.
-
-Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
-accessed instead because MCR shares the same address space as XON1.
-
-Since MCR[2] is unmodified and still zero, when writing to TCR we are in
-fact writing to MSR because TCR/TLR registers share the same address space
-as MSR/SPR.
-
-Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
-functions), as it is already enabled in sc16is7xx_probe() since commit
-43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
-Now LCR is $00, which means that MCR access is enabled.
-
-Also remove regcache_cache_bypass() calls since we no longer access the
-enhanced registers set, and TCR is already declared as volatile (in fact
-by declaring MSR as volatile, which shares the same address).
-
-Finally disable access to TCR/TLR registers after modifying them by
-clearing MCR[2].
-
-Note: the comment about "... and internal clock div" is wrong and can be
-      ignored/removed as access to internal clock div registers (DLL/DLH)
-      is permitted only when LCR[7] is logic 1, not when enhanced features
-      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8c485bedfb785 ("regulator: sy7636a: Initial commit")
+Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+Reviewed-by: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Message-ID: <20250906-sy7636-rsrc-v1-2-e2886a9763a7@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/regulator/sy7636a-regulator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1166,17 +1166,6 @@ static int sc16is7xx_startup(struct uart
- 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
- 			     SC16IS7XX_FCR_FIFO_BIT);
+diff --git a/drivers/regulator/sy7636a-regulator.c b/drivers/regulator/sy7636a-regulator.c
+index d1e7ba1fb3e1a..27e3d939b7bb9 100644
+--- a/drivers/regulator/sy7636a-regulator.c
++++ b/drivers/regulator/sy7636a-regulator.c
+@@ -83,9 +83,11 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
+ 	if (!regmap)
+ 		return -EPROBE_DEFER;
  
--	/* Enable EFR */
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--			     SC16IS7XX_LCR_CONF_MODE_B);
--
--	regcache_cache_bypass(one->regmap, true);
--
--	/* Enable write access to enhanced features and internal clock div */
--	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_ENABLE_BIT,
--			      SC16IS7XX_EFR_ENABLE_BIT);
--
- 	/* Enable TCR/TLR */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_TCRTLR_BIT,
-@@ -1188,7 +1177,8 @@ static int sc16is7xx_startup(struct uart
- 			     SC16IS7XX_TCR_RX_RESUME(24) |
- 			     SC16IS7XX_TCR_RX_HALT(48));
+-	gdp = devm_gpiod_get(pdev->dev.parent, "epd-pwr-good", GPIOD_IN);
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
++	gdp = devm_gpiod_get(&pdev->dev, "epd-pwr-good", GPIOD_IN);
+ 	if (IS_ERR(gdp)) {
+-		dev_err(pdev->dev.parent, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
++		dev_err(&pdev->dev, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
+ 		return PTR_ERR(gdp);
+ 	}
  
--	regcache_cache_bypass(one->regmap, false);
-+	/* Disable TCR/TLR access */
-+	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
+@@ -105,7 +107,6 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
+ 	}
  
- 	/* Now, initialize the UART */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.regmap = regmap;
+ 
+ 	rdev = devm_regulator_register(&pdev->dev, &desc, &config);
+-- 
+2.51.0
+
 
 
 
