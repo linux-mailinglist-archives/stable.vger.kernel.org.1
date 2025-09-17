@@ -1,200 +1,202 @@
-Return-Path: <stable+bounces-179821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6448B7CB6F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:08:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A90B7CF31
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D7477A6083
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 10:51:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86C5B1BC3E09
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 10:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88622C0F6E;
-	Wed, 17 Sep 2025 10:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AekO0TGn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3EA29A323;
+	Wed, 17 Sep 2025 10:59:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A7A29B795
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5832E03EF
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758106383; cv=none; b=QzeZNzQ62QnRAa6mCYbrh5XDHdaPJxYMd1B28HsdUp6Ntfh+3slZBXH7gZY/C1kaZZeWcV5EJCZ95X/XiEHaOYyRmmfhmm3iqsk224fiHsqiEWnNbaeseekBKxSlY7+pq6bXxmTjqeEbaMHDcp1eNqEb94LBy2PT8b9g7Ga3Vms=
+	t=1758106755; cv=none; b=s9NbehWHiDCnNFHPcNSAXlr3wpj/FmkwmysqHwt2jUq0O+1U1HncVf6N1S0/4TLUkPwkvc7GI8A11UzZdtpWd0P5pXVkSG6X0JoTJU8VTohQGUIRb3+fNIWHj+HYKfVOPJhX6yossx1+sg7KLT5zra5HGlk74Sp1LFbOJ2hFF00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758106383; c=relaxed/simple;
-	bh=Ikb0ULTLN47O661rXEoFttNyAecoMC7wAc2tvgvurUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k+rQPra9ljmUiVrY0sQj548dkdmH1RCUvDtlgoVLYBnA1qe8WO5uEl6W7sJnVHZLG+iZ9aYndjR9x30kfQF0F6cUUZGMtVJ3bEXWYRMw+NbjCmGLpVamvuWyLdOnZngEll7hKyJYZ1yvLnh00KlTp1qN4KuBMi5WOnkwGIT8PxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AekO0TGn; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758106381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=h6j8Nz2GipAO+d9sYeGusBaesKR+rSO74MbWDuoA0aU=;
-	b=AekO0TGnAKk4Qhsghxz+teX4yavJrWHvnxaHHu2i66Q2YlAU8P+fPOAAW/sj9V8kMt4nCj
-	U8WvShyja7vgp/BxIeSJuMBNNk7AbEs85zsD98BvDdB1R/Y1GHKsWMfZNV8lrf87RJVMJ9
-	seyJSIUjBm9WVmUD1d7jI/IGpJg7ZAQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-T3wVwZ7gMMeoBC5ujrjvtg-1; Wed, 17 Sep 2025 06:52:59 -0400
-X-MC-Unique: T3wVwZ7gMMeoBC5ujrjvtg-1
-X-Mimecast-MFC-AGG-ID: T3wVwZ7gMMeoBC5ujrjvtg_1758106378
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45de27bf706so36922275e9.0
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 03:52:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758106378; x=1758711178;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h6j8Nz2GipAO+d9sYeGusBaesKR+rSO74MbWDuoA0aU=;
-        b=odVe5nqb/9JDRHkkfYVk65JXK3QqtLyUn++5TsTqpDFPlyYBDqWkDfHJyq1ewkupBl
-         +YyAB8XsjGiwfEItvuCI11QGQiKcJOPgNOGs8huXe7Ti64Q7958zg/w3zC0N/sL1wEvk
-         lcwm8eozUWowUuzy1cdO4G8PfvH5Sjrcx6t+LHu+2ZuJ96eyiG5t+HtMoMn84EWFvfZu
-         XeMcnzsz7hFZLOCKc+n0j5mnzrek8YvF8d66h6e9tnOBrnwDuK7XWjdbfqtlgiesLPvy
-         aykw957filLobahDsrMDLrCNSvOMusfx1nd27UfXRbHt/MzcIkzqt2rLR/SzaF53eD+3
-         Rrnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnNqdGUgpVSp4LBNbG04zJWmpmmgKpNKSHj/9hklqxnv5uyBmC3pPzX7ZX/NARrN+a2wh+EJ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEp/f8VWB4B0qBNh0HkG97sF6pW8rPPUMGnRkXYPWGfhCAh4U3
-	qZGAwpYJn++tGqR2HOo+A4MMMA8Rw77AsZYNODVO4VhMV3pYFaj8HVhLbNo6nxhZ9jj076+HIYl
-	9mD5YTiu1boGqKWCwkbfubXk1JEP4oZlRqtNyULXGzF9VEJl/qWjd6qBdUw==
-X-Gm-Gg: ASbGncs+Qh8w11FNxYUwxYQoKSyH4BUIoBDGORlS0K8vIhKHORgQaVcw/mhoQUnDPHa
-	L0uSy7z7AVDL2upK7xX+XKBmq/8ZNjmtGr7xtIaOBTxEZxRwhUUPwN34hfwWok/BDKjrlvGw/ii
-	nymjetByY2puwEQpNE5aiv0IF/SVkz5ymbWdTCKr23yAbTA+kLIVQsizTCsdgKzErmJpBuWRL14
-	MNJWO8XZzOn40swmh7/Fa8WbvsDxCZgxqA5nMDPwqm8o7jKP/pJn8H4aHotj0KEudHDG4uyYbeu
-	bDJ2I4EkNsvZKx+lq9CjqEreIW6yTQUuD+QLBzqTmCJfKx8hn7qwM5bhWe7AqKk6+LzK0Ns3LaD
-	3lwpg8LE2X7dPEURRTH1a8fx2UOSUZ56sJbmPnG16mqHYGKAmKn5sT0/1oejIfAv5
-X-Received: by 2002:a05:600c:3b09:b0:45f:2d2a:e323 with SMTP id 5b1f17b1804b1-461fc6674f9mr17284025e9.0.1758106377763;
-        Wed, 17 Sep 2025 03:52:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IESkIdDmkpsYOdBEK8Vy0LYg2yM7axrrebxRGyM0x90xAENdINMOVuiRGc5rue0jgcFRLjsmA==
-X-Received: by 2002:a05:600c:3b09:b0:45f:2d2a:e323 with SMTP id 5b1f17b1804b1-461fc6674f9mr17283645e9.0.1758106377323;
-        Wed, 17 Sep 2025 03:52:57 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f27:6d00:7b96:afc9:83d0:5bd? (p200300d82f276d007b96afc983d005bd.dip0.t-ipconnect.de. [2003:d8:2f27:6d00:7b96:afc9:83d0:5bd])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613d33633bsm32518195e9.11.2025.09.17.03.52.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 03:52:56 -0700 (PDT)
-Message-ID: <ad019c14-5211-4261-bfb8-c4e0dd3b2535@redhat.com>
-Date: Wed, 17 Sep 2025 12:52:54 +0200
+	s=arc-20240116; t=1758106755; c=relaxed/simple;
+	bh=wMnnhqcrWzFS+qEW//OjfG/ZRECTjnOF6+Sodn3XmUE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lZ6tN7bwBiLG7tcnsiGVS0/FkaSpPycdBFPTZJZnBQp+c9agbP1Q7YL8jcMK8adRGFMtFvr7m3CXpL/97bUAoKJ11VzF3p0EUssB5MRfkWrh/oAMfn/UWaIKxFMN19rCbnrvdxIb/eDLpQnVwS5NCXRCeabW5yUq4wlN9ba+27c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED2B32696;
+	Wed, 17 Sep 2025 03:59:02 -0700 (PDT)
+Received: from entos-yitian-01.shanghai.arm.com (unknown [10.169.217.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E23F53F66E;
+	Wed, 17 Sep 2025 03:59:08 -0700 (PDT)
+From: Jia He <justin.he@arm.com>
+To: ssg-linux-patches@arm.com
+Cc: Jun He <Jun.He@arm.com>,
+	Jia He <justin.he@arm.com>,
+	stable@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 01/29] arm64: hugetlb: Fix huge_ptep_get_and_clear() for non-present ptes
+Date: Wed, 17 Sep 2025 10:58:29 +0000
+Message-Id: <20250917105857.474284-2-justin.he@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250917105857.474284-1-justin.he@arm.com>
+References: <20250917105857.474284-1-justin.he@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
-To: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org,
- minchan@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, pfalcato@suse.de
-Cc: kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>,
- Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-2-kaleshsingh@google.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 15.09.25 18:36, Kalesh Singh wrote:
-> The VMA count limit check in do_mmap() and do_brk_flags() uses a
-> strict inequality (>), which allows a process's VMA count to exceed
-> the configured sysctl_max_map_count limit by one.
-> 
-> A process with mm->map_count == sysctl_max_map_count will incorrectly
-> pass this check and then exceed the limit upon allocation of a new VMA
-> when its map_count is incremented.
-> 
-> Other VMA allocation paths, such as split_vma(), already use the
-> correct, inclusive (>=) comparison.
-> 
-> Fix this bug by changing the comparison to be inclusive in do_mmap()
-> and do_brk_flags(), bringing them in line with the correct behavior
-> of other allocation paths.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: <stable@vger.kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Minchan Kim <minchan@kernel.org>
-> Cc: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> ---
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+arm64 supports multiple huge_pte sizes. Some of the sizes are covered by
+a single pte entry at a particular level (PMD_SIZE, PUD_SIZE), and some
+are covered by multiple ptes at a particular level (CONT_PTE_SIZE,
+CONT_PMD_SIZE). So the function has to figure out the size from the
+huge_pte pointer. This was previously done by walking the pgtable to
+determine the level and by using the PTE_CONT bit to determine the
+number of ptes at the level.
 
+But the PTE_CONT bit is only valid when the pte is present. For
+non-present pte values (e.g. markers, migration entries), the previous
+implementation was therefore erroneously determining the size. There is
+at least one known caller in core-mm, move_huge_pte(), which may call
+huge_ptep_get_and_clear() for a non-present pte. So we must be robust to
+this case. Additionally the "regular" ptep_get_and_clear() is robust to
+being called for non-present ptes so it makes sense to follow the
+behavior.
+
+Fix this by using the new sz parameter which is now provided to the
+function. Additionally when clearing each pte in a contig range, don't
+gather the access and dirty bits if the pte is not present.
+
+An alternative approach that would not require API changes would be to
+store the PTE_CONT bit in a spare bit in the swap entry pte for the
+non-present case. But it felt cleaner to follow other APIs' lead and
+just pass in the size.
+
+As an aside, PTE_CONT is bit 52, which corresponds to bit 40 in the swap
+entry offset field (layout of non-present pte). Since hugetlb is never
+swapped to disk, this field will only be populated for markers, which
+always set this bit to 0 and hwpoison swap entries, which set the offset
+field to a PFN; So it would only ever be 1 for a 52-bit PVA system where
+memory in that high half was poisoned (I think!). So in practice, this
+bit would almost always be zero for non-present ptes and we would only
+clear the first entry if it was actually a contiguous block. That's
+probably a less severe symptom than if it was always interpreted as 1
+and cleared out potentially-present neighboring PTEs.
+
+Cc: stable@vger.kernel.org
+Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250226120656.2400136-3-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jia He <justin.he@arm.com>
+---
+ arch/arm64/mm/hugetlbpage.c | 53 ++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 33 deletions(-)
+
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 7a54f8b4164b..d631d52986ec 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -121,20 +121,11 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+ 
+ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+ {
+-	int contig_ptes = 0;
++	int contig_ptes = 1;
+ 
+ 	*pgsize = size;
+ 
+ 	switch (size) {
+-#ifndef __PAGETABLE_PMD_FOLDED
+-	case PUD_SIZE:
+-		if (pud_sect_supported())
+-			contig_ptes = 1;
+-		break;
+-#endif
+-	case PMD_SIZE:
+-		contig_ptes = 1;
+-		break;
+ 	case CONT_PMD_SIZE:
+ 		*pgsize = PMD_SIZE;
+ 		contig_ptes = CONT_PMDS;
+@@ -143,6 +134,8 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+ 		*pgsize = PAGE_SIZE;
+ 		contig_ptes = CONT_PTES;
+ 		break;
++	default:
++		WARN_ON(!__hugetlb_valid_size(size));
+ 	}
+ 
+ 	return contig_ptes;
+@@ -184,24 +177,23 @@ static pte_t get_clear_contig(struct mm_struct *mm,
+ 			     unsigned long pgsize,
+ 			     unsigned long ncontig)
+ {
+-	pte_t orig_pte = __ptep_get(ptep);
+-	unsigned long i;
+-
+-	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
+-		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
+-
+-		/*
+-		 * If HW_AFDBM is enabled, then the HW could turn on
+-		 * the dirty or accessed bit for any page in the set,
+-		 * so check them all.
+-		 */
+-		if (pte_dirty(pte))
+-			orig_pte = pte_mkdirty(orig_pte);
+-
+-		if (pte_young(pte))
+-			orig_pte = pte_mkyoung(orig_pte);
++	pte_t pte, tmp_pte;
++	bool present;
++
++	pte = __ptep_get_and_clear(mm, addr, ptep);
++	present = pte_present(pte);
++	while (--ncontig) {
++		ptep++;
++		addr += pgsize;
++		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
++		if (present) {
++			if (pte_dirty(tmp_pte))
++				pte = pte_mkdirty(pte);
++			if (pte_young(tmp_pte))
++				pte = pte_mkyoung(pte);
++		}
+ 	}
+-	return orig_pte;
++	return pte;
+ }
+ 
+ static pte_t get_clear_contig_flush(struct mm_struct *mm,
+@@ -419,13 +411,8 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+ {
+ 	int ncontig;
+ 	size_t pgsize;
+-	pte_t orig_pte = __ptep_get(ptep);
+-
+-	if (!pte_cont(orig_pte))
+-		return __ptep_get_and_clear(mm, addr, ptep);
+-
+-	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+ 
++	ncontig = num_contig_ptes(sz, &pgsize);
+ 	return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
+ }
+ 
 -- 
-Cheers
-
-David / dhildenb
+2.34.1
 
 
