@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B21DB7F048
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:11:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585DDB7F16D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5B91C26468
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 381D9524ABD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53B136CC90;
-	Wed, 17 Sep 2025 12:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1ED32E72A;
+	Wed, 17 Sep 2025 13:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hiYktQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alRrG3Lb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634FC30CB22;
-	Wed, 17 Sep 2025 12:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA885296BCC;
+	Wed, 17 Sep 2025 13:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113908; cv=none; b=lzLejsDtpEi9MKP4ppGfaZg2h8CRkqGkgV7PXO34uHxtQM175+BWCEReSrEoVr911nZdPU6DLhopr3P4Kmw6g2WPNSvwqFxlo6EBUA1LW+NNVHndXQfdqgG2DiQf1ahHi8Ka9A+PBGZztlM7PVgAPXv9wffPLwuBICZhm7dGuWY=
+	t=1758114124; cv=none; b=eT0/+QpBf7csJxzQsck80+R7O/SYJrH8Hm3IssqvlRjA2i9/mY1tQjd7KQNHOWpd+10XU/NH07guV42s9S/aNVf/yO8Yn9DeAkxfnuLrLd48lj/ioaLdQY4/dqIAW/s2fU00Moh6IIh0liABDCt9Cm3Fz9bnwXLhHEc8t8c+WGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113908; c=relaxed/simple;
-	bh=KHEuE5/QisbmJURde2GkKIlcnJxLTtnzPcINmmg/x8E=;
+	s=arc-20240116; t=1758114124; c=relaxed/simple;
+	bh=P2GjAKDCJJablRkGzxm6xae9PqW326BCJTcjrv9nr0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVEcNj81CoN+t6vgFkmxid8x28RofhnDmNPvYtLhIpBdjoj9oFsouwMKqRDuOxTxE0ezAe5xnGubmxlAYQZov2GpyklXqRUrsbstWu0a+XgtZmKAYEc493feuhyRLRkR3Wa3F35qdoLBStGZQRkN+V/ILFbIfMiMAwVEnH1EnMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hiYktQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D98C4CEF0;
-	Wed, 17 Sep 2025 12:58:27 +0000 (UTC)
+	 MIME-Version; b=AQbL0ckxAPaP7FxBH3OqTfTodisEwvb4/goVS88RomOjXKtwaeBNrDRzmbcKJMjWPX+DuNa7W2zvAsnhAwmbI+SL6aNgngyw05ODs9htb6s56Mtyv3EjpLo8Ut9CcYBOLiu0F6lZ6FE2sO7O4rPuMN9eY59MXo4Naejvk8CWUC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alRrG3Lb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E369EC4CEF5;
+	Wed, 17 Sep 2025 13:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113908;
-	bh=KHEuE5/QisbmJURde2GkKIlcnJxLTtnzPcINmmg/x8E=;
+	s=korg; t=1758114123;
+	bh=P2GjAKDCJJablRkGzxm6xae9PqW326BCJTcjrv9nr0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hiYktQ25jhAidjUgOZvbfWotLahuL4hRtbaSELLCSWSVZWAHLX8ZGEAcrBgNeMgZ
-	 WUuuJVF8tIp4IaaYcACJqBxeF3ydBryCunZOa0NNiEjHb0SXpjnm42qftCTuzXCPhx
-	 luqlt93KfUwrfJGRMkGAYeZ/tuYqUmGXp8jUrvgE=
+	b=alRrG3Lb/5VFtdJAMLqUI1aAEKuxElyziOzzPFiR9VYGwthMIBza45YmPNm0xTcmA
+	 xazn7uJWdJjMN7yL8Fm7aEqqLhFa1GaoPoQlUMwAUKDorcsUvO5oGZTMi9Gxu/cP9C
+	 rDpYEIFOHVKJafb8ac+upDfVKdrZpMmSAKrEb5VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 090/101] xhci: fix memory leak regression when freeing xhci vdev devices depth first
-Date: Wed, 17 Sep 2025 14:35:13 +0200
-Message-ID: <20250917123339.015276311@linuxfoundation.org>
+	Alex Tran <alex.t.tran@gmail.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 53/78] docs: networking: can: change bcm_msg_head frames member to support flexible array
+Date: Wed, 17 Sep 2025 14:35:14 +0200
+Message-ID: <20250917123330.860834716@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Alex Tran <alex.t.tran@gmail.com>
 
-commit edcbe06453ddfde21f6aa763f7cab655f26133cc upstream.
+[ Upstream commit 641427d5bf90af0625081bf27555418b101274cd ]
 
-Suspend-resume cycle test revealed a memory leak in 6.17-rc3
+The documentation of the 'bcm_msg_head' struct does not match how
+it is defined in 'bcm.h'. Changed the frames member to a flexible array,
+matching the definition in the header file.
 
-Turns out the slot_id race fix changes accidentally ends up calling
-xhci_free_virt_device() with an incorrect vdev parameter.
-The vdev variable was reused for temporary purposes right before calling
-xhci_free_virt_device().
+See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+flexible-array members")
 
-Fix this by passing the correct vdev parameter.
-
-The slot_id race fix that caused this regression was targeted for stable,
-so this needs to be applied there as well.
-
-Fixes: 2eb03376151b ("usb: xhci: Fix slot_id resource race conflict")
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/linux-usb/20250829181354.4450-1-00107082@163.com
-Suggested-by: Michal Pecio <michal.pecio@gmail.com>
-Suggested-by: David Wang <00107082@163.com>
-Cc: stable@vger.kernel.org
-Tested-by: David Wang <00107082@163.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250904031709.1426895-1-alex.t.tran@gmail.com
+Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217783
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c |    2 +-
+ Documentation/networking/can.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -945,7 +945,7 @@ static void xhci_free_virt_devices_depth
- out:
- 	/* we are now at a leaf device */
- 	xhci_debugfs_remove_slot(xhci, slot_id);
--	xhci_free_virt_device(xhci, vdev, slot_id);
-+	xhci_free_virt_device(xhci, xhci->devs[slot_id], slot_id);
- }
+diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
+index ebc822e605f55..9ac6d3973ad58 100644
+--- a/Documentation/networking/can.rst
++++ b/Documentation/networking/can.rst
+@@ -740,7 +740,7 @@ The broadcast manager sends responses to user space in the same form:
+             struct timeval ival1, ival2;    /* count and subsequent interval */
+             canid_t can_id;                 /* unique can_id for task */
+             __u32 nframes;                  /* number of can_frames following */
+-            struct can_frame frames[0];
++            struct can_frame frames[];
+     };
  
- int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
+ The aligned payload 'frames' uses the same basic CAN frame structure defined
+-- 
+2.51.0
+
 
 
 
