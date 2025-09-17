@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-180049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0254BB7E75F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8CFB7E171
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 056681898C14
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73E0E1B21EBA
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D3B31A81E;
-	Wed, 17 Sep 2025 12:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870F82EC0A8;
+	Wed, 17 Sep 2025 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/bA1yd4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFkOV9BS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B253016F8;
-	Wed, 17 Sep 2025 12:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C85189F5C;
+	Wed, 17 Sep 2025 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113218; cv=none; b=CFrCmzmMJraz3pzCEIAOWdz8mSM5oEpx5rqqs6wrUJHfeamZ4urEELSij4AhHDcJ9BjLhMDw+SjqdJHIdQTu1+CX2eZWwBayGzT1Hh+Aw0NmvQD4uPnqOsdNL6b5l0RjdLuuye9ewt6qI3l5BYLcxAMZdq9B9Y6nnXiy4YhCl2U=
+	t=1758112805; cv=none; b=uFp8jXYytqFWATHUkGP7LG+96M8FB6yf/h8z/GQ3bOf+6lAFUk/F9sDlyZcysPxlAM1l4Vfb1BeANbzIs+xVxzXPlUI+vBOCLQDL3nmjvdufm9tXibx05FER93M1wBJ0yM8bg2e7zpp8Z3IVNYB63wPAuvPRZnNU77eG+hm3mdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113218; c=relaxed/simple;
-	bh=S75SXKgGLBJxD2rl4Gbk7MVv4yaXL3zexg4u48rIUtk=;
+	s=arc-20240116; t=1758112805; c=relaxed/simple;
+	bh=hcyN68oHH9DHCZx58vlJ9yH6H4YoKxxKHFxpSwT3f5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnaVNTUUz4NwjgBAKuh54GvfQTk/MvOIX5vhhpQ4zebbcsDf+9sn/sQlfS+raBh3P1RsNfn62rgh2zUjQCeUNGlwjjXIMzL0UKkYbynyXslnPMKL2qcpgG1XN4k6CNWwnNJVCvt6gk+mUeYecXu7vJCKT9ey3fKqxkHdY3Ow3kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/bA1yd4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7397DC4CEF0;
-	Wed, 17 Sep 2025 12:46:57 +0000 (UTC)
+	 MIME-Version; b=DFhzW7mWuXGt2AbrDEf9MvwXNohhfHNXq1W+RzadBILIXZngtbk2X95cEa5nyuCSAMMSrdTIQ08eRjUpPrIWBU+r7l7WaoGjZM/itkp5hfpO1wOprzS1zVrMZpf5e3PwZ8luozH2ciOfTz8HX3fOOHlWoFQ5lHQwho51Wmy1e5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFkOV9BS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F67C4CEF0;
+	Wed, 17 Sep 2025 12:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113217;
-	bh=S75SXKgGLBJxD2rl4Gbk7MVv4yaXL3zexg4u48rIUtk=;
+	s=korg; t=1758112805;
+	bh=hcyN68oHH9DHCZx58vlJ9yH6H4YoKxxKHFxpSwT3f5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/bA1yd44o6vArl/COPIansvNWsb/Yl1Zbs2PK/2xO+mgf/CxqPRHONsQsqxxRKEB
-	 cJZt/SzLDxbiX4FLgiTxD1DK2TGbSbu2urSOoAeB8s2YJIqoEZLSkmopAELqVBoRaU
-	 26pcGzMBAIvl0oI8rZ18sVDBkA9p6pa7lh3i1kas=
+	b=eFkOV9BS/6ipHJJxpjV0NeNIZgGEmBMvrCJpS57BJokUpege3jGFWNRX1I996Iftk
+	 RRHoX4hpNXsFRzKBhcrBlmeM/H6xakPYUhS8nMXxAZ5uSwMdDxNGpNQ+IAwe7quYib
+	 4VdexUay5asQt7KOznKbhIshAB0apXUXcVpA229E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/140] drm/amdgpu: Add back JPEG to video caps for carrizo and newer
-Date: Wed, 17 Sep 2025 14:33:11 +0200
-Message-ID: <20250917123344.781425696@linuxfoundation.org>
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	SeongJae Park <sj@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	ze zuo <zuoze1@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 082/189] mm/damon/lru_sort: avoid divide-by-zero in damon_lru_sort_apply_parameters()
+Date: Wed, 17 Sep 2025 14:33:12 +0200
+Message-ID: <20250917123353.865987404@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Quanmin Yan <yanquanmin1@huawei.com>
 
-[ Upstream commit 2036be31741b00f030530381643a8b35a5a42b5c ]
+commit 711f19dfd783ffb37ca4324388b9c4cb87e71363 upstream.
 
-JPEG is not supported on Vega only.
+Patch series "mm/damon: avoid divide-by-zero in DAMON module's parameters
+application".
 
-Fixes: 0a6e7b06bdbe ("drm/amdgpu: Remove JPEG from vega and carrizo video caps")
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0f4dfe86fe922c37bcec99dce80a15b4d5d4726d)
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+DAMON's RECLAIM and LRU_SORT modules perform no validation on
+user-configured parameters during application, which may lead to
+division-by-zero errors.
+
+Avoid the divide-by-zero by adding validation checks when DAMON modules
+attempt to apply the parameters.
+
+
+This patch (of 2):
+
+During the calculation of 'hot_thres' and 'cold_thres', either
+'sample_interval' or 'aggr_interval' is used as the divisor, which may
+lead to division-by-zero errors.  Fix it by directly returning -EINVAL
+when such a case occurs.  Additionally, since 'aggr_interval' is already
+required to be set no smaller than 'sample_interval' in damon_set_attrs(),
+only the case where 'sample_interval' is zero needs to be checked.
+
+Link: https://lkml.kernel.org/r/20250827115858.1186261-2-yanquanmin1@huawei.com
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.0+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vi.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/damon/lru_sort.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vi.c b/drivers/gpu/drm/amd/amdgpu/vi.c
-index 48ab93e715c82..6e4f9c6108f60 100644
---- a/drivers/gpu/drm/amd/amdgpu/vi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vi.c
-@@ -239,6 +239,13 @@ static const struct amdgpu_video_codec_info cz_video_codecs_decode_array[] =
- 		.max_pixels_per_frame = 4096 * 4096,
- 		.max_level = 186,
- 	},
-+	{
-+		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG,
-+		.max_width = 4096,
-+		.max_height = 4096,
-+		.max_pixels_per_frame = 4096 * 4096,
-+		.max_level = 0,
-+	},
- };
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -198,6 +198,11 @@ static int damon_lru_sort_apply_paramete
+ 	if (err)
+ 		return err;
  
- static const struct amdgpu_video_codecs cz_video_codecs_decode =
--- 
-2.51.0
-
++	if (!damon_lru_sort_mon_attrs.sample_interval) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
+ 	if (err)
+ 		goto out;
 
 
 
