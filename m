@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-180052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183D5B7E81D
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:51:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA85B7E175
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54CEF527B9F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E43D1B23B12
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128313233E1;
-	Wed, 17 Sep 2025 12:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB56E302CA6;
+	Wed, 17 Sep 2025 12:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2Er3XUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPdB204h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C274931A7F6;
-	Wed, 17 Sep 2025 12:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DBB1E7C2D;
+	Wed, 17 Sep 2025 12:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113227; cv=none; b=hcPg814DlaFK1Y1Ixla7JMNxSPMFrrhOg+LGGkLhavqTuVddtuTcJv+4cZIeheSbDLmlMKGMB61fI4Cu5mkSX9+IuvRFWrmPIq13KZK/XCBHo+jJy9EKT0n7jTnCGDukewlpdij9cmHIq4/jAFN9vnjP/l3gdHCthCGl20/EuLs=
+	t=1758112808; cv=none; b=JjCaSYubkF6rjs1R2OP2KTmsGkfgCba8uxyV+peKgIfP2vpc08k8B7Sn4vdkPDoRSUuRBWc1tzF2IyHhplBcKe4Purzb1omiY6AXoVj1jE8VA+jg8zZe3A5fJw0HdNeXusfULuaS8z3SKiQB4Q8GCjw1WOq0UgCIBwt8IGH3mX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113227; c=relaxed/simple;
-	bh=Jl0jriY7xCVaO+gaCbHaLzRpNsNtsJPKxSTtNbx2IUc=;
+	s=arc-20240116; t=1758112808; c=relaxed/simple;
+	bh=PilOcc9dPZ8a17J1F2XKqT0AwcNNH79aOYUo3uYEkbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmgGOyNPilZQdMoKn6Q2oP/rPW1ioQ8+0zZ3gkYdRGqVfGO44PsgYPGy8IypVKajmraDGgABf2illgG+oS/0/dvqrdBI2kSttwQVaYvNW83kNnSPBd74CI/nyT1MsMesRjUq5pvzF65obVu8CW9WGz48TcZV0Wcvk5sI4zfITK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2Er3XUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32213C4CEF0;
-	Wed, 17 Sep 2025 12:47:06 +0000 (UTC)
+	 MIME-Version; b=oMzaLSpnwnEgtmsq3ibvA2I4NmbPitQwk9JbME/M1G2/TVBtD15u2qO+Qa54s4bqn2ZEE8h+FqHkrOUkUDUXAVm+x4t7rJdRdHBppykm3veWPEGeRqfi2siC3wel5ywuffRKVwnY61dnwSWqILfMVoib9ncJvFagykn/Wrq7Ax8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPdB204h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB825C4CEF0;
+	Wed, 17 Sep 2025 12:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113227;
-	bh=Jl0jriY7xCVaO+gaCbHaLzRpNsNtsJPKxSTtNbx2IUc=;
+	s=korg; t=1758112808;
+	bh=PilOcc9dPZ8a17J1F2XKqT0AwcNNH79aOYUo3uYEkbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2Er3XUXsbZIoKCJHrZJpzNF+xbXaGvVgPiBZo9+ukI0nBzsfo0/OlIlE+seinGwZ
-	 72EbEGCC5d0atk5j4FaQ/kejUC6ydbePmcXumHvFuCWCtH8MKpQv0LIuZpKr/n0iZ0
-	 jSmyVjosDqDPYz6HZz6pPgn1h1BkSakN/PZjlgiU=
+	b=dPdB204hENH/wAJhfPFQ17SFQEYoISBWX/qrBYLPyLN6PbkrdSAZ6hYHDwDOjzlNT
+	 wV2i/UWq7HAbhlMKifsR+UItcoSsT+CztCLtQWqncwWwer/sXjJa4KLYs0mfPjQjr+
+	 KBlomCZOJs9DSkUOKNEXdi9Tn+05EJTAM8KlUFec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Worrell <jworrell@gmail.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Scott Mayhew <smayhew@redhat.com>
-Subject: [PATCH 6.12 021/140] SUNRPC: call xs_sock_process_cmsg for all cmsg
+	Ma Ke <make24@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Subject: [PATCH 6.16 083/189] drm/mediatek: fix potential OF node use-after-free
 Date: Wed, 17 Sep 2025 14:33:13 +0200
-Message-ID: <20250917123344.827173784@linuxfoundation.org>
+Message-ID: <20250917123353.890368733@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Worrell <jworrell@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 9559d2fffd4f9b892165eed48198a0e5cb8504e6 ]
+commit 4de37a48b6b58faaded9eb765047cf0d8785ea18 upstream.
 
-xs_sock_recv_cmsg was failing to call xs_sock_process_cmsg for any cmsg
-type other than TLS_RECORD_TYPE_ALERT (TLS_RECORD_TYPE_DATA, and other
-values not handled.) Based on my reading of the previous commit
-(cc5d5908: sunrpc: fix client side handling of tls alerts), it looks
-like only iov_iter_revert should be conditional on TLS_RECORD_TYPE_ALERT
-(but that other cmsg types should still call xs_sock_process_cmsg). On
-my machine, I was unable to connect (over mtls) to an NFS share hosted
-on FreeBSD. With this patch applied, I am able to mount the share again.
+The for_each_child_of_node() helper drops the reference it takes to each
+node as it iterates over children and an explicit of_node_put() is only
+needed when exiting the loop early.
 
-Fixes: cc5d59081fa2 ("sunrpc: fix client side handling of tls alerts")
-Signed-off-by: Justin Worrell <jworrell@gmail.com>
-Reviewed-and-tested-by: Scott Mayhew <smayhew@redhat.com>
-Link: https://lore.kernel.org/r/20250904211038.12874-3-jworrell@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Drop the recently introduced bogus additional reference count decrement
+at each iteration that could potentially lead to a use-after-free.
+
+Fixes: 1f403699c40f ("drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv")
+Cc: Ma Ke <make24@iscas.ac.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250829090345.21075-2-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtsock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 92cec227215ae..b78f1aae9e806 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -407,9 +407,9 @@ xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- 	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
- 		      alert_kvec.iov_len);
- 	ret = sock_recvmsg(sock, &msg, flags);
--	if (ret > 0 &&
--	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
--		iov_iter_revert(&msg.msg_iter, ret);
-+	if (ret > 0) {
-+		if (tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT)
-+			iov_iter_revert(&msg.msg_iter, ret);
- 		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
- 					   -EAGAIN);
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -388,11 +388,11 @@ static bool mtk_drm_get_all_drm_priv(str
+ 
+ 		of_id = of_match_node(mtk_drm_of_ids, node);
+ 		if (!of_id)
+-			goto next_put_node;
++			continue;
+ 
+ 		pdev = of_find_device_by_node(node);
+ 		if (!pdev)
+-			goto next_put_node;
++			continue;
+ 
+ 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
+ 		if (!drm_dev)
+@@ -418,11 +418,10 @@ next_put_device_drm_dev:
+ next_put_device_pdev_dev:
+ 		put_device(&pdev->dev);
+ 
+-next_put_node:
+-		of_node_put(node);
+-
+-		if (cnt == MAX_CRTC)
++		if (cnt == MAX_CRTC) {
++			of_node_put(node);
+ 			break;
++		}
  	}
--- 
-2.51.0
-
+ 
+ 	if (drm_priv->data->mmsys_dev_num == cnt) {
 
 
 
