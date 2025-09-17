@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-180005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B96B7E5A8
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944F8B7F0E2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDD1B3A31D8
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F18144A75D6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115431F583D;
-	Wed, 17 Sep 2025 12:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE81A37C118;
+	Wed, 17 Sep 2025 12:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxY4EBWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uV7/VYbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BC21E489;
-	Wed, 17 Sep 2025 12:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE5D333A9B;
+	Wed, 17 Sep 2025 12:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113079; cv=none; b=EDo72a0uQXbB2OIlSY5OrGGqkHy9TGPTws9Y7jTjlOOjk9safJQsSxJdKLyou1BBoTpNW0dGU+8iiWe1HdJjzteAmc6eoJ+jSXG70Y1tu79W7mTwN2nYOchXTxA3bqPIA+3kH01uZnXRWBOHlwlZRB4zodGWBzoaOcdkamY4tEc=
+	t=1758113994; cv=none; b=WBMUsbZq/qTRbgwcoMuQBomlRdeXpZAhn+uQJ1AdCII6Xlz2egxDQ8SjBmEkGvT6ZJLsa5jwO827ZVhH56DgMLjDRwSamciW7u+fX3cF16E1zGu6VCYFLc6JDD0r4v/Tim/fPxbU0UmenKsFOTkHsQq8tEu4kwT9AHA6VNMcFC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113079; c=relaxed/simple;
-	bh=LU2Yqe4nWCnqp2h6y8KGyld4TQmYTzgyfZP4zHnYJz4=;
+	s=arc-20240116; t=1758113994; c=relaxed/simple;
+	bh=L/wqeGRw++Ta7BWgEXHoOvyZDHu2uWsV8onpUK9uDas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1ZsSEsKeMbXdbhiojmgu903EvLSUqVQAyooKTCXGWZe4RJKrbI7QPk19Dx89RkH2nE+x0GxkWmKH8NjwtUEwBrQmJIwkxppV6lc22PWR2UaRY988xHdwPp6UijvtsEKj2OsxV/HqUCJ77HPA1ncJnA8YinTqC4m1xG+Y6syQvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxY4EBWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F85C4CEF5;
-	Wed, 17 Sep 2025 12:44:38 +0000 (UTC)
+	 MIME-Version; b=HwSCNBwMUH9AsMYFyTi/XDmayDjKxm2Y+5FnK9DlnA3pDo3Glunahq413QP2TMY0C9wJ7AlWplMLoORwsGXDkTH99rn92oXKXFdXt3oP0NWZaMbxtQ9NXn3JYSAwyNCxJJo0WSrrVM4bm3zKS/fjFuhVil0tJiNkOvk+rClgtuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uV7/VYbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9901C4CEF7;
+	Wed, 17 Sep 2025 12:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113079;
-	bh=LU2Yqe4nWCnqp2h6y8KGyld4TQmYTzgyfZP4zHnYJz4=;
+	s=korg; t=1758113994;
+	bh=L/wqeGRw++Ta7BWgEXHoOvyZDHu2uWsV8onpUK9uDas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YxY4EBWuQe5pZ5zvcNw/zKFvAcnNuRa5KYlF2t0KJxzeGKXskYr0ARNFw99BRx8by
-	 9VfQwguyyU/wocKJtAhhqFpyEMKhtC0qs9mZYVRlMS9bwzDl4dbAEfWTvFhPhShou5
-	 BtNl2Za6bka+2FNplZpHtH+BlCffe3PqMpF0CeLI=
+	b=uV7/VYbCBrbfA1hrTO3fsH5HBTZ1LslX1zhb6jo75R2S0XiyYGhswqC7b/YKgx0TV
+	 tliDNqyCdX4M/MCNVt/y9PeG6+Vj4zcA/i263aT7h/Vq/Y7KY1D3FRl8xnMXc8YSah
+	 a5giXO1MkA9H66E9cuIBgD2cMJYtsLdmE0LWSlok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jonathan Curley <jcurley@purestorage.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 166/189] phy: qualcomm: phy-qcom-eusb2-repeater: fix override properties
+Subject: [PATCH 6.1 15/78] NFSv4/flexfiles: Fix layout merge mirror check.
 Date: Wed, 17 Sep 2025 14:34:36 +0200
-Message-ID: <20250917123355.934407496@linuxfoundation.org>
+Message-ID: <20250917123329.940445764@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Jonathan Curley <jcurley@purestorage.com>
 
-[ Upstream commit 942e47ab228c7dd27c2ae043c17e7aab2028082c ]
+[ Upstream commit dd2fa82473453661d12723c46c9f43d9876a7efd ]
 
-property "qcom,tune-usb2-preem" is for EUSB2_TUNE_USB2_PREEM
-property "qcom,tune-usb2-amplitude" is for EUSB2_TUNE_IUSB2
+Typo in ff_lseg_match_mirrors makes the diff ineffective. This results
+in merge happening all the time. Merge happening all the time is
+problematic because it marks lsegs invalid. Marking lsegs invalid
+causes all outstanding IO to get restarted with EAGAIN and connections
+to get closed.
 
-The downstream correspondence is as follows:
-EUSB2_TUNE_USB2_PREEM: Tx pre-emphasis tuning
-EUSB2_TUNE_IUSB2: HS trasmit amplitude
-EUSB2_TUNE_SQUELCH_U: Squelch detection threshold
-EUSB2_TUNE_HSDISC: HS disconnect threshold
-EUSB2_TUNE_EUSB_SLEW: slew rate
+Closing connections constantly triggers race conditions in the RDMA
+implementation...
 
-Fixes: 31bc94de7602 ("phy: qualcomm: phy-qcom-eusb2-repeater: Don't zero-out registers")
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Luca Weiss <luca.weiss@fairphone.com>
-Link: https://lore.kernel.org/r/20250812093957.32235-1-mitltlatltl@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 660d1eb22301c ("pNFS/flexfile: Don't merge layout segments if the mirrors don't match")
+Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-index d7493c2294ef2..3709fba42ebd8 100644
---- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-+++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-@@ -127,13 +127,13 @@ static int eusb2_repeater_init(struct phy *phy)
- 			     rptr->cfg->init_tbl[i].value);
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 21016ee2eafc8..e84ac71bdc18f 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -276,7 +276,7 @@ ff_lseg_match_mirrors(struct pnfs_layout_segment *l1,
+ 		struct pnfs_layout_segment *l2)
+ {
+ 	const struct nfs4_ff_layout_segment *fl1 = FF_LAYOUT_LSEG(l1);
+-	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l1);
++	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l2);
+ 	u32 i;
  
- 	/* Override registers from devicetree values */
--	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
-+	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
- 		regmap_write(regmap, base + EUSB2_TUNE_USB2_PREEM, val);
- 
- 	if (!of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &val))
- 		regmap_write(regmap, base + EUSB2_TUNE_HSDISC, val);
- 
--	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
-+	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
- 		regmap_write(regmap, base + EUSB2_TUNE_IUSB2, val);
- 
- 	/* Wait for status OK */
+ 	if (fl1->mirror_array_cnt != fl2->mirror_array_cnt)
 -- 
 2.51.0
 
