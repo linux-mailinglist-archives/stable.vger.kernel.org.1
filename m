@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9DDB7E8CD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A01B7EE32
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3263A7BADA6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:50:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A1A63A2379
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A8A36CE04;
-	Wed, 17 Sep 2025 12:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DF4330D29;
+	Wed, 17 Sep 2025 12:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1CZTcgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqexQyn/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C8235FC0D;
-	Wed, 17 Sep 2025 12:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F92330D21;
+	Wed, 17 Sep 2025 12:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113439; cv=none; b=jeHtbqilQw2DxjIRNgbnZdyyy23T4SuxmhakGb8jsCM5L3lx66VgoqE4hNm6qI9Oe9sLL8blXcJL4u2sF6/QLNXphHieqIpyQRi72e+utOmy4RmvOq079ZR/Zj8Bw/I22Xe9LZzjwHQ6vvngfdWpuQ4o+erogWDTvc989sPOFEI=
+	t=1758113730; cv=none; b=ntIwLI08WXquzMJ56T/ltbL8zMtPlMYGga2R9zzl8u6P4F1wPSJ22Mw5JsMdRql/fehuK0dBILWB9ZjkJqwzq+mqhQUqbdTZ+szbdyj8qKAKLw3diC2riFZOwy/Sm0GpedH4ZotDkvtb170lkU6xdZet8NdLY8HgEoQNRmAJKJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113439; c=relaxed/simple;
-	bh=Y/XMMPljclJDdN8O32AUbn9x3yDoVo6SHu/srELY+BM=;
+	s=arc-20240116; t=1758113730; c=relaxed/simple;
+	bh=qXqz+MwZPaJ+o82xrYy6R6gteJJ4buX19CkCA/CfR+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDQa630VUyy8F3JaT2jPA8pyyJ3HSSit44TOVXeQxFph1eA6Kn7wve14G2B4dqwA32zvV6pAtp9zAnNmaURJp+i9rmus6WBzJ5EE5dKo4I9F5kvFrX6CxrZ4vzQ1vkORrp8JvDbgk0BhtxraeQDKFHu3ApMLHnAjiYm9XPCoa8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1CZTcgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16786C4CEFA;
-	Wed, 17 Sep 2025 12:50:38 +0000 (UTC)
+	 MIME-Version; b=r9S8JbRWVE9VPtHFXJHgwIwrrKsgpTJLF+cGz7Cc+At8e3wC34jpUv0foLR9SStlaP/SfwWDIyJFelAHm7gIdY6XHkhcbx4Et7gGgVF6eyrS/U/9jBrG1QeG9L/rCO/Simc/3niZVstVC2K02tIE+gVooaYzR8nnSe5EfFGCVS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqexQyn/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C19AC4CEF0;
+	Wed, 17 Sep 2025 12:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113439;
-	bh=Y/XMMPljclJDdN8O32AUbn9x3yDoVo6SHu/srELY+BM=;
+	s=korg; t=1758113730;
+	bh=qXqz+MwZPaJ+o82xrYy6R6gteJJ4buX19CkCA/CfR+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1CZTcgw4KewNrga8KB6A/89I/n751iI1AxEvdauypYE8qx0/3JCaYeWvF/g8xdXj
-	 3r5qBrDCXEKIBW/+v+4c7Ux2+FaLWdgtjnB9vie7hnrjGSKC1Kpg6uF999Swb4876h
-	 q3hu1wLW5+GY6KyiWvtGDUgCleL3qoKYeqR0AmjA=
+	b=CqexQyn/UQI+KAAlYt5eUXu84hwzvIydfUY+lCOTHHCjKRMv/QLypFND2va+puSgh
+	 hNrBd+9E06/YNOjg/GBZcXLQY42O4c0fDm/IjYd+dq4DTgGhcr5psZK9GjEhLuaKvw
+	 DcjZZeA9vs2M59tAh7oXdXnyc0hbg+GkUHBa/DJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 087/140] Input: i8042 - add TUXEDO InfinityBook Pro Gen10 AMD to i8042 quirk table
+	Chiasheng Lee <chiasheng.lee@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 036/101] i2c: i801: Hide Intel Birch Stream SoC TCO WDT
 Date: Wed, 17 Sep 2025 14:34:19 +0200
-Message-ID: <20250917123346.435167281@linuxfoundation.org>
+Message-ID: <20250917123337.719408949@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Chiasheng Lee <chiasheng.lee@linux.intel.com>
 
-commit 1939a9fcb80353dd8b111aa1e79c691afbde08b4 upstream.
+commit 664596bd98bb251dd417dfd3f9b615b661e1e44a upstream.
 
-Occasionally wakes up from suspend with missing input on the internal
-keyboard. Setting the quirks appears to fix the issue for this device as
-well.
+Hide the Intel Birch Stream SoC TCO WDT feature since it was removed.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250826142646.13516-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+On platforms with PCH TCO WDT, this redundant device might be rendering
+errors like this:
+
+[   28.144542] sysfs: cannot create duplicate filename '/bus/platform/devices/iTCO_wdt'
+
+Fixes: 8c56f9ef25a3 ("i2c: i801: Add support for Intel Birch Stream SoC")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220320
+Signed-off-by: Chiasheng Lee <chiasheng.lee@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.7+
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250901125943.916522-1-chiasheng.lee@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/i2c/busses/i2c-i801.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1155,6 +1155,20 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with the forcenorestore quirk.
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1051,7 +1051,7 @@ static const struct pci_device_id i801_i
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_SOC_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+-	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
++	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5)			 },
+ 	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
 
 
 
