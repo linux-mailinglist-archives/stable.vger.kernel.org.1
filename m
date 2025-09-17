@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-180329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479F1B7F162
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 492C5B7EA9E
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE2B71892DA0
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EABFD7B2A90
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E3E32341D;
-	Wed, 17 Sep 2025 13:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A992EBBB2;
+	Wed, 17 Sep 2025 12:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnqSPnws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDahmoQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E3931A814;
-	Wed, 17 Sep 2025 13:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C7D2F361A;
+	Wed, 17 Sep 2025 12:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114116; cv=none; b=kOoJ8SSxPJuGiYhfw3tqmkCWISJuYczOKOgaTrNeKZyCyFHOGmRA96kr3VOYtgLs0pRMtzSgPjd1Ve0122uQsO8LbWANG6AhRHKaMeM/Ygg6GxBXqvbAQ+igiA18wYUuRzamsMDmWJkjqWbHiuzcZkq8sQkezJCymVhwCOnbdwA=
+	t=1758113610; cv=none; b=Rn+FyeBlrITtebvwQ5LBdZl+Hhy88aAE2gIE2OjPoxLhuK3DlrmfwLm9OgT3PNJvwXiTCtekisTWq46iQ0FJ3i/l7Po3dtEnJkVrrP53N8N7S0SnyOOo4V9vVb1nK7bypGHF5dRYO1ZGhLjTbzU23R/2Oly5uR8a9Dve7gAH/4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114116; c=relaxed/simple;
-	bh=aCiKQKZ4VHY5vkloJry5l5pekod3KSPgEs8jc0n7m1Q=;
+	s=arc-20240116; t=1758113610; c=relaxed/simple;
+	bh=uTgFQ6t8W8aSmgHaDZDaMq8L/UEe/Zg8zGn+FnHUnek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OU3DSUAODOaiPRrBqfRLxcyjTTgXjTJULI9AErJnGWjBVGvWQrjIYP808YeKj3iMaLnRY3IdICGl1qAZolNUSwCK5oGRGhZocdutrMwRS2Luoh6eTCxh5b93S7i8EJ+3+Qa0CMKVfAcIUW6i8pNdwzvWcvy2Rmr+WtqkuErndFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnqSPnws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D27EC4CEF0;
-	Wed, 17 Sep 2025 13:01:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PfPuvdEhPgC77QhRw/CJmai/ZlunmIiC8hRTuV2lzee0UzjwgNnZE9EJ2JPeq7+TGauHd5yA1bq25UHXZ24w1360ahlxcuCCHby8JZjlUjOw62tIFkEFlosbQYKkvnMHaqy/u3RqrfiH2rorbioxfdL9qm5Rohv4km06EiplOJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDahmoQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AC3C4CEF5;
+	Wed, 17 Sep 2025 12:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114116;
-	bh=aCiKQKZ4VHY5vkloJry5l5pekod3KSPgEs8jc0n7m1Q=;
+	s=korg; t=1758113610;
+	bh=uTgFQ6t8W8aSmgHaDZDaMq8L/UEe/Zg8zGn+FnHUnek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnqSPnwsypOuNyEd3LwBBDBWSRpd3fwo/4P4USPCJkxyPXnomqcaQ1D2QZcYv0aEb
-	 oyNQFLHDce1VQl9RHkyhKXE/7qW+M44mWPXv8ZOlM9N9BwcmHeSAUplefB2yyVeV6S
-	 OISRcQghth2JrHiiW7JaUUVbVnLmgrKFzftxHNac=
+	b=MDahmoQM0RTlc/wQqegLs7uXRuJmvBv5YOGPQyIalrhvfvCehCmBye8rZchRkPpXa
+	 EdltDJ53Bi8w0AVGXBb6cSfgW/gA7LQjODAukLPazScFcpJpvj7HGdda6L4z6DYOEh
+	 xDn+7tbLOQlviFhPSfK39qp5kwB4vff0PB3Bidug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Richard Leitner <richard.leitner@skidata.com>,
-	Simon Horman <horms@kernel.org>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Lin.Cao" <lincao12@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/78] net: fec: Fix possible NPD in fec_enet_phy_reset_after_clk_enable()
+Subject: [PATCH 6.12 140/140] drm/amdgpu: fix a memory leak in fence cleanup when unloading
 Date: Wed, 17 Sep 2025 14:35:12 +0200
-Message-ID: <20250917123330.812758320@linuxfoundation.org>
+Message-ID: <20250917123347.745396297@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 03e79de4608bdd48ad6eec272e196124cefaf798 ]
+commit 7838fb5f119191403560eca2e23613380c0e425e upstream.
 
-The function of_phy_find_device may return NULL, so we need to take
-care before dereferencing phy_dev.
+Commit b61badd20b44 ("drm/amdgpu: fix usage slab after free")
+reordered when amdgpu_fence_driver_sw_fini() was called after
+that patch, amdgpu_fence_driver_sw_fini() effectively became
+a no-op as the sched entities we never freed because the
+ring pointers were already set to NULL.  Remove the NULL
+setting.
 
-Fixes: 64a632da538a ("net: fec: Fix phy_device lookup for phy_reset_after_clk_enable()")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Cc: Richard Leitner <richard.leitner@skidata.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250904091334.53965-1-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Lin.Cao <lincao12@amd.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Fixes: b61badd20b44 ("drm/amdgpu: fix usage slab after free")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a525fa37aac36c4591cc8b07ae8957862415fbd5)
+Cc: stable@vger.kernel.org
+[ Adapt to conditional check ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index d10db5d6d226a..ca271d7a388b4 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2137,7 +2137,8 @@ static void fec_enet_phy_reset_after_clk_enable(struct net_device *ndev)
- 		 */
- 		phy_dev = of_phy_find_device(fep->phy_node);
- 		phy_reset_after_clk_enable(phy_dev);
--		put_device(&phy_dev->mdio.dev);
-+		if (phy_dev)
-+			put_device(&phy_dev->mdio.dev);
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -400,9 +400,6 @@ void amdgpu_ring_fini(struct amdgpu_ring
+ 	dma_fence_put(ring->vmid_wait);
+ 	ring->vmid_wait = NULL;
+ 	ring->me = 0;
+-
+-	if (!ring->is_mes_queue)
+-		ring->adev->rings[ring->idx] = NULL;
  }
  
--- 
-2.51.0
-
+ /**
 
 
 
