@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35431B7ECB1
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:01:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C120B7F12F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53C5482AB6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDB031C27F68
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3F031618D;
-	Wed, 17 Sep 2025 12:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9FA30AACA;
+	Wed, 17 Sep 2025 13:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Fpdwix8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHH5++hb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1962831618E;
-	Wed, 17 Sep 2025 12:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B640183CA6;
+	Wed, 17 Sep 2025 13:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113623; cv=none; b=TJh/JFM5YvkFceYTC5pucq/sCcR873zmkHHZDgscOGN4/2Z1FY/FtXx1nr7mxrQc4kNuko4GCN1daAqKSHsTH6rvc20nIt+b+75nc4eW5F0/ArF1WqAtw2zPBJ2+zShwZogcPWAyLEQ+GVXqgHaaJ81/cnG17iN5hCW7rkxIc/I=
+	t=1758114071; cv=none; b=FUclDwMqSSto9prgJ93aiQMgJEl5WbY/wvA/AbwVKP3w6MKf0wKbsueVYNn2lGttCGvD4eFhgu+fQWbXaFiAVUiTh8CilWx7S2cFVOTvSu9d7WnViXaizh5d8Z0iMeqqIi7gLSpwHfXOtIpFeGiZ3SApvzizhUTGHe3VU9fLxYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113623; c=relaxed/simple;
-	bh=NqtC/8EHsIQlAqm70m1o+N/tnibMRiSU1pbrZAAgmeo=;
+	s=arc-20240116; t=1758114071; c=relaxed/simple;
+	bh=8eT2409VU5TQC5kKUTKAm/ADWK4L2SPbJP2nLuoAuo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gz0Ly+XQ8G9/CaQKlpYkV4KwoItdPsHevFKrMWBs/5vLiP/uiTmhj/gKSd/aWQRLEOIhGjThj8ZmlaqO/KjZugCokPebziS0rHBqJ/hXgggRRHmVYIRs8WIKqzXQaScAA+Hus06tbDQcdFyF7IVIZvqtpNvY2MMNmciASJDmdYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Fpdwix8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A592C4CEF0;
-	Wed, 17 Sep 2025 12:53:42 +0000 (UTC)
+	 MIME-Version; b=ccfnOsBkRDFa2fDZMDnnEtFB4HpgJfvMZoeV3KTGShv+A3sBUsNoafHL+UxzVz4SlkAgPE7KW2ppUYouxhhANRGBlt4v3Ig47kI2T6+JUPT22jcKaVrl0rfXnVEr9DpVSZPQ/gj0RLgqAYkI3/PnjcuiEhdzOdeI52Yr86RnJD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHH5++hb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA7CC4CEF0;
+	Wed, 17 Sep 2025 13:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113623;
-	bh=NqtC/8EHsIQlAqm70m1o+N/tnibMRiSU1pbrZAAgmeo=;
+	s=korg; t=1758114071;
+	bh=8eT2409VU5TQC5kKUTKAm/ADWK4L2SPbJP2nLuoAuo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Fpdwix8QPTTLx0ljnzIodkZK2nuLbkm626h/iqDB1ahiMuRXNaxIaxr6QsaR5X/F
-	 zOTNWdgOS8I18StBnQROLxdmItljTtQANGnzGzarxuVLQhrcDD2ge6cSCOjnM3Aunj
-	 IEjdFOJDH41lpXLwo4Z++O/2m25ElJ3wSNcJw28Y=
+	b=aHH5++hb97uQy5pfnW5sLU+wkt1+UrZrlej2rrvUaEMicWeNKDyOGCGP49kUxu9tF
+	 lRpZ7OXhPc6r5NT0NwVF/H3Fi6I1pKy0EQnasZtuCib8BM1Cdr6hwbFRDaoIGXQBkH
+	 E+wQwzRP1t7pZhn+PXauZJaidl5W2YhVbO39tA1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 127/140] xhci: fix memory leak regression when freeing xhci vdev devices depth first
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Alexander Dahl <ada@thorsis.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 38/78] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
 Date: Wed, 17 Sep 2025 14:34:59 +0200
-Message-ID: <20250917123347.414659141@linuxfoundation.org>
+Message-ID: <20250917123330.489820577@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-commit edcbe06453ddfde21f6aa763f7cab655f26133cc upstream.
+[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
 
-Suspend-resume cycle test revealed a memory leak in 6.17-rc3
+Having setup time 0 violates tAR, tCLR of some chips, for instance
+TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
+being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
+98 dc 90 15 76 ...).
 
-Turns out the slot_id race fix changes accidentally ends up calling
-xhci_free_virt_device() with an incorrect vdev parameter.
-The vdev variable was reused for temporary purposes right before calling
-xhci_free_virt_device().
+Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
+[1], but it looks more appropriate to just calculate setup time properly.
 
-Fix this by passing the correct vdev parameter.
+[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
 
-The slot_id race fix that caused this regression was targeted for stable,
-so this needs to be applied there as well.
-
-Fixes: 2eb03376151b ("usb: xhci: Fix slot_id resource race conflict")
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/linux-usb/20250829181354.4450-1-00107082@163.com
-Suggested-by: Michal Pecio <michal.pecio@gmail.com>
-Suggested-by: David Wang <00107082@163.com>
 Cc: stable@vger.kernel.org
-Tested-by: David Wang <00107082@163.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-4-mathias.nyman@linux.intel.com
+Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/atmel/nand-controller.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -939,7 +939,7 @@ static void xhci_free_virt_devices_depth
- out:
- 	/* we are now at a leaf device */
- 	xhci_debugfs_remove_slot(xhci, slot_id);
--	xhci_free_virt_device(xhci, vdev, slot_id);
-+	xhci_free_virt_device(xhci, xhci->devs[slot_id], slot_id);
- }
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1378,13 +1378,23 @@ static int atmel_smc_nand_prepare_smccon
+ 		return ret;
  
- int xhci_alloc_virt_device(struct xhci_hcd *xhci, int slot_id,
+ 	/*
++	 * Read setup timing depends on the operation done on the NAND:
++	 *
++	 * NRD_SETUP = max(tAR, tCLR)
++	 */
++	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
++	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
++	totalcycles += ncycles;
++	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
++	if (ret)
++		return ret;
++
++	/*
+ 	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
+-	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
+-	 *
+-	 * NRD_SETUP is always 0.
++	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
+ 	 */
+ 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
+ 	ncycles = max(totalcycles, ncycles);
 
 
 
