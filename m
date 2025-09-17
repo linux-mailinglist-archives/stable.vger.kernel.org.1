@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-180250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487F6B7EF70
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3374B7F13B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AA583AC761
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3501E1891541
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACFA32BBEC;
-	Wed, 17 Sep 2025 12:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E7130CB21;
+	Wed, 17 Sep 2025 13:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQqQi0Ej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBh1D5/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A0F32897A;
-	Wed, 17 Sep 2025 12:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BA5303A05;
+	Wed, 17 Sep 2025 13:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113860; cv=none; b=R2IF3riDQun5Dfc2Zz6OpipIbS39ywKgI2X14d69X2Wt8LHmkAndg74kf9CiJBz0qSvj9N5L7BUydC/tfRjHZweYa2s4NXOo2X2S5I1nMtFnxey2EPjqiKk3eDS7vA2ef0RDl37bCwihXmumjSdwahhTja+S5x8giKoax7Xqo/E=
+	t=1758114076; cv=none; b=PUInUOtftEsiu+mMblJEeqYcGh9QekK10Jablqr4hY8/rQYdTfhSgmtloXNQ77ofasj0SGgEkw13yq6hPXiwcj+SgriSBbJkidIPkGaxCQuXrj4URaT4YXwq2+X4H3ZUyBJU3opd626om9ThrgUW4hyPCGY+kPd6GhwoJ36VzHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113860; c=relaxed/simple;
-	bh=xq8cHzJyV0c9NrnESeE4GLmZgaF5TTK3J/binAlVerc=;
+	s=arc-20240116; t=1758114076; c=relaxed/simple;
+	bh=sfufQgHXtEAGL76+UV2beUiV8QfCYovXkfihxbBOvwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0FDECbbSjV9XHkvx8LI0Kwg8Uju11/flQf9SsBarlNf9kcixKRpHm/8P7LtyrgfUnDrriaA8Zj9eXvRRYJd27Hnmu9CWD4Hu4pfLEFVUym5C7BSnjN+1c/jwkvKzWl7TCiKMghUe+LAnt+KgS5leeErEeL+Gxzm66yTWvJ06GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQqQi0Ej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D89C4CEF0;
-	Wed, 17 Sep 2025 12:57:39 +0000 (UTC)
+	 MIME-Version; b=IaTY9vIEdmXm8CVbeGKmEIHinKQ1Z3RrXNJsuqQ5TZ0cwxZooKUW2lpxH2Fq7JyeQesCLvG3/F61oIGLcrTP3auvP+ERkUSHEhN8asc9bTVUgnwdI05l7tMH0kZdfofHtXCp5l93rwjANKXqL0o/NtWdqkZkE5nU7lFLE8DFfYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBh1D5/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD76AC4CEF5;
+	Wed, 17 Sep 2025 13:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113860;
-	bh=xq8cHzJyV0c9NrnESeE4GLmZgaF5TTK3J/binAlVerc=;
+	s=korg; t=1758114074;
+	bh=sfufQgHXtEAGL76+UV2beUiV8QfCYovXkfihxbBOvwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQqQi0Ejrw3o+0nS1Q89lTxv9FYqyTMydaYJbZfpCY1kPUXHR32C4NmnVQkMJl5v+
-	 olm4t+yonNFgN4DkWVCSl0ZmDhHpSKRUoi7gnO+hMkonA3m4q6AfQ9vfrSKfyzAxBD
-	 AmWfxKit6KXA1CKOOSkMtKDMreDqtLuX7/HKJUSY=
+	b=pBh1D5/YE611TyzVBUDW5ROF3ZJnBQTcpecdflBA1HqjcUvoTpZfhDDqOMYVWzg+a
+	 A/8qKsv4/d25qNGHpu7RkHN1yYPtLY0qmp5fxyy5eVdFCBrp2vZkC5caOVYz/6GrSX
+	 cc2ofq2tuuEkq9ouMMEgaleYcvP1lmy5lGeDPLQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anssi Hannula <anssi.hannula@bitwise.fi>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Rik van Riel <riel@surriel.com>,
+	Yang Shi <shy828301@gmail.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/101] can: xilinx_can: xcan_write_frame(): fix use-after-free of transmitted SKB
-Date: Wed, 17 Sep 2025 14:34:59 +0200
-Message-ID: <20250917123338.674170411@linuxfoundation.org>
+Subject: [PATCH 6.1 39/78] mm/khugepaged: convert hpage_collapse_scan_pmd() to use folios
+Date: Wed, 17 Sep 2025 14:35:00 +0200
+Message-ID: <20250917123330.513677117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anssi Hannula <anssi.hannula@bitwise.fi>
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 
-[ Upstream commit ef79f00be72bd81d2e1e6f060d83cf7e425deee4 ]
+[ Upstream commit 5c07ebb372d66423e508ecfb8e00324f8797f072 ]
 
-can_put_echo_skb() takes ownership of the SKB and it may be freed
-during or after the call.
+Replaces 5 calls to compound_head(), and removes 1385 bytes of kernel
+text.
 
-However, xilinx_can xcan_write_frame() keeps using SKB after the call.
-
-Fix that by only calling can_put_echo_skb() after the code is done
-touching the SKB.
-
-The tx_lock is held for the entire xcan_write_frame() execution and
-also on the can_get_echo_skb() side so the order of operations does not
-matter.
-
-An earlier fix commit 3d3c817c3a40 ("can: xilinx_can: Fix usage of skb
-memory") did not move the can_put_echo_skb() call far enough.
-
-Signed-off-by: Anssi Hannula <anssi.hannula@bitwise.fi>
-Fixes: 1598efe57b3e ("can: xilinx_can: refactor code in preparation for CAN FD support")
-Link: https://patch.msgid.link/20250822095002.168389-1-anssi.hannula@bitwise.fi
-[mkl: add "commit" in front of sha1 in patch description]
-[mkl: fix indention]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lkml.kernel.org/r/20231020183331.10770-3-vishal.moola@gmail.com
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 394bfac1c7f7 ("mm/khugepaged: fix the address passed to notifier on testing young")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/xilinx_can.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ mm/khugepaged.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/can/xilinx_can.c b/drivers/net/can/xilinx_can.c
-index abe58f1030433..57d1209134f11 100644
---- a/drivers/net/can/xilinx_can.c
-+++ b/drivers/net/can/xilinx_can.c
-@@ -628,14 +628,6 @@ static void xcan_write_frame(struct net_device *ndev, struct sk_buff *skb,
- 		dlc |= XCAN_DLCR_EDL_MASK;
- 	}
- 
--	if (!(priv->devtype.flags & XCAN_FLAG_TX_MAILBOXES) &&
--	    (priv->devtype.flags & XCAN_FLAG_TXFEMP))
--		can_put_echo_skb(skb, ndev, priv->tx_head % priv->tx_max, 0);
--	else
--		can_put_echo_skb(skb, ndev, 0, 0);
--
--	priv->tx_head++;
--
- 	priv->write_reg(priv, XCAN_FRAME_ID_OFFSET(frame_offset), id);
- 	/* If the CAN frame is RTR frame this write triggers transmission
- 	 * (not on CAN FD)
-@@ -668,6 +660,14 @@ static void xcan_write_frame(struct net_device *ndev, struct sk_buff *skb,
- 					data[1]);
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1140,6 +1140,7 @@ static int hpage_collapse_scan_pmd(struc
+ 	int result = SCAN_FAIL, referenced = 0;
+ 	int none_or_zero = 0, shared = 0;
+ 	struct page *page = NULL;
++	struct folio *folio = NULL;
+ 	unsigned long _address;
+ 	spinlock_t *ptl;
+ 	int node = NUMA_NO_NODE, unmapped = 0;
+@@ -1221,29 +1222,28 @@ static int hpage_collapse_scan_pmd(struc
+ 			}
  		}
- 	}
-+
-+	if (!(priv->devtype.flags & XCAN_FLAG_TX_MAILBOXES) &&
-+	    (priv->devtype.flags & XCAN_FLAG_TXFEMP))
-+		can_put_echo_skb(skb, ndev, priv->tx_head % priv->tx_max, 0);
-+	else
-+		can_put_echo_skb(skb, ndev, 0, 0);
-+
-+	priv->tx_head++;
- }
  
- /**
--- 
-2.51.0
-
+-		page = compound_head(page);
+-
++		folio = page_folio(page);
+ 		/*
+ 		 * Record which node the original page is from and save this
+ 		 * information to cc->node_load[].
+ 		 * Khugepaged will allocate hugepage from the node has the max
+ 		 * hit record.
+ 		 */
+-		node = page_to_nid(page);
++		node = folio_nid(folio);
+ 		if (hpage_collapse_scan_abort(node, cc)) {
+ 			result = SCAN_SCAN_ABORT;
+ 			goto out_unmap;
+ 		}
+ 		cc->node_load[node]++;
+-		if (!PageLRU(page)) {
++		if (!folio_test_lru(folio)) {
+ 			result = SCAN_PAGE_LRU;
+ 			goto out_unmap;
+ 		}
+-		if (PageLocked(page)) {
++		if (folio_test_locked(folio)) {
+ 			result = SCAN_PAGE_LOCK;
+ 			goto out_unmap;
+ 		}
+-		if (!PageAnon(page)) {
++		if (!folio_test_anon(folio)) {
+ 			result = SCAN_PAGE_ANON;
+ 			goto out_unmap;
+ 		}
+@@ -1265,7 +1265,7 @@ static int hpage_collapse_scan_pmd(struc
+ 		 * has excessive GUP pins (i.e. 512).  Anyway the same check
+ 		 * will be done again later the risk seems low.
+ 		 */
+-		if (!is_refcount_suitable(page)) {
++		if (!is_refcount_suitable(&folio->page)) {
+ 			result = SCAN_PAGE_COUNT;
+ 			goto out_unmap;
+ 		}
+@@ -1275,8 +1275,8 @@ static int hpage_collapse_scan_pmd(struc
+ 		 * enough young pte to justify collapsing the page
+ 		 */
+ 		if (cc->is_khugepaged &&
+-		    (pte_young(pteval) || page_is_young(page) ||
+-		     PageReferenced(page) || mmu_notifier_test_young(vma->vm_mm,
++		    (pte_young(pteval) || folio_test_young(folio) ||
++		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+ 								     address)))
+ 			referenced++;
+ 	}
+@@ -1298,7 +1298,7 @@ out_unmap:
+ 		*mmap_locked = false;
+ 	}
+ out:
+-	trace_mm_khugepaged_scan_pmd(mm, page, writable, referenced,
++	trace_mm_khugepaged_scan_pmd(mm, &folio->page, writable, referenced,
+ 				     none_or_zero, result, unmapped);
+ 	return result;
+ }
 
 
 
