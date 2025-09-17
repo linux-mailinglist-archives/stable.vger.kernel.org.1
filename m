@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-180075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0738AB7E7EC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:51:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A24B7E4D6
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0831F1C05581
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA5317B819D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ACE31A7E8;
-	Wed, 17 Sep 2025 12:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7991F29B795;
+	Wed, 17 Sep 2025 12:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFwiwu/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leWazWKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3CC3090EC;
-	Wed, 17 Sep 2025 12:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AC11EF36C;
+	Wed, 17 Sep 2025 12:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113303; cv=none; b=UhiB7hOgUHGzkKqzEfiPMGhceXdy/NJnW18WCD9eYmGMRf78hJcNnvpxm4ITMdEVDedacqnITIU7gfk0iKLbKithQUxQ4K+ba9G44ZvhOdO5H9f1KzIxdBM/wcsLk09HK+bdKqcFzp4BQTVfMVED+CWTCQ5YwRGL8owN7TZgu6g=
+	t=1758113037; cv=none; b=J9ZW9lNk4PCZ+wxBqc/+XcITTr8V0kDQAiNY8rco7blLfVo4rTBp46sc7MXNCHFKo253vdhZ1Fqs9DQ4CqWPvNOKdCpp9PxFtcT29ioK82EnVCW9LVjzXvo1qJiMhp+Mfk72y8vufZmaAVaE5yDzD9I/RPzWam8gD2ZVh8fte30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113303; c=relaxed/simple;
-	bh=c24VzB0PqQJBoti7Zx654rK4+bz8+OF7jrVKKL1GJyo=;
+	s=arc-20240116; t=1758113037; c=relaxed/simple;
+	bh=00teFDujugHzMCAxUhpAuS72xLRco5mmJAuW6GP1Lu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esDwp9kTH/C2mVeQWYTMb8TCM1tkUqXWLSru2puD6duz3aCSm4IUFuzj4YRgdGQH1X5CpRyI8MEKUA84AKyOZ80PRfzF4xLcdw2ZbN4veEAS98Wyj/fcvqup7O7omFXvdZTZoWdjsX3dl4SoAP0mXLU7PgywTgDjAzOsZ3TEVxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFwiwu/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEA0C4CEF0;
-	Wed, 17 Sep 2025 12:48:21 +0000 (UTC)
+	 MIME-Version; b=pF7GiHuBiuhdfoBGKnLI/ohzdsogU/IIFalWaH6z/biQNox0PNCtUwH4UMBoQVynDWVvHUUDgJMPK3KZ431md0COm7y+nmplEQwkEfazZVfoLLkw1Vl1PusIQxjCddbtnnR1rP44HLjM5nPtjplClGszrBB5xmLllSjjwFzgS1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leWazWKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8254C4CEF0;
+	Wed, 17 Sep 2025 12:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113301;
-	bh=c24VzB0PqQJBoti7Zx654rK4+bz8+OF7jrVKKL1GJyo=;
+	s=korg; t=1758113037;
+	bh=00teFDujugHzMCAxUhpAuS72xLRco5mmJAuW6GP1Lu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFwiwu/+hrnkprESU2eWJajj+g+sDqz9XuJDGUEdBLmSPaBqU5vVVYvED7mf7ytUj
-	 w+JhOWrLRU6ESJHe0z1j1Jr78S9yTjgp7ZXKqdcmHUD+8Umsh0TYUNY/+lLGbL+3og
-	 04cf66hM/pnUIKAV/A9D7g3/JXwUrrTqxRO3Lxb4=
+	b=leWazWKz4YJiZ3kdUTeqRm+beaEKK03FFfrawSStcpQrY6Geajs1TgAnr98073Llj
+	 bxdcy2LkcFyGEZod0JTMfzTAXOMXZ2tgec1qAHrrqtMFsmsvdRHoPvc4BeFbwbZl3i
+	 ZBcf5eUXk9m7g2hLzh1pBfWB7xDoTMnTSJVpkUco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sridharan S N <quic_sridsn@quicinc.com>,
+	Santhosh Kumar K <s-k6@ti.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/140] tcp_bpf: Call sk_msg_free() when tcp_bpf_send_verdict() fails to allocate psock->cork.
+Subject: [PATCH 6.16 107/189] mtd: spinand: winbond: Fix oob_layout for W25N01JW
 Date: Wed, 17 Sep 2025 14:33:37 +0200
-Message-ID: <20250917123345.404365991@linuxfoundation.org>
+Message-ID: <20250917123354.482488939@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Santhosh Kumar K <s-k6@ti.com>
 
-[ Upstream commit a3967baad4d533dc254c31e0d221e51c8d223d58 ]
+[ Upstream commit 4550d33e18112a11a740424c4eec063cd58e918c ]
 
-syzbot reported the splat below. [0]
+Fix the W25N01JW's oob_layout according to the datasheet [1]
 
-The repro does the following:
+[1] https://www.winbond.com/hq/product/code-storage-flash-memory/qspinand-flash/?__locale=en&partNo=W25N01JW
 
-  1. Load a sk_msg prog that calls bpf_msg_cork_bytes(msg, cork_bytes)
-  2. Attach the prog to a SOCKMAP
-  3. Add a socket to the SOCKMAP
-  4. Activate fault injection
-  5. Send data less than cork_bytes
-
-At 5., the data is carried over to the next sendmsg() as it is
-smaller than the cork_bytes specified by bpf_msg_cork_bytes().
-
-Then, tcp_bpf_send_verdict() tries to allocate psock->cork to hold
-the data, but this fails silently due to fault injection + __GFP_NOWARN.
-
-If the allocation fails, we need to revert the sk->sk_forward_alloc
-change done by sk_msg_alloc().
-
-Let's call sk_msg_free() when tcp_bpf_send_verdict fails to allocate
-psock->cork.
-
-The "*copied" also needs to be updated such that a proper error can
-be returned to the caller, sendmsg. It fails to allocate psock->cork.
-Nothing has been corked so far, so this patch simply sets "*copied"
-to 0.
-
-[0]:
-WARNING: net/ipv4/af_inet.c:156 at inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156, CPU#1: syz-executor/5983
-Modules linked in:
-CPU: 1 UID: 0 PID: 5983 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156
-Code: 0f 0b 90 e9 62 fe ff ff e8 7a db b5 f7 90 0f 0b 90 e9 95 fe ff ff e8 6c db b5 f7 90 0f 0b 90 e9 bb fe ff ff e8 5e db b5 f7 90 <0f> 0b 90 e9 e1 fe ff ff 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c 9f fc
-RSP: 0018:ffffc90000a08b48 EFLAGS: 00010246
-RAX: ffffffff8a09d0b2 RBX: dffffc0000000000 RCX: ffff888024a23c80
-RDX: 0000000000000100 RSI: 0000000000000fff RDI: 0000000000000000
-RBP: 0000000000000fff R08: ffff88807e07c627 R09: 1ffff1100fc0f8c4
-R10: dffffc0000000000 R11: ffffed100fc0f8c5 R12: ffff88807e07c380
-R13: dffffc0000000000 R14: ffff88807e07c60c R15: 1ffff1100fc0f872
-FS:  00005555604c4500(0000) GS:ffff888125af1000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555604df5c8 CR3: 0000000032b06000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- __sk_destruct+0x86/0x660 net/core/sock.c:2339
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x286/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1052
- </IRQ>
-
-Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
-Reported-by: syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68c0b6b5.050a0220.3c6139.0013.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250909232623.4151337-1-kuniyu@google.com
+Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
+Cc: Sridharan S N <quic_sridsn@quicinc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_bpf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/spi/winbond.c |   37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 22e8a2af5dd8b..8372ca512a755 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -408,8 +408,11 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
- 		if (!psock->cork) {
- 			psock->cork = kzalloc(sizeof(*psock->cork),
- 					      GFP_ATOMIC | __GFP_NOWARN);
--			if (!psock->cork)
-+			if (!psock->cork) {
-+				sk_msg_free(sk, msg);
-+				*copied = 0;
- 				return -ENOMEM;
-+			}
- 		}
- 		memcpy(psock->cork, msg, sizeof(*msg));
- 		return 0;
--- 
-2.51.0
-
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -162,6 +162,36 @@ static const struct mtd_ooblayout_ops w2
+ 	.free = w25n02kv_ooblayout_free,
+ };
+ 
++static int w25n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 12;
++	region->length = 4;
++
++	return 0;
++}
++
++static int w25n01jw_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section);
++	region->length = 12;
++
++	/* Extract BBM */
++	if (!section) {
++		region->offset += 2;
++		region->length -= 2;
++	}
++
++	return 0;
++}
++
+ static int w35n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				  struct mtd_oob_region *region)
+ {
+@@ -192,6 +222,11 @@ static int w35n01jw_ooblayout_free(struc
+ 	return 0;
+ }
+ 
++static const struct mtd_ooblayout_ops w25n01jw_ooblayout = {
++	.ecc = w25n01jw_ooblayout_ecc,
++	.free = w25n01jw_ooblayout_free,
++};
++
+ static const struct mtd_ooblayout_ops w35n01jw_ooblayout = {
+ 	.ecc = w35n01jw_ooblayout_ecc,
+ 	.free = w35n01jw_ooblayout_free,
+@@ -307,7 +342,7 @@ static const struct spinand_info winbond
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL),
+ 		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
+ 	SPINAND_INFO("W25N01KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
 
 
 
