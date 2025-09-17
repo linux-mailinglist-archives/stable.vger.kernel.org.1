@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A33B7ECA2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:01:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35938B7EAB0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBDA47ACC61
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:59:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61A1517936B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A82A31A7E5;
-	Wed, 17 Sep 2025 12:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF67F374291;
+	Wed, 17 Sep 2025 12:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ok8K7rrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H76+W5d2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C37F30CB5D;
-	Wed, 17 Sep 2025 12:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6761531A81D;
+	Wed, 17 Sep 2025 12:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113763; cv=none; b=qVmhuLibFJcBYx+uyym9a1EvpChMzBli5fkeyu2RUdubdH0Q5lRi58aB5KgnCZoQIee6UEndK6bP8k12PThU+5IEYF5H3nufpK/Cw63Q0Fw3TRBui+aris80kB1jraKhuCxf8aKtcbywLSFMSzgx9imMq9mFVe3CxFm3iVC57JQ=
+	t=1758113465; cv=none; b=iPFbENGuSQRAZJgf18nFbGGSbuAar9b8msal7ms74m/B2K0/WY732Z4ibfmp2dUV7CX0d4ujlnEr9dxoYiAuvom3LU+A6Ju+GuvvVRMw5BTocMjOIDQ6FLw9aGOAsq95/qe5ZSY+mTXps1Jb7I/enmwYDqzZ9GRKbKYpa+2pG5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113763; c=relaxed/simple;
-	bh=PHrOyTf30m88l3XD7YPhkajyRwR3opU7AY27xD++DQ4=;
+	s=arc-20240116; t=1758113465; c=relaxed/simple;
+	bh=zDIOpSEjpVsRILIXLG3n+KuoKhF3wJNi5kCFETMKcY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2IekjwF6FUgQ8gH9V6b7JL/5zKkRFPhiMcH7HMFG3YPczojiGq2C6j0R+xR0iPKTZztk+BuncKbwP63Q5ALrQukiiGSLwt//ky0NCEjanwamGUWr/SukJMqkFfcgQeyQaWX2vFhJP64eBLnszXhwsRD5x+2RJtp2HBPIg/fXxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ok8K7rrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCB4C4CEF0;
-	Wed, 17 Sep 2025 12:55:59 +0000 (UTC)
+	 MIME-Version; b=CTJavQ2bPsBOyQsc37D2tKfRRMYApKWAapegSrwtJjC10RLP6ywUwzU1tkDlMtqmRKH5iM8PZOn0wfrS6kusBUN6O2USW5ZGoyMF+CduyF4n/MKs9k6B6F14IdQMqck8vE/WrPi55WLFukwBhmxU+0uDCX7KipxoNuF2+QmC/8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H76+W5d2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07B5C4CEFA;
+	Wed, 17 Sep 2025 12:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113760;
-	bh=PHrOyTf30m88l3XD7YPhkajyRwR3opU7AY27xD++DQ4=;
+	s=korg; t=1758113465;
+	bh=zDIOpSEjpVsRILIXLG3n+KuoKhF3wJNi5kCFETMKcY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ok8K7rrFmThwUubldorBQPmnkD932JR6RlaVPhX7EaqcoGTHa98Ll/WCC6x50Zv7v
-	 WzBviwippBraz3uENpu70cUMYmzDqRZyOiHVb1I+lu8AYlSzXE6vZVxUVxlQoYPFK5
-	 IwnXzbapUZiwPaiUxBVzs7C0SRYqepHOAWx6huoU=
+	b=H76+W5d2SZH4AZ+SH70CwLfQCQooxKEcs14Zyecj4E6HcTHUNBRC+3/h76594yPLh
+	 ygB5yBEhjEE9Bi4TgeO1DyFpBFMzuU7GClUIXsFGd/4hNn5r3/EzeEwPoglR0koVys
+	 Y90AJGvpOoifnLWdM4ETs0cDOpRf8WDHBKGsork4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Johan Hovold <johan@kernel.org>,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.6 044/101] drm/mediatek: fix potential OF node use-after-free
+	Chia-I Wu <olvaffe@gmail.com>,
+	Steven Price <steven.price@arm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>
+Subject: [PATCH 6.12 095/140] drm/panthor: validate group queue count
 Date: Wed, 17 Sep 2025 14:34:27 +0200
-Message-ID: <20250917123337.911093571@linuxfoundation.org>
+Message-ID: <20250917123346.622513488@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-commit 4de37a48b6b58faaded9eb765047cf0d8785ea18 upstream.
+[ Upstream commit a00f2015acdbd8a4b3d2382eaeebe11db1925fad ]
 
-The for_each_child_of_node() helper drops the reference it takes to each
-node as it iterates over children and an explicit of_node_put() is only
-needed when exiting the loop early.
+A panthor group can have at most MAX_CS_PER_CSG panthor queues.
 
-Drop the recently introduced bogus additional reference count decrement
-at each iteration that could potentially lead to a use-after-free.
-
-Fixes: 1f403699c40f ("drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv")
-Cc: Ma Ke <make24@iscas.ac.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250829090345.21075-2-johan@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4bdca11507928 ("drm/panthor: Add the driver frontend block")
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com> # v1
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250903192133.288477-1-olvaffe@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/panthor/panthor_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -365,11 +365,11 @@ static bool mtk_drm_get_all_drm_priv(str
+diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+index c520f156e2d73..03eb7d52209a2 100644
+--- a/drivers/gpu/drm/panthor/panthor_drv.c
++++ b/drivers/gpu/drm/panthor/panthor_drv.c
+@@ -1023,7 +1023,7 @@ static int panthor_ioctl_group_create(struct drm_device *ddev, void *data,
+ 	struct drm_panthor_queue_create *queue_args;
+ 	int ret;
  
- 		of_id = of_match_node(mtk_drm_of_ids, node);
- 		if (!of_id)
--			goto next_put_node;
-+			continue;
+-	if (!args->queues.count)
++	if (!args->queues.count || args->queues.count > MAX_CS_PER_CSG)
+ 		return -EINVAL;
  
- 		pdev = of_find_device_by_node(node);
- 		if (!pdev)
--			goto next_put_node;
-+			continue;
- 
- 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
- 		if (!drm_dev)
-@@ -395,11 +395,10 @@ next_put_device_drm_dev:
- next_put_device_pdev_dev:
- 		put_device(&pdev->dev);
- 
--next_put_node:
--		of_node_put(node);
--
--		if (cnt == MAX_CRTC)
-+		if (cnt == MAX_CRTC) {
-+			of_node_put(node);
- 			break;
-+		}
- 	}
- 
- 	if (drm_priv->data->mmsys_dev_num == cnt) {
+ 	ret = PANTHOR_UOBJ_GET_ARRAY(queue_args, &args->queues);
+-- 
+2.51.0
+
 
 
 
