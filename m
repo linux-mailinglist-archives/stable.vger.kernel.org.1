@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F9FB7EF67
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF51AB7F195
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D10D316A70A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D4C34A7348
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0265A308F18;
-	Wed, 17 Sep 2025 12:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401A137C101;
+	Wed, 17 Sep 2025 12:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0FPiXEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dYU9N7a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C881A3167;
-	Wed, 17 Sep 2025 12:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0D7335957;
+	Wed, 17 Sep 2025 12:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113776; cv=none; b=QerXKhrRhwRHx0uvkbKLVI0t3uLc+MzsF2rqqV9pwWCyRYj6LURDiQ6Y++1D4bO6yW70CnJGBtggLx+Ypc4ssIVhMfoD8XrIjG9z4fgT+TUFtM3ZJMtRaQDbc0av9knFNOy/Rt1yTxiahH6bfyTZjsbdSh/azOnxEZ79AjTVsbw=
+	t=1758113978; cv=none; b=QI71m4BUmO9pXq5NlHniwZcs7WXG2nfQ05uB8V+bsthB4wzEi9BlnuH57XKDblUBm75ChzYtrEkqQHQ+6XTQAsLjsVTEokT/BAvKOeXXrie/4vVmIhd1K77zqxQ4V6SSIsmruRGNa3r0RRg0Ngi1oCWbqtYie+NLq/HFkVElHzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113776; c=relaxed/simple;
-	bh=yiH9/gd1V6+SQDNJG23vZ9fnvy2uYrKvNqnJI2NxPC8=;
+	s=arc-20240116; t=1758113978; c=relaxed/simple;
+	bh=WOri9CPEspaHYvq0r2M8epBJ3Gd24wovBUVyyELI9CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+w1BVAX5CREBWtHA4m+nevUZ+CG8OtG8cyO9ZXWpF/ieN+mW0nstY5XGhsqgEcqhs2opXZrAJz2+9AR7wBSuwo//fj++PFvo+9POPUv+nMQTfIOztoI54AroQSwLc15gnB0JCWu6CXNEfSBe/w3Ev3s5/gX/qdZs4BOYiy8cfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0FPiXEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F73C4CEF0;
-	Wed, 17 Sep 2025 12:56:16 +0000 (UTC)
+	 MIME-Version; b=l5xb0U54LaT1SCW7u9KfegWQ9TuI9wfeVntYqGjAaFaym5m4FhfzgJ7bjKeWtBMPftMqWtSLJlwLLRhEQ90UhAA+xhvq8BOwsPGjyVL3E3ia+9bq1kCuYP1wSUKxlhejVUUmPHSbLF1koNRmmqIOP9GaBfM/LDwMvCQ7olC9N5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dYU9N7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27086C4CEF0;
+	Wed, 17 Sep 2025 12:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113776;
-	bh=yiH9/gd1V6+SQDNJG23vZ9fnvy2uYrKvNqnJI2NxPC8=;
+	s=korg; t=1758113977;
+	bh=WOri9CPEspaHYvq0r2M8epBJ3Gd24wovBUVyyELI9CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0FPiXEhZsdP7bJt8kGMtB09whpV2aKWb1BXD1pY/QCkoJ0lP5YoOL+w1eGqtwJng
-	 Y5WuH8El82rb6EvqDnFLCc/8F1GxkxE80l+sZpRWC4A+OGIlvZrwD855yunQxQ469B
-	 1WI8POmYsMt3+k2lwQdH9KyICnjSXXrzBgaZqmc8=
+	b=0dYU9N7aN2fpiiPWC3cCP3lg+K11TKtSn8zcDaNKZup54iwtMBvUupFgxfvof0xng
+	 ze1+EC6sQOZ6i+yCHq8Vua84Z+0qF6d28pMgIUPPAtLLN90DbMc2AII92ELzmfUgMd
+	 ZKKB7W0DDKa52U7ml2O/RpajSnGFezYS7k/RQDfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexander Dahl <ada@thorsis.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Scott Haiden <scott.b.haiden@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/101] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
+Subject: [PATCH 6.1 10/78] NFSv4: Dont clear capabilities that wont be reset
 Date: Wed, 17 Sep 2025 14:34:31 +0200
-Message-ID: <20250917123338.004395642@linuxfoundation.org>
+Message-ID: <20250917123329.821830329@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
+[ Upstream commit 31f1a960ad1a14def94fa0b8c25d62b4c032813f ]
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+Don't clear the capabilities that are not going to get reset by the call
+to _nfs4_server_capabilities().
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
-
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
-
-Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Dahl <ada@thorsis.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reported-by: Scott Haiden <scott.b.haiden@gmail.com>
+Fixes: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4proc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1378,13 +1378,23 @@ static int atmel_smc_nand_prepare_smccon
- 		return ret;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 71e96fddc6cb5..29f189dc334fd 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3957,7 +3957,6 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
+ 	};
+ 	int err;
  
- 	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
-+
-+	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
+-	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
+-- 
+2.51.0
+
 
 
 
