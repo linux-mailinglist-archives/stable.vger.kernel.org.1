@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E358B7E501
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:46:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F952B7F135
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B41D6189C1B9
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA8744A7CFF
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B8931A806;
-	Wed, 17 Sep 2025 12:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E5D1C4A0A;
+	Wed, 17 Sep 2025 13:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNRqZKn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpBp/oPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1031F2EBB8A;
-	Wed, 17 Sep 2025 12:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EA4301712;
+	Wed, 17 Sep 2025 13:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113105; cv=none; b=Er6xSPTgUUX/khyNZjwbz3VaZBMOeO6Ne+MMRuNWnxcv24czxAYq6t5D9zhhOxcuqprQ0PMyx/4UfjDjS+RWgwzP+fiT5y44yim557+mhQbNiO3MODNSxkBGppe81AAYocYFxsM59mgRho5Dt70sPcsAgQzfjBGHSKDtigw9kO8=
+	t=1758114020; cv=none; b=pWT2LKMXlDpmWkhbCMvMFow3HlGSVsaGlCsTyaXYd+m1ys9f7fsoz0WUflTO/2RZr96h6Z4iBWIT1NiAehISrRhx2XhWuo/vT9Pd5nmnEzjviacE3fRCmQwmrD2cNGxrDbpL6Wf+CHTtNy2UD/Dz63lyxOaVj8ZVMlouUH7723A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113105; c=relaxed/simple;
-	bh=Suv/3N35CecV1ng5K70ImqUeTYlFZBbaS6n0Og8BCBo=;
+	s=arc-20240116; t=1758114020; c=relaxed/simple;
+	bh=AhrhwMa38YCGoUatGp7dfW3YAeQhZe6Cf7Ykpd2sPaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POrFocmjltHUJaCD1kZx0FXmASGEQr0FTfYv4yTJnN+gjIbu/apvsoybDWOvDIN8m2DJP4plkiKT6TtIwoCBByFqhFEiaJ7fqZNXWwgiKqkS18ruTRPqE/zYo6tx3yyhcw0EHWv5u9TVQySyFayKABEzQwSI8SaTpGzPwsj863E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNRqZKn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAF0C4CEF0;
-	Wed, 17 Sep 2025 12:45:04 +0000 (UTC)
+	 MIME-Version; b=i/ufeRCuUPYVcB/BJEEv41OalIGuTcFRYU8r1n5GisEcg8FcnYCBCe4rh3JrIcFyNIRH/TrP5Xlo8nHkFhzbZ6a7ROu5SBosl5+IYeHcZT3M3f2IU6fmRiO3j0isQESFOFV+PxDtVBxqQpUqYejczebLmi6dMJPUsrd4YOC+qCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpBp/oPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E771C4CEF0;
+	Wed, 17 Sep 2025 13:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113104;
-	bh=Suv/3N35CecV1ng5K70ImqUeTYlFZBbaS6n0Og8BCBo=;
+	s=korg; t=1758114020;
+	bh=AhrhwMa38YCGoUatGp7dfW3YAeQhZe6Cf7Ykpd2sPaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNRqZKn6TbVkvmWXWUR+vTkAj0KgVfcTQoYlg7gZFXOnK1kVIxlcc/unGX2b6w8ld
-	 unaQge34E2ax8FugYEzubJ9IqlF06IPlcorFxSDk65PRO/aA3uoykXNnWtd5ulUBn8
-	 ozz8PlVLGFbbM4qLW/JXL2OaFbXJXRIMnwnzlRBI=
+	b=NpBp/oPeDQqlFHj2Pzb4hj58Kd5Px91Unlx7Jq6IulNz2PbeA3Si4qBNDeQLw3iWW
+	 8aGrDECTWh/z+u0jZJ3GEJv9yygmNTaLPIQXNUW53MHTwQKL+xZZHYS2Go1+DoHXqJ
+	 A8A2PBLgOR0xTosnYHg8VMm/RRqw45ioZvI2d4yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+5a398eb460ddaa6f242f@syzkaller.appspotmail.com
-Subject: [PATCH 6.16 173/189] erofs: fix invalid algorithm for encoded extents
+	Jinpu Wang <jinpu.wang@ionos.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Subject: [PATCH 6.1 22/78] KVM: SVM: Set synthesized TSA CPUID flags
 Date: Wed, 17 Sep 2025 14:34:43 +0200
-Message-ID: <20250917123356.108454687@linuxfoundation.org>
+Message-ID: <20250917123330.108366456@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit 131897c65e2b86cf14bec7379f44aa8fbb407526 ]
+Commit f3f9deccfc68a6b7c8c1cc51e902edba23d309d4 in the LTS tree.
 
-The current algorithm sanity checks do not properly apply to new
-encoded extents.
+VERW_CLEAR is supposed to be set only by the hypervisor to denote TSA
+mitigation support to a guest. SQ_NO and L1_NO are both synthesizable,
+and are going to be set by hw CPUID on future machines.
 
-Unify the algorithm check with Z_EROFS_COMPRESSION(_RUNTIME)_MAX
-and ensure consistency with sbi->available_compr_algs.
+So keep the kvm_cpu_cap_init_kvm_defined() invocation *and* set them
+when synthesized.
 
-Reported-and-tested-by: syzbot+5a398eb460ddaa6f242f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/68a8bd20.050a0220.37038e.005a.GAE@google.com
-Fixes: 1d191b4ca51d ("erofs: implement encoded extent metadata")
-Thanks-to: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fix is stable-only.
+
+Co-developed-by: Jinpu Wang <jinpu.wang@ionos.com>
+Signed-off-by: Jinpu Wang <jinpu.wang@ionos.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org> # 6.1.y
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zmap.c | 67 +++++++++++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 30 deletions(-)
+ arch/x86/kvm/cpuid.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index cd33a5d29406c..14d01474ad9dd 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -403,10 +403,10 @@ static int z_erofs_map_blocks_fo(struct inode *inode,
- 		.inode = inode,
- 		.map = map,
- 	};
--	int err = 0;
--	unsigned int endoff, afmt;
-+	unsigned int endoff;
- 	unsigned long initial_lcn;
- 	unsigned long long ofs, end;
-+	int err;
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -770,10 +770,15 @@ void kvm_set_cpu_caps(void)
+ 	if (cpu_feature_enabled(X86_FEATURE_SRSO_NO))
+ 		kvm_cpu_cap_set(X86_FEATURE_SRSO_NO);
  
- 	ofs = flags & EROFS_GET_BLOCKS_FINDTAIL ? inode->i_size - 1 : map->m_la;
- 	if (fragment && !(flags & EROFS_GET_BLOCKS_FINDTAIL) &&
-@@ -502,20 +502,15 @@ static int z_erofs_map_blocks_fo(struct inode *inode,
- 			err = -EFSCORRUPTED;
- 			goto unmap_out;
- 		}
--		afmt = vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER ?
--			Z_EROFS_COMPRESSION_INTERLACED :
--			Z_EROFS_COMPRESSION_SHIFTED;
-+		if (vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER)
-+			map->m_algorithmformat = Z_EROFS_COMPRESSION_INTERLACED;
-+		else
-+			map->m_algorithmformat = Z_EROFS_COMPRESSION_SHIFTED;
-+	} else if (m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
-+		map->m_algorithmformat = vi->z_algorithmtype[1];
- 	} else {
--		afmt = m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2 ?
--			vi->z_algorithmtype[1] : vi->z_algorithmtype[0];
--		if (!(EROFS_I_SB(inode)->available_compr_algs & (1 << afmt))) {
--			erofs_err(sb, "inconsistent algorithmtype %u for nid %llu",
--				  afmt, vi->nid);
--			err = -EFSCORRUPTED;
--			goto unmap_out;
--		}
-+		map->m_algorithmformat = vi->z_algorithmtype[0];
- 	}
--	map->m_algorithmformat = afmt;
- 
- 	if ((flags & EROFS_GET_BLOCKS_FIEMAP) ||
- 	    ((flags & EROFS_GET_BLOCKS_READMORE) &&
-@@ -645,9 +640,9 @@ static int z_erofs_fill_inode(struct inode *inode, struct erofs_map_blocks *map)
- {
- 	struct erofs_inode *const vi = EROFS_I(inode);
- 	struct super_block *const sb = inode->i_sb;
--	int err, headnr;
--	erofs_off_t pos;
- 	struct z_erofs_map_header *h;
-+	erofs_off_t pos;
-+	int err = 0;
- 
- 	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags)) {
- 		/*
-@@ -661,7 +656,6 @@ static int z_erofs_fill_inode(struct inode *inode, struct erofs_map_blocks *map)
- 	if (wait_on_bit_lock(&vi->flags, EROFS_I_BL_Z_BIT, TASK_KILLABLE))
- 		return -ERESTARTSYS;
- 
--	err = 0;
- 	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags))
- 		goto out_unlock;
- 
-@@ -698,15 +692,6 @@ static int z_erofs_fill_inode(struct inode *inode, struct erofs_map_blocks *map)
- 	else if (vi->z_advise & Z_EROFS_ADVISE_INLINE_PCLUSTER)
- 		vi->z_idata_size = le16_to_cpu(h->h_idata_size);
- 
--	headnr = 0;
--	if (vi->z_algorithmtype[0] >= Z_EROFS_COMPRESSION_MAX ||
--	    vi->z_algorithmtype[++headnr] >= Z_EROFS_COMPRESSION_MAX) {
--		erofs_err(sb, "unknown HEAD%u format %u for nid %llu, please upgrade kernel",
--			  headnr + 1, vi->z_algorithmtype[headnr], vi->nid);
--		err = -EOPNOTSUPP;
--		goto out_unlock;
--	}
--
- 	if (!erofs_sb_has_big_pcluster(EROFS_SB(sb)) &&
- 	    vi->z_advise & (Z_EROFS_ADVISE_BIG_PCLUSTER_1 |
- 			    Z_EROFS_ADVISE_BIG_PCLUSTER_2)) {
-@@ -745,6 +730,30 @@ static int z_erofs_fill_inode(struct inode *inode, struct erofs_map_blocks *map)
- 	return err;
- }
- 
-+static int z_erofs_map_sanity_check(struct inode *inode,
-+				    struct erofs_map_blocks *map)
-+{
-+	struct erofs_sb_info *sbi = EROFS_I_SB(inode);
++	kvm_cpu_cap_check_and_set(X86_FEATURE_VERW_CLEAR);
 +
-+	if (!(map->m_flags & EROFS_MAP_ENCODED))
-+		return 0;
-+	if (unlikely(map->m_algorithmformat >= Z_EROFS_COMPRESSION_RUNTIME_MAX)) {
-+		erofs_err(inode->i_sb, "unknown algorithm %d @ pos %llu for nid %llu, please upgrade kernel",
-+			  map->m_algorithmformat, map->m_la, EROFS_I(inode)->nid);
-+		return -EOPNOTSUPP;
-+	}
-+	if (unlikely(map->m_algorithmformat < Z_EROFS_COMPRESSION_MAX &&
-+		     !(sbi->available_compr_algs & (1 << map->m_algorithmformat)))) {
-+		erofs_err(inode->i_sb, "inconsistent algorithmtype %u for nid %llu",
-+			  map->m_algorithmformat, EROFS_I(inode)->nid);
-+		return -EFSCORRUPTED;
-+	}
-+	if (unlikely(map->m_plen > Z_EROFS_PCLUSTER_MAX_SIZE ||
-+		     map->m_llen > Z_EROFS_PCLUSTER_MAX_DSIZE))
-+		return -EOPNOTSUPP;
-+	return 0;
-+}
+ 	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
+ 		F(TSA_SQ_NO) | F(TSA_L1_NO)
+ 	);
+ 
++	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_SQ_NO);
++	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_L1_NO);
 +
- int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
- 			    int flags)
- {
-@@ -765,10 +774,8 @@ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
- 			else
- 				err = z_erofs_map_blocks_fo(inode, map, flags);
- 		}
--		if (!err && (map->m_flags & EROFS_MAP_ENCODED) &&
--		    unlikely(map->m_plen > Z_EROFS_PCLUSTER_MAX_SIZE ||
--			     map->m_llen > Z_EROFS_PCLUSTER_MAX_DSIZE))
--			err = -EOPNOTSUPP;
-+		if (!err)
-+			err = z_erofs_map_sanity_check(inode, map);
- 		if (err)
- 			map->m_llen = 0;
- 	}
--- 
-2.51.0
-
+ 	/*
+ 	 * Hide RDTSCP and RDPID if either feature is reported as supported but
+ 	 * probing MSR_TSC_AUX failed.  This is purely a sanity check and
 
 
 
