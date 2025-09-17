@@ -1,82 +1,83 @@
-Return-Path: <stable+bounces-180432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCEEB814DA
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 20:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E19B81670
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 20:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CF9B17E19E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 18:09:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C766D466A90
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 18:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEBF2FE578;
-	Wed, 17 Sep 2025 18:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Woj+43d4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34193009ED;
+	Wed, 17 Sep 2025 18:58:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F6C2FB0B6;
-	Wed, 17 Sep 2025 18:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1A518D656;
+	Wed, 17 Sep 2025 18:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758132553; cv=none; b=X+kofC4NREzYNJ5GplIB57vuuLrhtm5OvVL9WaYUYTntHtpsnU3h7ygzLYOWJcmzOMWPLM4ufsUHfy1Bk4/Dpl33qP6dT7R0AwKz19wexOXmUIeV93T0yMfVK6ozEibC4zLTU6qedhGVj3r0tsrPbNGk+7KuJ87HeGeUFVwfYaY=
+	t=1758135509; cv=none; b=XM4J2JizVMGOb8/y3y2UCWxbnnDwYrYlwftO4Tq6gSzGy1TCigfjtIk3XJKdwJqv6KX6FUVBqMxTQ3OjaH5N68/YVarIwCt3HmlRTuQgJ39laejPm0vRVINIrZhBt8iKv0V3C/se/C3QQqD8yk4WRD3oklYOTSToRldga5PqMB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758132553; c=relaxed/simple;
-	bh=A/g6yV8OwHRMixXofvXoksUXU4c9BCDZkHauOGy8f90=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=BYSAAiXD4zoWqW8lYit0QklqHHvpTB3hkKd7jyzhg/kBQIu5OALqCOmvkhCK8yiEcmjGCpXeSvPHDerBC35VKm7uOZxgy4Nxul3x0L70IczGJAlIzF/BridK2MeKiWTRd+rxsyuBiPEjWXAc8cvCNnHotwBeCxiAsVTwIzpTsBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Woj+43d4; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 88A34211AF09; Wed, 17 Sep 2025 11:09:11 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 88A34211AF09
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1758132551;
-	bh=A/g6yV8OwHRMixXofvXoksUXU4c9BCDZkHauOGy8f90=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Woj+43d44IRh35lM/EUdlNyy6kOv2+FP755dsMbAQlIWyCZnjYxBvIPhAPdnrpNMB
-	 ofX0bXLVydNIC/9/9Hd73X3BlJXVygWH2BK2U8nHXpEs2vrVR8aS30jXZm2TM0rbgk
-	 z2bfRqEThdNWjGNlEvdaRJH+cG0Xq+7LBswZfCHY=
-From: Hardik Garg <hargar@linux.microsoft.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.16 000/189] 6.16.8-rc1 review
-Date: Wed, 17 Sep 2025 11:09:11 -0700
-Message-Id: <1758132551-18432-1-git-send-email-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+	s=arc-20240116; t=1758135509; c=relaxed/simple;
+	bh=UJV1axYFUWahAo/wlw4bcjdRchM59PcQ4RAHtgD9ZE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iNNBctYGQ13fkxzEFK9AL44uhkC3t/xHpWviJMhi72NdY1YdG2MF7uBQv44+m8GbKvHQqY7Q3Kl4O/LKSpZwxINLkfe/L5JFBuzRrQO+paYPRdFLyog3DiPrvpcjtTLNRTuoHCvhSJzvzAgnfmniQxysbB52OBv+7R583c5QFz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id ADCA32C0163F;
+	Wed, 17 Sep 2025 20:58:17 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 7CE07149290; Wed, 17 Sep 2025 20:58:17 +0200 (CEST)
+Date: Wed, 17 Sep 2025 20:58:17 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Hubert Wi??niewski <hubert.wisniewski.25632@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Xu Yang <xu.yang_2@nxp.com>, linux-usb@vger.kernel.org
+Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
+ PM/MDIO + RTNL deadlock
+Message-ID: <aMsEyXPMVWewOmQS@wunner.de>
+References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917095457.2103318-1-o.rempel@pengutronix.de>
 
-The kernel, bpf tool, perf tool, and kselftest builds fine for v6.16.8-rc1 on x86 and arm64 Azure VM.
+On Wed, Sep 17, 2025 at 11:54:57AM +0200, Oleksij Rempel wrote:
+> Forbid USB runtime PM (autosuspend) for AX88772* in bind.
+[...]
+> With autosuspend active, resume paths may require calling phylink/phylib
+> (caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
+> resume can deadlock (RTNL may already be held), and MDIO can attempt a
+> runtime-wake while the USB PM lock is held.
 
-
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
-
+FWIW, for smsc95xx.c, the MDIO deadlock issue was resolved by commit
+7b960c967f2a ("usbnet: smsc95xx: Fix deadlock on runtime resume").
+I would assume that something similar would be possible for
+asix_devices.c as well.
 
 Thanks,
-Hardik
+
+Lukas
 
