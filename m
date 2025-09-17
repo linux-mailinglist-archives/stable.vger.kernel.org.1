@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-180172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C243B7EC64
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:00:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83243B7F03C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A601918905D3
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:56:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8449418820BB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F62F3074A4;
-	Wed, 17 Sep 2025 12:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B863728A8;
+	Wed, 17 Sep 2025 12:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJNO0XQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OAODape"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9822EBBB2;
-	Wed, 17 Sep 2025 12:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CB137289E;
+	Wed, 17 Sep 2025 12:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113607; cv=none; b=CmtzwlfXQprnioXD790zcoT734RfbOFqoPx+9bOCIJN3dAJ5WdjkdjyOrimfir4ovLmR0c9kI5Bn7V7fYIsQxQkiAnbYsLuxF6ha5NX/tQwHLddTsgt+p5Xza71OSon5bfTOvNOF5LW3TM1Eu3ChwrHzHkVLyKq0Qp17NP6QyA8=
+	t=1758113903; cv=none; b=ChSV/JMyJ556KaQPHBeEMiSA9VFyU5zdXoITh4GZbP6/C3Cg1zL0ubb47y6gY610sYyVIg3/daVf7fGep/VXW3EbOv35/kHSr0eEqeTTkTl1ydDkpImrGnTMTCsOEjcmK/Tco/zzzwahSpYufj82By73h0WlEKc9fCizMUt417A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113607; c=relaxed/simple;
-	bh=BV1QgvR35fDF7WN0FbqwGpH3yAszWcpvR4ringJ1mqE=;
+	s=arc-20240116; t=1758113903; c=relaxed/simple;
+	bh=qs0zn5H2Vwza9Gbh02DmNmIlYGdl23zuBbDMiv8CcLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UF92mpiUDHoqBGT8xU+G8yKjK6zzykj0YotiUigC0JaSLCruSU6HOOxh8LcOKmDYd/8z7DNIrneMtLqcB9Uadgj5brQ2BE36ZgBVfjzRI5xWtjIXKtKVB4lncxm8YNPKaxaETfIQYoYPwxvFNbIVBr5JVACB6MsqKsKjySwOS1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJNO0XQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1140C4CEF0;
-	Wed, 17 Sep 2025 12:53:26 +0000 (UTC)
+	 MIME-Version; b=SbS4GuEn4Or+h77M/YZkismlzlxYCRpBmThovPwRSmgNJfvHTm5SAkoCYlTEOIRjXNac0VmGZAIvNIRv4jSVmpp08ZWK1kuFb5bChm+A7tRz1vVAiGICOGCy1KsalJqOTtjVBm43DJ8e4CG6Qv93H655x5+tec7ofPgbidw+o2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OAODape; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BA7C4CEF0;
+	Wed, 17 Sep 2025 12:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113607;
-	bh=BV1QgvR35fDF7WN0FbqwGpH3yAszWcpvR4ringJ1mqE=;
+	s=korg; t=1758113901;
+	bh=qs0zn5H2Vwza9Gbh02DmNmIlYGdl23zuBbDMiv8CcLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJNO0XQrMzSgFK7XSTmwIzVcbo5PUxfc9Il789Ij3UNWLJ571de+btyaRNuZrptWJ
-	 uvsuDs7+1zXAbqcaA7lgxvaUFlSU1Ri1UJiUr47v7c9Ev14EWzErHJiurlCPqDzRi8
-	 b2LGucoruN+lEftT/ZmUWmm5++TtSbvW+HcrFFBE=
+	b=1OAODapeJOTT0//uEZDkuZWPPEjIhCmizqvxoi2VdN9JJuHVy5Yp66HXGZ5noULgz
+	 aogeexbtCy1Z/5h5n1YG79mvHTHX3AQTVN6y4Wwoc9L76ZUJh9d7gCGllUf5pdcTPl
+	 jV7niaOoEqqUS9LkYIPMC1iLXRB5KqJSXfI8ezZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 139/140] drm/i915/power: fix size for for_each_set_bit() in abox iteration
+Subject: [PATCH 6.6 088/101] hrtimers: Unconditionally update target CPU base after offline timer migration
 Date: Wed, 17 Sep 2025 14:35:11 +0200
-Message-ID: <20250917123347.717005436@linuxfoundation.org>
+Message-ID: <20250917123338.964479797@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-commit cfa7b7659757f8d0fc4914429efa90d0d2577dd7 upstream.
+[ Upstream commit e895f8e29119c8c966ea794af9e9100b10becb88 ]
 
-for_each_set_bit() expects size to be in bits, not bytes. The abox mask
-iteration uses bytes, but it works by coincidence, because the local
-variable holding the mask is unsigned long, and the mask only ever has
-bit 2 as the highest bit. Using a smaller type could lead to subtle and
-very hard to track bugs.
+When testing softirq based hrtimers on an ARM32 board, with high resolution
+mode and NOHZ inactive, softirq based hrtimers fail to expire after being
+moved away from an offline CPU:
 
-Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://lore.kernel.org/r/20250905104149.1144751-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 7ea3baa6efe4bb93d11e1c0e6528b1468d7debf6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-[ adapted struct intel_display *display parameters to struct drm_i915_private *dev_priv ]
+CPU0				CPU1
+				hrtimer_start(..., HRTIMER_MODE_SOFT);
+cpu_down(CPU1)			...
+				hrtimers_cpu_dying()
+				  // Migrate timers to CPU0
+				  smp_call_function_single(CPU0, returgger_next_event);
+  retrigger_next_event()
+    if (!highres && !nohz)
+        return;
+
+As retrigger_next_event() is a NOOP when both high resolution timers and
+NOHZ are inactive CPU0's hrtimer_cpu_base::softirq_expires_next is not
+updated and the migrated softirq timers never expire unless there is a
+softirq based hrtimer queued on CPU0 later.
+
+Fix this by removing the hrtimer_hres_active() and tick_nohz_active() check
+in retrigger_next_event(), which enforces a full update of the CPU base.
+As this is not a fast path the extra cost does not matter.
+
+[ tglx: Massaged change log ]
+
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Co-developed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250805081025.54235-1-wangxiongfeng2@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_power.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/time/hrtimer.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_power.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power.c
-@@ -1150,7 +1150,7 @@ static void icl_mbus_init(struct drm_i91
- 	if (DISPLAY_VER(dev_priv) == 12)
- 		abox_regs |= BIT(0);
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 0c3ad1755cc26..ccea52adcba67 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -808,10 +808,10 @@ static void retrigger_next_event(void *arg)
+ 	 * of the next expiring timer is enough. The return from the SMP
+ 	 * function call will take care of the reprogramming in case the
+ 	 * CPU was in a NOHZ idle sleep.
++	 *
++	 * In periodic low resolution mode, the next softirq expiration
++	 * must also be updated.
+ 	 */
+-	if (!hrtimer_hres_active(base) && !tick_nohz_active)
+-		return;
+-
+ 	raw_spin_lock(&base->lock);
+ 	hrtimer_update_base(base);
+ 	if (hrtimer_hres_active(base))
+@@ -2289,11 +2289,6 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
+ 				     &new_base->clock_base[i]);
+ 	}
  
--	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
-+	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
- 		intel_de_rmw(dev_priv, MBUS_ABOX_CTL(i), mask, val);
- }
+-	/*
+-	 * The migration might have changed the first expiring softirq
+-	 * timer on this CPU. Update it.
+-	 */
+-	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
+ 	/* Tell the other CPU to retrigger the next event */
+ 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
  
-@@ -1603,11 +1603,11 @@ static void tgl_bw_buddy_init(struct drm
- 	if (table[config].page_mask == 0) {
- 		drm_dbg(&dev_priv->drm,
- 			"Unknown memory configuration; disabling address buddy logic.\n");
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
- 			intel_de_write(dev_priv, BW_BUDDY_CTL(i),
- 				       BW_BUDDY_DISABLE);
- 	} else {
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
- 			intel_de_write(dev_priv, BW_BUDDY_PAGE_MASK(i),
- 				       table[config].page_mask);
- 
+-- 
+2.51.0
+
 
 
 
