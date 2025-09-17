@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-180226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C15B7EC9F
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:01:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FCCB7E5F1
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 177194E1E2B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8978E7B9781
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1E731BCBA;
-	Wed, 17 Sep 2025 12:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63B030BBBC;
+	Wed, 17 Sep 2025 12:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsuTEQ7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bmqu0UvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5E672602;
-	Wed, 17 Sep 2025 12:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A306A1F873B;
+	Wed, 17 Sep 2025 12:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113783; cv=none; b=GEV2oIIIxuF+QYhzAj2xoP0eIPTt0W6HJ2XJTPERDCuygrpFcMxOXfO6ozxV8DQZgP1+1GV10y+y6NfDrFJ9jiRb/WFOsKWmBYqX2xQ6olgyVor9ZGxoInjvztidSkKgaBdg6U+zX3TQIN3ZAvDZtRbnAUrjTUXiBv11u9WmrpI=
+	t=1758113072; cv=none; b=gZOqHYc59YCETxj6SXF5HFdI2djPRS8QNWmetJu0FuTbMq2NO5Ey6s00bFxD1wdwXLG/XYaDYNZobOAEm6NShmlo8RfObN8mwdkm+Vt/yHUEfF3oXaPVGq5H4MtjSzqL8RRcHFBcAbZBELS6d74v1Yq3idj4t63VkcRFN8Rnqck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113783; c=relaxed/simple;
-	bh=V9zed4CKwqh2z6e+ChFgISFt7kVh5dWX2kU2+jIGrlw=;
+	s=arc-20240116; t=1758113072; c=relaxed/simple;
+	bh=YDTCceEr46ysDyo2MF3MikO/xVvlN9Ur3+EAMCicp3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxfcVCfKvfbe9aiWdm997iNf2Eyk7x7SMDhfUo+9tlVhdZ4eNfl3cN/PzTWl74wtSo2UX3IAo60y18lNwAK/WryN//z4bLa6wh3EOq6ACjgVMWZsBGYdVeOw3/0Fz8srUQj6i+sZ3PCcU9jMKqoyvmd3bumZDlLy1RDUfpzix/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsuTEQ7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB64C4CEF0;
-	Wed, 17 Sep 2025 12:56:22 +0000 (UTC)
+	 MIME-Version; b=bMb1yplc/40CHavyNDFQbJZ3G98Nb8Q75Wf99p5sFB+0Ilyvf1t16B0TuucTiRhluG8qNyBZixWubggcj0GaP6FqTJyWbpxZlhFTLdvYDzXlkYEg9XUB3h2k44fwvuERFfEXxuNrf93p0Ij/qJ1eTa5M7GwdDEnBx/Mi01VG5aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bmqu0UvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC7EC4CEF0;
+	Wed, 17 Sep 2025 12:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113783;
-	bh=V9zed4CKwqh2z6e+ChFgISFt7kVh5dWX2kU2+jIGrlw=;
+	s=korg; t=1758113072;
+	bh=YDTCceEr46ysDyo2MF3MikO/xVvlN9Ur3+EAMCicp3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsuTEQ7K9aU15NtIMruVTfrilrVh0A1e922L7FpMJgJzL9hVwQS8WRqmHpS+jYfXb
-	 1XvFhSU2VIHqdNBOaRy+P2Vtt2oP6d/4Xnc840725BQfEY79X9oPhuS4JGD45ppcse
-	 V6e/Du/6v1xK55PoUCrotidu5vvcnu1RFBADaBJo=
+	b=Bmqu0UvLmXuKX40COlEeF39aHWVJPwtFzsY0HS0QauJskkTvEWV8XnLVCaMx0tXWp
+	 pAHPTYVw/0ruB+iH+YmTiusRz+FY2dPcjv2ZUKw20j/yDbpEfTqqJFBxABmCytO0ep
+	 UC0+Avv+X8x/ANwIbq6H+bYMCsl293dfo4wknApA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fort <disclosure@aisle.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 050/101] mm/damon/sysfs: fix use-after-free in state_show()
-Date: Wed, 17 Sep 2025 14:34:33 +0200
-Message-ID: <20250917123338.053141678@linuxfoundation.org>
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 164/189] hsr: use hsr_for_each_port_rtnl in hsr_port_get_hsr
+Date: Wed, 17 Sep 2025 14:34:34 +0200
+Message-ID: <20250917123355.884164266@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fort <stanislav.fort@aisle.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 3260a3f0828e06f5f13fac69fb1999a6d60d9cff upstream.
+[ Upstream commit 393c841fe4333cdd856d0ca37b066d72746cfaa6 ]
 
-state_show() reads kdamond->damon_ctx without holding damon_sysfs_lock.
-This allows a use-after-free race:
+hsr_port_get_hsr() iterates over ports using hsr_for_each_port(),
+but many of its callers do not hold the required RCU lock.
 
-CPU 0                         CPU 1
------                         -----
-state_show()                  damon_sysfs_turn_damon_on()
-ctx = kdamond->damon_ctx;     mutex_lock(&damon_sysfs_lock);
-                              damon_destroy_ctx(kdamond->damon_ctx);
-                              kdamond->damon_ctx = NULL;
-                              mutex_unlock(&damon_sysfs_lock);
-damon_is_running(ctx);        /* ctx is freed */
-mutex_lock(&ctx->kdamond_lock); /* UAF */
+Switch to hsr_for_each_port_rtnl(), since most callers already hold
+the rtnl lock. After review, all callers are covered by either the rtnl
+lock or the RCU lock, except hsr_dev_xmit(). Fix this by adding an
+RCU read lock there.
 
-(The race can also occur with damon_sysfs_kdamonds_rm_dirs() and
-damon_sysfs_kdamond_release(), which free or replace the context under
-damon_sysfs_lock.)
-
-Fix by taking damon_sysfs_lock before dereferencing the context, mirroring
-the locking used in pid_show().
-
-The bug has existed since state_show() first accessed kdamond->damon_ctx.
-
-Link: https://lkml.kernel.org/r/20250905101046.2288-1-disclosure@aisle.com
-Fixes: a61ea561c871 ("mm/damon/sysfs: link DAMON for virtual address spaces monitoring")
-Signed-off-by: Stanislav Fort <disclosure@aisle.com>
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c5a759117210 ("net/hsr: Use list_head (and rcu) instead of array for slave devices.")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250905091533.377443-3-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/sysfs.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/hsr/hsr_device.c | 3 +++
+ net/hsr/hsr_main.c   | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1055,14 +1055,18 @@ static ssize_t state_show(struct kobject
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index bce7b4061ce08..702da1f9aaa90 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -226,6 +226,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct hsr_priv *hsr = netdev_priv(dev);
+ 	struct hsr_port *master;
+ 
++	rcu_read_lock();
+ 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+ 	if (master) {
+ 		skb->dev = master->dev;
+@@ -238,6 +239,8 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		dev_core_stats_tx_dropped_inc(dev);
+ 		dev_kfree_skb_any(skb);
+ 	}
++	rcu_read_unlock();
++
+ 	return NETDEV_TX_OK;
+ }
+ 
+diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
+index ac1eb1db1a52b..bc94b07101d80 100644
+--- a/net/hsr/hsr_main.c
++++ b/net/hsr/hsr_main.c
+@@ -134,7 +134,7 @@ struct hsr_port *hsr_port_get_hsr(struct hsr_priv *hsr, enum hsr_port_type pt)
  {
- 	struct damon_sysfs_kdamond *kdamond = container_of(kobj,
- 			struct damon_sysfs_kdamond, kobj);
--	struct damon_ctx *ctx = kdamond->damon_ctx;
--	bool running;
-+	struct damon_ctx *ctx;
-+	bool running = false;
+ 	struct hsr_port *port;
  
--	if (!ctx)
--		running = false;
--	else
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+
-+	ctx = kdamond->damon_ctx;
-+	if (ctx)
- 		running = damon_sysfs_ctx_running(ctx);
- 
-+	mutex_unlock(&damon_sysfs_lock);
-+
- 	return sysfs_emit(buf, "%s\n", running ?
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_ON] :
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_OFF]);
+-	hsr_for_each_port(hsr, port)
++	hsr_for_each_port_rtnl(hsr, port)
+ 		if (port->type == pt)
+ 			return port;
+ 	return NULL;
+-- 
+2.51.0
+
 
 
 
