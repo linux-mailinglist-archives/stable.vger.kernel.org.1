@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-180108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61EA0B7EA3E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC74BB7EF52
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E27D3BD145
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC1A962419F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06AB323414;
-	Wed, 17 Sep 2025 12:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1925B3161AF;
+	Wed, 17 Sep 2025 12:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kNYgo1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkZUjgDE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8B832340F;
-	Wed, 17 Sep 2025 12:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3661E7C2D;
+	Wed, 17 Sep 2025 12:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113410; cv=none; b=HaO3JyNNgbpDLBwWb7uh55a+JFB1ltO13CDibDtRxONQT4OyHj7K68LrKiQz8ZwQ9N7zdwHG2RYBKHM3W79y/hU6ybuJ7YI8A4LQovhqWhx7PYk9CNK0SvqapVSzcoNhwM/1O52iV0VLWPV5v+7f2FDkJ8D7Jcmm2GaTzGZlEQA=
+	t=1758113840; cv=none; b=XCvhVXYOY/uqlq4uPeSExXxv8NZmbUA9CfTciRezHohonUW/HcB83moGQ7eDP1MxMqPtoDeiF0APCgfgRFkb+7Rn9na28M8K+5T1bECntvH5D2U9TGz7kT54ri1yOwLFFtURqTWDy9ol2r9pQgcsmMG3niEfs9bwYs3ebjYXmuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113410; c=relaxed/simple;
-	bh=9saPuyV2pwM229ecWdprAKYe8Qs97bC7ReZl7mr+eZ4=;
+	s=arc-20240116; t=1758113840; c=relaxed/simple;
+	bh=tkoZdGuPQlElZI5x3GDbN9An4njzgdu66ZJmsPAKZEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMDR+zgEFebYwm8ZN+q9WkjY6k7VYcrD+pESSt4mF+LM3PL2ZYGvrIhR3fKnxL3jUp479LADWl2oc/5UKPNpPw7vw9hmLhUoYlkhv/gmlNUXjbwEDVFRW+ZYDk3f+bdl0k2MTtP96agcR4xKOliFs+3loHLIUgZcUIGIMPvRDuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kNYgo1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05237C4CEF0;
-	Wed, 17 Sep 2025 12:50:09 +0000 (UTC)
+	 MIME-Version; b=pZKtyzb74mgzgSEZJwVHKp1v/8YlfML2SHf7uNOJOMP8SW9dT8Qibql/BotoH0uXayBMIbuXuPe3Fm4jvFQAYU9g4lbXj7HY+gUIeTKfI+EfBtt2P7M4MNUPlbRnsmTF5/g2shxzsgv5iOhGf5rxfmtfgVHayMPVw9PFFta02lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkZUjgDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F1DC4CEF0;
+	Wed, 17 Sep 2025 12:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113410;
-	bh=9saPuyV2pwM229ecWdprAKYe8Qs97bC7ReZl7mr+eZ4=;
+	s=korg; t=1758113840;
+	bh=tkoZdGuPQlElZI5x3GDbN9An4njzgdu66ZJmsPAKZEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2kNYgo1cGyzZqaamNEy6LA/ZuQMKOBSlWnjF+zcQW6MmjbdASKCgeJ0omtiD5TcGp
-	 qSEP9RI2SxJgbNp1WxE8m2bUknt6O9aVbzHhvLPiRMikLRSmhjIY1qduRrFdrVetzz
-	 JjTneAn6LvLoZI0SFMedbKr0GxIbtMbe7ENfqHQU=
+	b=vkZUjgDE7PvTgNJkIf2SnfKGU0fBc77r1TE5lJLI/B07FKqZzQaQ8IcaBLVkN7C20
+	 KiC2gmz3oBpOHIr1cz/6oSG3fTn35HEpP4zm0vzxh0tGIolt19DGlYFHtFrUqagLa8
+	 GVXoLQiIjaNKGsgwl9oatBZAEOQc2bUJ3V/+HCGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zhang Zhaotian <zhangzhaotian@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 075/140] kernfs: Fix UAF in polling when open file is released
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Peilin Ye <yepeilin@google.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 024/101] bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()
 Date: Wed, 17 Sep 2025 14:34:07 +0200
-Message-ID: <20250917123346.146185303@linuxfoundation.org>
+Message-ID: <20250917123337.442184862@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,301 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Peilin Ye <yepeilin@google.com>
 
-commit 3c9ba2777d6c86025e1ba4186dc5cd930e40ec5f upstream.
+[ Upstream commit 6d78b4473cdb08b74662355a9e8510bde09c511e ]
 
-A use-after-free (UAF) vulnerability was identified in the PSI (Pressure
-Stall Information) monitoring mechanism:
+Currently, calling bpf_map_kmalloc_node() from __bpf_async_init() can
+cause various locking issues; see the following stack trace (edited for
+style) as one example:
 
-BUG: KASAN: slab-use-after-free in psi_trigger_poll+0x3c/0x140
-Read of size 8 at addr ffff3de3d50bd308 by task systemd/1
-
-psi_trigger_poll+0x3c/0x140
-cgroup_pressure_poll+0x70/0xa0
-cgroup_file_poll+0x8c/0x100
-kernfs_fop_poll+0x11c/0x1c0
-ep_item_poll.isra.0+0x188/0x2c0
-
-Allocated by task 1:
-cgroup_file_open+0x88/0x388
-kernfs_fop_open+0x73c/0xaf0
-do_dentry_open+0x5fc/0x1200
-vfs_open+0xa0/0x3f0
-do_open+0x7e8/0xd08
-path_openat+0x2fc/0x6b0
-do_filp_open+0x174/0x368
-
-Freed by task 8462:
-cgroup_file_release+0x130/0x1f8
-kernfs_drain_open_files+0x17c/0x440
-kernfs_drain+0x2dc/0x360
-kernfs_show+0x1b8/0x288
-cgroup_file_show+0x150/0x268
-cgroup_pressure_write+0x1dc/0x340
-cgroup_file_write+0x274/0x548
-
-Reproduction Steps:
-1. Open test/cpu.pressure and establish epoll monitoring
-2. Disable monitoring: echo 0 > test/cgroup.pressure
-3. Re-enable monitoring: echo 1 > test/cgroup.pressure
-
-The race condition occurs because:
-1. When cgroup.pressure is disabled (echo 0 > cgroup.pressure), it:
-   - Releases PSI triggers via cgroup_file_release()
-   - Frees of->priv through kernfs_drain_open_files()
-2. While epoll still holds reference to the file and continues polling
-3. Re-enabling (echo 1 > cgroup.pressure) accesses freed of->priv
-
-epolling			disable/enable cgroup.pressure
-fd=open(cpu.pressure)
-while(1)
 ...
-epoll_wait
-kernfs_fop_poll
-kernfs_get_active = true	echo 0 > cgroup.pressure
-...				cgroup_file_show
-				kernfs_show
-				// inactive kn
-				kernfs_drain_open_files
-				cft->release(of);
-				kfree(ctx);
-				...
-kernfs_get_active = false
-				echo 1 > cgroup.pressure
-				kernfs_show
-				kernfs_activate_one(kn);
-kernfs_fop_poll
-kernfs_get_active = true
-cgroup_file_poll
-psi_trigger_poll
-// UAF
+ [10.011566]  do_raw_spin_lock.cold
+ [10.011570]  try_to_wake_up             (5) double-acquiring the same
+ [10.011575]  kick_pool                      rq_lock, causing a hardlockup
+ [10.011579]  __queue_work
+ [10.011582]  queue_work_on
+ [10.011585]  kernfs_notify
+ [10.011589]  cgroup_file_notify
+ [10.011593]  try_charge_memcg           (4) memcg accounting raises an
+ [10.011597]  obj_cgroup_charge_pages        MEMCG_MAX event
+ [10.011599]  obj_cgroup_charge_account
+ [10.011600]  __memcg_slab_post_alloc_hook
+ [10.011603]  __kmalloc_node_noprof
 ...
-end: close(fd)
+ [10.011611]  bpf_map_kmalloc_node
+ [10.011612]  __bpf_async_init
+ [10.011615]  bpf_timer_init             (3) BPF calls bpf_timer_init()
+ [10.011617]  bpf_prog_xxxxxxxxxxxxxxxx_fcg_runnable
+ [10.011619]  bpf__sched_ext_ops_runnable
+ [10.011620]  enqueue_task_scx           (2) BPF runs with rq_lock held
+ [10.011622]  enqueue_task
+ [10.011626]  ttwu_do_activate
+ [10.011629]  sched_ttwu_pending         (1) grabs rq_lock
+...
 
-To address this issue, introduce kernfs_get_active_of() for kernfs open
-files to obtain active references. This function will fail if the open file
-has been released. Replace kernfs_get_active() with kernfs_get_active_of()
-to prevent further operations on released file descriptors.
+The above was reproduced on bpf-next (b338cf849ec8) by modifying
+./tools/sched_ext/scx_flatcg.bpf.c to call bpf_timer_init() during
+ops.runnable(), and hacking the memcg accounting code a bit to make
+a bpf_timer_init() call more likely to raise an MEMCG_MAX event.
 
-Fixes: 34f26a15611a ("sched/psi: Per-cgroup PSI accounting disable/re-enable interface")
-Cc: stable <stable@kernel.org>
-Reported-by: Zhang Zhaotian <zhangzhaotian@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20250822070715.1565236-2-chenridong@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We have also run into other similar variants (both internally and on
+bpf-next), including double-acquiring cgroup_file_kn_lock, the same
+worker_pool::lock, etc.
+
+As suggested by Shakeel, fix this by using __GFP_HIGH instead of
+GFP_ATOMIC in __bpf_async_init(), so that e.g. if try_charge_memcg()
+raises an MEMCG_MAX event, we call __memcg_memory_event() with
+@allow_spinning=false and avoid calling cgroup_file_notify() there.
+
+Depends on mm patch
+"memcg: skip cgroup_file_notify if spinning is not allowed":
+https://lore.kernel.org/bpf/20250905201606.66198-1-shakeel.butt@linux.dev/
+
+v0 approach s/bpf_map_kmalloc_node/bpf_mem_alloc/
+https://lore.kernel.org/bpf/20250905061919.439648-1-yepeilin@google.com/
+v1 approach:
+https://lore.kernel.org/bpf/20250905234547.862249-1-yepeilin@google.com/
+
+Fixes: b00628b1c7d5 ("bpf: Introduce bpf timers.")
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Peilin Ye <yepeilin@google.com>
+Link: https://lore.kernel.org/r/20250909095222.2121438-1-yepeilin@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/kernfs/file.c |   58 ++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 20 deletions(-)
+ kernel/bpf/helpers.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/kernfs/file.c
-+++ b/fs/kernfs/file.c
-@@ -70,6 +70,24 @@ static struct kernfs_open_node *of_on(st
- 					 !list_empty(&of->list));
- }
- 
-+/* Get active reference to kernfs node for an open file */
-+static struct kernfs_open_file *kernfs_get_active_of(struct kernfs_open_file *of)
-+{
-+	/* Skip if file was already released */
-+	if (unlikely(of->released))
-+		return NULL;
-+
-+	if (!kernfs_get_active(of->kn))
-+		return NULL;
-+
-+	return of;
-+}
-+
-+static void kernfs_put_active_of(struct kernfs_open_file *of)
-+{
-+	return kernfs_put_active(of->kn);
-+}
-+
- /**
-  * kernfs_deref_open_node_locked - Get kernfs_open_node corresponding to @kn
-  *
-@@ -139,7 +157,7 @@ static void kernfs_seq_stop_active(struc
- 
- 	if (ops->seq_stop)
- 		ops->seq_stop(sf, v);
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- }
- 
- static void *kernfs_seq_start(struct seq_file *sf, loff_t *ppos)
-@@ -152,7 +170,7 @@ static void *kernfs_seq_start(struct seq
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return ERR_PTR(-ENODEV);
- 
- 	ops = kernfs_ops(of->kn);
-@@ -238,7 +256,7 @@ static ssize_t kernfs_file_read_iter(str
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		len = -ENODEV;
- 		mutex_unlock(&of->mutex);
- 		goto out_free;
-@@ -252,7 +270,7 @@ static ssize_t kernfs_file_read_iter(str
- 	else
- 		len = -EINVAL;
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
- 
- 	if (len < 0)
-@@ -323,7 +341,7 @@ static ssize_t kernfs_fop_write_iter(str
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		mutex_unlock(&of->mutex);
- 		len = -ENODEV;
- 		goto out_free;
-@@ -335,7 +353,7 @@ static ssize_t kernfs_fop_write_iter(str
- 	else
- 		len = -EINVAL;
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
- 
- 	if (len > 0)
-@@ -357,13 +375,13 @@ static void kernfs_vma_open(struct vm_ar
- 	if (!of->vm_ops)
- 		return;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return;
- 
- 	if (of->vm_ops->open)
- 		of->vm_ops->open(vma);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- }
- 
- static vm_fault_t kernfs_vma_fault(struct vm_fault *vmf)
-@@ -375,14 +393,14 @@ static vm_fault_t kernfs_vma_fault(struc
- 	if (!of->vm_ops)
- 		return VM_FAULT_SIGBUS;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return VM_FAULT_SIGBUS;
- 
- 	ret = VM_FAULT_SIGBUS;
- 	if (of->vm_ops->fault)
- 		ret = of->vm_ops->fault(vmf);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -395,7 +413,7 @@ static vm_fault_t kernfs_vma_page_mkwrit
- 	if (!of->vm_ops)
- 		return VM_FAULT_SIGBUS;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return VM_FAULT_SIGBUS;
- 
- 	ret = 0;
-@@ -404,7 +422,7 @@ static vm_fault_t kernfs_vma_page_mkwrit
- 	else
- 		file_update_time(file);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -418,14 +436,14 @@ static int kernfs_vma_access(struct vm_a
- 	if (!of->vm_ops)
- 		return -EINVAL;
- 
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		return -EINVAL;
- 
- 	ret = -EINVAL;
- 	if (of->vm_ops->access)
- 		ret = of->vm_ops->access(vma, addr, buf, len, write);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -455,7 +473,7 @@ static int kernfs_fop_mmap(struct file *
- 	mutex_lock(&of->mutex);
- 
- 	rc = -ENODEV;
--	if (!kernfs_get_active(of->kn))
-+	if (!kernfs_get_active_of(of))
- 		goto out_unlock;
- 
- 	ops = kernfs_ops(of->kn);
-@@ -490,7 +508,7 @@ static int kernfs_fop_mmap(struct file *
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 4b20a72ab8cff..90c281e1379ee 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -1204,8 +1204,11 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
+ 		goto out;
  	}
- 	vma->vm_ops = &kernfs_vm_ops;
- out_put:
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- out_unlock:
- 	mutex_unlock(&of->mutex);
  
-@@ -852,7 +870,7 @@ static __poll_t kernfs_fop_poll(struct f
- 	struct kernfs_node *kn = kernfs_dentry_node(filp->f_path.dentry);
- 	__poll_t ret;
- 
--	if (!kernfs_get_active(kn))
-+	if (!kernfs_get_active_of(of))
- 		return DEFAULT_POLLMASK|EPOLLERR|EPOLLPRI;
- 
- 	if (kn->attr.ops->poll)
-@@ -860,7 +878,7 @@ static __poll_t kernfs_fop_poll(struct f
- 	else
- 		ret = kernfs_generic_poll(of, wait);
- 
--	kernfs_put_active(kn);
-+	kernfs_put_active_of(of);
- 	return ret;
- }
- 
-@@ -875,7 +893,7 @@ static loff_t kernfs_fop_llseek(struct f
- 	 * the ops aren't called concurrently for the same open file.
- 	 */
- 	mutex_lock(&of->mutex);
--	if (!kernfs_get_active(of->kn)) {
-+	if (!kernfs_get_active_of(of)) {
- 		mutex_unlock(&of->mutex);
- 		return -ENODEV;
- 	}
-@@ -886,7 +904,7 @@ static loff_t kernfs_fop_llseek(struct f
- 	else
- 		ret = generic_file_llseek(file, offset, whence);
- 
--	kernfs_put_active(of->kn);
-+	kernfs_put_active_of(of);
- 	mutex_unlock(&of->mutex);
- 	return ret;
- }
+-	/* allocate hrtimer via map_kmalloc to use memcg accounting */
+-	cb = bpf_map_kmalloc_node(map, size, GFP_ATOMIC, map->numa_node);
++	/* Allocate via bpf_map_kmalloc_node() for memcg accounting. Until
++	 * kmalloc_nolock() is available, avoid locking issues by using
++	 * __GFP_HIGH (GFP_ATOMIC & ~__GFP_RECLAIM).
++	 */
++	cb = bpf_map_kmalloc_node(map, size, __GFP_HIGH, map->numa_node);
+ 	if (!cb) {
+ 		ret = -ENOMEM;
+ 		goto out;
+-- 
+2.51.0
+
 
 
 
