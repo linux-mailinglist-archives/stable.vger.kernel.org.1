@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4412B7EF64
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:08:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48878B7E324
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62E7A1753DB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12A811BC11AD
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B79332A40;
-	Wed, 17 Sep 2025 12:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A61D1F3BA2;
+	Wed, 17 Sep 2025 12:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwIC+dvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ogu8AlNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCA8332A3A;
-	Wed, 17 Sep 2025 12:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EDF337EB9;
+	Wed, 17 Sep 2025 12:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113805; cv=none; b=tMM82LYMLjKWwDcwl81ncQpTPNOJvj+RCEGTxwA0AkxX8JJO7+KdK/5ozyP3U2q9vnbr0Ff+CYAg8gv5RjsyAHwG3+CWdmwzvu5DOKQTgvAzcSwhViYS+SzjDFkw1BD/efwxjappV4gByueP/VtanMMo2bKVJBnhQY4RBi8SfjU=
+	t=1758112986; cv=none; b=OAfNKq9ZdehuZKesIZq9M371kU8dvi3CXhgjGdjlxH25afw0jH1f5V7ndbJP2CWPNHv9UJ+unjzPkdwkFRDsBn0sWly+GhcltcmxBc3qNagJHmPPS6DIMu838lAvv3RtUiBVZGOg+FO3Y6mUxwFmmIi25C/xF0jeK8XwG20Xw1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113805; c=relaxed/simple;
-	bh=6F3PON2DzhSXnsJNjGIQnHEcxsGloG+mwaRhz2MseAc=;
+	s=arc-20240116; t=1758112986; c=relaxed/simple;
+	bh=t+o5DmSH//lhFndqnBKUTy9kGl1cI/79pBUwk3HSPaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OK7gITdNYJ/l6d8CJb03ITm+gBz4dvrmnEgC5hDmVQ5+d68FLV1HJbFTJVbLU/FNZYiSUbBezZaDzfOwE18S8ZeQrcb0f4fySHB3HLF1A+DW/QLBScVbDvvZ8VX3KVGHTV6JpZ3m806g8OJVPkVR49z1jeBSU9XbbypkcUD6ZjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwIC+dvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F97C4CEF5;
-	Wed, 17 Sep 2025 12:56:44 +0000 (UTC)
+	 MIME-Version; b=p06fJUCsEu3/BPDyHKxlPZcaRw2Jm4mzW/99owXo5zDxR6CM9KltFB6xDaacBVKaLpom9zy8I4WVIfAAigHxmvfaceinfTxNVm40AqlCIcU07dvTGzgkCjUeFCe/qtX8/ama4YmNyKGGheULi7VCngJpy9yvs7PZZJfaS/GIEEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ogu8AlNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F707C4CEF0;
+	Wed, 17 Sep 2025 12:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113805;
-	bh=6F3PON2DzhSXnsJNjGIQnHEcxsGloG+mwaRhz2MseAc=;
+	s=korg; t=1758112985;
+	bh=t+o5DmSH//lhFndqnBKUTy9kGl1cI/79pBUwk3HSPaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwIC+dvHovlMXNCD0djOdqX42XiUl9ZIQUzdtAsd8zytMWn6AngQF97c5cHhy3kQu
-	 PJcq/8robTSjR2/UnkljZEbck1SH33ZWhqlt81u7oqDksZR9dQC/Oc4R1FxN2LPNfF
-	 OI7N7nzB19vwXOOJTP4jfiD6LC5J24unwKoNoui4=
+	b=Ogu8AlNCFZn2/JLtvb7DC/NENnuXMiHBkvNHzU0BBVBiev9Yca0KIz4w+Elnr1ma/
+	 n9NG/Wi5UMujGw7eOSW/58PSZR47eeq0hvVbGrm5C0W10gB88UszQsTp+tlJ9neFWS
+	 dQ8161LxvRPiAkxoVXVurX9a02f6sGNHq8kvtHjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Curley <jcurley@purestorage.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/101] NFSv4/flexfiles: Fix layout merge mirror check.
-Date: Wed, 17 Sep 2025 14:34:04 +0200
-Message-ID: <20250917123337.371249263@linuxfoundation.org>
+Subject: [PATCH 6.16 135/189] genetlink: fix genl_bind() invoking bind() after -EPERM
+Date: Wed, 17 Sep 2025 14:34:05 +0200
+Message-ID: <20250917123355.158949429@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Curley <jcurley@purestorage.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit dd2fa82473453661d12723c46c9f43d9876a7efd ]
+[ Upstream commit 1dbfb0363224f6da56f6655d596dc5097308d6f5 ]
 
-Typo in ff_lseg_match_mirrors makes the diff ineffective. This results
-in merge happening all the time. Merge happening all the time is
-problematic because it marks lsegs invalid. Marking lsegs invalid
-causes all outstanding IO to get restarted with EAGAIN and connections
-to get closed.
+Per family bind/unbind callbacks were introduced to allow families
+to track multicast group consumer presence, e.g. to start or stop
+producing events depending on listeners.
 
-Closing connections constantly triggers race conditions in the RDMA
-implementation...
+However, in genl_bind() the bind() callback was invoked even if
+capability checks failed and ret was set to -EPERM. This means that
+callbacks could run on behalf of unauthorized callers while the
+syscall still returned failure to user space.
 
-Fixes: 660d1eb22301c ("pNFS/flexfile: Don't merge layout segments if the mirrors don't match")
-Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fix this by only invoking bind() after "if (ret) break;" check
+i.e. after permission checks have succeeded.
+
+Fixes: 3de21a8990d3 ("genetlink: Add per family bind/unbind callbacks")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250905135731.3026965-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netlink/genetlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index b05dd4d3ed653..42c73c647a27f 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -276,7 +276,7 @@ ff_lseg_match_mirrors(struct pnfs_layout_segment *l1,
- 		struct pnfs_layout_segment *l2)
- {
- 	const struct nfs4_ff_layout_segment *fl1 = FF_LAYOUT_LSEG(l1);
--	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l1);
-+	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l2);
- 	u32 i;
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index 104732d345434..978c129c60950 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1836,6 +1836,9 @@ static int genl_bind(struct net *net, int group)
+ 		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
+ 			ret = -EPERM;
  
- 	if (fl1->mirror_array_cnt != fl2->mirror_array_cnt)
++		if (ret)
++			break;
++
+ 		if (family->bind)
+ 			family->bind(i);
+ 
 -- 
 2.51.0
 
