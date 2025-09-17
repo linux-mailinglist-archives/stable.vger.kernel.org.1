@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-180342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A54B7F1CF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:17:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F050BB7F064
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1092620DFD
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61A381C26609
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279262FBE1D;
-	Wed, 17 Sep 2025 13:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8140B32E741;
+	Wed, 17 Sep 2025 12:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gqhou7YA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKs/Hfmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D711429AB13;
-	Wed, 17 Sep 2025 13:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A36732E737;
+	Wed, 17 Sep 2025 12:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758114159; cv=none; b=Et17pVRV8dOwuKFn2Ka+jHYDzEQTAd9Vl1hAI1R5teML6It6WZaSZn7hzimqTB2oBilftC/VFPi9bzkp/wAYcN5CHV2dyLBE+n9Rd1ojpiBTETFM73D1pG+HsCqSZ84ozZ3ALWInduYUrz9BNkeSYjtl9REd5wOl9A8wt2sOJgw=
+	t=1758113948; cv=none; b=lHizWs/t0EQ2J1e5QleaxrTCH0g++Ssp2X9MVhrS1+9CeRsKSfPMCnneqMTd5EF8jygJt+mkMmkQETFOWtFQVtqdLP4xKCqSaizJkHMyTzXZjaW/R8bWRd9v9Nycv+SOdHRqyTYWio2rTWDcHII7sb/JKjg9pmwwfCRUzermJrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758114159; c=relaxed/simple;
-	bh=SCFiyAHvXeOdM+YE8h5AFFce5MjlYFv8pEU2/XJMDDI=;
+	s=arc-20240116; t=1758113948; c=relaxed/simple;
+	bh=mhbnJAvBxF5aiDUMoXyhkZWFp0tdhfqwcE1NUusEBU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpF5o05TjPMm8CVunsuGIeHNV4gjFAi07ecmy8xGvKhph1fhripg253Ea/5RzPwg7wzcuflrPoHI+729b/0H+Gqmu4P309Qb/9NONeEInlhD34ljQRpwcBtFFWtioNw1WgEwMzgszSeQ1ueBBWmumxl2od+/I/k5MGMdEN6hDSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gqhou7YA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9EEC4CEF0;
-	Wed, 17 Sep 2025 13:02:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r2+eKsMJFfc+Mcd08CMan9xQcgVegLMwOjoRkFBLVYfaECSL3sUtqLYuWdbW53OY2BW6uwDE4hNAaEHTJF4+gSPx6yNzaTJyXA7dPbVvLIS0xBuUjcF77z5Bsrp72L0Ssbpife+BdPJSzOlfwLKeZgWgo+t1rhrMaFETQXiEu5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKs/Hfmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DA3C4CEF5;
+	Wed, 17 Sep 2025 12:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758114159;
-	bh=SCFiyAHvXeOdM+YE8h5AFFce5MjlYFv8pEU2/XJMDDI=;
+	s=korg; t=1758113947;
+	bh=mhbnJAvBxF5aiDUMoXyhkZWFp0tdhfqwcE1NUusEBU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gqhou7YAzS97JDISQ42bQzk7uyUqDlpkcG9jrqNQsW5uI/VchKdAzf3ZUui1Df/id
-	 GLVJ1gsvkEM7bzGqzGKSVes3lXqD5R5mC770FZEHtyknhS9fWJX/6iFsZqLHG5M+Js
-	 0EDEig9EznAbC4V1+E1/QRylhYgZ/CrgEUhdge60=
+	b=QKs/Hfmp8AeQ8nKw2l4bwxlTMylszTOTPxcvwWb3OXj7C7RO4v7yBM6zZ3DrwhLOD
+	 KeInCW+o1ncBY3S7MW1Z9vgYVuH6wyLmWW1aCoDxUxTrxzOCF25Z88CRbG/mAxxpVs
+	 B9s2Xcrw7ttYVWN+aFFV68zi+gFL65F7QOwhcTJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 63/78] hsr: use hsr_for_each_port_rtnl in hsr_port_get_hsr
+Subject: [PATCH 6.6 101/101] drm/i915/power: fix size for for_each_set_bit() in abox iteration
 Date: Wed, 17 Sep 2025 14:35:24 +0200
-Message-ID: <20250917123331.113897125@linuxfoundation.org>
+Message-ID: <20250917123339.269049916@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 393c841fe4333cdd856d0ca37b066d72746cfaa6 ]
+[ Upstream commit cfa7b7659757f8d0fc4914429efa90d0d2577dd7 ]
 
-hsr_port_get_hsr() iterates over ports using hsr_for_each_port(),
-but many of its callers do not hold the required RCU lock.
+for_each_set_bit() expects size to be in bits, not bytes. The abox mask
+iteration uses bytes, but it works by coincidence, because the local
+variable holding the mask is unsigned long, and the mask only ever has
+bit 2 as the highest bit. Using a smaller type could lead to subtle and
+very hard to track bugs.
 
-Switch to hsr_for_each_port_rtnl(), since most callers already hold
-the rtnl lock. After review, all callers are covered by either the rtnl
-lock or the RCU lock, except hsr_dev_xmit(). Fix this by adding an
-RCU read lock there.
-
-Fixes: c5a759117210 ("net/hsr: Use list_head (and rcu) instead of array for slave devices.")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250905091533.377443-3-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: stable@vger.kernel.org # v5.9+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://lore.kernel.org/r/20250905104149.1144751-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 7ea3baa6efe4bb93d11e1c0e6528b1468d7debf6)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+[ adapted struct intel_display *display parameters to struct drm_i915_private *dev_priv ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_device.c | 3 +++
- net/hsr/hsr_main.c   | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_display_power.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 8b98b3f3b71d9..0b23d52b8d87a 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -228,6 +228,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct hsr_priv *hsr = netdev_priv(dev);
- 	struct hsr_port *master;
+--- a/drivers/gpu/drm/i915/display/intel_display_power.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power.c
+@@ -1170,7 +1170,7 @@ static void icl_mbus_init(struct drm_i91
+ 	if (DISPLAY_VER(dev_priv) == 12)
+ 		abox_regs |= BIT(0);
  
-+	rcu_read_lock();
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	if (master) {
- 		skb->dev = master->dev;
-@@ -240,6 +241,8 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 		dev_core_stats_tx_dropped_inc(dev);
- 		dev_kfree_skb_any(skb);
- 	}
-+	rcu_read_unlock();
-+
- 	return NETDEV_TX_OK;
+-	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
++	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
+ 		intel_de_rmw(dev_priv, MBUS_ABOX_CTL(i), mask, val);
  }
  
-diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
-index c325ddad539a7..76a1958609e29 100644
---- a/net/hsr/hsr_main.c
-+++ b/net/hsr/hsr_main.c
-@@ -125,7 +125,7 @@ struct hsr_port *hsr_port_get_hsr(struct hsr_priv *hsr, enum hsr_port_type pt)
- {
- 	struct hsr_port *port;
+@@ -1623,11 +1623,11 @@ static void tgl_bw_buddy_init(struct drm
+ 	if (table[config].page_mask == 0) {
+ 		drm_dbg(&dev_priv->drm,
+ 			"Unknown memory configuration; disabling address buddy logic.\n");
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
+ 			intel_de_write(dev_priv, BW_BUDDY_CTL(i),
+ 				       BW_BUDDY_DISABLE);
+ 	} else {
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
+ 			intel_de_write(dev_priv, BW_BUDDY_PAGE_MASK(i),
+ 				       table[config].page_mask);
  
--	hsr_for_each_port(hsr, port)
-+	hsr_for_each_port_rtnl(hsr, port)
- 		if (port->type == pt)
- 			return port;
- 	return NULL;
--- 
-2.51.0
-
 
 
 
