@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-180268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B5DB7F036
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838D9B7F170
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B4D918869B7
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:04:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 910B2627E06
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E77630CB22;
-	Wed, 17 Sep 2025 12:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AEB328967;
+	Wed, 17 Sep 2025 13:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l01VestP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="au7tME8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D4F330D27;
-	Wed, 17 Sep 2025 12:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B8830CB49;
+	Wed, 17 Sep 2025 13:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113918; cv=none; b=KUvIU9Q5GASx6G67HuOKOzH4H8gCrZJoz9MEvgexsX3WrHCQ5/7G9OUPc3PytvX0TN0UCrofPMX+XgepTLiTafRsQlUb36CHc61IdjPHQ8pxh8/ubfDoD7okDUPH3GG4sCXL4hdl9fovEz1pnCXhkEPCMU2meRveTxrK+PgHJA8=
+	t=1758114138; cv=none; b=Z82Mmd/17ELwxvlGJV7PlyN6w00/FnNNmzi93WMELJcNcz/sMaLwoCGTp2EhCgBqNurHZWOvyurhCDWMy3IIKKEnhGm6flFZ6uZB+5BxC9IlOOYnk/0qrWC4Fozixo29nc5tGQhpbis0spdOj7I1ktvK4ObRjkYpon7GKX19pIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113918; c=relaxed/simple;
-	bh=oyDoUBKiQGcIZBXc76jClQcKsmP13wsoqvaMBoRnTcY=;
+	s=arc-20240116; t=1758114138; c=relaxed/simple;
+	bh=4IKqLTbRjyz0E60MS15vQNlLAFOFn8xCrWWXScqjEOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ri7wahUVHYuazWGMaGsVX+oTv0Gt9idWnlGjoZa2QBfNWHiSv8pohWiUIcDY5ci8HM1XoQEmi4JD7zhI4l2Qt2pzmyy4qHfRXPb8i2fX+FVXm1vnyeMs/WnYynATt0EQUUu0dxvlQTUInwEtl2H5u+rf7QqOqLTUYEQOYDuZa6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l01VestP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDFCC4CEF0;
-	Wed, 17 Sep 2025 12:58:37 +0000 (UTC)
+	 MIME-Version; b=ixKnSAOzNjc6LzCF/Myp6992hogiRYBPWVSuqPL2Rgnkq6f5vhpP8bReUWbCrJ8jMQB36AfgL5Pg7byabwkMtRyM9dDJtkU9lyxBNFsbIRYAtCRwtaLNwh4OKIG/WA27fdTQAhU2wML+Xju7MrVXN3DO1AfGZAnK2ry3zdKRoEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=au7tME8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF0EC4CEF0;
+	Wed, 17 Sep 2025 13:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113917;
-	bh=oyDoUBKiQGcIZBXc76jClQcKsmP13wsoqvaMBoRnTcY=;
+	s=korg; t=1758114136;
+	bh=4IKqLTbRjyz0E60MS15vQNlLAFOFn8xCrWWXScqjEOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l01VestPz8V7Wpd03o2b8xWFbrtCLu13FCyEDRpSKN44vu8tC4B1WxFJhC2eKp9gV
-	 wmsTr21qTkpHRoaC7kKfWs5djzeDcmyt7qhUDRxCX28ozE7io2t0igTNLmtEVrxaZm
-	 KrFWBY9P2IJL7aX71ow6YWcWZB+joPUEV/LVGscE=
+	b=au7tME8On1r4Y2StzSiSV5yjmq9tbaUgk57Xjp0Axy8u7v/PeyjqkjtdHUlqayBjm
+	 pVFd1odoR7vrUpV9BgoeuSmsNE84qVDFQZ/n0bW/jWb9+UwustppXtU9VWNb47BnKl
+	 bRrd0auO96UWxOWqZ9v6eSBOTpB4t/OTSJj4n70U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 093/101] usb: gadget: midi2: Fix MIDI2 IN EP max packet size
-Date: Wed, 17 Sep 2025 14:35:16 +0200
-Message-ID: <20250917123339.088544966@linuxfoundation.org>
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 56/78] can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
+Date: Wed, 17 Sep 2025 14:35:17 +0200
+Message-ID: <20250917123330.937621360@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
-References: <20250917123336.863698492@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 116e79c679a1530cf833d0ff3007061d7a716bd9 upstream.
+[ Upstream commit f214744c8a27c3c1da6b538c232da22cd027530e ]
 
-The EP-IN of MIDI2 (altset 1) wasn't initialized in
-f_midi2_create_usb_configs() as it's an INT EP unlike others BULK
-EPs.  But this leaves rather the max packet size unchanged no matter
-which speed is used, resulting in the very slow access.
-And the wMaxPacketSize values set there look legit for INT EPs, so
-let's initialize the MIDI2 EP-IN there for achieving the equivalent
-speed as well.
+Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
+callback") expects that a call to j1939_priv_put() can be unconditionally
+delayed until j1939_sk_sock_destruct() is called. But a refcount leak will
+happen when j1939_sk_bind() is called again after j1939_local_ecu_get()
+ from previous j1939_sk_bind() call returned an error. We need to call
+j1939_priv_put() before j1939_sk_bind() returns an error.
 
-Fixes: 8b645922b223 ("usb: gadget: Add support for USB MIDI 2.0 function driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20250905133240.20966-1-tiwai@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/4f49a1bc-a528-42ad-86c0-187268ab6535@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi2.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/can/j1939/socket.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -1739,9 +1739,12 @@ static int f_midi2_create_usb_configs(st
- 	case USB_SPEED_HIGH:
- 		midi2_midi1_ep_out_desc.wMaxPacketSize = cpu_to_le16(512);
- 		midi2_midi1_ep_in_desc.wMaxPacketSize = cpu_to_le16(512);
--		for (i = 0; i < midi2->num_eps; i++)
-+		for (i = 0; i < midi2->num_eps; i++) {
- 			midi2_midi2_ep_out_desc[i].wMaxPacketSize =
- 				cpu_to_le16(512);
-+			midi2_midi2_ep_in_desc[i].wMaxPacketSize =
-+				cpu_to_le16(512);
-+		}
- 		fallthrough;
- 	case USB_SPEED_FULL:
- 		midi1_in_eps = midi2_midi1_ep_in_descs;
-@@ -1750,9 +1753,12 @@ static int f_midi2_create_usb_configs(st
- 	case USB_SPEED_SUPER:
- 		midi2_midi1_ep_out_desc.wMaxPacketSize = cpu_to_le16(1024);
- 		midi2_midi1_ep_in_desc.wMaxPacketSize = cpu_to_le16(1024);
--		for (i = 0; i < midi2->num_eps; i++)
-+		for (i = 0; i < midi2->num_eps; i++) {
- 			midi2_midi2_ep_out_desc[i].wMaxPacketSize =
- 				cpu_to_le16(1024);
-+			midi2_midi2_ep_in_desc[i].wMaxPacketSize =
-+				cpu_to_le16(1024);
-+		}
- 		midi1_in_eps = midi2_midi1_ep_in_ss_descs;
- 		midi1_out_eps = midi2_midi1_ep_out_ss_descs;
- 		break;
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index 0a4267a24263b..502975fd5f97e 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -520,6 +520,9 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	ret = j1939_local_ecu_get(priv, jsk->addr.src_name, jsk->addr.sa);
+ 	if (ret) {
+ 		j1939_netdev_stop(priv);
++		jsk->priv = NULL;
++		synchronize_rcu();
++		j1939_priv_put(priv);
+ 		goto out_release_sock;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
