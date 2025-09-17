@@ -1,56 +1,96 @@
-Return-Path: <stable+bounces-179907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC01DB7E166
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92210B7E8A4
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECDDA621F13
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8DE482772
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7451F462C;
-	Wed, 17 Sep 2025 12:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D5132898C;
+	Wed, 17 Sep 2025 12:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bjF05NQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PG0zyhnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BB61F873B;
-	Wed, 17 Sep 2025 12:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAE42D480D;
+	Wed, 17 Sep 2025 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112762; cv=none; b=c/gMrdFpz25Zk0xEy6qSD8r8ypBMDBZBEZAE/NJEaMhvdURfsXRMw4fOO9qjnGz79bUiW7wK+9j9i+6pSuSeFO7pfWiWEwomOyJ26m++B0TKZ6xP7zm3tvItb/6Awulj6Ptm6tyLdCOiEnEkmBSERkNScbQ0PwG8qQb0wEIcRbM=
+	t=1758113272; cv=none; b=H5teOoW+H2PsXuGRDs3NP1IEff8uJ7QS0Ob0+4A8u9GdLo+1IG8DtGhW4dd96Yr3YNPCMFrC2I1dJSVBDsv+9JqV1sX29AFnecn7znEUaRcY0fODsWqML72rPW0rvNT/gGCnSZhcROQ/v5P57Q4OCfzgL4YxEWyBUHzngRDBkAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112762; c=relaxed/simple;
-	bh=YumrNPofz6rELJFvY6RXWRpREu+uzDLB3xOrIcZP/Lw=;
+	s=arc-20240116; t=1758113272; c=relaxed/simple;
+	bh=QtA9+hyITH9OGdzYTMv+6PNaCcJA2x89pW+qUM9X9gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hR/8DlSzFOEvQkxX7tE0ZnXzjOlqE53r9V9ToWo1/ktQoYsRR1bCuKIKJgGvaIIUUOt9Y7qhCOVSnIyK9+puy99Pjn/kbiSFAAVA+b3KZGRBD4ZSyHqZMajWuWEh8FYt0WP62aXtzQ8YZ1+zSMPHFOuFsMBrtCf8oKICMDCKRcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bjF05NQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B367FC4CEF0;
-	Wed, 17 Sep 2025 12:39:21 +0000 (UTC)
+	 MIME-Version; b=lhXr25Sa9hyhWCqL7rDnHkdI29dSXWlZNXJy09t5vE2t8CZsdFcQdeG8ztluFbQAYlFpjOBuqDaG1GGKaG/yUyx59CvIDMpd/VY5nrxW0zO/oxOJ2MmJ26n1g7KsadwscLv4sjkcD+SmEu7dA5YHMBQi/Bt8VUKg/9555c9Xd4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PG0zyhnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFB7C4CEF7;
+	Wed, 17 Sep 2025 12:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112762;
-	bh=YumrNPofz6rELJFvY6RXWRpREu+uzDLB3xOrIcZP/Lw=;
+	s=korg; t=1758113272;
+	bh=QtA9+hyITH9OGdzYTMv+6PNaCcJA2x89pW+qUM9X9gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bjF05NQ8GQC/iHAh5HDh0AKRG0wZkHWkQGmsysqiHUoI2HggxInv0Oz6DYomgGAt
-	 4TlBAAY01ysIEe7Be1dk5PlyhU7PtkN/SGHHHXxsX22nncxaiN9hyagCtqXWynzq/z
-	 KGfd4GOs2T1fmjLp00siUUrXfZWLWfyhwfMsLlNU=
+	b=PG0zyhnksw07vT9qoEmbDTvPWIJtQN7zNsE3A8V+2Csbc359AS34eQPvg6ylZB/8o
+	 336IB00u5QzM9Wj092jg7b26N+M9j6jZxXhdsGz4I4vpEUN/EqYWoBEf+oAdLMUxro
+	 jazW2x/bV0Xp4u7x24tC4Q+81Cm851HI2zPzzSBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexander Dahl <ada@thorsis.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.16 070/189] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
-Date: Wed, 17 Sep 2025 14:33:00 +0200
-Message-ID: <20250917123353.581789082@linuxfoundation.org>
+	Harry Yoo <harry.yoo@oracle.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	bibo mao <maobibo@loongson.cn>,
+	Borislav Betkov <bp@alien8.de>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Thomas Huth <thuth@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 009/140] mm: introduce and use {pgd,p4d}_populate_kernel()
+Date: Wed, 17 Sep 2025 14:33:01 +0200
+Message-ID: <20250917123344.545747822@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +102,292 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-commit fd779eac2d659668be4d3dbdac0710afd5d6db12 upstream.
+commit f2d2f9598ebb0158a3fe17cda0106d7752e654a2 upstream.
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
+populating PGD and P4D entries for the kernel address space.  These
+helpers ensure proper synchronization of page tables when updating the
+kernel portion of top-level page tables.
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
+Until now, the kernel has relied on each architecture to handle
+synchronization of top-level page tables in an ad-hoc manner.  For
+example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for direct
+mapping and vmemmap mapping changes").
 
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
+However, this approach has proven fragile for following reasons:
 
-Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Dahl <ada@thorsis.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+  1) It is easy to forget to perform the necessary page table
+     synchronization when introducing new changes.
+     For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
+     savings for compound devmaps") overlooked the need to synchronize
+     page tables for the vmemmap area.
+
+  2) It is also easy to overlook that the vmemmap and direct mapping areas
+     must not be accessed before explicit page table synchronization.
+     For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
+     sub-pmd ranges")) caused crashes by accessing the vmemmap area
+     before calling sync_global_pgds().
+
+To address this, as suggested by Dave Hansen, introduce _kernel() variants
+of the page table population helpers, which invoke architecture-specific
+hooks to properly synchronize page tables.  These are introduced in a new
+header file, include/linux/pgalloc.h, so they can be called from common
+code.
+
+They reuse existing infrastructure for vmalloc and ioremap.
+Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
+and the actual synchronization is performed by
+arch_sync_kernel_mappings().
+
+This change currently targets only x86_64, so only PGD and P4D level
+helpers are introduced.  Currently, these helpers are no-ops since no
+architecture sets PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
+
+In theory, PUD and PMD level helpers can be added later if needed by other
+architectures.  For now, 32-bit architectures (x86-32 and arm) only handle
+PGTBL_PMD_MODIFIED, so p*d_populate_kernel() will never affect them unless
+we introduce a PMD level helper.
+
+[harry.yoo@oracle.com: fix KASAN build error due to p*d_populate_kernel()]
+  Link: https://lkml.kernel.org/r/20250822020727.202749-1-harry.yoo@oracle.com
+Link: https://lkml.kernel.org/r/20250818020206.4517-3-harry.yoo@oracle.com
+Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: bibo mao <maobibo@loongson.cn>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adjust context ]
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ include/linux/pgalloc.h |   29 +++++++++++++++++++++++++++++
+ include/linux/pgtable.h |   13 +++++++------
+ mm/kasan/init.c         |   12 ++++++------
+ mm/percpu.c             |    6 +++---
+ mm/sparse-vmemmap.c     |    6 +++---
+ 5 files changed, 48 insertions(+), 18 deletions(-)
+ create mode 100644 include/linux/pgalloc.h
 
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1378,13 +1378,23 @@ static int atmel_smc_nand_prepare_smccon
- 		return ret;
- 
- 	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
+--- /dev/null
++++ b/include/linux/pgalloc.h
+@@ -0,0 +1,29 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_PGALLOC_H
++#define _LINUX_PGALLOC_H
 +
-+	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
++#include <linux/pgtable.h>
++#include <asm/pgalloc.h>
++
++/*
++ * {pgd,p4d}_populate_kernel() are defined as macros to allow
++ * compile-time optimization based on the configured page table levels.
++ * Without this, linking may fail because callers (e.g., KASAN) may rely
++ * on calls to these functions being optimized away when passing symbols
++ * that exist only for certain page table levels.
++ */
++#define pgd_populate_kernel(addr, pgd, p4d)				\
++	do {								\
++		pgd_populate(&init_mm, pgd, p4d);			\
++		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)	\
++			arch_sync_kernel_mappings(addr, addr);		\
++	} while (0)
++
++#define p4d_populate_kernel(addr, p4d, pud)				\
++	do {								\
++		p4d_populate(&init_mm, p4d, pud);			\
++		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)	\
++			arch_sync_kernel_mappings(addr, addr);		\
++	} while (0)
++
++#endif /* _LINUX_PGALLOC_H */
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1699,8 +1699,8 @@ static inline int pmd_protnone(pmd_t pmd
+ 
+ /*
+  * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
+- * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
+- * needs to be called.
++ * and let generic vmalloc, ioremap and page table update code know when
++ * arch_sync_kernel_mappings() needs to be called.
+  */
+ #ifndef ARCH_PAGE_TABLE_SYNC_MASK
+ #define ARCH_PAGE_TABLE_SYNC_MASK 0
+@@ -1833,10 +1833,11 @@ static inline bool arch_has_pfn_modify_c
+ /*
+  * Page Table Modification bits for pgtbl_mod_mask.
+  *
+- * These are used by the p?d_alloc_track*() set of functions an in the generic
+- * vmalloc/ioremap code to track at which page-table levels entries have been
+- * modified. Based on that the code can better decide when vmalloc and ioremap
+- * mapping changes need to be synchronized to other page-tables in the system.
++ * These are used by the p?d_alloc_track*() and p*d_populate_kernel()
++ * functions in the generic vmalloc, ioremap and page table update code
++ * to track at which page-table levels entries have been modified.
++ * Based on that the code can better decide when page table changes need
++ * to be synchronized to other page-tables in the system.
+  */
+ #define		__PGTBL_PGD_MODIFIED	0
+ #define		__PGTBL_P4D_MODIFIED	1
+--- a/mm/kasan/init.c
++++ b/mm/kasan/init.c
+@@ -13,9 +13,9 @@
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+ #include <linux/slab.h>
++#include <linux/pgalloc.h>
+ 
+ #include <asm/page.h>
+-#include <asm/pgalloc.h>
+ 
+ #include "kasan.h"
+ 
+@@ -203,7 +203,7 @@ static int __ref zero_p4d_populate(pgd_t
+ 			pud_t *pud;
+ 			pmd_t *pmd;
+ 
+-			p4d_populate(&init_mm, p4d,
++			p4d_populate_kernel(addr, p4d,
+ 					lm_alias(kasan_early_shadow_pud));
+ 			pud = pud_offset(p4d, addr);
+ 			pud_populate(&init_mm, pud,
+@@ -224,7 +224,7 @@ static int __ref zero_p4d_populate(pgd_t
+ 			} else {
+ 				p = early_alloc(PAGE_SIZE, NUMA_NO_NODE);
+ 				pud_init(p);
+-				p4d_populate(&init_mm, p4d, p);
++				p4d_populate_kernel(addr, p4d, p);
+ 			}
+ 		}
+ 		zero_pud_populate(p4d, addr, next);
+@@ -263,10 +263,10 @@ int __ref kasan_populate_early_shadow(co
+ 			 * puds,pmds, so pgd_populate(), pud_populate()
+ 			 * is noops.
+ 			 */
+-			pgd_populate(&init_mm, pgd,
++			pgd_populate_kernel(addr, pgd,
+ 					lm_alias(kasan_early_shadow_p4d));
+ 			p4d = p4d_offset(pgd, addr);
+-			p4d_populate(&init_mm, p4d,
++			p4d_populate_kernel(addr, p4d,
+ 					lm_alias(kasan_early_shadow_pud));
+ 			pud = pud_offset(p4d, addr);
+ 			pud_populate(&init_mm, pud,
+@@ -285,7 +285,7 @@ int __ref kasan_populate_early_shadow(co
+ 				if (!p)
+ 					return -ENOMEM;
+ 			} else {
+-				pgd_populate(&init_mm, pgd,
++				pgd_populate_kernel(addr, pgd,
+ 					early_alloc(PAGE_SIZE, NUMA_NO_NODE));
+ 			}
+ 		}
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -3129,7 +3129,7 @@ out_free:
+ #endif /* BUILD_EMBED_FIRST_CHUNK */
+ 
+ #ifdef BUILD_PAGE_FIRST_CHUNK
+-#include <asm/pgalloc.h>
++#include <linux/pgalloc.h>
+ 
+ #ifndef P4D_TABLE_SIZE
+ #define P4D_TABLE_SIZE PAGE_SIZE
+@@ -3157,7 +3157,7 @@ void __init __weak pcpu_populate_pte(uns
+ 		p4d = memblock_alloc(P4D_TABLE_SIZE, P4D_TABLE_SIZE);
+ 		if (!p4d)
+ 			goto err_alloc;
+-		pgd_populate(&init_mm, pgd, p4d);
++		pgd_populate_kernel(addr, pgd, p4d);
+ 	}
+ 
+ 	p4d = p4d_offset(pgd, addr);
+@@ -3165,7 +3165,7 @@ void __init __weak pcpu_populate_pte(uns
+ 		pud = memblock_alloc(PUD_TABLE_SIZE, PUD_TABLE_SIZE);
+ 		if (!pud)
+ 			goto err_alloc;
+-		p4d_populate(&init_mm, p4d, pud);
++		p4d_populate_kernel(addr, p4d, pud);
+ 	}
+ 
+ 	pud = pud_offset(p4d, addr);
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -27,9 +27,9 @@
+ #include <linux/spinlock.h>
+ #include <linux/vmalloc.h>
+ #include <linux/sched.h>
++#include <linux/pgalloc.h>
+ 
+ #include <asm/dma.h>
+-#include <asm/pgalloc.h>
+ 
+ /*
+  * Allocate a block of memory to be used to back the virtual memory map
+@@ -230,7 +230,7 @@ p4d_t * __meminit vmemmap_p4d_populate(p
+ 		if (!p)
+ 			return NULL;
+ 		pud_init(p);
+-		p4d_populate(&init_mm, p4d, p);
++		p4d_populate_kernel(addr, p4d, p);
+ 	}
+ 	return p4d;
+ }
+@@ -242,7 +242,7 @@ pgd_t * __meminit vmemmap_pgd_populate(u
+ 		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
+ 		if (!p)
+ 			return NULL;
+-		pgd_populate(&init_mm, pgd, p);
++		pgd_populate_kernel(addr, pgd, p);
+ 	}
+ 	return pgd;
+ }
 
 
 
