@@ -1,328 +1,115 @@
-Return-Path: <stable+bounces-180456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E031B82272
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 00:28:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4F5B8227A
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 00:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10A20585FE8
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 22:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 183711C80EF0
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 22:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF1130E0FD;
-	Wed, 17 Sep 2025 22:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A8130EF8C;
+	Wed, 17 Sep 2025 22:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIjc/yRY"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Rc1UCYpI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D22A55
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 22:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF4530E82E
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 22:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758148094; cv=none; b=mDhcoBJttjMLFr2fck/srdQmqWZP6ZVmAhvOffzaW8zzMVkYY5VR+9quhdAuS6Hv2J4jfviGlGaVgPPmP5UWMsbd1mxRbyM9CeP0EQKcRWH2Qy+LQKEUvcTPH30zqn8auUi9Kg3JSCosPz2AvQGHubno7MW49wlb1KSk+ak+iGk=
+	t=1758148124; cv=none; b=iwC0ojWpdgAXrLUsW0AqOURdsttM/Z8G44Y19osMdGJ5PA2L0p6g6oauncZ38mSeZomqip5itMUuCjgkwHClW+p0/tvJCJdWlsLxiq0nj03J9nP27VywQV5KbwygeiN56taFJsIzDC8yV+jpIQ/g/D8G1XNWyeEOXNVZALPglo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758148094; c=relaxed/simple;
-	bh=JUmpkfXE/ckBh6uUpVA53yMm3XYAiKGXYp30GK8/XQc=;
+	s=arc-20240116; t=1758148124; c=relaxed/simple;
+	bh=FibkJLFpdmPs16TWPQcjI1FEmw5E/LmUaqG65SaId+U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ULbzbx4B4oL8K0+xT92cbJyIiNkzTvmtqklpasarnbQ4CimfyCESEVMFWxIG9TbY8NOVMaoT0mfwvckXOBvzm5vG2P3+MnYfHbspOW1Qa6SoSyXHatb/NaeVMVlQixbOGEW/JUC7rccUyFc7nfAN+2wGpMNl7PEeJK6Vjmx9J08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIjc/yRY; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32326e2f0b3so162691a91.2
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:28:12 -0700 (PDT)
+	 To:Cc:Content-Type; b=AL9Ejz50MS0GKCewsTDA0oEg19HK5kxdddAb83xnvHVTIkk7fK10jgVyZx8Y9KjzrMsNlH5il6j8J0nctJQTz4X7bT6odHunsarVZyV0YqTMTC0SqRC1IBHrYe3teG88uc+xsvxrRal6cLrYmeibAnfdFa2/6dDHh04HF+qQNYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Rc1UCYpI; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-70ba7aa131fso3003666d6.2
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758148092; x=1758752892; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1758148121; x=1758752921; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=88Hfxga3d3LxPeYNhn85xtDJ4XWn1qJNDdfdd5STqPw=;
-        b=FIjc/yRY4LBXc3dp57UoKBFTi3YfTdgGjVCbIHZ66C0NiU7MWWH4fvmPGxjXRLDE4s
-         9mUfomyQ2VGB/TLWSgLst3SBrPBFSLnL5qRKU+g1yyBZMH9A44sBycgToIC7CydLNWtp
-         Ha06QN07wFt37CGOzG7kWNFtwXCvleLl+ARUoFfJZC1ol7fztaL+oLC+RFwuDkX19NVH
-         cWhRVy/tm+Jfukeh2oBVrhMkSEZz2oC/o0BukbRHxD47prA4gxFrn/68OLLwbeRbail+
-         cEHRS+uSXOt2dwifoDcx6OFT73ONf/FYa6e+W8lQVYg8gyaLQ7LShLcmRAu8uK6oB+Zs
-         9IBg==
+        bh=FibkJLFpdmPs16TWPQcjI1FEmw5E/LmUaqG65SaId+U=;
+        b=Rc1UCYpIeZiBs7TWLP8eGp5TdgEs9GX8HR7TEJkNSpe4d9Y4sl6BNDCo7fILWFSaB/
+         cHMGHwTpul8dnIbf2xtdYjB+Vy36OhURIQHeDfcv82U6BqVldxLFRC9QUWj2a85d3Wno
+         HVztqkNJZ5RwceTZ1fd94nUlq7n1vOs/BS7Qw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758148092; x=1758752892;
+        d=1e100.net; s=20230601; t=1758148121; x=1758752921;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=88Hfxga3d3LxPeYNhn85xtDJ4XWn1qJNDdfdd5STqPw=;
-        b=sJQHlGo57nd+yEZdc207drjcf8hojHJ0OKS8hgFriUegTNFdIk9aA/XHqEp3F+u/IM
-         t0NJgn+D8UHZz27WwYkKVh1q+nSwZ5sWRT4ulwA46zHVC4bYgP19B5id/87GP0CvHfiP
-         BVaOj92UEw4sNPPDkDHk2feVtmhiQK0FQs6oNVIZzaNy+a0Q9jsqSMz++EHy9Af06+m4
-         PoeNoKoA7yh2azS7TRqIPCYpzhYlnUwwVwao3ULFyfdpoZunerhXFIglurKd2lF53USg
-         dmXwIxQLvogDnCaKolsx6GohQWYrA4+NMooCDkOXIYIQg7mXgctegBAGnnOWtUdjlHkj
-         e4Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXkV7pSXrYLpXqbatfi/z62tRlUQChNmeleBtn+oUCwoC93yBLxeBvuKD8zxVNY4Vzt1BnojbY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6r9zGtuuyhd2jc+PujiWYusEiDCrmmnDaMU6ktYv/8UvdqpEi
-	D5H/WR1QZLzvHve2qI3koOlRbeR3tOUde+tVhQTngxNKuDAY3IADQyLHbPaBpGZJuRYyclIXOCv
-	J34VmTDmlw6wzRDH5M5dP3cUbkdSGSvNJlmUdCa4=
-X-Gm-Gg: ASbGncsbqXlbESePLoDBdHGRZSYHI7USCTT+PGz63UgB+B/aSH+/yZCR+88hvahQuvu
-	H3VLjW9PlvkSGo2sn8qXk5qFBhZDmxqadEkTStMi3RbQeA5zJORi+kmIxib9Bt31kPOBx0yGfBG
-	/S5gdfWE9JCUcgd4iTQSnmWPyYMoHIsRsL4C8JRCvX8XNHhSQw4IimOFnv89hHjO0Purjeu8wL+
-	5Mo48bv8PKYfhNmgrE8efk=
-X-Google-Smtp-Source: AGHT+IEDwDc6isJL4dhnCo+gBgaLwDjZMIE8vgVMomCk4Y1HZMZzi470YdQATAEQ9+I5qiFrYGkw3FLRGKOsO2XoBaY=
-X-Received: by 2002:a17:90b:5550:b0:330:6c04:755a with SMTP id
- 98e67ed59e1d1-3306c04779bmr12761a91.12.1758148092207; Wed, 17 Sep 2025
- 15:28:12 -0700 (PDT)
+        bh=FibkJLFpdmPs16TWPQcjI1FEmw5E/LmUaqG65SaId+U=;
+        b=qB1WcoDOzmayHEcEA4OLiqApZYe4hobtWozkbhPczChmnpyCB8jmCN4UNG2xUta3/k
+         6dkYf6bTvPqr+08aRPjAGP9EKf0Oja7OIT0+ERdF9c26X6T58HzL0PqzzF8ylUCNAz3v
+         pGTYOib/KuVQ8Wyn1vBM6kH3oiwV7m9pMoxJx6EEEUHL40ZUFcCJ+q8YOYAk+A8bcE5G
+         I6gB4oCK5KhzDTmKUdG8JRK6SSKE4pY36HKY6u8Pd0XBWImmkIFnpuKVmMy9OFoAxydP
+         XjhBI3FoXzbm8dHKUqW2XKK4HRHvSHkr/JGftHcV1SHT0a75atEHpfjsibTSPgslbe+v
+         Ztdg==
+X-Forwarded-Encrypted: i=1; AJvYcCUE0pxSuui//CFdZJ62TskfHL4fX+85xmcD5fYI+ZWGSthn1x7sk77UCZmMtPgiIrIRwlmTSvw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXhRELQc3CfFmZ5BMee5lslhCZAqWvvIwd2aAvnDPuoX1tuVgr
+	uA/eMi8i8t1Uf5wPfzq8t3Kczyzd9wQQvkVPQJYU6nsGTmJSrWWa3/IxGsXY7dTQSIksip81c91
+	0iH4=
+X-Gm-Gg: ASbGncvE709QxV5uEey5imfgpTzBTv1UvGaLdwfY6YHL6tksKLjsY7kfhy8L86avn3U
+	kbWl2t8YLib/1ldC6wnE3uxqHobapYTuzZoxUUW5HEPMhRvDPYgSyrf+4K2MjCyyjNi61kYGr98
+	zVLeJJBqZKhcEZgk5J2RTg/kRUGfsE5SOCouaQdAPr2xgUsXcrMZWe/+xWdcTk8ou6ljZ1QYKqw
+	QBLsGZbAUNp9rRlMzIosE3SLNvbcoAUXC+7uoaSv/lxUm8enQmWcsUv2RlpxxKhMPng2/N6FBX3
+	mTbLtIaMzULHrYj8Bo09ukrx15po5AneGFEKYSXQ9AUbviHlUs7eeI5Ji+1P8K3SDXDthEQedKB
+	p3e6xyOsGkLWOL268/HCH+ZE2F43xfvyTtIm1Rc7bJ3JmHJa614Be4sJlTp621ipRVgLOdAZrpA
+	2ZP6J8tQ==
+X-Google-Smtp-Source: AGHT+IE89f5xeZZ+DOMbcSOuCp1YJ7SqULDY2sB4o753zG/ofPF0x38X7gx0MIaPWrzdMgBQhNx3KQ==
+X-Received: by 2002:a05:6214:460a:b0:78e:d1a1:2331 with SMTP id 6a1803df08f44-78ed1b066a8mr39864936d6.12.1758148120673;
+        Wed, 17 Sep 2025 15:28:40 -0700 (PDT)
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com. [209.85.160.174])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-79354c9eea8sm2760756d6.61.2025.09.17.15.28.39
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 15:28:39 -0700 (PDT)
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4bb7209ec97so57921cf.1
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:28:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCViGylpgV9KVf8xPduINUYJlqidoWz53zcn1hYeIYT1+5eStUX3lXhbbckHVB3kUmU3n71S268=@vger.kernel.org
+X-Received: by 2002:a05:622a:290:b0:4b0:f1f3:db94 with SMTP id
+ d75a77b69052e-4ba2dbd91e3mr7888171cf.5.1758148118686; Wed, 17 Sep 2025
+ 15:28:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250917221641.30226-2-julian.lagattuta@gmail.com> <20250917221641.30226-4-julian.lagattuta@gmail.com>
-In-Reply-To: <20250917221641.30226-4-julian.lagattuta@gmail.com>
-From: Julian LaGattuta <julian.lagattuta@gmail.com>
-Date: Wed, 17 Sep 2025 18:28:00 -0400
-X-Gm-Features: AS18NWBzcAx5cvt8RiaUg8Ergg45OoVqrlZQHVsmG8ufYPNdLoG8Efsgvkv8okE
-Message-ID: <CADuX1q+DRQMbV3Xrbpi3b8kqJX0KeQTO_g5Hh=dHnaFXZuftgw@mail.gmail.com>
-Subject: Re: [PATCH 03/39] Bluetooth: L2CAP: Fix L2CAP MTU negotiation
-To: julian.lagattuta@gmail.com
-Cc: =?UTF-8?B?RnLDqWTDqXJpYyBEYW5pcw==?= <frederic.danis@collabora.com>, 
-	stable@vger.kernel.org, Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+References: <cover.1752824628.git.namcao@linutronix.de> <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+ <aflo53gea7i6cyy22avn7mqxb3xboakgjwnmj4bqmjp6oafejj@owgv35lly7zq>
+ <87zfat19i7.fsf@yellow.woof> <CAGudoHFLrkk_FBgFJ_ppr60ARSoJT7JLji4soLdKbrKBOxTR1Q@mail.gmail.com>
+ <CAGudoHE=iaZp66pTBYTpgcqis25rU--wFJecJP-fq78hmPViCg@mail.gmail.com> <CACGdZYKcQmJtEVt8xoO9Gk53Rq1nmdginH4o5CmS4Kp3yVyM-Q@mail.gmail.com>
+In-Reply-To: <CACGdZYKcQmJtEVt8xoO9Gk53Rq1nmdginH4o5CmS4Kp3yVyM-Q@mail.gmail.com>
+From: Khazhy Kumykov <khazhy@chromium.org>
+Date: Wed, 17 Sep 2025 15:28:27 -0700
+X-Gmail-Original-Message-ID: <CACGdZYLByXsRruwv+BNWG-EqK+-f6V0inki+6gg31PGw5oa90A@mail.gmail.com>
+X-Gm-Features: AS18NWCUMtpdk9H0fWidPAaF1Bc8oxlz8rdMZKPuVQEPlj7Pq_GvycrjQRByVOg
+Message-ID: <CACGdZYLByXsRruwv+BNWG-EqK+-f6V0inki+6gg31PGw5oa90A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Nam Cao <namcao@linutronix.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Shuah Khan <shuah@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Soheil Hassas Yeganeh <soheil@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Eric Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-I am so sorry I was messing around with git send email and stupidly
-sent a random patch that is not mine by accident. Please ignore and
-forgive me.
-
-On Wed, Sep 17, 2025 at 6:17=E2=80=AFPM julian-lagattuta
-<julian.lagattuta@gmail.com> wrote:
+On Wed, Sep 17, 2025 at 11:03=E2=80=AFAM Khazhy Kumykov <khazhy@chromium.or=
+g> wrote:
 >
-> From: Fr=C3=A9d=C3=A9ric Danis <frederic.danis@collabora.com>
->
-> OBEX download from iPhone is currently slow due to small packet size
-> used to transfer data which doesn't follow the MTU negotiated during
-> L2CAP connection, i.e. 672 bytes instead of 32767:
->
->   < ACL Data TX: Handle 11 flags 0x00 dlen 12
->       L2CAP: Connection Request (0x02) ident 18 len 4
->         PSM: 4103 (0x1007)
->         Source CID: 72
->   > ACL Data RX: Handle 11 flags 0x02 dlen 16
->       L2CAP: Connection Response (0x03) ident 18 len 8
->         Destination CID: 14608
->         Source CID: 72
->         Result: Connection successful (0x0000)
->         Status: No further information available (0x0000)
->   < ACL Data TX: Handle 11 flags 0x00 dlen 27
->       L2CAP: Configure Request (0x04) ident 20 len 19
->         Destination CID: 14608
->         Flags: 0x0000
->         Option: Maximum Transmission Unit (0x01) [mandatory]
->           MTU: 32767
->         Option: Retransmission and Flow Control (0x04) [mandatory]
->           Mode: Enhanced Retransmission (0x03)
->           TX window size: 63
->           Max transmit: 3
->           Retransmission timeout: 2000
->           Monitor timeout: 12000
->           Maximum PDU size: 1009
->   > ACL Data RX: Handle 11 flags 0x02 dlen 26
->       L2CAP: Configure Request (0x04) ident 72 len 18
->         Destination CID: 72
->         Flags: 0x0000
->         Option: Retransmission and Flow Control (0x04) [mandatory]
->           Mode: Enhanced Retransmission (0x03)
->           TX window size: 32
->           Max transmit: 255
->           Retransmission timeout: 0
->           Monitor timeout: 0
->           Maximum PDU size: 65527
->         Option: Frame Check Sequence (0x05) [mandatory]
->           FCS: 16-bit FCS (0x01)
->   < ACL Data TX: Handle 11 flags 0x00 dlen 29
->       L2CAP: Configure Response (0x05) ident 72 len 21
->         Source CID: 14608
->         Flags: 0x0000
->         Result: Success (0x0000)
->         Option: Maximum Transmission Unit (0x01) [mandatory]
->           MTU: 672
->         Option: Retransmission and Flow Control (0x04) [mandatory]
->           Mode: Enhanced Retransmission (0x03)
->           TX window size: 32
->           Max transmit: 255
->           Retransmission timeout: 2000
->           Monitor timeout: 12000
->           Maximum PDU size: 1009
->   > ACL Data RX: Handle 11 flags 0x02 dlen 32
->       L2CAP: Configure Response (0x05) ident 20 len 24
->         Source CID: 72
->         Flags: 0x0000
->         Result: Success (0x0000)
->         Option: Maximum Transmission Unit (0x01) [mandatory]
->           MTU: 32767
->         Option: Retransmission and Flow Control (0x04) [mandatory]
->           Mode: Enhanced Retransmission (0x03)
->           TX window size: 63
->           Max transmit: 3
->           Retransmission timeout: 2000
->           Monitor timeout: 12000
->           Maximum PDU size: 1009
->         Option: Frame Check Sequence (0x05) [mandatory]
->           FCS: 16-bit FCS (0x01)
->   ...
->   > ACL Data RX: Handle 11 flags 0x02 dlen 680
->       Channel: 72 len 676 ctrl 0x0202 [PSM 4103 mode Enhanced Retransmiss=
-ion (0x03)] {chan 8}
->       I-frame: Unsegmented TxSeq 1 ReqSeq 2
->   < ACL Data TX: Handle 11 flags 0x00 dlen 13
->       Channel: 14608 len 9 ctrl 0x0204 [PSM 4103 mode Enhanced Retransmis=
-sion (0x03)] {chan 8}
->       I-frame: Unsegmented TxSeq 2 ReqSeq 2
->   > ACL Data RX: Handle 11 flags 0x02 dlen 680
->       Channel: 72 len 676 ctrl 0x0304 [PSM 4103 mode Enhanced Retransmiss=
-ion (0x03)] {chan 8}
->       I-frame: Unsegmented TxSeq 2 ReqSeq 3
->
-> The MTUs are negotiated for each direction. In this traces 32767 for
-> iPhone->localhost and no MTU for localhost->iPhone, which based on
-> '4.4 L2CAP_CONFIGURATION_REQ' (Core specification v5.4, Vol. 3, Part
-> A):
->
->   The only parameters that should be included in the
->   L2CAP_CONFIGURATION_REQ packet are those that require different
->   values than the default or previously agreed values.
->   ...
->   Any missing configuration parameters are assumed to have their
->   most recently explicitly or implicitly accepted values.
->
-> and '5.1 Maximum transmission unit (MTU)':
->
->   If the remote device sends a positive L2CAP_CONFIGURATION_RSP
->   packet it should include the actual MTU to be used on this channel
->   for traffic flowing into the local device.
->   ...
->   The default value is 672 octets.
->
-> is set by BlueZ to 672 bytes.
->
-> It seems that the iPhone used the lowest negotiated value to transfer
-> data to the localhost instead of the negotiated one for the incoming
-> direction.
->
-> This could be fixed by using the MTU negotiated for the other
-> direction, if exists, in the L2CAP_CONFIGURATION_RSP.
-> This allows to use segmented packets as in the following traces:
->
->   < ACL Data TX: Handle 11 flags 0x00 dlen 12
->         L2CAP: Connection Request (0x02) ident 22 len 4
->           PSM: 4103 (0x1007)
->           Source CID: 72
->   < ACL Data TX: Handle 11 flags 0x00 dlen 27
->         L2CAP: Configure Request (0x04) ident 24 len 19
->           Destination CID: 2832
->           Flags: 0x0000
->           Option: Maximum Transmission Unit (0x01) [mandatory]
->             MTU: 32767
->           Option: Retransmission and Flow Control (0x04) [mandatory]
->             Mode: Enhanced Retransmission (0x03)
->             TX window size: 63
->             Max transmit: 3
->             Retransmission timeout: 2000
->             Monitor timeout: 12000
->             Maximum PDU size: 1009
->   > ACL Data RX: Handle 11 flags 0x02 dlen 26
->         L2CAP: Configure Request (0x04) ident 15 len 18
->           Destination CID: 72
->           Flags: 0x0000
->           Option: Retransmission and Flow Control (0x04) [mandatory]
->             Mode: Enhanced Retransmission (0x03)
->             TX window size: 32
->             Max transmit: 255
->             Retransmission timeout: 0
->             Monitor timeout: 0
->             Maximum PDU size: 65527
->           Option: Frame Check Sequence (0x05) [mandatory]
->             FCS: 16-bit FCS (0x01)
->   < ACL Data TX: Handle 11 flags 0x00 dlen 29
->         L2CAP: Configure Response (0x05) ident 15 len 21
->           Source CID: 2832
->           Flags: 0x0000
->           Result: Success (0x0000)
->           Option: Maximum Transmission Unit (0x01) [mandatory]
->             MTU: 32767
->           Option: Retransmission and Flow Control (0x04) [mandatory]
->             Mode: Enhanced Retransmission (0x03)
->             TX window size: 32
->             Max transmit: 255
->             Retransmission timeout: 2000
->             Monitor timeout: 12000
->             Maximum PDU size: 1009
->   > ACL Data RX: Handle 11 flags 0x02 dlen 32
->         L2CAP: Configure Response (0x05) ident 24 len 24
->           Source CID: 72
->           Flags: 0x0000
->           Result: Success (0x0000)
->           Option: Maximum Transmission Unit (0x01) [mandatory]
->             MTU: 32767
->           Option: Retransmission and Flow Control (0x04) [mandatory]
->             Mode: Enhanced Retransmission (0x03)
->             TX window size: 63
->             Max transmit: 3
->             Retransmission timeout: 2000
->             Monitor timeout: 12000
->             Maximum PDU size: 1009
->           Option: Frame Check Sequence (0x05) [mandatory]
->             FCS: 16-bit FCS (0x01)
->   ...
->   > ACL Data RX: Handle 11 flags 0x02 dlen 1009
->         Channel: 72 len 1005 ctrl 0x4202 [PSM 4103 mode Enhanced Retransm=
-ission (0x03)] {chan 8}
->         I-frame: Start (len 21884) TxSeq 1 ReqSeq 2
->   > ACL Data RX: Handle 11 flags 0x02 dlen 1009
->         Channel: 72 len 1005 ctrl 0xc204 [PSM 4103 mode Enhanced Retransm=
-ission (0x03)] {chan 8}
->         I-frame: Continuation TxSeq 2 ReqSeq 2
->
-> This has been tested with kernel 5.4 and BlueZ 5.77.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fr=C3=A9d=C3=A9ric Danis <frederic.danis@collabora.com>
-> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-> ---
->  net/bluetooth/l2cap_core.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-> index a5bde5db58ef..40daa38276f3 100644
-> --- a/net/bluetooth/l2cap_core.c
-> +++ b/net/bluetooth/l2cap_core.c
-> @@ -3415,7 +3415,7 @@ static int l2cap_parse_conf_req(struct l2cap_chan *=
-chan, void *data, size_t data
->         struct l2cap_conf_rfc rfc =3D { .mode =3D L2CAP_MODE_BASIC };
->         struct l2cap_conf_efs efs;
->         u8 remote_efs =3D 0;
-> -       u16 mtu =3D L2CAP_DEFAULT_MTU;
-> +       u16 mtu =3D 0;
->         u16 result =3D L2CAP_CONF_SUCCESS;
->         u16 size;
->
-> @@ -3520,6 +3520,13 @@ static int l2cap_parse_conf_req(struct l2cap_chan =
-*chan, void *data, size_t data
->                 /* Configure output options and let the other side know
->                  * which ones we don't like. */
->
-> +               /* If MTU is not provided in configure request, use the m=
-ost recently
-> +                * explicitly or implicitly accepted value for the other =
-direction,
-> +                * or the default value.
-> +                */
-> +               if (mtu =3D=3D 0)
-> +                       mtu =3D chan->imtu ? chan->imtu : L2CAP_DEFAULT_M=
-TU;
-> +
->                 if (mtu < L2CAP_DEFAULT_MIN_MTU)
->                         result =3D L2CAP_CONF_UNACCEPT;
->                 else {
-> --
-> 2.45.2
->
+> One ordering thing that sticks out to me is
+(ordering can't help here since we'll rapidly be flapping between
+ovflist in use and inactive... right)
 
