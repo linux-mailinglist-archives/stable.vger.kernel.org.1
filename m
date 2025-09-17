@@ -1,206 +1,105 @@
-Return-Path: <stable+bounces-180416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C2BB807B2
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:19:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28CFB80B20
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 17:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2512527863
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:19:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 362EB3BB6B2
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE2B333A93;
-	Wed, 17 Sep 2025 15:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DC8314D1A;
+	Wed, 17 Sep 2025 15:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="ZBiiUnVa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929052D97B5;
-	Wed, 17 Sep 2025 15:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B3B2E228D
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 15:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758122370; cv=none; b=btgD7b1cKcXdKwW5JKlDh61r9iDo7h1VKd115K2+YWG/lmh196UXsTXNOLTNc/eFO7eDk4dy9HzQjCBnnfCBOE5T2M/UJ1WhwwsR+gH/4ZHZVRS7z3TpAsnvIARrVfv388lAUOxTIUf25xAxz3scVIspTR8dytE7HnwimvEQLes=
+	t=1758123618; cv=none; b=WgfuH2MkW/ilQP2AQoOjOHBCdrV6ccjMSfHJramqbPOg2nlrfG2wYg1veITD71UwKNxSumkruSruExoMWjDLZkuSJnxIV+6hC7Xv1dT3ROGkd7hO46X9VOQMzJ+J6J/7POZBJfAUTHN0JeU5INd6dSxHwAXxpa2tazeuWecinHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758122370; c=relaxed/simple;
-	bh=ec3UcGcmns+1WED33m/nQgJBe8h/K7vnYvuHF6DPz3A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Rm4ShOF1HyIERnEIvHISj1m566wGr2MGLxU9gDo1EkDClkpXhcnkqZ8e1OOTGWGxx2lsKo2kasQwEzZJmh/y6/rRuQMLNKxvpWf1LjpU8cZ2YAVKQhtU9pocQUvwdyBBrnXqAz5xuZIuSQCovlueZEoy87OsAQzfsSsXIro/s1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from sven-desktop.home.narfation.org (p200300c5971bEfE00000000000000c00.dip0.t-ipconnect.de [IPv6:2003:c5:971b:efe0::c00])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id AF95AFA12C;
-	Wed, 17 Sep 2025 17:19:19 +0200 (CEST)
-From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
-Date: Wed, 17 Sep 2025 17:18:22 +0200
-Subject: [PATCH] wifi: mt76: Fix DTS power-limits on little endian systems
+	s=arc-20240116; t=1758123618; c=relaxed/simple;
+	bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ffFdkqn8Jmo154ru/6sbYWvMKWLQEPZpZgHPnt0P/D3gfjy4pQt/enMvzbZ5x5e/02KPay06OixiM6UoAV8ZlsGKv/MvDo2+kuQHisfoQa5K3iy+4vSk2qSBXGCRamBMIclUh4aU5zS5l/Ae3HMFkcLAIC3tCElk41RZS/xbLx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=ZBiiUnVa; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id BF93A1C127B
+	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 18:31:22 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1758123081; x=
+	1758987082; bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=; b=Z
+	BiiUnVaI6vLZjymUDuFgCXZ3jG+cidW+H0VlpfQWgMME89/Uxx/R3T4xfrf53Nxe
+	ON1BkHyPnLzTrwt2rzuIoBCxW91HlHpFLu2T8yJwwbwLaCmfpTV1x++3P/QG1kOB
+	uEEBZPrttiy49qHbQFt02q/88Z0meUhY5fU0VKz0/Y=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 2XsYiC4QNvIe for <stable@vger.kernel.org>;
+	Wed, 17 Sep 2025 18:31:21 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 024D61C0CC1;
+	Wed, 17 Sep 2025 18:31:18 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] net: liquidio: fix overflow in octeon_init_instr_queue()
+Date: Wed, 17 Sep 2025 15:30:58 +0000
+Message-ID: <20250917153105.562563-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-fix-power-limits-v1-1-616e859a9881@simonwunderlich.de>
-X-B4-Tracking: v=1; b=H4sIAD3RymgC/x2M0QpAMBRAf0X32a2NZuZX5IG5uMVoE2r5d8vjq
- XNOhECeKUCTRfB0ceDdJZB5Bnbp3UzIY2IoRKGEkRonfvDYb/K48sZnQGVJ6MGYsqolpOzwlJx
- /2Xbv+wFkAL5+YgAAAA==
-X-Change-ID: 20250917-fix-power-limits-5ce07b993681
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- stable@vger.kernel.org, 
- "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4942; i=se@simonwunderlich.de;
- h=from:subject:message-id; bh=ec3UcGcmns+1WED33m/nQgJBe8h/K7vnYvuHF6DPz3A=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDBmnLobVprIoe6yMlV3be/1Dd59l89vWxv7yudOeLuvsd
- WoqDWnsKGVhEONikBVTZNlzJf/8Zva38p+nfTwKM4eVCWQIAxenAEzkARfD/3B++1MMO6NOlM8Q
- O6fAHvLVKCckcaXHfY307MpdTn1ybYwMSwvv8Um4yXr8rTslfJSpsu9VXHt1nKTEkT3mOhdevp7
- MDgA=
-X-Developer-Key: i=se@simonwunderlich.de; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
+Content-Transfer-Encoding: 8bit
 
-The power-limits for ru and mcs and stored in the devicetree as bytewise
-array (often with sizes which are not a multiple of 4). These arrays have a
-prefix which defines for how many modes a line is applied. This prefix is
-also only a byte - but the code still tried to fix the endianness of this
-byte with a be32 operation. As result, loading was mostly failing or was
-sending completely unexpected values to the firmware.
+The expression `(conf->instr_type == 64) << iq_no` can overflow because
+`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
+operand to `u64` ensures correct 64-bit arithmetic.
 
-Since the other rates are also stored in the devicetree as bytewise arrays,
-just drop the u32 access + be32_to_cpu conversion and directly access them
-as bytes arrays.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: stable@vger.kernel.org
-Fixes: 22b980badc0f ("mt76: add functions for parsing rate power limits from DT")
-Fixes: 273943f4abd4 ("wifi: mt76: Fix DTS power-limits on little endian systems")
-Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+Cc: stable@vger.kernel.org # v4.2+
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 ---
- drivers/net/wireless/mediatek/mt76/eeprom.c | 37 +++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index a987c5e4eff6c6b0a014b4b069dc1259ffa82d31..6ce8e4af18fe53c10a0cb7290bf65962ce9cdde4 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -253,6 +253,19 @@ mt76_get_of_array(struct device_node *np, char *name, size_t *len, int min)
- 	return prop->value;
- }
+diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+index de8a6ce86ad7..12105ffb5dac 100644
+--- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
++++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+@@ -126,7 +126,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
+ 	oct->io_qmask.iq |= BIT_ULL(iq_no);
  
-+static const s8 *
-+mt76_get_of_array_s8(struct device_node *np, char *name, size_t *len, int min)
-+{
-+	struct property *prop = of_find_property(np, name, NULL);
-+
-+	if (!prop || !prop->value || prop->length < min)
-+		return NULL;
-+
-+	*len = prop->length;
-+
-+	return prop->value;
-+}
-+
- struct device_node *
- mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
- {
-@@ -294,7 +307,7 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
- }
+ 	/* Set the 32B/64B mode for each input queue */
+-	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
++	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
+ 	iq->iqcmd_64B = (conf->instr_type == 64);
  
- static void
--mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
-+mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- 		       s8 target_power, s8 nss_delta, s8 *max_power)
- {
- 	int i;
-@@ -303,15 +316,14 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
- 		return;
- 
- 	for (i = 0; i < pwr_len; i++) {
--		pwr[i] = min_t(s8, target_power,
--			       be32_to_cpu(data[i]) + nss_delta);
-+		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
- 		*max_power = max(*max_power, pwr[i]);
- 	}
- }
- 
- static void
- mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
--			     const __be32 *data, size_t len, s8 target_power,
-+			     const s8 *data, size_t len, s8 target_power,
- 			     s8 nss_delta, s8 *max_power)
- {
- 	int i, cur;
-@@ -319,8 +331,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 	if (!data)
- 		return;
- 
--	len /= 4;
--	cur = be32_to_cpu(data[0]);
-+	cur = data[0];
- 	for (i = 0; i < pwr_num; i++) {
- 		if (len < pwr_len + 1)
- 			break;
-@@ -335,7 +346,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 		if (!len)
- 			break;
- 
--		cur = be32_to_cpu(data[0]);
-+		cur = data[0];
- 	}
- }
- 
-@@ -346,7 +357,7 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- {
- 	struct mt76_dev *dev = phy->dev;
- 	struct device_node *np;
--	const __be32 *val;
-+	const s8 *val;
- 	char name[16];
- 	u32 mcs_rates = dev->drv->mcs_rates;
- 	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
-@@ -392,21 +403,21 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 
- 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
- 
--	val = mt76_get_of_array(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
-+	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
- 	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
- 			       target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-ofdm",
--				&len, ARRAY_SIZE(dest->ofdm));
-+	val = mt76_get_of_array_s8(np, "rates-ofdm",
-+				   &len, ARRAY_SIZE(dest->ofdm));
- 	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
- 			       target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-mcs", &len, mcs_rates + 1);
-+	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
- 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
- 				     ARRAY_SIZE(dest->mcs), val, len,
- 				     target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-ru", &len, ru_rates + 1);
-+	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
- 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
- 				     ARRAY_SIZE(dest->ru), val, len,
- 				     target_power, txs_delta, &max_power);
-
----
-base-commit: b36d55610215a976267197ddc914902c494705d7
-change-id: 20250917-fix-power-limits-5ce07b993681
-
-Best regards,
+ 	oct->fn_list.setup_iq_regs(oct, iq_no);
 -- 
-Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+2.43.0
 
 
