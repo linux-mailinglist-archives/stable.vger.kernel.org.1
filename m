@@ -1,120 +1,182 @@
-Return-Path: <stable+bounces-179818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82EBB7DF3A
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:37:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BDAB8037D
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 16:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37BD34E2955
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 10:11:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCAF91BC042F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 10:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C31353344;
-	Wed, 17 Sep 2025 10:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64F731B806;
+	Wed, 17 Sep 2025 10:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HTt4Nrr4"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="kYy/23bx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0109634F492
-	for <stable@vger.kernel.org>; Wed, 17 Sep 2025 10:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756B028489B;
+	Wed, 17 Sep 2025 10:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.28.197.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758103854; cv=none; b=AYCCUbbKvI/PaQa7cu5WRVkOiWVtNtqLhmnZ6oZUGugTlFDZwHKlExLN5Yo8Tu6hX2oMtUD3V704H6vVaAsxE0IxT73+WM5SMsu9EbiUHIQIyjbGK2NH5jRpmgU6TCjFcC/RIMF4S0626H4ItwD7fSV6pvtqF/Gv+vyak3bjpUw=
+	t=1758105464; cv=none; b=OaDGyp2PQFOVZjaKxRx+3poMvAPGyfTq4F9ueNW3cqs/dhKnvXBTdxY2MTLywgkIih8RDsgLIpIBivkozBbtkfkXbPTSsoOZaKyoMt+tGVGeMeWI/vtB3jV4fdq/Hs/K2gm7B/ZpXvZbtUsGfX5kk3PLnkQlosKLF6skCb8feL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758103854; c=relaxed/simple;
-	bh=ZZVPr8zwc3jcO0OuCGyJfEYik/KPMCAqckFIByRhOZU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ls4BEwpmWZvqzJg1rLvDu13IFlq7t63d3caEX+WDO7JlpJCWnqL3wFQWQBXGYsH2PZC5adE98Akvs3ReHl6FYEwNRrjjQY6Sjh3nargNFEKOkSxzLeNp6U7CAVuLFKeX1AlH0Ppl60uy+XNYXub0254vfDqrJIH8kAcN2sE33WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HTt4Nrr4; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b07dac96d1eso114026566b.1
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 03:10:51 -0700 (PDT)
+	s=arc-20240116; t=1758105464; c=relaxed/simple;
+	bh=Ytv1newusG7+bkOHV2/blNmqr9tI6rdENvNUJmTjzz0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Pj5HnbfNam3uj5CZBkrEVA70Cqfp43AsOyXlwP5gGJ+s5/Py9pg5ayFStLgvFtPEHvmXdXRyMvoCNioYrRLu4DgknRCvik1feDk0jlKrJ6hJLY9IFLCO7spqhgwJ3yNhxMqTNBFhzmi3etPSKRUSN2yrl7dbaGtHMAFOz8FbkXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=kYy/23bx; arc=none smtp.client-ip=52.28.197.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1758103850; x=1758708650; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gfhBOmsmCdqnUMz/+8Ss3Stx4dtkUPFOWgiDwJ5M/m8=;
-        b=HTt4Nrr42awsw/sWUUmkJaZXN/VLbWtlFTAMScXNR3O99EntNwP3wnXVCsMrz6cEK5
-         5LWmcm07ExLRuQMwYcEOZJ+KFyBT/C0vw604BF0B1kN/TACYXQVfJ5c/tvolRvdtZfg2
-         iiRH5JEZ6+CP33Qr7uYEVTIX9K/WJm82bG5+PkHJotTgUfMvptfkI2ANdD2XVbyv6B/E
-         fzWXURrSyJSIIM0nmTHvg4h2ci6fw4x6aJRnxiRXGqEsOFxxHsjVbz+eaPrIGg+wc6Uu
-         Lj2yDsNSVm0CEzUYaYFwI/tj8EPCGUMvvvlISA1CVvsQ/o3oOn02SSrnxf9igWnyyWUD
-         MOIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758103850; x=1758708650;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gfhBOmsmCdqnUMz/+8Ss3Stx4dtkUPFOWgiDwJ5M/m8=;
-        b=rg5j1tpwuDYXb0yTj2UsaBW80jyxVTzdhmOH/xy/ch8tOzXlUvYhmFYgvVEPf+q/AJ
-         stjeX3wiQDU/7AX+F8uRA+JZkBiv8VeQvv5OVVZiRpDDAMNWs87W4kMqSHmQihkVmyB4
-         8x0Lh9pVlgRRNOh0RtAXn61+mye5mDDjqhWInIPMlBhZYbLlLFV4QbbAeAAaWocdL/Iu
-         qgz1gx7HKLQQ7+26UfAWGZRrfpXWexaZ9hDqeTScGNq4vAYwgxqMhGayrRxmf+jg0YYw
-         o7uEx51XFgdFpEpseLV8+mPRp1d+ucttBnmAFsoic3J1R82vrMbRvlkRyFcS86JC9itQ
-         IUrA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQQRR6pcpMR816RBuXCILr2mJZQxfIvpoZkSiQZe+GNlNNp+xrzyYB5CfxJC/oeLLljcyBLlg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ7xIWeUdLBXfa2aYthJM6wu9haXDxi4l0NwruxhoOybxBgLIj
-	DiTgGkUZSgq32a9nkOBICZeX9ESOwIaYL6SwqG3276KfazaWiOU3tljetmelngJqRTE=
-X-Gm-Gg: ASbGnct5YqFZ6VOh005sL+jTtMlE04tQMV2af7885ed+QFvR+yvsfZ+typAWY4YtPkD
-	X3KlQprYIsyk5HtE5leuMSlrFDhm+9TE9DMt3CIbOlG4/VP+jhay5I+sDbntIEBwTUJ3WgnDWPK
-	TIfT4y/vsnVBVfpDXXNQLVhzGoV02yTBkSLI3vWCtLWFocLjVicfsXN++rTxpT1RtbjKGL0vWsJ
-	QFWjJyK9zbBLVyRMwAfvTFSjKJoXLDl/j+Yz9AoT/BT6PystYXDO9m4eZODFYhIfs7S0Z3VmEKb
-	uBIcxi5wsyemas51fsjuqrMckjqL7Veg7rbfGjsCxHfg7FSVTwFpc8uEv6mGDq7jNSACoi1WyHf
-	llnd5iWzJaTpWLgy+MZ6x4+JPDJI7eq7/3DbsuDepMK3gK7VF46rkUZ5QXsrA4gOt
-X-Google-Smtp-Source: AGHT+IEffrTIn04hCkbbCjr83BNBKSLUY7sk2TJEFlqvq5wVXFDKpBzk6i+bXHi14sqiagolHGQ+ug==
-X-Received: by 2002:a17:906:c106:b0:b07:c66d:798b with SMTP id a640c23a62f3a-b1be49e1b5dmr185057166b.11.1758103850321;
-        Wed, 17 Sep 2025 03:10:50 -0700 (PDT)
-Received: from ?IPV6:2001:a61:133d:ff01:f29d:4e4:f043:caa2? ([2001:a61:133d:ff01:f29d:4e4:f043:caa2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07d2870da1sm1004985666b.13.2025.09.17.03.10.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 03:10:50 -0700 (PDT)
-Message-ID: <0f2fe17b-89bb-4464-890d-0b73ed1cf117@suse.com>
-Date: Wed, 17 Sep 2025 12:10:48 +0200
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1758105462; x=1789641462;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=eLSWhg5NVrk5v8Kgwub/wl0fv0lwqhPjbvfwBqv7PuY=;
+  b=kYy/23bxnmi8b1Ar4vRrYiKTCpenbXe6D8rJCuVO43YSvISiX7lc0wWf
+   /+e6d7eRTWhrh7iEiRlfFDeufXabmr/+58QOtiX3vkn6C8FdDY1ogbZmz
+   svNppIULJA4HB7Pa5eXNqnORk7An0fP3koj3vhjAocJFopV8dmkd5ybyn
+   q2Lmnti9P6aK0Co13ThiFNLb53TXkfLiO0yfpGZK1YMgK5h4rt0TCTM6O
+   Elb+xwNfODmaNI/mAWGIyj6H7RscNRiFWhXVxwTVVK6mukdKLFS62em8w
+   8bo+qGbR8YcIxy/3ypD/4b4KQSd1TGNoNA2f2pHF8xVQw+KeYmS58Ulk+
+   w==;
+X-CSE-ConnectionGUID: CtGF1Dk7RPWFlQviryGv4w==
+X-CSE-MsgGUID: EBgriIOpTnCmIc2LiTXBrg==
+X-IronPort-AV: E=Sophos;i="6.18,271,1751241600"; 
+   d="scan'208";a="2137626"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 10:37:32 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:8555]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.1.3:2525] with esmtp (Farcaster)
+ id 6aec255b-397c-4ef4-9439-fab825e22f38; Wed, 17 Sep 2025 10:37:31 +0000 (UTC)
+X-Farcaster-Flow-ID: 6aec255b-397c-4ef4-9439-fab825e22f38
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 17 Sep 2025 10:37:31 +0000
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 17 Sep 2025 10:37:31 +0000
+Received: from EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d]) by
+ EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d%3]) with mapi id
+ 15.02.2562.020; Wed, 17 Sep 2025 10:37:31 +0000
+From: "Farber, Eliav" <farbere@amazon.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: "luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>, "mingo@redhat.com"
+	<mingo@redhat.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"sj@kernel.org" <sj@kernel.org>, "David.Laight@aculab.com"
+	<David.Laight@aculab.com>, "Jason@zx2c4.com" <Jason@zx2c4.com>,
+	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+	"bvanassche@acm.org" <bvanassche@acm.org>, "keescook@chromium.org"
+	<keescook@chromium.org>, "linux-sparse@vger.kernel.org"
+	<linux-sparse@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Chocron, Jonathan" <jonnyc@amazon.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>, "Farber, Eliav" <farbere@amazon.com>
+Subject: RE: [PATCH 1/7 5.10.y] tracing: Define the is_signed_type() macro
+ once
+Thread-Topic: [PATCH 1/7 5.10.y] tracing: Define the is_signed_type() macro
+ once
+Thread-Index: AQHcJ78SUxQReVk2GUOsJiAxSQXGEw==
+Date: Wed, 17 Sep 2025 10:37:31 +0000
+Message-ID: <91da8ce3e4fb4a8991876a3ed130a873@amazon.com>
+References: <20250916212259.48517-1-farbere@amazon.com>
+ <20250916212259.48517-2-farbere@amazon.com>
+ <2025091717-snowflake-subtract-40f7@gregkh>
+In-Reply-To: <2025091717-snowflake-subtract-40f7@gregkh>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
- PM/MDIO + RTNL deadlock
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: =?UTF-8?Q?Hubert_Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
- kernel@pengutronix.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>, Russell King <linux@armlinux.org.uk>,
- Xu Yang <xu.yang_2@nxp.com>, linux-usb@vger.kernel.org
-References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <20250917095457.2103318-1-o.rempel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi,
+> On Tue, Sep 16, 2025 at 09:22:53PM +0000, Eliav Farber wrote:
+> > From: Bart Van Assche <bvanassche@acm.org>
+> >
+> > commit 92d23c6e94157739b997cacce151586a0d07bb8a upstream.
+>
+> This is only in 6.1, and not other trees, why is it needed here?
 
-On 17.09.25 11:54, Oleksij Rempel wrote:
+It exists also in 5.15:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/inc=
+lude/linux/overflow.h?h=3Dv5.15.193&id=3Ded6e37e30826b12572636c6bbfe6319233=
+690c90
 
-> With autosuspend active, resume paths may require calling phylink/phylib
-> (caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
-> resume can deadlock (RTNL may already be held), and MDIO can attempt a
-> runtime-wake while the USB PM lock is held. Given the lack of benefit
-> and poor test coverage (autosuspend is usually disabled by default in
-> distros), forbid runtime PM here to avoid these hazards.
+Without this change, I get many compilation errors when backporting
+commit d53b5d862acd ("minmax: allow min()/max()/clamp() if the
+arguments have the same signedness.")
 
-This reasoning depends on netif_running() returning false during system resume.
-Is that guaranteed?
+  CALL    scripts/atomic/check-atomics.sh
+  CC      arch/arm64/kernel/asm-offsets.s
+In file included from ./include/linux/bits.h:22,
+                 from ./include/linux/ioport.h:15,
+                 from ./include/linux/acpi.h:12,
+                 from ./include/acpi/apei.h:9,
+                 from ./include/acpi/ghes.h:5,
+                 from ./include/linux/arm_sdei.h:8,
+                 from arch/arm64/kernel/asm-offsets.c:10:
+./include/linux/nodemask.h: In function '__first_node':
+./include/linux/minmax.h:30:39: error: implicit declaration of function 'is=
+_signed_type' [-Werror=3Dimplicit-function-declaration]
+   30 |  __builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))), \
+      |                                       ^~~~~~~~~~~~~~
+./include/linux/build_bug.h:78:56: note: in definition of macro '__static_a=
+ssert'
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+./include/linux/minmax.h:50:3: note: in expansion of macro 'static_assert'
+   50 |   static_assert(__types_ok(x, y),  \
+      |   ^~~~~~~~~~~~~
+./include/linux/minmax.h:30:24: note: in expansion of macro '__is_constexpr=
+'
+   30 |  __builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))), \
+      |                        ^~~~~~~~~~~~~~
+./include/linux/minmax.h:38:3: note: in expansion of macro '__is_signed'
+   38 |  (__is_signed(x) =3D=3D __is_signed(y) ||   \
+      |   ^~~~~~~~~~~
+./include/linux/minmax.h:50:17: note: in expansion of macro '__types_ok'
+   50 |   static_assert(__types_ok(x, y),  \
+      |                 ^~~~~~~~~~
+./include/linux/minmax.h:57:3: note: in expansion of macro '__cmp_once'
+   57 |   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
+      |   ^~~~~~~~~~
+./include/linux/minmax.h:160:27: note: in expansion of macro '__careful_cmp=
+'
+  160 | #define min_t(type, x, y) __careful_cmp(min, (type)(x), (type)(y))
+      |                           ^~~~~~~~~~~~~
+./include/linux/nodemask.h:265:9: note: in expansion of macro 'min_t'
+  265 |  return min_t(unsigned int, MAX_NUMNODES, find_first_bit(srcp->bits=
+, MAX_NUMNODES));
+      |         ^~~~~
+./include/linux/minmax.h:30:54: error: expected expression before 'typeof'
+   30 |  __builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))), \
+      |                                                      ^~~~~~
+./include/linux/build_bug.h:78:56: note: in definition of macro '__static_a=
+ssert'
+...
 
-	Regards
-		Oliver
 
+> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org> (cherry=20
+> > picked from commit a49a64b5bf195381c09202c524f0f84b5f3e816f)
+>
+> This is not a valid git id in the tree at all.
+
+I will fix the mismatch here and above, but please notice that this
+hash appears in the link I shared.
+
+---
+Regards, Eliav
 
