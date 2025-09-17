@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-180001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4ABB7E548
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B87AB7EF80
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE7917B95A4
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 516DA4A4766
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9021D30CB52;
-	Wed, 17 Sep 2025 12:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E6F189BB0;
+	Wed, 17 Sep 2025 12:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mI0KElAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEdxr+V8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C24830BBBC;
-	Wed, 17 Sep 2025 12:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAD51A3167;
+	Wed, 17 Sep 2025 12:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113066; cv=none; b=XvWHanDSUViA7aohQKZeV0sR6xT/uax/cgbMGfOzMpMOoFIFz4pCHbDTXZ2TXwwjB5UxZ9XvKhwltuiLvOxiKv0NctYIdimOCxaght01JQJ4QYQnAhFznx/Az5Yw6DD8hAzE7l1hAUfkxrYIq19TcwXdR+tTMYjRw5GWE4jopPY=
+	t=1758113779; cv=none; b=MthsLxYhy7L8Ql5ZHJ64Fhawa4zOMJgeem9cFLbQrQVROQASMPJHEQ7tRxxgF47NiWkUvhH0zz3Ahrur8U4To+LvtP1riTZeG4Scn9FEjYJyHACg2K0H4BhFUxGVoyZ8p1p64LcU/KXkdHSLe7EQVYM/EZ5oaeWEO3IUSQo3Grk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113066; c=relaxed/simple;
-	bh=LzWsL4lhw2x4s7BVlgHC/uizME4Ep8kIL/S4k/qnZUI=;
+	s=arc-20240116; t=1758113779; c=relaxed/simple;
+	bh=9O3dmR6z/rXFsSna5cIFkmZ5QSaTBYm638RCLE6SaQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5PtNti3WCiQ6hvitgIBgurXADDOuPJQuT/LJg/43gXHrMo6QWxrpBv+Z2vyaDp0hWdRVEnqViNYjkVR6P7gr4HEw4eH57OHAGeEtmwR12ETkkQZPM2hNzabJl8498InbiiY7zR+BV2vB+GcW4uGjngdd8odH5AAyHl94jj49SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mI0KElAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6771EC4CEF0;
-	Wed, 17 Sep 2025 12:44:25 +0000 (UTC)
+	 MIME-Version; b=cIVqxRSfdq/whydeZJPtExEYzPjBebnzQXUKMqmH9Lu0303fK+uIAUxl5laxXAOeqJsINLKgTp0I8zhZuGfcXGVNGOf6kwP5xTVDQCdhAchpQnxuummZ4B1OymhA2a7mZ1vwftsmnVdPz8qNwSE93YKyubmHKCZFiiW1cvJyn4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEdxr+V8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B01FC4CEF0;
+	Wed, 17 Sep 2025 12:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113065;
-	bh=LzWsL4lhw2x4s7BVlgHC/uizME4Ep8kIL/S4k/qnZUI=;
+	s=korg; t=1758113779;
+	bh=9O3dmR6z/rXFsSna5cIFkmZ5QSaTBYm638RCLE6SaQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mI0KElAFoeXNIh0ozaRXSEMFjgOUTmzvXHi9VRh4zYZqYJ4rHJCrXnuw9ODVlx7OM
-	 L8GOLre9C+PeflM/UQUrXjJEicYMgSnIWGpHEckuucBNfD90pqk6F9bvzgAf2C87GI
-	 /prjsqi1mHx+o175SWUXAbyFU/WGk49vwsZALMEg=
+	b=nEdxr+V8EapEhUEWg0B+XD0DXXv1iEhCts1aWB1pnGw+a6odscX9YyvuqVs86y+oy
+	 +cAyZYfl/dTANmXZcpWPNOcREFxI+bnTK0k4hXiy32JmvhXKeMSQa/O/2Zh7MQR0tX
+	 2j0Mvifa0nCflsopzrIY09ctBg5jXs29j6UsjqHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 162/189] netfilter: nf_tables: restart set lookup on base_seq change
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.6 049/101] libceph: fix invalid accesses to ceph_connection_v1_info
 Date: Wed, 17 Sep 2025 14:34:32 +0200
-Message-ID: <20250917123355.832077150@linuxfoundation.org>
+Message-ID: <20250917123338.028533573@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,157 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit b2f742c846cab9afc5953a5d8f17b54922dcc723 ]
+commit cdbc9836c7afadad68f374791738f118263c5371 upstream.
 
-The hash, hash_fast, rhash and bitwise sets may indicate no result even
-though a matching element exists during a short time window while other
-cpu is finalizing the transaction.
+There is a place where generic code in messenger.c is reading and
+another place where it is writing to con->v1 union member without
+checking that the union member is active (i.e. msgr1 is in use).
 
-This happens when the hash lookup/bitwise lookup function has picked up
-the old genbit, right before it was toggled by nf_tables_commit(), but
-then the same cpu managed to unlink the matching old element from the
-hash table:
+On 64-bit systems, con->v1.auth_retry overlaps with con->v2.out_iter,
+so such a read is almost guaranteed to return a bogus value instead of
+0 when msgr2 is in use.  This ends up being fairly benign because the
+side effect is just the invalidation of the authorizer and successive
+fetching of new tickets.
 
-cpu0					cpu1
-  has added new elements to clone
-  has marked elements as being
-  inactive in new generation
-					perform lookup in the set
-  enters commit phase:
-					A) observes old genbit
-   increments base_seq
-I) increments the genbit
-II) removes old element from the set
-					B) finds matching element
-					C) returns no match: found
-					element is not valid in old
-					generation
+con->v1.connect_seq overlaps with con->v2.conn_bufs and the fact that
+it's being written to can cause more serious consequences, but luckily
+it's not something that happens often.
 
-					Next lookup observes new genbit and
-					finds matching e2.
-
-Consider a packet matching element e1, e2.
-
-cpu0 processes following transaction:
-1. remove e1
-2. adds e2, which has same key as e1.
-
-P matches both e1 and e2.  Therefore, cpu1 should always find a match
-for P. Due to above race, this is not the case:
-
-cpu1 observed the old genbit.  e2 will not be considered once it is found.
-The element e1 is not found anymore if cpu0 managed to unlink it from the
-hlist before cpu1 found it during list traversal.
-
-The situation only occurs for a brief time period, lookups happening
-after I) observe new genbit and return e2.
-
-This problem exists in all set types except nft_set_pipapo, so fix it once
-in nft_lookup rather than each set ops individually.
-
-Sample the base sequence counter, which gets incremented right before the
-genbit is changed.
-
-Then, if no match is found, retry the lookup if the base sequence was
-altered in between.
-
-If the base sequence hasn't changed:
- - No update took place: no-match result is expected.
-   This is the common case.  or:
- - nf_tables_commit() hasn't progressed to genbit update yet.
-   Old elements were still visible and nomatch result is expected, or:
- - nf_tables_commit updated the genbit:
-   We picked up the new base_seq, so the lookup function also picked
-   up the new genbit, no-match result is expected.
-
-If the old genbit was observed, then nft_lookup also picked up the old
-base_seq: nft_lookup_should_retry() returns true and relookup is performed
-in the new generation.
-
-This problem was added when the unconditional synchronize_rcu() call
-that followed the current/next generation bit toggle was removed.
-
-Thanks to Pablo Neira Ayuso for reviewing an earlier version of this
-patchset, for suggesting re-use of existing base_seq and placement of
-the restart loop in nft_set_do_lookup().
-
-Fixes: 0cbc06b3faba ("netfilter: nf_tables: remove synchronize_rcu in commit phase")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cd1a677cad99 ("libceph, ceph: implement msgr2.1 protocol (crc and secure modes)")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |  3 ++-
- net/netfilter/nft_lookup.c    | 31 ++++++++++++++++++++++++++++++-
- 2 files changed, 32 insertions(+), 2 deletions(-)
+ net/ceph/messenger.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 5ea7a015504bb..cde63e5f18d8f 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10971,7 +10971,8 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 	while (++base_seq == 0)
- 		;
- 
--	WRITE_ONCE(net->nft.base_seq, base_seq);
-+	/* pairs with smp_load_acquire in nft_lookup_eval */
-+	smp_store_release(&net->nft.base_seq, base_seq);
- 
- 	gc_seq = nft_gc_seq_begin(nft_net);
- 
-diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
-index 2c6909bf1b407..58c5b14889c47 100644
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -55,11 +55,40 @@ __nft_set_do_lookup(const struct net *net, const struct nft_set *set,
- 	return set->ops->lookup(net, set, key);
- }
- 
-+static unsigned int nft_base_seq(const struct net *net)
-+{
-+	/* pairs with smp_store_release() in nf_tables_commit() */
-+	return smp_load_acquire(&net->nft.base_seq);
-+}
-+
-+static bool nft_lookup_should_retry(const struct net *net, unsigned int seq)
-+{
-+	return unlikely(seq != nft_base_seq(net));
-+}
-+
- const struct nft_set_ext *
- nft_set_do_lookup(const struct net *net, const struct nft_set *set,
- 		  const u32 *key)
+--- a/net/ceph/messenger.c
++++ b/net/ceph/messenger.c
+@@ -1524,7 +1524,7 @@ static void con_fault_finish(struct ceph
+ 	 * in case we faulted due to authentication, invalidate our
+ 	 * current tickets so that we can get new ones.
+ 	 */
+-	if (con->v1.auth_retry) {
++	if (!ceph_msgr2(from_msgr(con->msgr)) && con->v1.auth_retry) {
+ 		dout("auth_retry %d, invalidating\n", con->v1.auth_retry);
+ 		if (con->ops->invalidate_authorizer)
+ 			con->ops->invalidate_authorizer(con);
+@@ -1714,9 +1714,10 @@ static void clear_standby(struct ceph_co
  {
--	return __nft_set_do_lookup(net, set, key);
-+	const struct nft_set_ext *ext;
-+	unsigned int base_seq;
-+
-+	do {
-+		base_seq = nft_base_seq(net);
-+
-+		ext = __nft_set_do_lookup(net, set, key);
-+		if (ext)
-+			break;
-+		/* No match?  There is a small chance that lookup was
-+		 * performed in the old generation, but nf_tables_commit()
-+		 * already unlinked a (matching) element.
-+		 *
-+		 * We need to repeat the lookup to make sure that we didn't
-+		 * miss a matching element in the new generation.
-+		 */
-+	} while (nft_lookup_should_retry(net, base_seq));
-+
-+	return ext;
- }
- EXPORT_SYMBOL_GPL(nft_set_do_lookup);
- 
--- 
-2.51.0
-
+ 	/* come back from STANDBY? */
+ 	if (con->state == CEPH_CON_S_STANDBY) {
+-		dout("clear_standby %p and ++connect_seq\n", con);
++		dout("clear_standby %p\n", con);
+ 		con->state = CEPH_CON_S_PREOPEN;
+-		con->v1.connect_seq++;
++		if (!ceph_msgr2(from_msgr(con->msgr)))
++			con->v1.connect_seq++;
+ 		WARN_ON(ceph_con_flag_test(con, CEPH_CON_F_WRITE_PENDING));
+ 		WARN_ON(ceph_con_flag_test(con, CEPH_CON_F_KEEPALIVE_PENDING));
+ 	}
 
 
 
