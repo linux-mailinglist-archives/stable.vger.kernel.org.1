@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-180120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B755B7E9CF
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:55:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BB7B7F1B3
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E499188C852
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DEAD4A72EE
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8361B2D7DF2;
-	Wed, 17 Sep 2025 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228D8337EB8;
+	Wed, 17 Sep 2025 12:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLmgQRZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYGVYxBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBDD22D78A;
-	Wed, 17 Sep 2025 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D386A37C0FE;
+	Wed, 17 Sep 2025 12:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113449; cv=none; b=TE2THZMbCRDkXiM/wMJ2nIfncVgA94s8ksf5PMkk+bERwPMYRvi1wo70kAWrada5Jybu9NMm10aND72i74cupaBU5XikF8XBVwbytksb1zJJBHUlkA0lG6JhzB9Myx8C0ugN7ZDsk6pkJu4H3Rmlj5odSRJyIA7YiZH7lK9+1H0=
+	t=1758113974; cv=none; b=RR8KCcYZ9GP1yVh4o89TFNheBvD0I4PmvQb5hziOqIXSo7ZIEcJ9eNOQkj+OCXylg/30s706NTH1Cw8WXQJcibknG0634TJMQH6LHBntzJjhr2M1h2ZkkC3zjyX5kFDnwdpAApgqyFBbXgPx6FP6KJukYODPpUBWLCvWDSAcMXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113449; c=relaxed/simple;
-	bh=31pYGUR+Hd4AlfPCJXhUX3P4O8Y/POhE25UTEBbyjFA=;
+	s=arc-20240116; t=1758113974; c=relaxed/simple;
+	bh=ijIAskCPAowRZ5hv6vwtf4tF+vEpESkziKh6jUiZ+Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZBMjACoshJN5wH2Qmcc58zR5cuhrci6mf+sSNQIfjovL3doZPAtigo70RVgZAsB3/79Zskebcn3veFkb0TU1wjcnNWcmaQD9dZPobxlU1Xfm7ZH3tYoJVY+hZm6wAhCXYqyz7Hmqps0BPxiVxuHhC1GDkwhMbJTWqbF51nNgBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLmgQRZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F13C4CEF7;
-	Wed, 17 Sep 2025 12:50:48 +0000 (UTC)
+	 MIME-Version; b=pcU4DpYtZ9IFlCNyRrXHJWw2LjZRpUoqhUzlbhE0zBXVeuxpDC65/5b+KuO5+tWyAB4nuWDYqxpm42ut3H3vTzrtAIpbamIT+33bX/BFwvofXTrcEzwpKsf5tuCZPRaeQNtYNTh00/iOHu5g+rCpv6TLqHIKcekH4l+Q6t2GlXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYGVYxBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A927C4CEF5;
+	Wed, 17 Sep 2025 12:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113449;
-	bh=31pYGUR+Hd4AlfPCJXhUX3P4O8Y/POhE25UTEBbyjFA=;
+	s=korg; t=1758113974;
+	bh=ijIAskCPAowRZ5hv6vwtf4tF+vEpESkziKh6jUiZ+Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLmgQRZzXqWitL2kHpkQ1wSxZUADJ9HGeYHxRAVwS1RCd2/oVLuVANtEuVd9+GKbZ
-	 7050gvFEX67oYL5zMf1P9D9QFdoBw3ZEUfpJJdnE75seZG4ZsGQCXhIr4TbE1o2NUE
-	 kXEWAZZZz+JyAk/mj9Maht1vPJdndnPy9zpYJ8R4=
+	b=tYGVYxBYMUaozxoWVIaP52MH6JKAAvtVh70ZFHu9e7HUrjCVj6i38RTwyvLXG0ZoY
+	 no6cEXzvcLbeO6ghgzuGh9A3Z+sDFod30D020We+Z1k4u8Of2U/MBCKEBqkF6y4MbG
+	 z3AMH8NVKLnx19B75oqa/Isayt3yjgpUnCexWkBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.12 090/140] serial: sc16is7xx: fix bug in flow control levels init
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 01/78] kunit: kasan_test: disable fortify string checker on kasan_strings() test
 Date: Wed, 17 Sep 2025 14:34:22 +0200
-Message-ID: <20250917123346.504744602@linuxfoundation.org>
+Message-ID: <20250917123329.613867740@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-commit 535fd4c98452c87537a40610abba45daf5761ec6 upstream.
+commit 7a19afee6fb39df63ddea7ce78976d8c521178c6 upstream.
 
-When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
-writing to the TCR register to configure flow control levels, we are
-incorrectly writing to the MSR register. The default value of $00 is then
-used for TCR, which means that selectable trigger levels in FCR are used
-in place of TCR.
+Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
+FORTIFY_SOURCE") the kernel is panicing in kasan_string().
 
-TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
-to be set. EFR[4] is already set in probe().
+This is due to the `src` and `ptr` not being hidden from the optimizer
+which would disable the runtime fortify string checker.
 
-MCR access requires LCR[7] to be zero.
+Call trace:
+  __fortify_panic+0x10/0x20 (P)
+  kasan_strings+0x980/0x9b0
+  kunit_try_run_case+0x68/0x190
+  kunit_generic_run_threadfn_adapter+0x34/0x68
+  kthread+0x1c4/0x228
+  ret_from_fork+0x10/0x20
+ Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
+ ---[ end trace 0000000000000000 ]---
+ note: kunit_try_catch[128] exited with irqs disabled
+ note: kunit_try_catch[128] exited with preempt_count 1
+     # kasan_strings: try faulted: last
+** replaying previous printk message **
+     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
+     # kasan_strings: internal error occurred preventing test case from running: -4
 
-Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
-accessed instead because MCR shares the same address space as XON1.
-
-Since MCR[2] is unmodified and still zero, when writing to TCR we are in
-fact writing to MSR because TCR/TLR registers share the same address space
-as MSR/SPR.
-
-Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
-functions), as it is already enabled in sc16is7xx_probe() since commit
-43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
-Now LCR is $00, which means that MCR access is enabled.
-
-Also remove regcache_cache_bypass() calls since we no longer access the
-enhanced registers set, and TCR is already declared as volatile (in fact
-by declaring MSR as volatile, which shares the same address).
-
-Finally disable access to TCR/TLR registers after modifying them by
-clearing MCR[2].
-
-Note: the comment about "... and internal clock div" is wrong and can be
-      ignored/removed as access to internal clock div registers (DLL/DLH)
-      is permitted only when LCR[7] is logic 1, not when enhanced features
-      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
+Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
+Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ mm/kasan/kasan_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1161,17 +1161,6 @@ static int sc16is7xx_startup(struct uart
- 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
- 			     SC16IS7XX_FCR_FIFO_BIT);
+--- a/mm/kasan/kasan_test.c
++++ b/mm/kasan/kasan_test.c
+@@ -993,6 +993,7 @@ static void kasan_strings(struct kunit *
  
--	/* Enable EFR */
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--			     SC16IS7XX_LCR_CONF_MODE_B);
--
--	regcache_cache_bypass(one->regmap, true);
--
--	/* Enable write access to enhanced features and internal clock div */
--	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
--			      SC16IS7XX_EFR_ENABLE_BIT,
--			      SC16IS7XX_EFR_ENABLE_BIT);
--
- 	/* Enable TCR/TLR */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_TCRTLR_BIT,
-@@ -1183,7 +1172,8 @@ static int sc16is7xx_startup(struct uart
- 			     SC16IS7XX_TCR_RX_RESUME(24) |
- 			     SC16IS7XX_TCR_RX_HALT(48));
+ 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
++	OPTIMIZER_HIDE_VAR(ptr);
  
--	regcache_cache_bypass(one->regmap, false);
-+	/* Disable TCR/TLR access */
-+	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
+ 	kfree(ptr);
  
- 	/* Now, initialize the UART */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
 
 
 
