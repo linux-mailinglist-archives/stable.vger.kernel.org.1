@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-179926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CE7B7E169
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:41:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D8AB7E79B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0B2B2A7ED5
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D38E77A8A2C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01508301465;
-	Wed, 17 Sep 2025 12:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A35183CA6;
+	Wed, 17 Sep 2025 12:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZF/vFV9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDA7uh1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38CE1A2392;
-	Wed, 17 Sep 2025 12:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B8A30CB2D;
+	Wed, 17 Sep 2025 12:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112822; cv=none; b=lOBdYi/keq5YY2ER8Fj+UHkpR/YP5UoCMLCvOUdHyKaIU8W7hZi+LuRU+RqvUJmPiwLqzeX+GCjGAI42E2EEEaUX3gdMu1/gskCNAEM3dG9fwXkCRv5WX6JuM87DCpj5lSSTmuc9fl26Ww3E/M0TDAmoducvA9PcvYmabr0y0JQ=
+	t=1758113237; cv=none; b=s90xi/P2dOGM8GAxvaWmfW5em68h1NeBTPM33nEELnZ2AE59sI0W5/X9VV8duptColHepf+HuoXFdyNJVJrINjvLALx5erZZyHebw8ZuLkJqBIADFloFB16WJC0Cum3OJPx9JY166UfUDEf3j8DyuTyDSxBbZo+lyhUYqZ0eURA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112822; c=relaxed/simple;
-	bh=4tEzqz2WSVPVslxmhsnu3g04/OAhjS9DBYfrcR0bwAQ=;
+	s=arc-20240116; t=1758113237; c=relaxed/simple;
+	bh=xV2YlNx29Ykl5S462Nz6hUPpEX+Hyx4jag7iOlfJsg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HJiX2nOWz9zW7X5mo3xYLp2Ppa239ozC36+pYLShmb5b8xCnvx6ZoBFYeJGwrtKkRdI4cHUMYT1jtYyc/xmPhgGqdiPn9lnN6TzukvVmCdUF0cNImD53Y4G03WzBAI/mVHXyWYfJvKFAf3NTKt3O7ncsgn2t+KAbXhy36NGR5ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZF/vFV9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27D0C4CEF0;
-	Wed, 17 Sep 2025 12:40:20 +0000 (UTC)
+	 MIME-Version; b=sxjORBv19ISOd5efEq+XSLJs19GWXiq/4E9PHRTKNSLNTaNXQXD9WeLbWn/T/ZIv7tX6V9t3c7j5dsuUTIJ/VzpQx5YTijwDx2nisx8fTAzbSREtH2vfA8EbcQkePg+KuLVgiyfsKF5WwL9JMNCR/+aeluWCVHcs28pcjMRXYwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDA7uh1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7DFC4CEF0;
+	Wed, 17 Sep 2025 12:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112821;
-	bh=4tEzqz2WSVPVslxmhsnu3g04/OAhjS9DBYfrcR0bwAQ=;
+	s=korg; t=1758113237;
+	bh=xV2YlNx29Ykl5S462Nz6hUPpEX+Hyx4jag7iOlfJsg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZF/vFV9g13yePgoQeGZ1aDxdh5l7AkAYvEyz0V/8oVe6hPhS0vgfYeRXW7FLfIYMA
-	 B2UtVgXCouEL92azlzvjizRjjEjzxtAupD1kHMTyFsMAoQbh9Rdh8RHEVY40/9Vn1I
-	 Zruk7NBTfGMKay7GI78MGEnwGq+YYqByJDLYHStw=
+	b=UDA7uh1pFAZPIEvR0dCBDWtvcxgjHUQfKvgo7FQlALElrmXd1f8NKFvav2dwtEz4O
+	 uQJDMks8c9H5WwDVqUSIzhK+AConi2wBYZT7ML6a/6K9u/1CqnxNzTncIdISpCD9y3
+	 A4ZbeO0O4jJKlEJCm7bK27NanXlPtFEs8U8IGlzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.16 086/189] drm/xe: Allow the pm notifier to continue on failure
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 024/140] NFSv4: Clear the NFS_CAP_FS_LOCATIONS flag if it is not set
 Date: Wed, 17 Sep 2025 14:33:16 +0200
-Message-ID: <20250917123353.957966815@linuxfoundation.org>
+Message-ID: <20250917123344.897679579@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit d84820309ed34cc412ce76ecfa9471dae7d7d144 upstream.
+[ Upstream commit dd5a8621b886b02f8341c5d4ea68eb2c552ebd3e ]
 
-Its actions are opportunistic anyway and will be completed
-on device suspend.
+_nfs4_server_capabilities() is expected to clear any flags that are not
+supported by the server.
 
-Marking as a fix to simplify backporting of the fix
-that follows in the series.
-
-v2:
-- Keep the runtime pm reference over suspend / hibernate and
-  document why. (Matt Auld, Rodrigo Vivi):
-
-Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250904160715.2613-3-thomas.hellstrom@linux.intel.com
-(cherry picked from commit ebd546fdffddfcaeab08afdd68ec93052c8fa740)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8a59bb93b7e3 ("NFSv4 store server support for fs_location attribute")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c |   17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ fs/nfs/nfs4proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -296,17 +296,17 @@ static int xe_pm_notifier_callback(struc
- 	case PM_SUSPEND_PREPARE:
- 		xe_pm_runtime_get(xe);
- 		err = xe_bo_evict_all_user(xe);
--		if (err) {
-+		if (err)
- 			drm_dbg(&xe->drm, "Notifier evict user failed (%d)\n", err);
--			xe_pm_runtime_put(xe);
--			break;
--		}
- 
- 		err = xe_bo_notifier_prepare_all_pinned(xe);
--		if (err) {
-+		if (err)
- 			drm_dbg(&xe->drm, "Notifier prepare pin failed (%d)\n", err);
--			xe_pm_runtime_put(xe);
--		}
-+		/*
-+		 * Keep the runtime pm reference until post hibernation / post suspend to
-+		 * avoid a runtime suspend interfering with evicted objects or backup
-+		 * allocations.
-+		 */
- 		break;
- 	case PM_POST_HIBERNATION:
- 	case PM_POST_SUSPEND:
-@@ -315,9 +315,6 @@ static int xe_pm_notifier_callback(struc
- 		break;
- 	}
- 
--	if (err)
--		return NOTIFY_BAD;
--
- 	return NOTIFY_DONE;
- }
- 
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 3ac8ecad2e53a..7a1a6c68d7324 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3989,8 +3989,9 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
+ 				     res.attr_bitmask[2];
+ 		}
+ 		memcpy(server->attr_bitmask, res.attr_bitmask, sizeof(server->attr_bitmask));
+-		server->caps &= ~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS |
+-				  NFS_CAP_SYMLINKS| NFS_CAP_SECURITY_LABEL);
++		server->caps &=
++			~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS |
++			  NFS_CAP_SECURITY_LABEL | NFS_CAP_FS_LOCATIONS);
+ 		server->fattr_valid = NFS_ATTR_FATTR_V4;
+ 		if (res.attr_bitmask[0] & FATTR4_WORD0_ACL &&
+ 				res.acl_bitmask & ACL4_SUPPORT_ALLOW_ACL)
+-- 
+2.51.0
+
 
 
 
