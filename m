@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AB2B7EA6E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB773B7F159
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9CF37AFD57
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:54:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676B61892A6B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40062BD022;
-	Wed, 17 Sep 2025 12:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2065F30CB51;
+	Wed, 17 Sep 2025 13:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VV4BpC6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJFH1Ya0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DF4215F4A;
-	Wed, 17 Sep 2025 12:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E611F4192;
+	Wed, 17 Sep 2025 13:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113591; cv=none; b=DCBnE+z3uRp4c4roQZozU0aQ1WsXf6MPRuC2U/aTTzXO63foZ9/wQfB+dUejLi1dhpCjM51psOPZ8KnNMhn4JVtU0Y0DY5H+juz/EZqq1p7XSZ4dxfzZCbTxw+zsN6QHY+u2fE+05m4uytqyLhPZo48G8mgTNo4ol3PXE8laQFk=
+	t=1758114093; cv=none; b=FdAtkNDlUk3Z6Y+XauOKUqnvJiw0sBwnOhNMjh39Vna814WdsMIP4YDm8C/0qtWabtdbULThuWL56iTdDT2FVr3FuAb2MIaCioVNicvrh6wxBS3hxQv+WPjJFk9tWC/dbI/bYb2mCrtWd1dPkjNoc78wJTLmIkPqR+Cbho1K3fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113591; c=relaxed/simple;
-	bh=FmVT2uXXNHYIML7JIf+ngogvSdZFtnW6cxUMcNpLd28=;
+	s=arc-20240116; t=1758114093; c=relaxed/simple;
+	bh=hKdmHRXuzYO99eAyhCpjwwpRwSvHK5/770zP81Xhzbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6XKVa4qDGC0qm/upNOE4+tmz601QfpRktUNlCOoiOlzmQT4PhM7saGVezEzVYNoi9N4oju8eSVvxCRAY47QurJmxad2M06wZogtwJT6jTESBB9dYCQazQBPrZGr15VfhuAwFPfnIjI+JDOb2sIm5ZiuJ8OZOJaDjwLvSgfd0PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VV4BpC6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1CBC4CEF0;
-	Wed, 17 Sep 2025 12:53:10 +0000 (UTC)
+	 MIME-Version; b=ZmXGl6ASSA+ZIjTVbM/rWRRkT8WvtoM1JrwC3V3f1SFqE+k/oAab7EUOlMXkZ+8vaKrj/klxndPrwlY1SkouYyTmmdUQyPgTkzmz6E+p81+jDioPFq7Q4Sb51QuWcMv5eHEiRuPMJFQTaLyGXfyhVB/+dXMqoRmk3J8UsDjTLM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJFH1Ya0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45867C4CEF0;
+	Wed, 17 Sep 2025 13:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113591;
-	bh=FmVT2uXXNHYIML7JIf+ngogvSdZFtnW6cxUMcNpLd28=;
+	s=korg; t=1758114093;
+	bh=hKdmHRXuzYO99eAyhCpjwwpRwSvHK5/770zP81Xhzbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VV4BpC6VvOMQAqcGcF1m9EcGli2HzT7Tt8b2vX/KOq4bMgwiHIOqS+wjhbUccyBga
-	 OQCgMSFdlVOuUWiVh66Z8hQD1D9E5hi9ZaZrAX8MODaSMI2z/y6rrS6kBGc83tFUJT
-	 yEsXBk95WU289j2w8ji5DLARSJCJ3nFwcc/Ak/tY=
+	b=GJFH1Ya0r67xm8TvAdejfd/HDTnxOLgV/dPOCjyFGQG+R3AJJCaunHTJoMsGXGgtm
+	 51MxuA6pOBzc8OapN+sLCakqpzkzI4KIqvQhITwM2q8HJOBEK2vwKI11px4Udg+Gyz
+	 FovNVzycwicNqI5x7uikqkP1Sqwm/fGS/DFMEkFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JC Kuo <jckuo@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 134/140] phy: tegra: xusb: fix device and OF node leak at probe
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 45/78] Revert "net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups"
 Date: Wed, 17 Sep 2025 14:35:06 +0200
-Message-ID: <20250917123347.595665133@linuxfoundation.org>
+Message-ID: <20250917123330.666619944@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit bca065733afd1e3a89a02f05ffe14e966cd5f78e upstream.
+commit 63a796558bc22ec699e4193d5c75534757ddf2e6 upstream.
 
-Make sure to drop the references taken to the PMC OF node and device by
-of_parse_phandle() and of_find_device_by_node() during probe.
+This reverts commit 5537a4679403 ("net: usb: asix: ax88772: drop
+phylink use in PM to avoid MDIO runtime PM wakeups"), it breaks
+operation of asix ethernet usb dongle after system suspend-resume
+cycle.
 
-Note the holding a reference to the PMC device does not prevent the
-PMC regmap from going away (e.g. if the PMC driver is unbound) so there
-is no need to keep the reference.
-
-Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
-Cc: stable@vger.kernel.org	# 5.14
-Cc: JC Kuo <jckuo@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-2-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com/
+Fixes: 5537a4679403 ("net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/2945b9dbadb8ee1fee058b19554a5cb14f1763c1.1757601118.git.pabeni@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra210.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/phy/tegra/xusb-tegra210.c
-+++ b/drivers/phy/tegra/xusb-tegra210.c
-@@ -3164,18 +3164,22 @@ tegra210_xusb_padctl_probe(struct device
- 	}
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -607,8 +607,15 @@ static const struct net_device_ops ax887
  
- 	pdev = of_find_device_by_node(np);
-+	of_node_put(np);
- 	if (!pdev) {
- 		dev_warn(dev, "PMC device is not available\n");
- 		goto out;
- 	}
+ static void ax88772_suspend(struct usbnet *dev)
+ {
++	struct asix_common_private *priv = dev->driver_priv;
+ 	u16 medium;
  
--	if (!platform_get_drvdata(pdev))
-+	if (!platform_get_drvdata(pdev)) {
-+		put_device(&pdev->dev);
- 		return ERR_PTR(-EPROBE_DEFER);
++	if (netif_running(dev->net)) {
++		rtnl_lock();
++		phylink_suspend(priv->phylink, false);
++		rtnl_unlock();
 +	}
- 
- 	padctl->regmap = dev_get_regmap(&pdev->dev, "usb_sleepwalk");
- 	if (!padctl->regmap)
- 		dev_info(dev, "failed to find PMC regmap\n");
- 
-+	put_device(&pdev->dev);
- out:
- 	return &padctl->base;
++
+ 	/* Stop MAC operation */
+ 	medium = asix_read_medium_status(dev, 1);
+ 	medium &= ~AX_MEDIUM_RE;
+@@ -637,6 +644,12 @@ static void ax88772_resume(struct usbnet
+ 	for (i = 0; i < 3; i++)
+ 		if (!priv->reset(dev, 1))
+ 			break;
++
++	if (netif_running(dev->net)) {
++		rtnl_lock();
++		phylink_resume(priv->phylink);
++		rtnl_unlock();
++	}
  }
+ 
+ static int asix_resume(struct usb_interface *intf)
 
 
 
