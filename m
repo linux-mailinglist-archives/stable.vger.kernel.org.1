@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-180129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9ADB7E93C
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:54:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DB5B7EFE9
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 957CC7BA323
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:51:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AD9F4A46C1
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748792FBE01;
-	Wed, 17 Sep 2025 12:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C66C30F933;
+	Wed, 17 Sep 2025 12:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESWqhebu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6wNNdXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FA53233F8;
-	Wed, 17 Sep 2025 12:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3973931A7EE;
+	Wed, 17 Sep 2025 12:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113478; cv=none; b=SZCGXI8iTKxLhAVmFZZZ1TTlMECoziItfvkhoCvNae57KLG0rkAFXTlYouGDxUTj4ZAlHW/r4dzC3eSHTQV1womf5/jSeupkXOEtEWPkJjv4hLrHsc8n9ZlXvxcndrJq+hTMWoBP2TUgmaqmds40Yh0aKG9aNLR7dRsTtHtR/vk=
+	t=1758113767; cv=none; b=J8fmi4ZFGtlYeShL2xWfiJG2pNX8s8vXTO+sih69ODTqXyCtnUDihxTBriytT2FJPhoNscN0DqSrY5hAi4/WsiA3lyXG5zfNJR1W4M+Ppr2/SK55prp5NeXJ0kRUGa9VgKCi40EeyqyPZpRSzecwtYxCecsEe9VzaLvjgCF2J1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113478; c=relaxed/simple;
-	bh=qBlQYQiEikr8M4F0yrnYVfo4U2rFw3KTjzUPo6eicFw=;
+	s=arc-20240116; t=1758113767; c=relaxed/simple;
+	bh=JSXYldzeB6rjPnoVuHU+cFQQTO2/BqVoEgq/Ix0kgpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IpA/+6XKBAIXAR29p8V2GRHLeL3RoyADuvOfKgVO5OqP9/2E8YUxb5FBH0FjhsB+Smq9aA2P+kINwDubj8HHramx6KzfHqDGgYo+XOuYhBbW4lOAuX7oIAP/LGnlECcKAf+6Q4ygDyAZsvRjcKdWfFYasg6tNmdXFCl60VP45e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESWqhebu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4079AC4CEF0;
-	Wed, 17 Sep 2025 12:51:14 +0000 (UTC)
+	 MIME-Version; b=ckEIdkm9AogFzsIZgd7EmSfuZcuJYmqkbs/HcgAOowCq6E329dut9sg7vj9BTyEvk4OkobwRu0HzGQM7a2ImE9ro1S5IqY9KDUP/8UBat99WYM15CHsiBh+olI0axkf9ANrpe3gl/hOs+Fn73avw6P9kFs2y5Cw2HEttfAIeIKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6wNNdXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81B9C4CEF0;
+	Wed, 17 Sep 2025 12:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113474;
-	bh=qBlQYQiEikr8M4F0yrnYVfo4U2rFw3KTjzUPo6eicFw=;
+	s=korg; t=1758113767;
+	bh=JSXYldzeB6rjPnoVuHU+cFQQTO2/BqVoEgq/Ix0kgpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESWqhebu3CISZWecLvN6XP285360xtV+vK9/P0UaPTh9/WZIfJ2kDSW9MXB2LxuIU
-	 jL3PDR8qbhK0Ul92UpB3gfk7Jao8CUyS5dLiJp62kUMq43yyOrbyvMiFrOccX5TbTS
-	 KirYPl0HfuZcYINB+LYKaX8iK3gdV+Dp/HcwzhGo=
+	b=Z6wNNdXunkqoB4Gpycs+WvLP0xOmZ0olLYasTkFHVzFNx4HhvtkuV6bQE6lZ/oG59
+	 KG9ad3egeHSg30tT9Atvb0zI9loY6AzId5w0DNiLyzJOZgWaTG9vl5Z4O+7fKkto1V
+	 3CPzWpbxuszYbubTm5pjxvoAMH3WDp+4XslzPb3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/140] genetlink: fix genl_bind() invoking bind() after -EPERM
+	David Rosca <david.rosca@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 046/101] drm/amdgpu/vcn4: Fix IB parsing with multiple engine info packages
 Date: Wed, 17 Sep 2025 14:34:29 +0200
-Message-ID: <20250917123346.674107872@linuxfoundation.org>
+Message-ID: <20250917123337.956801292@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: David Rosca <david.rosca@amd.com>
 
-[ Upstream commit 1dbfb0363224f6da56f6655d596dc5097308d6f5 ]
+commit 2b10cb58d7a3fd621ec9b2ba765a092e562ef998 upstream.
 
-Per family bind/unbind callbacks were introduced to allow families
-to track multicast group consumer presence, e.g. to start or stop
-producing events depending on listeners.
+There can be multiple engine info packages in one IB and the first one
+may be common engine, not decode/encode.
+We need to parse the entire IB instead of stopping after finding first
+engine info.
 
-However, in genl_bind() the bind() callback was invoked even if
-capability checks failed and ret was set to -EPERM. This means that
-callbacks could run on behalf of unauthorized callers while the
-syscall still returned failure to user space.
-
-Fix this by only invoking bind() after "if (ret) break;" check
-i.e. after permission checks have succeeded.
-
-Fixes: 3de21a8990d3 ("genetlink: Add per family bind/unbind callbacks")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250905135731.3026965-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Rosca <david.rosca@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit dc8f9f0f45166a6b37864e7a031c726981d6e5fc)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/genetlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |   52 +++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 31 deletions(-)
 
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 07ad65774fe29..3327d84518141 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1836,6 +1836,9 @@ static int genl_bind(struct net *net, int group)
- 		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
- 			ret = -EPERM;
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -1747,22 +1747,16 @@ out:
  
-+		if (ret)
-+			break;
+ #define RADEON_VCN_ENGINE_TYPE_ENCODE			(0x00000002)
+ #define RADEON_VCN_ENGINE_TYPE_DECODE			(0x00000003)
+-
+ #define RADEON_VCN_ENGINE_INFO				(0x30000001)
+-#define RADEON_VCN_ENGINE_INFO_MAX_OFFSET		16
+-
+ #define RENCODE_ENCODE_STANDARD_AV1			2
+ #define RENCODE_IB_PARAM_SESSION_INIT			0x00000003
+-#define RENCODE_IB_PARAM_SESSION_INIT_MAX_OFFSET	64
+ 
+-/* return the offset in ib if id is found, -1 otherwise
+- * to speed up the searching we only search upto max_offset
+- */
+-static int vcn_v4_0_enc_find_ib_param(struct amdgpu_ib *ib, uint32_t id, int max_offset)
++/* return the offset in ib if id is found, -1 otherwise */
++static int vcn_v4_0_enc_find_ib_param(struct amdgpu_ib *ib, uint32_t id, int start)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < ib->length_dw && i < max_offset && ib->ptr[i] >= 8; i += ib->ptr[i]/4) {
++	for (i = start; i < ib->length_dw && ib->ptr[i] >= 8; i += ib->ptr[i] / 4) {
+ 		if (ib->ptr[i + 1] == id)
+ 			return i;
+ 	}
+@@ -1777,33 +1771,29 @@ static int vcn_v4_0_ring_patch_cs_in_pla
+ 	struct amdgpu_vcn_decode_buffer *decode_buffer;
+ 	uint64_t addr;
+ 	uint32_t val;
+-	int idx;
++	int idx = 0, sidx;
+ 
+ 	/* The first instance can decode anything */
+ 	if (!ring->me)
+ 		return 0;
+ 
+-	/* RADEON_VCN_ENGINE_INFO is at the top of ib block */
+-	idx = vcn_v4_0_enc_find_ib_param(ib, RADEON_VCN_ENGINE_INFO,
+-			RADEON_VCN_ENGINE_INFO_MAX_OFFSET);
+-	if (idx < 0) /* engine info is missing */
+-		return 0;
+-
+-	val = amdgpu_ib_get_value(ib, idx + 2); /* RADEON_VCN_ENGINE_TYPE */
+-	if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {
+-		decode_buffer = (struct amdgpu_vcn_decode_buffer *)&ib->ptr[idx + 6];
+-
+-		if (!(decode_buffer->valid_buf_flag  & 0x1))
+-			return 0;
+-
+-		addr = ((u64)decode_buffer->msg_buffer_address_hi) << 32 |
+-			decode_buffer->msg_buffer_address_lo;
+-		return vcn_v4_0_dec_msg(p, job, addr);
+-	} else if (val == RADEON_VCN_ENGINE_TYPE_ENCODE) {
+-		idx = vcn_v4_0_enc_find_ib_param(ib, RENCODE_IB_PARAM_SESSION_INIT,
+-			RENCODE_IB_PARAM_SESSION_INIT_MAX_OFFSET);
+-		if (idx >= 0 && ib->ptr[idx + 2] == RENCODE_ENCODE_STANDARD_AV1)
+-			return vcn_v4_0_limit_sched(p, job);
++	while ((idx = vcn_v4_0_enc_find_ib_param(ib, RADEON_VCN_ENGINE_INFO, idx)) >= 0) {
++		val = amdgpu_ib_get_value(ib, idx + 2); /* RADEON_VCN_ENGINE_TYPE */
++		if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {
++			decode_buffer = (struct amdgpu_vcn_decode_buffer *)&ib->ptr[idx + 6];
 +
- 		if (family->bind)
- 			family->bind(i);
- 
--- 
-2.51.0
-
++			if (!(decode_buffer->valid_buf_flag & 0x1))
++				return 0;
++
++			addr = ((u64)decode_buffer->msg_buffer_address_hi) << 32 |
++				decode_buffer->msg_buffer_address_lo;
++			return vcn_v4_0_dec_msg(p, job, addr);
++		} else if (val == RADEON_VCN_ENGINE_TYPE_ENCODE) {
++			sidx = vcn_v4_0_enc_find_ib_param(ib, RENCODE_IB_PARAM_SESSION_INIT, idx);
++			if (sidx >= 0 && ib->ptr[sidx + 2] == RENCODE_ENCODE_STANDARD_AV1)
++				return vcn_v4_0_limit_sched(p, job);
++		}
++		idx += ib->ptr[idx] / 4;
+ 	}
+ 	return 0;
+ }
 
 
 
