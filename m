@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-180004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E479B7E5F7
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61152B7F081
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE3977B97A6
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:43:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AFF1C261D4
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 13:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4B9301465;
-	Wed, 17 Sep 2025 12:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3DE333AA3;
+	Wed, 17 Sep 2025 12:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Upj/QTuM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWlldLq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386022FBE19;
-	Wed, 17 Sep 2025 12:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BBB333A9F;
+	Wed, 17 Sep 2025 12:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113076; cv=none; b=eyIkvGv+MpszqT0S0LWNr9d7LDPYqM0c25hLO8o8J5EkjNQN/fr034fdNMaJ78aUi0BftDsXs4OEGBX3ykkzqBy9UMD1mGb88OrPvqG3a/3hYHrhkXAiX6nsv0oN6oa4DhmCFVw98mXX7K0eOJ/QKn68k/Lj0yybZ0GeLoEnuu4=
+	t=1758113990; cv=none; b=miyhoyIcst5hH3SYXbfw6NtjG0kU/kcQ3eHPFAe8k0szjEkC+lyKtfNcAPaQ9kMrnNBiwOX5kwiAig7VymLM51t34jOrDerngP45Laov1n3DuKCfqtWyg5l3guRfCeqIOHIjWkQ4GeETYGLoghxqLe+Prlry8iWgcIARXnw8a6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113076; c=relaxed/simple;
-	bh=chNlZdPQrP0qlBj0EhAjyBNJgKixF0+OjeynNy4ETOk=;
+	s=arc-20240116; t=1758113990; c=relaxed/simple;
+	bh=YTSPhMCkD9NsRv3ot8YUikNJHMGr4W8/fMp/zLvhHac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxGKP0/7Z4/RODu4Uj8ch0poAi8MtC45BIYb2WLYszhxC90PuExp+tj5eq3mA2osIm9q4d2RaMc57WX/1G/iFWE0ZfB030Ey/tPDed43auYA3CbrQFtQ9tKo2dfdX/74WFy+YM/ACPOQDReDcAavGS71BOITnOesDUMMC9Lf/kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upj/QTuM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44D7C4CEF0;
-	Wed, 17 Sep 2025 12:44:35 +0000 (UTC)
+	 MIME-Version; b=e4V1goYESWdtXfRmBWVgc42+v0ddf+FrLMVEed8+pIARc4ApT3mP58mQSGCi3uJPK5UmWe2NXK5zFqWc7L3QpTAU5FYDs4JCDnT9WEcyAW0xrp9Xe3r5XthcyMteTZiAfxUDxutQjhtnc7MHMg02Sf6YBmGEbup37o6lW/fY7fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWlldLq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45ECC4CEF5;
+	Wed, 17 Sep 2025 12:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113076;
-	bh=chNlZdPQrP0qlBj0EhAjyBNJgKixF0+OjeynNy4ETOk=;
+	s=korg; t=1758113990;
+	bh=YTSPhMCkD9NsRv3ot8YUikNJHMGr4W8/fMp/zLvhHac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Upj/QTuMdJyIebRkEv6qotTWAhd4zT/N1nQwdlZUYYL5Y6kZXFMd1CEZdJXbRoegB
-	 yo4ccGfpNGRL0AHNpyiFabj0x9n5f9/WDorM66T61ibHdsYC9CmW3Zaei/rGGEQL4+
-	 PiASdP5AxwTD45JB0PN8IjshjS7lOF4VZzQQkmVE=
+	b=dWlldLq4UlbRjUWOe/owj/1n/XB+0Utbgqd/pTKFe+IhC2XECz1GnZxoT07IzJ7jq
+	 6mexFX5DMknLQaHTlnajhoe6wor7SLmw4rD3iSia1hSSzKghIlvT1JFovuYhCR/fLE
+	 HbUD3PI2g+lQIh2kEnYh8lRb0xtHaAgDwwM857hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 165/189] hsr: hold rcu and dev lock for hsr_get_port_ndev
+Subject: [PATCH 6.1 14/78] ftrace/samples: Fix function size computation
 Date: Wed, 17 Sep 2025 14:34:35 +0200
-Message-ID: <20250917123355.908335442@linuxfoundation.org>
+Message-ID: <20250917123329.916686583@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
+References: <20250917123329.576087662@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
 
-[ Upstream commit 847748fc66d08a89135a74e29362a66ba4e3ab15 ]
+[ Upstream commit 80d03a40837a9b26750a25122b906c052cc846c9 ]
 
-hsr_get_port_ndev calls hsr_for_each_port, which need to hold rcu lock.
-On the other hand, before return the port device, we need to hold the
-device reference to avoid UaF in the caller function.
+In my_tramp1 function .size directive was placed above
+ASM_RET instruction, leading to a wrong function size.
 
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Fixes: 9c10dd8eed74 ("net: hsr: Create and export hsr_get_port_ndev()")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250905091533.377443-4-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/aK3d7vxNcO52kEmg@vova-pc
+Fixes: 9d907f1ae80b ("samples/ftrace: Fix asm function ELF annotations")
+Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 20 ++++++++++++++------
- net/hsr/hsr_device.c                         |  7 ++++++-
- 2 files changed, 20 insertions(+), 7 deletions(-)
+ samples/ftrace/ftrace-direct-modify.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index f436d7cf565a1..1a9cc8206430b 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -691,7 +691,7 @@ static void icssg_prueth_hsr_fdb_add_del(struct prueth_emac *emac,
+diff --git a/samples/ftrace/ftrace-direct-modify.c b/samples/ftrace/ftrace-direct-modify.c
+index 39146fa83e20b..cbef49649ce01 100644
+--- a/samples/ftrace/ftrace-direct-modify.c
++++ b/samples/ftrace/ftrace-direct-modify.c
+@@ -36,8 +36,8 @@ asm (
+ "	movq %rsp, %rbp\n"
+ "	call my_direct_func1\n"
+ "	leave\n"
+-"	.size		my_tramp1, .-my_tramp1\n"
+ 	ASM_RET
++"	.size		my_tramp1, .-my_tramp1\n"
  
- static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
- {
--	struct net_device *real_dev;
-+	struct net_device *real_dev, *port_dev;
- 	struct prueth_emac *emac;
- 	u8 vlan_id, i;
- 
-@@ -700,11 +700,15 @@ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
- 
- 	if (is_hsr_master(real_dev)) {
- 		for (i = HSR_PT_SLAVE_A; i < HSR_PT_INTERLINK; i++) {
--			emac = netdev_priv(hsr_get_port_ndev(real_dev, i));
--			if (!emac)
-+			port_dev = hsr_get_port_ndev(real_dev, i);
-+			emac = netdev_priv(port_dev);
-+			if (!emac) {
-+				dev_put(port_dev);
- 				return -EINVAL;
-+			}
- 			icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
- 						     true);
-+			dev_put(port_dev);
- 		}
- 	} else {
- 		emac = netdev_priv(real_dev);
-@@ -716,7 +720,7 @@ static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
- 
- static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
- {
--	struct net_device *real_dev;
-+	struct net_device *real_dev, *port_dev;
- 	struct prueth_emac *emac;
- 	u8 vlan_id, i;
- 
-@@ -725,11 +729,15 @@ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
- 
- 	if (is_hsr_master(real_dev)) {
- 		for (i = HSR_PT_SLAVE_A; i < HSR_PT_INTERLINK; i++) {
--			emac = netdev_priv(hsr_get_port_ndev(real_dev, i));
--			if (!emac)
-+			port_dev = hsr_get_port_ndev(real_dev, i);
-+			emac = netdev_priv(port_dev);
-+			if (!emac) {
-+				dev_put(port_dev);
- 				return -EINVAL;
-+			}
- 			icssg_prueth_hsr_fdb_add_del(emac, addr, vlan_id,
- 						     false);
-+			dev_put(port_dev);
- 		}
- 	} else {
- 		emac = netdev_priv(real_dev);
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 702da1f9aaa90..fbbc3ccf9df64 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -675,9 +675,14 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- 	struct hsr_priv *hsr = netdev_priv(ndev);
- 	struct hsr_port *port;
- 
-+	rcu_read_lock();
- 	hsr_for_each_port(hsr, port)
--		if (port->type == pt)
-+		if (port->type == pt) {
-+			dev_hold(port->dev);
-+			rcu_read_unlock();
- 			return port->dev;
-+		}
-+	rcu_read_unlock();
- 	return NULL;
- }
- EXPORT_SYMBOL(hsr_get_port_ndev);
+ "	.type		my_tramp2, @function\n"
+ "	.globl		my_tramp2\n"
 -- 
 2.51.0
 
