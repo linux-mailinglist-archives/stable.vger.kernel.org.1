@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-179931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9269B7E23B
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:42:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEE9B7EA77
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7BF1621DEB
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:41:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5833B6E32
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C6531A7F5;
-	Wed, 17 Sep 2025 12:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD79328961;
+	Wed, 17 Sep 2025 12:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zW6a+yUE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwWqo3q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16A31EF363;
-	Wed, 17 Sep 2025 12:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A76F2E0B6A;
+	Wed, 17 Sep 2025 12:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112837; cv=none; b=mtIHL2uHkgBKSAvbpnX739LHvGldQ8LZ12RMV24o5E4JPys4pk26mYfWqYzItOhs5JVjJZcwd6V8/5PectTehBnX3eMfTIKTyGPTEuZlzx9dauG2jNGEnKPIuvqhW03yCVFEetBLekiygXYTqFGnOs0u58VhcSbdkrRiShIPRXE=
+	t=1758113430; cv=none; b=ib70nXBvh4Jsw+fa5CjqDlQZ/MuMdcjYXVZ0ysw+ofNTOEl2fVm8EkpezDSc5JoL9JioiUacXUFSeglYiD2jYJWeqprbJSlA7eIBRwRbBCshbQ2y8QXuoc5/VSPoBcV7p0jDMYTnLqdKis4WtiI+DyxCSakf7UWL/HuZJRyM3qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112837; c=relaxed/simple;
-	bh=DXaMb6+m1GG9Fa3etFeb10eLqoyUv+oQTTVUv2VXUHs=;
+	s=arc-20240116; t=1758113430; c=relaxed/simple;
+	bh=UFKcQTEwRx4quCoA+xYd2z+16C94cgzy4SSAmXNHBLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uc5zKlQp+El5nweZu6DJXav+IbLUrGmlmmECyRkj5vCiemp4sD0q8SoaZeXlmRPV4awKH2rsndmjnkVoECpTxWiT+fnj0KW2un0jVx+zie7/14G1UBbAjLGjWqOK/mCsSPaNEWiywRF9+zAGFd2pz4gmvR1unVxCsyBuCWHz0eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zW6a+yUE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39870C4CEF0;
-	Wed, 17 Sep 2025 12:40:37 +0000 (UTC)
+	 MIME-Version; b=BpSYh6MFIAoFw3AZNOdpsxCc6Jler2WQ/4JTvb35hEr3koUuhCB2U4L2vww3KOHbYIauWrTnviCSjzCrK1uQgb4wsqnLE8ZoFzeRWPCn9gk3gJ06wHlSFUYz40OGORsaC2rbUazYNoJEC434Bq0hkQh0QVbcWNFYlPg+JTK1ZaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwWqo3q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3230BC4CEF5;
+	Wed, 17 Sep 2025 12:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112837;
-	bh=DXaMb6+m1GG9Fa3etFeb10eLqoyUv+oQTTVUv2VXUHs=;
+	s=korg; t=1758113429;
+	bh=UFKcQTEwRx4quCoA+xYd2z+16C94cgzy4SSAmXNHBLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zW6a+yUEOquC8RZ3rEFlj0n4fTXlCrwXYsKbLT52PRNG6IXqC2r6sX2g8YLDn0z6I
-	 FPlBiqfcpRBzFtcVt5ZWDl8j71q5xKz2IB7d167nwruC002RUv7Pz1ER1KFBrgE56V
-	 prvrih5Z3TPQynlc+dn5rfGgdJkT63e5YoUdG5ZI=
+	b=OwWqo3q034gja9/S39Eojrq29SHZH5fSjDDe/z3ztKG48q/jyDep6X2Kj3cSXzUWy
+	 QyP5dEwHtWgvwC+z58VOJOL303wHm+AOldm69CB0aCNQy75sVx9a+UhKZmCfup5Ess
+	 Y3YATSNetQdhw35Qz4ojN5K++vB9rpn+xMptEkoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.16 091/189] drm/amd/display: Correct sequences and delays for DCN35 PG & RCG
+	Mike Snitzer <snitzer@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 029/140] nfs/localio: add direct IO enablement with sync and async IO support
 Date: Wed, 17 Sep 2025 14:33:21 +0200
-Message-ID: <20250917123354.078175615@linuxfoundation.org>
+Message-ID: <20250917123345.019184916@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,660 +63,266 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Bunea <ovidiu.bunea@amd.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit 70f0b051f82d0234ade2f6753f72a2610048db3b upstream.
+[ Upstream commit 3feec68563dda59517f83d19123aa287a1dfd068 ]
 
-[why]
-The current PG & RCG programming in driver has some gaps and incorrect
-sequences.
+This commit simply adds the required O_DIRECT plumbing.  It doesn't
+address the fact that NFS doesn't ensure all writes are page aligned
+(nor device logical block size aligned as required by O_DIRECT).
 
-[how]
-Added delays after ungating clocks to allow ramp up, increased polling
-to allow more time for power up, and removed the incorrect sequences.
+Because NFS will read-modify-write for IO that isn't aligned, LOCALIO
+will not use O_DIRECT semantics by default if/when an application
+requests the use of O_DIRECT.  Allow the use of O_DIRECT semantics by:
+1: Adding a flag to the nfs_pgio_header struct to allow the NFS
+   O_DIRECT layer to signal that O_DIRECT was used by the application
+2: Adding a 'localio_O_DIRECT_semantics' NFS module parameter that
+   when enabled will cause LOCALIO to use O_DIRECT semantics (this may
+   cause IO to fail if applications do not properly align their IO).
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1bde5584e297921f45911ae874b0175dce5ed4b5)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit is derived from code developed by Weston Andros Adamson.
+
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Stable-dep-of: 992203a1fba5 ("nfs/localio: restore creds before releasing pageio data")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h                      |    1 
- drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c   |   74 +++++----
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c  |  115 ++-------------
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c   |    3 
- drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c |    3 
- drivers/gpu/drm/amd/display/dc/inc/hw/pg_cntl.h          |    1 
- drivers/gpu/drm/amd/display/dc/pg/dcn35/dcn35_pg_cntl.c  |   78 ++++++----
- 7 files changed, 111 insertions(+), 164 deletions(-)
+ Documentation/filesystems/nfs/localio.rst | 13 ++++
+ fs/nfs/direct.c                           |  1 +
+ fs/nfs/localio.c                          | 93 ++++++++++++++++++++---
+ include/linux/nfs_xdr.h                   |  1 +
+ 4 files changed, 98 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -1095,6 +1095,7 @@ struct dc_debug_options {
- 	bool enable_hblank_borrow;
- 	bool force_subvp_df_throttle;
- 	uint32_t acpi_transition_bitmasks[MAX_PIPES];
-+	bool enable_pg_cntl_debug_logs;
+diff --git a/Documentation/filesystems/nfs/localio.rst b/Documentation/filesystems/nfs/localio.rst
+index bd1967e2eab32..20fc901a08f4d 100644
+--- a/Documentation/filesystems/nfs/localio.rst
++++ b/Documentation/filesystems/nfs/localio.rst
+@@ -306,6 +306,19 @@ is issuing IO to the underlying local filesystem that it is sharing with
+ the NFS server. See: fs/nfs/localio.c:nfs_local_doio() and
+ fs/nfs/localio.c:nfs_local_commit().
+ 
++With normal NFS that makes use of RPC to issue IO to the server, if an
++application uses O_DIRECT the NFS client will bypass the pagecache but
++the NFS server will not. Because the NFS server's use of buffered IO
++affords applications to be less precise with their alignment when
++issuing IO to the NFS client. LOCALIO can be configured to use O_DIRECT
++semantics by setting the 'localio_O_DIRECT_semantics' nfs module
++parameter to Y, e.g.:
++
++  echo Y > /sys/module/nfs/parameters/localio_O_DIRECT_semantics
++
++Once enabled, it will cause LOCALIO to use O_DIRECT semantics (this may
++cause IO to fail if applications do not properly align their IO).
++
+ Security
+ ========
+ 
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index c1f1b826888c9..f159cfc125adc 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -320,6 +320,7 @@ static void nfs_read_sync_pgio_error(struct list_head *head, int error)
+ static void nfs_direct_pgio_init(struct nfs_pgio_header *hdr)
+ {
+ 	get_dreq(hdr->dreq);
++	set_bit(NFS_IOHDR_ODIRECT, &hdr->flags);
+ }
+ 
+ static const struct nfs_pgio_completion_ops nfs_direct_read_completion_ops = {
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index ab305dfc71269..8fb145124e93b 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -35,6 +35,7 @@ struct nfs_local_kiocb {
+ 	struct bio_vec		*bvec;
+ 	struct nfs_pgio_header	*hdr;
+ 	struct work_struct	work;
++	void (*aio_complete_work)(struct work_struct *);
+ 	struct nfsd_file	*localio;
  };
  
+@@ -50,6 +51,11 @@ static void nfs_local_fsync_work(struct work_struct *work);
+ static bool localio_enabled __read_mostly = true;
+ module_param(localio_enabled, bool, 0644);
  
---- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-+++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -133,30 +133,34 @@ enum dsc_clk_source {
- };
- 
- 
--static void dccg35_set_dsc_clk_rcg(struct dccg *dccg, int inst, bool enable)
-+static void dccg35_set_dsc_clk_rcg(struct dccg *dccg, int inst, bool allow_rcg)
- {
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
--	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dsc && enable)
-+	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dsc && allow_rcg)
- 		return;
- 
- 	switch (inst) {
- 	case 0:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 1:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 2:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 3:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	default:
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
++static bool localio_O_DIRECT_semantics __read_mostly = false;
++module_param(localio_O_DIRECT_semantics, bool, 0644);
++MODULE_PARM_DESC(localio_O_DIRECT_semantics,
++		 "LOCALIO will use O_DIRECT semantics to filesystem.");
 +
-+	/* Wait for clock to ramp */
-+	if (!allow_rcg)
-+		udelay(10);
- }
- 
- static void dccg35_set_symclk32_se_rcg(
-@@ -385,35 +389,34 @@ static void dccg35_set_dtbclk_p_rcg(stru
- 	}
- }
- 
--static void dccg35_set_dppclk_rcg(struct dccg *dccg,
--												int inst, bool enable)
-+static void dccg35_set_dppclk_rcg(struct dccg *dccg, int inst, bool allow_rcg)
+ static inline bool nfs_client_is_local(const struct nfs_client *clp)
  {
--
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
--
--	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && enable)
-+	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && allow_rcg)
- 		return;
- 
- 	switch (inst) {
- 	case 0:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 1:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 2:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 3:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	default:
- 	BREAK_TO_DEBUGGER();
- 		break;
+ 	return !!test_bit(NFS_CS_LOCAL_IO, &clp->cl_flags);
+@@ -287,10 +293,19 @@ nfs_local_iocb_alloc(struct nfs_pgio_header *hdr,
+ 		kfree(iocb);
+ 		return NULL;
  	}
--	//DC_LOG_DEBUG("%s: inst(%d) DPPCLK rcg_disable: %d\n", __func__, inst, enable ? 0 : 1);
- 
-+	/* Wait for clock to ramp */
-+	if (!allow_rcg)
-+		udelay(10);
- }
- 
- static void dccg35_set_dpstreamclk_rcg(
-@@ -1177,32 +1180,34 @@ static void dccg35_update_dpp_dto(struct
- }
- 
- static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
--		 uint32_t dpp_inst, uint32_t enable)
-+		 uint32_t dpp_inst, uint32_t disallow_rcg)
- {
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
--	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
-+	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && !disallow_rcg)
- 		return;
- 
- 
- 	switch (dpp_inst) {
- 	case 0:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	case 1:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	case 2:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	case 3:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	default:
- 		break;
- 	}
--	//DC_LOG_DEBUG("%s: dpp_inst(%d) rcg: %d\n", __func__, dpp_inst, enable);
- 
-+	/* Wait for clock to ramp */
-+	if (disallow_rcg)
-+		udelay(10);
- }
- 
- static void dccg35_get_pixel_rate_div(
-@@ -1782,8 +1787,7 @@ static void dccg35_enable_dscclk(struct
- 	//Disable DTO
- 	switch (inst) {
- 	case 0:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK0_DTO_PARAM,
- 				DSCCLK0_DTO_PHASE, 0,
-@@ -1791,8 +1795,7 @@ static void dccg35_enable_dscclk(struct
- 		REG_UPDATE(DSCCLK_DTO_CTRL,	DSCCLK0_EN, 1);
- 		break;
- 	case 1:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK1_DTO_PARAM,
- 				DSCCLK1_DTO_PHASE, 0,
-@@ -1800,8 +1803,7 @@ static void dccg35_enable_dscclk(struct
- 		REG_UPDATE(DSCCLK_DTO_CTRL, DSCCLK1_EN, 1);
- 		break;
- 	case 2:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK2_DTO_PARAM,
- 				DSCCLK2_DTO_PHASE, 0,
-@@ -1809,8 +1811,7 @@ static void dccg35_enable_dscclk(struct
- 		REG_UPDATE(DSCCLK_DTO_CTRL, DSCCLK2_EN, 1);
- 		break;
- 	case 3:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK3_DTO_PARAM,
- 				DSCCLK3_DTO_PHASE, 0,
-@@ -1821,6 +1822,9 @@ static void dccg35_enable_dscclk(struct
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
+-	init_sync_kiocb(&iocb->kiocb, file);
 +
-+	/* Wait for clock to ramp */
-+	udelay(10);
- }
- 
- static void dccg35_disable_dscclk(struct dccg *dccg,
-@@ -1864,6 +1868,9 @@ static void dccg35_disable_dscclk(struct
- 	default:
- 		return;
- 	}
++	if (localio_O_DIRECT_semantics &&
++	    test_bit(NFS_IOHDR_ODIRECT, &hdr->flags)) {
++		iocb->kiocb.ki_filp = file;
++		iocb->kiocb.ki_flags = IOCB_DIRECT;
++	} else
++		init_sync_kiocb(&iocb->kiocb, file);
 +
-+	/* Wait for clock ramp */
-+	udelay(10);
+ 	iocb->kiocb.ki_pos = hdr->args.offset;
+ 	iocb->hdr = hdr;
+ 	iocb->kiocb.ki_flags &= ~IOCB_APPEND;
++	iocb->aio_complete_work = NULL;
++
+ 	return iocb;
  }
  
- static void dccg35_enable_symclk_se(struct dccg *dccg, uint32_t stream_enc_inst, uint32_t link_enc_inst)
-@@ -2349,10 +2356,7 @@ static void dccg35_disable_symclk_se_cb(
- 
- void dccg35_root_gate_disable_control(struct dccg *dccg, uint32_t pipe_idx, uint32_t disable_clock_gating)
- {
--
--	if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp) {
--		dccg35_set_dppclk_root_clock_gating(dccg, pipe_idx, disable_clock_gating);
--	}
-+	dccg35_set_dppclk_root_clock_gating(dccg, pipe_idx, disable_clock_gating);
+@@ -345,6 +360,18 @@ nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
+ 	nfs_local_hdr_release(hdr, hdr->task.tk_ops);
  }
  
- static const struct dccg_funcs dccg35_funcs_new = {
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -113,6 +113,14 @@ static void enable_memory_low_power(stru
- }
- #endif
- 
-+static void print_pg_status(struct dc *dc, const char *debug_func, const char *debug_log)
++/*
++ * Complete the I/O from iocb->kiocb.ki_complete()
++ *
++ * Note that this function can be called from a bottom half context,
++ * hence we need to queue the rpc_call_done() etc to a workqueue
++ */
++static inline void nfs_local_pgio_aio_complete(struct nfs_local_kiocb *iocb)
 +{
-+	if (dc->debug.enable_pg_cntl_debug_logs && dc->res_pool->pg_cntl) {
-+		if (dc->res_pool->pg_cntl->funcs->print_pg_status)
-+			dc->res_pool->pg_cntl->funcs->print_pg_status(dc->res_pool->pg_cntl, debug_func, debug_log);
-+	}
++	INIT_WORK(&iocb->work, iocb->aio_complete_work);
++	queue_work(nfsiod_workqueue, &iocb->work);
 +}
 +
- void dcn35_set_dmu_fgcg(struct dce_hwseq *hws, bool enable)
+ static void
+ nfs_local_read_done(struct nfs_local_kiocb *iocb, long status)
  {
- 	REG_UPDATE_3(DMU_CLK_CNTL,
-@@ -137,6 +145,8 @@ void dcn35_init_hw(struct dc *dc)
- 	uint32_t user_level = MAX_BACKLIGHT_LEVEL;
- 	int i;
- 
-+	print_pg_status(dc, __func__, ": start");
-+
- 	if (dc->clk_mgr && dc->clk_mgr->funcs->init_clocks)
- 		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
- 
-@@ -200,10 +210,7 @@ void dcn35_init_hw(struct dc *dc)
- 
- 	/* we want to turn off all dp displays before doing detection */
- 	dc->link_srv->blank_all_dp_displays(dc);
--/*
--	if (hws->funcs.enable_power_gating_plane)
--		hws->funcs.enable_power_gating_plane(dc->hwseq, true);
--*/
-+
- 	if (res_pool->hubbub && res_pool->hubbub->funcs->dchubbub_init)
- 		res_pool->hubbub->funcs->dchubbub_init(dc->res_pool->hubbub);
- 	/* If taking control over from VBIOS, we may want to optimize our first
-@@ -236,6 +243,8 @@ void dcn35_init_hw(struct dc *dc)
- 		}
- 
- 		hws->funcs.init_pipes(dc, dc->current_state);
-+		print_pg_status(dc, __func__, ": after init_pipes");
-+
- 		if (dc->res_pool->hubbub->funcs->allow_self_refresh_control &&
- 			!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter)
- 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
-@@ -312,6 +321,7 @@ void dcn35_init_hw(struct dc *dc)
- 		if (dc->res_pool->pg_cntl->funcs->init_pg_status)
- 			dc->res_pool->pg_cntl->funcs->init_pg_status(dc->res_pool->pg_cntl);
- 	}
-+	print_pg_status(dc, __func__, ": after init_pg_status");
+@@ -367,6 +394,23 @@ nfs_local_read_done(struct nfs_local_kiocb *iocb, long status)
+ 			status > 0 ? status : 0, hdr->res.eof);
  }
  
- static void update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
-@@ -500,97 +510,6 @@ void dcn35_physymclk_root_clock_control(
- 	}
- }
- 
--void dcn35_dsc_pg_control(
--		struct dce_hwseq *hws,
--		unsigned int dsc_inst,
--		bool power_on)
--{
--	uint32_t power_gate = power_on ? 0 : 1;
--	uint32_t pwr_status = power_on ? 0 : 2;
--	uint32_t org_ip_request_cntl = 0;
--
--	if (hws->ctx->dc->debug.disable_dsc_power_gate)
--		return;
--	if (hws->ctx->dc->debug.ignore_pg)
--		return;
--	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
--	if (org_ip_request_cntl == 0)
--		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
--
--	switch (dsc_inst) {
--	case 0: /* DSC0 */
--		REG_UPDATE(DOMAIN16_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN16_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	case 1: /* DSC1 */
--		REG_UPDATE(DOMAIN17_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN17_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	case 2: /* DSC2 */
--		REG_UPDATE(DOMAIN18_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN18_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	case 3: /* DSC3 */
--		REG_UPDATE(DOMAIN19_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN19_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	default:
--		BREAK_TO_DEBUGGER();
--		break;
--	}
--
--	if (org_ip_request_cntl == 0)
--		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 0);
--}
--
--void dcn35_enable_power_gating_plane(struct dce_hwseq *hws, bool enable)
--{
--	bool force_on = true; /* disable power gating */
--	uint32_t org_ip_request_cntl = 0;
--
--	if (hws->ctx->dc->debug.disable_hubp_power_gate)
--		return;
--	if (hws->ctx->dc->debug.ignore_pg)
--		return;
--	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
--	if (org_ip_request_cntl == 0)
--		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
--	/* DCHUBP0/1/2/3/4/5 */
--	REG_UPDATE(DOMAIN0_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN2_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	/* DPP0/1/2/3/4/5 */
--	REG_UPDATE(DOMAIN1_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN3_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--
--	force_on = true; /* disable power gating */
--	if (enable && !hws->ctx->dc->debug.disable_dsc_power_gate)
--		force_on = false;
--
--	/* DCS0/1/2/3/4 */
--	REG_UPDATE(DOMAIN16_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN17_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN18_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN19_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--
--
--}
--
- /* In headless boot cases, DIG may be turned
-  * on which causes HW/SW discrepancies.
-  * To avoid this, power down hardware on boot
-@@ -1453,6 +1372,8 @@ void dcn35_prepare_bandwidth(
- 	}
- 
- 	dcn20_prepare_bandwidth(dc, context);
-+
-+	print_pg_status(dc, __func__, ": after rcg and power up");
- }
- 
- void dcn35_optimize_bandwidth(
-@@ -1461,6 +1382,8 @@ void dcn35_optimize_bandwidth(
- {
- 	struct pg_block_update pg_update_state;
- 
-+	print_pg_status(dc, __func__, ": before rcg and power up");
-+
- 	dcn20_optimize_bandwidth(dc, context);
- 
- 	if (dc->hwss.calc_blocks_to_gate) {
-@@ -1472,6 +1395,8 @@ void dcn35_optimize_bandwidth(
- 		if (dc->hwss.root_clock_control)
- 			dc->hwss.root_clock_control(dc, &pg_update_state, false);
- 	}
-+
-+	print_pg_status(dc, __func__, ": after rcg and power up");
- }
- 
- void dcn35_set_drr(struct pipe_ctx **pipe_ctx,
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-@@ -115,7 +115,6 @@ static const struct hw_sequencer_funcs d
- 	.exit_optimized_pwr_state = dcn21_exit_optimized_pwr_state,
- 	.update_visual_confirm_color = dcn10_update_visual_confirm_color,
- 	.apply_idle_power_optimizations = dcn35_apply_idle_power_optimizations,
--	.update_dsc_pg = dcn32_update_dsc_pg,
- 	.calc_blocks_to_gate = dcn35_calc_blocks_to_gate,
- 	.calc_blocks_to_ungate = dcn35_calc_blocks_to_ungate,
- 	.hw_block_power_up = dcn35_hw_block_power_up,
-@@ -150,7 +149,6 @@ static const struct hwseq_private_funcs
- 	.plane_atomic_disable = dcn35_plane_atomic_disable,
- 	//.plane_atomic_disable = dcn20_plane_atomic_disable,/*todo*/
- 	//.hubp_pg_control = dcn35_hubp_pg_control,
--	.enable_power_gating_plane = dcn35_enable_power_gating_plane,
- 	.dpp_root_clock_control = dcn35_dpp_root_clock_control,
- 	.dpstream_root_clock_control = dcn35_dpstream_root_clock_control,
- 	.physymclk_root_clock_control = dcn35_physymclk_root_clock_control,
-@@ -165,7 +163,6 @@ static const struct hwseq_private_funcs
- 	.calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,
- 	.resync_fifo_dccg_dio = dcn314_resync_fifo_dccg_dio,
- 	.is_dp_dig_pixel_rate_div_policy = dcn35_is_dp_dig_pixel_rate_div_policy,
--	.dsc_pg_control = dcn35_dsc_pg_control,
- 	.dsc_pg_status = dcn32_dsc_pg_status,
- 	.enable_plane = dcn35_enable_plane,
- 	.wait_for_pipe_update_if_needed = dcn10_wait_for_pipe_update_if_needed,
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-@@ -114,7 +114,6 @@ static const struct hw_sequencer_funcs d
- 	.exit_optimized_pwr_state = dcn21_exit_optimized_pwr_state,
- 	.update_visual_confirm_color = dcn10_update_visual_confirm_color,
- 	.apply_idle_power_optimizations = dcn35_apply_idle_power_optimizations,
--	.update_dsc_pg = dcn32_update_dsc_pg,
- 	.calc_blocks_to_gate = dcn351_calc_blocks_to_gate,
- 	.calc_blocks_to_ungate = dcn351_calc_blocks_to_ungate,
- 	.hw_block_power_up = dcn351_hw_block_power_up,
-@@ -145,7 +144,6 @@ static const struct hwseq_private_funcs
- 	.plane_atomic_disable = dcn35_plane_atomic_disable,
- 	//.plane_atomic_disable = dcn20_plane_atomic_disable,/*todo*/
- 	//.hubp_pg_control = dcn35_hubp_pg_control,
--	.enable_power_gating_plane = dcn35_enable_power_gating_plane,
- 	.dpp_root_clock_control = dcn35_dpp_root_clock_control,
- 	.dpstream_root_clock_control = dcn35_dpstream_root_clock_control,
- 	.physymclk_root_clock_control = dcn35_physymclk_root_clock_control,
-@@ -159,7 +157,6 @@ static const struct hwseq_private_funcs
- 	.setup_hpo_hw_control = dcn35_setup_hpo_hw_control,
- 	.calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,
- 	.is_dp_dig_pixel_rate_div_policy = dcn35_is_dp_dig_pixel_rate_div_policy,
--	.dsc_pg_control = dcn35_dsc_pg_control,
- 	.dsc_pg_status = dcn32_dsc_pg_status,
- 	.enable_plane = dcn35_enable_plane,
- 	.wait_for_pipe_update_if_needed = dcn10_wait_for_pipe_update_if_needed,
---- a/drivers/gpu/drm/amd/display/dc/inc/hw/pg_cntl.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/hw/pg_cntl.h
-@@ -47,6 +47,7 @@ struct pg_cntl_funcs {
- 	void (*optc_pg_control)(struct pg_cntl *pg_cntl, unsigned int optc_inst, bool power_on);
- 	void (*dwb_pg_control)(struct pg_cntl *pg_cntl, bool power_on);
- 	void (*init_pg_status)(struct pg_cntl *pg_cntl);
-+	void (*print_pg_status)(struct pg_cntl *pg_cntl, const char *debug_func, const char *debug_log);
- };
- 
- #endif //__DC_PG_CNTL_H__
---- a/drivers/gpu/drm/amd/display/dc/pg/dcn35/dcn35_pg_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/pg/dcn35/dcn35_pg_cntl.c
-@@ -79,16 +79,12 @@ void pg_cntl35_dsc_pg_control(struct pg_
- 	uint32_t power_gate = power_on ? 0 : 1;
- 	uint32_t pwr_status = power_on ? 0 : 2;
- 	uint32_t org_ip_request_cntl = 0;
--	bool block_enabled;
--
--	/*need to enable dscclk regardless DSC_PG*/
--	if (pg_cntl->ctx->dc->res_pool->dccg->funcs->enable_dsc && power_on)
--		pg_cntl->ctx->dc->res_pool->dccg->funcs->enable_dsc(
--				pg_cntl->ctx->dc->res_pool->dccg, dsc_inst);
-+	bool block_enabled = false;
-+	bool skip_pg = pg_cntl->ctx->dc->debug.ignore_pg ||
-+		       pg_cntl->ctx->dc->debug.disable_dsc_power_gate ||
-+		       pg_cntl->ctx->dc->idle_optimizations_allowed;
- 
--	if (pg_cntl->ctx->dc->debug.ignore_pg ||
--		pg_cntl->ctx->dc->debug.disable_dsc_power_gate ||
--		pg_cntl->ctx->dc->idle_optimizations_allowed)
-+	if (skip_pg && !power_on)
- 		return;
- 
- 	block_enabled = pg_cntl35_dsc_pg_status(pg_cntl, dsc_inst);
-@@ -111,7 +107,7 @@ void pg_cntl35_dsc_pg_control(struct pg_
- 
- 		REG_WAIT(DOMAIN16_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	case 1: /* DSC1 */
- 		REG_UPDATE(DOMAIN17_PG_CONFIG,
-@@ -119,7 +115,7 @@ void pg_cntl35_dsc_pg_control(struct pg_
- 
- 		REG_WAIT(DOMAIN17_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	case 2: /* DSC2 */
- 		REG_UPDATE(DOMAIN18_PG_CONFIG,
-@@ -127,7 +123,7 @@ void pg_cntl35_dsc_pg_control(struct pg_
- 
- 		REG_WAIT(DOMAIN18_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	case 3: /* DSC3 */
- 		REG_UPDATE(DOMAIN19_PG_CONFIG,
-@@ -135,7 +131,7 @@ void pg_cntl35_dsc_pg_control(struct pg_
- 
- 		REG_WAIT(DOMAIN19_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	default:
- 		BREAK_TO_DEBUGGER();
-@@ -144,12 +140,6 @@ void pg_cntl35_dsc_pg_control(struct pg_
- 
- 	if (dsc_inst < MAX_PIPES)
- 		pg_cntl->pg_pipe_res_enable[PG_DSC][dsc_inst] = power_on;
--
--	if (pg_cntl->ctx->dc->res_pool->dccg->funcs->disable_dsc && !power_on) {
--		/*this is to disable dscclk*/
--		pg_cntl->ctx->dc->res_pool->dccg->funcs->disable_dsc(
--			pg_cntl->ctx->dc->res_pool->dccg, dsc_inst);
--	}
- }
- 
- static bool pg_cntl35_hubp_dpp_pg_status(struct pg_cntl *pg_cntl, unsigned int hubp_dpp_inst)
-@@ -189,11 +179,12 @@ void pg_cntl35_hubp_dpp_pg_control(struc
- 	uint32_t pwr_status = power_on ? 0 : 2;
- 	uint32_t org_ip_request_cntl;
- 	bool block_enabled;
-+	bool skip_pg = pg_cntl->ctx->dc->debug.ignore_pg ||
-+		       pg_cntl->ctx->dc->debug.disable_hubp_power_gate ||
-+		       pg_cntl->ctx->dc->debug.disable_dpp_power_gate ||
-+		       pg_cntl->ctx->dc->idle_optimizations_allowed;
- 
--	if (pg_cntl->ctx->dc->debug.ignore_pg ||
--		pg_cntl->ctx->dc->debug.disable_hubp_power_gate ||
--		pg_cntl->ctx->dc->debug.disable_dpp_power_gate ||
--		pg_cntl->ctx->dc->idle_optimizations_allowed)
-+	if (skip_pg && !power_on)
- 		return;
- 
- 	block_enabled = pg_cntl35_hubp_dpp_pg_status(pg_cntl, hubp_dpp_inst);
-@@ -213,22 +204,22 @@ void pg_cntl35_hubp_dpp_pg_control(struc
- 	case 0:
- 		/* DPP0 & HUBP0 */
- 		REG_UPDATE(DOMAIN0_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN0_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN0_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	case 1:
- 		/* DPP1 & HUBP1 */
- 		REG_UPDATE(DOMAIN1_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN1_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN1_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	case 2:
- 		/* DPP2 & HUBP2 */
- 		REG_UPDATE(DOMAIN2_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN2_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN2_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	case 3:
- 		/* DPP3 & HUBP3 */
- 		REG_UPDATE(DOMAIN3_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN3_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN3_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	default:
- 		BREAK_TO_DEBUGGER();
-@@ -501,6 +492,36 @@ void pg_cntl35_init_pg_status(struct pg_
- 	pg_cntl->pg_res_enable[PG_DWB] = block_enabled;
- }
- 
-+static void pg_cntl35_print_pg_status(struct pg_cntl *pg_cntl, const char *debug_func, const char *debug_log)
++static void nfs_local_read_aio_complete_work(struct work_struct *work)
 +{
-+	int i = 0;
-+	bool block_enabled = false;
++	struct nfs_local_kiocb *iocb =
++		container_of(work, struct nfs_local_kiocb, work);
 +
-+	DC_LOG_DEBUG("%s: %s", debug_func, debug_log);
-+
-+	DC_LOG_DEBUG("PG_CNTL status:\n");
-+
-+	block_enabled = pg_cntl35_io_clk_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO0=%d (DCCG, DIO, DCIO)\n", block_enabled ? 1 : 0);
-+
-+	block_enabled = pg_cntl35_mem_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO1=%d (DCHUBBUB, DCHVM, DCHUBBUBMEM)\n", block_enabled ? 1 : 0);
-+
-+	block_enabled = pg_cntl35_plane_otg_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO2=%d (MPC, OPP, OPTC, DWB)\n", block_enabled ? 1 : 0);
-+
-+	block_enabled = pg_cntl35_hpo_pg_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO3=%d (HPO)\n", block_enabled ? 1 : 0);
-+
-+	for (i = 0; i < pg_cntl->ctx->dc->res_pool->pipe_count; i++) {
-+		block_enabled = pg_cntl35_hubp_dpp_pg_status(pg_cntl, i);
-+		DC_LOG_DEBUG("ONO%d=%d (DCHUBP%d, DPP%d)\n", 4 + i * 2, block_enabled ? 1 : 0, i, i);
-+
-+		block_enabled = pg_cntl35_dsc_pg_status(pg_cntl, i);
-+		DC_LOG_DEBUG("ONO%d=%d (DSC%d)\n", 5 + i * 2, block_enabled ? 1 : 0, i);
-+	}
++	nfs_local_pgio_release(iocb);
 +}
 +
- static const struct pg_cntl_funcs pg_cntl35_funcs = {
- 	.init_pg_status = pg_cntl35_init_pg_status,
- 	.dsc_pg_control = pg_cntl35_dsc_pg_control,
-@@ -511,7 +532,8 @@ static const struct pg_cntl_funcs pg_cnt
- 	.mpcc_pg_control = pg_cntl35_mpcc_pg_control,
- 	.opp_pg_control = pg_cntl35_opp_pg_control,
- 	.optc_pg_control = pg_cntl35_optc_pg_control,
--	.dwb_pg_control = pg_cntl35_dwb_pg_control
-+	.dwb_pg_control = pg_cntl35_dwb_pg_control,
-+	.print_pg_status = pg_cntl35_print_pg_status
++static void nfs_local_read_aio_complete(struct kiocb *kiocb, long ret)
++{
++	struct nfs_local_kiocb *iocb =
++		container_of(kiocb, struct nfs_local_kiocb, kiocb);
++
++	nfs_local_read_done(iocb, ret);
++	nfs_local_pgio_aio_complete(iocb); /* Calls nfs_local_read_aio_complete_work */
++}
++
+ static void nfs_local_call_read(struct work_struct *work)
+ {
+ 	struct nfs_local_kiocb *iocb =
+@@ -381,10 +425,10 @@ static void nfs_local_call_read(struct work_struct *work)
+ 	nfs_local_iter_init(&iter, iocb, READ);
+ 
+ 	status = filp->f_op->read_iter(&iocb->kiocb, &iter);
+-	WARN_ON_ONCE(status == -EIOCBQUEUED);
+-
+-	nfs_local_read_done(iocb, status);
+-	nfs_local_pgio_release(iocb);
++	if (status != -EIOCBQUEUED) {
++		nfs_local_read_done(iocb, status);
++		nfs_local_pgio_release(iocb);
++	}
+ 
+ 	revert_creds(save_cred);
+ }
+@@ -412,6 +456,11 @@ nfs_do_local_read(struct nfs_pgio_header *hdr,
+ 	nfs_local_pgio_init(hdr, call_ops);
+ 	hdr->res.eof = false;
+ 
++	if (iocb->kiocb.ki_flags & IOCB_DIRECT) {
++		iocb->kiocb.ki_complete = nfs_local_read_aio_complete;
++		iocb->aio_complete_work = nfs_local_read_aio_complete_work;
++	}
++
+ 	INIT_WORK(&iocb->work, nfs_local_call_read);
+ 	queue_work(nfslocaliod_workqueue, &iocb->work);
+ 
+@@ -541,6 +590,24 @@ nfs_local_write_done(struct nfs_local_kiocb *iocb, long status)
+ 	nfs_local_pgio_done(hdr, status);
+ }
+ 
++static void nfs_local_write_aio_complete_work(struct work_struct *work)
++{
++	struct nfs_local_kiocb *iocb =
++		container_of(work, struct nfs_local_kiocb, work);
++
++	nfs_local_vfs_getattr(iocb);
++	nfs_local_pgio_release(iocb);
++}
++
++static void nfs_local_write_aio_complete(struct kiocb *kiocb, long ret)
++{
++	struct nfs_local_kiocb *iocb =
++		container_of(kiocb, struct nfs_local_kiocb, kiocb);
++
++	nfs_local_write_done(iocb, ret);
++	nfs_local_pgio_aio_complete(iocb); /* Calls nfs_local_write_aio_complete_work */
++}
++
+ static void nfs_local_call_write(struct work_struct *work)
+ {
+ 	struct nfs_local_kiocb *iocb =
+@@ -559,11 +626,11 @@ static void nfs_local_call_write(struct work_struct *work)
+ 	file_start_write(filp);
+ 	status = filp->f_op->write_iter(&iocb->kiocb, &iter);
+ 	file_end_write(filp);
+-	WARN_ON_ONCE(status == -EIOCBQUEUED);
+-
+-	nfs_local_write_done(iocb, status);
+-	nfs_local_vfs_getattr(iocb);
+-	nfs_local_pgio_release(iocb);
++	if (status != -EIOCBQUEUED) {
++		nfs_local_write_done(iocb, status);
++		nfs_local_vfs_getattr(iocb);
++		nfs_local_pgio_release(iocb);
++	}
+ 
+ 	revert_creds(save_cred);
+ 	current->flags = old_flags;
+@@ -599,10 +666,16 @@ nfs_do_local_write(struct nfs_pgio_header *hdr,
+ 	case NFS_FILE_SYNC:
+ 		iocb->kiocb.ki_flags |= IOCB_DSYNC|IOCB_SYNC;
+ 	}
++
+ 	nfs_local_pgio_init(hdr, call_ops);
+ 
+ 	nfs_set_local_verifier(hdr->inode, hdr->res.verf, hdr->args.stable);
+ 
++	if (iocb->kiocb.ki_flags & IOCB_DIRECT) {
++		iocb->kiocb.ki_complete = nfs_local_write_aio_complete;
++		iocb->aio_complete_work = nfs_local_write_aio_complete_work;
++	}
++
+ 	INIT_WORK(&iocb->work, nfs_local_call_write);
+ 	queue_work(nfslocaliod_workqueue, &iocb->work);
+ 
+diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
+index 12d8e47bc5a38..b48d94f099657 100644
+--- a/include/linux/nfs_xdr.h
++++ b/include/linux/nfs_xdr.h
+@@ -1637,6 +1637,7 @@ enum {
+ 	NFS_IOHDR_RESEND_PNFS,
+ 	NFS_IOHDR_RESEND_MDS,
+ 	NFS_IOHDR_UNSTABLE_WRITES,
++	NFS_IOHDR_ODIRECT,
  };
  
- struct pg_cntl *pg_cntl35_create(
+ struct nfs_io_completion;
+-- 
+2.51.0
+
 
 
 
