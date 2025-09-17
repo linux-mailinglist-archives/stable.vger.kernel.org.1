@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-180076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880B6B7E8E5
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:53:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F6AB7E39F
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59145207DC
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:49:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5207623AF8
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD32431BC93;
-	Wed, 17 Sep 2025 12:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C36283CB5;
+	Wed, 17 Sep 2025 12:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgRBNzgK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXZA+ijz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BDF3090EC;
-	Wed, 17 Sep 2025 12:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657A11E489;
+	Wed, 17 Sep 2025 12:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113305; cv=none; b=LUIfmx+9giERbu5yLN7CRHVBdKtTdmzkN7zNFb6j7GwJqsSIsYUBV9pgL7e9Ii8BbtdboqIJMbaJnAgqEk8loVGMBUuz0jD7T0p+EglbCMQlL985WzgaFEiESIQKkY29wWeGS47FiPf6kzvPaHt4Sej4HDnP9ng+6w+5u9gfTJo=
+	t=1758113040; cv=none; b=fUICGlUGiwjlLI09nQ4k/RbDKolZsJ2M3grDZLtAN8pteYp1TTX0UOLcV+bxpvDwOkXg/p9nwVuWx2c1mljDZ2LaPWCkXVI+VoyEcXn84U3HIzvXXJTWPF1b9cOm23qp34G8gSx5IkJ0PunNe1Ji+5MwDxRJ19fZ9fRn/j4vBZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113305; c=relaxed/simple;
-	bh=HfpJjjTTWnUO3n4C3qOFvR7gMm83FB54XwXjit7Vfpc=;
+	s=arc-20240116; t=1758113040; c=relaxed/simple;
+	bh=n1Xj2jNwdoAGwAMVI+Pv91gZhhXqyscfg8ET0FkpMIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dL7WGnmECrbOLZteAMmnQ4REpupB1jP8fPwJfxgve03SFTNrcoFYCGvHphkDOcOiVuTXwBjWXT7bLYY61cujM0ensYwrKMQv0YMK5FhnlqtYBUMzgVWfyhOOweT5PL53vOYHccPSXapbz3OWGIhaIbliasEXlmjgshDHKO9cTN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgRBNzgK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC369C4CEF0;
-	Wed, 17 Sep 2025 12:48:24 +0000 (UTC)
+	 MIME-Version; b=gTxw1BpoDw53wLU7VcQiEM7jKVz52IlYJNjSlyF0NpWI9xsGOXBzi+TPDgAIcbgqJ1VRY+IRR3M2poT0mHBMw2ss0y5k9WAiXFrg6WAu/aoIlfDV7ZkFJXGMRN/9lq2Jwx5He5Gm8E5pY/Y7ynKg1mT7LKvQxG76tqgHGHg8jz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXZA+ijz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A0FC4CEF0;
+	Wed, 17 Sep 2025 12:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113305;
-	bh=HfpJjjTTWnUO3n4C3qOFvR7gMm83FB54XwXjit7Vfpc=;
+	s=korg; t=1758113040;
+	bh=n1Xj2jNwdoAGwAMVI+Pv91gZhhXqyscfg8ET0FkpMIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgRBNzgKWsgckshiD9w193XNqG/fRWAt27G3K1mIsYmx/tZ5o0zexLQz4Y8uXHmLX
-	 Ox52+TfPw5rhJzhOuIP7bL19ila8r0x79T5oXeJH1WTFcGY8SydGMU0LuYbIXvFmQX
-	 2itIQe5iBHFjsOfRlkdvHtyGs3JInG5dXesIkOoI=
+	b=UXZA+ijzSi9uORPNbICwuIPdFWnuP7syXLSzrqUrI/lajgn7UIvC4Sh5N6tFhZoPA
+	 O0GkKkFpAg0W7RtulFVaqDFp3ldOTGx9JpW/qrgDmih5XgoX5zT0NvdjuKbkmcnCbs
+	 IaI///W4BuWLiFWm2mcX8wcG2yjeAi/JcjrV+fE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Brad Spengler <spender@grsecurity.net>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/140] proc: fix type confusion in pde_set_flags()
+	Stanislav Fort <disclosure@aisle.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 108/189] mm/damon/sysfs: fix use-after-free in state_show()
 Date: Wed, 17 Sep 2025 14:33:38 +0200
-Message-ID: <20250917123345.427181264@linuxfoundation.org>
+Message-ID: <20250917123354.507964964@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,61 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Stanislav Fort <stanislav.fort@aisle.com>
 
-[ Upstream commit 0ce9398aa0830f15f92bbed73853f9861c3e74ff ]
+commit 3260a3f0828e06f5f13fac69fb1999a6d60d9cff upstream.
 
-Commit 2ce3d282bd50 ("proc: fix missing pde_set_flags() for net proc
-files") missed a key part in the definition of proc_dir_entry:
+state_show() reads kdamond->damon_ctx without holding damon_sysfs_lock.
+This allows a use-after-free race:
 
-union {
-	const struct proc_ops *proc_ops;
-	const struct file_operations *proc_dir_ops;
-};
+CPU 0                         CPU 1
+-----                         -----
+state_show()                  damon_sysfs_turn_damon_on()
+ctx = kdamond->damon_ctx;     mutex_lock(&damon_sysfs_lock);
+                              damon_destroy_ctx(kdamond->damon_ctx);
+                              kdamond->damon_ctx = NULL;
+                              mutex_unlock(&damon_sysfs_lock);
+damon_is_running(ctx);        /* ctx is freed */
+mutex_lock(&ctx->kdamond_lock); /* UAF */
 
-So dereference of ->proc_ops assumes it is a proc_ops structure results in
-type confusion and make NULL check for 'proc_ops' not work for proc dir.
+(The race can also occur with damon_sysfs_kdamonds_rm_dirs() and
+damon_sysfs_kdamond_release(), which free or replace the context under
+damon_sysfs_lock.)
 
-Add !S_ISDIR(dp->mode) test before calling pde_set_flags() to fix it.
+Fix by taking damon_sysfs_lock before dereferencing the context, mirroring
+the locking used in pid_show().
 
-Link: https://lkml.kernel.org/r/20250904135715.3972782-1-wangzijie1@honor.com
-Fixes: 2ce3d282bd50 ("proc: fix missing pde_set_flags() for net proc files")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Closes: https://lore.kernel.org/all/20250903065758.3678537-1-wangzijie1@honor.com/
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Stefano Brivio <sbrivio@redhat.com>
+The bug has existed since state_show() first accessed kdamond->damon_ctx.
+
+Link: https://lkml.kernel.org/r/20250905101046.2288-1-disclosure@aisle.com
+Fixes: a61ea561c871 ("mm/damon/sysfs: link DAMON for virtual address spaces monitoring")
+Signed-off-by: Stanislav Fort <disclosure@aisle.com>
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/generic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/damon/sysfs.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index a87a9404e0d0c..eb49beff69bcb 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -388,7 +388,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 	if (proc_alloc_inum(&dp->low_ino))
- 		goto out_free_entry;
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1243,14 +1243,18 @@ static ssize_t state_show(struct kobject
+ {
+ 	struct damon_sysfs_kdamond *kdamond = container_of(kobj,
+ 			struct damon_sysfs_kdamond, kobj);
+-	struct damon_ctx *ctx = kdamond->damon_ctx;
+-	bool running;
++	struct damon_ctx *ctx;
++	bool running = false;
  
--	pde_set_flags(dp);
-+	if (!S_ISDIR(dp->mode))
-+		pde_set_flags(dp);
+-	if (!ctx)
+-		running = false;
+-	else
++	if (!mutex_trylock(&damon_sysfs_lock))
++		return -EBUSY;
++
++	ctx = kdamond->damon_ctx;
++	if (ctx)
+ 		running = damon_sysfs_ctx_running(ctx);
  
- 	write_lock(&proc_subdir_lock);
- 	dp->parent = dir;
--- 
-2.51.0
-
++	mutex_unlock(&damon_sysfs_lock);
++
+ 	return sysfs_emit(buf, "%s\n", running ?
+ 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_ON] :
+ 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_OFF]);
 
 
 
