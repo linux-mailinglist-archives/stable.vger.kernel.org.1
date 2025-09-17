@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-180018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAB0B7E618
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:47:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06C6B7EB1B
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2966E4A0704
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:45:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A07524AFB
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505252FBDFF;
-	Wed, 17 Sep 2025 12:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1DF323411;
+	Wed, 17 Sep 2025 12:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8Hp0G3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nluAs7Dl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4DA30CB5B;
-	Wed, 17 Sep 2025 12:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5708718FDBD;
+	Wed, 17 Sep 2025 12:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113118; cv=none; b=ZM9ABxIU+rHBVSIPBTyYJ5ZwLdGlE+V8/zGJPZCVaNPJ3olKbpUUOmV8qrQ3OiV3qg28izroeI1LiGCRdM7OHijZM8nMdacZT0c5CEMWqX3jUHrZXQHELK6Su5oFHMuAZSu9LUDFNyt7/W46xQz+ChbrookKvVv27e23vEBCo2s=
+	t=1758113536; cv=none; b=L6MUEJV/J0LrkLsFBl5t8xaLDtAnmhrcLiGXYGwIB2+UrM86onK7nJsSzYsVpo/6aMB782VI41C1+A7w+h9Rw2HIA6rL34/3gwsb2yMkrYyUM4ZtJeyCljK89KXZaiQHC1BFpvvTlF+GsWhB5ICEDHwvZ7hAiztX9ILJFOXxBY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113118; c=relaxed/simple;
-	bh=bUaUTPO+E+d5OMRGxTUdPovT9tRha0mXcxdhloLDc5w=;
+	s=arc-20240116; t=1758113536; c=relaxed/simple;
+	bh=/QxmnS2pJWa1DVAJz375UDoDzrbyYO4vvY09Y5ob26Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmiygjXWkhXybxBE2fMdo5n4bI1oSqVXrJzav+VQDSJAVw89saU+LqB+4lTKxLHAwvP+3aL9KeMaRgRtu6ZxOFXupnKudVPqjjsocgGRiHGWByoIkVN9vi0zVeW0/y823tiTBtRQD5aRT3jdB1sB7ddwj39ox5AgMNh5rhRVXCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8Hp0G3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEE8C4CEF0;
-	Wed, 17 Sep 2025 12:45:16 +0000 (UTC)
+	 MIME-Version; b=mnTgP0+u+LwfwnosOU2z9S5im3WeNArCC+zcPoPmI3iEzEzjz4+EWNoOdD/fsEai/vQxuWYx6dtVp8I0lcGFGKob+VPlgkoAt+MGze23bC/bSnBgpnmrPICJ5s0h3JWLoLsYolsZxlI2Pmt6gK5bQjIDjjyQGhBEgTWR1LpPDMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nluAs7Dl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BA8C4CEFB;
+	Wed, 17 Sep 2025 12:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113117;
-	bh=bUaUTPO+E+d5OMRGxTUdPovT9tRha0mXcxdhloLDc5w=;
+	s=korg; t=1758113536;
+	bh=/QxmnS2pJWa1DVAJz375UDoDzrbyYO4vvY09Y5ob26Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8Hp0G3ppyZttLNWWfyO0oDN1poB4kioN4X06PT1tbGXJegJVv2hge5v7MpdW6yLv
-	 YnIY8RDxO6IezWpDLb6wQXc0t7pcUmc3hvqkx2FM/NokZhMF3dUv0rOe7IH1xSQ5PM
-	 Zt63THJ7FTQogRNz6J+QjdNmNslMEGUcBBoUhQDE=
+	b=nluAs7Dl71YEPVnvELKqZ0NA48YS72tZiPZisUBclzkrfAx0WpUqLM+wb+K+X8eZB
+	 r49ydJU0+7h8xJGcL3s5a864wDd/Ie/8DcWTp4NYCHmTrZrk4l0QZw/uvZocg/zOla
+	 oKudQeX6CQpUFni7IXLhkzKZgK7GooTZoPviEDSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.16 177/189] xhci: dbc: decouple endpoint allocation from initialization
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 115/140] netfilter: nf_tables: make nft_set_do_lookup available unconditionally
 Date: Wed, 17 Sep 2025 14:34:47 +0200
-Message-ID: <20250917123356.207863072@linuxfoundation.org>
+Message-ID: <20250917123347.115710916@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,140 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 220a0ffde02f962c13bc752b01aa570b8c65a37b upstream.
+[ Upstream commit 11fe5a82e53ac3581a80c88e0e35fb8a80e15f48 ]
 
-Decouple allocation of endpoint ring buffer from initialization
-of the buffer, and initialization of endpoint context parts from
-from the rest of the contexts.
+This function was added for retpoline mitigation and is replaced by a
+static inline helper if mitigations are not enabled.
 
-It allows driver to clear up and reinitialize endpoint rings
-after disconnect without reallocating everything.
+Enable this helper function unconditionally so next patch can add a lookup
+restart mechanism to fix possible false negatives while transactions are
+in progress.
 
-This is a prerequisite for the next patch that prevents the transfer
-ring from filling up with cancelled (no-op) TRBs if a debug cable is
-reconnected several times without transferring anything.
+Adding lookup restarts in nft_lookup_eval doesn't work as nft_objref would
+then need the same copypaste loop.
 
-Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch is separate to ease review of the actual bug fix.
+
+Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: b2f742c846ca ("netfilter: nf_tables: restart set lookup on base_seq change")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |   71 ++++++++++++++++++++++++++---------------
- 1 file changed, 46 insertions(+), 25 deletions(-)
+ include/net/netfilter/nf_tables_core.h | 10 ++--------
+ net/netfilter/nft_lookup.c             | 17 ++++++++++++-----
+ 2 files changed, 14 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -101,13 +101,34 @@ static u32 xhci_dbc_populate_strings(str
- 	return string_length;
- }
+diff --git a/include/net/netfilter/nf_tables_core.h b/include/net/netfilter/nf_tables_core.h
+index 6a52fb97b8443..04699eac5b524 100644
+--- a/include/net/netfilter/nf_tables_core.h
++++ b/include/net/netfilter/nf_tables_core.h
+@@ -109,17 +109,11 @@ nft_hash_lookup_fast(const struct net *net, const struct nft_set *set,
+ const struct nft_set_ext *
+ nft_hash_lookup(const struct net *net, const struct nft_set *set,
+ 		const u32 *key);
++#endif
++
+ const struct nft_set_ext *
+ nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+ 		  const u32 *key);
+-#else
+-static inline const struct nft_set_ext *
+-nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+-		  const u32 *key)
+-{
+-	return set->ops->lookup(net, set, key);
+-}
+-#endif
  
-+static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
-+{
-+	struct xhci_ep_ctx      *ep_ctx;
-+	unsigned int		max_burst;
-+	dma_addr_t		deq;
-+
-+	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
-+
-+	/* Populate bulk out endpoint context: */
-+	ep_ctx                  = dbc_bulkout_ctx(dbc);
-+	deq                     = dbc_bulkout_enq(dbc);
-+	ep_ctx->ep_info         = 0;
-+	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
-+	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
-+
-+	/* Populate bulk in endpoint context: */
-+	ep_ctx                  = dbc_bulkin_ctx(dbc);
-+	deq                     = dbc_bulkin_enq(dbc);
-+	ep_ctx->ep_info         = 0;
-+	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
-+	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
-+}
-+
- static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ /* called from nft_pipapo_avx2.c */
+ const struct nft_set_ext *
+diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
+index 40c602ffbcba7..2c6909bf1b407 100644
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -24,11 +24,11 @@ struct nft_lookup {
+ 	struct nft_set_binding		binding;
+ };
+ 
+-#ifdef CONFIG_MITIGATION_RETPOLINE
+-const struct nft_set_ext *
+-nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+-		  const u32 *key)
++static const struct nft_set_ext *
++__nft_set_do_lookup(const struct net *net, const struct nft_set *set,
++		    const u32 *key)
  {
- 	struct dbc_info_context	*info;
--	struct xhci_ep_ctx	*ep_ctx;
- 	u32			dev_info;
--	dma_addr_t		deq, dma;
--	unsigned int		max_burst;
-+	dma_addr_t		dma;
++#ifdef CONFIG_MITIGATION_RETPOLINE
+ 	if (set->ops == &nft_set_hash_fast_type.ops)
+ 		return nft_hash_lookup_fast(net, set, key);
+ 	if (set->ops == &nft_set_hash_type.ops)
+@@ -51,10 +51,17 @@ nft_set_do_lookup(const struct net *net, const struct nft_set *set,
+ 		return nft_rbtree_lookup(net, set, key);
  
- 	if (!dbc)
- 		return;
-@@ -121,20 +142,8 @@ static void xhci_dbc_init_contexts(struc
- 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
- 	info->length		= cpu_to_le32(string_length);
- 
--	/* Populate bulk out endpoint context: */
--	ep_ctx			= dbc_bulkout_ctx(dbc);
--	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
--	deq			= dbc_bulkout_enq(dbc);
--	ep_ctx->ep_info		= 0;
--	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
--	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
--
--	/* Populate bulk in endpoint context: */
--	ep_ctx			= dbc_bulkin_ctx(dbc);
--	deq			= dbc_bulkin_enq(dbc);
--	ep_ctx->ep_info		= 0;
--	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
--	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
-+	/* Populate bulk in and out endpoint contexts: */
-+	xhci_dbc_init_ep_contexts(dbc);
- 
- 	/* Set DbC context and info registers: */
- 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
-@@ -436,6 +445,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t
- 	return ctx;
+ 	WARN_ON_ONCE(1);
++#endif
+ 	return set->ops->lookup(net, set, key);
  }
- 
-+static void xhci_dbc_ring_init(struct xhci_ring *ring)
++
++const struct nft_set_ext *
++nft_set_do_lookup(const struct net *net, const struct nft_set *set,
++		  const u32 *key)
 +{
-+	struct xhci_segment *seg = ring->first_seg;
-+
-+	/* clear all trbs on ring in case of old ring */
-+	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
-+
-+	/* Only event ring does not use link TRB */
-+	if (ring->type != TYPE_EVENT) {
-+		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
-+
-+		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
-+		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
-+	}
-+	xhci_initialize_ring_info(ring);
++	return __nft_set_do_lookup(net, set, key);
 +}
-+
- static struct xhci_ring *
- xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
- {
-@@ -464,15 +490,10 @@ xhci_dbc_ring_alloc(struct device *dev,
+ EXPORT_SYMBOL_GPL(nft_set_do_lookup);
+-#endif
  
- 	seg->dma = dma;
- 
--	/* Only event ring does not use link TRB */
--	if (type != TYPE_EVENT) {
--		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
--
--		trb->link.segment_ptr = cpu_to_le64(dma);
--		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
--	}
- 	INIT_LIST_HEAD(&ring->td_list);
--	xhci_initialize_ring_info(ring);
-+
-+	xhci_dbc_ring_init(ring);
-+
- 	return ring;
- dma_fail:
- 	kfree(seg);
+ void nft_lookup_eval(const struct nft_expr *expr,
+ 		     struct nft_regs *regs,
+-- 
+2.51.0
+
 
 
 
