@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-179923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB5BB7E2E8
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDC6B7E796
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C68F37B7DF1
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:39:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A39177B0B90
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82F12DC33F;
-	Wed, 17 Sep 2025 12:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA153233E0;
+	Wed, 17 Sep 2025 12:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqUp9BW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMWOEv6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944AB238140;
-	Wed, 17 Sep 2025 12:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB342F5A2E;
+	Wed, 17 Sep 2025 12:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112811; cv=none; b=MWpdYDHu1ErTXm45bBtaOQpczjZvWYLHNzxl9j/pwh3D/0cQ+ZJ9z8QZ3XoaB2jI1AKsWZFnnLkI0J2hAlTKR9A0Rdyg0kI51MJAkDJiqtzPRgkVBQ/PuIq2O4y1kcQT7b8KK62g08lmOtJH/zffkmVkLW+gVMzWTZ4l1rlIIGA=
+	t=1758113231; cv=none; b=HVAOKFTp4F4lkwZ9CUj5NIzLc2O9xcbLr6Xio2+V0kEnSKgOmC89wDXlhxSDOXY4WxxfVLLZDEK2Be5d88pnuDKODqJOpyiFlxPRamN7PDYTcCMK0eVCk9RE4WySmn1PnfH4pQEWk2onsFUpQFMRuAW//zYlNUmXEbRYeS4KEbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112811; c=relaxed/simple;
-	bh=KQWCn+9ESROkD7mxymEUPEJuB9ViV+MmpHkPqggY7n8=;
+	s=arc-20240116; t=1758113231; c=relaxed/simple;
+	bh=Saa++o0umdAssohr4Zp3B11JF318BTVSSuvmrYya124=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hhttl9Z31/osslFK0hNTHpWobn9dC1gnInue8Xxfyn8jD0OkBDdNZaX/6W5OcX1r4AjW5G6Wdjj/XqnbeYP+uo3xkWPLG1KAoMT2b08QggWLxW1t+fQ0rrauv/t6iGUSrU3vlelwTqIJSaw6loYHst3dNjTfj4hkW4G9Uchi7AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqUp9BW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13437C4CEF0;
-	Wed, 17 Sep 2025 12:40:10 +0000 (UTC)
+	 MIME-Version; b=JntIaUpdcOiuaD+XceMHZxR34ehp137U43nKcSOmRSJdiPXb+r8o0JM/UuHzlY2WB7T86h7ycrl2A1pLjBVTdaozPtA1rQQCjBcmL4L1AKtoD4kJnJcOxaRYJaSP4GTjHxyfKkDvtq47UVK8KGpK5oZwtA4BAbnqJZY9TsKjllc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMWOEv6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F256C4CEF0;
+	Wed, 17 Sep 2025 12:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112811;
-	bh=KQWCn+9ESROkD7mxymEUPEJuB9ViV+MmpHkPqggY7n8=;
+	s=korg; t=1758113230;
+	bh=Saa++o0umdAssohr4Zp3B11JF318BTVSSuvmrYya124=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqUp9BW4/v5vhsxsQqUwQk5mjEtCgOaRdaqQ2mktCEJ+PpxERbv013scuPK70Seeq
-	 9ov5CfDm/1pA9CcZOgNPxJRTDNgiNGsATwaREPcLCLoyQ0C8pO8NA+dxkiYAcXcfAL
-	 6+fZN5UDnPJz8KnViMgBctZhxxJ8lcDwid+b8qSo=
+	b=YMWOEv6MEPRskBKn5xWavp/7Xt6zh6UyAMmbOJnd3V5tkT8NqQ6uWZPw9qDNVOtME
+	 ohM19WS0u9IDaLnhSC8TGPNAW1CMI9I5Ltgec5YpFdpmZmDFWPt7uDMp307yDbyZ+Q
+	 NU2OW7ewpMf598+psF9qrhfQjvX8+ugrODJcwQC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.16 084/189] drm/i915/power: fix size for for_each_set_bit() in abox iteration
+	Scott Haiden <scott.b.haiden@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 022/140] NFSv4: Dont clear capabilities that wont be reset
 Date: Wed, 17 Sep 2025 14:33:14 +0200
-Message-ID: <20250917123353.912441940@linuxfoundation.org>
+Message-ID: <20250917123344.849455957@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+References: <20250917123344.315037637@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit cfa7b7659757f8d0fc4914429efa90d0d2577dd7 upstream.
+[ Upstream commit 31f1a960ad1a14def94fa0b8c25d62b4c032813f ]
 
-for_each_set_bit() expects size to be in bits, not bytes. The abox mask
-iteration uses bytes, but it works by coincidence, because the local
-variable holding the mask is unsigned long, and the mask only ever has
-bit 2 as the highest bit. Using a smaller type could lead to subtle and
-very hard to track bugs.
+Don't clear the capabilities that are not going to get reset by the call
+to _nfs4_server_capabilities().
 
-Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://lore.kernel.org/r/20250905104149.1144751-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 7ea3baa6efe4bb93d11e1c0e6528b1468d7debf6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Scott Haiden <scott.b.haiden@gmail.com>
+Fixes: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_power.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4proc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_power.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power.c
-@@ -1169,7 +1169,7 @@ static void icl_mbus_init(struct intel_d
- 	if (DISPLAY_VER(display) == 12)
- 		abox_regs |= BIT(0);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index e6b7cbc06c9c8..3ac8ecad2e53a 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -4064,7 +4064,6 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
+ 	};
+ 	int err;
  
--	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
-+	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
- 		intel_de_rmw(display, MBUS_ABOX_CTL(i), mask, val);
- }
- 
-@@ -1630,11 +1630,11 @@ static void tgl_bw_buddy_init(struct int
- 	if (table[config].page_mask == 0) {
- 		drm_dbg_kms(display->drm,
- 			    "Unknown memory configuration; disabling address buddy logic.\n");
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
- 			intel_de_write(display, BW_BUDDY_CTL(i),
- 				       BW_BUDDY_DISABLE);
- 	} else {
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
- 			intel_de_write(display, BW_BUDDY_PAGE_MASK(i),
- 				       table[config].page_mask);
- 
+-	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
+-- 
+2.51.0
+
 
 
 
