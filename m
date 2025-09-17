@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-179964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0B5B7E2EE
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:43:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C3DB7EDB7
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 15:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C78AB622569
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:42:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9A22A7A3C
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B5F1F4192;
-	Wed, 17 Sep 2025 12:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BEA328985;
+	Wed, 17 Sep 2025 12:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyqfSV/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQWajt2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F011EF36C;
-	Wed, 17 Sep 2025 12:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456921EF363;
+	Wed, 17 Sep 2025 12:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112950; cv=none; b=XmpwccHLf1rn8aEvA2AVT39UwzOqJD5kGpIaUkADwy7JRz/dGD1g9mzeJYCQmP6hepys1nnqdnNv76yJZumvFB7pRbaP9PDeap6dkYZXgCbmfTRmp8PlvGz6xhiEkbCFF7Pdl43Gcg70nWh2eApuAYqMfG+jWLu2ENuzlfbmAbs=
+	t=1758113652; cv=none; b=iQs+f4rrQGUSRAHszZL1VTUkkQZxhiZSgL7GuDc31tZITgh04nWGLZT9rNB0PvVzt5AVKHKQbtnOsaRqJoGatK/M9cycoBtmkNiuqIWhM2jLOf5HXbS44+CCf6h1AxqD8n+nnRP6tbpiLa40+kdflq/uf/lEdmcicqBbuQByqrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112950; c=relaxed/simple;
-	bh=S6SGoRYIr6P3erehYfgo6QFkorGHMydX1/zQwUkAcVE=;
+	s=arc-20240116; t=1758113652; c=relaxed/simple;
+	bh=P/qLRxuK5hKkoH2rhDabiELu29vgx2y3WHc7LP0fs60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJ2cH7/6YtNx7oGr3nwjlJ0hHSGKVu31nV0wVwIRhak7X7u1P+CcfLi1LzMcVLGAd7ZhmvFQ5QYSn+5K5KFhgr4VgrAndpH8wBs1ULTE6DRhElw+g/RiH65+tnukSIUPz01LPWJcOCIB1YFJgmKw9qStc6Tj9pZCbeA8PEgg9y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyqfSV/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11712C4CEF0;
-	Wed, 17 Sep 2025 12:42:29 +0000 (UTC)
+	 MIME-Version; b=ST6e7Dand00ifOPjRWQly7AtcV1VB1VBKrPMK+XQNjJt82n/8YZPc/QQF8EqaEq55keiN6oNm8HAjDiN9qjGfTxEJzrIWJHgOvmHKYLw9JLrKpx87pAjOqO0KMxdyngSgcw0H2QY36Xz9bd/bNjyYZLjuv164giVFVEGfZIXBHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQWajt2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1C7C4CEF0;
+	Wed, 17 Sep 2025 12:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758112950;
-	bh=S6SGoRYIr6P3erehYfgo6QFkorGHMydX1/zQwUkAcVE=;
+	s=korg; t=1758113652;
+	bh=P/qLRxuK5hKkoH2rhDabiELu29vgx2y3WHc7LP0fs60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RyqfSV/iUQxHdnBxfEu8OeM7v0VGegzwBCYTugkKGCLJGQ1K49mUgpF5cy5YAmwcE
-	 ZJGY1BGlxwTmwuRKkRzA6GLb9jYZ4M+VN7+0DxLbaveZDL4iTLIbiF10u2JfMhKLRW
-	 q1qkmCPcaNhA22j9E7iUaleOWnkjIn/wrNjneg/s=
+	b=kQWajt2VDAhk6GroZHJll2RW9e6lh5NfEEBbUB7md5Qps/d8/oz5C+Nod92An7jzn
+	 Ew6qyTmVn28uI5ahFtYeRlzqUNupXz+XXmQoNof/PrvAr5CjNMbtGNq1tgkT3U1tIs
+	 y3jkH7gRmeguHVzAVpDCcWk4kfZ8zbifchcQ0bWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 125/189] mtd: rawnand: nuvoton: Fix an error handling path in ma35_nand_chips_init()
+Subject: [PATCH 6.6 012/101] NFSv4: Clear the NFS_CAP_FS_LOCATIONS flag if it is not set
 Date: Wed, 17 Sep 2025 14:33:55 +0200
-Message-ID: <20250917123354.912614296@linuxfoundation.org>
+Message-ID: <20250917123337.164382558@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-References: <20250917123351.839989757@linuxfoundation.org>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
+References: <20250917123336.863698492@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 1eae113dd5ff5192cfd3e11b6ab7b96193b42c01 ]
+[ Upstream commit dd5a8621b886b02f8341c5d4ea68eb2c552ebd3e ]
 
-If a ma35_nand_chip_init() call fails, then a reference to 'nand_np' still
-needs to be released.
+_nfs4_server_capabilities() is expected to clear any flags that are not
+supported by the server.
 
-Use for_each_child_of_node_scoped() to fix the issue.
-
-Fixes: 5abb5d414d55 ("mtd: rawnand: nuvoton: add new driver for the Nuvoton MA35 SoC")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 8a59bb93b7e3 ("NFSv4 store server support for fs_location attribute")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nuvoton-ma35d1-nand-controller.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/nuvoton-ma35d1-nand-controller.c b/drivers/mtd/nand/raw/nuvoton-ma35d1-nand-controller.c
-index c23b537948d5e..1a285cd8fad62 100644
---- a/drivers/mtd/nand/raw/nuvoton-ma35d1-nand-controller.c
-+++ b/drivers/mtd/nand/raw/nuvoton-ma35d1-nand-controller.c
-@@ -935,10 +935,10 @@ static void ma35_chips_cleanup(struct ma35_nand_info *nand)
- 
- static int ma35_nand_chips_init(struct device *dev, struct ma35_nand_info *nand)
- {
--	struct device_node *np = dev->of_node, *nand_np;
-+	struct device_node *np = dev->of_node;
- 	int ret;
- 
--	for_each_child_of_node(np, nand_np) {
-+	for_each_child_of_node_scoped(np, nand_np) {
- 		ret = ma35_nand_chip_init(dev, nand, nand_np);
- 		if (ret) {
- 			ma35_chips_cleanup(nand);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index bc1eaabaf2c30..124b9cee6fed7 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3882,8 +3882,9 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
+ 			res.attr_bitmask[2] &= FATTR4_WORD2_NFS42_MASK;
+ 		}
+ 		memcpy(server->attr_bitmask, res.attr_bitmask, sizeof(server->attr_bitmask));
+-		server->caps &= ~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS |
+-				  NFS_CAP_SYMLINKS| NFS_CAP_SECURITY_LABEL);
++		server->caps &=
++			~(NFS_CAP_ACLS | NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS |
++			  NFS_CAP_SECURITY_LABEL | NFS_CAP_FS_LOCATIONS);
+ 		server->fattr_valid = NFS_ATTR_FATTR_V4;
+ 		if (res.attr_bitmask[0] & FATTR4_WORD0_ACL &&
+ 				res.acl_bitmask & ACL4_SUPPORT_ALLOW_ACL)
 -- 
 2.51.0
 
