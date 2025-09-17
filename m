@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-180060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6882DB7E891
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:51:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CED0B7E136
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 14:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5865117507E
-	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:48:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21BBF1B20D91
+	for <lists+stable@lfdr.de>; Wed, 17 Sep 2025 12:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375E532341C;
-	Wed, 17 Sep 2025 12:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F31B31A812;
+	Wed, 17 Sep 2025 12:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL82HbA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDxguXQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50FE328977;
-	Wed, 17 Sep 2025 12:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E5731A802;
+	Wed, 17 Sep 2025 12:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113254; cv=none; b=bL/6FIn2HlKRqsF+orR4WQErt7QjrwluJTAkL9LGGdnLEtxxS6VuHGglezwFdElvFhKchi96zMbBzN0yI/TvVtXOkQCor2iy7Qz2JmLDEeyTjWoqyxWlV9n7AQrs1GlznZ8lcewOLJAeSbFP9aXES6aw6KE9EG9A3g9aZk2WFSA=
+	t=1758112749; cv=none; b=gMJode5exuRJVHF68ihBZcF9mBe96C324j16y33t8EJkYbY5jMucbo53ynOmsmgs1sz5swc/MNdtGj6H57S6vTnbmHU26vBr3Ek7KSgb8Kofu+dRFD38PT5o9vv94qzsKfj3V+ZxYGa+XJllOwcggvdpBsiVUZrW79e0+vCG3lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758113254; c=relaxed/simple;
-	bh=RhU44sMsNFwRLE7LN8qhxN50fF0GTD26yfcqxdpV13Y=;
+	s=arc-20240116; t=1758112749; c=relaxed/simple;
+	bh=kXz8hQj7Y4Yry2zbyIUHnm3EIMT9yB8+wPwuazpVX3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/2rmZ3ejju0MteOKApMA1X6qcnSaBxZ2C2BKfQa5L78u9YvAWxnA6YLF73elDZJ2LfhCcAbnbYIPIAIJSZ9uPQArFC0PxjJmFCPGJ3FKuMl5Af+5PWED5Zt3WJFkhl81Fw68I/W65XWxb64BfE0NGBHH91KSulh33T90oFdoN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL82HbA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BC9C4CEF5;
-	Wed, 17 Sep 2025 12:47:32 +0000 (UTC)
+	 MIME-Version; b=pouZudwAIM2TTVG1N9VNREfdUdg+Bq+DVFG57z/j/wP93sqACqE51YWxmkOICzvHfSk5v3NVEkCayDxXGJK/XeL029/MCJiicRF8weMkUI6kSC9QvTBxZjf164nyQVoefEN462Q+Kh8v+nnO4tvkDGPc3Wpl0zkvtiyYJwhyhkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDxguXQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE935C4CEF0;
+	Wed, 17 Sep 2025 12:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758113253;
-	bh=RhU44sMsNFwRLE7LN8qhxN50fF0GTD26yfcqxdpV13Y=;
+	s=korg; t=1758112749;
+	bh=kXz8hQj7Y4Yry2zbyIUHnm3EIMT9yB8+wPwuazpVX3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JL82HbA+zB90M91HC+wfBUavmv/8cLU7BwbqD6Ge6rGoDWNPxsQqrZoP8nYQYZsIK
-	 z4Qp6hsZeV1/tCiRer4NY/SEb+zfV+gHLdKyefk8nHokplp9r5ZpA4cwCODUwITkAf
-	 IR/3v2/FAA0tv/4BpeBL5cOyBW7UX1y+Scsv4FS4=
+	b=TDxguXQQDTC8gtguM4tJcaiyPi02U9GXJuHUZfxZyQ3j78wbyb2n8N1jcw7Z91V3W
+	 7OwSyjqBl41hW5JshkWRvPgNpAjfzPU5k5MmfTqJIB8MdVMbnAyGhZt8+U/fAoD/4P
+	 9LeYlkIvrNwHqyKb3Bs3jlwJ/B2HcUtuBxkUoW8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/140] dma-mapping: trace dma_alloc/free direction
-Date: Wed, 17 Sep 2025 14:32:55 +0200
-Message-ID: <20250917123344.402595521@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.16 066/189] wifi: iwlwifi: fix 130/1030 configs
+Date: Wed, 17 Sep 2025 14:32:56 +0200
+Message-ID: <20250917123353.486164641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+References: <20250917123351.839989757@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3afff779a725cba914e6caba360b696ae6f90249 ]
+commit 2682e7a317504a9d81cbb397249d4299e84dfadd upstream.
 
-In preparation for using these tracepoints in a few more places, trace
-the DMA direction as well. For coherent allocations this is always
-bidirectional.
+The 130/1030 devices are really derivatives of 6030,
+with some small differences not pertaining to the MAC,
+so they must use the 6030 MAC config.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Stable-dep-of: 7e2368a21741 ("dma-debug: don't enforce dma mapping check on noncoherent allocations")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220472
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220517
+Fixes: 35ac275ebe0c ("wifi: iwlwifi: cfg: finish config split")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250909121728.8e4911f12528.I3aa7194012a4b584fbd5ddaa3a77e483280f1de4@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/dma.h | 18 ++++++++++++------
- kernel/dma/mapping.c       |  6 ++++--
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index b0f41265191c3..012729cc178f0 100644
---- a/include/trace/events/dma.h
-+++ b/include/trace/events/dma.h
-@@ -116,8 +116,9 @@ DEFINE_EVENT(dma_unmap, dma_unmap_resource,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index f9e2095d6490..7e56e4ff7642 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -124,13 +124,13 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
+ 	{IWL_PCI_DEVICE(0x0082, 0x1304, iwl6005_mac_cfg)},/* low 5GHz active */
+ 	{IWL_PCI_DEVICE(0x0082, 0x1305, iwl6005_mac_cfg)},/* high 5GHz active */
  
- TRACE_EVENT(dma_alloc,
- 	TP_PROTO(struct device *dev, void *virt_addr, dma_addr_t dma_addr,
--		 size_t size, gfp_t flags, unsigned long attrs),
--	TP_ARGS(dev, virt_addr, dma_addr, size, flags, attrs),
-+		 size_t size, enum dma_data_direction dir, gfp_t flags,
-+		 unsigned long attrs),
-+	TP_ARGS(dev, virt_addr, dma_addr, size, dir, flags, attrs),
+-/* 6x30 Series */
+-	{IWL_PCI_DEVICE(0x008A, 0x5305, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x008A, 0x5307, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x008A, 0x5325, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x008A, 0x5327, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x008B, 0x5315, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x008B, 0x5317, iwl1000_mac_cfg)},
++/* 1030/6x30 Series */
++	{IWL_PCI_DEVICE(0x008A, 0x5305, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x008A, 0x5307, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x008A, 0x5325, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x008A, 0x5327, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x008B, 0x5315, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x008B, 0x5317, iwl6030_mac_cfg)},
+ 	{IWL_PCI_DEVICE(0x0090, 0x5211, iwl6030_mac_cfg)},
+ 	{IWL_PCI_DEVICE(0x0090, 0x5215, iwl6030_mac_cfg)},
+ 	{IWL_PCI_DEVICE(0x0090, 0x5216, iwl6030_mac_cfg)},
+@@ -181,12 +181,12 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
+ 	{IWL_PCI_DEVICE(0x08AE, 0x1027, iwl1000_mac_cfg)},
  
- 	TP_STRUCT__entry(
- 		__string(device, dev_name(dev))
-@@ -125,6 +126,7 @@ TRACE_EVENT(dma_alloc,
- 		__field(u64, dma_addr)
- 		__field(size_t, size)
- 		__field(gfp_t, flags)
-+		__field(enum dma_data_direction, dir)
- 		__field(unsigned long, attrs)
- 	),
+ /* 130 Series WiFi */
+-	{IWL_PCI_DEVICE(0x0896, 0x5005, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x0896, 0x5007, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x0897, 0x5015, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x0897, 0x5017, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x0896, 0x5025, iwl1000_mac_cfg)},
+-	{IWL_PCI_DEVICE(0x0896, 0x5027, iwl1000_mac_cfg)},
++	{IWL_PCI_DEVICE(0x0896, 0x5005, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x0896, 0x5007, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x0897, 0x5015, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x0897, 0x5017, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x0896, 0x5025, iwl6030_mac_cfg)},
++	{IWL_PCI_DEVICE(0x0896, 0x5027, iwl6030_mac_cfg)},
  
-@@ -137,8 +139,9 @@ TRACE_EVENT(dma_alloc,
- 		__entry->attrs = attrs;
- 	),
- 
--	TP_printk("%s dma_addr=%llx size=%zu virt_addr=%p flags=%s attrs=%s",
-+	TP_printk("%s dir=%s dma_addr=%llx size=%zu virt_addr=%p flags=%s attrs=%s",
- 		__get_str(device),
-+		decode_dma_data_direction(__entry->dir),
- 		__entry->dma_addr,
- 		__entry->size,
- 		__entry->virt_addr,
-@@ -148,14 +151,15 @@ TRACE_EVENT(dma_alloc,
- 
- TRACE_EVENT(dma_free,
- 	TP_PROTO(struct device *dev, void *virt_addr, dma_addr_t dma_addr,
--		 size_t size, unsigned long attrs),
--	TP_ARGS(dev, virt_addr, dma_addr, size, attrs),
-+		 size_t size, enum dma_data_direction dir, unsigned long attrs),
-+	TP_ARGS(dev, virt_addr, dma_addr, size, dir, attrs),
- 
- 	TP_STRUCT__entry(
- 		__string(device, dev_name(dev))
- 		__field(void *, virt_addr)
- 		__field(u64, dma_addr)
- 		__field(size_t, size)
-+		__field(enum dma_data_direction, dir)
- 		__field(unsigned long, attrs)
- 	),
- 
-@@ -164,11 +168,13 @@ TRACE_EVENT(dma_free,
- 		__entry->virt_addr = virt_addr;
- 		__entry->dma_addr = dma_addr;
- 		__entry->size = size;
-+		__entry->dir = dir;
- 		__entry->attrs = attrs;
- 	),
- 
--	TP_printk("%s dma_addr=%llx size=%zu virt_addr=%p attrs=%s",
-+	TP_printk("%s dir=%s dma_addr=%llx size=%zu virt_addr=%p attrs=%s",
- 		__get_str(device),
-+		decode_dma_data_direction(__entry->dir),
- 		__entry->dma_addr,
- 		__entry->size,
- 		__entry->virt_addr,
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 74d453ec750a1..9720f3c157d9f 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -619,7 +619,8 @@ void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	else
- 		return NULL;
- 
--	trace_dma_alloc(dev, cpu_addr, *dma_handle, size, flag, attrs);
-+	trace_dma_alloc(dev, cpu_addr, *dma_handle, size, DMA_BIDIRECTIONAL,
-+			flag, attrs);
- 	debug_dma_alloc_coherent(dev, size, *dma_handle, cpu_addr, attrs);
- 	return cpu_addr;
- }
-@@ -644,7 +645,8 @@ void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
- 	if (!cpu_addr)
- 		return;
- 
--	trace_dma_free(dev, cpu_addr, dma_handle, size, attrs);
-+	trace_dma_free(dev, cpu_addr, dma_handle, size, DMA_BIDIRECTIONAL,
-+		       attrs);
- 	debug_dma_free_coherent(dev, size, cpu_addr, dma_handle);
- 	if (dma_alloc_direct(dev, ops))
- 		dma_direct_free(dev, size, cpu_addr, dma_handle, attrs);
+ /* 2x00 Series */
+ 	{IWL_PCI_DEVICE(0x0890, 0x4022, iwl2000_mac_cfg)},
 -- 
 2.51.0
 
