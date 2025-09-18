@@ -1,153 +1,170 @@
-Return-Path: <stable+bounces-180545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AFAB854CF
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:42:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37884B8555E
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 045667B2780
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 14:40:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5071468171
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 14:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8DD2F2609;
-	Thu, 18 Sep 2025 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CAE2FBDEB;
+	Thu, 18 Sep 2025 14:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I92hhvne"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="R5dHzP/U"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CB2214204
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 14:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB79B302CD1
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 14:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758206513; cv=none; b=NaSM5H77ye2bjHUgjMFMNtCAHEdVM0pMNhOsP8YZi1zxg7z/bty0k3vUXVwexaIs9iYEa0UlhwJUv0L6sWpFPkWn1DUybR2VyRdtxLI76THSKQbBUMJYZLP3QqmxijH0ohoEkoaBCm1Z2q5SRQhmlCuppTZ89nxahUn7K/irMjk=
+	t=1758206826; cv=none; b=R09zttuNdPfCOpbGArEbuF+Yzy7id32jBdo85A7sJ9scxy1+458K864BYq/Smd43xkBVATBDu++MV+ssOr8lGS3eShIFkykJZOsUqQw0jZDPOXs8oVhmNKhixb0YCLUyv+9hUQnap6fwAmjt32Xf3PhC6oPL2MHvmq2sJBCO7Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758206513; c=relaxed/simple;
-	bh=52mzwF50ZysPik2mfGb84bky8NEzJW1dDbmZc78Gl3o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=mWIwKpxX2JaQuJCXbwK5XL2VvVT2uXF9OEBmbgsm5+dgrCGMORoROcsDlDLrrDq/U+HMudRndLEgrOoKcwXe71sgkRbYa8YbpUXCgi65xhpltFLggxYfB+J/gjsuliSk7pyQa8wZEyua8+bUi2Lox5dl3DjLjyF4ZQo4At5WU04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I92hhvne; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758206509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=XGS8iYxGjjgCtPNfLtzzgPnXWY2Ig3ulBcoQ+vUpdX4=;
-	b=I92hhvnejmVFbYB1S4O6uxwKDCpPHQ9DOb2YpM26hWG4p4nbx8ei6HCKEK8VNBvAK3S9H4
-	NpY8HJqsuRAtYlVJf36K/NA+GW8z6wbWEoCzcUwnpnRMCCKEXDvXwq9WJVinbN4g3rnxvF
-	DuGWUMobI4l3nH1P8swRrFc76XznV98=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-wj7EoWu-OeyG76nyLZTenw-1; Thu, 18 Sep 2025 10:41:48 -0400
-X-MC-Unique: wj7EoWu-OeyG76nyLZTenw-1
-X-Mimecast-MFC-AGG-ID: wj7EoWu-OeyG76nyLZTenw_1758206507
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45f2f1a650dso7432105e9.2
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 07:41:48 -0700 (PDT)
+	s=arc-20240116; t=1758206826; c=relaxed/simple;
+	bh=tifRwdG0cup/GwpjdX6d2kTze0RGw/mxSxR2cHl7XPc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ZQUP7R3u+hHrj4axn6fOoD4llamvEsHJXl4yUf8Bsjp3vhVLjeuEQcxHNzGEb21mwHXotfV7D+O+9OkZVWvXS8jE9nWyUVF62Bv33o/2xgTBLsTU5euGDmDxfZYEHp9PejWYh+Kowg45uRwM+CYJ7wn4mbuJAlPn6jhhseVk/9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=R5dHzP/U; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45f2313dd86so9520005e9.2
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 07:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758206822; x=1758811622; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=37D42GXffjAW9iYbAp7WEI4f33KeURcYQYqpxtmTp+Y=;
+        b=R5dHzP/Uhrfm2jyILT6fxoAzH61nnPfRNnDcz3XB8z1styjfacM9wcZrqSVWluord6
+         ocd2KWLX5iXA+RwyScF9aaGlRtI5ZQV1axQMF5R4j4ZKj9gGbEXrmziKM1ATo09NsnDW
+         MKawupjIChAMc/7ybpRZ70If2XJwrT/NhUWpVd7S0SBFMJ7MP6Q1zLl3TKMGz8a18A47
+         /Q1EyX7HwGoqJDyw0M8qQBm6jJyOxTwaCoFbDbBotweaGZ9U4u8XJTv7dj2VEFYMnqNd
+         4XwX5zvChMqK/9bTollBbnPry8LKYxOZOaXQIFjbEdL9KEsLCru6Tl08plvJPc4aUoNJ
+         oOKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758206507; x=1758811307;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1758206822; x=1758811622;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XGS8iYxGjjgCtPNfLtzzgPnXWY2Ig3ulBcoQ+vUpdX4=;
-        b=DX3igQZBDXJTTdMuG0CbOxPyy2J6TnBLeb9NatZa3MnwwtADlBtgpFc/u9gaTdzAEn
-         cmRNLbsBnOm92DJb4b2OgOCrby8kfeyI5QHscU5JxHDRNuAhbYx7+Z09BmQ1amyye1fa
-         sEScihWoImtASZEDfY0ZaGvsZ3XYUfdiCiOKRDS9DJ0wEk0Whp6wNv+uNSqxO5fRv3mm
-         wffjwwoQMTdaR7kuP0b1x/GN/rn1m+fMO2KK985D2hX0T04c9FoItIu26+eZUt+N4ORN
-         rB/UTSG6U+XRfKhTkZDSiUUyG5qq8m6Cq2tpgjxj9SlM2c9Cu64jAUGDZNi8sj/RxhYH
-         W+/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWfnlPuEQmU3G058vL2pB5G+p1swn3FILc0I9cq50ChGBbRmy/ji0k6vlgRLMm4WxWL5Crq67A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/uhJUMsmlyp5uK3IptGniSMAfr3fkZDL7Nd+EfE3CUiQcRDBn
-	EVaB/fmmCeaQHTrdHQrIFgd0d88fjgfj9GxQyzlu2tSPQyg7jjSMbA7TGuWmEpD2pODNgJtg8o7
-	t4RdaxKM7/+04iVhrigMcY3/4l3nNdJz5dGQBbnxF7jJbD5+LC6QVeatYHw==
-X-Gm-Gg: ASbGnctpleHPArEikuVxFJXnmXE4Ek2dLsTYaP3Y1Q4Z8cs96qdneuGW2au3OjL3KSg
-	E0DO6wIpDtviMiXm9r/q0NWdSn37cdFihf+H2fM1320SX7r+hZzhIgPw1XaGooKwfMbfU01SpgM
-	AJ4w9L9xlEvMnumnEOXwAUxSsrPl6TKixxgfPe0rcOEfG2WMSW+0HHoqCjVAbhOHzZvbqFlqf7b
-	MfwBvJ8XWs5O3ql94ua1qNx93Iyf4n3W6MwetxM5rW59YvECH3A5wjvdDN5BxXLsscY1HJHLeHM
-	lb3cbltURETObntL9phzfSZWEUwNiN0RqSc=
-X-Received: by 2002:a05:600c:3b05:b0:461:8b9d:db1d with SMTP id 5b1f17b1804b1-46201f8aa61mr51947705e9.7.1758206507325;
-        Thu, 18 Sep 2025 07:41:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6KtyNG51lUBBb+796Ksha+xJ3k91Ah4nN79uv8tPH32cwmgf4CIFGIqg2jBve/wowaCq5Rg==
-X-Received: by 2002:a05:600c:3b05:b0:461:8b9d:db1d with SMTP id 5b1f17b1804b1-46201f8aa61mr51947335e9.7.1758206506772;
-        Thu, 18 Sep 2025 07:41:46 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73e7:4d00:2294:2331:c6cf:2fde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f0aac3fdsm42562565e9.1.2025.09.18.07.41.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 07:41:46 -0700 (PDT)
-Date: Thu, 18 Sep 2025 10:41:44 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	alok.a.tiwari@oracle.com, ashwini@wisig.com, filip.hejsek@gmail.com,
-	hi@alyssa.is, leiyang@redhat.com, maxbr@linux.ibm.com,
-	mst@redhat.com, seanjc@google.com, stable@vger.kernel.org,
-	zhangjiao2@cmss.chinamobile.com
-Subject: [GIT PULL] virtio,vhost: last minute fixes
-Message-ID: <20250918104144-mutt-send-email-mst@kernel.org>
+        bh=37D42GXffjAW9iYbAp7WEI4f33KeURcYQYqpxtmTp+Y=;
+        b=hzvSViHE0IENzmNqraSSP7psMGUCchLOGIYuZZhV5tlsiemMzztYIkuuyngb+ms3E+
+         auWC0ipAl3NLHq5qhgnDibDeU860WosRDbq2nBz+TofDXzFI4uGgJn+XzoY7g57mHWab
+         w99Qc1d/RoZvAFl8pmbfrsF14jgmGII9UpFDLGo6u/QuwqeT5Wi0hP2ZethWVdFUvUpt
+         VHUpqGGfcS6kkX4EODGg3IE0WcWlM2AZ3Pdf1xVCOLdIfyW2JXKO8XGje6US9IslNfCO
+         hnXPKAKJnucWbda9P5C26XHdGBMfljW+NdP9sbusMFGgjUSF1SdzeQZnnWMP5SvSRN0+
+         u4vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUOIRT2tqa4/6TB9Q943h7nTod5D0jP9zb9c53IESr21j7Qz1mF/0xerEnOMzHidaESb5rzZ+o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBa2B98ObGEprCE4GT6ARl+0DN3uqgkR0hV3nFr2W7edrIn3OX
+	pSPwH3mrrd0uIeM3wB+byexixEuJuWAJakYhoDUEo8R7IAJ3ulSChB8cSCWurQdzPwE=
+X-Gm-Gg: ASbGncvIynyJhSmACtneF5/1JvdFfFc0P2Xh6b50FWKk/YgMeNHFNIp90KWUXiJvsem
+	89bL0ko2eCAYH3PRYtmMHmnRA8PYKqreUnhJMH6nhKfb9PFp8Air/hBSt0+BBJCfmO0WMo6L5kb
+	qcBWkvdu5YWoO8CzTOQVtMbdWwIiWYWF5A4YP8fO90s1mn8OK6J3v5bJi5/FnrXk3cromf32cO+
+	SfCB5j82NnoIirB08NYMxVt1p23TXxhC42tb+HRCPNCxb22NCdeAYHCTkegfQCxdRy3PH8j8Tdm
+	Ih32c9bKVHrvWh6+1ZrcT3EkNU818l2C+s1WVYRVv+p+TtMQ86qNJonkXMjGdBO8kLIggk0exfb
+	cjFDu9oUVIGVeUMe3KezpMZZceXFDo5Ersn4mdCWOoH8Px/bpEMn/z5zo0S/wTfrxRUy01F3UvB
+	z3LobG66J137zsVdk=
+X-Google-Smtp-Source: AGHT+IHYrsOd5brbUtJHp6pWROrBl7QN3jfM0a76C9QRJ2hgXJ077DV9G1Iemwpn3n8RIcYFh9WFLg==
+X-Received: by 2002:a05:600c:354c:b0:45b:7aae:7a92 with SMTP id 5b1f17b1804b1-46205fa5930mr56047915e9.21.1758206822048;
+        Thu, 18 Sep 2025 07:47:02 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:71:7cc0:9f51:a89f:3777:bbea? ([2a01:e0a:71:7cc0:9f51:a89f:3777:bbea])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0fbf1ad6sm3767288f8f.54.2025.09.18.07.47.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 07:47:01 -0700 (PDT)
+Message-ID: <fae4241e-eb1f-4aea-8a25-b80ffd566547@freebox.fr>
+Date: Thu, 18 Sep 2025 16:47:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mutt-Fcc: =sent
+User-Agent: Mozilla Thunderbird
+From: Pablo MG <pmartin-gomez@freebox.fr>
+Subject: Re: [PATCH wireless] wifi: mac80211: do not permit 40 MHz EHT
+ operation on 5/6 GHz
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ linux-wireless@vger.kernel.org
+Cc: Benjamin Berg <benjamin.berg@intel.com>, stable@vger.kernel.org
+References: <20250826202553.a6582f3abf57.Ic670429dc7127f68c818b4290d950ebfb5a0b9e1@changeid>
+ <29b001dd-92b5-4afd-a871-f9fbe875e91c@freebox.fr>
+ <a17c63c51c621031e2bfac56e63d562895583c60.camel@sipsolutions.net>
+Content-Language: en-US
+In-Reply-To: <a17c63c51c621031e2bfac56e63d562895583c60.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-The following changes since commit 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c:
+Le 26/08/2025 à 21:39, Johannes Berg a écrit :
 
-  Linux 6.17-rc5 (2025-09-07 14:22:57 -0700)
+> On Tue, 2025-08-26 at 21:02 +0200, Pablo MARTIN-GOMEZ wrote:
+>
+> This is wrong one way or another.
+>
+> If we follow the 802.11 standard strictly [I'm going to use annex B's
+> items so it is easier to follow], we are implementing EHTP3.3, so a non
+> I ... don't think that's a good (correct?) way to phrase it. "Implement
+> EHTP3.3" means you have 80 MHz support, which is required unless it's 20
+> MHz only STA. Here we're not really implementing 80 MHz support but
+> saying that this is a requirement ...
+Yes, I admit my email didn't have the proper phrasing and the use of 
+Annex B items might have been inadequate and confusing. I was just 
+trying to make a point by mail that was somewhat comprehensible. From 
+your response, I get that you understood the point I was trying to get 
+across, that is all that matters to me.
+>> So
+>> that means that the strictly compliant approach would be to disallow a
+>> 40 MHz STA in the 6 GHz band and downgrade a 40 MHz STA to HT in the
+>> 5GHz band.
+> Looks like, yes. We should probably do that. These are corner cases
+> anyway though, I don't think I've ever actually seen it happen.
+For an AP working on the 5 GHz upper band, with DFS, it could end up 
+with only 40 MHz bandwidth available after two radar detection. So yes, 
+a corner case but still a case.
+>> If we follow the 802.11 standard more liberally, we never enforced
+>> VHTP3.3 nor HEP3.3, so why begin now with EHTP3.3?
+> Nobody found bugs with the other ones? ;-)
+>
+> Here it comes down to this actually _happening_ due some devices not
+> allowing puncturing, and then we can't connect in the right way.
+>
+> And this doesn't matter to HE, if we connect to an AP with puncturing in
+> the 80 MHz as an 80 MHz HE station, then it _must_ have HE not punctured
+> so only 40 MHz. Then if the HE actually moves to 80 MHz the puncturing
+> in EHT must go away, and the HE is 80 MHz unpunctured which is fine for
+> the HE STA, so there isn't even a bug.
+>
+> The only bug would be if the downgrade happens for reasons other than
+> puncturing (e.g. regulatory bands) but this is very unlikely in the
+> first place.
+>
+> So practically, the only issue we had with this is that for EHT and
+> puncturing, and then the downgrade to HE basically fixes that issue and
+> we can connect with HE even if we pretend we can do 80 MHz because as
+> long as the puncturing is there, the AP has to use 20 or 40 MHz
+> operation for HE (and lower of course.)
+>
+>
+> I agree though that this isn't really completely correct for HE/VHT if
+> the downgrade were to happen for other reasons.
+I made purely my remark regarding the standard compliance. If this 
+change is the best course of action to fix the issue you describe, don't 
+mind me. We'll discuss the compliance at another occasion.
+> However, I also don't think this is an argument _against_ fixing this
+> issue for EHT. Clearly, for EHT there's the additional practical
+> puncturing issue that matters. Yes, the APs rate scaling might be able
+> to cope with it eventually, but if we remain connected with EHT and
+> pretend we're 80 MHz when we're not, then we could get RUs in the
+> unavailable part etc. and I think rate scaling would probably not deal
+> with that well. This is true for HE as well, of course, but see above?
+>
+> johannes
 
-are available in the Git repository at:
+Best regards,
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-
-for you to fetch changes up to 549db78d951726646ae9468e86c92cbd1fe73595:
-
-  virtio_config: clarify output parameters (2025-09-16 05:37:03 -0400)
-
-----------------------------------------------------------------
-virtio,vhost: last minute fixes
-
-More small fixes. Most notably this reverts a virtio console
-change since we made it without considering compatibility
-sufficiently.
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Alok Tiwari (1):
-      vhost-scsi: fix argument order in tport allocation error message
-
-Alyssa Ross (1):
-      virtio_config: clarify output parameters
-
-Ashwini Sahu (1):
-      uapi: vduse: fix typo in comment
-
-Michael S. Tsirkin (1):
-      Revert "virtio_console: fix order of fields cols and rows"
-
-Sean Christopherson (3):
-      vhost_task: Don't wake KVM x86's recovery thread if vhost task was killed
-      vhost_task: Allow caller to omit handle_sigkill() callback
-      KVM: x86/mmu: Don't register a sigkill callback for NX hugepage recovery tasks
-
-zhang jiao (1):
-      vhost: vringh: Modify the return value check
-
- arch/x86/kvm/mmu/mmu.c           |  7 +-----
- drivers/char/virtio_console.c    |  2 +-
- drivers/vhost/scsi.c             |  2 +-
- drivers/vhost/vhost.c            |  2 +-
- drivers/vhost/vringh.c           |  7 +++---
- include/linux/sched/vhost_task.h |  1 +
- include/linux/virtio_config.h    | 11 ++++----
- include/uapi/linux/vduse.h       |  2 +-
- kernel/vhost_task.c              | 54 ++++++++++++++++++++++++++++++++++++----
- 9 files changed, 65 insertions(+), 23 deletions(-)
+Pablo MG
 
 
