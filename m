@@ -1,185 +1,161 @@
-Return-Path: <stable+bounces-180511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F6CB845D2
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 13:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 765EFB8461D
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 13:40:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7231BC0D7B
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:32:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDC4518890E1
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381BA2FFF9F;
-	Thu, 18 Sep 2025 11:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81ED4303A05;
+	Thu, 18 Sep 2025 11:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lhdT2L1t";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RiyRI2no";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mZ/uXFCm";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="F4mpeiMA"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CIw+E+Mf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73269BA42
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 11:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBD0302740
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 11:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758195103; cv=none; b=PNREe4d3Ly8hoR6IewwmWZbcUzPp144dnYbovVsT+eSezSuBQU/XZSR9w2hI3Uk0R2oLRSYOhpMAfpllaVZHpZnTQOjBcKbLu1yKBAmnPK3sgObiR3b4s++bZHGcP+Ud5v7ITmYAHhS1P0SE2zvfV21XG/RjVwtnQiGBZFHPXsU=
+	t=1758195597; cv=none; b=k5lOFcrS60CEDHoB1ruxTV95Zuito/71/gmDm7kYhe1cLQN9kelMzL6U63+aPk38ZZkjDg8yDitmNe195379cT8mCGLq0GqoBw6rHrJUzkLInBIq7XeA4pVHzIV+j5jjZHhnfWUvIXoaNJy4xlqo0F43ybaBbREZ2Fh+fgqwarw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758195103; c=relaxed/simple;
-	bh=MLl6OKx32oF/mUyZeLnKIVTtA/C1JJP+sSJUZhdTOM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DsHYk137fjRthZN9lsxiY99LBnKHPYKxPn+VVYJQMlzv+TSoa/LjtB/A88JGhJUu3opLX2U2SPy38cBgyyQEDIy5COJtNPyYbQ0Y3yrQVYP3cnxf1bVboFto+j2FXcauovHQqhloidtJfRXgFqvsmh6FSy5030BofwXZ3Px+Smw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lhdT2L1t; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RiyRI2no; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mZ/uXFCm; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=F4mpeiMA; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8AE0233791;
-	Thu, 18 Sep 2025 11:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758195099; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F0jk5pHWcSpilbLxJaV/z4FUuxkpZfccsNZuNA2Q9Bo=;
-	b=lhdT2L1tZ/eU01dAvv55m+bCEsqSXn9IA/5PI3U3FxpNs0aIVG5VXdU/1hy0iSeEN7Pw79
-	Bofhd8h+Lu/NUDQgTx+DFJ2rfruf0Ez7PC6X5J22of1d6Wb9cAQUAzeg5iFC2cXxYAzxBy
-	JAGOlD4SlPjr6tEiifhJG8ab/O4KClw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758195099;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F0jk5pHWcSpilbLxJaV/z4FUuxkpZfccsNZuNA2Q9Bo=;
-	b=RiyRI2nob+MF0STXidJ4xVHvz+Hvs6a7btnXjChpqptOZmH1OMRuQau6ztX6QilOsI19tM
-	mWjgrlV4vqR3/4AQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="mZ/uXFCm";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=F4mpeiMA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758195098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F0jk5pHWcSpilbLxJaV/z4FUuxkpZfccsNZuNA2Q9Bo=;
-	b=mZ/uXFCm/LcB68G+Pulz+vmUd3OkOcAShB69OktBNN3CDzNOUlingOy/CvYD7qdUPgI1pD
-	SIT86IppWhAFXzD3Adv0o6HXgCYSPrRAOiK85uI5+GizLBu7dT+PSMZDf/D257u/Ah4LNl
-	j2rcNCxlLRaGLIFjVQ9W0ZkBFdbN/vw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758195098;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F0jk5pHWcSpilbLxJaV/z4FUuxkpZfccsNZuNA2Q9Bo=;
-	b=F4mpeiMAiFwgKtIBR86KL8f7OjWr7aG5rnz8aOXCA4LWMC1X5SXu1uiugKiTYOreT33gH6
-	4P4VfZBx5MQ+j7Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80F0C13A51;
-	Thu, 18 Sep 2025 11:31:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id r3swHJjty2gJBQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 18 Sep 2025 11:31:36 +0000
-Date: Thu, 18 Sep 2025 12:31:30 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: akpm@linux-foundation.org, minchan@kernel.org, 
-	lorenzo.stoakes@oracle.com, david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
-Message-ID: <zol3d77dnwgrkbwc7lui3qm2mkwqftzifr6gn7smtbg4jo4bte@y4dzwfvt2xtj>
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-2-kaleshsingh@google.com>
+	s=arc-20240116; t=1758195597; c=relaxed/simple;
+	bh=uFxlB2R+ZAYSRcEYlTPVQyhSU7uzPWXjKHbWDaZJTTI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AqBFRJCA+pjq0TL1F2vjVISmJfATd5lzHb7gK5QhAlT2ufbCAQXynr2P2omkHr9osF6poy1XfJjT63OMFVGOtiaiEjZCWObANqN8lwbDQT0VcgJIuUYsx1+kzAMn3e5ne/J4IRh0KcT3MP9U3aaa3TKcRxiG5dSWzFFhM5zReGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CIw+E+Mf; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-726fbc53376so100216d6.0
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 04:39:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758195595; x=1758800395; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5vUxrIL/IBc7jEhkf1uGzLd2PnG5mi3zNkUmu0ufRfg=;
+        b=CIw+E+MfZv9AAWjCRMSzSjiEDMZmCH7ycLG1LPqV04zKeo3q/6aj4WjpwtSE3Rhcc5
+         7frgDoJ/kvWNO1qcuos9asElyqMHaiyi27mXPLoPSWp7o3lWUeEDEd8AqXoM3WwhFRkL
+         gRajcgArYRwtSWYbLrVyj5xLlb77PLnmWt5Qum94+RGnr7VvXHNMg1HbhCrPXLVzz6m6
+         7eFsAhGS8AChjdoLqCIe59TyqeYC0d2I9SlKv1jM9YkEjaruT1io/2wxpBygCzRG5b6X
+         cbTf8uMDv2PKPRUMIDdyRRU1I+71H5QSKxkfCsSNrRaQTi6xo0zHLOFpdJwTHynCsr2x
+         nvfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758195595; x=1758800395;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5vUxrIL/IBc7jEhkf1uGzLd2PnG5mi3zNkUmu0ufRfg=;
+        b=B/88weS4LydSXhXMhJS7eO9IUMwBbNKqobJfgBWHGgVzXwQqxqFfatveK7Iuv+Mk/k
+         lQDCa+BBqFfpS/a2lpG/Vmb7Qhat9pfgn3HuJP1SgKJGSmiybDWzVqUY0q77dr3REQlI
+         NjWfMMl09K+aEi8f8ie+U1SzIGCqvD3p0g33TZeuwac0vMkdLuXK/fjidnJfGQ1DFSph
+         Zp7RU2amJcvlY8t5aBsYpsxqVd5gDk9sJGHkYYXLAMfD/0eYHqsoFIIj9hr0PAQJV3sM
+         /D3bOQQhd5dnYyz/nab78hlcS6iaimUlzsnyT5jPCkBg8Fn+i0/Xsmk/P0nogmQxENX8
+         uCDQ==
+X-Gm-Message-State: AOJu0Yzh8JvK5cUN7Eap9/XmZP5/8f2Aylc3WF2gtjMgHzkAQ8oxmHOx
+	HXQYH76oJP/L14+X3u0vU/Z5q+bVcZ9wCgZvzpnyyk+6dE3FrxIAKdaHfeYGklpXk0HVbVuQq/a
+	g8m/EtgY5/7e5pHcYBpDG1yKpeNvQ4PmJw6mLIPZV6A==
+X-Gm-Gg: ASbGnctd3HG9nurNoElnzIrETYem1xqfL38hRsPB77gu5T9dlzyTtp6+8j+7DjnYxHe
+	G7gAup2WqfzjqRXltcE9nlAiHifVdHz06hSkBEaaxAcpPnmAG2YiN3d1Gt42H+LmtMxjxP3xo8W
+	5UnAOD2/HPbsMCkp3LZ1GHZEVIV5t5053jmsjc6lickxScpl50TDMskZcFKmvktqnGA26n6E6rx
+	qleOM97A1FZcQ4yydjgu+eQ
+X-Google-Smtp-Source: AGHT+IH48ivQXtWG6C+0ln0hXjbS+q797BMP5NkKk70x0e10WLGtjHZ+0cOJrQylQsmByXrESmf6BwG/gWAUyqH0+oU=
+X-Received: by 2002:a05:6214:519b:b0:795:c55c:87de with SMTP id
+ 6a1803df08f44-795c55c8cffmr5136256d6.5.1758195594483; Thu, 18 Sep 2025
+ 04:39:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 8AE0233791
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	R_RATELIMIT(0.00)[to_ip_from(RLg31yqq1xypujqsbh8raoa6zf)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,oracle.com:email,suse.de:dkim,suse.de:email]
-X-Spam-Score: -4.01
+References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Thu, 18 Sep 2025 13:39:43 +0200
+X-Gm-Features: AS18NWBNNFTT46ohA_9aWzCCmFKj0hhU1Nz5FCTOq6VyCT2bqNOYD0vIURq0WvA
+Message-ID: <CADYN=9+vrKOAkyqp69eG785TXoqbw2QdORoFOJWz=fXeEmGz1g@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/140] 6.12.48-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Sep 15, 2025 at 09:36:32AM -0700, Kalesh Singh wrote:
-> The VMA count limit check in do_mmap() and do_brk_flags() uses a
-> strict inequality (>), which allows a process's VMA count to exceed
-> the configured sysctl_max_map_count limit by one.
-> 
-> A process with mm->map_count == sysctl_max_map_count will incorrectly
-> pass this check and then exceed the limit upon allocation of a new VMA
-> when its map_count is incremented.
-> 
-> Other VMA allocation paths, such as split_vma(), already use the
-> correct, inclusive (>=) comparison.
-> 
-> Fix this bug by changing the comparison to be inclusive in do_mmap()
-> and do_brk_flags(), bringing them in line with the correct behavior
-> of other allocation paths.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: <stable@vger.kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Minchan Kim <minchan@kernel.org>
-> Cc: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+On Wed, 17 Sept 2025 at 14:48, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.48 release.
+> There are 140 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 19 Sep 2025 12:32:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.48-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+
+While building Linux stable-rc 6.12.48-rc1 the powerpc allmodconfig and x86_64
+allyesconfig build fails.
+
+Regression Analysis:
+- New regression? yes
+- Reproducibility? yes
+
+Build regression: powerpc clang-20-allmodconfig
+
+Powerpc allmodconfig build error  :
+/builds/linux/drivers/net/ethernet/ibm/ibmvnic.c:6134:13: error: stack
+frame size (2080) exceeds limit (2048) in 'ibmvnic_tasklet'
+[-Werror,-Wframe-larger-than]
+ 6134 | static void ibmvnic_tasklet(struct tasklet_struct *t)
+       |             ^
+
+Build log: https://qa-reports.linaro.org/api/testruns/29918282/log_file/
+Build details: https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.12.y/v6.12.46-149-g6281f90c1450/log-parser-build-clang/clang-compiler-drivers_net_ethernet_ibm_ibmvnic_c-error-stack-frame-size-exceeds-limit-in-ibmvnic_tasklet/
+
+Bisection in progress.
 
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Build regression: x86_64 gcc-13-allyesconfig
 
--- 
-Pedro
+2025/09/17 13:43:43 socat-external[1252] W waitpid(-1, {}, WNOHANG):
+no child has exited
+x86_64-linux-gnu-ld: kernel image bigger than KERNEL_IMAGE_SIZE
+
+Build log: https://qa-reports.linaro.org/api/testruns/29919415/log_file/
+Build details: https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.12.y/v6.12.46-149-g6281f90c1450/build/gcc-13-allyesconfig/
+
+Bisection in progress.
+
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.12.48-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: 6281f90c1450c5ee21a0f42e3dff4654f395d963
+* git describe: v6.12.46-149-g6281f90c1450
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.46-149-g6281f90c1450
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
