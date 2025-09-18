@@ -1,186 +1,124 @@
-Return-Path: <stable+bounces-180501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3564B83F0C
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:59:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42D4B84071
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 12:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CAA3A96F1
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:59:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5F7D3AE92D
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 10:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDBC2E9743;
-	Thu, 18 Sep 2025 09:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B7B2F5467;
+	Thu, 18 Sep 2025 10:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3GuC4/0E";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6C39Yrta";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3GuC4/0E";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6C39Yrta"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRvvxQlM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8472925486D
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 09:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A132F2914
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 10:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758189559; cv=none; b=uNNT5yYOhjJZJBHfBVK0voejWaenh0GjPN/6COBOkPh8Nv6dnaXSodfh1Fp0q2gvtAR1uCtKq0E8FSGxOucBV6N/oLxKYoG3hh6BpLvJK1IVgv25CaM88XMjZYDfxNaG5VbY/aw2aq43VYLyade1YPsMGL7nUojCfti1qGYlJ9k=
+	t=1758190545; cv=none; b=XOlBiGYXcOo0hWtlXtS7eHnvFhojw3UUBFqaV7RBBXc8fEXOWbDnpd59kk0Rgl4AZIqDrl9tDeSFwF17A9Fo7A7eIEphgHT7tsFZs36CVU/AkZlop2KtBNwmYYgupHhbs9qU4EEBPV24YSZqGM6QbEPgDdF1R0vJdDZYrhc6Oww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758189559; c=relaxed/simple;
-	bh=0RqsuiwyKINatYSR4jMGpA2kcsw74TNDR71ONXIxGVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=agPRdmjZyW8zZR/uQozeBrdfFq77EPEdSggvYHGGIegt09vh5ZhR1EVQnniQ6QrfmrwKsF3OSnxcQvIz1B+nq3qhHPaGzaq/vHbdjWbrQ4ATFCvO5Uk2GDuuo/DlA2Fr46LQPKBM8SsQ1VObo9kwQXMBNnMngTgvgkByN6wrkvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3GuC4/0E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6C39Yrta; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3GuC4/0E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6C39Yrta; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A50FF3370E;
-	Thu, 18 Sep 2025 09:59:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758189555; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
-	b=3GuC4/0ESPjQC3pmzIZ8bUCKHTf/JnNQrCqYYL9kmgf85s872lNOzwXwhKUuxkWBLC2WyB
-	s2R6wFu5VsG+nCwu65iLBy8RDidVPcj+vriWINrK6M18sij6Y/TJ2um4t+qOLPBnx4drYq
-	bL0D9MtXtRERWp3NFmAKgwD1rwe74LA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758189555;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
-	b=6C39YrtawpyxD3kT6zBqWw3NoYY63UzNAjAlne7/PNQwND2TcTzmnUMngyuaa7EIaYb43S
-	t41Z2/gB+1zvY9DA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758189555; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
-	b=3GuC4/0ESPjQC3pmzIZ8bUCKHTf/JnNQrCqYYL9kmgf85s872lNOzwXwhKUuxkWBLC2WyB
-	s2R6wFu5VsG+nCwu65iLBy8RDidVPcj+vriWINrK6M18sij6Y/TJ2um4t+qOLPBnx4drYq
-	bL0D9MtXtRERWp3NFmAKgwD1rwe74LA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758189555;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
-	b=6C39YrtawpyxD3kT6zBqWw3NoYY63UzNAjAlne7/PNQwND2TcTzmnUMngyuaa7EIaYb43S
-	t41Z2/gB+1zvY9DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 902A913A51;
-	Thu, 18 Sep 2025 09:59:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id C//kIvPXy2giZQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 18 Sep 2025 09:59:15 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id DA616A09B1; Thu, 18 Sep 2025 11:59:14 +0200 (CEST)
-Date: Thu, 18 Sep 2025 11:59:14 +0200
-From: Jan Kara <jack@suse.cz>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>, 
-	Jakub Acs <acsjakub@amazon.de>, linux-unionfs@vger.kernel.org, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Subject: Re: [PATCH] ovl: check before dereferencing s_root field
-Message-ID: <vtan7uaf5mf35zxy6pma6sdahxr7idv2awaf7yh7vtyhxsoram@2au7ec4hto7i>
-References: <20250915101510.7994-1-acsjakub@amazon.de>
- <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
- <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
- <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
- <gdovf4egsaqighoig3xg4r2ddwthk2rujenkloqep5kdub75d4@7wkvfnp4xlxx>
- <CAOQ4uxhOMcaVupVVGXV2Srz_pAG+BzDc9Gb4hFdwKUtk45QypQ@mail.gmail.com>
- <scmyycf2trich22v25s6gpe3ib6ejawflwf76znxg7sedqablp@ejfycd34xvpa>
- <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
- <20250917204200.GB39973@ZenIV>
+	s=arc-20240116; t=1758190545; c=relaxed/simple;
+	bh=a5KnwUSk1PbWVS7mlC52gOqleynRC/2hkubAYqM6uOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JIsifRbhKHeWMKF9xnK3caL6kzomsvx0p+KZwTS8BpaZfReO5l+PwadIKxzZz0WjBl47fdRKZQnaGXKVgAalemX++/HeekC5iM/eVua1/Sg05MJ5mvnS2ez19rnf8GtbtA6AvnSpBRCpkuDtxRHKW2OgioYU6ZZXJoCmYTsk2M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QRvvxQlM; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-77d94c6562fso389734b3a.2
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 03:15:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758190543; x=1758795343; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ul8ElkgeTFthD1gCeDvetsXA/BGz8nMUUjjJgS8RCvM=;
+        b=QRvvxQlMTgmOQveuVYZR0m7E+KUESnOo2MdlzhZ+kFxcCd0k08SiZqj/BVge0KC0Gy
+         Koep0aQP/rQTAjGtTMLcz0ppDXQbzBeLtAKoYA0mdhVsYYqffCVlXFGryfpDjBrv4jqC
+         NqBLLa6rzzMXnMH6OGthoYkJvuxkmqi97+dimLq/7i1kfG10XaW59F8q99QWRTGm66sq
+         Pr5dsTn0+O49ki69J1ZFWLhukiR2Er8z1e9CVeT2l7BQXSuRbyYd9le2EoAoLI2033SG
+         18Ao/H8+Mucqaiz0ig3u7GEBhfDll3b0jN/PsfCsYHvxfVGKNw2s7/lF1Lp0m5cLHMRu
+         FK8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758190543; x=1758795343;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ul8ElkgeTFthD1gCeDvetsXA/BGz8nMUUjjJgS8RCvM=;
+        b=SpEAtiRLkHhv/K2vNQ73qKbc7SsX1BYILdILtFyhbk2CZmkenSYcvrR2hx6gDcoQGa
+         oVzoJ1l1sZGYREPZVavPaQCLhe71XjGCCTZqu7T2prdko8uHNgLarESr99BFk3SIcpb5
+         5GzEI3G98ZdEERgnkmlgtePLRvo0yhdnj6NJfb5JCajLy6HL8UyRXc6ojna18blRPTiv
+         EUEEnegZ0uDAbRP0oBNX7XsEkoZYhnWkNT8aaY/Pk/RlTO1FEJldb2EzqVlNnAPVsVBL
+         jksOnRL6F3ZvsUWPQzM6rEROoBvgcEtX8bNdg9Wd3X09fQIr40QACSLItmGDDVwvhyOQ
+         2GOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMXJXoXyiD/B/MZvyWu549KLQ5lz3J3/0v4coxTLZq4gJPQj5lcEcQ9WQxfiWjhN3WxWCNkbk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmN/lwZkqJUeODLBSAr0W2Fw1RHaghjSVPZFxXZWoOlyLNs3aG
+	MgQGZdNATfA6KMy+INfupv/qleqOZZ293ypEnTEgvm2QhhWdLlmlXzqLLvQnFfW4ZoE=
+X-Gm-Gg: ASbGnctiJvff4Eb5i3dWsitpNoumOKXpwk8CBDTZAIIMvkP+JwJZo+4+8V2LdNaNnPI
+	m/R8G3oYkrq7g/NrW/bUIvkgpNxxoSyOmWfzXNf3QCz11xfBD9owx4iwC3cBL3wTAu3cJivENEG
+	xyYhZ7VBuOuYcTXJ1DR5Xr6kNLDRoSE9B3hbMo1+s4t+/9V33ArZEDghp43J/Ias15mQ6lRUJJH
+	+LbyxR2Ob8grT6CkKmXOTd+KScugMu3BaMY7gzsPNESvg/yt98EQm52cjC96QblY5qEOLpLKVw/
+	kQI7IvthJxk81VcpAArjZ9Dk2rizHnkJPts8hMdTVI//uk49/9h9GuLTOKfSeuJH/kIBskBY1cR
+	CnbpJ2BIzW6qUr+UvWvnAz0yPi3DlHuQyqtReEH0=
+X-Google-Smtp-Source: AGHT+IEh098LpUQZCcn5N0gPt1Pj74yLqq4l/+KzbDeFs5lavn9UHh3TfGQl7xx/Rwo1+Q0mJENLyg==
+X-Received: by 2002:a05:6a20:12ca:b0:24f:f79d:6696 with SMTP id adf61e73a8af0-27a9a7e77eemr8131532637.2.1758190542727;
+        Thu, 18 Sep 2025 03:15:42 -0700 (PDT)
+Received: from lgs.. ([223.80.110.60])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32edd97fe58sm4740780a91.13.2025.09.18.03.15.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 03:15:42 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dan Douglass <dan.douglass@nxp.com>,
+	Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] crypto: caam: Add check for kcalloc() in test_len()
+Date: Thu, 18 Sep 2025 18:15:27 +0800
+Message-ID: <20250918101527.3458436-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917204200.GB39973@ZenIV>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,amazon.de,vger.kernel.org,szeredi.hu,kernel.org];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
+Content-Transfer-Encoding: 8bit
 
-On Wed 17-09-25 21:42:00, Al Viro wrote:
-> On Wed, Sep 17, 2025 at 01:07:45PM +0200, Amir Goldstein wrote:
-> 
-> > diff --git a/fs/dcache.c b/fs/dcache.c
-> > index 60046ae23d514..8c9d0d6bb0045 100644
-> > --- a/fs/dcache.c
-> > +++ b/fs/dcache.c
-> > @@ -1999,10 +1999,12 @@ struct dentry *d_make_root(struct inode *root_inode)
-> > 
-> >         if (root_inode) {
-> >                 res = d_alloc_anon(root_inode->i_sb);
-> > -               if (res)
-> > +               if (res) {
-> > +                       root_inode->i_opflags |= IOP_ROOT;
-> >                         d_instantiate(res, root_inode);
-> 
-> Umm...  Not a good idea - if nothing else, root may end up
-> being attached someplace (normal with nfs, for example).
-> 
-> But more fundamentally, once we are into ->kill_sb(), let alone
-> generic_shutdown_super(), nobody should be playing silly buggers
-> with the filesystem.  Sure, RCU accesses are possible, but messing
-> around with fhandles?  ->s_root is not the only thing that might
-> be no longer there.
-> 
-> What the fuck is fsnotify playing at?
+As kcalloc() may fail, check its return value to avoid a NULL pointer
+dereference when passing the buffer to rng->read() and
+print_hex_dump_debug().
 
-The problem is fsnotify marks aren't shutdown until generic_shutdown_super()
-calls fsnotify_sb_delete(). So until that moment fsnotify can be generating
-events for the filesystem. Sure, userspace has no longer access to the fs
-but stuff like delayed inode deletion or other in-kernel users can still
-result in events being generated and these events may end up creating file
-handles to report to userspace.
+Fixes: 2be0d806e25e ("crypto: caam - add a test for the RNG")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/crypto/caam/caamrng.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-We have already uncovered with Amir quite a few moments how this is broken
-so I agree that the best solution is to shutdown fsnotify before we call
-shrink_dcache_for_umount(). The slight problem is this means iterating all
-inodes in the sb which is costly when you have millions of them (this is
-the reason why fsnotify_sb_delete() is currently called after
-evict_inodes()). So it needs more work on fsnotify side...
-
-								Honza
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index e0adb326f496..d887ecf6f99d 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -183,7 +183,6 @@ static inline void test_len(struct hwrng *rng, size_t len, bool wait)
+ 	buf = kcalloc(CAAM_RNG_MAX_FIFO_STORE_SIZE, sizeof(u8), GFP_KERNEL);
+ 
+ 	if (!buf) {
+-		dev_err(dev, "RNG buffer allocation failed\n");
+ 		return;
+ 	}
+ 	while (len > 0) {
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.43.0
+
 
