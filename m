@@ -1,141 +1,126 @@
-Return-Path: <stable+bounces-180526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC42B84C07
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 15:12:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F11B84C32
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 15:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 464183BDE62
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 13:12:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 972C2484A9D
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 13:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEC8308F0D;
-	Thu, 18 Sep 2025 13:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81722D3A6C;
+	Thu, 18 Sep 2025 13:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dDvHmuzm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QupOPcvo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5EB225390
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 13:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE3B246BA5
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 13:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758201144; cv=none; b=uQYDHIwJiNoIGQ8uZGbzwwebj2mzffAAM3rKpT2aGUuGgsrwMfzt5J0dJ+l14F1ieXnYhyCngDPDvHSntr3rvFGak4O5NGBY04SNVViVDE+k0h5P4KI3XOBRvuUaKXK9+G27l+4Ol1Z/oSPtgzbv2WBEWU0E0P3k2r/WfabK3bw=
+	t=1758201345; cv=none; b=FnsTTqwUeHIpBHbbDX2uFdK9M6WfGrt0gSO122OFn9mAW4GfXEmihiW455+RQWvXotrcPmPDG7bIWuk8k697oium9L8Rv5CxOTpf4SqKRvYWxE/z56/jn8fozKvwDd+ZqedWNUJfpItyhg+wz2lkN0OIHmiUvr6VNr8fAlXCfeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758201144; c=relaxed/simple;
-	bh=ZLxT69O2gSyWg52xQm3YXSUFli9jeiD60m+YcwAVNlE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UTMcPfqta5vqNkqji2ucKsrhz+07UOq+rT+7F24rV7TCAOmc3I7s9P3a573omKHB4OvkdM6+RsJsqU8nbVlPLTWk7uW1GRvUKtGOjx8SBTtJeCRN5r3AbB2OfXYM8XlGw1fFnjupBiltIWnUENiwdPVgKTZTTQWfWISnjbLkVao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dDvHmuzm; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1758201345; c=relaxed/simple;
+	bh=vCwW3fPtoB+FbX1hIE9ZZO2T7qCinTOaCrEh2NsxC+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y4GOp1Obii6ObDAaFaZcfPdAkscRCy0tNV/MfGV0TaH2VvmKQPsdduAlvRBe6imJIlCxTsb20iX7QwCS2qAw8w9SWBXOI7vaBNg2gmIioqHBgEDzdb3cW6ferfuGUXKhu3LuAtlJljWojcsRvXBsficb3mJZUX9RJW3OAn3uAGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QupOPcvo; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-267fad019d4so1880795ad.3
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 06:12:22 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-267facf9b58so6976315ad.2
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 06:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758201142; x=1758805942; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ow/FekpgA7UhV9Mvh36laSeW60WQ/h2Ti7HkmGFnCsM=;
-        b=dDvHmuzmmePHl+XNe66WuGEMLQDlzES7k6uW/6JNVhqpEkzaoTKkgURwMFO+dCtPDF
-         EtLnD8UkvHm83MY3LsD/KhpPcfhf2Z3GPqqwYsXiNfZzwzQEssDavn6+1dQyE58McNDG
-         jLRJ4HU/okKdgR6OuMEI+vWsA5Q1i9cusUoxe+PEZuZvp+N2vERX9EN9QQOg2kijzryk
-         x3rdPY+ZP82ApEnPIqfwUwcEhrCJfvsPDoiBpe/gY+LvZRjrfNJwcafH/2YeRl/PmHbG
-         jOZkChvC4Yik5rT/jFrDFtG3DRWQAMNTQvn9sfqFa6aUUribzMJxu6K07sBAg1T8j73b
-         YXMw==
+        d=gmail.com; s=20230601; t=1758201344; x=1758806144; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
+        b=QupOPcvovHnbrAVMbi2CBDv5Rdo6CyBlGgfHFaNTEnLmktwdkfFeYvjBQvM1IPt/Q3
+         4c4ncE6OSVoJxf2vzeL4SmXQH6tGiTF36BgKYFXI12ERdaXUREettRdiErgtcZhgTSpV
+         O7Rc4dODBg2gfGRQoowzCh0qYZdvHFI1UEYMq03F45lDyo+PwxQ4JTPc/dO3KLhjr3zf
+         WK94K3sCwEiK4V7+4Xam3wmfipVYG2x6XbXY6pLuRXUjU1kV687OBMtzaeSZcWMp/OWz
+         Z5OFRq95WBzmPmCoMXVAX2Fgq25TCBLJChD12QdEqJXSJBU06MdFYMiGegMbJwWdlXFe
+         dtow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758201142; x=1758805942;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ow/FekpgA7UhV9Mvh36laSeW60WQ/h2Ti7HkmGFnCsM=;
-        b=aq1Qm9FSLof6lkV+VnUpHd8bsIJdCED+4JV8TCSAU4pJ/dDRwtafLCLRL+eSCaFc+P
-         tCltxSGaSmW4TYjyOYWcWf1Cv6LIwedesOc9LvLSYB5Zde8AoCrX0oKIPYaJSSyKfXA/
-         sNyoBIfD73/WE4+T3ZrF3H7TAvCkeiOlLUIcpOrdKBRYdzRO/CNOdjPmyV3pQjti3kU6
-         9rKfzOA6LwkiuK4hg8a1hwWL1D+2UA65FBGt9heJBcaUW1c2FzMcLkXERflWpk3EZ6SA
-         GI3me8XIdxw1HgRKWXutVq6Al5pcqg1I2zN0qk8tNeqpg/ArVI40Fq2fLnLCXIGSDdyw
-         m1pg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHVth7/qkRFU9NCfHwUvE9zflI//LQ7v1Vi8jFY29CcSm/+s/4AZlJCg+j2rvjdB7xbaVvpbg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjyqNM+6Tb5gAA+Am8H3cEVCXOn+XtOSuZicRMsCdgi7SA9jwj
-	4xLlljglBq/ey79zVsCcYQzz7GAleYn3LQzo6mWiK9r3S5b1n5A3zgnKoYA9wTJwhZFAGgVOa5k
-	NSZef/QVg7XZHVPObRkVnKmHNYxnfn5k=
-X-Gm-Gg: ASbGncu8/6M5BBm28NPE8BaLherwyIIE7VTDGSewzgG+Evx7MF5c96pzG3+X+wbsr0b
-	AVIAdMTwRLsDJZCXPO7K9315UHUq/8i0fFzJScqJ53BQV3eV5+jw1Y6sSEPJwY1x+QWxONF/evL
-	KNPuSkrNDWmWao2gsSgBhTJJCfI9evFjqHQR/VqgI0igWRmHObCNWkymN0nG2LCFAARN8FHERMj
-	GQ3zbKp3/HISLSIIrvPy+4KQNY=
-X-Google-Smtp-Source: AGHT+IGPGpvPJnDMA+MU6VEF8DQ0xnGm1dy+iqzuJdF1p3969ZuqYgSVs9i3T569keWH/YmK9RWABocwx0S6kTCDWjQ=
-X-Received: by 2002:a17:902:ce81:b0:269:9ae5:26cf with SMTP id
- d9443c01a7336-2699ae52d42mr9215285ad.4.1758201142273; Thu, 18 Sep 2025
- 06:12:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758201344; x=1758806144;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
+        b=rCZm94E066SP6wm9u+ynBjJhrGersJdud51J+GNqbcDUJ6GSWFcGgobJW26qQArENj
+         rTHqd7ai0sMtsB2/pARC1nVijfuTnzoHJhO9u3tNCkBLFWWk1VDaMZt+OdMIOjj8BriX
+         y6ECacH1rig9sOiXn4W13+fNZgukFyc1G+qag7PRs50o/0msuuE+fZ82840J1a4j6lM9
+         ngQ2VeRTxA9v/4Ha8RhSAgTbfqz2SI9eSWNqdowAnFrrEKlvs3OjHmIYXqbbI+4e2Lj1
+         jxdbzPqR2ZsF9/Hp5fWSdRJtveM+NRvDWRRIV1KuygdvVzhMueafQbLRTsY6JNc07DuF
+         kYNg==
+X-Gm-Message-State: AOJu0YwAEuIP+taUZlfYCsBSXSpfNULD2n0zOG0vr5OLgZX9LVELIazN
+	U2OJtT5SM6er6VaqZuh9QAaa1A6OqRNlyvPt+88wqOVYviNkVkSU/iDB
+X-Gm-Gg: ASbGncsribUEJ+46GZ9WziwrHNDVNMe7N72HlNdAmLbJGFZ12TOuUwBUPWADgOUBqhG
+	GPj30+pwDRow2EsIbC3919zmeFWYHXQv7V5f5Y2Z3arwl1uVZOAyBq3g9gBSvncqsT/wQHSml0p
+	f4BJT9+el6NRMVr4Km5EIzax8nUuMKFkrBicunMu/UJOD4ZYR8UZXcj6qmzpza/frdqqgV9+eRa
+	BfA4RcqkyVbOCUbH+kdA/x0jkZBOameebjHrwzz5mk7jGY9bZh7bttHanbxgfVMTo3hAv0B4Sza
+	JDVG4un5VpHz8d1+7baWBgQGT5z3kBrC40I10nl/Wt08zDK8ruQitCuEx0CJuz8ORTTnjPmr73G
+	4qNEvDsi5QPJTqhU8vITsfmzzLkruVqF34P0f2bvR8A==
+X-Google-Smtp-Source: AGHT+IGsMo/8lQqefuavLtapLE7AECgG8b9jcfsyTOPdN+syxzbumlh0WE+7dvjsyXF6z+BpZPP70Q==
+X-Received: by 2002:a17:903:fa4:b0:24a:8e36:420a with SMTP id d9443c01a7336-2698aa45676mr34911085ad.40.1758201343497;
+        Thu, 18 Sep 2025 06:15:43 -0700 (PDT)
+Received: from lgs.. ([2408:8417:e00:1e5d:c81b:8d5e:98f2:8322])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698033ff66sm25343095ad.133.2025.09.18.06.15.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 06:15:42 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	"Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] powerpc/smp: Add check for kcalloc() in parse_thread_groups()
+Date: Thu, 18 Sep 2025 21:15:13 +0800
+Message-ID: <20250918131513.3557422-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250918105705.3480495-1-lgs201920130244@gmail.com>
-In-Reply-To: <20250918105705.3480495-1-lgs201920130244@gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Thu, 18 Sep 2025 09:12:10 -0400
-X-Gm-Features: AS18NWBryzMXeisWyksAUCkLKladPwFh28QPE6dGbAFuIaGpcNhnEsksRdkuC1w
-Message-ID: <CADnq5_NQMQNpa7=MW4LXHvnKWTc4+QSEoA0zsNqpdfEV5Ho0SA@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu/atom: Check kcalloc() for WS buffer in amdgpu_atom_execute_table_locked()
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Kees Cook <kees@kernel.org>, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 18, 2025 at 8:44=E2=80=AFAM Guangshuo Li <lgs201920130244@gmail=
-.com> wrote:
->
-> kcalloc() may fail. When WS is non-zero and allocation fails, ectx.ws
-> remains NULL while ectx.ws_size is set, leading to a potential NULL
-> pointer dereference in atom_get_src_int() when accessing WS entries.
->
-> Return -ENOMEM on allocation failure to avoid the NULL dereference.
->
-> Fixes: 6396bb221514 ("treewide: kzalloc() -> kcalloc()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/atom.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/atom.c b/drivers/gpu/drm/amd/amdg=
-pu/atom.c
-> index 82a02f831951..bed3083f317b 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/atom.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/atom.c
-> @@ -1247,9 +1247,9 @@ static int amdgpu_atom_execute_table_locked(struct =
-atom_context *ctx, int index,
->         if (ws) {
->                 ectx.ws =3D kcalloc(4, ws, GFP_KERNEL);
->                 if (!ectx.ws) {
-> -               ret =3D -ENOMEM;
-> -               goto free;
-> -        }
-> +                       ret =3D -ENOMEM;
-> +                       goto free;
-> +               }
+As kcalloc() may fail, check its return value to avoid a NULL pointer
+dereference when passing it to of_property_read_u32_array().
 
-What branch is this patch against?  This doesn't apply as is.  I've
-fixed this up manually and applied it.
+Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ arch/powerpc/kernel/smp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks,
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 5ac7084eebc0..fa0cd3f7a93c 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -822,6 +822,10 @@ static int parse_thread_groups(struct device_node *dn,
+ 
+ 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
+ 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
++	if (!thread_group_array) {
++		ret = -ENOMEM;
++		goto out_free;
++	}
+ 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
+ 					 thread_group_array, count);
+ 	if (ret)
+-- 
+2.43.0
 
-Alex
-
->                 ectx.ws_size =3D ws;
->         } else {
->                 ectx.ws =3D NULL;
-> --
-> 2.43.0
->
 
