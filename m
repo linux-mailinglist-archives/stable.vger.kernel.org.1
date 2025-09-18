@@ -1,67 +1,99 @@
-Return-Path: <stable+bounces-180537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72E9B85324
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:24:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FD1B8530A
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB3AD562759
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 14:18:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B543B897B
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 14:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334303128CE;
-	Thu, 18 Sep 2025 14:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084B624887E;
+	Thu, 18 Sep 2025 14:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FhpXnzrZ"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Jv5JSEvt"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4730D3126D2;
-	Thu, 18 Sep 2025 14:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7975130E85C
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 14:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758204607; cv=none; b=dNa8VtONcrvNNZUjfvoPX25IBbOFQY9jemvgVeSF2VDD7h3V8wGLArjd7NyRzxWFX8uYJJNPVqrQ1onByb//f+F+Re+jfqjNgM5Krm2FdKXFOeOrYP+0O+1F0mkoLRFJVRvKDLX0kTzjchkxhQOk1l3iMjZw2eZtUYsJ5zNf+lE=
+	t=1758204667; cv=none; b=iX9cA7GyyJ7JvyGhIL6Mo3uDyWBH8bPQSkRNqLGngKxT4DZ5NZ+bd35j0/4QVtkxw1rocBULDYQWo9dsCWMiAQK6QvY9UmGhA+WSe/mNPjqTZwQoSwzaaP+yvg16Aj0r7MTrj/lgVXZxHDLFavQF1jQscZ93PM8jyefSdf7t+9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758204607; c=relaxed/simple;
-	bh=nFHi54wCET7igQC5KRhNHkJ7aBYvqs3E5kPuCORPpoQ=;
+	s=arc-20240116; t=1758204667; c=relaxed/simple;
+	bh=x7jb8JfGQsSR4XtTJ8eBWd6uBi74hSXtB25C9NcBMXU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jA3ncoCfzUtWuKl53/JmdlaQlERYjMIIxD9pIX0DifbHRsIMPBUrs9MLKgVFL7upfa6u/gNZYQWxHr19VV8UjD3ZipyVusP9IsA1cz21fG1CgOUXtyBZMaIX1gQv1DvjibdRFO3wt15ftAU70g12XxXsMqCp2tM2UWrPAnP9LXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FhpXnzrZ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FFLORDihYCicM5VZt7vNB80L4AErinlH5+UxIfqQxVw=; b=FhpXnzrZcb6mjDFRd2NdWQ823k
-	R1B/DN7Ol8sQnnusRoRVLVERXTDVPwq1oVqpGj/rKM/9/Z6+AG7R2cKBc/su7lPAwG4hsTsFPsI7e
-	yUg2SmC1Fb4dXcWWQwxNoOuGivGonRXsPgGFp6WWOJjmVD3NUrCfzObSrDiF1HqBRLgs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzFKa-008pbw-Bz; Thu, 18 Sep 2025 16:09:52 +0200
-Date: Thu, 18 Sep 2025 16:09:52 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wunderlich <frank-w@public-files.de>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 3/4] arm64: dts: marvell: cn9132-clearfog: fix
- multi-lane pci x2 and x4 ports
-Message-ID: <dedd4222-b2ba-4247-98b4-504b5c032f69@lunn.ch>
-References: <20250911-cn913x-sr-fix-sata-v2-0-0d79319105f8@solid-run.com>
- <20250911-cn913x-sr-fix-sata-v2-3-0d79319105f8@solid-run.com>
- <9272b233-b710-4e57-b3ff-735f45c03c74@lunn.ch>
- <dbb10e82-ae10-4987-900b-17d4f4b62099@solid-run.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PlVMdqPJ4XyOf53bXCdwY3zQuzatMw01x8NlGFatrdhmkRAF2QBhAB+wYY1klFayQDm66FZvv46O+RaK83aEOq/vB21Zq//lv6YmTyioCuJBuwDHO+hJHooHg8BfUKDoBxY5Vr3jZgdD/Qic3Cde6VnTHkR+VhHnJcX8HMtgsDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Jv5JSEvt; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8275237837fso85076385a.2
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 07:11:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1758204664; x=1758809464; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x7jb8JfGQsSR4XtTJ8eBWd6uBi74hSXtB25C9NcBMXU=;
+        b=Jv5JSEvt90Fa9tbW7z3hoHOvmlNlKEagQOh6WrcP01HKdI0sZIqM7xCK5+8ZnqbRMD
+         fAzcx9rQ+TbZ8zunCIkVM8BqI9D97/uKbeWaMzMpM3+ziHP69ifZzRPsj4iuUBg7FkFh
+         ze1I+tVXnLL4I55H5+Yjz8nzSGGS3LFrYI2RtKxnJ0glqLk8cLGwYN80fdqtNI6ZDk1o
+         8cwZnd1IjEV+ffSwf7mzQ1S+/ozk4yIz3/zo8TXZKrymfxHAcsr5xrah24eO4mcVNeNc
+         Jf6YKv3WS4K0UdFj+UnbL6WOsqayPzmLbQHSpdqdprdFyxEHnjpc6bKaFSocruMTkSTa
+         7rcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758204664; x=1758809464;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x7jb8JfGQsSR4XtTJ8eBWd6uBi74hSXtB25C9NcBMXU=;
+        b=AsQ1X3qKFgWoCE+Tps/Yw9ip/5+djWv0qfYqmuCFvKe24CZqgUjgbfg/3Gp6zWF7rP
+         VOfH/eTbgmSrHgHPxwgrbhaADnkqNwcUbkY7AcJmnaQKN6YC8ZINQbVD1VhS5f8aQfeM
+         1RGsLwlJVxUwKUJEZ/vrILctGpt34A0ibY+xCr+jrAY98lWgYTfC4LM40RBeCMWlsq4H
+         2grLrjXKid9Bo/IyLS3u0v7bWh9Fz7xaSJhFjYL4Y67ta+7l2PciNWiY0hi1gkH7pefr
+         v/G6RpclWNaPp+156I0qcyWoiTttheFCIm1gDf346Mw2HN9u2rthqlVHMFL2WKYmTvJO
+         MEsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5Z9V9TCZ7yodDGOUbYj/Ohb5jFcShFKtOVzvN30p6AnBhUZGTyIKYaVvIoFn0Q8AYubSLsrM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6GXeIz3tXDU46rkscQW5mjQpPrFrROhFy9mzrCOZLanZ6D5YR
+	LLaOSbQkb8ez6VF/TpwHWKDUKoIebYn2Qif7OuxIAaAHNW/ksrutIR/p8RWYsMasL/M=
+X-Gm-Gg: ASbGnctypKz1WpMR0O1eH9NrEPhhjCF2pRPYBiLPXwtnKtp74zg0/AY9eAR43ig67kc
+	TVlQBaerR0f09rM5WOLaid4Z7jPiuHtmoJXiq2hOt2Y9nE13DjDZ3y2BvMVEpfET+tPGbCS4YYX
+	9YfE4Jpn0bdBAYhbfozGnSaO+8VtphWubMKQGSrDTGa5Nwph5ra3JWN8GCSSqH1vQ7+9gZ+YlB0
+	noopRV9+mPn6KFDXtaUPsHPjgJeaBM4X9XxcbN3pIwg5k+Xhb/sdR0loU6E+Jy4Qpi8OHMsvq+G
+	cQ5SlsbsTQcoCjZn8MV4s6NfehBhwKSpA1qK0DwnnNGLdPjDpyMq5VCoJqHa6mc+eAe/1Nl7V9y
+	4fG/sb7vy37+SrDefMajuFMQ+Y8EEgy5+/8OfKfIf8OPW5swGqCBF+rqz0F/ETltHIjrfIt5LPp
+	Okp2n8gGI/tj8=
+X-Google-Smtp-Source: AGHT+IFcG0Z3ZK5/PQ6vJav0eqkeBfwJrYJnuhkwdniJkW36no16Dw8WiAtdmBAplhwPvdJpSRD8qA==
+X-Received: by 2002:a05:620a:462c:b0:812:be4:670e with SMTP id af79cd13be357-831109114e7mr656127185a.43.1758204663628;
+        Thu, 18 Sep 2025 07:11:03 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-83627d7dd01sm169419185a.27.2025.09.18.07.11.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 07:11:02 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uzFLi-00000008vyr-1Vsu;
+	Thu, 18 Sep 2025 11:11:02 -0300
+Date: Thu, 18 Sep 2025 11:11:02 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: manivannan.sadhasivam@oss.qualcomm.com
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Joerg Roedel <jroedel@suse.de>, iommu@lists.linux.dev,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
+	Xingang Wang <wangxingang5@huawei.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] PCI: Fix ACS enablement for Root Ports in DT
+ platforms
+Message-ID: <20250918141102.GO1326709@ziepe.ca>
+References: <20250910-pci-acs-v1-0-fe9adb65ad7d@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,45 +102,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dbb10e82-ae10-4987-900b-17d4f4b62099@solid-run.com>
+In-Reply-To: <20250910-pci-acs-v1-0-fe9adb65ad7d@oss.qualcomm.com>
 
-On Thu, Sep 18, 2025 at 10:46:03AM +0000, Josua Mayer wrote:
-> Am 12.09.25 um 00:12 schrieb Andrew Lunn:
-> > On Thu, Sep 11, 2025 at 08:28:06PM +0200, Josua Mayer wrote:
-> >> The mvebu-comphy driver does not currently know how to pass correct
-> >> lane-count to ATF while configuring the serdes lanes.
-> >>
-> >> This causes the system to hard reset during reconfiguration, if a pci
-> >> card is present and has established a link during bootloader.
-> >>
-> >> Remove the comphy handles from the respective pci nodes to avoid runtime
-> >> reconfiguration, relying solely on bootloader configuration - while
-> >> avoiding the hard reset.
-> >>
-> >> When bootloader has configured the lanes correctly, the pci ports are
-> >> functional under Linux.
-> > Does this require a specific bootloader? Can i use mainline grub or
-> > bareboot?
-> 
-> In this case it means U-Boot, i.e. before one would start grub.
-> 
-> I am never quite sure if in this situation I should say "firmware" instead ...
+On Wed, Sep 10, 2025 at 11:09:19PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> This issue was already found and addressed with a quirk for a different device
+> from Microsemi with 'commit, aa667c6408d2 ("PCI: Workaround IDT switch ACS
+> Source Validation erratum")'. Apparently, this issue seems to be documented in
+> the erratum #36 of IDT 89H32H8G3-YC, which is not publicly available.
 
-What you failed to answer is my question about 'mainline'? Do i need a
-specific vendor u-boot, or can i just use mainline u-boot, or mainline
-bareboot.
+This is a pretty broken device! I'm not sure this fix is good enough
+though.
 
-I personally like to replace the bootloader, because the one shipped
-with the board often has useful features disabled, or is old. If i do
-that, will the board work? I would much prefer the kernel makes no
-assumptions about the bootloader. You said:
+For instance if you reset a downstream device it should loose its RID
+and then the config cycles waiting for reset to complete will trigger SV
+and reset will fail?
 
-> The mvebu-comphy driver does not currently know how to pass correct
-> lane-count to ATF while configuring the serdes lanes.
+Maybe a better answer is to say these switches don't support SV and
+prevent the kernel from enabling it in the first place?
 
-Why not just teach mvebu-comphy to pass the correct line-count? That
-sounds like the proper fix, and that makes the kernel independent of
-the bootloader.
-
-	Andrew
+Jason
 
