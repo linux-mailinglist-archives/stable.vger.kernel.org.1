@@ -1,129 +1,144 @@
-Return-Path: <stable+bounces-180557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4582B85EAF
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 18:12:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DDEB853AB
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DDE27B307D
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1BB15608AF
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 14:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8AB30E848;
-	Thu, 18 Sep 2025 16:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685E930EF80;
+	Thu, 18 Sep 2025 14:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J21xbqK5"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Ak/ryp8V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04491306D36
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 16:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CAC19F121
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 14:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758211952; cv=none; b=SAjmMi3t68HwxHJi5t/bhbqeDrQvazPBAF+Ttu/uiyai/R4SWg+lyrEZVLBx93RgoBW3JbpjEA51/0hIckXuNZjHZ7Sn4F5EgqGLqzVN5k2y08yk/2AdSRHesYu7Cy3NLi1zoT3d3iPbN4t0CRjFgrWT4THepf9yMO/ZuHbDZsE=
+	t=1758205061; cv=none; b=KH4tT9wRgxx57X+D1Idgz0NnP1jI2SV+0nYH6/nSLu+BgaA1iaoLGYuis+hOldLWwSWgx/Y15OGsP1IqWpFUW6IXZCN9r9Q7HhjwAIKIhPJPZm6WVO31pa0XTEd986FGHEN37vJYSyhREeshfzS8ABXGPJkIh67y/8FUiT8E8BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758211952; c=relaxed/simple;
-	bh=9NHi/2Cce6YtYupIQCjuGL2CK/BqjDprlX3JyUrBZ4k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=euS2+nfiCLyYqL9UiU6r913x8JpYgbyf3p0fw3L74s7rg9rwVMicTwgc+rfh9AsyAZLY5PYwuHn0NiZV6abvkqx16JWfruGjPN1yCFuImwKq71daQZ60swcu1T6W/CONTPCIvPPLsKMw0SHC/e7xfcJtI5QRkJD/T/KfGq25Sb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J21xbqK5; arc=none smtp.client-ip=209.85.221.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-545e265e2d0so779313e0c.1
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 09:12:30 -0700 (PDT)
+	s=arc-20240116; t=1758205061; c=relaxed/simple;
+	bh=oBrHOy3u1qRTaEr6O66akdLOdzotS9PWV5TdeiiBhnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W5RETVZWuxvocW0zOeKlvHh47uf35LYkYoFCngiMTmEJB9hIXxxueN8jEWxm6Q3DhjgRyyZcrr6fM7gLYXYL7Hpo3lvkCo47+FOoAg2Fs/Q7lCqxXqUD5Pst053U9DjSk0NQG5jp+ksYtBnrDop4aK70wc3d6XVKDTTcdBl2Ax4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Ak/ryp8V; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-7957e2f6ba8so4796216d6.3
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 07:17:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758211950; x=1758816750; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Sc26hxDTkdtCvz76lZc7JwNfgd5ybo+08CIFSOrjwg=;
-        b=J21xbqK5jMhq4hwH0aeiH3Bb53TPRP4taFoXVXuqspbMTUNt5WVf5MLq+dVXAJfkGR
-         qHxDRKZhL9gehS3ICvduHkIqDGj43alcW+xQyU3Q73HONIG9jmF4+XAlQomXG/FnXPeG
-         mm8npmrvnJa7fdnUjhqY++8/5e5PGeZMvylUHVfCLfuR1pF7T/36wMMnGyHxAbmImWw6
-         hiC9df6QI+7r4lSF/30t+E7BSE3c5LMd0xq3OzDt7QHl71cN1CktFJ/oDF2pAcWrULaN
-         NbWBKONWDPZFaS+538GLPia81QcY54pMV7bkn/Pb355YQ9/t6WiUvbSIN6HWfrKltX2R
-         0Ddg==
+        d=ziepe.ca; s=google; t=1758205058; x=1758809858; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9PlWQvS2VeWY2sKUieX87g6u6W0qtTQRJN790c3dQ9A=;
+        b=Ak/ryp8VStXeFSBJzUhGgBLtLIqlkFRGu6+Vf1rezOiw2VjVa+CFpMBHrelb3kHiUl
+         F0QhB9oeDA0ZAphKMET0Zz/vY3CYMecGMGzhVADO7mBfzO/qKbNfpcLk0Lg8OXs4PAVM
+         rzJkAwg/YsxdJbuxkbDgtxUj0Fs7C6UdBbMYgCVQgK5gHJ/SVUkKdq7aJN67yLzwGUqa
+         pNiFWblEN/UhnlfZPM3bbT0srmmhKXq6EqgfkGYcVJaOWz8wTGILvWSZYMwN4zennHsS
+         lrx9njiEdAYnA0/lviBmsL5bdwVoQ1nfp6+09Zmn4WZI71lCHSZ1nphlQnd/Q+qprBLb
+         sS+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758211950; x=1758816750;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2Sc26hxDTkdtCvz76lZc7JwNfgd5ybo+08CIFSOrjwg=;
-        b=TzBxVgB8F/JqdQhXuqtC/BQBBsD+Fww+vNON/C7qlaY24e5wbKDlZQnn9v+1rVra8B
-         GY3dOMgb+SENwZSbXAlA2BVIwEuwjeuUIns/7lBTCmGvYQlOVYbdW17w5xKHo2Vmqw9E
-         cSuJvDs/4aHGxM+pbkHAxSOxJcWjaFw36mUdcxNVRa7dqcMgsozVpaLqgidGVrIDInTt
-         nIH1KZuZDaLQOyBsDKR0QRVUUF73q4v4LnVx+ZZk+yoBWa12o1CD45eAkL6dLOj4PP+C
-         wHEgnv3WMCmHkdBvnlkW1LMJlxkoJAlF1M53RYp+bVFdvZ6Yg5C2sD1qUhtyh2iHHoE2
-         zaLw==
-X-Gm-Message-State: AOJu0Yw6LXWg3YOUnrrYdgDkB5jaNHIxLFtUzMagVXTHq26iIsRR8Y24
-	xDa4TSVnmiCnmobF7PGmyfIRGEkxxtOR7e9X74nbEbpe1j565HXy6VW+SgBBKOF6qro=
-X-Gm-Gg: ASbGncuf9BDMwCuEpSUnehk4zBADJkWM7ozrBY8lm+jIuxWUMZ4cRXErg2m2NGU9dNd
-	JhffXc1MwEvCR047cDGHpB5STIMRi4Hu+fruy332iY06hFf/ESSoR8xSsmPBxOBlX+/YDK1IY62
-	h5KwcaU3oRDXCcqPTBKoNEJZSnLQLZisN7wm562flFL1M+gZ38yFX1qgqpH/UW3issi4qSXszzh
-	IKB4RQrroT+7uQxF1wmzvZLzUCw2tVuQEwdwNsihFizK9khvz+F2PWiWmfd5RwsUse8mQIbpbAd
-	rhrMLuTfL9ldRoNgsWZfcnBuaEVzrydOQ6RBd++uTkA8uxk1A5V2Z7wwdbqe6+eWSqN9sUkKqFu
-	iaLMexb8iVaMZ98nIZVAWtzTBNdy0ksjNPTnWjDggJw==
-X-Google-Smtp-Source: AGHT+IF9suJfr/TckXhc3x4V/Ham0gaboRPTGKUywBt8FfSoHGxa1LjxFJVx6FIwVN06VaKFltF9Bg==
-X-Received: by 2002:aa7:888e:0:b0:772:499e:99c4 with SMTP id d2e1a72fcca58-77bf926881fmr9331092b3a.18.1758204996072;
-        Thu, 18 Sep 2025 07:16:36 -0700 (PDT)
-Received: from lgs.. ([2408:8417:e00:1e5d:70da:6ea2:4e14:821e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cff321237sm2490376b3a.102.2025.09.18.07.16.28
+        d=1e100.net; s=20230601; t=1758205058; x=1758809858;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9PlWQvS2VeWY2sKUieX87g6u6W0qtTQRJN790c3dQ9A=;
+        b=Vp79iv95zJtUjd3qMfpg6KT6ZsodDOUQ26uN6BWUNKADeHAi9wEchHEAUNZFQWr8bv
+         fUcG1FlLTPxNNgEWAWr5K7NwJKXZrENVdGAoIKdbe6pPB5R3YhzYdlg3upGyjYr8qIVY
+         YYzBoCQegf28S8ldXX7OCpxCyAXzZvZApem5zYUpvF01LbaMn+yXzgejxgSjSG9AJ+am
+         QcMYx6fZlNQOAfN7//X8jU93TWEKFFPsHoTO/bblDjjTioEPZ9Cex+MilELbLij4o27l
+         zDr2ohDd4g0fx3we0MtHYeyqSXXctbmv20Ae2zcAr9nkL6ERKFYwEuj7l+FnxtE1knEC
+         2SHw==
+X-Forwarded-Encrypted: i=1; AJvYcCXPqJeMuvgl83Ss8yVIuIWEEFdDiKxdPEjayq3N1g4Ts5iJjWTQEMiNLBndwCgfNm2BRQV30g0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjVDvxIx4WX8j2ugzdZ75dMueJHB/iYLWV80E20V+EENUMZvbB
+	G4/11A/eUFjRXWLAZsH1A4TdyOVsA1cgi9q9jZxXhclRcsAnP9pdxhXx7UyJmvwymB4=
+X-Gm-Gg: ASbGncsYFEZo4IoQOoHB2CYTx5JpgAw6Ftgkou/OZd3YR3XpqalEkz2SckUK8jOpYlK
+	IfSoTmeATo1x5MOGp+LDD34fiatrfdaoZDHNmCFqp60UvYPhOtiLcbdvXK8iPGYfgZSa38divDS
+	r0LimhdsDtoygwOtUsgMJSYp+uIyDv+bINElqMXbQm9rxzXoR8Ua8qUOSNVzCCxKbe7tE2LAztf
+	l3Vho9bxY7R3O1cORCAxieKY00+u2QNmyKjrUEUxdd6u6W0qDV8WeKS+auDNo3+LMteEW5Dkzct
+	YhC5FKfWLQcpCGPBOoeQEx7hMyTeauKQIxYuhHbQPVYtrphgZgwqdbHAzsPTQidM5eEFAYdPggG
+	3YujFuvxBGHSYuOPizzciPIV80F4zuQte54MqYIDwz5ZkPcq4+Nd0TJiG/wMhJclhAucMNAzpj+
+	FhjrgHJKD3qfu0eReUzK0D4g==
+X-Google-Smtp-Source: AGHT+IGdtgO3co+AzjVg14mLustilnQBnl2mxoBu2Ha/Mk2Otj53RF7QzncRloXmzkssBqEVBSBo2A==
+X-Received: by 2002:ad4:5de4:0:b0:733:74d3:5fda with SMTP id 6a1803df08f44-78eccef286dmr69174246d6.28.1758205058082;
+        Thu, 18 Sep 2025 07:17:38 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-793443cfee2sm13588626d6.13.2025.09.18.07.17.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 07:16:35 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Santosh Sivaraj <santosh@fossix.org>,
-	nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] nvdimm: ndtest: Add check for devm_kcalloc() allocations in ndtest_probe()
-Date: Thu, 18 Sep 2025 22:16:06 +0800
-Message-ID: <20250918141606.3589435-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Thu, 18 Sep 2025 07:17:37 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uzFS5-00000008w2b-0Rq1;
+	Thu, 18 Sep 2025 11:17:37 -0300
+Date: Thu, 18 Sep 2025 11:17:37 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Vasant Hegde <vasant.hegde@amd.com>
+Cc: iommu@lists.linux.dev, joro@8bytes.org, will@kernel.org,
+	robin.murphy@arm.com, suravee.suthikulpanit@amd.com,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	stable@vger.kernel.org, Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH] iommu/amd/pgtbl: Fix possible race while increase page
+ table level
+Message-ID: <20250918141737.GP1326709@ziepe.ca>
+References: <20250911121416.633216-1-vasant.hegde@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250911121416.633216-1-vasant.hegde@amd.com>
 
-devm_kcalloc() may fail. ndtest_probe() allocates three DMA address
-arrays (dcr_dma, label_dma, dimm_dma) and later unconditionally uses
-them in ndtest_nvdimm_init(), which can lead to a NULL pointer
-dereference on allocation failure.
+On Thu, Sep 11, 2025 at 12:14:15PM +0000, Vasant Hegde wrote:
 
-Add NULL checks for all three allocations and return -ENOMEM if any
-allocation fails.
+> The IOMMU IOVA allocator initially starts with 32-bit address and onces its
+> exhuasted it switches to 64-bit address (max address is determined based
+> on IOMMU and device DMA capability). To support larger IOVA, AMD IOMMU
+> driver increases page table level.
 
-Fixes: 9399ab61ad82 ("ndtest: Add dimms to the two buses")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- tools/testing/nvdimm/test/ndtest.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/tools/testing/nvdimm/test/ndtest.c b/tools/testing/nvdimm/test/ndtest.c
-index 68a064ce598c..516f304bb0b9 100644
---- a/tools/testing/nvdimm/test/ndtest.c
-+++ b/tools/testing/nvdimm/test/ndtest.c
-@@ -855,6 +855,11 @@ static int ndtest_probe(struct platform_device *pdev)
- 	p->dimm_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
- 				  sizeof(dma_addr_t), GFP_KERNEL);
+Is this the case? I thought I saw something that the allocator is
+starting from high addresses?
  
-+	if (!p->dcr_dma || !p->label_dma || !p->dimm_dma) {
-+		pr_err("%s: failed to allocate DMA address arrays\n", __func__);
-+		return -ENOMEM;
-+	}
-+
- 	rc = ndtest_nvdimm_init(p);
- 	if (rc)
- 		goto err;
--- 
-2.43.0
+> But in unmap path (iommu_v1_unmap_pages()), fetch_pte() reads
+> pgtable->[root/mode] without lock. So its possible that in exteme corner case,
+> when increase_address_space() is updating pgtable->[root/mode], fetch_pte()
+> reads wrong page table level (pgtable->mode). It does compare the value with
+> level encoded in page table and returns NULL. This will result is
+> iommu_unmap ops to fail and upper layer may retry/log WARN_ON.
 
+Yep, definately a bug, I spotted it already and fixed it in iommupt,
+you can read about it here:
+
+https://lore.kernel.org/linux-iommu/13-v5-116c4948af3d+68091-iommu_pt_jgg@nvidia.com/
+
+> CPU 0                                         CPU 1
+> ------                                       ------
+> map pages                                    unmap pages
+> alloc_pte() -> increase_address_space()      iommu_v1_unmap_pages() -> fetch_pte()
+>   pgtable->root = pte (new root value)
+>                                              READ pgtable->[mode/root]
+> 					       Reads new root, old mode
+>   Updates mode (pgtable->mode += 1)
+
+This doesn't solve the whole problem, yes reading the two values
+coherently is important but we must also serialize parallel map such
+that map only returns if the IOMMU is actually programmed with the new
+roots.
+
+I don't see that in this fix.
+
+IMHO unless someone is actually hitting this I'd leave it and focus on
+merging iomupt which fully fixes this without adding any locks to the
+fast path.
+
+Jason
 
