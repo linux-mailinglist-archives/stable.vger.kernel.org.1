@@ -1,57 +1,109 @@
-Return-Path: <stable+bounces-180500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80081B83F03
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:58:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3564B83F0C
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E7C24E28DB
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:58:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CAA3A96F1
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB77C2E2F0E;
-	Thu, 18 Sep 2025 09:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDBC2E9743;
+	Thu, 18 Sep 2025 09:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6mng8FS"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3GuC4/0E";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6C39Yrta";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3GuC4/0E";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6C39Yrta"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1C4221DAE;
-	Thu, 18 Sep 2025 09:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8472925486D
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 09:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758189530; cv=none; b=aVlva4lHd0RTRaztnKx10ZRVCqStAMi07WkbVD3k0iwaz1g3TiQdnga+hU4jFt9Wu4Ai6JjO6EmVaIYCwrdieRtA8zONfeAfNASU8+S8h/Vjkcu80H2Xko0pFQOK+h9N9QcOHzztNHEkybl+I1+R2b/GbrYPFdozAYb3iXlQKIc=
+	t=1758189559; cv=none; b=uNNT5yYOhjJZJBHfBVK0voejWaenh0GjPN/6COBOkPh8Nv6dnaXSodfh1Fp0q2gvtAR1uCtKq0E8FSGxOucBV6N/oLxKYoG3hh6BpLvJK1IVgv25CaM88XMjZYDfxNaG5VbY/aw2aq43VYLyade1YPsMGL7nUojCfti1qGYlJ9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758189530; c=relaxed/simple;
-	bh=wZ0jJ3AfFbctD9TGyyfz/skh1/gN9TayJVlnjwK+8xE=;
+	s=arc-20240116; t=1758189559; c=relaxed/simple;
+	bh=0RqsuiwyKINatYSR4jMGpA2kcsw74TNDR71ONXIxGVw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ve50ffaLNfO7KFgREDvoLMIkddzMpTE35fOvw5e0f5O+m22kw/+7tAKq1yQStqpSBVUMLZpPm/4F/LwWzq2szx0Q/3IfxUfDmB4do0SrmYizqJV1Tfli3GAipW+OMvfprtnJyYV45Uq/SeUrO0/TfC3sfPP1slzoU0Ja9RWETTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6mng8FS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B261C4CEE7;
-	Thu, 18 Sep 2025 09:58:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758189530;
-	bh=wZ0jJ3AfFbctD9TGyyfz/skh1/gN9TayJVlnjwK+8xE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R6mng8FS7mZ813mxW/F0Y3qsrI0aKGcwjPAFxKqnv2H7du7w2FzK7FCOOdLzwdpz1
-	 LwkpL0HlFOBpk39auPasGutwiX/ek9UUQFF0F0zlmZFy1B7KJ4aYIjyQBb66bIgfrh
-	 GPYvLhVQ7Pf+aeuO7MOrJp9lRtdleQ/HCOncFVjW+DdJrzADlGfPjaZXlktow+jSwT
-	 emgQF4QxcHq3So6p63+VHfWSkjmt+b8Qw0up2pSfJa3XZl49oZWc62UixrNt7tqoPX
-	 5CYsjDIdfrM8+8D8BLey76pRwjI35wuCIXrL9WV8yIJBnOs0/cCmf9ZpCr+2gYi2Ya
-	 a3YB4dOTGoCvg==
-Date: Thu, 18 Sep 2025 12:58:44 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: "yanjun.zhu" <yanjun.zhu@linux.dev>
-Cc: Gui-Dong Han <hanguidong02@gmail.com>, zyjzyj2000@gmail.com,
-	jgg@ziepe.ca, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] RDMA/rxe: Fix race in do_task() when draining
-Message-ID: <20250918095844.GD10800@unreal>
-References: <20250917100657.1535424-1-hanguidong02@gmail.com>
- <a321729d-f8a1-4901-ae9d-f08339b5093b@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=agPRdmjZyW8zZR/uQozeBrdfFq77EPEdSggvYHGGIegt09vh5ZhR1EVQnniQ6QrfmrwKsF3OSnxcQvIz1B+nq3qhHPaGzaq/vHbdjWbrQ4ATFCvO5Uk2GDuuo/DlA2Fr46LQPKBM8SsQ1VObo9kwQXMBNnMngTgvgkByN6wrkvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3GuC4/0E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6C39Yrta; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3GuC4/0E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6C39Yrta; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A50FF3370E;
+	Thu, 18 Sep 2025 09:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758189555; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
+	b=3GuC4/0ESPjQC3pmzIZ8bUCKHTf/JnNQrCqYYL9kmgf85s872lNOzwXwhKUuxkWBLC2WyB
+	s2R6wFu5VsG+nCwu65iLBy8RDidVPcj+vriWINrK6M18sij6Y/TJ2um4t+qOLPBnx4drYq
+	bL0D9MtXtRERWp3NFmAKgwD1rwe74LA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758189555;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
+	b=6C39YrtawpyxD3kT6zBqWw3NoYY63UzNAjAlne7/PNQwND2TcTzmnUMngyuaa7EIaYb43S
+	t41Z2/gB+1zvY9DA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758189555; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
+	b=3GuC4/0ESPjQC3pmzIZ8bUCKHTf/JnNQrCqYYL9kmgf85s872lNOzwXwhKUuxkWBLC2WyB
+	s2R6wFu5VsG+nCwu65iLBy8RDidVPcj+vriWINrK6M18sij6Y/TJ2um4t+qOLPBnx4drYq
+	bL0D9MtXtRERWp3NFmAKgwD1rwe74LA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758189555;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v86nF+pbQuZ2GvN5imRKeIaZ48Qi34wAMqRkUSzBUxg=;
+	b=6C39YrtawpyxD3kT6zBqWw3NoYY63UzNAjAlne7/PNQwND2TcTzmnUMngyuaa7EIaYb43S
+	t41Z2/gB+1zvY9DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 902A913A51;
+	Thu, 18 Sep 2025 09:59:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id C//kIvPXy2giZQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 18 Sep 2025 09:59:15 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id DA616A09B1; Thu, 18 Sep 2025 11:59:14 +0200 (CEST)
+Date: Thu, 18 Sep 2025 11:59:14 +0200
+From: Jan Kara <jack@suse.cz>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>, 
+	Jakub Acs <acsjakub@amazon.de>, linux-unionfs@vger.kernel.org, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH] ovl: check before dereferencing s_root field
+Message-ID: <vtan7uaf5mf35zxy6pma6sdahxr7idv2awaf7yh7vtyhxsoram@2au7ec4hto7i>
+References: <20250915101510.7994-1-acsjakub@amazon.de>
+ <CAOQ4uxgXvwumYvJm3cLDFfx-TsU3g5-yVsTiG=6i8KS48dn0mQ@mail.gmail.com>
+ <x4q65t5ar5bskvinirqjbrs4btoqvvvdsce2bdygoe33fnwdtm@eqxfv357dyke>
+ <CAOQ4uxhbDwhb+2Brs1UdkoF0a3NSdBAOQPNfEHjahrgoKJpLEw@mail.gmail.com>
+ <gdovf4egsaqighoig3xg4r2ddwthk2rujenkloqep5kdub75d4@7wkvfnp4xlxx>
+ <CAOQ4uxhOMcaVupVVGXV2Srz_pAG+BzDc9Gb4hFdwKUtk45QypQ@mail.gmail.com>
+ <scmyycf2trich22v25s6gpe3ib6ejawflwf76znxg7sedqablp@ejfycd34xvpa>
+ <CAOQ4uxgSQPQ6Vx4MLECPPxn35m8--1iL7_rUFEobBuROfEzq_A@mail.gmail.com>
+ <20250917204200.GB39973@ZenIV>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,103 +112,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a321729d-f8a1-4901-ae9d-f08339b5093b@linux.dev>
+In-Reply-To: <20250917204200.GB39973@ZenIV>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,suse.cz,amazon.de,vger.kernel.org,szeredi.hu,kernel.org];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
 
-On Wed, Sep 17, 2025 at 12:30:56PM -0700, yanjun.zhu wrote:
-> On 9/17/25 3:06 AM, Gui-Dong Han wrote:
-> > When do_task() exhausts its RXE_MAX_ITERATIONS budget, it unconditionally
+On Wed 17-09-25 21:42:00, Al Viro wrote:
+> On Wed, Sep 17, 2025 at 01:07:45PM +0200, Amir Goldstein wrote:
 > 
-> From the source code, it will check ret value, then set it to
-> TASK_STATE_IDLE, not unconditionally.
-> 
-> > sets the task state to TASK_STATE_IDLE to reschedule. This overwrites
-> > the TASK_STATE_DRAINING state that may have been concurrently set by
-> > rxe_cleanup_task() or rxe_disable_task().
-> 
-> From the source code, there is a spin lock to protect the state. It will not
-> make race condition.
-> 
+> > diff --git a/fs/dcache.c b/fs/dcache.c
+> > index 60046ae23d514..8c9d0d6bb0045 100644
+> > --- a/fs/dcache.c
+> > +++ b/fs/dcache.c
+> > @@ -1999,10 +1999,12 @@ struct dentry *d_make_root(struct inode *root_inode)
 > > 
-> > This race condition breaks the cleanup and disable logic, which expects
-> > the task to stop processing new work. The cleanup code may proceed while
-> > do_task() reschedules itself, leading to a potential use-after-free.
-> > 
+> >         if (root_inode) {
+> >                 res = d_alloc_anon(root_inode->i_sb);
+> > -               if (res)
+> > +               if (res) {
+> > +                       root_inode->i_opflags |= IOP_ROOT;
+> >                         d_instantiate(res, root_inode);
 > 
-> Can you post the call trace when this problem occurred?
+> Umm...  Not a good idea - if nothing else, root may end up
+> being attached someplace (normal with nfs, for example).
 > 
-> Hi, Jason && Leon
+> But more fundamentally, once we are into ->kill_sb(), let alone
+> generic_shutdown_super(), nobody should be playing silly buggers
+> with the filesystem.  Sure, RCU accesses are possible, but messing
+> around with fhandles?  ->s_root is not the only thing that might
+> be no longer there.
 > 
-> Please comment on this problem.
+> What the fuck is fsnotify playing at?
 
-The idea to recheck task->state looks correct to me, otherwise we overwrite it unconditionally.
-However I would write this patch slightly different (without cont = 1):
+The problem is fsnotify marks aren't shutdown until generic_shutdown_super()
+calls fsnotify_sb_delete(). So until that moment fsnotify can be generating
+events for the filesystem. Sure, userspace has no longer access to the fs
+but stuff like delayed inode deletion or other in-kernel users can still
+result in events being generated and these events may end up creating file
+handles to report to userspace.
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
-index 6f8f353e95838..2ff5d7cc0a933 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.c
-+++ b/drivers/infiniband/sw/rxe/rxe_task.c
-@@ -132,8 +132,10 @@ static void do_task(struct rxe_task *task)
-                 * yield the cpu and reschedule the task
-                 */
-                if (!ret) {
--                       task->state = TASK_STATE_IDLE;
--                       resched = 1;
-+                       if (task->state != TASK_STATE_DRAINING) {
-+                               task->state = TASK_STATE_IDLE;
-+                               resched = 1;
-+                       }
-                        goto exit;
-                }
+We have already uncovered with Amir quite a few moments how this is broken
+so I agree that the best solution is to shutdown fsnotify before we call
+shrink_dcache_for_umount(). The slight problem is this means iterating all
+inodes in the sb which is costly when you have millions of them (this is
+the reason why fsnotify_sb_delete() is currently called after
+evict_inodes()). So it needs more work on fsnotify side...
 
-@@ -151,7 +153,6 @@ static void do_task(struct rxe_task *task)
-                        break;
-
-                case TASK_STATE_DRAINING:
--                       task->state = TASK_STATE_DRAINED;
-                        break;
-
-                default:
-(END)
-
-
-
-> 
-> Thanks a lot.
-> Yanjun.Zhu
-> 
-> > This bug was introduced during the migration from tasklets to workqueues,
-> > where the special handling for the draining case was lost.
-> > 
-> > Fix this by restoring the original behavior. If the state is
-> > TASK_STATE_DRAINING when iterations are exhausted, continue the loop by
-> > setting cont to 1. This allows new iterations to finish the remaining
-> > work and reach the switch statement, which properly transitions the
-> > state to TASK_STATE_DRAINED and stops the task as intended.
-> > 
-> > Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-> > ---
-> >   drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
-> >   1 file changed, 6 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
-> > index 6f8f353e9583..f522820b950c 100644
-> > --- a/drivers/infiniband/sw/rxe/rxe_task.c
-> > +++ b/drivers/infiniband/sw/rxe/rxe_task.c
-> > @@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
-> >   		 * yield the cpu and reschedule the task
-> >   		 */
-> >   		if (!ret) {
-> > -			task->state = TASK_STATE_IDLE;
-> > -			resched = 1;
-> > +			if (task->state != TASK_STATE_DRAINING) {
-> > +				task->state = TASK_STATE_IDLE;
-> > +				resched = 1;
-> > +			} else {
-> > +				cont = 1;
-> > +			}
-> >   			goto exit;
-> >   		}
-> 
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
