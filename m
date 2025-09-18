@@ -1,98 +1,136 @@
-Return-Path: <stable+bounces-180581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AB8B86DED
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 22:15:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFC4B86F9A
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 22:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3311CC4047
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 20:15:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F06525A3F
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 20:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C5E31CA54;
-	Thu, 18 Sep 2025 20:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD432F3C03;
+	Thu, 18 Sep 2025 20:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxwccQKU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y4YzXKc7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD7C3128B8;
-	Thu, 18 Sep 2025 20:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B8C281371;
+	Thu, 18 Sep 2025 20:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758226534; cv=none; b=uES4gAapVT3UoI+vp5kAZ1RRYkUc152jX6g/ja+M0NnD2SKU1QoDTeqvNhQ0UL9wEes2+JqeYNO3vHT+Q+i2in7SB4GNLaeJk2xMs9eEUflUOXud9yyWW8Uien/t/r30ZCkT6S8gIWJqnGYOJcs5SIy1EISnJzcnF9oDQhHE8iA=
+	t=1758229164; cv=none; b=EgEPk9QBpj/Q/2WtCN2oCX4h+kvANZ0MZ41TBZYO5e0IXCdnmznE9Pl6U+BeF0k1IfvgWCvjuiVFBAZ9U6klwxwmgo+eX5+xoj+rtM95RkjK6xUchEbO9Bo7tchHsNiI4dWHak96bC2nonf5k2DtApW5PbRptnEq9LEDR4WFCF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758226534; c=relaxed/simple;
-	bh=HQTm4CMW9+YUNyC28ifG6Tb9djwUQbuPlwyEg/Xqx4I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KND9nKLbpCCm+0Xxw+nZtBQyqztnkjlduqwOVQXLscf9z7w4P2kseN4uT+cHC5CpkM5IVx3h7OywhK7mI0Nrx4rOt4GdkP1J1MAK1oCPpflxwKNfiYUUayUvN8ljjO3rysYIC9W6cPzNRSvDvRwm87TBKciDZS8fXXGAAgWrwNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxwccQKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEDEC4CEE7;
-	Thu, 18 Sep 2025 20:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758226533;
-	bh=HQTm4CMW9+YUNyC28ifG6Tb9djwUQbuPlwyEg/Xqx4I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lxwccQKUkKLfcHvCvYAlv/KeXhHwELTRsIYFouON5TvIu8Fv3fbKWwjm0i4JJd4cz
-	 y3ldXAx23PHn98MRchmSYsWdDttPtTVxnumr5hq/Lmj5VrSBkoaTrjZGRVoCbFXqns
-	 dfbldo6p9xrCIqkW0msjtU1YFhRaOG1lJCXby+HGCgQCLC0SUCbadrnIsJUNPxj/46
-	 O9tH6j3yF20q6naf6oKwlK3zqU8wtGP1puZWBFJCO18pleuoGXXq+y+8WzJP3VnHBy
-	 tlLDp2bGxnlacFHW/5n0nRwi+nBqu1qpi64VioVSbirOfUWF8k8t1Vys4J6kiMT5Hm
-	 w4Hxxv0KLfdLQ==
-Date: Thu, 18 Sep 2025 21:15:26 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, achill@achill.org
-Subject: Re: [PATCH 6.1 00/78] 6.1.153-rc1 review
-Message-ID: <095a7365-8c06-4854-ba71-2a65865d2e3a@sirena.org.uk>
-References: <20250917123329.576087662@linuxfoundation.org>
+	s=arc-20240116; t=1758229164; c=relaxed/simple;
+	bh=jnK6+B9ddsUgwv8Le0upLeCswhfyFEJ3xy/dYjG0+fI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n7Y+GNrKxAt0sP79v/l9imQaIKEF+pMMJbw1C9rFAg9lfEDZRBKz3u9GIMqtAdEp7lvUx8fBEQC3y7nBXr72m0o3IHJUs0gSKrBINX79NUtFrJb7GDnHt5OOk4jU6yDP3zeNuT0uUHZCjfHYhnfEP0FMC14zMAFNkk5hW+WDTb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y4YzXKc7; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758229162; x=1789765162;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jnK6+B9ddsUgwv8Le0upLeCswhfyFEJ3xy/dYjG0+fI=;
+  b=Y4YzXKc7ykLPmLJjHLjL9+a1y3PjQ5XkUZaS7mDOukiy4kr7EFgdwcAU
+   AXonkp+OdzqHTT3H2ql8fe0ndNUeSdulEhHdHzVEC55bzYQAvapAdGK15
+   GXxylnoeEiNQwZi9BPDXC+PnC55RQCxdwNAvbpmGe1Ul+Tj0w2RbclWCg
+   7gjomqLuP53v7mzDsLzyB8+j+PD2+9g9Ez7tLjSJINo8ADy3eB7pNE0L4
+   qB6ypX6XebMqShuIBqZp4zNkaPR/EauwT7l0bpdUTNGhI5z1gKQpSstbQ
+   xeUBeKGy4Hggsbdzhe6srESzvyqmKGOaxlAxrL74hnASX/FwfrckVZhBC
+   A==;
+X-CSE-ConnectionGUID: hjUcl3UhSf+w2niTm8tj4A==
+X-CSE-MsgGUID: NKAATsbcSruoK/evjWUaqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="63205049"
+X-IronPort-AV: E=Sophos;i="6.18,275,1751266800"; 
+   d="scan'208";a="63205049"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 13:59:21 -0700
+X-CSE-ConnectionGUID: Ub4ULYcdST6rMWJdFXubpA==
+X-CSE-MsgGUID: zDQ0MTx/QveyY2BRHqGSVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,275,1751266800"; 
+   d="scan'208";a="174915014"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 13:59:20 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	linux-pci@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	=?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 0/2] drm/xe: Fix some rebar issues
+Date: Thu, 18 Sep 2025 13:58:55 -0700
+Message-ID: <20250918-xe-pci-rebar-2-v1-0-6c094702a074@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OW6HTeUJpEW4Xj5W"
-Content-Disposition: inline
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-X-Cookie: Victory uber allies!
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20250917-xe-pci-rebar-2-c0fe2f04c879
+X-Mailer: b4 0.15-dev-b03c7
+Content-Transfer-Encoding: 8bit
 
+Our implementation for BAR2 (lmembar) resize works at the xe_vram layer
+and only releases that BAR before resizing. That is not always
+sufficient. If the parent bridge needs to move, the BAR0 also needs to
+be released, otherwise the resize fails. This is the case of not having
+enough space allocated from the beginning.
 
---OW6HTeUJpEW4Xj5W
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Also, there's a BAR0 in the upstream port of the pcie switch in BMG
+preventing the resize to propagate to the bridge as previously discussed
+in https://lore.kernel.org/intel-xe/20250721173057.867829-1-uwu@icenowy.me/
+and https://lore.kernel.org/intel-xe/wqukxnxni2dbpdhri3cbvlrzsefgdanesgskzmxi5sauvsirsl@xor663jw2cdw
+I'm bringing that commit from Ilpo here so this can be tested with the
+xe changes and propagate to stable. Note that the use of a pci fixup is
+not ideal, but without intrusive changes on resource fitting it's
+possibly the best alternative. I also have confirmation from HW folks
+that the BAR in the upstream port has no production use.
 
-On Wed, Sep 17, 2025 at 02:34:21PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.153 release.
-> There are 78 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+I have more cleanups on top on the xe side, but those conflict with some
+refactors Ilpo is working on as prep for the resource fitting, so I will
+wait things settle to submit again.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+I propose to take this through the drm tree.
 
---OW6HTeUJpEW4Xj5W
-Content-Type: application/pgp-signature; name="signature.asc"
+With this I could resize the lmembar on some problematic hosts and after
+doing an SBR, with one caveat: the audio device also prevents the BAR
+from moving and it needs to be manually removed before resizing. With
+the PCI refactors and BAR fitting logic that Ilpo is working on, it's
+expected that it won't be needed for a long time.
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+Ilpo Järvinen (1):
+      PCI: Release BAR0 of an integrated bridge to allow GPU BAR resize
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjMaF0ACgkQJNaLcl1U
-h9D3UwgAg2Lzpw4vlid0Z4kZVDD9KnB/cWqzvQPiFI6gXsYvMNQcmw90/iMFXBFN
-IRbH7hPgaX0KE6QejBQwonXOGXe47PUbpmCZrXGNMieuX77tU6ZpU7hPfLJy2Wn4
-LbxqbOGh3106whyvPsfh1vEGH0stDaH0Fg2QcD+IqxPSPYW7z4d/QhHFA3KrTXPl
-mlp5sNjP1FChccOXTyMOBwkpw6TYO+a1/FiH6Z3dQpswbK2oXq0125D9t5fyz81v
-Zz42oO+S+0ktxztrVcf9DbKBlDWl7vdfywp8xjCqEUpDzMRxNyKwhdqqDjzYN0xg
-7YNyuJsGXSAB39lpOfcdbAIif8OtZw==
-=pJsT
------END PGP SIGNATURE-----
+Lucas De Marchi (1):
+      drm/xe: Move rebar to be done earlier
 
---OW6HTeUJpEW4Xj5W--
+ drivers/gpu/drm/xe/xe_pci.c  |  2 ++
+ drivers/gpu/drm/xe/xe_vram.c | 34 ++++++++++++++++++++++++++--------
+ drivers/gpu/drm/xe/xe_vram.h |  1 +
+ drivers/pci/quirks.c         | 23 +++++++++++++++++++++++
+ 4 files changed, 52 insertions(+), 8 deletions(-)
+
+base-commit: 8031d70dbb4201841897de480cec1f9750d4a5dc
+change-id: 20250917-xe-pci-rebar-2-c0fe2f04c879
+
+Lucas De Marchi
+
 
