@@ -1,181 +1,131 @@
-Return-Path: <stable+bounces-180519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A00DB84AE3
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 14:52:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD6B84A75
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 14:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 912237BD278
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 12:50:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A4E7C062C
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 12:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B899330505D;
-	Thu, 18 Sep 2025 12:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02AC305E09;
+	Thu, 18 Sep 2025 12:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FauBYyuV"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="pOUx7t5p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f228.google.com (mail-pf1-f228.google.com [209.85.210.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB422FD7A7
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 12:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D48E2D3207
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 12:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758199901; cv=none; b=uALjqrolNEyXbGb1OFOuEtY6tLcw2AXO/MtZYlIJOQBmlXeDwmRhXomQINq2pEudxJOOkQvjvtvsKJyzJDMM6g3JsTO02ikcxiYARNhaacH6vegLU7lvi8xy00fE1WkH2S5IwvrOzrb2Cu9IpG6ZGbjQFjpVqNp3d9fRmr8Llck=
+	t=1758199623; cv=none; b=Vsly2R2KUJ7di6aMnTO7XVO4PgdOaWurPsbnGxa7JEePqCzNFVUHeNjvThU4U2KpEA8hLgvU5RSBY24gOAJVoo54usye4w0jFgc3UCFetohQkn+m9GIbz5lii66TQFREHJ6yC5kbU2y3E1YhSdMRq1P9KwPxQ8JAlvlaV7SjmB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758199901; c=relaxed/simple;
-	bh=kQvQlJ4Ntkejel7Bjw96+PBXVk0IMsnf/Ap3QHrmNCI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DvrO2JRz14oHYhMCmUgvkNbmEyuymMpmnCDoxTXPFhLECeXZf1oF6gwqfvYw1MG8ucGXEKLtk0bRgaapns8l+AG9XZFXKoYZC/h6B5ev/60+ywaoJaq/+JIkQwfjILavm8BrZqvVee1R88bviQS9PrfifaTQeXyMrbS9usNUz+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FauBYyuV; arc=none smtp.client-ip=209.85.210.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f228.google.com with SMTP id d2e1a72fcca58-7761a8a1dbcso893347b3a.1
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 05:51:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758199899; x=1758804699;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lgi+BTeRK9OMV3Te7iHLbRBW1UdG0wv6serJphMr1ec=;
-        b=jATbPenxyxHWTED7ZTifyvK6f163M8PXEYV0ZqHyqBqdU4nas5TQf9I+7PPHnD4xvD
-         ohBxsZhVH5X1Tt7TwRR3Sv9t9l9Jdy1GanU1hBkBXQ0vkV5lM2Ruij7B0IugDJK+5DTK
-         WIL+s6NBZgvxlbMM/NUM9sUsRc4EdZhXMfKFoZ1Q9hQttuuYDM24S09rgbmCwKRmc9Tn
-         SrisNyXKg/xZ2bIP/x4sIQlxSTW749xv2pJPu/JiLUdLWcVRs9Rlx/fse5cVtVq5YyWM
-         NZMEbqVa2JvCqPFHA8OglYh8MIu2p/ILFKTdG+4AMWIbnNHENUKlNm5OkgQl4xBqHyFb
-         nWVg==
-X-Gm-Message-State: AOJu0YxqQKpIU1zMvCR4smWXwntWhlsqQdbvRWBfYA+fQCni8huUi+da
-	ZxpK3N3IymiJJLNJqhcigG2MLHX2ucE9FS1D8+Qw2vGdmUsmefmkdL1GiAMBVq7jzMPkEAMdo64
-	GhdtQVWCw3UpU+SkiAyxAOsxpuUw1v4vR2OsC7DVtFo6QDjqqGAeXm6hu1JJDMf16cyCtIkMRwq
-	VW3KGBhpkOC2aYMuNzWdK/JPpo3FULRNOiWwi4uuHKoox8g5MXO7tmG4MHwoDLmMIlVLIvVVg4t
-	HMDFDPdEEA=
-X-Gm-Gg: ASbGncti7Kn0WcqYFp2oZTzQaWqi3DP72sbJbCoWsjXtKDUVj9qxuU+2CcE2dy/N8un
-	F04kflMh+RtzfRuXIKzO5D1SndEvCq3OW4vBRJc+ez8lcwtUBn5fOwqBzwn1mLBLRvK3bqhMnz3
-	AbHOGshzyrKrn1eGwgx0uhgsYw8KEegHuiP3ms9QSmT8Qw52MwOPK7f5zInTDGFQP1yfKmg7Jx0
-	G5DvX/Ua7dennp+HEdZsqFvf9hMBgh+pVQ4xA7KBxi7T5XjwyA1UfEuz/4Qr9bBn4FRpVIbaxbG
-	wGURvbmEd44DM/5FFTub/m3yBbGr9i6IAUgn5QSKXOG9co28exy6RZCktV0AdUGdrjhXCw6Fw5C
-	S4SPpIXoQCmPYCc8+GTcFWTjnHCTIiRBdPKVkLLQ7sc7g16znrKbkPuNRmRTD+2G17Ki/aszmPQ
-	Q=
-X-Google-Smtp-Source: AGHT+IFyz12eBrWfJRE7zi7f0qQIeOv3Nosr89M9+zbkLxtjIHxUzWkdnL/0Su9655gN9fU+2EjRRnRXok+9
-X-Received: by 2002:a17:902:d511:b0:24b:11c8:2d05 with SMTP id d9443c01a7336-26813aedcbbmr79142215ad.45.1758199899226;
-        Thu, 18 Sep 2025 05:51:39 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-119.dlp.protect.broadcom.com. [144.49.247.119])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2698029ef16sm1846265ad.57.2025.09.18.05.51.38
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Sep 2025 05:51:39 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-828bd08624aso172508485a.1
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 05:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1758199898; x=1758804698; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lgi+BTeRK9OMV3Te7iHLbRBW1UdG0wv6serJphMr1ec=;
-        b=FauBYyuV9RU3PYdBbhT/xbRKdmsvPRJY5jeIF2P1+iA28OnnPvQOPbf5azb6HNYg1o
-         RP9t3pwCs3pdwDb2SMQd961YZdOTfkLdKHfjnQW9u7IP63dgEj7F2GhfwfI9DoS+CZzS
-         uNO1Q5WMPI2CmP+xTUgeh+DVYPVKYw+A1Ri/U=
-X-Received: by 2002:a05:620a:2685:b0:82e:6ec8:9899 with SMTP id af79cd13be357-8310ef30b26mr617477485a.48.1758199897615;
-        Thu, 18 Sep 2025 05:51:37 -0700 (PDT)
-X-Received: by 2002:a05:620a:2685:b0:82e:6ec8:9899 with SMTP id af79cd13be357-8310ef30b26mr617472985a.48.1758199896971;
-        Thu, 18 Sep 2025 05:51:36 -0700 (PDT)
-Received: from photon-dev-haas.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-836278b77fasm159592685a.23.2025.09.18.05.51.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 05:51:36 -0700 (PDT)
-From: Ajay Kaher <ajay.kaher@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: pv-drivers@vmware.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	sankararaman.jayaraman@broadcom.com,
-	ronak.doshi@broadcom.com,
-	florian.fainelli@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH v6.6-v6.12] vmxnet3: unregister xdp rxq info in the reset path
-Date: Thu, 18 Sep 2025 12:37:32 +0000
-Message-Id: <20250918123732.502171-1-ajay.kaher@broadcom.com>
-X-Mailer: git-send-email 2.40.4
+	s=arc-20240116; t=1758199623; c=relaxed/simple;
+	bh=/NwgI4Pz9Gazir1kDPO3ynh+LF2s3swEokSrXPvlyWg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jFxZCO+B+2QHO6qfjf6a+tCTwT0Fq27fw3dSyUXeTnV+k1FwI/Qtv0C6jV88rv1xgktDWakFDUJDlbIaZ+VOWJAnxJHj8OekzJLGGnu9G0evsSfLdpg22x6dJEJRkxMx2YWyDzYDgnUsNcGLawqZxGxxiN9QnA+HZiTe4ZYqM/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=pOUx7t5p; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5002b.ext.cloudfilter.net ([10.0.29.226])
+	by cmsmtp with ESMTPS
+	id z7gZuPOuvaPqLzE2Ju6dW6; Thu, 18 Sep 2025 12:46:55 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id zE2IuB1buktgtzE2IufYbN; Thu, 18 Sep 2025 12:46:54 +0000
+X-Authority-Analysis: v=2.4 cv=PbL/hjhd c=1 sm=1 tr=0 ts=68cbff3e
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=uteLxf5mF2kd1xbYuWv0xsYKkoUJep4E7helE5lAOSs=; b=pOUx7t5pZe9T9aieByYzb4JWFH
+	e8khIAOBS1tfyH7M/GHN22sbOqVmHKQZ8E4DPvrsBRmHzQv/6qLHI+OCNBvGjqI7CpJB/VON4QDI6
+	sg3g/hrSCGFWhc0w7VjVr9zpU2a8qK8FMT7scdMY2daHXqfC3xgZEhXDnK6DPeAv1lIOUomuAHs4V
+	T/tFxgvlYxn4ghbQGK+3GVq2wPg1BIAwYLlm7S4IByJb1G89EtzVXBU3DkA6icmNSPcgJyH5dDUJF
+	wDfmUGLZUnm0XuZ3tXAaXr69QNhxCbBTxbi+lArU+JkDEWRb56T3MBSLPqSCJoudwk+Liqcv12afw
+	58dDwdPw==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:44014 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1uzE2H-00000004B9b-1eTa;
+	Thu, 18 Sep 2025 06:46:53 -0600
+Message-ID: <26de3e38-6c06-4315-a5a3-15ff16ea5494@w6rz.net>
+Date: Thu, 18 Sep 2025 05:46:51 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 000/189] 6.16.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250917123351.839989757@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1uzE2H-00000004B9b-1eTa
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:44014
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfAe/jtVHOSTdpR1lKoPUpGCBfnCjpga70V9O3qjMuqOeWSU04DW+0gKEcjPAyqggKsujsKFJd2OqZvpv+ukf5rsMhmWlZt3iKl9TnmSGNp1OuHKE3rqI
+ jsSzH5ikXB6MYLfMgpygmN+uGWEHVSRXiguSZRhu+l/SojflWEfMsXH0WMEdc+XwFnynAPgixIjYhA==
 
-From: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+On 9/17/25 05:31, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.16.8 release.
+> There are 189 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 19 Sep 2025 12:32:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-[ Upstream commit 0dd765fae295832934bf28e45dd5a355e0891ed4 ]
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-vmxnet3 does not unregister xdp rxq info in the
-vmxnet3_reset_work() code path as vmxnet3_rq_destroy()
-is not invoked in this code path. So, we get below message with a
-backtrace.
+Tested-by: Ron Economos <re@w6rz.net>
 
-Missing unregister, handled but fix driver
-WARNING: CPU:48 PID: 500 at net/core/xdp.c:182
-__xdp_rxq_info_reg+0x93/0xf0
-
-This patch fixes the problem by moving the unregister
-code of XDP from vmxnet3_rq_destroy() to vmxnet3_rq_cleanup().
-
-Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
-Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Link: https://patch.msgid.link/20250320045522.57892-1-sankararaman.jayaraman@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Ajay: Modified to apply on v6.6, v6.12]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
----
- drivers/net/vmxnet3/vmxnet3_drv.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index 6793fa09f9d1a..3df6aabc7e339 100644
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -2033,6 +2033,11 @@ vmxnet3_rq_cleanup(struct vmxnet3_rx_queue *rq,
- 
- 	rq->comp_ring.gen = VMXNET3_INIT_GEN;
- 	rq->comp_ring.next2proc = 0;
-+
-+	if (xdp_rxq_info_is_reg(&rq->xdp_rxq))
-+		xdp_rxq_info_unreg(&rq->xdp_rxq);
-+	page_pool_destroy(rq->page_pool);
-+	rq->page_pool = NULL;
- }
- 
- 
-@@ -2073,11 +2078,6 @@ static void vmxnet3_rq_destroy(struct vmxnet3_rx_queue *rq,
- 		}
- 	}
- 
--	if (xdp_rxq_info_is_reg(&rq->xdp_rxq))
--		xdp_rxq_info_unreg(&rq->xdp_rxq);
--	page_pool_destroy(rq->page_pool);
--	rq->page_pool = NULL;
--
- 	if (rq->data_ring.base) {
- 		dma_free_coherent(&adapter->pdev->dev,
- 				  rq->rx_ring[0].size * rq->data_ring.desc_size,
--- 
-2.39.5
 
