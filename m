@@ -1,128 +1,125 @@
-Return-Path: <stable+bounces-180497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C393CB83D38
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A652B83D41
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64D181736BD
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:36:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32658179651
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6852848B0;
-	Thu, 18 Sep 2025 09:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA95242D93;
+	Thu, 18 Sep 2025 09:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDJkVhWo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E0x2ynBY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF3A28489B
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 09:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CDE1D9663
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 09:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758188197; cv=none; b=bGox7GXlKZtsKXwrrn8csoiQhL2NpSzIpkqtlyxWu832x4VkN17MTkINI+C+xsy8i1gllb+INNZwxSmLtL6yr7pHhgofsLQuor+4yMgh+K4JJkgo/ixMP4wLfMsCm7DTVBeU0L3XYzBwRa8rQQq/clxKJ4P8QuZr+V3BSuGcYkY=
+	t=1758188298; cv=none; b=I3SowrWgJSkwkJMJocch7S0IuGiCi6EXHv3MeJtNNcBvLwpVMm3Gd3RpbzaYrt+rfNsZSM/MhVWM53FRpjX9/bc7QEfoGE5wU1t4Y7JTOL5+V0GwqVEEQP1KqVfE+50jKSs8vXkCiJSYfrYDaIsVY+H/rWeb3Eb29oo8vAVTWYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758188197; c=relaxed/simple;
-	bh=WZdbcxOzbiNsQtB3ULEYsVAVNPqktdSanKBGZLRQ8a8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b7pxxOTpQbwGTDWH6puNRdWiF0dp/RpWASwi7KpvxJrKwH2fOq6oJEkZzDLwPhjC8PE4KYwEA+Vd4gFAEuMt+Wr5uRhsThNtnbY5qMrFB5foRt4Yp2tOVvJyZR1uTkP25gD6jUoP/ebQGrhLbHuwQ3m6M49D1viEvM/ubj6yDq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MDJkVhWo; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b54fd723df2so414793a12.3
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 02:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758188195; x=1758792995; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SdBtG29DuxWk0x1+vO/vrZiCN7poYWKo12KFNkdCIPk=;
-        b=MDJkVhWooo8RgpaixpJ/gWERyqG8ybrXA7r8WTa8+1eV031PisqkSSyqIVRuOh94t5
-         Bvg9sUftC4nQXV8JaZJaIhFUg3yqlIa8mi1nKATG5snB5/aa8hz5t06WCjbeGjPkXEVy
-         QSvkDHmbXDWElcLjEu3T59kPAFmLIy732ZPWes0UIbAjt/Sbwjg4pz8f6sTWAqP7cwjq
-         YvpaZHAcE/XwT9QNO8VV84V+t7Cuzd3qJwQ42VMv4G/k7D9hUGS6NsyQdSlfmg65htVh
-         GISaajzyltU1taXqpfg2P0HmA3LcWjjb+tb+VomlhFgsamZtupPFzF9hxGfMYLZ0V5q4
-         +AAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758188195; x=1758792995;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SdBtG29DuxWk0x1+vO/vrZiCN7poYWKo12KFNkdCIPk=;
-        b=hwgv+s7BU3Du+y5c3f1nz17RB0p08mMSlBdH2/ItJlHcpFvxSHs+4qRVzt+nDw2ZEt
-         xGrB+AgBXNm+Api9tcArmP2o5Jb9rV3T7pP4daKGldZVCXeusw3SUnpdZzdr068p38QI
-         BpeQcsx75qQxX7xWRVmAQOK3uQx//2UAqCa1aXC+uHy6DJB+ZmnPgQSj8mZpux7D2OJp
-         OmoL9u1DNifa5Lqeu8u5JftCvNucf+J4NhPX9+j107fCuoqKnetfOUZXC7g+pOqmDVUm
-         91ah3CtbDbQ8J9bGuz/+EbFyw6RS+gnN5oeBjoMn1tiSnd7NlsZW1o2A5cBAQNaQ/TV8
-         K+dw==
-X-Gm-Message-State: AOJu0Yy8tXw63W5zUhSz7Z8tewyyifzkPhTFaPB//xbK3i8pf2Qf7PZn
-	IWI0DuV7djlruCJk3c/MKaqmuAFPJRJPZhyYFI5cljov9xDwlJqNDDbt
-X-Gm-Gg: ASbGncscAzixVErdmtNNElfksB9sMn5yzHr0haZEAVxeH4d3UFTWCv8H18iLlegfmoG
-	i+jLJA4fnn2kuVQRuoumRktrrvlNTPMGOkkYCGLJ3KJQjSXivk1fzPnyfdMSVdLu5IDpganOuGT
-	2iwT80ri/9+f8VLC7GYcuD1HC8dxxYY4bcIDfaJYncc+BQFKDX42NISGzOq0TGbQRmnLfQLct1G
-	nBRav2kfPSBKnjnMBYDnLAsJUKarw8uZPVg9ROMZDCT1KwGcfFadgLkwXkozKI1vo3cYAmq4ack
-	ElwBJphmkcOHI3n6Vo+Pqhv2Jl05LtVSgt1ovhhHkfx6SKbiQ2wf2gSuEYZPCkT1jVoqYKCydAN
-	u68xZ+EbZDXnrlIHpfMvQlxkyMsWSjLJro0y9pBA3/p1AtHuzBYQ=
-X-Google-Smtp-Source: AGHT+IHPVQDk6Ab2pQFcVltfSjSsGNPhsS0OloAUxOVgDrV9vtF9WjkL/knZUEDWVPGNTRaOkCpGOA==
-X-Received: by 2002:a17:902:f548:b0:267:4b80:29c4 with SMTP id d9443c01a7336-26813ef9f5emr69353095ad.59.1758188195347;
-        Thu, 18 Sep 2025 02:36:35 -0700 (PDT)
-Received: from lgs.. ([112.224.155.38])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698030d8casm20015275ad.97.2025.09.18.02.36.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 02:36:34 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] powerpc/smp: Add check for kcalloc() in parse_thread_groups()
-Date: Thu, 18 Sep 2025 17:34:15 +0800
-Message-ID: <20250918093415.3441741-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1758188298; c=relaxed/simple;
+	bh=sP4AHCkAkbd/YxZxQkK4mSoGzrnznrymsItntTUNu0M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E3QxPaIAbG+5G99InGNygmFhxXayZEJRRbnCdJSwn+6KkUzE+drszVbvct2Rjdw/CcOsIQtpOLfW6rlLcobRb7A77rEIYLVBgEL7Vf8+UqUDkJmfrZx2QuCitlurBxgnvjY9rFncwKfB8IllQo5qGa3dlhCxKwX+YVt+T00fzR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E0x2ynBY; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758188297; x=1789724297;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=sP4AHCkAkbd/YxZxQkK4mSoGzrnznrymsItntTUNu0M=;
+  b=E0x2ynBYuTmecBD01V7gOJ34V7lbm7apgX9/MPyq3tlt5L+L0/10Ntf9
+   aJ8UrGXeSrkoMWfy1tPa9Lvrs8ZsyjEEPnNZWX//QUiFeVqwM6benBY5m
+   8qiqTmluDzbeklc6/IsvO6Rs7goojpfTjI0TEeS7zCV+jWEXufMNMcoxu
+   OjkTo7hI56ljtHTqL32YlJAXI7GUTomIiO7xyuBC+VwfZd7NkPERl3nV5
+   cAsFlZCrCWkTlLZjpuIlxxI5psSp1BVnVMUTSEHSA67EappJmcWvtKDf7
+   JPpZ2iSgb6mO8oNrqEJ4pgCGq1J4Maan7Kuhp6Far1DJ8Lbi4oVH1nKeb
+   Q==;
+X-CSE-ConnectionGUID: sP2xFJvCQm+Nt/PCvscIog==
+X-CSE-MsgGUID: KYBYl85uReOchJAQvssrgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="60444054"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
+   d="scan'208";a="60444054"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 02:38:16 -0700
+X-CSE-ConnectionGUID: 3edeNqo4SM67ZVBhNH1FOg==
+X-CSE-MsgGUID: EN5vAJpaQfy0XQdImMMbBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
+   d="scan'208";a="175938149"
+Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.228]) ([10.245.244.228])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 02:38:15 -0700
+Message-ID: <321635af-b292-4849-9844-a52a881ef87c@intel.com>
+Date: Thu, 18 Sep 2025 10:38:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] drm/xe: Don't copy pinned kernel bos twice on
+ suspend
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+References: <20250918092207.54472-1-thomas.hellstrom@linux.intel.com>
+ <20250918092207.54472-2-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20250918092207.54472-2-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-As kcalloc() may fail, check its return value to avoid a NULL pointer
-dereference when passing it to of_property_read_u32_array().
+On 18/09/2025 10:22, Thomas Hellström wrote:
+> We were copying the bo content the bos on the list
+> "xe->pinned.late.kernel_bo_present" twice on suspend.
+> 
+> Presumingly the intent is to copy the pinned external bos on
+> the first pass.
+> 
+> This is harmless since we (currently) should have no pinned
+> external bos needing copy since
+> a) exernal system bos don't have compressed content,
+> b) We do not (yet) allow pinning of VRAM bos.
+> 
+> Still, fix this up so that we copy pinned external bos on
+> the first pass. We're about to allow bos pinned in VRAM.
+> 
+> Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.16+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- arch/powerpc/kernel/smp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index dac45694a9c9..34de27d75b1b 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -822,9 +822,9 @@ static int parse_thread_groups(struct device_node *dn,
- 
- 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
- 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
--	if (!thread_group_array) {
--	ret = -ENOMEM;
--	goto out_free;
-+	if (!thread_group_array) {	/* check kcalloc() to avoid NULL deref */
-+		ret = -ENOMEM;
-+		goto out_free;
- 	}
- 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
- 					 thread_group_array, count);
--- 
-2.43.0
+> ---
+>   drivers/gpu/drm/xe/xe_bo_evict.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
+> index 7484ce55a303..d5dbc51e8612 100644
+> --- a/drivers/gpu/drm/xe/xe_bo_evict.c
+> +++ b/drivers/gpu/drm/xe/xe_bo_evict.c
+> @@ -158,8 +158,8 @@ int xe_bo_evict_all(struct xe_device *xe)
+>   	if (ret)
+>   		return ret;
+>   
+> -	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
+> -				    &xe->pinned.late.evicted, xe_bo_evict_pinned);
+> +	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.external,
+> +				    &xe->pinned.late.external, xe_bo_evict_pinned);
+>   
+>   	if (!ret)
+>   		ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
 
 
