@@ -1,125 +1,96 @@
-Return-Path: <stable+bounces-180556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C550B85E14
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 18:05:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D238B85F08
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 18:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A2D3AEA4B
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 15:59:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A47767A8DA3
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D8D30F529;
-	Thu, 18 Sep 2025 15:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FFD307AFE;
+	Thu, 18 Sep 2025 16:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZsqzyRB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xodd5kAz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2352F7AAA
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 15:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E9D220F5C;
+	Thu, 18 Sep 2025 16:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758211141; cv=none; b=AwcI89qJuAKkISSlMkXaW59FiXG8wbt5UkRNKXHd3qmb0sQznknCBRsGyf3qakIvQISXFLnCBlgw0BKlW9JU6oSEHF+UtsvGJWxVJuuNKvS+o6+Gx9Ijkr/9HST9xGx4kQLqXILTW3je4PE3giLAv+CZf+/8y+9ssJGaTMZGnbw=
+	t=1758212289; cv=none; b=YNu6Uit+44TAWoBpS9FqidR78QqeRAklqsuyOA7jBxG6aZfp5EVwtZFjkfg/NGSESfxRo8jOZGPVEe5jhqgeqKgfkc9kmDvDk+lb8M5GwpzDynBFXkBROjj2fMVA/F4rOd8mVCUTEQb+9K0CaWIg62cf4Hx2fT68QUGcSxGHiuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758211141; c=relaxed/simple;
-	bh=BnbygAsl8Dx4wWRa3lp7WuWFbtimSRJj/t9AgFbug00=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lqn095HdQdEn0E2Nj275LtOYuTo5Pk5ctcJbdY8RbwihU4ftFyQCfsEpjvhrXA2Tece5rG8RiXGpiCQR3GaoF67m5E3xmOGt1FT2yCk1J7yzSI4JUAOBegSvWms4g7qfvGKPLRUJHiiY1CV6AklhX8AAhdz6hDTm+SqvKC4dQC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZsqzyRB; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so168694166b.3
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 08:58:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758211138; x=1758815938; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BnbygAsl8Dx4wWRa3lp7WuWFbtimSRJj/t9AgFbug00=;
-        b=YZsqzyRBtcfXCtInhkTfj7m/xHgfM7zY8+8NgqtJN0qM03InLM560Z9/vynYn1jgm0
-         6mPsvETmxhu7V0yxApReU8NzKaIAMhJFhuJ8dgfzmD3W01lZopug/wTezzAP/mICec27
-         O8xnEkcGe0OxfjvOq1teac6tTWkb3FyLmkjU1DLy8w2D3ntMmQ6OM5zIfu0N7vmsEfV8
-         4GK0jeH7W/FUiQ7+Gq3klWr0mpsujUxkIjbTXh8qPyCf8oTtCgt3leTYt0Dm6A5Cy7J8
-         7LdRVUxG1AEGW1LcPXU3org7j1QLM1RJ8YCv5uNU63y+WgjQKimMxqoDgcBkVSahGxiY
-         M7wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758211138; x=1758815938;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BnbygAsl8Dx4wWRa3lp7WuWFbtimSRJj/t9AgFbug00=;
-        b=wzHhhHJDpcTfk3JCnJY6wFIscWcnwxs1/j+uj11P9xy+Zqzy2W9mw5xhgxT+ATF+Pg
-         9JX+dkPbdfnhlMjSa1upRKpSl+5yKGZQpxwMqzNFui06zM9yNXd1izehe3deE28YqaaW
-         c/MDHiRB726Xb10Aa+r10FvMVRCUMNZjoW0pwDUCbw/lxmgVMmoCs3CARL1+8uzsMRRN
-         H3rk/edVSSgMztPhGQeN3YBB9tY2qFXRPydwiNKvIYd6275BX8qm3irBHM3TXvaiKXy1
-         9PakSsVdsxl0An6+m+PXiV00Z09In7IIBDG6sy+bhDNPcN4XZB76syMIqJlhnydBy5x4
-         BFPA==
-X-Gm-Message-State: AOJu0YyIq7CAMcVLPGx7u2RPqEsgBS++gl8znz4kf2rkw2IOqghXQYFG
-	rzAyUvwRvZ5Icjkx/n6FeBHLU5V4Br+eHAQNnc3EBgnypv8ENOM3zSeM/bu2Ejq7
-X-Gm-Gg: ASbGncudSV00wQ6BXglVG0xP3CaHYYxm0pjKrILl9imZ5SuDT8QXd44BB9+kurm68DN
-	eIzHgscxQ7cwshXAJQLIvhY1y3QN9XGa4dQ7WVEzMpurpOGarDfyb1Mf3g7/Lwm+NUkfqlP177f
-	mSGLAS7iKtNU4cg8C97Mk/gcjZ8FJek97JdJYy3+tvDt8UOKRq/va6Rou7HI9NVCKGB56NkSEsT
-	7TH273eZogIEXOvuqOfy2FIHpHLoAIeYmGbV7t5+lLN2cLJOGMmZqMe0f/iXpDysN1yXqFVZnbw
-	1SpEyuzt6Lh5rV9PYEKd4qkr5gG2uD2NO5KC4XlUQC7MY+QyfHdDKWKdHqnIHvu7/jiR0CB4u7P
-	3bKT+U5+UOfGMlY2+lpj2RaaKjNVW4qwXjvGM6Af6bJfd5rUFN9+BVv8dUz+9hFA2R9fC
-X-Google-Smtp-Source: AGHT+IEamsg+VBhCg1Lnmf79ffLdz+G7xL4OSv0lxnsoJ8h5Ioo+r205TSmpJSHOPFxqKmgywIfMwg==
-X-Received: by 2002:a17:906:6a1f:b0:b04:2252:7cb1 with SMTP id a640c23a62f3a-b1bb086959emr787373866b.12.1758211137544;
-        Thu, 18 Sep 2025 08:58:57 -0700 (PDT)
-Received: from [10.192.92.112] (cgnat129.sys-data.com. [79.98.72.129])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fc5f4390csm216682466b.10.2025.09.18.08.58.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 08:58:56 -0700 (PDT)
-Message-ID: <5a9aa16aafbcd8235a70f25249b94de6a897fc14.camel@gmail.com>
-Subject: Re: Backport request for commit 5326ab737a47 ("virtio_console: fix
- order of fields cols and rows")
-From: Filip Hejsek <filip.hejsek@gmail.com>
-To: stable@vger.kernel.org
-Cc: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>, "Michael S.
- Tsirkin"	 <mst@redhat.com>, Daniel Verkamp <dverkamp@chromium.org>, Amit
- Shah	 <amit@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	virtualization@lists.linux.dev
-Date: Thu, 18 Sep 2025 17:58:55 +0200
-In-Reply-To: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
-References: <f839e710b4ede119aa9ad1f2a8e8bcc7fcc00233.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1758212289; c=relaxed/simple;
+	bh=2txUjo5Nz+BSEMezG0q7gafb7Kyc4NK7ms7exwCmsW4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NUg4d/xQpp9ZsOLp9f7NVJL0wk5/USqI1P8zDCuVphpmcd73tX7GDpEuLKRieQ9JBO1Cj1VSBhuqj97RlfJO7hIW34AwuCMwk56KTZrJF8sGD+6Dd9Uf9PtrvZLtcuVzx8i0v8RvIOFxzkvIEC8706bUCAa54lowpxg3KIF9XcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xodd5kAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F107C4CEFA;
+	Thu, 18 Sep 2025 16:18:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758212288;
+	bh=2txUjo5Nz+BSEMezG0q7gafb7Kyc4NK7ms7exwCmsW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xodd5kAzjKSidzcOwUfy/6fgewF1HGJQg72D3CA1Jfn8yaBXgmNHGhwtZHLH6tZTs
+	 06RrRksv86C9A5p//EY0jBHNijSo+rlFqmRQJy0ito+YkSHKxP180UwDIFBYORUhfc
+	 7GWw8+4ctW8ex87yLMEMNtGFIxW9+rafkTppCi5t+VAZidIByTxkOY6k29NzrXcZR6
+	 N6tSkfKNF/Pq6cYOezPUtu6tQBYxiKGnljn2xi3VcxNTPZCOVSd7yIN4AgK0CvTewq
+	 FiHMhxNmvVDSBqwatqRTcG/vuOrVX8IwOrujatiodc+NR/4qu/GDxLDSlfmw98yU+8
+	 yM4OfmaxoflDQ==
+Date: Thu, 18 Sep 2025 17:18:04 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Kuniyuki Iwashima <kuniyu@google.com>
+Subject: Re: [PATCH net-next] mptcp: reset blackhole on success with
+ non-loopback ifaces
+Message-ID: <20250918161804.GZ394836@horms.kernel.org>
+References: <20250918-net-next-mptcp-blackhole-reset-loopback-v1-1-bf5818326639@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250918-net-next-mptcp-blackhole-reset-loopback-v1-1-bf5818326639@kernel.org>
 
-On Thu, 2025-09-18 at 01:13 +0200, Filip Hejsek wrote:
-> Hi,
->=20
-> I would like to request backporting 5326ab737a47 ("virtio_console: fix
-> order of fields cols and rows") to all LTS kernels.
->=20
-> I'm working on QEMU patches that add virtio console size support.
-> Without the fix, rows and columns will be swapped.
->=20
-> As far as I know, there are no device implementations that use the
-> wrong order and would by broken by the fix.
->=20
-> Note: A previous version [1] of the patch contained "Cc: stable" and
-> "Fixes:" tags, but they seem to have been accidentally left out from
-> the final version.
->=20
-> [1]: https://lore.kernel.org/all/20250320172654.624657-1-maxbr@linux.ibm.=
-com/
->=20
-> Thanks,
-> Filip Hejsek
+On Thu, Sep 18, 2025 at 10:50:18AM +0200, Matthieu Baerts (NGI0) wrote:
+> When a first MPTCP connection gets successfully established after a
+> blackhole period, 'active_disable_times' was supposed to be reset when
+> this connection was done via any non-loopback interfaces.
+> 
+> Unfortunately, the opposite condition was checked: only reset when the
+> connection was established via a loopback interface. Fixing this by
+> simply looking at the opposite.
+> 
+> This is similar to what is done with TCP FastOpen, see
+> tcp_fastopen_active_disable_ofo_check().
+> 
+> This patch is a follow-up of a previous discussion linked to commit
+> 893c49a78d9f ("mptcp: Use __sk_dst_get() and dst_dev_rcu() in
+> mptcp_active_enable()."), see [1].
+> 
+> Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/4209a283-8822-47bd-95b7-87e96d9b7ea3@kernel.org [1]
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> Note: sending this fix to net-next, similar to commits 108a86c71c93
+> ("mptcp: Call dst_release() in mptcp_active_enable().") and 893c49a78d9f
+> ("mptcp: Use __sk_dst_get() and dst_dev_rcu() in mptcp_active_enable().").
+> Also to avoid conflicts, and because we are close to the merge windows.
 
-Sorry, that patch might actually end up being reverted, so please wait
-until this clears up. We are still debating whether the Linux
-implementation or the spec should be changed.
-
-Best regards,
-Filip Hejsek
+Reviewed-by: Simon Horman <horms@kernel.org>
 
