@@ -1,87 +1,99 @@
-Return-Path: <stable+bounces-180586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E2DB87050
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 23:10:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2588BB872E8
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 23:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A51E97BCFE5
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 21:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E168A1C87B3A
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 21:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5188F2F5305;
-	Thu, 18 Sep 2025 21:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD73F2D7DDE;
+	Thu, 18 Sep 2025 21:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpGw0jGR"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E8mRoC96"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838F2F3C03;
-	Thu, 18 Sep 2025 21:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572D72222B4
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 21:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758229820; cv=none; b=W4BgaaNW3Ejk6yNKJx5txuFJ1HPSOXqG43CuS6G80ApF+7qeKcJHJiHx99r60K9YU2XFMTkRm9zXQevrbHstfzDNMMsQMmmFH/uro9H9leeTdoUwSaY/H5/j6X3MvLgkSOKFNMHLeXwmWMG9lMtRuPtYUPXL1hhH21SfHVil/So=
+	t=1758232334; cv=none; b=aBDQuEjIxDvuDm9/e4EIQp4wjP+kxUwdW6tdJXcBszkJ30+Jjcmni+b8ki4MAz5MqQv35YvhqR/mUbFXbXRAlSmVjv3RAIm7IIRw3vU9n7Fnhr4DhbpApeuiW+wQLpSJh+jcP/FNz5Yba3c5DyKznt3UAfL1S8kv1JP1co18xF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758229820; c=relaxed/simple;
-	bh=L/0fJfUvECLEcb6+QI5nnYxmkm3fVlEfEg6i5rtgZPM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R3Tfd4uUfwN7Sca51S3yQcUj7CfLnUXZuKKgr6b0Q5nyvbkJARP881oI96HhEbfcmB9yY8qAw8HSeL4bs3RR0u3SNNyN0n66vfYkT28Q7mdzutGEEZqt7R2q3v/Dvaug88OOxdjJR4ANfj5A+PxUnhR8DTtt2SDVSTzEaX3GrWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpGw0jGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C3EC4CEE7;
-	Thu, 18 Sep 2025 21:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758229819;
-	bh=L/0fJfUvECLEcb6+QI5nnYxmkm3fVlEfEg6i5rtgZPM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpGw0jGRD9kwuFdEm1fzXk65vmgf4R+xGuDbhnIivUESJs1d1+qKqodEeD41Ukl4/
-	 UllTfbSHFGPTJIaqwZiEyIQ/1fKPXOWR9I6BUA3j2XBdNS51uzI1JXx/s9wP652ymE
-	 o1myDzCN1BPXTojyAYT82kWjzg5VUJHFv4RgWGs6cjJnOtK6yapWrp/wJLLNKkpBwr
-	 tPuknM/4JI1jqFDDpjGvtCjCxUrRu2hzkr3OxL15JFPB8il9HTuY9UIcUJ0l9sNHv8
-	 geOC0NJTlnKYBd+ETksupKw1HvUO+RtLCV2JqKbxHeA9dL6E+2eVLCfPj5tuXjg+mn
-	 o3An2VAmWidBg==
-From: Will Deacon <will@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-perf-users@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] perf/arm-cmn: Fix CMN S3 DTM offset
-Date: Thu, 18 Sep 2025 22:10:06 +0100
-Message-Id: <175822310579.3544708.17568166573613612200.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <f1248eedc2d082c80f5299747acedc8decb94c70.1758212731.git.robin.murphy@arm.com>
-References: <f1248eedc2d082c80f5299747acedc8decb94c70.1758212731.git.robin.murphy@arm.com>
+	s=arc-20240116; t=1758232334; c=relaxed/simple;
+	bh=Ipq/8bMEmZ3YBB5MvHG7bBIQs7fEdskNxCmPXaIoyDg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Qd+HpvkoXX/MWfrHq7UJMpRZt2eirHzdfh6cpW8pgWhfBmsTsF4Bf4nOFv2oEwAzGXzzF3Vovs/QwbobTAgvPJqeqzrnPHdaFiv6xviBT2TgCWF+esmhf5okiojGkAkaZPEYYZUBI+ihGXRnGoAf3hcjx78+HpWKTV7oFsRWSkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--angeladetula.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E8mRoC96; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--angeladetula.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3307af9b595so678769a91.0
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 14:52:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758232332; x=1758837132; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GYOx61hntVPS8SRxPrDcvDgBzheZb9eAW8Va69wNEpA=;
+        b=E8mRoC966Uzm29jX3osvHTJI2KL6bKPc/T19rJPIRXKk95Vp66pG1eVnj6L1/Zezfg
+         YOpYJW/ZGbXBXKh6AfSM7dp7wjMr3wKQHkr5JV0p0QVRdBdjL6Lhkp/l14n/NxxMwErl
+         mfM2dPq6ifpiVFprBfLWI/IyLJKO+nn2O+AOeVzVYT9v1v74HYWbmrCnGEfr0yjInNOs
+         vsTKmTVe5biZ/ADaZUi1vGMm4EvS4KV7e7FnNluex1h/MwA6mvEuvc6htuevvT3ke7/Y
+         MIWOdc5OEpNdpQ/z5paF/P2Hvw7crZFD+ehggERWvY97dc0L0f09Y+CIS1J+BEUgXXNv
+         fmrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758232332; x=1758837132;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GYOx61hntVPS8SRxPrDcvDgBzheZb9eAW8Va69wNEpA=;
+        b=JuW8fkj9sEHT+3jFLVe50K/PbHGbue4IZ15ICBr0TCVVXftb8IXobvb5IHy3RLjUqC
+         Xf4+cv5/uqBAcUcIU9kOFFvQrpHONbSNb6rHup8gKZxxtrIXqdgb+kWA7CjfVqpPHjaX
+         RDP/6WJB+BM+1vM3/QZcLWx2I+93N/7BYvUHCLYMlQ0Bzd/N9wi1qCv/SNK+ySja8jkk
+         2n4a4oQpGmEmtPYSRbz9jrbaIDEL26CQXOq7x+wEi9jxmnDoDe+KvLFL5TtJA+xyHhwk
+         qbAD1EWe5br2TpnW/ON6jgimzv47KN3BgsevIZyxiBfPHOVUuRatLRv+Rgc+7zixO+T/
+         /0Lw==
+X-Gm-Message-State: AOJu0YyLNXkO/Ej5yYzqznlnsYbkPunu8WCJO/EYRMEZBvV4QQfKNMpQ
+	Bajk7O3JAkrTUQZ94fiPVylT41Ou9z5Y2JXb2sh/zY+FKkvGAc5Rk7dT2SsbXknr6aw8rsFyEMv
+	2hJDGN7Y6n5J+PRYx/YgSVveChIPtvbgyG7rsZY12A4BGH81Uyj9rlzbY5OdOF4LGbM3eSKkLMQ
+	ZLKioUkLHeDGw/xKZlhix+eHf0jdYpiAIUDx6gYleYLSQtgPkCBzjedXnAuBgHapbKiZFP
+X-Google-Smtp-Source: AGHT+IGgQI99UJIJxD+7ygUSt4Mcoi3zB6/kj33XSbRnNR5dyvIydoA2dUlmxw8CkrzgTyz87dnBUIOaCNoonciUz+s=
+X-Received: from pjkk4.prod.google.com ([2002:a17:90b:57e4:b0:327:e021:e61d])
+ (user=angeladetula job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3d8f:b0:32e:e5:a90a with SMTP id 98e67ed59e1d1-33097fd0f1fmr1126840a91.8.1758232332436;
+ Thu, 18 Sep 2025 14:52:12 -0700 (PDT)
+Date: Thu, 18 Sep 2025 21:52:07 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.470.ga7dc726c21-goog
+Message-ID: <20250918215208.1108713-1-angeladetula@google.com>
+Subject: [PATCH 0/1] perf/x86/intel: Fix crash in icl_update_topdown_event()
+From: Angel Adetula <angeladetula@google.com>
+To: stable@vger.kernel.org
+Cc: Angel Adetula <angeladetula@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 18 Sep 2025 17:25:31 +0100, Robin Murphy wrote:
-> CMN S3's DTM offset is different between r0px and r1p0, and it
-> turns out this was not a error in the earlier documentation, but
-> does actually exist in the design. Lovely.
-> 
-> 
+This patch fixes a crash in icl_update_topdown_event().
 
-Applied to will (for-next/perf), thanks!
+This fix has already been applied to the 'linux-6.1.y', 'linux-6.6.y', and
+'linux-6.15.y' stable trees. This submission is to request application to the
+'linux-6.12.y' stable tree, as it appears to be still missing there.
+This should also fix kernel bug CVE-2025-38322.
 
-[1/1] perf/arm-cmn: Fix CMN S3 DTM offset
-      https://git.kernel.org/will/c/b3fe1c83a56f
+Kan Liang (1):
+  perf/x86/intel: Fix crash in icl_update_topdown_event()
 
-Cheers,
--- 
-Will
+ arch/x86/events/intel/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+
+base-commit: f6cf124428f51e3ef07a8e54c743873face9d2b2
+--
+2.51.0.470.ga7dc726c21-goog
+
 
