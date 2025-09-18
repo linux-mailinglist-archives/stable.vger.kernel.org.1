@@ -1,101 +1,128 @@
-Return-Path: <stable+bounces-180561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D92B86083
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 18:28:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28546B860DB
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 18:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00AE0162FBF
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:26:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92451BC7EC9
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD503161BB;
-	Thu, 18 Sep 2025 16:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B168E314D09;
+	Thu, 18 Sep 2025 16:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fmstMp9f"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B1A14B06C;
-	Thu, 18 Sep 2025 16:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA9230EF97
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 16:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758212743; cv=none; b=k0atL0BJkjperEk0+b0Wk0ea3sn9BfZ++6vg9IGA1Wvb6k5ClntvG13jxkpYtWPoYjOHxedVngCShwZv7NZW52GCvQ075R+UVkumXR+Ri57y9bVptMoCLonB57StvGRmSjrZ3k9wnuQDcKSJ/PeZEonYg6ZAVJDAfl/1uQR92II=
+	t=1758213093; cv=none; b=O2WZ66nDy9zrwGaBiIh5pvJJnNa1KH7pUGSEnnNzfaNJdQJ2cLlzy8Ccmh7MCSR0TN2PoTtDJfyCAwqAgCcYToQ1VBSL1D0C9cL9Nl0OzKa86nMomSuDi2sd44DfdC+xoNz2gFQdY7790w8S4pNcQIC/CEfiagQT8ppNwKWjlQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758212743; c=relaxed/simple;
-	bh=yoJm0h0nEd1ymiNbwpGC0swfY0I68k78+ZMpOcMi0mI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ieWIstLSZyM6jUlAMAPuSfC0JwGBefqV3YusInBpNmYb6k25gyGiGLoFseybssCCa2TZw6qjmfPpFxPGIamFdLHlkF+JaaRXelsQnjupJYYxsw5XXgKVyML3mBH5zIgXW1KWJII0dNvv7vgCKvZSdh753DacVnvyG1Jd3/XGsYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 79777176C;
-	Thu, 18 Sep 2025 09:25:32 -0700 (PDT)
-Received: from 010265703453.cambridge.arm.com (010265703453.cambridge.arm.com [10.1.33.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A7FB73F673;
-	Thu, 18 Sep 2025 09:25:39 -0700 (PDT)
-From: Robin Murphy <robin.murphy@arm.com>
-To: will@kernel.org
-Cc: mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-perf-users@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/arm-cmn: Fix CMN S3 DTM offset
-Date: Thu, 18 Sep 2025 17:25:31 +0100
-Message-Id: <f1248eedc2d082c80f5299747acedc8decb94c70.1758212731.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1758213093; c=relaxed/simple;
+	bh=3KNQBrmuTJnLnWcZwGaVeyMZ6PXTJNOElnm2MX06lJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y9SFH31KPDhh8nuFBZFDlMyUztVym/HI70I1/nmKJOV1L4yL62QR5GSonn6awkacGqnby4SsVegT67+G3WCOrbd9j4dONKCwfWHOq4Yze5/oYSrwwjeR4ohCg51Sp3uAfamnrb8kivOIi4/TFKH4nd7UnxV0gaWyUudu3k4FfFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fmstMp9f; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <abc0f24a-33dc-4a64-a293-65683f52dd42@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758213079;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+1p1A6UBHOrPki1VrYn/yNmVc9P78XZFmtuQXerf7RA=;
+	b=fmstMp9fFges487/IV/ethWtE9xqvl2Y3omU0qNnsk16lV33roM+pUJJvKak8LfzJmdCAl
+	iti9nBCbaf6nwA8oIkoucZHMwaU5feBVcCs2OngyWavgznRf4PgymK6tFR38r9jLVj5nuH
+	BhOjnbq/D6J6nfPRrgripqVxBXXgsOo=
+Date: Thu, 18 Sep 2025 09:31:12 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH] RDMA/rxe: Fix race in do_task() when draining
+To: Gui-Dong Han <hanguidong02@gmail.com>
+Cc: zyjzyj2000@gmail.com, jgg@ziepe.ca, leon@kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ baijiaju1990@gmail.com, stable@vger.kernel.org, rpearsonhpe@gmail.com
+References: <20250917100657.1535424-1-hanguidong02@gmail.com>
+ <a321729d-f8a1-4901-ae9d-f08339b5093b@linux.dev>
+ <CALbr=LZFZP3ioRmRx1T4Xm=LpPXRsDhkNMxM9dYrfE5nOuknNg@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+In-Reply-To: <CALbr=LZFZP3ioRmRx1T4Xm=LpPXRsDhkNMxM9dYrfE5nOuknNg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-CMN S3's DTM offset is different between r0px and r1p0, and it
-turns out this was not a error in the earlier documentation, but
-does actually exist in the design. Lovely.
 
-Cc: stable@vger.kernel.org
-Fixes: 0dc2f4963f7e ("perf/arm-cmn: Support CMN S3")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
- drivers/perf/arm-cmn.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+On 9/17/25 7:21 PM, Gui-Dong Han wrote:
+> On Thu, Sep 18, 2025 at 3:31 AM yanjun.zhu <yanjun.zhu@linux.dev> wrote:
+>> On 9/17/25 3:06 AM, Gui-Dong Han wrote:
+>>> When do_task() exhausts its RXE_MAX_ITERATIONS budget, it unconditionally
+>>   From the source code, it will check ret value, then set it to
+>> TASK_STATE_IDLE, not unconditionally.
+> Hi Yanjun,
+>
+> Thanks for your review. Let me clarify a few points.
+>
+> You are correct that the code checks the ret value. The if (!ret)
+> branch specifically handles the case where the RXE_MAX_ITERATIONS
+> limit is reached while work still remains. My use of "unconditionally"
+> refers to the action inside this branch, which sets the state to
+> TASK_STATE_IDLE without a secondary check on task->state. The original
+> tasklet implementation effectively checked both conditions in this
+> scenario.
+>
+>>> sets the task state to TASK_STATE_IDLE to reschedule. This overwrites
+>>> the TASK_STATE_DRAINING state that may have been concurrently set by
+>>> rxe_cleanup_task() or rxe_disable_task().
+>>   From the source code, there is a spin lock to protect the state. It
+>> will not make race condition.
+> While a spinlock protects state changes, rxe_cleanup_task() and
+> rxe_disable_task() do not hold it for its entire duration. It acquires
+> the lock to set TASK_STATE_DRAINING, but then releases it to wait in
+> the while (!is_done(task)) loop. The race window exists when do_task()
+> acquires the lock during this wait period, allowing it to overwrite
+> the TASK_STATE_DRAINING state.
+>
+>>> This race condition breaks the cleanup and disable logic, which expects
+>>> the task to stop processing new work. The cleanup code may proceed while
+>>> do_task() reschedules itself, leading to a potential use-after-free.
+>>>
+>> Can you post the call trace when this problem occurred?
+> This issue was identified through code inspection and a static
+> analysis tool we are developing to detect TOCTOU bugs in the kernel,
+> so I do not have a runtime call trace. The bug is confirmed by
+> inspecting the Fixes commit (9b4b7c1f9f54), which lost the special
+> handling for the draining case during the migration from tasklets to
+> workqueues.
+Thanks a lot for your detailed explanations. Could you update the commit 
+logs to reflect the points you explained above?
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index 50695b95fbfd..6698f0ec94e9 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -65,7 +65,7 @@
- /* PMU registers occupy the 3rd 4KB page of each node's region */
- #define CMN_PMU_OFFSET			0x2000
- /* ...except when they don't :( */
--#define CMN_S3_DTM_OFFSET		0xa000
-+#define CMN_S3_R1_DTM_OFFSET		0xa000
- #define CMN_S3_PMU_OFFSET		0xd900
- 
- /* For most nodes, this is all there is */
-@@ -233,6 +233,9 @@ enum cmn_revision {
- 	REV_CMN700_R1P0,
- 	REV_CMN700_R2P0,
- 	REV_CMN700_R3P0,
-+	REV_CMNS3_R0P0 = 0,
-+	REV_CMNS3_R0P1,
-+	REV_CMNS3_R1P0,
- 	REV_CI700_R0P0 = 0,
- 	REV_CI700_R1P0,
- 	REV_CI700_R2P0,
-@@ -425,8 +428,8 @@ static enum cmn_model arm_cmn_model(const struct arm_cmn *cmn)
- static int arm_cmn_pmu_offset(const struct arm_cmn *cmn, const struct arm_cmn_node *dn)
- {
- 	if (cmn->part == PART_CMN_S3) {
--		if (dn->type == CMN_TYPE_XP)
--			return CMN_S3_DTM_OFFSET;
-+		if (cmn->rev >= REV_CMNS3_R1P0 && dn->type == CMN_TYPE_XP)
-+			return CMN_S3_R1_DTM_OFFSET;
- 		return CMN_S3_PMU_OFFSET;
- 	}
- 	return CMN_PMU_OFFSET;
--- 
-2.34.1
+The current commit logs are a bit confusing, but your explanation makes 
+everything clear. If you rewrite the logs with that context, other 
+reviewers will be able to understand your intent directly from the 
+commit message, without needing the extra explanation. That would make 
+the commit much clearer.
 
+Any way,
+
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+
+Zhu Yanjun
+
+>
+> Regards,
+> Han
 
