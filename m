@@ -1,117 +1,125 @@
-Return-Path: <stable+bounces-180465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1F2B8262A
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 02:36:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55BE9B826FC
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 02:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5265C1C227F5
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 00:37:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC107202C4
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 00:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794881946C8;
-	Thu, 18 Sep 2025 00:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B802D023;
+	Thu, 18 Sep 2025 00:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Xvlx1QYh"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557E7155C88;
-	Thu, 18 Sep 2025 00:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D542612B73
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 00:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758155802; cv=none; b=iAo+FHdGctq+j5/30tXFf4rT6MP11VcXvZlEY17PSUAfqSh65WE3tY/fRbRcKhMawLgntbJFYFSgTib6aSRS4z99SA0CYhygJKVnAVty+jBb1OtvyvB/JTZ4tXIZ8tQG28nGP9LXtRtBIJChNyOWS6006kFSberaN1ukhkXaIG4=
+	t=1758156459; cv=none; b=ZUDbHDH3aSewwO9u7iftiDqLHIt114Baox6c6KVBZ5PRzf/4PoNHk7ydeWSeq/JBv1x0xy3xGrQqcUHZkEukhnK+KIzA4Z79gkWwlzQeB90mHfswWHZoGT+taxJoMonHdQ6XQwSKcPWPSzD3lH4vklVTLvxNYIts+4GcnbRGLVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758155802; c=relaxed/simple;
-	bh=UayNBM1GmpR7o1Us1R3d49EZMYhUj8lOlbjWmlvGO98=;
+	s=arc-20240116; t=1758156459; c=relaxed/simple;
+	bh=IrbF+vK94gpu/ozn7Qtd6NvlKSesxn8hE2qZizKldxw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p58P7Dccq+LltaTknNbo5m7X/3SJzQcX9p3GXjrSI/IPXxX+wFpAsn4yM/JafIq0OYXhGURZHmKwZ/fAKnSPGHNOxZFLBR1lQYMTXehQv3sAdbqlJ8Ash3me/kOhZ/luzL6koP3Wk0v+Cr6fXiR+vYY45QZgqBXbzszlz6Uk33o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 86760ac8942711f0b29709d653e92f7d-20250918
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:2640ed47-cee0-4871-a8ca-e0afd6265c47,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:7533c8c04f92634043e68b07df599b37,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 86760ac8942711f0b29709d653e92f7d-20250918
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1301637609; Thu, 18 Sep 2025 08:36:32 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id A7C82E009009;
-	Thu, 18 Sep 2025 08:36:32 +0800 (CST)
-X-ns-mid: postfix-68CB5410-860761
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 5C8BFE009008;
-	Thu, 18 Sep 2025 08:36:31 +0800 (CST)
-Message-ID: <f6afc998-f11e-4aac-a190-fbadb97e2d0c@kylinos.cn>
-Date: Thu, 18 Sep 2025 08:36:30 +0800
+	 In-Reply-To:Content-Type; b=NROX7uc9vRx33psmw79DtuUHIuCjs69VjCbTsilgW34oqdvAGK9wQTLLdULyYgCuzL2lTpbkoVx+AUTASOjg8bNsOqGE7TqcEkaE7mwNtMdkvzLNys9nsaoNifjim20x+abTgC8UeAvPJmA/NYPCzewrCSNLcVyy94eeGDvjK7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Xvlx1QYh; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so2161255e9.1
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 17:47:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1758156456; x=1758761256; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dy3po34F373z2LL6aW/ho/h2XKggLTL7CNUt6WWnkWM=;
+        b=Xvlx1QYhwouY7GrnLC4ddxEpoYmHruCJM6XA47zzQZIpxhkM8o5W+MY1AHubPtTZ68
+         Jn+LlqYphah1YKP6on77LaWwWMKLBGm79qFyPx982SbqySesvPLNG4R5+Puvs2DiRhHs
+         AW8I+GjlyEL61y4oacfQdwOeVJFcmnEPWNiNLldLMesEgeCrsBskrRFHYfmZ37AA2MiM
+         0TIjhItsjV4XUORSKslLNr5ai/lppRsd2Wr9bg8XLK6268rFwDS/N7tJ2BOSmm3lsS1v
+         nO+sOJ5z4m+fYhNB/X4ItJvPzBQYIxn8tazRbBhf96gnjDT5ox7dE0FBGRzyXw8f4imc
+         pA1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758156456; x=1758761256;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dy3po34F373z2LL6aW/ho/h2XKggLTL7CNUt6WWnkWM=;
+        b=XD9nv9igxf/ypx37HfoyQJibV+oshQIFX7wyKvi+rBTyIr1pasLmrMeReiQ0O9AWh0
+         1BCNo5CZSNz5fHY3vINVWu6TE9lS+l/exC9TGyA7qFZQApcNPW9/1El3M1Oz5c8sPxUh
+         3GA0guymWJ/oVTJDJpetCgGIm0/RarcOqNKDLmcr0udW5TbdZ3tyYSQnqMIbQhhDVRzS
+         E0wn9vAzqr4xqUPvCIKN/KNcl/eGdI0xRes69fgkPPEYU21Wb2D1QbZHPD5U7pMS6A1C
+         BI90hlTckEnbWsOd2rsRok98YD5tCBL/duK5AUB6OzHSuIHe4sIAF4X+5+AohuKGG6wZ
+         Ikog==
+X-Forwarded-Encrypted: i=1; AJvYcCUZJT821YkTfUo1lPCBL+LFcO7TdiyQ9UjSY5dYpAAB81m3V72MUK8XwqNeqk8iRVdvuw6Vf2s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPqDs1ZK0H8mDOZQpoqh152G4uf0RrWFwxLwH3ecgy6erETlMt
+	muRTLKdLHbR4PRYS5fBC4ulWlIBPUMJfV9fYynlM0N1vyW8oRYehF74=
+X-Gm-Gg: ASbGncu2EA7pfnoY54IDzOuNZQZaC/B6z0F+85lCacFWGiLdEsFgjtaJNW9OJo9upAk
+	ms9konS6370yOHAzyuKlesSfcUvURM4wKexKo8RJDrtzSk/6cBM6sJVznkY8pjAgI90g49nm2QI
+	sp1ATMiQ/4wqmIwGqySi0+Au1cVYQjujgs19+2sfsHJL2DWg7LX+XdgHUWk4Evy0kA4uIk1SWdF
+	XeOaNrejBBtZORH++XT7IUDHG0VUNxeFD29W3BsaX2vNODdpcxO1jJY11Kqv9WKURrcY2T3fTn0
+	275V9SxD54A3V47WrHqxweyTMM8oevvC7qfC0xO2mt2R6Uy1jgEKeCRosXVguavupMeEGF3PuU6
+	NivbTdxgr3iL7cYae+xhR418zOTOQiCu/R/C+6hP8oBrcOMzTWiMlJveVBYD5//6jE6FI3F8c6f
+	tzgLQp0cfJPf3ZsXYoVA==
+X-Google-Smtp-Source: AGHT+IF2GdKlp1Cj55CMvxh773K38LbN60g3EFJ2JiKm4A5B9QL/on7+DP5zXojEycCtnsrb/d1cTg==
+X-Received: by 2002:a05:600c:1993:b0:45f:2cd5:5086 with SMTP id 5b1f17b1804b1-46201f8b30bmr40989045e9.3.1758156455984;
+        Wed, 17 Sep 2025 17:47:35 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2aca14.dip0.t-ipconnect.de. [91.42.202.20])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f320ff272sm48908065e9.1.2025.09.17.17.47.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 17:47:35 -0700 (PDT)
+Message-ID: <b7a5110c-42b0-48f3-9a68-7681ad588142@googlemail.com>
+Date: Thu, 18 Sep 2025 02:47:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
-To: hansg@kernel.org
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, mario.limonciello@amd.com, rafael@kernel.org,
- stable@vger.kernel.org
-References: <17cc74d6-2e49-4370-ae37-39cddfe67d7d@kernel.org>
- <20250912103538.3657242-1-zhangzihuan@kylinos.cn>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <20250912103538.3657242-1-zhangzihuan@kylinos.cn>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/101] 6.6.107-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250917123336.863698492@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250917123336.863698492@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+
+Am 17.09.2025 um 14:33 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.107 release.
+> There are 101 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
-=E5=9C=A8 2025/9/12 18:35, Zihuan Zhang =E5=86=99=E9=81=93:
->> 1. There must be a GPU driver for these laptops somewhere?
->> Even if out of tree using a laptop without a GPU these days
->> just does not give a good user experience. So fix the GPU
->> driver to call acpi_video_register_backlight().
->>
->> Note acpi_video_register_backlight() is deliberately exported
->> without requiring the consuming out of tree kernel module to
->> be GPL to allow this.
->>
->> Other options would be:
->>
->> 2. Add some special heuristics for Zhaoxin CPUs,
->> the kernel already has a CPUID match mechanism for
->> things like this. This could potentially be combined
->> with a DMI system-vendor check to only do this special
->> case handling on e.g. Lenovo and Inspur laptops.
->>
->> 3. Instead of adding the CPU-id based special case
->> just outright use DMI quirks. In this case lets try
->> to use substring matches to cover multiple models
->> with a single entry so as to not grow the quirk
->> table too much.
->
-> Got it, thanks!
->
-> In fact, we have tried a few approaches (cmdline option, CPU-ID based q=
-uirk, and DMI quirk),
-> and all of them work.
-> I will sync this information with Zhaoxin to see which way they prefer.
+Beste Grüße,
+Peter Schneider
 
-Zhaoxin has confirmed that they will handle this through their own GPU=20
-driver,
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-so we don=E2=80=99t need to take any additional actions on our side.
-
-Thanks!
-
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
