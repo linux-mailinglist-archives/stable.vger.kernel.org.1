@@ -1,129 +1,121 @@
-Return-Path: <stable+bounces-180495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B920B83989
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 10:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31641B83C1E
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 11:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CDFC7211D3
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 08:51:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAE65188954B
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EF32FF159;
-	Thu, 18 Sep 2025 08:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4702FCC1A;
+	Thu, 18 Sep 2025 09:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrWsTO03"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YRdfQw3i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9CD2FE594;
-	Thu, 18 Sep 2025 08:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C549D2C0263
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 09:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758185490; cv=none; b=Hjwvzgw6y8winIqgNtoBFEUf6xYLeWtmt8SC6XkkpHIPTFz4wc+jqCwX0OXeobys6Y19ihDzRwSP/iFEP3gX9b4kG/Ksv6jQkB8DnHlHzP+ymMtd6G0nocYligOZfLMtGvnpHZtc1hNbh4C6yA9O9WqX5iSQs7m2VXNsmaSeqgg=
+	t=1758187352; cv=none; b=fWm+oyLd8RKZe3ZvhYvHDOqkc5QdmYdS+92cpZYh3bmmGOkYZijknITy0oWGeAfu65DYkI73rkVOKScu/nW3JFekzKDms7QVWvQHlE1r6FpuK21GWTWmEGKDr+WCu9bIUmYjh/zoQT3GIBmUx46CvcenSC61BIltO+cB2zNR0d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758185490; c=relaxed/simple;
-	bh=EOhcyQviMMRhx2W39PIzcaMVrFvf9rRwgBG7ZlEa5Qk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=niAkxSFmXvPA00pic9rjsnVSPtdUvh5W9NLJgwYlECWOcQCWgMKX7DsDorqTzB9yzk5ZMEyeWqwm9Pmm32YmnRoBBeWgIv4A542FFLiTr3su3yDaexf160dW3Ds8XZJ9+ut+NyZczFlLTHVkJdbwTpT28b0/iMnT8wwsROUKUP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrWsTO03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF19C4CEF7;
-	Thu, 18 Sep 2025 08:51:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758185490;
-	bh=EOhcyQviMMRhx2W39PIzcaMVrFvf9rRwgBG7ZlEa5Qk=;
-	h=From:Date:Subject:To:Cc:From;
-	b=rrWsTO03uNLR2OpUo2Y+lCxaOienaLS0y3f5lE2pdbvNZrvJ9gXyEgyx6CNIHoCn/
-	 CeNwxbahgBoqvIm/FxvphGRWISHEdb8kzeOvArQLXBzZNZ4tZS9WCNn5yuifS75F/h
-	 G6vg04mIcgPZ9DHskv7HAl30TAzDvSdWpKAvAfwTH3rEPmVVAG1sb6902PZMszKkeL
-	 Mh9A9WvXDPFlxRHoLckAeMl143/a1IM8Gend6hpFpgK2va6LsQ57pYlbIM6a57UWR9
-	 b6Yd615bm8+ygtDJvLSccESMHjHv3SZ4kUk+5sZA0oN5QHvMwrFK/7uVhAgyKZkJI+
-	 CrwSaTPPanSQg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Thu, 18 Sep 2025 10:50:18 +0200
-Subject: [PATCH net-next] mptcp: reset blackhole on success with
- non-loopback ifaces
+	s=arc-20240116; t=1758187352; c=relaxed/simple;
+	bh=o62IgxppByvf1UamDAzQ6GW1JgxOKWtl1wFnIbCsGIw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GBldvE+vYRiBUtE/OU/iyVEssW2Y7A8J+8QaTSV5v56dlN4EKTGx9nDjYtG5CkuREhQ6xrKwcEXPTKCYcMlE2mSSJ7eFZvKBIYc2qQad3XT11fv11sXFjdxXP0hc3DgJLFE/YLbvblOBddzguCSU9ByScAANuTsnPvHm7ydyLcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YRdfQw3i; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758187351; x=1789723351;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=o62IgxppByvf1UamDAzQ6GW1JgxOKWtl1wFnIbCsGIw=;
+  b=YRdfQw3iuzAoZnV6Nll1lpwciISM81loR0NEQ9HLBlFvs04ldD3rZuT5
+   /qMHWK5mU7koW4TpZHt6EVOXGFN/8nP1hbseiXXmvgyLLhGdlnZK+jFjR
+   f+FeD3xZ2ptVovypY7EnWq5Zvz3hZI2tG7JzgGH1P2xPReCCoWcesemHw
+   zjDFAUAe1bPYgSBOaq8Bj5zHpBKeUStuWcT3M+D60D+YbgqOX9PVgflm5
+   02uVkoTuFCLXYop5Ik8V66FRQaz1DeHDvDTwi7VIl4a2vcKWIVRoFlLSC
+   II4mUH1hBEYLu/dZ+M9A8sypRoiSZh4WwGjg9pp9p2ZNAH7/c47/Mb8EM
+   g==;
+X-CSE-ConnectionGUID: 3JunqeCETtaMjWVEIgs8tg==
+X-CSE-MsgGUID: VnhMQBLfSa2YzTRp1wnRLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="48081689"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
+   d="scan'208";a="48081689"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 02:22:30 -0700
+X-CSE-ConnectionGUID: DBfBCONhQk2GmHHDmiaWHA==
+X-CSE-MsgGUID: 6krv/U/2Seq9qWLDRMvQRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
+   d="scan'208";a="206284854"
+Received: from abityuts-desk.ger.corp.intel.com (HELO fedora) ([10.245.244.175])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 02:22:29 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] drm/xe: Don't copy pinned kernel bos twice on suspend
+Date: Thu, 18 Sep 2025 11:22:05 +0200
+Message-ID: <20250918092207.54472-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250918092207.54472-1-thomas.hellstrom@linux.intel.com>
+References: <20250918092207.54472-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250918-net-next-mptcp-blackhole-reset-loopback-v1-1-bf5818326639@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAMnHy2gC/zWNwQqDMBBEf0X23IUkVIj+SulB46qLaRKSUATx3
- 10ED3N4M/DmgEKZqUDfHJDpz4VjENCvBtw6hIWQJ2EwyrSq0xYDVcle8ZeqSzj6wW1r9ISZikw
- +xjRKhZM1rtWW3qqbQWwp08z7/fSBRwLf87wAanYj6IMAAAA=
-X-Change-ID: 20250918-net-next-mptcp-blackhole-reset-loopback-d82c518e409f
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Kuniyuki Iwashima <kuniyu@google.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2035; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=EOhcyQviMMRhx2W39PIzcaMVrFvf9rRwgBG7ZlEa5Qk=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJOn+Cbx3R/a6HmPg7hL8vc48p7vu/ViJORv6Q589HC0
- xPiOWuyOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACZyPJaR4YRHFLd78r/U1cmt
- 927t4DXVYLR7+e7qhQ0rWKsjZ4XaVjEyXM8u37p/S6S0h+qvmCq9N/+FW9TvpCoXMAjVLmLJff2
- fFwA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When a first MPTCP connection gets successfully established after a
-blackhole period, 'active_disable_times' was supposed to be reset when
-this connection was done via any non-loopback interfaces.
+We were copying the bo content the bos on the list
+"xe->pinned.late.kernel_bo_present" twice on suspend.
 
-Unfortunately, the opposite condition was checked: only reset when the
-connection was established via a loopback interface. Fixing this by
-simply looking at the opposite.
+Presumingly the intent is to copy the pinned external bos on
+the first pass.
 
-This is similar to what is done with TCP FastOpen, see
-tcp_fastopen_active_disable_ofo_check().
+This is harmless since we (currently) should have no pinned
+external bos needing copy since
+a) exernal system bos don't have compressed content,
+b) We do not (yet) allow pinning of VRAM bos.
 
-This patch is a follow-up of a previous discussion linked to commit
-893c49a78d9f ("mptcp: Use __sk_dst_get() and dst_dev_rcu() in
-mptcp_active_enable()."), see [1].
+Still, fix this up so that we copy pinned external bos on
+the first pass. We're about to allow bos pinned in VRAM.
 
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/4209a283-8822-47bd-95b7-87e96d9b7ea3@kernel.org [1]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: <stable@vger.kernel.org> # v6.16+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-Note: sending this fix to net-next, similar to commits 108a86c71c93
-("mptcp: Call dst_release() in mptcp_active_enable().") and 893c49a78d9f
-("mptcp: Use __sk_dst_get() and dst_dev_rcu() in mptcp_active_enable().").
-Also to avoid conflicts, and because we are close to the merge windows.
----
- net/mptcp/ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_bo_evict.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-index e8ffa62ec183f3cd8156e3969ac4a7d0213a990b..d96130e49942e2fb878cd1897ad43c1d420fb233 100644
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -507,7 +507,7 @@ void mptcp_active_enable(struct sock *sk)
- 		rcu_read_lock();
- 		dst = __sk_dst_get(sk);
- 		dev = dst ? dst_dev_rcu(dst) : NULL;
--		if (dev && (dev->flags & IFF_LOOPBACK))
-+		if (!(dev && (dev->flags & IFF_LOOPBACK)))
- 			atomic_set(&pernet->active_disable_times, 0);
- 		rcu_read_unlock();
- 	}
-
----
-base-commit: b127e355f1af1e4a635ed8f78cb0d11c916613cf
-change-id: 20250918-net-next-mptcp-blackhole-reset-loopback-d82c518e409f
-
-Best regards,
+diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
+index 7484ce55a303..d5dbc51e8612 100644
+--- a/drivers/gpu/drm/xe/xe_bo_evict.c
++++ b/drivers/gpu/drm/xe/xe_bo_evict.c
+@@ -158,8 +158,8 @@ int xe_bo_evict_all(struct xe_device *xe)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
+-				    &xe->pinned.late.evicted, xe_bo_evict_pinned);
++	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.external,
++				    &xe->pinned.late.external, xe_bo_evict_pinned);
+ 
+ 	if (!ret)
+ 		ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
 -- 
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
+2.51.0
 
 
