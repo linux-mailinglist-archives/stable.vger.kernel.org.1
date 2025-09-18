@@ -1,120 +1,164 @@
-Return-Path: <stable+bounces-180503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FF2B841CC
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 12:33:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66507B842FE
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 12:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF88D1C234AE
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 10:32:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54CCF174BF1
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 10:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA372FB623;
-	Thu, 18 Sep 2025 10:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1D55I4vO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74882F90F0;
+	Thu, 18 Sep 2025 10:42:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591902F99A5
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 10:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21502BEFEA
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 10:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758191439; cv=none; b=L+SS0M0NLngDAH3uvgaLCn/JAiqcJkqq+rMuEXCWdOrIkMz+IrXd8dkIOhV75a8lrjohCT3tTFZp8YKCIyulYdhRWq72g1BGXbzTHOLUBqbBQwrSTze6tt5+xPq5Ur6f7Rz8JGg8X3Y/NNz78auRy1pVOm/yiTxFopr0x/5mlYA=
+	t=1758192138; cv=none; b=ZO7LuD+T+5+Bt+m2abJeE9KowF+vG/BT8FT//2I/Px2rOt02NmAxo6H/1sStb/sNHt1PP5aRX3O+6m6AT1ReympH53FZ3zHjXk9YgC8h2Bztk7b/IUbgw/mDwAyps362RAcPybYfgM3JBFs3Vj5Bq5HWm2UPty5v2Q/n2ROcxaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758191439; c=relaxed/simple;
-	bh=9IGxOSD8/IQWLwc8jT7mSjBjvXiOryrCfl8S8dMZveI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ckbPaqex8ISvHNyW4vZRlWlJek7/xmiHGFHWSLc3eD/OVUn8kPkoZmd42bkfzdVLJN8Oo/W8owd+mJ0XY6Q15infowNKa9nfhhqAC0QQRT4/DD6SxGsLdv/0ARGAIObdehiMWYIKCyfgZ0mz2JRvNC+dGLaTbreP3s6hEArfYTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1D55I4vO; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45cb612d362so4283395e9.3
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 03:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758191436; x=1758796236; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9g+ayt4FM2fztSLOAfcyGb2gFshK+qygOJzTnKa0+m8=;
-        b=1D55I4vOpZiOLe7yHvECiVpaFdSXj7kok9kCzIeR0agutFDvzg1H+IEGsxlkT45/Tz
-         cEKc5dtZt+EfbUlKHeKybV+u8/G10xG4iyfEIMPeQaL74aVKNv5uxAegDkQDkeztJzTa
-         MY7+t1wQn9pQOeTy+nv7yqwFVpUL3ZBkCo6ES8jYdVviCNHUo8xUla/A7zDz1Ln8reof
-         c9TsGk5EHx99fifzaJdTXsbALvsvJn+LYG+0dfoA8VGgJxY5ZRS7yxxUWc1LRMd/1E/E
-         eDxQIoLtzsypHI6DnI4PZATgZVBXAAL5SHOQmHx/TMlKbX/GOWo/QU24an1zMMt7xgh/
-         4C2Q==
+	s=arc-20240116; t=1758192138; c=relaxed/simple;
+	bh=kmRZY8w5k0zkpK6hrl5VtFf84jTuGxFx4DLf6XrQZNo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BEKGlGa8gvl68876KIOFo0Sw64WkB+sWP+MaX1eujrqN9K4NrI0VqYWmdbl3TXqMRpq8kG5LiiAWz4jfy6E2agR1Ei6yoVET9ODjZ1umWtC5ddyYK6u9tXWHmIN8Q5xgA0pS0D0aI/CFCm17XJKcOHgaVThRNBnObPwv0n+RNkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b07883a5feeso151625966b.1
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 03:42:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758191436; x=1758796236;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9g+ayt4FM2fztSLOAfcyGb2gFshK+qygOJzTnKa0+m8=;
-        b=lnIvit0mZIqZJOGigUcC32gzgz8h/hT1jHJpgJ9yM1h+TfAKUzHjIThWOIVgnidHOz
-         jYG2sW4bprV1xFIIKJZnuLxrByQv2yxjuCzjCZcec+ksEuwEYdv28c4gxoMZuo/wGGgV
-         lpyDK90homGx0jYQtiKQ71Uj6TkO6GAUbmCiX5K91+7JF7AMN4CgiblRFSRxfVqB7nM/
-         A2PMIEfFVpq6NnC0PtqQFay+slWw3u4YuZhOqJ0bm3UnpOP5sW0VLfsN6EBDmBcPedO7
-         cfwI7VSM/BFRt3hbsOY+/KfsRYWs8K+gn9j2nnEIm3wc8tJ9YXOrLB2c3i1glj+PxpT8
-         DD7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUdpZkBaZkdX2/8XyCutaqvK6y2t8WLpPYK+nnjWnV+xqDXCG7bXiAgysk38WgHSKBgZaCMSuw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyItbX2JC8aOi5KILZjVB569iVRtQQBH+P8uFGz43U3BO/JR6iO
-	lqt3pdW4rKkDQoUn5oj8tPVlFbJteknZYt3uyz9Tuutb9XRjqXwpB3kKnulJFONLqbekB1AfQA=
-	=
-X-Google-Smtp-Source: AGHT+IHLme5GiJqIwrRwEMO5+ZWXnbB3UysoUpD5npyfKiKL033RbmiEockBVOaN3XQJRx9xa79Wam2T
-X-Received: from wmbeq8.prod.google.com ([2002:a05:600c:8488:b0:45d:d39b:53ca])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d05:b0:459:db7b:988e
- with SMTP id 5b1f17b1804b1-46202a0e68dmr48837855e9.13.1758191435539; Thu, 18
- Sep 2025 03:30:35 -0700 (PDT)
-Date: Thu, 18 Sep 2025 12:30:12 +0200
-In-Reply-To: <20250918103010.2973462-10-ardb+git@google.com>
+        d=1e100.net; s=20230601; t=1758192134; x=1758796934;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nxYxoWnyh3CIAHNSBMBX+856QflQb2Xo+2DXZq8kCNM=;
+        b=VviAX5PUt1QVSfLYshTkq6Uec0T3sC2/BYl0uog/IB1/derUgRFkws9Tm2lK81O7nG
+         4MwIg5ATcj3J8HTvYoCSmdLjZQnGVMuZ9/jHZuiwaqUDPMjtr2wvszIgYANnhmiuxMuU
+         qnw5VS2jZkZOBk0IDVCfBoIylRGVnbi6uSB3PWWQ2yHKPZQGEM9oF9u9y6Kp/aPgqBMA
+         PrAokNPGhc+us41Kbq47zdXuUD+CRiF9Xfy0ECIWUxputz0u8VkG7sNlQ9pwK5uCCdTw
+         oI/Oyz9uIVBnvl+eYuQN+Pv1TJ23fzyGMzgAt8Oe2X2WlfUagVDKa6p2pa1cxQKHXLfG
+         9vRw==
+X-Forwarded-Encrypted: i=1; AJvYcCXcbjlWhQ4LX8kbw0ZHSiUd39KgYV3KwvvHKFk9vgTisqkwtT8gZEshYkmUuerA43iKmAevTAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygD68U/jQBwHnsvF9l96uoC8xcjWwDhyzE8BNKq8VOzVDlYcRv
+	Rb65qjc0afJUwLbt/aYCLcGYAG/fsVQVRlLEWWmVEXKFSok6OXmQwczQ
+X-Gm-Gg: ASbGncsYFgWkT1WEtCdAErFjvZ4RLQ2+ddzEv8dx3kI6+ThyjUkHb3wmCTol5rNqrzb
+	1yQwpOd/cXRlWT7fQp7zkYUy9CdghMfyQkMDzR+vE45+2q13ONfxNaEgIaIsNeIOTOuQ9zFF1v1
+	XCVq1vm6RPU9G7nQ7AuL+7WdJYRq/nXJsPK7X8kI4anLYleQxomc4P8wqpMbd/MOpms+kqJcyuP
+	HiJz9DQL5TRmRPY9+A8cXMclHL3wiNwaV2Np4+Qb6szSomFw/UFvGu7mr69uQRMbt+xQBGWTV+1
+	zJdW38zyA7uhWHOVH6nQqJy/u66ylspTLdrGJt0iCKNEIOt17QQ/pkLoZ1K7aR5oWpJ3/YI6HFd
+	FatCX+yuOStbRvdhFRCOPIn/ivHlqbXB1
+X-Google-Smtp-Source: AGHT+IFPlnj0GWz3JtOomOSOaIy/h3xVJRcQvzsL6J7IalJov4TbRyxQPOXC8EJWvJr+zn6eCnYukA==
+X-Received: by 2002:a17:907:2d2b:b0:b04:b435:fc6b with SMTP id a640c23a62f3a-b1bc02f6656mr572679066b.60.1758192133735;
+        Thu, 18 Sep 2025 03:42:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:41::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd2816ebcsm167488966b.109.2025.09.18.03.42.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 03:42:13 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net v5 0/4] net: netpoll: fix memory leak and add
+ comprehensive selftests
+Date: Thu, 18 Sep 2025 03:42:04 -0700
+Message-Id: <20250918-netconsole_torture-v5-0-77e25e0a4eb6@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250918103010.2973462-10-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=804; i=ardb@kernel.org;
- h=from:subject; bh=6f4GfQJsdA/kppXTxBZ4Rl0+1i1W3t0MYvIV3huOmLg=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeP0fVOTx8nmnjWPnBfWRlyx2Nust7U+6NwL8w/u6QyND
- RPLOTw7SlkYxLgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwERqTBgZluiZM7wIMHV4y6zk
- ptEotHLrMlbGvhem5399bg39UWz4i+F/seOk8zl9+Tn7j2ns0a9iejh1HUdq+LoVum3H9upcd1b gBQA=
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918103010.2973462-11-ardb+git@google.com>
-Subject: [PATCH v3 1/8] efi: Add missing static initializer for efi_mm::cpus_allowed_lock
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP3hy2gC/33NTWrDMBBA4auIWXvKSLLkn1XvEUqRpVEiKFKQX
+ ZMSfPeCVy4xXT/43hNmrolnGMUTKq9pTiXDKEwjwN9cvjKmAKMARcrQQAozL77kuXzx51Lq8l0
+ Z++iVjuS8GwZoBNwrx/TY0QtkXuCjEXBL81Lqzz5a5Z7+M1eJEkl7S9aaoefhPfCUXH4r9bp7q
+ zoa7amhkNB0neFggtfWvhj6aJhTQyNh3xnfRZ6Clq9GezBkd2q0SEjOTHrqYy89/zG2bfsFI1l
+ L8oYBAAA=
+X-Change-ID: 20250902-netconsole_torture-8fc23f0aca99
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+ david decotigny <decot@googlers.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+ calvin@wbinvd.org, kernel-team@meta.com, calvin@wbinvd.org, 
+ jv@jvosburgh.net, Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2394; i=leitao@debian.org;
+ h=from:subject:message-id; bh=kmRZY8w5k0zkpK6hrl5VtFf84jTuGxFx4DLf6XrQZNo=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoy+IEayY0wOB0N6LcgVg/3eZnL0c4YjWUJMcW8
+ aPTGC82+PuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaMviBAAKCRA1o5Of/Hh3
+ bWhHD/4g2xJTXx8UGq9wQva+IfMIUCFKahYqNTlZGbrgrrHqDoyoDJuL5MEuOUZtuc8W6i0TZFQ
+ Apm3fPKwpCpKcTJ+BHkdTy35yIZLWzdozLuLMwvu/QfkimJMa7r4FgvZLaj9bUj6gi/Fr1fjZe6
+ OlyLtzaus7QfQg56wRJ4k1andr/l2C9cXqHxbp09qMeTPSM+IZ8fmcobzc4wqAffmSsSS/quD+1
+ TYyhl0O3Ts57gZxub9BkNzmAklAJnI/YvtTrIbCkySxV5nDbslCQYff8kB6OK4FJyFVI/mQYmmt
+ YY5ntWdZpMbIt3HrZid8VCc2L49Z9W7eH7H08t9xD2fwwnkT9K29Aa5pu0cwA+9bKQUfJ/Yy1Vz
+ iTEiLVEqiyvbs5LprfO2/m+4pOdjKnbpIcFzPwfepdlPiUnCAQMwiAQ6jZlGNTYD5+4ni82svNv
+ +0MGZU8NIo6o3Kt1/Y/rdfRJxuQibP+fLYjzJNNB9JLvTbhhiP/pGOkpdEhwjlx/TBpggCTygFe
+ AiVWfMQu9wU3jYV7313QoNZJVmeqd9lDr8JsV6SuH9GVK8sR4qVEB87A95GUK9o3W8H5I3l+n6c
+ X3kSs1jU8Ow8tz3evtIuKKtuSdCbWdf7Y5Z5OR9BNBOgEcbdTyEaqar607jCRGhPJy0/jVKGEJ/
+ kYx6smXqwTftCMg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-From: Ard Biesheuvel <ardb@kernel.org>
+Fix a memory leak in netpoll and introduce netconsole selftests that
+expose the issue when running with kmemleak detection enabled.
 
-Initialize the cpus_allowed_lock struct member of efi_mm.
+This patchset includes a selftest for netpoll with multiple concurrent
+users (netconsole + bonding), which simulates the scenario from test[1]
+that originally demonstrated the issue allegedly fixed by commit
+efa95b01da18 ("netpoll: fix use after free") - a commit that is now
+being reverted.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Sending this to "net" branch because this is a fix, and the selftest
+might help with the backports validation.
+
+Link: https://lore.kernel.org/lkml/96b940137a50e5c387687bb4f57de8b0435a653f.1404857349.git.decot@googlers.com/ [1]
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/firmware/efi/efi.c | 3 +++
- 1 file changed, 3 insertions(+)
+Changes in v5:
+- Set CONFIG_BONDING=m in selftests/drivers/net/config.
+- Link to v4: https://lore.kernel.org/r/20250917-netconsole_torture-v4-0-0a5b3b8f81ce@debian.org
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 1ce428e2ac8a..fc407d891348 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -74,6 +74,9 @@ struct mm_struct efi_mm = {
- 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
- 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
- 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
-+#ifdef CONFIG_SCHED_MM_CID
-+	.cpus_allowed_lock	= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.cpus_allowed_lock),
-+#endif
- };
- 
- struct workqueue_struct *efi_rts_wq;
--- 
-2.51.0.384.g4c02a37b29-goog
+Changes in v4:
+- Added an additional selftest to test multiple netpoll users in
+  parallel
+- Link to v3: https://lore.kernel.org/r/20250905-netconsole_torture-v3-0-875c7febd316@debian.org
+
+Changes in v3:
+- This patchset is a merge of the fix and the selftest together as
+  recommended by Jakub.
+
+Changes in v2:
+- Reuse the netconsole creation from lib_netcons.sh. Thus, refactoring
+  the create_dynamic_target() (Jakub)
+- Move the "wait" to after all the messages has been sent.
+- Link to v1: https://lore.kernel.org/r/20250902-netconsole_torture-v1-1-03c6066598e9@debian.org
+
+---
+Breno Leitao (4):
+      net: netpoll: fix incorrect refcount handling causing incorrect cleanup
+      selftest: netcons: refactor target creation
+      selftest: netcons: create a torture test
+      selftest: netcons: add test for netconsole over bonded interfaces
+
+ net/core/netpoll.c                                 |   7 +-
+ tools/testing/selftests/drivers/net/Makefile       |   2 +
+ tools/testing/selftests/drivers/net/config         |   1 +
+ .../selftests/drivers/net/lib/sh/lib_netcons.sh    | 197 ++++++++++++++++++---
+ .../selftests/drivers/net/netcons_over_bonding.sh  |  76 ++++++++
+ .../selftests/drivers/net/netcons_torture.sh       | 127 +++++++++++++
+ 6 files changed, 385 insertions(+), 25 deletions(-)
+---
+base-commit: 5e87fdc37f8dc619549d49ba5c951b369ce7c136
+change-id: 20250902-netconsole_torture-8fc23f0aca99
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
