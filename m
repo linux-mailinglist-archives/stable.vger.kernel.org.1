@@ -1,76 +1,174 @@
-Return-Path: <stable+bounces-180487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87252B83100
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 07:58:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C27B8301C
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 07:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 368FD1C23D66
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 05:58:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF76D4A40B5
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 05:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559572D6E7D;
-	Thu, 18 Sep 2025 05:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA7F29C326;
+	Thu, 18 Sep 2025 05:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="vLT5PifE"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EF72D6E7C;
-	Thu, 18 Sep 2025 05:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3203281375;
+	Thu, 18 Sep 2025 05:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758175105; cv=none; b=N8ttiWlgH7EsUFwIQpe8c4Lef9trRYkLQTcL7viekAONtRuvYqg9x8paIrsZX/7sl/6MJu2UYGWqewurQ4jfll+pXri8PP0Ix/nXjLlWpuLUAqJ4OgxxTrbu921a3zEQOEc5sBxIYKekxbMNRbOrwrvL0PZRb+qfIxBXDTbKLBA=
+	t=1758173057; cv=none; b=De9fKfgTBjRr2r3NAh3b0uWoDmV0xpVA8V2XpGS8+nC0EY9MlDH0JeDH3gKkZ2hltofqtSoG7sQk6zWWN31u01f2ec1eAQh3ZHlGAYwEVKazsmy/7CdR6T1r+49/KD1QjpQze7hxpiF2g7Hy8/diB+wAjNl3fWudtDjIlT43jio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758175105; c=relaxed/simple;
-	bh=Z31P0pyB6/ssq5ftp8MiYvz56BhmJwldnEG7jzAhWaQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hx39EB7ToZelwQai4tOI2Y8JyHGaxtc94s1H4BW6SRUtJHI2FZZCmo9DY2RLTrOeNqlPixYly/ve+JYkXRJEBZQeqimyTmRiG7xnQlOC2LdWYXXVecmtTT6BYcvxyjj4/b5+3oqdzo0bJOQezAgG2uYEJHexI3MP0V6ZHN0hwG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: 6.1.153-rc1 review
-Date: Thu, 18 Sep 2025 05:18:15 +0000
-Message-ID: <20250918051823.4121-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-References: <20250917123329.576087662@linuxfoundation.org>
+	s=arc-20240116; t=1758173057; c=relaxed/simple;
+	bh=FNtiDJXaDF48h0ZpLR5jyntUjXxFv/j2ACZS4RWdxX8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=g1V4pUujzb1YR5OZ/m/qgBe72pwS/CwzivvCfQGsHRSL+0UrXc6sORsTEgwX2FWAjPn7qLrXd9qtCm043SLv58rrMPJr4j68lp9E+ZoFx5MgcCtLJIznxE91e87V2JchJdJRhA6ICk+p4se69rRvbu1Z+g1T6VBtHK/VO23hWGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=vLT5PifE; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58I5NtZfA1470537, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1758173035; bh=yfb0T1IuR01ikSLxgbloRE+lvwhVVb9eeNr2I4REOd0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=vLT5PifEYz+5bMZHU0JbGeqrcey0TgFdiQCpNX52m33gbKzCJeP+yV89wva7kXfDx
+	 k/F5caSsvX+3pIA7bBKqwC+2vghAJI10Rw5/6sRgFnpaR8BRdPUGLjvu6bzV0Bte72
+	 VbruOZpJqCZOrxuuCh1Ju65gw7uV74VeQRrmPH3shXfqOdsJKSfxDRMa/3XIK4rN5m
+	 lXXuQrEkcIlafZ+aAgnOmcAmErOijBCeRVRLQ4hDFhmBEn9T4Bk0TQ6eEaAbBqyxRW
+	 GAITmdapCzkkGu9RmLm5AnvUAP2Abhu6HoCHhXRGm+sY7e0SvptVbQ+fwi38PBMg16
+	 GMyHF08ZtDjcw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58I5NtZfA1470537
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Sep 2025 13:23:55 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Thu, 18 Sep 2025 13:23:55 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 18 Sep 2025 13:23:54 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Thu, 18 Sep 2025 13:23:54 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Zong-Zhe Yang <kevin_yang@realtek.com>,
+        Fedor Pchelkin
+	<pchelkin@ispras.ru>
+CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Bernie Huang
+	<phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH rtw v4 1/4] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+Thread-Topic: [PATCH rtw v4 1/4] wifi: rtw89: fix use-after-free in
+ rtw89_core_tx_kick_off_and_wait()
+Thread-Index: AQHcJ7j9ihvmCigyUEi4g4qppzNcU7SYSUhg//+OAICAAJEK0A==
+Date: Thu, 18 Sep 2025 05:23:54 +0000
+Message-ID: <8aa1fe0b49dd49408dc26ad48ba9a605@realtek.com>
+References: <20250917095302.2908617-1-pchelkin@ispras.ru>
+ <20250917095302.2908617-2-pchelkin@ispras.ru>
+ <391e7cc762a549b7826e72090b61ebb2@realtek.com>
+ <5d1be8c759c243f9a331c672cc301bbc@realtek.com>
+In-Reply-To: <5d1be8c759c243f9a331c672cc301bbc@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-# Librecast Test Results
+Zong-Zhe Yang <kevin_yang@realtek.com> wrote:
+> Ping-Ke Shih <pkshih@realtek.com> wrote:
+> >
+> > Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> >
+> > [...]
+> >
+> > > @@ -6181,6 +6187,27 @@ rtw89_assoc_link_rcu_dereference(struct rtw89_=
+dev *rtwdev,
+> > u8 macid)
+> > >         list_first_entry_or_null(&p->dlink_pool,
+> > > typeof(*p->links_inst), dlink_schd); \
+> > >  })
+> > >
+> > > +static inline void rtw89_tx_wait_release(struct rtw89_tx_wait_info
+> > > +*wait) {
+> > > +       dev_kfree_skb_any(wait->skb);
+> > > +       kfree_rcu(wait, rcu_head);
+> > > +}
+> > > +
+> > > +static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev=
+)
+> > > +{
+> > > +       struct rtw89_tx_wait_info *wait, *tmp;
+> > > +
+> > > +       lockdep_assert_wiphy(rtwdev->hw->wiphy);
+> > > +
+> > > +       list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) =
+{
+> > > +               if (!wait_for_completion_timeout(&wait->completion,
+> > > +
+> > RTW89_TX_WAIT_DEFAULT_TIMEOUT))
+> > > +                       continue;
+> >
+> >
+> > Why should we wait 10ms? Just try_wait_for_completion()?
+> >
+> > Since TX completion might be missing (rtw89_core_stop(), for example), =
+shouldn't we
+> > unconditionally free all in wait list for that case?
+> >
+>=20
+> In hci reset (when we release pending skb), the condition will become tru=
+e.
+> So, all left will be freed at that time. Before that, there is no logic t=
+o ensure no
+> more completing side, so it cannot be unconditionally freed unless we don=
+'t
+> want to double check if those, which timed out, are done at some moment.
+>=20
+> (e.g. core stop will do hci reset)
 
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+Thanks for the explanation.=20
 
-CPU/kernel: Linux auntie 6.1.153-rc1-00087-gb31770c84f52 #83 SMP PREEMPT_DYNAMIC Wed Sep 17 13:29:51 -00 2025 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+Just consider try_wait_for_completion() then.
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+By the way, if want a delay for timeout case, use delayed work for tx_wait_=
+work
+instead.
+
+>=20
+> >
+> > > +               list_del(&wait->list);
+> > > +               rtw89_tx_wait_release(wait);
+> > > +       }
+> > > +}
+> > > +
+> > >  static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
+> > >                                      struct rtw89_core_tx_request *tx=
+_req)
+> > >  {
+> >
+
 
