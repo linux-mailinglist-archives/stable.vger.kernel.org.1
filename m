@@ -1,114 +1,111 @@
-Return-Path: <stable+bounces-180490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB06B83430
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:07:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B966BB8353A
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 09:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 766D97BA3E4
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 07:05:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC004A4B22
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 07:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DC354764;
-	Thu, 18 Sep 2025 07:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93FC2E9ED5;
+	Thu, 18 Sep 2025 07:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bU5Z1lt4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r51iA/mc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FFC2D8DD1
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 07:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DB32D5C7A;
+	Thu, 18 Sep 2025 07:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758179225; cv=none; b=DHfS43XzCExzrAuDNFW7sDAsXwmSUGk0QcQvQmR2zcbtC4ZK6Ui9I9kVxHKi9An8Fat0tufL/AFL5wtE3t+huw10zioTOKRaoBgzDWAawNVqddG2cWxC3J5PvfDclE7H5m2spOaJNP5n8l9urFlfibqMNrkCjcNYyXWy5rQ02sQ=
+	t=1758180835; cv=none; b=di6uFn9Oo+NAzozaB/HK/qZ9S4ME8q/gU2j+hEDYChC6kQpSAQlyiQUnom/Zo/IL1QMPq5SLnR3rDJy0fkIKrpUf6ZjU/XYtv6bAJNdbw54f5LIE7ZG5bA/+iLH3CUSHLMYeI+xBLAY8xfPzJngomGoUrLO09kmSkpPJ/ZOOsS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758179225; c=relaxed/simple;
-	bh=LIWh9rCdfk9QZIOUNYrRMXALV0xzQlmiVi96oKR3cJU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bSa/2l+CvNbpJkFryFufAdxsxtwR2fsx2eiGOKhtwOe703E+MV7ZqcGZZ/o/GD2a0ol8L1jb1LDMywVnk3y+zujbMwNc/SZRqFldXVYJy0K2bqv0xvO7tkbDAlCPPTRnLJjukSZBDLosLE0vBuMt81EwV8azM32cMnLYpMSI92Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bU5Z1lt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24E4C4CEFC
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 07:07:04 +0000 (UTC)
+	s=arc-20240116; t=1758180835; c=relaxed/simple;
+	bh=zoF2TshriM3ZS0e8AelFve/OPI4XACW7RUZD7luL5+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=is6SAZAzyp1dNKkqDROU97B8H71BLHhE5IADgdgtvMUExgh4cQPjJhRTM6jXqO5S8oAv2TuEe8GURCjE4jalNbZX+c3Ea4DOWogwXfne9yUUZ2B3nzMIGK+TtgPZTyu1eCzLoaEYVwO/Q2Hhie60UJq15W/Fv16vlH1yoHKsi3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r51iA/mc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29A5C4CEE7;
+	Thu, 18 Sep 2025 07:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758179224;
-	bh=LIWh9rCdfk9QZIOUNYrRMXALV0xzQlmiVi96oKR3cJU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bU5Z1lt47Lq0VkB4KKNYsVyisLJO8FFfkZ/yyMccp/uZss70isryVNw5E/RzHsj0N
-	 fvnriXofakA3oKEv2foRfNviHJ+hvfQf9gCHO3WZFrH348D8aWsWn0xo0nv6vVih+U
-	 Xs1LgeKSacudQOdjTskJd1nkl59TvgKg/0CBLc309dLM+dMgb3+Tyjxqumq6lVl116
-	 FPhC+ZgakWtvYPYsw1iot0fJqSNrnA1LZKzEBHKVdZhrc4elX+wZABZ3aTCBcLZ4NJ
-	 b24yJXOtSr3lmAVeNMIO1vyyICfVUTx6vChSh1MKJo6wWi+FSxKTgdefsDve7r7N4k
-	 cMsm6qTBjyW9g==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b046f6fb230so125407166b.1
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 00:07:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVtIi6RIIEPRFM+fV01+6QPzxLryltQBf61icmu9bjUrivgMSEkWWnTpeVEVrcy5UI2IjCqPMw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRR/dxJt5tD0fRaI5B88IQiaQh+joPW9cX4vD1+hKCoHqxOQFn
-	cjMNJ8iIf5SmEZGei5g0zmKg5caO+90IfUn8uSXlaLq/Q7n7vfBJymkX/YLENAkJ6Ku85l8DEAg
-	EtLvBYZ0uFQmabkTeBp/QHNIg82LnNzg=
-X-Google-Smtp-Source: AGHT+IHDwQed8QlPUnnnh18AjAw4YMW4KXcHgPP/wiHiSdIyFg9qXXASXGDcTOHAySLAH7fyN/psk4mX2ofDkgxKubU=
-X-Received: by 2002:a17:906:4a94:b0:b20:a567:8724 with SMTP id
- a640c23a62f3a-b20a567874dmr141766966b.1.1758179223191; Thu, 18 Sep 2025
- 00:07:03 -0700 (PDT)
+	s=k20201202; t=1758180835;
+	bh=zoF2TshriM3ZS0e8AelFve/OPI4XACW7RUZD7luL5+g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=r51iA/mcdivvaemgqGMjjV2SmWFHkPwVzpmTtRhePCYe26CLPkKGj3HcX4F5JlKV5
+	 qDm5FACFLobIj3q/8ZcsJhYH99HHQ2SpNctsDXPmfvb80yT1XQLuRxVamq8E412s87
+	 lcUYjd9mb/ro0e6mBUMkIWaMzD9CE7FP1SvtOxmIRhsA4V2ACK4aU44Acb9lmwsnFR
+	 n+QWEXS83Vc8ouvf4je+z/BjXvAHD3EKyRVfYmLPOC6vVnqj2nOox1LNDJtGUsAmQ3
+	 zUKLEIhI0wi2p39tocUMmwELSXL7ogLHXCZChiia8MneNYC7Tot/4qbEKKmAnJ9KpL
+	 6i9OblXcdmSKw==
+Message-ID: <0b214249-958c-4e14-a4d8-512f1d90dff4@kernel.org>
+Date: Thu, 18 Sep 2025 09:33:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250916145710.2994663-1-lgs201920130244@gmail.com>
-In-Reply-To: <20250916145710.2994663-1-lgs201920130244@gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 18 Sep 2025 15:06:51 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6hTFrUO5gTx6FYo89TAouEykTvKpLNkqFfhtsg0PVLiw@mail.gmail.com>
-X-Gm-Features: AS18NWC7cWrisYIT52dGDytiHP4tfAEgtfCVPbsy0njCO_2FdgqJJthiylvNoAg
-Message-ID: <CAAhV-H6hTFrUO5gTx6FYo89TAouEykTvKpLNkqFfhtsg0PVLiw@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: vDSO: check kcalloc() result in init_vdso
-To: lgs201920130244@gmail.com
-Cc: WANG Xuerui <kernel@xen0n.name>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Nam Cao <namcao@kernel.org>, Xi Ruoyao <xry111@xry111.site>, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Guangshuo Li <202321181@mail.sdu.edu.cn>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mario.limonciello@amd.com, rafael@kernel.org,
+ stable@vger.kernel.org
+References: <17cc74d6-2e49-4370-ae37-39cddfe67d7d@kernel.org>
+ <20250912103538.3657242-1-zhangzihuan@kylinos.cn>
+ <f6afc998-f11e-4aac-a190-fbadb97e2d0c@kylinos.cn>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <f6afc998-f11e-4aac-a190-fbadb97e2d0c@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Applied, thanks.
+Hi Zihuan,
 
-Huacai
+On 18-Sep-25 2:36 AM, Zihuan Zhang wrote:
+> 
+> 在 2025/9/12 18:35, Zihuan Zhang 写道:
+>>> 1. There must be a GPU driver for these laptops somewhere?
+>>> Even if out of tree using a laptop without a GPU these days
+>>> just does not give a good user experience. So fix the GPU
+>>> driver to call acpi_video_register_backlight().
+>>>
+>>> Note acpi_video_register_backlight() is deliberately exported
+>>> without requiring the consuming out of tree kernel module to
+>>> be GPL to allow this.
+>>>
+>>> Other options would be:
+>>>
+>>> 2. Add some special heuristics for Zhaoxin CPUs,
+>>> the kernel already has a CPUID match mechanism for
+>>> things like this. This could potentially be combined
+>>> with a DMI system-vendor check to only do this special
+>>> case handling on e.g. Lenovo and Inspur laptops.
+>>>
+>>> 3. Instead of adding the CPU-id based special case
+>>> just outright use DMI quirks. In this case lets try
+>>> to use substring matches to cover multiple models
+>>> with a single entry so as to not grow the quirk
+>>> table too much.
+>>
+>> Got it, thanks!
+>>
+>> In fact, we have tried a few approaches (cmdline option, CPU-ID based quirk, and DMI quirk),
+>> and all of them work.
+>> I will sync this information with Zhaoxin to see which way they prefer.
+> 
+> Zhaoxin has confirmed that they will handle this through their own GPU driver.
 
-On Tue, Sep 16, 2025 at 10:57=E2=80=AFPM <lgs201920130244@gmail.com> wrote:
->
-> From: Guangshuo Li <202321181@mail.sdu.edu.cn>
->
-> Add a NULL-pointer check after the kcalloc() call in init_vdso(). If
-> allocation fails, return -ENOMEM to prevent a possible dereference of
-> vdso_info.code_mapping.pages when it is NULL.
->
-> Fixes: 2ed119aef60d ("LoongArch: Set correct size for vDSO code mapping")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <202321181@mail.sdu.edu.cn>
-> ---
->  arch/loongarch/kernel/vdso.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/loongarch/kernel/vdso.c b/arch/loongarch/kernel/vdso.c
-> index 10cf1608c7b3..da7a7922fb24 100644
-> --- a/arch/loongarch/kernel/vdso.c
-> +++ b/arch/loongarch/kernel/vdso.c
-> @@ -53,7 +53,8 @@ static int __init init_vdso(void)
->         vdso_info.size =3D PAGE_ALIGN(vdso_end - vdso_start);
->         vdso_info.code_mapping.pages =3D
->                 kcalloc(vdso_info.size / PAGE_SIZE, sizeof(struct page *)=
-, GFP_KERNEL);
-> -
-> +       if (!vdso_info.code_mapping.pages)
-> +               return -ENOMEM;
->         pfn =3D __phys_to_pfn(__pa_symbol(vdso_info.vdso));
->         for (i =3D 0; i < vdso_info.size / PAGE_SIZE; i++)
->                 vdso_info.code_mapping.pages[i] =3D pfn_to_page(pfn + i);
-> --
-> 2.43.0
->
+That is good to hear, thank you for the update.
+
+Regards,
+
+Hans
+
+
+
 
