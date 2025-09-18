@@ -1,128 +1,149 @@
-Return-Path: <stable+bounces-180562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28546B860DB
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 18:34:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C6AB86216
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 18:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92451BC7EC9
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:32:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AD3A7BA9A1
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 16:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B168E314D09;
-	Thu, 18 Sep 2025 16:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610BE253F3D;
+	Thu, 18 Sep 2025 16:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fmstMp9f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdWOxbk/"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA9230EF97
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 16:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1254625393E;
+	Thu, 18 Sep 2025 16:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758213093; cv=none; b=O2WZ66nDy9zrwGaBiIh5pvJJnNa1KH7pUGSEnnNzfaNJdQJ2cLlzy8Ccmh7MCSR0TN2PoTtDJfyCAwqAgCcYToQ1VBSL1D0C9cL9Nl0OzKa86nMomSuDi2sd44DfdC+xoNz2gFQdY7790w8S4pNcQIC/CEfiagQT8ppNwKWjlQo=
+	t=1758214534; cv=none; b=fFmRbkr4EH+ZfAHAnWQiSnWOTFgtC4+SUEh9YbPtREdykQaUZNPeHg48zW8PTdcY0fK9rgW96Kcx0DoweRSvqVLqMD/h6qmFhuxi4+CKCI/VY4i/cv7mZjxtDWjS5/Hy8ZpXovwXUyOhr55k2qUI1mIpLd0oCBj/KehujdDEovg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758213093; c=relaxed/simple;
-	bh=3KNQBrmuTJnLnWcZwGaVeyMZ6PXTJNOElnm2MX06lJE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y9SFH31KPDhh8nuFBZFDlMyUztVym/HI70I1/nmKJOV1L4yL62QR5GSonn6awkacGqnby4SsVegT67+G3WCOrbd9j4dONKCwfWHOq4Yze5/oYSrwwjeR4ohCg51Sp3uAfamnrb8kivOIi4/TFKH4nd7UnxV0gaWyUudu3k4FfFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fmstMp9f; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <abc0f24a-33dc-4a64-a293-65683f52dd42@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758213079;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+1p1A6UBHOrPki1VrYn/yNmVc9P78XZFmtuQXerf7RA=;
-	b=fmstMp9fFges487/IV/ethWtE9xqvl2Y3omU0qNnsk16lV33roM+pUJJvKak8LfzJmdCAl
-	iti9nBCbaf6nwA8oIkoucZHMwaU5feBVcCs2OngyWavgznRf4PgymK6tFR38r9jLVj5nuH
-	BhOjnbq/D6J6nfPRrgripqVxBXXgsOo=
-Date: Thu, 18 Sep 2025 09:31:12 -0700
+	s=arc-20240116; t=1758214534; c=relaxed/simple;
+	bh=Kqk5ednRgzGPi+bgJWvscXP/ogWlX/IzlFxebU6bR/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FlwfY40NEICn9a4azy4/G9CHCq9P7STypYe8SxeSCY9lmne2ZZfD33htuSEfOdOLfPn7n5EZUE9m8ojboakxPexLhGPY9pN2ZzH0JJagY6Ym6b3H2Q8T1vOG9h8WXbZuZu8nrK5bCXWJSpmvm7P4qbFcndwmivzDbdF6gepI5nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UdWOxbk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A97FC4CEE7;
+	Thu, 18 Sep 2025 16:55:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758214533;
+	bh=Kqk5ednRgzGPi+bgJWvscXP/ogWlX/IzlFxebU6bR/0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UdWOxbk/g0caqNNOaItptsAiQC152ymoz6X9w1lll1IhaSPr9jPYGMTx9BE6b6mZM
+	 XS4ZIMSgDZbU0L6WhvDm49eASwpaTuI16sdFiU5IQEJro5/Igq+AvNFifKq9P4MYla
+	 7rQShCUlBuuXIFCKRQ1NIBhH4CmQ6BIGzGzeI1lppdPV9tKVw0ek/YI3WKCasoTKRI
+	 YSb+DpFFO+s3s6W8SBwcdpWmNtb5TUBSluALwjkBog/GC5oCtRp5Yy1ReFVeas3bCa
+	 Kv9jIjyVQ1UVGKUvvJN7HhJc0dLCxyArDB4ZUSbg3LOuBtyoifULYUr+B/ckHj8e4C
+	 rjOcyaB3xcKjA==
+Date: Thu, 18 Sep 2025 09:55:33 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: tytso@mit.edu, linux-ext4@vger.kernel.org, linux-api@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] ext4: avoid potential buffer over-read in
+ parse_apply_sb_mount_options()
+Message-ID: <20250918165533.GF8084@frogsfrogsfrogs>
+References: <20250916-tune2fs-v2-0-d594dc7486f0@mit.edu>
+ <20250916-tune2fs-v2-1-d594dc7486f0@mit.edu>
+ <ik565ztp7s7zyhiog6n52zxylybtkkael6opfrmtvtf6su34iw@zho5dlhfvibq>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] RDMA/rxe: Fix race in do_task() when draining
-To: Gui-Dong Han <hanguidong02@gmail.com>
-Cc: zyjzyj2000@gmail.com, jgg@ziepe.ca, leon@kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, stable@vger.kernel.org, rpearsonhpe@gmail.com
-References: <20250917100657.1535424-1-hanguidong02@gmail.com>
- <a321729d-f8a1-4901-ae9d-f08339b5093b@linux.dev>
- <CALbr=LZFZP3ioRmRx1T4Xm=LpPXRsDhkNMxM9dYrfE5nOuknNg@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <CALbr=LZFZP3ioRmRx1T4Xm=LpPXRsDhkNMxM9dYrfE5nOuknNg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ik565ztp7s7zyhiog6n52zxylybtkkael6opfrmtvtf6su34iw@zho5dlhfvibq>
 
+On Wed, Sep 17, 2025 at 06:05:06PM +0200, Jan Kara wrote:
+> On Tue 16-09-25 23:22:47, Theodore Ts'o via B4 Relay wrote:
+> > From: Theodore Ts'o <tytso@mit.edu>
+> > 
+> > Unlike other strings in the ext4 superblock, we rely on tune2fs to
+> > make sure s_mount_opts is NUL terminated.  Harden
+> > parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+> > __nonstring.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+> > Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> 
+> Looks good. Feel free to add:
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
 
-On 9/17/25 7:21 PM, Gui-Dong Han wrote:
-> On Thu, Sep 18, 2025 at 3:31 AM yanjun.zhu <yanjun.zhu@linux.dev> wrote:
->> On 9/17/25 3:06 AM, Gui-Dong Han wrote:
->>> When do_task() exhausts its RXE_MAX_ITERATIONS budget, it unconditionally
->>   From the source code, it will check ret value, then set it to
->> TASK_STATE_IDLE, not unconditionally.
-> Hi Yanjun,
->
-> Thanks for your review. Let me clarify a few points.
->
-> You are correct that the code checks the ret value. The if (!ret)
-> branch specifically handles the case where the RXE_MAX_ITERATIONS
-> limit is reached while work still remains. My use of "unconditionally"
-> refers to the action inside this branch, which sets the state to
-> TASK_STATE_IDLE without a secondary check on task->state. The original
-> tasklet implementation effectively checked both conditions in this
-> scenario.
->
->>> sets the task state to TASK_STATE_IDLE to reschedule. This overwrites
->>> the TASK_STATE_DRAINING state that may have been concurrently set by
->>> rxe_cleanup_task() or rxe_disable_task().
->>   From the source code, there is a spin lock to protect the state. It
->> will not make race condition.
-> While a spinlock protects state changes, rxe_cleanup_task() and
-> rxe_disable_task() do not hold it for its entire duration. It acquires
-> the lock to set TASK_STATE_DRAINING, but then releases it to wait in
-> the while (!is_done(task)) loop. The race window exists when do_task()
-> acquires the lock during this wait period, allowing it to overwrite
-> the TASK_STATE_DRAINING state.
->
->>> This race condition breaks the cleanup and disable logic, which expects
->>> the task to stop processing new work. The cleanup code may proceed while
->>> do_task() reschedules itself, leading to a potential use-after-free.
->>>
->> Can you post the call trace when this problem occurred?
-> This issue was identified through code inspection and a static
-> analysis tool we are developing to detect TOCTOU bugs in the kernel,
-> so I do not have a runtime call trace. The bug is confirmed by
-> inspecting the Fixes commit (9b4b7c1f9f54), which lost the special
-> handling for the draining case during the migration from tasklets to
-> workqueues.
-Thanks a lot for your detailed explanations. Could you update the commit 
-logs to reflect the points you explained above?
+Looks fine to me too,
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 
-The current commit logs are a bit confusing, but your explanation makes 
-everything clear. If you rewrite the logs with that context, other 
-reviewers will be able to understand your intent directly from the 
-commit message, without needing the extra explanation. That would make 
-the commit much clearer.
+--D
 
-Any way,
-
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-
-Zhu Yanjun
-
->
-> Regards,
-> Han
+> 
+> 								Honza
+> 
+> > ---
+> >  fs/ext4/super.c | 17 +++++------------
+> >  1 file changed, 5 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> > index 699c15db28a82f26809bf68533454a242596f0fd..94c98446c84f9a4614971d246ca7f001de610a8a 100644
+> > --- a/fs/ext4/super.c
+> > +++ b/fs/ext4/super.c
+> > @@ -2460,7 +2460,7 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+> >  					struct ext4_fs_context *m_ctx)
+> >  {
+> >  	struct ext4_sb_info *sbi = EXT4_SB(sb);
+> > -	char *s_mount_opts = NULL;
+> > +	char s_mount_opts[65];
+> >  	struct ext4_fs_context *s_ctx = NULL;
+> >  	struct fs_context *fc = NULL;
+> >  	int ret = -ENOMEM;
+> > @@ -2468,15 +2468,11 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+> >  	if (!sbi->s_es->s_mount_opts[0])
+> >  		return 0;
+> >  
+> > -	s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
+> > -				sizeof(sbi->s_es->s_mount_opts),
+> > -				GFP_KERNEL);
+> > -	if (!s_mount_opts)
+> > -		return ret;
+> > +	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
+> >  
+> >  	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+> >  	if (!fc)
+> > -		goto out_free;
+> > +		return -ENOMEM;
+> >  
+> >  	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
+> >  	if (!s_ctx)
+> > @@ -2508,11 +2504,8 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+> >  	ret = 0;
+> >  
+> >  out_free:
+> > -	if (fc) {
+> > -		ext4_fc_free(fc);
+> > -		kfree(fc);
+> > -	}
+> > -	kfree(s_mount_opts);
+> > +	ext4_fc_free(fc);
+> > +	kfree(fc);
+> >  	return ret;
+> >  }
+> >  
+> > 
+> > -- 
+> > 2.51.0
+> > 
+> > 
+> > 
+> -- 
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
+> 
 
