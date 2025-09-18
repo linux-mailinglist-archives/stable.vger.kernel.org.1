@@ -1,130 +1,142 @@
-Return-Path: <stable+bounces-180472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A829B82BEE
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 05:24:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBB4B82D70
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 06:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB9B1C22EDC
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 03:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953EE4A0BA5
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 04:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E86A22A4DB;
-	Thu, 18 Sep 2025 03:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7052A244685;
+	Thu, 18 Sep 2025 04:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UqQSzHav"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="fPw3eB8w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0211E25FA
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 03:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BD7241664;
+	Thu, 18 Sep 2025 04:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758165858; cv=none; b=Q7ZE+Nx7hWtlnj3swQ0r7UJKvzKKyrX2WgEMKVxg0H5HufQzRlnhduG3vX6kCtIYevWExbDki8VR93FkW4fyP/pNu78Eb6hB3SIGDmWombalHY36VUNiugxu/nn1aNFdrc2a1IAUjF7F8eP68WgPpF9C5hFrVrmZQEXho+KCd6o=
+	t=1758168037; cv=none; b=oAxaVuKFp0QTUXC8CnjZlYZYi2uxxomD4jz0BP03xF4Vr4Ts3If/WM5VlkspdeMUjTqVHG7NSFjYvKFdKBF4w2NIAJ2clobxR/okj3lBezcCwTe4T8wqnFhQxRIBdCVEIDwLxGmvZ6b3lnaRfKEdU1+pXfN57c2afB94RmdDhak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758165858; c=relaxed/simple;
-	bh=DvWUuw32eTmD0TBOxqoUtKRjTwAHv8x8+456fT8H83A=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JUuZJiPrBsxYO0P5OSpDI2GnhHbU9p7Lyd5AiRWfPLpJyL3PmsNImIoIJ2JsJ0lYqqgmzeUnkDPZpbXuTb0u048xMwgr7v4BwVCSZlQxCnFCr5yP3N5yr+356DFUWDB+2zKdat2tGYxwX2/3cunPBR41hyCL6RzWnPC5rLaR8qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UqQSzHav; arc=none smtp.client-ip=209.85.166.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-42401f30515so2885425ab.0
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 20:24:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758165856; x=1758770656; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DvWUuw32eTmD0TBOxqoUtKRjTwAHv8x8+456fT8H83A=;
-        b=UqQSzHavKO8bNoOS5GJuJjjmFKpG2Vt9+mSlxKqbXd8ndtw2oEq+XUeATQOSQQoErP
-         Usn9+iBzREgMsPLeDmwnwfIMB42uIT56LWuTSMswHR6VvR0uvEoIAOG77ITEDql2TWz6
-         F7eW7PqUCBCXwPz/pJOD24JJBi1mubUj0lRCCpKlyycufgyXSLpJyR4JvF850JXFUHWG
-         k2YR4e4qqSnSQqZGBrwKs1R4ZReD5v5dULh1b+uR7aSTKZqYj4pMjkewxFmZ4uytKGZP
-         6YxxsPLIsL/ynYGJM+ZKiXEEKsn6tCOP1GQ5zl2lZjVDoMuX5tq6MSbdC0evEgPmc+Z3
-         3XXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758165856; x=1758770656;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DvWUuw32eTmD0TBOxqoUtKRjTwAHv8x8+456fT8H83A=;
-        b=trwYFkTJ/iNnyyxJ9ZxTs0DCXNaay7rneyMek/WByJA6y7mmWhI85DLKaifhcOTxN4
-         713onIi1kET56jNYQuRfPzv736vuQRlqwBolF1T/T/UrV3qcXfvaOYitUQnjMCvjUazJ
-         sFdkvGFNKB95X58CD29SlywSZNMGeN87TKW+7zsm9hnsuQeOk6IJmAO3sSDcA36YRc20
-         OZBQmLxdxcgnzntWw6HkT6a1MmO3t+0VsXox/J0i4wl8bdpoNX2Ce6svNy5Sizyfia0V
-         ImDnBlIWjm9h/oV+dSI+9ST4XYaMKJIx/k7sfQJz3ufKq1HByUon0J2wW7NYDAZGHsCH
-         Rs9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWzUqWmeqs59J3Gjh4fUVke47jT1AKJCx2ggZzYa6mPx0GVRgJcOUpd2j8Wlh1XgHADrxZ4LGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6Z92Se5ubwjFnbkaRpI/p+vHboH4E5eGPz8ZSCGiqCDYlLqsM
-	fN4P+XXT+J1Atf98VaVnzvWr82KxlMTncVRU5FoxcraYbOc3WaXjJbBjhuZKVM3Edz+HRFO7UJn
-	nOS4Ffdr+no8jHDWw2ciFVnp065sM+fU5lzKN
-X-Gm-Gg: ASbGnctIJVur8yaHYE3U5xNaeKmL3LnzLf+rlq1Sg61lxwaMLptrB3LwBWziB2jnBXV
-	F6VPYlxFxE3Y2J7NPvHgXFYh/Fpqe0bw2GTvdmW1qE0j1NC1JmLFf/yH5Gzn2/F0f9jb0xR/lns
-	FY6UVKFhH3aLdcd/JrYZnSIvrdqCRfT/jKIT2wMl8C/kWL7ElsGQsIwMdiRgPQPB0tPpVrQBf/w
-	L+SFVkGxjul4kCJqMiYf7hUxj1OUS6s/lGasFtp3gTRo0YRDZ3Fg0txP94=
-X-Google-Smtp-Source: AGHT+IHfDggKv5QOJ/N9XWK5VNhvBo2x601ZNaTZuASjaVHdh6hja61z3hw04catZiFTV9IVWU2JHH32rSqA68zyY2A=
-X-Received: by 2002:a05:6e02:3787:b0:423:fd65:fefa with SMTP id
- e9e14a558f8ab-424444e68c1mr26363375ab.6.1758165855748; Wed, 17 Sep 2025
- 20:24:15 -0700 (PDT)
+	s=arc-20240116; t=1758168037; c=relaxed/simple;
+	bh=afjM9h6h+iyrSkWCeooIuUGSF4sz2XGs7yO7jWty1uw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=N4o5ejX7DYyDGN4uUTQw3bgzMAtU9lzSN2TX3Fn6RdMz4H6Lhu7sgdA8eWJIQ6eLOTGF7xC/cT76rXmw4zOwPcGw90xXLPnXNhhl9sHNV6D7tBRvCJc9zzNvGxPb5lyrgS1aZ6S/v2NGs/yRdVuHFmT1qAmC1dW/WMT1bETs4R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fPw3eB8w; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58I409oY41366026, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1758168009; bh=bSYjaCMBA5N0RZxLFxXWqR8CkeiHrM8cDyTs9gHcRyA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=fPw3eB8wn2WwuM/EruD0ofNNWCuzfp1f5//wtr0ReZYLVs7NhAVRcjdYltzcQIwix
+	 IFPj+KZuIpGSgya59q2ofnTjpLNyr4lI779PVSViT9kvC/ItcJairikEN3LTc5bb2A
+	 wYCfs4AX8jm4WW1BOl7aKfvaePdcoVHc3H7FNzQBpOyNlKcWcH7dWCSIdjxZ3g/u0M
+	 J0yk7si9DAI3Y2EzAdcqcZHrwni8QGC7xllmgeCoDmDJtTi7EB6cHcFkeKKzGML1/P
+	 cSqF8OjvgX5l/RyCmm5TYMbS9gJR3MN7TWdX/zoFXh2bc6S8oiMbSSOzucVJyX4nbe
+	 JRVLH6kzIdyXQ==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58I409oY41366026
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Sep 2025 12:00:09 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Thu, 18 Sep 2025 12:00:10 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 18 Sep 2025 12:00:09 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Thu, 18 Sep 2025 12:00:09 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fedor Pchelkin <pchelkin@ispras.ru>,
+        Zong-Zhe Yang
+	<kevin_yang@realtek.com>
+CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Bernie Huang
+	<phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH rtw v4 1/4] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+Thread-Topic: [PATCH rtw v4 1/4] wifi: rtw89: fix use-after-free in
+ rtw89_core_tx_kick_off_and_wait()
+Thread-Index: AQHcJ7j9ihvmCigyUEi4g4qppzNcU7SYSUhg
+Date: Thu, 18 Sep 2025 04:00:09 +0000
+Message-ID: <391e7cc762a549b7826e72090b61ebb2@realtek.com>
+References: <20250917095302.2908617-1-pchelkin@ispras.ru>
+ <20250917095302.2908617-2-pchelkin@ispras.ru>
+In-Reply-To: <20250917095302.2908617-2-pchelkin@ispras.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: CHANDRA SEKHAR REDDY <ccsr007@gmail.com>
-Date: Thu, 18 Sep 2025 08:54:49 +0530
-X-Gm-Features: AS18NWAP7q_fkSyvuwb8OByZDBUBkGuLAC104wFC2wov2kFHWMzA9WOBzEoAGSk
-Message-ID: <CAHD5p1U5vrrcT1QpqPDwEgQJANdX67N-j0Hy4sh2ED+6BPMstQ@mail.gmail.com>
-Subject: [REGRESSION] v5.15: UDP packets not fragmented after receiving ICMP
- "Fragmentation Needed" (works in v5.10)
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "arun85.m@gmail.com" <arun85.m@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Team,
+Fedor Pchelkin <pchelkin@ispras.ru> wrote:
 
-We are observing an intermittent regression in UDP fragmentation
-handling between Linux kernel versions v5.10.35 and v5.15.71.
+[...]
 
-Problem description:
-Our application sends UDP packets that exceed the path MTU. An
-intermediate hop returns an ICMP Type 3, Code 4 (Fragmentation Needed)
-message.
+> @@ -6181,6 +6187,27 @@ rtw89_assoc_link_rcu_dereference(struct rtw89_dev =
+*rtwdev, u8 macid)
+>         list_first_entry_or_null(&p->dlink_pool, typeof(*p->links_inst), =
+dlink_schd); \
+>  })
+>=20
+> +static inline void rtw89_tx_wait_release(struct rtw89_tx_wait_info *wait=
+)
+> +{
+> +       dev_kfree_skb_any(wait->skb);
+> +       kfree_rcu(wait, rcu_head);
+> +}
+> +
+> +static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev)
+> +{
+> +       struct rtw89_tx_wait_info *wait, *tmp;
+> +
+> +       lockdep_assert_wiphy(rtwdev->hw->wiphy);
+> +
+> +       list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
+> +               if (!wait_for_completion_timeout(&wait->completion,
+> +                                                RTW89_TX_WAIT_DEFAULT_TI=
+MEOUT))
+> +                       continue;
 
-On v5.10.35, the kernel correctly updates the Path MTU cache, and
-subsequent packets are fragmented as expected.
 
-On v5.15.71, although the ICMP message is received by the kernel,
-subsequent UDP packets are sometimes not fragmented and continue to be
-dropped.
+Why should we wait 10ms? Just try_wait_for_completion()?
 
-System details:
+Since TX completion might be missing (rtw89_core_stop(), for example),=20
+shouldn't we unconditionally free all in wait list for that case?
 
-Egress interface MTU: 9192 bytes
 
-Path MTU at intermediate hop: 1500 bytes
+> +               list_del(&wait->list);
+> +               rtw89_tx_wait_release(wait);
+> +       }
+> +}
+> +
+>  static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
+>                                      struct rtw89_core_tx_request *tx_req=
+)
+>  {
 
-Kernel parameter: ip_no_pmtu_disc=0 (default)
 
-Questions / request for feedback:
-
-Is this a known regression in the 5.15 kernel series?
-
-We have verified that the Path MTU cache is usually updated correctly.
-
-Is there a way to detect or log cases where the cache is not updated?
-
-If this issue has already been addressed, could you please point us to
-the relevant fix commit so we can backport and test it?
-
-We have reviewed several patches between v5.10.35 and v5.15.71 related
-to PMTU and ICMP handling and examined the code flow,
- but have not been able to pinpoint the root cause.
-
-Any guidance, insights, or pointers would be greatly appreciated.
-
-Best regards,
-Chandrasekharreddy C
 
