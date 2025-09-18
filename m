@@ -1,113 +1,102 @@
-Return-Path: <stable+bounces-180523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E89DB84BD8
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 15:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6ACB84BDE
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 15:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A43CC7B051F
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 13:05:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AA727A53CF
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 13:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7AE308F24;
-	Thu, 18 Sep 2025 13:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC86A308F2B;
+	Thu, 18 Sep 2025 13:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="MgZi47er"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="cvMyrK4j"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED23822F74F
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 13:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BE828504B
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 13:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758200823; cv=none; b=ktgyx0VLEr0lM6saTmvX/8G93hhzrVjUFzdoIw0EYNKUI/XlA8lHQYNWs8VnJNqpSzc/XXnVKQQpGSIZVD0wZlzU3X6xwWPgEOIGojb6GStop2NOWabmeASHN1ReG3aJSF7K1F8p+geiRmy543D/CgDgSkYBTapG8zF6UPFWsgo=
+	t=1758200933; cv=none; b=R5WT5umT1v/sJk5Ckt2jacMCdqWXb3mB9j/G/9QhoL9z2fVk56ZrfTC1fxvaPt3MLl8mot8kq9ea+JXf/iX2UDe9i74Ctg/fYR70tnhA/19CZhq9ACVRhUCy1rN7IeQgc71ggWBI+9FORfzraMEVbMcKvF9/U2tdilemQb3s+I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758200823; c=relaxed/simple;
-	bh=KcmqPwBjgLkSsRbxfnZNnepU7CTAr1FybpG3hRWqMKk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A6sO/VZleTMqsbVGcnHkKzbGRbTCyA/GaqaFs5/5LqagaEoqeUHe9mQv6gUpUJBkeQPE2dqD1F+4GEvV3lUfMLPc0iU0UH60ePHhRzEw9hd+7BuKNzqIrCmRv577bCa0tVDUjqRF59O3mRM8U4LvKqMl8iT1jbIP1QsJn+Rujxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=MgZi47er; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5007b.ext.cloudfilter.net ([10.0.29.167])
-	by cmsmtp with ESMTPS
-	id zCrzukBjYSkcfzELjuKrCQ; Thu, 18 Sep 2025 13:06:59 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id zELiuDrdOI1rXzELiuBe3T; Thu, 18 Sep 2025 13:06:58 +0000
-X-Authority-Analysis: v=2.4 cv=OcKYDgTY c=1 sm=1 tr=0 ts=68cc03f2
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=xNs7/8oyUBGKxMI5SUf4zNPR4nghxJm5nsNHGNXlGaQ=; b=MgZi47er0oddL/gLkLUPMV7CMd
-	OlPyXqiNKTTOB4enayns9/Nezf9JM/SU62/P+muzz+I+OalKvxM0dXQXVvitoQT1jVcAcivGyuBbh
-	BYFIQ2/UTfvuQA+kitL9eh34VW4LaPrbxnXcBPNL+fak/4+sPIRW+KHGLbaCPt47snfELVkOIF0w/
-	VI95Fv9lIssQuCBBTIxtfRRnEv4oiXeMdY8nZL/XnYwo7qB6dC5kMB8ivqib/U14m43zb6C4A3kKm
-	Avw83wFc1V6r3dQj/rMmzE0AmR7RbuAKXFsRE8mqbl7V7XypgrfWurok/KZ1ABCQ4R1iI4VmU1eF0
-	nkLRlLYg==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:57200 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1uzELh-00000004Jpx-2wNS;
-	Thu, 18 Sep 2025 07:06:57 -0600
-Message-ID: <d56c00b0-b3d9-4c10-8ca9-5f2c29e0d6eb@w6rz.net>
-Date: Thu, 18 Sep 2025 06:06:55 -0700
+	s=arc-20240116; t=1758200933; c=relaxed/simple;
+	bh=MiPOtFlUbt8t5mkkoOEMpCXHDPi78OTH6xbWfZ7DGRA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H6zgRiB0k4RJvcxDh2ANs5VqD9VBmzsuZ59DGgKISCTyCrr1Uw0vHAAdMOFwAtlyHnqBeGPICy5yqib/MeCEGzQcEMtGvi2HtcWS9BfjF/uV6BQcdZ6ESrQnmeP/ybCkujfGqFfpj7F0gIUBb2gOxO1ypnMiuS1gOSXQ9EfEciE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=cvMyrK4j; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-82a334e379eso60630385a.3
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 06:08:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1758200929; x=1758805729; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PGbQKBDEp65TUh3jBVAZzg6GKFTf8pj7WLSq9aZrdY8=;
+        b=cvMyrK4jw4vXNIEmJIAqxeK+WB2a5AleM0kd36tdUhN83d2gvUm4D18z4abCD2OZM/
+         RDPW7kfBZvXJnVmffW2hgJNR1FXL7wto3Z6OuR9tgIH4BxVfonT4vi34msow4JAP1VfH
+         zvqJOBjL4OnJJmeeK91u5mpLL+co//VguE7dGoKLQYZvQFyoSX2E2e92YvGp40AX0Nhn
+         ia3/0xq27A5XL5PC8hAcvpvKV098JO2ubsV0xStnQ5Qz4sF/y/1MYAvkQaREK0bqGQMj
+         Mbyt45BzG2gHz/ayOm55WR7yt4L+QukdAoOfEI8KKUu8WpQfcIawhX3q8DihyQB8J9/0
+         /q6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758200929; x=1758805729;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PGbQKBDEp65TUh3jBVAZzg6GKFTf8pj7WLSq9aZrdY8=;
+        b=Y1IL09cVGO/OVCvQKBoDR0VrpIa/4Eexc8QWKKnUAo12o5Glkkeq4RywzSHkeJWJhS
+         Z42BRl4p6JFb1fjK25c3RzzOdV5ebVaCBrIt99DNStRwFXk+uvFmtk7LlX5X4oWEema7
+         3ytxcB4DIKcGa8xHkGiC/C8L/ZCCA5R40j0KSsXQeSB6I13SVcuEf5Z0H4hUstK581nu
+         SxNcZuld2Oj1bLiNLPXekAKjzfPE9gr4EicRxBpY+rbCKCzHn9vzcKyubjwDPWyFZKqh
+         3JCMvAvCVFfWdfS/3na4KA40GI+7kixI8MrhFvVQLg5mqhAtwu3NDcEE7vlDvTEQLcV7
+         ZxyQ==
+X-Gm-Message-State: AOJu0YzpLlO663KXe6SkEXLiIE9m8MsxwblbLmrM6VlIboOLRFul1YBo
+	129DTGuHTDPHY8/eqNi6PrepYpj4X9PWm5ca2dPyfSa+Qa0viuch0dFF0xZP9da0OZenGveiqv6
+	akUsOziXHX5mexdtx4HldIwFEMTejDy0RucKX0G4DSQ==
+X-Gm-Gg: ASbGncu8QQQx/oLbNo15BSAt1GoZXc8zCxmjipsorZZRVd9MdGZehA/bpdCi3tgKJ8N
+	UkrBdRkZZI8wglNC6qOrWRmvEZ3y6pa2zYF2Y6gius4cr7OnO+bQTXdgYMUZ2KJlBX+JPpp5+MK
+	8ivciJpJE3ZPnlA8gwmNH/cp0QxRAg+yTjxbVfvq7PziWYxRs/0TG1xd8pd2h3nKGSnOhiiI5rE
+	4ajVKz27YLzqRN+ox9CNs9pTvw=
+X-Google-Smtp-Source: AGHT+IHelxpl1f80CJWLjoVJmEHYdJGPILPJ9Om10uXhQBYkh+errVXpSNl2QIO11FjsrjCy/TZGGAjpjeDzf/ykliQ=
+X-Received: by 2002:a05:620a:29c9:b0:828:47e2:f407 with SMTP id
+ af79cd13be357-83110afbe1amr582735985a.60.1758200929182; Thu, 18 Sep 2025
+ 06:08:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/78] 6.1.153-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250917123329.576087662@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250917123329.576087662@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1uzELh-00000004Jpx-2wNS
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:57200
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfIWeTrVYeOx4096gyuBm5TnvwO7hdHR03OFv6658JVYm0f4aRyvgQFf4iGm7HQXJ9i1PuQvcszOwqOQS7X0SMiRQEfG808nXR9K7oCLjLlWGq7QeW0d4
- f1ORfJqfwgixa86wSn65eU2kbZn/WGql9+u7rz3TDissxTWqKVDDO5yTbFz04Uzf1dOc8Vl+zQmwmQ==
+References: <20250917123344.315037637@linuxfoundation.org>
+In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Thu, 18 Sep 2025 09:08:37 -0400
+X-Gm-Features: AS18NWAnVFAbN7cGEMPi5uSP6yfieOtzy8GuF5GwV4ANGOF8knGeTQaKAOU9C1U
+Message-ID: <CAOBMUvhwfizZxP-YT9LsOwxEJuasazs=JHhh44EkLzoE8q33Xg@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/140] 6.12.48-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/17/25 05:34, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.153 release.
-> There are 78 patches in this series, all will be posted as a response
+On Wed, Sep 17, 2025 at 8:52=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.48 release.
+> There are 140 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -115,17 +104,23 @@ On 9/17/25 05:34, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.153-rc1.gz
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.48-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
 > and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
+>
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
-Tested-by: Ron Economos <re@w6rz.net>
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
+Thanks,
+Brett
 
