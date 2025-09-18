@@ -1,142 +1,83 @@
-Return-Path: <stable+bounces-180473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBB4B82D70
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 06:00:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E388B82E3E
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 06:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953EE4A0BA5
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 04:00:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED57A3B1A9F
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 04:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7052A244685;
-	Thu, 18 Sep 2025 04:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6AF24502C;
+	Thu, 18 Sep 2025 04:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="fPw3eB8w"
+	dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="0tSa4jQ3"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cdmsr1.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BD7241664;
-	Thu, 18 Sep 2025 04:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D6D24469B
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 04:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758168037; cv=none; b=oAxaVuKFp0QTUXC8CnjZlYZYi2uxxomD4jz0BP03xF4Vr4Ts3If/WM5VlkspdeMUjTqVHG7NSFjYvKFdKBF4w2NIAJ2clobxR/okj3lBezcCwTe4T8wqnFhQxRIBdCVEIDwLxGmvZ6b3lnaRfKEdU1+pXfN57c2afB94RmdDhak=
+	t=1758170115; cv=none; b=TxDUqE+UJI1yiiECi1Cdh/0vC8hiMDEPUjAEifpFnEhPOX0Ph1Vq3xhqeJMy5y3G/0NQ2wAIS0QLhd4VOdPg1x7a5Dij+lBaL+IJGkWGuVUSl0aLBj71cOCHKDnspjTc8JNKylmev39QCaRMqxj2GZD5rUdWUtJ9xQFoFYuy1Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758168037; c=relaxed/simple;
-	bh=afjM9h6h+iyrSkWCeooIuUGSF4sz2XGs7yO7jWty1uw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=N4o5ejX7DYyDGN4uUTQw3bgzMAtU9lzSN2TX3Fn6RdMz4H6Lhu7sgdA8eWJIQ6eLOTGF7xC/cT76rXmw4zOwPcGw90xXLPnXNhhl9sHNV6D7tBRvCJc9zzNvGxPb5lyrgS1aZ6S/v2NGs/yRdVuHFmT1qAmC1dW/WMT1bETs4R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fPw3eB8w; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58I409oY41366026, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1758168009; bh=bSYjaCMBA5N0RZxLFxXWqR8CkeiHrM8cDyTs9gHcRyA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=fPw3eB8wn2WwuM/EruD0ofNNWCuzfp1f5//wtr0ReZYLVs7NhAVRcjdYltzcQIwix
-	 IFPj+KZuIpGSgya59q2ofnTjpLNyr4lI779PVSViT9kvC/ItcJairikEN3LTc5bb2A
-	 wYCfs4AX8jm4WW1BOl7aKfvaePdcoVHc3H7FNzQBpOyNlKcWcH7dWCSIdjxZ3g/u0M
-	 J0yk7si9DAI3Y2EzAdcqcZHrwni8QGC7xllmgeCoDmDJtTi7EB6cHcFkeKKzGML1/P
-	 cSqF8OjvgX5l/RyCmm5TYMbS9gJR3MN7TWdX/zoFXh2bc6S8oiMbSSOzucVJyX4nbe
-	 JRVLH6kzIdyXQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58I409oY41366026
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Sep 2025 12:00:09 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 18 Sep 2025 12:00:10 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Sep 2025 12:00:09 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Thu, 18 Sep 2025 12:00:09 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
-        Zong-Zhe Yang
-	<kevin_yang@realtek.com>
-CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Bernie Huang
-	<phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH rtw v4 1/4] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
-Thread-Topic: [PATCH rtw v4 1/4] wifi: rtw89: fix use-after-free in
- rtw89_core_tx_kick_off_and_wait()
-Thread-Index: AQHcJ7j9ihvmCigyUEi4g4qppzNcU7SYSUhg
-Date: Thu, 18 Sep 2025 04:00:09 +0000
-Message-ID: <391e7cc762a549b7826e72090b61ebb2@realtek.com>
-References: <20250917095302.2908617-1-pchelkin@ispras.ru>
- <20250917095302.2908617-2-pchelkin@ispras.ru>
-In-Reply-To: <20250917095302.2908617-2-pchelkin@ispras.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1758170115; c=relaxed/simple;
+	bh=/OMbF9owtaHhE9k8kJ20eu1/oMpRys03hx98tByb++U=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=Bpx1VAl0/6IvZV08WW8yD9szzfncX5mOUe7Lt3d1cHtEORDNuspg6IjKYnF9S+whHfOndlWsyeePGGaZNm54wTCWNMEvV61xGOUltWKa9DqdKq4nTV3jUk1/HGeyqBEaBsKAi9mOp1C5gSkLJgULWjXb3WVDOv4FABd1XngPCD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=0tSa4jQ3; arc=none smtp.client-ip=210.65.1.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
+Received: from cmsr6.hinet.net ([10.199.216.85])
+	by cdmsr1.hinet.net (8.15.2/8.15.2) with ESMTPS id 58I4Z8eI178148
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 12:35:11 +0800
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=ms29.hinet.net;
+	s=default; t=1758170112; bh=G8ZRgE8IGNZe3GIsPWp3hDJnuTo=;
+	h=From:To:Subject:Date;
+	b=0tSa4jQ3R4mtpZbvKw+zVZZUta4cU85aoUuQfaHjBLEgJQt7/86Mz2gHRpqUjWj+8
+	 SNEwHbJ/+oHZPQvX7o/8jbsUwglZclD+5KsWJl4ESDGyWQKPKlHc5hxvKT6NBO64ad
+	 o8J2YmhzjCArwCfsaxIWw3TuwMn38v0DiRROIJis=
+Received: from [127.0.0.1] (36-230-36-145.dynamic-ip.hinet.net [36.230.36.145])
+	by cmsr6.hinet.net (8.15.2/8.15.2) with ESMTPS id 58I4WZOv803198
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 12:33:49 +0800
+From: "Info - Albinayah 368" <Stable@ms29.hinet.net>
+To: stable@vger.kernel.org
+Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
+Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gMDE2NDYgVGh1cnNkYXksIFNlcHRlbWJlciAxOCwgMjAyNSBhdCAwNjozMzo0OCBBTQ==?=
+Message-ID: <7e8860f1-b5d3-29a8-90db-d9eefcecd0f0@ms29.hinet.net>
+Content-Transfer-Encoding: 7bit
+Date: Thu, 18 Sep 2025 04:33:49 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+X-HiNet-Brightmail: Spam
+X-CMAE-Score: 100
+X-CMAE-Analysis: v=2.4 cv=LvQxyWdc c=0 sm=1 tr=0 ts=68cb8baf
+	p=OrFXhexWvejrBOeqCD4A:9 a=LesP0XISgDggMnRgYmeDtg==:117 a=IkcTkHD0fZMA:10
+	a=5KLPUuaC_9wA:10
 
-Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+Hi Stable,
 
-[...]
+Please provide a quote for your products:
 
-> @@ -6181,6 +6187,27 @@ rtw89_assoc_link_rcu_dereference(struct rtw89_dev =
-*rtwdev, u8 macid)
->         list_first_entry_or_null(&p->dlink_pool, typeof(*p->links_inst), =
-dlink_schd); \
->  })
->=20
-> +static inline void rtw89_tx_wait_release(struct rtw89_tx_wait_info *wait=
-)
-> +{
-> +       dev_kfree_skb_any(wait->skb);
-> +       kfree_rcu(wait, rcu_head);
-> +}
-> +
-> +static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev)
-> +{
-> +       struct rtw89_tx_wait_info *wait, *tmp;
-> +
-> +       lockdep_assert_wiphy(rtwdev->hw->wiphy);
-> +
-> +       list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
-> +               if (!wait_for_completion_timeout(&wait->completion,
-> +                                                RTW89_TX_WAIT_DEFAULT_TI=
-MEOUT))
-> +                       continue;
+Include:
+1.Pricing (per unit)
+2.Delivery cost & timeline
+3.Quote expiry date
 
+Deadline: September
 
-Why should we wait 10ms? Just try_wait_for_completion()?
+Thanks!
 
-Since TX completion might be missing (rtw89_core_stop(), for example),=20
-shouldn't we unconditionally free all in wait list for that case?
+Kamal Prasad
 
-
-> +               list_del(&wait->list);
-> +               rtw89_tx_wait_release(wait);
-> +       }
-> +}
-> +
->  static inline int rtw89_hci_tx_write(struct rtw89_dev *rtwdev,
->                                      struct rtw89_core_tx_request *tx_req=
-)
->  {
-
-
+Albinayah Trading
 
