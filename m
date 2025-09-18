@@ -1,138 +1,130 @@
-Return-Path: <stable+bounces-180471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52929B82B5D
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 05:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A829B82BEE
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 05:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AFBF1C22396
-	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 03:08:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB9B1C22EDC
+	for <lists+stable@lfdr.de>; Thu, 18 Sep 2025 03:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA3D244687;
-	Thu, 18 Sep 2025 03:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E86A22A4DB;
+	Thu, 18 Sep 2025 03:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="V9Oj/Lag"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UqQSzHav"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598D9241665
-	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 03:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0211E25FA
+	for <stable@vger.kernel.org>; Thu, 18 Sep 2025 03:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758164882; cv=none; b=i4G6GbIN6B7djkWU1DJHhHD0H34acNrVglWiX2tBzQdV70CrqPf6HbikMlbtZkcXb+jbi1MtJtImeouWNR9An+GYs5WL3IHu+kiV4n3u6Bxd1JAAkusgvqvYC9IQnauPcclT+rQrQtgwSBl5hPGaT37TReYnkWNbICEVIA9b1Iw=
+	t=1758165858; cv=none; b=Q7ZE+Nx7hWtlnj3swQ0r7UJKvzKKyrX2WgEMKVxg0H5HufQzRlnhduG3vX6kCtIYevWExbDki8VR93FkW4fyP/pNu78Eb6hB3SIGDmWombalHY36VUNiugxu/nn1aNFdrc2a1IAUjF7F8eP68WgPpF9C5hFrVrmZQEXho+KCd6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758164882; c=relaxed/simple;
-	bh=ucCRcxsuGDClfG5heo1r5qIU5kMebbEElSVKOAPitJU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K/UHPZZgnXSodcbOq7WZgf5gxzwIg4TtnC8xatdZNaYfJA4idV91OmtjBdIoM+r4K0pCpDfupDrHWwyeSj4ntK64BICZ5e3vrBygUwQ2KOdSaJELMhaB7t3Mh6lu1mwMJZoWBBF5QK8dl+zeKYplTrut9xUZ1Dn5dmCiJRxdNrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=V9Oj/Lag; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2445824dc27so4588615ad.3
-        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 20:07:59 -0700 (PDT)
+	s=arc-20240116; t=1758165858; c=relaxed/simple;
+	bh=DvWUuw32eTmD0TBOxqoUtKRjTwAHv8x8+456fT8H83A=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JUuZJiPrBsxYO0P5OSpDI2GnhHbU9p7Lyd5AiRWfPLpJyL3PmsNImIoIJ2JsJ0lYqqgmzeUnkDPZpbXuTb0u048xMwgr7v4BwVCSZlQxCnFCr5yP3N5yr+356DFUWDB+2zKdat2tGYxwX2/3cunPBR41hyCL6RzWnPC5rLaR8qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UqQSzHav; arc=none smtp.client-ip=209.85.166.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-42401f30515so2885425ab.0
+        for <stable@vger.kernel.org>; Wed, 17 Sep 2025 20:24:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1758164878; x=1758769678; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cOr262x4SNCixfw6D+h2DN6gV7zkR61R9C2FM+lF078=;
-        b=V9Oj/LagAayBJWbzzAdIr+QLfFUypJLqCn0Q0otuGWv9ZLEa4CApHB8Oht7mBo2hV8
-         tfsbDddh0ow3pzDtJbOyxCVCrwcxEDRALxkXUlg5cxwXtSxsy9DAD/OJQP1Fc5P7tcjt
-         E65zpgnXmZ76x9ZeIykiXazJTL962d7zRByky+YCWQc7PG3WqRiqJv60gXswtiiLgwv3
-         gJhzbiqQIy8dkLCgz+V9TeC3aTLPmmJVgyPJ7V8Rp0GiDeaWU7mu6CKhZpyuRHjVv+bc
-         aXHlMWbVvePGIjFjlz90AICYWFTaCLm39Ah40bNvaGAtCGrx2XOhAFiqMG5rBNMdU6nb
-         H1PQ==
+        d=gmail.com; s=20230601; t=1758165856; x=1758770656; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DvWUuw32eTmD0TBOxqoUtKRjTwAHv8x8+456fT8H83A=;
+        b=UqQSzHavKO8bNoOS5GJuJjjmFKpG2Vt9+mSlxKqbXd8ndtw2oEq+XUeATQOSQQoErP
+         Usn9+iBzREgMsPLeDmwnwfIMB42uIT56LWuTSMswHR6VvR0uvEoIAOG77ITEDql2TWz6
+         F7eW7PqUCBCXwPz/pJOD24JJBi1mubUj0lRCCpKlyycufgyXSLpJyR4JvF850JXFUHWG
+         k2YR4e4qqSnSQqZGBrwKs1R4ZReD5v5dULh1b+uR7aSTKZqYj4pMjkewxFmZ4uytKGZP
+         6YxxsPLIsL/ynYGJM+ZKiXEEKsn6tCOP1GQ5zl2lZjVDoMuX5tq6MSbdC0evEgPmc+Z3
+         3XXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758164878; x=1758769678;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cOr262x4SNCixfw6D+h2DN6gV7zkR61R9C2FM+lF078=;
-        b=GnU3muXRk6P2OF3u6+LWavLNUWbPOH26ieQCw1z65l6YfPb7wvEa6qbZ192cCZ8CCr
-         bILVWmHiFp6rQ3tRKXgWzLUhkftcjmjOhVeY2NLHjYrCEUYyce3Rz8QfbR+B6mrGEVFW
-         fsiGH2WaPHfSUvHVGaRJ92gBQD+exTzAW09qSyd9co/OJM7XlCRItmEATZt6he50rr7U
-         jopAATGf9YY/FUdyctGmko2Efhe8J3gqcSqsl54NuPhoewlOwBkPYDDsHxnzQd0JpEjN
-         +NZOEXkN5/lASar50Ie/yH4IKfV5LcCBvbKoDOWHPaRfh9bLpR/SnAEEPAtDpZ2tbA3Q
-         kRXA==
-X-Gm-Message-State: AOJu0Yy8PSzC+oYJB6f2wB1ahpWdwNV80OZQQzfi9Q1vriHIkjm/CsE5
-	uAGa41wcLGF8SVuQB0ntSaYJzfYdmpRnLfe0l2tuh48QUD4pnmsXiSsegv0xEwFcBO68F5ooZXp
-	UBCeV1DV+Ls1D0BO4OQbPbdN2TWFNsyhxOsN+CHbS0w==
-X-Gm-Gg: ASbGncslP0/3uVbcj9GoLmgkEYZRpYC1mdgNBAvqL1mUr0nzj20uHPHyoXT2akva77d
-	/C4oZT4r4UQSLCzr6zzjcAe7IQm7nUgo7A+k50cY1i5v8uvrFcD53pKsmJrV+0ZHjfcsT66QNEx
-	GZ4O5UYFeiBomXCau/u2tzRagezNlyEyHhcbDGi7L0afg4/f5LYku6mk8rw3weIQlmsa6pFX8W0
-	Behw3SEgelKvRYqCjVUGYt/SJ4=
-X-Google-Smtp-Source: AGHT+IESFnLmLGxL7zVRW9/AAJMJ3eUyMJy5//Ofo8Y4ShmsKybTu8OCYOtVcM347qhv52LF3IQYEflH+bF5I5G6ezM=
-X-Received: by 2002:a17:902:d4cb:b0:24d:64bc:1495 with SMTP id
- d9443c01a7336-26813bf3d79mr48842325ad.41.1758164878562; Wed, 17 Sep 2025
- 20:07:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758165856; x=1758770656;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DvWUuw32eTmD0TBOxqoUtKRjTwAHv8x8+456fT8H83A=;
+        b=trwYFkTJ/iNnyyxJ9ZxTs0DCXNaay7rneyMek/WByJA6y7mmWhI85DLKaifhcOTxN4
+         713onIi1kET56jNYQuRfPzv736vuQRlqwBolF1T/T/UrV3qcXfvaOYitUQnjMCvjUazJ
+         sFdkvGFNKB95X58CD29SlywSZNMGeN87TKW+7zsm9hnsuQeOk6IJmAO3sSDcA36YRc20
+         OZBQmLxdxcgnzntWw6HkT6a1MmO3t+0VsXox/J0i4wl8bdpoNX2Ce6svNy5Sizyfia0V
+         ImDnBlIWjm9h/oV+dSI+9ST4XYaMKJIx/k7sfQJz3ufKq1HByUon0J2wW7NYDAZGHsCH
+         Rs9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWzUqWmeqs59J3Gjh4fUVke47jT1AKJCx2ggZzYa6mPx0GVRgJcOUpd2j8Wlh1XgHADrxZ4LGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6Z92Se5ubwjFnbkaRpI/p+vHboH4E5eGPz8ZSCGiqCDYlLqsM
+	fN4P+XXT+J1Atf98VaVnzvWr82KxlMTncVRU5FoxcraYbOc3WaXjJbBjhuZKVM3Edz+HRFO7UJn
+	nOS4Ffdr+no8jHDWw2ciFVnp065sM+fU5lzKN
+X-Gm-Gg: ASbGnctIJVur8yaHYE3U5xNaeKmL3LnzLf+rlq1Sg61lxwaMLptrB3LwBWziB2jnBXV
+	F6VPYlxFxE3Y2J7NPvHgXFYh/Fpqe0bw2GTvdmW1qE0j1NC1JmLFf/yH5Gzn2/F0f9jb0xR/lns
+	FY6UVKFhH3aLdcd/JrYZnSIvrdqCRfT/jKIT2wMl8C/kWL7ElsGQsIwMdiRgPQPB0tPpVrQBf/w
+	L+SFVkGxjul4kCJqMiYf7hUxj1OUS6s/lGasFtp3gTRo0YRDZ3Fg0txP94=
+X-Google-Smtp-Source: AGHT+IHfDggKv5QOJ/N9XWK5VNhvBo2x601ZNaTZuASjaVHdh6hja61z3hw04catZiFTV9IVWU2JHH32rSqA68zyY2A=
+X-Received: by 2002:a05:6e02:3787:b0:423:fd65:fefa with SMTP id
+ e9e14a558f8ab-424444e68c1mr26363375ab.6.1758165855748; Wed, 17 Sep 2025
+ 20:24:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250917123351.839989757@linuxfoundation.org>
-In-Reply-To: <20250917123351.839989757@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Thu, 18 Sep 2025 12:07:42 +0900
-X-Gm-Features: AS18NWAHWPq2LKZaxfOvpUL1LbKclh98pn2Km87I8UZDUptfVR4FgiZQQobBzMs
-Message-ID: <CAKL4bV5MDKDWPKJvQke1Lah=HzeX3=hO0rfQYb3S_nXMcEYOvg@mail.gmail.com>
-Subject: Re: [PATCH 6.16 000/189] 6.16.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
+From: CHANDRA SEKHAR REDDY <ccsr007@gmail.com>
+Date: Thu, 18 Sep 2025 08:54:49 +0530
+X-Gm-Features: AS18NWAP7q_fkSyvuwb8OByZDBUBkGuLAC104wFC2wov2kFHWMzA9WOBzEoAGSk
+Message-ID: <CAHD5p1U5vrrcT1QpqPDwEgQJANdX67N-j0Hy4sh2ED+6BPMstQ@mail.gmail.com>
+Subject: [REGRESSION] v5.15: UDP packets not fragmented after receiving ICMP
+ "Fragmentation Needed" (works in v5.10)
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "arun85.m@gmail.com" <arun85.m@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Greg
+Hi Team,
 
-On Wed, Sep 17, 2025 at 9:36=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.16.8 release.
-> There are 189 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 19 Sep 2025 12:32:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.16.8-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.16.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+We are observing an intermittent regression in UDP fragmentation
+handling between Linux kernel versions v5.10.35 and v5.15.71.
 
-6.16.8-rc1 tested.
+Problem description:
+Our application sends UDP packets that exceed the path MTU. An
+intermediate hop returns an ICMP Type 3, Code 4 (Fragmentation Needed)
+message.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+On v5.10.35, the kernel correctly updates the Path MTU cache, and
+subsequent packets are fragmented as expected.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+On v5.15.71, although the ICMP message is received by the kernel,
+subsequent UDP packets are sometimes not fragmented and continue to be
+dropped.
 
-[    0.000000] Linux version 6.16.8-rc1rv-gfb25a6be32b3
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20250813, GNU ld (GNU
-Binutils) 2.45.0) #1 SMP PREEMPT_DYNAMIC Thu Sep 18 11:43:14 JST 2025
+System details:
 
-Thanks
+Egress interface MTU: 9192 bytes
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Path MTU at intermediate hop: 1500 bytes
+
+Kernel parameter: ip_no_pmtu_disc=0 (default)
+
+Questions / request for feedback:
+
+Is this a known regression in the 5.15 kernel series?
+
+We have verified that the Path MTU cache is usually updated correctly.
+
+Is there a way to detect or log cases where the cache is not updated?
+
+If this issue has already been addressed, could you please point us to
+the relevant fix commit so we can backport and test it?
+
+We have reviewed several patches between v5.10.35 and v5.15.71 related
+to PMTU and ICMP handling and examined the code flow,
+ but have not been able to pinpoint the root cause.
+
+Any guidance, insights, or pointers would be greatly appreciated.
+
+Best regards,
+Chandrasekharreddy C
 
