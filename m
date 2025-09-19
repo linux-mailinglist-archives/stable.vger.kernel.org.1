@@ -1,124 +1,118 @@
-Return-Path: <stable+bounces-180597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E046B87D11
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 05:32:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25173B87D8A
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 06:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24FF05652A9
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 03:32:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31E352337A
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 04:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5181E5B82;
-	Fri, 19 Sep 2025 03:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hp+0s/S6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B56621FF28;
+	Fri, 19 Sep 2025 04:02:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5224918A6C4
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 03:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5B41F12E0;
+	Fri, 19 Sep 2025 04:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758252729; cv=none; b=IUSMdkrwVLx44HI6bjSdJMIUf9lgzLtUccrY6GnfW/TXwHHTLRy+fQNgG5egtk8WBzEOdjd/a7RoUwMQAUu+GvEN08Mk0EHTNa1Dls6IuPFzJkPdBJg0En3RuPq2TF5uIDYRFjW2a7RmfJAE7oDZi3L4aMDATDU2QgHQ+CzgVyU=
+	t=1758254523; cv=none; b=vDmAfdOyEBFA24ygT094QFTFJdLb9NQJd8U/0+cuzfOIceKaMYnMtBx7/EX0H/En5EiLYM6bD4VTF9A2qVk7e2tY5EKGjW37Z0aqB3yEbIEQGSupYNW/WhWYjz2n87cw/aVUZDWq4hJhoPCw5peqqlM/GO2pzRGGnoT4ewPZZFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758252729; c=relaxed/simple;
-	bh=9i+ewLTm0tW3oXQSCeGon/cSgfcT+S++hB/pwA2zED0=;
+	s=arc-20240116; t=1758254523; c=relaxed/simple;
+	bh=J0X3/qOcIhQPImwvFRyFoOTpMSuDc7j7KO334CJhEDw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=juGecfOQa8/Lo+f3JFSxD4aRmdfdosoWzyo3Xt9z12p6pyNLqv74HPZYygYvaKsvZaz/Qo09tXHfwjlb6K/gMfbDpwWiLt72oy0P6LupYHeb8aA/fGtjwKNN9rnj4hPvtF81ldAVCcUW7344GGxwdQRWbhbdgO04kOe/oP93RR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hp+0s/S6; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <76443569-ec44-421c-8447-4afc27892f23@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758252713;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gnuCEFFdN917o/8qA/xrR9kzuXojStpI6kORXvgXUoA=;
-	b=hp+0s/S63yfT2Qp2O2VH0w9Htyr7I5soo/0KudVCBPBBPx+Q7UPiWL0NznagYoIAXrOFKF
-	2r4ezJvZakZP8rS9aXP0Tl4DbE8D5ybxBIKfi501Fnpsb4m+oujh1By6l/ECr6NW2sP0Rt
-	YCkEojXRWQUHbikBfDMdoGibz7EEeQ0=
-Date: Thu, 18 Sep 2025 20:31:48 -0700
+	 In-Reply-To:Content-Type; b=o130Nnx9ngVJ2SPO37ZBTWcwUSXJhMEPGoVF3nkrroqbW5BBJHGkRoWCcL1tPELj4q3wN/prHPbr62WUesqXp3/ZDQ6UtxITcjV1/AqBH87Efp0G+/9ZIMAexWmbn06k7eIsA9vSXdII0xQryCo4ZyV/7eyBhJRyfLhnBZPdLsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F98C1758;
+	Thu, 18 Sep 2025 21:01:51 -0700 (PDT)
+Received: from [10.164.18.52] (MacBook-Pro.blr.arm.com [10.164.18.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 700843F673;
+	Thu, 18 Sep 2025 21:01:57 -0700 (PDT)
+Message-ID: <70958792-2d11-4fab-be78-e35434f2e524@arm.com>
+Date: Fri, 19 Sep 2025 09:31:54 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] RDMA/rxe: Fix race in do_task() when draining
-To: Gui-Dong Han <hanguidong02@gmail.com>, zyjzyj2000@gmail.com,
- jgg@ziepe.ca, leon@kernel.org
-Cc: linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, rpearsonhpe@gmail.com, stable@vger.kernel.org
-References: <20250919025212.1682087-1-hanguidong02@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2 PATCH] arm64: kprobes: call set_memory_rox() for kprobe page
+To: Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>
+Cc: catalin.marinas@arm.com, ryan.roberts@arm.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250918162349.4031286-1-yang@os.amperecomputing.com>
+ <aMxAwDr11M2VG5XV@willie-the-truck>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <20250919025212.1682087-1-hanguidong02@gmail.com>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aMxAwDr11M2VG5XV@willie-the-truck>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
 
-On 9/18/25 7:52 PM, Gui-Dong Han wrote:
-> When do_task() exhausts its iteration budget (!ret), it sets the state
-> to TASK_STATE_IDLE to reschedule, without a secondary check on the
-> current task->state. This can overwrite the TASK_STATE_DRAINING state
-> set by a concurrent call to rxe_cleanup_task() or rxe_disable_task().
->
-> While state changes are protected by a spinlock, both rxe_cleanup_task()
-> and rxe_disable_task() release the lock while waiting for the task to
-> finish draining in the while(!is_done(task)) loop. The race occurs if
-> do_task() hits its iteration limit and acquires the lock in this window.
-> The cleanup logic may then proceed while the task incorrectly
-> reschedules itself, leading to a potential use-after-free.
->
-> This bug was introduced during the migration from tasklets to workqueues,
-> where the special handling for the draining case was lost.
->
-> Fix this by restoring the original pre-migration behavior. If the state is
-> TASK_STATE_DRAINING when iterations are exhausted, set cont to 1 to
-> force a new loop iteration. This allows the task to finish its work, so
-> that a subsequent iteration can reach the switch statement and correctly
-> transition the state to TASK_STATE_DRAINED, stopping the task as intended.
->
-> Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+On 18/09/25 10:56 pm, Will Deacon wrote:
+> On Thu, Sep 18, 2025 at 09:23:49AM -0700, Yang Shi wrote:
+>> The kprobe page is allocated by execmem allocator with ROX permission.
+>> It needs to call set_memory_rox() to set proper permission for the
+>> direct map too. It was missed.
+>>
+>> Fixes: 10d5e97c1bf8 ("arm64: use PAGE_KERNEL_ROX directly in alloc_insn_page")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>> ---
+>> v2: Separated the patch from BBML2 series since it is an orthogonal bug
+>>      fix per Ryan.
+>>      Fixed the variable name nit per Catalin.
+>>      Collected R-bs from Catalin.
+>>
+>>   arch/arm64/kernel/probes/kprobes.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
+>>
+>> diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
+>> index 0c5d408afd95..8ab6104a4883 100644
+>> --- a/arch/arm64/kernel/probes/kprobes.c
+>> +++ b/arch/arm64/kernel/probes/kprobes.c
+>> @@ -10,6 +10,7 @@
+>>   
+>>   #define pr_fmt(fmt) "kprobes: " fmt
+>>   
+>> +#include <linux/execmem.h>
+>>   #include <linux/extable.h>
+>>   #include <linux/kasan.h>
+>>   #include <linux/kernel.h>
+>> @@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+>>   static void __kprobes
+>>   post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct pt_regs *);
+>>   
+>> +void *alloc_insn_page(void)
+>> +{
+>> +	void *addr;
+>> +
+>> +	addr = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
+>> +	if (!addr)
+>> +		return NULL;
+>> +	set_memory_rox((unsigned long)addr, 1);
+>> +	return addr;
+>> +}
+> Why isn't execmem taking care of this? It looks to me like the
+> execmem_cache_alloc() path calls set_memory_rox() but the
+> execmem_vmalloc() path doesn't?
 
-Thanks a lot. I am fine with this.
+Ryan has raised this issue here -
+https://lore.kernel.org/all/d4019be7-e24c-4715-a42a-4f1fc39a9bd4@arm.com/
 
-Yanjun.Zhu
-
-> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-> ---
-> v2:
-> * Rewrite commit message for clarity. Thanks to Zhu Yanjun for the review.
-> ---
->   drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
-> index 6f8f353e9583..f522820b950c 100644
-> --- a/drivers/infiniband/sw/rxe/rxe_task.c
-> +++ b/drivers/infiniband/sw/rxe/rxe_task.c
-> @@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
->   		 * yield the cpu and reschedule the task
->   		 */
->   		if (!ret) {
-> -			task->state = TASK_STATE_IDLE;
-> -			resched = 1;
-> +			if (task->state != TASK_STATE_DRAINING) {
-> +				task->state = TASK_STATE_IDLE;
-> +				resched = 1;
-> +			} else {
-> +				cont = 1;
-> +			}
->   			goto exit;
->   		}
->   
+> It feels a bit bizarre to me that we have to provide our own wrapper
+> (which is identical to what s390 does). Also, how does alloc_insn_page()
+> handle the direct map alias on x86?
+>
+> Will
+>
 
