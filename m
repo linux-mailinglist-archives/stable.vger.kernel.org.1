@@ -1,99 +1,115 @@
-Return-Path: <stable+bounces-180685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D96B8ADBD
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EF3B8ADC3
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3F51CC366F
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:08:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A2CB1CC3699
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EA9256C6C;
-	Fri, 19 Sep 2025 18:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C289323BCE3;
+	Fri, 19 Sep 2025 18:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jDqRi4s3"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="KDV7vTlj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAEA1D8DE1
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 18:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0241A2392;
+	Fri, 19 Sep 2025 18:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758305294; cv=none; b=ipu/Wx6neopYDeC2jrlRY5ZiWw+ad7B6wMiKsnNl7g0qQvn+r0Q39Rto4fZEe3bXT9XMPdU5njhFieCJ+S9l/c64MwHZUB1U8P9kGlFo1ySBzSW8M54OJHRsjCS1p2wkiGFcKMXezI0yTlgNnrbEe9VmzqQxCQLQuzYZCtjm3cQ=
+	t=1758305307; cv=none; b=QqNy0xYYGPQd4VUcNN2XKsqVUr7NdjAJxNhAWmksblJQ9Kugu14QePLSgzFuP/BQt4Q87d8a8Za3Yhq+iWR2/axCtK3dPxxNNTgpnMegFTjQHwil5b34nvQ6ol5qjc4ghE1miQTU/eLpIqvaHyrMvKy+49oppfZ0CwkMsolYgrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758305294; c=relaxed/simple;
-	bh=d+IpnihDr4NXdRPvmqmk0qIWkC/FYIAhSuLCT190ba8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=h7uylT4JKGC5wBFRKGT+LPF93Jm05Db5oW0OoOTw7WvkQHkSxfU6DTYS8YD2wzLNSmH8TXLfKqw0YVWVDvJIXObxUv89FBTRNR4SWIkbld7rRUYbMHIi/u+Vd7CfTncb8gd0tMayiooLXh5JobcgFWxG9HXrke+GYiNSfg+AsrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jDqRi4s3; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758305292; x=1789841292;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=d+IpnihDr4NXdRPvmqmk0qIWkC/FYIAhSuLCT190ba8=;
-  b=jDqRi4s3mNKi+aMPyat6cYqLGLkDBv0oM/ykGG1kl3iTSHdfJbraVaGE
-   b+/ria3yaiXwURgLjABreIlZ+FiKr6hXhYP6oXkqdgY0uorG5/PwyMZb3
-   KjahGwSwnNd1l7u3DJZZVLH2vtesTIjYlYGekOBI4V5jT1aakr1meoB+j
-   pZ85mm5JfnPmHwIEd3TSSs2app6dxHANkaZDrq7zKGu3Te/IhIP3Xumcc
-   hdujgUNoKZ/DiOGtV5DC0hbkEJobfThRfVc5sTFSrlVJWX7zJmNx7FiDk
-   XQwR0KYDPAsGqR7v/H0faMlPWezTgE3k+oVmxZkWkwo42WBEcDDiFXJI4
-   A==;
-X-CSE-ConnectionGUID: jVtAFcixQ625oxhaPS2+SQ==
-X-CSE-MsgGUID: cIvfMb4TS0q6DxbK5tnjdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60712313"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="60712313"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 11:08:11 -0700
-X-CSE-ConnectionGUID: AxerEPqZR5atSwmZ4HU/VQ==
-X-CSE-MsgGUID: vbGHOtBXTF2EzcKvayIs1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="175698571"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 19 Sep 2025 11:08:11 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uzfWh-0004ed-2X;
-	Fri, 19 Sep 2025 18:08:07 +0000
-Date: Sat, 20 Sep 2025 02:07:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: hariconscious@gmail.com
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net] net/core : fix KMSAN: uninit value in tipc_rcv
-Message-ID: <aM2b79FnV-yP1ZPs@f1e5f3f3c112>
+	s=arc-20240116; t=1758305307; c=relaxed/simple;
+	bh=GmHbu8ynTyd173pmgmhNrvCDGzhcTmBxNkeN59Ta6ck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FYLtb2zaaHoizcYSrQs9EbPUwRFXOT21sjdL7+r9cY/JpTNne/4z1XIFIBEYJXFHSDXVzAPjcqYKZK5xcemUjJtq7H8ggSmN3HHlDetORglbFWEaPhja4a9NwXzo184MqqGJwH6XMYeJAN6seOaXJjL7MZBTrqpkZRlViDJDj1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=KDV7vTlj reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cT0qW332yz1DDBW;
+	Fri, 19 Sep 2025 20:08:23 +0200 (CEST)
+Received: from [10.10.15.9] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cT0qV6rfxz1DDgW;
+	Fri, 19 Sep 2025 20:08:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1758305303;
+	bh=or5FSHJv8FvEukdP9GhqjsDqbG7dhF0bL0g3d2UeTB0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KDV7vTljLwb+U84dNx5bw5/mG977ff9eb8i7H/19aT7tExv8goUmNapCyoYYthnMF
+	 zoDWJ05ed6TK6r1SBTnf5SpSJeI9UnzCmEG4ZNo8/IDJ/qS+8lyBdEowZvgTrD+1ff
+	 g+Slr/H7M9RdLrn7zsLlwePuIoiyIORMq182yDSSGtTpW80cHYhhpiNr9NXzz2jyl5
+	 HiftCd+t944o53UUW+k85y/tUGrNYGW3n9x69u/7eCCV8dLsiKiwUCkaHLnhasl/DP
+	 P4/16c/UssiTKMgXS0WT+4XgJUG0ZKteUBsdwigDj9a8caLBiV/LD4k5QHGNSFd/1J
+	 YLg2FycxEQ0cg==
+Message-ID: <932cf31f-84ca-4298-832c-98579f8b37bd@gaisler.com>
+Date: Fri, 19 Sep 2025 20:08:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250919180601.76152-1-hariconscious@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 RESEND] sparc: fix error handling in scan_one_device()
+To: Ma Ke <make24@iscas.ac.cn>, davem@davemloft.net
+Cc: akpm@linux-foundation.org, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250718093205.3403010-1-make24@iscas.ac.cn>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20250718093205.3403010-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 2025-07-18 11:32, Ma Ke wrote:
+> Once of_device_register() failed, we should call put_device() to
+> decrement reference count for cleanup. Or it could cause memory leak.
+> So fix this by calling put_device(), then the name can be freed in
+> kobject_cleanup().
+> 
+> Calling path: of_device_register() -> of_device_add() -> device_add().
+> As comment of device_add() says, 'if device_add() succeeds, you should
+> call device_del() when you want to get rid of it. If device_add() has
+> not succeeded, use only put_device() to drop the reference count'.
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+> Changes in v2:
+> - retained kfree() manually due to the lack of a release callback function.
+> ---
+>  arch/sparc/kernel/of_device_64.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
+> index f98c2901f335..f53092b07b9e 100644
+> --- a/arch/sparc/kernel/of_device_64.c
+> +++ b/arch/sparc/kernel/of_device_64.c
+> @@ -677,6 +677,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
+>  
+>  	if (of_device_register(op)) {
+>  		printk("%pOF: Could not register of device.\n", dp);
+> +		put_device(&op->dev);
+>  		kfree(op);
+>  		op = NULL;
+>  	}
 
-Thanks for your patch.
+Thank you and sorry for the late feedback, but could you also fix the
+same problem in arch/sparc/kernel/of_device_32.c?
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net] net/core : fix KMSAN: uninit value in tipc_rcv
-Link: https://lore.kernel.org/stable/20250919180601.76152-1-hariconscious%40gmail.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Thanks,
+Andreas
 
 
