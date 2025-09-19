@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-180692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02A2B8AFBF
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:50:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D733B8AFD7
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DBDE563358
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:50:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C616A1C8868B
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FC7279DAE;
-	Fri, 19 Sep 2025 18:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A15327AC4D;
+	Fri, 19 Sep 2025 18:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eeFeoos8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PRuCZeSv"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978FC276050;
-	Fri, 19 Sep 2025 18:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9847427815D;
+	Fri, 19 Sep 2025 18:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758307809; cv=none; b=il1eum3gZ8lQDE2hGaYQh76CYQNO866X/ZSTtwHcmIjD+Ay0jMGep6HRu/CEW2de2PH2qTq0ZKNVTz+WWeh8pCxqns+n3o9/IZPY4qX1uXtX8Z4z2Z+elc0HHuMfJsYcXJiS1UuSxmye1yetEIZIKMJleqJfjtBSUTUpVJ4dZE0=
+	t=1758307810; cv=none; b=Z/0LKwqe9P/pwtTzWRZ2kbGx2LTrd/jxtnrM8osTiM+5m9N6hjrfMsgfJP1/zqgrW02izAAPz6Vx03TZCTMdFzTR2xKvZsfAnBoKKFLdJR/pNR4DQKMqE9b4aB1SWlOHE+sKehXzHXEn90xB252uMrIkvttfdTIKEeBnpndUCzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758307809; c=relaxed/simple;
-	bh=9jgxN2hb2oX58Mj3p3jPGEEAipYs05bu/Fpc3dikX7Y=;
+	s=arc-20240116; t=1758307810; c=relaxed/simple;
+	bh=TX7UL0cLxTWPtiVoye8gMNAcxASDP7ICcV6LfylSoCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nc+4DADTP091M4Enneh7dUQ5Snsf5kh+fLHnK0zdmSAsmHCUK+bgHwXuovnD1VvSHECRS98nAwndAPF3PDX5XgPTaW/OptFXqoFOhyrZYWOhZDNM6aWAR6CvQFSg+aj4zuBY3w546yzumF7r0241WEidWCy/2kQwgdCc1i8f63A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eeFeoos8; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=a/PfPF8bkPHZNvdz/3kiuEwNezFFjg8VekKoGSpkX634zBP/6fKDkZJI/2TVPLiMg5h7Jfxsfq83sEkcqNqXVGF5EBZZEkHZQ//iLnV0uz+miGkVMuIA3zvX/okvsdQz9ritGEc9nowRvGGoehOVLhLeMQJOjZU3hLIxoCrTcpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PRuCZeSv; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758307807; x=1789843807;
+  t=1758307808; x=1789843808;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9jgxN2hb2oX58Mj3p3jPGEEAipYs05bu/Fpc3dikX7Y=;
-  b=eeFeoos8Xvuw1lsmCyqmUmphkH/nAUHmLKZsy1Ofoyt+cXditxDMLr4z
-   ju6tVFrp0n6tMcQ4xTMZ/EoMNRVXMrRkCkGvRr18eJCWtKabesPmDD0A1
-   +pT9b8CKC84OmVBLFG/5ITuXwNdpdzrNML+drKZKvIRQVK7vaX4EtJrif
-   EcdVvdGvdI2EdZvgNfCa8gWTqwI2cmxaLJG07N97x8nrVo1KVcVaSmKwd
-   tt/pRBXixzFBF+97aSbsP7VhdQvewQMzO7X0GPNHcPj6Q3e7sHdpFBADe
-   s5cyxzGezdsrU+DvlzerMElgnGxWqu9VG5BVRvN7r76IbU8lROCX9a5Sl
-   Q==;
-X-CSE-ConnectionGUID: KjOH6rDTSq+6lsN/Gb0reQ==
-X-CSE-MsgGUID: 9Nm5iY7ZQn+yWg7X7ixWXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="60589750"
+  bh=TX7UL0cLxTWPtiVoye8gMNAcxASDP7ICcV6LfylSoCM=;
+  b=PRuCZeSvqwWsUdDw+qa/k76Q5Xt8TBRuhOiX86DA/UUoiGS1pOCZeJVt
+   tLTyWKgIHFdTdxcqxZeabp3RTOaqTV1mbibZh9akxRNazXRW61zW8hRzN
+   ftVRDpE4iA34pClcdiA1Seik3HhIYGiScPegnmpRTmbh82Zx2HpyM0giq
+   n42aLepv07tWfR3ZlprIi9VwW8qxepHX6PlXohsYxp9fOpJepK8fMA4Jg
+   tMNSRqKveo9+ooEgIurGgNi3nxLcqdYCkPFQPJZaB2RxBsDZ6sfNbg+vY
+   xPeKtm7W3eswj4CB4vcgtBrLvbqpzXfsyd5owlwBsylQlpIkZyC09uwwr
+   g==;
+X-CSE-ConnectionGUID: eS1QB9pbQIudBHkK+R/i1w==
+X-CSE-MsgGUID: UyXifO1EQzu7kLlFiP5ypQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="60589760"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60589750"
+   d="scan'208";a="60589760"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 11:50:05 -0700
-X-CSE-ConnectionGUID: 8wb9w+0rQ6iisePt+Jjn3A==
-X-CSE-MsgGUID: XXypAbvSQsWWychJhfPV8g==
+X-CSE-ConnectionGUID: umitClbqRhyUuoWJ9DVOlQ==
+X-CSE-MsgGUID: 3KDyEJIxTcmu91SoacmQdA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="175458774"
+   d="scan'208";a="175458786"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa009.jf.intel.com with ESMTP; 19 Sep 2025 11:50:05 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -75,9 +75,9 @@ Cc: Lukasz Czapnik <lukasz.czapnik@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Simon Horman <horms@kernel.org>,
 	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 4/8] i40e: fix input validation logic for action_meta
-Date: Fri, 19 Sep 2025 11:49:54 -0700
-Message-ID: <20250919184959.656681-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 5/8] i40e: fix validation of VF state in get resources
+Date: Fri, 19 Sep 2025 11:49:55 -0700
+Message-ID: <20250919184959.656681-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250919184959.656681-1-anthony.l.nguyen@intel.com>
 References: <20250919184959.656681-1-anthony.l.nguyen@intel.com>
@@ -91,9 +91,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-Fix condition to check 'greater or equal' to prevent OOB dereference.
+VF state I40E_VF_STATE_ACTIVE is not the only state in which
+VF is actually active so it should not be used to determine
+if a VF is allowed to obtain resources.
 
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
+i40e_vc_get_vf_resources_msg() and cleared during reset.
+
+Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
 Cc: stable@vger.kernel.org
 Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
@@ -102,22 +107,56 @@ Reviewed-by: Simon Horman <horms@kernel.org>
 Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 7 ++++++-
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h | 3 ++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index b6db4d78c02d..c85715f75435 100644
+index c85715f75435..5ef3dc43a8a0 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3603,7 +3603,7 @@ static int i40e_validate_cloud_filter(struct i40e_vf *vf,
+@@ -1464,6 +1464,7 @@ static void i40e_trigger_vf_reset(struct i40e_vf *vf, bool flr)
+ 	 * functions that may still be running at this point.
+ 	 */
+ 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
++	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
  
- 	/* action_meta is TC number here to which the filter is applied */
- 	if (!tc_filter->action_meta ||
--	    tc_filter->action_meta > vf->num_tc) {
-+	    tc_filter->action_meta >= vf->num_tc) {
- 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
- 			 vf->vf_id, tc_filter->action_meta);
+ 	/* In the case of a VFLR, the HW has already reset the VF and we
+ 	 * just need to clean up, so don't hit the VFRTRIG register.
+@@ -2130,7 +2131,10 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
+ 	size_t len = 0;
+ 	int ret;
+ 
+-	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
++	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
++
++	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
++	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
+ 		aq_ret = -EINVAL;
  		goto err;
+ 	}
+@@ -2233,6 +2237,7 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
+ 				vf->default_lan_addr.addr);
+ 	}
+ 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
++	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
+ 
+ err:
+ 	/* send the response back to the VF */
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+index 5cf74f16f433..f558b45725c8 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -41,7 +41,8 @@ enum i40e_vf_states {
+ 	I40E_VF_STATE_MC_PROMISC,
+ 	I40E_VF_STATE_UC_PROMISC,
+ 	I40E_VF_STATE_PRE_ENABLE,
+-	I40E_VF_STATE_RESETTING
++	I40E_VF_STATE_RESETTING,
++	I40E_VF_STATE_RESOURCES_LOADED,
+ };
+ 
+ /* VF capabilities */
 -- 
 2.47.1
 
