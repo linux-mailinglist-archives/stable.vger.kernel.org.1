@@ -1,104 +1,140 @@
-Return-Path: <stable+bounces-180697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC51B8B00A
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8FBB8B0C9
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75C051654C3
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:52:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 296E0563654
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 19:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6062A26E16E;
-	Fri, 19 Sep 2025 18:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0FC28312D;
+	Fri, 19 Sep 2025 19:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYKXeHdp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hXCxHh8N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149EF1E1E16;
-	Fri, 19 Sep 2025 18:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D18D280309
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 19:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758307957; cv=none; b=N3CAkNpUSqycWQXTdHOVWmssBpKUzHnJ6NkKJ3BHRmeClOVACbMIJCdImTWXQ/89AStBgkcYN/lb+tfqOTa3ghsccB2Ye/gLrkgGl/y5qpnl4eM9ykV9y1MDtJIypjKATX6vdK+giLL6Ep1zenN/okhiIrn95mPT5A+AU641d9U=
+	t=1758308959; cv=none; b=qg0Mu/6rYJxHJtDZIDZnjST2jxRsTJ/EG/g16j8xV6NWqi7glQoLwQ+FrJeZD5XrNQNNinlJcQzVZLsA3w4G5slJUMS5RQQ0x2wCM9MzJy/QtAwvYHb2xAWw+Txb1JBKeWk6zXXjPsrR0i6gs51SIaqfO0lzCRO2XXo1Z/hzYt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758307957; c=relaxed/simple;
-	bh=+sZY14sW8tr9IVa9GH1fBB0VscnTuhTsxV2CfzO6pdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PsWLWzitgj5e2HeyuJD6oEeIrr4IUtIoOOonbvJTwy0lRHGuoE22gij75zxSBGuv1vx6ENc3nft2qNxsA8UIAT2ZoKXdd3/xMidALwd6RGNpNQ0DFSo21yvNyi9p9VE1wgH42Lgkm6Yc9ZVEJKzdRokL7veUo9VrJbZuetD0EfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYKXeHdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9E1C4CEF0;
-	Fri, 19 Sep 2025 18:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758307956;
-	bh=+sZY14sW8tr9IVa9GH1fBB0VscnTuhTsxV2CfzO6pdE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NYKXeHdpOD1QbneH7XyTm8yziyDnhWbFad7CxaSZwm9o5f/2Ad2/EPvyMurh9fl6r
-	 XpwDHZmNvLYX3IiWaTOOvp28390iGIKQ7CAkbWP55QLE2rf5FeKzRrfYiqFdWAoY2v
-	 Bi6Du/7yz6eQ6/WckJumn+j/htMTZCIImITFILh14CNCnv60JTK1LRDTS26tO+HlQo
-	 r8rqN3taiY9u3mcMjto5zndQ5hbS3IB7OKk7O9c1hJsuDaF5l8DSXd0HaSofQs3kuC
-	 qBKtzpm2fn6dh80hQWZOwqsSoR3f96c3quFJIv08G/xgWPvCOoKa7fuXH2HQKEiOnz
-	 jcnvqf/qIqeRA==
-Date: Fri, 19 Sep 2025 19:52:32 +0100
-From: Simon Horman <horms@kernel.org>
-To: Deepak Sharma <deepak.sharma.472935@gmail.com>
-Cc: krzk@kernel.org, vadim.fedorenko@linux.dev, netdev@vger.kernel.org,
-	stable@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v3] net: nfc: nci: Add parameter validation for
- packet data
-Message-ID: <20250919185232.GF589507@horms.kernel.org>
-References: <20250919064545.4252-1-deepak.sharma.472935@gmail.com>
+	s=arc-20240116; t=1758308959; c=relaxed/simple;
+	bh=I6jtwFO4rLlCn3Qr98wO3TZ4R5zgDcuCAtGJjeBz4KM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mZmiPn+K+N+wA86itTToMlGxQxY73osvtrSLMQnhRdxksXuPn8ja6hKCdgB1vT6+lWFZeZXCwJbShBb776qsF5hLqUNdVdOpHarz5R+cxVJOV80usXbFDiLbt4nYn9M7hVciIRDT+kD+6zWfrZw9iPZf7cFc6QwYHkPpNAYt9q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hXCxHh8N; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4b7a8ceaad3so22356891cf.2
+        for <stable@vger.kernel.org>; Fri, 19 Sep 2025 12:09:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758308956; x=1758913756; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vXbAvw5kkLVhGfc5Ze9Jc+p6148kul0m6ybt6DGydeg=;
+        b=hXCxHh8NCbn0JujoChJPSy9bcSl39TyHyq01HV0SDhHBu7LAbEyO0uK6HQv37Vf4u5
+         gTFIwC+mQPrRHmp9aFFvHoI2xnkjDkrOlh+LS1DAbqAhwFnGSO8j/OaFD3zb7NaAJ4Jg
+         oYKmkGEadimwVh8bZt0Hqf4HvM2CxGJbe7rXnMEsDRoZayvKrnZHOo6V9KkE14wPApax
+         DbJJ6/NFnHYqqhUsosZFrRAV6srW7rDQA7aixuoYnjHso4RQ2PVLmNaACIBB2E6yP+1Y
+         ySyUcDJh7P2qyrcSOCVoGuTqIzikYH3/f6f1NRFlfJldjzNGOc1P+MjaMdea+WytqbNj
+         otZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758308956; x=1758913756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vXbAvw5kkLVhGfc5Ze9Jc+p6148kul0m6ybt6DGydeg=;
+        b=FkLmzu1Ha7RInV5MstPz7SWo4CkZw7pZD7wmPjrsRyAjH68noR2th+EXu3hxDwwKva
+         v7BZLS9EOEJuHcdj30OMNuaDjIWxEmiNgL0b7S4aOgJSo8MKaFUv75gsqqrHzFJde2Cg
+         PaiZR85VIsJLpOZosBuLswrT7L05pMbjVBJiooZP+NUwwPe8mddduK45bAGiuQFgb5R1
+         WNmMKj/QW0EM3n2WAisfeSTTzp81qY9tcz9AXJ4kWhPp6h97qZeo5w1xCrOwzaI5mEBs
+         SMfMYIFLyXlcUa7Bf9kg16zU/MSS5FJmMmTG88nXHSWWpMwTBRFdPCSP7vT2VwtEUMS7
+         mrZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVz8rkgkdVarIqcZc0yHdszlqgsZh9LlHNu+nCS28g66xuIzWcnN8lycW4DeTQm2wd01ghluKo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/DMIIoT2IvtcUrHcoMhUaIoOIaaqQa73bwo0sPzj0b++njSfu
+	8e9/MqwZ7IUH0FDPUNp8S508BiABgDyo8/S4VsI9ZvmUrhqlWIFvy/GYQLcbnmatVxuWr0COqKM
+	ENuQI7bCoGvFEUVCnZN03lSpqm958Vie+zwoKYwJ7
+X-Gm-Gg: ASbGncubNB3is1Z4CRJH4NMJj6WqlD6110ewuR+qVP+2kZhGN4e9U2wAKjNoOKuKseq
+	R/HOV85bqk4bDgQ46IB7PUElLGEdzbrmgzFxTXerMy7vRiq/MhBnGw7puYQpnmbnUo1rmjPTvde
+	IHHpSYZjCNR+ww7wDTjJUcSkImzVx4DYqe1fsv7No6/4JUYWxxXFY3R2iMr1rRs5Gd56qPbOHGw
+	PEJ0A==
+X-Google-Smtp-Source: AGHT+IHK4rrWt8hd+ehEHrqlcbzDHbyFpcHelDgbKsL1PGeJzPjV9eDyf0iQYAEDXEKf6jxfMvTMc1pEz6lgz1mBp/E=
+X-Received: by 2002:ac8:7d01:0:b0:4b7:a62d:ef6f with SMTP id
+ d75a77b69052e-4c072e26929mr51253261cf.64.1758308956080; Fri, 19 Sep 2025
+ 12:09:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250919064545.4252-1-deepak.sharma.472935@gmail.com>
+References: <20250919180601.76152-1-hariconscious@gmail.com>
+In-Reply-To: <20250919180601.76152-1-hariconscious@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 19 Sep 2025 12:09:04 -0700
+X-Gm-Features: AS18NWDU8qkSN-NhK9yhAi1bjWHatilGj8aec2jq6okG1y-abKQuoQiJV7Jupu0
+Message-ID: <CANn89i+ara1CeKOfuQgZ+oF3FMv3gF2BLP_7OSEEqytz-j9a-Q@mail.gmail.com>
+Subject: Re: [PATCH net] net/core : fix KMSAN: uninit value in tipc_rcv
+To: hariconscious@gmail.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, shuah@kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 19, 2025 at 12:15:44PM +0530, Deepak Sharma wrote:
-> Syzbot reported an uninit-value bug at nci_init_req for commit
-> 5aca7966d2a7 ("Merge tag 'perf-tools-fixes-for-v6.17-2025-09-16'..).
-> 
-> This bug arises due to very limited and poor input validation
-> that was done at nic_valid_size(). This validation only
-> validates the skb->len (directly reflects size provided at the
-> userspace interface) with the length provided in the buffer
-> itself (interpreted as NCI_HEADER). This leads to the processing
-> of memory content at the address assuming the correct layout
-> per what opcode requires there. This leads to the accesses to
-> buffer of `skb_buff->data` which is not assigned anything yet.
-> 
-> Following the same silent drop of packets of invalid sizes at
-> `nic_valid_size()`, add validation of the data in the respective
-> handlers and return error values in case of failure. Release
-> the skb if error values are returned from handlers in 
-> `nci_nft_packet` and effectively do a silent drop
-> 
-> Possible TODO: because we silently drop the packets, the
-> call to `nci_request` will be waiting for completion of request
-> and will face timeouts. These timeouts can get excessively logged
-> in the dmesg. A proper handling of them may require to export
-> `nci_request_cancel` (or propagate error handling from the
-> nft packets handlers).
-> 
-> Reported-by: syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=740e04c2a93467a0f8c8
-> Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation)
+On Fri, Sep 19, 2025 at 11:06=E2=80=AFAM <hariconscious@gmail.com> wrote:
+>
+> From: HariKrishna Sagala <hariconscious@gmail.com>
+>
+> Syzbot reported an uninit-value bug on at kmalloc_reserve for
+> commit 320475fbd590 ("Merge tag 'mtd/fixes-for-6.17-rc6' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux")'
+>
+> Syzbot KMSAN reported use of uninitialized memory originating from functi=
+ons
+> "kmalloc_reserve()", where memory allocated via "kmem_cache_alloc_node()"=
+ or
+> "kmalloc_node_track_caller()" was not explicitly initialized.
+> This can lead to undefined behavior when the allocated buffer
+> is later accessed.
+>
+> Fix this by requesting the initialized memory using the gfp flag
+> appended with the option "__GFP_ZERO".
+>
+> Reported-by: syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D9a4fbb77c9d4aacd3388
+> Fixes: 915d975b2ffa ("net: deal with integer overflows in
+> kmalloc_reserve()")
+> Tested-by: syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
+> Signed-off-by: HariKrishna Sagala <hariconscious@gmail.com>
+> ---
+>  net/core/skbuff.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index ee0274417948..2308ebf99bbd 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -573,6 +573,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_=
+t flags, int node,
+>         void *obj;
+>
+>         obj_size =3D SKB_HEAD_ALIGN(*size);
+> +       flags |=3D __GFP_ZERO;
 
-There is a typo in the fixes tag. It should be:
+Certainly not.
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-                                                           ^^^
-I expect there is no need to repost to address this.
+Some of us care about performance.
 
-> Tested-by: syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com
-> Signed-off-by: Deepak Sharma <deepak.sharma.472935@gmail.com>
+Moreover, the bug will be still there for non linear skbs.
 
-...
+So please fix tipc.
 
