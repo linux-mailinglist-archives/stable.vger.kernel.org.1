@@ -1,205 +1,275 @@
-Return-Path: <stable+bounces-180704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C39EB8B47A
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 23:08:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CE0B8B49B
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 23:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04147A80C63
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:08:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A182A80DF7
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747E12877F1;
-	Fri, 19 Sep 2025 21:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEB92D3755;
+	Fri, 19 Sep 2025 21:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EpOb77ib"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="MX/OFU3R"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1029C35942;
-	Fri, 19 Sep 2025 21:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0597C28689B;
+	Fri, 19 Sep 2025 21:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758316130; cv=none; b=RoRablamohxAnO5p9PpmdMv4mWV3OH+7UL2HZf9cEmqyIinFrvcJSyZcVXQXpgjwC+EOjjU2yAwlFSHNWIlGvHZFs0ax5+PpxDhDkHYOmhUvwHzPckbqgyYEr4RHCCo5egOZnLWkyvm5WjVAGhu0pUrQU+l3x1QitskX5BVkTiE=
+	t=1758316175; cv=none; b=AhZR50zZQseKSulI9AIzHb6LxWXVabOGjp3u6rH4p48ZR9CtOvuk793J614/FX4j/Kf4bsX1NZ24e/6wdeHy8IHfzxc6RmhKfeOUNU2dGYKaW6x0QxfHmQCOrIwHKwTVy3Jxq9ndW+gKKscjNNJyyAzadl/lTfPPzUnaDh8AGSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758316130; c=relaxed/simple;
-	bh=2BPYk2GRDKhzl7tfsBOYcymv33a0ea9HaOON3SIwMpk=;
-	h=Date:To:From:Subject:Message-Id; b=ma+tskXyW9jEKjKZvoZibjxs8EtF+6ANA5AxmqDNsfLBvLeOOd+3s+tLzLFDxaRmU3KOe9h2jn3hq9i70HALvMeITg6on9U3lzWcR/m94IqD8gEbeDAZzlWbwSGEBqCtVa1XGIGtCpLV+RZYas6/YNMKm9rwSujrKZZ12x4+nBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EpOb77ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDF7C4CEF0;
-	Fri, 19 Sep 2025 21:08:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758316129;
-	bh=2BPYk2GRDKhzl7tfsBOYcymv33a0ea9HaOON3SIwMpk=;
-	h=Date:To:From:Subject:From;
-	b=EpOb77iblrbafi52L0rtpr4cOs4CnAdtymskL6cfYVnm8/BDtKGvM4XbvOrXsZPnH
-	 eAC3tWqwv9g0kSJU7bPTbyPMJerHApwpxDiy5U9bBfm/Jvoa9i46xrPcUaiO129d31
-	 5/gUmr/50mA7LvVRfobWodepCTeXPFShGGS7qQ9k=
-Date: Fri, 19 Sep 2025 14:08:48 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,glider@google.com,elver@google.com,dvyukov@google.com,ebiggers@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kmsan-fix-out-of-bounds-access-to-shadow-memory.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250919210849.7EDF7C4CEF0@smtp.kernel.org>
+	s=arc-20240116; t=1758316175; c=relaxed/simple;
+	bh=AgnmiRl00Q+TR5lkkj3F3V6s0smD41VHyxIWPPeLXUM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Xck2Y+soO7BHGjwWevmsoktv11JAWJbySgsb5I2xNZN6qUhPW9GEYBBCKDkJtzPlMnYGJP06XNRytBGGANpKVdxsC5MOOLPM32LHlWaNfklIj5wKRm7dNTk+Jq27nWrNB0YIC7E+V+JkvJ4g76d1CGN5FB8CH0IsyneVe69HUR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=MX/OFU3R; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from debian.intra.ispras.ru (unknown [10.10.165.9])
+	by mail.ispras.ru (Postfix) with ESMTPSA id AD0124076724;
+	Fri, 19 Sep 2025 21:09:23 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru AD0124076724
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1758316163;
+	bh=TMZ1Ae4sWnLco23Cwa29HKv1iyXkHZtKG3JzaMIlqYc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MX/OFU3RUwPikIyT6/m1bTTOACdO8oDSPQ4BagFejJ66SftTTErI0JJ3KJnTghCw4
+	 Ms+zzVzp7Yfl+BPu29pJUmUFbbWwlB77RC8pYbR6Kl7iDIOjxku4VvxFuYb16euZah
+	 qTfl7safaO2G9b5B+FcbXoG2CiwTxEF2PwgVFV90=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Po-Hao Huang <phhuang@realtek.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH rtw-next v5 2/4] wifi: rtw89: avoid possible TX wait initialization race
+Date: Sat, 20 Sep 2025 00:08:48 +0300
+Message-ID: <20250919210852.823912-3-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250919210852.823912-1-pchelkin@ispras.ru>
+References: <20250919210852.823912-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+The value of skb_data->wait indicates whether skb is passed on to the
+core mac80211 stack or released by the driver itself.  Make sure that by
+the time skb is added to txwd queue and becomes visible to the completing
+side, it has already allocated and initialized TX wait related data (in
+case it's needed).
 
-The patch titled
-     Subject: kmsan: Fix out-of-bounds access to shadow memory
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kmsan-fix-out-of-bounds-access-to-shadow-memory.patch
+This is found by code review and addresses a possible race scenario
+described below:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kmsan-fix-out-of-bounds-access-to-shadow-memory.patch
+      Waiting thread                          Completing thread
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+rtw89_core_send_nullfunc()
+  rtw89_core_tx_write_link()
+    ...
+    rtw89_pci_txwd_submit()
+      skb_data->wait = NULL
+      /* add skb to the queue */
+      skb_queue_tail(&txwd->queue, skb)
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+  /* another thread (e.g. rtw89_ops_tx) performs TX kick off for the same queue */
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+                                            rtw89_pci_napi_poll()
+                                            ...
+                                              rtw89_pci_release_txwd_skb()
+                                                /* get skb from the queue */
+                                                skb_unlink(skb, &txwd->queue)
+                                                rtw89_pci_tx_status()
+                                                  rtw89_core_tx_wait_complete()
+                                                  /* use incorrect skb_data->wait */
+  rtw89_core_tx_kick_off_and_wait()
+  /* assign skb_data->wait but too late */
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Found by Linux Verification Center (linuxtesting.org).
 
-------------------------------------------------------
-From: Eric Biggers <ebiggers@kernel.org>
-Subject: kmsan: Fix out-of-bounds access to shadow memory
-Date: Thu, 11 Sep 2025 12:58:58 -0700
-
-Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-kmsan_internal_set_shadow_origin():
-
-    BUG: unable to handle page fault for address: ffffbc3840291000
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
-    Oops: 0000 [#1] SMP NOPTI
-    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
-    Tainted: [N]=TEST
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
-    [...]
-    Call Trace:
-    <TASK>
-    __msan_memset+0xee/0x1a0
-    sha224_final+0x9e/0x350
-    test_hash_buffer_overruns+0x46f/0x5f0
-    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
-    ? __pfx_test_hash_buffer_overruns+0x10/0x10
-    kunit_try_run_case+0x198/0xa00
-
-This occurs when memset() is called on a buffer that is not 4-byte aligned
-and extends to the end of a guard page, i.e.  the next page is unmapped.
-
-The bug is that the loop at the end of kmsan_internal_set_shadow_origin()
-accesses the wrong shadow memory bytes when the address is not 4-byte
-aligned.  Since each 4 bytes are associated with an origin, it rounds the
-address and size so that it can access all the origins that contain the
-buffer.  However, when it checks the corresponding shadow bytes for a
-particular origin, it incorrectly uses the original unrounded shadow
-address.  This results in reads from shadow memory beyond the end of the
-buffer's shadow memory, which crashes when that memory is not mapped.
-
-To fix this, correctly align the shadow address before accessing the 4
-shadow bytes corresponding to each origin.
-
-Link: https://lkml.kernel.org/r/20250911195858.394235-1-ebiggers@kernel.org
-Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Tested-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of TX skbs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
 
- mm/kmsan/core.c       |   10 +++++++---
- mm/kmsan/kmsan_test.c |   16 ++++++++++++++++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+v5: - update the changelog to reflect that the potential race scenario
+      was found by code review
+    - pass wait as an argument to rtw89_core_tx_kick_off_and_wait()
 
---- a/mm/kmsan/core.c~kmsan-fix-out-of-bounds-access-to-shadow-memory
-+++ a/mm/kmsan/core.c
-@@ -195,7 +195,8 @@ void kmsan_internal_set_shadow_origin(vo
- 				      u32 origin, bool checked)
- {
- 	u64 address = (u64)addr;
--	u32 *shadow_start, *origin_start;
-+	void *shadow_start;
-+	u32 *aligned_shadow, *origin_start;
- 	size_t pad = 0;
- 
- 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
-@@ -214,9 +215,12 @@ void kmsan_internal_set_shadow_origin(vo
- 	}
- 	__memset(shadow_start, b, size);
- 
--	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+		aligned_shadow = shadow_start;
-+	} else {
- 		pad = address % KMSAN_ORIGIN_SIZE;
- 		address -= pad;
-+		aligned_shadow = shadow_start - pad;
- 		size += pad;
- 	}
- 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
-@@ -230,7 +234,7 @@ void kmsan_internal_set_shadow_origin(vo
- 	 * corresponding shadow slot is zero.
- 	 */
- 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
--		if (origin || !shadow_start[i])
-+		if (origin || !aligned_shadow[i])
- 			origin_start[i] = origin;
- 	}
+v4: - use wiphy_dereference (Zong-Zhe)
+    - move wait->skb assignment place 
+
+ drivers/net/wireless/realtek/rtw89/core.c | 39 +++++++++++++----------
+ drivers/net/wireless/realtek/rtw89/core.h |  3 +-
+ drivers/net/wireless/realtek/rtw89/pci.c  |  2 --
+ 3 files changed, 24 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index ec467ae0e9e6..1f44c7fc1c5e 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1153,25 +1153,14 @@ void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)
  }
---- a/mm/kmsan/kmsan_test.c~kmsan-fix-out-of-bounds-access-to-shadow-memory
-+++ a/mm/kmsan/kmsan_test.c
-@@ -556,6 +556,21 @@ DEFINE_TEST_MEMSETXX(16)
- DEFINE_TEST_MEMSETXX(32)
- DEFINE_TEST_MEMSETXX(64)
  
-+/* Test case: ensure that KMSAN does not access shadow memory out of bounds. */
-+static void test_memset_on_guarded_buffer(struct kunit *test)
-+{
-+	void *buf = vmalloc(PAGE_SIZE);
-+
-+	kunit_info(test,
-+		   "memset() on ends of guarded buffer should not crash\n");
-+
-+	for (size_t size = 0; size <= 128; size++) {
-+		memset(buf, 0xff, size);
-+		memset(buf + PAGE_SIZE - size, 0xff, size);
-+	}
-+	vfree(buf);
-+}
-+
- static noinline void fibonacci(int *array, int size, int start)
+ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+-				    int qsel, unsigned int timeout)
++				    struct rtw89_tx_wait_info *wait, int qsel,
++				    unsigned int timeout)
  {
- 	if (start < 2 || (start == size))
-@@ -677,6 +692,7 @@ static struct kunit_case kmsan_test_case
- 	KUNIT_CASE(test_memset16),
- 	KUNIT_CASE(test_memset32),
- 	KUNIT_CASE(test_memset64),
-+	KUNIT_CASE(test_memset_on_guarded_buffer),
- 	KUNIT_CASE(test_long_origin_chain),
- 	KUNIT_CASE(test_stackdepot_roundtrip),
- 	KUNIT_CASE(test_unpoison_memory),
-_
-
-Patches currently in -mm which might be from ebiggers@kernel.org are
-
-kmsan-fix-out-of-bounds-access-to-shadow-memory.patch
+-	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
+-	struct rtw89_tx_wait_info *wait;
+ 	unsigned long time_left;
+ 	int ret = 0;
+ 
+ 	lockdep_assert_wiphy(rtwdev->hw->wiphy);
+ 
+-	wait = kzalloc(sizeof(*wait), GFP_KERNEL);
+-	if (!wait) {
+-		rtw89_core_tx_kick_off(rtwdev, qsel);
+-		return 0;
+-	}
+-
+-	init_completion(&wait->completion);
+-	wait->skb = skb;
+-	rcu_assign_pointer(skb_data->wait, wait);
+-
+ 	rtw89_core_tx_kick_off(rtwdev, qsel);
+ 	time_left = wait_for_completion_timeout(&wait->completion,
+ 						msecs_to_jiffies(timeout));
+@@ -1234,10 +1223,12 @@ int rtw89_h2c_tx(struct rtw89_dev *rtwdev,
+ static int rtw89_core_tx_write_link(struct rtw89_dev *rtwdev,
+ 				    struct rtw89_vif_link *rtwvif_link,
+ 				    struct rtw89_sta_link *rtwsta_link,
+-				    struct sk_buff *skb, int *qsel, bool sw_mld)
++				    struct sk_buff *skb, int *qsel, bool sw_mld,
++				    struct rtw89_tx_wait_info *wait)
+ {
+ 	struct ieee80211_sta *sta = rtwsta_link_to_sta_safe(rtwsta_link);
+ 	struct ieee80211_vif *vif = rtwvif_link_to_vif(rtwvif_link);
++	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
+ 	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
+ 	struct rtw89_core_tx_request tx_req = {};
+ 	int ret;
+@@ -1254,6 +1245,8 @@ static int rtw89_core_tx_write_link(struct rtw89_dev *rtwdev,
+ 	rtw89_core_tx_update_desc_info(rtwdev, &tx_req);
+ 	rtw89_core_tx_wake(rtwdev, &tx_req);
+ 
++	rcu_assign_pointer(skb_data->wait, wait);
++
+ 	ret = rtw89_hci_tx_write(rtwdev, &tx_req);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to transmit skb to HCI\n");
+@@ -1290,7 +1283,8 @@ int rtw89_core_tx_write(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 		}
+ 	}
+ 
+-	return rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, qsel, false);
++	return rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, qsel, false,
++					NULL);
+ }
+ 
+ static __le32 rtw89_build_txwd_body0(struct rtw89_tx_desc_info *desc_info)
+@@ -3928,6 +3922,7 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
+ 	struct ieee80211_vif *vif = rtwvif_link_to_vif(rtwvif_link);
+ 	int link_id = ieee80211_vif_is_mld(vif) ? rtwvif_link->link_id : -1;
+ 	struct rtw89_sta_link *rtwsta_link;
++	struct rtw89_tx_wait_info *wait;
+ 	struct ieee80211_sta *sta;
+ 	struct ieee80211_hdr *hdr;
+ 	struct rtw89_sta *rtwsta;
+@@ -3937,6 +3932,12 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
+ 	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
+ 		return 0;
+ 
++	wait = kzalloc(sizeof(*wait), GFP_KERNEL);
++	if (!wait)
++		return -ENOMEM;
++
++	init_completion(&wait->completion);
++
+ 	rcu_read_lock();
+ 	sta = ieee80211_find_sta(vif, vif->cfg.ap_addr);
+ 	if (!sta) {
+@@ -3951,6 +3952,8 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
+ 		goto out;
+ 	}
+ 
++	wait->skb = skb;
++
+ 	hdr = (struct ieee80211_hdr *)skb->data;
+ 	if (ps)
+ 		hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_PM);
+@@ -3961,7 +3964,8 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
+ 		goto out;
+ 	}
+ 
+-	ret = rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, &qsel, true);
++	ret = rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, &qsel, true,
++				       wait);
+ 	if (ret) {
+ 		rtw89_warn(rtwdev, "nullfunc transmit failed: %d\n", ret);
+ 		dev_kfree_skb_any(skb);
+@@ -3970,10 +3974,11 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
+ 
+ 	rcu_read_unlock();
+ 
+-	return rtw89_core_tx_kick_off_and_wait(rtwdev, skb, qsel,
++	return rtw89_core_tx_kick_off_and_wait(rtwdev, skb, wait, qsel,
+ 					       timeout);
+ out:
+ 	rcu_read_unlock();
++	kfree(wait);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index d15fa70eb4dc..928c8c84c964 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -7476,7 +7476,8 @@ int rtw89_h2c_tx(struct rtw89_dev *rtwdev,
+ 		 struct sk_buff *skb, bool fwdl);
+ void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel);
+ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+-				    int qsel, unsigned int timeout);
++				    struct rtw89_tx_wait_info *wait, int qsel,
++				    unsigned int timeout);
+ void rtw89_core_fill_txdesc(struct rtw89_dev *rtwdev,
+ 			    struct rtw89_tx_desc_info *desc_info,
+ 			    void *txdesc);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 8dd91d867ea6..0ee5f8579447 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1494,7 +1494,6 @@ static int rtw89_pci_txwd_submit(struct rtw89_dev *rtwdev,
+ 	struct pci_dev *pdev = rtwpci->pdev;
+ 	struct sk_buff *skb = tx_req->skb;
+ 	struct rtw89_pci_tx_data *tx_data = RTW89_PCI_TX_SKB_CB(skb);
+-	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
+ 	bool en_wd_info = desc_info->en_wd_info;
+ 	u32 txwd_len;
+ 	u32 txwp_len;
+@@ -1510,7 +1509,6 @@ static int rtw89_pci_txwd_submit(struct rtw89_dev *rtwdev,
+ 	}
+ 
+ 	tx_data->dma = dma;
+-	rcu_assign_pointer(skb_data->wait, NULL);
+ 
+ 	txwp_len = sizeof(*txwp_info);
+ 	txwd_len = chip->txwd_body_size;
+-- 
+2.51.0
 
 
