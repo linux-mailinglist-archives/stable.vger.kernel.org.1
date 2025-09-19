@@ -1,125 +1,151 @@
-Return-Path: <stable+bounces-180593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EE2B87BE6
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 04:46:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6FC7B87C17
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 04:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97BB77C8319
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 02:46:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAB5F1C2255F
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 02:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607FA248F73;
-	Fri, 19 Sep 2025 02:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7D425CC64;
+	Fri, 19 Sep 2025 02:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="X67I+gOr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g35c4Ak6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7A62512DE
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 02:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA1423D7FC
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 02:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758249970; cv=none; b=A7t9tyMiTkTrNVMkorCFGsgr2iCPoLkJtsEDDX0Rx1znkOCb0+O0BuboxjgvabwGXw48COv8S84TcPoFNYvQT7ZG6PMoD5ZKCBgUKvFmbLhBg0I8K0jHjNRz4NUA70+4t1JlYxJ2b5nJ32um49hKkmtshijhb3RTt9S1ShpNG0c=
+	t=1758250373; cv=none; b=iuOhMiIDVnP8PMRci1BbXCwEJSKktErVLGqPYGV/tAhqkP49SfyIk1Yw1BZrep5/Da5+OrEF/rSUTpnxgFffJqYJHI/mtYJPbEZFlnPg9HZcLNiY6FLSKT5gZ1IzqaRVbm3dhMOCzqYxAaeERRsrklGjZacIpW51ZqzoN9RZVuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758249970; c=relaxed/simple;
-	bh=C3rJlPeakNHxNeSRxvndvY3Bl2Okug10Y6PTrK8S7+Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XJp0t9v6DUIKKQXePiaRQEc4H/N2/JMzwsnaTfSbq1OeSO1wrnSREejWmCJFlZhXIHjLVe+PxnlIbzdzw1rXi59m7jIpYGk14dePUnZ+5HErqSkFGEB0VMqOvNM4LYHyJzdWR7SO5ij6haAmFI2g8/H2NuJAG7J6FWGUWwS6R+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=X67I+gOr; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45f2c9799a3so11422505e9.0
-        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 19:46:08 -0700 (PDT)
+	s=arc-20240116; t=1758250373; c=relaxed/simple;
+	bh=98yvKwH2UtIVCSKMJziEGfp4kYGQhk/YviYY9MS7FD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kfzRs5C3pmcGheccSBIVjSTUY2dYITcjFurLEfL26b8AeI9Ck4NqtJmqldaXAWh9odPJAlbnfRfoRxEWtoi6q4Eoaf4xN2yOh+ym2ekGv4OQzAF0408IrK6QVsiY6baIec69BdCzqs1tQBs2NISZYjgnW3Zhz0giaOx9XKPJdCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g35c4Ak6; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b5488c409d1so1205270a12.1
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 19:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1758249967; x=1758854767; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RV82iQeoL7J45auwt67Jr/9GlmlJe4+A69CPPiwNB4U=;
-        b=X67I+gOrOUE2WkEHBXwSjsVAYvlPAiClyKC/J6H6NO30h9gCaP3ur6FkV8L6Jwf0PR
-         KuFBZNpMN9PcRecqvnFfD5hHQUj74fwUDzXQnxOgurvjyg7I4HqwRJg2IUlzm6hP3TXO
-         NEYM95kSDlHXxNWV6Q8lVfyWKxQCM62IFDfDrm93767l+uLHwnu0GM9RufzckHn9Hl5u
-         qLkrd/atKIYyzc2NmXrMBaoBtO6XxLdyMTSNLwwp46/l+HyTHtVd0di8T/EvYQPuw1he
-         F4wz+ahcso1QbcG/GjkBdCD/QH5fSGqbM2hQIkGHvr9L/xZm3AsCuUf3XiJEbJQ4ezMG
-         siCA==
+        d=gmail.com; s=20230601; t=1758250371; x=1758855171; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eWHSM8M5PEdLO5mZG9/ihvJhFYCqF9T0YZiDT0RrxmE=;
+        b=g35c4Ak6GAov6YXceSt7+wXavS6MTWDLwP32+0z5dG6ADxtry1+X/HK/Oz9SLvD3gT
+         dyI3T4lolf8PTpFgCMcLc+giBNhpfp1TSjEnJPQuKgi0ip2HTxu3BLBqgYG2IIF/JKVe
+         PJ/Dzmnq7cjV2dAXNfZ/FBXt1YGIH49jg2XKKsoLYFvrDwh5EsBf/Oe7s0ZXKUCzLEdD
+         tdXIuedMZEpghfJiDE77BhBBx1vzRUjiIfNHUUy8hoH9LT0vIpxlfwJj4px7yVFjjmnR
+         MdpdOfH2vI/KaQ49DuGWdRNp0WCVmzNoelGvqoVhX+r3J1+LotKeLPbKEhpru+43ZW0u
+         P9wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758249967; x=1758854767;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RV82iQeoL7J45auwt67Jr/9GlmlJe4+A69CPPiwNB4U=;
-        b=vrdAVQiz2h6TdzdUGvve0MnN3lY+PO+GqIHYTS+rKe7Byb9Q8U+YWHw5pyD7q2rP0z
-         hlimYwTp9vXn8pFYX/dcAdzqUSaCsJ7r1fes8x074xUBj2ukR5IyiAAOg5EAADUKE4t1
-         ZqIX2ocRoiokm/uPPM03blwHQoW6FpC50HKTkdnJFONEhrxdIodMb3VRKDsA6GOW/mQB
-         YhjpLjxJojrK8qP0ffWDVIaJJfmgk79RcjWLaF1x2JnnUsvefW2WGHwQZ46dT5camOQU
-         hcyE4xJQC4RKcAHcxuLewTZY9CmCCnUo7Y1qY5W6tvJbbt2x5Py9V4wL+miaw73O9XVO
-         oIQw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9h7fz01riFB49tVi6PqbBS9W03TpycZzaMZoPY/+JDtvedxH0t5H6g+F11iXa4mk8fA9INrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQyVOuhNmAsiMOWtImZWefOAp/5/UrthyfeFowXbcraQatOCK+
-	EontPAAlOSXetDc76cAMCr9x0bYVntsh4Fu77t68bHdB5o5ewUXS970=
-X-Gm-Gg: ASbGnctdEBvdjXjS0cdtlZcudLBjMa6RY3LZSaEAbLSD1PdyhAK7FT3iEv8yoU8rHC+
-	vDH0cN6VIn4bGPZBb025SBR4prhgEX07WRSl8g+33pSNlI1tDnzOjBWClDJkkZhzAhy3h2gb1ll
-	GRJdQY8bg/ZKuP7Ywidll+CZ8Tn7jy2YYiC8PR6UjlP3X+QADohzkuRy6p3tQCu8nnUH6heESuD
-	PsPtG9+OhNPOd0buLBh8sEkmEtamkDkLZKmGuTB9pjx3VCJD1AeAhOPm3AxZu1fLouTNv8l6/MW
-	iawimyyDNzUUoSusf+P2ffIujSs2EqPEKLbgwr+kY4LJ3gO/ZVhMNkXW9NMSKBE36jfAg1eKk1I
-	XO6b1NEumq34FZt1q4rQhrCx2Q6uHvBUgziEyEvEIRyPm1xAhGdJwnTI6dskpr2iohnOTJqD5Uw
-	w=
-X-Google-Smtp-Source: AGHT+IGgQuGA3pdRA6O9frETa1wvqCMUipxJgFmb0Z1HCL/sLjXWcSHn9dqNe7Zf38rm77aViWLBYg==
-X-Received: by 2002:a05:600c:1910:b0:459:dde3:1a55 with SMTP id 5b1f17b1804b1-467eb0454f8mr10603065e9.24.1758249966425;
-        Thu, 18 Sep 2025 19:46:06 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac915.dip0.t-ipconnect.de. [91.42.201.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-461391232e7sm103225465e9.6.2025.09.18.19.46.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 19:46:06 -0700 (PDT)
-Message-ID: <f7a654dc-aac0-4898-b07d-c6b46bd4dc1c@googlemail.com>
-Date: Fri, 19 Sep 2025 04:46:05 +0200
+        d=1e100.net; s=20230601; t=1758250371; x=1758855171;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eWHSM8M5PEdLO5mZG9/ihvJhFYCqF9T0YZiDT0RrxmE=;
+        b=M+T6FdHCc2/+sAQOWzCan2ptF/uilDQ7z01Ag1PUwIlTii4dQEdQJoG2y+hhMoNSPY
+         2VcWWuOl9xZjdtQ4uWafkXfDhFgrDsXtVSwhtorcxDjAwEWQN1p1Uds3ZwSxKxWhI85+
+         vs9aLmbsbytkHlrJp8HlvF1EvwmR3eSRACXpVUuX4/5m7OWIMuJR3iNv/Q5uQlxcQw4x
+         PFb4EdSMvrLYdTi6pCG+BaCWRgD/2EkQDR4xUkqQ7Lf4YOOFahm92citMOxtRYcdfdZd
+         S0ApA31rMg1seG2X53e2XVTZ2aEs678VhlwWDtmcWU+qi1jNWzk6XkAwuUi2GDl+eu4z
+         7Npg==
+X-Forwarded-Encrypted: i=1; AJvYcCWtODJB35g9oyuj/d8vV0fYywj43qAuKzX+xeJMM1ewdzGQUA/EIBvMZT6Oz9tdMvssOdXq3uM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzSruYb/0zq0BRUSstQ1UYzUV2moZ9Wzlg47p974vScwbnXtN3
+	8ULrSX5bj8c/ZVqQYPuDgsq4XW4bKyDE5KZTUHEKlXsjJjmChlOBjmRv
+X-Gm-Gg: ASbGnct15n42TLdrNgUq3ZQOxsYS0sCDz85g53fIdywdXpuw2veFjIzPPwdRv+Hg7PO
+	L1IvxrrjlBEELHZxw9/62qj6Sgy9Zop/FIGBSZJpcj3N7huGBB1mrSFwhOE4w35rp5lHs2X/Xby
+	JqabYbR2/ad3QOqTOF56R+SxfNVVYVEVroPGL6fDk9gTr9+JUy8svrfklcY8RBit8KSRQ1kF6tC
+	dPMEd3UCyX0oB3kQbdxkWRNmvdldyh1yYneqdt/rbmnP9GlTHD/J4uKZ7lOrkVGCuZy8DiotnP+
+	/OYB5olYW/C7Glt3hCmqZ0hfjqUiF+1m2h4p4Hx+yihIBg/ebsXklIDnv1W6grMCFcKjHc/BOZg
+	o656j59iAQdZaLEDh4zNWQNOrnZfVzQZkMi8=
+X-Google-Smtp-Source: AGHT+IHEmNw6zHNNZODOfJtrO3dxHRaOi6uO7+rK6qSFuOnxsr+E4gymoo7BQxMey8Irv6HpdcmwNg==
+X-Received: by 2002:a17:902:fc8f:b0:267:f7bc:673c with SMTP id d9443c01a7336-269ba51ed72mr22845625ad.44.1758250370330;
+        Thu, 18 Sep 2025 19:52:50 -0700 (PDT)
+Received: from localhost.localdomain ([115.42.62.9])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-26afe6385afsm4393875ad.39.2025.09.18.19.52.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 19:52:49 -0700 (PDT)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: zyjzyj2000@gmail.com,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	yanjun.zhu@linux.dev
+Cc: linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	rpearsonhpe@gmail.com,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] RDMA/rxe: Fix race in do_task() when draining
+Date: Fri, 19 Sep 2025 02:52:12 +0000
+Message-Id: <20250919025212.1682087-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/140] 6.12.48-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250917123344.315037637@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250917123344.315037637@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 17.09.2025 um 14:32 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.48 release.
-> There are 140 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+When do_task() exhausts its iteration budget (!ret), it sets the state
+to TASK_STATE_IDLE to reschedule, without a secondary check on the
+current task->state. This can overwrite the TASK_STATE_DRAINING state
+set by a concurrent call to rxe_cleanup_task() or rxe_disable_task().
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+While state changes are protected by a spinlock, both rxe_cleanup_task()
+and rxe_disable_task() release the lock while waiting for the task to
+finish draining in the while(!is_done(task)) loop. The race occurs if
+do_task() hits its iteration limit and acquires the lock in this window.
+The cleanup logic may then proceed while the task incorrectly
+reschedules itself, leading to a potential use-after-free.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+This bug was introduced during the migration from tasklets to workqueues,
+where the special handling for the draining case was lost.
 
+Fix this by restoring the original pre-migration behavior. If the state is
+TASK_STATE_DRAINING when iterations are exhausted, set cont to 1 to
+force a new loop iteration. This allows the task to finish its work, so
+that a subsequent iteration can reach the switch statement and correctly
+transition the state to TASK_STATE_DRAINED, stopping the task as intended.
 
-Beste Grüße,
-Peter Schneider
+Fixes: 9b4b7c1f9f54 ("RDMA/rxe: Add workqueue support for rxe tasks")
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+---
+v2:
+* Rewrite commit message for clarity. Thanks to Zhu Yanjun for the review.
+---
+ drivers/infiniband/sw/rxe/rxe_task.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 6f8f353e9583..f522820b950c 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -132,8 +132,12 @@ static void do_task(struct rxe_task *task)
+ 		 * yield the cpu and reschedule the task
+ 		 */
+ 		if (!ret) {
+-			task->state = TASK_STATE_IDLE;
+-			resched = 1;
++			if (task->state != TASK_STATE_DRAINING) {
++				task->state = TASK_STATE_IDLE;
++				resched = 1;
++			} else {
++				cont = 1;
++			}
+ 			goto exit;
+ 		}
+ 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.25.1
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
