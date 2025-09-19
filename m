@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-180702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40A1B8B2C6
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 22:14:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB7BB8B46F
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 23:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA0EB1CC3F89
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:14:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30575A678D
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0815279DC3;
-	Fri, 19 Sep 2025 20:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6BE2C11C9;
+	Fri, 19 Sep 2025 21:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yScsVnFk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1bSOih1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A34A257852;
-	Fri, 19 Sep 2025 20:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170DE2BE653;
+	Fri, 19 Sep 2025 21:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758312844; cv=none; b=ZG1pux+POCLfAeRgu5mntw63R1iLZccz95x2Q75w5dmn9EZA/wLKbEnWNOhCtA7x9Bvs9lSeoiSPInf5KgQeq4IDCp66cVsheXBSrDhCp3ms4wrLSHx869zE8SasS7oMCuqhe5zqw/xNqSM90QxkROyOoPgc+28NcnBk0Pe2np4=
+	t=1758316044; cv=none; b=V2TlAHQC0i38fDup5FeQiJF6TcExyuMaGky2iumv2H/6PR9tHh4gO4QBnTC9B5lL9YodecKvG9/5iyUBx3/0oy1kMLEZI+tOwCzhd/6k999WVIMg0kLICTSLWp4+ccjrYjIG77LHwUhVpjhP35eQbQD0lfOxV+Ig7+RJQLEqvZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758312844; c=relaxed/simple;
-	bh=r2jwadqywijs9tE/NrgnxVbD/jn2Afyw+dU7S1pH+6Q=;
-	h=Date:To:From:Subject:Message-Id; b=JBqTfhVPxFPzb6iokVJVwCwITQuz9s3kPVb8BUGZnNyfUYwltHtyuT/0dYR+Du2SI0W9Ct/KihKW0ry5gATaNA0vqmWvXxPdezEyn2hUtOw2UUpZk0VXXFWJJA++k2ZYfitJGIE7AlE1rHR+LUeH8596FhthSw3Erhj7MP4kA8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yScsVnFk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACB9C4CEF0;
-	Fri, 19 Sep 2025 20:14:04 +0000 (UTC)
+	s=arc-20240116; t=1758316044; c=relaxed/simple;
+	bh=rJc9yPU41ifibH1xbMxA1Q9hKKO4z8mUpv1BvJ+5uxk=;
+	h=Date:To:From:Subject:Message-Id; b=ZDBHnxEUqQpqYTBOkm1ooxxGTif5ealH4OG+wmuf2+qhgrZbS/NM8Vj3SAkTxb+J6l+BJIze3kRDgRMXRMLiLBotRGYHpNntHcY0NGE6T8yF0ircyOvqS+tHBGAIveaeHpMiLwcMmH9eZHRpUi8lsCMYGwYhefhZQZgwPGonEXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1bSOih1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91432C4CEF0;
+	Fri, 19 Sep 2025 21:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758312844;
-	bh=r2jwadqywijs9tE/NrgnxVbD/jn2Afyw+dU7S1pH+6Q=;
+	s=korg; t=1758316043;
+	bh=rJc9yPU41ifibH1xbMxA1Q9hKKO4z8mUpv1BvJ+5uxk=;
 	h=Date:To:From:Subject:From;
-	b=yScsVnFkAxn604opWnezQ1hHQ39Ibk6u74oHlfRrcsvg3AdznSaHhelnMRcmXg5LW
-	 qQQu49+PrNbBLM+OaZYbxTMeanJl7RN3UtW+UVqGkU3Ei9E5NEGhToN94nOhi1Aa0S
-	 eGYjec7cWkZFilx5MDrXcH1+9tz+Gy+oF0bs7g4A=
-Date: Fri, 19 Sep 2025 13:14:03 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,usama.anjum@collabora.com,tujinjiang@huawei.com,surenb@google.com,superman.xpt@gmail.com,stable@vger.kernel.org,sfr@canb.auug.org.au,ryan.roberts@arm.com,mirq-linux@rere.qmqm.pl,lorenzo.stoakes@oracle.com,david@redhat.com,broonie@kernel.org,baolin.wang@linux.alibaba.com,avagin@gmail.com,adobriyan@gmail.com,acsjakub@amazon.de,akpm@linux-foundation.org
+	b=1bSOih1mDlmLTUvuK88S4MpU39ooBIWqx4G3kv8VzEZGHpCis4qRjm8sWbq/bsreP
+	 FDhwArQFEZfPSBmtNpSi1BT8HOpgpTnDIqIbsjif/QWt9aCTBH5mKGUatjMgKmHkxm
+	 SfiNaXunrQqYOG8v9OuTfPH5eWxId595D6UtkviY=
+Date: Fri, 19 Sep 2025 14:07:23 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,phillip@squashfs.org.uk,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fs-proc-task_mmu-check-cur_buf-for-null.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250919201404.1ACB9C4CEF0@smtp.kernel.org>
+Subject: + squashfs-fix-uninit-value-in-squashfs_get_parent.patch added to mm-nonmm-unstable branch
+Message-Id: <20250919210723.91432C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: fs/proc/task_mmu: check cur_buf for NULL
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fs-proc-task_mmu-check-cur_buf-for-null.patch
+     Subject: Squashfs: fix uninit-value in squashfs_get_parent
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     squashfs-fix-uninit-value-in-squashfs_get_parent.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-check-cur_buf-for-null.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/squashfs-fix-uninit-value-in-squashfs_get_parent.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
+This patch will later appear in the mm-nonmm-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -73,95 +73,124 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Jakub Acs <acsjakub@amazon.de>
-Subject: fs/proc/task_mmu: check cur_buf for NULL
-Date: Fri, 19 Sep 2025 14:21:04 +0000
+From: Phillip Lougher <phillip@squashfs.org.uk>
+Subject: Squashfs: fix uninit-value in squashfs_get_parent
+Date: Fri, 19 Sep 2025 00:33:08 +0100
 
-When the PAGEMAP_SCAN ioctl is invoked with vec_len = 0 reaches
-pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
+Syzkaller reports a "KMSAN: uninit-value in squashfs_get_parent" bug.
 
-[   44.936808] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-[   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.0-rc6 #22 PREEMPT(none)
-[   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
+This is caused by open_by_handle_at() being called with a file handle
+containing an invalid parent inode number.  In particular the inode number
+is that of a symbolic link, rather than a directory.
 
-<snip registers, unreliable trace>
+Squashfs_get_parent() gets called with that symbolic link inode, and
+accesses the parent member field.
 
-[   44.946828] Call Trace:
-[   44.947030]  <TASK>
-[   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
-[   44.952593]  walk_pmd_range.isra.0+0x302/0x910
-[   44.954069]  walk_pud_range.isra.0+0x419/0x790
-[   44.954427]  walk_p4d_range+0x41e/0x620
-[   44.954743]  walk_pgd_range+0x31e/0x630
-[   44.955057]  __walk_page_range+0x160/0x670
-[   44.956883]  walk_page_range_mm+0x408/0x980
-[   44.958677]  walk_page_range+0x66/0x90
-[   44.958984]  do_pagemap_scan+0x28d/0x9c0
-[   44.961833]  do_pagemap_cmd+0x59/0x80
-[   44.962484]  __x64_sys_ioctl+0x18d/0x210
-[   44.962804]  do_syscall_64+0x5b/0x290
-[   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+	unsigned int parent_ino = squashfs_i(inode)->parent;
 
-vec_len = 0 in pagemap_scan_init_bounce_buffer() means no buffers are
-allocated and p->vec_buf remains set to NULL.
+Because non-directory inodes in Squashfs do not have a parent value, this
+is uninitialised, and this causes an uninitialised value access.
 
-This breaks an assumption made later in pagemap_scan_backout_range(), that
-page_region is always allocated for p->vec_buf_index.
+The fix is to initialise parent with the invalid inode 0, which will cause
+an EINVAL error to be returned.
 
-Fix it by explicitly checking cur_buf for NULL before dereferencing.
+Regular inodes used to share the parent field with the block_list_start
+field.  This is removed in this commit to enable the parent field to
+contain the invalid inode number 0.
 
-Other sites that might run into same deref-issue are already (directly or
-transitively) protected by checking p->vec_buf.
-
-Note:
-From PAGEMAP_SCAN man page, it seems vec_len = 0 is valid when no output
-is requested and it's only the side effects caller is interested in, hence
-it passes check in pagemap_scan_get_args().
-
-This issue was found by syzkaller.
-
-Link: https://lkml.kernel.org/r/20250919142106.43527-1-acsjakub@amazon.de
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Penglei Jiang <superman.xpt@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Link: https://lkml.kernel.org/r/20250918233308.293861-1-phillip@squashfs.org.uk
+Fixes: 122601408d20 ("Squashfs: export operations")
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: syzbot+157bdef5cf596ad0da2c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68cc2431.050a0220.139b6.0001.GAE@google.com/
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/proc/task_mmu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/squashfs/inode.c         |    7 +++++++
+ fs/squashfs/squashfs_fs_i.h |    2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/fs/proc/task_mmu.c~fs-proc-task_mmu-check-cur_buf-for-null
-+++ a/fs/proc/task_mmu.c
-@@ -2417,6 +2417,9 @@ static void pagemap_scan_backout_range(s
- {
- 	struct page_region *cur_buf = &p->vec_buf[p->vec_buf_index];
+--- a/fs/squashfs/inode.c~squashfs-fix-uninit-value-in-squashfs_get_parent
++++ a/fs/squashfs/inode.c
+@@ -169,6 +169,7 @@ int squashfs_read_inode(struct inode *in
+ 		squashfs_i(inode)->start = le32_to_cpu(sqsh_ino->start_block);
+ 		squashfs_i(inode)->block_list_start = block;
+ 		squashfs_i(inode)->offset = offset;
++		squashfs_i(inode)->parent = 0;
+ 		inode->i_data.a_ops = &squashfs_aops;
  
-+	if (!cur_buf)
-+		return;
-+
- 	if (cur_buf->start != addr)
- 		cur_buf->end = addr;
- 	else
+ 		TRACE("File inode %x:%x, start_block %llx, block_list_start "
+@@ -216,6 +217,7 @@ int squashfs_read_inode(struct inode *in
+ 		squashfs_i(inode)->start = le64_to_cpu(sqsh_ino->start_block);
+ 		squashfs_i(inode)->block_list_start = block;
+ 		squashfs_i(inode)->offset = offset;
++		squashfs_i(inode)->parent = 0;
+ 		inode->i_data.a_ops = &squashfs_aops;
+ 
+ 		TRACE("File inode %x:%x, start_block %llx, block_list_start "
+@@ -296,6 +298,7 @@ int squashfs_read_inode(struct inode *in
+ 		inode->i_mode |= S_IFLNK;
+ 		squashfs_i(inode)->start = block;
+ 		squashfs_i(inode)->offset = offset;
++		squashfs_i(inode)->parent = 0;
+ 
+ 		if (type == SQUASHFS_LSYMLINK_TYPE) {
+ 			__le32 xattr;
+@@ -333,6 +336,7 @@ int squashfs_read_inode(struct inode *in
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		rdev = le32_to_cpu(sqsh_ino->rdev);
+ 		init_special_inode(inode, inode->i_mode, new_decode_dev(rdev));
++		squashfs_i(inode)->parent = 0;
+ 
+ 		TRACE("Device inode %x:%x, rdev %x\n",
+ 				SQUASHFS_INODE_BLK(ino), offset, rdev);
+@@ -357,6 +361,7 @@ int squashfs_read_inode(struct inode *in
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		rdev = le32_to_cpu(sqsh_ino->rdev);
+ 		init_special_inode(inode, inode->i_mode, new_decode_dev(rdev));
++		squashfs_i(inode)->parent = 0;
+ 
+ 		TRACE("Device inode %x:%x, rdev %x\n",
+ 				SQUASHFS_INODE_BLK(ino), offset, rdev);
+@@ -377,6 +382,7 @@ int squashfs_read_inode(struct inode *in
+ 			inode->i_mode |= S_IFSOCK;
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		init_special_inode(inode, inode->i_mode, 0);
++		squashfs_i(inode)->parent = 0;
+ 		break;
+ 	}
+ 	case SQUASHFS_LFIFO_TYPE:
+@@ -396,6 +402,7 @@ int squashfs_read_inode(struct inode *in
+ 		inode->i_op = &squashfs_inode_ops;
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		init_special_inode(inode, inode->i_mode, 0);
++		squashfs_i(inode)->parent = 0;
+ 		break;
+ 	}
+ 	default:
+--- a/fs/squashfs/squashfs_fs_i.h~squashfs-fix-uninit-value-in-squashfs_get_parent
++++ a/fs/squashfs/squashfs_fs_i.h
+@@ -16,6 +16,7 @@ struct squashfs_inode_info {
+ 	u64		xattr;
+ 	unsigned int	xattr_size;
+ 	int		xattr_count;
++	int		parent;
+ 	union {
+ 		struct {
+ 			u64		fragment_block;
+@@ -27,7 +28,6 @@ struct squashfs_inode_info {
+ 			u64		dir_idx_start;
+ 			int		dir_idx_offset;
+ 			int		dir_idx_cnt;
+-			int		parent;
+ 		};
+ 	};
+ 	struct inode	vfs_inode;
 _
 
-Patches currently in -mm which might be from acsjakub@amazon.de are
+Patches currently in -mm which might be from phillip@squashfs.org.uk are
 
-fs-proc-task_mmu-check-cur_buf-for-null.patch
+squashfs-fix-uninit-value-in-squashfs_get_parent.patch
 
 
