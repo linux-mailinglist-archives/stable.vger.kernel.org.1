@@ -1,106 +1,155 @@
-Return-Path: <stable+bounces-180678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C3CB8ABD0
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 19:20:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB59B8AC4E
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 19:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2DAF1C206F9
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 17:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8A38564BF0
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 17:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2972271464;
-	Fri, 19 Sep 2025 17:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7169824503B;
+	Fri, 19 Sep 2025 17:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="K5PL6AR/"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="qHxUfN8v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D374267AF1
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 17:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3AB3D6F
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 17:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758302449; cv=none; b=H5JIztmRggMyqwy5th2btnXRFIRs/bKRY00yI/YXmuGzYQu/NrO9Vf/KAs5Docu15XMegr/C8fBH8s3CO6Ol6iqX9t0JyTL11mnEKV7cGR1q47QtnaHEHxa1cf38ZhSA8jr4h0Xy9G7WhJvrl6nag/SF3BFeLb81xczrl3eIC9o=
+	t=1758303221; cv=none; b=Ok0AgZIdXVXyhFc+HpU+h7OkbOHQdlAvt6e7X9+PZDWf1VFAeQz3qmMbdQ6NSYIPItgf7At8dmoihEkj0Sgq/MSvtyGNxK7/w9eA4FkzU0K5x+1Xjsuzc5+DuXt/W6dllSTUWVE6hAQdTRIxNSi/FA3oR871Ep4P1Gtpq63mVHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758302449; c=relaxed/simple;
-	bh=+ZXTL9ughxuEJrk0UoHDP2xRAgKLRReA6kuppagwkyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oPf6l5D968B9sXturGW2dxgFsVwDLuchrXfXe9+w/rf3Sv5/VfszyxDhKIuxQTeCMowI2PFi+gc7bTRsekZgAYqDz5yc1rabCutoTP3iVQDwCtVc22ca5FapW7vpQdfJRXGt6w93mI1ROE5v0s0K+C9r4RhzZCGlX4dIeNm1sOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=K5PL6AR/; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 17B9840E01BB;
-	Fri, 19 Sep 2025 17:20:43 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id rJHfAKqq4lVK; Fri, 19 Sep 2025 17:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1758302439; bh=5Pk44VxBaBs7hbVnJwFTDxBhb49l67Y/UBRyVrdjWDc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K5PL6AR/k7yNBQqjvGXE/1DSSKaLKvLJKi7TH4qE2nC/cFhUrGMyaetIknBaF5BEv
-	 1h9ha4xPP+s5hAnpDXab+seXF6MERegIaIKexou2/m5etKhS5TD/zZRmT+Cq66EtaB
-	 L4FdR77bgxS1MIf5A9w1F9cJ+Jk1l0HWdRHLooKj/x1hMGJ178ycpsmpOxhWZKay66
-	 T+AGJgQSUUMYzhZMGg1Q2q0opQGnnpjTz+FzRt2W7fOAxjtUNKPbDttA/MXhBP/HjW
-	 1gYq9GgUEC5FfV15jYjiP2x+TanxfqlgdZ8OvyR6GZHRAWGQ1wk602FHQSMs3dub5L
-	 naGRSiyx81kgZwNT9JYpeVba0CWC69ta5sQ+n2X7o42FSSFdSVD904CQFxjozpx94C
-	 30mSR7H+4q9qTXqI5yfPh91Xz8//uwbcdpwdc81cr09lFCfZ4j5+0SQm29/bixzkvw
-	 LxLJq+nrBd/55rml+pTK2gDUCdsXgLYZwhW2GLkxbV6hWiMWvrd0x8EvWa57WAzhjj
-	 zFUWEgryYzQmISh7w9RPxdOxGkTtQogoeEMpLgdTbFhfgtOOC//d68hw0bRxJy2dRQ
-	 6COBkkW68/b8V99s90Ujh9XHYQIlnFzC8V9kYgF1BYQEv/iYRa+weHETuCDZD+SWxU
-	 AUpuzqnE/ulZ4oF+uyjyiN2s=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 28B8A40E01A3;
-	Fri, 19 Sep 2025 17:20:30 +0000 (UTC)
-Date: Fri, 19 Sep 2025 19:20:24 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	pawan.kumar.gupta@linux.intel.com, dave.hansen@linux.intel.com,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	Darren Kenny <darren.kenny@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [bug-report 6.12.y] Probably a problematic stable backport
- commit: 7c62c442b6eb ("x86/vmscape: Enumerate VMSCAPE bug")
-Message-ID: <20250919172024.GEaM2Q2Go9RKnb0VYD@fat_crate.local>
-References: <915c0e00-b92d-4e37-9d4b-0f6a4580da97@oracle.com>
+	s=arc-20240116; t=1758303221; c=relaxed/simple;
+	bh=bOj7w/AuPXR5UmlynBXZOpcQtsEsQhGaFaPRIiUozQs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UDvBCJq//Snge3l0lYFQoIUeSUKQHkVZ0KSonCiW6uEw5cFAAR63JgjnLMNalcaH06VpwHwZJBBk3hFDR9m515rTc7OMU7wSlCSuPN9DV4D7UHZPfz4+ZjNCgmjZPff9vKIROekvDks9wiJgpqieafO3BDKQRcjo4sDnDQ3kpF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=qHxUfN8v; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58JDuSAF018787;
+	Fri, 19 Sep 2025 17:33:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=G89DQwPlPYzU5eyXRS/PRq/AeumF2
+	wEPmc1PKVRHxa8=; b=qHxUfN8vPfENEPkb64scL9Bkbwh5RMGQl+UlYwWg2HfZ2
+	qbreSjEAaXU9Ksf9eaNL8HdjQsmHHowpj4L4/jREi7/wx7rewbSMYP90m3CKjQAX
+	6Ig1lHlSz/CQkG/BaChhHD+dg0gmFn1kjTV1gYhkZhD8mPColw8zUjmd+B+TDBJa
+	nagC0xUc8ShHgEbkP5nAYliGnQKr5H7TIa1u4PztqhxFZIAE2LwNQZNhQKpN30XL
+	E9RJ1YOqKdzLC1GnV2BrJoRBjnp1ESBtpAHD3zV+WLLE4fy7nriXjX7iQyuRd8Uf
+	GjgN1rh4o6kC3zTLrLAs/l1ns/xItjwyJ9v2tn4Ew==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fx9x35c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Sep 2025 17:33:32 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58JG6Iaj001595;
+	Fri, 19 Sep 2025 17:33:31 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 494y2gy13g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Sep 2025 17:33:31 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58JHXUud001465;
+	Fri, 19 Sep 2025 17:33:30 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 494y2gy0w9-1;
+	Fri, 19 Sep 2025 17:33:30 +0000
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, ankur.a.arora@oracle.com,
+        boris.ostrovsky@oracle.com, bp@alien8.de, darren.kenny@oracle.com,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12.y 0/3] Fix a backport of VMSCAPE enumeration fix
+Date: Fri, 19 Sep 2025 10:32:57 -0700
+Message-ID: <20250919173300.2508056-1-harshit.m.mogalapalli@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <915c0e00-b92d-4e37-9d4b-0f6a4580da97@oracle.com>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-19_01,2025-09-19_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
+ suspectscore=0 spamscore=0 mlxscore=0 adultscore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509190164
+X-Proofpoint-ORIG-GUID: MPa0uI6mzKxTaaDsEVq0F34Wwj_WWqkD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX2wcGMPLiZmyZ
+ KFp8827YoqBj9YG5KPIE0JXwl3l0iO7vFEiSNKY7Ofwo5GBE3AhivhwSxFSGmduuhqQwhexgIla
+ Ie/b/YQjmG+xysa9J9vMRNAy5KVaKFHMI4r6+crKU/Efep0/lBbZSv31Y5bH/D0oWls99LxvU36
+ F2NN5jrsLUr4/MrTYC8iE0sT+N2EEt1vVf5pPDIyIC7o6AmRIAog7cdQUdB56X6uxHU/DwiG6j1
+ fcQzBluP1ik1hHH9gR444r/e184FGY/tmwpj5hWMVe9CzFsCkDLvXEhSrrxrziZA4tHVZGH+iKy
+ PG7G03i0i1j7oVYQIAs1L0wvtmVAdBcSEh+7xZkWWoHTSlxo7nNZZ6XesqLYFCJrJsIyM2mOgIV
+ bzat0Yl+
+X-Proofpoint-GUID: MPa0uI6mzKxTaaDsEVq0F34Wwj_WWqkD
+X-Authority-Analysis: v=2.4 cv=C7vpyRP+ c=1 sm=1 tr=0 ts=68cd93ec cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=JRmoFRQgYutMhVdIDhoA:9
 
-On Fri, Sep 19, 2025 at 10:42:33PM +0530, Harshit Mogalapalli wrote:
-> Notice the part where VULNBL_AMD(0x1a, SRSO | VMSCAPE) is added, 6.12.y
-> doesn't have commit: 877818802c3e ("x86/bugs: Add SRSO_USER_KERNEL_NO
-> support") so I think we shouldn't be adding VULNBL_AMD(0x1a, SRSO | VMSCAPE)
-> directly.
+Bug-report: https://lore.kernel.org/all/915c0e00-b92d-4e37-9d4b-0f6a4580da97@oracle.com/
 
-Whoops.
+Summary: While backporting commit: 7c62c442b6eb ("x86/vmscape: Enumerate
+VMSCAPE bug") to 6.12.y --> VULNBL_AMD(0x1a, SRSO | VMSCAPE) was added
+even when 6.12.y doesn't have commit: 877818802c3e ("x86/bugs: Add
+SRSO_USER_KERNEL_NO support").
 
-> I can send my backports to stable if this looks good. Thoughts ?
+Boris Ostrovsky suggested backporting three commits to 6.12.y:
+1. commit: 877818802c3e ("x86/bugs: Add SRSO_USER_KERNEL_NO support")
+2. commit: 8442df2b49ed ("x86/bugs: KVM: Add support for SRSO_MSR_FIX") 
+and its fix
+3. commit: e3417ab75ab2 ("KVM: SVM: Set/clear SRSO's BP_SPEC_REDUCE on 0 
+<=> 1 VM count transitions") -- Maybe optional
 
-Sounds about right.
+Which changes current mitigation status on turin for 6.12.48 from Safe
+RET to Reduced Speculation, leaving it with Safe RET liely causes heavy
+performance regressions.
 
-I wonder what else is missing in 6.12 for Turin though...
+This three patches together change mitigation status from Safe RET to
+Reduced Speculation
+
+Tested on Turin:
+[    3.188134] Speculative Return Stack Overflow: Mitigation: Reduced Speculation
+
+Backports:
+1. Patch 1 had minor conflict as VMSCAPE commit added VULNBL_AMD(0x1a,
+SRSO | VMSCAPE), and resolution is to skip that line.
+2. Patch 2 and 3 are clean cherry-picks, 3 is a fix for 2.
+
+Note: I verified if this problem is also on other stable trees like (6.6
+--> 5.10, no they don't have this backport problem)
+
+Thanks,
+Harshit
+
+Borislav Petkov (1):
+  x86/bugs: KVM: Add support for SRSO_MSR_FIX
+
+Borislav Petkov (AMD) (1):
+  x86/bugs: Add SRSO_USER_KERNEL_NO support
+
+Sean Christopherson (1):
+  KVM: SVM: Set/clear SRSO's BP_SPEC_REDUCE on 0 <=> 1 VM count
+    transitions
+
+ Documentation/admin-guide/hw-vuln/srso.rst | 13 +++++
+ arch/x86/include/asm/cpufeatures.h         |  5 ++
+ arch/x86/include/asm/msr-index.h           |  1 +
+ arch/x86/kernel/cpu/bugs.c                 | 28 ++++++++--
+ arch/x86/kvm/svm/svm.c                     | 65 ++++++++++++++++++++++
+ arch/x86/kvm/svm/svm.h                     |  2 +
+ arch/x86/lib/msr.c                         |  2 +
+ 7 files changed, 112 insertions(+), 4 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.50.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
