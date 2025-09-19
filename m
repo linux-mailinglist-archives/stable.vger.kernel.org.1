@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-180657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7AAB89862
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 14:46:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA111B8985A
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 14:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBD318990AE
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 12:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827825A423C
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 12:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE84247299;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EA023C8C5;
 	Fri, 19 Sep 2025 12:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="hoIpC+2C"
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="YTPCtv5S"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B48238D42
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDD723C505
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 12:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758285931; cv=none; b=kdaIxQbSVJHvhzot5R8LBTpB4SRGKzUJtF88MEtgUs2+UMExpQ/CBapFWN6/ikEUVT2t0gNnUricU/F5MUIrPr/CJ4nHa54qTmfV4fD+gLrb8jh4xgg4fxm9ieeBi63/7Y13M/04idYjilcDmBLXf5IkicP/oFKcBbs12T45h50=
+	t=1758285932; cv=none; b=A6fnmA7/Ud5JDFaJs8BIh0uVyxldJnZ7UW49FT+IA4ZgcZSGDvuundKwM0dB2v4hIEv5sXAM9RGKkt/kBHIcixIPPdqv3SnbQb+h6oPr3OSvhTnYOHbwlbLtx/kp/nuM8/+G0sd6nYWxk2huC8uCAq+RTNWVE7DZmywwRXnkqsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758285931; c=relaxed/simple;
-	bh=j1nrrg0RmoSPwnhr33zQNmy3orw+WYtn3PKmfZ0ZitA=;
+	s=arc-20240116; t=1758285932; c=relaxed/simple;
+	bh=nEO9A5estcrBaZZ3rYeaMOsotbmu+x5d3sSjpotKCRI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pv88P0yDb+9xTwZmLnvtRxuwKi/T/CKoQRXbycac26JZlWcrlSpN3PXx0AVqi/0RXw6EvnYCHiR6bqLoiikM4M9Ng/jDxSaLZTAEd4VoZLMpuHk8SzV84/hlr96LiZHHg1vEGujzvUxfQmWx5bTI2tNcwC91MO5ncP5chOBRHbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=hoIpC+2C; arc=none smtp.client-ip=209.85.166.180
+	 In-Reply-To:Content-Type; b=Wl8JfJ6V9dOnVbyFRqyRRCnC/CdL/UeiThg/PvOuP6Eo5UvPB4hVSFhgh9tntX02cVHYdtsY+RhRc8czMidMEHs2x46IENHGEF9q4OE6df7ItrjOuxf7qosxl4QbN03wMpVz5q8K8GdXoNX9/1LTOBQwfhOcaniM0lQ3o1s41mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=YTPCtv5S; arc=none smtp.client-ip=209.85.166.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-42401f30515so11427065ab.0
-        for <stable@vger.kernel.org>; Fri, 19 Sep 2025 05:45:29 -0700 (PDT)
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-42408762dc3so10674815ab.2
+        for <stable@vger.kernel.org>; Fri, 19 Sep 2025 05:45:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1758285929; x=1758890729; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=bzmxpHATkMjGkSRbploj9vHGhBjXSr18jt0vlLNWxVI=;
-        b=hoIpC+2CDGfDh2bQX+NgtClGBX9fISR85UaQIDk1AA30oWRFAx++l5RMZpvxF+4i6r
-         SH+qzqP6Y5BJONrKYX62TGu7nSuiHgv4o2a/HRIonB5Cybkez6V1a2CG0GolPgaWBnuu
-         /ok4UTMvoFwYI8aBMmD8o3abeFFG3IV1Ppy9dprcWec8lCQmbEZTVnw6B7xAc3agjtZh
-         FFX666HR/F+5Hxlujo+n2a4tk09wX25lwvYMeC98uLREuZ9FZ27qnFrsW+sgXFkg5EFG
-         UF6lzVvBhLm/4nMPiUxQTlS+25v+xH+SAmppgIBtAa7RP5gdZmAXSoQYcp9tfwNDTjEr
-         Zp9g==
+        bh=BzyDqMhfge6O0mUrp6h5HzhJD8esfaSJIML1z8ifdic=;
+        b=YTPCtv5S4+tdo+WA8wVJ8f8Q9eCVj+ULcITnY2ZYVwM203ESg0J3ExtiuDQKE44p9P
+         RhqAil7+bwrWT9WtEIVjaO/Ls7wCmNrZMHC174V75zvzhLGhu8wB4KPLU8FcONJgfXnz
+         PNPJ6ykaJb8D9r7OjUJ6p9FVVyp1SBFFipVfnEZeQv+uAVllh3McnpH2syhMBPlHrKgM
+         ph6Z50kBCk2Ks3+PnK6zcFerv0AA3O+UBCptktrjgLQsJAXVppgMcvvn2lPDWbFYg7IV
+         umZ3pY0A2hKJIazBXwH2pZu5QfxLfQ2RHz7KoanhpAZLOZOkl7CkbrEpiqEt/fIp94mN
+         gKIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1758285929; x=1758890729;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bzmxpHATkMjGkSRbploj9vHGhBjXSr18jt0vlLNWxVI=;
-        b=m+6HluyjfDsyd5SHl8DnDnFfbCX5qYJJ6zSm5llIEjylbZ1oeZ4Ue1MCOWDAEKROrA
-         VlV9D0EqAO2ThyN+GjH+pY1XTesfGRsNJVREfLaX1B0OnpKgTi6Jd2Xpvy8O+D/Ka7ff
-         8HU4AcGYnlDwz7c7qAlVEMnbrroUzktACDf2ljssZZJa81jnfiBKnKObWnFFY6fri+Os
-         M+UWpO6/r8/rMolD/HSz2kzOB1sjRNNrqFz3L51heWHall82GSp0d/AfW7AC5sF3svDh
-         8k4Cr1ylwNL87H3axhJVEB/1E0ILyv3jy302FhXc58RBtAQ+uamhDp56X6zucjtqYpNm
-         0MTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQknBGOwiYgE3b2lDSt09H2Db2hVvEd1V4+6W72We7KyP+jSO7XmuSn/7eAc6T5GIktUTquNE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6/j7wE5oUwHu4hQrWhCFzINqQb8xeEJ2okQr27HF3ZBJ8WefT
-	mRkNrsSQgCXuHzUpjhJNbPe5qVVJO9qs6aqKFe2SPttKA9Ip06slCCzwXHjO2b+cZuM=
-X-Gm-Gg: ASbGncsgb/ifzVd8+tqrhphFc3RxOa+MnfmNnzJ3eiMYV6iTOQbeD/pQEFmcsrdsz4J
-	hkdXc1Hbj70Ly0jwocr71or+FwWz0IGJD0AHCJoWHhI28Ih8Q6v8qlRDow3DLwoAoJB8SoNMG9L
-	/eTdJmWSUrhwir2p8Th5t2N2isP+PuhRdTESaInf5XIS39JsbVxAAg/aCPaPI/d1+6Zb87H9e69
-	H//9kADCONTNMOSuqqOskFqq3SZBBccfSGi5R3N5Rep8yFpI3RsYO1eAPQD7TTzKSPDmZ45ZsED
-	IEvcTv64MzcUzY41NnxbksQ0xFi/5ojuRcclI/hAv7b5G7aFuRM7EAoaWtxTR6C8H1B886cjJ9O
-	7hfNrVxBPauKtMKtHWWGXI2Yp5mPjDEalGBSuHmYLtq73vvxGKKO0Ob6hY28ddg==
-X-Google-Smtp-Source: AGHT+IG8i/FekPaVIyvtRw3Y0kGumJTcRoGw86iT4JN6uhjg6+GmBG475UFLhSqVtvQD0Vy0Pr6cbg==
-X-Received: by 2002:a05:6e02:4807:b0:40a:728e:85a8 with SMTP id e9e14a558f8ab-424411d8b1fmr94994315ab.2.1758285928583;
-        Fri, 19 Sep 2025 05:45:28 -0700 (PDT)
+        bh=BzyDqMhfge6O0mUrp6h5HzhJD8esfaSJIML1z8ifdic=;
+        b=kIktEFkJ/XwgNwnbBu8eccxC2P+3emZeBbrKA87TgzQtyV1XlbS8WmJIkmQCBrJevY
+         izRE18Vog7/P5xWER2uFt+/fpRpeNKQ4g0tEDTBXFrD1ZoSPoLfFnuXV1yMQGlCpo871
+         ea9JR+LZ+4tzwxvyml1tFW/BqEUtVpZKstJLA/akqhypyDNLecP1asBhN3SeIuaYesKB
+         jcOJ+qhoBU/WuScg1LUD+aCL2ypT/OctDCa7ysB3q2DlBSMEZwAbT4712Dzry/PNsox5
+         65Zu7u/miffcWWzyxRQoP6LAjk+YxRMjWNgHZB6v2BZTYvP46ztIIvscgZjxJ1L8UWv4
+         03rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVsUMflkq8+IUssUio3aoc0toqt0eziWW4ACuQqX/4oKQdC0VeKUUqYoZxYUIMTZaoaTDQ6xqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6ndThw0RYL8DO200Po/zKG2HeGtZlByhEPS49wBhfuhwYiKjH
+	EnjpCfnvteOvcPgVMPGuPqubKgh7Q+LxF6sNN5u9ktrfuSttQu9s9hms0URlhFGKdwE=
+X-Gm-Gg: ASbGncv3jj8OttfWJwsbJSUdnX+ZSds+WjGxHgUKnXdkm3Y/48xt9G1o+JgJ6iQBJBZ
+	p6maEVrnBDrLfpOTrBLlUNwrliTfQmOcyqip/eqaafaPGd5WMR08y6UhTW9/k0QYPbteXw/22VC
+	mMOw+H3sSmDSEGaZFh0lWYnh3vcCG9sjPAJuqP+nfZBTD24vXIf7bbvc2DpngTBNcmKoD22AWH7
+	BRo0N29pYko4AqhXciOoREcp4OucANHPHwoRxXfVorAgmX2nD1U5Fbxw+QTjOAGOgm3n4GILgIR
+	2pgdRMZTKlwJGIKSXz+4GurECX61COHOTq5v+1uH6fgysBsFJGGe5NxSZ8mnjasFOW1rMKnwuoR
+	JmivRlsltWwKsCBGy5zCMT8jzmcdDNLH+lzO4mua7vetsxqRYYU7kmZ9uz7IA6Q==
+X-Google-Smtp-Source: AGHT+IGaYKcNyrN3h+Obk0fXfCRoaZRWy8GiOsFpfO6FVenXyvQXLeYAMxkGNu2xkv3b70xUOjmYLA==
+X-Received: by 2002:a05:6e02:1fe1:b0:420:f97:745a with SMTP id e9e14a558f8ab-42481999bd3mr42354935ab.20.1758285929601;
+        Fri, 19 Sep 2025 05:45:29 -0700 (PDT)
 Received: from [172.22.22.28] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-53d53c6e38asm2113770173.60.2025.09.19.05.45.27
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-53d53c6e38asm2113770173.60.2025.09.19.05.45.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Sep 2025 05:45:28 -0700 (PDT)
-Message-ID: <4037b00c-5ae4-4874-bb44-56e850bf142d@riscstar.com>
-Date: Fri, 19 Sep 2025 07:45:27 -0500
+        Fri, 19 Sep 2025 05:45:29 -0700 (PDT)
+Message-ID: <db9a797d-a0dc-492b-a38f-cd91caac0397@riscstar.com>
+Date: Fri, 19 Sep 2025 07:45:28 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,95 +82,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.16.y 2/2] dt-bindings: serial: 8250: allow "main" and
- "uart" as clock names
+Subject: Re: [PATCH 6.16.y 3/3] dt-bindings: serial: 8250: move a constraint
 To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: stable <stable@kernel.org>, kernel test robot <lkp@intel.com>,
+Cc: stable <stable@kernel.org>, Conor Dooley <conor@kernel.org>,
  Conor Dooley <conor.dooley@microchip.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <2025091753-raider-wake-9e9d@gregkh>
- <20250917115554.481057-1-sashal@kernel.org>
- <20250917115554.481057-2-sashal@kernel.org>
+References: <2025091759-buddy-verdict-96be@gregkh>
+ <20250917115746.482046-1-sashal@kernel.org>
+ <20250917115746.482046-3-sashal@kernel.org>
 Content-Language: en-US
 From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <20250917115554.481057-2-sashal@kernel.org>
+In-Reply-To: <20250917115746.482046-3-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/17/25 6:55 AM, Sasha Levin wrote:
+On 9/17/25 6:57 AM, Sasha Levin wrote:
 > From: Alex Elder <elder@riscstar.com>
 > 
-> [ Upstream commit a1b51534b532dd4f0499907865553ee9251bebc3 ]
+> [ Upstream commit 387d00028cccee7575f6416953bef62f849d83e3 ]
 > 
-> There are two compatible strings defined in "8250.yaml" that require
-> two clocks to be specified, along with their names:
->    - "spacemit,k1-uart", used in "spacemit/k1.dtsi"
->    - "nxp,lpc1850-uart", used in "lpc/lpc18xx.dtsi"
-> 
-> When only one clock is used, the name is not required.  However there
-> are two places that do specify a name:
->    - In "mediatek/mt7623.dtsi", the clock for the "mediatek,mtk-btif"
->      compatible serial device is named "main"
->    - In "qca/ar9132.dtsi", the clock for the "ns8250" compatible
->      serial device is named "uart"
-> 
-> In commit d2db0d7815444 ("dt-bindings: serial: 8250: allow clock
-> 'uartclk' and 'reg' for nxp,lpc1850-uart"), Frank Li added the
-> restriction that two named clocks be used for the NXP platform
-> mentioned above.
-> 
-> Change that logic, so that an additional condition for (only) the
-> SpacemiT platform similarly restricts the two clocks to have the
-> names "core" and "bus".
-> 
-> Finally, add "main" and "uart" as allowed names when a single clock is
-> specified.
+> A block that required a "spacemit,k1-uart" compatible node to
+> specify two clocks was placed in the wrong spot in the binding.
+> Conor Dooley pointed out it belongs earlier in the file, as part
+> of the initial "allOf".
 > 
 > Fixes: 2c0594f9f0629 ("dt-bindings: serial: 8250: support an optional second clock")
 > Cc: stable <stable@kernel.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202507160314.wrC51lXX-lkp@intel.com/
+> Reported-by: Conor Dooley <conor@kernel.org>
+> Closes: https://lore.kernel.org/lkml/20250729-reshuffle-contented-e6def76b540b@spud/
 > Signed-off-by: Alex Elder <elder@riscstar.com>
 > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Link: https://lore.kernel.org/r/20250813031338.2328392-1-elder@riscstar.com
+> Link: https://lore.kernel.org/r/20250813032151.2330616-1-elder@riscstar.com
 > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-This fix looks good.
+Thank you Sasha, this fix looks good.
 
 Acked-by: Alex Elder <elder@riscstar.com>
 
 > ---
->   Documentation/devicetree/bindings/serial/8250.yaml | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+>   .../devicetree/bindings/serial/8250.yaml      | 46 +++++++++----------
+>   1 file changed, 22 insertions(+), 24 deletions(-)
 > 
 > diff --git a/Documentation/devicetree/bindings/serial/8250.yaml b/Documentation/devicetree/bindings/serial/8250.yaml
-> index 2766bb6ff2d1b..c1c8bd8e8dde6 100644
+> index e46bee8d25bf0..f59c0b37e8ebb 100644
 > --- a/Documentation/devicetree/bindings/serial/8250.yaml
 > +++ b/Documentation/devicetree/bindings/serial/8250.yaml
-> @@ -60,7 +60,12 @@ allOf:
+> @@ -48,7 +48,6 @@ allOf:
+>         oneOf:
+>           - required: [ clock-frequency ]
+>           - required: [ clocks ]
+> -
+>     - if:
+>         properties:
+>           compatible:
+> @@ -66,6 +65,28 @@ allOf:
 >             items:
->               - const: uartclk
->               - const: reg
-> -    else:
+>               - const: core
+>               - const: bus
 > +  - if:
 > +      properties:
 > +        compatible:
 > +          contains:
-> +            const: spacemit,k1-uart
+> +            enum:
+> +              - spacemit,k1-uart
+> +              - nxp,lpc1850-uart
 > +    then:
->         properties:
->           clock-names:
->             items:
-> @@ -162,6 +167,9 @@ properties:
->       minItems: 1
->       maxItems: 2
->       oneOf:
-> +      - enum:
-> +          - main
-> +          - uart
->         - items:
->             - const: core
->             - const: bus
+> +      required:
+> +        - clocks
+> +        - clock-names
+> +      properties:
+> +        clocks:
+> +          minItems: 2
+> +        clock-names:
+> +          minItems: 2
+> +    else:
+> +      properties:
+> +        clocks:
+> +          maxItems: 1
+> +        clock-names:
+> +          maxItems: 1
+>   
+>   properties:
+>     compatible:
+> @@ -264,29 +285,6 @@ required:
+>     - reg
+>     - interrupts
+>   
+> -if:
+> -  properties:
+> -    compatible:
+> -      contains:
+> -        enum:
+> -          - spacemit,k1-uart
+> -          - nxp,lpc1850-uart
+> -then:
+> -  required:
+> -    - clocks
+> -    - clock-names
+> -  properties:
+> -    clocks:
+> -      minItems: 2
+> -    clock-names:
+> -      minItems: 2
+> -else:
+> -  properties:
+> -    clocks:
+> -      maxItems: 1
+> -    clock-names:
+> -      maxItems: 1
+> -
+>   unevaluatedProperties: false
+>   
+>   examples:
 
 
