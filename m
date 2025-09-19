@@ -1,54 +1,50 @@
-Return-Path: <stable+bounces-180662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954B2B89FB9
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 16:32:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB283B89FDD
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 16:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7F625A735E
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 14:30:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2976B16DE34
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 14:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBAB3164C3;
-	Fri, 19 Sep 2025 14:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4C63195E6;
+	Fri, 19 Sep 2025 14:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eZJss6da"
 X-Original-To: stable@vger.kernel.org
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E11E314A85;
-	Fri, 19 Sep 2025 14:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17C93164A7;
+	Fri, 19 Sep 2025 14:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758292224; cv=none; b=RkTm43N2UswicBxMdg1j0X7i+A1igk1c+P+KKdH91gG4NSXnblHUBKAIdr3e9tCOzZHZcStWe7mVJV58GCc7zeOrZP8pdLVrzZ+96xUqNljt9Z/bDe6sztAylLheiq4pD68x/whCYhYeiGUf8NrWbMtyTe5uHiU19VsRHNHS9hc=
+	t=1758292229; cv=none; b=Ltjzyw3ARImxxN9ju/U6i2YX7I+WTQf/vKqKp7JgVokpM5Duzsl1FH9KpfOeiVEU1ll28tUzB8Qj1f72tDINca+gOrt9FQU4AwEbk4wxvLTYha2JzkIZPRycBBBH1WxI6QfPugLx9gCSevA4gjh5VdDABV1gSHLNRdoctXtG6tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758292224; c=relaxed/simple;
-	bh=jR5hXSe5Rb2lJevs7VVywEayah8UQ+hzgixju+gCauo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r9NZ/qRfuB2twSrIZ5Cj9s94dMfSuskTuTwtXGg5YuTNfuEgvLum74p8TkbEp5pZCCF7GrcgrttaoWDLCd1JN4lDEPQVNLbnPFuxLBYeRDfGAwNgrDfP5dt2ysLrTwPNE7V/nalnaFYo+H8UwTERSrGjF6+j029/SllIoTlD6U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: QoxrVUnMQTSZrC+KOJJF5A==
-X-CSE-MsgGUID: QMmjvF3MRJu2R/nyXL2UxA==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 19 Sep 2025 23:30:13 +0900
-Received: from demon-pc.localdomain (unknown [10.226.92.70])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 2EAF940083FA;
-	Fri, 19 Sep 2025 23:30:09 +0900 (JST)
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-To: 
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] nvmem: rcar-efuse: add missing MODULE_DEVICE_TABLE
-Date: Fri, 19 Sep 2025 17:28:53 +0300
-Message-ID: <20250919142856.2313927-1-cosmin-gabriel.tanislav.xa@renesas.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1758292229; c=relaxed/simple;
+	bh=vA9guvcgL927U5ffFZqiyBwAArQQdF916BNKlifkJAs=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=LS5R/4cJkO4oxdD41SUA0hGqEtrmz+l3swcsHm26j2iaGtnRj/XDTgoRJrp1jgEUfJvTTCof4uBj8fjSpoSA6g59XktKtE/aPm6TaVi7Yew2gdeF7wkC5eQd76jMPlIfEDPvYE6tFRGZ0PgTwyqCSSHXXgBZ7ImPOE0OkDWFdxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eZJss6da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D65FC4CEF9;
+	Fri, 19 Sep 2025 14:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758292229;
+	bh=vA9guvcgL927U5ffFZqiyBwAArQQdF916BNKlifkJAs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=eZJss6danaiwJMxxUfWVD4rBvhbrRPRLbPeS+4QZ61D+l1/zN3sWcYt/QZ9Hf+KRK
+	 BP49Zn/yZOeCvLSVivthHkRXXbCDiOA1XlE8ImPSGVBNHH2Xjr9Nn+ZcYBATF8fBLx
+	 dSwT73XomEFgVed2RT+JRkBgIRs7vDg1CB67V9v+sMK3nH2ZJviwwrrJljzNB42k9L
+	 fvQRiD9wN0zCDzxA/B0qn+HPg83J4vELrKo/vyGgxZNVoMVAC0uUXk6+nIf/XuPYoa
+	 NhShXVw6o2GEJfRm9otDUOHvkIrHLsuXnnPBU3Gras4kHAO1lE2zfs9H/AN/RBC8If
+	 aiTaRGG64VYTA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB16B39D0C20;
+	Fri, 19 Sep 2025 14:30:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,37 +52,46 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] mptcp: reset blackhole on success with
+ non-loopback ifaces
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175829222874.3219626.13984058147860089030.git-patchwork-notify@kernel.org>
+Date: Fri, 19 Sep 2025 14:30:28 +0000
+References: 
+ <20250918-net-next-mptcp-blackhole-reset-loopback-v1-1-bf5818326639@kernel.org>
+In-Reply-To: 
+ <20250918-net-next-mptcp-blackhole-reset-loopback-v1-1-bf5818326639@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kuniyu@google.com
 
-The nvmem-rcar-efuse driver can be compiled as a module. Add missing
-MODULE_DEVICE_TABLE so it can be matched by modalias and automatically
-loaded by udev.
+Hello:
 
-Cc: stable@vger.kernel.org
-Fixes: 1530b923a514 ("nvmem: Add R-Car E-FUSE driver")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-V2:
- * add stable to CC
- * pick up Reviewed-by
+On Thu, 18 Sep 2025 10:50:18 +0200 you wrote:
+> When a first MPTCP connection gets successfully established after a
+> blackhole period, 'active_disable_times' was supposed to be reset when
+> this connection was done via any non-loopback interfaces.
+> 
+> Unfortunately, the opposite condition was checked: only reset when the
+> connection was established via a loopback interface. Fixing this by
+> simply looking at the opposite.
+> 
+> [...]
 
- drivers/nvmem/rcar-efuse.c | 1 +
- 1 file changed, 1 insertion(+)
+Here is the summary with links:
+  - [net-next] mptcp: reset blackhole on success with non-loopback ifaces
+    https://git.kernel.org/netdev/net-next/c/833d4313bc1e
 
-diff --git a/drivers/nvmem/rcar-efuse.c b/drivers/nvmem/rcar-efuse.c
-index f24bdb9cb5a7..d9a96a1d59c8 100644
---- a/drivers/nvmem/rcar-efuse.c
-+++ b/drivers/nvmem/rcar-efuse.c
-@@ -127,6 +127,7 @@ static const struct of_device_id rcar_fuse_match[] = {
- 	{ .compatible = "renesas,r8a779h0-otp", .data = &rcar_fuse_v4m },
- 	{ /* sentinel */ }
- };
-+MODULE_DEVICE_TABLE(of, rcar_fuse_match);
- 
- static struct platform_driver rcar_fuse_driver = {
- 	.probe = rcar_fuse_probe,
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
