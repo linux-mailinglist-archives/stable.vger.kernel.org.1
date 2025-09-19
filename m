@@ -1,133 +1,116 @@
-Return-Path: <stable+bounces-180605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DA5B881FA
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 09:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E06B88239
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 09:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 998353AF35E
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 07:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 707F01C8691F
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 07:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDD92C08AA;
-	Fri, 19 Sep 2025 07:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9797C287262;
+	Fri, 19 Sep 2025 07:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="by6V6Zm5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LIGtAXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3091B277C95;
-	Fri, 19 Sep 2025 07:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3C81862A;
+	Fri, 19 Sep 2025 07:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758266003; cv=none; b=Q6kaZdkxZE5laYkVfeMHUZ1XX2joOOteBY7+QomUXEOFdj1Dtc84YfhuqDqpVl+g39spIbWYlsZTw71ZPBuvJD+s0HXdN/XgaCTkCYOJBM9uL/Guh25wshRi10/F+Q5x8GrXmyaeklpYYW15PD1Hpbvjv27vxetY4j0l9INUsN8=
+	t=1758266361; cv=none; b=K1AWFrXfoVgNCzkY75kg7PqUoLv9j2V5ATzQUb3rnRwG6LlvkVBEk5rWqdk5XsV+eLa63ZpMbrZfalbrsJA2YU66rPl8u+FjEs56naCxOfq+hjUqLd6SXmg2B8u3BpHSCB277Ud65U58X2XS+iAimUODnbDaUnHOtnDu6Ys1ejI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758266003; c=relaxed/simple;
-	bh=1t5vWZ8iEbnpsW4relA0572VxAhet0HxabKQsq73kfU=;
+	s=arc-20240116; t=1758266361; c=relaxed/simple;
+	bh=h8IcExnL+ufUC/sHx295zmDgmYauyGFmpVaWBmtGSTQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cp1/TAsOOdbMA8hjv++Z5ONAmkkjIhiW57o7+k5233A0Cxvokd/gwHROZ39DXsaissvgdbuOM+Hubl248GbHnepkU74WHioK+I8hHQzBLrTx0cwFXMdpGlwQcT95xoNf2VgQWkJggOYmmMFROpce86fCoaKX+p/evBdOG21kJi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=by6V6Zm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54532C4CEF0;
-	Fri, 19 Sep 2025 07:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758266001;
-	bh=1t5vWZ8iEbnpsW4relA0572VxAhet0HxabKQsq73kfU=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=AZwmEF+Gl4XfsUKDPuRJyHVS3+j/UegeIoG0KNKGFK7XfFCD9KnJGi0fAPlcHao4PkRxO3kce0B16/LNwXHI3Br3Cn8AqFhzSLQ4RED1oYvoyt/KGlyxBJWZQStQOxt1YwEp7YgmxnZYJX6s97ZVRL+GHawag3GKj+36kbmKHME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LIGtAXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F91C4CEF0;
+	Fri, 19 Sep 2025 07:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758266360;
+	bh=h8IcExnL+ufUC/sHx295zmDgmYauyGFmpVaWBmtGSTQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=by6V6Zm5lbZKY3r4zH0m9zFGT412JeEerfDGTUnFTWzJ2j8Yow/MmkTCiERx/bAXN
-	 MPnOPSylLLWa+Dw1CwRm5FQZ7Zv9UfOLKxd5rG/30WGwYolJJbilI/cTLig/DR5K0x
-	 bw513GyxaY4BRwpJE8Z6x3CKLB1ChyoXmbjkb/Y0HzYz3SL/hMDJh4qjWd8aRKzqTI
-	 WP6urLss1YVOTSKBRgH8eh9giOgWY4k4vnVNukzCHE99mL1ZEbplegLkDeVmeewObW
-	 MIvMW5oc48l+/WPgyleK16UN3gIdKGS4M6HIDyId6GUG/X3XXG7UPh45ftgrIsx8BT
-	 Is2tetSE3DKFA==
-Date: Fri, 19 Sep 2025 09:13:16 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] iommu/vt-d: PRS isn't usable if PDS isn't supported
-Message-ID: <t5ier7jfq7f6sedqq2vholm4x7myolk7tanhi7cjcd6xkrk72d@luay37lq7ipu>
-References: <20250915062946.120196-1-baolu.lu@linux.intel.com>
- <zkgvbw42g25a47nyydehxismaup6eh4kygqbdw7fk54kxze7j3@lrczardwx2ma>
- <3d633e85-04fd-4077-9bf8-92fb487f89fb@linux.intel.com>
+	b=0LIGtAXJ1K5y+wMv+yLAQ2cmknYeP4bryMH2uopDreHp/jnIL9xdM4f437xCNBBRE
+	 VxHQn7BWxAuCRUwbA/eF8PUNti8J6zUm42cE16VJwX5zmxV6jFZD6CGSHMJd6yInu5
+	 ei5iQdvr79UBfkGBiPltwpeAvlFVpzDfrhuuJOO4=
+Date: Fri, 19 Sep 2025 09:19:16 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Anders Roxell <anders.roxell@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org
+Subject: Re: [PATCH 6.1 00/78] 6.1.153-rc1 review
+Message-ID: <2025091903-relish-neuron-30e5@gregkh>
+References: <20250917123329.576087662@linuxfoundation.org>
+ <CADYN=9Li3gHMJ+weE0khMBmpS1Wcj-XaUeaUZg2Nxdz0qY9sdg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3xq7uv7x2yy5bq7s"
-Content-Disposition: inline
-In-Reply-To: <3d633e85-04fd-4077-9bf8-92fb487f89fb@linux.intel.com>
-
-
---3xq7uv7x2yy5bq7s
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CADYN=9Li3gHMJ+weE0khMBmpS1Wcj-XaUeaUZg2Nxdz0qY9sdg@mail.gmail.com>
 
-On Tue, Sep 16, 2025 at 09:58:14AM +0800, Baolu Lu wrote:
-> On 9/15/25 19:30, Joel Granados wrote:
-> > On Mon, Sep 15, 2025 at 02:29:46PM +0800, Lu Baolu wrote:
-> > > The specification, Section 7.10, "Software Steps to Drain Page Reques=
-ts &
-> > > Responses," requires software to submit an Invalidation Wait Descript=
-or
-> > > (inv_wait_dsc) with the Page-request Drain (PD=3D1) flag set, along w=
-ith
-> > > the Invalidation Wait Completion Status Write flag (SW=3D1). It then =
-waits
-> > > for the Invalidation Wait Descriptor's completion.
-> > >=20
-> > > However, the PD field in the Invalidation Wait Descriptor is optional=
-, as
-> > > stated in Section 6.5.2.9, "Invalidation Wait Descriptor":
-> > >=20
-> > > "Page-request Drain (PD): Remapping hardware implementations reporting
-> > >   Page-request draining as not supported (PDS =3D 0 in ECAP_REG) trea=
-t this
-> > >   field as reserved."
-> > >=20
-> > > This implies that if the IOMMU doesn't support the PDS capability, so=
-ftware
-> > > can't drain page requests and group responses as expected.
-> > >=20
-> > > Do not enable PCI/PRI if the IOMMU doesn't support PDS.
-> >=20
-> > After giving the spec another look, this is probably the way to go.
-> > However the PDS also mentions that DT must be set. Should we check
-> > ecap_dev_iotlb_support(iommu->ecap)  as well?
->=20
-> It has already been checked.
-Yes. In intel_iommu_probe_device. Thx for the clarification.
+On Thu, Sep 18, 2025 at 03:28:01PM +0200, Anders Roxell wrote:
+> On Wed, 17 Sept 2025 at 15:01, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.1.153 release.
+> > There are 78 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Fri, 19 Sep 2025 12:32:53 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.153-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> While building Linux stable-rc 6.1.153-rc1 the s390 allmodconfig with
+> clang-20 toolchain build failed.
+> 
+> Regression Analysis:
+> - New regression? yes
+> - Reproducibility? yes
+> 
+> Build regression: s390 clang-20-allmodconfig
+> 
+> Build error:
+> arch/s390/kernel/perf_cpum_cf.c:556:10: error: variable 'err' is
+> uninitialized when used here [-Werror,-Wuninitialized]
+>   556 |                 return err;
+>       |                        ^~~
+> arch/s390/kernel/perf_cpum_cf.c:553:9: note: initialize the variable
+> 'err' to silence this warning
+>   553 |         int err;
+>       |                ^
+>       |                 = 0
+> 1 error generated.
+> 
+> The bad commit pointing to,
+>   s390/cpum_cf: Deny all sampling events by counter PMU
+>   [ Upstream commit ce971233242b5391d99442271f3ca096fb49818d ]
 
-Best
+Thanks for the info, I'll go drop this patch from the queue.
 
---=20
-
-Joel Granados
-
---3xq7uv7x2yy5bq7s
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmjNAoMACgkQupfNUreW
-QU//8Qv9HdMlipScLuChqDoQOMybUKTj0nBOjYcagRoZ3qeZfkLooPPQqt7LSXq2
-TaTzY/ZUMhyeeMhxUpBfvsEzjIE14QtwQt3I1hQq/xMf+BMKYQRdS1WLRxkGN4/U
-q4+wt4NacUMmIDR+Yhz37vw76E/Ljsg1E3RnpICU6BRJtROMiO6IuB83sOyUhhvy
-bf7BobCK3TFGOymBaT0fNzgyssYIuF5VCiNkQTPmJ340CZOt2MYYi/TxNT6GLBSQ
-gmw42mYtAmXJ8C20SsJ5NaUWqep8cexa67CQzkRUstSuiaQ29Nlim0B3wdgbBlcs
-2G+Dr6qEzeSOZuWQgGuv0ICx2sAmGtglQn5vvyEektqbWdfqZVpFZnZd0udpxaqG
-u3HBTt9WkiCZ0SvnaYIUsOIBKcHsnAb0LfFzw+CfgjFVCFEc4r+IK+peK6xffEfc
-zZkWFEd7P0JSBLaz0xiELqhgH2zpnyDQ6h2OT0kaAQpAt0jGwDMT0ERe4YhBRpTb
-SsNZCFdG
-=IWaY
------END PGP SIGNATURE-----
-
---3xq7uv7x2yy5bq7s--
+greg k-h
 
