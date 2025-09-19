@@ -1,138 +1,99 @@
-Return-Path: <stable+bounces-180684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD68B8ADA8
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:06:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D96B8ADBD
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2EAA1CC3546
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3F51CC366F
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA93255E27;
-	Fri, 19 Sep 2025 18:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EA9256C6C;
+	Fri, 19 Sep 2025 18:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hR1EdqpL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jDqRi4s3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E65155A30
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 18:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAEA1D8DE1
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 18:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758305194; cv=none; b=e/QuM7hHggldyCZKhZ4LwVg3H0iJ9clTiU50YAEOUZ7gPm1QYS1qLIfHvIrnzPuFMblmbxBj5qlRE8z9g/KvW3yLknONXph7+8IPbo3+CN84LVvNYAZaXq1rAwa0Lh7RW+tJZiPXW0/yOgFWBDjd5qmxm95jk2p1rgDBushSvsM=
+	t=1758305294; cv=none; b=ipu/Wx6neopYDeC2jrlRY5ZiWw+ad7B6wMiKsnNl7g0qQvn+r0Q39Rto4fZEe3bXT9XMPdU5njhFieCJ+S9l/c64MwHZUB1U8P9kGlFo1ySBzSW8M54OJHRsjCS1p2wkiGFcKMXezI0yTlgNnrbEe9VmzqQxCQLQuzYZCtjm3cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758305194; c=relaxed/simple;
-	bh=gDa85MneB+BAwS7qvm7CDHhrBvUCUyClipVl7dU5XkE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KwcqkqyG5FqmQHMkhw6/9gBaFq5OoSc2OFzm+IKj6iT9QHZ+w3D3qRQJcQM2ct/RG9tjLytNM9xk2kKrvNKD+sFvKrP2mhRBDljc4yXmCxaxtD6zK3ugBKVuPDfP01jE7i4JFaXxbUetMYgS1Q22cFErDAiKlUix8KO8vNNStPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hR1EdqpL; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b54b0434101so2140560a12.2
-        for <stable@vger.kernel.org>; Fri, 19 Sep 2025 11:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758305192; x=1758909992; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fq9/RhrmaJ95VHFP/mSsZ0mv4u1FmOMHDPmgSCxvyHU=;
-        b=hR1EdqpLAvs+dSy38IGxoIFrouLJ3GJa+y3XrAZekHfXNiLnfK5jPiN8HgrF1bfa26
-         knL0JvVuqHmdRegdJgVIdCWViy8nRqUFVE8xq+KkVOmNTSoRmQh9Qd6zvEIiSlFr4bFx
-         AAR8g+zYPjDmX4p/z153dFp860K4R77dthXlTSMnuuveN0546X5iajorgihVWBs07pfj
-         vX6ofpjajPUhubgsvxWw+ovKPlm5RBJfGGrKQm/gRqCsTmucJov5TwW7YjjBuv9Edy3W
-         k+03Bijy2MfF/5FaFebT0Z2S8hZKihb7hw/Nm/IrvdTL/nDo32ONM0G4i8w9LL7EA9ph
-         Y2XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758305192; x=1758909992;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fq9/RhrmaJ95VHFP/mSsZ0mv4u1FmOMHDPmgSCxvyHU=;
-        b=nftjXCuikzkQCaWiwMGrke50PnqgUtK5l6GhISKxLHlDMro4U3oHJiHePa3f0OqvB7
-         rPIFcfazqWA2JayRU2co4ozN5H5nrDtfQx1d2l6erHK0d9APt21pBpVYVyUat5nq7MAr
-         0GZiFO8WuzfgtNjniu8BRE5rKe++02DeLVEemgCUZiW8+a0OnVHhzwntOwQbZCQR0Lo5
-         45Cay6f1OcYWda4UCn2JUVWbRrf9gO5uWfjM6oDiAiFZxLhNKqJ9g+Uns9lX60dTQn3u
-         ohyS8aXJi6/9QJa26xheSBU5IxZwfCBWuW/zCj1tD0hUtlOtTKa1hVkiosY2muR24CfR
-         1A8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVcfyZ+NSDHRQAQsFt47W56x7m4zEJR/t0KqqSPZRV0IM+MowqOhC6ieXIEJC+HnMvPy8Te5VY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2K1dCbMrJKngzEGgDCIpGM46vzQoBMlf1DjKPlnRe+ac7bVaE
-	3YqkXkNcLyfqeKle4bIc2N/+pGrZyv5otiSfsJJi3FZCgHcvcp9saNFnJwjIXOmz1u0=
-X-Gm-Gg: ASbGncuKDwoxy2SoT0qZz9DFu4+55DcquIEPRD7cacia6615vwBadFHkjwBiLiHT+xc
-	4Y5CMGj4X0Phir6CKtToHBusf50k6KDWv2+nYVWCsdqHxf14UlN6rVwz1Et6QBlLEeugX85M2fA
-	inD778+wx/6z6JdDAddqNZWGyvPuhZUQTc+MTF5swbLcLW9zilSHYIFlAmtv4NNYku0lQIF8lzV
-	0wcxKdt/ETjLPEVbYWZXP+GyVol6QKXFF3K6lshWjBunz4uUe4EdlGFmRbj9eQeKOrlC1f8Z91x
-	AIDwvOkGWQs5WeikFON6bekH3YAfyNJ11tm0URtShgTcyYHFFkLIHx05vAmMVBEYdVcf6RFDCNE
-	cSR1HL+tOJXbVipi+vDJbrCrjb0g=
-X-Google-Smtp-Source: AGHT+IG8ZpyqLIkbcuvtqtJ+EHy3A9Tiq7R+4x7DEyt9BYgtt5t3QogZOzW/orps6pe0vIGob3Fzng==
-X-Received: by 2002:a17:90b:3945:b0:329:f535:6e4b with SMTP id 98e67ed59e1d1-3309838f187mr5713725a91.37.1758305192045;
-        Fri, 19 Sep 2025 11:06:32 -0700 (PDT)
-Received: from gmail.com ([157.45.202.48])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32ed257bb5asm8702313a91.0.2025.09.19.11.06.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 11:06:31 -0700 (PDT)
-From: hariconscious@gmail.com
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	shuah@kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com,
-	HariKrishna Sagala <hariconscious@gmail.com>
-Subject: [PATCH net] net/core : fix KMSAN: uninit value in tipc_rcv
-Date: Fri, 19 Sep 2025 23:36:01 +0530
-Message-ID: <20250919180601.76152-1-hariconscious@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1758305294; c=relaxed/simple;
+	bh=d+IpnihDr4NXdRPvmqmk0qIWkC/FYIAhSuLCT190ba8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=h7uylT4JKGC5wBFRKGT+LPF93Jm05Db5oW0OoOTw7WvkQHkSxfU6DTYS8YD2wzLNSmH8TXLfKqw0YVWVDvJIXObxUv89FBTRNR4SWIkbld7rRUYbMHIi/u+Vd7CfTncb8gd0tMayiooLXh5JobcgFWxG9HXrke+GYiNSfg+AsrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jDqRi4s3; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758305292; x=1789841292;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=d+IpnihDr4NXdRPvmqmk0qIWkC/FYIAhSuLCT190ba8=;
+  b=jDqRi4s3mNKi+aMPyat6cYqLGLkDBv0oM/ykGG1kl3iTSHdfJbraVaGE
+   b+/ria3yaiXwURgLjABreIlZ+FiKr6hXhYP6oXkqdgY0uorG5/PwyMZb3
+   KjahGwSwnNd1l7u3DJZZVLH2vtesTIjYlYGekOBI4V5jT1aakr1meoB+j
+   pZ85mm5JfnPmHwIEd3TSSs2app6dxHANkaZDrq7zKGu3Te/IhIP3Xumcc
+   hdujgUNoKZ/DiOGtV5DC0hbkEJobfThRfVc5sTFSrlVJWX7zJmNx7FiDk
+   XQwR0KYDPAsGqR7v/H0faMlPWezTgE3k+oVmxZkWkwo42WBEcDDiFXJI4
+   A==;
+X-CSE-ConnectionGUID: jVtAFcixQ625oxhaPS2+SQ==
+X-CSE-MsgGUID: cIvfMb4TS0q6DxbK5tnjdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60712313"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="60712313"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 11:08:11 -0700
+X-CSE-ConnectionGUID: AxerEPqZR5atSwmZ4HU/VQ==
+X-CSE-MsgGUID: vbGHOtBXTF2EzcKvayIs1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
+   d="scan'208";a="175698571"
+Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 19 Sep 2025 11:08:11 -0700
+Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uzfWh-0004ed-2X;
+	Fri, 19 Sep 2025 18:08:07 +0000
+Date: Sat, 20 Sep 2025 02:07:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: hariconscious@gmail.com
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH net] net/core : fix KMSAN: uninit value in tipc_rcv
+Message-ID: <aM2b79FnV-yP1ZPs@f1e5f3f3c112>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919180601.76152-1-hariconscious@gmail.com>
 
-From: HariKrishna Sagala <hariconscious@gmail.com>
+Hi,
 
-Syzbot reported an uninit-value bug on at kmalloc_reserve for
-commit 320475fbd590 ("Merge tag 'mtd/fixes-for-6.17-rc6' of
-git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux")'
+Thanks for your patch.
 
-Syzbot KMSAN reported use of uninitialized memory originating from functions
-"kmalloc_reserve()", where memory allocated via "kmem_cache_alloc_node()" or
-"kmalloc_node_track_caller()" was not explicitly initialized.
-This can lead to undefined behavior when the allocated buffer
-is later accessed.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fix this by requesting the initialized memory using the gfp flag
-appended with the option "__GFP_ZERO".
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Reported-by: syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9a4fbb77c9d4aacd3388
-Fixes: 915d975b2ffa ("net: deal with integer overflows in
-kmalloc_reserve()")
-Tested-by: syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
-Signed-off-by: HariKrishna Sagala <hariconscious@gmail.com>
----
- net/core/skbuff.c | 1 +
- 1 file changed, 1 insertion(+)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH net] net/core : fix KMSAN: uninit value in tipc_rcv
+Link: https://lore.kernel.org/stable/20250919180601.76152-1-hariconscious%40gmail.com
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index ee0274417948..2308ebf99bbd 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -573,6 +573,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
- 	void *obj;
- 
- 	obj_size = SKB_HEAD_ALIGN(*size);
-+	flags |= __GFP_ZERO;
- 	if (obj_size <= SKB_SMALL_HEAD_CACHE_SIZE &&
- 	    !(flags & KMALLOC_NOT_NORMAL_BITS)) {
- 		obj = kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
