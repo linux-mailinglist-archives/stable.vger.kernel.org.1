@@ -1,124 +1,167 @@
-Return-Path: <stable+bounces-180701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5F8B8B2BA
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 22:07:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40A1B8B2C6
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 22:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C409D17A18B
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:07:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA0EB1CC3F89
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A0A226D02;
-	Fri, 19 Sep 2025 20:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0815279DC3;
+	Fri, 19 Sep 2025 20:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="KDO1mvFt"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yScsVnFk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A565D5C96
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 20:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A34A257852;
+	Fri, 19 Sep 2025 20:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758312474; cv=none; b=FIy2XUYgSyefg4t61nT3e1nUZUNjcW7cjMOQt852V7ONGnLHAdl1OkK7gAO4JBxxO9+ZbmYugMbPCoqnD/847qs3mo9qlX29+HSVyjPgU6IteGUZPE0bNSsbdpEEI8/agCsZFk4Rm/x7Lxvi4Tf89tGSVYKBaQpxqn72EZOE8dc=
+	t=1758312844; cv=none; b=ZG1pux+POCLfAeRgu5mntw63R1iLZccz95x2Q75w5dmn9EZA/wLKbEnWNOhCtA7x9Bvs9lSeoiSPInf5KgQeq4IDCp66cVsheXBSrDhCp3ms4wrLSHx869zE8SasS7oMCuqhe5zqw/xNqSM90QxkROyOoPgc+28NcnBk0Pe2np4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758312474; c=relaxed/simple;
-	bh=eQjmGnTJtmrKS9Hdr/GbCM4ZRCEZHusvDQMJJFXcgxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AvF5G3qmd4Q+RXGSo+CUuGKkZAE9a5krucp2WpTcarxwuGnWPjMXWjhR0OuT2M3kUxREaVsHogleHP0WCgEYw5koCw2DhK1Fj1Sv0zB1D9HUNVpj7EIxdEStWGO7a/zJF7KfTJIneL5Zc1RQ5nTY+mJun3v8tQLlEE2lz59BFoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=KDO1mvFt; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DCD2240E01AC;
-	Fri, 19 Sep 2025 20:07:43 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 0hcxTfL3TvAh; Fri, 19 Sep 2025 20:07:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1758312459; bh=39k++MWCxtgVipuZBpMqLNFIwWColgmOpUmv1+b8nZs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KDO1mvFt9x/TPhEelVhSTmEFR4TOqsP402gdHEbtjDGhtGjRfmeVEjwG2EtoN4onv
-	 TLq7OT+2CUL/sJIttxNr+Vvcu6aoMHE544iZpgTwuIsCBjdGG0U7qEgzbb2iWZ+7xR
-	 OhX0lgMYeFEB1UAoIRwALs6xHg+RoWQlgD6mOkn5Guyn58bMKK5g6Sf4BBD5EP60NM
-	 5uQ570Mmqm29xrZCHo4BCoiOKufhTkxWSU0GsIppLwvG7wFNgyz+B4KHKtp/C5QqCk
-	 segW8N9dhFF6CVJ+0I81BdM4GT3Ce2gzpULMuj+2vKiXS1g0ExqivWm2s+mnq+yP+q
-	 4g4kCEZ2t/6yIcOFYOqwMhNEUK9fB78jMF6XXYyrPb5hXK0pvA4Yre8t3FoMX4+rMz
-	 6+s/n+6Kuu83hL1xRra8xgVYiBOtMnraeS9Be1JGh9hzvo25ks+cM1Ys1L27p6X0Ra
-	 U+xHcRzeCj8P4WAp2Mt177bjnUGQ+CN3ezyuXtaNFy+doSIM8q/3cbFOA4L/9v0o1F
-	 wstW1L6Pio2tq1MHm20Qv7Y5xYKxEkdkuIo7b/0rXobPzSEmNYJw6iVAnRoSC73Zt+
-	 1Yxx0os3xLncub9zoUnyBEGhVjipAnI9FAU5epRKwg5BrbUxlZQBIzk4dh4MAxKiTW
-	 RJtb2ICKgYsYDLJTSLYbI2Mk=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 18D3340E019F;
-	Fri, 19 Sep 2025 20:07:32 +0000 (UTC)
-Date: Fri, 19 Sep 2025 22:07:25 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org,
-	ankur.a.arora@oracle.com, boris.ostrovsky@oracle.com,
-	darren.kenny@oracle.com, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 6.12.y 2/3] x86/bugs: KVM: Add support for SRSO_MSR_FIX
-Message-ID: <20250919200725.GGaM23_fjYFpBjDfU8@fat_crate.local>
-References: <20250919173300.2508056-1-harshit.m.mogalapalli@oracle.com>
- <20250919173300.2508056-3-harshit.m.mogalapalli@oracle.com>
+	s=arc-20240116; t=1758312844; c=relaxed/simple;
+	bh=r2jwadqywijs9tE/NrgnxVbD/jn2Afyw+dU7S1pH+6Q=;
+	h=Date:To:From:Subject:Message-Id; b=JBqTfhVPxFPzb6iokVJVwCwITQuz9s3kPVb8BUGZnNyfUYwltHtyuT/0dYR+Du2SI0W9Ct/KihKW0ry5gATaNA0vqmWvXxPdezEyn2hUtOw2UUpZk0VXXFWJJA++k2ZYfitJGIE7AlE1rHR+LUeH8596FhthSw3Erhj7MP4kA8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yScsVnFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACB9C4CEF0;
+	Fri, 19 Sep 2025 20:14:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758312844;
+	bh=r2jwadqywijs9tE/NrgnxVbD/jn2Afyw+dU7S1pH+6Q=;
+	h=Date:To:From:Subject:From;
+	b=yScsVnFkAxn604opWnezQ1hHQ39Ibk6u74oHlfRrcsvg3AdznSaHhelnMRcmXg5LW
+	 qQQu49+PrNbBLM+OaZYbxTMeanJl7RN3UtW+UVqGkU3Ei9E5NEGhToN94nOhi1Aa0S
+	 eGYjec7cWkZFilx5MDrXcH1+9tz+Gy+oF0bs7g4A=
+Date: Fri, 19 Sep 2025 13:14:03 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,usama.anjum@collabora.com,tujinjiang@huawei.com,surenb@google.com,superman.xpt@gmail.com,stable@vger.kernel.org,sfr@canb.auug.org.au,ryan.roberts@arm.com,mirq-linux@rere.qmqm.pl,lorenzo.stoakes@oracle.com,david@redhat.com,broonie@kernel.org,baolin.wang@linux.alibaba.com,avagin@gmail.com,adobriyan@gmail.com,acsjakub@amazon.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fs-proc-task_mmu-check-cur_buf-for-null.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250919201404.1ACB9C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250919173300.2508056-3-harshit.m.mogalapalli@oracle.com>
 
-On Fri, Sep 19, 2025 at 10:32:59AM -0700, Harshit Mogalapalli wrote:
-> From: Borislav Petkov <bp@alien8.de>
-> 
-> [ Upstream commit 8442df2b49ed9bcd67833ad4f091d15ac91efd00 ]
-> 
-> Add support for
-> 
->   CPUID Fn8000_0021_EAX[31] (SRSO_MSR_FIX). If this bit is 1, it
->   indicates that software may use MSR BP_CFG[BpSpecReduce] to mitigate
->   SRSO.
-> 
-> Enable BpSpecReduce to mitigate SRSO across guest/host boundaries.
-> 
-> Switch back to enabling the bit when virtualization is enabled and to
-> clear the bit when virtualization is disabled because using a MSR slot
-> would clear the bit when the guest is exited and any training the guest
-> has done, would potentially influence the host kernel when execution
-> enters the kernel and hasn't VMRUN the guest yet.
-> 
-> More detail on the public thread in Link below.
-> 
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Link: https://lore.kernel.org/r/20241202120416.6054-1-bp@kernel.org
-> (cherry picked from commit 8442df2b49ed9bcd67833ad4f091d15ac91efd00)
 
-This and the next patch doesn't need those "cherry picked from" - that's what
-the "Upstream commit... " tag is for.
+The patch titled
+     Subject: fs/proc/task_mmu: check cur_buf for NULL
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-proc-task_mmu-check-cur_buf-for-null.patch
 
-But Greg will zap that when applying.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-check-cur_buf-for-null.patch
 
-Other than that, LGTM.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Thx for doing that.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
--- 
-Regards/Gruss,
-    Boris.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-https://people.kernel.org/tglx/notes-about-netiquette
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jakub Acs <acsjakub@amazon.de>
+Subject: fs/proc/task_mmu: check cur_buf for NULL
+Date: Fri, 19 Sep 2025 14:21:04 +0000
+
+When the PAGEMAP_SCAN ioctl is invoked with vec_len = 0 reaches
+pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
+
+[   44.936808] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+[   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+[   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
+
+<snip registers, unreliable trace>
+
+[   44.946828] Call Trace:
+[   44.947030]  <TASK>
+[   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
+[   44.952593]  walk_pmd_range.isra.0+0x302/0x910
+[   44.954069]  walk_pud_range.isra.0+0x419/0x790
+[   44.954427]  walk_p4d_range+0x41e/0x620
+[   44.954743]  walk_pgd_range+0x31e/0x630
+[   44.955057]  __walk_page_range+0x160/0x670
+[   44.956883]  walk_page_range_mm+0x408/0x980
+[   44.958677]  walk_page_range+0x66/0x90
+[   44.958984]  do_pagemap_scan+0x28d/0x9c0
+[   44.961833]  do_pagemap_cmd+0x59/0x80
+[   44.962484]  __x64_sys_ioctl+0x18d/0x210
+[   44.962804]  do_syscall_64+0x5b/0x290
+[   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+vec_len = 0 in pagemap_scan_init_bounce_buffer() means no buffers are
+allocated and p->vec_buf remains set to NULL.
+
+This breaks an assumption made later in pagemap_scan_backout_range(), that
+page_region is always allocated for p->vec_buf_index.
+
+Fix it by explicitly checking cur_buf for NULL before dereferencing.
+
+Other sites that might run into same deref-issue are already (directly or
+transitively) protected by checking p->vec_buf.
+
+Note:
+From PAGEMAP_SCAN man page, it seems vec_len = 0 is valid when no output
+is requested and it's only the side effects caller is interested in, hence
+it passes check in pagemap_scan_get_args().
+
+This issue was found by syzkaller.
+
+Link: https://lkml.kernel.org/r/20250919142106.43527-1-acsjakub@amazon.de
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Penglei Jiang <superman.xpt@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/task_mmu.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-check-cur_buf-for-null
++++ a/fs/proc/task_mmu.c
+@@ -2417,6 +2417,9 @@ static void pagemap_scan_backout_range(s
+ {
+ 	struct page_region *cur_buf = &p->vec_buf[p->vec_buf_index];
+ 
++	if (!cur_buf)
++		return;
++
+ 	if (cur_buf->start != addr)
+ 		cur_buf->end = addr;
+ 	else
+_
+
+Patches currently in -mm which might be from acsjakub@amazon.de are
+
+fs-proc-task_mmu-check-cur_buf-for-null.patch
+
 
