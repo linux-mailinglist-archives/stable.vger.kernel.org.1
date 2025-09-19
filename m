@@ -1,81 +1,115 @@
-Return-Path: <stable+bounces-180608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6821B883C7
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 09:43:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42494B883FD
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 09:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084D04673C7
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 07:42:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DB0417C692
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 07:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B192D131D;
-	Fri, 19 Sep 2025 07:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BD62C0F90;
+	Fri, 19 Sep 2025 07:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="hw3ZaB6J"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="sU4pEa9h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA28C2D0C9D
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 07:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758267632; cv=none; b=BBMoCPCpEkATfcO48K6znyNpywu4fj+K2XbnEWGRfIcit7JWR94fUXwO3N2GZ7ZBFM/pj11Uk4x9bFgZAw50goq1Pr6DuRylHb8wtLri6yhOoMhSIi128lG2xvRLFD9Bxg6eRHAuBxYMOLrInCyjok2oAPvjmvk0SWKv1cSqQsQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758267632; c=relaxed/simple;
-	bh=Ge0srBt8kuBHxlltoVn4IgBNE0Uz+odUeFDkrg808us=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i+r2LfUcndejswaPpC0q0Uk6Kop1YGQoPqMkUnwSTN/I1bb0B5qxICjmnt6Nyg7g40rLfxLa69wUbqwgGupEiwKV0lH3Q17HbeNp+8qzDCzT8dLbAMuUqdsCfLPAcKBZneFH0cRVmQFwrA4o/9BIKS9mPjT54Z+S0oEuPOA06+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=hw3ZaB6J; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 3198A55998;
-	Fri, 19 Sep 2025 09:40:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1758267623;
-	bh=Ge0srBt8kuBHxlltoVn4IgBNE0Uz+odUeFDkrg808us=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48231917ED;
+	Fri, 19 Sep 2025 07:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758267996; cv=none; b=G53P2oOGRiIOCOGulYvPsxTzdur2puLD8tWbT55x9ZsuorApSlSP4B7vQAyIH7D2L5x/4ky/FAsLN0iuO1/U7Z3u89ptLwspPq8wJvPOkebYB0BZELtjJ4pDwXLcy7kGeO4ztvstRgp9vcz55KTLsisPE7ljIEpeKeN9sWf6LNw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758267996; c=relaxed/simple;
+	bh=rvrmYUZgL7bQQ6IjrPjE5dSTAS903szh3gdAerd2LU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=opfxsjek97yEGeDZgG+U+emCo56F7HDoGzqEy846xPYTaJFxHuSBigdEc+GbAT5CrWDOFwKFGPRKJQBHY8MSqqvX5lYYp5tkaVBFZjykRezN4FIJBVJL3WDdLPJ+dz50BexMPuGbb8Ddhs4/J3+kK1HnF/KqxKghgr1bFTWhm50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=sU4pEa9h; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [10.10.165.9])
+	by mail.ispras.ru (Postfix) with UTF8SMTPSA id 40B084076723;
+	Fri, 19 Sep 2025 07:46:29 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 40B084076723
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1758267989;
+	bh=vvxr3H1WS7K4t51ln89FsOhtImEKJfiVxLgiE628QEA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hw3ZaB6Jk+Qd1g9kjX7a7pX96ey02vnclSM4cZSi9lCjsips5EQuopLPaIG7mojAC
-	 n+dfMpEpfJPovhq5QFEFOWfzxu8CAtLMn1qBOoB10VwPfZobhJY1ebVivq0pDYkfZW
-	 uaiswwZ5soQhtJj+kKZBpB3uox1bve7QpEdyefanLWBqjzrJtfrgv6C/1MhnQk4wEC
-	 6iMBLbPBr3mPZXj1aMSbAB0Anj/+Qvo+MU9MdOp9pNcWTHA33Uo78obxX3BNEOY+ec
-	 yer/240qtVYYFTt09SH+WcU8LqIi531uoXPN8NCKbcUibKtB9v5yCSVwWNTbW53QEo
-	 P8iX0QK+3IvFg==
-Date: Fri, 19 Sep 2025 09:40:22 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: Vasant Hegde <vasant.hegde@amd.com>
-Cc: iommu@lists.linux.dev, will@kernel.org, robin.murphy@arm.com, 
-	suravee.suthikulpanit@amd.com, Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
-	stable@vger.kernel.org, Joao Martins <joao.m.martins@oracle.com>
-Subject: Re: [PATCH v2] iommu/amd/pgtbl: Fix possible race while increase
- page table level
-Message-ID: <srhrjp5kcx6vma645asqa6r3zhxtflt2v2rxc3zwjqsbqxnp67@puw2tdybqebl>
-References: <20250913062657.641437-1-vasant.hegde@amd.com>
+	b=sU4pEa9h+D76ZLjUJK/7/NZd35pUymq/yu3TJ4+z5lIR6nZ4RTeTTvqK4Yd+vOIhQ
+	 VhNziBWwwh/8iK5Oe2zaH+mdWxmxXV2ES6KGlB9oPWQH8wDjGiF3aohrDPeeN1URrS
+	 T4e0aKdWfrJngbKnxel9i5i0j2+nuAPK12FJjYGE=
+Date: Fri, 19 Sep 2025 10:46:29 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>, 
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>, Bernie Huang <phhuang@realtek.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH rtw v4 2/4] wifi: rtw89: fix tx_wait initialization race
+Message-ID: <20250919102546-7f8366ac69aae3e6d47c65a5-pchelkin@ispras>
+References: <20250917095302.2908617-1-pchelkin@ispras.ru>
+ <20250917095302.2908617-3-pchelkin@ispras.ru>
+ <08b25263c6874a089e4a271cb95a9cb7@realtek.com>
+ <20250918173522-07abe99566c12fa46a096fc5-pchelkin@ispras>
+ <7a53522bc0004a979fd78b1d6f440457@realtek.com>
+ <97aed12182074193b362472d32f0c9a9@realtek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250913062657.641437-1-vasant.hegde@amd.com>
+In-Reply-To: <97aed12182074193b362472d32f0c9a9@realtek.com>
 
-On Sat, Sep 13, 2025 at 06:26:57AM +0000, Vasant Hegde wrote:
-> Fixes: 754265bcab7 ("iommu/amd: Fix race in increase_address_space()")
-> Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-> Cc: stable@vger.kernel.org
-> Cc: Joao Martins <joao.m.martins@oracle.com>
-> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-> ---
->  drivers/iommu/amd/amd_iommu_types.h |  1 +
->  drivers/iommu/amd/io_pgtable.c      | 25 +++++++++++++++++++++----
->  2 files changed, 22 insertions(+), 4 deletions(-)
+On Fri, 19. Sep 00:50, Ping-Ke Shih wrote:
+> Ping-Ke Shih <pkshih@realtek.com> wrote:
+> > Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> > > That's a good question and it made me rethink the cause of the race
+> > > scenario.  I didn't initially take TX kick off into consideration when
+> > > it actually matters.
+> > 
+> > Do it mean that you pictured the racing scenario in commit message by
+> > code review instead of a real case you met?
 
-Applied for -rc, thanks Vasant.
+Yes, the underlying issue for this patch was found by code review only.
+Somehow the negative consequences of the potential race became an "obvious"
+thing after preparing the first commit, and ignorance of TX kick off
+influence made the changelog confusing..
+
+> > 
+> > >
+> > > The thing is: there might have been another thread initiating TX kick off
+> > > for the same queue in parallel.  But no such thread exists because a taken
+> > > wiphy lock generally protects from such situations. rtw89_core_txq_schedule()
+> > > worker looks like a good candidate but it doesn't operate on the needed
+> > > management queues.
+> > 
+> > Last night I also thought if another thread works in parallel.
+> > Maybe rtw89_ops_tx() could be?
+
+Well, probably it could.  I thought rtw89_ops_tx() is wiphy locked, too,
+but apparently it's not always the case.
+
+Not that it's a relatively easy-to-hit race I'm going to try to reproduce
+though :)
+
+> > 
+> > >
+> > > So I may conclude this patch doesn't fix any real bug though I'd prefer to
+> > > keep it (with description rewritten of course) because it helps to avoid
+> > > potential issues in future.
+> > 
+> > Agree.
+> > 
+> 
+> Forgot to say. Could you mention this racing scenario was found by core
+> review and your perspective in commit message? 
+
+Sure.
 
