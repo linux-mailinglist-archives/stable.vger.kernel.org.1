@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-180691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A262B8AFCB
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:50:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F525B8AFAD
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 20:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB84A3ADC85
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:50:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5D11C87B0D
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 18:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF05B27978C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5EA27816E;
 	Fri, 19 Sep 2025 18:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKBpFBJi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AqPDI1uA"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3BB26E712;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB9A2690F9;
 	Fri, 19 Sep 2025 18:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758307808; cv=none; b=bX08RTyw5iMHNJSpHF6q0CGo3t/lOiVHYnuVeHRfMiEoUKK7XVsKgF+ZY0JHkqT5L2QBZnY7De3DS9dBqzlIE0fu9fZQjeDo2M+xdaSiE+z+6TX6alF8rNTNseplMDw7WtWy/PPxmy7jvLQW2vO+1uwuWlszYEhhidI6VsvbLLw=
+	t=1758307808; cv=none; b=jeQjbsHGQ9q1y6mfpA9k6+2nB1wW60v89xWaYipzjE+v4F5mDPwy/Yb/WBWI8P2Obslxmmy4hF7NqHKwlECHOrAmiKORYC2fws7cteXLRs1H0lKlT5AoktcZ6le0T75zl1osVFDnuC9wLvt79g59hk5Du9JSqw4MagFzwRsnO4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758307808; c=relaxed/simple;
-	bh=keDpMk3zkpZAu2eVo9yyyaGQd/Ol7tVdkrD0sKL5EpU=;
+	bh=sSa9+vEqcuU4R1ZoK/EtFjHhG88i08/MRkfxv2zXZ6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bkfc3kAIKF3QOTP5NRzNqNs2Zq8t7llEsaYFjnSSUnvzgfSwxp8TCLNwVEliMU0MC8q4ah6Vk+/sOA1Uc11ipPgRUyB2tDMLFp4IK4HIVR7rXEHWJu9kN+rHhoRpSyjFi1ik5JVDp3rfPHP2KApK7AplcPW0OuxjWOIFmWtXpL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKBpFBJi; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=T+Sx46jFInDEkwh0IA8ScgDQr19Gto3yOEOpDJq4IznB7FiidEHcEwROqsmS9tUvicxgfwJxZR6NX5QekClunJlCIJBcst02+0XwXKy9Ncac15PS3SjRLLCu+k4quDbKehEo4Gx3ZuT/Dq8Ex8dxsae9sr8q/bK0kDZYmWRa5qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AqPDI1uA; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1758307807; x=1789843807;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=keDpMk3zkpZAu2eVo9yyyaGQd/Ol7tVdkrD0sKL5EpU=;
-  b=PKBpFBJi1/Wso58pIcdciBsuR21N7sZw0EuOu14sPcl+LEqrDiLVDaim
-   u+8VKDZbR2K576l6ejMx4Kcdqk1cZ+4V5OQVJcsU7mFkypOg+JZjEJ9ZB
-   1VBva+D7auYsp4eNdxNx308usKZ13FQrpMdmRet+hq8ifeDPqNwtwfn6k
-   tbmiIHnPuuGU0CnlowmVyRqDw9DtuF9iSUgvEHR8LzU5zXgNVu1EXGT5U
-   09Jp+SmhZadtebCFWJZYMXBRWkEAU/ZTYrJP2lNEWSJ2ohkPzhgq3A67W
-   AWeTabYTZF48b+/BINwr5gaykYYm7mNo6bqZePbR5YT8wWczoqOpHiXsv
-   w==;
-X-CSE-ConnectionGUID: JNKrZpV1Q6ieDYHzKOOD1Q==
-X-CSE-MsgGUID: cH+gvFG3Q+yydQYIHcydIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="60589735"
+  bh=sSa9+vEqcuU4R1ZoK/EtFjHhG88i08/MRkfxv2zXZ6Y=;
+  b=AqPDI1uAIE43Cpe2i8THA2COTKvxWtqjTCXS0u+/fDklRIjJWWfZX6rM
+   aif98duY5gHapj9B3IjhzVwuNmpeps1V523gaBSxtY1KiNcrzlY4hhtdp
+   cEV2IL/CiOl6ZLAEx00LGxeDKXY3T0t/7oELqGJrSdQDEdwvMKa7qjmxv
+   HSnN09nUG1DrweACmZnFLSM9Aak8gjfM5pQiZRi+L4dKNPg8/Lwuqk/iW
+   nwyizOTdc1CRNCEtYK/K7D1U/Dcxg9TMgmlE5F4TLpvyqCuZ/JIlkDHO0
+   XzmToCXBwPu5M5l30DsH6OtDME5r2QiIzdNuZJXCYYQKg1F+HZGI5gwDh
+   g==;
+X-CSE-ConnectionGUID: 9Mg8dcsORmaetrWrzyuO4w==
+X-CSE-MsgGUID: DJlpoWMRTROjNh9TDDf/SA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="60589738"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60589735"
+   d="scan'208";a="60589738"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 11:50:04 -0700
-X-CSE-ConnectionGUID: Ql/RflaSQpOg/abhKwhxdQ==
-X-CSE-MsgGUID: vZVCjtK5QQCAd7WmqDYAIA==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 11:50:05 -0700
+X-CSE-ConnectionGUID: kHffiX91T9ifGCS+A5bCkw==
+X-CSE-MsgGUID: kH6TlU3CSZyqCDUsrlkZPA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="175458768"
+   d="scan'208";a="175458771"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa009.jf.intel.com with ESMTP; 19 Sep 2025 11:50:04 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -75,9 +75,9 @@ Cc: Lukasz Czapnik <lukasz.czapnik@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Simon Horman <horms@kernel.org>,
 	Kamakshi Nellore <nellorex.kamakshi@intel.com>
-Subject: [PATCH net 2/8] i40e: fix idx validation in i40e_validate_queue_map
-Date: Fri, 19 Sep 2025 11:49:52 -0700
-Message-ID: <20250919184959.656681-3-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 3/8] i40e: fix idx validation in config queues msg
+Date: Fri, 19 Sep 2025 11:49:53 -0700
+Message-ID: <20250919184959.656681-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250919184959.656681-1-anthony.l.nguyen@intel.com>
 References: <20250919184959.656681-1-anthony.l.nguyen@intel.com>
@@ -92,7 +92,7 @@ Content-Transfer-Encoding: 8bit
 From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
 Ensure idx is within range of active/initialized TCs when iterating over
-vf->ch[idx] in i40e_validate_queue_map().
+vf->ch[idx] in i40e_vc_config_queues_msg().
 
 Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
 Cc: stable@vger.kernel.org
@@ -103,26 +103,31 @@ Reviewed-by: Simon Horman <horms@kernel.org>
 Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index cb37b2ac56f1..1c4f86221255 100644
+index 1c4f86221255..b6db4d78c02d 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2466,8 +2466,10 @@ static int i40e_validate_queue_map(struct i40e_vf *vf, u16 vsi_id,
- 	u16 vsi_queue_id, queue_id;
+@@ -2395,7 +2395,7 @@ static int i40e_vc_config_queues_msg(struct i40e_vf *vf, u8 *msg)
+ 		}
  
- 	for_each_set_bit(vsi_queue_id, &queuemap, I40E_MAX_VSI_QP) {
--		if (vf->adq_enabled) {
--			vsi_id = vf->ch[vsi_queue_id / I40E_MAX_VF_VSI].vsi_id;
-+		u16 idx = vsi_queue_id / I40E_MAX_VF_VSI;
-+
-+		if (vf->adq_enabled && idx < vf->num_tc) {
-+			vsi_id = vf->ch[idx].vsi_id;
- 			queue_id = (vsi_queue_id % I40E_DEFAULT_QUEUES_PER_VF);
- 		} else {
- 			queue_id = vsi_queue_id;
+ 		if (vf->adq_enabled) {
+-			if (idx >= ARRAY_SIZE(vf->ch)) {
++			if (idx >= vf->num_tc) {
+ 				aq_ret = -ENODEV;
+ 				goto error_param;
+ 			}
+@@ -2416,7 +2416,7 @@ static int i40e_vc_config_queues_msg(struct i40e_vf *vf, u8 *msg)
+ 		 * to its appropriate VSIs based on TC mapping
+ 		 */
+ 		if (vf->adq_enabled) {
+-			if (idx >= ARRAY_SIZE(vf->ch)) {
++			if (idx >= vf->num_tc) {
+ 				aq_ret = -ENODEV;
+ 				goto error_param;
+ 			}
 -- 
 2.47.1
 
