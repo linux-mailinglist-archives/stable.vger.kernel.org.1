@@ -1,137 +1,130 @@
-Return-Path: <stable+bounces-180591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4CBB878A3
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 02:51:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E76B87B04
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 04:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EF5816A4FF
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 00:51:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 610DA564126
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 02:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0311BEF7E;
-	Fri, 19 Sep 2025 00:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424DC248F73;
+	Fri, 19 Sep 2025 02:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jys+2teh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RnkUIm6a"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6842734BA5A;
-	Fri, 19 Sep 2025 00:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331123D7EC
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 02:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758243062; cv=none; b=TeaOQ0wIDEVLTmnAHcwrYDd2q+6MARs3LvO9wvPmMJuWJBKciTMHIhfczaIVn9m+vkZLU+rlGq5VJwN/lsuweex73eoXcoWTNbuT4nP8CsZzWd5VzUWqn6ErWiqZPuUZuWlAtREib8z/vzUic9r9FNmSMEEoMfaVcTw3doTq6kg=
+	t=1758247897; cv=none; b=VcNX4mJU8OO7V1TeMbOduc+KSjfIq0mrJ33Py+DwAlKGvziz4GSHtWGwD+MgZLRim8q1aSBAus+lZC3QKblY8U+4W94mrShQVMPTe8pU4IQipN2qkT26PBVvjuECZtskpzUSs4YAoJ2O3JeI7bzcVnmqil/E2Cj3QK+4aQnykEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758243062; c=relaxed/simple;
-	bh=xxlnomEv4nIoxqs7NRd6I6qDcqF81xOiYQRvuJxF2d0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Kl2XljHCM10mlLlP2Td/JWujm2FlyGuqKrS9raW5EE6b0JDIrNRAXbxz9d3tZ7CyMyVoIvocK/NRM9oCf+/iQ40RqeMhG0n+9PQmFbVybwJX2lVqvO6F4Xu4dEqsZhp+fSxAHJ40EQAdoOpvfAtxoVZBkSLSlzicoAmQ4nXGZtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jys+2teh; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58J0oiV632871132, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1758243044; bh=xxlnomEv4nIoxqs7NRd6I6qDcqF81xOiYQRvuJxF2d0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=jys+2teh3KSLXov9Pen35NyYyQwsKW0ObVsS0khRc7NZp8nda7rSZjNhmIpMA5yFW
-	 IrjvEX0jye5tc2XejEKYgbsZ9s8ze3UwOD5ONBV8rUDw2tQ/l5SYFXoCbxyzu0V5pK
-	 jAlC1NI7mkajnb9VZh8kICPtDcbylIzAPHW30oUUF733t5Pu9zSWhO2HaNZk+uwIeH
-	 RHXqi16QSXmVYoWgTuXwp+nAv/is00JkRgIZVmAuOvYm2wmt9KNbimfoR70cq7IIJh
-	 IzxRz5PLR/Grm3hwGG+roq2bLLNqUgg4tN5tkIH3NgJJmgB9Zhd8dKAFvWoSEvhsX4
-	 U8imc0FcI5eig==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58J0oiV632871132
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Sep 2025 08:50:44 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 19 Sep 2025 08:50:44 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 19 Sep 2025 08:50:44 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Fri, 19 Sep 2025 08:50:43 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-CC: Zong-Zhe Yang <kevin_yang@realtek.com>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>,
-        Bernie Huang <phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH rtw v4 2/4] wifi: rtw89: fix tx_wait initialization race
-Thread-Topic: [PATCH rtw v4 2/4] wifi: rtw89: fix tx_wait initialization race
-Thread-Index: AQHcJ7j8gFkFIGygsECCjdEXp53dJbSYbw2QgAAaqwCAAR9BUIAABXPA
-Date: Fri, 19 Sep 2025 00:50:43 +0000
-Message-ID: <97aed12182074193b362472d32f0c9a9@realtek.com>
-References: <20250917095302.2908617-1-pchelkin@ispras.ru>
- <20250917095302.2908617-3-pchelkin@ispras.ru>
- <08b25263c6874a089e4a271cb95a9cb7@realtek.com>
- <20250918173522-07abe99566c12fa46a096fc5-pchelkin@ispras>
- <7a53522bc0004a979fd78b1d6f440457@realtek.com>
-In-Reply-To: <7a53522bc0004a979fd78b1d6f440457@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1758247897; c=relaxed/simple;
+	bh=ziXcd/mGn2ry+d/Ov28rbQ3Z8WS0immtLzwgvpIlto0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R2sHbWQCrhScdB8ZsSwBxscX5rVKTJHZJswPK4F219oInuMCz0wbbTgK5lFmcV9WO89Uyr9QQQhHc2AiN6Yuk4/x479N6Ah7eBTed0aS6UWyGUIwNOH4zfjIt/vsykLYi0quT25U+HLQwQG/gsx+C5sWU+uNxC6Xn2L7anDD/a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RnkUIm6a; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-244580523a0so17518825ad.1
+        for <stable@vger.kernel.org>; Thu, 18 Sep 2025 19:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758247894; x=1758852694; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZzkp8nCuA3tTuaf6Pt6AXsPGQNEt3CNxtrSQfVvzGo=;
+        b=RnkUIm6aoS5bTEJdbZVIq91ZN9KEsN1bIt4Bf1Y4+j4OmXDYuEdYfmf5DTXf7sJPT0
+         xN3lGH3WXJQ59LC01wsLdM2oIOWMBE5TvPI1CgfPyRRQy1gp+KU+xThDtgQzhbxS6v6x
+         Y3MovN39rpu+jcHzw2rXM0yVG2iBSt6LYtaHyhXUKrLKQ1YJK+3VFYNf68HwoIy+G+go
+         Cn00Hlc2upxJ8EMHe11nJq2TAYchXqdNLaakBd+IrKj3E8dkR7tuC8jxEH0LFiqj/V7g
+         Y75ZbOzl8uZcY/fw4zuNhULI4OiUEZjoioMDu7QEULWXDbcej/VCOEicv4iBa1U18NXS
+         Y1xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758247894; x=1758852694;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qZzkp8nCuA3tTuaf6Pt6AXsPGQNEt3CNxtrSQfVvzGo=;
+        b=gKJK4xuPdye3q59NFrzXV+0pVSeCUS+XedPODrt6AN9l6Fv2aM97Lp9exajY9qG8OP
+         974cSB29mP5tOSwnjT79u+TwGp1UbIWUE9OfbBDQNENRt4iIMMu6u8rzPggpoiJTef1u
+         797IgKtowIb4Gh5p8+/wXCgK2Zq9zAZq2DLLOAweqnZ9df9bRPKQMSBBZcErXVLluOpO
+         et7mtZSVTPei1rL33lKTdYacFSyvRM7+8lYxKcAm30UJzDXwuEBrFm/fUkzkVNpZwq+t
+         7yezEnP8RHbqkA+a7RL267nFHAHeURooOZXf4UNSELktbhHVlseFsTq5blDSZ59xKeMZ
+         uDaA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1HmqirfXWBdzGkk9cvQiD0WvOISg7l7pCaot6n9t0HWZF/uTCY0WhAnaVXht6F+lbCKGE7MI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOTZA2ZKqIgfPHUF1WrgQ66n+3MpNaZW7XFD9A2Ul9ABI+hfLV
+	bArf5oOoC/+slpTtZgfHrfzdZmd75GInO0L19zBcSry7/Eg4AziZVHcc
+X-Gm-Gg: ASbGncv8iNOOmCznKMgtVrDrBbEwMPDYgr6IilndEcmm90AL2eJjqByVCDvZEFfc3NL
+	ERp3Lu61Uyuphlgmr5HiZvYU0cOvLCxiKWFEKyYE6x2+TjAhlvwC6+QvMGlupQXSZY18i094BK5
+	Y6Nc0Qq5WslC7Da0Ag7+jxC8dVtwyCbSKPfHJFe6IlAzYL7XH1OwRhviKxS4QmE3phdoKA44VnA
+	HVhMVxz6cK2iiR6Lkh1VcQVEDZf7nxNp+dt7ld8KjC7nZkXRxLV+ckd50EEsChwKfRrW04Httg/
+	67QLnto5cu6/rhjbhtuCcQ1d5zcMwqYmj8M5xlLlJ9Kq6LPxNdi9Vd/57n69bnz9dPjS/T8LflG
+	Lo7RUpnqArQb1Jnu0Gd6bHNWr
+X-Google-Smtp-Source: AGHT+IFai2xzlAnilWh4m4u+vIgxxJ3TsFPhkwgF6XAkrIfE2ErA7mqnopPzZJz605+TwLFG1Fausw==
+X-Received: by 2002:a17:902:dad1:b0:267:d772:f845 with SMTP id d9443c01a7336-269ba55f8f5mr26364635ad.52.1758247894071;
+        Thu, 18 Sep 2025 19:11:34 -0700 (PDT)
+Received: from lgs.. ([2408:8418:1100:9530:23e9:7ba2:72c2:e926])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269802fdfdfsm38785405ad.102.2025.09.18.19.11.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 19:11:33 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: HighPoint Linux Team <linux@highpoint-tech.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	James Bottomley <James.Bottomley@SteelEye.com>,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: hptiop: Add check for device-provided context pointer in ITL callback
+Date: Fri, 19 Sep 2025 10:11:04 +0800
+Message-ID: <20250919021104.3726271-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-UGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyb3RlOg0KPiBGZWRvciBQY2hlbGtp
-biA8cGNoZWxraW5AaXNwcmFzLnJ1PiB3cm90ZToNCj4gPiBPbiBUaHUsIDE4LiBTZXAgMDU6NDcs
-IFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPiA+IEZlZG9yIFBjaGVsa2luIDxwY2hlbGtpbkBpc3By
-YXMucnU+IHdyb3RlOg0KPiA+ID4gPiBAQCAtMTA5NCwyMiArMTA5NCwxMyBAQCBpbnQgcnR3ODlf
-Y29yZV90eF9raWNrX29mZl9hbmRfd2FpdChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsIHN0cnVj
-dCBza19idWZmDQo+ID4gKnNrDQo+ID4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIGludCBxc2VsLCB1bnNpZ25lZCBpbnQgdGltZW91dCkNCj4gPiA+ID4gIHsNCj4gPiA+
-ID4gICAgICAgICBzdHJ1Y3QgcnR3ODlfdHhfc2tiX2RhdGEgKnNrYl9kYXRhID0gUlRXODlfVFhf
-U0tCX0NCKHNrYik7DQo+ID4gPiA+IC0gICAgICAgc3RydWN0IHJ0dzg5X3R4X3dhaXRfaW5mbyAq
-d2FpdDsNCj4gPiA+ID4gKyAgICAgICBzdHJ1Y3QgcnR3ODlfdHhfd2FpdF9pbmZvICp3YWl0ID0g
-d2lwaHlfZGVyZWZlcmVuY2UocnR3ZGV2LT5ody0+d2lwaHksDQo+ID4gPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNrYl9kYXRh
-LT53YWl0KTsNCj4gPiA+DQo+ID4gPiBDYW4ndCB3ZSBqdXN0IHBhc3MgJ3dhaXQnIGJ5IGZ1bmN0
-aW9uIGFyZ3VtZW50Pw0KPiA+DQo+ID4gWWVwLg0KPiA+DQo+ID4gPg0KPiA+ID4gPiAgICAgICAg
-IHVuc2lnbmVkIGxvbmcgdGltZV9sZWZ0Ow0KPiA+ID4gPiAgICAgICAgIGludCByZXQgPSAwOw0K
-PiA+ID4gPg0KPiA+ID4gPiAgICAgICAgIGxvY2tkZXBfYXNzZXJ0X3dpcGh5KHJ0d2Rldi0+aHct
-PndpcGh5KTsNCj4gPiA+ID4NCj4gPiA+ID4gLSAgICAgICB3YWl0ID0ga3phbGxvYyhzaXplb2Yo
-KndhaXQpLCBHRlBfS0VSTkVMKTsNCj4gPiA+ID4gLSAgICAgICBpZiAoIXdhaXQpIHsNCj4gPiA+
-ID4gLSAgICAgICAgICAgICAgIHJ0dzg5X2NvcmVfdHhfa2lja19vZmYocnR3ZGV2LCBxc2VsKTsN
-Cj4gPiA+ID4gLSAgICAgICAgICAgICAgIHJldHVybiAwOw0KPiA+ID4gPiAtICAgICAgIH0NCj4g
-PiA+ID4gLQ0KPiA+ID4gPiAtICAgICAgIGluaXRfY29tcGxldGlvbigmd2FpdC0+Y29tcGxldGlv
-bik7DQo+ID4gPiA+IC0gICAgICAgd2FpdC0+c2tiID0gc2tiOw0KPiA+ID4gPiAtICAgICAgIHJj
-dV9hc3NpZ25fcG9pbnRlcihza2JfZGF0YS0+d2FpdCwgd2FpdCk7DQo+ID4gPiA+IC0NCj4gPiA+
-DQo+ID4gPiBIZXJlLCBvcmlnaW5hbCBjb2RlIHByZXBhcmVzIGNvbXBsZXRpb24gYmVmb3JlIFRY
-IGtpY2sgb2ZmLiBIb3cgaXQgY291bGQNCj4gPiA+IGJlIGEgcHJvYmxlbT8gRG8gSSBtaXNzIHNv
-bWV0aGluZz8NCj4gPg0KPiA+IFRoYXQncyBhIGdvb2QgcXVlc3Rpb24gYW5kIGl0IG1hZGUgbWUg
-cmV0aGluayB0aGUgY2F1c2Ugb2YgdGhlIHJhY2UNCj4gPiBzY2VuYXJpby4gIEkgZGlkbid0IGlu
-aXRpYWxseSB0YWtlIFRYIGtpY2sgb2ZmIGludG8gY29uc2lkZXJhdGlvbiB3aGVuDQo+ID4gaXQg
-YWN0dWFsbHkgbWF0dGVycy4NCj4gDQo+IERvIGl0IG1lYW4gdGhhdCB5b3UgcGljdHVyZWQgdGhl
-IHJhY2luZyBzY2VuYXJpbyBpbiBjb21taXQgbWVzc2FnZSBieQ0KPiBjb2RlIHJldmlldyBpbnN0
-ZWFkIG9mIGEgcmVhbCBjYXNlIHlvdSBtZXQ/DQo+IA0KPiA+DQo+ID4gVGhlIHRoaW5nIGlzOiB0
-aGVyZSBtaWdodCBoYXZlIGJlZW4gYW5vdGhlciB0aHJlYWQgaW5pdGlhdGluZyBUWCBraWNrIG9m
-Zg0KPiA+IGZvciB0aGUgc2FtZSBxdWV1ZSBpbiBwYXJhbGxlbC4gIEJ1dCBubyBzdWNoIHRocmVh
-ZCBleGlzdHMgYmVjYXVzZSBhIHRha2VuDQo+ID4gd2lwaHkgbG9jayBnZW5lcmFsbHkgcHJvdGVj
-dHMgZnJvbSBzdWNoIHNpdHVhdGlvbnMuIHJ0dzg5X2NvcmVfdHhxX3NjaGVkdWxlKCkNCj4gPiB3
-b3JrZXIgbG9va3MgbGlrZSBhIGdvb2QgY2FuZGlkYXRlIGJ1dCBpdCBkb2Vzbid0IG9wZXJhdGUg
-b24gdGhlIG5lZWRlZA0KPiA+IG1hbmFnZW1lbnQgcXVldWVzLg0KPiANCj4gTGFzdCBuaWdodCBJ
-IGFsc28gdGhvdWdodCBpZiBhbm90aGVyIHRocmVhZCB3b3JrcyBpbiBwYXJhbGxlbC4NCj4gTWF5
-YmUgcnR3ODlfb3BzX3R4KCkgY291bGQgYmU/DQo+IA0KPiA+DQo+ID4gU28gSSBtYXkgY29uY2x1
-ZGUgdGhpcyBwYXRjaCBkb2Vzbid0IGZpeCBhbnkgcmVhbCBidWcgdGhvdWdoIEknZCBwcmVmZXIg
-dG8NCj4gPiBrZWVwIGl0ICh3aXRoIGRlc2NyaXB0aW9uIHJld3JpdHRlbiBvZiBjb3Vyc2UpIGJl
-Y2F1c2UgaXQgaGVscHMgdG8gYXZvaWQNCj4gPiBwb3RlbnRpYWwgaXNzdWVzIGluIGZ1dHVyZS4N
-Cj4gDQo+IEFncmVlLg0KPiANCg0KRm9yZ290IHRvIHNheS4gQ291bGQgeW91IG1lbnRpb24gdGhp
-cyByYWNpbmcgc2NlbmFyaW8gd2FzIGZvdW5kIGJ5IGNvcmUNCnJldmlldyBhbmQgeW91ciBwZXJz
-cGVjdGl2ZSBpbiBjb21taXQgbWVzc2FnZT8gDQoNCg0K
+An untrusted device may return a NULL context pointer in the request
+header. hptiop_iop_request_callback_itl() dereferences that pointer
+unconditionally to write result fields and to invoke arg->done(), which
+can cause a NULL pointer dereference.
+
+Add a NULL check for the reconstructed context pointer. If it is NULL,
+acknowledge the request by writing the tag to the outbound queue and
+return early.
+
+Fixes: ede1e6f8b432 ("[SCSI] hptiop: HighPoint RocketRAID 3xxx controller driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/scsi/hptiop.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/scsi/hptiop.c b/drivers/scsi/hptiop.c
+index 21f1d9871a33..2b29cd83ce5e 100644
+--- a/drivers/scsi/hptiop.c
++++ b/drivers/scsi/hptiop.c
+@@ -812,6 +812,11 @@ static void hptiop_iop_request_callback_itl(struct hptiop_hba *hba, u32 tag)
+ 		(readl(&req->context) |
+ 			((u64)readl(&req->context_hi32)<<32));
+ 
++	if (!arg) {
++		writel(tag, &hba->u.itl.iop->outbound_queue);
++		return;
++	}
++
+ 	if (readl(&req->result) == IOP_RESULT_SUCCESS) {
+ 		arg->result = HPT_IOCTL_RESULT_OK;
+ 
+-- 
+2.43.0
+
 
