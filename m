@@ -1,110 +1,137 @@
-Return-Path: <stable+bounces-180647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBB9B891BC
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 12:42:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 389A1B891A7
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 12:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA2483A45FF
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 10:37:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 892EFB644E1
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 10:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839082FBE18;
-	Fri, 19 Sep 2025 10:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FFB308F18;
+	Fri, 19 Sep 2025 10:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="sJTrYxDg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.64.237.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B902EA47E
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 10:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1C93093DE;
+	Fri, 19 Sep 2025 10:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.64.237.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758278258; cv=none; b=PvqQ+csIYZJ7MOxx3RzxmyKWreSfAIuO1p42hpUd2Rfm8tQicK95nFLGe18KGydrMqtu4Y4DWf8kPaFepNcRNYVJLRouNOd3zpihMTSldpsQO+TUkTSR+Y627PnM/ftRqkByHREWJR1V5cS3ng4GYVOq6pbhjMkhqLZQmMdkgfE=
+	t=1758278478; cv=none; b=V9miLAMoy9t8BhL5n6AtsSW+iM8sBea0pxNS6qDJ82olrnbTYDU4BHplTMkIAWhmR3/WuBmajGOZzOceJ04g476nHsJAf9irbRW87jwaKc2btcU9hOiQ+dGUyKRQ6TIkN73xOHKtSy8NhVIMMSqHhZEIvx7Yf2ivP0q+YoPMLB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758278258; c=relaxed/simple;
-	bh=sSpLFT4U9OHuE2V29wbDu3tL+WcnIbqf/4zQvCmO6PE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gihz2Z5OzVWf8BtUhNL88moaTfXmqQPNt4kTf254vKm/tCy98v1NsD1G24In/tj+5fdpUcoT8v1xf8lGaKxfiksXHu6Ljp109QWba4DxFS76Ih/d0/WBtxgso0vcNVKv5cVV1A+5oHBZpj0mWrqR9lBdXaXolJM/Yvl6w5kGmUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb7322da8so356501666b.0
-        for <stable@vger.kernel.org>; Fri, 19 Sep 2025 03:37:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758278251; x=1758883051;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X9U9gZIYVtcJesnIs4Ndokeg4wnbvz5UlSNhlgDM20k=;
-        b=rC9LXFZkRdPO7tREwuZuqHNfz8Xswz6G+QW7oqAhV/V6XoioETNWh9Dj2TxZ1GxomN
-         gBRVqCYi9iCEKcts9gAWHylNAdDfQ0tkHnpgJOkQHz0j0bYgpEKeJzV3ys1raNFQCDo7
-         bFm7XYyoXUOq7BhQY9xW8RDcLc/knV14kAC0DJ7ZLiRQkovsYr1cx1Tlrkh+ZDex1Pci
-         tg1AvaHKIhJn8wLxTIJJd7IBzQ9RILJMDXMo1vutQ13ZOr64A1Cy1QstlZI0sAxYgi5E
-         aWEFnWFdXOEI6yCkkpCnPEj64qP5RGD4OIrEcDJAcYqtXtoMvO8Br4AEL/Hd/UotlV99
-         oNyw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHYYhS1TwbyUzEgsK5hQXnfOiLTkfdghxUOhnwChRhe0A5EEdLun8HKlbFEa6/3nrK302WsLw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKM9jl4WD1YqnpPUnf86A1KqBs1BXZUAKIGDCzSrN6KldUoAWZ
-	r7uhG5ZDvf2vU2oXK7K+Wm54dxTHaO6BCPBVUvg630vtBP3yTt9ZbKDx
-X-Gm-Gg: ASbGncti9pAf/9Hap83xqcBrRlAvtuCAsiYFr5AeozFJnHo0zCT829a+wVmQlLwLer0
-	Tb2m8xX51KV0aqcHvUnpWF7Kw4uC1lhtUsmGAOTZHOutzbpnC0zOvGPqjQ/PRmOF5KJoHrXkeRH
-	k7YGQGHTFN9cqWOOWcgWXtz71vvWiHldbQrBknu1RNCClTHLKrrwVutYuT2lDWFXBBkNc0gkw8a
-	0EV8o6KCWTe4Kams7dAdZGqrOzvAGJPiGNIyYL3+ETscvtsBWKXxT2Q5QmO0sXXaUS3BjAJK75/
-	cbrHDMdPgRhRrWWdpSQyrItiPl4MALiQkUk/seTfGbXId2y8XJXqM5WcotRE5P62MVh0Kpb9UgN
-	TVYHvvsO7Vrac1Q==
-X-Google-Smtp-Source: AGHT+IFglqUodAXwS+ScFaUf0u5cK7hW01o3j0jrGwN7eAFMAQqVtLyd+PtU4bJWyqZbJ2fZ6V8QnQ==
-X-Received: by 2002:a17:907:6eab:b0:b21:b4f6:d676 with SMTP id a640c23a62f3a-b24eedb9ee5mr318558466b.25.1758278250742;
-        Fri, 19 Sep 2025 03:37:30 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fc890c608sm408296566b.45.2025.09.19.03.37.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 03:37:30 -0700 (PDT)
-Date: Fri, 19 Sep 2025 03:37:27 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gu Bowen <gubowen5@huawei.com>, catalin.marinas@arm.com
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Waiman Long <llong@redhat.com>, stable@vger.kernel.org, linux-mm@kvack.org, 
-	John Ogness <john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH v5] mm: Fix possible deadlock in kmemleak
-Message-ID: <5ohuscufoavyezhy6n5blotk4hovyd2e23pfqylrfwhpu45nby@jxwe6jmkwdzb>
-References: <20250822073541.1886469-1-gubowen5@huawei.com>
+	s=arc-20240116; t=1758278478; c=relaxed/simple;
+	bh=dp3f92ooJx/Qlj2pugKuI/xuwCibHRao7VwSC+oBMbY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hnC95gYKXRnpkZN4aZNa9zi/+Dl3LYMewyXG8LiN6K3yP6nctJLkZ08vdHgE4s+gIXAZgnaddxNqwjJJp422ZQ2LuHxPN5q9RVGs7hlZb6yn7jTwA9RABSkPd+Rf//YNazCZtD7iRQodQ71VaUwYvCym1L+0f5F8a5CWCu/vpyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=sJTrYxDg; arc=none smtp.client-ip=3.64.237.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1758278473; x=1789814473;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=W0Ai5Zxfm7dB1PJ4NTWSgwXGTfzI+LMJh0bJX4Aj+GA=;
+  b=sJTrYxDglnqDGRSiLCX46y2vQbQb2oUDPZUFOIHamLYQIlbqTDmuzSNy
+   RWQnS4Xy/3/eo67sN5LUjYKlnOjILvcDapyVtOXcdWB0gNakKRl+ei9i9
+   xp59ojnBuEIoIWvZVe4ZQPT8lkkVQsWrDzMXRcRgHpGuH8HkFX5SKKVHG
+   o01FUm8Eyl8lUyh99/9HWzeULN4itO8ZkqM/FY+JrJ6TxGQAYyBN0PZSY
+   IYv6bqS8VG5RYAeetpL9RORFOaeddLhjPckCxZimf2dP8sLvbucY/CVpD
+   TPjgiBITStC7JtThMK0sMoSCGUepl1CqWLDr5247K3fNFcN7MajyZWxnD
+   Q==;
+X-CSE-ConnectionGUID: /jhZ36E6T/6z3u9MC8KPMw==
+X-CSE-MsgGUID: 7CO/c3eDTFCrQt77yaHI5g==
+X-IronPort-AV: E=Sophos;i="6.18,277,1751241600"; 
+   d="scan'208";a="2268735"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:41:10 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:14263]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.39.25:2525] with esmtp (Farcaster)
+ id 05227dc1-3d5c-4ee4-8b04-fa5b09820c29; Fri, 19 Sep 2025 10:41:10 +0000 (UTC)
+X-Farcaster-Flow-ID: 05227dc1-3d5c-4ee4-8b04-fa5b09820c29
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 19 Sep 2025 10:41:10 +0000
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 19 Sep 2025 10:41:10 +0000
+Received: from EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d]) by
+ EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d%3]) with mapi id
+ 15.02.2562.020; Fri, 19 Sep 2025 10:41:10 +0000
+From: "Farber, Eliav" <farbere@amazon.com>
+To: David Laight <david.laight.linux@gmail.com>
+CC: "luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>, "mingo@redhat.com"
+	<mingo@redhat.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "sj@kernel.org"
+	<sj@kernel.org>, "David.Laight@ACULAB.COM" <David.Laight@ACULAB.COM>,
+	"Jason@zx2c4.com" <Jason@zx2c4.com>, "andriy.shevchenko@linux.intel.com"
+	<andriy.shevchenko@linux.intel.com>, "bvanassche@acm.org"
+	<bvanassche@acm.org>, "keescook@chromium.org" <keescook@chromium.org>,
+	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Chocron,
+ Jonathan" <jonnyc@amazon.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH 0/7 5.10.y] Cherry pick of minmax.h commits from 5.15.y
+Thread-Topic: [PATCH 0/7 5.10.y] Cherry pick of minmax.h commits from 5.15.y
+Thread-Index: AQHcKVHp4/4nJqw1BEmK54brcBSm0g==
+Date: Fri, 19 Sep 2025 10:41:09 +0000
+Message-ID: <98f086dbdc2d4a7c8586bdcb04571300@amazon.com>
+References: <20250916212259.48517-1-farbere@amazon.com>
+ <20250918220106.75a8191b@pumpkin>
+In-Reply-To: <20250918220106.75a8191b@pumpkin>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822073541.1886469-1-gubowen5@huawei.com>
 
-On Fri, Aug 22, 2025 at 03:35:41PM +0800, Gu Bowen wrote:
-> To solve this problem, switch to printk_safe mode before printing warning
-> message, this will redirect all printk()-s to a special per-CPU buffer,
-> which will be flushed later from a safe context (irq work), and this
-> deadlock problem can be avoided.
+> On Tue, 16 Sep 2025 21:22:52 +0000
+> Eliav Farber <farbere@amazon.com> wrote:
+>
+> > This series backports seven commits from v5.15.y that update minmax.h=20
+> > and related code:
+> >
+> >  - ed6e37e30826 ("tracing: Define the is_signed_type() macro once")
+> >  - 998f03984e25 ("minmax: sanity check constant bounds when clamping")
+> >  - d470787b25e6 ("minmax: clamp more efficiently by avoiding extra
+> >    comparison")
+> >  - 1c2ee5bc9f11 ("minmax: fix header inclusions")
+> >  - d53b5d862acd ("minmax: allow min()/max()/clamp() if the arguments
+> >    have the same signedness.")
+> >  - 7ed91c5560df ("minmax: allow comparisons of 'int' against 'unsigned
+> >    char/short'")
+> >  - 22f7794ef5a3 ("minmax: relax check to allow comparison between
+> >    unsigned arguments and signed constants")
+>
+> I think you need to pick up the later changes (from Linus) as well.
+> Without them nested min() and max() can generate very long lines from the=
+ pre-processor (tens of megabytes) that cause very slow and/or failing comp=
+ilations on 32bit and other memory-limited systems.
+>
+> There are a few other changes needed at the same time.
+> The current min() and max() can't be used in a few places because they ar=
+en't 'constant enough' with constant arguments.
 
-I am still thinking about this problem, given I got another deadlock
-issue that I was not able to debug further given I do not have the
-crashdump.
+I aligned minmax.h to include all changes in v6.17-rc6.
+https://lore.kernel.org/stable/20250919101727.16152-1-farbere@amazon.com/T/=
+#t
 
-Should we have a wrapper around raw_spin_lock_irqsave(kmemleak_lock,
-flags), that would defer printk at all? 
+---
+Regards, Eliav
 
-Then, we can simply replace the raw_spin_lock_irqsave() by the helper,
-avoiding spreading these printk_deferred_enter() in the kmemleak code.
-
-For instance, something as this completely untested code, just to show
-the idea.
-
-	void kmemleak_lock(unsigned long *flags) {
-		printk_deferred_enter();
-		raw_spin_lock_irqsave(&kmemleak_lock, flags);
-	}
-
-	void kmemleak_lock(unsigned long flags) {
-		raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-		printk_deferred_exit();
-	}
 
