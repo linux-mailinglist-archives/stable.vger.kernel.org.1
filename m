@@ -1,151 +1,190 @@
-Return-Path: <stable+bounces-180708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF751B8B553
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 23:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B34B8B65F
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 23:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ACE67C4122
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 514DBA03E1D
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38A123D7E9;
-	Fri, 19 Sep 2025 21:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB02020DD72;
+	Fri, 19 Sep 2025 21:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdP9uc75"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPhFJwRZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D293190685
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 21:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645D11917ED;
+	Fri, 19 Sep 2025 21:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758317430; cv=none; b=YEQ0U3eo0cRc9E4VDv19NfC7kVkdzFwmTZ8A644HhWdEh1C8h93AocWJsgsdHR7XfnJklsZxAPCoQWo0HW8zfA6w21IwE4iIOFeXydaDSqBZ6VwNCXY36uwx3S4iqEp5y4DfH7yyxjn0f/jkIO4LKeDXA435IwXdYdiOHn7NtMk=
+	t=1758318582; cv=none; b=kHk1NB8hD5deXBU3N2MrouCKfiC9ZLEDJzhkMrrbZmfI0N6YEN8rqFfVwGIoGNTA2EwR2n34T39Y2wRFKyA3rLI/2mfKziQxVLVEdWYbELDn7n4+8KddzubTFgpxE5t1JwOwC78TUYT4tUVuDARl6/FfKj52wO0Rl4zp2vsqxRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758317430; c=relaxed/simple;
-	bh=8gjPUKJuVH5UjcYzA1yL05f6Glq70nkkcSeRJ/jOkbE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ThrgpW03n2XuPLREIPywwdAs2H9Dy31bJsUUdADsTqn7ScEEAXe/2DFDqk7ScLQnEO6MkG9huOo9N3trTVFXxX1yJqHrHYKWnY9TZUadHp6eT7VQV5RfZ2Ag5pxsL9pUSLEk5iGolxUM8PJd9LEWd08Chk+r/+7TPOe/MHKnFwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdP9uc75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2817C4CEF0;
-	Fri, 19 Sep 2025 21:30:26 +0000 (UTC)
+	s=arc-20240116; t=1758318582; c=relaxed/simple;
+	bh=Ek1JREZlTjO/kGvO7PHGPgR6rIY7A7ZouOJ8TApwGWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bTi2bND1hqPHrnwXoq2FvzH735ACB5Hr1Gr9W1N7m0rYTlyDko1kyfckkAiiuIZQ1lj424oeGUR8mN7ifbVCM7NE4YhU16hvdiUwhqGpgQWFkz6k9cA3dfh/oZIJ26oKaHw5QiOXF1FKijDO3SvDnCgWcvAnhss0JMg8o3iNmq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPhFJwRZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4402EC4CEF0;
+	Fri, 19 Sep 2025 21:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758317427;
-	bh=8gjPUKJuVH5UjcYzA1yL05f6Glq70nkkcSeRJ/jOkbE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BdP9uc75XcDHkWfAnoEvJZyzZSDTNx8rX0LWCIjr2mVeK3+3kjL7Hm70YwADfADWJ
-	 JAdJvtd8tSLNeouJelAQm8ZVDUVIjJg5OkeUZ/lxuUIS9Bj7wWiNzuOsU7TzQ2PktE
-	 DQGIwf1Ofn8Gv7Uju59jrW2b+xXn+TkIo8/V+kf2Y3BzYb2zjfWrVBfG7qROEW4VEx
-	 rhnMgEMTlqvT8Fa0nFWb8p5LyHrY507xsF4mpBvKXkSLfEUXA3MjdkAcoxAxFFHq3u
-	 BzKaeux6N2w75AN3DvN8KPiJKKM1T+Nwb/Qq2JhFi5EyH43zp0hG5xoJ9Xf7YFVnnN
-	 ORDSLluYH5ePg==
-Message-ID: <9989cd82-d126-4dd3-96e5-37dad7f733fb@kernel.org>
-Date: Fri, 19 Sep 2025 23:30:24 +0200
+	s=k20201202; t=1758318581;
+	bh=Ek1JREZlTjO/kGvO7PHGPgR6rIY7A7ZouOJ8TApwGWw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tPhFJwRZwJA8R75zdRYDDo99+GyCIUQzgvOE0BgHB8xWyU11He3SIwzn1LV+qN3WG
+	 VRafg+57wvwvoPRUkpmz8WKP1ybS5GrTIm6io5AoiGIB5+uIJOfjLgRJNzjUdbVrX6
+	 M6n/l2iir4CaOlwkyKgb2VhwajyHzU/c91a7eYBUVo5RdupIzqvHtfBX2ZhVChXLzs
+	 d9js5cLzvxZxhcPg0nudG1Pm+hxPFqEcCD7SqatvetJ7bMS3do8vmlFQiXCHw4ICGO
+	 VPRqiodsrX7q9nJcSKpx+i8A6/4eRdt4CgZnPcPlSuujRBxR+2xVuohAJwl32hSc+n
+	 cFIj3yXyJFHCg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Marek Majkowski <marek@cloudflare.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16.y] mptcp: pm: nl: announce deny-join-id0 flag
+Date: Fri, 19 Sep 2025 23:49:22 +0200
+Message-ID: <20250919214921.3467324-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: stable: queue/* branches no longer updated
-Content-Language: en-GB, fr-BE
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-References: <e6ea1805-3e82-476c-86a8-096b80bde74a@kernel.org>
- <aImjNPvGPMqFu3RD@lappy>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <aImjNPvGPMqFu3RD@lappy>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5495; i=matttbe@kernel.org; h=from:subject; bh=Ek1JREZlTjO/kGvO7PHGPgR6rIY7A7ZouOJ8TApwGWw=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLOnn8Uefbzdn9REQHlRxNX9fScCp6TWt524kUM+8I/T WoCdiEPO0pZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACby6icjQ09l/e5bupPM8zTe u/RZPPytuHNiYmeuhDv/M4eULwqHPjP8j9IQs3XJK/gy780cF+GupaW7jY///s/C6xXH8vztkiI dPgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+commit 2293c57484ae64c9a3c847c8807db8c26a3a4d41 upstream.
 
-On 30/07/2025 06:44, Sasha Levin wrote:
-> On Mon, Jul 28, 2025 at 11:06:17AM +0200, Matthieu Baerts wrote:
->> Hi Sasha,
->>
->> Thank you for maintaining the stable versions with Greg!
->>
->> If I remember well, you run some scripts on your side to maintain the
->> queue/* branches in the linux-stable-rc Git tree [1], is that correct?
->>
->> These branches have not been updated for a bit more than 3 weeks. Is it
->> normal?
->>
->> Personally, I find them useful. But if it is just me, I can work without
->> them.
-> 
-> Nope, it's a bug!
-> 
-> Looks like git was throwing:
-> 
-> fatal: Unable to create '/home/sasha/data/stable-queue-builder/linux-
-> stable/.git/index.lock': File exists.
-> 
-> Another git process seems to be running in this repository, e.g.
-> an editor opened by 'git commit'. Please make sure all processes
-> are terminated then try again. If it still fails, a git process
-> may have crashed in this repository earlier:
-> remove the file manually to continue.
-> 
-> 
-> Which my script was promptly ignoring...
-> 
-> Fixed now, thanks for the heads up!
+During the connection establishment, a peer can tell the other one that
+it cannot establish new subflows to the initial IP address and port by
+setting the 'C' flag [1]. Doing so makes sense when the sender is behind
+a strict NAT, operating behind a legacy Layer 4 load balancer, or using
+anycast IP address for example.
 
-It looks like these branches are no longer updated. Do you mind checking
-on your side please? :)
+When this 'C' flag is set, the path-managers must then not try to
+establish new subflows to the other peer's initial IP address and port.
+The in-kernel PM has access to this info, but the userspace PM didn't.
 
-Cheers,
-Matt
+The RFC8684 [1] is strict about that:
+
+  (...) therefore the receiver MUST NOT try to open any additional
+  subflows toward this address and port.
+
+So it is important to tell the userspace about that as it is responsible
+for the respect of this flag.
+
+When a new connection is created and established, the Netlink events
+now contain the existing but not currently used 'flags' attribute. When
+MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 is set, it means no other subflows
+to the initial IP address and port -- info that are also part of the
+event -- can be established.
+
+Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.1-20.6 [1]
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Reported-by: Marek Majkowski <marek@cloudflare.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/532
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-2-40171884ade8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_pm.yaml, because the indentation has been modified
+  in commit ec362192aa9e ("netlink: specs: fix up indentation errors"),
+  which is not in this version. Applying the same modifications, but at
+  a different level. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ Documentation/netlink/specs/mptcp_pm.yaml | 4 ++--
+ include/uapi/linux/mptcp.h                | 2 ++
+ include/uapi/linux/mptcp_pm.h             | 4 ++--
+ net/mptcp/pm_netlink.c                    | 7 +++++++
+ 4 files changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/netlink/specs/mptcp_pm.yaml b/Documentation/netlink/specs/mptcp_pm.yaml
+index ecfe5ee33de2..c77f32cfcae9 100644
+--- a/Documentation/netlink/specs/mptcp_pm.yaml
++++ b/Documentation/netlink/specs/mptcp_pm.yaml
+@@ -28,13 +28,13 @@ definitions:
+         traffic-patterns it can take a long time until the
+         MPTCP_EVENT_ESTABLISHED is sent.
+         Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, server-side.
++        dport, server-side, [flags].
+      -
+       name: established
+       doc: >-
+         A MPTCP connection is established (can start new subflows).
+         Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, server-side.
++        dport, server-side, [flags].
+      -
+       name: closed
+       doc: >-
+diff --git a/include/uapi/linux/mptcp.h b/include/uapi/linux/mptcp.h
+index 67d015df8893..5fd5b4cf75ca 100644
+--- a/include/uapi/linux/mptcp.h
++++ b/include/uapi/linux/mptcp.h
+@@ -31,6 +31,8 @@
+ #define MPTCP_INFO_FLAG_FALLBACK		_BITUL(0)
+ #define MPTCP_INFO_FLAG_REMOTE_KEY_RECEIVED	_BITUL(1)
+ 
++#define MPTCP_PM_EV_FLAG_DENY_JOIN_ID0		_BITUL(0)
++
+ #define MPTCP_PM_ADDR_FLAG_SIGNAL                      (1 << 0)
+ #define MPTCP_PM_ADDR_FLAG_SUBFLOW                     (1 << 1)
+ #define MPTCP_PM_ADDR_FLAG_BACKUP                      (1 << 2)
+diff --git a/include/uapi/linux/mptcp_pm.h b/include/uapi/linux/mptcp_pm.h
+index 6ac84b2f636c..7359d34da446 100644
+--- a/include/uapi/linux/mptcp_pm.h
++++ b/include/uapi/linux/mptcp_pm.h
+@@ -16,10 +16,10 @@
+  *   good time to allocate memory and send ADD_ADDR if needed. Depending on the
+  *   traffic-patterns it can take a long time until the MPTCP_EVENT_ESTABLISHED
+  *   is sent. Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side.
++ *   sport, dport, server-side, [flags].
+  * @MPTCP_EVENT_ESTABLISHED: A MPTCP connection is established (can start new
+  *   subflows). Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side.
++ *   sport, dport, server-side, [flags].
+  * @MPTCP_EVENT_CLOSED: A MPTCP connection has stopped. Attribute: token.
+  * @MPTCP_EVENT_ANNOUNCED: A new address has been announced by the peer.
+  *   Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 50aaf259959a..ce7d42d3bd00 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -408,6 +408,7 @@ static int mptcp_event_created(struct sk_buff *skb,
+ 			       const struct sock *ssk)
+ {
+ 	int err = nla_put_u32(skb, MPTCP_ATTR_TOKEN, READ_ONCE(msk->token));
++	u16 flags = 0;
+ 
+ 	if (err)
+ 		return err;
+@@ -415,6 +416,12 @@ static int mptcp_event_created(struct sk_buff *skb,
+ 	if (nla_put_u8(skb, MPTCP_ATTR_SERVER_SIDE, READ_ONCE(msk->pm.server_side)))
+ 		return -EMSGSIZE;
+ 
++	if (READ_ONCE(msk->pm.remote_deny_join_id0))
++		flags |= MPTCP_PM_EV_FLAG_DENY_JOIN_ID0;
++
++	if (flags && nla_put_u16(skb, MPTCP_ATTR_FLAGS, flags))
++		return -EMSGSIZE;
++
+ 	return mptcp_event_add_subflow(skb, ssk);
+ }
+ 
 -- 
-Sponsored by the NGI0 Core fund.
+2.51.0
 
 
