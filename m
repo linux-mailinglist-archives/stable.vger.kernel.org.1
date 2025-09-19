@@ -1,137 +1,176 @@
-Return-Path: <stable+bounces-180656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADFEB89813
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 14:42:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7AAB89862
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 14:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E243175725
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 12:42:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBD318990AE
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 12:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294B120B7E1;
-	Fri, 19 Sep 2025 12:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE84247299;
+	Fri, 19 Sep 2025 12:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aCljUI7S"
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="hoIpC+2C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F26208961
-	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 12:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B48238D42
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 12:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758285760; cv=none; b=odeeb1xgMpmHjSgIIZXlpvdruI0V5NqHy7ilfuMVCrWeuunLZGsjHWyz2JLrKzMgNg90Q8v5lpAcaA6RMKFkV/hlz4TVlgvWXvHs0U2+30ddZHObcSd6El8SRwij2qFldMxE9tONZDO3ugFh9Ns4dIoicZ8qvLGmPmnS9J0TSHI=
+	t=1758285931; cv=none; b=kdaIxQbSVJHvhzot5R8LBTpB4SRGKzUJtF88MEtgUs2+UMExpQ/CBapFWN6/ikEUVT2t0gNnUricU/F5MUIrPr/CJ4nHa54qTmfV4fD+gLrb8jh4xgg4fxm9ieeBi63/7Y13M/04idYjilcDmBLXf5IkicP/oFKcBbs12T45h50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758285760; c=relaxed/simple;
-	bh=JORA1gDfS/Nfb7H4WI1KAIpM6/cjUQBA5RYJUWYUP9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gFRBaBUACGCaPhW0Hqg49zu5w63hNXqa1R4lbwnOeV4xIjfM8QEU+LBMlyhAUWCrrxT1rOY8Mb2uD0Ems0YpeLKB4YQ599S9ESdUu2sGpgopXGOfYrfJd3XZR+GwmdQyB/B+K8okXsU8uRYVFkOD3/6enAzlycPiTd+3+qi4S98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aCljUI7S; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb7a16441so307221166b.2
-        for <stable@vger.kernel.org>; Fri, 19 Sep 2025 05:42:38 -0700 (PDT)
+	s=arc-20240116; t=1758285931; c=relaxed/simple;
+	bh=j1nrrg0RmoSPwnhr33zQNmy3orw+WYtn3PKmfZ0ZitA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pv88P0yDb+9xTwZmLnvtRxuwKi/T/CKoQRXbycac26JZlWcrlSpN3PXx0AVqi/0RXw6EvnYCHiR6bqLoiikM4M9Ng/jDxSaLZTAEd4VoZLMpuHk8SzV84/hlr96LiZHHg1vEGujzvUxfQmWx5bTI2tNcwC91MO5ncP5chOBRHbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=hoIpC+2C; arc=none smtp.client-ip=209.85.166.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-42401f30515so11427065ab.0
+        for <stable@vger.kernel.org>; Fri, 19 Sep 2025 05:45:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758285757; x=1758890557; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wj7WblQsPSyrGWWKSxzzmKooYDH1YcR0H73P9e5XZO4=;
-        b=aCljUI7STkPyEukgZZAazRPsrTzQEjbXQEU6IzopLcU+4Hr1YOYw/ixEpVvlR4HTdg
-         MfVwABzulYp49S0vJeRxHQx6PtSfH9RAhuQk/WEFAOsuuqhnGwBwRtOLlMOnasTMGLqE
-         +sQUysf2+9H415KMdNcXwlCNhXiZL54wZiAjDTUnWSRQd0ZnkW7u8fTcYNlLT9unFtBq
-         aCGkvh8ly7ei7v8BVcHdBHdKjk95u6+y6UNNA7ZY8VFdSB1nYeSQRfvN0kp1GSzOI6to
-         /YP42qwD186nLOLVb3lb+/ki2thixPOTVAFQ/jZm1DRqu9sQqfGCl67r5uqEyBWZdrlg
-         WoZQ==
+        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1758285929; x=1758890729; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bzmxpHATkMjGkSRbploj9vHGhBjXSr18jt0vlLNWxVI=;
+        b=hoIpC+2CDGfDh2bQX+NgtClGBX9fISR85UaQIDk1AA30oWRFAx++l5RMZpvxF+4i6r
+         SH+qzqP6Y5BJONrKYX62TGu7nSuiHgv4o2a/HRIonB5Cybkez6V1a2CG0GolPgaWBnuu
+         /ok4UTMvoFwYI8aBMmD8o3abeFFG3IV1Ppy9dprcWec8lCQmbEZTVnw6B7xAc3agjtZh
+         FFX666HR/F+5Hxlujo+n2a4tk09wX25lwvYMeC98uLREuZ9FZ27qnFrsW+sgXFkg5EFG
+         UF6lzVvBhLm/4nMPiUxQTlS+25v+xH+SAmppgIBtAa7RP5gdZmAXSoQYcp9tfwNDTjEr
+         Zp9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758285757; x=1758890557;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wj7WblQsPSyrGWWKSxzzmKooYDH1YcR0H73P9e5XZO4=;
-        b=m6z0IUAFHvqoV/ZJ9SOvBTvyZ+PqsAHdqtwjJ7BjrD6OdDvcCii+ESM3rRCKoLRSEp
-         c+G6uB0vn4HT/BVplIoMmEO2MMtghiYnCqzxxkbRhpdYWDy7SEsBMH88fYcp+3oHxDAa
-         48i2npQ6p04tNr9K4caGimI558Wf3DhTCod6qdieDW40DQC5FsbmOl1L269dIQ/UbHnC
-         GquProa465uLJTKb+69RDbfi6BOCsjPqMrrgBHClyNjYogqmtfBYULzxhEq8hIeo8Cd7
-         7C3uD8XcEgdm+58jF0J8Oqw4ZFdWnaoGrdUcJeSP6QMoF6wBaGGjdzZuZp0baLXGtnPk
-         OfoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLp+kiE4YphGixrZy0MLdpH0CJDwwqDerWQq8gLF7SELdQ6rUlpXI7clle5UGqMD5hjMcwHzo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZd4jdljGNbW+B+7/GGBF+WzCUJGVx+bV4cpkht12L3WRZoxRH
-	1P/5mqDp6CtSftsVytI7hNwBvIlQ4laf1QHeYSlbfb9byb1xzLhQ804qN3xEo1flT88=
-X-Gm-Gg: ASbGncs4wtABnczP/R3XVkBqL5g+Nkbmm7gdkSM0u+Qq9632Uz4PBCZ9gHiyv4YNjfY
-	cCJfzka8aCuqJLwzKx/67CkMa6linpGBUqgLOXV4oZ18a8RweUrf80yqEQldgKJX20znxGXrmks
-	rQBWCh8+nP6m8uY7POJu1P/1/YQZrD6vjYOw3e+kfDQneJCsiwOkyMtNacRkFeAdGYAQLZFcRq2
-	Zfybv/8dz4uW4k5V+QDXfM78hNsTec76ljyKHvOoGO3qJ0aIA4xZRC2hB5A9T7g5BPkZQVcVNXD
-	5ISuUxWS6vKas86qtY/aqVIKPDN1h+U8eVSf0Ao0iJy7Ucl7g+KK919WuHD3U3WIz66ATLw1Q/7
-	BjqFWWXmD+/jo39xzvYfevO/wI7s2lxaG4RAb059Co1fXfb6vI7k7LmVxmOfQvfdrV1e0j4oye3
-	0=
-X-Google-Smtp-Source: AGHT+IFr1BTounEptyjlbKSLG3yb0rrKq8OODXhqwAInRGVZzvO/n5qSDVMOGac6sdWkTXPIaFNEFQ==
-X-Received: by 2002:a17:907:2da2:b0:b04:6e60:4df1 with SMTP id a640c23a62f3a-b24f50aa963mr308717466b.53.1758285757281;
-        Fri, 19 Sep 2025 05:42:37 -0700 (PDT)
-Received: from rayden.urgonet (h-37-123-177-177.A175.priv.bahnhof.se. [37.123.177.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd262993asm429170166b.94.2025.09.19.05.42.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 05:42:36 -0700 (PDT)
-From: Jens Wiklander <jens.wiklander@linaro.org>
-To: linux-kernel@vger.kernel.org,
-	op-tee@lists.trustedfirmware.org
-Cc: Sumit Garg <sumit.garg@kernel.org>,
-	Jerome Forissier <jerome.forissier@linaro.org>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	stable@vger.kernel.org,
-	Masami Ichikawa <masami256@gmail.com>
-Subject: [PATCH] tee: fix register_shm_helper()
-Date: Fri, 19 Sep 2025 14:40:16 +0200
-Message-ID: <20250919124217.2934718-1-jens.wiklander@linaro.org>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1758285929; x=1758890729;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bzmxpHATkMjGkSRbploj9vHGhBjXSr18jt0vlLNWxVI=;
+        b=m+6HluyjfDsyd5SHl8DnDnFfbCX5qYJJ6zSm5llIEjylbZ1oeZ4Ue1MCOWDAEKROrA
+         VlV9D0EqAO2ThyN+GjH+pY1XTesfGRsNJVREfLaX1B0OnpKgTi6Jd2Xpvy8O+D/Ka7ff
+         8HU4AcGYnlDwz7c7qAlVEMnbrroUzktACDf2ljssZZJa81jnfiBKnKObWnFFY6fri+Os
+         M+UWpO6/r8/rMolD/HSz2kzOB1sjRNNrqFz3L51heWHall82GSp0d/AfW7AC5sF3svDh
+         8k4Cr1ylwNL87H3axhJVEB/1E0ILyv3jy302FhXc58RBtAQ+uamhDp56X6zucjtqYpNm
+         0MTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQknBGOwiYgE3b2lDSt09H2Db2hVvEd1V4+6W72We7KyP+jSO7XmuSn/7eAc6T5GIktUTquNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6/j7wE5oUwHu4hQrWhCFzINqQb8xeEJ2okQr27HF3ZBJ8WefT
+	mRkNrsSQgCXuHzUpjhJNbPe5qVVJO9qs6aqKFe2SPttKA9Ip06slCCzwXHjO2b+cZuM=
+X-Gm-Gg: ASbGncsgb/ifzVd8+tqrhphFc3RxOa+MnfmNnzJ3eiMYV6iTOQbeD/pQEFmcsrdsz4J
+	hkdXc1Hbj70Ly0jwocr71or+FwWz0IGJD0AHCJoWHhI28Ih8Q6v8qlRDow3DLwoAoJB8SoNMG9L
+	/eTdJmWSUrhwir2p8Th5t2N2isP+PuhRdTESaInf5XIS39JsbVxAAg/aCPaPI/d1+6Zb87H9e69
+	H//9kADCONTNMOSuqqOskFqq3SZBBccfSGi5R3N5Rep8yFpI3RsYO1eAPQD7TTzKSPDmZ45ZsED
+	IEvcTv64MzcUzY41NnxbksQ0xFi/5ojuRcclI/hAv7b5G7aFuRM7EAoaWtxTR6C8H1B886cjJ9O
+	7hfNrVxBPauKtMKtHWWGXI2Yp5mPjDEalGBSuHmYLtq73vvxGKKO0Ob6hY28ddg==
+X-Google-Smtp-Source: AGHT+IG8i/FekPaVIyvtRw3Y0kGumJTcRoGw86iT4JN6uhjg6+GmBG475UFLhSqVtvQD0Vy0Pr6cbg==
+X-Received: by 2002:a05:6e02:4807:b0:40a:728e:85a8 with SMTP id e9e14a558f8ab-424411d8b1fmr94994315ab.2.1758285928583;
+        Fri, 19 Sep 2025 05:45:28 -0700 (PDT)
+Received: from [172.22.22.28] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-53d53c6e38asm2113770173.60.2025.09.19.05.45.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Sep 2025 05:45:28 -0700 (PDT)
+Message-ID: <4037b00c-5ae4-4874-bb44-56e850bf142d@riscstar.com>
+Date: Fri, 19 Sep 2025 07:45:27 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16.y 2/2] dt-bindings: serial: 8250: allow "main" and
+ "uart" as clock names
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: stable <stable@kernel.org>, kernel test robot <lkp@intel.com>,
+ Conor Dooley <conor.dooley@microchip.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <2025091753-raider-wake-9e9d@gregkh>
+ <20250917115554.481057-1-sashal@kernel.org>
+ <20250917115554.481057-2-sashal@kernel.org>
+Content-Language: en-US
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <20250917115554.481057-2-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-In register_shm_helper(), fix incorrect error handling for a call to
-iov_iter_extract_pages(). A case is missing for when
-iov_iter_extract_pages() only got some pages and return a number larger
-than 0, but not the requested amount.
+On 9/17/25 6:55 AM, Sasha Levin wrote:
+> From: Alex Elder <elder@riscstar.com>
+> 
+> [ Upstream commit a1b51534b532dd4f0499907865553ee9251bebc3 ]
+> 
+> There are two compatible strings defined in "8250.yaml" that require
+> two clocks to be specified, along with their names:
+>    - "spacemit,k1-uart", used in "spacemit/k1.dtsi"
+>    - "nxp,lpc1850-uart", used in "lpc/lpc18xx.dtsi"
+> 
+> When only one clock is used, the name is not required.  However there
+> are two places that do specify a name:
+>    - In "mediatek/mt7623.dtsi", the clock for the "mediatek,mtk-btif"
+>      compatible serial device is named "main"
+>    - In "qca/ar9132.dtsi", the clock for the "ns8250" compatible
+>      serial device is named "uart"
+> 
+> In commit d2db0d7815444 ("dt-bindings: serial: 8250: allow clock
+> 'uartclk' and 'reg' for nxp,lpc1850-uart"), Frank Li added the
+> restriction that two named clocks be used for the NXP platform
+> mentioned above.
+> 
+> Change that logic, so that an additional condition for (only) the
+> SpacemiT platform similarly restricts the two clocks to have the
+> names "core" and "bus".
+> 
+> Finally, add "main" and "uart" as allowed names when a single clock is
+> specified.
+> 
+> Fixes: 2c0594f9f0629 ("dt-bindings: serial: 8250: support an optional second clock")
+> Cc: stable <stable@kernel.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202507160314.wrC51lXX-lkp@intel.com/
+> Signed-off-by: Alex Elder <elder@riscstar.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Link: https://lore.kernel.org/r/20250813031338.2328392-1-elder@riscstar.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-This fixes a possible NULL pointer dereference following a bad input from
-ioctl(TEE_IOC_SHM_REGISTER) where parts of the buffer isn't mapped.
+This fix looks good.
 
-Cc: stable@vger.kernel.org
-Reported-by: Masami Ichikawa <masami256@gmail.com>
-Closes: https://lore.kernel.org/op-tee/CACOXgS-Bo2W72Nj1_44c7bntyNYOavnTjJAvUbEiQfq=u9W+-g@mail.gmail.com/
-Fixes: 7bdee4157591 ("tee: Use iov_iter to better support shared buffer registration")
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
----
- drivers/tee/tee_shm.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Acked-by: Alex Elder <elder@riscstar.com>
 
-diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
-index daf6e5cfd59a..6ed7d030f4ed 100644
---- a/drivers/tee/tee_shm.c
-+++ b/drivers/tee/tee_shm.c
-@@ -316,7 +316,16 @@ register_shm_helper(struct tee_context *ctx, struct iov_iter *iter, u32 flags,
- 
- 	len = iov_iter_extract_pages(iter, &shm->pages, LONG_MAX, num_pages, 0,
- 				     &off);
--	if (unlikely(len <= 0)) {
-+	if (DIV_ROUND_UP(len + off, PAGE_SIZE) != num_pages) {
-+		if (len > 0) {
-+			/*
-+			 * If we only got a few pages, update to release
-+			 * the correct amount below.
-+			 */
-+			shm->num_pages = len / PAGE_SIZE;
-+			ret = ERR_PTR(-ENOMEM);
-+			goto err_put_shm_pages;
-+		}
- 		ret = len ? ERR_PTR(len) : ERR_PTR(-ENOMEM);
- 		goto err_free_shm_pages;
- 	}
--- 
-2.43.0
+> ---
+>   Documentation/devicetree/bindings/serial/8250.yaml | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/serial/8250.yaml b/Documentation/devicetree/bindings/serial/8250.yaml
+> index 2766bb6ff2d1b..c1c8bd8e8dde6 100644
+> --- a/Documentation/devicetree/bindings/serial/8250.yaml
+> +++ b/Documentation/devicetree/bindings/serial/8250.yaml
+> @@ -60,7 +60,12 @@ allOf:
+>             items:
+>               - const: uartclk
+>               - const: reg
+> -    else:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: spacemit,k1-uart
+> +    then:
+>         properties:
+>           clock-names:
+>             items:
+> @@ -162,6 +167,9 @@ properties:
+>       minItems: 1
+>       maxItems: 2
+>       oneOf:
+> +      - enum:
+> +          - main
+> +          - uart
+>         - items:
+>             - const: core
+>             - const: bus
 
 
