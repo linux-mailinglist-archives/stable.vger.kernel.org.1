@@ -1,275 +1,257 @@
-Return-Path: <stable+bounces-180706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CE0B8B49B
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 23:10:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 268F6B8B50B
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 23:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A182A80DF7
-	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:10:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2193561A80
+	for <lists+stable@lfdr.de>; Fri, 19 Sep 2025 21:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEB92D3755;
-	Fri, 19 Sep 2025 21:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DEC2BEFF9;
+	Fri, 19 Sep 2025 21:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="MX/OFU3R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bxbBwn5n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0597C28689B;
-	Fri, 19 Sep 2025 21:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758316175; cv=none; b=AhZR50zZQseKSulI9AIzHb6LxWXVabOGjp3u6rH4p48ZR9CtOvuk793J614/FX4j/Kf4bsX1NZ24e/6wdeHy8IHfzxc6RmhKfeOUNU2dGYKaW6x0QxfHmQCOrIwHKwTVy3Jxq9ndW+gKKscjNNJyyAzadl/lTfPPzUnaDh8AGSE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758316175; c=relaxed/simple;
-	bh=AgnmiRl00Q+TR5lkkj3F3V6s0smD41VHyxIWPPeLXUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xck2Y+soO7BHGjwWevmsoktv11JAWJbySgsb5I2xNZN6qUhPW9GEYBBCKDkJtzPlMnYGJP06XNRytBGGANpKVdxsC5MOOLPM32LHlWaNfklIj5wKRm7dNTk+Jq27nWrNB0YIC7E+V+JkvJ4g76d1CGN5FB8CH0IsyneVe69HUR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=MX/OFU3R; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.intra.ispras.ru (unknown [10.10.165.9])
-	by mail.ispras.ru (Postfix) with ESMTPSA id AD0124076724;
-	Fri, 19 Sep 2025 21:09:23 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru AD0124076724
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1758316163;
-	bh=TMZ1Ae4sWnLco23Cwa29HKv1iyXkHZtKG3JzaMIlqYc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MX/OFU3RUwPikIyT6/m1bTTOACdO8oDSPQ4BagFejJ66SftTTErI0JJ3KJnTghCw4
-	 Ms+zzVzp7Yfl+BPu29pJUmUFbbWwlB77RC8pYbR6Kl7iDIOjxku4VvxFuYb16euZah
-	 qTfl7safaO2G9b5B+FcbXoG2CiwTxEF2PwgVFV90=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Zong-Zhe Yang <kevin_yang@realtek.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Po-Hao Huang <phhuang@realtek.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH rtw-next v5 2/4] wifi: rtw89: avoid possible TX wait initialization race
-Date: Sat, 20 Sep 2025 00:08:48 +0300
-Message-ID: <20250919210852.823912-3-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250919210852.823912-1-pchelkin@ispras.ru>
-References: <20250919210852.823912-1-pchelkin@ispras.ru>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B1F27F170
+	for <stable@vger.kernel.org>; Fri, 19 Sep 2025 21:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758316776; cv=fail; b=ZBE2hNQxpb6YQd54gC0BMojg/O2eSAZZ60+nab47MSYBice1TPjXF+VMUcGuQql5eA4PNThLt6KsGDFxfDyBzZbYPqOAXpt3rw45Pi0Rwa3oZHgYIFEINzrOzd2zd0DaxuRRMmanUnDDvlAaqImM3Dn54xEJ982rxAYC/eXc5Pc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758316776; c=relaxed/simple;
+	bh=13IZ74gDZFsVMNsat9Pn62M3QiFEkfSKb3khHljEEPc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cnuf3K1ZbVXLYO+BTgIawqE9hk3dZ96WT+HbdiFp/s0jeo1nqlX6enC9AANmQQCItVBbotvy9qdk6R14IMjjwt4utL/QarKzHNsE5s3LL0eCykb0L2Mx9Z9xlUOxpIn2gi7w67N+xpDhD56EHqJt5yotORxWzscMoh9PxvvaHWA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bxbBwn5n; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758316775; x=1789852775;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=13IZ74gDZFsVMNsat9Pn62M3QiFEkfSKb3khHljEEPc=;
+  b=bxbBwn5n0kk6PoakAZ1sLLlJA93u3RLk7rWidzVk1n2/r9XkFKzrGDXB
+   3OLjDjJzpcgoz1cr6UeZOaHF/7qF/fEpqIZFCZYS5mrqlGe/5NwqUE9kP
+   D8TuIo9/ojg0XXARVut91MIHcfISex192WtKzpgeA2LRvaVem9seyDX86
+   9wBy6T1gQ+YYGWJ6EGmEzeoq123l34AA2TIA030tFoZHoxMfEZhLEf/gM
+   QNYQm0IN59Wz9KbpwQ8tVpsFfSXRW3t4mydQHHIKjms4b6tRI94URqgaK
+   mhWNx8K9Ur5jROQoxBagaytbjbQwAIqQLxRU1epQojXUf5QY6J3/+BvaL
+   w==;
+X-CSE-ConnectionGUID: hCbtebAZT9yZA+8R0/zDhQ==
+X-CSE-MsgGUID: mV1jO/a3TlyaIlxo14Eh8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="64489078"
+X-IronPort-AV: E=Sophos;i="6.18,279,1751266800"; 
+   d="scan'208";a="64489078"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 14:19:33 -0700
+X-CSE-ConnectionGUID: 2lHq/zf8TQ+y1b1jZdydAg==
+X-CSE-MsgGUID: F0oUogOmQ1u6NKZJZhPDMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,279,1751266800"; 
+   d="scan'208";a="175852682"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 14:19:33 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 19 Sep 2025 14:19:32 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Fri, 19 Sep 2025 14:19:32 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.20) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 19 Sep 2025 14:19:32 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s9QvgmPio+YyuCSrNbDco1wnXPThlwsSoU4lsmzkqbggIUYX1vZjuJTbEGVrMQ3bGoFwR6/ToMd8sEHi5kirPPlNCG/0QC5kF8D3RFaR0OxD0gP4GAJnZC3huGV3/mQIGZdOSO9pQXG+LeOTL2JJK27uibMmmOJxwHB8OKuWpW7/cJunrsUJN4fbLtJLERIBalDZrue7tYpkZXqjhLgypA5QamfcrFxQmB91VbiC5djle6zRgiAbs3VMrdH7/d7jAfLDUvyRrNDtR8RRXxpvEhu+KikWyLgDP0bm1z/BMs7fb+27hsFgQzDqedJ0BiwnoLq+hkieqheM/ECARuVrxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rwKTJq6rLlcE6rT8g9sffVEmVWGSX9qPsU0ayJcOlpY=;
+ b=EA2vKgk8atYeMkii4c2NCLDigmR9cnMByTXz/2DVYws4PmJcHY8Vurhyc7nUDDPVM04kXZvCt6MUAt0qKXwbn/AaDIp81Fy+fjzXwnvY8SsFXD9tpg4aCX/Feo3fnoHIS7UiGs0+fidz7gFeM/lcUkDAKDoSfylQ1VbIoghLFotPDJldj4FVP7q1i48F04DGhUz19ZfzHadoPJ9QHyqAZwltzbXgTEuy3dZ7nYAEnb+W/oU9ynDhVUHoIa3obaLm4HNVv37ZdTGpw4crsy9p1t8EPVe+45Qmdk7ln34Cu+N3JSpypiEgd22gcjRfkZ6Ry6ZWu3Zgfn5f4+Xf2VyYbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CYYPR11MB8430.namprd11.prod.outlook.com (2603:10b6:930:c6::19)
+ by DM4PR11MB6168.namprd11.prod.outlook.com (2603:10b6:8:ab::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.23; Fri, 19 Sep
+ 2025 21:19:30 +0000
+Received: from CYYPR11MB8430.namprd11.prod.outlook.com
+ ([fe80::76d2:8036:2c6b:7563]) by CYYPR11MB8430.namprd11.prod.outlook.com
+ ([fe80::76d2:8036:2c6b:7563%6]) with mapi id 15.20.9137.012; Fri, 19 Sep 2025
+ 21:19:30 +0000
+Date: Fri, 19 Sep 2025 17:19:26 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+CC: <intel-xe@lists.freedesktop.org>, Thomas =?iso-8859-1?Q?Hellstr=F6m?=
+	<thomas.hellstrom@linux.intel.com>, Joshua Santosh
+	<joshua.santosh.ranjan@intel.com>, =?iso-8859-1?Q?Jos=E9?= Roberto de Souza
+	<jose.souza@intel.com>, Matthew Brost <matthew.brost@intel.com>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/xe/uapi: loosen used tracking restriction
+Message-ID: <aM3I3oRNuZL86_3X@intel.com>
+References: <20250919122052.420979-2-matthew.auld@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250919122052.420979-2-matthew.auld@intel.com>
+X-ClientProxiedBy: SJ0PR13CA0197.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::22) To CYYPR11MB8430.namprd11.prod.outlook.com
+ (2603:10b6:930:c6::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CYYPR11MB8430:EE_|DM4PR11MB6168:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68d07aad-1bc3-4bee-8404-08ddf7c23841
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?zcs9823EvqjsU8yOVOcUYw+OZ2Lh59jQFmaImLrG/WOipMQt4yVjzlUVXI?=
+ =?iso-8859-1?Q?y/nQWV6FYfRU9fnZqEc93waaLpIaY0hrk2mQrmDjwTW2Fpzwa+54uQz4av?=
+ =?iso-8859-1?Q?3jMCTGbvyBSPHp4K+MpHmvnp8gDyqvhhT40sXXm8vT7gEMK7QNa1c1w4Ax?=
+ =?iso-8859-1?Q?1zoYrWbDHr8hKjDyV67ur4O0gThjhf1+2Yy3MmLzojXzx/96fwyLrr0kfN?=
+ =?iso-8859-1?Q?zWHdMUjk5x7LZAdBi4EQpzeMrHxIgOKpGz85ZqauAxV0kNse06PKIOE47M?=
+ =?iso-8859-1?Q?B/nK2QkwfIzkPoy7wGC3OgKtRSrcWh8nFAr+bx3WiQIYdkKiinpRslCSMX?=
+ =?iso-8859-1?Q?hJyRatPfOp2PlDviHhUOXSAsw/Njr1ElT4s03LeckC4IMD4/QDfcoH8E29?=
+ =?iso-8859-1?Q?26V6106IyL+cG1GLjzJzQLvkxiyDjVjK632PG1u32k8j+akpAmqaXt5ah8?=
+ =?iso-8859-1?Q?WeWC1Tolk6c548oexdyCt3vgkEKFCbSaMazP7wKkuqHO671yK3vzrFoJGH?=
+ =?iso-8859-1?Q?HcCfdyv8/nuoTjlwkRDSwKiddkJzM0Qi3MaFuUWrnBvfLOTAfmdulsr8Ez?=
+ =?iso-8859-1?Q?KG/XfNFkyIIxpEJn2rR0w/tu1VZD0O0ESetcX2hey2ImpomWCwFiJYoH88?=
+ =?iso-8859-1?Q?GXADooSOTcXbMydaC6C4pTogJW/c7TvKOgWt44iEBZt5FNP+KuJ2/+bQdf?=
+ =?iso-8859-1?Q?W+/TsjdIF7gAS5grWAfRrtNTa1bu8TrOl6Jj6fPSuZxzNsWMBp3kbjYjmj?=
+ =?iso-8859-1?Q?XDcE+OJcKnkz+5mxHGNUG3nMhLYwlNVm5UHX8s4aWRaw+VWb5sMbon9SWh?=
+ =?iso-8859-1?Q?wbB5mKbcvjuhKAnjAra79VkKITPUFKdSkeqDxA8PomUJDnhULLIEaCQJDF?=
+ =?iso-8859-1?Q?CHpzp0VlxmL+G1vjyizAklp3NXIzsryag+pOfZgVql0RjlwzRNwK8rTuyS?=
+ =?iso-8859-1?Q?/uEKPcbhKTrxK6/t/abhs75R8L7IrnzMPXQIh3kqRvEAGG3ScloJN0MeN/?=
+ =?iso-8859-1?Q?M3p8yQvhuPlbb79fzrPWO2eVh7RKn3Ze+bDgWVMvhqYi4R/A3PbEGap60A?=
+ =?iso-8859-1?Q?eUB+BpI+rp32sczoTj+2TKkw0DCxRt3bcRQ5KFDgGgVsCJECT27kzR6vtF?=
+ =?iso-8859-1?Q?16tkHgU+QzoAQjIK7x42GentIObL6HTk9wjzNCe3bJPX+X93lNMAyBt2Lo?=
+ =?iso-8859-1?Q?kTfNPTVSN+LWKimVdR9OHEfNS9KuKgYpBuCr3kdx5cYo+EnkY0fKiHO0m1?=
+ =?iso-8859-1?Q?3gyO33BdLDth3eUaymrjYCG7BDugm1qry74SWd0NpbjZZyOu1fMqY3SeNM?=
+ =?iso-8859-1?Q?VV9255YyIdHGUQw2wORWqkkcsJ2VGkjjeFz0g2SQcV2YmNT0cIYE5jBwAc?=
+ =?iso-8859-1?Q?DeJoRaCauYqYKvELF89c1MnKSlvNGOyOxzL/HukByA8w+3st7ASuNyOgj6?=
+ =?iso-8859-1?Q?t9s071MrhbMfBWUVoI5uuacDVWrujG80V+XitfRj6W3ydruRYrR3uYo/FX?=
+ =?iso-8859-1?Q?4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR11MB8430.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?pMgEYaei1hGFypK2ynsdKUSlRdxb2evmCGpvcfkcH/oFd88Wey7dqSxQzk?=
+ =?iso-8859-1?Q?U9D6t6zV6Ub6stard2p7jkxN45hd1VD0xGtMn+69DMI4XoC4WzoNXaKEA4?=
+ =?iso-8859-1?Q?XYjMX26rwHOcWcFUQsapfWDTW43L8bSkt/Ff6U/O0vzlQEazSK9xK0kmOX?=
+ =?iso-8859-1?Q?UFMMAhtxqAUqu1P/ActW3Zx2rr8Ezkv6Z06n6leln1zfO9iCZMLDYEhyoE?=
+ =?iso-8859-1?Q?6tJzkoWLohlfznLFCdUn+KDIxMZrDlxTkrC4c97jahvNs81aRNcq/V4D/b?=
+ =?iso-8859-1?Q?jU52TRP2BcmearV9U/Lzl+5jg+tuHIXV3ISdtwEo6craCdaSa/3EQvvdwl?=
+ =?iso-8859-1?Q?20g4RbLWMApyONrhirtM/3JaQPv8QPZ/GJt21+oR8Y0PWZf6q7FT3jPqR2?=
+ =?iso-8859-1?Q?vwT/+aH9mAADgICQrDB+BdT70WqfJ2VMWimc+CHgSVrC3o1fFxbco0PjD4?=
+ =?iso-8859-1?Q?9RimGqAAGg9OyeZsT1WzEvcy7jJrQe3HrbtfJu1rb2KZRwcNMH/0jNDwWP?=
+ =?iso-8859-1?Q?FriDQkr+kOESNj48y51U3e7PEicKCuPKaJSoF0y8aNfVhz6uCTmXTnMlld?=
+ =?iso-8859-1?Q?kooru00hm+rPnu/Nj/osRvBa+S3+A1RZAb3SI7MAg3Js4JOpjJ4kS14Q/6?=
+ =?iso-8859-1?Q?B2162/KHTc3ja2V9vpJ7ZBLQiC8dHqhgWojYz+qfq2Jq0LKOgE0qagQ5R7?=
+ =?iso-8859-1?Q?G9LzboyksiYhWLaY+XK3E6AFMQdawl+hMx3E3FHhpkWS/NZI1wq1BJmSeq?=
+ =?iso-8859-1?Q?qdtCJ4TEb0bywhNlfH+kQvTMXNstL46HHbe0daDAAvZNJXyDq5/GEJSe/Q?=
+ =?iso-8859-1?Q?sPET0oGRlajAzbpDBk1FbNVYOubzsBgBuFVBbEJf2NF66pfMuUkY4u3l8X?=
+ =?iso-8859-1?Q?URuF7mCcMa8zqf+A0PVhXCsTx/fzs9w2xIaltDufWENuepGm269IQqBYwb?=
+ =?iso-8859-1?Q?g5UJaiSAyUxSOCZ4zw7csWVHKpemJLrBEfMm80mHgaagol+EwFu4xpkJbi?=
+ =?iso-8859-1?Q?X54XTbJrD70FfjVbALsxi52i6S4OQXUjbf3rXODUjvNI7Nm9mGrcaUmVvE?=
+ =?iso-8859-1?Q?5ygTzQIsZFZhXDs3MOExzWZ8bWr4pajOai1PnFx1n3k6eFC072S5btu2u4?=
+ =?iso-8859-1?Q?EBCNxKj28+aGUUefGmAfn2a74VEL7+2s9gxz+3IbzvJDr98W2bwx16pQ7K?=
+ =?iso-8859-1?Q?P18YDCE2zYrflYeETu6AgUqxWqzmB2AKHKuKWiGjxKCKnARZ3aEVw3N4Al?=
+ =?iso-8859-1?Q?VLslC/ftd52dwrkRDZoKoO4ttXJq2C0Luk1Oiv4JVDzq037Ei1LzyuqtEz?=
+ =?iso-8859-1?Q?bUhMzLfvyrSnKFW+FmY+srUYOCqJlnIPDYJPiK09l9kahLdxbTQR7Qr1aq?=
+ =?iso-8859-1?Q?41SHU7KC+ZtcGFqSJ3QnprVzfJoGs6zvAetgONeD4b5qUMYbqxNNF2jXaR?=
+ =?iso-8859-1?Q?jGPMSs//0V7xY+KMRut4yZuR1vJdH1T6+vs9WXSmABlOdTIuQdrHcBIKUa?=
+ =?iso-8859-1?Q?xu1FV3kEq6TgF0xvdcUj/+U1mTAziWBf/QCIJLzGJdcVsoIWZmEmnY0in2?=
+ =?iso-8859-1?Q?rlfzxwCg2bb8DakqOmv5DOHVsXso90FY081cXL7z6x1Z451cJLGwO+T1XJ?=
+ =?iso-8859-1?Q?wOwcxl/vqQsiKxm/PCI0s4tzVKtlihb6X6?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68d07aad-1bc3-4bee-8404-08ddf7c23841
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR11MB8430.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 21:19:29.9300
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LDcfOQjpLr83Yd5vIqcclZc81hL/WsUCFT9ufnkhw/NmpbD3tfw6WH3VIM3p9XTMCnvvLONkjehgFADgd1MAoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6168
+X-OriginatorOrg: intel.com
 
-The value of skb_data->wait indicates whether skb is passed on to the
-core mac80211 stack or released by the driver itself.  Make sure that by
-the time skb is added to txwd queue and becomes visible to the completing
-side, it has already allocated and initialized TX wait related data (in
-case it's needed).
+On Fri, Sep 19, 2025 at 01:20:53PM +0100, Matthew Auld wrote:
+> Currently this is hidden behind perfmon_capable() since this is
+> technically an info leak, given that this is a system wide metric.
+> However the granularity reported here is always PAGE_SIZE aligned, which
+> matches what the core kernel is already willing to expose to userspace
+> if querying how many free RAM pages there are on the system, and that
+> doesn't need any special privileges. In addition other drm drivers seem
+> happy to expose this.
+> 
+> The motivation here if with oneAPI where they want to use the system
+> wide 'used' reporting here, so not the per-client fdinfo stats. This has
+> also come up with some perf overlay applications wanting this
+> information.
+> 
+> Fixes: 1105ac15d2a1 ("drm/xe/uapi: restrict system wide accounting")
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Joshua Santosh <joshua.santosh.ranjan@intel.com>
+> Cc: José Roberto de Souza <jose.souza@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.8+
 
-This is found by code review and addresses a possible race scenario
-described below:
+Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-      Waiting thread                          Completing thread
-
-rtw89_core_send_nullfunc()
-  rtw89_core_tx_write_link()
-    ...
-    rtw89_pci_txwd_submit()
-      skb_data->wait = NULL
-      /* add skb to the queue */
-      skb_queue_tail(&txwd->queue, skb)
-
-  /* another thread (e.g. rtw89_ops_tx) performs TX kick off for the same queue */
-
-                                            rtw89_pci_napi_poll()
-                                            ...
-                                              rtw89_pci_release_txwd_skb()
-                                                /* get skb from the queue */
-                                                skb_unlink(skb, &txwd->queue)
-                                                rtw89_pci_tx_status()
-                                                  rtw89_core_tx_wait_complete()
-                                                  /* use incorrect skb_data->wait */
-  rtw89_core_tx_kick_off_and_wait()
-  /* assign skb_data->wait but too late */
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of TX skbs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
-
-v5: - update the changelog to reflect that the potential race scenario
-      was found by code review
-    - pass wait as an argument to rtw89_core_tx_kick_off_and_wait()
-
-v4: - use wiphy_dereference (Zong-Zhe)
-    - move wait->skb assignment place 
-
- drivers/net/wireless/realtek/rtw89/core.c | 39 +++++++++++++----------
- drivers/net/wireless/realtek/rtw89/core.h |  3 +-
- drivers/net/wireless/realtek/rtw89/pci.c  |  2 --
- 3 files changed, 24 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index ec467ae0e9e6..1f44c7fc1c5e 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1153,25 +1153,14 @@ void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)
- }
- 
- int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
--				    int qsel, unsigned int timeout)
-+				    struct rtw89_tx_wait_info *wait, int qsel,
-+				    unsigned int timeout)
- {
--	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
--	struct rtw89_tx_wait_info *wait;
- 	unsigned long time_left;
- 	int ret = 0;
- 
- 	lockdep_assert_wiphy(rtwdev->hw->wiphy);
- 
--	wait = kzalloc(sizeof(*wait), GFP_KERNEL);
--	if (!wait) {
--		rtw89_core_tx_kick_off(rtwdev, qsel);
--		return 0;
--	}
--
--	init_completion(&wait->completion);
--	wait->skb = skb;
--	rcu_assign_pointer(skb_data->wait, wait);
--
- 	rtw89_core_tx_kick_off(rtwdev, qsel);
- 	time_left = wait_for_completion_timeout(&wait->completion,
- 						msecs_to_jiffies(timeout));
-@@ -1234,10 +1223,12 @@ int rtw89_h2c_tx(struct rtw89_dev *rtwdev,
- static int rtw89_core_tx_write_link(struct rtw89_dev *rtwdev,
- 				    struct rtw89_vif_link *rtwvif_link,
- 				    struct rtw89_sta_link *rtwsta_link,
--				    struct sk_buff *skb, int *qsel, bool sw_mld)
-+				    struct sk_buff *skb, int *qsel, bool sw_mld,
-+				    struct rtw89_tx_wait_info *wait)
- {
- 	struct ieee80211_sta *sta = rtwsta_link_to_sta_safe(rtwsta_link);
- 	struct ieee80211_vif *vif = rtwvif_link_to_vif(rtwvif_link);
-+	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
- 	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
- 	struct rtw89_core_tx_request tx_req = {};
- 	int ret;
-@@ -1254,6 +1245,8 @@ static int rtw89_core_tx_write_link(struct rtw89_dev *rtwdev,
- 	rtw89_core_tx_update_desc_info(rtwdev, &tx_req);
- 	rtw89_core_tx_wake(rtwdev, &tx_req);
- 
-+	rcu_assign_pointer(skb_data->wait, wait);
-+
- 	ret = rtw89_hci_tx_write(rtwdev, &tx_req);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to transmit skb to HCI\n");
-@@ -1290,7 +1283,8 @@ int rtw89_core_tx_write(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 		}
- 	}
- 
--	return rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, qsel, false);
-+	return rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, qsel, false,
-+					NULL);
- }
- 
- static __le32 rtw89_build_txwd_body0(struct rtw89_tx_desc_info *desc_info)
-@@ -3928,6 +3922,7 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
- 	struct ieee80211_vif *vif = rtwvif_link_to_vif(rtwvif_link);
- 	int link_id = ieee80211_vif_is_mld(vif) ? rtwvif_link->link_id : -1;
- 	struct rtw89_sta_link *rtwsta_link;
-+	struct rtw89_tx_wait_info *wait;
- 	struct ieee80211_sta *sta;
- 	struct ieee80211_hdr *hdr;
- 	struct rtw89_sta *rtwsta;
-@@ -3937,6 +3932,12 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
- 	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
- 		return 0;
- 
-+	wait = kzalloc(sizeof(*wait), GFP_KERNEL);
-+	if (!wait)
-+		return -ENOMEM;
-+
-+	init_completion(&wait->completion);
-+
- 	rcu_read_lock();
- 	sta = ieee80211_find_sta(vif, vif->cfg.ap_addr);
- 	if (!sta) {
-@@ -3951,6 +3952,8 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
- 		goto out;
- 	}
- 
-+	wait->skb = skb;
-+
- 	hdr = (struct ieee80211_hdr *)skb->data;
- 	if (ps)
- 		hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_PM);
-@@ -3961,7 +3964,8 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
- 		goto out;
- 	}
- 
--	ret = rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, &qsel, true);
-+	ret = rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link, skb, &qsel, true,
-+				       wait);
- 	if (ret) {
- 		rtw89_warn(rtwdev, "nullfunc transmit failed: %d\n", ret);
- 		dev_kfree_skb_any(skb);
-@@ -3970,10 +3974,11 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rt
- 
- 	rcu_read_unlock();
- 
--	return rtw89_core_tx_kick_off_and_wait(rtwdev, skb, qsel,
-+	return rtw89_core_tx_kick_off_and_wait(rtwdev, skb, wait, qsel,
- 					       timeout);
- out:
- 	rcu_read_unlock();
-+	kfree(wait);
- 
- 	return ret;
- }
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index d15fa70eb4dc..928c8c84c964 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -7476,7 +7476,8 @@ int rtw89_h2c_tx(struct rtw89_dev *rtwdev,
- 		 struct sk_buff *skb, bool fwdl);
- void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel);
- int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
--				    int qsel, unsigned int timeout);
-+				    struct rtw89_tx_wait_info *wait, int qsel,
-+				    unsigned int timeout);
- void rtw89_core_fill_txdesc(struct rtw89_dev *rtwdev,
- 			    struct rtw89_tx_desc_info *desc_info,
- 			    void *txdesc);
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 8dd91d867ea6..0ee5f8579447 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -1494,7 +1494,6 @@ static int rtw89_pci_txwd_submit(struct rtw89_dev *rtwdev,
- 	struct pci_dev *pdev = rtwpci->pdev;
- 	struct sk_buff *skb = tx_req->skb;
- 	struct rtw89_pci_tx_data *tx_data = RTW89_PCI_TX_SKB_CB(skb);
--	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
- 	bool en_wd_info = desc_info->en_wd_info;
- 	u32 txwd_len;
- 	u32 txwp_len;
-@@ -1510,7 +1509,6 @@ static int rtw89_pci_txwd_submit(struct rtw89_dev *rtwdev,
- 	}
- 
- 	tx_data->dma = dma;
--	rcu_assign_pointer(skb_data->wait, NULL);
- 
- 	txwp_len = sizeof(*txwp_info);
- 	txwd_len = chip->txwd_body_size;
--- 
-2.51.0
-
+> ---
+>  drivers/gpu/drm/xe/xe_query.c | 15 ++++++---------
+>  1 file changed, 6 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
+> index e1b603aba61b..2e9ff33ed2fe 100644
+> --- a/drivers/gpu/drm/xe/xe_query.c
+> +++ b/drivers/gpu/drm/xe/xe_query.c
+> @@ -276,8 +276,7 @@ static int query_mem_regions(struct xe_device *xe,
+>  	mem_regions->mem_regions[0].instance = 0;
+>  	mem_regions->mem_regions[0].min_page_size = PAGE_SIZE;
+>  	mem_regions->mem_regions[0].total_size = man->size << PAGE_SHIFT;
+> -	if (perfmon_capable())
+> -		mem_regions->mem_regions[0].used = ttm_resource_manager_usage(man);
+> +	mem_regions->mem_regions[0].used = ttm_resource_manager_usage(man);
+>  	mem_regions->num_mem_regions = 1;
+>  
+>  	for (i = XE_PL_VRAM0; i <= XE_PL_VRAM1; ++i) {
+> @@ -293,13 +292,11 @@ static int query_mem_regions(struct xe_device *xe,
+>  			mem_regions->mem_regions[mem_regions->num_mem_regions].total_size =
+>  				man->size;
+>  
+> -			if (perfmon_capable()) {
+> -				xe_ttm_vram_get_used(man,
+> -					&mem_regions->mem_regions
+> -					[mem_regions->num_mem_regions].used,
+> -					&mem_regions->mem_regions
+> -					[mem_regions->num_mem_regions].cpu_visible_used);
+> -			}
+> +			xe_ttm_vram_get_used(man,
+> +					     &mem_regions->mem_regions
+> +					     [mem_regions->num_mem_regions].used,
+> +					     &mem_regions->mem_regions
+> +					     [mem_regions->num_mem_regions].cpu_visible_used);
+>  
+>  			mem_regions->mem_regions[mem_regions->num_mem_regions].cpu_visible_size =
+>  				xe_ttm_vram_get_cpu_visible_size(man);
+> -- 
+> 2.51.0
+> 
 
