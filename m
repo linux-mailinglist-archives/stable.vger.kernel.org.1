@@ -1,160 +1,102 @@
-Return-Path: <stable+bounces-180732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CDFB8D089
-	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 22:12:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5E6B8D094
+	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 22:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 154751B26E14
-	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 20:12:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF53A7AD8BD
+	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 20:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07452749E9;
-	Sat, 20 Sep 2025 20:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125DC2749E2;
+	Sat, 20 Sep 2025 20:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeHwIeJR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gjQ8/Jp8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B7F2144D7;
-	Sat, 20 Sep 2025 20:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9582629D
+	for <stable@vger.kernel.org>; Sat, 20 Sep 2025 20:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758399124; cv=none; b=QstfjZ82cI/vi7T6LbW9ogy4GUo30kyuW7AQ7lRCqFMHfNWu614FEAh4Bq/0M+V5GqrLCPREvxlFMEyiS4cz/lKluQhQTKsyuwrQIuBc4ZTzmCn3bn5/8LPE7YrhrvvyAOiqZzqIfTnNunpPcAo5wg4Wbjj9mnV/Ve25KmhtjVk=
+	t=1758399208; cv=none; b=J41cuQ9zOOSLsshQ+BeVYAoB1Zj42p170CmxE3G8RkCbStd0dJXJMyjW6M17UKQM0BNHvoo/hvAxKVNIPf3nO8HBw1ZHHTs3H5UnGJxbgRMH5YVlDJqNvhBilQ41z1AUkyrGGmpQkxrfh5Z9/mp1RxST3V2NkdXbWS4K5Q6EEwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758399124; c=relaxed/simple;
-	bh=jbC9Sb3AKdA6ZHnElBfDO40DRbp3oq6m6FxraEOQX40=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aEwSzefTaKUhMewg1QM+nM2mcdTXFsouqGYCBS0eP9ndHK1PvBYZCVfVLqAeBMYDZb4EpOs5kJHS2Zyd8/3vMHgjK4zw1G+YjGKx8Q86AkyQEHmdf7O53ACFNvbgDGMjxDQWW7QD2wrzu4TwI5CE85mJy4n/n+D7NeMxSKR7PpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeHwIeJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253F4C4CEEB;
-	Sat, 20 Sep 2025 20:12:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758399124;
-	bh=jbC9Sb3AKdA6ZHnElBfDO40DRbp3oq6m6FxraEOQX40=;
-	h=From:To:Cc:Subject:Date:From;
-	b=aeHwIeJRuqfEzBkIR0JTCSXB7SN1/5B1adA8YIqaTXA677pyfckwqeeAZsURVJ7rC
-	 /uIGoTOjPujKZxW0JSXMhBQhT3pAJc0RQbI8lZz5Yl3MMvIOGlNiSUgxEioTytpc/f
-	 iGWezFyvCvo34vcsROUuVQ4JkvdzmYVaQNImx0J4dVMA0aeCwFYj/V+mz5YuSY/Dwa
-	 vLYa4lI5Uh+qwPzKHZlYCPI+pljDOIKcd8rga3J8Haa7qvp04OCKIO+AoG1XQJ6wXg
-	 xWZftzQPXTUcMtdP57I0Qfz9979UxZgzGgf8X1SacnjbLZQmdSmvHTy4tpodOjYT44
-	 VV9axEbLG+ckQ==
-From: Hans de Goede <hansg@kernel.org>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mario Limonciello <superm1@kernel.org>
-Subject: [PATCH 6.17 REGRESSION FIX] gpiolib: acpi: Make set debounce errors non fatal
-Date: Sat, 20 Sep 2025 22:12:00 +0200
-Message-ID: <20250920201200.20611-1-hansg@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1758399208; c=relaxed/simple;
+	bh=c/YVOsFfXNOqu7i+KjseJUiqJ+wfyb7OI3iWlQ4bQFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PaUkKRLA4UHQpanHOLN7QExwsVWidHvhml6lZMiIQt0Z/Q038w+yEoHqY6OprzpJ0yJ9Mf8PTwyOHr4xZXkBtrqcXnjB2BCuFO0AF4TCaMr/3XXTiPOLMrSPkAxp2HFs7jD7VGnlyyYwHIVm//MXgGdWiQRuVlMqXFSTPP/r0dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gjQ8/Jp8; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758399207; x=1789935207;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=c/YVOsFfXNOqu7i+KjseJUiqJ+wfyb7OI3iWlQ4bQFY=;
+  b=gjQ8/Jp8myXaCW+QnBJJZwAjJlhuKsab+fju8PM26ssYC3bGNc5zLvkr
+   nsYsrGe7PE6whyXrhFvP17wRzRBU/oo/Er8eBCxvMJuV41bJ5wyd0BrjD
+   Dvz4dTAzUasHi9b39gHuzt3x00dPFSlezt9Qb4ugHJfeop+jRoNd7opdm
+   mRfettfdvuCjxRId2hjJXvHn2m0dADLVwsFjh+HT8q/ml92Cg3lUY9Lry
+   enuzTgtcjg8MGmPD/s6Zm7sGhfaI7/7MW5PLqYMDMLvwO4HZItjxj2atJ
+   1GTKNd9FKDBX+zxuAFHayqLXFClb2OH2p4oP/lD4TMjj7IBhrNAaT327d
+   g==;
+X-CSE-ConnectionGUID: m4OXanV2TQ6626CXTRALmA==
+X-CSE-MsgGUID: vVFbYVPDTcycQRJ7O2elGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60658184"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="60658184"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2025 13:13:27 -0700
+X-CSE-ConnectionGUID: mLjYwlPES4KsZwcmhlFZWw==
+X-CSE-MsgGUID: CSmZchkeQCaJqEidlsnRjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; 
+   d="scan'208";a="207074524"
+Received: from lkp-server01.sh.intel.com (HELO 7f63209e7e66) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 20 Sep 2025 13:13:25 -0700
+Received: from kbuild by 7f63209e7e66 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v03xT-00004V-0q;
+	Sat, 20 Sep 2025 20:13:23 +0000
+Date: Sun, 21 Sep 2025 04:13:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 6.17 REGRESSION FIX] gpiolib: acpi: Make set debounce
+ errors non fatal
+Message-ID: <aM8K4jAPD4rbWOcE@371967cdecd7>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250920201200.20611-1-hansg@kernel.org>
 
-Commit 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-adds a gpio_set_debounce_timeout() call to acpi_find_gpio() and makes
-acpi_find_gpio() fail if this fails.
+Hi,
 
-But gpio_set_debounce_timeout() failing is a somewhat normal occurrence,
-since not all debounce values are supported on all GPIO/pinctrl chips.
+Thanks for your patch.
 
-Making this an error for example break getting the card-detect GPIO for
-the micro-sd slot found on many Bay Trail tablets, breaking support for
-the micro-sd slot on these tablets.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-acpi_request_own_gpiod() already treats gpio_set_debounce_timeout()
-failures as non-fatal, just warning about them.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-Add a acpi_gpio_set_debounce_timeout() helper which wraps
-gpio_set_debounce_timeout() and warns on failures and replace both existing
-gpio_set_debounce_timeout() calls with the helper.
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 6.17 REGRESSION FIX] gpiolib: acpi: Make set debounce errors non fatal
+Link: https://lore.kernel.org/stable/20250920201200.20611-1-hansg%40kernel.org
 
-Since the helper only warns on failures this fixes the card-detect issue.
+Please ignore this mail if the patch is not relevant for upstream.
 
-Fixes: 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <superm1@kernel.org>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
----
- drivers/gpio/gpiolib-acpi-core.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index 284e762d92c4..67c4c38afb86 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -291,6 +291,19 @@ acpi_gpio_to_gpiod_flags(const struct acpi_resource_gpio *agpio, int polarity)
- 	return GPIOD_ASIS;
- }
- 
-+static void acpi_gpio_set_debounce_timeout(struct gpio_desc *desc,
-+					   unsigned int acpi_debounce)
-+{
-+	int ret;
-+
-+	/* ACPI uses hundredths of milliseconds units */
-+	acpi_debounce *= 10;
-+	ret = gpio_set_debounce_timeout(desc, acpi_debounce);
-+	if (ret)
-+		gpiod_warn(desc, "Failed to set debounce-timeout %u: %d\n",
-+			   acpi_debounce, ret);
-+}
-+
- static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
- 						struct acpi_resource_gpio *agpio,
- 						unsigned int index,
-@@ -300,18 +313,12 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
- 	enum gpiod_flags flags = acpi_gpio_to_gpiod_flags(agpio, polarity);
- 	unsigned int pin = agpio->pin_table[index];
- 	struct gpio_desc *desc;
--	int ret;
- 
- 	desc = gpiochip_request_own_desc(chip, pin, label, polarity, flags);
- 	if (IS_ERR(desc))
- 		return desc;
- 
--	/* ACPI uses hundredths of milliseconds units */
--	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout * 10);
--	if (ret)
--		dev_warn(chip->parent,
--			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
--			 pin, ret);
-+	acpi_gpio_set_debounce_timeout(desc, agpio->debounce_timeout);
- 
- 	return desc;
- }
-@@ -944,7 +951,6 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
- 	struct acpi_gpio_info info = {};
- 	struct gpio_desc *desc;
--	int ret;
- 
- 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
- 	if (IS_ERR(desc))
-@@ -959,10 +965,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	acpi_gpio_update_gpiod_flags(dflags, &info);
- 	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
- 
--	/* ACPI uses hundredths of milliseconds units */
--	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
--	if (ret)
--		return ERR_PTR(ret);
-+	acpi_gpio_set_debounce_timeout(desc, info.debounce);
- 
- 	return desc;
- }
 -- 
-2.51.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
