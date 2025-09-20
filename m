@@ -1,128 +1,114 @@
-Return-Path: <stable+bounces-180727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929A1B8C918
-	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 15:28:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06ECB8C996
+	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 15:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E1E1BC46ED
-	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 13:29:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FB81189D9B6
+	for <lists+stable@lfdr.de>; Sat, 20 Sep 2025 13:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619B221ABB9;
-	Sat, 20 Sep 2025 13:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jlm+3YlK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF5F2F363F;
+	Sat, 20 Sep 2025 13:43:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D37211290
-	for <stable@vger.kernel.org>; Sat, 20 Sep 2025 13:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FB325DD1E;
+	Sat, 20 Sep 2025 13:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758374918; cv=none; b=fbY1IG3sDRO8a9cQxnGusA45gMAcoTdmvQVQpKfXg7FLAhNiRLAShKGy8ldBlfxc7r/SiWmcj7IIAROIFJz6HLigubuYvPBktgRTqljf50tFRBrQGfCzkxhy12GIICq/GZuJkiTW3EbSw6Hk9WYZcZGVH/bL3ZzcaAcD4vbaLJY=
+	t=1758375801; cv=none; b=RVKC/ImObPLSf2kI43JfMnzaK4KlScn4TXjgjrXvHFj26HLDpCnGqSIeJyXyrnYwjKQR6Kc8wapcOyRhHMN/8bvUl3kKC5HQXT4iwtFe1Un8EpiM9Kv7M1PLeDKTt1d0OS8NzRziwfEzzAFaI7Lh07czn0gGRa6JIDHSUncezeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758374918; c=relaxed/simple;
-	bh=c4T5h8Lj+r5QHOJrfTGmZa4X38Mi6teWvFjOqLPEbvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GxoDPpl+/pviNWuo7F+/u5gCgPn75hyinxnUnk3Lo9s8ZwpqgiC4PywVCD6MTfpjknazrtG47ZCBI2phtWpqiUZrSwPJ2fBxQiuq0ML5ltPv0Bh5L7r5Bo4v6K19nOFoxxUBpBkg5shYeSQ3GvPa7obNyb+6DvXy/81wB53s7zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jlm+3YlK; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7761b83fd01so2884100b3a.3
-        for <stable@vger.kernel.org>; Sat, 20 Sep 2025 06:28:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758374916; x=1758979716; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gjxouBjT5nmqga++V9b1ze7RKvPFTL21IXfIsCNqNqg=;
-        b=jlm+3YlKXzZAHMJRaLkxMD8QwnSOCFBFG1zJi2bJFgaz8PisbC0t7OgSHe4PPfKuIX
-         k7s62Kk4X+EZS1KkIMDziHTKnDMxEgX7OgwX4ar21z/8NN/Bi5qdALcpqAEPEcM6NMc+
-         Ct+09mocTJYuYPiak5DPbILjXrs1H2hOvJ9zKojLrSbt4/QwCSkPy7dj7vM7zvth3S7D
-         v1c6ETMvE6C/BSNV1o/hgT/nPPHHLGjbkP2sEYlySXPJs9mE4kM27nM2jetTtErIOUrg
-         9CX9IVjGTTf3paWavSeUKvrgQeC7o085GZKn/C25E8p9MUWg7oUvG4Dw1Mv4+VF9Kwna
-         +Hdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758374916; x=1758979716;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gjxouBjT5nmqga++V9b1ze7RKvPFTL21IXfIsCNqNqg=;
-        b=Kp8I+9YvHHfm2swMsDaXeUB3LseGc4mYCl9qzTmjDjaN7U1c1RV8w+/fpJGna0hHQR
-         aTr7RM9oaf8wFBIztr+84x+9z6tSsbauJ+LCEUz8k8l7PUM6INli1npLSMMxE+PUBP8j
-         FFH+B+Fl0fIHYuORJ9MwgHWd65fRIPIdmQX+Nxwvatv/mBCp9ofFLfigKMnZ/b21SlVz
-         W13CzRoWsa7rwYQVi//pIJHVhWXB9Dhka5fj2EtPsejmaByRYR5kDzjWYenaBB4ZDOsP
-         rCkQe2cZsXCjJsAui09nx/zeUdtSunnADJDpi3bvUrsLNM4pAfTYA0tZc5t2m+uozfcr
-         XH8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWy0naJFQj7lX8uXp1dY9/DDulQ5m9jKUYCXglu7oYk94L8r2iG3egcfORvl0sUmMCeIh+CDxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUW0QWeVD7CGJL241Vevqp8/oY/9qFg4+ujAJWbEfTR+UZKHyK
-	YWhS1XoM3qRdanu7Bgwin2BLgmlG+a83LuTq1oD+YAKVk8rK5ivV1zqi
-X-Gm-Gg: ASbGncuYayOl/o3s8kWm4gTh9Z7D7GlXXBMxiR6d6bMxLdwKkdE6ZT19jOw7QWrupUb
-	xG8A1TfVo4Kqt2gig/9h7r3N73jXa/clGcx9KplvH2xRR04wPHlGEmKrfV62gx7BlDIq5tVm2hU
-	aXW+n7JZzLU9FyEm52DVTBzGGt4bH+5biBgLtnsGixvN2sJO9rqc1d7aa3M+79EnbPbBbY6n4cL
-	Bk8aiXvzxwEK/yAMUc/eLWRxJobrXCvQACK0zlFQ0bMIwiNDtCHuUaoUAJ0293p6HzlX9vPnu0s
-	zIV33v7fZLkXmAtQDl1CGMXiL7bz9xEWWRVfe9Nyi7QCTWSfXPFJvGjiDBGgq78JtE4a+8+isN7
-	G6n1NOCui7gyro//5fc54DWW8FeOAhX0Yx6R33A==
-X-Google-Smtp-Source: AGHT+IE3IUDImelMA1Pd199Dh7tuKfUZyU+6ZHuOXZm1pmSy0cEqS2FhGPr3AAovcBFC3q8C0kUEuw==
-X-Received: by 2002:a05:6a00:3c91:b0:776:1f45:9044 with SMTP id d2e1a72fcca58-77e49f0742fmr7991411b3a.0.1758374915693;
-        Sat, 20 Sep 2025 06:28:35 -0700 (PDT)
-Received: from localhost.localdomain ([240f:34:212d:1:881f:6424:2c16:746a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cfe669a58sm8077093b3a.52.2025.09.20.06.28.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Sep 2025 06:28:35 -0700 (PDT)
-From: Akinobu Mita <akinobu.mita@gmail.com>
-To: damon@lists.linux.dev
-Cc: akpm@linux-foundation.org,
-	sj@kernel.org,
-	akinobu.mita@gmail.com,
+	s=arc-20240116; t=1758375801; c=relaxed/simple;
+	bh=zbQJHCGgM5Kr8QW7UWc85ZebxI239jbRy3/bx4Z++aI=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=s27/OGtYkXc9IwVCKhzeMeo0lRD5GIwPbHb1qshuiyQSm/90VnNKDPH+srkkTfNvRNxwm5ITDlYiYnrhyxstI0tcd30on6R8WqFWIEwcyrlnqLop+zUfdwr1HRErrU/hnUR4xf0xDpzpXQ5QyMA8ZrRjlk6QR2MhBwgYLCmK/ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowADHEXxer85o_qPvAw--.9226S2;
+	Sat, 20 Sep 2025 21:43:06 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: sakari.ailus@linux.intel.com,
+	bingbu.cao@intel.com,
+	lixu.zhang@intel.com,
+	stanislaw.gruszka@linux.intel.com,
+	mchehab@kernel.org,
+	wentong.wu@intel.com
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] mm/damon/sysfs: do not ignore callback's return value in damon_sysfs_damon_call()
-Date: Sat, 20 Sep 2025 22:25:46 +0900
-Message-ID: <20250920132546.5822-1-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH] media: pci: intel: ivsc: fix error handling in scan_one_device()
+Date: Sat, 20 Sep 2025 21:42:52 +0800
+Message-Id: <20250920134252.8612-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:rQCowADHEXxer85o_qPvAw--.9226S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KFW5CF48Ar15Wry5Kw1fCrg_yoW8GFWfpr
+	W2gFWvkFW5Xr12gryDu3WUuFy5GwnIva9xGFy7Ka1xWan5Zry7tryjqa42kFWjvF92yFyj
+	yr13GrW3Ar4kJw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
+	v_Xr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUnFApUUUU
+	U
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The callback return value is ignored in damon_sysfs_damon_call(), which
-means that it is not possible to detect invalid user input when writing
-commands such as 'commit' to /sys/kernel/mm/damon/admin/kdamonds/<K>/state.
-Fix it.
+The mei_ace driver contains a device reference count leak in
+mei_ace_setup_dev_link() where device_find_child_by_name() increases
+the reference count of the found device but this reference is not
+properly decreased in the success path. Add put_device() in
+mei_ace_setup_dev_link() and delete put_device() in mei_ace_remove(),
+which ensures that the reference count of the device is correctly
+managed regardless of whether the probe is successful or fails.
 
-Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-Fixes: f64539dcdb87 ("mm/damon/sysfs: use damon_call() for update_schemes_stats")
-Cc: <stable@vger.kernel.org> # v6.14.x
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- mm/damon/sysfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/pci/intel/ivsc/mei_ace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index fe4e73d0ebbb..3ffe3a77b5db 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1627,12 +1627,14 @@ static int damon_sysfs_damon_call(int (*fn)(void *data),
- 		struct damon_sysfs_kdamond *kdamond)
- {
- 	struct damon_call_control call_control = {};
-+	int err;
+diff --git a/drivers/media/pci/intel/ivsc/mei_ace.c b/drivers/media/pci/intel/ivsc/mei_ace.c
+index 98310b8511b1..261b30788118 100644
+--- a/drivers/media/pci/intel/ivsc/mei_ace.c
++++ b/drivers/media/pci/intel/ivsc/mei_ace.c
+@@ -421,6 +421,7 @@ static int mei_ace_setup_dev_link(struct mei_ace *ace)
+ 	}
  
- 	if (!kdamond->damon_ctx)
- 		return -EINVAL;
- 	call_control.fn = fn;
- 	call_control.data = kdamond;
--	return damon_call(kdamond->damon_ctx, &call_control);
-+	err = damon_call(kdamond->damon_ctx, &call_control);
-+	return err ? err : call_control.return_code;
- }
+ 	ace->csi_dev = csi_dev;
++	put_device(csi_dev);
  
- struct damon_sysfs_schemes_walk_data {
+ 	return 0;
+ 
+@@ -522,7 +523,6 @@ static void mei_ace_remove(struct mei_cl_device *cldev)
+ 	cancel_work_sync(&ace->work);
+ 
+ 	device_link_del(ace->csi_link);
+-	put_device(ace->csi_dev);
+ 
+ 	pm_runtime_disable(&cldev->dev);
+ 	pm_runtime_set_suspended(&cldev->dev);
 -- 
-2.43.0
+2.17.1
 
 
