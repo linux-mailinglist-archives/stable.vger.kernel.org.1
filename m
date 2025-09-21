@@ -1,185 +1,134 @@
-Return-Path: <stable+bounces-180747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B899CB8DA67
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 13:44:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3F3B8DA7C
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 14:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5A8594E160A
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 11:44:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B7DB189A898
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 12:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8378A2C236F;
-	Sun, 21 Sep 2025 11:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39060253B4C;
+	Sun, 21 Sep 2025 12:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Nimsq3Nc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vuMbTr9"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701E02C0F60
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 11:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3604315A
+	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 12:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758455034; cv=none; b=Tt3+OpZ/o4Pv0KbRpvEbmalHFAdT/srHiWNMQRkuHlzzPGlVuwxHLZ4GgLmDbYmmb1lyTFEx9DRtM4CrwvG9lwvA5YhCEpN0YGElUh1GO/tnv7xuD2bqyytkPMoV3MX1K61PPAqPmDFWuG4MROs34nClrp1sjt71lk8hdnlZXNA=
+	t=1758456683; cv=none; b=dSk/0U99istD6CzAg0nKcOm8ZnRYzCEAxIeegOlt6VN/FNkmP8imLDBIkTHbPQSwMli71hUElyR8r885V/5k6pzKDp9uQOEU0k12QlniNFMhIa1uHyWtyW5/RKAhfA327yxNDHgIT3SDTdNVzvMece3LYiniXHvRlAH9RTSVpaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758455034; c=relaxed/simple;
-	bh=+Pn/OVfTwdSSSOXNeOm06iGQ/roCwDtZwhhSb17LvI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UFlaIDXsT4u0KMefqzfYudbrRzZrrOw0uuKWPpuddNh4N7S7HSDTh2ppWzoYjTBsDMeuUgngELibDzd9nl/6ytVNT602E68jZOmONq6u1FRclHW9R8TPBcI2kDaU0gv6kzkVDC85FuRFGflR9mSg/awfzI3MAqj8P8qodoLU9iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Nimsq3Nc; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58L7hxcl008421
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 11:43:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=2tz38OrlUOeLMiW/V6pVbFqi
-	MiAYEhH1+bQDPLCltYU=; b=Nimsq3NcjCR1Np9YlKps0K9TPHI6pZtKpJKVIutE
-	AfHwOLN0/u/XjtyWYsHtAFIf+lEBdJnDX4pjqBrjW1cch+9U+ldIxOkJTLFLuOzT
-	KO9B4GljHXJnEbhyJnc+fImVzdzktygSlkTfGyqBqRQA3jQ+tkfi4NSL8TXiBYeh
-	KNayi9ZX3m53EEqwfUVLebk/3o8jFkcYvnSR7Dk/hObwqZtsbLASek3AvVlnC13d
-	z4zpcb3Ks8ZwRgBYpn/UR6pEaD3gJixdL60gQunqKbpR1X/yDh9jeTr5roCFhzg0
-	3LMe//iuWciUS+hDqeuVah4M3L+R+3xoPrYiBeBldpXIrg==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499mbv23nd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 11:43:44 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4b5fbf0388eso46244471cf.3
-        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 04:43:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758455023; x=1759059823;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2tz38OrlUOeLMiW/V6pVbFqiMiAYEhH1+bQDPLCltYU=;
-        b=v/UyL2p2eVfhwJu/GjZXsyrkhpjDcW0CQudaVetD0WZCqanjQcigkweRdhiHQkTMGQ
-         OAdGmNrq2GyrtM/6tT5xlP3FQtWPbE9zdGwXWrREIPju0x9NCZO3u84IbVHJnkVaTcJf
-         SN5rwNaC7py1/gqENgwO88yse3Azh8tt1WkNo0Ho8SbOj3MAxZ1+hL9lLJELBLR1U1bn
-         OLGyL64OMMqAQ562AWeKt69hAtPGb2S5XDOc3318BHow9TpYt8VjBq//I7KnRKZ0FpXn
-         0l4jesXCBh/pTE1r0ScyUcvXIvn3/7T3gtj93W0wNfMHkrM7yiFHCjLo4xnZkelygdNy
-         bt0A==
-X-Forwarded-Encrypted: i=1; AJvYcCU0M2wEEiepJI1rDKAu0LZ5d6xEyRVExu5M9dM9bMBrMlQGg/TAGvRV6H02J3cwNykrOefIOiI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7oEkKMz2NYw/Jm0tA+cV7UZR4ZxrqfA5JuGscCTs1ZZaFCCA6
-	e0N5ANt/XjVjy/U0Xu6+CRPtm9YNb6WsDAKjIHM20ire8e0+xBgLbgRKSfW+z43Oaxz5PguUyC7
-	Zt5RVt9Nbu6YIJHxF+77UnYd2h67AlrO2M+BDuP3RYqASY+oo5Kj6JAK8dmY=
-X-Gm-Gg: ASbGncs9EcmVlqfFfqntr0OwJbitRfgFYRddUJ7OvGzIcSYzj38ih1u2dwZG0XEN9AM
-	LCI5qUPUGCh2aa2/WHRmpx/ZWkpKkWeP3f+n2b8F4XeKIBwfNBzvETeVrO6SCSKiSSMAfHBDL34
-	auyOQIXvNTZ40PTFCr77ii2trvmdTueR8RmMP6ic8FcUj2B8KG5SxeUBFVd/koqr2vqJ3WeEIiG
-	lXXJpFFpnkJc4maw6z0zao0rILwQVYp7q0RE3a7OoS6tKQu7xZvJSphxiyerH/r+nFdz/sXRjiL
-	bFsuI4YL6tpXQBhfQVnisStBC6mF9VVXSGaf2fw7FEZPQsfPpjryXXgUMOa0AhjjJoi77YWSbj3
-	eGV46sEx5GqXzqBYKU2JhaFib+3WCK1LfXyurHWOOhJbkvBZSWZQa
-X-Received: by 2002:a05:622a:289:b0:4b7:9581:a211 with SMTP id d75a77b69052e-4c06f84409bmr97544691cf.24.1758455023259;
-        Sun, 21 Sep 2025 04:43:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcgRW/31bOxLKwY8qsOfsclAMytFaKWAzuOnLefGy2cQabOY5f9ALQUf9IAhjpMBxBBPDADQ==
-X-Received: by 2002:a05:622a:289:b0:4b7:9581:a211 with SMTP id d75a77b69052e-4c06f84409bmr97544541cf.24.1758455022788;
-        Sun, 21 Sep 2025 04:43:42 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-57c56d47591sm659763e87.50.2025.09.21.04.43.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Sep 2025 04:43:42 -0700 (PDT)
-Date: Sun, 21 Sep 2025 14:43:40 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: srini@kernel.org, lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com, pierre-louis.bossart@linux.dev,
-        linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: wcd934x: fix error handling in
- wcd934x_codec_parse_data()
-Message-ID: <lqgi66r4voh5z4p7mrjiulxvy6gky6mzn6rq2yresuhqfzsnt3@xcgvnxxd7qnq>
-References: <20250921095927.28065-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1758456683; c=relaxed/simple;
+	bh=yvGKNc9V02KHhl8YO85Cys9QHWv8jOc1X1oPyyPvxG8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=feg3zOl+kwBWwdaw3XLnJ3wzscEtJhBnOPQHuqhVGSfb9/TEW0LTwpK9v5heSaj4R8MK5jlgA9Og2liSnZR2JqfVPKXO36KOYHQylcntksW3Y9dBSjFowLB2LXT9Ocp2+zNos4xJ/v72uoB6OIV9EJ+RWT8bkgt4+LR4RlTYMks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vuMbTr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E74C4CEE7;
+	Sun, 21 Sep 2025 12:11:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758456681;
+	bh=yvGKNc9V02KHhl8YO85Cys9QHWv8jOc1X1oPyyPvxG8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0vuMbTr94vLVkows5P3Cl/qBeg8bAMEiH0OJRwd3FrVfexkZbfL7jMewnqjwfXFMs
+	 cz/xgHdrtxVxI5Z2grg7EDqVE02LOAt9MYljpAR47cl/PjjefQfKW04CADy6vcGMYD
+	 Rc1RAKY1fYutQE0eT0Fs8AwWncRRA+G7vNhzlFOM=
+Subject: FAILED: patch "[PATCH] ksmbd: smbdirect: validate data_offset and data_length field" failed to apply to 5.15-stable tree
+To: linkinjeon@kernel.org,luigino.camastra@aisle.com,metze@samba.org,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 21 Sep 2025 14:11:18 +0200
+Message-ID: <2025092118-portside-cheesy-44d2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250921095927.28065-1-make24@iscas.ac.cn>
-X-Authority-Analysis: v=2.4 cv=ZcAdNtVA c=1 sm=1 tr=0 ts=68cfe4f0 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=YRiNdvbt-P8spsNBmjsA:9 a=CjuIK1q_8ugA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: YeSb96v0AcSBU4a5If6CYzN1dTK-O4J0
-X-Proofpoint-GUID: YeSb96v0AcSBU4a5If6CYzN1dTK-O4J0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMSBTYWx0ZWRfX/bXJT2fkXa5+
- 6wXlPguyHJxSp0V3QtZZSCatRSPBYcdVVgvG2s3SdBAByOlNLO5/CjW6OVTzelyu+SFToIHHf9J
- B4KXDAJNeLMjtzIxx3tvEWioYve6hkWDc9OeCC67/AfC20SSttL4eP6zNObVMXfnNocUSr6YD3c
- 4/jjwm7OtNU6ONC7YVtuU+HsmX6sHXvnyLNuxhROQGWxKYCNehbJIqPlNdZeCNZJ4cHDoOyiusG
- ZJxcD7/91XAWJSxyC+ERkX36PXrQUc98EsbPM95EQLlCx8Mxuq6VHCibuNw2eHwVxzA8QG0d+dE
- PpARyu8pYqrNfhO7KYgvPDy0fEQCjJO1vt0Qc5JbvHdh4WIETDtPUXbFunKsh32fOZsdJflkfwi
- mMjJ6Hm0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-21_03,2025-09-19_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 impostorscore=0 clxscore=1015 bulkscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200031
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 21, 2025 at 05:59:27PM +0800, Ma Ke wrote:
-> wcd934x_codec_parse_data() contains a device reference count leak in
-> of_slim_get_device() where device_find_child() increases the reference
-> count of the device but this reference is not properly decreased in
-> the success path. Add put_device() in wcd934x_codec_parse_data(),
-> which ensures that the reference count of the device is correctly
-> managed.
-> 
-> Calling path: of_slim_get_device() -> of_find_slim_device() ->
-> device_find_child(). As comment of device_find_child() says, 'NOTE:
-> you will need to drop the reference with put_device() after use.'.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a61f3b4f476e ("ASoC: wcd934x: add support to wcd9340/wcd9341 codec")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  sound/soc/codecs/wcd934x.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
-> index 1bb7e1dc7e6b..9ffa65329934 100644
-> --- a/sound/soc/codecs/wcd934x.c
-> +++ b/sound/soc/codecs/wcd934x.c
-> @@ -5849,10 +5849,13 @@ static int wcd934x_codec_parse_data(struct wcd934x_codec *wcd)
->  	slim_get_logical_addr(wcd->sidev);
->  	wcd->if_regmap = regmap_init_slimbus(wcd->sidev,
->  				  &wcd934x_ifc_regmap_config);
 
-regmap code doesn't increase refcount of the device, so we need to keep
-the reference till the remove time. The code also leaks the memory for
-regmap, so this code needs additional fixes anyway.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> -	if (IS_ERR(wcd->if_regmap))
-> +	if (IS_ERR(wcd->if_regmap)) {
-> +		put_device(&wcd->sidev->dev);
+To reproduce the conflict and resubmit, you may use the following commands:
 
-This call is correct
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5282491fc49d5614ac6ddcd012e5743eecb6a67c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092118-portside-cheesy-44d2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
->  		return dev_err_probe(dev, PTR_ERR(wcd->if_regmap),
->  				     "Failed to allocate ifc register map\n");
-> +	}
->  
-> +	put_device(&wcd->sidev->dev);
+Possible dependencies:
 
-But this one needs to be deferred until remove time (e.g. by using
-devres)
 
->  	of_property_read_u32(dev->parent->of_node, "qcom,dmic-sample-rate",
->  			     &wcd->dmic_sample_rate);
->  
-> -- 
-> 2.17.1
-> 
 
--- 
-With best wishes
-Dmitry
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5282491fc49d5614ac6ddcd012e5743eecb6a67c Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Wed, 10 Sep 2025 11:22:52 +0900
+Subject: [PATCH] ksmbd: smbdirect: validate data_offset and data_length field
+ of smb_direct_data_transfer
+
+If data_offset and data_length of smb_direct_data_transfer struct are
+invalid, out of bounds issue could happen.
+This patch validate data_offset and data_length field in recv_done.
+
+Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Reported-by: Luigino Camastra, Aisle Research <luigino.camastra@aisle.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index cc4322bfa1d6..d52f37578276 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -554,7 +554,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_length;
++		unsigned int data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
+ 
+ 		if (wc->byte_len <
+@@ -565,14 +565,15 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		}
+ 
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+-		if (data_length) {
+-			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+-			    (u64)data_length) {
+-				put_recvmsg(t, recvmsg);
+-				smb_direct_disconnect_rdma_connection(t);
+-				return;
+-			}
++		data_offset = le32_to_cpu(data_transfer->data_offset);
++		if (wc->byte_len < data_offset ||
++		    wc->byte_len < (u64)data_offset + data_length) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
++		}
+ 
++		if (data_length) {
+ 			if (t->full_packet_received)
+ 				recvmsg->first_segment = true;
+ 
+
 
