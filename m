@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-180807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC1AB8DC5C
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 15:37:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6990DB8DC5F
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 15:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51F4B189E62D
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 13:38:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24D783A9640
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 13:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F29C253B4C;
-	Sun, 21 Sep 2025 13:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AC02D73B3;
+	Sun, 21 Sep 2025 13:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGMJnkQu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOpozGeO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F06A4A1A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662244A1A
 	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 13:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758461861; cv=none; b=Tyw9u5bvnhjh7eEHd4z7/MzBAFXXCPAbQxIogAqaW5CL06lm1kN1VenvPHjYBX7VjNkTbtPp4Ud20pPZMaddhRUSyqaMBQXh8tDZFaSSmFSkL0PzW+Bz0mlWkBDiVH0MAnijfbety6RI3xNadCHx8Fuj9fGYuZ3J6UDPcZQ7U4M=
+	t=1758461862; cv=none; b=bbIfOIeHPYzJwW6Sm61EaOAjFQJ+83mLOjX/SB/lgTk8YJ8TSaGhlzLOWGwdnHGc1wFnNM+/ZYgu3fltBUiPxlW6J98WjMll+k9B/JK0PCs73673mP/PgDSLZ0pIpXWfhFlO5bpZ+DN7mSg+TTfGezBkpm8N9ckzeYxxKp+/XjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758461861; c=relaxed/simple;
-	bh=yAl+XhKpdpCfRhFGn7e0pqOSueRe1jLhBJr7y40IaZo=;
+	s=arc-20240116; t=1758461862; c=relaxed/simple;
+	bh=7c3Qjl0yuMinfBwTqhCv/Fe6A23GUkuidjsbhMPCzbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0oJ6OzDOTvjitzYuwPFxAHanGXW+TNWJNhp7jcSa7gmopI0CB24EmX8VXJQDVxMkNBj4biMHQV79UJnOpdHfgJbIpJMJ9/XN1GBS/ib7iyrvlWQ0SFUtm/G/PDiW2Mip8Gb/SDy6nbh6Q3v1PV+5PKf2pkEO7iT9kbC2j+Qk4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGMJnkQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796FFC4CEE7;
-	Sun, 21 Sep 2025 13:37:40 +0000 (UTC)
+	 MIME-Version; b=PYWwbgg/ouL1ZfXS8ZC/+i7hpCEkox5um+KGtq/g0omeHjYNHQ/AuckYAzZN9PUnnCl+z+sa8ehYQY6RHRk+1894u+tx7KaAp1EYpiNmjOuknUUKfg+LaTDVW9lONjsNBetnzF2jeiGxoksCogA6sGym/mW620KIHGWQWamVWqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOpozGeO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B26C116C6;
+	Sun, 21 Sep 2025 13:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758461860;
-	bh=yAl+XhKpdpCfRhFGn7e0pqOSueRe1jLhBJr7y40IaZo=;
+	s=k20201202; t=1758461861;
+	bh=7c3Qjl0yuMinfBwTqhCv/Fe6A23GUkuidjsbhMPCzbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGMJnkQub82vT1oF1vyQGlHWsfzxv7GMIE8AwsDFa+fuyBjfdp9FPgikCZNaoIqto
-	 pUOvlRbuf7gMnCxfzwSAnyUEtnTPv/BTqAtMVohldUlyHGATAK40fHObjvNClkddOS
-	 5cnB6OQbHuFPAs1JiTcusx9gXoDuPMvmhQppGeuZblLwi6JDH5vb1hbJ62Mesi1Bvv
-	 Nk3xdkKFNn4oq2hVyEf10hxxGzxEed8nHrC1CzQd+EzzktAWcawqzOlZ5tuskhwRuF
-	 5WVB75Rt9kvpLHJ75TSsDak3gF2RpQFq8pvx2SAsSJjDrKi9l0xGmoEvXEJBlPHbQk
-	 ahKEZ3QVUlSug==
+	b=XOpozGeOsnTXVX6875XIdIswo97OH8zKRDfjuLBKVebylqbPHmEjMO0uIZ8+nBFjV
+	 nh6v2w5kSxtwpVoe+Fw3hDsqUUoZoyHDbxdAtROj8UkgAx3hIt5SCbHM87k6BRrJTP
+	 Cug7/W5jyItvewNrOBduTeAWylqhQnt1aMqtzXmLkJewjG8jkNwkwWNquxuAYyK6WO
+	 8pXiDP05lICT/w+o7FODjkNFyR6x8YCCzQKDP79J14vWPZzAMB/oasxY2a2Pv3Zr6E
+	 Phk90EWp/SlPag4jSsrhALjWopXTAqfikUAptFpWYHe4Ggh3sPqlyuM+12HcX5ThlY
+	 7RavWP1wEaCIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: SeongJae Park <sj@kernel.org>,
+Cc: Honggyu Kim <honggyu.kim@sk.com>,
+	SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 1/3] samples/damon/prcl: fix boot time enable crash
-Date: Sun, 21 Sep 2025 09:37:36 -0400
-Message-ID: <20250921133738.2911582-1-sashal@kernel.org>
+Subject: [PATCH 6.16.y 2/3] samples/damon: change enable parameters to enabled
+Date: Sun, 21 Sep 2025 09:37:37 -0400
+Message-ID: <20250921133738.2911582-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025092111-specked-enviably-906d@gregkh>
+In-Reply-To: <20250921133738.2911582-1-sashal@kernel.org>
 References: <2025092111-specked-enviably-906d@gregkh>
+ <20250921133738.2911582-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,53 +62,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: SeongJae Park <sj@kernel.org>
+From: Honggyu Kim <honggyu.kim@sk.com>
 
-[ Upstream commit 2780505ec2b42c07853b34640bc63279ac2bb53b ]
+[ Upstream commit 793020545cea0c9e2a79de6ad5c9746ec4f5bd7e ]
 
-If 'enable' parameter of the 'prcl' DAMON sample module is set at boot
-time via the kernel command line, memory allocation is tried before the
-slab is initialized.  As a result kernel NULL pointer dereference BUG can
-happen.  Fix it by checking the initialization status.
+The damon_{lru_sort,reclaim,stat} kernel modules use "enabled" parameter
+knobs as follows.
 
-Link: https://lkml.kernel.org/r/20250706193207.39810-3-sj@kernel.org
-Fixes: 2aca254620a8 ("samples/damon: introduce a skeleton of a smaple DAMON module for proactive reclamation")
-Signed-off-by: SeongJae Park <sj@kernel.org>
+  /sys/module/damon_lru_sort/parameters/enabled
+  /sys/module/damon_reclaim/parameters/enabled
+  /sys/module/damon_stat/parameters/enabled
+
+However, other sample modules of damon use "enable" parameter knobs so
+it'd be better to rename them from "enable" to "enabled" to keep the
+consistency with other damon modules.
+
+Before:
+  /sys/module/damon_sample_wsse/parameters/enable
+  /sys/module/damon_sample_prcl/parameters/enable
+  /sys/module/damon_sample_mtier/parameters/enable
+
+After:
+  /sys/module/damon_sample_wsse/parameters/enabled
+  /sys/module/damon_sample_prcl/parameters/enabled
+  /sys/module/damon_sample_mtier/parameters/enabled
+
+There is no functional changes in this patch.
+
+Link: https://lkml.kernel.org/r/20250707024548.1964-1-honggyu.kim@sk.com
+Signed-off-by: Honggyu Kim <honggyu.kim@sk.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Stable-dep-of: f826edeb888c ("samples/damon/wsse: avoid starting DAMON before initialization")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/damon/prcl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ samples/damon/mtier.c | 22 +++++++++++-----------
+ samples/damon/prcl.c  | 22 +++++++++++-----------
+ samples/damon/wsse.c  | 22 +++++++++++-----------
+ 3 files changed, 33 insertions(+), 33 deletions(-)
 
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index ed6bed8b3d4d9..11cbfea1af675 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -27,14 +27,14 @@ module_param(node1_end_addr, ulong, 0600);
+ static int damon_sample_mtier_enable_store(
+ 		const char *val, const struct kernel_param *kp);
+ 
+-static const struct kernel_param_ops enable_param_ops = {
++static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_sample_mtier_enable_store,
+ 	.get = param_get_bool,
+ };
+ 
+-static bool enable __read_mostly;
+-module_param_cb(enable, &enable_param_ops, &enable, 0600);
+-MODULE_PARM_DESC(enable, "Enable of disable DAMON_SAMPLE_MTIER");
++static bool enabled __read_mostly;
++module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
++MODULE_PARM_DESC(enabled, "Enable or disable DAMON_SAMPLE_MTIER");
+ 
+ static struct damon_ctx *ctxs[2];
+ 
+@@ -156,20 +156,20 @@ static bool init_called;
+ static int damon_sample_mtier_enable_store(
+ 		const char *val, const struct kernel_param *kp)
+ {
+-	bool enabled = enable;
++	bool is_enabled = enabled;
+ 	int err;
+ 
+-	err = kstrtobool(val, &enable);
++	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (enable == enabled)
++	if (enabled == is_enabled)
+ 		return 0;
+ 
+-	if (enable) {
++	if (enabled) {
+ 		err = damon_sample_mtier_start();
+ 		if (err)
+-			enable = false;
++			enabled = false;
+ 		return err;
+ 	}
+ 	damon_sample_mtier_stop();
+@@ -181,10 +181,10 @@ static int __init damon_sample_mtier_init(void)
+ 	int err = 0;
+ 
+ 	init_called = true;
+-	if (enable) {
++	if (enabled) {
+ 		err = damon_sample_mtier_start();
+ 		if (err)
+-			enable = false;
++			enabled = false;
+ 	}
+ 	return 0;
+ }
 diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
-index 5597e6a08ab22..a9d7629d70f0a 100644
+index a9d7629d70f0a..223f13a5a4ad4 100644
 --- a/samples/damon/prcl.c
 +++ b/samples/damon/prcl.c
-@@ -109,6 +109,8 @@ static void damon_sample_prcl_stop(void)
- 		put_pid(target_pidp);
- }
+@@ -17,14 +17,14 @@ module_param(target_pid, int, 0600);
+ static int damon_sample_prcl_enable_store(
+ 		const char *val, const struct kernel_param *kp);
  
-+static bool init_called;
-+
+-static const struct kernel_param_ops enable_param_ops = {
++static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_sample_prcl_enable_store,
+ 	.get = param_get_bool,
+ };
+ 
+-static bool enable __read_mostly;
+-module_param_cb(enable, &enable_param_ops, &enable, 0600);
+-MODULE_PARM_DESC(enable, "Enable of disable DAMON_SAMPLE_WSSE");
++static bool enabled __read_mostly;
++module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
++MODULE_PARM_DESC(enabled, "Enable or disable DAMON_SAMPLE_PRCL");
+ 
+ static struct damon_ctx *ctx;
+ static struct pid *target_pidp;
+@@ -114,20 +114,20 @@ static bool init_called;
  static int damon_sample_prcl_enable_store(
  		const char *val, const struct kernel_param *kp)
  {
-@@ -134,6 +136,14 @@ static int damon_sample_prcl_enable_store(
+-	bool enabled = enable;
++	bool is_enabled = enabled;
+ 	int err;
  
- static int __init damon_sample_prcl_init(void)
- {
-+	int err = 0;
-+
-+	init_called = true;
-+	if (enable) {
-+		err = damon_sample_prcl_start();
-+		if (err)
-+			enable = false;
-+	}
+-	err = kstrtobool(val, &enable);
++	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (enable == enabled)
++	if (enabled == is_enabled)
+ 		return 0;
+ 
+-	if (enable) {
++	if (enabled) {
+ 		err = damon_sample_prcl_start();
+ 		if (err)
+-			enable = false;
++			enabled = false;
+ 		return err;
+ 	}
+ 	damon_sample_prcl_stop();
+@@ -139,10 +139,10 @@ static int __init damon_sample_prcl_init(void)
+ 	int err = 0;
+ 
+ 	init_called = true;
+-	if (enable) {
++	if (enabled) {
+ 		err = damon_sample_prcl_start();
+ 		if (err)
+-			enable = false;
++			enabled = false;
+ 	}
  	return 0;
  }
+diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
+index e941958b10324..d50730ee65a7e 100644
+--- a/samples/damon/wsse.c
++++ b/samples/damon/wsse.c
+@@ -18,14 +18,14 @@ module_param(target_pid, int, 0600);
+ static int damon_sample_wsse_enable_store(
+ 		const char *val, const struct kernel_param *kp);
  
+-static const struct kernel_param_ops enable_param_ops = {
++static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_sample_wsse_enable_store,
+ 	.get = param_get_bool,
+ };
+ 
+-static bool enable __read_mostly;
+-module_param_cb(enable, &enable_param_ops, &enable, 0600);
+-MODULE_PARM_DESC(enable, "Enable or disable DAMON_SAMPLE_WSSE");
++static bool enabled __read_mostly;
++module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
++MODULE_PARM_DESC(enabled, "Enable or disable DAMON_SAMPLE_WSSE");
+ 
+ static struct damon_ctx *ctx;
+ static struct pid *target_pidp;
+@@ -94,20 +94,20 @@ static bool init_called;
+ static int damon_sample_wsse_enable_store(
+ 		const char *val, const struct kernel_param *kp)
+ {
+-	bool enabled = enable;
++	bool is_enabled = enabled;
+ 	int err;
+ 
+-	err = kstrtobool(val, &enable);
++	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (enable == enabled)
++	if (enabled == is_enabled)
+ 		return 0;
+ 
+-	if (enable) {
++	if (enabled) {
+ 		err = damon_sample_wsse_start();
+ 		if (err)
+-			enable = false;
++			enabled = false;
+ 		return err;
+ 	}
+ 	damon_sample_wsse_stop();
+@@ -119,10 +119,10 @@ static int __init damon_sample_wsse_init(void)
+ 	int err = 0;
+ 
+ 	init_called = true;
+-	if (enable) {
++	if (enabled) {
+ 		err = damon_sample_wsse_start();
+ 		if (err)
+-			enable = false;
++			enabled = false;
+ 	}
+ 	return err;
+ }
 -- 
 2.51.0
 
