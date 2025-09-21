@@ -1,129 +1,127 @@
-Return-Path: <stable+bounces-180836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB0EB8E375
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 20:46:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B81B8E3A2
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 21:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13ABD17D5D3
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 18:46:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF7218968F8
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 19:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696BB26529B;
-	Sun, 21 Sep 2025 18:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38747214A9B;
+	Sun, 21 Sep 2025 19:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A0RTRwAM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RIMP4rPw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4691E5B9A
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 18:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412242BB1D
+	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 19:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758480365; cv=none; b=qWaNtPK4eXM2rllc2fKNI3Uf1soQ0ZMWtfxRyLJnUQxbcy59VMYLxRBPiatWu1tLx5SZpAsK3ZiqAlWPXuh2yxd9BSQrp6VQMn8rKR15l4gHDM7oxKisdq3yYHXeFz5Y9D101T1aLfvuxats+vXvnvwMimXiQK/4suAyVqsN0i0=
+	t=1758481455; cv=none; b=ANxUKGlE73G5I5ZAZTNkTbn3H+JokCaFAMPTPTFq/UrbmnoTGz6yM7zoz7EicXSE35fH24gWW5PpcXJj0DPLL/VfOOaTcNPQz3vUsa3qBtMjuBPBfdEpkR16/0lgZzz2h7woM5EU0HeN6Hqdo/4hLrPs59ocBS6xhyiYc857iBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758480365; c=relaxed/simple;
-	bh=s2zLXFL3oZyxxRnuK7m4mTTTzjy81wEwkm7YmZJ3hOk=;
+	s=arc-20240116; t=1758481455; c=relaxed/simple;
+	bh=BJPFF72dsCJl//Va5XHokThLKW/b3to+vIBA6ac9V2w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DAlQJluj7pza5C2tLbr9z8Bp95Pxv4YwTReIgBBoNRJIz2fNh1afM17xFIDisTXcW8QscS/Xga1k83cayZ+pSm183uw9MTXbfBy0w6Od8XWtHpnFTuZXxibj8CXF6mpSiyeJlOvmC0nCyW0IWDZuU3KdYvRFLfQURYOxQ7gQSrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A0RTRwAM; arc=none smtp.client-ip=209.85.218.48
+	 To:Cc:Content-Type; b=kJtB2rIlb7pyt7A1vOGj/UXRGoce8alR3AVUcYtiaRIMNcSJEcoKp4pxUTVZc2XtOm6VR1lZ9V/MM44xWZLTuOSY0RvS52NQZayM5KXro52et7+WwWcJREvqIi6BFD2KVCqcLaGKYjX4gsgRfC6R+PTvEirJJd+yaGwO7IiO6Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RIMP4rPw; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b149efbed4eso589264766b.1
-        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 11:46:03 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b03fa5c5a89so485080166b.2
+        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 12:04:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758480362; x=1759085162; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758481451; x=1759086251; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LvrG/fYnobVZfYkaIXOslWuOpvRasf4JDL3N8DCdcQs=;
-        b=A0RTRwAMtYjsbE2dh7F6aSybVsW2KDNOhzynNZVg7etLOYUqySgmbrQZVG4eb0xaL5
-         /qFhlaMbRr+KGh81qyqjyVqlifaAYUMO8Ouee8z/N3qfSVUtl7swhKLPIWg17jeoRsaD
-         8OMAaAdCnVgWF4ktevl7OkCgDgvqGqc2XLFXC+YVdngZniD0V7Rakmtu2g/aMMy5FHko
-         4wd7hxgW8FRyPtm4ysC5KJGw2e6BVF2q12lSeNTSTnW0bAaV9yi7/5JkLInKyBV/EFvj
-         VDU7qOFgT1FDSxUyDHFSvLSmkEQ32nSH7vtfY/grpDdyT22TBAZqdPNilFNEVgLQtSWR
-         gezw==
+        bh=7HTjUfL5kki5kMB1zvXr2jB2trY+d+4aKWapJKFWTs0=;
+        b=RIMP4rPwyFlireRoboG79/sRAvOil2ckCejtv1XrYW6gqA+AoXfAxHjXQUfV6UuSHN
+         AfGyeomhHGQQmKSxYhOZaIKc40KkAzNXBteWAcxQ/f3djJPkXLNidgTAv7tC/QR5bIYg
+         o7qLwizrMOTEtJaLf+zthVGbmPwyZLK6q+2aapMAOGqMVt7kUlQ4W31K1DQCM0M67Gct
+         tQt8tyEpbs4zzFVQisAiQPrHCOrNZAWJcNSIz36kfFmjk0FsfLFSlCM0EfafGjR2Fy0d
+         WbwC6M7ZA9ysB+5ilpZjbwYR82VTAx+u6ANfddfa7rsOmQiKz4EFjVrf0fgUGn5ABn4j
+         oGkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758480362; x=1759085162;
+        d=1e100.net; s=20230601; t=1758481451; x=1759086251;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LvrG/fYnobVZfYkaIXOslWuOpvRasf4JDL3N8DCdcQs=;
-        b=AhKkPrUk36TsBskS/5sNDmRDTCmx3w9G45jcSqVYwrdrBxMZEY6NVaOql21dZ8X8t5
-         3PD9evF9ehEfNQeFiRkudLdiNp7zrRyXqKmJytAFzMolUnjVVQvSfnn6FGYOdMQ/oiPM
-         myHiD7fbHp6MAAfL+ZBcgQtZeoxiQA+8Y2eSGEUZ1k23rkcEyzBk3b1kXoVuhzMONrxj
-         Yi30gWvN1R1fwmoLcohDOzddi1qvRbbLKVmmrsiiIw+zRhq4UVymDBuG/bIXPR4/NzxL
-         vbwbnmDOyIYM+USvs8f0NFWtt0AQLbIBbRprcAqEnFHsKDxGT15oJObz9MTEAvH2S+dY
-         9obA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkZr/o1VK4KxkaJygu3fuGrVEJ8RlNOyamZcZR0CSfpve8J9EpqAqjwlcGk5uPIpsE/Bc6FD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZvD+b+Eh6y1bgMUXbmHVAhxqNQalAsVco59/8G8/N6OYIDr/7
-	Q7eR3PGM2nbFTo2JEP2NlLEnQITxSd6xKfd9CXzeeZhdQ5xrGXW+S1RqDe/Llw5MR9OYg4FKBPB
-	YwqxLQgYy2M60C98UfjHxSBU6tfohbDI=
-X-Gm-Gg: ASbGncsHsDf8BRYOFYh+wxs+bHlMlBfUH4EaAUwgcQohbzRcnnEQDAQG/t+nezqZcEV
-	YBj9nOipKYyOer2NoA+jy2gHdsib/I06WJgS8vtReIokoRVu0mqEzS9uPCMpdJ5mhVttNpCE5uI
-	M7DdRicaBM4zxjq0MWr3BQ88mQ1qJ44ncPECOuWgmytG/yuVOt+6JWtTB55OF9jgfwD7Vxalx5d
-	mLG/4c=
-X-Google-Smtp-Source: AGHT+IGGGllbTI7KeHuphlLDGQpJRt14pyAekhjmR1hgEzwbGY/f9vj/49nWttbUlxCKKlMAxXhz85pHtx1Lj09NDyY=
-X-Received: by 2002:a17:907:1c8e:b0:b04:39af:bee9 with SMTP id
- a640c23a62f3a-b24e116b821mr976879266b.0.1758480361850; Sun, 21 Sep 2025
- 11:46:01 -0700 (PDT)
+        bh=7HTjUfL5kki5kMB1zvXr2jB2trY+d+4aKWapJKFWTs0=;
+        b=AciU3U2mxxm9eK5CPK1K/mEWl01MoCsXOZ+W4/J8nVm8xw6HH+7K+meuTvkC+oLFv8
+         iqzztPneKrXYuxL7mA8Re1EnWD+CsN3ZnIOwX2oNDIbFuiK57cPxZohBHD8ChuVvoMHO
+         1igy2Rkr9i0qDbgzW2f2TwS/zL3y3Pp+nCouDJFnuhUAyTRcH5ANyM5A4QSptCbN/0HQ
+         dWgh+Cqr69p8FpIHX/82f4iXuGFNGXO4WTgN4Dm2FXF+Sx/VLoU4jSqpetvo4Sk50jPr
+         8KJVv3/69C2Z4t3nomvu5F37lCADKenYz79Vt5f6FqPxU/mvxa+7WAXZ2sGXNBJhYVhz
+         lIug==
+X-Forwarded-Encrypted: i=1; AJvYcCVl3lveT8wj1Wj+WXZqvSYYyYZjyX+Gv49c4vhwlP2D8bsMx25fP4OSmxTjq2dyBWBTKY1Gils=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwURLP3FI0b+mymTF/UHKwxQsjYgM3QZ/YSVWEsnK1gGfW7MEQg
+	AMmdkqYovy4sjsaTWRfK9vj/Qn9C6T0+bUPcbljPbidJj5YhHpoPyuh3sXJSEPhHgJmmwbD1ngH
+	OpTPG0INoK1BUvszgr1s68YrJxmIEFME=
+X-Gm-Gg: ASbGncv/1jIVlVat6pMb4ZAguK3FCM/y/FLJPe0EO4cMDjWaCtu8r3l2IxbtAnYaaix
+	X8xszxS1UBTU6pbO5ApjMo2LgwYoTJ47sazKAV0ezX6jWE3gXRGb8DntLZqZqZqdqfCLvKcxRP4
+	5iHUhe498Ne3BmzkCXkRBwKkVEswI71TPCbuQeZZ02/0fky/ZqOZHFPhhgnqBd5cUzhYovWo4zZ
+	5oDmHGiPJkCJFhFcw==
+X-Google-Smtp-Source: AGHT+IHBSnpMJcWk6XkKtG6y4uHFbhdXqxkzUnTU5yVuXt4gqaAGYKj+uH6Cnq8v6c/a2ZttHmoR79jp+2R7muQ2PIc=
+X-Received: by 2002:a17:907:3c8a:b0:b0b:f228:25a with SMTP id
+ a640c23a62f3a-b24f7f1a36amr1039680266b.64.1758481451396; Sun, 21 Sep 2025
+ 12:04:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250920200955.20403-1-hansg@kernel.org> <w7twypwesy4t5qkcupjqyqzcdh2soahqpa35rqeajzh2syhtra@6trjploaie6g>
- <d8e90507-49d1-4afa-a71a-ceacf5f89f82@kernel.org>
-In-Reply-To: <d8e90507-49d1-4afa-a71a-ceacf5f89f82@kernel.org>
+References: <20250920201200.20611-1-hansg@kernel.org> <6d9e13e9-1e93-4e39-bfd1-56e4d25c007f@kernel.org>
+In-Reply-To: <6d9e13e9-1e93-4e39-bfd1-56e4d25c007f@kernel.org>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 21 Sep 2025 21:45:24 +0300
-X-Gm-Features: AS18NWBhNqYELqho0RrBHNg2hMISYyhFwTOMutrnHFC2Ze-Ijp3oRQDj_P3ofHU
-Message-ID: <CAHp75Vdt6Fpt5JHzKFGLDGjeEV9io+D37FfbWWYMX6B4gc76+A@mail.gmail.com>
-Subject: Re: [PATCH v2] gpiolib: Extend software-node support to support
- secondary software-nodes
-To: Hans de Goede <hansg@kernel.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Andy Shevchenko <andy@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+Date: Sun, 21 Sep 2025 22:03:35 +0300
+X-Gm-Features: AS18NWCBhiEjsWPWd83UV9lSxsFOVR7Ya2wWnCbsBeeXYvaqpUaLo0Egqw1SSbE
+Message-ID: <CAHp75Vf-MMcVGDt5xAMB94N866jZROQPKpvu5dZ-nCEPA9j-pg@mail.gmail.com>
+Subject: Re: [PATCH 6.17 REGRESSION FIX] gpiolib: acpi: Make set debounce
+ errors non fatal
+To: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andy@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
 	linux-acpi@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 21, 2025 at 4:00=E2=80=AFPM Hans de Goede <hansg@kernel.org> wr=
-ote:
-> On 20-Sep-25 11:27 PM, Dmitry Torokhov wrote:
-> > On Sat, Sep 20, 2025 at 10:09:55PM +0200, Hans de Goede wrote:
+On Sun, Sep 21, 2025 at 9:09=E2=80=AFPM Mario Limonciello (AMD) (kernel.org=
+)
+<superm1@kernel.org> wrote:
+> On 9/20/2025 3:12 PM, Hans de Goede wrote:
 
 ...
 
-> > Bikeshedding for later. Maybe do it like this in case we can have more
-> > than 2 nodes at some point?
-> >
-> >         do {
-> >               desc =3D gpiod_find_by_fwnode(fwnode, consumer, con_id, i=
-dx, flags, lookupflags);
-> >               if (!gpiod_not_found(desc))
-> >                       return desc;
-> >
-> >               fwnode =3D fwnode->secondary;
-> >       } while (!IS_ERR_OR_NULL(fwnode));
-> >
-> >       return ERR_PTR(-ENOENT);
+> Looks pretty much identical now to what I sent in my v3 and that Andy
+> had requested we change to make it fatal [1].
 >
-> At a minimum this would need to a regular while () {} loop then,
-> the initial fwnode may also be NULL and we don't want to deref that.
->
-> Andy did mention turning the fwnode-s into a regular linked-list
-> in the future, but I think that would be using <linux/list.h> then,
-> replacing the secondary pointer with a list head ?
+> Where is this bad GPIO value coming from?  It's in the GpioInt()
+> declaration?  If so, should the driver actually be supporting this?
 
-Dropping secondary in the struct fwnode_handle and use struct
-list_head somewhere else, e.g., struct device.
+Since it's in acpi_find_gpio() it's about any GPIO resource type.
+Sorry, it seems I missed this fact. I was under the impression that v4
+was done only for the GpioInt() case. With this being said, the
+GpioIo() should not be fatal (it's already proven by cases in the wild
+that sometimes given values there are unsupported by HW), but
+GpioInt() in my opinion needs a justification to become non-fatal.
+OTOH, for the first case we can actually run SW debounce. But it might
+be quite an intrusive change to call it "a fix".
 
-> >> +}
+So, taking the above into account I suggest that the helper should
+return int and check the info.gpioint flag and in case of being set,
+return an error, otherwise ignore wrong settings. Or something like
+this. In such a case we may also use it in the
+acpi_dev_gpio_irq_wake_get_by().
+
+> https://lore.kernel.org/linux-gpio/20250811164356.613840-1-superm1@kernel=
+.org/
+> [1]
 
 
 --=20
