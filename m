@@ -1,152 +1,135 @@
-Return-Path: <stable+bounces-180741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3EEB8D6D5
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 09:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70528B8D760
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 10:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C733B9EFB
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 07:36:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C20D3BF6F8
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 08:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E98C2BE65F;
-	Sun, 21 Sep 2025 07:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127C323D7E8;
+	Sun, 21 Sep 2025 08:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ARVmY+Vz"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GsrVTsOx";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Vt982O9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD243FB31;
-	Sun, 21 Sep 2025 07:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35FD184;
+	Sun, 21 Sep 2025 08:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758440211; cv=none; b=W52wGFJmE0mpoHGO/FAs09bHtvzZTHJ0tQvhFNt3RRkn0F5YmBteyNoDh/jBTwVGPjO5Fa3jZl1X3qumPj6K6KNpcts5nJS3PEK5ccpK+f5HxNneVohVcvEDR8uDVlJkxGaf+17hcjRc1DPiyK5pVu1o1NXgWDWf3N9nKJbSnRY=
+	t=1758443285; cv=none; b=HCuCjXVJJe8UQaz0OoIM8SoK3GUKp0zoDSv8viUibYQNldGk8TofBOqLFzwwM8LfF8f1LPnuuZP0u7/EqJoMm4Yu5KOCF4QN7hagorAZWTx/jy/eT+6RMIbcc3+qHAeS3Ozz1PYj3OSIqoSOZt/byUtrFZEkf2u8JUBzlEqfxW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758440211; c=relaxed/simple;
-	bh=u+7GWK94K2d12xoNceoyNQMPQ+Avsc5hXDrIp3bhOiw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vul3RdD83XcoJWZn6df4Q/NGyEicGLH+J85HWd++qRQkysDlOV0dPXub7HmJgZv6+D3i5mCJ0ulj2fdpQBRkTc/frTUK0thShcc7OYWSzQefVOGilq1fgrLp9WZUvVN5FrJGObVz+boflvNLO1dB81uhr63Vazs1PgVRWRPVOoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ARVmY+Vz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8C8C4CEE7;
-	Sun, 21 Sep 2025 07:36:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758440211;
-	bh=u+7GWK94K2d12xoNceoyNQMPQ+Avsc5hXDrIp3bhOiw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ARVmY+VzcXR/pwJD4cJSRgX+IajyrlajMfIWP/OlGMJvNOua8lbiv+guGXgycID6i
-	 4ONFjQRLNiTR6Jr3gN/jljj8TWjlKiMfcsW7UPrZ0Xq7k7AhRStXbFpgfr2wJT4vI8
-	 /I6zUmRm7+RhZM9XtLRt5Esv6URS2lD51qwKNifB4yUl3OwFQZUZiYUwjHYAqtevdR
-	 JnMoUojwQxcrSZjkuXMidH8izfveUAtlaFtMrMW53mTwPKPD/lasRlrt/TvPE/9UWk
-	 /r01Y3y6nxVidYXq/ZsQ+m3klo8QUcyujlIiSheFX2GDlAjZ3GLwEsv01HPfVbyTRO
-	 j2wz/sYZAtZ1w==
-Date: Sun, 21 Sep 2025 10:36:44 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Yang Shi <yang@os.amperecomputing.com>
-Cc: Will Deacon <will@kernel.org>, catalin.marinas@arm.com,
-	ryan.roberts@arm.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [v2 PATCH] arm64: kprobes: call set_memory_rox() for kprobe page
-Message-ID: <aM-rDD-TRqmtr6Nb@kernel.org>
-References: <20250918162349.4031286-1-yang@os.amperecomputing.com>
- <aMxAwDr11M2VG5XV@willie-the-truck>
- <8df9d007-f363-4488-96e9-fbf017d9c8e2@os.amperecomputing.com>
+	s=arc-20240116; t=1758443285; c=relaxed/simple;
+	bh=a2ozcfRvL1LNCpQJLw3UNVFJr5AW/8/JVOwIRszxAWM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iP6CgFJfebvPqX9Ji3+3ITazOkTkrW3cws2hV9Bh1QDWv0gtFlgClr8rlmpm6IZj2fgAQljDsqoG5XmvJ4iN1H6HfZgX2SbcvaVeZDJk/kygjgW3K850ltGEQVr05QvqgQmGoNKig18bls0FrmOBp/qJFmBUTAfG5+V7fcxACqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GsrVTsOx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1Vt982O9; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1758443281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9Zd+C1azbDEt3Vz0ImeQyxblM1ChpI5F+d3T0ZRmmlY=;
+	b=GsrVTsOxqKIg/ZCp3pN45SNUYSErdZ0EAY747oORQ2U7LzGsfw5uvTIi0jiCI7NAOCKL54
+	RIHBqJYdv/bvoSRKFhNnscwonRjNHokJ440D0GhWFbsXdfeVYyK3AjOTawROhsM6kvBUg4
+	yiE23i0txfBEim2aXazFWBtqn8xN/8T1WHebLcy6PTEkJXCJP+hnvjIRXxxMrN22m8njnW
+	tDHtlxv+8dnp6KSQM7B9zfcImg8UTofoG8iOsTZaNLs2EXzt6jBIzbVm9XGZ7t49Slrkva
+	+b/Glj7TJjRCv0UYdORckiCkNNQgLhI565BSK+RaDeaeZIjXy4/rmln5swsMng==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1758443281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9Zd+C1azbDEt3Vz0ImeQyxblM1ChpI5F+d3T0ZRmmlY=;
+	b=1Vt982O9XL6grD/TgQTBMrDh1K0kOl0pnLICT4p5yqtFxB1xxU9uQ9uER0HWNGToyNWAFl
+	zUz66DO3CeeZpfBw==
+To: Lucas Zampieri <lzampier@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Lucas Zampieri <lzampier@redhat.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Samuel Holland <samuel.holland@sifive.com>,
+ stable@vger.kernel.org, linux-riscv@lists.infradead.org, Jia Wang
+ <wangjia@ultrarisc.com>
+Subject: Re: [PATCH] irqchip/sifive-plic: avoid interrupt ID 0 handling
+ during suspend/resume
+In-Reply-To: <20250915162847.103445-1-lzampier@redhat.com>
+References: <20250915162847.103445-1-lzampier@redhat.com>
+Date: Sun, 21 Sep 2025 10:27:59 +0200
+Message-ID: <87ikhc5hww.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8df9d007-f363-4488-96e9-fbf017d9c8e2@os.amperecomputing.com>
+Content-Type: text/plain
 
-On Thu, Sep 18, 2025 at 10:33:26AM -0700, Yang Shi wrote:
-> 
-> 
-> On 9/18/25 10:26 AM, Will Deacon wrote:
-> > On Thu, Sep 18, 2025 at 09:23:49AM -0700, Yang Shi wrote:
-> > > The kprobe page is allocated by execmem allocator with ROX permission.
-> > > It needs to call set_memory_rox() to set proper permission for the
-> > > direct map too. It was missed.
-> > > 
-> > > Fixes: 10d5e97c1bf8 ("arm64: use PAGE_KERNEL_ROX directly in alloc_insn_page")
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-> > > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-> > > ---
-> > > v2: Separated the patch from BBML2 series since it is an orthogonal bug
-> > >      fix per Ryan.
-> > >      Fixed the variable name nit per Catalin.
-> > >      Collected R-bs from Catalin.
-> > > 
-> > >   arch/arm64/kernel/probes/kprobes.c | 12 ++++++++++++
-> > >   1 file changed, 12 insertions(+)
-> > > 
-> > > diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
-> > > index 0c5d408afd95..8ab6104a4883 100644
-> > > --- a/arch/arm64/kernel/probes/kprobes.c
-> > > +++ b/arch/arm64/kernel/probes/kprobes.c
-> > > @@ -10,6 +10,7 @@
-> > >   #define pr_fmt(fmt) "kprobes: " fmt
-> > > +#include <linux/execmem.h>
-> > >   #include <linux/extable.h>
-> > >   #include <linux/kasan.h>
-> > >   #include <linux/kernel.h>
-> > > @@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
-> > >   static void __kprobes
-> > >   post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct pt_regs *);
-> > > +void *alloc_insn_page(void)
-> > > +{
-> > > +	void *addr;
-> > > +
-> > > +	addr = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
-> > > +	if (!addr)
-> > > +		return NULL;
-> > > +	set_memory_rox((unsigned long)addr, 1);
-> > > +	return addr;
-> > > +}
-> > Why isn't execmem taking care of this? It looks to me like the
-> > execmem_cache_alloc() path calls set_memory_rox() but the
-> > execmem_vmalloc() path doesn't?
+On Mon, Sep 15 2025 at 17:28, Lucas Zampieri wrote:
 
-execmem_alloc() -> execmem_vmalloc() consolidated __vmalloc_node_range()
-for executable allocations. Those also didn't update the linear map alias.
+> To: linux-kernel@vger.kernel.org
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Samuel Holland <samuel.holland@sifive.com>
+> Cc: stable@vger.kernel.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: Thomas Gleixner <tglx@linutronix.de>
 
-It could be added to execmem_vmalloc(), but as of now we don't have a way
-for generic code to tell which set_memory method to call based on pgprot,
-so making execmem_vmalloc() to deal with direct map alias is quite
-involved.
+How is this Cc list relevant in explaining the changes here?
 
-It would be easier to just remove the direct map alias. It works on x86 so
-I don't see what can possibly go wrong :)
- 
-> execmem_cache_alloc() is just called if execmem ROX cache is enabled, but it
-> currently just supported by x86. Included Mike to this thread who is the
-> author of execmem ROX cache.
-> 
-> > 
-> > It feels a bit bizarre to me that we have to provide our own wrapper
-> > (which is identical to what s390 does). Also, how does alloc_insn_page()
-> > handle the direct map alias on x86?
+> According to the PLIC specification[1], global interrupt sources are
+> assigned small unsigned integer identifiers beginning at the value 1.
+> An interrupt ID of 0 is reserved to mean "no interrupt".
+>
+> The current plic_irq_resume() and plic_irq_suspend() functions incorrectly
+> starts the loop from index 0, which could access the reserved interrupt ID
+> 0 register space.
+> This fix changes the loop to start from index 1, skipping the reserved
+> interrupt ID 0 as per the PLIC specification.
 
-s390 had its version of alloc_insn_page() long before execmem so there I
-just replaced module_alloc() with exemem_alloc().
+s/This fix changes/Change/
 
-arm64 version of alloc_insn_page() didn't update the direct map before
-execmem, so I overlooked this issue when I was converting arm64 to execmem.
- 
-> x86 handles it via execmem ROX cache.
-> 
-> Thanks,
-> Yang
-> 
-> > 
-> > Will
-> 
+And please separate this from the explanation above.
 
--- 
-Sincerely yours,
-Mike.
+https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#patch-submission-notes
+
+> This prevents potential undefined behavior when accessing the reserved
+> register space during suspend/resume cycles.
+>
+> Fixes: e80f0b6a2cf3 ("irqchip/irq-sifive-plic: Add syscore callbacks for hibernation")
+> Co-developed-by: Jia Wang <wangjia@ultrarisc.com>
+> Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+> Signed-off-by: Lucas Zampieri <lzampier@redhat.com>
+>
+> [1] https://github.com/riscv/riscv-plic-spec/releases/tag/1.0.0
+
+Link: .....
+
+This [1] stuff is just annoying.
+
+> ---
+>  drivers/irqchip/irq-sifive-plic.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+> index bf69a4802b71..1c2b4d2575ac 100644
+> --- a/drivers/irqchip/irq-sifive-plic.c
+> +++ b/drivers/irqchip/irq-sifive-plic.c
+> @@ -252,7 +252,7 @@ static int plic_irq_suspend(void)
+>  
+>  	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
+>  
+> -	for (i = 0; i < priv->nr_irqs; i++) {
+> +	for (i = 1; i < priv->nr_irqs; i++) {
+
+This lacks a comment explaining this non-obvious 'i = 1'.
+
+Thanks,
+
+        tglx
 
