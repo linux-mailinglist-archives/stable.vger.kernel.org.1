@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-180752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6BAB8DA8B
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 14:16:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875A8B8DA92
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 14:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A78AB3BE8BF
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 12:16:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF2A3BCED6
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 12:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453882E40B;
-	Sun, 21 Sep 2025 12:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574081A9F97;
+	Sun, 21 Sep 2025 12:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtowiSAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pmyb/vsx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0206134BA52
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 12:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1541534BA52
+	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 12:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758456962; cv=none; b=XvMuBsm4FJFjF+bP45zWxotaMNUKQwnFXNc3i68wsxKzp8StfXLJfDtTiXD4SXOwDn7/VTdibIIRVMUiqANcwMSTUt3kYw06ydBRBjVYjyYOTtpkD/Z/CYgxxTbhhy5IgL9WMa/jd4IyHjLi4VEYnnPVgSGAPbGJiYccORmUjkc=
+	t=1758457066; cv=none; b=fpy/y6+Dgi2yNCDDAmfBubO2Opn/DhXtk8+jcX/5HpCszGm84v9M0wVVL2MVJ2YqtGjtr1fGNbcVehU0WFuT3sqbNf9+1QI+k1xMveB2e6pw5Hhr+OnNdyELranbPFDUMUMYxVgqgEhBFzIkuy3hqfDVNzWrXEaDcAGvmsQe73Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758456962; c=relaxed/simple;
-	bh=nUbrhrssw0Nhx29CwtxiN9cR5+pvpWRT9Hl48lkEL5U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kJptlmwQtarL43u2UQ4QhYQaM2oLk0J+xIPiRqi45PFInteJiDWgAQ15i5iYdi4TqLEwEjRt8Fnj9kUF3dZPvlN0d9bsr+h5r/7vi8TETNXCEZVhn0WxDOlvKFQ8nyvsghoa4K6XR1ftE7TYUzhWHfaBSqdMd3SNhN3SqQZa6tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtowiSAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B783C116B1;
-	Sun, 21 Sep 2025 12:16:01 +0000 (UTC)
+	s=arc-20240116; t=1758457066; c=relaxed/simple;
+	bh=WSyGVZaClERWCe55wISy62gJN83NbBVzAZO6eKG2f5Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BDmKG/fySWzpJCYeHl9vnALhM0HgVpI3aVdEfCYIOEhH8D4bRga6o1lchHZKhhjrl38xEvvdC9TS3ic/7Dp2U6j5bU/i9yaXa4v/ZBTniMhkyh3PLzQzfRpS6Xv9NuSNnzxZqZYCFEWHRRb7vRVGHKxXIYMyh16ZNN0Ygjr3jto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pmyb/vsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275CFC4CEE7;
+	Sun, 21 Sep 2025 12:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758456961;
-	bh=nUbrhrssw0Nhx29CwtxiN9cR5+pvpWRT9Hl48lkEL5U=;
+	s=korg; t=1758457065;
+	bh=WSyGVZaClERWCe55wISy62gJN83NbBVzAZO6eKG2f5Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WtowiSArY109YB15wHD5DtO5tHdBR/f4BCs6oUveSIDVRPzpDX9Nxn9tw8KFcVJZq
-	 DA6uKug/k+SYH2/RD+wnUQoR68EsWICHtIgX14xmXaD7JVd1dsrBBh+sWAhdEFhJ4h
-	 jNDJY7ndq+SDM4acboJGn4J5e01lfjKO5P9qkAPk=
-Subject: FAILED: patch "[PATCH] mm/gup: check ref_count instead of lru before migration" failed to apply to 5.4-stable tree
-To: hughd@google.com,akpm@linux-foundation.org,aneesh.kumar@kernel.org,axelrasmussen@google.com,chrisl@kernel.org,david@redhat.com,hannes@cmpxchg.org,hch@infradead.org,jgg@ziepe.ca,jhubbard@nvidia.com,kas@kernel.org,keirf@google.com,koct9i@gmail.com,lizhe.67@bytedance.com,peterx@redhat.com,riel@surriel.com,shivankg@amd.com,stable@vger.kernel.org,vbabka@suse.cz,weixugc@google.com,will@kernel.org,willy@infradead.org,yangge1116@126.com,yuanchu@google.com,yuzhao@google.com
+	b=Pmyb/vsxzu01zl03KvvspMlJO7WjyOdhvYNrJFHv0NqZeq3iYg5W2Xsn6gcQhS6B3
+	 6u+PG5Q/zXBKN1/3qBrEjcudTKvOpsVWAbBcPiTYu5D/A+y+iSN9W8Bx2UxZmpLmhK
+	 9TAQBKiNYuioF0U5S/IWZXA+YJuANMigxBIy1rJE=
+Subject: FAILED: patch "[PATCH] mm: folio_may_be_lru_cached() unless folio_test_large()" failed to apply to 6.12-stable tree
+To: hughd@google.com,akpm@linux-foundation.org,aneesh.kumar@kernel.org,axelrasmussen@google.com,chrisl@kernel.org,david@redhat.com,hannes@cmpxchg.org,hch@infradead.org,jgg@ziepe.ca,jhubbard@nvidia.com,keirf@google.com,koct9i@gmail.com,lizhe.67@bytedance.com,peterx@redhat.com,riel@surriel.com,shivankg@amd.com,stable@vger.kernel.org,vbabka@suse.cz,weixugc@google.com,will@kernel.org,willy@infradead.org,yangge1116@126.com,yuanchu@google.com,yuzhao@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 21 Sep 2025 14:15:56 +0200
-Message-ID: <2025092156-candied-rogue-bf08@gregkh>
+Date: Sun, 21 Sep 2025 14:17:42 +0200
+Message-ID: <2025092142-easiness-blatancy-23af@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 98c6d259319ecf6e8d027abd3f14b81324b8c0ad
+git cherry-pick -x 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092156-candied-rogue-bf08@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092142-easiness-blatancy-23af@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,100 +77,31 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 98c6d259319ecf6e8d027abd3f14b81324b8c0ad Mon Sep 17 00:00:00 2001
+From 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 Mon Sep 17 00:00:00 2001
 From: Hugh Dickins <hughd@google.com>
-Date: Mon, 8 Sep 2025 15:15:03 -0700
-Subject: [PATCH] mm/gup: check ref_count instead of lru before migration
+Date: Mon, 8 Sep 2025 15:23:15 -0700
+Subject: [PATCH] mm: folio_may_be_lru_cached() unless folio_test_large()
 
-Patch series "mm: better GUP pin lru_add_drain_all()", v2.
+mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
+large folio is added: so collect_longterm_unpinnable_folios() just wastes
+effort when calling lru_add_drain[_all]() on a large folio.
 
-Series of lru_add_drain_all()-related patches, arising from recent mm/gup
-migration report from Will Deacon.
+But although there is good reason not to batch up PMD-sized folios, we
+might well benefit from batching a small number of low-order mTHPs (though
+unclear how that "small number" limitation will be implemented).
 
+So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
+insulate those particular checks from future change.  Name preferred to
+"folio_is_batchable" because large folios can well be put on a batch: it's
+just the per-CPU LRU caches, drained much later, which need care.
 
-This patch (of 5):
+Marked for stable, to counter the increase in lru_add_drain_all()s from
+"mm/gup: check ref_count instead of lru before migration".
 
-Will Deacon reports:-
-
-When taking a longterm GUP pin via pin_user_pages(),
-__gup_longterm_locked() tries to migrate target folios that should not be
-longterm pinned, for example because they reside in a CMA region or
-movable zone.  This is done by first pinning all of the target folios
-anyway, collecting all of the longterm-unpinnable target folios into a
-list, dropping the pins that were just taken and finally handing the list
-off to migrate_pages() for the actual migration.
-
-It is critically important that no unexpected references are held on the
-folios being migrated, otherwise the migration will fail and
-pin_user_pages() will return -ENOMEM to its caller.  Unfortunately, it is
-relatively easy to observe migration failures when running pKVM (which
-uses pin_user_pages() on crosvm's virtual address space to resolve stage-2
-page faults from the guest) on a 6.15-based Pixel 6 device and this
-results in the VM terminating prematurely.
-
-In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
-mapping of guest memory prior to the pinning.  Subsequently, when
-pin_user_pages() walks the page-table, the relevant 'pte' is not present
-and so the faulting logic allocates a new folio, mlocks it with
-mlock_folio() and maps it in the page-table.
-
-Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch
-by pagevec"), mlock/munlock operations on a folio (formerly page), are
-deferred.  For example, mlock_folio() takes an additional reference on the
-target folio before placing it into a per-cpu 'folio_batch' for later
-processing by mlock_folio_batch(), which drops the refcount once the
-operation is complete.  Processing of the batches is coupled with the LRU
-batch logic and can be forcefully drained with lru_add_drain_all() but as
-long as a folio remains unprocessed on the batch, its refcount will be
-elevated.
-
-This deferred batching therefore interacts poorly with the pKVM pinning
-scenario as we can find ourselves in a situation where the migration code
-fails to migrate a folio due to the elevated refcount from the pending
-mlock operation.
-
-Hugh Dickins adds:-
-
-!folio_test_lru() has never been a very reliable way to tell if an
-lru_add_drain_all() is worth calling, to remove LRU cache references to
-make the folio migratable: the LRU flag may be set even while the folio is
-held with an extra reference in a per-CPU LRU cache.
-
-5.18 commit 2fbb0c10d1e8 may have made it more unreliable.  Then 6.11
-commit 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding
-to LRU batch") tried to make it reliable, by moving LRU flag clearing; but
-missed the mlock/munlock batches, so still unreliable as reported.
-
-And it turns out to be difficult to extend 33dfe9204f29's LRU flag
-clearing to the mlock/munlock batches: if they do benefit from batching,
-mlock/munlock cannot be so effective when easily suppressed while !LRU.
-
-Instead, switch to an expected ref_count check, which was more reliable
-all along: some more false positives (unhelpful drains) than before, and
-never a guarantee that the folio will prove migratable, but better.
-
-Note on PG_private_2: ceph and nfs are still using the deprecated
-PG_private_2 flag, with the aid of netfs and filemap support functions.
-Although it is consistently matched by an increment of folio ref_count,
-folio_expected_ref_count() intentionally does not recognize it, and ceph
-folio migration currently depends on that for PG_private_2 folios to be
-rejected.  New references to the deprecated flag are discouraged, so do
-not add it into the collect_longterm_unpinnable_folios() calculation: but
-longterm pinning of transiently PG_private_2 ceph and nfs folios (an
-uncommon case) may invoke a redundant lru_add_drain_all().  And this makes
-easy the backport to earlier releases: up to and including 6.12, btrfs
-also used PG_private_2, but without a ref_count increment.
-
-Note for stable backports: requires 6.16 commit 86ebd50224c0 ("mm:
-add folio_expected_ref_count() for reference count calculation").
-
-Link: https://lkml.kernel.org/r/41395944-b0e3-c3ac-d648-8ddd70451d28@google.com
-Link: https://lkml.kernel.org/r/bd1f314a-fca1-8f19-cac0-b936c9614557@google.com
+Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
 Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
 Signed-off-by: Hugh Dickins <hughd@google.com>
-Reported-by: Will Deacon <will@kernel.org>
-Closes: https://lore.kernel.org/linux-mm/20250815101858.24352-1-will@kernel.org/
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Suggested-by: David Hildenbrand <david@redhat.com>
 Acked-by: David Hildenbrand <david@redhat.com>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: Axel Rasmussen <axelrasmussen@google.com>
@@ -188,25 +119,97 @@ Cc: Rik van Riel <riel@surriel.com>
 Cc: Shivank Garg <shivankg@amd.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
 Cc: yangge <yangge1116@126.com>
 Cc: Yuanchu Xie <yuanchu@google.com>
 Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 2fe6ed2cc3fd..7012a0f758d8 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -385,6 +385,16 @@ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
+ 
++static inline bool folio_may_be_lru_cached(struct folio *folio)
++{
++	/*
++	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
++	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
++	 * will be sensible, but nobody has implemented and tested that yet.
++	 */
++	return !folio_test_large(folio);
++}
++
+ extern atomic_t lru_disable_count;
+ 
+ static inline bool lru_cache_disabled(void)
 diff --git a/mm/gup.c b/mm/gup.c
-index adffe663594d..82aec6443c0a 100644
+index b47066a54f52..0bc4d140fc07 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -2307,7 +2307,8 @@ static unsigned long collect_longterm_unpinnable_folios(
+@@ -2307,13 +2307,13 @@ static unsigned long collect_longterm_unpinnable_folios(
  			continue;
  		}
  
--		if (!folio_test_lru(folio) && drain_allow) {
-+		if (drain_allow && folio_ref_count(folio) !=
-+				   folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
- 			drain_allow = false;
+-		if (drained == 0 &&
++		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain();
+ 			drained = 1;
  		}
+-		if (drained == 1 &&
++		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+diff --git a/mm/mlock.c b/mm/mlock.c
+index a1d93ad33c6d..bb0776f5ef7c 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
+ 	 */
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, folio) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+diff --git a/mm/swap.c b/mm/swap.c
+index 6ae2d5680574..b74ebe865dd9 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -192,7 +192,7 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+ 		local_lock(&cpu_fbatches.lock);
+ 
+ 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
+-			folio_test_large(folio) || lru_cache_disabled())
++			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 
+ 	if (disable_irq)
 
 
