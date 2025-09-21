@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-180789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16992B8DB19
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 14:34:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBD8B8DB1F
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 14:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32E787A3294
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 12:32:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E053189D777
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 12:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49F222F757;
-	Sun, 21 Sep 2025 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC0525393E;
+	Sun, 21 Sep 2025 12:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efjtIFZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIYgUhIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E861853
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FAE1A9F9E
+	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 12:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758458043; cv=none; b=b1a1xuSRRgy/cO4WOKQXTZzplImFwGS30OO0CEF2Iyov9PfsQf+hadAXHB+LEFja5WDhhIffYHCCM8KCgSPdL2+C6GE4elbjYc9qKpmI6MO1v5sqDKup++pQouTF5/9dY0jUO3gGyqJ6HT02xGLNXEtRDh5DGPADimzwY6w75q8=
+	t=1758458068; cv=none; b=rBer7rMVlDZbTY7O/kkFOO6ydyb8VI00GnwDMZx4d7pf738RrJt1h/ul1A3GPsPa04ywkLDV0raI4ChN4wVeuSqiOFr8f0aC/Jz3m3GKGW4ofW/8WZUuFmHBrlPNO+co+QnrVvI+76+xcsiLryCDc5Oo75xsig/1MRCbc7B1ejk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758458043; c=relaxed/simple;
-	bh=KKA3+p3wbIOBMKnXE8L/14ncsPKZywGV5qpCZJeXYA8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l8d582AGNUTAik/8SkMJrfh4UJ9Z43uY/eYrSxs8ErES1AZynGR71i6X9xLxqPH3z5uLCLuBBdZ7RdfeFDfumao8vGuHMBjMtK7bjx5FW2bNVF5XcPZ+7Lvgx8FhxhGb1fr4NR7zyqHGd1aR7RSYXGj+96ou08+UHpvr26ciwiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efjtIFZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBF0C4CEE7;
-	Sun, 21 Sep 2025 12:34:02 +0000 (UTC)
+	s=arc-20240116; t=1758458068; c=relaxed/simple;
+	bh=+25xnoZtEsG1Yamny17QMYeW15rDuoh+wJ+oLPcUBD4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EW3GQATs6+3wxxvhB3uzbKIe2E52jEuHUjWtTnLOJyu3QUgpNQGxnOngCI6YAR7lhqZou29lMLrbZ5If8SQndM+mXO9I/p34E4u2S5xSMbWK2FajsPQOt0TiPgv2Ze31OQYyJ5eMZnnPL3H+xGF/HJ2qiEFN67AMsyUjnXzQQmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIYgUhIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1764CC4CEE7;
+	Sun, 21 Sep 2025 12:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758458043;
-	bh=KKA3+p3wbIOBMKnXE8L/14ncsPKZywGV5qpCZJeXYA8=;
+	s=korg; t=1758458068;
+	bh=+25xnoZtEsG1Yamny17QMYeW15rDuoh+wJ+oLPcUBD4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=efjtIFZBkZPwpEatf6zIqKWw4SEIGYkd1pLyMnjSnf76mkQe2UPwr3jBTFD9fZ1pI
-	 U+ecNiDAIklzPNDbBxEEEOToOwa4rO7EegBX8mZyHD7H9XCDw6nXzjB46N9JSTJHpL
-	 fxgdRqfca3X2AjwFuJExyDa51sutvdyZex+h5okU=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: connect: catch IO errors on listen side" failed to apply to 5.15-stable tree
-To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org,martineau@kernel.org
+	b=UIYgUhIa4jAW8DjHdDi8BNoBMGiHPjQAuCSwfd7MRcm8yLNk+yZ2LhYcjs69fJmcH
+	 TDwxMpVtp3iUtK2MpSt/bKCW4IkoEacRW0LBbVcJ9twR8Ft/g4XBwmv7I/DlzQD4Z+
+	 RU+bfcB6f/oEygIh95vRYb75FR8fiXnubMLn9mdA=
+Subject: FAILED: patch "[PATCH] platform/x86: asus-wmi: Re-add extra keys to ignore_key_wlan" failed to apply to 6.16-stable tree
+To: lkml@antheas.dev,ilpo.jarvinen@linux.intel.com,rahul@chandra.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 21 Sep 2025 14:33:58 +0200
-Message-ID: <2025092158-molehill-radiation-11c3@gregkh>
+Date: Sun, 21 Sep 2025 14:34:26 +0200
+Message-ID: <2025092125-thigh-immerse-6abd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.16-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 14e22b43df25dbd4301351b882486ea38892ae4f
+git cherry-pick -x 225d1ee0f5ba3218d1814d36564fdb5f37b50474
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092158-molehill-radiation-11c3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092125-thigh-immerse-6abd@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,70 +77,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 14e22b43df25dbd4301351b882486ea38892ae4f Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 12 Sep 2025 14:25:51 +0200
-Subject: [PATCH] selftests: mptcp: connect: catch IO errors on listen side
+From 225d1ee0f5ba3218d1814d36564fdb5f37b50474 Mon Sep 17 00:00:00 2001
+From: Antheas Kapenekakis <lkml@antheas.dev>
+Date: Tue, 16 Sep 2025 09:28:18 +0200
+Subject: [PATCH] platform/x86: asus-wmi: Re-add extra keys to ignore_key_wlan
+ quirk
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-IO errors were correctly printed to stderr, and propagated up to the
-main loop for the server side, but the returned value was ignored. As a
-consequence, the program for the listener side was no longer exiting
-with an error code in case of IO issues.
+It turns out that the dual screen models use 0x5E for attaching and
+detaching the keyboard instead of 0x5F. So, re-add the codes by
+reverting commit cf3940ac737d ("platform/x86: asus-wmi: Remove extra
+keys from ignore_key_wlan quirk"). For our future reference, add a
+comment next to 0x5E indicating that it is used for that purpose.
 
-Because of that, some issues might not have been seen. But very likely,
-most issues either had an effect on the client side, or the file
-transfer was not the expected one, e.g. the connection got reset before
-the end. Still, it is better to fix this.
+Fixes: cf3940ac737d ("platform/x86: asus-wmi: Remove extra keys from ignore_key_wlan quirk")
+Reported-by: Rahul Chandra <rahul@chandra.net>
+Closes: https://lore.kernel.org/all/10020-68c90c80-d-4ac6c580@106290038/
+Cc: stable@kernel.org
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://patch.msgid.link/20250916072818.196462-1-lkml@antheas.dev
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-The main consequence of this issue is the error that was reported by the
-selftests: the received and sent files were different, and the MIB
-counters were not printed. Also, when such errors happened during the
-'disconnect' tests, the program tried to continue until the timeout.
-
-Now when an IO error is detected, the program exits directly with an
-error.
-
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-2-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-index 4f07ac9fa207..1408698df099 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1093,6 +1093,7 @@ int main_loop_s(int listensock)
- 	struct pollfd polls;
- 	socklen_t salen;
- 	int remotesock;
-+	int err = 0;
- 	int fd = 0;
- 
- again:
-@@ -1125,7 +1126,7 @@ int main_loop_s(int listensock)
- 		SOCK_TEST_TCPULP(remotesock, 0);
- 
- 		memset(&winfo, 0, sizeof(winfo));
--		copyfd_io(fd, remotesock, 1, true, &winfo);
-+		err = copyfd_io(fd, remotesock, 1, true, &winfo);
- 	} else {
- 		perror("accept");
- 		return 1;
-@@ -1134,10 +1135,10 @@ int main_loop_s(int listensock)
- 	if (cfg_input)
- 		close(fd);
- 
--	if (--cfg_repeat > 0)
-+	if (!err && --cfg_repeat > 0)
- 		goto again;
- 
--	return 0;
-+	return err;
- }
- 
- static void init_rng(void)
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index 3a488cf9ca06..6a62bc5b02fd 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -673,6 +673,8 @@ static void asus_nb_wmi_key_filter(struct asus_wmi_driver *asus_wmi, int *code,
+ 		if (atkbd_reports_vol_keys)
+ 			*code = ASUS_WMI_KEY_IGNORE;
+ 		break;
++	case 0x5D: /* Wireless console Toggle */
++	case 0x5E: /* Wireless console Enable / Keyboard Attach, Detach */
+ 	case 0x5F: /* Wireless console Disable / Special Key */
+ 		if (quirks->key_wlan_event)
+ 			*code = quirks->key_wlan_event;
 
 
