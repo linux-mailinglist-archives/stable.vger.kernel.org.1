@@ -1,110 +1,139 @@
-Return-Path: <stable+bounces-180838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C18FB8E4D5
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 22:11:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298A0B8E53E
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 22:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AC25188E96B
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 20:12:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07293BEB1F
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 20:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A94D285CAF;
-	Sun, 21 Sep 2025 20:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D078028CF66;
+	Sun, 21 Sep 2025 20:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tpey+Y31"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4eB9xT7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BAF26E71C;
-	Sun, 21 Sep 2025 20:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74132848A1
+	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 20:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758485509; cv=none; b=tokOeRKiUa3XVC4tNJysAcL6T0/AoPnBobM5r0gYKv480krS/WqPGTGymAx2wSTNMvIN4zKt3dLsnfSskDCULe0xS0dczgpsETNWbz9T20XhEt/CXQtPv6yRrCnQ8MA3BOGHpbTrrrFeRk2sUuwFcZ8YMlAT+ygwij5BrSslVvA=
+	t=1758486392; cv=none; b=Ql6cA9ZpCHmhK8Dl9FwdI8m3ZsOJG5GuvuF95OZuzEW7ahfoz8CnrkQrm09t0jO+jBiJ4oXO8Q72z5K2zeEbMYus++XpQqHIwwdhyUizgSnt93P5ZRgDQ5A9TqYY+3MZLfd1h5MdzPchvRvBYesr3M8b6TAi1fBhjYjnaE4+1OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758485509; c=relaxed/simple;
-	bh=viuT5oZ1HQTylzEhrkFgwAIlziupevcUeuKoZ6Hny28=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WpX0f0TRz5Tw2cOkCQAJVfizIYMaDAQL9O3s1kdUy46a9AuSR/wYgUH8CbIrWkFEnE8eCyqiOFBc+wuFuXZAf2a5S4qERSPYtmYn11hy9Q0uXeJwU/3jeST3m0AbCIQBG2rPm2QdOHg1zkUTUBP6+yPYv+i8b7CjucRC//Pt5uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tpey+Y31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48246C4CEE7;
-	Sun, 21 Sep 2025 20:11:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758485509;
-	bh=viuT5oZ1HQTylzEhrkFgwAIlziupevcUeuKoZ6Hny28=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tpey+Y31HhGmAfYFGIMUimTVoBThgXGJHVzyu/6AMGTCKr9AO/cfVBCc1CDcN9gU/
-	 XYarJXKZNrZB7804iMR+YATVxkbraB0XGSUVsbp2Il05RR0P4Md8jMhMov1oACt7aM
-	 d07Tut19WCFH/Q5eU0eJRu+pvEvVx2hCTCGP7qduQ8UtcWS+bupFkx6hC5nQmGpQLG
-	 IOwX0vRFcZLxlbWjax1qZLXz8NRLgv0OH222F8vofM9EzfaSEstBHiYpoXFRhX4k4f
-	 kl+UmzB4srTUquxlIGC+XRGiQfi27gYFNmPju/nrBMiK3u3jSBZ172FXyZgxMM2hI2
-	 QyNGnHdGzA5+Q==
-Message-ID: <f40ab4a5-1b17-4022-9539-37e470b7a175@kernel.org>
-Date: Sun, 21 Sep 2025 22:11:45 +0200
+	s=arc-20240116; t=1758486392; c=relaxed/simple;
+	bh=gka5bKFW2cHv0ZLSZ7B/QH8eA3YDoxbmOhwKKVhGU40=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UhGPpH9tW03UWgfiHtnLz1Y0fLK961RKLmmKPgIRGHTG3ZS/yYMBalFL+SDwdHRLbHBX+wdkZaOyaf1KsGox9ALb1j4NkLg3DWndC5m5cit0t8MGt4yj9KgHVRpe33XrKWN6VtMw+C2DaZt9RR9AsCagnpjGkWMox54WrVU7UNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4eB9xT7; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b28e1b87aa7so160174066b.3
+        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 13:26:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758486389; x=1759091189; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6w1uUC+fzd5RSRP1ifN1bHpVu6vu0MYSCszxUPTV56A=;
+        b=c4eB9xT7FVW3MmNDaExO5Zn7IcBZiagj3xMoby9q9msP1t7RoxWNR8q51VuR3SvEVq
+         PM9G6qxxc7BK+EGwwPtts9aSr5Ft6ZlpXjpyA0WI02xBhMwIsM/Un+uTtBGZZsMzJzZ6
+         +m0q+L7Ezbv7X2FGNd51E1w5Kt1S7aLXsxeuurceh5LNZlWEo0p14kJp4X2Bk+bMfq35
+         sc9W95XF+ugnu7+SoWpnT1t96cBNniv54nOMXQg8RWuR2FCrOfah+oLYBTswcPFgMWZc
+         U6pKunY/LtfY3EKx9MCEanadjBlOZEq5wUWj8NJTppvUJknyTcDaGkI7EGe0GtBEx+1q
+         jISw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758486389; x=1759091189;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6w1uUC+fzd5RSRP1ifN1bHpVu6vu0MYSCszxUPTV56A=;
+        b=pnuvpbu8m8e2kGUtnRI3MaWpgjy5hwiF/huY/zu8R7ArJWS17lJg4MXm+TqUP4QBKR
+         nHxt2ZacS2Lqew7zv4GiQ09Uat87E2PAEulji7AATADrO3MLChRpzzzZ49cA58uOQcNa
+         y3yyOD0nSLfvoYEJBT2sS926sHZR0JL/ki5mpKwf0TbfX51Vo/2Pkpki1sHXYnztDMeY
+         iHmTrjWgw8rvj0L98WbskOgSfZHiIv65hPnRRnPqNFf8GXfVHSq6edDhISSfoz1u0pK2
+         O/voh8XPMlmIRLKqpflOhJ0HlkztxMR1y3OCwswbVJcQfBOtyYDTzRD4Gk1Dht0d6dBj
+         62Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCXrrvPzGN3whrlzc1qqdKhwFkfoddt0LPGNisJ1ixuFe9yhA70LboR8/lbGpKh6cOc9b2EJVNU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1VhCpph67zXM7OMYHxZWHcBKWo1aodjF8vVhDX94gThnubTHK
+	QKvKXJ+1C6PwUXvOGsRGvpHhm/XRF+ddV0sWKiDU+OhiLCj6V3i2kn016t50Z6Aewxrc/O4Mrmw
+	nSCsUcqJ4ISMkWFkbuuBjM1DEVLULK45uCKoWys4=
+X-Gm-Gg: ASbGncuNvDy76bbBnvFSX5Fq36Clxkc7Luy3I4UMaaGBVNFaHuzNHENb/mahsGelKbM
+	vr4x69K+HMfRBu9oN7ypuCK0e6wwK1ilrPXvRicha0S5m94VY8vvCto75aGdCOAUIu3HnHYoLE8
+	AxD7krjK+Tqd4pvvUAuOLqpwwqZb9xnqDtoGau4utPXTOoGapMdFdugmxNG6roK92WDaweI6Ykj
+	+IPpYI=
+X-Google-Smtp-Source: AGHT+IF+x1qG5m/7YpKbUllg6jANfb1pA8Bj2oy/e8nNAFxVGPMtNlfo7K0pnij41IW9pVmeCBnwxf9u27zs5M2RfwE=
+X-Received: by 2002:a17:907:741:b0:b0e:cb5a:3dc9 with SMTP id
+ a640c23a62f3a-b24ed97e846mr936786966b.8.1758486388984; Sun, 21 Sep 2025
+ 13:26:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20250920201200.20611-1-hansg@kernel.org> <6d9e13e9-1e93-4e39-bfd1-56e4d25c007f@kernel.org>
+ <CAHp75Vf-MMcVGDt5xAMB94N866jZROQPKpvu5dZ-nCEPA9j-pg@mail.gmail.com> <f40ab4a5-1b17-4022-9539-37e470b7a175@kernel.org>
+In-Reply-To: <f40ab4a5-1b17-4022-9539-37e470b7a175@kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sun, 21 Sep 2025 23:25:52 +0300
+X-Gm-Features: AS18NWCHxLhQYf5FvuBq3VuISPNUQRlCd8-oqVvlkccsxjdBicCTMbzlcdEWgvE
+Message-ID: <CAHp75VfaRcQOLjrd_pVK4XYPRN_4yM=acyVsOKThV3oMw1fB0g@mail.gmail.com>
 Subject: Re: [PATCH 6.17 REGRESSION FIX] gpiolib: acpi: Make set debounce
  errors non fatal
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
- "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andy Shevchenko <andy@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
- linux-acpi@vger.kernel.org, stable@vger.kernel.org
-References: <20250920201200.20611-1-hansg@kernel.org>
- <6d9e13e9-1e93-4e39-bfd1-56e4d25c007f@kernel.org>
- <CAHp75Vf-MMcVGDt5xAMB94N866jZROQPKpvu5dZ-nCEPA9j-pg@mail.gmail.com>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <CAHp75Vf-MMcVGDt5xAMB94N866jZROQPKpvu5dZ-nCEPA9j-pg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: Hans de Goede <hansg@kernel.org>
+Cc: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andy@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi All,
+On Sun, Sep 21, 2025 at 11:11=E2=80=AFPM Hans de Goede <hansg@kernel.org> w=
+rote:
+> On 21-Sep-25 9:03 PM, Andy Shevchenko wrote:
+> > On Sun, Sep 21, 2025 at 9:09=E2=80=AFPM Mario Limonciello (AMD) (kernel=
+.org)
+> > <superm1@kernel.org> wrote:
+> >> On 9/20/2025 3:12 PM, Hans de Goede wrote:
 
-On 21-Sep-25 9:03 PM, Andy Shevchenko wrote:
-> On Sun, Sep 21, 2025 at 9:09 PM Mario Limonciello (AMD) (kernel.org)
-> <superm1@kernel.org> wrote:
->> On 9/20/2025 3:12 PM, Hans de Goede wrote:
-> 
-> ...
-> 
->> Looks pretty much identical now to what I sent in my v3 and that Andy
->> had requested we change to make it fatal [1].
->>
->> Where is this bad GPIO value coming from?  It's in the GpioInt()
->> declaration?  If so, should the driver actually be supporting this?
-> 
-> Since it's in acpi_find_gpio() it's about any GPIO resource type.
-> Sorry, it seems I missed this fact. I was under the impression that v4
-> was done only for the GpioInt() case. With this being said, the
-> GpioIo() should not be fatal (it's already proven by cases in the wild
-> that sometimes given values there are unsupported by HW), but
-> GpioInt() in my opinion needs a justification to become non-fatal.
+...
 
-GpioInt() debounce setting not succeeding already is non fatal in
-the acpi_request_own_gpiod() case, which is used for ACPI events
-(_AEI resources) and that exact use-case is why it was made non-fatal,
-so no this is not only about GpioIo() resources. See commit
-cef0d022f553 ("gpiolib: acpi: Make set-debounce-timeout failures non
-fatal")
+> >> Looks pretty much identical now to what I sent in my v3 and that Andy
+> >> had requested we change to make it fatal [1].
+> >>
+> >> Where is this bad GPIO value coming from?  It's in the GpioInt()
+> >> declaration?  If so, should the driver actually be supporting this?
+> >
+> > Since it's in acpi_find_gpio() it's about any GPIO resource type.
+> > Sorry, it seems I missed this fact. I was under the impression that v4
+> > was done only for the GpioInt() case. With this being said, the
+> > GpioIo() should not be fatal (it's already proven by cases in the wild
+> > that sometimes given values there are unsupported by HW), but
+> > GpioInt() in my opinion needs a justification to become non-fatal.
+>
+> GpioInt() debounce setting not succeeding already is non fatal in
+> the acpi_request_own_gpiod() case, which is used for ACPI events
+> (_AEI resources) and that exact use-case is why it was made non-fatal,
+> so no this is not only about GpioIo() resources. See commit
+> cef0d022f553 ("gpiolib: acpi: Make set-debounce-timeout failures non
+> fatal")
+>
+> IOW we need set debounce failures to be non-fatal for both the GpioIo
+> and GpioInt cases and this fix is correct as is.
 
-IOW we need set debounce failures to be non-fatal for both the GpioIo
-and GpioInt cases and this fix is correct as is.
+Okay, since it doesn't change the state of affairs with for
+acpi_dev_gpio_irq_wake_get_by(), it's fair enough to get it as is.
+Mario, do you agree with Hans' explanations?
 
-It is very likely too late to fix this *regression* for 6.17.0, please
-queue this up for merging ASAP so that we can get a fix added to 6.17.1
-
-Regards,
-
-Hans
+> It is very likely too late to fix this *regression* for 6.17.0, please
+> queue this up for merging ASAP so that we can get a fix added to 6.17.1
 
 
+--=20
+With Best Regards,
+Andy Shevchenko
 
