@@ -1,68 +1,55 @@
-Return-Path: <stable+bounces-180825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF181B8E15D
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 19:13:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAF4B8E16C
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 19:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FFB71794DC
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 17:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 738DC1893E4A
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 17:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A172571B3;
-	Sun, 21 Sep 2025 17:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A6B202987;
+	Sun, 21 Sep 2025 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/7/AZu6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4QMmSbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BFD341AA
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854563FB1B
+	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758474777; cv=none; b=AsZBStYFIG4m/O7aaLqqtNLszfHi2lXJbj8IVBOhQy7brnLFr95hEf3HEkzw4RbiwvlHwYWkW8m0JpfFEm2tAfAaXQ70kFbzTLsWPx0tJY+UJN4uvtzismDw7SyMkydiHJTBpkfC3DW171sVBcvTtnYT0DGPIrHxHgQvpL/c9Gg=
+	t=1758474950; cv=none; b=Scb3QZUx47eE9RSvgy+OAL+9SttbF/QzLYd+P5V5mGxRKKGBlXdYI/xIuys0fZhAU94WCefnrSkKXG2518P5ej/mqDylLrUBc+hODu/DYvDIpZnaWGNrRLP7W9G70F+KS5JZXWusSUBUgmlwcFYGBCsTDLV0NLRyDcG/H2N6w6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758474777; c=relaxed/simple;
-	bh=ajTEE/WYt5sHNyiqFsPcOuDWIf6LbNVJRiQMIj/UE+Q=;
+	s=arc-20240116; t=1758474950; c=relaxed/simple;
+	bh=lU/kWUAyJ2/usW1ZBG27EbyCVSJJgAa1FHQmX4Z1lOM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ICd4AZLGILFzx3AzKuxSmvP/xy3vSxrlNH4h8w1gFvQcbrOkmIsVrt1Peu04Rhu7/q5X6l8Tvj1Qpk3NCfhaA3HNA7A49PoEB113tkvlOvZ6ACquR6snkU69MY9pzHXRBm5J1ZnEQZVs/QSxHG6HnzE3GQIEZ8y07ZVXCBg+n28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/7/AZu6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115DDC4CEE7;
-	Sun, 21 Sep 2025 17:12:56 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TdgDobN9Pe4077GGokeg9Hvx332J+kRce8rOPGMu/htmb2Fz1O+xfzQzPneQ4vebFnJXCaqSQjQZ67NZljgUzflb8vAWc+n4XmFIeWMdFPdplO8D8vdxY0aJ2WrEgiqYoGD4SuZOv/uWI1txbdLaCt1xq6PAUoWTYZRaNqCZQTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4QMmSbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44BCC4CEE7;
+	Sun, 21 Sep 2025 17:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758474776;
-	bh=ajTEE/WYt5sHNyiqFsPcOuDWIf6LbNVJRiQMIj/UE+Q=;
+	s=korg; t=1758474950;
+	bh=lU/kWUAyJ2/usW1ZBG27EbyCVSJJgAa1FHQmX4Z1lOM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N/7/AZu6WncO2H6c0LZjINnaasnxfwzr9hkOWV88qkx4cUFWOxNQGtPBIZx0NJZpM
-	 Vnh8btgpfRy8EztfoUZEcFsXX/apQJiu6kL5Uh9s1vw5u55Jl5xzReQ30mf5gu+J7b
-	 nZJBrJgoOl/n+oCeapluD4vpx4mUzIB8fnY6Jo6M=
-Date: Sun, 21 Sep 2025 19:12:54 +0200
+	b=n4QMmSbYRQBQ8WyOcXXLBC93P2QnybWAZJ/k+MPvwS37W2my27I01nvVqCMtpgrpk
+	 dhtPGs6ZlyKlYeH+FvlMCP+nn3ze8/sWTM6wnqVLHL4Cr5luZBNw0YQrJDHBv2q58m
+	 JuOlqCCkgNXMSs+uk8z9/saD7MAb+AE5dHrAYyxc=
+Date: Sun, 21 Sep 2025 19:15:48 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>, Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>, Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>, Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.12.y] mm: folio_may_be_lru_cached() unless
- folio_test_large()
-Message-ID: <2025092135-collie-parched-1244@gregkh>
-References: <2025092142-easiness-blatancy-23af@gregkh>
- <20250921154134.2945191-1-sashal@kernel.org>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH 6.6.y] x86/cpu/amd: Always try detect_extended_topology()
+ on AMD processors
+Message-ID: <2025092105-pager-plethora-13be@gregkh>
+References: <2025091431-craftily-size-46c6@gregkh>
+ <20250915051825.1793-1-kprateek.nayak@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,62 +58,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250921154134.2945191-1-sashal@kernel.org>
+In-Reply-To: <20250915051825.1793-1-kprateek.nayak@amd.com>
 
-On Sun, Sep 21, 2025 at 11:41:34AM -0400, Sasha Levin wrote:
-> From: Hugh Dickins <hughd@google.com>
+On Mon, Sep 15, 2025 at 05:18:25AM +0000, K Prateek Nayak wrote:
+> commit cba4262a19afae21665ee242b3404bcede5a94d7 upstream.
 > 
-> [ Upstream commit 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 ]
+> Support for parsing the topology on AMD/Hygon processors using CPUID leaf 0xb
+> was added in
 > 
-> mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
-> large folio is added: so collect_longterm_unpinnable_folios() just wastes
-> effort when calling lru_add_drain[_all]() on a large folio.
+>   3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available").
 > 
-> But although there is good reason not to batch up PMD-sized folios, we
-> might well benefit from batching a small number of low-order mTHPs (though
-> unclear how that "small number" limitation will be implemented).
+> In an effort to keep all the topology parsing bits in one place, this commit
+> also introduced a pseudo dependency on the TOPOEXT feature to parse the CPUID
+> leaf 0xb.
 > 
-> So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
-> insulate those particular checks from future change.  Name preferred to
-> "folio_is_batchable" because large folios can well be put on a batch: it's
-> just the per-CPU LRU caches, drained much later, which need care.
+> The TOPOEXT feature (CPUID 0x80000001 ECX[22]) advertises the support for
+> Cache Properties leaf 0x8000001d and the CPUID leaf 0x8000001e EAX for
+> "Extended APIC ID" however support for 0xb was introduced alongside the x2APIC
+> support not only on AMD [1], but also historically on x86 [2].
 > 
-> Marked for stable, to counter the increase in lru_add_drain_all()s from
-> "mm/gup: check ref_count instead of lru before migration".
+> The support for the 0xb leaf is expected to be confirmed by ensuring
 > 
-> Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
-> Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-> Cc: Axel Rasmussen <axelrasmussen@google.com>
-> Cc: Chris Li <chrisl@kernel.org>
-> Cc: Christoph Hellwig <hch@infradead.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Keir Fraser <keirf@google.com>
-> Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-> Cc: Li Zhe <lizhe.67@bytedance.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Rik van Riel <riel@surriel.com>
-> Cc: Shivank Garg <shivankg@amd.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Wei Xu <weixugc@google.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: yangge <yangge1116@126.com>
-> Cc: Yuanchu Xie <yuanchu@google.com>
-> Cc: Yu Zhao <yuzhao@google.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> [ adapted to drain_allow instead of drained ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
+>   leaf <= max supported cpuid_level
+> 
+> and then parsing the level 0 of the leaf to confirm EBX[15:0]
+> (LogProcAtThisLevel) is non-zero as stated in the definition of
+> "CPUID_Fn0000000B_EAX_x00 [Extended Topology Enumeration]
+> (Core::X86::Cpuid::ExtTopEnumEax0)" in Processor Programming Reference (PPR)
+> for AMD Family 19h Model 01h Rev B1 Vol1 [3] Sec. 2.1.15.1 "CPUID Instruction
+> Functions".
+> 
+> This has not been a problem on baremetal platforms since support for TOPOEXT
+> (Fam 0x15 and later) predates the support for CPUID leaf 0xb (Fam 0x17[Zen2]
+> and later), however, for AMD guests on QEMU, the "x2apic" feature can be
+> enabled independent of the "topoext" feature where QEMU expects topology and
+> the initial APICID to be parsed using the CPUID leaf 0xb (especially when
+> number of cores > 255) which is populated independent of the "topoext" feature
+> flag.
+> 
+> Unconditionally call detect_extended_topology() on AMD processors to first
+> parse the topology using the extended topology leaf 0xb before using the
+> TOPOEXT leaf (0x8000001e).
+> 
+> Parsing of "DIE_TYPE" in detect_extended_topology() is specific to CPUID
+> leaf 0x1f which is only supported on Intel platforms. Continue using the
+> TOPOEXT leaf (0x8000001e) to derive the "cpu_die_id" on AMD platforms.
+> 
+>   [ prateek: Adapted the fix from the original commit to stable kernel
+>     which doesn't contain the x86 topology rewrite, renamed
+>     cpu_parse_topology_ext() with the erstwhile
+>     detect_extended_topology() function in commit message, dropped
+>     references to extended topology leaf 0x80000026 which the stable
+>     kernels aren't aware of, make a note of "cpu_die_id" parsing
+>     nuances in detect_extended_topology() and why AMD processors should
+>     still rely on TOPOEXT leaf for "cpu_die_id". ]
 
-Does not apply as it conflicts with the other mm changes you sent right
-before this one :(
+That's a lot of changes.  Why not just use a newer kernel for this new
+hardware?  Why backport this in such a different way?  That is going to
+cause other changes in the future to be harder to backport in the
+future.
 
+What's driving the requirement to run new hardware on old kernels?
 
+thanks,
+
+greg k-h
 
