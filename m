@@ -1,203 +1,247 @@
-Return-Path: <stable+bounces-180841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186C9B8E685
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 23:37:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FFCB8E922
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 00:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E679D189C477
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 21:38:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D20E176233
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 22:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596602D248B;
-	Sun, 21 Sep 2025 21:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C8A24C669;
+	Sun, 21 Sep 2025 22:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="q6jgY5Fn"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="cIPA9wjf";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="cIPA9wjf"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF352D0602
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 21:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.176.194.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203FF2036FE
+	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 22:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758490642; cv=none; b=U4g84yuIOr95VYNNlCYt6rUUgnn5nY972JIYKDQZ6AYn5SYF1T49QdD/G6u4zET8xNizZeZUsQOyYOB3SXWHR7kZj1h6lHWNJeDUq+sCa54hTCOYiL7SzStwvaTlpv3qNQu8UJzMI56s6sUPfbbo98oyt+v62em7ur0B3lX+iFQ=
+	t=1758494829; cv=none; b=au2fteVhirRE28E1OkHxgC9vDGFGvQ4onDzSD9f1KInBPrzr7BRle9AtHPdil5E9N1++tSlkxCrNYZz2UI5WoaRYcqhSvFQTJzf1EHPIM/C7dAlSyMkcJvnSxRzLOKd6in6ZMzPKYz31KiMiXW8MM/Rj0JbS7qQtiIneCsBNceU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758490642; c=relaxed/simple;
-	bh=M02zsxznMGs6HMD/XzUUAFZy73WGAXWgjh1I4Owdlc4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Zt2Ey5XxuuyZwSYWpa0kxTFGBHxPRZRZzpm76mRnn73tlyy1Hj+CfZCT+E9eMFDKQwIGK1kstV587gMw8LnKyTx4alK1hgvTRKUH5rRoQGlSqQjByzPqbrNmePvC5k0hzQUj2miZBdOCCDt23vOSoqTv4YS8Nl3p8y5GgTxDY/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=q6jgY5Fn; arc=none smtp.client-ip=63.176.194.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758490640; x=1790026640;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=w/nAd4kDSjaQjN1Dv16qY5ce7rfWNGwV0jiO1W97n90=;
-  b=q6jgY5FnPFzweBE0Up6bqX+jKrAEekzJAIlHOhsQAi4Fj5VXbxFs20ON
-   PSS8ryqQfth9q/NBUQbihCS70FARFsitScv3ugnlDmN2/r1dHYIHTnRTq
-   S/atYi8kJmqRs6HPiTdjS3luWmrkw1caEPqRDbk18CUTb/Pu3neMi5WvM
-   wHJjIRaM4JmBLclmu90RCpW19bjU+4PhmuQ93ZJRAmVbIgU/KgMj/UBhT
-   HJa5gum6pO7HJvW6I2mL4oYUcbGDi59Z93gctwERT8ujdMpwupNPU1KFq
-   TojwqjePNyOZS1qsxRoT8udO/BiC4A+ct2anYvoEUeVbIdVz7hsX5oO9N
-   w==;
-X-CSE-ConnectionGUID: DOkGQiaKRkqVy/bgNdokHQ==
-X-CSE-MsgGUID: RN89nNggRuO/wsxK9s01Sg==
-X-IronPort-AV: E=Sophos;i="6.18,283,1751241600"; 
-   d="scan'208";a="2450588"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 21:37:08 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:9621]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.23.64:2525] with esmtp (Farcaster)
- id f4f69eae-88e9-4f51-a954-df83aa80a1e8; Sun, 21 Sep 2025 21:37:07 +0000 (UTC)
-X-Farcaster-Flow-ID: f4f69eae-88e9-4f51-a954-df83aa80a1e8
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Sun, 21 Sep 2025 21:37:03 +0000
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Sun, 21 Sep 2025 21:37:02 +0000
-Received: from EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d]) by
- EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d%3]) with mapi id
- 15.02.2562.020; Sun, 21 Sep 2025 21:37:02 +0000
-From: "Farber, Eliav" <farbere@amazon.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "jdike@addtoit.com"
-	<jdike@addtoit.com>, "richard@nod.at" <richard@nod.at>,
-	"anton.ivanov@cambridgegreys.com" <anton.ivanov@cambridgegreys.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"luto@kernel.org" <luto@kernel.org>, "peterz@infradead.org"
-	<peterz@infradead.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "qiuxu.zhuo@intel.com"
-	<qiuxu.zhuo@intel.com>, "mchehab@kernel.org" <mchehab@kernel.org>,
-	"james.morse@arm.com" <james.morse@arm.com>, "rric@kernel.org"
-	<rric@kernel.org>, "harry.wentland@amd.com" <harry.wentland@amd.com>,
-	"sunpeng.li@amd.com" <sunpeng.li@amd.com>, "alexander.deucher@amd.com"
-	<alexander.deucher@amd.com>, "christian.koenig@amd.com"
-	<christian.koenig@amd.com>, "airlied@linux.ie" <airlied@linux.ie>,
-	"daniel@ffwll.ch" <daniel@ffwll.ch>, "evan.quan@amd.com" <evan.quan@amd.com>,
-	"james.qian.wang@arm.com" <james.qian.wang@arm.com>, "liviu.dudau@arm.com"
-	<liviu.dudau@arm.com>, "mihail.atanassov@arm.com" <mihail.atanassov@arm.com>,
-	"brian.starkey@arm.com" <brian.starkey@arm.com>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
-	<tzimmermann@suse.de>, "robdclark@gmail.com" <robdclark@gmail.com>,
-	"sean@poorly.run" <sean@poorly.run>, "jdelvare@suse.com" <jdelvare@suse.com>,
-	"linux@roeck-us.net" <linux@roeck-us.net>, "fery@cypress.com"
-	<fery@cypress.com>, "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-	"agk@redhat.com" <agk@redhat.com>, "snitzer@redhat.com" <snitzer@redhat.com>,
-	"dm-devel@redhat.com" <dm-devel@redhat.com>, "rajur@chelsio.com"
-	<rajur@chelsio.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>, "peppe.cavallaro@st.com"
-	<peppe.cavallaro@st.com>, "alexandre.torgue@st.com"
-	<alexandre.torgue@st.com>, "joabreu@synopsys.com" <joabreu@synopsys.com>,
-	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>, "malattia@linux.it"
-	<malattia@linux.it>, "hdegoede@redhat.com" <hdegoede@redhat.com>,
-	"mgross@linux.intel.com" <mgross@linux.intel.com>,
-	"intel-linux-scu@intel.com" <intel-linux-scu@intel.com>,
-	"artur.paszkiewicz@intel.com" <artur.paszkiewicz@intel.com>,
-	"jejb@linux.ibm.com" <jejb@linux.ibm.com>, "martin.petersen@oracle.com"
-	<martin.petersen@oracle.com>, "sakari.ailus@linux.intel.com"
-	<sakari.ailus@linux.intel.com>, "clm@fb.com" <clm@fb.com>,
-	"josef@toxicpanda.com" <josef@toxicpanda.com>, "dsterba@suse.com"
-	<dsterba@suse.com>, "jack@suse.com" <jack@suse.com>, "tytso@mit.edu"
-	<tytso@mit.edu>, "adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>,
-	"dushistov@mail.ru" <dushistov@mail.ru>, "luc.vanoostenryck@gmail.com"
-	<luc.vanoostenryck@gmail.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>,
-	"pmladek@suse.com" <pmladek@suse.com>, "sergey.senozhatsky@gmail.com"
-	<sergey.senozhatsky@gmail.com>, "andriy.shevchenko@linux.intel.com"
-	<andriy.shevchenko@linux.intel.com>, "linux@rasmusvillemoes.dk"
-	<linux@rasmusvillemoes.dk>, "minchan@kernel.org" <minchan@kernel.org>,
-	"ngupta@vflare.org" <ngupta@vflare.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "kuznet@ms2.inr.ac.ru" <kuznet@ms2.inr.ac.ru>,
-	"yoshfuji@linux-ipv6.org" <yoshfuji@linux-ipv6.org>, "pablo@netfilter.org"
-	<pablo@netfilter.org>, "kadlec@netfilter.org" <kadlec@netfilter.org>,
-	"fw@strlen.de" <fw@strlen.de>, "jmaloy@redhat.com" <jmaloy@redhat.com>,
-	"ying.xue@windriver.com" <ying.xue@windriver.com>, "willy@infradead.org"
-	<willy@infradead.org>, "sashal@kernel.org" <sashal@kernel.org>,
-	"ruanjinjie@huawei.com" <ruanjinjie@huawei.com>, "David.Laight@aculab.com"
-	<David.Laight@aculab.com>, "herve.codina@bootlin.com"
-	<herve.codina@bootlin.com>, "Jason@zx2c4.com" <Jason@zx2c4.com>,
-	"bvanassche@acm.org" <bvanassche@acm.org>, "keescook@chromium.org"
-	<keescook@chromium.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-um@lists.infradead.org"
-	<linux-um@lists.infradead.org>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "amd-gfx@lists.freedesktop.org"
-	<amd-gfx@lists.freedesktop.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "linux-arm-msm@vger.kernel.org"
-	<linux-arm-msm@vger.kernel.org>, "freedreno@lists.freedesktop.org"
-	<freedreno@lists.freedesktop.org>, "linux-hwmon@vger.kernel.org"
-	<linux-hwmon@vger.kernel.org>, "linux-input@vger.kernel.org"
-	<linux-input@vger.kernel.org>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
-	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "netfilter-devel@vger.kernel.org"
-	<netfilter-devel@vger.kernel.org>, "coreteam@netfilter.org"
-	<coreteam@netfilter.org>, "tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "Chocron, Jonathan" <jonnyc@amazon.com>
-Subject: RE: [PATCH 00/27 5.10.y] Backport minmax.h updates from v6.17-rc6
-Thread-Topic: [PATCH 00/27 5.10.y] Backport minmax.h updates from v6.17-rc6
-Thread-Index: AQHcKz/dRIfBoG9yrEaIjS9Ywn6sYg==
-Date: Sun, 21 Sep 2025 21:37:02 +0000
-Message-ID: <4f497306c58240a88c0bb001786c3ad2@amazon.com>
-References: <20250919101727.16152-1-farbere@amazon.com>
- <2025092136-unelected-skirt-d91d@gregkh>
-In-Reply-To: <2025092136-unelected-skirt-d91d@gregkh>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1758494829; c=relaxed/simple;
+	bh=wbYul/CauuhGCtntOc8clcF5qvEQLNAoSnIefIJxF0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pCdKWHeQnXrDYin16y5PNQQ5rYyOo3CyDzzc4ycPcYxTAK7lGCU4CnOi7jS7wAig5fUXYWuy/AVxcVjKjNXencUmN8G6mkZbmYTG9H/h5QZvlkL6LTOsyZ7HylYjr8ZCwRwqdGe1bOHaZiwTgPd3JY5ThiMEVKRUlgwO1CX/VKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=cIPA9wjf; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=cIPA9wjf; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 61CE122274;
+	Sun, 21 Sep 2025 22:41:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1758494471; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=irw1cxmdVnCYzU5LBO4zADP1QmuXxt9dn2RxqZcWxUw=;
+	b=cIPA9wjfFjIMLd1u2v2mqQgcflciMyH8yIoiC8uDRZjuFgYD+eqpdU+c2rnMQNrjaes5XO
+	ThJALpNrVJgvgKWGbHn22yzwREjB1Cos6DypCPOOFxzsVgSHms5+brb4Zs7zIQbsM+orHJ
+	BjisRVYK/qcNOOnXf/dSKAgdCVcEffo=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1758494471; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=irw1cxmdVnCYzU5LBO4zADP1QmuXxt9dn2RxqZcWxUw=;
+	b=cIPA9wjfFjIMLd1u2v2mqQgcflciMyH8yIoiC8uDRZjuFgYD+eqpdU+c2rnMQNrjaes5XO
+	ThJALpNrVJgvgKWGbHn22yzwREjB1Cos6DypCPOOFxzsVgSHms5+brb4Zs7zIQbsM+orHJ
+	BjisRVYK/qcNOOnXf/dSKAgdCVcEffo=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 693FD13ACD;
+	Sun, 21 Sep 2025 22:41:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yCiQCwZ/0GisdwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Sun, 21 Sep 2025 22:41:10 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2 1/9] btrfs: fix the incorrect @max_bytes value for find_lock_delalloc_range()
+Date: Mon, 22 Sep 2025 08:10:43 +0930
+Message-ID: <8e713e74d2a2515727f5438e9f86f68ad2f4cceb.1758494327.git.wqu@suse.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1758494326.git.wqu@suse.com>
+References: <cover.1758494326.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWO(0.00)[2];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:helo];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -2.80
 
-> On Fri, Sep 19, 2025 at 10:17:00AM +0000, Eliav Farber wrote:
-> > This series includes a total of 27 patches, to align minmax.h of
-> > v5.15.y with v6.17-rc6.
-> >
-> > The set consists of 24 commits that directly update minmax.h:
-> > 1) 92d23c6e9415 ("overflow, tracing: Define the is_signed_type() macro
-> >    once")
->
-> But this isn't in 5.15.y, so how is this syncing things up?
->
-> I'm all for this, but I got confused here, at the first commit :)
+[BUG]
+With my local branch to enable bs > ps support for btrfs, sometimes I
+hit the following ASSERT() inside submit_one_sector():
 
-It's a typo.
-It should be 5.10.y and not 5.15.y.
+	ASSERT(block_start != EXTENT_MAP_HOLE);
 
-> Some of these are also only in newer kernels, which, as you know, is
-> generally a bad thing (i.e. I can't take patches only for older
-> kernels.)
->
-> I want these changes, as they are great, but can you perhaps provide
-> patch series for newer kernels first so that I can then take these?
+Please note that it's not yet possible to hit this ASSERT() in the wild
+yet, as it requires btrfs bs > ps support, which is not even in the
+development branch.
 
-So you'd first like first to align 6.16 with 6.17, then 6.15 with 6.16,
-then 6.12 with 6.15, then 6.6 with 6.12, and so on until we eventually
-align 5.10 and even 5.4?
+But on the other hand, there is also a very low chance to hit above
+ASSERT() with bs < ps cases, so this is an existing bug affect not only
+the incoming bs > ps support but also the existing bs < ps support.
 
+[CAUSE]
+Firstly that ASSERT() means we're trying to submit a dirty block but
+without a real extent map nor ordered extent map backing it.
+
+Furthermore with extra debugging, the folio triggering such ASSERT() is
+always larger than the fs block size in my bs > ps case.
+(8K block size, 4K page size)
+
+After some more debugging, the ASSERT() is trigger by the following
+sequence:
+
+ extent_writepage()
+ |  We got a 32K folio (4 fs blocks) at file offset 0, and the fs block
+ |  size is 8K, page size is 4K.
+ |  And there is another 8K folio at file offset 32K, which is also
+ |  dirty.
+ |  So the filemap layout looks like the following:
+ |
+ |  "||" is the filio boundary in the filemap.
+ |  "//| is the dirty range.
+ |
+ |  0        8K       16K        24K         32K       40K
+ |  |////////|        |//////////////////////||////////|
+ |
+ |- writepage_delalloc()
+ |  |- find_lock_delalloc_range() for [0, 8K)
+ |  |  Now range [0, 8K) is properly locked.
+ |  |
+ |  |- find_lock_delalloc_range() for [16K, 40K)
+ |  |  |- btrfs_find_delalloc_range() returned range [0, 8K)
+ |  |  |- lock_delalloc_folios() succeeded.
+ |  |  |
+ |  |  |  The filemap range [32K, 40K) got dropped from filemap.
+ |  |  |
+ |  |  |- lock_delalloc_folios() failed with -EAGAIN.
+ |  |  |  As it failed to lock the folio at [32K, 40K).
+ |  |  |
+ |  |  |- loops = 1;
+ |  |  |- max_bytes = PAGE_SIZE;
+ |  |  |- goto again;
+ |  |  |  This will re-do the lookup for dirty delalloc ranges.
+ |  |  |
+ |  |  |- btrfs_find_delalloc_range() called with @max_bytes == 4K
+ |  |  |  This is smaller than block size, so
+ |  |  |  btrfs_find_delalloc_range() is unable to return any range.
+ |  |  \- return false;
+ |  |
+ |  \- Now only range [0, 8K) has an OE for it, but for dirty range
+ |     [16K, 32K) it's dirty without an OE.
+ |     This breaks the assumption that writepage_delalloc() will find
+ |     and lock all dirty ranges inside the folio.
+ |
+ |- extent_writepage_io()
+    |- submit_one_sector() for [0, 8K)
+    |  Succeeded
+    |
+    |- submit_one_sector() for [16K, 24K)
+       Triggering the ASSERT(), as there is no OE, and the original
+       extent map is a hole.
+
+Please note that, this also exposed the same problem for bs < ps
+support. E.g. with 64K page size and 4K block size.
+
+If we failed to lock a folio, and falls back into the "loops = 1;"
+branch, we will re-do the search using 64K as max_bytes.
+Which may fail again to lock the next folio, and exit early without
+handling all dirty blocks inside the folio.
+
+[FIX]
+Instead of using the fixed size PAGE_SIZE as @max_bytes, use
+@sectorsize, so that we are ensured to find and lock any remaining
+blocks inside the folio.
+
+And since we're here, add an extra ASSERT() to
+before calling btrfs_find_delalloc_range() to make sure the @max_bytes is
+at least no smaller than a block to avoid false negative.
+
+Cc: stable@vger.kernel.org #5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
-Regards, Eliav
+ fs/btrfs/extent_io.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index ca7174fa0240..2fd82055a779 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -393,6 +393,13 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 	/* step one, find a bunch of delalloc bytes starting at start */
+ 	delalloc_start = *start;
+ 	delalloc_end = 0;
++
++	/*
++	 * If @max_bytes is smaller than a block, btrfs_find_delalloc_range() can
++	 * return early without handling any dirty ranges.
++	 */
++	ASSERT(max_bytes >= fs_info->sectorsize);
++
+ 	found = btrfs_find_delalloc_range(tree, &delalloc_start, &delalloc_end,
+ 					  max_bytes, &cached_state);
+ 	if (!found || delalloc_end <= *start || delalloc_start > orig_end) {
+@@ -423,13 +430,14 @@ noinline_for_stack bool find_lock_delalloc_range(struct inode *inode,
+ 				   delalloc_end);
+ 	ASSERT(!ret || ret == -EAGAIN);
+ 	if (ret == -EAGAIN) {
+-		/* some of the folios are gone, lets avoid looping by
+-		 * shortening the size of the delalloc range we're searching
++		/*
++		 * Some of the folios are gone, lets avoid looping by
++		 * shortening the size of the delalloc range we're searching.
+ 		 */
+ 		btrfs_free_extent_state(cached_state);
+ 		cached_state = NULL;
+ 		if (!loops) {
+-			max_bytes = PAGE_SIZE;
++			max_bytes = fs_info->sectorsize;
+ 			loops = 1;
+ 			goto again;
+ 		} else {
+-- 
+2.50.1
+
 
