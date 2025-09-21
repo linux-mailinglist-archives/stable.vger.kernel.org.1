@@ -1,126 +1,204 @@
-Return-Path: <stable+bounces-180826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAF4B8E16C
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 19:15:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F07DB8E172
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 19:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 738DC1893E4A
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 17:16:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A5B47AD6F7
+	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 17:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A6B202987;
-	Sun, 21 Sep 2025 17:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A7D202987;
+	Sun, 21 Sep 2025 17:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4QMmSbY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhL+rBVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854563FB1B
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 17:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7AE155C82;
+	Sun, 21 Sep 2025 17:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758474950; cv=none; b=Scb3QZUx47eE9RSvgy+OAL+9SttbF/QzLYd+P5V5mGxRKKGBlXdYI/xIuys0fZhAU94WCefnrSkKXG2518P5ej/mqDylLrUBc+hODu/DYvDIpZnaWGNrRLP7W9G70F+KS5JZXWusSUBUgmlwcFYGBCsTDLV0NLRyDcG/H2N6w6A=
+	t=1758474988; cv=none; b=djPJhgn/Ve4usCzcdl7lYM0GpT62E9ObL1rMRJr4743sJOC/ejvlj+0sHuwqIx8SATbqnplhOE2sxR5DCMbH4fP6j7NEn0dyLZmYbINekkm3316sVw8mgp9Xrjffkylm0zHij1dLWEoeNuWZwW5Nr/P/jL7P0yA2AqaIdjQlusw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758474950; c=relaxed/simple;
-	bh=lU/kWUAyJ2/usW1ZBG27EbyCVSJJgAa1FHQmX4Z1lOM=;
+	s=arc-20240116; t=1758474988; c=relaxed/simple;
+	bh=UPXswAUSrZIxzSDUJryHz5yqoPHslofeNlXxxCUxl8I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TdgDobN9Pe4077GGokeg9Hvx332J+kRce8rOPGMu/htmb2Fz1O+xfzQzPneQ4vebFnJXCaqSQjQZ67NZljgUzflb8vAWc+n4XmFIeWMdFPdplO8D8vdxY0aJ2WrEgiqYoGD4SuZOv/uWI1txbdLaCt1xq6PAUoWTYZRaNqCZQTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4QMmSbY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44BCC4CEE7;
-	Sun, 21 Sep 2025 17:15:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=W6gP363ytr9t0IrXbHFzbz3Sb4NeVp0NEa2PbNeij02XHqF1V7wbneKGjJmchozE3s+nsG0le/Kx8duMwwLoN2aF9lhVfk2hhthjsYdJduN+vYlpTRqccurNXHUtksS6UeCE8IWi+yfvo/KgIQ5fa/5fz62Oms1LAcxmcDl5CzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhL+rBVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494BBC4CEE7;
+	Sun, 21 Sep 2025 17:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758474950;
-	bh=lU/kWUAyJ2/usW1ZBG27EbyCVSJJgAa1FHQmX4Z1lOM=;
+	s=korg; t=1758474987;
+	bh=UPXswAUSrZIxzSDUJryHz5yqoPHslofeNlXxxCUxl8I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n4QMmSbYRQBQ8WyOcXXLBC93P2QnybWAZJ/k+MPvwS37W2my27I01nvVqCMtpgrpk
-	 dhtPGs6ZlyKlYeH+FvlMCP+nn3ze8/sWTM6wnqVLHL4Cr5luZBNw0YQrJDHBv2q58m
-	 JuOlqCCkgNXMSs+uk8z9/saD7MAb+AE5dHrAYyxc=
-Date: Sun, 21 Sep 2025 19:15:48 +0200
+	b=nhL+rBVIPWaz6ZayE5ZqlDam9e/8JD2px7feqUcX90E1l+iaCXOMdlIEMIHZZdLdt
+	 mkCXktvqBAlUW+5YUcyUGBVxbWMFMjQ55FnM8wp6A3xs1MWplmTNsTy6A1ZmIXBkJh
+	 rFH8aGSLvTqmf7Eld+DQLeY81jdDu5nDKw+YIu7E=
+Date: Sun, 21 Sep 2025 19:16:25 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH 6.6.y] x86/cpu/amd: Always try detect_extended_topology()
- on AMD processors
-Message-ID: <2025092105-pager-plethora-13be@gregkh>
-References: <2025091431-craftily-size-46c6@gregkh>
- <20250915051825.1793-1-kprateek.nayak@amd.com>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Carlos Maiolino <cem@kernel.org>, linux-xfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH CANDIDATE 5.15, 6.1, 6.6] xfs: Increase
+ XFS_QM_TRANS_MAXDQS to 5
+Message-ID: <2025092158-marine-whoops-230b@gregkh>
+References: <20250913030503.433914-1-amir73il@gmail.com>
+ <20250915182056.GO8096@frogsfrogsfrogs>
+ <CAOQ4uxg4eBMS-FQADVYLGVh66QfMO+tHDAv3TUSpKqXn==XdKw@mail.gmail.com>
+ <20250915234032.GB8096@frogsfrogsfrogs>
+ <CAOQ4uxh00vdYLs24aMTonCNJ0wnmudwysxaJQa95-iq7zziD4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250915051825.1793-1-kprateek.nayak@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOQ4uxh00vdYLs24aMTonCNJ0wnmudwysxaJQa95-iq7zziD4Q@mail.gmail.com>
 
-On Mon, Sep 15, 2025 at 05:18:25AM +0000, K Prateek Nayak wrote:
-> commit cba4262a19afae21665ee242b3404bcede5a94d7 upstream.
+On Tue, Sep 16, 2025 at 08:37:54AM +0200, Amir Goldstein wrote:
+> On Tue, Sep 16, 2025 at 1:40 AM Darrick J. Wong <djwong@kernel.org> wrote:
+> >
+> > On Mon, Sep 15, 2025 at 10:20:40PM +0200, Amir Goldstein wrote:
+> > > On Mon, Sep 15, 2025 at 8:20 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > >
+> > > > On Sat, Sep 13, 2025 at 05:05:02AM +0200, Amir Goldstein wrote:
+> > > > > From: Allison Henderson <allison.henderson@oracle.com>
+> > > > >
+> > > > > [ Upstream  commit f103df763563ad6849307ed5985d1513acc586dd ]
+> > > > >
+> > > > > With parent pointers enabled, a rename operation can update up to 5
+> > > > > inodes: src_dp, target_dp, src_ip, target_ip and wip.  This causes
+> > > > > their dquots to a be attached to the transaction chain, so we need
+> > > > > to increase XFS_QM_TRANS_MAXDQS.  This patch also add a helper
+> > > > > function xfs_dqlockn to lock an arbitrary number of dquots.
+> > > > >
+> > > > > Signed-off-by: Allison Henderson <allison.henderson@oracle.com>
+> > > > > Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+> > > > > Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+> > > > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > > > >
+> > > > > [amir: backport to kernels prior to parent pointers to fix an old bug]
+> > > > >
+> > > > > A rename operation of a directory (i.e. mv A/C/ B/) may end up changing
+> > > > > three different dquot accounts under the following conditions:
+> > > > > 1. user (or group) quotas are enabled
+> > > > > 2. A/ B/ and C/ have different owner uids (or gids)
+> > > > > 3. A/ blocks shrinks after remove of entry C/
+> > > > > 4. B/ blocks grows before adding of entry C/
+> > > > > 5. A/ ino <= XFS_DIR2_MAX_SHORT_INUM
+> > > > > 6. B/ ino > XFS_DIR2_MAX_SHORT_INUM
+> > > > > 7. C/ is converted from sf to block format, because its parent entry
+> > > > >    needs to be stored as 8 bytes (see xfs_dir2_sf_replace_needblock)
+> > > > >
+> > > > > When all conditions are met (observed in the wild) we get this assertion:
+> > > > >
+> > > > > XFS: Assertion failed: qtrx, file: fs/xfs/xfs_trans_dquot.c, line: 207
+> > > > >
+> > > > > The upstream commit fixed this bug as a side effect, so decided to apply
+> > > > > it as is rather than changing XFS_QM_TRANS_MAXDQS to 3 in stable kernels.
+> > > >
+> > > > Heh.  Indeed, you only need MAXDQS==5 for filesystems that support
+> > > > parent pointers, because only on those filesystems can you end up
+> > > > needing to allocate a xattr block either to the new whiteout file or
+> > > > free one from the file being unlinked.
+> > > >
+> > > > > The Fixes commit below is NOT the commit that introduced the bug, but
+> > > > > for some reason, which is not explained in the commit message, it fixes
+> > > > > the comment to state that highest number of dquots of one type is 3 and
+> > > > > not 2 (which leads to the assertion), without actually fixing it.
+> > > >
+> > > > Agree.
+> > > >
+> > > > > The change of wording from "usr, grp OR prj" to "usr, grp and prj"
+> > > > > suggests that there may have been a confusion between "the number of
+> > > > > dquote of one type" and "the number of dquot types" (which is also 3),
+> > > > > so the comment change was only accidentally correct.
+> > > >
+> > > > I interpret the "OR" -> "and" change to reflect the V4 -> V5 transition
+> > > > where you actually can have all three dquot types because group/project
+> > > > quota are no longer mutually exclusive.
+> > > >
+> > > > The "...involved in a transaction is 3" part I think is separate, and
+> > > > strange that XFS_QM_TRANS_MAXDQS wasn't updated.
+> > > >
+> > > > > Fixes: 10f73d27c8e9 ("xfs: fix the comment explaining xfs_trans_dqlockedjoin")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> > > > > ---
+> > > > >
+> > > > > Christoph,
+> > > > >
+> > > > > This is a cognitive challenge. can you say what you where thinking in
+> > > > > 2013 when making the comment change in the Fixes commit?
+> > > > > Is my speculation above correct?
+> > > > >
+> > > > > Catherine and Leah,
+> > > > >
+> > > > > I decided that cherry-pick this upstream commit as is with a commit
+> > > > > message addendum was the best stable tree strategy.
+> > > > > The commit applies cleanly to 5.15.y, so I assume it does for 6.6 and
+> > > > > 6.1 as well. I ran my tests on 5.15.y and nothing fell out, but did not
+> > > > > try to reproduce these complex assertion in a test.
+> > > > >
+> > > > > Could you take this candidate backport patch to a spin on your test
+> > > > > branch?
+> > > > >
+> > > > > What do you all think about this?
+> > > >
+> > > > I only think you need MAXDQS==5 for 6.12 to handle parent pointers.
+> > > >
+> > >
+> > > Yes, of course. I just preferred to keep the 5 to avoid deviating from
+> > > the upstream commit if there is no good reason to do so.
+> >
+> > <shrug> What do Greg and Sasha think about this?  If they don't mind
+> > this then I guess I don't either. ;)
+> >
 > 
-> Support for parsing the topology on AMD/Hygon processors using CPUID leaf 0xb
-> was added in
+> Ok let's see.
 > 
->   3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available").
+> Greg,
 > 
-> In an effort to keep all the topology parsing bits in one place, this commit
-> also introduced a pseudo dependency on the TOPOEXT feature to parse the CPUID
-> leaf 0xb.
+> In kernels < 6.10 the size of the 'dqs' array per transaction was too small
+> (XFS_QM_TRANS_MAXDQS is 2 instead of 3) which can, as explained
+> in my commit, cause an assertion and crash the kernel.
 > 
-> The TOPOEXT feature (CPUID 0x80000001 ECX[22]) advertises the support for
-> Cache Properties leaf 0x8000001d and the CPUID leaf 0x8000001e EAX for
-> "Extended APIC ID" however support for 0xb was introduced alongside the x2APIC
-> support not only on AMD [1], but also historically on x86 [2].
+> This bug exists for a long time, it may have low probability for the entire
+> "world", but under specific conditions (e.g. a specific workload that is fully
+> controlled by unpriv user) it happens for us every other week on kernel 5.15.y
+> and with more effort, an upriv user can trigger it much more frequently.
 > 
-> The support for the 0xb leaf is expected to be confirmed by ensuring
+> In kernel 6.10, XFS_QM_TRANS_MAXDQS was increased to 5 to
+> cover a use case for a new feature (parent pointer).
+> That means that upstream no longer has the bug.
 > 
->   leaf <= max supported cpuid_level
+> I opted for applying this upstream commit to fix the stable kernel bug
+> although raising the max to 5 is an overkill.
 > 
-> and then parsing the level 0 of the leaf to confirm EBX[15:0]
-> (LogProcAtThisLevel) is non-zero as stated in the definition of
-> "CPUID_Fn0000000B_EAX_x00 [Extended Topology Enumeration]
-> (Core::X86::Cpuid::ExtTopEnumEax0)" in Processor Programming Reference (PPR)
-> for AMD Family 19h Model 01h Rev B1 Vol1 [3] Sec. 2.1.15.1 "CPUID Instruction
-> Functions".
+> This has a slight impact on memory footprint, but I think it is negligible
+> and in any case, same exact memory footprint as upstream code.
 > 
-> This has not been a problem on baremetal platforms since support for TOPOEXT
-> (Fam 0x15 and later) predates the support for CPUID leaf 0xb (Fam 0x17[Zen2]
-> and later), however, for AMD guests on QEMU, the "x2apic" feature can be
-> enabled independent of the "topoext" feature where QEMU expects topology and
-> the initial APICID to be parsed using the CPUID leaf 0xb (especially when
-> number of cores > 255) which is populated independent of the "topoext" feature
-> flag.
+> What do you prefer? Applying the commit as is with increase to 5
+> or apply a customized commit for kernels < 6.10 which raises the
+> max to 3 without mentioning the upstream commit?
 > 
-> Unconditionally call detect_extended_topology() on AMD processors to first
-> parse the topology using the extended topology leaf 0xb before using the
-> TOPOEXT leaf (0x8000001e).
-> 
-> Parsing of "DIE_TYPE" in detect_extended_topology() is specific to CPUID
-> leaf 0x1f which is only supported on Intel platforms. Continue using the
-> TOPOEXT leaf (0x8000001e) to derive the "cpu_die_id" on AMD platforms.
-> 
->   [ prateek: Adapted the fix from the original commit to stable kernel
->     which doesn't contain the x86 topology rewrite, renamed
->     cpu_parse_topology_ext() with the erstwhile
->     detect_extended_topology() function in commit message, dropped
->     references to extended topology leaf 0x80000026 which the stable
->     kernels aren't aware of, make a note of "cpu_die_id" parsing
->     nuances in detect_extended_topology() and why AMD processors should
->     still rely on TOPOEXT leaf for "cpu_die_id". ]
+> If you agree with my choice, please advise regarding my choice of
+> formatting of the commit message - original commit message followed
+> by stable specific bug fix commit message which explains the above.
 
-That's a lot of changes.  Why not just use a newer kernel for this new
-hardware?  Why backport this in such a different way?  That is going to
-cause other changes in the future to be harder to backport in the
-future.
-
-What's driving the requirement to run new hardware on old kernels?
-
-thanks,
+Original message followed by stable specific bugfix seems to make sense
+to me, thanks!
 
 greg k-h
 
