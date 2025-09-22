@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-181404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE65B931BB
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD47B931CF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16E2217E05F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7FAE3AC4F0
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13611F91E3;
-	Mon, 22 Sep 2025 19:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4461422F14C;
+	Mon, 22 Sep 2025 19:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwC3qFA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C50HOCH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE6318C2C;
-	Mon, 22 Sep 2025 19:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025FF1547CC;
+	Mon, 22 Sep 2025 19:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570457; cv=none; b=FmCXW3ZEvwyXyEptTIspS3Xss5wRMoN1a2Uow7uXud9ZB3dltY+9G5VYmzY4On74y424bsen7j76XWo7wZHihxsWlcOrz49fK4fWG+KxsAv/b14H6B0w1ZuZHyAt/Y/sLAbKuZ+3N+OCO6K++dXBFI92XLyEgPrC2Vlmxiz6eqQ=
+	t=1758570435; cv=none; b=aK60En9gZVXV6SPSlOXRd//AgrhOWdYrNPRxvTjHIPF3dwrU7faUXiYPHrPK0P1EapiJYJBfP3SJLmL3BQO4vySQ+oQ9e+gbMXYebbk6q9GUJdbJ84DbOZFQ9NgFCJg+kfHt7ftwhvNavcLc8NjtC5QO31++DqA3VoubcA6qpSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570457; c=relaxed/simple;
-	bh=+QX/Ohg4X3XbiczEi0KCf28I83nRUZM/3NwqhtRLOzU=;
+	s=arc-20240116; t=1758570435; c=relaxed/simple;
+	bh=a+EHCMLX2ccCchkTvYZe3GtYnhGYAcUHR44qosIzjPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFAewHELOBJae2Co1JL17VkSm7v2llBUnqLi1iI1M2juYjZAWAfC4bNLtVmdILxOv6A8nScJSEDqpRTkS3/MEv2wjyokLvIkJP5H2XUgt74hLEJHap9f0W6y/6gqVBW1vqvRPrwPIsCjkVj3u9nzOhjCijPDAluy/3XaodzlosU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwC3qFA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B79C4CEF0;
-	Mon, 22 Sep 2025 19:47:36 +0000 (UTC)
+	 MIME-Version; b=YM8TJy5H3zVNpOlpeQorWeC2Q/QBZOJ+tSBVMhT9qHEMmXwIItCxjwMFkhNHXydsGrHvMuist/OadpeaveJo9+UgJ4vEb51+4nHurehqPNTWz278WwpRPc91QTcAzRk3evcsOo2STzZKnQmHfcvasjOf5Fu76N4pQoME8ut8nuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C50HOCH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917CCC4CEF5;
+	Mon, 22 Sep 2025 19:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570457;
-	bh=+QX/Ohg4X3XbiczEi0KCf28I83nRUZM/3NwqhtRLOzU=;
+	s=korg; t=1758570434;
+	bh=a+EHCMLX2ccCchkTvYZe3GtYnhGYAcUHR44qosIzjPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwC3qFA2n0DiDF/qEA3UPcXaSA07rGZdR48AkWmoOJX428AZwmCNPImJgkDOMGW7a
-	 VFen0AymkJrT9niaOjWBM7V2mIb+WTytkHicCciO3jl5gaZHNDj2jBwqXE0FYhA2Ue
-	 q5wjrGK9CbOnCDtcylG4JZV3P5WCWFrSXrkkuCb0=
+	b=C50HOCH93hSuVT7fiU4ueSU7kQS1Q33uwfcgw/c9qgaLgUIjQh2ulFoQQmwfYxHT4
+	 dUn5Ufp3uUcAWedrn/oh/Z6O1RHPZbPfO1Ycq4AThaII8bZafQ93dLYBY7h961MTUw
+	 aRGsSrizb5iUatV0HDj2gUdDFIteCXPaW/m6ZjnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 147/149] samples/damon/mtier: avoid starting DAMON before initialization
-Date: Mon, 22 Sep 2025 21:30:47 +0200
-Message-ID: <20250922192416.573271427@linuxfoundation.org>
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>
+Subject: [PATCH 6.16 148/149] clk: sunxi-ng: mp: Fix dual-divider clock rate readback
+Date: Mon, 22 Sep 2025 21:30:48 +0200
+Message-ID: <20250922192416.600829456@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
 References: <20250922192412.885919229@linuxfoundation.org>
@@ -66,40 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit c62cff40481c037307a13becbda795f7afdcfebd ]
+commit 25fbbaf515acd13399589bd5ee6de5f35740cef2 upstream.
 
-Commit 964314344eab ("samples/damon/mtier: support boot time enable
-setup") is somehow incompletely applying the origin patch [1].  It is
-missing the part that avoids starting DAMON before module initialization.
-Probably a mistake during a merge has happened.  Fix it by applying the
-missed part again.
+When dual-divider clock support was introduced, the P divider offset was
+left out of the .recalc_rate readback function. This causes the clock
+rate to become bogus or even zero (possibly due to the P divider being
+1, leading to a divide-by-zero).
 
-Link: https://lkml.kernel.org/r/20250909022238.2989-4-sj@kernel.org
-Link: https://lore.kernel.org/20250706193207.39810-4-sj@kernel.org [1]
-Fixes: 964314344eab ("samples/damon/mtier: support boot time enable setup")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by incorporating the P divider offset into the calculation.
+
+Fixes: 45717804b75e ("clk: sunxi-ng: mp: introduce dual-divider clock")
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Link: https://patch.msgid.link/20250830170901.1996227-4-wens@kernel.org
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/damon/mtier.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/sunxi-ng/ccu_mp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -166,6 +166,9 @@ static int damon_sample_mtier_enable_sto
- 	if (enabled == is_enabled)
- 		return 0;
+diff --git a/drivers/clk/sunxi-ng/ccu_mp.c b/drivers/clk/sunxi-ng/ccu_mp.c
+index 354c981943b6..4221b1888b38 100644
+--- a/drivers/clk/sunxi-ng/ccu_mp.c
++++ b/drivers/clk/sunxi-ng/ccu_mp.c
+@@ -185,7 +185,7 @@ static unsigned long ccu_mp_recalc_rate(struct clk_hw *hw,
+ 	p &= (1 << cmp->p.width) - 1;
  
-+	if (!init_called)
-+		return 0;
-+
- 	if (enabled) {
- 		err = damon_sample_mtier_start();
- 		if (err)
+ 	if (cmp->common.features & CCU_FEATURE_DUAL_DIV)
+-		rate = (parent_rate / p) / m;
++		rate = (parent_rate / (p + cmp->p.offset)) / m;
+ 	else
+ 		rate = (parent_rate >> p) / m;
+ 
+-- 
+2.51.0
+
 
 
 
