@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-181164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFABEB92E75
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BB2B93048
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231431630AC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73315448280
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F3B2F0C6C;
-	Mon, 22 Sep 2025 19:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74652F291B;
+	Mon, 22 Sep 2025 19:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Lw6t4jG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E78vVTdQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7F425F780;
-	Mon, 22 Sep 2025 19:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9332F49E3;
+	Mon, 22 Sep 2025 19:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569849; cv=none; b=KlCTYahn6xM06EQnnBY5qZZVtcx2FuOUd21u8eKpZAItxs9Sf2pK0Db0/zikTnxOUARfg+E7IN1SFfBCYnmcjfrq2yxOSK2LmbAmyO25aZbbKHCdsReZNuVlrxS0UIkhxhdAEN7FPIoWgzW4iVbv4MuMw9P4KZ2aynOzk0ECiBc=
+	t=1758570143; cv=none; b=TortF3J2bSr//aFoO/j3D0RK9OSsoWrjYJ2aWidh7kqwtaCP8KMHKoTJfv/yq+qJCgnsnIbpYEd/eh4cl7L3QUjCGx9DWjzzkMeEKCB/BJKL5IPbXVZgMefhgZVJo2IqlVvM4CiAvMdXAXa9FIQpKR45kFe5NQkVNIcQ4nybqGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569849; c=relaxed/simple;
-	bh=xofNqn5Ogaw6W0dAq4lJUxvz6BQ5QdFmJ7TsRbq2WRY=;
+	s=arc-20240116; t=1758570143; c=relaxed/simple;
+	bh=pc7moO8cjUuFBaVU71Ge9NxZS47LNpzQJukgmQWSqFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=asvirMZK0Q4eBkObs+R8hsiFu5tNVLSNRe7T2d+i+KlIjpmp3XGpiupCbbDr9PCLuJEA5UDGkP2NzEow/2zrJI0cnk32pekniiVliInT6c0m8swF3mZuJ7OYUiY74hdQtebq8/CHKcieJEdACDiR/lYYunwOx6mZFrcVKcYwSKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Lw6t4jG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA10C4CEF5;
-	Mon, 22 Sep 2025 19:37:29 +0000 (UTC)
+	 MIME-Version; b=GZ2ovgTiBxEfWAhY9NP9O3jNMXqoLZqgdqStL87sDvj4qWCQCJ00VkWiQf4upPkTUwAOvUfIEqo9azlbzAVfNusgvcg7qINn95vebxBxBkRs4o2YHApy7V5aoASc3VODTkS4lSG69z+8iMixUSvxmNA1P7BhQbc0p+TlnJZ2gjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E78vVTdQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA758C4CEF0;
+	Mon, 22 Sep 2025 19:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569849;
-	bh=xofNqn5Ogaw6W0dAq4lJUxvz6BQ5QdFmJ7TsRbq2WRY=;
+	s=korg; t=1758570143;
+	bh=pc7moO8cjUuFBaVU71Ge9NxZS47LNpzQJukgmQWSqFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Lw6t4jG/5WZDBuafvK0N9Kj5528HTqXSxmQ9RpFNqgJXZO14oHeeqbYZDVv8O5j4
-	 WlxcwI3yepUcZSgHaq3CyB5A3A4BGId9uRNzLcFTIsvwxilvOzNRzW9Qb9I8QuR/9B
-	 ANYjmG542QzBT3L0A/pEBXfmmiEoh3hs5cLbDL4c=
+	b=E78vVTdQT3JT+wPiVkFtxJGzQY4RY7q6qG6DqQBE9lUdkyDZwECvgp8igdIIAQgrn
+	 K0LkklE5Q+gLL1t4o/zhjHJw/V8AqMTloBbJUVsRNRjKiyfIlN1pMPpq3fVWFP7+g3
+	 2z8Xgbf6hG/PzERNL4YON9rji274LHs7sb+NcvC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+	"Remy D. Farley" <one-d-wide@protonmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/105] net/tcp: Fix a NULL pointer dereference when using TCP-AO with TCP_REPAIR
+Subject: [PATCH 6.16 035/149] doc/netlink: Fix typos in operation attributes
 Date: Mon, 22 Sep 2025 21:28:55 +0200
-Message-ID: <20250922192409.224226248@linuxfoundation.org>
+Message-ID: <20250922192413.751489529@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Remy D. Farley <one-d-wide@protonmail.com>
 
-[ Upstream commit 2e7bba08923ebc675b1f0e0e0959e68e53047838 ]
+[ Upstream commit 109f8b51543d106aee50dfe911f439e43fb30c7a ]
 
-A NULL pointer dereference can occur in tcp_ao_finish_connect() during a
-connect() system call on a socket with a TCP-AO key added and TCP_REPAIR
-enabled.
+I'm trying to generate Rust bindings for netlink using the yaml spec.
 
-The function is called with skb being NULL and attempts to dereference it
-on tcp_hdr(skb)->seq without a prior skb validation.
+It looks like there's a typo in conntrack spec: attribute set conntrack-attrs
+defines attributes "counters-{orig,reply}" (plural), while get operation
+references "counter-{orig,reply}" (singular). The latter should be fixed, as it
+denotes multiple counters (packet and byte). The corresonding C define is
+CTA_COUNTERS_ORIG.
 
-Fix this by checking if skb is NULL before dereferencing it.
+Also, dump request references "nfgen-family" attribute, which neither exists in
+conntrack-attrs attrset nor ctattr_type enum. There's member of nfgenmsg struct
+with the same name, which is where family value is actually taken from.
 
-The commentary is taken from bpf_skops_established(), which is also called
-in the same flow. Unlike the function being patched,
-bpf_skops_established() validates the skb before dereferencing it.
+> static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
+>                struct sk_buff *skb,
+>                const struct nlmsghdr *nlh,
+>                const struct nlattr * const cda[],
+>                struct netlink_ext_ack *extack)
+> {
+>   int err;
+>   struct nfgenmsg *nfmsg = nlmsg_data(nlh);
+>   u_int8_t u3 = nfmsg->nfgen_family;
+                         ^^^^^^^^^^^^
 
-int main(void){
-	struct sockaddr_in sockaddr;
-	struct tcp_ao_add tcp_ao;
-	int sk;
-	int one = 1;
-
-	memset(&sockaddr,'\0',sizeof(sockaddr));
-	memset(&tcp_ao,'\0',sizeof(tcp_ao));
-
-	sk = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-	sockaddr.sin_family = AF_INET;
-
-	memcpy(tcp_ao.alg_name,"cmac(aes128)",12);
-	memcpy(tcp_ao.key,"ABCDEFGHABCDEFGH",16);
-	tcp_ao.keylen = 16;
-
-	memcpy(&tcp_ao.addr,&sockaddr,sizeof(sockaddr));
-
-	setsockopt(sk, IPPROTO_TCP, TCP_AO_ADD_KEY, &tcp_ao,
-	sizeof(tcp_ao));
-	setsockopt(sk, IPPROTO_TCP, TCP_REPAIR, &one, sizeof(one));
-
-	sockaddr.sin_family = AF_INET;
-	sockaddr.sin_port = htobe16(123);
-
-	inet_aton("127.0.0.1", &sockaddr.sin_addr);
-
-	connect(sk,(struct sockaddr *)&sockaddr,sizeof(sockaddr));
-
-return 0;
-}
-
-$ gcc tcp-ao-nullptr.c -o tcp-ao-nullptr -Wall
-$ unshare -Urn
-
-BUG: kernel NULL pointer dereference, address: 00000000000000b6
-PGD 1f648d067 P4D 1f648d067 PUD 1982e8067 PMD 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop
-Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:tcp_ao_finish_connect (net/ipv4/tcp_ao.c:1182)
-
-Fixes: 7c2ffaf21bd6 ("net/tcp: Calculate TCP-AO traffic keys")
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250911230743.2551-3-anderson@allelesecurity.com
+Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
+Fixes: 23fc9311a526 ("netlink: specs: add conntrack dump and stats dump support")
+Link: https://patch.msgid.link/20250913140515.1132886-1-one-d-wide@protonmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ao.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/netlink/specs/conntrack.yaml | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index bbb8d5f0eae7d..3338b6cc85c48 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -1178,7 +1178,9 @@ void tcp_ao_finish_connect(struct sock *sk, struct sk_buff *skb)
- 	if (!ao)
- 		return;
- 
--	WRITE_ONCE(ao->risn, tcp_hdr(skb)->seq);
-+	/* sk with TCP_REPAIR_ON does not have skb in tcp_finish_connect */
-+	if (skb)
-+		WRITE_ONCE(ao->risn, tcp_hdr(skb)->seq);
- 	ao->rcv_sne = 0;
- 
- 	hlist_for_each_entry_rcu(key, &ao->head, node, lockdep_sock_is_held(sk))
+diff --git a/Documentation/netlink/specs/conntrack.yaml b/Documentation/netlink/specs/conntrack.yaml
+index 840dc4504216b..1865ddf01fb0f 100644
+--- a/Documentation/netlink/specs/conntrack.yaml
++++ b/Documentation/netlink/specs/conntrack.yaml
+@@ -575,8 +575,8 @@ operations:
+             - nat-dst
+             - timeout
+             - mark
+-            - counter-orig
+-            - counter-reply
++            - counters-orig
++            - counters-reply
+             - use
+             - id
+             - nat-dst
+@@ -591,7 +591,6 @@ operations:
+         request:
+           value: 0x101
+           attributes:
+-            - nfgen-family
+             - mark
+             - filter
+             - status
+@@ -608,8 +607,8 @@ operations:
+             - nat-dst
+             - timeout
+             - mark
+-            - counter-orig
+-            - counter-reply
++            - counters-orig
++            - counters-reply
+             - use
+             - id
+             - nat-dst
 -- 
 2.51.0
 
