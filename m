@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-181142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0B6B92E29
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CAAB93131
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17ABD447298
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A3671906DC1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4562F0C64;
-	Mon, 22 Sep 2025 19:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF762F3C2F;
+	Mon, 22 Sep 2025 19:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tML+A54M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4Xw/RLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31CC2F0C5C;
-	Mon, 22 Sep 2025 19:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3658C253B5C;
+	Mon, 22 Sep 2025 19:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569795; cv=none; b=dgtYigEC/gnAxNyFPy/2krAsXYWD9f43ogI4CVrLZG2BWodxDsbDrz+v+27nCTcDbybN+Eqem+dU+2mpQgWpORi1AScydQvRoh29x4mjIV4JAiz0aDYhUwE3nJfqeH9MoV4EUYHmX8Dq5ZIe4gqm394WqYmZgRQ4lAFVwOG6dwU=
+	t=1758570342; cv=none; b=cKXAgKeJmBysgCoGv1/LSAji1GwvAh+wxz8QcTS9OZdPcTpNDfGaOoyRQDO6Qkkxjq0pcesJHxHUnQWP9ZK31eCsH1CarOMJlWmoNEdVxeTJB3l7LlnZfCn9FS7iOCztkR+E+iOHTaCjQ3YyeeK5NzBCtHKp18IW4R0WkH4UL7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569795; c=relaxed/simple;
-	bh=hdNPuewVEG/0/jFF9KCu3Ldqm8roAHH3pugLA8IXilw=;
+	s=arc-20240116; t=1758570342; c=relaxed/simple;
+	bh=hWjWNrDCZ2LED/W/8YhOmDuT7LOJ5LZ5Hyp9uHS722Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWyhafzcxSSoA7VNOjJMIRBD9OhbFiPJmsdciX5SoQq9FWEZhJGJ89VR0cBpFgURNjZFyqbl08jDoRc5WI1MkJPobeTJldVOtOT5XYLwW7JusZouc5loaJXj7Ondr2y8TcHSI0QwZMUtAGCJmjEkOE554RH8Ska5eJfWekVS+sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tML+A54M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8806FC4CEF0;
-	Mon, 22 Sep 2025 19:36:34 +0000 (UTC)
+	 MIME-Version; b=tL9j5d7CWI3q9sJpgx2H3gCaAWGsKPC6PKsKW4xzXFr2ylrUUG3uMppeCpgrxo1ncgCH/ugvxxdSWkOhqPvtLK5B1RI2i7VwzJOtYn1ZS7lgTm8YR9rJQjSQ6L35u/ShosL+sC64IiViOt8yren8Xys9nML+nGWd9tBbDcPHoGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4Xw/RLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD4CC4CEF0;
+	Mon, 22 Sep 2025 19:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569794;
-	bh=hdNPuewVEG/0/jFF9KCu3Ldqm8roAHH3pugLA8IXilw=;
+	s=korg; t=1758570342;
+	bh=hWjWNrDCZ2LED/W/8YhOmDuT7LOJ5LZ5Hyp9uHS722Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tML+A54Mr6cPPZMFnboGGHq+sppOUiCI6ryT9b90Sd3xxvKJoCgR5cYsU5c5wU7zZ
-	 578KSzXn8+GmGo7IKaLLAyqEUWONqFIdtLrx71CexX61BEb98Zketsk3Fen5tEWYUB
-	 6omutWt7sSJCS28rXW36nnXG+zcN+LA2l35EnDgQ=
+	b=t4Xw/RLs2HESuaja9HwdjcvjJX1VNvuuAhPqF3jwHvtwUxv/dU8xl7gs0Ifz9KhhK
+	 xz+E5Tu6HSg4goBNIi6kcW5pZxJMFhGCOn4OBsqGt83vZjXxoCfxtU2esqcQULn9hB
+	 3DpUQJxUggUABg9s9sJEL5BqfuMZOaE3qCU0TAIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 59/70] selftests: mptcp: userspace pm: validate deny-join-id0 flag
+	Benedek Thaler <thaler@thaler.hu>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.16 099/149] io_uring: include dying ring in task_work "should cancel" state
 Date: Mon, 22 Sep 2025 21:29:59 +0200
-Message-ID: <20250922192406.183370035@linuxfoundation.org>
+Message-ID: <20250922192415.381281604@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 24733e193a0d68f20d220e86da0362460c9aa812 upstream.
+commit 3539b1467e94336d5854ebf976d9627bfb65d6c3 upstream.
 
-The previous commit adds the MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 flag. Make
-sure it is correctly announced by the other peer when it has been
-received.
+When running task_work for an exiting task, rather than perform the
+issue retry attempt, the task_work is canceled. However, this isn't
+done for a ring that has been closed. This can lead to requests being
+successfully completed post the ring being closed, which is somewhat
+confusing and surprising to an application.
 
-pm_nl_ctl will now display 'deny_join_id0:1' when monitoring the events,
-and when this flag was set by the other peer.
+Rather than just check the task exit state, also include the ring
+ref state in deciding whether or not to terminate a given request when
+run from task_work.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-3-40171884ade8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in userspace_pm.sh, because of a difference in the context,
-  introduced by commit c66fb480a330 ("selftests: userspace pm: avoid
-  relaunching pm events"), which is not in this version. The same lines
-  can still be added at the same place. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@vger.kernel.org # 6.1+
+Link: https://github.com/axboe/liburing/discussions/1459
+Reported-by: Benedek Thaler <thaler@thaler.hu>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/pm_nl_ctl.c     |    7 +++++++
- tools/testing/selftests/net/mptcp/userspace_pm.sh |   14 +++++++++++---
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ io_uring/io_uring.c  |    6 ++++--
+ io_uring/io_uring.h  |    4 ++--
+ io_uring/poll.c      |    2 +-
+ io_uring/timeout.c   |    2 +-
+ io_uring/uring_cmd.c |    2 +-
+ 5 files changed, 9 insertions(+), 7 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-+++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-@@ -194,6 +194,13 @@ static int capture_events(int fd, int ev
- 					fprintf(stderr, ",error:%u", *(__u8 *)RTA_DATA(attrs));
- 				else if (attrs->rta_type == MPTCP_ATTR_SERVER_SIDE)
- 					fprintf(stderr, ",server_side:%u", *(__u8 *)RTA_DATA(attrs));
-+				else if (attrs->rta_type == MPTCP_ATTR_FLAGS) {
-+					__u16 flags = *(__u16 *)RTA_DATA(attrs);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1371,8 +1371,10 @@ static void io_req_task_cancel(struct io
+ 
+ void io_req_task_submit(struct io_kiocb *req, io_tw_token_t tw)
+ {
+-	io_tw_lock(req->ctx, tw);
+-	if (unlikely(io_should_terminate_tw()))
++	struct io_ring_ctx *ctx = req->ctx;
 +
-+					/* only print when present, easier */
-+					if (flags & MPTCP_PM_EV_FLAG_DENY_JOIN_ID0)
-+						fprintf(stderr, ",deny_join_id0:1");
-+				}
++	io_tw_lock(ctx, tw);
++	if (unlikely(io_should_terminate_tw(ctx)))
+ 		io_req_defer_failed(req, -EFAULT);
+ 	else if (req->flags & REQ_F_FORCE_ASYNC)
+ 		io_queue_iowq(req);
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -470,9 +470,9 @@ static inline bool io_allowed_run_tw(str
+  * 2) PF_KTHREAD is set, in which case the invoker of the task_work is
+  *    our fallback task_work.
+  */
+-static inline bool io_should_terminate_tw(void)
++static inline bool io_should_terminate_tw(struct io_ring_ctx *ctx)
+ {
+-	return current->flags & (PF_KTHREAD | PF_EXITING);
++	return (current->flags & (PF_KTHREAD | PF_EXITING)) || percpu_ref_is_dying(&ctx->refs);
+ }
  
- 				attrs = RTA_NEXT(attrs, msg_len);
- 			}
---- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
-+++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
-@@ -196,6 +196,9 @@ make_connection()
- 		is_v6="v4"
- 	fi
+ static inline void io_req_queue_tw_complete(struct io_kiocb *req, s32 res)
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -224,7 +224,7 @@ static int io_poll_check_events(struct i
+ {
+ 	int v;
  
-+	# set this on the client side only: will not affect the rest
-+	ip netns exec "$ns2" sysctl -q net.mptcp.allow_join_initial_addr_port=0
-+
- 	# Capture netlink events over the two network namespaces running
- 	# the MPTCP client and server
- 	if [ -z "$client_evts" ]; then
-@@ -227,23 +230,28 @@ make_connection()
- 	local client_token
- 	local client_port
- 	local client_serverside
-+	local client_nojoin
- 	local server_token
- 	local server_serverside
-+	local server_nojoin
+-	if (unlikely(io_should_terminate_tw()))
++	if (unlikely(io_should_terminate_tw(req->ctx)))
+ 		return -ECANCELED;
  
- 	client_token=$(mptcp_lib_evts_get_info token "$client_evts")
- 	client_port=$(mptcp_lib_evts_get_info sport "$client_evts")
- 	client_serverside=$(mptcp_lib_evts_get_info server_side "$client_evts")
-+	client_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$client_evts")
- 	server_token=$(mptcp_lib_evts_get_info token "$server_evts")
- 	server_serverside=$(mptcp_lib_evts_get_info server_side "$server_evts")
-+	server_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$server_evts")
+ 	do {
+--- a/io_uring/timeout.c
++++ b/io_uring/timeout.c
+@@ -324,7 +324,7 @@ static void io_req_task_link_timeout(str
+ 	int ret;
  
- 	print_test "Established IP${is_v6} MPTCP Connection ns2 => ns1"
--	if [ "$client_token" != "" ] && [ "$server_token" != "" ] && [ "$client_serverside" = 0 ] &&
--		   [ "$server_serverside" = 1 ]
-+	if [ "${client_token}" != "" ] && [ "${server_token}" != "" ] &&
-+	   [ "${client_serverside}" = 0 ] && [ "${server_serverside}" = 1 ] &&
-+	   [ "${client_nojoin:-0}" = 0 ] && [ "${server_nojoin:-0}" = 1 ]
- 	then
- 		test_pass
- 		print_title "Connection info: ${client_addr}:${client_port} -> ${connect_addr}:${app_port}"
- 	else
--		test_fail "Expected tokens (c:${client_token} - s:${server_token}) and server (c:${client_serverside} - s:${server_serverside})"
-+		test_fail "Expected tokens (c:${client_token} - s:${server_token}), server (c:${client_serverside} - s:${server_serverside}), nojoin (c:${client_nojoin} - s:${server_nojoin})"
- 		mptcp_lib_result_print_all_tap
- 		exit 1
- 	fi
+ 	if (prev) {
+-		if (!io_should_terminate_tw()) {
++		if (!io_should_terminate_tw(req->ctx)) {
+ 			struct io_cancel_data cd = {
+ 				.ctx		= req->ctx,
+ 				.data		= prev->cqe.user_data,
+--- a/io_uring/uring_cmd.c
++++ b/io_uring/uring_cmd.c
+@@ -123,7 +123,7 @@ static void io_uring_cmd_work(struct io_
+ 	struct io_uring_cmd *ioucmd = io_kiocb_to_cmd(req, struct io_uring_cmd);
+ 	unsigned int flags = IO_URING_F_COMPLETE_DEFER;
+ 
+-	if (io_should_terminate_tw())
++	if (io_should_terminate_tw(req->ctx))
+ 		flags |= IO_URING_F_TASK_DEAD;
+ 
+ 	/* task_work executor checks the deffered list completion */
 
 
 
