@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0662DB92E60
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A496B92D5B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5272D1906F8F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B7F5445F83
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E041B2F1FE3;
-	Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE58A2EDD5D;
+	Mon, 22 Sep 2025 19:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvqyKe0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwbyXGBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B15A285C92;
-	Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A35725F780;
+	Mon, 22 Sep 2025 19:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569839; cv=none; b=jxMGepV9Di5G6Ho6mFdwGgUhAkXRTc8eNmtTlDyi511304KhOjILaCcIBVozbNPpJT0CJIXb8ZLIs2diymBepC7lZXfz0NfGWubA2pBQBzi3y5xG/VPuzdWagNyQCDB2SD3/A7Nk5Mg0daet5coHhRJv0CEpFH3pAI8wSAl5tas=
+	t=1758569646; cv=none; b=CbGCTv1QYfWgSB4YC1agqFljY/TnI6fC5tXhLsZ9zsVPLBdyEG15KawOn8xz8ABgibola1tjG0Gi6GxpE6bmKEP0OAs584ZFY5HSGPWoWeLU0jZRq5n+WT2ZhGis/h2m0WqtyVaM0cY0TMQEEzUWyIOXB9VNO6h8gxY78C1OkWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569839; c=relaxed/simple;
-	bh=X0q34OXcUMkCznJ1Ure9/RBij5LUwRU/4jqOwav9GRc=;
+	s=arc-20240116; t=1758569646; c=relaxed/simple;
+	bh=/816tELNWaTboIpd0SQrm8jrqL4f0hAl+52g2u8E3RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RaIGZAzyl7Y8iydlF6qv5N7ffmISC7D+e51zrOPSZZUScxLXQXIZkFNZBE7TQ7600boRQl3oIRXiTQVbpA3NDf8kQ+HRtTz28WqAx503WqwuYyaGDRlBV8akZZpmDlvqYPc+4RD/15PHrQxlkQqfDK72FMgNzbizH/kqxk1EaOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvqyKe0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33587C4CEF0;
-	Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
+	 MIME-Version; b=n8oto+yj4YIwm5QhDYf0xpm1qO2YyhMsd/fzivJFV55UlMQmww3LUOPHZE8whWl+leEFovU6RL8sPQS1xO3cEiG80DJfirZh6XaC469CsPfmRsGtyulLqFiJ0Wy9gtRTxbIjZ4guV8Q+4W2b+Rd9Wy0NQCaSgd7elSROeOUxmxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwbyXGBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11277C4CEF0;
+	Mon, 22 Sep 2025 19:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569839;
-	bh=X0q34OXcUMkCznJ1Ure9/RBij5LUwRU/4jqOwav9GRc=;
+	s=korg; t=1758569646;
+	bh=/816tELNWaTboIpd0SQrm8jrqL4f0hAl+52g2u8E3RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvqyKe0CG7NLs4TjXbKmzAHaMKqOBP0+SnVKhbUdb5ZOYHSt5s/z5x47n3Zk4R3O6
-	 OKwxtMXZJZbslT3H72n9igjx9KC4+geQRywhl+ynA0mugBqYiEIwT4Q1LXGZtXyns4
-	 slJPzh5peuTAfDGAJPBNfngC1feSz9BFdHV/twWg=
+	b=kwbyXGBWti9+Q1Et6VcfpWdB3P+7kKmpCWqQzVSZnlLAxBfKFngp5Onjpsn9v/hY0
+	 4LYTyZnWVAgKLzonUxrute5/RF//HrgqMIKjRNcGAa4YwzEIg1d2hZbxTzD5aeAAXk
+	 nwIqISui2bO97jDVAodt7VOKqvjTZ6ECNmu+Xhrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/105] net: natsemi: fix `rx_dropped` double accounting on `netif_rx()` failure
+Subject: [PATCH 6.6 02/70] ALSA: firewire-motu: drop EPOLLOUT from poll return values as write is not supported
 Date: Mon, 22 Sep 2025 21:29:02 +0200
-Message-ID: <20250922192409.413608465@linuxfoundation.org>
+Message-ID: <20250922192404.529536508@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 93ab4881a4e2b9657bdce4b8940073bfb4ed5eab ]
+[ Upstream commit aea3493246c474bc917d124d6fb627663ab6bef0 ]
 
-`netif_rx()` already increments `rx_dropped` core stat when it fails.
-The driver was also updating `ndev->stats.rx_dropped` in the same path.
-Since both are reported together via `ip -s -s` command, this resulted
-in drops being counted twice in user-visible stats.
+The ALSA HwDep character device of the firewire-motu driver incorrectly
+returns EPOLLOUT in poll(2), even though the driver implements no operation
+for write(2). This misleads userspace applications to believe write() is
+allowed, potentially resulting in unnecessarily wakeups.
 
-Keep the driver update on `if (unlikely(!skb))`, but skip it after
-`netif_rx()` errors.
+This issue dates back to the driver's initial code added by a commit
+71c3797779d3 ("ALSA: firewire-motu: add hwdep interface"), and persisted
+when POLLOUT was updated to EPOLLOUT by a commit a9a08845e9ac ('vfs: do
+bulk POLL* -> EPOLL* replacement("").').
 
-Fixes: caf586e5f23c ("net: add a core netdev->rx_dropped counter")
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250913060135.35282-3-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This commit fixes the bug.
+
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/20250829233749.366222-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/natsemi/ns83820.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ sound/firewire/motu/motu-hwdep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
-index 998586872599b..c692d2e878b2e 100644
---- a/drivers/net/ethernet/natsemi/ns83820.c
-+++ b/drivers/net/ethernet/natsemi/ns83820.c
-@@ -820,7 +820,7 @@ static void rx_irq(struct net_device *ndev)
- 	struct ns83820 *dev = PRIV(ndev);
- 	struct rx_info *info = &dev->rx_info;
- 	unsigned next_rx;
--	int rx_rc, len;
-+	int len;
- 	u32 cmdsts;
- 	__le32 *desc;
- 	unsigned long flags;
-@@ -881,8 +881,10 @@ static void rx_irq(struct net_device *ndev)
- 		if (likely(CMDSTS_OK & cmdsts)) {
- #endif
- 			skb_put(skb, len);
--			if (unlikely(!skb))
-+			if (unlikely(!skb)) {
-+				ndev->stats.rx_dropped++;
- 				goto netdev_mangle_me_harder_failed;
-+			}
- 			if (cmdsts & CMDSTS_DEST_MULTI)
- 				ndev->stats.multicast++;
- 			ndev->stats.rx_packets++;
-@@ -901,15 +903,12 @@ static void rx_irq(struct net_device *ndev)
- 				__vlan_hwaccel_put_tag(skb, htons(ETH_P_IPV6), tag);
- 			}
- #endif
--			rx_rc = netif_rx(skb);
--			if (NET_RX_DROP == rx_rc) {
--netdev_mangle_me_harder_failed:
--				ndev->stats.rx_dropped++;
--			}
-+			netif_rx(skb);
- 		} else {
- 			dev_kfree_skb_irq(skb);
- 		}
+diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
+index 88d1f4b56e4be..a220ac0c8eb83 100644
+--- a/sound/firewire/motu/motu-hwdep.c
++++ b/sound/firewire/motu/motu-hwdep.c
+@@ -111,7 +111,7 @@ static __poll_t hwdep_poll(struct snd_hwdep *hwdep, struct file *file,
+ 		events = 0;
+ 	spin_unlock_irq(&motu->lock);
  
-+netdev_mangle_me_harder_failed:
- 		nr++;
- 		next_rx = info->next_rx;
- 		desc = info->descs + (DESC_SIZE * next_rx);
+-	return events | EPOLLOUT;
++	return events;
+ }
+ 
+ static int hwdep_get_info(struct snd_motu *motu, void __user *arg)
 -- 
 2.51.0
 
