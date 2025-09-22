@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-181412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FFAB937C4
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 00:31:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7496AB937E5
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 00:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27DC8175FCF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 22:31:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A612E127F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 22:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCBE27A906;
-	Mon, 22 Sep 2025 22:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AF72DEA6F;
+	Mon, 22 Sep 2025 22:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AlxR0kwF"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NAhWY+oR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC63121D3F5;
-	Mon, 22 Sep 2025 22:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD21119A288;
+	Mon, 22 Sep 2025 22:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758580310; cv=none; b=b4A6Nz3VIzupHiJVMLmyD+sJdhEwBDIUJaDupNgSEidak0Dnmhe8s2dtTT7DiJeE0cl0iTwkyoTj67cfdaHf6SXJT73uo473Xug5Nc+1aaO/R7xNCAJPD/ecK13GhBi0KgDUE2KxbQfq2wXqH5pnTyVXDVlxjFHER5h152ZEEtE=
+	t=1758580676; cv=none; b=oIaj98t9z9M5AYLP9Piwpu9Z5fobS2pCoeB+Yx1Mr8K6fxx8XQJCMvWWL8AfHsuXJqEAa9Qyz/MOIGjXgpxqUhGsrbe8X5wu7ChDd8MU5NtLAhS27jcm9OnHIuWNHDOS5e8rta3fsVJPU/ucVpZBRwjriFA26ZFIQo+XmgWKB3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758580310; c=relaxed/simple;
-	bh=IRVE3RzrnmzqED9rH5Kl1EzZeTA3qBfY7avoHEPz9WI=;
-	h=Date:To:From:Subject:Message-Id; b=o260ClqBFEpvNUe5tfpLCDSFACBoVws1Q4Y2+mnIvDBdHerYT2Ipk6VxCGghTEkkrxSbiqsG7S+MdLIpp9B3qnUTYAeBRm+t+RnmmyP99Ok7J4Pgl+MWc1twvGSV9kUp4I8RcvSICkHZB8iyqvRKiyLhRmrDIvqkFAI57xvHtuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AlxR0kwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54029C4CEF0;
-	Mon, 22 Sep 2025 22:31:49 +0000 (UTC)
+	s=arc-20240116; t=1758580676; c=relaxed/simple;
+	bh=R4eju/JW8BmOqw+IGO3wqLX9p1tngOBCcWl/O6J38OE=;
+	h=Date:To:From:Subject:Message-Id; b=gxnwiSPsKQiG4D8w4bLYrQeSqrpERwcY2rXmqgLwsCWWDwe8wPRM5vJp1DwCfKKRSLyKvwLGx3MnCYRr/VcyZIOW+1GX8/Ea6E3YNsQv8ZB/K4zGVlUtFZn/AmWW72wMeWvCRRZcC/ajd5VtWwsT64aJurC5X5kxaDYC8r+vJOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NAhWY+oR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC95C4CEF0;
+	Mon, 22 Sep 2025 22:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758580309;
-	bh=IRVE3RzrnmzqED9rH5Kl1EzZeTA3qBfY7avoHEPz9WI=;
+	s=korg; t=1758580674;
+	bh=R4eju/JW8BmOqw+IGO3wqLX9p1tngOBCcWl/O6J38OE=;
 	h=Date:To:From:Subject:From;
-	b=AlxR0kwFrCdOkw185VDUV42gEPN8eoALoHrJfub2mHU5T+hlmsIk64kpc6y5YNfru
-	 9fHdrEcogJG5Jw30zlRuwCQrT6EPpvZf2Ve8L8PsJhwsNzvnZgZSoiywbiLc7xPRAE
-	 muAjE2GqWdjByeEiaWDnTbVfowhZBfbfPLH/hWik=
-Date: Mon, 22 Sep 2025 15:31:48 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,ying.huang@linux.alibaba.com,willy@infradead.org,usamaarif642@gmail.com,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,samuel.holland@sifive.com,ryncsn@gmail.com,ryan.roberts@arm.com,rppt@kernel.org,roman.gushchin@linux.dev,riel@surriel.com,rakie.kim@sk.com,Qun-wei.Lin@mediatek.com,palmer@rivosinc.com,npache@redhat.com,matthew.brost@intel.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kaleshsingh@google.com,joshua.hahnjy@gmail.com,hughd@google.com,hannes@cmpxchg.org,gourry@gourry.net,dev.jain@arm.com,david@redhat.com,chinwen.chang@mediatek.com,charlie@rivosinc.com,cerasuolodomenico@gmail.com,catalin.marinas@arm.com,byungchul@sk.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,apopple@nvidia.com,andrew.yang@mediatek.com,lance.yang@linux.dev,akpm@linux-foundation.org
+	b=NAhWY+oRZnn8NDkmCMW+2+FoM2nsMyAn75vl9ZzkJq4btbTX0P10wfUeHtTIkoFKR
+	 9YIpdjUuWLKKGf9Fvb1tuouqeJYUmwglK9goRPPrig9nD23KklkYNwMKQsZpoMmiZn
+	 zk0nmXillRlQGmHkJJqPpvK1Ekh0uunroXQuGU34=
+Date: Mon, 22 Sep 2025 15:37:53 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akinobu.mita@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250922223149.54029C4CEF0@smtp.kernel.org>
+Subject: + mm-damon-sysfs-do-not-ignore-callbacks-return-value-in-damon_sysfs_damon_call.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250922223754.4BC95C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/thp: fix MTE tag mismatch when replacing zero-filled subpages
+     Subject: mm/damon/sysfs: do not ignore callback's return value in damon_sysfs_damon_call()
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch
+     mm-damon-sysfs-do-not-ignore-callbacks-return-value-in-damon_sysfs_damon_call.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-do-not-ignore-callbacks-return-value-in-damon_sysfs_damon_call.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,152 +73,48 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Lance Yang <lance.yang@linux.dev>
-Subject: mm/thp: fix MTE tag mismatch when replacing zero-filled subpages
-Date: Mon, 22 Sep 2025 10:14:58 +0800
+From: Akinobu Mita <akinobu.mita@gmail.com>
+Subject: mm/damon/sysfs: do not ignore callback's return value in damon_sysfs_damon_call()
+Date: Sat, 20 Sep 2025 22:25:46 +0900
 
+The callback return value is ignored in damon_sysfs_damon_call(), which
+means that it is not possible to detect invalid user input when writing
+commands such as 'commit' to
+/sys/kernel/mm/damon/admin/kdamonds/<K>/state.  Fix it.
 
-When both THP and MTE are enabled, splitting a THP and replacing its
-zero-filled subpages with the shared zeropage can cause MTE tag mismatch
-faults in userspace.
-
-Remapping zero-filled subpages to the shared zeropage is unsafe, as the
-zeropage has a fixed tag of zero, which may not match the tag expected by
-the userspace pointer.
-
-KSM already avoids this problem by using memcmp_pages(), which on arm64
-intentionally reports MTE-tagged pages as non-identical to prevent unsafe
-merging.
-
-As suggested by David[1], this patch adopts the same pattern, replacing the
-memchr_inv() byte-level check with a call to pages_identical(). This
-leverages existing architecture-specific logic to determine if a page is
-truly identical to the shared zeropage.
-
-Having both the THP shrinker and KSM rely on pages_identical() makes the
-design more future-proof, IMO. Instead of handling quirks in generic code,
-we just let the architecture decide what makes two pages identical.
-
-[1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
-
-Link: https://lkml.kernel.org/r/20250922021458.68123-1-lance.yang@linux.dev
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
-Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Usama Arif <usamaarif642@gmail.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: andrew.yang <andrew.yang@mediatek.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Chinwen Chang <chinwen.chang@mediatek.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Samuel Holland <samuel.holland@sifive.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20250920132546.5822-1-akinobu.mita@gmail.com
+Fixes: f64539dcdb87 ("mm/damon/sysfs: use damon_call() for update_schemes_stats")
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.14+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/huge_memory.c |   15 +++------------
- mm/migrate.c     |    8 +-------
- 2 files changed, 4 insertions(+), 19 deletions(-)
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/huge_memory.c~mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages
-+++ a/mm/huge_memory.c
-@@ -4115,32 +4115,23 @@ static unsigned long deferred_split_coun
- static bool thp_underused(struct folio *folio)
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-do-not-ignore-callbacks-return-value-in-damon_sysfs_damon_call
++++ a/mm/damon/sysfs.c
+@@ -1592,12 +1592,14 @@ static int damon_sysfs_damon_call(int (*
+ 		struct damon_sysfs_kdamond *kdamond)
  {
- 	int num_zero_pages = 0, num_filled_pages = 0;
--	void *kaddr;
- 	int i;
+ 	struct damon_call_control call_control = {};
++	int err;
  
- 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
- 		return false;
- 
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
--		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
--		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
--			num_zero_pages++;
--			if (num_zero_pages > khugepaged_max_ptes_none) {
--				kunmap_local(kaddr);
-+		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
-+			if (++num_zero_pages > khugepaged_max_ptes_none)
- 				return true;
--			}
- 		} else {
- 			/*
- 			 * Another path for early exit once the number
- 			 * of non-zero filled pages exceeds threshold.
- 			 */
--			num_filled_pages++;
--			if (num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none) {
--				kunmap_local(kaddr);
-+			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
- 				return false;
--			}
- 		}
--		kunmap_local(kaddr);
- 	}
- 	return false;
+ 	if (!kdamond->damon_ctx)
+ 		return -EINVAL;
+ 	call_control.fn = fn;
+ 	call_control.data = kdamond;
+-	return damon_call(kdamond->damon_ctx, &call_control);
++	err = damon_call(kdamond->damon_ctx, &call_control);
++	return err ? err : call_control.return_code;
  }
---- a/mm/migrate.c~mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages
-+++ a/mm/migrate.c
-@@ -301,9 +301,7 @@ static bool try_to_map_unused_to_zeropag
- 					  unsigned long idx)
- {
- 	struct page *page = folio_page(folio, idx);
--	bool contains_data;
- 	pte_t newpte;
--	void *addr;
  
- 	if (PageCompound(page))
- 		return false;
-@@ -320,11 +318,7 @@ static bool try_to_map_unused_to_zeropag
- 	 * this subpage has been non present. If the subpage is only zero-filled
- 	 * then map it to the shared zeropage.
- 	 */
--	addr = kmap_local_page(page);
--	contains_data = memchr_inv(addr, 0, PAGE_SIZE);
--	kunmap_local(addr);
--
--	if (contains_data)
-+	if (!pages_identical(page, ZERO_PAGE(0)))
- 		return false;
- 
- 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+ struct damon_sysfs_schemes_walk_data {
 _
 
-Patches currently in -mm which might be from lance.yang@linux.dev are
+Patches currently in -mm which might be from akinobu.mita@gmail.com are
 
-hung_task-fix-warnings-caused-by-unaligned-lock-pointers.patch
-mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch
-selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled.patch
+mm-damon-sysfs-do-not-ignore-callbacks-return-value-in-damon_sysfs_damon_call.patch
 
 
