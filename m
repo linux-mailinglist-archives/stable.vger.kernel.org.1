@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-181349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF95B930DA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF868B92F1D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142A42A0BF6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46CD52A7EA4
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85ED253B5C;
-	Mon, 22 Sep 2025 19:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A3D1C1ADB;
+	Mon, 22 Sep 2025 19:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usX2ZVzk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DIaXFBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964E01F91E3;
-	Mon, 22 Sep 2025 19:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5AD2E285C;
+	Mon, 22 Sep 2025 19:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570317; cv=none; b=osi3dm4WGay3aL8MXIX2CAlgkBjQG5r1GPOWgQrcNiVQuxciNXN5JHHwgPRDsWmtnddNFFOMj2iLNnBtfPea+PdeVsSNR+zu1EdAbzPXDecU8op5LTZB4f7yerru5boswg4AxCRRdFdXmNreqrT+MSP9Gpm1kR0zf2TvNXJMSCo=
+	t=1758569983; cv=none; b=lt6+z+JIIjU6D3oymFcDoL/DwEdBv5vt1aInXopyWBvqxMEMHkRYQxE41gwD0LYtyNcKB9cFRaE3StqyhHh1jCwQqaKsF9CW77N1UAOgYlOVOIdedStV+PfjquTB2qx63NZRLxhQj9zKLHGSGKNEo+WlXA3c2z7k6hdjcNaqJvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570317; c=relaxed/simple;
-	bh=VtyKMPU3ufStzeR9Zsj7uNkIF1ZsqeUPkr2P0kaElN8=;
+	s=arc-20240116; t=1758569983; c=relaxed/simple;
+	bh=QxKishtbmT7JhsDQSNIE5N9EYo1wKGi8vA3kbKpXfTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sxc2Qyx75AHyWocmpFxzb4G2q3fchSkKG7Zt5vfd4aSAhqqmTU6ajmO9in8ZrJnyJFB4PZzmYQQEmaJlOPjqqbLZcwV8Za77oLUEDaLHvaY1ipgFikr3ZtGdiCQjKlWHPxiGRD5dW8zP9sH+lBspIkGcjE45W6XAobFXfH/gMh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usX2ZVzk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304FAC4CEF0;
-	Mon, 22 Sep 2025 19:45:17 +0000 (UTC)
+	 MIME-Version; b=eVfocDj2UtykUaTEVh9J2fB+hnZM0siXipBs9MSVO5OGlP2Yz8tiboBNyUyjOeVVbQPhNkYroNF0L1XrbcmOr9eUBDvt8fxu3FvNd2+FWSi22utvAyY3MS/gyI1YgnEfuF5rycj3paOP4kYiYrl4d5yRNOlYJKSAp7gSES5UL+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DIaXFBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D29C4CEF0;
+	Mon, 22 Sep 2025 19:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570317;
-	bh=VtyKMPU3ufStzeR9Zsj7uNkIF1ZsqeUPkr2P0kaElN8=;
+	s=korg; t=1758569983;
+	bh=QxKishtbmT7JhsDQSNIE5N9EYo1wKGi8vA3kbKpXfTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usX2ZVzkID9mb+n3dpWqFojT1A2ZwbqZ2PthHhWQ58lS+gi42iTVIshgjZz9buIPv
-	 TzZ4vOGha9QSzAOKARGT//kJr7hZlQQuK1EOsKsHiAi+tyohwGGMUUcVNzwQBHd97b
-	 nS9Oe3wlOYeHmGOZTPPtQcehJybCt+i72RJLydBY=
+	b=2DIaXFBcRQ7QBOUH/ZUbjkNO8TOCfBU3nKmA8WhlTBB7bkWKLZe9nebg2IFISIepM
+	 ODTS55ByGklgpH6rBEsJ0M8YwTrCksgDgc4ACeGUuFxUaQGY6zvfgAdGcYE5y3ToXG
+	 j9nMt96PKofqe/7uOxDeDpWabdCHW8a+6t4aJ8ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.16 088/149] mmc: mvsdio: Fix dma_unmap_sg() nents value
+	Praful Adiga <praful.adiga@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 065/105] ALSA: hda/realtek: Fix mute led for HP Laptop 15-dw4xx
 Date: Mon, 22 Sep 2025 21:29:48 +0200
-Message-ID: <20250922192415.104210022@linuxfoundation.org>
+Message-ID: <20250922192410.614793144@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Praful Adiga <praful.adiga@gmail.com>
 
-commit 8ab2f1c35669bff7d7ed1bb16bf5cc989b3e2e17 upstream.
+commit d33c3471047fc54966621d19329e6a23ebc8ec50 upstream.
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+This laptop uses the ALC236 codec with COEF 0x7 and idx 1 to
+control the mute LED. Enable the existing quirk for this device.
 
-Fixes: 236caa7cc351 ("mmc: SDIO driver for Marvell SoCs")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Praful Adiga <praful.adiga@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mvsdio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/mvsdio.c
-+++ b/drivers/mmc/host/mvsdio.c
-@@ -292,7 +292,7 @@ static u32 mvsd_finish_data(struct mvsd_
- 		host->pio_ptr = NULL;
- 		host->pio_size = 0;
- 	} else {
--		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_frags,
-+		dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
- 			     mmc_get_dma_dir(data));
- 	}
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10666,6 +10666,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8992, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8994, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8995, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x89a0, "HP Laptop 15-dw4xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x89a4, "HP ProBook 440 G9", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x89a6, "HP ProBook 450 G9", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x89aa, "HP EliteBook 630 G9", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
