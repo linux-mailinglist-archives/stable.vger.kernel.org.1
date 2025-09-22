@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-181165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C780FB92E6C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA2CB92C8C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD96919070BA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD445189C832
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D972285C92;
-	Mon, 22 Sep 2025 19:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF738285C92;
+	Mon, 22 Sep 2025 19:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUkv9zKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHdJR95x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2988925F780;
-	Mon, 22 Sep 2025 19:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F57170A37;
+	Mon, 22 Sep 2025 19:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569852; cv=none; b=l+06WXrhnsRvohzh5bE9VXPvsaqL92CMG1YI8yPE3YXMdHhB9JdSRM6dIix+uwVsmaO/z5j5SCZ+vBwWGmz0KhcE6PzTsFGEHeDRX1ycU5Xb7TDEQYmpP0Af8OPd8+eiaL/GLGjM9cpGY0T8oDesU2JpdsTzgFpPHpMufuRgsCA=
+	t=1758569494; cv=none; b=a1eGyj9y4MAKfQzpnt7eJlKVdk3sWLqM9+La181HAalsldYHdU8b3MZzrOIVdp/yrn7PvNRZnjldNpS7+cp0HVDbFXmy0clMuuxWuEq4oLN/ar5zEBY2ygTZ0YATbU+XHw1saBRVcQaNsnVOQ7oFEoNJPO3SXhf+e/yVXWrpxak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569852; c=relaxed/simple;
-	bh=fpSHHZhK3CRGYAvW9wuJZvB451PJx/GcJSmu/hAeZAs=;
+	s=arc-20240116; t=1758569494; c=relaxed/simple;
+	bh=TxDhY+GfxsBmGHKTAd1lPj/+XgAeUtrMIK7SNoUn3Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOmndsyz6G6f/1NSP4BttNf7EBsSX+Lx/VuYqiY97KOX/pnMNGuuY5NwtXkbA3mjbTIJuiY9cMEkr0Hd8b2UscTxjvEh2HfvLX8ck2PMKUeZlMOWzqpvORtzdiKo2MDM/hzk8f4X+8lNXO1IozvREJB5ufaD1PILAtP58cOWIZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUkv9zKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50AAC4CEF0;
-	Mon, 22 Sep 2025 19:37:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XFz7vq31/CieUnCKUCQqokKLM9NAxJhguB7VLyf1ASxrLjle44fyWMT4k0+fim2T5PHeMFDWXNUVxH2AFkywFP9wCGUMa8oL/2QF4JYlSh3UtAboJfOpeX4t9uM/8JzDsDPFi91jdwOoRWpFHBHB2lQm6gB0QTTPFVbFsffPo1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHdJR95x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1900C4CEF0;
+	Mon, 22 Sep 2025 19:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569852;
-	bh=fpSHHZhK3CRGYAvW9wuJZvB451PJx/GcJSmu/hAeZAs=;
+	s=korg; t=1758569494;
+	bh=TxDhY+GfxsBmGHKTAd1lPj/+XgAeUtrMIK7SNoUn3Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUkv9zKdecQxRQ0rqkejj/O+1nHIRjC6VuzwIxDdsCNmQjbo3TrMblFXYAVcG/Syp
-	 r4N8AiE+bqqamvHqwtouEQokMOHat60Acirgy4C92D5xuChDsu1AUNhO7NXYABLCEp
-	 i5054MaxP02fgUqUfzBFFeelhw9csUO68R/COc2A=
+	b=DHdJR95xxKkS8QVtaOUbFdLzJIphBZRQZfnFN+aaQymiEUS0xRfCk8QwvPXdvjIUk
+	 fHM96RPRLb7vVwvy/l+yi8asRZNjjaHMppsZMnjOkDv+8cQrihbIhs1WZgm8rgeyQj
+	 rlSqwIZjQvH0z2z/Cg7C4t84CtNuA/YBGA0o75r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/105] qed: Dont collect too many protection override GRC elements
-Date: Mon, 22 Sep 2025 21:28:56 +0200
-Message-ID: <20250922192409.251469636@linuxfoundation.org>
+Subject: [PATCH 6.1 04/61] pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
+Date: Mon, 22 Sep 2025 21:28:57 +0200
+Message-ID: <20250922192403.666169740@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
+[ Upstream commit d1dfcdd30140c031ae091868fb5bed084132bca1 ]
 
-In the protection override dump path, the firmware can return far too
-many GRC elements, resulting in attempting to write past the end of the
-previously-kmalloc'ed dump buffer.
+As described in the added code comment, a reference to .exit.text is ok
+for drivers registered via platform_driver_probe().  Make this explicit
+to prevent the following section mismatch warning
 
-This will result in a kernel panic with reason:
+    WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
 
- BUG: unable to handle kernel paging request at ADDRESS
+that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
 
-where "ADDRESS" is just past the end of the protection override dump
-buffer. The start address of the buffer is:
- p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
-and the size of the buffer is buf_size in the same data structure.
-
-The panic can be arrived at from either the qede Ethernet driver path:
-
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc02662ed [qed]
- qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
- qed_dbg_feature at ffffffffc026aa8f [qed]
- qed_dbg_all_data at ffffffffc026b211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
- devlink_health_do_dump at ffffffff82497f61
- devlink_health_report at ffffffff8249cf29
- qed_report_fatal_error at ffffffffc0272baf [qed]
- qede_sp_task at ffffffffc045ed32 [qede]
- process_one_work at ffffffff81d19783
-
-or the qedf storage driver path:
-
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc068b2ed [qed]
- qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
- qed_dbg_feature at ffffffffc068fa8f [qed]
- qed_dbg_all_data at ffffffffc0690211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
- devlink_health_do_dump at ffffffff8aa95e51
- devlink_health_report at ffffffff8aa9ae19
- qed_report_fatal_error at ffffffffc0697baf [qed]
- qed_hw_err_notify at ffffffffc06d32d7 [qed]
- qed_spq_post at ffffffffc06b1011 [qed]
- qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
- qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
- qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
- fc_rport_work at ffffffffc02da715 [libfc]
- process_one_work at ffffffff8a319663
-
-Resolve this by clamping the firmware's return value to the maximum
-number of legal elements the firmware should return.
-
-Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pcmcia/omap_cf.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-index f67be4b8ad435..523cbd91baf49 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-@@ -4461,10 +4461,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
- 		goto out;
- 	}
+diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+index e22a752052f2f..b8260dd12b1a8 100644
+--- a/drivers/pcmcia/omap_cf.c
++++ b/drivers/pcmcia/omap_cf.c
+@@ -305,7 +305,13 @@ static int __exit omap_cf_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
--	/* Add override window info to buffer */
-+	/* Add override window info to buffer, preventing buffer overflow */
- 	override_window_dwords =
--		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
--		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
-+		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
-+		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
-+		PROTECTION_OVERRIDE_DEPTH_DWORDS);
- 	if (override_window_dwords) {
- 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
- 		offset += qed_grc_dump_addr_range(p_hwfn,
+-static struct platform_driver omap_cf_driver = {
++/*
++ * omap_cf_remove() lives in .exit.text. For drivers registered via
++ * platform_driver_probe() this is ok because they cannot get unbound at
++ * runtime. So mark the driver struct with __refdata to prevent modpost
++ * triggering a section mismatch warning.
++ */
++static struct platform_driver omap_cf_driver __refdata = {
+ 	.driver = {
+ 		.name	= driver_name,
+ 	},
 -- 
 2.51.0
 
