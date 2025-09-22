@@ -1,355 +1,219 @@
-Return-Path: <stable+bounces-180958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601EAB916E6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEC5B91801
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 451D618957DF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 13:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45DE018955AC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 13:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A53D2D9EED;
-	Mon, 22 Sep 2025 13:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB5F30E0F7;
+	Mon, 22 Sep 2025 13:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Ml0sE6zx"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="To0MYj2a"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011049.outbound.protection.outlook.com [52.101.57.49])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8244D30DD37
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 13:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758548280; cv=fail; b=rR6aF+HB0C1leCP3YTGzmwuAgMxbwg5Nh4om0UGbNbB5FIePN0/pNcLdNANJ5SOmYjgx5fnGRgq6xEEuFd5pVIq+l1M2Ud0CA5qr0clDkVa2ceJdyihqd+bT2cSt1+6qFq3PmvV0mHOeF5StNqWkzKxmrEaoh4BGiyCEPHNg8RY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758548280; c=relaxed/simple;
-	bh=Fq05uUyUMdCzzTp3fjv9h3pxAM2DCY7D2fN31LxiSP0=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=OS9YQy0awq9hbR4AAjJfgQOV4eDuPesJri4Dl3bb/usmWMW/D62lCPoiiLb71xTDuNBqW+tLz3IVJdd1cx/nlqLgdzvDGdHO1DoOAjUuZF9ZbWixD3RlIw/US399ig1YCDjPd3T0S5coBPVYnvbgLFzxOvJdBFwFiPLnS8WwtKg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Ml0sE6zx; arc=fail smtp.client-ip=52.101.57.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J86L+Gpej36G8SRqWrZg8gRy7ho0AhgQfbO19DrI+Z0aRjPbxnoW3yU9DGvNNtTGTAyuSwRqD9j/dL6UjVp/R1Cs5ylnmpR8r9/AY6ENsel+ELAW2Z/LB+mqHfL51fHqqkg/HBQjbXfrS0erpPm1Cpe8JBxvjVp+Hz0anwzvjlAp1h95sVVkh0UOCYMhvsw9FN+pbflIPmqd4G8S8MKU4S2f/mCe3VrNTJY2hwZK1UdweD9tBuQ96MTc1LCbXpf+TSdJomPuPNJ7Jc2XGegAqfs9+6/60uUUlCJ1K8wd8YAwUAcQ5lY5XH72ywQpKbFYFwLIci9vtr1YWGo/NnaqLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g93iLRLXVKbyXX3SDneRjBsjglJkIGxKeYGMX2A/fw4=;
- b=pXwR67KDq0eEs9RYIv1bo4+NdNMWqPOHuXdRKWO0GOlSZLaK1WlxsoSjMFa/8E5AVdHKWPjdVEZ56zsAsYXo7Uoe+67rmmH0yPL4gywg7mWwVhR53csxsdxTWFODlyDrgS7sjDLYeioEsEly/e9ZhRY6pQH+TcF+RHll9JE71cpYo6PR2/OEK/7hgjkiHbC0MKlhS4Xwmv8FEFn7Z3BuA8HZAhuFdnCDDMv8aSyLXbF3HMlDYe8/UQ/zP6e3J5ssUNSy3gdHglEWNOlinvphPZaQwObMj+DITW8HwxfLZ2sKEmkB6qWYprc2x5p4kHeOUzZhU/jwHhejcna+TMTDdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g93iLRLXVKbyXX3SDneRjBsjglJkIGxKeYGMX2A/fw4=;
- b=Ml0sE6zxGx3k8zqwX0WcS9SE7rfTRrZXt9fVNcFIYMBh+zj9evMQmv9RmTZOQ3uvbg/z4+KYdm23tfckfdj+I3uGzMPhplPqhQ5Ud9RThIqb9rgEY/8mDp6W0ps7/kAfX7QRDDylckFbePR7nlAeEoS+6MFOQ2K2CIYShDpbXko=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5062.namprd12.prod.outlook.com (2603:10b6:208:313::6)
- by SN7PR12MB8129.namprd12.prod.outlook.com (2603:10b6:806:323::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Mon, 22 Sep
- 2025 13:37:55 +0000
-Received: from BL1PR12MB5062.namprd12.prod.outlook.com
- ([fe80::fe03:ef1f:3fee:9d4a]) by BL1PR12MB5062.namprd12.prod.outlook.com
- ([fe80::fe03:ef1f:3fee:9d4a%4]) with mapi id 15.20.9137.018; Mon, 22 Sep 2025
- 13:37:55 +0000
-Message-ID: <371ed3b2-8c7c-40bb-4e23-6a246a715168@amd.com>
-Date: Mon, 22 Sep 2025 08:37:51 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: Patch "x86/sev: Guard sev_evict_cache() with
- CONFIG_AMD_MEM_ENCRYPT" has been added to the 6.12-stable tree
-To: gregkh@linuxfoundation.org, bp@alien8.de, sashal@kernel.org,
- stable@kernel.org, stable@vger.kernel.org
-References: <2025092205-quaking-approve-4cd6@gregkh>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <2025092205-quaking-approve-4cd6@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR03CA0006.namprd03.prod.outlook.com
- (2603:10b6:806:20::11) To BL1PR12MB5062.namprd12.prod.outlook.com
- (2603:10b6:208:313::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51FD30E0C6
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 13:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758548721; cv=none; b=pskioXtZfBOY2zBKeiexpfLiABzNIDMTks4wXRh+8HlGipiiYuN+U2opNcPAqI8OWxtEC7FyKqOB3VgS4ct2bx7duUb0PQbdqV0tdNF7cNjazWMPI7xOCSzNANA1Q5rO8U4LUZJ5KEDjtPAqEC9GsNvzaYYeeHyGuTemlR+yrpg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758548721; c=relaxed/simple;
+	bh=uG75ywJ/N/C4VTC9ezp6AkudmGNPmDTqgRJVwd5unM4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d17eRHLCM6i+Nig92HS4NAMf4tqL9Gys+ArX7sIQsxwxRr69Qm39sDnRdv4+EdUJwv5k+vabtJz1dVo+l/tkBKFqcpERgly7+xOfnsDvtmNg/TzpNuNi2u59Dz3+Ag0CbuS0SLO6P2kUuO68WKS6oL7muIY/ATDKSlOWph0GSLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=To0MYj2a; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58M8vptb005854
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 13:45:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	+GScQufAFT4/Jq3nDg5dsFylkF0kL3QXfWaxbdntkyU=; b=To0MYj2aNo8/9OTq
+	e/rYP2cpxQIdJji9OOfwR9fV2WJBnUymGCrJW1V8SpZ0iBpVeFa6aJNau0zvFFB5
+	wZl+ia0jCIQLvsCr0GkG0o7Of0HMpawOiwGHM4mJqmk2QDjEUxkAD9ZXqe+6IZm4
+	06ITFC8/eUh8/GBgmNkFmCgy6a0q+EctabQ/r5fsCproGVzqF4uGOrTf67/7mbTo
+	dbwRd6EXMQYlH+yqOrJN8XEt9hjA4jI+iDGWkRhUSDug818EqHikyOU8QsIvt3cJ
+	qPFQK/dm/6Pg3zPKIoYB+F30z1WAkyT+EOh8+uCQje6BGgzCxEucJffJotN6Pyee
+	mp/E2A==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499mg34w1n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 13:45:19 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b550fab38e9so2778918a12.0
+        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 06:45:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758548718; x=1759153518;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+GScQufAFT4/Jq3nDg5dsFylkF0kL3QXfWaxbdntkyU=;
+        b=gQeKu/It8nDR6wGugqatloRHhE5FJhdYuRqtQr40F2zixiFicFau96nc//1hTOlWgE
+         Nu1RaU8dSNxbu1ssBd0r6BCxHsA6p/vLqZ1IZ25/r/BtQLY1k6Eug1fSj2zt++4VDYBx
+         eM7sK8o1lfEVXNiK3yv9Iq7zz7E5yj944spLIs9sVWag/JwIvFS3ezGoL+BXMQXPru+v
+         muHRsMUrE9siyAn+xq/FzYb/PuSY8TNznUquZ3BvZNZ3icqPCrlDqOPOCRwEA4jAhg3z
+         mFNx4kyVjeQWT+90Xvva/c4Zw2S1FW8CfiW6NzGaxRqOoBuisqCDg5oDxTH1i0+IA2p+
+         GHTA==
+X-Forwarded-Encrypted: i=1; AJvYcCUfvDsj1GfN8yl6L1o0vd1sxilrGbuuuS7B42KDiIRA4zcq25yvXXsS9Bln4wa8BP2u7Z3obhY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDJMNKYdDTkNt4QBitBPEMNZq71f45e2gRn92N+ANE6seo5RwR
+	zk4MG7YZg6o+Cn7GNDBimk0ICiARIQgUme9LF7V6sZQZyyH5BgeCMBnATySqSuuQPUDZmYQS6BK
+	/iZGoqWcb0VRGqQSKYaMqPifFoZTe/gk5ztzZ9gMq0fllx13mAGikZXEV4WA=
+X-Gm-Gg: ASbGncs3OePd0+r1NJsK9KqOTn2uvtQ6YED8XAOM2fdihRcp26NpAOkU5+e2hODYFYs
+	fFTnoy2HoaOLNp6XrMk2lEMZ3/49pFwLSYeLP2h76/iU292rJub55CcHTKYTeSzBYCpNJyckxZy
+	iAsfW+XWVyLqjCt+QdqWGPtQN9xbXjc9plcUcLaqUglSPnlttSPJ/nCSk1ygG+1MrGtHc91YAuO
+	KnCZU3LR7/DjeTc1ElCb6jkwjyDNTmwU7WQVLLa+hkjinPKbkx1b9/4bNmk6y2r+7/7vrB5SQjx
+	uwNiq0gBMDXU+j+QQ9ZMudvu+umvfUBi2k760GFCjQZPXHkcsxbfS4Wwq/FP1FgfZlj8dMGOjCt
+	n0qYCzFyLJIu6dThhflCMhW+UZlxzjE4=
+X-Received: by 2002:a17:903:380d:b0:246:de71:1839 with SMTP id d9443c01a7336-269ba5512ddmr154128675ad.50.1758548718064;
+        Mon, 22 Sep 2025 06:45:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2Bxtg/WM4oSQFnOHm5vgIFDxjSmyxZZcCDz7Kx3f4NlCh9peJ1mVy6ZCZLfMSaGBLSNf2zQ==
+X-Received: by 2002:a17:903:380d:b0:246:de71:1839 with SMTP id d9443c01a7336-269ba5512ddmr154128115ad.50.1758548717036;
+        Mon, 22 Sep 2025 06:45:17 -0700 (PDT)
+Received: from [10.133.33.135] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269802df852sm134515585ad.87.2025.09.22.06.45.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Sep 2025 06:45:16 -0700 (PDT)
+Message-ID: <1dd930a0-b975-4302-9e1f-f06904d8a25c@oss.qualcomm.com>
+Date: Mon, 22 Sep 2025 21:45:12 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5062:EE_|SN7PR12MB8129:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f55e2ed-c4eb-4e60-7af6-08ddf9dd3b15
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OFB5ZlZkWUZNNkxFUDk4R0Z3Uk5qSmNQTGVCMXpCQ0ZqNDMwTlBneHp6Qy9x?=
- =?utf-8?B?dGk2OUMzQlVNVG53S0tSMXFGL0k0MkUxWldOQTNWTUxsZlVtUWltRS9yZUxv?=
- =?utf-8?B?c0lKUSs5VkFsR25qZGlOalNJR01neFkrM3FHZkEyeUREVFB3OFU5M0E5Q1pI?=
- =?utf-8?B?NGh4dks2M2hscGRHMGVOdXVOMzFLZzJaTm9JdnFyWWNoMFR2WDNTUHdTQVpw?=
- =?utf-8?B?Lyt6a21MV0hueGl2SExmMGdHc2xNMFJBOStyVjl2ZFpJZ2R1TTJpcU1uMXpI?=
- =?utf-8?B?S1Y4ZFo0QnF6NWhsVU5LYnpNQXlvNVFkQUJtYWpYaEtkYzNwZE5UeXlXQ3VG?=
- =?utf-8?B?RlUxVkVVdmNBK3JqZ2w0NE1zS2xOS1MxeWZxV0hOMHpFQTRIRnJuYlJma1d0?=
- =?utf-8?B?MGJvbDZxSDFmZ1dEeG9GTVRQUVVvZ0VtZzhyY0xFd2FpbHhnd28wblJ5a2V5?=
- =?utf-8?B?SHpjYlphT2FDMmplZFVVeWdyY01mQnByeDljTzRGQ090OVZybldpdGZDNEo4?=
- =?utf-8?B?eUVMY1hNTFlMcUZRazNobEhja2VvSmUrZWFkdXk3TnR4dWZwMEtYMm1sVlJN?=
- =?utf-8?B?TnZndmVjby93VzBJRkZYTlpLSit0NWZ2ZlNadEdBZ0dpTHJTcVB5RG5YT3JX?=
- =?utf-8?B?NUppcklKNU5aY3JGS2NNclNoOEluNTE0SEx0OUJCU2dXMWxyTWdKbTZrRmZY?=
- =?utf-8?B?ajArNGEyQUNmT0hoSU1HUVBFOUlYdU1qeTRzVWs2amthS0d3bEpIYm9qME5V?=
- =?utf-8?B?QTc2NVU5MW4zcFlMd1BZRHdmTCt4VDNnNk5UK2hvZ2g0SjlzOVZxOUI1dENZ?=
- =?utf-8?B?MGh3QTJrRTRXL1hKMk5seW1Bd2w2WEh6V2c5RFpTeXc5R3orTkU5V0I0dUQ3?=
- =?utf-8?B?MHJsU0NybUxKZWcraXdGVzdQd3ZYVkhnNGRuZHlOMHJQYVJWOE5ReDhlTWVn?=
- =?utf-8?B?N3U2WG4zcXFVS3JBWVNaVEtYUDFFbVFjYXk1WVorNm5nV0RlVnVHbGQ4Wi9F?=
- =?utf-8?B?UlZLOVpWaExkNksrd3RsMWszNWg5bGpVT3lQejB0WSt4dTlVYVVWZVNZR3pJ?=
- =?utf-8?B?d2tSWXh5NGhxTldycWdtSlo3VjZ2djFIcEdvZEtRS3UwbFRsTmU0eVZsQ1dN?=
- =?utf-8?B?K3pVWTU4VHIvMEIxUzRTZ1lLT1lxVk5VZ2FHNU5aOHQ5a1NoeHFpSzU5ODgw?=
- =?utf-8?B?eHU3K0wrRkIwNGJoeXdZZ01MOHpGQ0dnTzBmZ2RtcXJ1OWttWklzRU1aazNY?=
- =?utf-8?B?ZG0yYWZlTWxuZzFtQnZnZkY5WVh5YlZPREVtcXNjek5hbVJxZkcrWFd4TGNM?=
- =?utf-8?B?Y1dVbVU5eG14KytiUEp5RHNVcytZZzlLVUJ0Ui9SQVB2eTRYWGRqTW9Fb016?=
- =?utf-8?B?OHJ6T2xtc2VOaTJWM2RtNXVPa0JmdGVPQk1tZjl4cVZRQjJiSjdRUjlCQkZN?=
- =?utf-8?B?Mk0ydnIrR1N1VHRGVkFBS0twUktodFhYQTFTbkxjVVNMd3RmUWdiVXBzQzZH?=
- =?utf-8?B?MThmNXVocStGNjZSamM2MVo0eDZMcmt2a3hMbzRISlhUeFZsYTRYVldjMTE2?=
- =?utf-8?B?Mk52bjRGRUFMU3Z0OTB5MnZqazdTYWpIdDlXdStmb1pQOVB3YmxqbG5hY1dE?=
- =?utf-8?B?MWNTL25oN2l6b1o4Mm5TWUwvR3I5eWdlLzZPQWZrUjd5WFhCeFBkMlBNL3R1?=
- =?utf-8?B?WFhESm1WWTNYWmZ2Y0l4NSs5dlhhb1VEbmRtaUFVMGRlNGJQSDlKa0R1Y1pz?=
- =?utf-8?B?NGhRUmJTWFZRMnpOT0hvVFBvRGZsbGx2cWU3dkUvbFZsV0hvTEFPUWJOaHNv?=
- =?utf-8?B?eDBJNVN2TDZZMFV3bWtMK2RHeHlYRnZ0L2tFUzdTako0MGhsRG5Hcm8venAz?=
- =?utf-8?Q?sRKdrH8a5+Faa?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5062.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d3FqVHZrbjhSZWxyWmxwUDBTOEg2ZGlyYnhIaS9iWkRQZmJUdm5sclBpRFdh?=
- =?utf-8?B?akE0WWg0eCt5RTQwMzNaYSt4NmpWYzY2QzB2NDJZQ1FQRkJaOFFIUlBUc0Ju?=
- =?utf-8?B?SDhFV0creWZLNExIdEVBUitJTyszR1k1bTJWdTl1eEVBQTlwUWVPNVFaNi9X?=
- =?utf-8?B?T2lOYk0yS3ErYnBrbXEzOHV2STJSSDVWWW5OL3ovcWpSeVJLZFBuQnJXTVcw?=
- =?utf-8?B?SDcrcm1VdjJYMForQ211K3V6QmtUNjRkTnJRcTVycVBMUUJ0WlFzTCt5bi9v?=
- =?utf-8?B?Nkp1SXpnT0J2dzQzSWc1TjhmNk5EMnRCQWQ4eGx1dXdGc1N0SzYxUURRL0tm?=
- =?utf-8?B?UU5aSXBYQ0pnUWVjRkordnlCVERsWDZSZUdIN0JzYklyVmRXNG5iM2tUNDlo?=
- =?utf-8?B?aC9SSWhrOEpFc29CZUR2bjc2Vnpud0pneFRYOFVwc0ZCRkV1ZVhaNWpnay96?=
- =?utf-8?B?SjY4MkZPcmdtUFpIZWxLQ2tFRXJ6VjMxa2U2NWFpZG02K2xrRG1mV1BOaHJM?=
- =?utf-8?B?azhaZ0UzRDRTZlZad2Q1Z1ZudTRuQVpWLzRqaWNYbjJVd1BXYWtxYkVIZmFG?=
- =?utf-8?B?NnZoQ0lmUUdkdHdYYmVwSU9kVDE2aTFwUy8zYmV3SkluZzhzdkhrUDBMbndP?=
- =?utf-8?B?K0lXbmFQRk8zL1BDOFR3Sy9WT0sraDdJYWMyNU5MWkxpckVRdlRVK0xhMzJL?=
- =?utf-8?B?OFpqWHdRWk5LT2ZiMWNDTE96VFdiNkJuUUplMU5TWFpNdkFWQW9NZmZCWndl?=
- =?utf-8?B?SGNGTUlGUGwwZ1NqQXZCWWRROWN3UW1LUXZsaGFYM053TzhvbThvcnpXR0JX?=
- =?utf-8?B?aFloZmZ3Q0RtTDBsRjNDbVU2TkpPVkxOdFdpN1c0MVFqdHZpYlk4S2FINDBj?=
- =?utf-8?B?NFFRR0duSTNDem5RQ0N4Wm9vdkwrYXBBSkJYamlXM0lOZ2lZZlN5bXcwTThQ?=
- =?utf-8?B?MkNrSjRaeFVDUG9SYVpiSzRsbmlGV1JmNlQ0ZEwxZjBZYUx3TWQ1bTBMQ1li?=
- =?utf-8?B?SzMydTJBVDNNL2c0QnhtdzY4RXlrTzNaUDNVVjVTZXJDR2JDd3JHK3p5SmV2?=
- =?utf-8?B?T0VEMDNMRk1GRXBnbUs1QlhtZE95cElPS0JVVzhQOWlPSVlXV1V3Y0ZEd3ZS?=
- =?utf-8?B?TDJwdEJOSWEzN0p6ZFJjRDNSYVBWWFhsY1N0VUUyWkJsUmkzbEwxZTlMa0dK?=
- =?utf-8?B?VVVRODBTRlFoTkR6V0Y0RllzRWgxRE1OdE9SK3pYbUV6WXFtZXR0VkM4S0RO?=
- =?utf-8?B?MEI5T2tRUFBhN1ZIUjQvWVRYZ3hNZHBSc3IzVGJsVHVHZG41U1hpZGd2SFRx?=
- =?utf-8?B?dzE2SDJOZ1JvOEFiTmM1TS9XbXVaYzlKd2o0czdscEdmZjZZdDB2eGdDaUNL?=
- =?utf-8?B?eU5uWU43bnN1elppSWloTUJlRlFDMldNN2lta1FxTFZIUi9uaUdydFVuWWpX?=
- =?utf-8?B?R2E0NFZadklHekFJejVlUUpxUEppV281cEhKeEhKZ0FUYWVIL1I5U2t0ZVdk?=
- =?utf-8?B?WU5YZy9aVmdWaGpzajBaZFBoNlZxNG45SnVRbkFlcUlucTZHV0U2eFBlWFFl?=
- =?utf-8?B?V0M4dVhBSzI1OFAzeWRtVFN0MWU0ZHRNZGxlanMxQVpOQzR2cTgrWU12eG5G?=
- =?utf-8?B?bHM5RjZpb1JnOWZJODFvMmxpY0pLU0MwSnVGOEdTSW1RSjkxOFBrRVFWc25s?=
- =?utf-8?B?aUE2U1Y2ZVEzOHRiSjBiVkUrd1ZJcG82U2dRRHgvMlVmc2ttdzR6REhrUm1l?=
- =?utf-8?B?ZDRRL3VSQnRPRTUrYnZMZkEzUURTQzdRSWpPZ2Z5cnppamE4QktzaUhwWTNS?=
- =?utf-8?B?MStzSlpzZSsyQThhbHIzZVJNZFZ6c0RkRnNTTXAzeFBHNTdhRW1lNzdEYlJ1?=
- =?utf-8?B?OXJnSXU0UkdxOTVTeTl0YlFvYXB6enZCQThzZ3FoMk1rbndrTk5VeklUbUUx?=
- =?utf-8?B?ZlJ2U3RFTHFzSjd1ZEY3dlpmSFAvcWZLZjVJQVMrRktmY0M5b2pycG9jZE9s?=
- =?utf-8?B?cUJ1d3RvUVcra1lLRDArZm9Kb01POGJya0dTQkpFSEZ5RWJKSmdmeDRNd0dF?=
- =?utf-8?B?K3FEYk4reXo4dVpPS2Y2Z0kzUThzTjVyZ1FoUytUTW1QUzMxalIrUlREbFpZ?=
- =?utf-8?Q?0QgvC7909w7MrUGKXs6v7ww3o?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f55e2ed-c4eb-4e60-7af6-08ddf9dd3b15
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5062.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 13:37:55.0296
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /L8erJG3D3oAJ/kV/GmgbjKt+4Yc/kaZZfoxUOwMhvSJJPYSNa/ts4PJhwBXSxzfhhz3pm0QTZdH0zPKTtq5UQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8129
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] cpufreq: Handle CPUFREQ_ETERNAL with a default
+ transition latency
+To: Shawn Guo <shawnguo2@yeah.net>, "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Qais Yousef <qyousef@layalina.io>,
+        Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        zhongqiu.han@oss.qualcomm.com
+References: <20250922125929.453444-1-shawnguo2@yeah.net>
+Content-Language: en-US
+From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+In-Reply-To: <20250922125929.453444-1-shawnguo2@yeah.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMiBTYWx0ZWRfXxtJGZ8TrcFOI
+ NOcgobhB3oa6zZJ2S3gCuo1LF4f2X8IV+B4SBmkQiuLTjMu451f5ycR8M2cmHiYTEqE3ez/6IaR
+ 7hAHQem0G4mWHzGClmKNernbRXRu3Wo4dCY+9hnXqFg0JqNEAlas+pmxsM5+MbNZ/IHUKRBRVQG
+ vvCt7lvQvUNdodoZG218DQfE/N/B0cE3uIvjcQaF1tt99qj4FmjZS3rX6bpB8M3CsYZZIk0vYxN
+ svIq2BYS1/Kyj5bt5+xhfzn51H8itv7yUGE6eYRcOQW3cUvK36KrH7L6Wv28Vf1CW6heY1aUGHT
+ eLDSM013H4sJDQaU/limuNeWx/Q7DYl2uoC5I+KnNgYp5BawKb1uBKpDXtYz9bzCMcFDWJRToEQ
+ 6e50hUhe
+X-Proofpoint-GUID: NnlE-WrEw7esoH_e04ofid9x9ms4JgaZ
+X-Authority-Analysis: v=2.4 cv=UvtjN/wB c=1 sm=1 tr=0 ts=68d152ef cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=D19gQVrFAAAA:8 a=VwQbUJbxAAAA:8
+ a=IMh0YCEmi6Npu7LhsKAA:9 a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
+ a=W4TVW4IDbPiebHqcZpNg:22
+X-Proofpoint-ORIG-GUID: NnlE-WrEw7esoH_e04ofid9x9ms4JgaZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-22_01,2025-09-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 clxscore=1011 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200032
 
-On 9/22/25 00:52, gregkh@linuxfoundation.org wrote:
+On 9/22/2025 8:59 PM, Shawn Guo wrote:
+> From: Shawn Guo <shawnguo@kernel.org>
 > 
-> This is a note to let you know that I've just added the patch titled
+> A regression is seen with 6.6 -> 6.12 kernel upgrade on platforms where
+> cpufreq-dt driver sets cpuinfo.transition_latency as CPUFREQ_ETERNAL (-1),
+> due to that platform's DT doesn't provide the optional property
+> 'clock-latency-ns'.  The dbs sampling_rate was 10000 us on 6.6 and
+> suddently becomes 6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these
+> platforms, because the default transition delay was dropped by the commits
+> below.
 > 
->     x86/sev: Guard sev_evict_cache() with CONFIG_AMD_MEM_ENCRYPT
-> 
-> to the 6.12-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      x86-sev-guard-sev_evict_cache-with-config_amd_mem_encrypt.patch
-> and it can be found in the queue-6.12 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+>    commit 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
+>    commit a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
+Hello Shawn,
 
-Maybe I didn't use the tag correctly, but I put 6.16.x on the stable tag
-to indicate that the patch only applied to 6.16 and above. Before 6.16,
-there isn't a stub version of the function, so all off those releases
-are fine.
+Reported by checkpatch.pl:
+WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit
+description?)
+#12:
+   commit a755d0e2d41b ("cpufreq: Honour transition_latency over
+transition_delay_us")
 
-So this patch doesn't need to be part of the 6.12 stable tree.
 
-Thanks,
-Tom
-
+>    commit e13aa799c2a6 ("cpufreq: Change default transition delay to 2ms")
 > 
+> It slows down dbs governor's reacting to CPU loading change
+> dramatically.  Also, as transition_delay_us is used by schedutil governor
+> as rate_limit_us, it shows a negative impact on device idle power
+> consumption, because the device gets slightly less time in the lowest OPP.
 > 
-> From stable+bounces-180849-greg=kroah.com@vger.kernel.org Mon Sep 22 01:18:07 2025
-> From: Sasha Levin <sashal@kernel.org>
-> Date: Sun, 21 Sep 2025 19:17:59 -0400
-> Subject: x86/sev: Guard sev_evict_cache() with CONFIG_AMD_MEM_ENCRYPT
-> To: stable@vger.kernel.org
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org, Sasha Levin <sashal@kernel.org>
-> Message-ID: <20250921231759.3033314-1-sashal@kernel.org>
+> Fix the regressions by defining a default transition latency for
+> handling the case of CPUFREQ_ETERNAL.
 > 
-> From: Tom Lendacky <thomas.lendacky@amd.com>
-> 
-> [ Upstream commit 7f830e126dc357fc086905ce9730140fd4528d66 ]
-> 
-> The sev_evict_cache() is guest-related code and should be guarded by
-> CONFIG_AMD_MEM_ENCRYPT, not CONFIG_KVM_AMD_SEV.
-> 
-> CONFIG_AMD_MEM_ENCRYPT=y is required for a guest to run properly as an SEV-SNP
-> guest, but a guest kernel built with CONFIG_KVM_AMD_SEV=n would get the stub
-> function of sev_evict_cache() instead of the version that performs the actual
-> eviction. Move the function declarations under the appropriate #ifdef.
-> 
-> Fixes: 7b306dfa326f ("x86/sev: Evict cache lines during SNP memory validation")
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Cc: stable@kernel.org # 6.16.x
-> Link: https://lore.kernel.org/r/70e38f2c4a549063de54052c9f64929705313526.1757708959.git.thomas.lendacky@amd.com
-> [ Move sev_evict_cache() out of shared.c ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: stable@vger.kernel.org
+> Fixes: 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
+> Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 > ---
->  arch/x86/coco/sev/shared.c |   18 ------------------
->  arch/x86/include/asm/sev.h |   19 +++++++++++++++++++
->  2 files changed, 19 insertions(+), 18 deletions(-)
+> Changes for v2:
+> - Follow Rafael's suggestion to define a default transition latency for
+>    handling CPUFREQ_ETERNAL, and pave the way to get rid of
+>    CPUFREQ_ETERNAL completely later.
 > 
-> --- a/arch/x86/coco/sev/shared.c
-> +++ b/arch/x86/coco/sev/shared.c
-> @@ -1243,24 +1243,6 @@ static void svsm_pval_terminate(struct s
->  	__pval_terminate(pfn, action, page_size, ret, svsm_ret);
->  }
->  
-> -static inline void sev_evict_cache(void *va, int npages)
-> -{
-> -	volatile u8 val __always_unused;
-> -	u8 *bytes = va;
-> -	int page_idx;
-> -
-> -	/*
-> -	 * For SEV guests, a read from the first/last cache-lines of a 4K page
-> -	 * using the guest key is sufficient to cause a flush of all cache-lines
-> -	 * associated with that 4K page without incurring all the overhead of a
-> -	 * full CLFLUSH sequence.
-> -	 */
-> -	for (page_idx = 0; page_idx < npages; page_idx++) {
-> -		val = bytes[page_idx * PAGE_SIZE];
-> -		val = bytes[page_idx * PAGE_SIZE + PAGE_SIZE - 1];
-> -	}
-> -}
-> -
->  static void svsm_pval_4k_page(unsigned long paddr, bool validate)
->  {
->  	struct svsm_pvalidate_call *pc;
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -400,6 +400,24 @@ u64 sev_get_status(void);
->  void sev_show_status(void);
->  void snp_update_svsm_ca(void);
->  
-> +static inline void sev_evict_cache(void *va, int npages)
-> +{
-> +	volatile u8 val __always_unused;
-> +	u8 *bytes = va;
-> +	int page_idx;
+> v1: https://lkml.org/lkml/2025/9/10/294
+> 
+>   drivers/cpufreq/cpufreq.c | 3 +++
+>   include/linux/cpufreq.h   | 2 ++
+>   2 files changed, 5 insertions(+)
+> 
+> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> index fc7eace8b65b..c69d10f0e8ec 100644
+> --- a/drivers/cpufreq/cpufreq.c
+> +++ b/drivers/cpufreq/cpufreq.c
+> @@ -549,6 +549,9 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
+>   	if (policy->transition_delay_us)
+>   		return policy->transition_delay_us;
+>   
+> +	if (policy->cpuinfo.transition_latency == CPUFREQ_ETERNAL)
+> +		policy->cpuinfo.transition_latency = CPUFREQ_DEFAULT_TANSITION_LATENCY_NS;
+
+For the fallback case, May we print a dbg info in dmesg to inform
+developers that the device tree is missing the clock-latency-ns
+property? (Rafael can help comment~)
+
+
 > +
-> +	/*
-> +	 * For SEV guests, a read from the first/last cache-lines of a 4K page
-> +	 * using the guest key is sufficient to cause a flush of all cache-lines
-> +	 * associated with that 4K page without incurring all the overhead of a
-> +	 * full CLFLUSH sequence.
-> +	 */
-> +	for (page_idx = 0; page_idx < npages; page_idx++) {
-> +		val = bytes[page_idx * PAGE_SIZE];
-> +		val = bytes[page_idx * PAGE_SIZE + PAGE_SIZE - 1];
-> +	}
-> +}
+>   	latency = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
+>   	if (latency)
+>   		/* Give a 50% breathing room between updates */
+> diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+> index 95f3807c8c55..935e9a660039 100644
+> --- a/include/linux/cpufreq.h
+> +++ b/include/linux/cpufreq.h
+> @@ -36,6 +36,8 @@
+>   /* Print length for names. Extra 1 space for accommodating '\n' in prints */
+>   #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
+>   
+> +#define CPUFREQ_DEFAULT_TANSITION_LATENCY_NS	NSEC_PER_MSEC
 > +
->  #else	/* !CONFIG_AMD_MEM_ENCRYPT */
->  
->  #define snp_vmpl 0
-> @@ -435,6 +453,7 @@ static inline u64 snp_get_unsupported_fe
->  static inline u64 sev_get_status(void) { return 0; }
->  static inline void sev_show_status(void) { }
->  static inline void snp_update_svsm_ca(void) { }
-> +static inline void sev_evict_cache(void *va, int npages) {}
->  
->  #endif	/* CONFIG_AMD_MEM_ENCRYPT */
->  
-> 
-> 
-> Patches currently in stable-queue which might be from sashal@kernel.org are
-> 
-> queue-6.12/mptcp-tfo-record-deny-join-id0-info.patch
-> queue-6.12/crypto-af_alg-set-merge-to-zero-early-in-af_alg_send.patch
-> queue-6.12/asoc-wm8940-correct-pll-rate-rounding.patch
-> queue-6.12/um-virtio_uml-fix-use-after-free-after-put_device-in.patch
-> queue-6.12/x86-sev-guard-sev_evict_cache-with-config_amd_mem_encrypt.patch
-> queue-6.12/mptcp-pm-nl-announce-deny-join-id0-flag.patch
-> queue-6.12/drm-bridge-anx7625-fix-null-pointer-dereference-with.patch
-> queue-6.12/asoc-sof-intel-hda-stream-fix-incorrect-variable-use.patch
-> queue-6.12/qed-don-t-collect-too-many-protection-override-grc-e.patch
-> queue-6.12/dpaa2-switch-fix-buffer-pool-seeding-for-control-tra.patch
-> queue-6.12/nvme-fix-pi-insert-on-write.patch
-> queue-6.12/xhci-dbc-fix-full-dbc-transfer-ring-after-several-reconnects.patch
-> queue-6.12/pcmcia-omap_cf-mark-driver-struct-with-__refdata-to-.patch
-> queue-6.12/tcp-clear-tcp_sk-sk-fastopen_rsk-in-tcp_disconnect.patch
-> queue-6.12/wifi-mac80211-increase-scan_ies_len-for-s1g.patch
-> queue-6.12/i40e-remove-redundant-memory-barrier-when-cleaning-t.patch
-> queue-6.12/usb-xhci-remove-option-to-change-a-default-ring-s-trb-cycle-bit.patch
-> queue-6.12/btrfs-fix-invalid-extref-key-setup-when-replaying-de.patch
-> queue-6.12/io_uring-fix-incorrect-io_kiocb-reference-in-io_link.patch
-> queue-6.12/ice-fix-rx-page-leak-on-multi-buffer-frames.patch
-> queue-6.12/net-natsemi-fix-rx_dropped-double-accounting-on-neti.patch
-> queue-6.12/drm-xe-tile-release-kobject-for-the-failure-path.patch
-> queue-6.12/wifi-mac80211-fix-incorrect-type-for-ret.patch
-> queue-6.12/smb-client-fix-smbdirect_recv_io-leak-in-smbd_negoti.patch
-> queue-6.12/net-mlx5e-harden-uplink-netdev-access-against-device.patch
-> queue-6.12/usb-xhci-introduce-macro-for-ring-segment-list-iteration.patch
-> queue-6.12/revert-net-mlx5e-update-and-set-xon-xoff-upon-port-s.patch
-> queue-6.12/net-liquidio-fix-overflow-in-octeon_init_instr_queue.patch
-> queue-6.12/net-tcp-fix-a-null-pointer-dereference-when-using-tc.patch
-> queue-6.12/drm-bridge-cdns-mhdp8546-fix-missing-mutex-unlock-on.patch
-> queue-6.12/ice-store-max_frame-and-rx_buf_len-only-in-ice_rx_ri.patch
-> queue-6.12/selftests-mptcp-userspace-pm-validate-deny-join-id0-.patch
-> queue-6.12/bonding-set-random-address-only-when-slaves-already-.patch
-> queue-6.12/drm-xe-fix-a-null-vs-is_err-in-xe_vm_add_compute_exe.patch
-> queue-6.12/cnic-fix-use-after-free-bugs-in-cnic_delete_task.patch
-> queue-6.12/mm-gup-check-ref_count-instead-of-lru-before-migration.patch
-> queue-6.12/tls-make-sure-to-abort-the-stream-if-headers-are-bog.patch
-> queue-6.12/um-fix-fd-copy-size-in-os_rcv_fd_msg.patch
-> queue-6.12/smb-client-let-smbd_destroy-call-disable_work_sync-i.patch
-> queue-6.12/bonding-don-t-set-oif-to-bond-dev-when-getting-ns-ta.patch
-> queue-6.12/xhci-dbc-decouple-endpoint-allocation-from-initialization.patch
-> queue-6.12/mptcp-set-remote_deny_join_id0-on-syn-recv.patch
-> queue-6.12/octeontx2-pf-fix-use-after-free-bugs-in-otx2_sync_ts.patch
-> queue-6.12/smb-client-fix-filename-matching-of-deferred-files.patch
-> queue-6.12/igc-don-t-fail-igc_probe-on-led-setup-error.patch
-> queue-6.12/octeon_ep-fix-vf-mac-address-lifecycle-handling.patch
-> queue-6.12/selftests-mptcp-sockopt-fix-error-messages.patch
-> queue-6.12/cgroup-split-cgroup_destroy_wq-into-3-workqueues.patch
-> queue-6.12/alsa-firewire-motu-drop-epollout-from-poll-return-va.patch
-> queue-6.12/asoc-wm8974-correct-pll-rate-rounding.patch
-> queue-6.12/mm-add-folio_expected_ref_count-for-reference-count-calculation.patch
-> queue-6.12/wifi-wilc1000-avoid-buffer-overflow-in-wid-string-co.patch
-> queue-6.12/asoc-intel-catpt-expose-correct-bit-depth-to-userspa.patch
-> queue-6.12/asoc-wm8940-correct-typo-in-control-name.patch
-> queue-6.12/perf-x86-intel-fix-crash-in-icl_update_topdown_event.patch
+
+TANSITION --> TRANSITION ?
+
+
+>   struct cpufreq_governor;
+>   
+>   enum cpufreq_table_sorting {
+
+
+-- 
+Thx and BRs,
+Zhongqiu Han
 
