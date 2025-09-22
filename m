@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9BAB93110
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27900B92D34
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ACB61888DE9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D001190648A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA7D2F28F9;
-	Mon, 22 Sep 2025 19:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B74729BDB5;
+	Mon, 22 Sep 2025 19:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zh8/MePL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMVVbHaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09061F91E3;
-	Mon, 22 Sep 2025 19:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D10C8E6;
+	Mon, 22 Sep 2025 19:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570321; cv=none; b=eR1M8SBZtxBNKhkxe2qQAOwviLoaN0wOOxjIiTBNh17CddDW/20NOg9et06NG8j5bMzXHuNskWGZah+UCsJK/7WZlf9mj+ELbSbR3/Yn0udSqG12HiE1OVrEvBjFaa0UicAMmoN7akpRMBA1Rj0IkY8D1f1hZUPiA+gFrO7JnB4=
+	t=1758569619; cv=none; b=AhPkxt9HW9X1sJWDiDVY0kBDop1o+FxiSqQg4PnZkXTRFpBVcSwXUyNLrc2haaGeHAUyAZdvqENDYdyWp1g/auSwdy+dIzsHtp/w/d7m7JjzH89JrZCysJL56MBvJMfHF/jH0zDFI5UC6iXdZFcsER+RHtq9a2Vp2WR2T2g9Syc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570321; c=relaxed/simple;
-	bh=IvmhSVm0/C8LLsKEBqSfipVsQEMe3X76xK4C+7y+RfM=;
+	s=arc-20240116; t=1758569619; c=relaxed/simple;
+	bh=+u6fQHT9u2+mO3Sw9dR2/9w7FWwVu9kOSkTty8ohZNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7gnxgy/B6z5/L5iSJhB5jxDgPp9SgX6XrYxwxmvvyjdeGd9idTRlV4L9bg9LtB24ptyTYoNjBXawjB9L/59ukWe/2jd/t3lmasKNZveXZ/nIBUMf1UrQgJDWrxoJYbPtINQhdBlQzi8R4umI5W79Z4FYYL5nYjR07PH442kqN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zh8/MePL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D73CC4CEF0;
-	Mon, 22 Sep 2025 19:45:20 +0000 (UTC)
+	 MIME-Version; b=cZSWKNKMajRnqqIRGAJx+7kiwUWMIF8+qRCtnBJ9pbWTZn/f2vL6THHbUlddSctumeh/SCwlAenI6RRuL8iD242/SnlxRvZyzrpgeV6p+hKgDjzz8eGv+8zLWD7Ofi52CXViLRjMoIH+woCjcGXH5yzpj3kbjtxVw8c6jSJW/7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMVVbHaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F370C4CEF0;
+	Mon, 22 Sep 2025 19:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570320;
-	bh=IvmhSVm0/C8LLsKEBqSfipVsQEMe3X76xK4C+7y+RfM=;
+	s=korg; t=1758569619;
+	bh=+u6fQHT9u2+mO3Sw9dR2/9w7FWwVu9kOSkTty8ohZNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zh8/MePLEBDaLf850ynj9ihDZdx6Yh05XkbY4VdgbWjj2ePA6ADMj3JyuwASwHEp4
-	 rYNCLHpnxD4xN3yjzg4rpSTCD6XGmC9GKXkiKkkQ0CvKiLpBrWSL5AoAzidUPaFgLB
-	 R1UTEWYZckFPCsdpnsvO+0sX7/F0x6shcvz58WEQ=
+	b=JMVVbHaAaCODmHm7pBCnqmD5+06AbBFiYRaRXd77WiVIcJPF2s6RbehT2zdrURoTA
+	 I5oAF7cJVsYYQSq5t6nXotQRc2icN4YFRnX0vf5XqgxwttTufFr3FpoeNGju9h/AyJ
+	 Ot2YRjmjii738drfZgFHNOC6saIEDmr+PPHGzD3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.16 089/149] mmc: sdhci: Move the code related to setting the clock from sdhci_set_ios_common() into sdhci_set_ios()
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 56/61] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
 Date: Mon, 22 Sep 2025 21:29:49 +0200
-Message-ID: <20250922192415.128920824@linuxfoundation.org>
+Message-ID: <20250922192405.174134499@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+From: Hans de Goede <hansg@kernel.org>
 
-commit 7b7e71683b4ccbe0dbd7d434707623327e852f20 upstream.
+[ Upstream commit b6f56a44e4c1014b08859dcf04ed246500e310e5 ]
 
-The sdhci_set_clock() is called in sdhci_set_ios_common() and
-__sdhci_uhs2_set_ios(). According to Section 3.13.2 "Card Interface
-Detection Sequence" of the SD Host Controller Standard Specification
-Version 7.00, the SD clock is supplied after power is supplied, so we only
-need one in __sdhci_uhs2_set_ios(). Let's move the code related to setting
-the clock from sdhci_set_ios_common() into sdhci_set_ios() and modify
-the parameters passed to sdhci_set_clock() in __sdhci_uhs2_set_ios().
+Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
+device property") rfkill_find_type() gets called with the possibly
+uninitialized "const char *type_name;" local variable.
 
-Fixes: 10c8298a052b ("mmc: sdhci-uhs2: add set_ios()")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
+acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
+
+        rfkill->type = (unsigned)id->driver_data;
+
+and there is no "type" property so device_property_read_string() will fail
+and leave type_name uninitialized, leading to a potential crash.
+
+rfkill_find_type() does accept a NULL pointer, fix the potential crash
+by initializing type_name to NULL.
+
+Note likely sofar this has not been caught because:
+
+1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
+2. The stack happened to contain NULL where type_name is stored
+
+Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
+Cc: stable@vger.kernel.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-uhs2.c |    3 ++-
- drivers/mmc/host/sdhci.c      |   34 +++++++++++++++++-----------------
- 2 files changed, 19 insertions(+), 18 deletions(-)
+ net/rfkill/rfkill-gpio.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-uhs2.c
-+++ b/drivers/mmc/host/sdhci-uhs2.c
-@@ -295,7 +295,8 @@ static void __sdhci_uhs2_set_ios(struct
- 	else
- 		sdhci_uhs2_set_power(host, ios->power_mode, ios->vdd);
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -78,10 +78,10 @@ static int rfkill_gpio_acpi_probe(struct
+ static int rfkill_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct rfkill_gpio_data *rfkill;
+-	struct gpio_desc *gpio;
++	const char *type_name = NULL;
+ 	const char *name_property;
+ 	const char *type_property;
+-	const char *type_name;
++	struct gpio_desc *gpio;
+ 	int ret;
  
--	sdhci_set_clock(host, host->clock);
-+	sdhci_set_clock(host, ios->clock);
-+	host->clock = ios->clock;
- }
- 
- static int sdhci_uhs2_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2367,23 +2367,6 @@ void sdhci_set_ios_common(struct mmc_hos
- 		(ios->power_mode == MMC_POWER_UP) &&
- 		!(host->quirks2 & SDHCI_QUIRK2_PRESET_VALUE_BROKEN))
- 		sdhci_enable_preset_value(host, false);
--
--	if (!ios->clock || ios->clock != host->clock) {
--		host->ops->set_clock(host, ios->clock);
--		host->clock = ios->clock;
--
--		if (host->quirks & SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK &&
--		    host->clock) {
--			host->timeout_clk = mmc->actual_clock ?
--						mmc->actual_clock / 1000 :
--						host->clock / 1000;
--			mmc->max_busy_timeout =
--				host->ops->get_max_timeout_count ?
--				host->ops->get_max_timeout_count(host) :
--				1 << 27;
--			mmc->max_busy_timeout /= host->timeout_clk;
--		}
--	}
- }
- EXPORT_SYMBOL_GPL(sdhci_set_ios_common);
- 
-@@ -2410,6 +2393,23 @@ void sdhci_set_ios(struct mmc_host *mmc,
- 
- 	sdhci_set_ios_common(mmc, ios);
- 
-+	if (!ios->clock || ios->clock != host->clock) {
-+		host->ops->set_clock(host, ios->clock);
-+		host->clock = ios->clock;
-+
-+		if (host->quirks & SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK &&
-+		    host->clock) {
-+			host->timeout_clk = mmc->actual_clock ?
-+						mmc->actual_clock / 1000 :
-+						host->clock / 1000;
-+			mmc->max_busy_timeout =
-+				host->ops->get_max_timeout_count ?
-+				host->ops->get_max_timeout_count(host) :
-+				1 << 27;
-+			mmc->max_busy_timeout /= host->timeout_clk;
-+		}
-+	}
-+
- 	if (host->ops->set_power)
- 		host->ops->set_power(host, ios->power_mode, ios->vdd);
- 	else
+ 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
 
 
 
