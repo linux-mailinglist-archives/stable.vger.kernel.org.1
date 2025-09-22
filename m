@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61EBB92E47
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51465B9302F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F8A2A542A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 700BE1907F04
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8E62F0C5C;
-	Mon, 22 Sep 2025 19:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F47E2F3608;
+	Mon, 22 Sep 2025 19:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBA3oAuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN+SkSsB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4931627B320;
-	Mon, 22 Sep 2025 19:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB28222590;
+	Mon, 22 Sep 2025 19:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569817; cv=none; b=OqOh2WmmUZYqmJDMeo28ViKGylCqkR6teGV0mL91TBnrk23ZlTTv8MbO5qMRJkLwJq3Z0AlnXry7XWdeMIH1FvShGFNAt+coJfx4S7SatfwYaRSXsaapHjyPLjn5eVX9KNbuH1mh6saTeEUHq+bJHnhrl+uqf158sO/tZeA1Mr8=
+	t=1758570153; cv=none; b=n73LCQdn8EW3rWEuotmvYhvkK/wy1TCBX8fHCy1ImrOTN2aouUsFpXstdLCAKEzdwtwpGNU4b8dqO7nDjMw73C+kII6QBcjcJnofPgcvS5N/CWoCMjaIZvdmE9yGo90NuSeznPtjN//LgWLtSjv8bKqYPcDL6LFD09TOwMKnIiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569817; c=relaxed/simple;
-	bh=lWF8iIgQBnpIg9sDIud6XGMwOB0KkibCUwF7nu4Ssrg=;
+	s=arc-20240116; t=1758570153; c=relaxed/simple;
+	bh=Flz1jdDEqc7JpmBq+Nxi6SgKfLl6dsSzpE0KoXPEDJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3j9IMfGkBht7RhKoRXiBaOor9tPiowU6nT6RGsG4TeJy9xluoSZKPqd4PzEJf2F5pjzCgimDCAP3Ogxu7bx2+yGrhS4VZ0K2KJLDF+60Z37CZsxp1C+BUHDbgtzx/mEtGxZflLxQ+06bTIQN6aXlqgOxHijXfD0Vouu5v0VSi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBA3oAuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2807C4CEF0;
-	Mon, 22 Sep 2025 19:36:56 +0000 (UTC)
+	 MIME-Version; b=SKnUra7W1trieNqBONaYL8XVdKJp1FGxoleSxEn2nCrEgcp2BURr03CQioak0zkCN5lJf8+//Z6LQQSVyDp3YVXWkCdik+8o5rnIp7W1WwqYMnAhB0c+7T+U4hpC04Qpe+0NaCPrcqgcQLhZZdfjqjcGec4Y6RnwS2FaiV1FHDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN+SkSsB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4477C4CEF0;
+	Mon, 22 Sep 2025 19:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569817;
-	bh=lWF8iIgQBnpIg9sDIud6XGMwOB0KkibCUwF7nu4Ssrg=;
+	s=korg; t=1758570153;
+	bh=Flz1jdDEqc7JpmBq+Nxi6SgKfLl6dsSzpE0KoXPEDJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBA3oAuD3Jb/vDuVY4qoZECUPlNQL1hfrHBNpl8SmpbBBeqkYvPy49I5tnWeZuY/T
-	 wesg5R31ldsNsjEOzuHdsOhXe7ifc6btT1AqzHSkHg2yk55zheo3VzE+hW7+Doti/j
-	 2wnuQl2qv5VrSe0dKkvDjzxMcwe9/dTr7p/8wvD4=
+	b=TN+SkSsBotol0Cxd9LxqyRMwWnuflhlrUaGNmDdqxxKd2V83oBA10e0duQqWRzkG1
+	 sD11dvG1bsa34js8p0T5MOaNKzI9lbVOtcWSYxfEofT1KUlVVPpbbovE7SRJzdxDSX
+	 xQ+cPtx3OYkDdPCOaMBkND17GE9cEKtWjKGF2Sug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/105] nvme: fix PI insert on write
-Date: Mon, 22 Sep 2025 21:28:45 +0200
-Message-ID: <20250922192408.976486542@linuxfoundation.org>
+Subject: [PATCH 6.16 026/149] selftests: mptcp: userspace pm: validate deny-join-id0 flag
+Date: Mon, 22 Sep 2025 21:28:46 +0200
+Message-ID: <20250922192413.528533073@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 7ac3c2889bc060c3f67cf44df0dbb093a835c176 ]
+[ Upstream commit 24733e193a0d68f20d220e86da0362460c9aa812 ]
 
-I recently ran into an issue where the PI generated using the block layer
-integrity code differs from that from a kernel using the PRACT fallback
-when the block layer integrity code is disabled, and I tracked this down
-to us using PRACT incorrectly.
+The previous commit adds the MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 flag. Make
+sure it is correctly announced by the other peer when it has been
+received.
 
-The NVM Command Set Specification (section 5.33 in 1.2, similar in older
-versions) specifies the PRACT insert behavior as:
+pm_nl_ctl will now display 'deny_join_id0:1' when monitoring the events,
+and when this flag was set by the other peer.
 
-  Inserted protection information consists of the computed CRC for the
-  protection information format (refer to section 5.3.1) in the Guard
-  field, the LBAT field value in the Application Tag field, the LBST
-  field value in the Storage Tag field, if defined, and the computed
-  reference tag in the Logical Block Reference Tag.
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Where the computed reference tag is defined as following for type 1 and
-type 2 using the text below that is duplicated in the respective bullet
-points:
-
-  the value of the computed reference tag for the first logical block of
-  the command is the value contained in the Initial Logical Block
-  Reference Tag (ILBRT) or Expected Initial Logical Block Reference Tag
-  (EILBRT) field in the command, and the computed reference tag is
-  incremented for each subsequent logical block.
-
-So we need to set ILBRT field, but we currently don't.  Interestingly
-this works fine on my older type 1 formatted SSD, but Qemu trips up on
-this.  We already set ILBRT for Write Same since commit aeb7bb061be5
-("nvme: set the PRACT bit when using Write Zeroes with T10 PI").
-
-To ease this, move the PI type check into nvme_set_ref_tag.
-
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-3-40171884ade8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ tools/testing/selftests/net/mptcp/pm_nl_ctl.c     |  7 +++++++
+ tools/testing/selftests/net/mptcp/userspace_pm.sh | 14 +++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 9e223574db7f7..24d82d35041b5 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -890,6 +890,15 @@ static void nvme_set_ref_tag(struct nvme_ns *ns, struct nvme_command *cmnd,
- 	u32 upper, lower;
- 	u64 ref48;
- 
-+	/* only type1 and type 2 PI formats have a reftag */
-+	switch (ns->head->pi_type) {
-+	case NVME_NS_DPS_PI_TYPE1:
-+	case NVME_NS_DPS_PI_TYPE2:
-+		break;
-+	default:
-+		return;
-+	}
+diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+index 994a556f46c15..93fea3442216c 100644
+--- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
++++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+@@ -188,6 +188,13 @@ static int capture_events(int fd, int event_group)
+ 					fprintf(stderr, ",error:%u", *(__u8 *)RTA_DATA(attrs));
+ 				else if (attrs->rta_type == MPTCP_ATTR_SERVER_SIDE)
+ 					fprintf(stderr, ",server_side:%u", *(__u8 *)RTA_DATA(attrs));
++				else if (attrs->rta_type == MPTCP_ATTR_FLAGS) {
++					__u16 flags = *(__u16 *)RTA_DATA(attrs);
 +
- 	/* both rw and write zeroes share the same reftag format */
- 	switch (ns->head->guard_type) {
- 	case NVME_NVM_NS_16B_GUARD:
-@@ -929,13 +938,7 @@ static inline blk_status_t nvme_setup_write_zeroes(struct nvme_ns *ns,
++					/* only print when present, easier */
++					if (flags & MPTCP_PM_EV_FLAG_DENY_JOIN_ID0)
++						fprintf(stderr, ",deny_join_id0:1");
++				}
  
- 	if (nvme_ns_has_pi(ns->head)) {
- 		cmnd->write_zeroes.control |= cpu_to_le16(NVME_RW_PRINFO_PRACT);
--
--		switch (ns->head->pi_type) {
--		case NVME_NS_DPS_PI_TYPE1:
--		case NVME_NS_DPS_PI_TYPE2:
--			nvme_set_ref_tag(ns, cmnd, req);
--			break;
--		}
-+		nvme_set_ref_tag(ns, cmnd, req);
- 	}
+ 				attrs = RTA_NEXT(attrs, msg_len);
+ 			}
+diff --git a/tools/testing/selftests/net/mptcp/userspace_pm.sh b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+index 333064b0b5ac0..97819e18578f4 100755
+--- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
++++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+@@ -201,6 +201,9 @@ make_connection()
+ 		is_v6="v4"
+ 	fi
  
- 	return BLK_STS_OK;
-@@ -1014,6 +1017,7 @@ static inline blk_status_t nvme_setup_rw(struct nvme_ns *ns,
- 			if (WARN_ON_ONCE(!nvme_ns_has_pi(ns->head)))
- 				return BLK_STS_NOTSUPP;
- 			control |= NVME_RW_PRINFO_PRACT;
-+			nvme_set_ref_tag(ns, cmnd, req);
- 		}
++	# set this on the client side only: will not affect the rest
++	ip netns exec "$ns2" sysctl -q net.mptcp.allow_join_initial_addr_port=0
++
+ 	:>"$client_evts"
+ 	:>"$server_evts"
  
- 		switch (ns->head->pi_type) {
+@@ -223,23 +226,28 @@ make_connection()
+ 	local client_token
+ 	local client_port
+ 	local client_serverside
++	local client_nojoin
+ 	local server_token
+ 	local server_serverside
++	local server_nojoin
+ 
+ 	client_token=$(mptcp_lib_evts_get_info token "$client_evts")
+ 	client_port=$(mptcp_lib_evts_get_info sport "$client_evts")
+ 	client_serverside=$(mptcp_lib_evts_get_info server_side "$client_evts")
++	client_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$client_evts")
+ 	server_token=$(mptcp_lib_evts_get_info token "$server_evts")
+ 	server_serverside=$(mptcp_lib_evts_get_info server_side "$server_evts")
++	server_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$server_evts")
+ 
+ 	print_test "Established IP${is_v6} MPTCP Connection ns2 => ns1"
+-	if [ "$client_token" != "" ] && [ "$server_token" != "" ] && [ "$client_serverside" = 0 ] &&
+-		   [ "$server_serverside" = 1 ]
++	if [ "${client_token}" != "" ] && [ "${server_token}" != "" ] &&
++	   [ "${client_serverside}" = 0 ] && [ "${server_serverside}" = 1 ] &&
++	   [ "${client_nojoin:-0}" = 0 ] && [ "${server_nojoin:-0}" = 1 ]
+ 	then
+ 		test_pass
+ 		print_title "Connection info: ${client_addr}:${client_port} -> ${connect_addr}:${app_port}"
+ 	else
+-		test_fail "Expected tokens (c:${client_token} - s:${server_token}) and server (c:${client_serverside} - s:${server_serverside})"
++		test_fail "Expected tokens (c:${client_token} - s:${server_token}), server (c:${client_serverside} - s:${server_serverside}), nojoin (c:${client_nojoin} - s:${server_nojoin})"
+ 		mptcp_lib_result_print_all_tap
+ 		exit ${KSFT_FAIL}
+ 	fi
 -- 
 2.51.0
 
