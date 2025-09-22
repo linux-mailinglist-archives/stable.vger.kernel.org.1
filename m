@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-181031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC8CB92CA5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35868B92E8D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72B8C1901ADF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F64717B57D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F98C2F067B;
-	Mon, 22 Sep 2025 19:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDD52F0C5C;
+	Mon, 22 Sep 2025 19:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyb0QTWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5SyJdLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0824191F66;
-	Mon, 22 Sep 2025 19:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB6827B320;
+	Mon, 22 Sep 2025 19:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569516; cv=none; b=ajn6V/ufsQHsI7ChOZXRb6v1ddp8h5iPrmUfSwNOkznnM2h7lEUUgWLyrp9GMIYDOstEQZa2tD36rtTudwAhfaYhF1jrozi+TBNFw7u+OfWqDMf9OTZvfGCYrnGeCaUC66uTsrN8Ezid00Cdk5LevqckN0R0FhA9XFGcfi/0SWw=
+	t=1758569874; cv=none; b=O7X8+ybA/zQRp4+d1+8y+h3493g+uXxMj1kqvfdWUf/5tNLnKTaZofFGpwfFJd+czfngtssngpCo9CwQnw0cXG1IOSkqN1eyc4YdZHLSqa5ZBSl6icZk1HWpfxh3tMnd9xZNbaZ3Tm6R06uOhv1O1UFVJo14niod1LRtyDzvipo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569516; c=relaxed/simple;
-	bh=TwYEtDF4wRTiwmfBVu912lyTYmal8JkR4kzNrHfth1o=;
+	s=arc-20240116; t=1758569874; c=relaxed/simple;
+	bh=cr60HvZ34oheV/X9RIZJPLj+48uUvrQ8eIkUBSIaXz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkFqvDFaFfBweXf9NF8trPA+l6WMsjtUdSMDbVkwQgWyUg1YCDaylPlmEtZKsx25UZdO3YF6fqjDi4aZ6Nnm1JmcfSaef2hfQ+lxR0DBm17EeV4PfmxjsO46bSttN0927j0/VBJgl9XNA3khoYkzCWaaYTxnz4JzFSXOe4jBJys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyb0QTWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBA5C4CEF0;
-	Mon, 22 Sep 2025 19:31:56 +0000 (UTC)
+	 MIME-Version; b=HMzIbfiwy7SV2lqwna2zbh+fwKaL78yehcZAhQ+3dIqGxIEdG+x6oF9VVMHG/ZzgCikM3t7NqOpT84m4yLdaJUrTDn9+Vy9/lBOfs8P/sGekDwBroBQO+CaJKCXwNyNs/pFDtIjTmZzMfUB+sIXWQawl8VvXyXcNnVjoxgWsgTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5SyJdLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3380AC4CEF0;
+	Mon, 22 Sep 2025 19:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569516;
-	bh=TwYEtDF4wRTiwmfBVu912lyTYmal8JkR4kzNrHfth1o=;
+	s=korg; t=1758569874;
+	bh=cr60HvZ34oheV/X9RIZJPLj+48uUvrQ8eIkUBSIaXz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dyb0QTWGv5d326x/+x8roEv51wNDHSzE1+X/0+pbfch73sY0BztWFOO7NwrrVdR95
-	 xKVOLW3IrjFpeqKMWIveNKnl0DlFyeLpHuYup4INUpWzfmvOG7IUIUUGvoZrzSbrkC
-	 iQnNzKWeAshJSIGdZxDDdel1cmjIliuRF0lxqIAY=
+	b=e5SyJdLaUDVunJsQ/i8AZNsiyEVr1CCwLkgXS7i197n8GHvccnbO26Tj/bHcfmYlL
+	 RJt0EoqUahvZxtfxhKY44FsHQQqDeX3jC2ljL4Y3XUpjjsAkZVu6jwxQ3NkB3H3GMO
+	 ieIvvT8igPB/FcdP7LBtZNqFSzpm8+TUw/+xyq8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.1 23/61] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+	Vince Weaver <vincent.weaver@maine.edu>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Angel Adetula <angeladetula@google.com>
+Subject: [PATCH 6.12 033/105] perf/x86/intel: Fix crash in icl_update_topdown_event()
 Date: Mon, 22 Sep 2025 21:29:16 +0200
-Message-ID: <20250922192404.188398667@linuxfoundation.org>
+Message-ID: <20250922192409.779383460@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 2c334d038466ac509468fbe06905a32d202117db upstream.
+commit b0823d5fbacb1c551d793cbfe7af24e0d1fa45ed upstream.
 
-Since commit
+The perf_fuzzer found a hard-lockup crash on a RaptorLake machine:
 
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+  Oops: general protection fault, maybe for address 0xffff89aeceab400: 0000
+  CPU: 23 UID: 0 PID: 0 Comm: swapper/23
+  Tainted: [W]=WARN
+  Hardware name: Dell Inc. Precision 9660/0VJ762
+  RIP: 0010:native_read_pmc+0x7/0x40
+  Code: cc e8 8d a9 01 00 48 89 03 5b cd cc cc cc cc 0f 1f ...
+  RSP: 000:fffb03100273de8 EFLAGS: 00010046
+  ....
+  Call Trace:
+    <TASK>
+    icl_update_topdown_event+0x165/0x190
+    ? ktime_get+0x38/0xd0
+    intel_pmu_read_event+0xf9/0x210
+    __perf_event_read+0xf9/0x210
 
-the console log of some devices with hdq enabled but no bq27000 battery
-(like e.g. the Pandaboard) is flooded with messages like:
+CPUs 16-23 are E-core CPUs that don't support the perf metrics feature.
+The icl_update_topdown_event() should not be invoked on these CPUs.
 
-[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
+It's a regression of commit:
 
-as soon as user-space is finding a /sys entry and trying to read the
-"status" property.
+  f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
 
-It turns out that the offending commit changes the logic to now return the
-value of cache.flags if it is <0. This is likely under the assumption that
-it is an error number. In normal errors from bq27xxx_read() this is indeed
-the case.
+The bug introduced by that commit is that the is_topdown_event() function
+is mistakenly used to replace the is_topdown_count() call to check if the
+topdown functions for the perf metrics feature should be invoked.
 
-But there is special code to detect if no bq27000 is installed or accessible
-through hdq/1wire and wants to report this. In that case, the cache.flags
-are set historically by
+Fix it.
 
-	commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to constant -1 which did make reading properties return -ENODEV. So everything
-appeared to be fine before the return value was passed upwards.
-
-Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
-condition in power_supply_format_property() which then floods the console log.
-
-So we change the detection of missing bq27000 battery to simply set
-
-	cache.flags = -ENODEV
-
-instead of -1.
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Cc: Jerry Lv <Jerry.Lv@axis.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: f9bdf1f95339 ("perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read")
+Closes: https://lore.kernel.org/lkml/352f0709-f026-cd45-e60c-60dfd97f73f3@maine.edu/
+Reported-by: Vince Weaver <vincent.weaver@maine.edu>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Vince Weaver <vincent.weaver@maine.edu>
+Cc: stable@vger.kernel.org # v6.15+
+Link: https://lore.kernel.org/r/20250612143818.2889040-1-kan.liang@linux.intel.com
+[ omitted PEBS check ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Angel Adetula <angeladetula@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    2 +-
+ arch/x86/events/intel/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1873,7 +1873,7 @@ static void bq27xxx_battery_update_unloc
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2793,7 +2793,7 @@ static void intel_pmu_read_event(struct
+ 		if (pmu_enabled)
+ 			intel_pmu_disable_all();
  
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
- 	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -1; /* read error */
-+		cache.flags = -ENODEV; /* read error */
- 	if (cache.flags >= 0) {
- 		cache.temperature = bq27xxx_battery_read_temperature(di);
- 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
+-		if (is_topdown_event(event))
++		if (is_topdown_count(event))
+ 			static_call(intel_pmu_update_topdown_event)(event);
+ 		else
+ 			intel_pmu_drain_pebs_buffer();
 
 
 
