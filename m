@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-181366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B53B9311F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A32B9312E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B9237ADB23
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31BD67AE402
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084662F49E3;
-	Mon, 22 Sep 2025 19:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1577F2F3C2F;
+	Mon, 22 Sep 2025 19:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfzOGUC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbnJfXS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2C92517AC;
-	Mon, 22 Sep 2025 19:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D6A2517AC;
+	Mon, 22 Sep 2025 19:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570362; cv=none; b=V5cdKinbYAcw93+a9X5YN/f9R5f1WLCd9f6v0lloKjl5fAD6KFWnoHBAjxd9ls3c0E7DGwrwt3we7rHiDK4mwXMWUQkaLly4UTKMbP+hG1q1u99KQPtlzzBNPV7pQXYMZrWHAYufAzWJ4zzOUwtY1tdBOrGd2jcLijbrGBs4sfk=
+	t=1758570374; cv=none; b=rWhti442cVK0XwtCijoez0KrN5B+3C5xeryGhv4mR9hvLgKfUHQ7mbrs2LFVOYHzbSTM6UF0GK3TSQwNFwG6OcVLQ8XMb34HnDCrqChxquJ1kndLjsW9xhrESQpmsmM6hezeIjoiPxVoeXaLVOf6ZW5GX5PSAJR3pcRs3xoVe0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570362; c=relaxed/simple;
-	bh=QvbzhkXA7Y90/IF0Wol7tv+cl/JiZZtgmfkPDwTxk+M=;
+	s=arc-20240116; t=1758570374; c=relaxed/simple;
+	bh=ouwKnYS0us8+omkEKsKl3RpAfkI08CeqWs8qYU/Psew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TI12L/kSFn/v0sRHQ9RaHlt973I6whqeLGIbsvwKLcR0IVidscBuESaB19r/KBtrAcOpgpClrwioxWf33vQAU18CVsQiwwE3xZyW+GkRRf91oOX5S+Nb5o9+xj1aPrQOaAJkM/hTQB5ZFXoetRaxP7CVv3KVmB9zwfRRHlRbn+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfzOGUC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA87C4CEF0;
-	Mon, 22 Sep 2025 19:46:01 +0000 (UTC)
+	 MIME-Version; b=B61Ltmd4RMvyZdL4jp7T15MmUUT/aualtCW4vBD6poNtsUD1M73hrCCGgztwKcIq5KgoLpbBqj98JaP42KgwX6Wbd4MBmXgiuepHokzqZNYl1eHYDIjGKH8v7zYqxuGa19fY92Hglp3ag7jw9S5chc5qitN6+lIBSBwkEl8WI38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbnJfXS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6015AC4CEF0;
+	Mon, 22 Sep 2025 19:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570362;
-	bh=QvbzhkXA7Y90/IF0Wol7tv+cl/JiZZtgmfkPDwTxk+M=;
+	s=korg; t=1758570374;
+	bh=ouwKnYS0us8+omkEKsKl3RpAfkI08CeqWs8qYU/Psew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfzOGUC8qMpVq/uPhveweJrXntKZytOOx14Da9n6CdXYJ2rMvXh52rO0oDfKovl/a
-	 sPsHlpcpTg7fNvY1bPuYxpWoFXGDszzYu2QV1BNelxDxORgP+gSCPL64cnpRLgsFKl
-	 P3Q9xataKgTEeX8MVpjUmzKfaicRJxElua2972vM=
+	b=nbnJfXS+aPUOK++vyry7DYzqOaBAUT3NCfgoG5ppVjb/CEDlwaQSUj+30i4J0lK43
+	 5JzBQxuQJ5ztWowfnWW+SKsICX0SF/wi8IBhxOFgk31l13bi8M7EKfpwEYEiyCtsBl
+	 n7N+EH7E3mPtXJQ4dhuNxi9eASEkogMz+6TgUWCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 111/149] ASoC: codec: sma1307: Fix memory corruption in sma1307_setting_loaded()
-Date: Mon, 22 Sep 2025 21:30:11 +0200
-Message-ID: <20250922192415.673694733@linuxfoundation.org>
+Subject: [PATCH 6.16 112/149] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
+Date: Mon, 22 Sep 2025 21:30:12 +0200
+Message-ID: <20250922192415.698910151@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
 References: <20250922192412.885919229@linuxfoundation.org>
@@ -66,49 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 78338108b5a856dc98223a335f147846a8a18c51 ]
+[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
 
-The sma1307->set.header_size is how many integers are in the header
-(there are 8 of them) but instead of allocating space of 8 integers
-we allocate 8 bytes.  This leads to memory corruption when we copy data
-it on the next line:
+The dev_err message is reporting an error about capture streams however
+it is using the incorrect variable num_playback instead of num_capture.
+Fix this by using the correct variable num_capture.
 
-        memcpy(sma1307->set.header, data,
-               sma1307->set.header_size * sizeof(int));
-
-Also since we're immediately copying over the memory in ->set.header,
-there is no need to zero it in the allocator.  Use devm_kmalloc_array()
-to allocate the memory instead.
-
-Fixes: 576c57e6b4c1 ("ASoC: sma1307: Add driver for Iron Device SMA1307")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aLGjvjpueVstekXP@stanley.mountain
+Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/sma1307.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/sof/intel/hda-stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/sma1307.c b/sound/soc/codecs/sma1307.c
-index b3d401ada1760..2d993428f87e3 100644
---- a/sound/soc/codecs/sma1307.c
-+++ b/sound/soc/codecs/sma1307.c
-@@ -1737,9 +1737,10 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
- 	sma1307->set.checksum = data[sma1307->set.header_size - 2];
- 	sma1307->set.num_mode = data[sma1307->set.header_size - 1];
- 	num_mode = sma1307->set.num_mode;
--	sma1307->set.header = devm_kzalloc(sma1307->dev,
--					   sma1307->set.header_size,
--					   GFP_KERNEL);
-+	sma1307->set.header = devm_kmalloc_array(sma1307->dev,
-+						 sma1307->set.header_size,
-+						 sizeof(int),
-+						 GFP_KERNEL);
- 	if (!sma1307->set.header) {
- 		sma1307->set.status = false;
- 		return;
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index aa6b0247d5c99..a34f472ef1751 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -890,7 +890,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
+ 
+ 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
+ 		dev_err(sdev->dev, "error: too many capture streams %d\n",
+-			num_playback);
++			num_capture);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.51.0
 
