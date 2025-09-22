@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-180947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291B6B9119A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 14:21:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF87DB91476
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC5BE3B7FEC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 12:21:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 890B7422C43
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 13:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C928F288C24;
-	Mon, 22 Sep 2025 12:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B06A30AAAD;
+	Mon, 22 Sep 2025 13:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="encnEY2o"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="M+vrnbNT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819C84A1E;
-	Mon, 22 Sep 2025 12:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CC8288C24;
+	Mon, 22 Sep 2025 13:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758543663; cv=none; b=WbHlNlYaydbuUFb1f1jKDT6h/tSfe+hVCBf3BWZkRwUqgXAHOJaj8BMw+x0OJqm/bGeZU1/f2KAtqnuym6/eD72pqSgfhU+dCgBrZ8vn4/zwuKLYENNn3IO2a/+ygkF1b08VwhlXe7/sY1VsZrTQxzYzCHcz9r7RswlfIDiycXo=
+	t=1758546092; cv=none; b=SNUDwuHBcrBw1KKiw9Wn/Pz/wOr//Stv9HcIskmNXbLRkQwFv/+N9QuxfX0OdQhpwd9EBD4DX/UAacyq1gknKNKmM2sx0c5Svlyp4Xkt2ia12X4owa8WF1e9L92zvwsuTeEd4tzBb8MKNhhhP5gKF5frA68f24kyvO7O8m/pN18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758543663; c=relaxed/simple;
-	bh=ViEQLBan4Shyr+1aYZ9y/fzuOhYaRstrxknRLRm0rGA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ddMpeRjlaGCj1LAee6lMgb15nHD+M9jYTMDWvdZu1Qinpm3YtoHzPCgtPi/9eg5vmKrNyZhwfhGiSKr/fPd83xYQM+l9zBC4iVQEn4oJkL3gk2+7bd65DO21zIbk6T+4awY7mJ3sBF/Jo7ryva+0ZKjkzKuR5RZNyeKI9/FSe3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=encnEY2o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9EFC4CEF0;
-	Mon, 22 Sep 2025 12:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758543663;
-	bh=ViEQLBan4Shyr+1aYZ9y/fzuOhYaRstrxknRLRm0rGA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=encnEY2oI3pkWuxyAegZ3o1uxvsHR3E3/cPqc8+frAtqwQXBKwNYjVwVv6/0+zsUP
-	 STOfoN9NEi3sbeverjAzNFEShAsmT+1+f9nKLCgJaOClGtmbch2RdO+1PPooZFd+um
-	 r6TWlWp2Gwf8HqMXcEuQNBvnYEeTZB3/cO8nACwL4Lb8WEM/vGgdFw56tcIR1Xv1Rc
-	 QQpcTzj37r0SE2ddvS69P/nDDx0EX9s6pmunPi/T+nwcH74Z2pKTciIQNrj5hq7Dr4
-	 c5j78Oyg1rGKuztmrtpMc42INM8ZZdDygoslJ2tk33Aa0dBVMfuftviMb3xsx0IAJM
-	 ZrRwNMGbe1vnw==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1v0fXL-0000000078t-1O9R;
-	Mon, 22 Sep 2025 14:20:56 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Alain Volmat <alain.volmat@foss.st.com>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1758546092; c=relaxed/simple;
+	bh=39MXPULtnQpLPowbOXB8BTSaKyc0RVXPG67R7milupw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BSwPjEdSt3Z8M9cUQGPsyXH1XM4OFXQ7Ziya9qIeunHOTZKlGSbnJZY1KjzYkTfuGYhxgdQJnQS/HyhFsZ6vJY9kbwtxNdlea/vTjanR9t8lAk4UZ5qjFVENeswlvbuA3ioQWGLkxiwIJzqshwy/4tqiu47a38jNw0N8bCz07YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=M+vrnbNT; arc=none smtp.client-ip=220.197.32.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mP
+	L4dda7cCLCvc6M0sl4DX1CFnt3sTxBX7BsAwf8coI=; b=M+vrnbNTCWg2hXeJCG
+	aH5DfOUOtqxbYNGAv2ot0Bx8jCK1WDaDw00TFTROXnyxLoH+cp9iDEXOiq96Ro+L
+	6W5k5luCg+j3fOytsobUbp4YAQJRH1fUvqHKpuL1pm5rI+wMReeAzlFwU8YchLjy
+	zmpn2PNisWXxkUh/A4F7UZoLo=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3nyRMSNFo42AXBQ--.30063S2;
+	Mon, 22 Sep 2025 20:59:56 +0800 (CST)
+From: Shawn Guo <shawnguo2@yeah.net>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Qais Yousef <qyousef@layalina.io>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Subject: [PATCH] drm: sti: fix device leaks at component probe
-Date: Mon, 22 Sep 2025 14:20:12 +0200
-Message-ID: <20250922122012.27407-1-johan@kernel.org>
-X-Mailer: git-send-email 2.49.1
+	stable@vger.kernel.org
+Subject: [PATCH v2] cpufreq: Handle CPUFREQ_ETERNAL with a default transition latency
+Date: Mon, 22 Sep 2025 20:59:21 +0800
+Message-ID: <20250922125929.453444-1-shawnguo2@yeah.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,47 +58,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Ms8vCgD3nyRMSNFo42AXBQ--.30063S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr15GF13CF1fuF1xtrWUArb_yoW5XF4xpF
+	W5uw42yw4kJayvqwnFka18u34Fqa1DAry2ka4UWwnYvw43A3ZYq3WDKrW5tFZ5Aw4kGa1U
+	ZFyDA39rWF48ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jcUUUUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhrQZWjRRUkGtwAAs5
 
-Make sure to drop the references taken to the vtg devices by
-of_find_device_by_node() when looking up their driver data during
-component probe.
+From: Shawn Guo <shawnguo@kernel.org>
 
-Note that holding a reference to a platform device does not prevent its
-driver data from going away so there is no point in keeping the
-reference after the lookup helper returns.
+A regression is seen with 6.6 -> 6.12 kernel upgrade on platforms where
+cpufreq-dt driver sets cpuinfo.transition_latency as CPUFREQ_ETERNAL (-1),
+due to that platform's DT doesn't provide the optional property
+'clock-latency-ns'.  The dbs sampling_rate was 10000 us on 6.6 and
+suddently becomes 6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these
+platforms, because the default transition delay was dropped by the commits
+below.
 
-Fixes: cc6b741c6f63 ("drm: sti: remove useless fields from vtg structure")
-Cc: stable@vger.kernel.org	# 4.16
-Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+  commit 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
+  commit a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
+  commit e13aa799c2a6 ("cpufreq: Change default transition delay to 2ms")
+
+It slows down dbs governor's reacting to CPU loading change
+dramatically.  Also, as transition_delay_us is used by schedutil governor
+as rate_limit_us, it shows a negative impact on device idle power
+consumption, because the device gets slightly less time in the lowest OPP.
+
+Fix the regressions by defining a default transition latency for
+handling the case of CPUFREQ_ETERNAL.
+
+Cc: stable@vger.kernel.org
+Fixes: 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 ---
- drivers/gpu/drm/sti/sti_vtg.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Changes for v2:
+- Follow Rafael's suggestion to define a default transition latency for
+  handling CPUFREQ_ETERNAL, and pave the way to get rid of
+  CPUFREQ_ETERNAL completely later.
 
-diff --git a/drivers/gpu/drm/sti/sti_vtg.c b/drivers/gpu/drm/sti/sti_vtg.c
-index ee81691b3203..ce6bc7e7b135 100644
---- a/drivers/gpu/drm/sti/sti_vtg.c
-+++ b/drivers/gpu/drm/sti/sti_vtg.c
-@@ -143,12 +143,17 @@ struct sti_vtg {
- struct sti_vtg *of_vtg_find(struct device_node *np)
- {
- 	struct platform_device *pdev;
-+	struct sti_vtg *vtg;
+v1: https://lkml.org/lkml/2025/9/10/294
+
+ drivers/cpufreq/cpufreq.c | 3 +++
+ include/linux/cpufreq.h   | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index fc7eace8b65b..c69d10f0e8ec 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -549,6 +549,9 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
+ 	if (policy->transition_delay_us)
+ 		return policy->transition_delay_us;
  
- 	pdev = of_find_device_by_node(np);
- 	if (!pdev)
- 		return NULL;
- 
--	return (struct sti_vtg *)platform_get_drvdata(pdev);
-+	vtg = platform_get_drvdata(pdev);
++	if (policy->cpuinfo.transition_latency == CPUFREQ_ETERNAL)
++		policy->cpuinfo.transition_latency = CPUFREQ_DEFAULT_TANSITION_LATENCY_NS;
 +
-+	put_device(&pdev->dev);
-+
-+	return vtg;
- }
+ 	latency = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
+ 	if (latency)
+ 		/* Give a 50% breathing room between updates */
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 95f3807c8c55..935e9a660039 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -36,6 +36,8 @@
+ /* Print length for names. Extra 1 space for accommodating '\n' in prints */
+ #define CPUFREQ_NAME_PLEN		(CPUFREQ_NAME_LEN + 1)
  
- static void vtg_reset(struct sti_vtg *vtg)
++#define CPUFREQ_DEFAULT_TANSITION_LATENCY_NS	NSEC_PER_MSEC
++
+ struct cpufreq_governor;
+ 
+ enum cpufreq_table_sorting {
 -- 
-2.49.1
+2.43.0
 
 
