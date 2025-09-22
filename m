@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-181043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84351B92CD4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576D4B92EC0
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F2E73B3FBF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98F80190720A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD71327FB2D;
-	Mon, 22 Sep 2025 19:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987E52DEA79;
+	Mon, 22 Sep 2025 19:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUqMTLiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOWRmOFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881B6C8E6;
-	Mon, 22 Sep 2025 19:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DA627B320;
+	Mon, 22 Sep 2025 19:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569546; cv=none; b=IZKo8MqCDbPJoZpb2cjbC7T3XGQn2Cp3iWRk/2Nsh8T/QFCnFQpxf7DLaLIiw39/c0302cgXiGoZdGYVpOh+qcUD+GmxiSemb6ezMnOxUHcWio4J21tO+k9sMcQI8vgcByPuXAQhlHvQBMuyzxYrCFeuShlMqxAqMkKYALHyuy4=
+	t=1758569914; cv=none; b=YZzBSy0OqnEa7/pVbb1ItyGJe0noqHG8g/pATqPZvMoT3cfHn5pbEXp9JZQl/iA88OuhXtW1IIdIMUjPHfmk73yAom38b85I5U58HKc26de1K7Rvdscl3yNomIbDxrh8Bs8Ft9xprmZPsQSKXUlK9YdIn2C3mB923CGwnsPsquI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569546; c=relaxed/simple;
-	bh=ev6BSBGf0virjsvm1ZGrkCmvlpN7UgwTOKEatiSzjAE=;
+	s=arc-20240116; t=1758569914; c=relaxed/simple;
+	bh=fGY274266P41hyO6Y4g/Glr0TDS9XtTaA72xmUiCyW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5pAItZEoA/OXVGdqyRcUjoVeb/PXZ9aaudsCXv1xdIT5NO3uPyoWl3C1iXuF43kX9AXOPJal6vok3aaScJWg+GaKXYoly/ZFAbjQ6NTmNG396xvEjMl3djbNFdsDrlsaLJtYwnt9MG5vC9/O7W0eSlbGB995Q/mWOp7G+K8phI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUqMTLiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20130C4CEF0;
-	Mon, 22 Sep 2025 19:32:25 +0000 (UTC)
+	 MIME-Version; b=nCuLJMxhXR3T53KToLgaZNqfFYv3mZ6sC7iL1cokB0Bnk7yeo31p1QQhgRsppd3U6hB/3z1dA7vlH2uXbPZ9s7f0YgzOhoQOkIPPGVAhTgY7b+VEJBF9NTQUJGtjsdMbTteib2HdsTdc6Ph4yFjw1DoDugV4J9OkAgyT6BFjFCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOWRmOFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E30C4CEF0;
+	Mon, 22 Sep 2025 19:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569546;
-	bh=ev6BSBGf0virjsvm1ZGrkCmvlpN7UgwTOKEatiSzjAE=;
+	s=korg; t=1758569914;
+	bh=fGY274266P41hyO6Y4g/Glr0TDS9XtTaA72xmUiCyW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUqMTLiIvhgRHS7Ftj4Fgk8jNfQXRvb9MhUxkomUI2zn/7A417YEwZO3ljYKQ90rl
-	 +8ms2Fmxk59aPBdpUNBuHlWzw70wdXIW2r6LgCcSVZ6LHDpcqGB8CFmU8rrMXRnmEJ
-	 TXIXSnuNF4npnct/WMxj7W2whdzAHzBoxWglFYig=
+	b=jOWRmOFTO+jMj8zYR3gpKLqHaLbO5WVS6fkjt4dZVtTtyBohD/cE+cQub9QhqB8RP
+	 rmSE1WTeqyQgjyzhI4tONLkmTNH7hrY2zCVEOMF2JrAUrt3pcm0FI7w3lJknFJmKxl
+	 TT69BoNux8flXOclSACF2KrUE/Cfmkz3/Wpk6DSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Koira <eugkoira@amazon.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.1 27/61] iommu/vt-d: Fix __domain_mapping()s usage of switch_to_super_page()
-Date: Mon, 22 Sep 2025 21:29:20 +0200
-Message-ID: <20250922192404.299527245@linuxfoundation.org>
+	Jerry Lv <Jerry.Lv@axis.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.12 038/105] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+Date: Mon, 22 Sep 2025 21:29:21 +0200
+Message-ID: <20250922192409.914043808@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Koira <eugkoira@amazon.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-commit dce043c07ca1ac19cfbe2844a6dc71e35c322353 upstream.
+commit 2c334d038466ac509468fbe06905a32d202117db upstream.
 
-switch_to_super_page() assumes the memory range it's working on is aligned
-to the target large page level. Unfortunately, __domain_mapping() doesn't
-take this into account when using it, and will pass unaligned ranges
-ultimately freeing a PTE range larger than expected.
+Since commit
 
-Take for example a mapping with the following iov_pfn range [0x3fe400,
-0x4c0600), which should be backed by the following mappings:
+	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
 
-   iov_pfn [0x3fe400, 0x3fffff] covered by 2MiB pages
-   iov_pfn [0x400000, 0x4bffff] covered by 1GiB pages
-   iov_pfn [0x4c0000, 0x4c05ff] covered by 2MiB pages
+the console log of some devices with hdq enabled but no bq27000 battery
+(like e.g. the Pandaboard) is flooded with messages like:
 
-Under this circumstance, __domain_mapping() will pass [0x400000, 0x4c05ff]
-to switch_to_super_page() at a 1 GiB granularity, which will in turn
-free PTEs all the way to iov_pfn 0x4fffff.
+[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
 
-Mitigate this by rounding down the iov_pfn range passed to
-switch_to_super_page() in __domain_mapping()
-to the target large page level.
+as soon as user-space is finding a /sys entry and trying to read the
+"status" property.
 
-Additionally add range alignment checks to switch_to_super_page.
+It turns out that the offending commit changes the logic to now return the
+value of cache.flags if it is <0. This is likely under the assumption that
+it is an error number. In normal errors from bq27xxx_read() this is indeed
+the case.
 
-Fixes: 9906b9352a35 ("iommu/vt-d: Avoid duplicate removing in __domain_mapping()")
-Signed-off-by: Eugene Koira <eugkoira@amazon.com>
+But there is special code to detect if no bq27000 is installed or accessible
+through hdq/1wire and wants to report this. In that case, the cache.flags
+are set historically by
+
+	commit 3dd843e1c26a ("bq27000: report missing device better.")
+
+to constant -1 which did make reading properties return -ENODEV. So everything
+appeared to be fine before the return value was passed upwards.
+
+Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
+condition in power_supply_format_property() which then floods the console log.
+
+So we change the detection of missing bq27000 battery to simply set
+
+	cache.flags = -ENODEV
+
+instead of -1.
+
+Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Cc: Jerry Lv <Jerry.Lv@axis.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://lore.kernel.org/r/20250826143816.38686-1-eugkoira@amazon.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2205,6 +2205,10 @@ static void switch_to_super_page(struct
- 	struct dma_pte *pte = NULL;
- 	unsigned long i;
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1910,7 +1910,7 @@ static void bq27xxx_battery_update_unloc
  
-+	if (WARN_ON(!IS_ALIGNED(start_pfn, lvl_pages) ||
-+		    !IS_ALIGNED(end_pfn + 1, lvl_pages)))
-+		return;
-+
- 	while (start_pfn <= end_pfn) {
- 		if (!pte)
- 			pte = pfn_to_dma_pte(domain, start_pfn, &level);
-@@ -2272,7 +2276,8 @@ __domain_mapping(struct dmar_domain *dom
- 				unsigned long pages_to_remove;
+ 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+ 	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -1; /* read error */
++		cache.flags = -ENODEV; /* read error */
+ 	if (cache.flags >= 0) {
+ 		cache.capacity = bq27xxx_battery_read_soc(di);
  
- 				pteval |= DMA_PTE_LARGE_PAGE;
--				pages_to_remove = min_t(unsigned long, nr_pages,
-+				pages_to_remove = min_t(unsigned long,
-+							round_down(nr_pages, lvl_pages),
- 							nr_pte_to_next_page(pte) * lvl_pages);
- 				end_pfn = iov_pfn + pages_to_remove - 1;
- 				switch_to_super_page(domain, iov_pfn, end_pfn, largepage_lvl);
 
 
 
