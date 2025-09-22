@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC6EB92C9B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:31:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0662DB92E60
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B25C1898BFD
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5272D1906F8F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4779827FB2D;
-	Mon, 22 Sep 2025 19:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E041B2F1FE3;
+	Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAIpFQiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvqyKe0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AF9C8E6;
-	Mon, 22 Sep 2025 19:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B15A285C92;
+	Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569508; cv=none; b=SRUP26jKGNGwSqGBoqAzUSw3pnsuxjwEiOTw7ubsYabW71FC5DkMU9t9li/RBLPF1V1qgLAPInryER/iy64X1305jeV/Jluui09K+uaEAwN1gxATI00tV3nJmqmVqZVwX9ak/klqoyuGhETFoPLY0m8IV0b6g81XDJ0LCyb+17A=
+	t=1758569839; cv=none; b=jxMGepV9Di5G6Ho6mFdwGgUhAkXRTc8eNmtTlDyi511304KhOjILaCcIBVozbNPpJT0CJIXb8ZLIs2diymBepC7lZXfz0NfGWubA2pBQBzi3y5xG/VPuzdWagNyQCDB2SD3/A7Nk5Mg0daet5coHhRJv0CEpFH3pAI8wSAl5tas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569508; c=relaxed/simple;
-	bh=LvbzLfrlA7bP8jMd7xk9sVVY9nWvft44qjiV/Ut7OQY=;
+	s=arc-20240116; t=1758569839; c=relaxed/simple;
+	bh=X0q34OXcUMkCznJ1Ure9/RBij5LUwRU/4jqOwav9GRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2r2jHwuXRyLYmmHhyJpqGkLck2Jn2yNaj/CqAL7oc6pFmXIrJgVWw57hJp6W7KsmPs6LLzV6Ls5GLAelu7JV9av8FnRUdQcW3QJw09Ya15PHOvpzrbxAZWDYAzWoJCa2P3+njC5ctr5Po55QOmjo4/Fl3xGg3PlqILoELOWT/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAIpFQiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0F4C4CEF0;
-	Mon, 22 Sep 2025 19:31:46 +0000 (UTC)
+	 MIME-Version; b=RaIGZAzyl7Y8iydlF6qv5N7ffmISC7D+e51zrOPSZZUScxLXQXIZkFNZBE7TQ7600boRQl3oIRXiTQVbpA3NDf8kQ+HRtTz28WqAx503WqwuYyaGDRlBV8akZZpmDlvqYPc+4RD/15PHrQxlkQqfDK72FMgNzbizH/kqxk1EaOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvqyKe0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33587C4CEF0;
+	Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569506;
-	bh=LvbzLfrlA7bP8jMd7xk9sVVY9nWvft44qjiV/Ut7OQY=;
+	s=korg; t=1758569839;
+	bh=X0q34OXcUMkCznJ1Ure9/RBij5LUwRU/4jqOwav9GRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAIpFQiUG3Jh6k5ATb4OCbGnONoMPdwRZSiZjUXQm5FEl3dHUD/2kuCQlsmWIkrG9
-	 FmyyFoqPeDPQ7miBaEZBCzCRs4o/HX2EgVBO+CslRm9u9RuX6TxzfizcWic9rnAbKC
-	 eVD/Egelv9NJc/8cY9PStPbLh6XAZbWq9EXkiv6o=
+	b=fvqyKe0CG7NLs4TjXbKmzAHaMKqOBP0+SnVKhbUdb5ZOYHSt5s/z5x47n3Zk4R3O6
+	 OKwxtMXZJZbslT3H72n9igjx9KC4+geQRywhl+ynA0mugBqYiEIwT4Q1LXGZtXyns4
+	 slJPzh5peuTAfDGAJPBNfngC1feSz9BFdHV/twWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/61] qed: Dont collect too many protection override GRC elements
+Subject: [PATCH 6.12 019/105] net: natsemi: fix `rx_dropped` double accounting on `netif_rx()` failure
 Date: Mon, 22 Sep 2025 21:29:02 +0200
-Message-ID: <20250922192403.803984852@linuxfoundation.org>
+Message-ID: <20250922192409.413608465@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
+[ Upstream commit 93ab4881a4e2b9657bdce4b8940073bfb4ed5eab ]
 
-In the protection override dump path, the firmware can return far too
-many GRC elements, resulting in attempting to write past the end of the
-previously-kmalloc'ed dump buffer.
+`netif_rx()` already increments `rx_dropped` core stat when it fails.
+The driver was also updating `ndev->stats.rx_dropped` in the same path.
+Since both are reported together via `ip -s -s` command, this resulted
+in drops being counted twice in user-visible stats.
 
-This will result in a kernel panic with reason:
+Keep the driver update on `if (unlikely(!skb))`, but skip it after
+`netif_rx()` errors.
 
- BUG: unable to handle kernel paging request at ADDRESS
-
-where "ADDRESS" is just past the end of the protection override dump
-buffer. The start address of the buffer is:
- p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
-and the size of the buffer is buf_size in the same data structure.
-
-The panic can be arrived at from either the qede Ethernet driver path:
-
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc02662ed [qed]
- qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
- qed_dbg_feature at ffffffffc026aa8f [qed]
- qed_dbg_all_data at ffffffffc026b211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
- devlink_health_do_dump at ffffffff82497f61
- devlink_health_report at ffffffff8249cf29
- qed_report_fatal_error at ffffffffc0272baf [qed]
- qede_sp_task at ffffffffc045ed32 [qede]
- process_one_work at ffffffff81d19783
-
-or the qedf storage driver path:
-
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc068b2ed [qed]
- qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
- qed_dbg_feature at ffffffffc068fa8f [qed]
- qed_dbg_all_data at ffffffffc0690211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
- devlink_health_do_dump at ffffffff8aa95e51
- devlink_health_report at ffffffff8aa9ae19
- qed_report_fatal_error at ffffffffc0697baf [qed]
- qed_hw_err_notify at ffffffffc06d32d7 [qed]
- qed_spq_post at ffffffffc06b1011 [qed]
- qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
- qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
- qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
- fc_rport_work at ffffffffc02da715 [libfc]
- process_one_work at ffffffff8a319663
-
-Resolve this by clamping the firmware's return value to the maximum
-number of legal elements the firmware should return.
-
-Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
+Fixes: caf586e5f23c ("net: add a core netdev->rx_dropped counter")
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250913060135.35282-3-yyyynoom@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/natsemi/ns83820.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-index cdcead614e9fa..ae421c2707785 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-@@ -4461,10 +4461,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
- 		goto out;
- 	}
+diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
+index 998586872599b..c692d2e878b2e 100644
+--- a/drivers/net/ethernet/natsemi/ns83820.c
++++ b/drivers/net/ethernet/natsemi/ns83820.c
+@@ -820,7 +820,7 @@ static void rx_irq(struct net_device *ndev)
+ 	struct ns83820 *dev = PRIV(ndev);
+ 	struct rx_info *info = &dev->rx_info;
+ 	unsigned next_rx;
+-	int rx_rc, len;
++	int len;
+ 	u32 cmdsts;
+ 	__le32 *desc;
+ 	unsigned long flags;
+@@ -881,8 +881,10 @@ static void rx_irq(struct net_device *ndev)
+ 		if (likely(CMDSTS_OK & cmdsts)) {
+ #endif
+ 			skb_put(skb, len);
+-			if (unlikely(!skb))
++			if (unlikely(!skb)) {
++				ndev->stats.rx_dropped++;
+ 				goto netdev_mangle_me_harder_failed;
++			}
+ 			if (cmdsts & CMDSTS_DEST_MULTI)
+ 				ndev->stats.multicast++;
+ 			ndev->stats.rx_packets++;
+@@ -901,15 +903,12 @@ static void rx_irq(struct net_device *ndev)
+ 				__vlan_hwaccel_put_tag(skb, htons(ETH_P_IPV6), tag);
+ 			}
+ #endif
+-			rx_rc = netif_rx(skb);
+-			if (NET_RX_DROP == rx_rc) {
+-netdev_mangle_me_harder_failed:
+-				ndev->stats.rx_dropped++;
+-			}
++			netif_rx(skb);
+ 		} else {
+ 			dev_kfree_skb_irq(skb);
+ 		}
  
--	/* Add override window info to buffer */
-+	/* Add override window info to buffer, preventing buffer overflow */
- 	override_window_dwords =
--		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
--		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
-+		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
-+		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
-+		PROTECTION_OVERRIDE_DEPTH_DWORDS);
- 	if (override_window_dwords) {
- 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
- 		offset += qed_grc_dump_addr_range(p_hwfn,
++netdev_mangle_me_harder_failed:
+ 		nr++;
+ 		next_rx = info->next_rx;
+ 		desc = info->descs + (DESC_SIZE * next_rx);
 -- 
 2.51.0
 
