@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFE6B93032
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B014BB92E7C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7326B17EFDC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F6317490C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348483148D8;
-	Mon, 22 Sep 2025 19:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7342F1FDA;
+	Mon, 22 Sep 2025 19:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKQfxTSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D26HuJtm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42213128C4;
-	Mon, 22 Sep 2025 19:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AFB2F0C5C;
+	Mon, 22 Sep 2025 19:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570173; cv=none; b=c92neWX+/XoqdjxE3XWyhQ1W1m7yncVEKaeGM/yyDL2THR/wCx8/zAYgKA4eMn0hr+nWfIkcFI94ZWhbS2uhWqOsK2rBV+PHn4HqW5j9hxZ3esgecXuCEpJwaWuNI/0/4r35NDJWJcGnCNnJlweBxpHA/qge9N9+IPXuRatjxkA=
+	t=1758569859; cv=none; b=DnP09iGvJaOfuv0OQFfGPm3AY2ysbbRvfectMAK+hAihP/I4yYR99iwliYLbC7wYKNYe4xeCBnOQzQRM5debHJwK3eTQiDgSfcZyxY0e4PA64tqIHrT+HN/qzJLfo27V67lvBfeDSF7paUv9qyQgr0T0ffJGKpW/Swdejero0Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570173; c=relaxed/simple;
-	bh=/rbcM0dtWHoeHuNcFMHF+TY1FhFto49kqyOutDMJ20Q=;
+	s=arc-20240116; t=1758569859; c=relaxed/simple;
+	bh=tyHjxJG4K2FrewJKIF/hPZwxvW1226lP8AeUeUpSCnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcrRVuKVBGBE9i6AtcXrsec0UBVWy4m9bz8E1Fc74geUOlzo1R1Zzwbi87/8FgJCzkuvVxONsJew8a2Lyp9JDgDOgfO0+lWFzffZYPy/SXZitpBY9Nb1e6Q7C6Rv7QCwOiywJFl2zCYrPgqiOQECoD1gmqeWPdMwKVFLgd0HV2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKQfxTSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3248CC4CEF0;
-	Mon, 22 Sep 2025 19:42:53 +0000 (UTC)
+	 MIME-Version; b=AteZv75H+kyXNSxrikmfWpJkl+qm4GR7Ly5sckBNmdA23XeIiD6el8rRdiZM7nlMaxVHwKnECxhUxjKMQYl7WPMWJP5MlmbazOfBeAkOMQAyuQjgrVCg924nmP7ZLPo0RxRJ0auLJPMe9/y+cVi61wGHOvTr6hGIC4g/JQAfAEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D26HuJtm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE2AC4CEF0;
+	Mon, 22 Sep 2025 19:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570173;
-	bh=/rbcM0dtWHoeHuNcFMHF+TY1FhFto49kqyOutDMJ20Q=;
+	s=korg; t=1758569859;
+	bh=tyHjxJG4K2FrewJKIF/hPZwxvW1226lP8AeUeUpSCnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKQfxTSJ7Zt7EQpcXZ7ndwXjliwiNUrRKYNCyNALxTVZ7wALgoFMJsxlndw96mwr+
-	 ltAE2iTxFeRXU3Ce6ZHmzNi8VJJQV1HVUjokqj8WwChtSFUZ/HzI90/rO5pvMaSrJ0
-	 4m0V2s/2SA6olvSWI9nSB7mxyhKv8u5Mbb+0JcOs=
+	b=D26HuJtmBuCRFFFeAku4jdHoue69i15CUfD0s3eKlC/z0lXtYVkWHbrYS5c99acnN
+	 mIR0kKwDxEYocTbZ+xtfFrYpWwIlYU53qlDgH0po7E0/9F9vAp/1QbD+Jpc+jyWrk1
+	 QH29aZfB4TRLa26cmMEETFQCBwklxqTididL2eO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathesh B Edara <sedara@marvell.com>,
-	Simon Horman <horms@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 039/149] octeon_ep: fix VF MAC address lifecycle handling
+Subject: [PATCH 6.12 016/105] selftests: mptcp: userspace pm: validate deny-join-id0 flag
 Date: Mon, 22 Sep 2025 21:28:59 +0200
-Message-ID: <20250922192413.848655034@linuxfoundation.org>
+Message-ID: <20250922192409.333642678@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathesh B Edara <sedara@marvell.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit a72175c985132885573593222a7b088cf49b07ae ]
+[ Upstream commit 24733e193a0d68f20d220e86da0362460c9aa812 ]
 
-Currently, VF MAC address info is not updated when the MAC address is
-configured from VF, and it is not cleared when the VF is removed. This
-leads to stale or missing MAC information in the PF, which may cause
-incorrect state tracking or inconsistencies when VFs are hot-plugged
-or reassigned.
+The previous commit adds the MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 flag. Make
+sure it is correctly announced by the other peer when it has been
+received.
 
-Fix this by:
- - storing the VF MAC address in the PF when it is set from VF
- - clearing the stored VF MAC address when the VF is removed
+pm_nl_ctl will now display 'deny_join_id0:1' when monitoring the events,
+and when this flag was set by the other peer.
 
-This ensures that the PF always has correct VF MAC state.
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Fixes: cde29af9e68e ("octeon_ep: add PF-VF mailbox communication")
-Signed-off-by: Sathesh B Edara <sedara@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250916133207.21737-1-sedara@marvell.com
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-3-40171884ade8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/mptcp/pm_nl_ctl.c     |  7 +++++++
+ tools/testing/selftests/net/mptcp/userspace_pm.sh | 14 +++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
-index ebecdd29f3bd0..0867fab61b190 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
-@@ -196,6 +196,7 @@ static void octep_pfvf_get_mac_addr(struct octep_device *oct,  u32 vf_id,
- 			vf_id);
- 		return;
- 	}
-+	ether_addr_copy(oct->vf_info[vf_id].mac_addr, rsp->s_set_mac.mac_addr);
- 	rsp->s_set_mac.type = OCTEP_PFVF_MBOX_TYPE_RSP_ACK;
- }
+diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+index 994a556f46c15..93fea3442216c 100644
+--- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
++++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+@@ -188,6 +188,13 @@ static int capture_events(int fd, int event_group)
+ 					fprintf(stderr, ",error:%u", *(__u8 *)RTA_DATA(attrs));
+ 				else if (attrs->rta_type == MPTCP_ATTR_SERVER_SIDE)
+ 					fprintf(stderr, ",server_side:%u", *(__u8 *)RTA_DATA(attrs));
++				else if (attrs->rta_type == MPTCP_ATTR_FLAGS) {
++					__u16 flags = *(__u16 *)RTA_DATA(attrs);
++
++					/* only print when present, easier */
++					if (flags & MPTCP_PM_EV_FLAG_DENY_JOIN_ID0)
++						fprintf(stderr, ",deny_join_id0:1");
++				}
  
-@@ -205,6 +206,8 @@ static void octep_pfvf_dev_remove(struct octep_device *oct,  u32 vf_id,
- {
- 	int err;
+ 				attrs = RTA_NEXT(attrs, msg_len);
+ 			}
+diff --git a/tools/testing/selftests/net/mptcp/userspace_pm.sh b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+index 3651f73451cf8..cc682bf675b2b 100755
+--- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
++++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+@@ -173,6 +173,9 @@ make_connection()
+ 		is_v6="v4"
+ 	fi
  
-+	/* Reset VF-specific information maintained by the PF */
-+	memset(&oct->vf_info[vf_id], 0, sizeof(struct octep_pfvf_info));
- 	err = octep_ctrl_net_dev_remove(oct, vf_id);
- 	if (err) {
- 		rsp->s.type = OCTEP_PFVF_MBOX_TYPE_RSP_NACK;
++	# set this on the client side only: will not affect the rest
++	ip netns exec "$ns2" sysctl -q net.mptcp.allow_join_initial_addr_port=0
++
+ 	:>"$client_evts"
+ 	:>"$server_evts"
+ 
+@@ -195,23 +198,28 @@ make_connection()
+ 	local client_token
+ 	local client_port
+ 	local client_serverside
++	local client_nojoin
+ 	local server_token
+ 	local server_serverside
++	local server_nojoin
+ 
+ 	client_token=$(mptcp_lib_evts_get_info token "$client_evts")
+ 	client_port=$(mptcp_lib_evts_get_info sport "$client_evts")
+ 	client_serverside=$(mptcp_lib_evts_get_info server_side "$client_evts")
++	client_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$client_evts")
+ 	server_token=$(mptcp_lib_evts_get_info token "$server_evts")
+ 	server_serverside=$(mptcp_lib_evts_get_info server_side "$server_evts")
++	server_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$server_evts")
+ 
+ 	print_test "Established IP${is_v6} MPTCP Connection ns2 => ns1"
+-	if [ "$client_token" != "" ] && [ "$server_token" != "" ] && [ "$client_serverside" = 0 ] &&
+-		   [ "$server_serverside" = 1 ]
++	if [ "${client_token}" != "" ] && [ "${server_token}" != "" ] &&
++	   [ "${client_serverside}" = 0 ] && [ "${server_serverside}" = 1 ] &&
++	   [ "${client_nojoin:-0}" = 0 ] && [ "${server_nojoin:-0}" = 1 ]
+ 	then
+ 		test_pass
+ 		print_title "Connection info: ${client_addr}:${client_port} -> ${connect_addr}:${app_port}"
+ 	else
+-		test_fail "Expected tokens (c:${client_token} - s:${server_token}) and server (c:${client_serverside} - s:${server_serverside})"
++		test_fail "Expected tokens (c:${client_token} - s:${server_token}), server (c:${client_serverside} - s:${server_serverside}), nojoin (c:${client_nojoin} - s:${server_nojoin})"
+ 		mptcp_lib_result_print_all_tap
+ 		exit ${KSFT_FAIL}
+ 	fi
 -- 
 2.51.0
 
