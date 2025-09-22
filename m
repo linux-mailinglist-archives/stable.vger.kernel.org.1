@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-181232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D35B92F69
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43443B930F8
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17B52A82F9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3F2F2E0453
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCF230C36E;
-	Mon, 22 Sep 2025 19:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFE22773C2;
+	Mon, 22 Sep 2025 19:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rew6JsuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmN6SXUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8372F0C64;
-	Mon, 22 Sep 2025 19:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482251F91E3;
+	Mon, 22 Sep 2025 19:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570020; cv=none; b=orRzSZuASw10GIjHLWn2AULE3Oi4NE1cWl5cihEa9ifG3pSXMqZrcNQBq8nLzLl+mIQNPayrMiqJE/fVUEv/b0E7i7zpmpB8Z3Pzb7+gEEDjCS2Rg0kPccxcZGUNDyy5boXss6vNbdg3hKVk3hP4c0asyyzy0PGn/iueRzKfA/8=
+	t=1758570347; cv=none; b=ZOwLqxl88EdFvn2ilpu2wvP/6LhPD3kT/LIScmSnQvZtmlDz1IXuiDUHB2tAL/UmG8bMkI4OkPu/dYFMYV1gcb6IbvK0pUvR9y+BkFB0APqQ3WrSysFQHCDblCU5WNcp5or9ExCqLVScwxDIb7DJKDwXS6xqB5ZetqHagRGZlxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570020; c=relaxed/simple;
-	bh=go+4smwS+YvjUO+VLu9o2SF40HzW1Dfzh0/mf6eEQlQ=;
+	s=arc-20240116; t=1758570347; c=relaxed/simple;
+	bh=7NEpnA/f7cM1HUEQQFJJAIHWT0/v6Ec0BC+XeROY7K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkl6r2t06VXjiikJCgNppfHVnZ4SF7z1HL1G5nYqaB3YN9L5rAMkU5VAsjeaLIPm8SILGI6g7XkMyezW853etUCOud0heTJF4YMJb7AQ/oRS3cW80tHr52uGBUT2xhIo0obIq2apFIN4Gp5AksujbRjCwcroi+0ZYs1ydlhnYi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rew6JsuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97675C4CEF0;
-	Mon, 22 Sep 2025 19:40:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=avfNq/hJ/UyfSoDB4UMrhtLzNUw6RW4/Hjcx77WjqBeJ4yp5lFnToFvLRcoC/V93xir92WSF2mImhmUpISZZC0qK3t+vFrxtwcfFzsMQ9Ja1hz/1EeulnzhaZRVxBTVG5gkN2TXV+cjVT22TQQPxO26waxrZVbIPyH8yMp96zD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmN6SXUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B8CC4CEF0;
+	Mon, 22 Sep 2025 19:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570019;
-	bh=go+4smwS+YvjUO+VLu9o2SF40HzW1Dfzh0/mf6eEQlQ=;
+	s=korg; t=1758570347;
+	bh=7NEpnA/f7cM1HUEQQFJJAIHWT0/v6Ec0BC+XeROY7K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rew6JsuLStK8T8042f3m/8t+xcgII3TfFFWsJ56rUwwj1NpcTctDis3G7TlN75E/B
-	 5gd9s79A71jHPIkEviWyVPASQjmmxYrCCjaqYVl1kodUDlPOOrGx5yNrn2F0YaOto2
-	 QQLfDdltihGfVEWLBQhrZPDIEdE6RyK0TRmtft4U=
+	b=xmN6SXUfY6E82pBZo2YEFy3tb52RmFxFUkVqUJMdQMqqAIM7erN6yL8mvu07TC3kc
+	 Rtt6E2+rlLP8hpWROHyVL6AADBxmZbyByklNB4bDNTK4afQ2Uif+C4+TifUji6QrHj
+	 PjT/DMcbt/IYkpCud25r71/Fca0CMDlX0VdnaVTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	Qi Xi <xiqi2@huawei.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/105] drm: bridge: cdns-mhdp8546: Fix missing mutex unlock on error path
+	=?UTF-8?q?S=C3=A9bastien=20Szymanski?= <sebastien.szymanski@armadeus.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Calvin Owens <calvin@wbinvd.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.16 101/149] gpiolib: acpi: initialize acpi_gpio_info struct
 Date: Mon, 22 Sep 2025 21:30:01 +0200
-Message-ID: <20250922192410.936012222@linuxfoundation.org>
+Message-ID: <20250922192415.434516925@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Xi <xiqi2@huawei.com>
+From: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
 
-[ Upstream commit 288dac9fb6084330d968459c750c838fd06e10e6 ]
+commit 19c839a98c731169f06d32e7c9e00c78a0086ebe upstream.
 
-Add missing mutex unlock before returning from the error path in
-cdns_mhdp_atomic_enable().
+Since commit 7c010d463372 ("gpiolib: acpi: Make sure we fill struct
+acpi_gpio_info"), uninitialized acpi_gpio_info struct are passed to
+__acpi_find_gpio() and later in the call stack info->quirks is used in
+acpi_populate_gpio_lookup. This breaks the i2c_hid_cpi driver:
 
-Fixes: 935a92a1c400 ("drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Qi Xi <xiqi2@huawei.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250904034447.665427-1-xiqi2@huawei.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   58.122916] i2c_hid_acpi i2c-UNIW0001:00: HID over i2c has not been provided an Int IRQ
+[   58.123097] i2c_hid_acpi i2c-UNIW0001:00: probe with driver i2c_hid_acpi failed with error -22
+
+Fix this by initializing the acpi_gpio_info pass to __acpi_find_gpio()
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220388
+Fixes: 7c010d463372 ("gpiolib: acpi: Make sure we fill struct acpi_gpio_info")
+Signed-off-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+Tested-by: Hans de Goede <hansg@kernel.org>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-By: Calvin Owens <calvin@wbinvd.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib-acpi-core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-index 9ba2a667a1f3a..b18bdb2daddf8 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-@@ -2054,8 +2054,10 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
- 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
+--- a/drivers/gpio/gpiolib-acpi-core.c
++++ b/drivers/gpio/gpiolib-acpi-core.c
+@@ -942,7 +942,7 @@ struct gpio_desc *acpi_find_gpio(struct
+ {
+ 	struct acpi_device *adev = to_acpi_device_node(fwnode);
+ 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
+-	struct acpi_gpio_info info;
++	struct acpi_gpio_info info = {};
+ 	struct gpio_desc *desc;
  
- 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
--	if (!mhdp_state->current_mode)
--		return;
-+	if (!mhdp_state->current_mode) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
+ 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
+@@ -992,7 +992,7 @@ int acpi_dev_gpio_irq_wake_get_by(struct
+ 	int ret;
  
- 	drm_mode_set_name(mhdp_state->current_mode);
+ 	for (i = 0, idx = 0; idx <= index; i++) {
+-		struct acpi_gpio_info info;
++		struct acpi_gpio_info info = {};
+ 		struct gpio_desc *desc;
  
--- 
-2.51.0
-
+ 		/* Ignore -EPROBE_DEFER, it only matters if idx matches */
 
 
 
