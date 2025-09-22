@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-181171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D74EB92E82
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBF0B92CD1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F038174138
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65FED17FD15
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F682F0C52;
-	Mon, 22 Sep 2025 19:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30E717A2EA;
+	Mon, 22 Sep 2025 19:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxPYR2wa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zui917lR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2514727B320;
-	Mon, 22 Sep 2025 19:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607E3C8E6;
+	Mon, 22 Sep 2025 19:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569867; cv=none; b=NiyeZyly5A5qe3T54tG3yZj6jpXQtEB3dGbQ2KfVU2yZ3RCE7B3GA5dNqU++eXqjvedVCP82jTcIPgf1g9k1bIIFrvJUuvft/23vZwYCE4ZXMYKqNbNuYUwjbne/Lp5kE11WsHPtppdo3WS88AUAYbu6gld4rXF0oCcmPnoDoGw=
+	t=1758569544; cv=none; b=tWFiDWPlYRiou7ECkQmdNJGYHxUVonpPbNxNAaggQvdZWthiVlTf0d2pC9JIKJctfR0zQiP1z2GzsExDJzmTpEqzN96S2SD3m5cTMxtJ2w0CVdOZs00HGIomYtCjxNfyoNDZKbpfC4tsw18hz2CsII5bKhgaBsFjNMm27PfVAZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569867; c=relaxed/simple;
-	bh=5lEGyOczTHF3nZ6GJKGH0a8LiQ6OA1UMheTQdJJQ1f0=;
+	s=arc-20240116; t=1758569544; c=relaxed/simple;
+	bh=I9Qm24cn+DKRtgVN3i1lMgQ0Zi+OH2qtTKYIfKoEyn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Su+N+CFWz8lHoWD+GPiE/hP9TAnROlTcoKdkkxjnbcyXvPsqm98hCbI1SukE9Fdtr9HQFR4QJV6UJ0vpzRQsIaL6FK4Em9eQvJiOOUez5ZDx3brqMP/qCfFSe6HXHCWnM49+az20n1+HhD4wnwJUhJXnIMmA7XSvl/vSQCwlrMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxPYR2wa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1757C4CEF0;
-	Mon, 22 Sep 2025 19:37:46 +0000 (UTC)
+	 MIME-Version; b=C4zmwldgVnm5q2yWg6iuEtqo/NBJRct3u2HPtPEpC3XkfM3u+evTjDIn1J0pwG2RMSs3O8aRBQGaQhHCZ0K4IOtMgc02ApJ2Hv3Qu2pu5jsa9ILgeenIs8pRVXV8UKIlHhDRTcf6ETh/hI8FMaYJKRkJorph7YUJCYHeQR7vGbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zui917lR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92B8C4CEF0;
+	Mon, 22 Sep 2025 19:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569867;
-	bh=5lEGyOczTHF3nZ6GJKGH0a8LiQ6OA1UMheTQdJJQ1f0=;
+	s=korg; t=1758569544;
+	bh=I9Qm24cn+DKRtgVN3i1lMgQ0Zi+OH2qtTKYIfKoEyn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxPYR2wa1Vgx/Dyy829mpHzIGZY2vHu+pVVeZgVoiDPbjUmRFrBwmA6cp5m+9uBVQ
-	 YFTXt1leYuym85DvTdJu4+Ew2Op4Cc/OilLf7c7Abx/iuNATawQtBkVR2GS9lxqIdG
-	 fddacAJtNEBt8t7CDV9mL3bARh4rZrt8G84VGTJg=
+	b=Zui917lRx/Ez1gpapJrHxbd0sMnMmbRG4+7Daw5zhyZOE/hO+IBM7pK+efbC4+d8S
+	 B9y41w4x3/8H2YmOjdNzt5Eb9mOAeVvTXaSEVyiTEkH4XkV4YXKXOSEfZouiUqN92r
+	 b/C/q7LR2iPF3se/ujOEKOg7n0EjySXBllHq180Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 022/105] i40e: remove redundant memory barrier when cleaning Tx descs
+Subject: [PATCH 6.1 12/61] i40e: remove redundant memory barrier when cleaning Tx descs
 Date: Mon, 22 Sep 2025 21:29:05 +0200
-Message-ID: <20250922192409.489502882@linuxfoundation.org>
+Message-ID: <20250922192403.884638115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -100,10 +100,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index c006f716a3bdb..ca7517a68a2c3 100644
+index 3d83fccf742b1..2ede35ba3919b 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -947,9 +947,6 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
+@@ -949,9 +949,6 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
  		if (!eop_desc)
  			break;
  
