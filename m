@@ -1,230 +1,166 @@
-Return-Path: <stable+bounces-181410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F82B9369A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 23:59:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF966B936DE
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 00:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D11E87A3EE6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:57:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE80819079A7
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 22:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613222F5A23;
-	Mon, 22 Sep 2025 21:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68D52F657C;
+	Mon, 22 Sep 2025 22:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AkT9iD5y"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GpKsQtwj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D19726AEC
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 21:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BB52F0C78;
+	Mon, 22 Sep 2025 22:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758578357; cv=none; b=lfwdSwxK67Ww1xFWqTCmngsoGlnE7jBcKN+Auu717J0dVz+uyHzDEg4UbVve9kFPrbSruuxNPxskTtteql0mx1zoxH5vSXE4FKSHXhjxrfZWCMZUwGnNkK7io8CjdiHNVP0YrSmXmdRXH7u4ecu9u5SPeveyh/1UVkfWb5kifJw=
+	t=1758578824; cv=none; b=rhFijZeLxIrWeUqXfDUDWoLhizcqclPBE2Me5FfDj6mLa/BWAF22XMrLUPAcTwJDZH/WKSON3HqTEvPbSbavL9kCNIwulKR/UVXDmVNvGo470iC5Elizy4AylD1StzCiZzwsZ49WDjg8xGglo5aK2ySZ+KiMP7W/UgO/O1FhFw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758578357; c=relaxed/simple;
-	bh=8EAdYteEsZfi3L8LNoGQ5Mo9rWCKtDhbyQqf6B5Tt4c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u2X8ssUr+0FKJiLkZsfzwA1HrpaDa1qSLw/epNiYKgwlCPWWwU2Vr5fVFs87sRSAOsoUGpghypk3pnE4rVSU830WRXADag8pmeOvhy2/yAAf18LPaWkE6FOOvPrHWa1MqSqwXwnQsWloKnPUQXQEu7TU8NNy9q1zoR28VtM9sXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AkT9iD5y; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58MH6BKZ027997
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 21:59:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0LDmHGPzBvAlIgIdJc1sMUYY1nDOFFKwgh16pYuyb2I=; b=AkT9iD5yDkz2ePE9
-	hYrle13HGQ84SwGViegVrJ6NjaVVf9fJ3FyaBJbfL1X2x4RT/lgN52Ml6+WHRQyt
-	5YeTnbs3lnpqBjHSuHMcEBOCdK0mJFmXPHOs++OGR2rrJUeSAdNcPNlYQ0t/NqCs
-	eu469/Us5gX6j/GKWdY2LCTXlsio0Kdeorghcz8EFiqvI48bT8Z0OprjBhROMVKu
-	PzkXjw3Qqr/fyYTH4MMmuhHXAgkBXFl4A8WVyyhLa8B7CRRgrYU4UQLT00RuplP+
-	rVulvB0RwxUFSr0/FpwByc2FLc17qGncFQ2AjO1R6V4lOpZja55LzhuXaKs5DbuF
-	wr9qQw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49bajerrjq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 21:59:14 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-26985173d8eso78488225ad.1
-        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 14:59:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758578354; x=1759183154;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0LDmHGPzBvAlIgIdJc1sMUYY1nDOFFKwgh16pYuyb2I=;
-        b=Mn8iuiGsXCVTKRbU2oazkD1wkTRJoXhy3rsC2uBwbn4a2DfGDWuxDMZ+3adeFt+jAJ
-         j7OP7FMVnLsEKxguYr+pZClICgUmyWjm2ErRgkP7pT/FYwSgzOznLOmSpKLxOTKyNKoe
-         902UNUhUfu1pNUZlem98zsp6mQei5ZIXgOGT7KRyMrKDJTs62Cg51U9phE6GVoE301q1
-         xeCfhAtbdUPWieBnE/fasSwiUUc1zs5pQ8tAgyDO+DHbO88rCFEnoodb6GXC9MdbyZ3X
-         7KZYmCbUSVtdNtnSwBbj83pB3tqmPPgog1LN9FJv5lVUwK9h0aEt9tP3/NPNe16EG4Qt
-         uXQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVtQGvGe4sN52dF7UDPLHROibSjKX5wu3tqIPNFYX1cmmvu++Yzcrwyne4Q1d/aCtjlMolV/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxCI7keyav4eoyop++D59l55eE0eVA8c9JWURMs8QJjsuv+9xI
-	EqRMiSdCQYEWUnwglZo3dGHDCE8ZFl9GZVr12Mz6N1ViDCxke+5XY/f25GMH4DmbCyJ1/xK9WJX
-	FsN0yEpkmtUqUVCXkCmkE3hPkpLUJS2EyJCiBgLzqbBqIv/LzXgLqt8fWc9E=
-X-Gm-Gg: ASbGnctS0r31TleZ8H0ei/fK6g88GeG43JwckkW2S9Sl2mz9W6ccUPZ8IWX2C0Qn9aE
-	RNPD26kvfGo9PIwfbIYapprsi4ljQ15Ns1SnsJldK9tEYirBNE3l0zqzi+GvhgeVfGnEVl+wZB4
-	7UF9XpVp9TRt4Eja2j80Pvf7cIx5Y8QUIClZ/nPXvNlPojZQSjTeItlvYaWi71Q3vyDvkXJDwDx
-	a0v5OyWoWcY2x1hsFy01zUQVp4pBRQbNGySBDEL1CSNKHjMX7RRuFJ2Sc+n5XcOORI/uKSppmyd
-	4PGb82wv2H5n8VxQWOPTI88d+HQDC+dUu13HSHTipce9OB/jkOK2PoGPknMjw+wstTxxC19rxr0
-	KemvkgoKDFPgLBNQoT3FecklqeUlCMLzCTyN7
-X-Received: by 2002:a17:903:1547:b0:248:79d4:93be with SMTP id d9443c01a7336-27cc5624f64mr3800965ad.30.1758578353707;
-        Mon, 22 Sep 2025 14:59:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGGG6T7ySc8crxPcb7K8edEeVJNt96b5JVAn3AQ/h6MKUU8Y56um/AFywBRAM+AxXS7ufrcJg==
-X-Received: by 2002:a17:903:1547:b0:248:79d4:93be with SMTP id d9443c01a7336-27cc5624f64mr3800745ad.30.1758578353279;
-        Mon, 22 Sep 2025 14:59:13 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698016c08dsm141506235ad.51.2025.09.22.14.59.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Sep 2025 14:59:12 -0700 (PDT)
-Message-ID: <b2885d4b-dd11-44ef-816a-9eed99f7a219@oss.qualcomm.com>
-Date: Mon, 22 Sep 2025 14:59:11 -0700
+	s=arc-20240116; t=1758578824; c=relaxed/simple;
+	bh=hi+17J+o2mONkoE3CGSvOksR/o9zi2ueZLj6pvXsxTE=;
+	h=Date:To:From:Subject:Message-Id; b=RZqzJgbE4TsYBVkMr9RJlmAC2pecJ/MSGh9GG3GvPBoxhMy5ijHkO/KA6AZZi2MClmnz6ruyih0fuu6RCEV9gj/XSwBVIlrP99eAgmY4hiil+PNsQWE2CVlSkMPB1ZiBEfq7W/rtClI+dqR14IWKjeSovUgVt1mhDVdwmw5ebrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GpKsQtwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1342C4CEF0;
+	Mon, 22 Sep 2025 22:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758578821;
+	bh=hi+17J+o2mONkoE3CGSvOksR/o9zi2ueZLj6pvXsxTE=;
+	h=Date:To:From:Subject:From;
+	b=GpKsQtwjwPMSEuatt0SNybb/nU3UWtyhLXNpRIOdeJaTLvnFKZnyqs/PRSiq5iQI+
+	 WuFAJYmPxlcR8IHMM9AshehB4bJnMuJqxQqoQ/5IIvuU8UETEcOGiGDoxgvXVSYdXz
+	 R2styw1Dnc8fiIKuAvoCAH+WllhhkxW3Dr26BheQ=
+Date: Mon, 22 Sep 2025 15:07:00 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,usama.anjum@collabora.com,tujinjiang@huawei.com,surenb@google.com,superman.xpt@gmail.com,stable@vger.kernel.org,sfr@canb.auug.org.au,ryan.roberts@arm.com,mirq-linux@rere.qmqm.pl,lorenzo.stoakes@oracle.com,david@redhat.com,broonie@kernel.org,baolin.wang@linux.alibaba.com,avagin@gmail.com,acsjakub@amazon.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fs-proc-task_mmu-check-p-vec_buf-for-null.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250922220700.E1342C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] wifi: ath11k: HAL SRNG: don't deinitialize and
- re-initialize again
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: kernel@collabora.com, stable@vger.kernel.org,
-        Muna Sinada <quic_msinada@quicinc.com>,
-        Anilkumar Kolli <quic_akolli@quicinc.com>,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Julia Lawall <julia.lawall@lip6.fr>,
-        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-        Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        Sven Eckelmann <sven@narfation.org>
-References: <20250722053121.1145001-1-usama.anjum@collabora.com>
- <1598d25d-e254-410e-ac5c-66d5450fd686@oss.qualcomm.com>
- <ae7a08cb-af73-4a27-aad4-c852be5f77aa@collabora.com>
- <ab5af5b9-d5a7-434c-938d-3f9aac388542@oss.qualcomm.com>
- <86c465a3-f9a1-4a63-9e21-7529a5634301@collabora.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <86c465a3-f9a1-4a63-9e21-7529a5634301@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: m2DXG4PeMcch8smU5jJYA4CapTGybcgg
-X-Authority-Analysis: v=2.4 cv=fY2ty1QF c=1 sm=1 tr=0 ts=68d1c6b2 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=e70TP3dOR9hTogukJ0528Q==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=QX4gbG5DAAAA:8 a=RL02kzwgQxJZJf316toA:9 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22 a=AbAUZ8qAyYyZVLSsDulk:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIyMDE2OCBTYWx0ZWRfX9EdAa48XT1JG
- qC78JRDRQiv5VoHg3bt9L3uYgyPx1tgahmZd5ccw5c1v4SOI9lwe6XExqf6+9kiUk9X9lygOlgS
- Ycah1MLgEgnGukWTmSNzWrC2Dbv/OsBVJC8/HFjeCzTnM7HHb7E4EdRCA1Ngo5evrbd/7UnCtBp
- WfSfliBJZvAiCPy4xXZxuvQWcz88DkUAZ1gnKh456ra6T+F1xi/RP2hque2RNtN/NyhJ/HWlM6f
- ErBTfDDc+M4IM8mDp/iCttS6nl8wwqFEIF7ucnjRNtJGTUmsUDQGphTw3oX0JdB9CvAee+6C+5c
- QtN2h1Zwlk89mvjbGZUnhNIGHBoMQen2hs6aojULD9lWBS/dsqEu38C0ghsy6WDh8AwC4E28hyd
- 4PuH86w7
-X-Proofpoint-ORIG-GUID: m2DXG4PeMcch8smU5jJYA4CapTGybcgg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-22_04,2025-09-22_05,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 spamscore=0 adultscore=0 impostorscore=0
- phishscore=0 bulkscore=0 priorityscore=1501 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509220168
 
-On 7/22/2025 8:05 AM, Muhammad Usama Anjum wrote:
-> On 7/22/25 7:07 PM, Jeff Johnson wrote:
->> On 7/22/2025 4:23 AM, Muhammad Usama Anjum wrote:
->>> Hi Kalle,
->>
->> Kalle is no longer a maintainer -- I am currently the only ath11k maintainer.
-> Sorry, I missed it.
-> 
->>
->>>
->>> On 7/22/25 2:47 PM, Baochen Qiang wrote:
->>>>
->>>>
->>>> On 7/22/2025 1:31 PM, Muhammad Usama Anjum wrote:
->>>>> Don't deinitialize and reinitialize the HAL helpers. The dma memory is
->>>>> deallocated and there is high possibility that we'll not be able to get
->>>>> the same memory allocated from dma when there is high memory pressure.
->>>>>
->>>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
->>>>>
->>>>> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
->>>>> Cc: stable@vger.kernel.org
->>>>> Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
->>>>> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
->>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->>>>> ---
->>>>> Changes since v1:
->>>>> - Cc stable and fix tested on tag
->>>>> - Clear essential fields as they may have stale data
->>>>>
->>>>> Changes since v2:
->>>>> - Add comment and reviewed by tag
->>>>> ---
->>>>>  drivers/net/wireless/ath/ath11k/core.c |  6 +-----
->>>>>  drivers/net/wireless/ath/ath11k/hal.c  | 16 ++++++++++++++++
->>>>>  drivers/net/wireless/ath/ath11k/hal.h  |  1 +
->>>>>  3 files changed, 18 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
->>>>> index 4488e4cdc5e9e..34b27711ed00f 100644
->>>>> --- a/drivers/net/wireless/ath/ath11k/core.c
->>>>> +++ b/drivers/net/wireless/ath/ath11k/core.c
->>>>> @@ -2213,14 +2213,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
->>>>>  	mutex_unlock(&ab->core_lock);
->>>>>  
->>>>>  	ath11k_dp_free(ab);
->>>>> -	ath11k_hal_srng_deinit(ab);
->>>>> +	ath11k_hal_srng_clear(ab);
->>>>>  
->>>>>  	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
->>>>>  
->>>>> -	ret = ath11k_hal_srng_init(ab);
->>>>> -	if (ret)
->>>>> -		return ret;
->>>>> -
->>>>>  	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
->>>>>  
->>>>>  	ret = ath11k_core_qmi_firmware_ready(ab);
->>>>> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
->>>>> index b32de563d453a..e8ebf963f195c 100644
->>>>> --- a/drivers/net/wireless/ath/ath11k/hal.c
->>>>> +++ b/drivers/net/wireless/ath/ath11k/hal.c
->>>>> @@ -1359,6 +1359,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
->>>>>  }
->>>>>  EXPORT_SYMBOL(ath11k_hal_srng_deinit);
->>>>>  
->>>>> +void ath11k_hal_srng_clear(struct ath11k_base *ab)
->>>>> +{
->>>>> +	/* No need to memset rdp and wrp memory since each individual
->>>>> +	 * segment would get cleared ath11k_hal_srng_src_hw_init() and
->>>>
->>>> nit: s/cleared /cleared in/
->>> Please can you make this change while applying the patch?
->>
->> I can make this change when I pull the patch into the pending branch.
->> I'd like to see a public Reviewed-by before doing so.
->>
->> Also note that, except for anything critical, I'm not taking any patches into
->> ath-next until the upcoming v6.17 merge window closes and all changes made to
->> Linus' tree have been backmerged via net-next => wireless-next => ath-next.
-> Thank you for mentioning. I didn't know the workflow.
-> 
-> No problem. There is no hurry.
 
-I've modified this comment in my 'pending' branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=9de41dd4c35fca6ebfe300b3799507dcafb9005e
+The patch titled
+     Subject: fs/proc/task_mmu: check p->vec_buf for NULL
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-proc-task_mmu-check-p-vec_buf-for-null.patch
 
-I'll promote to ath-next before my pull request to wireless for the v6.18
-merge window.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-check-p-vec_buf-for-null.patch
 
-/jeff
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jakub Acs <acsjakub@amazon.de>
+Subject: fs/proc/task_mmu: check p->vec_buf for NULL
+Date: Mon, 22 Sep 2025 08:22:05 +0000
+
+When the PAGEMAP_SCAN ioctl is invoked with vec_len = 0 reaches
+pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
+
+[   44.936808] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+[   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+[   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
+
+<snip registers, unreliable trace>
+
+[   44.946828] Call Trace:
+[   44.947030]  <TASK>
+[   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
+[   44.952593]  walk_pmd_range.isra.0+0x302/0x910
+[   44.954069]  walk_pud_range.isra.0+0x419/0x790
+[   44.954427]  walk_p4d_range+0x41e/0x620
+[   44.954743]  walk_pgd_range+0x31e/0x630
+[   44.955057]  __walk_page_range+0x160/0x670
+[   44.956883]  walk_page_range_mm+0x408/0x980
+[   44.958677]  walk_page_range+0x66/0x90
+[   44.958984]  do_pagemap_scan+0x28d/0x9c0
+[   44.961833]  do_pagemap_cmd+0x59/0x80
+[   44.962484]  __x64_sys_ioctl+0x18d/0x210
+[   44.962804]  do_syscall_64+0x5b/0x290
+[   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+vec_len = 0 in pagemap_scan_init_bounce_buffer() means no buffers are
+allocated and p->vec_buf remains set to NULL.
+
+This breaks an assumption made later in pagemap_scan_backout_range(), that
+page_region is always allocated for p->vec_buf_index.
+
+Fix it by explicitly checking p->vec_buf for NULL before dereferencing.
+
+Other sites that might run into same deref-issue are already (directly or
+transitively) protected by checking p->vec_buf.
+
+Note:
+From PAGEMAP_SCAN man page, it seems vec_len = 0 is valid when no output
+is requested and it's only the side effects caller is interested in,
+hence it passes check in pagemap_scan_get_args().
+
+This issue was found by syzkaller.
+
+Link: https://lkml.kernel.org/r/20250922082206.6889-1-acsjakub@amazon.de
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Penglei Jiang <superman.xpt@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/task_mmu.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-check-p-vec_buf-for-null
++++ a/fs/proc/task_mmu.c
+@@ -2417,6 +2417,9 @@ static void pagemap_scan_backout_range(s
+ {
+ 	struct page_region *cur_buf = &p->vec_buf[p->vec_buf_index];
+ 
++	if (!p->vec_buf)
++		return;
++
+ 	if (cur_buf->start != addr)
+ 		cur_buf->end = addr;
+ 	else
+_
+
+Patches currently in -mm which might be from acsjakub@amazon.de are
+
+fs-proc-task_mmu-check-p-vec_buf-for-null.patch
+
 
