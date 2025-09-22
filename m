@@ -1,55 +1,160 @@
-Return-Path: <stable+bounces-180877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75653B8EE8A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:11:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5FFB8EFB2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 07:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5046F7AA9B5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 04:09:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AA893BDFF1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 05:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2E02D9EFA;
-	Mon, 22 Sep 2025 04:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333FC2236E9;
+	Mon, 22 Sep 2025 05:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LA1B5JnG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcNVWZn6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9AB6BB5B;
-	Mon, 22 Sep 2025 04:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70552C148;
+	Mon, 22 Sep 2025 05:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758514277; cv=none; b=nDwolKWcl6/Ra4F26KCGzsJklQEHj96eOkqr5a0+2NvgEK9wmZyEX0AWvOvCLG4Eydr52aON8O7nGQpVFnN3CzyLl7wWAnDXwMeiOM2mAvExeH0M0gJXvOufr5iBg2SA22hWzgQsp64E0Du2rnIuVILpj6QMbw5euCWSOvoQ5TE=
+	t=1758517333; cv=none; b=WBECRCx1R8F7kTNTcagnzxArnF43MW479u8HGGAMhlZvlB/VjgsqF2ErA6pgUWstKhBs7OqMnqvO6tDR8Zjr/anfAd+C4HygXS9ZnJSXP1zkSn8SuZVmOY1m0qawGdyoLE0DPNl78xR/3St2OGg3xOEO3aqQ8H/w7CORuBTSuXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758514277; c=relaxed/simple;
-	bh=qLe5+D3p/KCHuEXmJDeqOmQHa8PWtS/4MQOlxPYDX7E=;
+	s=arc-20240116; t=1758517333; c=relaxed/simple;
+	bh=/nk8xPLOsGXuSw5wS41Jy4q570vGloBiPOCZp2/irX0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iUsbag6F18MUgMQsaVindSnbweC9ylZF+r+LpsGrHLDe+ytOBJ2eZ2YQIgg7ORDEpOC5bUamSnuwBzhHpcTtQiuPQREtRPXMu2oTqgyF/NYGVfg2qxBLQshecnqn4mq0awDVz08HjAn0xQpxcRfPa1Ilm0oTcLyAhztYgvG7kb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LA1B5JnG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EED2C4CEF5;
-	Mon, 22 Sep 2025 04:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758514276;
-	bh=qLe5+D3p/KCHuEXmJDeqOmQHa8PWtS/4MQOlxPYDX7E=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=WWoTP1eV0IW5JcNDQIZ3a0JzZCn0kPAtsTpcGxzybql9nw2ENzifIuqgGz2ODAmDzW+iz+kjm83zZHvvV/iuSWlKt/bpuTlt3TA0Ex9esZ0dtq15QIiwr7kRfTCrBCfFZHOVvQJ6dSesO4iJruzIc5OKsPjhYFBO5CKYivzF2mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcNVWZn6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A858C4CEF5;
+	Mon, 22 Sep 2025 05:02:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758517333;
+	bh=/nk8xPLOsGXuSw5wS41Jy4q570vGloBiPOCZp2/irX0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LA1B5JnGwrN9VzNVeM/dbIS00PgdcxFS4733F2v2T9YlH3M5yujhhvRNDpVcR4vtz
-	 yKbWstSh5+BAbFl2n4jD2hTE8bmJaYVdU7LRWUOnrgfFEmaIpsE1e6RI4gfTjGaEsc
-	 85VFdX7B2MIYH4SYEs0Ivqwo+TO7+n+dR3Vl5kHTlMLcTGnaJ2EbbWAj5rw2NLFKpu
-	 6r9EQIChNAGv1G7HYfGXHB53zhT6apKxF1sdDqWm0sWwBTQ3uqGB2up4ntxnaBcWDi
-	 kA2g7nHKA4D5oBZSNt1ROCBEnJc5QVbhuoT5Xre+fv8cuA34uaqpAS6L1SwCv3vMae
-	 WT9ve0Qz92AYg==
-Date: Mon, 22 Sep 2025 09:41:10 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Jens Wiklander <jens.wiklander@linaro.org>
-Cc: linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-	Jerome Forissier <jerome.forissier@linaro.org>,
-	stable@vger.kernel.org, Masami Ichikawa <masami256@gmail.com>
-Subject: Re: [PATCH] tee: fix register_shm_helper()
-Message-ID: <aNDMXvTriEiSLwPb@sumit-X1>
-References: <20250919124217.2934718-1-jens.wiklander@linaro.org>
+	b=BcNVWZn6zT4Gv/IUZ2C0NZn/XQ5pAMMpsZzcS58NBPYxD2oFH/k4xQ1OcYygH2JDO
+	 qM8XphYZH6pOzc+c2uakvnfuiVmB28vwfNolajwWxIrag0Gc1iZ0LiKuoKaX4EXv7U
+	 h1tGLKcFUdBrn8iKhoSlB6ijAzBdHBAHMrirLbcw=
+Date: Mon, 22 Sep 2025 07:02:08 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Farber, Eliav" <farbere@amazon.com>
+Cc: "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"jdike@addtoit.com" <jdike@addtoit.com>,
+	"richard@nod.at" <richard@nod.at>,
+	"anton.ivanov@cambridgegreys.com" <anton.ivanov@cambridgegreys.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"qiuxu.zhuo@intel.com" <qiuxu.zhuo@intel.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"rric@kernel.org" <rric@kernel.org>,
+	"harry.wentland@amd.com" <harry.wentland@amd.com>,
+	"sunpeng.li@amd.com" <sunpeng.li@amd.com>,
+	"alexander.deucher@amd.com" <alexander.deucher@amd.com>,
+	"christian.koenig@amd.com" <christian.koenig@amd.com>,
+	"airlied@linux.ie" <airlied@linux.ie>,
+	"daniel@ffwll.ch" <daniel@ffwll.ch>,
+	"evan.quan@amd.com" <evan.quan@amd.com>,
+	"james.qian.wang@arm.com" <james.qian.wang@arm.com>,
+	"liviu.dudau@arm.com" <liviu.dudau@arm.com>,
+	"mihail.atanassov@arm.com" <mihail.atanassov@arm.com>,
+	"brian.starkey@arm.com" <brian.starkey@arm.com>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>,
+	"tzimmermann@suse.de" <tzimmermann@suse.de>,
+	"robdclark@gmail.com" <robdclark@gmail.com>,
+	"sean@poorly.run" <sean@poorly.run>,
+	"jdelvare@suse.com" <jdelvare@suse.com>,
+	"linux@roeck-us.net" <linux@roeck-us.net>,
+	"fery@cypress.com" <fery@cypress.com>,
+	"dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+	"agk@redhat.com" <agk@redhat.com>,
+	"snitzer@redhat.com" <snitzer@redhat.com>,
+	"dm-devel@redhat.com" <dm-devel@redhat.com>,
+	"rajur@chelsio.com" <rajur@chelsio.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"peppe.cavallaro@st.com" <peppe.cavallaro@st.com>,
+	"alexandre.torgue@st.com" <alexandre.torgue@st.com>,
+	"joabreu@synopsys.com" <joabreu@synopsys.com>,
+	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+	"malattia@linux.it" <malattia@linux.it>,
+	"hdegoede@redhat.com" <hdegoede@redhat.com>,
+	"mgross@linux.intel.com" <mgross@linux.intel.com>,
+	"intel-linux-scu@intel.com" <intel-linux-scu@intel.com>,
+	"artur.paszkiewicz@intel.com" <artur.paszkiewicz@intel.com>,
+	"jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
+	"clm@fb.com" <clm@fb.com>,
+	"josef@toxicpanda.com" <josef@toxicpanda.com>,
+	"dsterba@suse.com" <dsterba@suse.com>,
+	"jack@suse.com" <jack@suse.com>, "tytso@mit.edu" <tytso@mit.edu>,
+	"adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>,
+	"dushistov@mail.ru" <dushistov@mail.ru>,
+	"luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>,
+	"pmladek@suse.com" <pmladek@suse.com>,
+	"sergey.senozhatsky@gmail.com" <sergey.senozhatsky@gmail.com>,
+	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+	"linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
+	"minchan@kernel.org" <minchan@kernel.org>,
+	"ngupta@vflare.org" <ngupta@vflare.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"kuznet@ms2.inr.ac.ru" <kuznet@ms2.inr.ac.ru>,
+	"yoshfuji@linux-ipv6.org" <yoshfuji@linux-ipv6.org>,
+	"pablo@netfilter.org" <pablo@netfilter.org>,
+	"kadlec@netfilter.org" <kadlec@netfilter.org>,
+	"fw@strlen.de" <fw@strlen.de>,
+	"jmaloy@redhat.com" <jmaloy@redhat.com>,
+	"ying.xue@windriver.com" <ying.xue@windriver.com>,
+	"willy@infradead.org" <willy@infradead.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"ruanjinjie@huawei.com" <ruanjinjie@huawei.com>,
+	"David.Laight@aculab.com" <David.Laight@aculab.com>,
+	"herve.codina@bootlin.com" <herve.codina@bootlin.com>,
+	"Jason@zx2c4.com" <Jason@zx2c4.com>,
+	"bvanassche@acm.org" <bvanassche@acm.org>,
+	"keescook@chromium.org" <keescook@chromium.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+	"freedreno@lists.freedesktop.org" <freedreno@lists.freedesktop.org>,
+	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
+	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+	"coreteam@netfilter.org" <coreteam@netfilter.org>,
+	"tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"Chocron, Jonathan" <jonnyc@amazon.com>
+Subject: Re: [PATCH 00/27 5.10.y] Backport minmax.h updates from v6.17-rc6
+Message-ID: <2025092203-untreated-sloppily-23b5@gregkh>
+References: <20250919101727.16152-1-farbere@amazon.com>
+ <2025092136-unelected-skirt-d91d@gregkh>
+ <4f497306c58240a88c0bb001786c3ad2@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,75 +163,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250919124217.2934718-1-jens.wiklander@linaro.org>
+In-Reply-To: <4f497306c58240a88c0bb001786c3ad2@amazon.com>
 
-On Fri, Sep 19, 2025 at 02:40:16PM +0200, Jens Wiklander wrote:
-> In register_shm_helper(), fix incorrect error handling for a call to
-> iov_iter_extract_pages(). A case is missing for when
-> iov_iter_extract_pages() only got some pages and return a number larger
-> than 0, but not the requested amount.
+On Sun, Sep 21, 2025 at 09:37:02PM +0000, Farber, Eliav wrote:
+> > On Fri, Sep 19, 2025 at 10:17:00AM +0000, Eliav Farber wrote:
+> > > This series includes a total of 27 patches, to align minmax.h of
+> > > v5.15.y with v6.17-rc6.
+> > >
+> > > The set consists of 24 commits that directly update minmax.h:
+> > > 1) 92d23c6e9415 ("overflow, tracing: Define the is_signed_type() macro
+> > >    once")
+> >
+> > But this isn't in 5.15.y, so how is this syncing things up?
+> >
+> > I'm all for this, but I got confused here, at the first commit :)
 > 
-> This fixes a possible NULL pointer dereference following a bad input from
-> ioctl(TEE_IOC_SHM_REGISTER) where parts of the buffer isn't mapped.
+> It's a typo.
+> It should be 5.10.y and not 5.15.y.
 > 
-> Cc: stable@vger.kernel.org
-> Reported-by: Masami Ichikawa <masami256@gmail.com>
-> Closes: https://lore.kernel.org/op-tee/CACOXgS-Bo2W72Nj1_44c7bntyNYOavnTjJAvUbEiQfq=u9W+-g@mail.gmail.com/
-> Fixes: 7bdee4157591 ("tee: Use iov_iter to better support shared buffer registration")
-> Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
-> ---
->  drivers/tee/tee_shm.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+> > Some of these are also only in newer kernels, which, as you know, is
+> > generally a bad thing (i.e. I can't take patches only for older
+> > kernels.)
+> >
+> > I want these changes, as they are great, but can you perhaps provide
+> > patch series for newer kernels first so that I can then take these?
 > 
-> diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
-> index daf6e5cfd59a..6ed7d030f4ed 100644
-> --- a/drivers/tee/tee_shm.c
-> +++ b/drivers/tee/tee_shm.c
-> @@ -316,7 +316,16 @@ register_shm_helper(struct tee_context *ctx, struct iov_iter *iter, u32 flags,
->  
->  	len = iov_iter_extract_pages(iter, &shm->pages, LONG_MAX, num_pages, 0,
->  				     &off);
-> -	if (unlikely(len <= 0)) {
-> +	if (DIV_ROUND_UP(len + off, PAGE_SIZE) != num_pages) {
-> +		if (len > 0) {
-> +			/*
-> +			 * If we only got a few pages, update to release
-> +			 * the correct amount below.
-> +			 */
-> +			shm->num_pages = len / PAGE_SIZE;
-> +			ret = ERR_PTR(-ENOMEM);
-> +			goto err_put_shm_pages;
-> +		}
->  		ret = len ? ERR_PTR(len) : ERR_PTR(-ENOMEM);
->  		goto err_free_shm_pages;
->  	}
+> So you'd first like first to align 6.16 with 6.17, then 6.15 with 6.16,
+> then 6.12 with 6.15, then 6.6 with 6.12, and so on until we eventually
+> align 5.10 and even 5.4?
 
-Rather than operating directly on "len" without checking for error code
-first doesn't seems appropriate to me. How about following diff instead?
+Yes please!
 
-diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
-index daf6e5cfd59a..cb52bc51943e 100644
---- a/drivers/tee/tee_shm.c
-+++ b/drivers/tee/tee_shm.c
-@@ -319,6 +319,14 @@ register_shm_helper(struct tee_context *ctx, struct iov_iter *iter, u32 flags,
-        if (unlikely(len <= 0)) {
-                ret = len ? ERR_PTR(len) : ERR_PTR(-ENOMEM);
-                goto err_free_shm_pages;
-+       } else if (DIV_ROUND_UP(len + off, PAGE_SIZE) != num_pages) {
-+               /*
-+                * If we only got a few pages, update to release the correct
-+                * amount below.
-+                */
-+               shm->num_pages = len / PAGE_SIZE;
-+               ret = ERR_PTR(-ENOMEM);
-+               goto err_put_shm_pages;
-        }
- 
-        /*
-
--Sumit
-
-> -- 
-> 2.43.0
-> 
 
