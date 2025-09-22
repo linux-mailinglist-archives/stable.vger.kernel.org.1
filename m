@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A84B92DC4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D2FB92D2B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE405189E021
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 05D1B4E293C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D33E2DF714;
-	Mon, 22 Sep 2025 19:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439112F0670;
+	Mon, 22 Sep 2025 19:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YheG9rWq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsRcJQ2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B27F262D14;
-	Mon, 22 Sep 2025 19:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010A81FDA89;
+	Mon, 22 Sep 2025 19:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569725; cv=none; b=Q9/ssgsyGmEO1D3nvmlFWU8UdEi52SmwyQ6z5zURMlCGxWV/RTUpncMUri8ZS0NgRq+3Me1WNwCdRnSxznDtx+Xmd4NZnohA0GgLlK0ohifY3JHg1I1fjQj7Odyp7DK9EniiAG+LYAgb+DZdVbS//mv0/Sd5WP217KqxxxhDpa0=
+	t=1758569614; cv=none; b=RpdpFJGIFP54NI3kiOvSVwxVw+Q0Ae93Zu/OOIpAHMjxCtFzfw+mXDuOpQuhD8Y5KrGmb/+0PuOcTWJ4fw28iSAhPDpljTlBg6wD5H4Ow7km8b6nAa9vaubVlaF0gOrVBPEsBDYVyZ+6sPaxUVFpy0GT7WEQmwnQtpDq8Yxe1YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569725; c=relaxed/simple;
-	bh=v1Mqw8l3VBLwfwjyjaCq/SrAGcvZAUcfD7tKX0aDPmw=;
+	s=arc-20240116; t=1758569614; c=relaxed/simple;
+	bh=zQUl31cL3Xim+X1hMIRJ/Jb2SftckTyEOVnYpe/RoZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXnZxEYlOe4ttuT/JpTwIc90WIgIUPpm+qHR3eVQgscgEdeUQCrqJux7mA5+aZmihCMP+8d88s/7brvyYdp1KkQsTbCtfgAUWGQYUINgy/kggHyEknOuydCBmDik/72ZN6lrCblvCQHP/U7htHS98XKnbcqsxk34xy4Hsuk6faA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YheG9rWq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CE1C4CEF0;
-	Mon, 22 Sep 2025 19:35:24 +0000 (UTC)
+	 MIME-Version; b=m072yDc8uW69X26vt9u+bjzJ56iMz1zs1O03DRRjhnF2tL0Kx4YRzglAiu0Z4ZyuhS0LK9Ig8rlK7U1ybJPfG7mFkB6PWZbIxPro041ygvJoGoHfBNnuItx4dTHun/hbJrLWJZM2ABCe2cAAfyGBoEgGWt70HLZqSuAhm8IkkzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsRcJQ2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C717C4CEF0;
+	Mon, 22 Sep 2025 19:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569725;
-	bh=v1Mqw8l3VBLwfwjyjaCq/SrAGcvZAUcfD7tKX0aDPmw=;
+	s=korg; t=1758569613;
+	bh=zQUl31cL3Xim+X1hMIRJ/Jb2SftckTyEOVnYpe/RoZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YheG9rWqo0s6vdaBEEC6t7Z9Kv2aEmaAS525xJyslr2nOLC0cUButqb67lAPpa5NN
-	 rA1wwPLGvvrOr5RugyxgVvRl/S6jAOX3PHqrT4mnue/TRcn4SiS8OX3dOjec5RxU7C
-	 3SBaMqgoM9oMDA3lgEAbXwodHXTwnz+QrFYz40X0=
+	b=dsRcJQ2f0QyDi5n2oKlHLLo5a+Oz8jJVwA5hjF5z2UgDv7TZGo05dy4Y9h6L4un4j
+	 VgSI1PQvZUB7Xy7u/m/s3WhBTXSPzj+X41kxtb3ob2BiGdyb/t71/lv/H4FOOPfT5W
+	 5P/Xs/OT2J1ftLZ2UXYyknWN2yIImCqGPf9Y3QCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 33/70] LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled
+	Colin Ian King <colin.i.king@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 40/61] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
 Date: Mon, 22 Sep 2025 21:29:33 +0200
-Message-ID: <20250922192405.490888043@linuxfoundation.org>
+Message-ID: <20250922192404.675553725@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit a9d13433fe17be0e867e51e71a1acd2731fbef8d upstream.
+[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
 
-ARCH_STRICT_ALIGN is used for hardware without UAL, now it only control
-the -mstrict-align flag. However, ACPI structures are packed by default
-so will cause unaligned accesses.
+The dev_err message is reporting an error about capture streams however
+it is using the incorrect variable num_playback instead of num_capture.
+Fix this by using the correct variable num_capture.
 
-To avoid this, define ACPI_MISALIGNMENT_NOT_SUPPORTED in asm/acenv.h to
-align ACPI structures if ARCH_STRICT_ALIGN enabled.
-
-Cc: stable@vger.kernel.org
-Reported-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Suggested-by: Xi Ruoyao <xry111@xry111.site>
-Suggested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/acenv.h |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ sound/soc/sof/intel/hda-stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/include/asm/acenv.h
-+++ b/arch/loongarch/include/asm/acenv.h
-@@ -10,9 +10,8 @@
- #ifndef _ASM_LOONGARCH_ACENV_H
- #define _ASM_LOONGARCH_ACENV_H
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index be60e7785da94..fafaf9a8e6c44 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -837,7 +837,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
  
--/*
-- * This header is required by ACPI core, but we have nothing to fill in
-- * right now. Will be updated later when needed.
-- */
-+#ifdef CONFIG_ARCH_STRICT_ALIGN
-+#define ACPI_MISALIGNMENT_NOT_SUPPORTED
-+#endif /* CONFIG_ARCH_STRICT_ALIGN */
+ 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
+ 		dev_err(sdev->dev, "error: too many capture streams %d\n",
+-			num_playback);
++			num_capture);
+ 		return -EINVAL;
+ 	}
  
- #endif /* _ASM_LOONGARCH_ACENV_H */
+-- 
+2.51.0
+
 
 
 
