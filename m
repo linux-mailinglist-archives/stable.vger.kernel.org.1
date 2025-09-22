@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34D0B92DA0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657BDB92EC3
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5482118898D7
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A03152A78AE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4D62F0690;
-	Mon, 22 Sep 2025 19:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B49E2F0C78;
+	Mon, 22 Sep 2025 19:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ih/B/pqR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyDBcy6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3A127B320;
-	Mon, 22 Sep 2025 19:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC590285C92;
+	Mon, 22 Sep 2025 19:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569696; cv=none; b=usS7Irx1qOuweqNzHpt4AnbV9bdwmUQvFHVsn+j1kY/4XUCHzahnAnuolO8YhysyJBxbPBXy33q5EooKRVSgI/fjqQBL39rKaWVv9deGxIdGu2xmU2IYbVtWDPXhAnDFs8PBNjDrxCwM6aYm2hklDqHTPr7/bUg7HiIhkOSjMqY=
+	t=1758569911; cv=none; b=jWlTRXUWOK+7QmqUlTYVKTv3BahFJlVRvevjGdu2WF70botZ2lfWsfhslTt6oPaoQySHCBcO8YHaiNDcYVvd8HgsqOqdKoJn8Ev7dF9+7WqIF2Wug0g3Mh23XnJAjqYusvT7CV4zmHmULGMI6iI4xtyb7nIlhIjQa9N7yDwUgd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569696; c=relaxed/simple;
-	bh=Wk34eKU/tJ2WER10WP8WvyF7vYUtBn6fOC74uwxmg3A=;
+	s=arc-20240116; t=1758569911; c=relaxed/simple;
+	bh=mT49cnbSicRNBcTPDgfR8n/mx1ziYtnXDbygEzUwCaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTIdRPHIbEi19betbLyvX0dVfcLyMK7fASW6P0o2iIyypGflEyTB3BHcUfV+VxoZlFCaSZiifHpGyrMixOC05TmhZQT23infpxQB6yK4VChY4Wr0PitwlCr4RZaf1lfyP/upA7dWDwvh7Scb4Ow851VQR0RQZYgrEU9JTVRcgYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ih/B/pqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8859BC4CEF0;
-	Mon, 22 Sep 2025 19:34:55 +0000 (UTC)
+	 MIME-Version; b=oDNfJ7FbFuQ1ZkVUC0UgcdGbwX2ViprIEiXoXLt+fSJn8TrFaU7B7JYZLG8LP+6ZTsZ9KIRL/as2p8vVsoWGA9jCqqpZMeRu8LGUG2DpLQUF8yyHT0qng6rZtgH4vK0WOpMLRaOmTXpr7ZVASgCAccst5fdhaCeF1M/YS59AJfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyDBcy6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649ACC4CEF0;
+	Mon, 22 Sep 2025 19:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569695;
-	bh=Wk34eKU/tJ2WER10WP8WvyF7vYUtBn6fOC74uwxmg3A=;
+	s=korg; t=1758569911;
+	bh=mT49cnbSicRNBcTPDgfR8n/mx1ziYtnXDbygEzUwCaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ih/B/pqRu2bTiqQchO/mssRSSd3sl6PyEHIMe2PaDatbT/aOwCfTmrxe8wFj38aI/
-	 jqGi7jLcEjU8AqVFrIysWZgrZsabYoQKMSl8EUhR922VYL34lm3rcwRvaDzG+QneNz
-	 k06CqmVCKOPYVksh+SYoxW5+I7lJLF9+BmLltVYk=
+	b=nyDBcy6NMkMVsB6n6uf3ok/Niw5sRzWLDdxrJQFzcNH7mu8Ko9GdYTaPF/gSgWCh1
+	 HRS4Loh1QR5HM/E9MUOlPTsgMBfiUQZPpQxNtfr7QMX5Tsr85vWft7r9E8GugiHi/u
+	 bzOcuadOYm/cgUUZNJXudtxeHFjKowR2hf2JhcKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/70] tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 037/105] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
 Date: Mon, 22 Sep 2025 21:29:20 +0200
-Message-ID: <20250922192405.099262371@linuxfoundation.org>
+Message-ID: <20250922192409.887639865@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 45c8a6cc2bcd780e634a6ba8e46bffbdf1fc5c01 ]
+commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 upstream.
 
-syzbot reported the splat below where a socket had tcp_sk(sk)->fastopen_rsk
-in the TCP_ESTABLISHED state. [0]
+Issuing two writes to the same af_alg socket is bogus as the
+data will be interleaved in an unpredictable fashion.  Furthermore,
+concurrent writes may create inconsistencies in the internal
+socket state.
 
-syzbot reused the server-side TCP Fast Open socket as a new client before
-the TFO socket completes 3WHS:
+Disallow this by adding a new ctx->write field that indiciates
+exclusive ownership for writing.
 
-  1. accept()
-  2. connect(AF_UNSPEC)
-  3. connect() to another destination
-
-As of accept(), sk->sk_state is TCP_SYN_RECV, and tcp_disconnect() changes
-it to TCP_CLOSE and makes connect() possible, which restarts timers.
-
-Since tcp_disconnect() forgot to clear tcp_sk(sk)->fastopen_rsk, the
-retransmit timer triggered the warning and the intended packet was not
-retransmitted.
-
-Let's call reqsk_fastopen_remove() in tcp_disconnect().
-
-[0]:
-WARNING: CPU: 2 PID: 0 at net/ipv4/tcp_timer.c:542 tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Modules linked in:
-CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 6.17.0-rc5-g201825fb4278 #62 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Code: 41 55 41 54 55 53 48 8b af b8 08 00 00 48 89 fb 48 85 ed 0f 84 55 01 00 00 0f b6 47 12 3c 03 74 0c 0f b6 47 12 3c 04 74 04 90 <0f> 0b 90 48 8b 85 c0 00 00 00 48 89 ef 48 8b 40 30 e8 6a 4f 06 3e
-RSP: 0018:ffffc900002f8d40 EFLAGS: 00010293
-RAX: 0000000000000002 RBX: ffff888106911400 RCX: 0000000000000017
-RDX: 0000000002517619 RSI: ffffffff83764080 RDI: ffff888106911400
-RBP: ffff888106d5c000 R08: 0000000000000001 R09: ffffc900002f8de8
-R10: 00000000000000c2 R11: ffffc900002f8ff8 R12: ffff888106911540
-R13: ffff888106911480 R14: ffff888106911840 R15: ffffc900002f8de0
-FS:  0000000000000000(0000) GS:ffff88907b768000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8044d69d90 CR3: 0000000002c30003 CR4: 0000000000370ef0
-Call Trace:
- <IRQ>
- tcp_write_timer (net/ipv4/tcp_timer.c:738)
- call_timer_fn (kernel/time/timer.c:1747)
- __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2372)
- timer_expire_remote (kernel/time/timer.c:2385 kernel/time/timer.c:2376 kernel/time/timer.c:2135)
- tmigr_handle_remote_up (kernel/time/timer_migration.c:944 kernel/time/timer_migration.c:1035)
- __walk_groups.isra.0 (kernel/time/timer_migration.c:533 (discriminator 1))
- tmigr_handle_remote (kernel/time/timer_migration.c:1096)
- handle_softirqs (./arch/x86/include/asm/jump_label.h:36 ./include/trace/events/irq.h:142 kernel/softirq.c:580)
- irq_exit_rcu (kernel/softirq.c:614 kernel/softirq.c:453 kernel/softirq.c:680 kernel/softirq.c:696)
- sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1050 (discriminator 35) arch/x86/kernel/apic/apic.c:1050 (discriminator 35))
- </IRQ>
-
-Fixes: 8336886f786f ("tcp: TCP Fast Open Server - support TFO listeners")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250915175800.118793-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ crypto/af_alg.c         |    7 +++++++
+ include/crypto/if_alg.h |   10 ++++++----
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index a4bbe959d1e25..40a2f172be2cb 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3011,6 +3011,7 @@ int tcp_disconnect(struct sock *sk, int flags)
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int old_state = sk->sk_state;
-+	struct request_sock *req;
- 	u32 seq;
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -970,6 +970,12 @@ int af_alg_sendmsg(struct socket *sock,
+ 	}
  
- 	if (old_state != TCP_CLOSE)
-@@ -3121,6 +3122,10 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	lock_sock(sk);
++	if (ctx->write) {
++		release_sock(sk);
++		return -EBUSY;
++	}
++	ctx->write = true;
++
+ 	if (ctx->init && !ctx->more) {
+ 		if (ctx->used) {
+ 			err = -EINVAL;
+@@ -1104,6 +1110,7 @@ int af_alg_sendmsg(struct socket *sock,
  
+ unlock:
+ 	af_alg_data_wakeup(sk);
++	ctx->write = false;
+ 	release_sock(sk);
  
- 	/* Clean up fastopen related fields */
-+	req = rcu_dereference_protected(tp->fastopen_rsk,
-+					lockdep_sock_is_held(sk));
-+	if (req)
-+		reqsk_fastopen_remove(sk, req, false);
- 	tcp_free_fastopen_req(tp);
- 	inet_clear_bit(DEFER_CONNECT, sk);
- 	tp->fastopen_client_fail = 0;
--- 
-2.51.0
-
+ 	return copied ?: err;
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -135,6 +135,7 @@ struct af_alg_async_req {
+  *			SG?
+  * @enc:		Cryptographic operation to be performed when
+  *			recvmsg is invoked.
++ * @write:		True if we are in the middle of a write.
+  * @init:		True if metadata has been sent.
+  * @len:		Length of memory allocated for this data structure.
+  * @inflight:		Non-zero when AIO requests are in flight.
+@@ -151,10 +152,11 @@ struct af_alg_ctx {
+ 	size_t used;
+ 	atomic_t rcvused;
+ 
+-	bool more;
+-	bool merge;
+-	bool enc;
+-	bool init;
++	u32		more:1,
++			merge:1,
++			enc:1,
++			write:1,
++			init:1;
+ 
+ 	unsigned int len;
+ 
 
 
 
