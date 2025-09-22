@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-181124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EED0B92DEA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C148B930C5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF9A544076E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 094781721DB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C98C2EDD5D;
-	Mon, 22 Sep 2025 19:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60822F3C23;
+	Mon, 22 Sep 2025 19:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S53yCsjb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0AMq7Oz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A13527B320;
-	Mon, 22 Sep 2025 19:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D792F2909;
+	Mon, 22 Sep 2025 19:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569750; cv=none; b=J/UaYs68bm9jX4UX6lHDi8qnG0h3zWYm2hEuuWk4xPBdobYXffzL0UP3SbEtsmp4cLON6qInJxOZKGUgJzhbeKXVz31MUtB8Jn/3lyrd8I4MVJCqGphpFo3Lh1LlGQIAozhN2aDF/LLSFbFRxil1OGd+ywok4RhzsJnNxzlfiAw=
+	t=1758570297; cv=none; b=Jkzq5yE1xHrN8NmyWayCkaydwbSlRybVgpBp2vgV6tw1AWWzhGl/fbtW2ehoGgRPRJbzrlwl5LrqY1fMPMHVVL1pMdF1iqecSDNZ1R1xxij7Z7vknN6rDStyApnLtmrMuPZWbsbRRxPSjBfUe6H7sQcl5qwPK2NPCeX2eAsmLgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569750; c=relaxed/simple;
-	bh=8KTJHbEyKh67xoK+QXW1tJl33GOniGpb4mONZYtPkVg=;
+	s=arc-20240116; t=1758570297; c=relaxed/simple;
+	bh=TpsX0u1b63KMo5ZPfjn0xUrZ0VD72tZAItLL6DsY+FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEfPLECPanhpQVynJEPT1yrIg6DJWd1J0M1hJvoFXwkyA5CAfbJWFDemTZj5G0xvslDOr/z/wX0IG651HTBOZWjyFJqMrA7vNwiig306jECSxjpLXpK+kNqzYPitC4y9vOQq6rIIDjPhKeoElJz9qo4L0Zd5L6QCyGetNSgTst4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S53yCsjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B4EC4CEF0;
-	Mon, 22 Sep 2025 19:35:49 +0000 (UTC)
+	 MIME-Version; b=LVbdVTCPKFF03uOs1+22ZfG6kosAO+QwhRjj7Kzm8j0NWBa1sBqSgUVtrCmQenzLXYjc/HNMqCmcl4TqRCxHawM8f5rTQlW6oFy2N8lScC+rvWiBArz+8eTCJZJyOgYlJjvJuiYtw3HL7Og88zKOpejLTHkI1BkCy0VOfzrVJZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0AMq7Oz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE68C4CEF0;
+	Mon, 22 Sep 2025 19:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569749;
-	bh=8KTJHbEyKh67xoK+QXW1tJl33GOniGpb4mONZYtPkVg=;
+	s=korg; t=1758570297;
+	bh=TpsX0u1b63KMo5ZPfjn0xUrZ0VD72tZAItLL6DsY+FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S53yCsjbDlE3gEBrg3bPn9tgNPLKmvOMpB++1LZ/MnEWxNsNp/PUmN7zrZunZ5PZm
-	 d9nx7nKXdD3GrFlrU144oLB7PkGuCFxsFGMqa25daXgpxI80UdKt2u49gWvd65SR5L
-	 L0GgFQt2XCwwUsCSCVgc0L6D5gd5ocnHK6VMk/iI=
+	b=V0AMq7OzaMsL7BBPSWU/b1HGOnI7JYKgnFhhTHnVbT7zdpBoy0OdJ0WhY5Ke9Jd7S
+	 1Pl/FtfyL1U/e1yEDeJW+l9CAEvdk4ipJYfXTMTHLIAsNUTRFtMbpdx8ta/3MaLX4j
+	 0Yknj6SpEKx+rK9fmhvhfnZ/N5LluTV0ILeFNMQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	Qi Xi <xiqi2@huawei.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 54/70] drm: bridge: cdns-mhdp8546: Fix missing mutex unlock on error path
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	David Perry <david.perry@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 094/149] drm/amdkfd: add proper handling for S0ix
 Date: Mon, 22 Sep 2025 21:29:54 +0200
-Message-ID: <20250922192406.055390811@linuxfoundation.org>
+Message-ID: <20250922192415.257701476@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Xi <xiqi2@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 288dac9fb6084330d968459c750c838fd06e10e6 ]
+commit 2ade36eaa9ac05e4913e9785df19c2cde8f912fb upstream.
 
-Add missing mutex unlock before returning from the error path in
-cdns_mhdp_atomic_enable().
+When in S0i3, the GFX state is retained, so all we need to do
+is stop the runlist so GFX can enter gfxoff.
 
-Fixes: 935a92a1c400 ("drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Qi Xi <xiqi2@huawei.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250904034447.665427-1-xiqi2@huawei.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Tested-by: David Perry <david.perry@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4bfa8609934dbf39bbe6e75b4f971469384b50b1)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c |   16 +++++++++---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h |   12 +++++++++
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c    |   36 +++++++++++++++++++++++++++++
+ 3 files changed, 60 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-index 858f5b6508491..bdb9fc00c776b 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-@@ -2057,8 +2057,10 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
- 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+@@ -250,16 +250,24 @@ void amdgpu_amdkfd_interrupt(struct amdg
  
- 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
--	if (!mhdp_state->current_mode)
--		return;
-+	if (!mhdp_state->current_mode) {
-+		ret = -EINVAL;
-+		goto out;
+ void amdgpu_amdkfd_suspend(struct amdgpu_device *adev, bool suspend_proc)
+ {
+-	if (adev->kfd.dev)
+-		kgd2kfd_suspend(adev->kfd.dev, suspend_proc);
++	if (adev->kfd.dev) {
++		if (adev->in_s0ix)
++			kgd2kfd_stop_sched_all_nodes(adev->kfd.dev);
++		else
++			kgd2kfd_suspend(adev->kfd.dev, suspend_proc);
++	}
+ }
+ 
+ int amdgpu_amdkfd_resume(struct amdgpu_device *adev, bool resume_proc)
+ {
+ 	int r = 0;
+ 
+-	if (adev->kfd.dev)
+-		r = kgd2kfd_resume(adev->kfd.dev, resume_proc);
++	if (adev->kfd.dev) {
++		if (adev->in_s0ix)
++			r = kgd2kfd_start_sched_all_nodes(adev->kfd.dev);
++		else
++			r = kgd2kfd_resume(adev->kfd.dev, resume_proc);
 +	}
  
- 	drm_mode_set_name(mhdp_state->current_mode);
+ 	return r;
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+@@ -426,7 +426,9 @@ void kgd2kfd_smi_event_throttle(struct k
+ int kgd2kfd_check_and_lock_kfd(void);
+ void kgd2kfd_unlock_kfd(void);
+ int kgd2kfd_start_sched(struct kfd_dev *kfd, uint32_t node_id);
++int kgd2kfd_start_sched_all_nodes(struct kfd_dev *kfd);
+ int kgd2kfd_stop_sched(struct kfd_dev *kfd, uint32_t node_id);
++int kgd2kfd_stop_sched_all_nodes(struct kfd_dev *kfd);
+ bool kgd2kfd_compute_active(struct kfd_dev *kfd, uint32_t node_id);
+ bool kgd2kfd_vmfault_fast_path(struct amdgpu_device *adev, struct amdgpu_iv_entry *entry,
+ 			       bool retry_fault);
+@@ -516,10 +518,20 @@ static inline int kgd2kfd_start_sched(st
+ 	return 0;
+ }
  
--- 
-2.51.0
-
++static inline int kgd2kfd_start_sched_all_nodes(struct kfd_dev *kfd)
++{
++	return 0;
++}
++
+ static inline int kgd2kfd_stop_sched(struct kfd_dev *kfd, uint32_t node_id)
+ {
+ 	return 0;
+ }
++
++static inline int kgd2kfd_stop_sched_all_nodes(struct kfd_dev *kfd)
++{
++	return 0;
++}
+ 
+ static inline bool kgd2kfd_compute_active(struct kfd_dev *kfd, uint32_t node_id)
+ {
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -1501,6 +1501,25 @@ int kgd2kfd_start_sched(struct kfd_dev *
+ 	return ret;
+ }
+ 
++int kgd2kfd_start_sched_all_nodes(struct kfd_dev *kfd)
++{
++	struct kfd_node *node;
++	int i, r;
++
++	if (!kfd->init_complete)
++		return 0;
++
++	for (i = 0; i < kfd->num_nodes; i++) {
++		node = kfd->nodes[i];
++		r = node->dqm->ops.unhalt(node->dqm);
++		if (r) {
++			dev_err(kfd_device, "Error in starting scheduler\n");
++			return r;
++		}
++	}
++	return 0;
++}
++
+ int kgd2kfd_stop_sched(struct kfd_dev *kfd, uint32_t node_id)
+ {
+ 	struct kfd_node *node;
+@@ -1518,6 +1537,23 @@ int kgd2kfd_stop_sched(struct kfd_dev *k
+ 	return node->dqm->ops.halt(node->dqm);
+ }
+ 
++int kgd2kfd_stop_sched_all_nodes(struct kfd_dev *kfd)
++{
++	struct kfd_node *node;
++	int i, r;
++
++	if (!kfd->init_complete)
++		return 0;
++
++	for (i = 0; i < kfd->num_nodes; i++) {
++		node = kfd->nodes[i];
++		r = node->dqm->ops.halt(node->dqm);
++		if (r)
++			return r;
++	}
++	return 0;
++}
++
+ bool kgd2kfd_compute_active(struct kfd_dev *kfd, uint32_t node_id)
+ {
+ 	struct kfd_node *node;
 
 
 
