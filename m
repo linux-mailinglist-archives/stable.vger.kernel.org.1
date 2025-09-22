@@ -1,183 +1,262 @@
-Return-Path: <stable+bounces-180894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0250B8F544
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 09:45:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B53B8F5FC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 09:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5C1175114
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 07:45:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B2B3AE63E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 07:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234802ECD15;
-	Mon, 22 Sep 2025 07:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF5A2D9484;
+	Mon, 22 Sep 2025 07:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fYkVa7vr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bu8KXftl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C1686329;
-	Mon, 22 Sep 2025 07:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B94E2F6179
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 07:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758527120; cv=none; b=SKySCclZGHmvG8TVB0jHn5H0Bt+E59mn1Fad1MQNS0sn1CN3hjTs2HUeWoR0v5YxB50RStflzNmdjvMk/hZDyehDsm7HYZ8Yrf7HJCnbyYq9hbyDEZepLVNtjEW7oKpkgPLV1GBHoyY5yXVVjfQFgiR4Sy6EBqPhnggZQ0yiODU=
+	t=1758527878; cv=none; b=KaFSz1bBoBpIdU5+dn15Wj3u0jLtsGCQBFNufmefiLa9vWHln5pyM551VKUChY0cKiBXpSq/ULacGvS64B8MDArpqytk8KXY86kNz2K66Ijn2HzGpXzJVIixrHTfa0ChlfUZaHEkWpl9MFczdTsP6qv76/b9bUVJxvA1za3uX4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758527120; c=relaxed/simple;
-	bh=H1RyaGQe908wgP+9DtCfGX//XxA1/HxhCRdfcWfFnz4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qDbws+FQH/DQ5cPNw4Nqeiruet82jx9Ctnoo8+UIxlvW4GlcskIut531Rgco50WICSAtSmsBlY2etyvEVTLyDlLMW6DrBDM1lL4+NzKC5taY2gqG/eMKgSD1FXbGSyY3nZ9n3MkgSS7jPFUaxz3FJ2p8iTR9SqOMuxwf4TYkf9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fYkVa7vr; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758527120; x=1790063120;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=H1RyaGQe908wgP+9DtCfGX//XxA1/HxhCRdfcWfFnz4=;
-  b=fYkVa7vr2GGEbJfEFsfcOIrvUaFBw6nSD1prLtP5u0+sytar615BsP6g
-   xOgPSut/HEYAxDjvwp19/n+CWjb80H+hG1SMxijGOtkJgrm/WWI1EXG2a
-   TolX1H3myh8IBYrMvWjyvGSjKeRPTQl26cB7I6Qfg6GPpi08gkkHn1su/
-   xAkdPrXaGN4xXT06/uj33KbOTPUp3Jfb3rI+NV4K4n7NUfFqbcU/m2fUc
-   OLiMvRqB8nqrBlB0PTuzq0AmUXFQ5AjP75V3BeiUCMUuHc2lkDSCcI/f/
-   GhWc5oEHP5Psqber+rYtYuo+wfxZ9pUaS18i8qyEjyMUO4AwtiyoP2Tgi
-   Q==;
-X-CSE-ConnectionGUID: dOodfSctSOq24iLZ62LSuw==
-X-CSE-MsgGUID: cKjAn5KfRiW1Yzw0vc8IHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="78224477"
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="78224477"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 00:45:19 -0700
-X-CSE-ConnectionGUID: h9HCINiUTMCizWZCP4GPqw==
-X-CSE-MsgGUID: /oSvEyXuS/2s/wbNz4RHQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="207149858"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 22 Sep 2025 00:45:16 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v0bEV-0001QP-0U;
-	Mon, 22 Sep 2025 07:45:11 +0000
-Date: Mon, 22 Sep 2025 15:45:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ma Ke <make24@iscas.ac.cn>, srini@kernel.org, lgirdwood@gmail.com,
-	broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
-	pierre-louis.bossart@linux.dev
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] ASoC: wcd934x: fix error handling in
- wcd934x_codec_parse_data()
-Message-ID: <202509221535.es8PWacQ-lkp@intel.com>
-References: <20250922013507.558-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1758527878; c=relaxed/simple;
+	bh=z22lo+Sx0EHZpjam8qqB/oYPmRH+xQqLMr6BUeu2yhw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uFJkQ7m3NYQKsZVLg0w4MdFvT37cJpWtGwapO1VG0vk+IGtxtkZAvv38xkSa+hH8Py548VMJJ5uxnkJh59+uruWEGTP4/Utfd1trsWM1wonHtM90idZ7HjTdX+1HPVAYItcuOJABLhxncZS7z92/IKTKf0PAM9p8UHOgUmsmqZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bu8KXftl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758527874;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+s5hco+l/6O5Jum665AcKyXnxSxFI2cgMRrfhyjJ+7Y=;
+	b=bu8KXftlA7SgVJ8Af08LZDtmcjm0d781JgRfUHg037brTgipsMSAToqp1wfK6vC2c0LxVn
+	tpt4KU+QVE/7iJNzMmc02HXrewMffToorKL8zI8GX5dBQkX2YUDuzPp307i3ytFkiyC7lZ
+	+c8vXJTt1bmNBfnG4CcV3t3m7CEZ3ME=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-153-hPRsJXptMHaNCEq0bqIlQA-1; Mon, 22 Sep 2025 03:57:52 -0400
+X-MC-Unique: hPRsJXptMHaNCEq0bqIlQA-1
+X-Mimecast-MFC-AGG-ID: hPRsJXptMHaNCEq0bqIlQA_1758527871
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e198ddbc1so1371175e9.1
+        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 00:57:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758527871; x=1759132671;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+s5hco+l/6O5Jum665AcKyXnxSxFI2cgMRrfhyjJ+7Y=;
+        b=QF+gTSA9AQwfmPqoSBuEoq5GiwWVQcyH0Q6vIjP9OtbKMMcbbSctT6D6vALeWAE+KO
+         4jIgBQ7237xSV90FgGPhxkwQovXrMKWsVWyn/enFk+hokejtI4mcsxDPrQNEIwSYKbZO
+         BqBj5tDBgwS9C411lGkQgyLpQ7C15LOt9V/C7Mw+jlKRnuuH0GOzc3+7vJc3t0K1OdGY
+         ciobUsnR24PRGhXYNoVQ9JvTrnWl1mLN9Dbgs0Q3zWrTXgC0onRNNQqHpZOkTL0rRwoY
+         tAPrUzzYKQBVYxIWaDgZlydIV07TjOubQhtGDHc8P9AmCmlyjVWLJK44HUM4/X5exQlA
+         J0CA==
+X-Forwarded-Encrypted: i=1; AJvYcCXybNt6Y6xoDQlAYyrjLTOYuoPOHNV6jmE0OPUZfG3U9SWFsDi6nyVO9l7ik63EgGPA/tTHQvg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWrULd2O6r3FXq9rlKBkzDyGu1mDnBrF5CnnEHLOLNzuV+rmFR
+	DiJtH4mS57EdCQl4SicuEZscl2jUuUBeO+2GiK0U6bUVs4kTyxMZ3cPI66SJSxv/ADa89XQQag9
+	f4WeBzFjSi5UZP8mN25JyOfy/iMoF2J5AykFieGfDTRjRSWVLy1MHmXe4bw==
+X-Gm-Gg: ASbGncvFkJwtNDhNpNLMsVQhARcTik8A2uLspxvTjmW0b2qUDTKYk8bLytJA9+FQikB
+	tzX0P7Ts3UzXXfWbqhiuNqituRwyP2SunpOx0b/yv7UU1XXCpb5X9DfFZIjqSsWNz69cg6tgbmh
+	VlyjLOttMavwiU0ezINPBs8/JYpfxxjLkhMLZTD0nhDODLJii5VC7LALbCMoUDKWgco8Dc0OkX3
+	nGooioJkSH6cEHVREkvG0Kv24Igsnf37b7WfwU3XNpyay2ZWDL6MSBujYSdTddcYm2D/eQs6JKS
+	a/IPIl8gvDTQPO4It1Ujfw1KEEQieC7H2ngYKDXhoyIEkUXmySbNWmAmddN48DlGdvz6mbsIx47
+	pdr7PQ1scfs3U6Q80zbVAQfflrcl/OrKqcJLRdQW1kXUqnN8ukL5jQ5R3xpeTL9A=
+X-Received: by 2002:a05:600c:a208:b0:45d:e4d6:a7db with SMTP id 5b1f17b1804b1-464f79beba7mr83846385e9.5.1758527870856;
+        Mon, 22 Sep 2025 00:57:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYtl6dMrscq08hXmNwVy+KDBLBadcgkwMR1AxFYVI10XhNR4OhAm0eqD+UkX6mimt30arIhQ==
+X-Received: by 2002:a05:600c:a208:b0:45d:e4d6:a7db with SMTP id 5b1f17b1804b1-464f79beba7mr83846155e9.5.1758527870417;
+        Mon, 22 Sep 2025 00:57:50 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f2a:e200:f98f:8d71:83f:f88? (p200300d82f2ae200f98f8d71083f0f88.dip0.t-ipconnect.de. [2003:d8:2f2a:e200:f98f:8d71:83f:f88])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613d14d212sm255773735e9.12.2025.09.22.00.57.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Sep 2025 00:57:49 -0700 (PDT)
+Message-ID: <17919309-4e13-4ca0-945f-82a2c71e24d2@redhat.com>
+Date: Mon, 22 Sep 2025 09:57:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250922013507.558-1-make24@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc/task_mmu: check cur_buf for NULL
+To: Jakub Acs <acsjakub@amazon.de>, Andrei Vagin <avagin@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Jinjiang Tu <tujinjiang@huawei.com>, Suren Baghdasaryan <surenb@google.com>,
+ Penglei Jiang <superman.xpt@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Muhammad Usama Anjum <usama.anjum@collabora.com>, stable@vger.kernel.org
+References: <20250919142106.43527-1-acsjakub@amazon.de>
+ <CANaxB-yAOhES6j6VJMDybAJJy8JEXM+ZB+ey4-=QVyLBeTYfrw@mail.gmail.com>
+ <20250922072414.GA40409@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250922072414.GA40409@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Ma,
+On 22.09.25 09:24, Jakub Acs wrote:
+> On Fri, Sep 19, 2025 at 09:22:14AM -0700, Andrei Vagin wrote:
+>> On Fri, Sep 19, 2025 at 7:21 AM Jakub Acs <acsjakub@amazon.de> wrote:
+>>>
+>>> When PAGEMAP_SCAN ioctl invoked with vec_len = 0 reaches
+>>> pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
+>>>
+>>> [   44.936808] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+>>> [   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+>>> [   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.0-rc6 #22 PREEMPT(none)
+>>> [   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+>>> [   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
+>>>
+>>> <snip registers, unreliable trace>
+>>>
+>>> [   44.946828] Call Trace:
+>>> [   44.947030]  <TASK>
+>>> [   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
+>>> [   44.952593]  walk_pmd_range.isra.0+0x302/0x910
+>>> [   44.954069]  walk_pud_range.isra.0+0x419/0x790
+>>> [   44.954427]  walk_p4d_range+0x41e/0x620
+>>> [   44.954743]  walk_pgd_range+0x31e/0x630
+>>> [   44.955057]  __walk_page_range+0x160/0x670
+>>> [   44.956883]  walk_page_range_mm+0x408/0x980
+>>> [   44.958677]  walk_page_range+0x66/0x90
+>>> [   44.958984]  do_pagemap_scan+0x28d/0x9c0
+>>> [   44.961833]  do_pagemap_cmd+0x59/0x80
+>>> [   44.962484]  __x64_sys_ioctl+0x18d/0x210
+>>> [   44.962804]  do_syscall_64+0x5b/0x290
+>>> [   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>>>
+>>> vec_len = 0 in pagemap_scan_init_bounce_buffer() means no buffers are
+>>> allocated and p->vec_buf remains set to NULL.
+>>>
+>>> This breaks an assumption made later in pagemap_scan_backout_range(),
+>>> that page_region is always allocated for p->vec_buf_index.
+>>>
+>>> Fix it by explicitly checking cur_buf for NULL before dereferencing.
+>>>
+>>> Other sites that might run into same deref-issue are already (directly
+>>> or transitively) protected by checking p->vec_buf.
+>>>
+>>> Note:
+>>>  From PAGEMAP_SCAN man page, it seems vec_len = 0 is valid when no output
+>>> is requested and it's only the side effects caller is interested in,
+>>> hence it passes check in pagemap_scan_get_args().
+>>>
+>>> This issue was found by syzkaller.
+>>>
+>>> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: David Hildenbrand <david@redhat.com>
+>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>> Cc: Jinjiang Tu <tujinjiang@huawei.com>
+>>> Cc: Suren Baghdasaryan <surenb@google.com>
+>>> Cc: Penglei Jiang <superman.xpt@gmail.com>
+>>> Cc: Mark Brown <broonie@kernel.org>
+>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>> Cc: Andrei Vagin <avagin@gmail.com>
+>>> Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+>>> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+>>> Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>>> linux-kernel@vger.kernel.org
+>>> linux-fsdevel@vger.kernel.org
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+>>>
+>>> ---
+>>>   fs/proc/task_mmu.c | 3 +++
+>>>   1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+>>> index 29cca0e6d0ff..8c10a8135e74 100644
+>>> --- a/fs/proc/task_mmu.c
+>>> +++ b/fs/proc/task_mmu.c
+>>> @@ -2417,6 +2417,9 @@ static void pagemap_scan_backout_range(struct pagemap_scan_private *p,
+>>>   {
+>>>          struct page_region *cur_buf = &p->vec_buf[p->vec_buf_index];
+>>>
+>>> +       if (!cur_buf)
+>>
+>> I think it is better to check !p->vec_buf. I know that vec_buf_index is
+>> always 0 in this case, so there is no functional difference, but the
+>> !p->vec_buf is more readable/obvious.
 
-kernel test robot noticed the following build warnings:
+Yes, please check p->vec_buf like we do in pagemap_scan_output().
 
-[auto build test WARNING on broonie-sound/for-next]
-[also build test WARNING on linus/master v6.17-rc7 next-20250919]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> I chose (!cur_buf) because it is more 'paranoid' than !p->vec_buf,
+> but happy to change that in v2. However, I noticed that the patch was
+> already merged to mm-hotfixes-unstable in [1]. Should I still send the
+> v2 with adjustment?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Ke/ASoC-wcd934x-fix-error-handling-in-wcd934x_codec_parse_data/20250922-094038
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-patch link:    https://lore.kernel.org/r/20250922013507.558-1-make24%40iscas.ac.cn
-patch subject: [PATCH v2] ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()
-config: i386-buildonly-randconfig-005-20250922 (https://download.01.org/0day-ci/archive/20250922/202509221535.es8PWacQ-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250922/202509221535.es8PWacQ-lkp@intel.com/reproduce)
+Feel free to send a quick fixup inline or resend the v2.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509221535.es8PWacQ-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> sound/soc/codecs/wcd934x.c:5862:38: warning: cast from 'void (*)(struct device *)' to 'void (*)(void *)' converts to incompatible function type [-Wcast-function-type-strict]
-    5862 |         ret = devm_add_action_or_reset(dev, (void (*)(void *))put_device, &wcd->sidev->dev);
-         |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/device/devres.h:166:34: note: expanded from macro 'devm_add_action_or_reset'
-     166 |         __devm_add_action_or_reset(dev, action, data, #action)
-         |                                         ^~~~~~
-   1 warning generated.
-
-
-vim +5862 sound/soc/codecs/wcd934x.c
-
-  5837	
-  5838	static int wcd934x_codec_probe(struct platform_device *pdev)
-  5839	{
-  5840		struct device *dev = &pdev->dev;
-  5841		struct wcd934x_ddata *data = dev_get_drvdata(dev->parent);
-  5842		struct wcd934x_codec *wcd;
-  5843		int ret, irq;
-  5844	
-  5845		wcd = devm_kzalloc(dev, sizeof(*wcd), GFP_KERNEL);
-  5846		if (!wcd)
-  5847			return -ENOMEM;
-  5848	
-  5849		wcd->dev = dev;
-  5850		wcd->regmap = data->regmap;
-  5851		wcd->extclk = data->extclk;
-  5852		wcd->sdev = to_slim_device(data->dev);
-  5853		mutex_init(&wcd->sysclk_mutex);
-  5854		mutex_init(&wcd->micb_lock);
-  5855		wcd->common.dev = dev->parent;
-  5856		wcd->common.max_bias = 4;
-  5857	
-  5858		ret = wcd934x_codec_parse_data(wcd);
-  5859		if (ret)
-  5860			return ret;
-  5861	
-> 5862		ret = devm_add_action_or_reset(dev, (void (*)(void *))put_device, &wcd->sidev->dev);
-  5863		if (ret)
-  5864			return ret;
-  5865	
-  5866		/* set default rate 9P6MHz */
-  5867		regmap_update_bits(wcd->regmap, WCD934X_CODEC_RPM_CLK_MCLK_CFG,
-  5868				   WCD934X_CODEC_RPM_CLK_MCLK_CFG_MCLK_MASK,
-  5869				   WCD934X_CODEC_RPM_CLK_MCLK_CFG_9P6MHZ);
-  5870		memcpy(wcd->rx_chs, wcd934x_rx_chs, sizeof(wcd934x_rx_chs));
-  5871		memcpy(wcd->tx_chs, wcd934x_tx_chs, sizeof(wcd934x_tx_chs));
-  5872	
-  5873		irq = regmap_irq_get_virq(data->irq_data, WCD934X_IRQ_SLIMBUS);
-  5874		if (irq < 0)
-  5875			return dev_err_probe(wcd->dev, irq, "Failed to get SLIM IRQ\n");
-  5876	
-  5877		ret = devm_request_threaded_irq(dev, irq, NULL,
-  5878						wcd934x_slim_irq_handler,
-  5879						IRQF_TRIGGER_RISING | IRQF_ONESHOT,
-  5880						"slim", wcd);
-  5881		if (ret)
-  5882			return dev_err_probe(dev, ret, "Failed to request slimbus irq\n");
-  5883	
-  5884		wcd934x_register_mclk_output(wcd);
-  5885		platform_set_drvdata(pdev, wcd);
-  5886	
-  5887		return devm_snd_soc_register_component(dev, &wcd934x_component_drv,
-  5888						       wcd934x_slim_dais,
-  5889						       ARRAY_SIZE(wcd934x_slim_dais));
-  5890	}
-  5891	
+As long as it's not in -stable we can change it as we please.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers
+
+David / dhildenb
+
 
