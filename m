@@ -1,241 +1,146 @@
-Return-Path: <stable+bounces-180978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C3DB91EED
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:30:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082A8B91FCB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A01A37A46AC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:28:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CEF6427879
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06612E6CD6;
-	Mon, 22 Sep 2025 15:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102B52E8B8A;
+	Mon, 22 Sep 2025 15:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KNPIp9tK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="czXoeN9Z"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881AA1A9FB4
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 15:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5C32EB5BD
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 15:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758555034; cv=none; b=XyvR3V2CtOJjGfUt/aptymXJ8qzwkHXBYsGUMdZoGAOVhnVYpaGNGNs+tf4rCKc5y6e1l4Fxe5Y3Rc5V+7UFOLl83Mdrs6hD9nQD8IpkTmHaRHV30Pqf8ip1/E4Ac7jy2hRyu6LQSNXBLZZ7Wy1hBLwbMN7FyFomM2eEgdJh7RI=
+	t=1758555312; cv=none; b=XwvVfea74hHUdHk3f2YOlQvl3u9TRjqhxwxjojY1DJU871fBv1torZ/flZpJYVlq8zZJztsMHzjLWQGkRk13yatAXj2qFtQK7P1oyGU/EpQfUSPmJOsE2QVP4pldUkP2XR3U7tGRcF4QvOjUOipTNSHaULO4m6Jq/Dpzm3YFq6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758555034; c=relaxed/simple;
-	bh=JEoWLQma3d9C5FlCU7NvQnl5f7JFiM3FrFqHNVuMSIM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LovtEBttuA9cewu/0yjaxRK4ScPsv/7qZCKc9vS/5WyogoZ+Qzw56eOq2vrozH07ivoAf/5Ou62hFrAZrgy7+2CqdlKjLGlAoiSnaCjpveE08Wv9Hu1eoQZrahu7Voh6M2LqpmR+of8G402Onx6keZSdvQtMdPjBfVV89g12iPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KNPIp9tK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758555031;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iDFZbpyvGnhx7ADmCrJggW1kUKxNmWW7JZfnJs2xw3E=;
-	b=KNPIp9tKd5+buovBWblA1oQDnB3nZMZXDquvVHVA8Cl7zvBaVDTrV9xz5oG6H+z7MYe2FM
-	q0CV5KRaEhuXatiDjJOowJ0Q8kJ17rfSIEVlI4xXIiVFLJaCXaaYDyrhOzPhpCy9AWi83k
-	BCUrTEOZJX9nrCMz+001lmqo78IAGIU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-CxOf9nTBO9CDK9h61jiDRQ-1; Mon, 22 Sep 2025 11:30:30 -0400
-X-MC-Unique: CxOf9nTBO9CDK9h61jiDRQ-1
-X-Mimecast-MFC-AGG-ID: CxOf9nTBO9CDK9h61jiDRQ_1758555029
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3f3787688b0so1066892f8f.0
-        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 08:30:29 -0700 (PDT)
+	s=arc-20240116; t=1758555312; c=relaxed/simple;
+	bh=ReQ2IHxDCCNVodf5BraXx3b8aV6M2m2LvnKjckwRCHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=da4ObOYIF9NSfgg/plxmKMxW3eJvF5QXJOqJYlYxpXpjuk4ZWXU3RzQAVx8H3gsQIHpfauHXkijFlIRcnbR5/plSVTnBsTDuRNsAvOk4DDpjSxY4njz/z/sQYQtSVJkNMNbPn5+xZ4HJ3T26S3k1FGu7ZCIuNU2hQTRwWbRge7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=czXoeN9Z; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7704f3c46ceso4153205b3a.2
+        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 08:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758555311; x=1759160111; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QPqBcezv8xW5mApCdOc1gSfedv0YvcKSgG7urTdN4Vw=;
+        b=czXoeN9ZUeRabyHS5FZFdl6XhtGWYsV9IZpQjMiNC0EDZt2qSH5CH+ZHcODLpKbwPp
+         aDhY55r3paugXZVodlmqHZ6sg/SaLlOG6dXtFWSCS0ehBdlvuBrjq15ZUQNH3L6i22/j
+         xtuUCsUH6i424MeIXl7Y7V045MrvyqzYL38+F1fU9TueNeW97ZIPFPkG+OsgdGxX9ozl
+         Y8/0zoZi+vdxTUwepbyTYtw78lrzykZRRR2ZTMCZM/P6a6bRXsv0di4gn0x73HEfe48J
+         aEUe7lv0ENgdz2SEmDk6MIIq1NUcEO6Gur/nAzcuqb0ePpgF+goYraaayWRonU2Anpr0
+         M8XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758555028; x=1759159828;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iDFZbpyvGnhx7ADmCrJggW1kUKxNmWW7JZfnJs2xw3E=;
-        b=Lv9VwSjwAwiyh2xXFEKNHMWAvy+0PJw00LJgq8awzGEX/uV1udH4wnpfK16+iCV7vB
-         1Wrg7Jkx//jN8ABEw0Yv2meQ/KyWGmx4x9ChcqV5ZlZH5MXwmwQ+DDAcCRcOqWQ7AsC+
-         EkRwxrMOrWt9MHaTjTNtZ9YFZedGuJFHHQKRkdaB/AryEDQMzdLb9nOCKHq+YidC+xi7
-         DCyGS/eD8HqTnk2BEf7DG/E0douKiiui+0Vyje7kjJeTjiUO3uVNK4nL46o7k+RFj8MB
-         cl5QdXQoM5DuqTrwoRDN7Vi2WTcWPwgvZPD5GN4hagoAQllDuFIsLSedsQ6lQqSLwYUf
-         fUBA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7M1F58GXcUTtmvI4GtfnsiTzHRMtQedJUK3uvA+xHhyyJq1aOAr6desys11pYRcmwOcBGLk0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9cs3ouo0CqH7W4XqeqjBN92ZXNim195n71gKPaVaX7xnT6cQU
-	YSxgKC2fsnnzUFMVfMpg2Kd05WbEtQmBTO2hndMCIv1rnqJhYVh+ed0paxNhthk8OgwbddalhnM
-	5jh5treDTuunuvKWFIQxePf/5KHV3BXjmOydN/QPDFn4VIm7dAf/rDAav7M/fh9wiOg==
-X-Gm-Gg: ASbGnct6wyVnWRHP4mMf73OHwFKehLc2ywGhHeDt1NJRElbuop5DvGOoPWIYZthuowW
-	YJ4elcdWYptHoF5z6yjxNG3QsuA6GyySwvJ6vYwDfNEv29QLAGk0Wwrljl8Ew8Tane0n+EuVLrN
-	fmImXrtHr16SnmSY9qkGVXxW66TZymzGuTnMCcU5MJFgng0pKy+O5g3Z6Fdp5IGeZUvOEgAt+bY
-	gsgkHXakS0BWHeriKVs6a88kRBRM6SjoQxgZnRYUoUtP6RBHVRucavUH3mZkHs2xeU8Jzi4tcrk
-	ZxWiyl1aCLJ30Ji49n8rmtW7NjN+BrhKTgQ33udy/UvzwyEIqeKDGqRCgsV006munQ==
-X-Received: by 2002:a5d:5846:0:b0:3e7:4835:8eeb with SMTP id ffacd0b85a97d-3ee86d6cfbfmr11687249f8f.53.1758555028442;
-        Mon, 22 Sep 2025 08:30:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCAOkKFTVFDfFCG7poxpWc2m1ZarKrUdEd7Dh40ZUlbSwp6VnnIr9BzKAGWmopfDr1MCCvDA==
-X-Received: by 2002:a5d:5846:0:b0:3e7:4835:8eeb with SMTP id ffacd0b85a97d-3ee86d6cfbfmr11687208f8f.53.1758555027927;
-        Mon, 22 Sep 2025 08:30:27 -0700 (PDT)
-Received: from [10.200.68.91] (nat-pool-muc-u.redhat.com. [149.14.88.27])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-403ec628ff7sm666524f8f.4.2025.09.22.08.30.26
+        d=1e100.net; s=20230601; t=1758555311; x=1759160111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QPqBcezv8xW5mApCdOc1gSfedv0YvcKSgG7urTdN4Vw=;
+        b=NnX9ZLLDODc/0kWFvkM0mlPnE+B3y96yd8rT2UY+wAz9/RS5ZZ+X94zI47vZXiKPhK
+         Wwi2sP2WBkIeiYqBIo6mwt7wQnU748Rlo//RWi4bcWIUJEyWWVhEFa2DGgaRr5BP3OWa
+         gvrI0NX208zVm8DZFqQYS4MJt31HOP4uU32gcY0zgNqaLOwQzY8hWJSU3HL1O7TQdYpr
+         GFj7KjRZvGc2mo4H3gS/cEdkJmIQKCpWVAiIN3sqmfb87KvSWo0/P/p8Q39Qtnim/N4G
+         GYM6HaCgBbBnrr6hH6G0u0BhoHfdmi+xp2OG89/M/+yTy22D3OMUvWclI6QlXLApTqp7
+         5PLw==
+X-Gm-Message-State: AOJu0YxYvZmIUA65dYTbq6miiosb1R1+/px8Oaru9iZfKxVpAkZLBZae
+	u2ctbJmgPk2RdT7yJI9/FjiJclpkv7HoLD4cnxNZtA36zXHjMCNlQFvb
+X-Gm-Gg: ASbGnct2tjtpQoROEeDdg1+NEChAZdsYhqkDZL1BREFlHHLUc1JXNhpIBGYJcQn3iqZ
+	Yki8Uq1spaFynNl1VuddzBU9Hg2nUEDhQwWKM3D5n36zA2Od6bcXoHp1r8VmFK0AtS1ZGG5uu73
+	sdiBSNoLmkcV49k6fxZZKxUp3AH4TETo+x8p4wyiDxXFYBbzNuyHtkkMRe+oGfyTQqFrL8EaKV1
+	FAEFOn+HKexpqkGtA6owYQNUT2GAcen3ijQvpyO8KflRRCWBTR1/NI2HvtuT5rpCq9HiakUb2y2
+	VbnMB++2RVucckj8i049bwrAD35BwaI17e9BeSbFyclYy8OgF225jVb3Od8ll/+FAoZGmGc3zYL
+	V/FAd/Emj3YAJg7qzudVM9qh3
+X-Google-Smtp-Source: AGHT+IH18SVWKRivLhs8wCCIP9cmJ9yWScaF5ZUPDSrGGLbbr6gElS8sRBQwR6sHGpWLBmjI6JFxRg==
+X-Received: by 2002:a05:6a00:929f:b0:772:4226:13b2 with SMTP id d2e1a72fcca58-77e4ecc36cemr14924105b3a.25.1758555310572;
+        Mon, 22 Sep 2025 08:35:10 -0700 (PDT)
+Received: from lgs.. ([2408:8418:1100:9530:3d9f:679e:4ddb:a104])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77dfbab0d7dsm11069712b3a.60.2025.09.22.08.35.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 08:30:27 -0700 (PDT)
-Message-ID: <8661bce085eed921feb3e718b8dc4c46784dff4d.camel@redhat.com>
-Subject: Re: [PATCH 6.12.y 1/3] drm/sched: Optimise drm_sched_entity_push_job
-From: Philipp Stanner <pstanner@redhat.com>
-To: Jules Maselbas <jmaselbas@zdiv.net>, stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
- Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Luben Tuikov <ltuikov89@gmail.com>, Matthew
- Brost <matthew.brost@intel.com>
-Date: Mon, 22 Sep 2025 17:30:26 +0200
-In-Reply-To: <20250922130948.5549-1-jmaselbas@zdiv.net>
-References: <20250922130948.5549-1-jmaselbas@zdiv.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+        Mon, 22 Sep 2025 08:35:10 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] ASoC: mediatek: mt8365: Add check for devm_kcalloc() in mt8365_afe_suspend()
+Date: Mon, 22 Sep 2025 23:34:48 +0800
+Message-ID: <20250922153448.1824447-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2025-09-22 at 15:09 +0200, Jules Maselbas wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->=20
-> commit d42a254633c773921884a19e8a1a0f53a31150c3 upstream.
->=20
-> In FIFO mode (which is the default), both drm_sched_entity_push_job() and
-> drm_sched_rq_update_fifo(), where the latter calls the former, are
-> currently taking and releasing the same entity->rq_lock.
->=20
-> We can avoid that design inelegance, and also have a miniscule
-> efficiency improvement on the submit from idle path, by introducing a new
-> drm_sched_rq_update_fifo_locked() helper and pulling up the lock taking t=
-o
-> its callers.
->=20
-> v2:
-> =C2=A0* Remove drm_sched_rq_update_fifo() altogether. (Christian)
->=20
-> v3:
-> =C2=A0* Improved commit message. (Philipp)
->=20
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Luben Tuikov <ltuikov89@gmail.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Philipp Stanner <pstanner@redhat.com>
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20241016122013.7857-2=
--tursulin@igalia.com
-> (cherry picked from commit d42a254633c773921884a19e8a1a0f53a31150c3)
-> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+devm_kcalloc() may fail. mt8365_afe_suspend() uses afe->reg_back_up
+unconditionally after allocation and writes afe->reg_back_up[i], which
+can lead to a NULL pointer dereference under low-memory conditions.
 
-Am I interpreting this mail correctly: you want to get this patch into
-stable?
+Add a NULL check and bail out with -ENOMEM, making sure to disable the
+main clock via the existing error path to keep clock state balanced.
 
-Why? It doesn't fix a bug.
+Fixes: e1991d102bc2 ("ASoC: mediatek: mt8365: Add the AFE driver support")
+Cc: stable@vger.kernel.org
+---
+changelog:
+v2:
+- Return -ENOMEM directly on allocation failure without goto/label.
+- Disable the main clock before returning to keep clock state balanced.
 
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ sound/soc/mediatek/mt8365/mt8365-afe-pcm.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-P.
-
-> ---
-> =C2=A0drivers/gpu/drm/scheduler/sched_entity.c | 13 +++++++++----
-> =C2=A0drivers/gpu/drm/scheduler/sched_main.c=C2=A0=C2=A0 |=C2=A0 6 +++---
-> =C2=A0include/drm/gpu_scheduler.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> =C2=A03 files changed, 13 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/s=
-cheduler/sched_entity.c
-> index 3e75fc1f6607..9dbae7b08bc9 100644
-> --- a/drivers/gpu/drm/scheduler/sched_entity.c
-> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
-> @@ -505,8 +505,12 @@ struct drm_sched_job *drm_sched_entity_pop_job(struc=
-t drm_sched_entity *entity)
-> =C2=A0		struct drm_sched_job *next;
-> =C2=A0
-> =C2=A0		next =3D to_drm_sched_job(spsc_queue_peek(&entity->job_queue));
-> -		if (next)
-> -			drm_sched_rq_update_fifo(entity, next->submit_ts);
-> +		if (next) {
-> +			spin_lock(&entity->rq_lock);
-> +			drm_sched_rq_update_fifo_locked(entity,
-> +							next->submit_ts);
-> +			spin_unlock(&entity->rq_lock);
-> +		}
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	/* Jobs and entities might have different lifecycles. Since we're
-> @@ -606,10 +610,11 @@ void drm_sched_entity_push_job(struct drm_sched_job=
- *sched_job)
-> =C2=A0		sched =3D rq->sched;
-> =C2=A0
-> =C2=A0		drm_sched_rq_add_entity(rq, entity);
-> -		spin_unlock(&entity->rq_lock);
-> =C2=A0
-> =C2=A0		if (drm_sched_policy =3D=3D DRM_SCHED_POLICY_FIFO)
-> -			drm_sched_rq_update_fifo(entity, submit_ts);
-> +			drm_sched_rq_update_fifo_locked(entity, submit_ts);
-> +
-> +		spin_unlock(&entity->rq_lock);
-> =C2=A0
-> =C2=A0		drm_sched_wakeup(sched);
-> =C2=A0	}
-> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/sch=
-eduler/sched_main.c
-> index 416590ea0dc3..3609d5a8fecd 100644
-> --- a/drivers/gpu/drm/scheduler/sched_main.c
-> +++ b/drivers/gpu/drm/scheduler/sched_main.c
-> @@ -169,14 +169,15 @@ static inline void drm_sched_rq_remove_fifo_locked(=
-struct drm_sched_entity *enti
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0
-> -void drm_sched_rq_update_fifo(struct drm_sched_entity *entity, ktime_t t=
-s)
-> +void drm_sched_rq_update_fifo_locked(struct drm_sched_entity *entity, kt=
-ime_t ts)
-> =C2=A0{
-> =C2=A0	/*
-> =C2=A0	 * Both locks need to be grabbed, one to protect from entity->rq c=
-hange
-> =C2=A0	 * for entity from within concurrent drm_sched_entity_select_rq an=
-d the
-> =C2=A0	 * other to update the rb tree structure.
-> =C2=A0	 */
-> -	spin_lock(&entity->rq_lock);
-> +	lockdep_assert_held(&entity->rq_lock);
-> +
-> =C2=A0	spin_lock(&entity->rq->lock);
-> =C2=A0
-> =C2=A0	drm_sched_rq_remove_fifo_locked(entity);
-> @@ -187,7 +188,6 @@ void drm_sched_rq_update_fifo(struct drm_sched_entity=
- *entity, ktime_t ts)
-> =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 drm_sched_entity_compare_before);
-> =C2=A0
-> =C2=A0	spin_unlock(&entity->rq->lock);
-> -	spin_unlock(&entity->rq_lock);
-> =C2=A0}
-> =C2=A0
-> =C2=A0/**
-> diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
-> index 9c437a057e5d..346a3c261b43 100644
-> --- a/include/drm/gpu_scheduler.h
-> +++ b/include/drm/gpu_scheduler.h
-> @@ -593,7 +593,7 @@ void drm_sched_rq_add_entity(struct drm_sched_rq *rq,
-> =C2=A0void drm_sched_rq_remove_entity(struct drm_sched_rq *rq,
-> =C2=A0				struct drm_sched_entity *entity);
-> =C2=A0
-> -void drm_sched_rq_update_fifo(struct drm_sched_entity *entity, ktime_t t=
-s);
-> +void drm_sched_rq_update_fifo_locked(struct drm_sched_entity *entity, kt=
-ime_t ts);
-> =C2=A0
-> =C2=A0int drm_sched_entity_init(struct drm_sched_entity *entity,
-> =C2=A0			=C2=A0 enum drm_sched_priority priority,
+diff --git a/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c b/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
+index 10793bbe9275..55d832e05072 100644
+--- a/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
++++ b/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
+@@ -1975,11 +1975,15 @@ static int mt8365_afe_suspend(struct device *dev)
+ 
+ 	mt8365_afe_enable_main_clk(afe);
+ 
+-	if (!afe->reg_back_up)
++	if (!afe->reg_back_up) {
+ 		afe->reg_back_up =
+ 			devm_kcalloc(dev, afe->reg_back_up_list_num,
+-				     sizeof(unsigned int), GFP_KERNEL);
+-
++				    sizeof(unsigned int), GFP_KERNEL);
++		if (!afe->reg_back_up) {
++			mt8365_afe_disable_main_clk(afe);
++			return -ENOMEM;
++		}
++	}
+ 	for (i = 0; i < afe->reg_back_up_list_num; i++)
+ 		regmap_read(regmap, afe->reg_back_up_list[i],
+ 			    &afe->reg_back_up[i]);
+-- 
+2.43.0
 
 
