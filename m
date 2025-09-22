@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-181155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40908B92E52
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99903B93062
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8F593AE1F5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FFD23BA7BC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9BA25F780;
-	Mon, 22 Sep 2025 19:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359412F2909;
+	Mon, 22 Sep 2025 19:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGh6VHup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ho/x53zH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AA52820D1;
-	Mon, 22 Sep 2025 19:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CCB222590;
+	Mon, 22 Sep 2025 19:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569827; cv=none; b=cHCeclZWM15aTnVfBWmZEaQwZ+gNKXl2MziB+N+OTZRt1+rWRDzDeL1JZdaqOvrJhAkht5DvcYvAq07tzn5Go361a/akk4PfcPiY1gY2PGKi1AGm5grW8hKPGd6aDHTnwb1IaJwvEcwKIJF/uxwuHVh2fJW/s2WqfshNQu+KeYw=
+	t=1758570161; cv=none; b=afJMh3oR6vs+sNSzTCW7olopa404tWoZVmwvH4s5bVlg5n+AbfQUH8PfTEO96eXPkIoj56yIhUnqFMGlwtMeemIADI55WcSiyFSZKv2hVS9iFWF58iXhaRPAEXix1xe4SO1ObdWkKCzjlRojqKErDQcJ9GG0bbs2sq6JSx/OqS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569827; c=relaxed/simple;
-	bh=ltY70nvl5d5SOUp7T6MLfVkEeX6U1jMg0mdH5VWKiyY=;
+	s=arc-20240116; t=1758570161; c=relaxed/simple;
+	bh=UyiE5sjXsI8DbTrWHH2a/gyEfcvTP+S9+z8Ln8oiBZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ttV9tyzo1sexnJ2VGQ9bT6cb1hCxEZO30lwKbAXLkr/5YkxwcRzLAQEW0NITqjyo9q4Sw0nCRbhIo09qzfA5AoUPIedrU3ak9pVycZNtOaw6xeJg9uuS9zNollfEqVJraU26MH+WTJEpGuyShXO3gPSS3vOrSMCYeg70vTrMOHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGh6VHup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C191CC4CEF0;
-	Mon, 22 Sep 2025 19:37:06 +0000 (UTC)
+	 MIME-Version; b=f8t7e8QdDMGx7hsXx6BGPzKo/Vi2FigB5ecnwlrWwcLpuQLkgJvLBMpkhpSIs/OTMCIdepdC0VENJEdwEHB3zfNDFp0yI5qTfovxs49obV2Nu3XWMCFMurp3dj7KNHMqytN13fsCC2JmQSHqxUowuG7hmF3IlAzt3ArSyks+q+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ho/x53zH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDD5C4CEF0;
+	Mon, 22 Sep 2025 19:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569827;
-	bh=ltY70nvl5d5SOUp7T6MLfVkEeX6U1jMg0mdH5VWKiyY=;
+	s=korg; t=1758570160;
+	bh=UyiE5sjXsI8DbTrWHH2a/gyEfcvTP+S9+z8Ln8oiBZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGh6VHupHJ5PPRKBs2Vsa5ROv/6qy5YquuJv3E3nth9bG30DJYRaYTigitRBPoxI2
-	 Df0fgX6+xujvRZZJqtNkYS6ettPQM/RJJR6XjvXQnXt/TCDKDpoqocvDooDsXzLV+q
-	 lzgKHmaRLQVTs1F/2y/jkdgiOf8t2ePFPpK6/ZX0=
+	b=Ho/x53zHkf/ob5TIHJYzEXFrCIJlMfG/tcJHz+cKQZchZ+vrbbkgIth2/PdPRGRl8
+	 WtYhhyrbOhi5FMp0H1EFXGtNOG2+m3+Yf8R+X3hMcXZCI/gwktI3f4lMxpzv7mGXiB
+	 mj9y5aT7uVmaL645HmIN4dXo8yye/yXpfqQeG/54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/105] pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
+Subject: [PATCH 6.16 029/149] net: natsemi: fix `rx_dropped` double accounting on `netif_rx()` failure
 Date: Mon, 22 Sep 2025 21:28:49 +0200
-Message-ID: <20250922192409.074124616@linuxfoundation.org>
+Message-ID: <20250922192413.602277222@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit d1dfcdd30140c031ae091868fb5bed084132bca1 ]
+[ Upstream commit 93ab4881a4e2b9657bdce4b8940073bfb4ed5eab ]
 
-As described in the added code comment, a reference to .exit.text is ok
-for drivers registered via platform_driver_probe().  Make this explicit
-to prevent the following section mismatch warning
+`netif_rx()` already increments `rx_dropped` core stat when it fails.
+The driver was also updating `ndev->stats.rx_dropped` in the same path.
+Since both are reported together via `ip -s -s` command, this resulted
+in drops being counted twice in user-visible stats.
 
-    WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
+Keep the driver update on `if (unlikely(!skb))`, but skip it after
+`netif_rx()` errors.
 
-that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Fixes: caf586e5f23c ("net: add a core netdev->rx_dropped counter")
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250913060135.35282-3-yyyynoom@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/omap_cf.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/natsemi/ns83820.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
-index 5b639c942f17a..a2f50db2b8bab 100644
---- a/drivers/pcmcia/omap_cf.c
-+++ b/drivers/pcmcia/omap_cf.c
-@@ -304,7 +304,13 @@ static void __exit omap_cf_remove(struct platform_device *pdev)
- 	kfree(cf);
- }
+diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
+index 56d5464222d97..cdbf82affa7be 100644
+--- a/drivers/net/ethernet/natsemi/ns83820.c
++++ b/drivers/net/ethernet/natsemi/ns83820.c
+@@ -820,7 +820,7 @@ static void rx_irq(struct net_device *ndev)
+ 	struct ns83820 *dev = PRIV(ndev);
+ 	struct rx_info *info = &dev->rx_info;
+ 	unsigned next_rx;
+-	int rx_rc, len;
++	int len;
+ 	u32 cmdsts;
+ 	__le32 *desc;
+ 	unsigned long flags;
+@@ -881,8 +881,10 @@ static void rx_irq(struct net_device *ndev)
+ 		if (likely(CMDSTS_OK & cmdsts)) {
+ #endif
+ 			skb_put(skb, len);
+-			if (unlikely(!skb))
++			if (unlikely(!skb)) {
++				ndev->stats.rx_dropped++;
+ 				goto netdev_mangle_me_harder_failed;
++			}
+ 			if (cmdsts & CMDSTS_DEST_MULTI)
+ 				ndev->stats.multicast++;
+ 			ndev->stats.rx_packets++;
+@@ -901,15 +903,12 @@ static void rx_irq(struct net_device *ndev)
+ 				__vlan_hwaccel_put_tag(skb, htons(ETH_P_IPV6), tag);
+ 			}
+ #endif
+-			rx_rc = netif_rx(skb);
+-			if (NET_RX_DROP == rx_rc) {
+-netdev_mangle_me_harder_failed:
+-				ndev->stats.rx_dropped++;
+-			}
++			netif_rx(skb);
+ 		} else {
+ 			dev_kfree_skb_irq(skb);
+ 		}
  
--static struct platform_driver omap_cf_driver = {
-+/*
-+ * omap_cf_remove() lives in .exit.text. For drivers registered via
-+ * platform_driver_probe() this is ok because they cannot get unbound at
-+ * runtime. So mark the driver struct with __refdata to prevent modpost
-+ * triggering a section mismatch warning.
-+ */
-+static struct platform_driver omap_cf_driver __refdata = {
- 	.driver = {
- 		.name	= driver_name,
- 	},
++netdev_mangle_me_harder_failed:
+ 		nr++;
+ 		next_rx = info->next_rx;
+ 		desc = info->descs + (DESC_SIZE * next_rx);
 -- 
 2.51.0
 
