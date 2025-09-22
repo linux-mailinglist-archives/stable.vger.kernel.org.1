@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-181118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C63B92DD0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B52B92F05
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49D48190608B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA791447AFE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681142F0690;
-	Mon, 22 Sep 2025 19:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156AF31194D;
+	Mon, 22 Sep 2025 19:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL/StzP0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mgz8KEtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EBB262D14;
-	Mon, 22 Sep 2025 19:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56E2306494;
+	Mon, 22 Sep 2025 19:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569735; cv=none; b=n+lGyrfgVEkGrH3AiwuUm3Jt+1EZ9+kU6EfCfTON//y49kuTs/5CWs2ofOvvfDEc1+4e4htlDE3bx2T/vHfPMGnNS9GPHuaQ7tPAI1fdqH3GSvZNV1jp0Lky5K2dRZVAek2oLP0uAl8TdJXWS4RRbRkNtQFbVQwWCVZENvaayxM=
+	t=1758569953; cv=none; b=FeRTp3ysGSeHNIzZKm1kkkraPLXCDy/49rQCOX4nuTbCLKsY8sOOqacckZYaFdky6gYP9aS62tfDUyxwqnfaF8IRbVZVitoLyLiDflPVvUbvx13aDfVom5qNuc0jtO0T/uSaUEBvKorVohjTZRxwW1464d712USsP2SGdnB/vHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569735; c=relaxed/simple;
-	bh=4GLnHZZO4/v+3WRo+Delkis9QhK2cQb2GT7X5l+Ej/k=;
+	s=arc-20240116; t=1758569953; c=relaxed/simple;
+	bh=ax7APLxVM/qYcj03auzZph1PdP7oSB4XPf0bWuj9Fmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmxCp6g0e4qzEH1Iv1Zq4XXJIB3uFQMdcHqG/wqWhQPlBFo6xjVrW5RhO3B9qeYH9i0447ZgdZZmBXx4etI4xRC8H0M9CI5Z3qavAVvlsRabHzOS0H2671AJJ5Gf3HauH6+1ylFk/ANSYnw5AfH20jvezhmrQkCbxYCaD3jZeK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL/StzP0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58AAC4CEF0;
-	Mon, 22 Sep 2025 19:35:34 +0000 (UTC)
+	 MIME-Version; b=pr7bIwnJmS3jhuTbhOFpk24ZbU9wlLxI2BOKItsfYCRcpSGTHYeCqkfXmNAJUfvLzsk0eRJ8PG5pYWa0H1NFhAZNZbslo+4RUZi1oTAtKB9yLVJcm78UQVNTLtX4bWcOAJegxgo4SahLMdXjXc374bHM81lJEiVPjLgJhB0CJYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mgz8KEtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA24C4CEF5;
+	Mon, 22 Sep 2025 19:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569735;
-	bh=4GLnHZZO4/v+3WRo+Delkis9QhK2cQb2GT7X5l+Ej/k=;
+	s=korg; t=1758569953;
+	bh=ax7APLxVM/qYcj03auzZph1PdP7oSB4XPf0bWuj9Fmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LL/StzP0CMxFHZe7ovMLjN+CawrTVncad7XuGS6ukNFVzPpt2ZhKE8R9LpJ/Fw/xJ
-	 f48bSI6Dt1jTl7LZe2Zu4DpKrDfvdkTZ555fj3b3aGkdLtUfMkxZKDZM4gunCh/xmi
-	 C4GaWnOl0YQaGrMNtFTXkzpPiCbs3z3zzRjfnZ+E=
+	b=Mgz8KEtDFWhr+rIhGf2UuoWeHN6aH32jv1cJDMTzUBkYTUVFGZ2NwDBM/erCKmWH8
+	 D4adOgxbBNfh2u66eNFgBlZ0bVUbxiKEiMupsVryHnMi5KNN1mEu7dFWpbMTVTiBQC
+	 I7Y4Dv7b/Y41Gv0pcpRwZ5OocgmwXI/e7NdRlRUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
 	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 37/70] ASoC: qcom: audioreach: Fix lpaif_type configuration for the I2S interface
+Subject: [PATCH 6.12 054/105] ASoC: qcom: audioreach: Fix lpaif_type configuration for the I2S interface
 Date: Mon, 22 Sep 2025 21:29:37 +0200
-Message-ID: <20250922192405.611313448@linuxfoundation.org>
+Message-ID: <20250922192410.332808346@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,7 +87,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/soc/qcom/qdsp6/audioreach.c
 +++ b/sound/soc/qcom/qdsp6/audioreach.c
-@@ -967,6 +967,7 @@ static int audioreach_i2s_set_media_form
+@@ -971,6 +971,7 @@ static int audioreach_i2s_set_media_form
  	param_data->param_id = PARAM_ID_I2S_INTF_CFG;
  	param_data->param_size = ic_sz - APM_MODULE_PARAM_DATA_SIZE;
  
