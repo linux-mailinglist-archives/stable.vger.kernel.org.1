@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-181189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657BDB92EC3
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5166B930CB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A03152A78AE
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55C3148023B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B49E2F0C78;
-	Mon, 22 Sep 2025 19:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E172F291B;
+	Mon, 22 Sep 2025 19:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyDBcy6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffov56a4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC590285C92;
-	Mon, 22 Sep 2025 19:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844A82F0C52;
+	Mon, 22 Sep 2025 19:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569911; cv=none; b=jWlTRXUWOK+7QmqUlTYVKTv3BahFJlVRvevjGdu2WF70botZ2lfWsfhslTt6oPaoQySHCBcO8YHaiNDcYVvd8HgsqOqdKoJn8Ev7dF9+7WqIF2Wug0g3Mh23XnJAjqYusvT7CV4zmHmULGMI6iI4xtyb7nIlhIjQa9N7yDwUgd4=
+	t=1758570238; cv=none; b=A36vsgacZbB/4CpJIIFhmgYxG/6ajTKc7D30yJgYWoSYo9jBV9ddq0hsuCB9aoIGvUnQOYjTr9jI5yhCq16iYWAqWzhgmPIIKh0aRTdROwxrTpL3ihZVgs56FPlJ2gXMcmyZfuodFI9dBCmiiHjvBLFH6Qw7dSTt1t6dSFzIG9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569911; c=relaxed/simple;
-	bh=mT49cnbSicRNBcTPDgfR8n/mx1ziYtnXDbygEzUwCaU=;
+	s=arc-20240116; t=1758570238; c=relaxed/simple;
+	bh=kx31ylSRz9djZwS31wsJkYKXF7JB5ReqH4cDGKSbycI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDNfJ7FbFuQ1ZkVUC0UgcdGbwX2ViprIEiXoXLt+fSJn8TrFaU7B7JYZLG8LP+6ZTsZ9KIRL/as2p8vVsoWGA9jCqqpZMeRu8LGUG2DpLQUF8yyHT0qng6rZtgH4vK0WOpMLRaOmTXpr7ZVASgCAccst5fdhaCeF1M/YS59AJfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyDBcy6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649ACC4CEF0;
-	Mon, 22 Sep 2025 19:38:31 +0000 (UTC)
+	 MIME-Version; b=s4j4nfSmnOlzhHbq8HvKEr+w4c257G9BS9gPIsLKQTCa0jdOJYM39x6d/BcYzQBeHnM4zdSCb6JEjrZHgDlTuH912YjhP9mgKe24TarqzrBMCZnCvbh73d45hjsUCwozmNx0y9Hds/Q4WkqVZw1sc8NV5+uMkPiRCqR4YfGHmuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffov56a4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCF6C4CEF0;
+	Mon, 22 Sep 2025 19:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569911;
-	bh=mT49cnbSicRNBcTPDgfR8n/mx1ziYtnXDbygEzUwCaU=;
+	s=korg; t=1758570238;
+	bh=kx31ylSRz9djZwS31wsJkYKXF7JB5ReqH4cDGKSbycI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyDBcy6NMkMVsB6n6uf3ok/Niw5sRzWLDdxrJQFzcNH7mu8Ko9GdYTaPF/gSgWCh1
-	 HRS4Loh1QR5HM/E9MUOlPTsgMBfiUQZPpQxNtfr7QMX5Tsr85vWft7r9E8GugiHi/u
-	 bzOcuadOYm/cgUUZNJXudtxeHFjKowR2hf2JhcKE=
+	b=ffov56a4Lwl71BpMcDGLbx2MF05dDiF/9ElcZ2vgWib2XWbMeWCMKQxr7KQIzNiVO
+	 5yEaBQP6pS0J/bo7jsHXdq0XJyuhsk3F5c+zbXUbaMdFcoerync83GVjKLNbcX2t/9
+	 Sze41tPKwdXSxm6kNghuTl4r5RFdOaU4ewfAhjAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 037/105] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
+	Li Zhe <lizhe.67@bytedance.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 060/149] gup: optimize longterm pin_user_pages() for large folio
 Date: Mon, 22 Sep 2025 21:29:20 +0200
-Message-ID: <20250922192409.887639865@linuxfoundation.org>
+Message-ID: <20250922192414.394799141@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +67,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Li Zhe <lizhe.67@bytedance.com>
 
-commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 upstream.
+commit a03db236aebfaeadf79396dbd570896b870bda01 upstream.
 
-Issuing two writes to the same af_alg socket is bogus as the
-data will be interleaved in an unpredictable fashion.  Furthermore,
-concurrent writes may create inconsistencies in the internal
-socket state.
+In the current implementation of longterm pin_user_pages(), we invoke
+collect_longterm_unpinnable_folios().  This function iterates through the
+list to check whether each folio belongs to the "longterm_unpinnabled"
+category.  The folios in this list essentially correspond to a contiguous
+region of userspace addresses, with each folio representing a physical
+address in increments of PAGESIZE.
 
-Disallow this by adding a new ctx->write field that indiciates
-exclusive ownership for writing.
+If this userspace address range is mapped with large folio, we can
+optimize the performance of function collect_longterm_unpinnable_folios()
+by reducing the using of READ_ONCE() invoked in
+pofs_get_folio()->page_folio()->_compound_head().
 
-Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Also, we can simplify the logic of collect_longterm_unpinnable_folios().
+Instead of comparing with prev_folio after calling pofs_get_folio(), we
+can check whether the next page is within the same folio.
+
+The performance test results, based on v6.15, obtained through the
+gup_test tool from the kernel source tree are as follows.  We achieve an
+improvement of over 66% for large folio with pagesize=2M.  For small
+folio, we have only observed a very slight degradation in performance.
+
+Without this patch:
+
+    [root@localhost ~] ./gup_test -HL -m 8192 -n 512
+    TAP version 13
+    1..1
+    # PIN_LONGTERM_BENCHMARK: Time: get:14391 put:10858 us#
+    ok 1 ioctl status 0
+    # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+    [root@localhost ~]# ./gup_test -LT -m 8192 -n 512
+    TAP version 13
+    1..1
+    # PIN_LONGTERM_BENCHMARK: Time: get:130538 put:31676 us#
+    ok 1 ioctl status 0
+    # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+With this patch:
+
+    [root@localhost ~] ./gup_test -HL -m 8192 -n 512
+    TAP version 13
+    1..1
+    # PIN_LONGTERM_BENCHMARK: Time: get:4867 put:10516 us#
+    ok 1 ioctl status 0
+    # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+    [root@localhost ~]# ./gup_test -LT -m 8192 -n 512
+    TAP version 13
+    1..1
+    # PIN_LONGTERM_BENCHMARK: Time: get:131798 put:31328 us#
+    ok 1 ioctl status 0
+    # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+[lizhe.67@bytedance.com: whitespace fix, per David]
+  Link: https://lkml.kernel.org/r/20250606091917.91384-1-lizhe.67@bytedance.com
+Link: https://lkml.kernel.org/r/20250606023742.58344-1-lizhe.67@bytedance.com
+Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c         |    7 +++++++
- include/crypto/if_alg.h |   10 ++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ mm/gup.c |   38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -970,6 +970,12 @@ int af_alg_sendmsg(struct socket *sock,
- 	}
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2300,6 +2300,31 @@ static void pofs_unpin(struct pages_or_f
+ 		unpin_user_pages(pofs->pages, pofs->nr_entries);
+ }
  
- 	lock_sock(sk);
-+	if (ctx->write) {
-+		release_sock(sk);
-+		return -EBUSY;
-+	}
-+	ctx->write = true;
++static struct folio *pofs_next_folio(struct folio *folio,
++		struct pages_or_folios *pofs, long *index_ptr)
++{
++	long i = *index_ptr + 1;
 +
- 	if (ctx->init && !ctx->more) {
- 		if (ctx->used) {
- 			err = -EINVAL;
-@@ -1104,6 +1110,7 @@ int af_alg_sendmsg(struct socket *sock,
++	if (!pofs->has_folios && folio_test_large(folio)) {
++		const unsigned long start_pfn = folio_pfn(folio);
++		const unsigned long end_pfn = start_pfn + folio_nr_pages(folio);
++
++		for (; i < pofs->nr_entries; i++) {
++			unsigned long pfn = page_to_pfn(pofs->pages[i]);
++
++			/* Is this page part of this folio? */
++			if (pfn < start_pfn || pfn >= end_pfn)
++				break;
++		}
++	}
++
++	if (unlikely(i == pofs->nr_entries))
++		return NULL;
++	*index_ptr = i;
++
++	return pofs_get_folio(pofs, i);
++}
++
+ /*
+  * Returns the number of collected folios. Return value is always >= 0.
+  */
+@@ -2307,16 +2332,13 @@ static unsigned long collect_longterm_un
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
+ {
+-	unsigned long i, collected = 0;
+-	struct folio *prev_folio = NULL;
++	unsigned long collected = 0;
+ 	bool drain_allow = true;
++	struct folio *folio;
++	long i = 0;
  
- unlock:
- 	af_alg_data_wakeup(sk);
-+	ctx->write = false;
- 	release_sock(sk);
+-	for (i = 0; i < pofs->nr_entries; i++) {
+-		struct folio *folio = pofs_get_folio(pofs, i);
+-
+-		if (folio == prev_folio)
+-			continue;
+-		prev_folio = folio;
++	for (folio = pofs_get_folio(pofs, i); folio;
++	     folio = pofs_next_folio(folio, pofs, &i)) {
  
- 	return copied ?: err;
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -135,6 +135,7 @@ struct af_alg_async_req {
-  *			SG?
-  * @enc:		Cryptographic operation to be performed when
-  *			recvmsg is invoked.
-+ * @write:		True if we are in the middle of a write.
-  * @init:		True if metadata has been sent.
-  * @len:		Length of memory allocated for this data structure.
-  * @inflight:		Non-zero when AIO requests are in flight.
-@@ -151,10 +152,11 @@ struct af_alg_ctx {
- 	size_t used;
- 	atomic_t rcvused;
- 
--	bool more;
--	bool merge;
--	bool enc;
--	bool init;
-+	u32		more:1,
-+			merge:1,
-+			enc:1,
-+			write:1,
-+			init:1;
- 
- 	unsigned int len;
- 
+ 		if (folio_is_longterm_pinnable(folio))
+ 			continue;
 
 
 
