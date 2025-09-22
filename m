@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BB2B93048
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71542B92C86
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73315448280
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 013E016351A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74652F291B;
-	Mon, 22 Sep 2025 19:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF2E1FDA89;
+	Mon, 22 Sep 2025 19:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E78vVTdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mvlcpugk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9332F49E3;
-	Mon, 22 Sep 2025 19:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80841C8E6;
+	Mon, 22 Sep 2025 19:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570143; cv=none; b=TortF3J2bSr//aFoO/j3D0RK9OSsoWrjYJ2aWidh7kqwtaCP8KMHKoTJfv/yq+qJCgnsnIbpYEd/eh4cl7L3QUjCGx9DWjzzkMeEKCB/BJKL5IPbXVZgMefhgZVJo2IqlVvM4CiAvMdXAXa9FIQpKR45kFe5NQkVNIcQ4nybqGo=
+	t=1758569489; cv=none; b=hIABBr0RYTb4jg44Z8kzU8NZhUjeJhEQVtrpEzSFce+JYywJPj/mB75Rat1aPjVKcAMLn7IqvNhqOdTMfHwCioawlO3ybAueYL1s82iqdX9/YCfbtBAqRQj0xwJTFd60yy3R+c23vPAAnFJRh0k54wIlzWPVXpuAsXeBK7kFqq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570143; c=relaxed/simple;
-	bh=pc7moO8cjUuFBaVU71Ge9NxZS47LNpzQJukgmQWSqFg=;
+	s=arc-20240116; t=1758569489; c=relaxed/simple;
+	bh=jpYcgXkORW60bwABTCGkbvBFkIXsnTtoAmuWzELggUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZ2ovgTiBxEfWAhY9NP9O3jNMXqoLZqgdqStL87sDvj4qWCQCJ00VkWiQf4upPkTUwAOvUfIEqo9azlbzAVfNusgvcg7qINn95vebxBxBkRs4o2YHApy7V5aoASc3VODTkS4lSG69z+8iMixUSvxmNA1P7BhQbc0p+TlnJZ2gjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E78vVTdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA758C4CEF0;
-	Mon, 22 Sep 2025 19:42:22 +0000 (UTC)
+	 MIME-Version; b=OR92xYUlSn9flTqerox2lsEqKAbFPlZnG0wpYil77idAqZXXlcZWnmshtxHLySjVGiJihDreYSDrE+c9k0hHxh/2T/yy8/7dGgb8vSGrtbY5y4CegXRUIx+lGOrfY8T5P3FHO53rVmNAy7e/u8fwo9YG8+Hgxvp24A8k60yHCSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mvlcpugk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953ACC4CEF0;
+	Mon, 22 Sep 2025 19:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570143;
-	bh=pc7moO8cjUuFBaVU71Ge9NxZS47LNpzQJukgmQWSqFg=;
+	s=korg; t=1758569489;
+	bh=jpYcgXkORW60bwABTCGkbvBFkIXsnTtoAmuWzELggUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E78vVTdQT3JT+wPiVkFtxJGzQY4RY7q6qG6DqQBE9lUdkyDZwECvgp8igdIIAQgrn
-	 K0LkklE5Q+gLL1t4o/zhjHJw/V8AqMTloBbJUVsRNRjKiyfIlN1pMPpq3fVWFP7+g3
-	 2z8Xgbf6hG/PzERNL4YON9rji274LHs7sb+NcvC8=
+	b=MvlcpugkmzXfYxKof6XbUCSVzVVlTAJ2gVUoaDoF9otaX79UxwphJ6/Atf4j3DKld
+	 ZNAGgRsla4I2vVK30e+XwlfzA6SgSSWwp++OAI6S1IVSKwNjDDdGyDtlE8V7zHZOUy
+	 youGokV0rd1uH/5JLe5rJ2dWVtlkJ7NZsSVrq2XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Remy D. Farley" <one-d-wide@protonmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 035/149] doc/netlink: Fix typos in operation attributes
+Subject: [PATCH 6.1 02/61] wifi: mac80211: increase scan_ies_len for S1G
 Date: Mon, 22 Sep 2025 21:28:55 +0200
-Message-ID: <20250922192413.751489529@linuxfoundation.org>
+Message-ID: <20250922192403.606433750@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remy D. Farley <one-d-wide@protonmail.com>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-[ Upstream commit 109f8b51543d106aee50dfe911f439e43fb30c7a ]
+[ Upstream commit 7e2f3213e85eba00acb4cfe6d71647892d63c3a1 ]
 
-I'm trying to generate Rust bindings for netlink using the yaml spec.
+Currently the S1G capability element is not taken into account
+for the scan_ies_len, which leads to a buffer length validation
+failure in ieee80211_prep_hw_scan() and subsequent WARN in
+__ieee80211_start_scan(). This prevents hw scanning from functioning.
+To fix ensure we accommodate for the S1G capability length.
 
-It looks like there's a typo in conntrack spec: attribute set conntrack-attrs
-defines attributes "counters-{orig,reply}" (plural), while get operation
-references "counter-{orig,reply}" (singular). The latter should be fixed, as it
-denotes multiple counters (packet and byte). The corresonding C define is
-CTA_COUNTERS_ORIG.
-
-Also, dump request references "nfgen-family" attribute, which neither exists in
-conntrack-attrs attrset nor ctattr_type enum. There's member of nfgenmsg struct
-with the same name, which is where family value is actually taken from.
-
-> static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
->                struct sk_buff *skb,
->                const struct nlmsghdr *nlh,
->                const struct nlattr * const cda[],
->                struct netlink_ext_ack *extack)
-> {
->   int err;
->   struct nfgenmsg *nfmsg = nlmsg_data(nlh);
->   u_int8_t u3 = nfmsg->nfgen_family;
-                         ^^^^^^^^^^^^
-
-Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
-Fixes: 23fc9311a526 ("netlink: specs: add conntrack dump and stats dump support")
-Link: https://patch.msgid.link/20250913140515.1132886-1-one-d-wide@protonmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250826085437.3493-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/conntrack.yaml | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/mac80211/main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/conntrack.yaml b/Documentation/netlink/specs/conntrack.yaml
-index 840dc4504216b..1865ddf01fb0f 100644
---- a/Documentation/netlink/specs/conntrack.yaml
-+++ b/Documentation/netlink/specs/conntrack.yaml
-@@ -575,8 +575,8 @@ operations:
-             - nat-dst
-             - timeout
-             - mark
--            - counter-orig
--            - counter-reply
-+            - counters-orig
-+            - counters-reply
-             - use
-             - id
-             - nat-dst
-@@ -591,7 +591,6 @@ operations:
-         request:
-           value: 0x101
-           attributes:
--            - nfgen-family
-             - mark
-             - filter
-             - status
-@@ -608,8 +607,8 @@ operations:
-             - nat-dst
-             - timeout
-             - mark
--            - counter-orig
--            - counter-reply
-+            - counters-orig
-+            - counters-reply
-             - use
-             - id
-             - nat-dst
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 683301d9f5084..7831e412c7b9d 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -945,7 +945,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	int result, i;
+ 	enum nl80211_band band;
+ 	int channels, max_bitrates;
+-	bool supp_ht, supp_vht, supp_he, supp_eht;
++	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g;
+ 	struct cfg80211_chan_def dflt_chandef = {};
+ 
+ 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
+@@ -1061,6 +1061,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	supp_vht = false;
+ 	supp_he = false;
+ 	supp_eht = false;
++	supp_s1g = false;
+ 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
+ 		struct ieee80211_supported_band *sband;
+ 
+@@ -1097,6 +1098,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 			max_bitrates = sband->n_bitrates;
+ 		supp_ht = supp_ht || sband->ht_cap.ht_supported;
+ 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
++		supp_s1g = supp_s1g || sband->s1g_cap.s1g;
+ 
+ 		for (i = 0; i < sband->n_iftype_data; i++) {
+ 			const struct ieee80211_sband_iftype_data *iftd;
+@@ -1219,6 +1221,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		local->scan_ies_len +=
+ 			2 + sizeof(struct ieee80211_vht_cap);
+ 
++	if (supp_s1g)
++		local->scan_ies_len += 2 + sizeof(struct ieee80211_s1g_cap);
++
+ 	/*
+ 	 * HE cap element is variable in size - set len to allow max size */
+ 	if (supp_he) {
 -- 
 2.51.0
 
