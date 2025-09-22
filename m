@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-181359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1D6B930EF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D35B92F69
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44B652E02D5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17B52A82F9
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA982F3612;
-	Mon, 22 Sep 2025 19:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCF230C36E;
+	Mon, 22 Sep 2025 19:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1ny3fr2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rew6JsuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF6E1F91E3;
-	Mon, 22 Sep 2025 19:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8372F0C64;
+	Mon, 22 Sep 2025 19:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570344; cv=none; b=Ag3itzeidVFydnRKOqh6egMHQNYGLY/tQciVc63EvLq0bSFK+ht+coUmGVLBND1kelpvNfPFoFpx/ztivJimHOpuLoJQPROfOpMtFF4KgtQKLbCRswWX83FkBO/jLVs8Ssu7VYPV3yPSgxhRSmgc1ykXltw9MMA8BNZS6zYI1qw=
+	t=1758570020; cv=none; b=orRzSZuASw10GIjHLWn2AULE3Oi4NE1cWl5cihEa9ifG3pSXMqZrcNQBq8nLzLl+mIQNPayrMiqJE/fVUEv/b0E7i7zpmpB8Z3Pzb7+gEEDjCS2Rg0kPccxcZGUNDyy5boXss6vNbdg3hKVk3hP4c0asyyzy0PGn/iueRzKfA/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570344; c=relaxed/simple;
-	bh=CksHH4xfdKQSip6tdqInQfR8xg4Iu9gHHZT1U67Nxas=;
+	s=arc-20240116; t=1758570020; c=relaxed/simple;
+	bh=go+4smwS+YvjUO+VLu9o2SF40HzW1Dfzh0/mf6eEQlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXsQIohpa5UKTjpQyfaCuz3vKdWI8rXzJJ+NiCu3cl+QXgqKqz6t3/rmSOBiCh+l+bwlTbpYFO4xMR94PgIiFf7dnKt4056zK7jKzTqWRv5LmMiNtwY5Zl8Usnalx+kLssZLR2NRXZorhH73q0sCVO7v6+7zEE/y8X/aiQrk7Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1ny3fr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576CAC4CEF0;
-	Mon, 22 Sep 2025 19:45:44 +0000 (UTC)
+	 MIME-Version; b=tkl6r2t06VXjiikJCgNppfHVnZ4SF7z1HL1G5nYqaB3YN9L5rAMkU5VAsjeaLIPm8SILGI6g7XkMyezW853etUCOud0heTJF4YMJb7AQ/oRS3cW80tHr52uGBUT2xhIo0obIq2apFIN4Gp5AksujbRjCwcroi+0ZYs1ydlhnYi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rew6JsuL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97675C4CEF0;
+	Mon, 22 Sep 2025 19:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570344;
-	bh=CksHH4xfdKQSip6tdqInQfR8xg4Iu9gHHZT1U67Nxas=;
+	s=korg; t=1758570019;
+	bh=go+4smwS+YvjUO+VLu9o2SF40HzW1Dfzh0/mf6eEQlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1ny3fr2tQ3hDxa0k1cK8RnnJsRdHfuXFaciXJqndMCIT7ShfYiJQ3J3rrAty4MVB
-	 JpbeX6uJ1N6vm1yoZjoCZE9CaBme1yo5j3Aw4t58ecoHNwCN7fcw3DW4EcN4EKIuOS
-	 Y6grX/2YxR/bZgwbBJz8XsB8IVBQhSVSo4y05G94=
+	b=Rew6JsuLStK8T8042f3m/8t+xcgII3TfFFWsJ56rUwwj1NpcTctDis3G7TlN75E/B
+	 5gd9s79A71jHPIkEviWyVPASQjmmxYrCCjaqYVl1kodUDlPOOrGx5yNrn2F0YaOto2
+	 QQLfDdltihGfVEWLBQhrZPDIEdE6RyK0TRmtft4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.16 100/149] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
-Date: Mon, 22 Sep 2025 21:30:00 +0200
-Message-ID: <20250922192415.409509290@linuxfoundation.org>
+	Hulk Robot <hulkci@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 078/105] drm: bridge: cdns-mhdp8546: Fix missing mutex unlock on error path
+Date: Mon, 22 Sep 2025 21:30:01 +0200
+Message-ID: <20250922192410.936012222@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Qi Xi <xiqi2@huawei.com>
 
-commit b6f56a44e4c1014b08859dcf04ed246500e310e5 upstream.
+[ Upstream commit 288dac9fb6084330d968459c750c838fd06e10e6 ]
 
-Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-device property") rfkill_find_type() gets called with the possibly
-uninitialized "const char *type_name;" local variable.
+Add missing mutex unlock before returning from the error path in
+cdns_mhdp_atomic_enable().
 
-On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
-
-        rfkill->type = (unsigned)id->driver_data;
-
-and there is no "type" property so device_property_read_string() will fail
-and leave type_name uninitialized, leading to a potential crash.
-
-rfkill_find_type() does accept a NULL pointer, fix the potential crash
-by initializing type_name to NULL.
-
-Note likely sofar this has not been caught because:
-
-1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-2. The stack happened to contain NULL where type_name is stored
-
-Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
-Cc: stable@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 935a92a1c400 ("drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250904034447.665427-1-xiqi2@huawei.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -94,10 +94,10 @@ static const struct dmi_system_id rfkill
- static int rfkill_gpio_probe(struct platform_device *pdev)
- {
- 	struct rfkill_gpio_data *rfkill;
--	struct gpio_desc *gpio;
-+	const char *type_name = NULL;
- 	const char *name_property;
- 	const char *type_property;
--	const char *type_name;
-+	struct gpio_desc *gpio;
- 	int ret;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index 9ba2a667a1f3a..b18bdb2daddf8 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2054,8 +2054,10 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
  
- 	if (dmi_check_system(rfkill_gpio_deny_table))
+ 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
+-	if (!mhdp_state->current_mode)
+-		return;
++	if (!mhdp_state->current_mode) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	drm_mode_set_name(mhdp_state->current_mode);
+ 
+-- 
+2.51.0
+
 
 
 
