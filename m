@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EB9B92EC9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87409B92CE6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAF74170A1F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7AB874E2963
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1757D2F2910;
-	Mon, 22 Sep 2025 19:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85CB2DF714;
+	Mon, 22 Sep 2025 19:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PentoVJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cS8KEUQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69412F2617;
-	Mon, 22 Sep 2025 19:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823D1C8E6;
+	Mon, 22 Sep 2025 19:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569916; cv=none; b=gPPv++gREzzp5jyhBalQRsrMNlU0RX55wU9r0sY4C6z+hMO4RjbGeHxqBPUArlSPVhjoOpcYVorO8SMhcheZvFZOVxzx+IA02MXYQ939G4TzUQyS0AeE9LKsLaJTco+uLNmOquwiXejYnKbl2lxlJm6owdUnTd0H9NbILFVTpEw=
+	t=1758569561; cv=none; b=RBiUdlxCn9itfTmcGxwNYmGZwDoNrLSpKOV3hw8JsIonsfHQlVrfzgcoZz52cXPCvD85R9V0f+GYz1PGn8jGFEQwsONHebot2IEG559aiNe+jjQwAN8mH31I9hQyIv1NTJnFt/fEVGpYaNWQESPfFghkWLWNpTJjnP9wk0/ugt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569916; c=relaxed/simple;
-	bh=VlP3k7yT8JTI0S+TGL/Lqq9Jr/NqxERy2LXgwjsu4CE=;
+	s=arc-20240116; t=1758569561; c=relaxed/simple;
+	bh=b4KXmcolKZyvgLteaK6Ec2n6mBKIKPffQKmtl8Nqw5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d7+OfnuojzH+opnyb1UKALkbBrYsyL9znNirzbNTfOtfDzfNOcnWHK1GpRs+uQQs2MrnKHkY8B+8XlUKD56WlEd/ucvOLF96oG/jung8e/l5EKnQCX4IP+CsQbGaDUkSU+0FfsMS/80t4vOVsSgNrM98V5BbGzSNkTQn/t8bOko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PentoVJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D27C113D0;
-	Mon, 22 Sep 2025 19:38:36 +0000 (UTC)
+	 MIME-Version; b=fJ2XxjAtdtNRzA0oXjVXcH1JtVbIeio2U0tfdOqYIaPsruKpwgclyCDXw0BETeLdAbgEtKUdkh0IgjZIu1GmfCVregO/QdnRxkD2lfzuRtLvZHVGyHPi0Sz+PqsLzZenurQlWc6SJq/0v5DTbUEfEvzU8NsDI2Vvfc2JB1CZ4sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cS8KEUQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4AFC4CEF0;
+	Mon, 22 Sep 2025 19:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569916;
-	bh=VlP3k7yT8JTI0S+TGL/Lqq9Jr/NqxERy2LXgwjsu4CE=;
+	s=korg; t=1758569561;
+	bh=b4KXmcolKZyvgLteaK6Ec2n6mBKIKPffQKmtl8Nqw5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PentoVJfN3XfBwF41HJ0x7C08/DgVN0+IUd5vW6Jhj5Ee62QFvl/J8Jh2zLIqoMtI
-	 Ts8Uo4xYRJ1feQVIXO6nJODmaJpg1w5rrL84lA8wFOzafDUDvYg6mF5FCIDOOt7Gmt
-	 sfYMhWGYjtLGB1km4qqPAihWciWRHjrn37+omtbg=
+	b=cS8KEUQH4oANiHoNkPIB1HK3GovYy9zo4U8nbDUq5cS6TMMk9wZkCl5/pfgNi0+Zb
+	 i6f4MDDUMlx5WRtalsOfZbFWeJOofI/W4ySBAq0Y5cVJn1t5zu1e7B+3z6RONG4X67
+	 KB/kjWiwQCOEK1Z0Wm67+J09DhQsF9gWJ4ueLWfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.12 039/105] power: supply: bq27xxx: restrict no-battery detection to bq27000
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 29/61] ASoC: qcom: audioreach: Fix lpaif_type configuration for the I2S interface
 Date: Mon, 22 Sep 2025 21:29:22 +0200
-Message-ID: <20250922192409.938927963@linuxfoundation.org>
+Message-ID: <20250922192404.353932102@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
 
-commit 1e451977e1703b6db072719b37cd1b8e250b9cc9 upstream.
+commit 5f1af203ef964e7f7bf9d32716dfa5f332cc6f09 upstream.
 
-There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may in some
-cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not be
-interpreted as "no battery" like for a disconnected battery with some built
-in bq27000 chip.
+Fix missing lpaif_type configuration for the I2S interface.
+The proper lpaif interface type required to allow DSP to vote
+appropriate clock setting for I2S interface.
 
-So restrict the no-battery detection originally introduced by
-
-    commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to the bq27000.
-
-There is no need to backport further because this was hidden before
-
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
+Fixes: 25ab80db6b133 ("ASoC: qdsp6: audioreach: add module configuration command helpers")
 Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+Message-ID: <20250908053631.70978-2-mohammad.rafi.shaik@oss.qualcomm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/qcom/qdsp6/audioreach.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1909,8 +1909,8 @@ static void bq27xxx_battery_update_unloc
- 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
+--- a/sound/soc/qcom/qdsp6/audioreach.c
++++ b/sound/soc/qcom/qdsp6/audioreach.c
+@@ -728,6 +728,7 @@ static int audioreach_i2s_set_media_form
+ 	param_data->param_id = PARAM_ID_I2S_INTF_CFG;
+ 	param_data->param_size = ic_sz - APM_MODULE_PARAM_DATA_SIZE;
  
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
--	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -ENODEV; /* read error */
-+	if (di->chip == BQ27000 && (cache.flags & 0xff) == 0xff)
-+		cache.flags = -ENODEV; /* bq27000 hdq read error */
- 	if (cache.flags >= 0) {
- 		cache.capacity = bq27xxx_battery_read_soc(di);
++	intf_cfg->cfg.lpaif_type = module->hw_interface_type;
+ 	intf_cfg->cfg.intf_idx = module->hw_interface_idx;
+ 	intf_cfg->cfg.sd_line_idx = module->sd_line_idx;
  
 
 
