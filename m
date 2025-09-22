@@ -1,140 +1,187 @@
-Return-Path: <stable+bounces-180890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9229AB8F3A1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 09:11:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AC1B8F47D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 09:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 530523B24CC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 07:11:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A90717EF32
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 07:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BD02F1FC3;
-	Mon, 22 Sep 2025 07:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203902F4A0E;
+	Mon, 22 Sep 2025 07:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qy0LR9mD"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EDE221FCC
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 07:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AA92F2908;
+	Mon, 22 Sep 2025 07:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758525097; cv=none; b=auCFyZ8KgMR00Y/H/GDnAexsikA3lY/mZH0UyczBc6Vj0qILkue71a7K8Anrz3VTnAGeYJkAv4g9N6nCma48E7TLhsVLijhAi9+vJ1brY684VPEuvnCNKhwIj0nooDEDNtTdWHgy2VEVNteHKPMCoeqA0TK7WpPWmaRE4cDpbc8=
+	t=1758525824; cv=none; b=K2sDXXsgHixfyjthJYl5AS6pvsCtKjIiQAixNbdrjzN3yBJ/5eJzcW7n4gBqYXHjVplEx/okr3HhMtY6HzbPQpDHi/JcTsEBfhEPXOP+f768nmrYHdiVqHETzhm/WuMxDQV04fQRTY56Hktrrw03QEq5xCDBCgBpt2KUvNKkYEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758525097; c=relaxed/simple;
-	bh=T7Z0FIstTb2WSj8YtIHnDt3lr50hwBNXU0a3XU0hZ6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HeaUDpgSnXCbaK9SBejv2OG/C7XQpmoK5WJiiA9v8gYa9qB7uQmoMk3c5X3ZAvPM6t6L8bue1nLdQxS6pKlKoK80eJKi/vMHYLjWDjR2JSihfytil1X4XnIXWjoIYhtkmZ5bw1S7Bhept60LLPw2vdKxkE3tD2KLGYbkqT8GqqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1v0ahc-0000Ae-EZ; Mon, 22 Sep 2025 09:11:12 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1v0ahZ-002YKq-2Z;
-	Mon, 22 Sep 2025 09:11:09 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1v0ahZ-006mzY-25;
-	Mon, 22 Sep 2025 09:11:09 +0200
-Date: Mon, 22 Sep 2025 09:11:09 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Hubert Wi??niewski <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	Xu Yang <xu.yang_2@nxp.com>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
- PM/MDIO + RTNL deadlock
-Message-ID: <aND2jWYm8k5sD4nV@pengutronix.de>
-References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
- <aMsEyXPMVWewOmQS@wunner.de>
+	s=arc-20240116; t=1758525824; c=relaxed/simple;
+	bh=ZV7aj9Kf9IQrMj6PE5MKPkZnwo28z3HICV1pbhZwGJg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LD6sGO6k1QebQS5JkUKLPflcpfRdahrKa2BpHDtO0eA7UJiTBFbNtOfe+/5/gX6B4CCF16e0ke+cq85hP6qEapdXI6o7l34LBGlS4CauzZNqWbihDQaXvzUGCipZzm6t9o4TeECjkX5oELJXWL36vBWxYX80m35HfXI8YEzptRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qy0LR9mD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1C5C4CEF0;
+	Mon, 22 Sep 2025 07:23:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758525824;
+	bh=ZV7aj9Kf9IQrMj6PE5MKPkZnwo28z3HICV1pbhZwGJg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qy0LR9mD5FuTYFS2OEEJV0ZztHALjbF577zATXWDiMUWjUHPZvD0/XqnOoP72QWXU
+	 nUKth23FKJFWfYC+C3InmIeMopxNUDqKbtp+Hs+AlMo0vFQnFEhHP1jOUv/OWGC0Yl
+	 pSDB1pegHFPWq93holMjx+rfjUylWVmtA/ZjxIpNQFYFAyi/dtqcXWOkfOpu5OHFJW
+	 4wnQNgpeUNMdTR2XllaByQLomBdAWJ97OhoJcF2WktRGQX0eE8Oz7c9YTtde1F2jH5
+	 fqEug/+UTai+Htj7z5FXrSoAdGMW7Z7oplqqMDYAQNadNwoZvSvED2KWa+J8P83QiA
+	 YvWpwtxbeEB9Q==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+	stable@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	linux-kernel@vger.kernel.org (open list),
+	keyrings@vger.kernel.org (open list:KEYS/KEYRINGS),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
+Subject: [PATCH] tpm: Use -EPERM as fallback error code in tpm_ret_to_err
+Date: Mon, 22 Sep 2025 10:23:32 +0300
+Message-Id: <20250922072332.2649135-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aMsEyXPMVWewOmQS@wunner.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Hi Lukas,
+From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 
-On Wed, Sep 17, 2025 at 08:58:17PM +0200, Lukas Wunner wrote:
-> On Wed, Sep 17, 2025 at 11:54:57AM +0200, Oleksij Rempel wrote:
-> > Forbid USB runtime PM (autosuspend) for AX88772* in bind.
-> [...]
-> > With autosuspend active, resume paths may require calling phylink/phylib
-> > (caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
-> > resume can deadlock (RTNL may already be held), and MDIO can attempt a
-> > runtime-wake while the USB PM lock is held.
-> 
-> FWIW, for smsc95xx.c, the MDIO deadlock issue was resolved by commit
-> 7b960c967f2a ("usbnet: smsc95xx: Fix deadlock on runtime resume").
-> I would assume that something similar would be possible for
-> asix_devices.c as well.
+Using -EFAULT here was not the best idea for tpm_ret_to_err as the fallback
+error code as it is no concise with trusted keys.
 
-thanks for the recommendation.
+Change the fallback as -EPERM, process TPM_RC_HASH also in tpm_ret_to_err,
+and by these changes make the helper applicable for trusted keys.
 
-Right now I’m juggling two goals:
-- Stable: provide a simple and robust fix with minimal risk.
-- net-next: design a clean and reliable solution that keeps autosuspend
-  working.
+Cc: stable@vger.kernel.org # v6.15+
+Fixes: 539fbab37881 ("tpm: Mask TPM RC in tpm2_start_auth_session()")
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+---
+ include/linux/tpm.h                       |  9 +++++---
+ security/keys/trusted-keys/trusted_tpm2.c | 26 ++++++-----------------
+ 2 files changed, 13 insertions(+), 22 deletions(-)
 
-For -stable, keeping autosuspend disabled per AX88772* seems to be the
-most straightforward and low-risk way to avoid the problematic
-autoresume path. Autosuspend isn’t on by default in most distros anyway,
-so the behavioral impact is minimal.
-
-If we keep autosuspend enabled, the driver has to be careful about
-multiple contexts:
-- Runtime PM callbacks: asix_{suspend,resume,reset_resume} running under
-the USB PM lock.
-
-- System sleep/resume: asix_resume() via dpm_run_callback() workqueues (no
-pm_runtime involved).
-
-- ndo_open() path (RTNL held): usbnet_open() -> usb_autopm_get_interface()
-  -> synchronous autoresume into asix_resume().
-
-- ethtool / netlink control paths: often under RTNL, may trigger
-  autoresume and/or MDIO via phylib.
-
-- phylink/MAC ops: may touch MDIO; caller is expected to hold RTNL.
-
-- status URB / NAPI: atomic/BH context (no sleeping, no RTNL).
-
-If maintainers prefer attempting the smsc95xx-style change right away, I
-can draft it; my preference for -stable is still the minimal forbid to
-limit churn.
-
-Best Regards,
-Oleksij
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index dc0338a783f3..667d290789ca 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -449,13 +449,16 @@ static inline ssize_t tpm_ret_to_err(ssize_t ret)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	switch (tpm2_rc_value(ret)) {
+-	case TPM2_RC_SUCCESS:
++	if (!ret)
+ 		return 0;
++
++	switch (tpm2_rc_value(ret)) {
+ 	case TPM2_RC_SESSION_MEMORY:
+ 		return -ENOMEM;
++	case TPM2_RC_HASH:
++		return -EINVAL;
+ 	default:
+-		return -EFAULT;
++		return -EPERM;
+ 	}
+ }
+ 
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 024be262702f..e165b117bbca 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -348,25 +348,19 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+ 	}
+ 
+ 	blob_len = tpm2_key_encode(payload, options, &buf.data[offset], blob_len);
++	if (blob_len < 0)
++		rc = blob_len;
+ 
+ out:
+ 	tpm_buf_destroy(&sized);
+ 	tpm_buf_destroy(&buf);
+ 
+-	if (rc > 0) {
+-		if (tpm2_rc_value(rc) == TPM2_RC_HASH)
+-			rc = -EINVAL;
+-		else
+-			rc = -EPERM;
+-	}
+-	if (blob_len < 0)
+-		rc = blob_len;
+-	else
++	if (!rc)
+ 		payload->blob_len = blob_len;
+ 
+ out_put:
+ 	tpm_put_ops(chip);
+-	return rc;
++	return tpm_ret_to_err(rc);
+ }
+ 
+ /**
+@@ -468,10 +462,7 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 		kfree(blob);
+ 	tpm_buf_destroy(&buf);
+ 
+-	if (rc > 0)
+-		rc = -EPERM;
+-
+-	return rc;
++	return tpm_ret_to_err(rc);
+ }
+ 
+ /**
+@@ -534,8 +525,6 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+ 	tpm_buf_fill_hmac_session(chip, &buf);
+ 	rc = tpm_transmit_cmd(chip, &buf, 6, "unsealing");
+ 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+-	if (rc > 0)
+-		rc = -EPERM;
+ 
+ 	if (!rc) {
+ 		data_len = be16_to_cpup(
+@@ -568,7 +557,7 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+ 
+ out:
+ 	tpm_buf_destroy(&buf);
+-	return rc;
++	return tpm_ret_to_err(rc);
+ }
+ 
+ /**
+@@ -600,6 +589,5 @@ int tpm2_unseal_trusted(struct tpm_chip *chip,
+ 
+ out:
+ 	tpm_put_ops(chip);
+-
+-	return rc;
++	return tpm_ret_to_err(rc);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
 
