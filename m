@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD80B93175
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4284DB92F7D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5187944178B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D24D2A810F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DAC2F39CE;
-	Mon, 22 Sep 2025 19:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70DF317706;
+	Mon, 22 Sep 2025 19:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ts33+vkA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpFEnGMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD23221F00;
-	Mon, 22 Sep 2025 19:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8447A2F28E0;
+	Mon, 22 Sep 2025 19:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570377; cv=none; b=CfknKo0CfAD187LY0KjQdeLctRYmElz0SHcAWuVUtUCJuNZHp9lN8XEZwdIbsDN4udhQsWu6TI8HuF6mV11ZOIADgbDBOYdN2w19cbFXoFn+l6XeDMiDqr2eVzDTEi53MPGGmytv1sFDH2bdV6GaMJJaP0/a+y0oWWReRVpYUD8=
+	t=1758570037; cv=none; b=SoYlso9mndIb+8dk4LJXicg1ax4X1U3AnnXRqP06VQj8J6cjy228bGDahNKIzMn3v2+Xmpo6Cag+xGQCFPYvzOq+8IxMl53B1QQYo8f3cWD6OChPMpP+86ghLuDqJjlcWLqQ9oX8+A7Dp++hDd5DPow7zmdtTEq/C4Q7hfWROX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570377; c=relaxed/simple;
-	bh=zWRwZfZAShoVoqbvZYwGWjdg5MzNGYOoQa5pjaHWmvE=;
+	s=arc-20240116; t=1758570037; c=relaxed/simple;
+	bh=/JsK0Olw/cRu+/PLXSlxRbluQXUiQYcftH0s9GbEtjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRhqGqJCI6yjWWdaWlwRg9W58VaEikXf518+Eo1Kppo40pBUbhedjdgtr81a2NN0pDErJ+TtCpEUlzYehO1fBWyRCiYeY7Bmnb9qwFQWjScGiNdFGDkmtvhnOsoKAssAxMEDk0/UWu5SJkbSC9TUhPI97hXlDXq+AnxK1uWs0gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ts33+vkA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5334C4CEF0;
-	Mon, 22 Sep 2025 19:46:16 +0000 (UTC)
+	 MIME-Version; b=YskuHwwJLf9KiMSVYIe2W5t8fCR54xbgGm2ijqCbkM7B/A+83AQqNigc37vZMHFbM5aJOzt3wBCCQ/Qxi6nXECxGDIpWTFcAE874wff/Rbg9nqG7LcR3MlgFPUn7ePi7diQ9EaNAHFWs4xZ25GMmY6oQTfKMvz+jvq5aS5yGDbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpFEnGMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17488C4CEF5;
+	Mon, 22 Sep 2025 19:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570377;
-	bh=zWRwZfZAShoVoqbvZYwGWjdg5MzNGYOoQa5pjaHWmvE=;
+	s=korg; t=1758570037;
+	bh=/JsK0Olw/cRu+/PLXSlxRbluQXUiQYcftH0s9GbEtjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ts33+vkAa6sj+Eyj5fnFOZeKU9/Q4+7185j5v14winWG/ynASQNUCg8KPcWQGtwRF
-	 eCC1jU8HeG4A3VrQheqAbQsFNm9NR3jV4znmsaK77E8TacOUfY9nNbkw2dMxR3sEkY
-	 V3jahmLDPz/8qeYenGSuRVVMvqDdgtC8t70oZKso=
+	b=OpFEnGMCoNrRqTMxiD7khfmoZlSGjImaCZ/4pBP1iVkor7JdhgKIzDQgnDoBm5TvX
+	 Xa0PCZXicmohtiZc+ChHixSqa2ElBt4pJNv2vB39yMhvIvUWAbFpxp9SBCgIsT79VK
+	 Zlv7oZvags1vh5KJuDkpSgO+tIB96jmxtHT9U614=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 113/149] ASoC: SDCA: Fix return value in sdca_regmap_mbq_size()
+	Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>,
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 6.12 090/105] vmxnet3: unregister xdp rxq info in the reset path
 Date: Mon, 22 Sep 2025 21:30:13 +0200
-Message-ID: <20250922192415.725755780@linuxfoundation.org>
+Message-ID: <20250922192411.264402793@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
 
-[ Upstream commit f81e63047600d023cbfda372b6de8f2821ff6839 ]
+commit 0dd765fae295832934bf28e45dd5a355e0891ed4 upstream.
 
-The MBQ size function returns an integer representing the size of a
-Control. Currently if the Control is not found the function will return
-false which makes little sense. Correct this typo to return -EINVAL.
+vmxnet3 does not unregister xdp rxq info in the
+vmxnet3_reset_work() code path as vmxnet3_rq_destroy()
+is not invoked in this code path. So, we get below message with a
+backtrace.
 
-Fixes: e3f7caf74b79 ("ASoC: SDCA: Add generic regmap SDCA helpers")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Message-ID: <20250820163717.1095846-2-ckeepax@opensource.cirrus.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Missing unregister, handled but fix driver
+WARNING: CPU:48 PID: 500 at net/core/xdp.c:182
+__xdp_rxq_info_reg+0x93/0xf0
+
+This patch fixes the problem by moving the unregister
+code of XDP from vmxnet3_rq_destroy() to vmxnet3_rq_cleanup().
+
+Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
+Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Link: https://patch.msgid.link/20250320045522.57892-1-sankararaman.jayaraman@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Ajay: Modified to apply on v6.6, v6.12 ]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sdca/sdca_regmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/sdca/sdca_regmap.c b/sound/soc/sdca/sdca_regmap.c
-index c41c67c2204a4..ff1f8fe2a39bb 100644
---- a/sound/soc/sdca/sdca_regmap.c
-+++ b/sound/soc/sdca/sdca_regmap.c
-@@ -196,7 +196,7 @@ int sdca_regmap_mbq_size(struct sdca_function_data *function, unsigned int reg)
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -2051,6 +2051,11 @@ vmxnet3_rq_cleanup(struct vmxnet3_rx_que
  
- 	control = function_find_control(function, reg);
- 	if (!control)
--		return false;
-+		return -EINVAL;
- 
- 	return clamp_val(control->nbits / BITS_PER_BYTE, sizeof(u8), sizeof(u32));
+ 	rq->comp_ring.gen = VMXNET3_INIT_GEN;
+ 	rq->comp_ring.next2proc = 0;
++
++	if (xdp_rxq_info_is_reg(&rq->xdp_rxq))
++		xdp_rxq_info_unreg(&rq->xdp_rxq);
++	page_pool_destroy(rq->page_pool);
++	rq->page_pool = NULL;
  }
--- 
-2.51.0
-
+ 
+ 
+@@ -2091,11 +2096,6 @@ static void vmxnet3_rq_destroy(struct vm
+ 		}
+ 	}
+ 
+-	if (xdp_rxq_info_is_reg(&rq->xdp_rxq))
+-		xdp_rxq_info_unreg(&rq->xdp_rxq);
+-	page_pool_destroy(rq->page_pool);
+-	rq->page_pool = NULL;
+-
+ 	if (rq->data_ring.base) {
+ 		dma_free_coherent(&adapter->pdev->dev,
+ 				  rq->rx_ring[0].size * rq->data_ring.desc_size,
 
 
 
