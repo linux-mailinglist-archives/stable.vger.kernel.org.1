@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-181365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DBBB9311C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0648B92F29
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C79A2E01BA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7E16447587
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4872F3C2F;
-	Mon, 22 Sep 2025 19:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48B62F2617;
+	Mon, 22 Sep 2025 19:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpnf3dNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZRn1egj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB502F49E3;
-	Mon, 22 Sep 2025 19:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D79C2E285C;
+	Mon, 22 Sep 2025 19:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570359; cv=none; b=oznSKbPvz4RBNH9czUNRUml0WFoNTBTCRDUG95g9uNYv1O6dC0YfxmtNGZu7tZmfrh+EmaLPGK6W1rqHlkbRM0X9fx+9YVtfQZk4dFuyv8RBm/KsA086XuhZVXq2DWuJZEi23b12ov6KxgpfRMx/jirzx8WCQGfyCmB4m0SklYQ=
+	t=1758569973; cv=none; b=VBiyhqdwCvKGkE3HlC6XHYTodU9ad/J51cAroKm7lLUarJggIJHV+W05Aof4VISz0TGSL52ad6aB1uyl74ziLzZPkZBUpkSSvcMlanwV+S3vZqPWvD6Y4LK9Laf5rX48ulVHoqvbf+16qf/yl1qAl9VHtcg/4oJO/U7M/GDrhlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570359; c=relaxed/simple;
-	bh=FvnL/dhvmO3xMT1crajOQdOxaGReVrkPljAuPL3Py4M=;
+	s=arc-20240116; t=1758569973; c=relaxed/simple;
+	bh=5F2fIni9MbngJcEiKgr5xDO3KKO6pgJtoZ8l3roQ1GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1vITfkSXlQ/lQzoLrqkTRF3vwyys0XYqSVjVYT5bQvubtkJP7KipS7s3uXDNfjUHsmLcQqI4MA5AwUX7LWiFGi3p1TLULKM50IdyADhD0xzBAikhcaa1cI1T5ctj3Fm43ww0Dh9Xvmym/4bdQVFsa5WN8FxPPRiTdzkFsBp++M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpnf3dNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6690DC4CEF0;
-	Mon, 22 Sep 2025 19:45:59 +0000 (UTC)
+	 MIME-Version; b=HrHEuUDOkMZsiQ4JmrEeriQ3FTtjjK/7MV8b716AcB4rkkwia8/tq89oH0GBDTt8gl+5H/SWTiGuXPW8DYkmOu5dUqt3AUAkfTT7gWLhCRC5n556ZMzneST0NLnQOSa67/erkclf3mFJ9tEk4cbQE7obTG3RbbTDRlaccDUiorU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZRn1egj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3169BC4CEF0;
+	Mon, 22 Sep 2025 19:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570359;
-	bh=FvnL/dhvmO3xMT1crajOQdOxaGReVrkPljAuPL3Py4M=;
+	s=korg; t=1758569973;
+	bh=5F2fIni9MbngJcEiKgr5xDO3KKO6pgJtoZ8l3roQ1GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpnf3dNUKO+cFnDaigzjKdDzlp+dfcZTPEAzOl1Hk+3APQfEH8bUzqQlK+g08H6QI
-	 WUk3UJ6c2j2qMXUYdXe3NehtSnJPPCrLi2JC/XRkBhvk9LDQTsHOMmv8NraV3VhA/l
-	 ULpuZeJ5Gbil/tcTmuSTTsQD+5/I7BPG8omwzeig=
+	b=cZRn1egjLwNGuB+BCKeqaBN2hFwQYCLL/QGLUqpySmEG5Juwq6ig0enIqWS1cdT4g
+	 Pnnc1aA4wW0wlWCUYI3W9GEthJJN9ligoYMAy5X3kF3Btt3RKa1QTYNepwajdVgaVr
+	 Vi+FMBBXp4kewOM37Bv2Wr/iG0k31SAaQbSJLvTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 096/149] drm/amd/display: Allow RX6xxx & RX7700 to invoke amdgpu_irq_get/put
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 073/105] ASoC: wm8974: Correct PLL rate rounding
 Date: Mon, 22 Sep 2025 21:29:56 +0200
-Message-ID: <20250922192415.307468593@linuxfoundation.org>
+Message-ID: <20250922192410.810321001@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Lipski <ivan.lipski@amd.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 29a2f430475357f760679b249f33e7282688e292 upstream.
+[ Upstream commit 9b17d3724df55ecc2bc67978822585f2b023be48 ]
 
-[Why&How]
-As reported on https://gitlab.freedesktop.org/drm/amd/-/issues/3936,
-SMU hang can occur if the interrupts are not enabled appropriately,
-causing a vblank timeout.
+Using a single value of 22500000 for both 48000Hz and 44100Hz audio
+will sometimes result in returning wrong dividers due to rounding.
+Update the code to use the actual value for both.
 
-This patch reverts commit 5009628d8509 ("drm/amd/display: Remove unnecessary
-amdgpu_irq_get/put"), but only for RX6xxx & RX7700 GPUs, on which the
-issue was observed.
-
-This will re-enable interrupts regardless of whether the user space needed
-it or not.
-
-Fixes: 5009628d8509 ("drm/amd/display: Remove unnecessary amdgpu_irq_get/put")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3936
-Suggested-by: Sun peng Li <sunpeng.li@amd.com>
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 95d168b367aa28a59f94fc690ff76ebf69312c6d)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 51b2bb3f2568 ("ASoC: wm8974: configure pll and mclk divider automatically")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250821082639.1301453-4-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   39 +++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wm8974.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8689,7 +8689,16 @@ static int amdgpu_dm_encoder_init(struct
- static void manage_dm_interrupts(struct amdgpu_device *adev,
- 				 struct amdgpu_crtc *acrtc,
- 				 struct dm_crtc_state *acrtc_state)
--{
-+{	/*
-+	 * We cannot be sure that the frontend index maps to the same
-+	 * backend index - some even map to more than one.
-+	 * So we have to go through the CRTC to find the right IRQ.
-+	 */
-+	int irq_type = amdgpu_display_crtc_idx_to_irq_type(
-+			adev,
-+			acrtc->crtc_id);
-+	struct drm_device *dev = adev_to_drm(adev);
-+
- 	struct drm_vblank_crtc_config config = {0};
- 	struct dc_crtc_timing *timing;
- 	int offdelay;
-@@ -8742,7 +8751,35 @@ static void manage_dm_interrupts(struct
+diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
+index 0ee3655cad01f..c0a8fc867301c 100644
+--- a/sound/soc/codecs/wm8974.c
++++ b/sound/soc/codecs/wm8974.c
+@@ -419,10 +419,14 @@ static int wm8974_update_clocks(struct snd_soc_dai *dai)
+ 	fs256 = 256 * priv->fs;
  
- 		drm_crtc_vblank_on_config(&acrtc->base,
- 					  &config);
-+		/* Allow RX6xxx, RX7700, RX7800 GPUs to call amdgpu_irq_get.*/
-+		switch (amdgpu_ip_version(adev, DCE_HWIP, 0)) {
-+		case IP_VERSION(3, 0, 0):
-+		case IP_VERSION(3, 0, 2):
-+		case IP_VERSION(3, 0, 3):
-+		case IP_VERSION(3, 2, 0):
-+			if (amdgpu_irq_get(adev, &adev->pageflip_irq, irq_type))
-+				drm_err(dev, "DM_IRQ: Cannot get pageflip irq!\n");
-+#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
-+			if (amdgpu_irq_get(adev, &adev->vline0_irq, irq_type))
-+				drm_err(dev, "DM_IRQ: Cannot get vline0 irq!\n");
-+#endif
-+		}
+ 	f = wm8974_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
+-
+ 	if (f != priv->mclk) {
+ 		/* The PLL performs best around 90MHz */
+-		fpll = wm8974_get_mclkdiv(22500000, fs256, &mclkdiv);
++		if (fs256 % 8000)
++			f = 22579200;
++		else
++			f = 24576000;
 +
- 	} else {
-+		/* Allow RX6xxx, RX7700, RX7800 GPUs to call amdgpu_irq_put.*/
-+		switch (amdgpu_ip_version(adev, DCE_HWIP, 0)) {
-+		case IP_VERSION(3, 0, 0):
-+		case IP_VERSION(3, 0, 2):
-+		case IP_VERSION(3, 0, 3):
-+		case IP_VERSION(3, 2, 0):
-+#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
-+			if (amdgpu_irq_put(adev, &adev->vline0_irq, irq_type))
-+				drm_err(dev, "DM_IRQ: Cannot put vline0 irq!\n");
-+#endif
-+			if (amdgpu_irq_put(adev, &adev->pageflip_irq, irq_type))
-+				drm_err(dev, "DM_IRQ: Cannot put pageflip irq!\n");
-+		}
-+
- 		drm_crtc_vblank_off(&acrtc->base);
++		fpll = wm8974_get_mclkdiv(f, fs256, &mclkdiv);
  	}
- }
+ 
+ 	wm8974_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
+-- 
+2.51.0
+
 
 
 
