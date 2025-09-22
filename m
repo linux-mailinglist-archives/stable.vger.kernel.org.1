@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-181363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF067B9310D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D859B92F6B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9CD72E0344
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B30552E00C9
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8C32F5497;
-	Mon, 22 Sep 2025 19:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79C83148C0;
+	Mon, 22 Sep 2025 19:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDPk+uxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5vckWpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDED2F28F9;
-	Mon, 22 Sep 2025 19:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E592F0C52;
+	Mon, 22 Sep 2025 19:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570354; cv=none; b=NTbXaAoqkXyEQGpuZr6P88OVCMuYo0sK123fWMt1HkCtNKaT1fdtNZwWAOHO1i9BMUcAkt/t/hdzl59Ieae6n7YQLNZlIudgYaSnAck4JzsbBEWAGyfgMv90CXYCasAxsDvinAl8y2cpw8ZhSlxFm9h2VAi27dYXqO3EF2PBxJI=
+	t=1758570027; cv=none; b=nOeAtvwbY/yvhGKfi2mqG+jN9OYkHMtE+oZwPzoVqZGTCzhWu7Q5LqZU8su0tYXh9imcEqhwbAdQJzO3iYG7+kXXvphihUPNrgEhZIVUUMvl/U8KlQWPvzubw0DNq4oGRSB0XGOvia4t4/5BHy2XtkPPjS0JJBPxcAdTtrhJ7LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570354; c=relaxed/simple;
-	bh=C+AL0rUzkl8WGZFBx4yyhiM/WlVQyQe/C524mNeWe60=;
+	s=arc-20240116; t=1758570027; c=relaxed/simple;
+	bh=ANFUOxyKeTKQiJ7hKOVummYz1agVnanljXCIX36ml0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUM3nWSizw+R+Fp9APQyMHUtASulhGEsyrHM5pOjJ19TePn+qq4OmMARfI8an9K6AFz7Xo++Lz43/7jUwavlNZqBdy1X38lzetV64dsQS5SqFs/4MPi+I1da7/Fps950ejXEORwcr/Oz+9/xNhUm9vcpu+bzlOAxz6awzi3JFmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDPk+uxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C3CC4CEF0;
-	Mon, 22 Sep 2025 19:45:54 +0000 (UTC)
+	 MIME-Version; b=JNrlMki4AtcrxBolsyUj2r7uBxpykQmmMerHc7vFvdKg4s/Fnpdik76d0by/mXMTEVbT7IPweFo9JD8mD8onmyLDF2E2aKb61/wEDMlYhjia7/Y/yW77UawWU2N+L0ckXmKjXJ1bkLBjzfmXgjKpXu1Vy0EXGvB1D0hGuKzk08A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5vckWpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AADBC4CEF5;
+	Mon, 22 Sep 2025 19:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570354;
-	bh=C+AL0rUzkl8WGZFBx4yyhiM/WlVQyQe/C524mNeWe60=;
+	s=korg; t=1758570027;
+	bh=ANFUOxyKeTKQiJ7hKOVummYz1agVnanljXCIX36ml0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDPk+uxGXsdogBRbFROeIwq1YFoGD7jKuFsR+l+vBnJRrz93gyPL6I4zFLXMQXR8l
-	 mDR9DgkUrc8TixvZpql5T2753BEPbSHogwLWELci6ESGU2GnIjVwzqjXYHcgzoaaFc
-	 Rht1KHMyqhml7ql1UYYU7L2ME9V1hvCS/QbLzn58=
+	b=i5vckWpTOKzbkaDdiU8v0tdgtNO17O0wacoCgsXZ35V5nCbK2ozMpkemoY2hqUk6H
+	 AKRENri1szCINBfAddJ4iQFuzmsVxJNNLt6f2jM5pkvM4CviK5CA+vX9xowJzEtE6o
+	 4vD7uR0IGoAfJoNpjb1NWP+wZQ994e/HNEUU0T7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 104/149] mptcp: propagate shutdown to subflows when possible
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 081/105] smb: client: let smbd_destroy() call disable_work_sync(&info->post_send_credits_work)
 Date: Mon, 22 Sep 2025 21:30:04 +0200
-Message-ID: <20250922192415.506681916@linuxfoundation.org>
+Message-ID: <20250922192411.019798849@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +68,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b upstream.
+[ Upstream commit d9dcbbcf9145b68aa85c40947311a6907277e097 ]
 
-When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
-metadata to exchange, and all subflows can be safely shutdown.
+In smbd_destroy() we may destroy the memory so we better
+wait until post_send_credits_work is no longer pending
+and will never be started again.
 
-Before this patch, the subflows were actually terminated at 'close()'
-time. That's certainly fine most of the time, but not when the userspace
-'shutdown()' a connection, without close()ing it. When doing so, the
-subflows were staying in LAST_ACK state on one side -- and consequently
-in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
-socket.
+I actually just hit the case using rxe:
 
-Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
-consequence of this is that the TCP 'FIN' flag can be set earlier now,
-but the end result is the same. This affects the packetdrill tests
-looking at the end of the MPTCP connections, but for a good reason.
+WARNING: CPU: 0 PID: 138 at drivers/infiniband/sw/rxe/rxe_verbs.c:1032 rxe_post_recv+0x1ee/0x480 [rdma_rxe]
+...
+[ 5305.686979] [    T138]  smbd_post_recv+0x445/0xc10 [cifs]
+[ 5305.687135] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 5305.687149] [    T138]  ? __kasan_check_write+0x14/0x30
+[ 5305.687185] [    T138]  ? __pfx_smbd_post_recv+0x10/0x10 [cifs]
+[ 5305.687329] [    T138]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[ 5305.687356] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 5305.687368] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 5305.687378] [    T138]  ? _raw_spin_unlock_irqrestore+0x11/0x60
+[ 5305.687389] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 5305.687399] [    T138]  ? get_receive_buffer+0x168/0x210 [cifs]
+[ 5305.687555] [    T138]  smbd_post_send_credits+0x382/0x4b0 [cifs]
+[ 5305.687701] [    T138]  ? __pfx_smbd_post_send_credits+0x10/0x10 [cifs]
+[ 5305.687855] [    T138]  ? __pfx___schedule+0x10/0x10
+[ 5305.687865] [    T138]  ? __pfx__raw_spin_lock_irq+0x10/0x10
+[ 5305.687875] [    T138]  ? queue_delayed_work_on+0x8e/0xa0
+[ 5305.687889] [    T138]  process_one_work+0x629/0xf80
+[ 5305.687908] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 5305.687917] [    T138]  ? __kasan_check_write+0x14/0x30
+[ 5305.687933] [    T138]  worker_thread+0x87f/0x1570
+...
 
-Note that tcp_shutdown() will check the subflow state, so no need to do
-that again before calling it.
+It means rxe_post_recv was called after rdma_destroy_qp().
+This happened because put_receive_buffer() was triggered
+by ib_drain_qp() and called:
+queue_work(info->workqueue, &info->post_send_credits_work);
 
-Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
-Cc: stable@vger.kernel.org
-Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/smb/client/smbdirect.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -350,6 +350,20 @@ static void mptcp_close_wake_up(struct s
- 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
- }
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index b9bb531717a65..6284252aa4882 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1308,6 +1308,9 @@ void smbd_destroy(struct TCP_Server_Info *server)
+ 			sc->status == SMBDIRECT_SOCKET_DISCONNECTED);
+ 	}
  
-+static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
-+{
-+	struct mptcp_subflow_context *subflow;
++	log_rdma_event(INFO, "cancelling post_send_credits_work\n");
++	disable_work_sync(&info->post_send_credits_work);
 +
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+		unlock_sock_fast(ssk, slow);
-+	}
-+}
-+
- /* called under the msk socket lock */
- static bool mptcp_pending_data_fin_ack(struct sock *sk)
- {
-@@ -374,6 +388,7 @@ static void mptcp_check_data_fin_ack(str
- 			break;
- 		case TCP_CLOSING:
- 		case TCP_LAST_ACK:
-+			mptcp_shutdown_subflows(msk);
- 			mptcp_set_state(sk, TCP_CLOSE);
- 			break;
- 		}
-@@ -542,6 +557,7 @@ static bool mptcp_check_data_fin(struct
- 			mptcp_set_state(sk, TCP_CLOSING);
- 			break;
- 		case TCP_FIN_WAIT2:
-+			mptcp_shutdown_subflows(msk);
- 			mptcp_set_state(sk, TCP_CLOSE);
- 			break;
- 		default:
+ 	log_rdma_event(INFO, "destroying qp\n");
+ 	ib_drain_qp(sc->ib.qp);
+ 	rdma_destroy_qp(sc->rdma.cm_id);
+-- 
+2.51.0
+
 
 
 
