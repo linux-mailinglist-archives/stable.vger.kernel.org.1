@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-181234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A8DB92F8F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF067B9310D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 647B2189A66A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9CD72E0344
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C6F3128AC;
-	Mon, 22 Sep 2025 19:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8C32F5497;
+	Mon, 22 Sep 2025 19:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoTARtS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDPk+uxG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1CD2F39C6;
-	Mon, 22 Sep 2025 19:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDED2F28F9;
+	Mon, 22 Sep 2025 19:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570025; cv=none; b=ZV8iYD0RwpcnX128VytYfTg75V7DT8WuJCIFQu39OMYLRrDYwwfFgSyjwenmuwy+aEcC7kU6DC4DgQgxR6e5wX9KHN3pNblOyh8WragdYBwvzI1nCW4v/9wI1etwIfKI7ktPPuMgsBEhVCikBfgKdyYrH0aSXTzTggtAJ3BMA6w=
+	t=1758570354; cv=none; b=NTbXaAoqkXyEQGpuZr6P88OVCMuYo0sK123fWMt1HkCtNKaT1fdtNZwWAOHO1i9BMUcAkt/t/hdzl59Ieae6n7YQLNZlIudgYaSnAck4JzsbBEWAGyfgMv90CXYCasAxsDvinAl8y2cpw8ZhSlxFm9h2VAi27dYXqO3EF2PBxJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570025; c=relaxed/simple;
-	bh=RFLqZI+3OZAO5rgZ/FEryvPF1k7+XnDfob8p/dywnpk=;
+	s=arc-20240116; t=1758570354; c=relaxed/simple;
+	bh=C+AL0rUzkl8WGZFBx4yyhiM/WlVQyQe/C524mNeWe60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mD64waBk+9bXmyQDHzYbcX/6+3UOgAQEJKVqnmvRqgifJBdMp1H5RGjvTOO2oYS2anadCZQQ5x2wvwIoj26UN+OGQK1vKEWPaB6quVlkJkHllm92afB1glKQPs3qcN+4AvOMwmEP0WLdpoyQSEnKiBzUiVzIej2/wBdRPxdr8EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoTARtS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2F4C4CEF0;
-	Mon, 22 Sep 2025 19:40:24 +0000 (UTC)
+	 MIME-Version; b=mUM3nWSizw+R+Fp9APQyMHUtASulhGEsyrHM5pOjJ19TePn+qq4OmMARfI8an9K6AFz7Xo++Lz43/7jUwavlNZqBdy1X38lzetV64dsQS5SqFs/4MPi+I1da7/Fps950ejXEORwcr/Oz+9/xNhUm9vcpu+bzlOAxz6awzi3JFmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDPk+uxG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C3CC4CEF0;
+	Mon, 22 Sep 2025 19:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570025;
-	bh=RFLqZI+3OZAO5rgZ/FEryvPF1k7+XnDfob8p/dywnpk=;
+	s=korg; t=1758570354;
+	bh=C+AL0rUzkl8WGZFBx4yyhiM/WlVQyQe/C524mNeWe60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoTARtS8tiWnAUEGWmnX++3eWRIkckibBtlO0tXqMhcoRIL/HQ+pxkkhE7PuPCR8X
-	 JrVDwm4DwJxaR/gsjzUfAYf/yxh/pMMDmZ1pEJEEzDxw5BCldFTT7zKvLUNhNIAu+H
-	 1FUv11lepFglAexEo+fkL84P8ibDTmmQ07eveV7w=
+	b=IDPk+uxGXsdogBRbFROeIwq1YFoGD7jKuFsR+l+vBnJRrz93gyPL6I4zFLXMQXR8l
+	 mDR9DgkUrc8TixvZpql5T2753BEPbSHogwLWELci6ESGU2GnIjVwzqjXYHcgzoaaFc
+	 Rht1KHMyqhml7ql1UYYU7L2ME9V1hvCS/QbLzn58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Frank Sorenson <sorenson@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/105] smb: client: fix filename matching of deferred files
-Date: Mon, 22 Sep 2025 21:30:03 +0200
-Message-ID: <20250922192410.992745435@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 104/149] mptcp: propagate shutdown to subflows when possible
+Date: Mon, 22 Sep 2025 21:30:04 +0200
+Message-ID: <20250922192415.506681916@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,144 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 93ed9a2951308db374cba4562533dde97bac70d3 ]
+commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b upstream.
 
-Fix the following case where the client would end up closing both
-deferred files (foo.tmp & foo) after unlink(foo) due to strstr() call
-in cifs_close_deferred_file_under_dentry():
+When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
+metadata to exchange, and all subflows can be safely shutdown.
 
-  fd1 = openat(AT_FDCWD, "foo", O_WRONLY|O_CREAT|O_TRUNC, 0666);
-  fd2 = openat(AT_FDCWD, "foo.tmp", O_WRONLY|O_CREAT|O_TRUNC, 0666);
-  close(fd1);
-  close(fd2);
-  unlink("foo");
+Before this patch, the subflows were actually terminated at 'close()'
+time. That's certainly fine most of the time, but not when the userspace
+'shutdown()' a connection, without close()ing it. When doing so, the
+subflows were staying in LAST_ACK state on one side -- and consequently
+in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
+socket.
 
-Fixes: e3fc065682eb ("cifs: Deferred close performance improvements")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Cc: Frank Sorenson <sorenson@redhat.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
+consequence of this is that the TCP 'FIN' flag can be set earlier now,
+but the end result is the same. This affects the packetdrill tests
+looking at the end of the MPTCP connections, but for a good reason.
+
+Note that tcp_shutdown() will check the subflow state, so no need to do
+that again before calling it.
+
+Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
+Cc: stable@vger.kernel.org
+Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsproto.h |  4 ++--
- fs/smb/client/inode.c     |  6 +++---
- fs/smb/client/misc.c      | 38 ++++++++++++++++----------------------
- 3 files changed, 21 insertions(+), 27 deletions(-)
+ net/mptcp/protocol.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index fee7bc9848a36..b59647291363b 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -298,8 +298,8 @@ extern void cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode);
- 
- extern void cifs_close_all_deferred_files(struct cifs_tcon *cifs_tcon);
- 
--extern void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
--				const char *path);
-+void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
-+					   struct dentry *dentry);
- 
- extern void cifs_mark_open_handles_for_deleted_file(struct inode *inode,
- 				const char *path);
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index c0df2c1841243..e06d02b68c538 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1958,7 +1958,7 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
- 	}
- 
- 	netfs_wait_for_outstanding_io(inode);
--	cifs_close_deferred_file_under_dentry(tcon, full_path);
-+	cifs_close_deferred_file_under_dentry(tcon, dentry);
- #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
- 	if (cap_unix(tcon->ses) && (CIFS_UNIX_POSIX_PATH_OPS_CAP &
- 				le64_to_cpu(tcon->fsUnixInfo.Capability))) {
-@@ -2489,10 +2489,10 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 		goto cifs_rename_exit;
- 	}
- 
--	cifs_close_deferred_file_under_dentry(tcon, from_name);
-+	cifs_close_deferred_file_under_dentry(tcon, source_dentry);
- 	if (d_inode(target_dentry) != NULL) {
- 		netfs_wait_for_outstanding_io(d_inode(target_dentry));
--		cifs_close_deferred_file_under_dentry(tcon, to_name);
-+		cifs_close_deferred_file_under_dentry(tcon, target_dentry);
- 	}
- 
- 	rc = cifs_do_rename(xid, source_dentry, from_name, target_dentry,
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 57b6b191293ee..499f791df7799 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -829,33 +829,28 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
- 		kfree(tmp_list);
- 	}
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -350,6 +350,20 @@ static void mptcp_close_wake_up(struct s
+ 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
  }
--void
--cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon, const char *path)
+ 
++static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
++{
++	struct mptcp_subflow_context *subflow;
 +
-+void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
-+					   struct dentry *dentry)
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		bool slow;
++
++		slow = lock_sock_fast(ssk);
++		tcp_shutdown(ssk, SEND_SHUTDOWN);
++		unlock_sock_fast(ssk, slow);
++	}
++}
++
+ /* called under the msk socket lock */
+ static bool mptcp_pending_data_fin_ack(struct sock *sk)
  {
--	struct cifsFileInfo *cfile;
- 	struct file_list *tmp_list, *tmp_next_list;
--	void *page;
--	const char *full_path;
-+	struct cifsFileInfo *cfile;
- 	LIST_HEAD(file_head);
- 
--	page = alloc_dentry_path();
- 	spin_lock(&tcon->open_file_lock);
- 	list_for_each_entry(cfile, &tcon->openFileList, tlist) {
--		full_path = build_path_from_dentry(cfile->dentry, page);
--		if (strstr(full_path, path)) {
--			if (delayed_work_pending(&cfile->deferred)) {
--				if (cancel_delayed_work(&cfile->deferred)) {
--					spin_lock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
--					cifs_del_deferred_close(cfile);
--					spin_unlock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
--
--					tmp_list = kmalloc(sizeof(struct file_list), GFP_ATOMIC);
--					if (tmp_list == NULL)
--						break;
--					tmp_list->cfile = cfile;
--					list_add_tail(&tmp_list->list, &file_head);
--				}
--			}
-+		if ((cfile->dentry == dentry) &&
-+		    delayed_work_pending(&cfile->deferred) &&
-+		    cancel_delayed_work(&cfile->deferred)) {
-+			spin_lock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
-+			cifs_del_deferred_close(cfile);
-+			spin_unlock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
-+
-+			tmp_list = kmalloc(sizeof(struct file_list), GFP_ATOMIC);
-+			if (tmp_list == NULL)
-+				break;
-+			tmp_list->cfile = cfile;
-+			list_add_tail(&tmp_list->list, &file_head);
+@@ -374,6 +388,7 @@ static void mptcp_check_data_fin_ack(str
+ 			break;
+ 		case TCP_CLOSING:
+ 		case TCP_LAST_ACK:
++			mptcp_shutdown_subflows(msk);
+ 			mptcp_set_state(sk, TCP_CLOSE);
+ 			break;
  		}
- 	}
- 	spin_unlock(&tcon->open_file_lock);
-@@ -865,7 +860,6 @@ cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon, const char *path)
- 		list_del(&tmp_list->list);
- 		kfree(tmp_list);
- 	}
--	free_dentry_path(page);
- }
- 
- /*
--- 
-2.51.0
-
+@@ -542,6 +557,7 @@ static bool mptcp_check_data_fin(struct
+ 			mptcp_set_state(sk, TCP_CLOSING);
+ 			break;
+ 		case TCP_FIN_WAIT2:
++			mptcp_shutdown_subflows(msk);
+ 			mptcp_set_state(sk, TCP_CLOSE);
+ 			break;
+ 		default:
 
 
 
