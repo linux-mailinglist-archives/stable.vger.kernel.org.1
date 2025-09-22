@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-181197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE53B92EE4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D274B92CDD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01312190761F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 216C82A0A9A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF6B3128AC;
-	Mon, 22 Sep 2025 19:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493A22EDD5D;
+	Mon, 22 Sep 2025 19:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUeU4zIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTR+qvvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7972F0C52;
-	Mon, 22 Sep 2025 19:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5B029BDB5;
+	Mon, 22 Sep 2025 19:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569931; cv=none; b=mXA6Xhn3fvFAWiYeT0mJmw/kvdnjtkHSNvsa9OWEcMrjRknVMWtew8Vv92I4F3m64Zdlibrfkbotj5VQp3wjIcY5g4bqNpymDO0orHLO6boo31nNJDElSwKZ7WJv4PF988ic+1kL0NZ23PUeXkDge4q0xgSBZl6lNKLpqHQ1OnQ=
+	t=1758569554; cv=none; b=t7VL5gAd4zk76jtL6QWTO+3hCLHm+ahzIrvBHL1+0/1K2DOqEFYDIUcYvAAXJxK8CLN4B/gZUwDYCxRbWgHQbRZQ3jO4v6TNq2D1jqKbUEIRpDTLH9gJC5oOR6vn6cVj4yLSbb3fWfrCfsWPxJidJyneVgBvCcE1+QJXDaZ7Dh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569931; c=relaxed/simple;
-	bh=P87LzlnqZlcUylrEI26Nit7wEM+IWAh1fuobTOpNp/4=;
+	s=arc-20240116; t=1758569554; c=relaxed/simple;
+	bh=71aoG+VXt8RY2GOFVh+GYje/ix76F63RVr+IMpKmMQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NCyC5BphLVyLmIlS62Ebedg3I+dqbafqvFTGsyeEU0GyiAq30tnB4aioJhrZvnuEgnHGFMxHzTxDeK4BxTeKGRoF5uc25+wHu9Hp+yUgeJDzuQAWeIrS88XsdBqnQyNxOfH+J6PcRNd27VwpSjcvxpxOxqE3D73uiAVCA8KJnUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUeU4zIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C37CC4CEF0;
-	Mon, 22 Sep 2025 19:38:51 +0000 (UTC)
+	 MIME-Version; b=MPRbgWLdRhtSpYufoMuht7XFICJF0wRTQZVsr3i/wLvOFo6Hb7xGnBfnmuX+rzrOO8qHQFV7uDEx8Uaq9nCV4XnwMDftVCsr279vjp+XAnm9XIP3/CpjuYJE/HLy13GHQQUZgt/Kfuxk9OhYpLVZS0WapGQ0R2oZaEzZmQnu5Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTR+qvvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82315C4CEF0;
+	Mon, 22 Sep 2025 19:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569931;
-	bh=P87LzlnqZlcUylrEI26Nit7wEM+IWAh1fuobTOpNp/4=;
+	s=korg; t=1758569553;
+	bh=71aoG+VXt8RY2GOFVh+GYje/ix76F63RVr+IMpKmMQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUeU4zIYZELsU8a/0cER8/EFFfzSKLwNjxuaxLYr9BWbBBpg1Xo8ebdpp51mKYrQp
-	 XpdHLZhy6SPycxvERCaQMXvF/WTMUxXUPpCEmduySkIGdMsxJ2ux9i9wU9pFQj/XZN
-	 WLVsRuhOt+Sk+WlYRyrIZe1XEQN2YsTScNEWeyEY=
+	b=eTR+qvvLvYG2tDGtJeamxOHJ2JKjqP7SWolrmw9GxpvnCdrSWbSc3/qoSJjHhhjiT
+	 1H/JxACfpCv5uuEX90gMgLkeVNz4Rg4fcuLmljMcsOb9F3/Nil+L5/RASyopb2i5A0
+	 3cJjdKXZZ6B6jAegBjXPoiYtFm5hP3iFt8aj3z4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <202321181@mail.sdu.edu.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 048/105] LoongArch: vDSO: Check kcalloc() result in init_vdso()
+	Ankur Tyagi <ankur.tyagi85@gmail.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 38/61] ASoC: wm8940: Correct typo in control name
 Date: Mon, 22 Sep 2025 21:29:31 +0200
-Message-ID: <20250922192410.176624002@linuxfoundation.org>
+Message-ID: <20250922192404.615285810@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <202321181@mail.sdu.edu.cn>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit ac398f570724c41e5e039d54e4075519f6af7408 upstream.
+[ Upstream commit b4799520dcd6fe1e14495cecbbe9975d847cd482 ]
 
-Add a NULL-pointer check after the kcalloc() call in init_vdso(). If
-allocation fails, return -ENOMEM to prevent a possible dereference of
-vdso_info.code_mapping.pages when it is NULL.
-
-Cc: stable@vger.kernel.org
-Fixes: 2ed119aef60d ("LoongArch: Set correct size for vDSO code mapping")
-Signed-off-by: Guangshuo Li <202321181@mail.sdu.edu.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0b5e92c5e020 ("ASoC WM8940 Driver")
+Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Link: https://patch.msgid.link/20250821082639.1301453-3-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/vdso.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/wm8940.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/vdso.c
-+++ b/arch/loongarch/kernel/vdso.c
-@@ -108,6 +108,9 @@ static int __init init_vdso(void)
- 	vdso_info.code_mapping.pages =
- 		kcalloc(vdso_info.size / PAGE_SIZE, sizeof(struct page *), GFP_KERNEL);
- 
-+	if (!vdso_info.code_mapping.pages)
-+		return -ENOMEM;
-+
- 	pfn = __phys_to_pfn(__pa_symbol(vdso_info.vdso));
- 	for (i = 0; i < vdso_info.size / PAGE_SIZE; i++)
- 		vdso_info.code_mapping.pages[i] = pfn_to_page(pfn + i);
+diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
+index 8dac9fd885470..2e70045d5920d 100644
+--- a/sound/soc/codecs/wm8940.c
++++ b/sound/soc/codecs/wm8940.c
+@@ -218,7 +218,7 @@ static const struct snd_kcontrol_new wm8940_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Digital Capture Volume", WM8940_ADCVOL,
+ 		       0, 255, 0, wm8940_adc_tlv),
+ 	SOC_ENUM("Mic Bias Level", wm8940_mic_bias_level_enum),
+-	SOC_SINGLE_TLV("Capture Boost Volue", WM8940_ADCBOOST,
++	SOC_SINGLE_TLV("Capture Boost Volume", WM8940_ADCBOOST,
+ 		       8, 1, 0, wm8940_capture_boost_vol_tlv),
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", WM8940_SPKVOL,
+ 		       0, 63, 0, wm8940_spk_vol_tlv),
+-- 
+2.51.0
+
 
 
 
