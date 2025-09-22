@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBADB92DE8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28E8B93101
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0206F7B2117
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F651884920
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1895627FB2D;
-	Mon, 22 Sep 2025 19:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02613176ED;
+	Mon, 22 Sep 2025 19:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP1CvYrU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WA5fdqqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE8E27B320;
-	Mon, 22 Sep 2025 19:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0522F3626;
+	Mon, 22 Sep 2025 19:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569752; cv=none; b=WdqJSAtCuoAeQHaA3XxBG11As9fp9mePiU8FsCdkt2edLup8YQD5kNZT0yaMD5IvO/7UiD6huLdxknW8BK5sSfnDexutn+FrK9NbzMZGl8hwfjBF1nU6yq7jPwBkELCvcnvwvQ485uREV2LqVhj8kzJ/dESckEZZz6HIcpurfM4=
+	t=1758570307; cv=none; b=ftXutzhAoVxks2C1EXUvyXZ59SwafGnn2jZzYfF5HKBEIoabiQzjwqpxMnhN+5IPowjETswY923I5/fUf/8YYEXYjI6KCNK0VAaZ2i9hNhlx7j0gWUxKA+dN36ING0JYUdKtzBhgVO0EXLLvIuU+cHX8N6662VbUU6gGs0+s3Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569752; c=relaxed/simple;
-	bh=Tj/nsJ442b3poWJDWjYTq1zZquA+6qkPq3N2938Kbs0=;
+	s=arc-20240116; t=1758570307; c=relaxed/simple;
+	bh=+g6BC0aESKzJcRQ+AZqClLcm1SunYw1vVUq3IDcjJ9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ry3zW1Wq054mtvJpgLi++EGa5tNVGH49QLSW/Yi1PpyUTb2S474Ef8Gp8hoRTF9UhIHQstEiQut350s4bBkRAZeGhim6qdphCTOzDS6p/lyMewfTfy4HbvRN0uc/Yg9zS0mNSUS0AfC9xU8zNkf1JwAzwgojy2iKcFixQhRBaK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP1CvYrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148EBC4CEF0;
-	Mon, 22 Sep 2025 19:35:51 +0000 (UTC)
+	 MIME-Version; b=DzMercbQEgmL4tMR6v3ykXDvGNt/Nm0TsfiE1+8U0MZyulUk8scMNzMmwbxNFyUI2R1Fhjwh6138CwX2oNjdC4OQ1CG+Jom9JYW4JnA56nG/oIuWt+XRyge5Mr0H11d+KhSBsmW7LE8jIKSVDDCMhDyWsPZpTx7KH3JmAwRgia0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WA5fdqqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265F9C4CEF0;
+	Mon, 22 Sep 2025 19:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569752;
-	bh=Tj/nsJ442b3poWJDWjYTq1zZquA+6qkPq3N2938Kbs0=;
+	s=korg; t=1758570307;
+	bh=+g6BC0aESKzJcRQ+AZqClLcm1SunYw1vVUq3IDcjJ9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aP1CvYrU1Z0TqwGi1MLC2HHKqJXETz1Ke8P+WRYXzej1jYLpD1v+qY3q/NHd00YRa
-	 61cZC1cb2872bxR97yxxpzXjAB8mZojmlT2iJspYuWJ+Z3JdSSWdlwUBtqpOUC1MDw
-	 ArDHdZn72fz/53aVvaP01MWIDXOJK6H5RAgqdN34=
+	b=WA5fdqqpiCLZVZNaw5ktpwva8X/z+bDoe+Jh2PeLaDC2SuZWLjFmYGIh1afGpLOJ0
+	 ZXtsBp0uTSFBVGwu16lY8mRTu0CKMc4OUwxJ0PzEfH7lVf5XCNQqKQGGWup6P30N++
+	 6qFbjqwn0Ba4i7N7me19wOpkveeX6cNhrtq9KhwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 43/70] rds: ib: Increment i_fastreg_wrs before bailing out
-Date: Mon, 22 Sep 2025 21:29:43 +0200
-Message-ID: <20250922192405.771818518@linuxfoundation.org>
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.16 084/149] ASoC: SDCA: Add quirk for incorrect function types for 3 systems
+Date: Mon, 22 Sep 2025 21:29:44 +0200
+Message-ID: <20250922192415.005928426@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-commit 4351ca3fcb3ffecf12631b4996bf085a2dad0db6 upstream.
+commit 28edfaa10ca1b370b1a27fde632000d35c43402c upstream.
 
-We need to increment i_fastreg_wrs before we bail out from
-rds_ib_post_reg_frmr().
+Certain systems have CS42L43 DisCo that claims to conform to version 0.6.28
+but uses the function types from the 1.0 spec. Add a quirk as a workaround.
 
-We have a fixed budget of how many FRWR operations that can be
-outstanding using the dedicated QP used for memory registrations and
-de-registrations. This budget is enforced by the atomic_t
-i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
-"leak" the possibility of posting an FRWR operation, and if that
-accumulates, no FRWR operation can be carried out.
-
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
+Closes: https://github.com/thesofproject/linux/issues/5515
 Cc: stable@vger.kernel.org
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-Link: https://patch.msgid.link/20250911133336.451212-1-haakon.bugge@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Link: https://patch.msgid.link/20250901151518.3197941-1-mstrozek@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/ib_frmr.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ include/sound/sdca.h            |    1 +
+ sound/soc/sdca/sdca_device.c    |   20 ++++++++++++++++++++
+ sound/soc/sdca/sdca_functions.c |   13 ++++++++-----
+ 3 files changed, 29 insertions(+), 5 deletions(-)
 
---- a/net/rds/ib_frmr.c
-+++ b/net/rds/ib_frmr.c
-@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct r
+--- a/include/sound/sdca.h
++++ b/include/sound/sdca.h
+@@ -46,6 +46,7 @@ struct sdca_device_data {
  
- 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
- 				&off, PAGE_SIZE);
--	if (unlikely(ret != ibmr->sg_dma_len))
--		return ret < 0 ? ret : -EINVAL;
-+	if (unlikely(ret != ibmr->sg_dma_len)) {
-+		ret = ret < 0 ? ret : -EINVAL;
-+		goto out_inc;
-+	}
+ enum sdca_quirk {
+ 	SDCA_QUIRKS_RT712_VB,
++	SDCA_QUIRKS_SKIP_FUNC_TYPE_PATCHING,
+ };
  
--	if (cmpxchg(&frmr->fr_state,
--		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
--		return -EBUSY;
-+	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
-+		ret = -EBUSY;
-+		goto out_inc;
-+	}
+ #if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_SND_SOC_SDCA)
+--- a/sound/soc/sdca/sdca_device.c
++++ b/sound/soc/sdca/sdca_device.c
+@@ -7,6 +7,7 @@
+  */
  
- 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
- 
-@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct r
- 		/* Failure here can be because of -ENOMEM as well */
- 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
- 
--		atomic_inc(&ibmr->ic->i_fastreg_wrs);
- 		if (printk_ratelimit())
- 			pr_warn("RDS/IB: %s returned error(%d)\n",
- 				__func__, ret);
--		goto out;
-+		goto out_inc;
- 	}
- 
- 	/* Wait for the registration to complete in order to prevent an invalid
-@@ -179,8 +181,10 @@ static int rds_ib_post_reg_frmr(struct r
- 	 */
- 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
- 
--out:
-+	return ret;
- 
-+out_inc:
-+	atomic_inc(&ibmr->ic->i_fastreg_wrs);
- 	return ret;
+ #include <linux/acpi.h>
++#include <linux/dmi.h>
+ #include <linux/module.h>
+ #include <linux/property.h>
+ #include <linux/soundwire/sdw.h>
+@@ -55,11 +56,30 @@ static bool sdca_device_quirk_rt712_vb(s
+ 	return false;
  }
  
++static bool sdca_device_quirk_skip_func_type_patching(struct sdw_slave *slave)
++{
++	const char *vendor, *sku;
++
++	vendor = dmi_get_system_info(DMI_SYS_VENDOR);
++	sku = dmi_get_system_info(DMI_PRODUCT_SKU);
++
++	if (vendor && sku &&
++	    !strcmp(vendor, "Dell Inc.") &&
++	    (!strcmp(sku, "0C62") || !strcmp(sku, "0C63") || !strcmp(sku, "0C6B")) &&
++	    slave->sdca_data.interface_revision == 0x061c &&
++	    slave->id.mfg_id == 0x01fa && slave->id.part_id == 0x4243)
++		return true;
++
++	return false;
++}
++
+ bool sdca_device_quirk_match(struct sdw_slave *slave, enum sdca_quirk quirk)
+ {
+ 	switch (quirk) {
+ 	case SDCA_QUIRKS_RT712_VB:
+ 		return sdca_device_quirk_rt712_vb(slave);
++	case SDCA_QUIRKS_SKIP_FUNC_TYPE_PATCHING:
++		return sdca_device_quirk_skip_func_type_patching(slave);
+ 	default:
+ 		break;
+ 	}
+--- a/sound/soc/sdca/sdca_functions.c
++++ b/sound/soc/sdca/sdca_functions.c
+@@ -89,6 +89,7 @@ static int find_sdca_function(struct acp
+ {
+ 	struct fwnode_handle *function_node = acpi_fwnode_handle(adev);
+ 	struct sdca_device_data *sdca_data = data;
++	struct sdw_slave *slave = container_of(sdca_data, struct sdw_slave, sdca_data);
+ 	struct device *dev = &adev->dev;
+ 	struct fwnode_handle *control5; /* used to identify function type */
+ 	const char *function_name;
+@@ -136,11 +137,13 @@ static int find_sdca_function(struct acp
+ 		return ret;
+ 	}
+ 
+-	ret = patch_sdca_function_type(sdca_data->interface_revision, &function_type);
+-	if (ret < 0) {
+-		dev_err(dev, "SDCA version %#x invalid function type %d\n",
+-			sdca_data->interface_revision, function_type);
+-		return ret;
++	if (!sdca_device_quirk_match(slave, SDCA_QUIRKS_SKIP_FUNC_TYPE_PATCHING)) {
++		ret = patch_sdca_function_type(sdca_data->interface_revision, &function_type);
++		if (ret < 0) {
++			dev_err(dev, "SDCA version %#x invalid function type %d\n",
++				sdca_data->interface_revision, function_type);
++			return ret;
++		}
+ 	}
+ 
+ 	function_name = get_sdca_function_name(function_type);
 
 
 
