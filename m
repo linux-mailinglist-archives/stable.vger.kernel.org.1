@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-181360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43443B930F8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 055CBB92E27
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3F2F2E0453
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A695116AC0F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFE22773C2;
-	Mon, 22 Sep 2025 19:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4FF2F0C5F;
+	Mon, 22 Sep 2025 19:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmN6SXUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbVfgiRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482251F91E3;
-	Mon, 22 Sep 2025 19:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E383925F780;
+	Mon, 22 Sep 2025 19:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570347; cv=none; b=ZOwLqxl88EdFvn2ilpu2wvP/6LhPD3kT/LIScmSnQvZtmlDz1IXuiDUHB2tAL/UmG8bMkI4OkPu/dYFMYV1gcb6IbvK0pUvR9y+BkFB0APqQ3WrSysFQHCDblCU5WNcp5or9ExCqLVScwxDIb7DJKDwXS6xqB5ZetqHagRGZlxE=
+	t=1758569800; cv=none; b=oYGF2lRIhtl7h0vU6y8rTt3Uz1ZSYI+Dc/31WRdWMvmeQVdyrPAKJGME8HLu6MKsTBnEJkWNm+yMr/CsySD3zT1BZF+6MvfEaoF6CkLRKzRoxuBSYNXaUMG3sBciy30LB9gCR9K1TrtHbhgKJAuQcuksA1a1SmfkmCQbaPD6MjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570347; c=relaxed/simple;
-	bh=7NEpnA/f7cM1HUEQQFJJAIHWT0/v6Ec0BC+XeROY7K4=;
+	s=arc-20240116; t=1758569800; c=relaxed/simple;
+	bh=36l8AVcY24J8Y1IjAeYzi4fF9gw/wIhx9fuSVXzmXuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=avfNq/hJ/UyfSoDB4UMrhtLzNUw6RW4/Hjcx77WjqBeJ4yp5lFnToFvLRcoC/V93xir92WSF2mImhmUpISZZC0qK3t+vFrxtwcfFzsMQ9Ja1hz/1EeulnzhaZRVxBTVG5gkN2TXV+cjVT22TQQPxO26waxrZVbIPyH8yMp96zD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmN6SXUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B8CC4CEF0;
-	Mon, 22 Sep 2025 19:45:46 +0000 (UTC)
+	 MIME-Version; b=A9IJa1gPIZ+llNbtE3i+Z3/f+i5qajQWSRpHXoaZt92I7oMGcKk+vNpQitNBc4kD6ZrSb2ddcb3LH1GooJjCvgJlxTxsrcj5lrqyekYVi9ypDO7d67j0fF4QRsFtqCOhf6gcH3p/FkLHXQdJZHKO9KUj0l3UHkSm6jtDGdf74kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbVfgiRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BCDC4CEF0;
+	Mon, 22 Sep 2025 19:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570347;
-	bh=7NEpnA/f7cM1HUEQQFJJAIHWT0/v6Ec0BC+XeROY7K4=;
+	s=korg; t=1758569799;
+	bh=36l8AVcY24J8Y1IjAeYzi4fF9gw/wIhx9fuSVXzmXuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xmN6SXUfY6E82pBZo2YEFy3tb52RmFxFUkVqUJMdQMqqAIM7erN6yL8mvu07TC3kc
-	 Rtt6E2+rlLP8hpWROHyVL6AADBxmZbyByklNB4bDNTK4afQ2Uif+C4+TifUji6QrHj
-	 PjT/DMcbt/IYkpCud25r71/Fca0CMDlX0VdnaVTU=
+	b=wbVfgiRh1DM4G0XmqTasADvO001AxD14cveBq28BVUd246/26dAKnMlIuUMIFNa5a
+	 JWxx0aXEjjsL68mEzEtGucYwQ/aD58VIkatkbZHNr1Pfz/fT1xZX7qESOlafnPqF0y
+	 RmO/orStexNHVLao4oYZvWMxqBCCZkr56oo++www=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?S=C3=A9bastien=20Szymanski?= <sebastien.szymanski@armadeus.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Calvin Owens <calvin@wbinvd.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.16 101/149] gpiolib: acpi: initialize acpi_gpio_info struct
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 61/70] phy: ti: omap-usb2: fix device leak at unbind
 Date: Mon, 22 Sep 2025 21:30:01 +0200
-Message-ID: <20250922192415.434516925@linuxfoundation.org>
+Message-ID: <20250922192406.238666578@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 19c839a98c731169f06d32e7c9e00c78a0086ebe upstream.
+[ Upstream commit 64961557efa1b98f375c0579779e7eeda1a02c42 ]
 
-Since commit 7c010d463372 ("gpiolib: acpi: Make sure we fill struct
-acpi_gpio_info"), uninitialized acpi_gpio_info struct are passed to
-__acpi_find_gpio() and later in the call stack info->quirks is used in
-acpi_populate_gpio_lookup. This breaks the i2c_hid_cpi driver:
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-[   58.122916] i2c_hid_acpi i2c-UNIW0001:00: HID over i2c has not been provided an Int IRQ
-[   58.123097] i2c_hid_acpi i2c-UNIW0001:00: probe with driver i2c_hid_acpi failed with error -22
-
-Fix this by initializing the acpi_gpio_info pass to __acpi_find_gpio()
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220388
-Fixes: 7c010d463372 ("gpiolib: acpi: Make sure we fill struct acpi_gpio_info")
-Signed-off-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
-Tested-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-By: Calvin Owens <calvin@wbinvd.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 478b6c7436c2 ("usb: phy: omap-usb2: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724131206.2211-3-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi-core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/ti/phy-omap-usb2.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -942,7 +942,7 @@ struct gpio_desc *acpi_find_gpio(struct
+--- a/drivers/phy/ti/phy-omap-usb2.c
++++ b/drivers/phy/ti/phy-omap-usb2.c
+@@ -363,6 +363,13 @@ static void omap_usb2_init_errata(struct
+ 		phy->flags |= OMAP_USB2_DISABLE_CHRG_DET;
+ }
+ 
++static void omap_usb2_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int omap_usb2_probe(struct platform_device *pdev)
  {
- 	struct acpi_device *adev = to_acpi_device_node(fwnode);
- 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
--	struct acpi_gpio_info info;
-+	struct acpi_gpio_info info = {};
- 	struct gpio_desc *desc;
+ 	struct omap_usb	*phy;
+@@ -373,6 +380,7 @@ static int omap_usb2_probe(struct platfo
+ 	struct device_node *control_node;
+ 	struct platform_device *control_pdev;
+ 	const struct usb_phy_data *phy_data;
++	int ret;
  
- 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
-@@ -992,7 +992,7 @@ int acpi_dev_gpio_irq_wake_get_by(struct
- 	int ret;
- 
- 	for (i = 0, idx = 0; idx <= index; i++) {
--		struct acpi_gpio_info info;
-+		struct acpi_gpio_info info = {};
- 		struct gpio_desc *desc;
- 
- 		/* Ignore -EPROBE_DEFER, it only matters if idx matches */
+ 	phy_data = device_get_match_data(&pdev->dev);
+ 	if (!phy_data)
+@@ -423,6 +431,11 @@ static int omap_usb2_probe(struct platfo
+ 			return -EINVAL;
+ 		}
+ 		phy->control_dev = &control_pdev->dev;
++
++		ret = devm_add_action_or_reset(&pdev->dev, omap_usb2_put_device,
++					       phy->control_dev);
++		if (ret)
++			return ret;
+ 	} else {
+ 		if (of_property_read_u32_index(node,
+ 					       "syscon-phy-power", 1,
 
 
 
