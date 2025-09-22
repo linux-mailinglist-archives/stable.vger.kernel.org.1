@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-181177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B4BB92E99
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE05B92CAC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9262F4471F5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69683175851
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86C72F0C78;
-	Mon, 22 Sep 2025 19:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E353F2F0670;
+	Mon, 22 Sep 2025 19:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLVnbL0L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaFuN9yg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E5427B320;
-	Mon, 22 Sep 2025 19:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD3D191F66;
+	Mon, 22 Sep 2025 19:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569884; cv=none; b=DTsrtRXWb3pq7DFB2buSG+9tMA7BlxZ4eOZLi2De1pbC8V60NMSigv7D39X6e5D2iPMGrb8yhuI0mDUm1hXA49mDsrAkB1W4YcaKCdUtHSk8W526neZKtgjfP05pIDORMw2o7kDfGDRpm8h+dJFxTh27G5sn9kOtKpjfCjIDA50=
+	t=1758569526; cv=none; b=e3tuXzLCZd21LYin7MBTxVkCxGxPnmFLk4rIZmI40DomRpkaW+rZUVQve5Rbi4RKLf+8/FxMNo5VC/HYrBow8Pr/K/u0yihfkWSOvbLz5StAYrxbv4ZwY6bZsD6PiT58OqYxTVCXozgiO0FqurfK8Kj8Fn9i9uEqn8CMHsgdOLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569884; c=relaxed/simple;
-	bh=1bU0VlgmipZYlam4RahH16yrrJExF/DB6YAQHCKCybw=;
+	s=arc-20240116; t=1758569526; c=relaxed/simple;
+	bh=XvERr3brTVM8ljaGCyO0ijtBIxjMo9EvTgDlokxbM5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3oYNNr+C1ig0MvlLafEJo/FQNfWrmkB1eWQHniu25fZ/j1rJjlTzJUHU5qdtycvE2ec90ZWm1xJUEQintUUFQ904DZDRfqP+kVBwlwpIjRp79irtvs6xakzBvvujhX2G331KpHCwixqOKDOapYhQiYtviUz9rST6QKKu6wLM0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLVnbL0L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C29C4CEF0;
-	Mon, 22 Sep 2025 19:38:01 +0000 (UTC)
+	 MIME-Version; b=HhTahGlWMHZdP0AIInH79uiI7JjTRrWtBOK6LgafLTjvxefDjxyQQWBfiTngs9bQmNlImowsMX5bZTV1uDsNK+U0CVTlrCS16XJclkPHQ4k6801MftdRAGi/ftYpD4H53FJ5sdIatfrgmflJDBCiicj1NbC7RuTxFJhbByjP+oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaFuN9yg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33505C4CEF0;
+	Mon, 22 Sep 2025 19:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569881;
-	bh=1bU0VlgmipZYlam4RahH16yrrJExF/DB6YAQHCKCybw=;
+	s=korg; t=1758569526;
+	bh=XvERr3brTVM8ljaGCyO0ijtBIxjMo9EvTgDlokxbM5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLVnbL0LnMyhoDonriGnZWGPEQfmktFv919yx3gPI5o6Y8l5wtDLX9pphQ/ZnOj1h
-	 6ZFZTNunEpJEVk7Zvvtp6dzp8457FDuJPFYuz/aIk/1kAUpX+tYPiabCKLiDnXWhCw
-	 TSp31xYigQ7k4Akn70WeD5/+496X0DZT7nqizoi4=
+	b=VaFuN9yghtRFLU0w7ZKzkeosPNtn69/YjVGKrax7A6nHcSq8PU1SDc0q/OvQKthch
+	 I9cS5X2n5VnRqV13iV1O/2EJ/ZmK/w/oNbI66JYA6RCZZVKjTCaOyphRv6oRmDZb41
+	 CSll64Cn6Abu/rVV3kLJf4MfjFciR9Jh55PAgnfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wilder <wilder@us.ibm.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/105] bonding: dont set oif to bond dev when getting NS target destination
+Subject: [PATCH 6.1 15/61] tls: make sure to abort the stream if headers are bogus
 Date: Mon, 22 Sep 2025 21:29:08 +0200
-Message-ID: <20250922192409.572459564@linuxfoundation.org>
+Message-ID: <20250922192403.966704307@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a8ba87f04ca9cdec06776ce92dce1395026dc3bb ]
+[ Upstream commit 0aeb54ac4cd5cf8f60131b4d9ec0b6dc9c27b20d ]
 
-Unlike IPv4, IPv6 routing strictly requires the source address to be valid
-on the outgoing interface. If the NS target is set to a remote VLAN interface,
-and the source address is also configured on a VLAN over a bond interface,
-setting the oif to the bond device will fail to retrieve the correct
-destination route.
+Normally we wait for the socket to buffer up the whole record
+before we service it. If the socket has a tiny buffer, however,
+we read out the data sooner, to prevent connection stalls.
+Make sure that we abort the connection when we find out late
+that the record is actually invalid. Retrying the parsing is
+fine in itself but since we copy some more data each time
+before we parse we can overflow the allocated skb space.
 
-Fix this by not setting the oif to the bond device when retrieving the NS
-target destination. This allows the correct destination device (the VLAN
-interface) to be determined, so that bond_verify_device_path can return the
-proper VLAN tags for sending NS messages.
+Constructing a scenario in which we're under pressure without
+enough data in the socket to parse the length upfront is quite
+hard. syzbot figured out a way to do this by serving us the header
+in small OOB sends, and then filling in the recvbuf with a large
+normal send.
 
-Reported-by: David Wilder <wilder@us.ibm.com>
-Closes: https://lore.kernel.org/netdev/aGOKggdfjv0cApTO@fedora/
-Suggested-by: Jay Vosburgh <jv@jvosburgh.net>
-Tested-by: David Wilder <wilder@us.ibm.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250916080127.430626-1-liuhangbin@gmail.com
+Make sure that tls_rx_msg_size() aborts strp, if we reach
+an invalid record there's really no way to recover.
+
+Reported-by: Lee Jones <lee@kernel.org>
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250917002814.1743558-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/tls/tls.h      |  1 +
+ net/tls/tls_strp.c | 14 +++++++++-----
+ net/tls/tls_sw.c   |  3 +--
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 952737a98751e..00204e42de2e7 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3338,7 +3338,6 @@ static void bond_ns_send_all(struct bonding *bond, struct slave *slave)
- 		/* Find out through which dev should the packet go */
- 		memset(&fl6, 0, sizeof(struct flowi6));
- 		fl6.daddr = targets[i];
--		fl6.flowi6_oif = bond->dev->ifindex;
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 4922668fefaa8..f25699517bdf8 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -91,6 +91,7 @@ int tls_sk_query(struct sock *sk, int optname, char __user *optval,
+ int tls_sk_attach(struct sock *sk, int optname, char __user *optval,
+ 		  unsigned int optlen);
+ void tls_err_abort(struct sock *sk, int err);
++void tls_strp_abort_strp(struct tls_strparser *strp, int err);
  
- 		dst = ip6_route_output(dev_net(bond->dev), NULL, &fl6);
- 		if (dst->error) {
+ int tls_set_sw_offload(struct sock *sk, struct tls_context *ctx, int tx);
+ void tls_update_rx_zc_capable(struct tls_context *tls_ctx);
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index b7ed76c0e576e..532230bed13b0 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -12,7 +12,7 @@
+ 
+ static struct workqueue_struct *tls_strp_wq;
+ 
+-static void tls_strp_abort_strp(struct tls_strparser *strp, int err)
++void tls_strp_abort_strp(struct tls_strparser *strp, int err)
+ {
+ 	if (strp->stopped)
+ 		return;
+@@ -210,11 +210,17 @@ static int tls_strp_copyin_frag(struct tls_strparser *strp, struct sk_buff *skb,
+ 				struct sk_buff *in_skb, unsigned int offset,
+ 				size_t in_len)
+ {
++	unsigned int nfrag = skb->len / PAGE_SIZE;
+ 	size_t len, chunk;
+ 	skb_frag_t *frag;
+ 	int sz;
+ 
+-	frag = &skb_shinfo(skb)->frags[skb->len / PAGE_SIZE];
++	if (unlikely(nfrag >= skb_shinfo(skb)->nr_frags)) {
++		DEBUG_NET_WARN_ON_ONCE(1);
++		return -EMSGSIZE;
++	}
++
++	frag = &skb_shinfo(skb)->frags[nfrag];
+ 
+ 	len = in_len;
+ 	/* First make sure we got the header */
+@@ -515,10 +521,8 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
+ 	tls_strp_load_anchor_with_queue(strp, inq);
+ 	if (!strp->stm.full_len) {
+ 		sz = tls_rx_msg_size(strp, strp->anchor);
+-		if (sz < 0) {
+-			tls_strp_abort_strp(strp, sz);
++		if (sz < 0)
+ 			return sz;
+-		}
+ 
+ 		strp->stm.full_len = sz;
+ 
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 96e62e8f1dad2..fe6514e964ba3 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2435,8 +2435,7 @@ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb)
+ 	return data_len + TLS_HEADER_SIZE;
+ 
+ read_failure:
+-	tls_err_abort(strp->sk, ret);
+-
++	tls_strp_abort_strp(strp, ret);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
