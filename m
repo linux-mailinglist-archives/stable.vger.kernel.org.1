@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-181136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367A7B92E1B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A84B92FB1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBBB446FE8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F7483A7298
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE6C2F0C5E;
-	Mon, 22 Sep 2025 19:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3689222590;
+	Mon, 22 Sep 2025 19:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9Y8amzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XilH6IPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF8527B320;
-	Mon, 22 Sep 2025 19:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3DF2DEA79;
+	Mon, 22 Sep 2025 19:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569780; cv=none; b=GxODB8W8AhS1gsSFwMWcmM/XisrFzVLQFrL4Ft6bMz6ktglZMWr4+ICM8yyDMVJd4MXyqNRW0iLVuWwIfjxqn//6GY+deaW7tWmVV8eMkTBGS9YU8ui+rMHES5qFGwTQs8nYP7Ihm5ckrXaAGT/qrq3zOBMVi79YSbx4/9XIoxY=
+	t=1758570032; cv=none; b=g+SXlUec7McabMDmRpLheiQFE4LFtm/zKql8apH4PdewHy5uh9lcUfRZHdrRLzA5zo3Fmb3DkmC6zNhijrhF93InctQX/LoR0oM0VSNIMKbqTXuo9uEkHxX7Qbuh537dJrh0MCneGwSGLwhggeBZw7xDCZ7aoSv9jVVGuv0kf2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569780; c=relaxed/simple;
-	bh=WU4mnf1CY5ncwtaKcIwOTbUe1DzsknEH/L3GyJOCxpA=;
+	s=arc-20240116; t=1758570032; c=relaxed/simple;
+	bh=3LyVNgj33xLG6tqMrcdwci5GO7Rd6E9EXSEavE7XAVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnJrmyF+aWwykFwcVFRj4spfE/bcXQN4zg0Oe7TI9wvLTT9xOolOYfXoG/TsggipXOmDPI7H2MFZi+wTLAykktW/R6miYD4IJKxS4d/JKwk6zZtpJDpLjb+NRA+AmrtI8KTOQuU/2fESPsdarqAmTXDa8xHjF/Zrq/iQmwnlb0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9Y8amzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FE1C4CEF0;
-	Mon, 22 Sep 2025 19:36:19 +0000 (UTC)
+	 MIME-Version; b=e9U86bZndJcsdzaAVC3QpvjzHqJdU2Un0kW+5h/7ICK4/WGYz6FouZksZti3Vsy7Db07/UQaBiqv6QQHJhkA+JkxpS7iwaZPZrU7adeiGIxykEdD1GKSIBnYzSQ9a5pDNDfmgxJ68FEenryuXXvLtWZoNzgP6MyyKpg7GS7oXAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XilH6IPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C6BC4CEF5;
+	Mon, 22 Sep 2025 19:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569780;
-	bh=WU4mnf1CY5ncwtaKcIwOTbUe1DzsknEH/L3GyJOCxpA=;
+	s=korg; t=1758570032;
+	bh=3LyVNgj33xLG6tqMrcdwci5GO7Rd6E9EXSEavE7XAVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9Y8amzTwaG28IcZH03p28lzL2z0SQrWxgXLY4ZDM4KXv1MhzjkF+LlmrprskIgZf
-	 DzIHQF8GVx6a+JcZKhawr6AshaxUBnGW/onvsyjslLnQt0Mddo+7SWjHaIjD9VcOm2
-	 GxOmaCsHtTvKswaXfX7ekY3WcQF7OS9PXTzWe7gw=
+	b=XilH6IPN2rG3Xk4HXSaaXqG9MbRd/VtyTkQS0B+jqM2V1DPNBtx/QtsB29HGfVFYL
+	 dsiPqZw04+d5ETf/vToUEeqVhRTmJQrGUGKfRUjw4zsGv0jdLfvCI6hdykjXzaHW+o
+	 fuJ0DbZ/+YAOWM52XCWXlrh84Vja49xJKfcxerlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 66/70] mptcp: propagate shutdown to subflows when possible
+Subject: [PATCH 6.12 083/105] smb: client: fix smbdirect_recv_io leak in smbd_negotiate() error path
 Date: Mon, 22 Sep 2025 21:30:06 +0200
-Message-ID: <20250922192406.379170994@linuxfoundation.org>
+Message-ID: <20250922192411.075611876@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +68,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b ]
+[ Upstream commit daac51c7032036a0ca5f1aa419ad1b0471d1c6e0 ]
 
-When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
-metadata to exchange, and all subflows can be safely shutdown.
+During tests of another unrelated patch I was able to trigger this
+error: Objects remaining on __kmem_cache_shutdown()
 
-Before this patch, the subflows were actually terminated at 'close()'
-time. That's certainly fine most of the time, but not when the userspace
-'shutdown()' a connection, without close()ing it. When doing so, the
-subflows were staying in LAST_ACK state on one side -- and consequently
-in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
-socket.
-
-Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
-consequence of this is that the TCP 'FIN' flag can be set earlier now,
-but the end result is the same. This affects the packetdrill tests
-looking at the end of the MPTCP connections, but for a good reason.
-
-Note that tcp_shutdown() will check the subflow state, so no need to do
-that again before calling it.
-
-Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
-Cc: stable@vger.kernel.org
-Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/smb/client/smbdirect.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -415,6 +415,20 @@ static void mptcp_close_wake_up(struct s
- 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
- }
- 
-+static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+		unlock_sock_fast(ssk, slow);
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 6284252aa4882..b1548269c308a 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1075,8 +1075,10 @@ static int smbd_negotiate(struct smbd_connection *info)
+ 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=0x%llx iov.length=%u iov.lkey=0x%x\n",
+ 		       rc, response->sge.addr,
+ 		       response->sge.length, response->sge.lkey);
+-	if (rc)
++	if (rc) {
++		put_receive_buffer(info, response);
+ 		return rc;
 +	}
-+}
-+
- static bool mptcp_pending_data_fin_ack(struct sock *sk)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
-@@ -438,6 +452,7 @@ static void mptcp_check_data_fin_ack(str
- 			break;
- 		case TCP_CLOSING:
- 		case TCP_LAST_ACK:
-+			mptcp_shutdown_subflows(msk);
- 			mptcp_set_state(sk, TCP_CLOSE);
- 			break;
- 		}
-@@ -605,6 +620,7 @@ static bool mptcp_check_data_fin(struct
- 			mptcp_set_state(sk, TCP_CLOSING);
- 			break;
- 		case TCP_FIN_WAIT2:
-+			mptcp_shutdown_subflows(msk);
- 			mptcp_set_state(sk, TCP_CLOSE);
- 			break;
- 		default:
+ 
+ 	init_completion(&info->negotiate_completion);
+ 	info->negotiate_done = false;
+-- 
+2.51.0
+
 
 
 
