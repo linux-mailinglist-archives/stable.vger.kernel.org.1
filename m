@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEA9B92D52
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:03 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC071B92CBF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A9019067EF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DAB44E2945
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43A52EDD5D;
-	Mon, 22 Sep 2025 19:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D52C8E6;
+	Mon, 22 Sep 2025 19:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjrXhjj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqwWSbJi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4C2C8E6;
-	Mon, 22 Sep 2025 19:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EBE29BDB5;
+	Mon, 22 Sep 2025 19:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569639; cv=none; b=VYoX1CXp7k3jU8+MaIKjfn7ngJkFiqPQve0eqaOvGbG3iTSgSNyvHvFFoQAduvUJ5tbV3jUXkWukMdh3jHYnA43aOut3sD1UGQYOFZydZJUY8RwjwJEjD9wYSNLHFbOxhjFZp7qCSxD2sTSK6naalGyZagNofTM0QMqFxty0UP8=
+	t=1758569534; cv=none; b=K+JCSqi3YPc9U68VJnteXjwK0cTIvbsi83NCt5TwTNWBIuImkEv3ZcQULeG8Fvd7qN9OQovAm8Jj4SCTeDqzKyT/cxRkp6YsBRhbMg5WzWrS2/q0Rqj0gCpHQhyv8DeO/FCK/VyRJ9uzeFvUW6Vqx35oN4WR+GYtyx2Aue7h4S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569639; c=relaxed/simple;
-	bh=oVEq2wNXPoBTpj7ZFV7FB+GAcG6ZFqmT1Kvld+jBNSs=;
+	s=arc-20240116; t=1758569534; c=relaxed/simple;
+	bh=n7gX8zi+GD36P1dNc1TJM35F2oelvylT7bd3lSxzL+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVB873Ge2Yv49T7L1ZmkJlX8SIhPaZRk9wrQ0IiYmr56m2hQM3qvYyaRX/t6CZvUt0qtTtIMaq+EGcaamVYmVkOjj4O4apcq8GkArO8F5QJFnaEIibRLNNSFbPJNhEf32k4sg56vzBLO3SZ3+16YzCYGCUN3pd3JjaEsGml77jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjrXhjj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93935C4CEF0;
-	Mon, 22 Sep 2025 19:33:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MQ9otH4at09te7SY6SvzWkkDnI+n6YwXxKeZIiP0FMSfNvRMN9U3UuRObGcUNQB9tMF42oPrL8m4TO/j4skz5jdOiRZcJTcLViANdgNPJ3suDWDV7U9Jy4d8AIwApayvBj4XCS0dwRNB2i3e3bbgGlrnZoB2E8wO7dbxTPIh8dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqwWSbJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7120C4CEF5;
+	Mon, 22 Sep 2025 19:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569638;
-	bh=oVEq2wNXPoBTpj7ZFV7FB+GAcG6ZFqmT1Kvld+jBNSs=;
+	s=korg; t=1758569534;
+	bh=n7gX8zi+GD36P1dNc1TJM35F2oelvylT7bd3lSxzL+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjrXhjj73kPYJk8C4aZuXCVCVIIgOGYFjpnZbCQ4a39B7Bbp8SkyrXQ95w6MSq5hv
-	 SnIrcoAQWDGYUYB4uirLCM0JzxYt7e4qk7kTUjZkXn3jLtIRKLjsJY0fMzGh5zdN2A
-	 QG12HlUxDjjmXXmOKKFee6q2T8MvltaK23pSOolk=
+	b=aqwWSbJi9pgL16weXczm50C6dux3cZgLBwr/f6ZrrP2Bhs9QfYPVzJmPFT3Key8P9
+	 Dkry9/RsCv466bl+ytbcFojFlPRwQMHXNdmxJzTez6i+4tOURDDXr24VqIR2ORih8i
+	 i3dUw8euWtRe+/hTVM7R30/KVPiMt92x+w/K7mhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/70] qed: Dont collect too many protection override GRC elements
-Date: Mon, 22 Sep 2025 21:29:10 +0200
-Message-ID: <20250922192404.771842995@linuxfoundation.org>
+Subject: [PATCH 6.1 18/61] cnic: Fix use-after-free bugs in cnic_delete_task
+Date: Mon, 22 Sep 2025 21:29:11 +0200
+Message-ID: <20250922192404.050513505@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
+[ Upstream commit cfa7d9b1e3a8604afc84e9e51d789c29574fb216 ]
 
-In the protection override dump path, the firmware can return far too
-many GRC elements, resulting in attempting to write past the end of the
-previously-kmalloc'ed dump buffer.
+The original code uses cancel_delayed_work() in cnic_cm_stop_bnx2x_hw(),
+which does not guarantee that the delayed work item 'delete_task' has
+fully completed if it was already running. Additionally, the delayed work
+item is cyclic, the flush_workqueue() in cnic_cm_stop_bnx2x_hw() only
+blocks and waits for work items that were already queued to the
+workqueue prior to its invocation. Any work items submitted after
+flush_workqueue() is called are not included in the set of tasks that the
+flush operation awaits. This means that after the cyclic work items have
+finished executing, a delayed work item may still exist in the workqueue.
+This leads to use-after-free scenarios where the cnic_dev is deallocated
+by cnic_free_dev(), while delete_task remains active and attempt to
+dereference cnic_dev in cnic_delete_task().
 
-This will result in a kernel panic with reason:
+A typical race condition is illustrated below:
 
- BUG: unable to handle kernel paging request at ADDRESS
+CPU 0 (cleanup)              | CPU 1 (delayed work callback)
+cnic_netdev_event()          |
+  cnic_stop_hw()             | cnic_delete_task()
+    cnic_cm_stop_bnx2x_hw()  | ...
+      cancel_delayed_work()  | /* the queue_delayed_work()
+      flush_workqueue()      |    executes after flush_workqueue()*/
+                             | queue_delayed_work()
+  cnic_free_dev(dev)//free   | cnic_delete_task() //new instance
+                             |   dev = cp->dev; //use
 
-where "ADDRESS" is just past the end of the protection override dump
-buffer. The start address of the buffer is:
- p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
-and the size of the buffer is buf_size in the same data structure.
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the cyclic delayed work item is properly canceled and that any
+ongoing execution of the work item completes before the cnic_dev is
+deallocated. Furthermore, since cancel_delayed_work_sync() uses
+__flush_work(work, true) to synchronously wait for any currently
+executing instance of the work item to finish, the flush_workqueue()
+becomes redundant and should be removed.
 
-The panic can be arrived at from either the qede Ethernet driver path:
+This bug was identified through static analysis. To reproduce the issue
+and validate the fix, I simulated the cnic PCI device in QEMU and
+introduced intentional delays — such as inserting calls to ssleep()
+within the cnic_delete_task() function — to increase the likelihood
+of triggering the bug.
 
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc02662ed [qed]
- qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
- qed_dbg_feature at ffffffffc026aa8f [qed]
- qed_dbg_all_data at ffffffffc026b211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
- devlink_health_do_dump at ffffffff82497f61
- devlink_health_report at ffffffff8249cf29
- qed_report_fatal_error at ffffffffc0272baf [qed]
- qede_sp_task at ffffffffc045ed32 [qede]
- process_one_work at ffffffff81d19783
-
-or the qedf storage driver path:
-
-    [exception RIP: qed_grc_dump_addr_range+0x108]
- qed_protection_override_dump at ffffffffc068b2ed [qed]
- qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
- qed_dbg_feature at ffffffffc068fa8f [qed]
- qed_dbg_all_data at ffffffffc0690211 [qed]
- qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
- devlink_health_do_dump at ffffffff8aa95e51
- devlink_health_report at ffffffff8aa9ae19
- qed_report_fatal_error at ffffffffc0697baf [qed]
- qed_hw_err_notify at ffffffffc06d32d7 [qed]
- qed_spq_post at ffffffffc06b1011 [qed]
- qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
- qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
- qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
- fc_rport_work at ffffffffc02da715 [libfc]
- process_one_work at ffffffff8a319663
-
-Resolve this by clamping the firmware's return value to the maximum
-number of legal elements the firmware should return.
-
-Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
+Fixes: fdf24086f475 ("cnic: Defer iscsi connection cleanup")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/cnic.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-index cdcead614e9fa..ae421c2707785 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
-@@ -4461,10 +4461,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
- 		goto out;
- 	}
+diff --git a/drivers/net/ethernet/broadcom/cnic.c b/drivers/net/ethernet/broadcom/cnic.c
+index 2198e35d9e181..1e3eff91877d0 100644
+--- a/drivers/net/ethernet/broadcom/cnic.c
++++ b/drivers/net/ethernet/broadcom/cnic.c
+@@ -4222,8 +4222,7 @@ static void cnic_cm_stop_bnx2x_hw(struct cnic_dev *dev)
  
--	/* Add override window info to buffer */
-+	/* Add override window info to buffer, preventing buffer overflow */
- 	override_window_dwords =
--		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
--		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
-+		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
-+		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
-+		PROTECTION_OVERRIDE_DEPTH_DWORDS);
- 	if (override_window_dwords) {
- 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
- 		offset += qed_grc_dump_addr_range(p_hwfn,
+ 	cnic_bnx2x_delete_wait(dev, 0);
+ 
+-	cancel_delayed_work(&cp->delete_task);
+-	flush_workqueue(cnic_wq);
++	cancel_delayed_work_sync(&cp->delete_task);
+ 
+ 	if (atomic_read(&cp->iscsi_conn) != 0)
+ 		netdev_warn(dev->netdev, "%d iSCSI connections not destroyed\n",
 -- 
 2.51.0
 
