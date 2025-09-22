@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E0BB92D55
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F55B9304D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521EE190666A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5DC2E0E8D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FD4C8E6;
-	Mon, 22 Sep 2025 19:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D832F39DE;
+	Mon, 22 Sep 2025 19:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRXwrkKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgjzkOU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1309125F780;
-	Mon, 22 Sep 2025 19:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8405E2F0C52;
+	Mon, 22 Sep 2025 19:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569644; cv=none; b=mfzVlrJg4q9J7GhSw6Fao3qgMf1VfDyyH3EmFxfIdPsPY0KwMQoOJEDfqV4cgUkTzbzaq8hoHn9xGv+nNW7WnM8l4rk8P+AJeWtU+4j2TDApu2apwOBDEWvz1wiB4ZWjxZn9LO4ONmFuPh1soLbNAZCZgbqhL83WM1h50xSQiqE=
+	t=1758570186; cv=none; b=CVgoJ3rX/hIplDbnBBhwfTpxvea0fo+T571pJv8hn2d4RZLnmROT50JyI7Iz6V7HS4+nLqxZuEccBMsMdhdiJs2931YPazqbzksxpJxZ3bgS4SWcqnWz8OdN9aWVMG43IBqARU65UYqK8OhtxVjTonN9oPmmkdwSqCaBaHaRI1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569644; c=relaxed/simple;
-	bh=Ku14XHbyWgnn6oli+NA2V5xMIKepbfdFqJ8DjD+tL1k=;
+	s=arc-20240116; t=1758570186; c=relaxed/simple;
+	bh=j/MO9K5/Cas5KfbAFljPsAz0Qo/3flH5/Qg7NHGl3cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwVY1V6rk9BxUn67wKc4YYVl6XmE2+r+MkXBO4hhWVcE/JgFt5Rf7UcHIUxIOxiHdMJXb0eFd6thfz7aVI26t6V5xIINROYOekekxZjTOeXkLZ78XWRqB9TN7CZOtA9fhycJCXFyGVeyeJu0aXyX2XZ5v9vr9H6gmxYDHNTBi3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRXwrkKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953D1C4CEF0;
-	Mon, 22 Sep 2025 19:34:03 +0000 (UTC)
+	 MIME-Version; b=Lais5wzLuF20VGQXsDwlK7Y2Kx7OqHj90Tw7QCtCfiTHYITYjhEFIP3hAIs1b18/1dJSVZJ1QjvHbevgk/y04I0f/T3r/yG+3xhLT3F19Q2U7ZlctiIT/56ltoAmAwa/A3BecqdFFmRghdFiHhmWPcX+leRU3Uzi+3D2Horf6Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgjzkOU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1C5C4CEF0;
+	Mon, 22 Sep 2025 19:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569643;
-	bh=Ku14XHbyWgnn6oli+NA2V5xMIKepbfdFqJ8DjD+tL1k=;
+	s=korg; t=1758570186;
+	bh=j/MO9K5/Cas5KfbAFljPsAz0Qo/3flH5/Qg7NHGl3cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRXwrkKEcKFSV7DtyMileNsndYTzm6X54XUwrjhJnMRx1r9W7VooPEU6hlFe4fS3V
-	 0RCLykZCrIWvo2KvEdDt4aB91m5sQCDrqbNzaEGjIAVrhlS/RCtHiZ8Wwn4zi1q2/T
-	 L8sT3W6ogaer+hrN9Fp9xVSOXNlF+1ndo2kZN2vY=
+	b=LgjzkOU6i9uFbn1EPYa/LlF91eNLMYCGZR4YAJPXDzNiIZ1AyBlA1JK3CdNE+2edM
+	 NQQ3O+j8zK/TbFN1R+/HwLDZDOu8JFtMKOXkkuIFmpu5oDxeg3B/7XV/rzSpOMbLj2
+	 VhBZv5x8JtLJ2K6wHA2Vky1WxBpWlfTxMmiMYd/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/70] mptcp: set remote_deny_join_id0 on SYN recv
+	Jerry Lv <Jerry.Lv@axis.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.16 052/149] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
 Date: Mon, 22 Sep 2025 21:29:12 +0200
-Message-ID: <20250922192404.837814865@linuxfoundation.org>
+Message-ID: <20250922192414.166378577@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-[ Upstream commit 96939cec994070aa5df852c10fad5fc303a97ea3 ]
+commit 2c334d038466ac509468fbe06905a32d202117db upstream.
 
-When a SYN containing the 'C' flag (deny join id0) was received, this
-piece of information was not propagated to the path-manager.
+Since commit
 
-Even if this flag is mainly set on the server side, a client can also
-tell the server it cannot try to establish new subflows to the client's
-initial IP address and port. The server's PM should then record such
-info when received, and before sending events about the new connection.
+	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
 
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-1-40171884ade8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+the console log of some devices with hdq enabled but no bq27000 battery
+(like e.g. the Pandaboard) is flooded with messages like:
+
+[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
+
+as soon as user-space is finding a /sys entry and trying to read the
+"status" property.
+
+It turns out that the offending commit changes the logic to now return the
+value of cache.flags if it is <0. This is likely under the assumption that
+it is an error number. In normal errors from bq27xxx_read() this is indeed
+the case.
+
+But there is special code to detect if no bq27000 is installed or accessible
+through hdq/1wire and wants to report this. In that case, the cache.flags
+are set historically by
+
+	commit 3dd843e1c26a ("bq27000: report missing device better.")
+
+to constant -1 which did make reading properties return -ENODEV. So everything
+appeared to be fine before the return value was passed upwards.
+
+Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
+condition in power_supply_format_property() which then floods the console log.
+
+So we change the detection of missing bq27000 battery to simply set
+
+	cache.flags = -ENODEV
+
+instead of -1.
+
+Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Cc: Jerry Lv <Jerry.Lv@axis.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/power/supply/bq27xxx_battery.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 0c9b9c0c277c2..dfee1890c841b 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -863,6 +863,10 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1920,7 +1920,7 @@ static void bq27xxx_battery_update_unloc
  
- 			ctx->subflow_id = 1;
- 			owner = mptcp_sk(ctx->conn);
-+
-+			if (mp_opt.deny_join_id0)
-+				WRITE_ONCE(owner->pm.remote_deny_join_id0, true);
-+
- 			mptcp_pm_new_connection(owner, child, 1);
+ 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+ 	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -1; /* read error */
++		cache.flags = -ENODEV; /* read error */
+ 	if (cache.flags >= 0) {
+ 		cache.capacity = bq27xxx_battery_read_soc(di);
  
- 			/* with OoO packets we can reach here without ingress
--- 
-2.51.0
-
 
 
 
