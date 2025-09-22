@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6625BB9305C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADA7B92E32
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F02548041C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEBC8446CD2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF2B2F291B;
-	Mon, 22 Sep 2025 19:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1472F0C52;
+	Mon, 22 Sep 2025 19:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsWti65n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz5EAI3c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E045F222590;
-	Mon, 22 Sep 2025 19:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4684A25F780;
+	Mon, 22 Sep 2025 19:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570156; cv=none; b=ebLPeVsbV/+qsQRXZoaD0vuz+zFGIMFdMpLE8V3bqzyfxThFCO9Rbp6SN76FeyS2Hq8eopcNrdrio1F4WG7O40iWRxx/ja03WXYNsuVeOJQQl7ToO4niP2jykzkThWitJxWv4yrIblIskS6E0GfHqXHFGeXe7CvGtvmayAeQlck=
+	t=1758569822; cv=none; b=DHuUnfqL6hj4DIt6RCFQVHIADQYUmRH8leIEWNNs0qWbE+1ojElV+bpYzVwz89lu/tQFauatpumrsNF/FduHRaNF6jkvcOnzV/d5HNHXYIfFyNY9zITG57HqnQvWgefjTGDsUXFFOCZl6bpIknT9GmZzy6hKNGRJL4dZ5b3nQ1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570156; c=relaxed/simple;
-	bh=T4+P7H3ZkWZCtcb9sXwbcoto/fg0kf5wU8uMkSF8Y7c=;
+	s=arc-20240116; t=1758569822; c=relaxed/simple;
+	bh=/fML+1WBD3Kv+jBrkAB6pAoicYcANecAIkeNihrhohY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sutnUWRk59tOMYJuwq/+WHDGWZzuj1QZuJycE4JruT7OwYjhncHN3htc83JkuQamQDTmCh0NtfO+gJX4lUIw4SqjXrTpQBkOpfSUDS3mDMwAOZH3pjefXmGFR6T97o03pWgd/o5UEwuKt088hIMPu+zKZrlGwX5O1thF3gmu6zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsWti65n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A69C4CEF0;
-	Mon, 22 Sep 2025 19:42:35 +0000 (UTC)
+	 MIME-Version; b=GuFOabhBU3li6O2oGHNIeKPC8qDFSDmklLioDrRi0LNRqFPVK0aub/bCL9i2Av59ZiT4SmVTIKg+W3kT9morWwi8A7sD988AaS3uavYBcKTlc/nE8EBQar7N9wpPqYaJq0DQGi+wtXO149qP5nf17tz2FPmBoFCjz8z9pCwyLDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz5EAI3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C4EC4CEF0;
+	Mon, 22 Sep 2025 19:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570155;
-	bh=T4+P7H3ZkWZCtcb9sXwbcoto/fg0kf5wU8uMkSF8Y7c=;
+	s=korg; t=1758569822;
+	bh=/fML+1WBD3Kv+jBrkAB6pAoicYcANecAIkeNihrhohY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsWti65njXfx8pSoPx3hfXsm7TdohCBXnI7HzOml6GcUkkndsZkPxAC+8jk7k4e2m
-	 VVau0Pyt3s04a8lxtAI7jv3JKHnQsO/D4ELLk6zJ3XkWczL5311S1fJGBiocBo4ZkH
-	 xaBTaLf2nF4kgZkEeQfyKJlLdJQoImZ5nZZh6RYA=
+	b=kz5EAI3cbv+le1YPDw1NB8z3kqoWavtRjSVKlr/TysPbQkTP8t5TFQj653QkBx4kz
+	 IfH/4JsPwu1asUa0ats3XhsKk4fAUS9UwcJx41JbUjXaaff3uhYl89vZ6wamAJoTgH
+	 k93ZOtOSvwEOUY1N31FNsEKVH7aWjrEL38F5M8w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 027/149] mptcp: tfo: record deny join id0 info
+Subject: [PATCH 6.12 004/105] wifi: mac80211: increase scan_ies_len for S1G
 Date: Mon, 22 Sep 2025 21:28:47 +0200
-Message-ID: <20250922192413.552975538@linuxfoundation.org>
+Message-ID: <20250922192409.024756437@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-[ Upstream commit 92da495cb65719583aa06bc946aeb18a10e1e6e2 ]
+[ Upstream commit 7e2f3213e85eba00acb4cfe6d71647892d63c3a1 ]
 
-When TFO is used, the check to see if the 'C' flag (deny join id0) was
-set was bypassed.
+Currently the S1G capability element is not taken into account
+for the scan_ies_len, which leads to a buffer length validation
+failure in ieee80211_prep_hw_scan() and subsequent WARN in
+__ieee80211_start_scan(). This prevents hw scanning from functioning.
+To fix ensure we accommodate for the S1G capability length.
 
-This flag can be set when TFO is used, so the check should also be done
-when TFO is used.
-
-Note that the set_fully_established label is also used when a 4th ACK is
-received. In this case, deny_join_id0 will not be set.
-
-Fixes: dfc8d0603033 ("mptcp: implement delayed seq generation for passive fastopen")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-4-40171884ade8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250826085437.3493-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mac80211/main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index c6983471dca55..bb4253aa675a6 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -984,13 +984,13 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
- 		return false;
- 	}
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index caedc939eea19..c745de0aae776 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1120,7 +1120,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	int result, i;
+ 	enum nl80211_band band;
+ 	int channels, max_bitrates;
+-	bool supp_ht, supp_vht, supp_he, supp_eht;
++	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g;
+ 	struct cfg80211_chan_def dflt_chandef = {};
  
--	if (mp_opt->deny_join_id0)
--		WRITE_ONCE(msk->pm.remote_deny_join_id0, true);
--
- 	if (unlikely(!READ_ONCE(msk->pm.server_side)))
- 		pr_warn_once("bogus mpc option on established client sk");
+ 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
+@@ -1236,6 +1236,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	supp_vht = false;
+ 	supp_he = false;
+ 	supp_eht = false;
++	supp_s1g = false;
+ 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
+ 		const struct ieee80211_sband_iftype_data *iftd;
+ 		struct ieee80211_supported_band *sband;
+@@ -1283,6 +1284,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 			max_bitrates = sband->n_bitrates;
+ 		supp_ht = supp_ht || sband->ht_cap.ht_supported;
+ 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
++		supp_s1g = supp_s1g || sband->s1g_cap.s1g;
  
- set_fully_established:
-+	if (mp_opt->deny_join_id0)
-+		WRITE_ONCE(msk->pm.remote_deny_join_id0, true);
+ 		for_each_sband_iftype_data(sband, i, iftd) {
+ 			u8 he_40_mhz_cap;
+@@ -1411,6 +1413,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		local->scan_ies_len +=
+ 			2 + sizeof(struct ieee80211_vht_cap);
+ 
++	if (supp_s1g)
++		local->scan_ies_len += 2 + sizeof(struct ieee80211_s1g_cap);
 +
- 	mptcp_data_lock((struct sock *)msk);
- 	__mptcp_subflow_fully_established(msk, subflow, mp_opt);
- 	mptcp_data_unlock((struct sock *)msk);
+ 	/*
+ 	 * HE cap element is variable in size - set len to allow max size */
+ 	if (supp_he) {
 -- 
 2.51.0
 
