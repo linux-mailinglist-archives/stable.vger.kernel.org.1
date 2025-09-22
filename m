@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-181097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB5CB92D9D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A5AB92EB4
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7438D4468DC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BAC519070E7
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37742F2609;
-	Mon, 22 Sep 2025 19:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87A52F0C5C;
+	Mon, 22 Sep 2025 19:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4j67MVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/QggWxY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EBF1FDA89;
-	Mon, 22 Sep 2025 19:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C8C1C1ADB;
+	Mon, 22 Sep 2025 19:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569681; cv=none; b=ZIWb2IY63wDebG2EOqNLJQGOeiUl/rVVEGFelZ79FREgdWeuR3wWWtTC1fT+8l2jTnmx0aKG0muzCf+hDcATS4Zk6t4I7Bal2uelojURdp0J4X6fzH/ySQ23St5qtFZ92A/JDuhPiRbkyktsBBuXF8G73kJq6LLxP/SYbrtICgg=
+	t=1758569904; cv=none; b=sZiCs3/on1jOoWnNK6I+6Bum0r7YWli2qnLAnKYKroXjH0wthniwSZd9fp5j2Q1mqJnd4isdNFVJLYUd6j8ynm8gQDJbGkaws7wrqdedsJBgh9uuPeli0kYFj67yfNCWCDNAubn28/oq/w1wcqWGFxgvX6FNySZpwKRQglLBHCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569681; c=relaxed/simple;
-	bh=dcjT9okpzy3BmcRq28rgo4MjdnV7GQkdXUYS/0z49dA=;
+	s=arc-20240116; t=1758569904; c=relaxed/simple;
+	bh=DfX/ERQPFljgTtUMIuui5HKGClzYFa2otPEaRqtJhTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZYqAgZwiz22T0bECSU104V3JSgUixZhFFFiq9u6Qq+YTMXzigt56lJdap6sJz+LwS52KTM8c0BB3Ycdg1U8eCbk6o9cbSHCbIm3k87wjhPbWOIK4QljvNV2QO1ngj03V95N3BZB0xqaFtcFa/TOdLWG9ENbT+mav3gI65V8jb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4j67MVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87F5C4CEF0;
-	Mon, 22 Sep 2025 19:34:40 +0000 (UTC)
+	 MIME-Version; b=ghlY9pgUfiqbzcBuNl4GV/TZHqYBnHD2yYMPPenuobhRtRy7DDfSnOgTW0lu1gayAsQ6zynCZbL89CFHP70pUhfFpdsCC/Tl9CJ2RMR/Sog8xEOWHTS27giIDwUshCFY3kkTUd0H0La7pmUtrVBM0Hjw5zJCpOOELg8pq+eSQ9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/QggWxY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034A3C4CEF0;
+	Mon, 22 Sep 2025 19:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569681;
-	bh=dcjT9okpzy3BmcRq28rgo4MjdnV7GQkdXUYS/0z49dA=;
+	s=korg; t=1758569904;
+	bh=DfX/ERQPFljgTtUMIuui5HKGClzYFa2otPEaRqtJhTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4j67MVm4OKT/dsl/Fk/VN0sP8VZPzDhq8tY3a1Cd0S0fizfJ1KN/TI3j3ASahDOT
-	 sTA9ye1Xylgu4fTdjcq3ZvTbHRgGuRKgsX21r1lYlVm+CTCd1aMZolk61S//uYc1kr
-	 3HrXAGbErr2yxPvZF8XYwWh4S+OfHh/0rUeeQgao=
+	b=t/QggWxYnVkkhnx3e25mTzUgFNrORMEVRAXB+p5wQV9o0uqYkU/8mYmsmGAZLfQw5
+	 m6zCfpgvg6+FxrgxXkMAPCeLHUMgv3ha3k8pimnhcBT8zM1xzayYXBFif1qpollDoZ
+	 cNJIaRC79rDSWko7hWC+SXYolSFJpbv5LRgXogSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 27/70] ksmbd: smbdirect: verify remaining_data_length respects max_fragmented_recv_size
-Date: Mon, 22 Sep 2025 21:29:27 +0200
-Message-ID: <20250922192405.307453170@linuxfoundation.org>
+	WANG Rui <wangrui@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 045/105] objtool/LoongArch: Mark types based on break immediate code
+Date: Mon, 22 Sep 2025 21:29:28 +0200
+Message-ID: <20250922192410.097890670@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit e1868ba37fd27c6a68e31565402b154beaa65df0 upstream.
+commit baad7830ee9a56756b3857348452fe756cb0a702 upstream.
 
-This is inspired by the check for data_offset + data_length.
+If the break immediate code is 0, it should mark the type as
+INSN_TRAP. If the break immediate code is 1, it should mark the
+type as INSN_BUG.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
+While at it, format the code style and add the code comment for nop.
+
 Cc: stable@vger.kernel.org
-Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Suggested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/objtool/arch/loongarch/decode.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -553,7 +553,7 @@ static void recv_done(struct ib_cq *cq,
- 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
- 		struct smb_direct_data_transfer *data_transfer =
- 			(struct smb_direct_data_transfer *)recvmsg->packet;
--		unsigned int data_offset, data_length;
-+		u32 remaining_data_length, data_offset, data_length;
- 		int avail_recvmsg_count, receive_credits;
+--- a/tools/objtool/arch/loongarch/decode.c
++++ b/tools/objtool/arch/loongarch/decode.c
+@@ -313,10 +313,16 @@ int arch_decode_instruction(struct objto
+ 	if (decode_insn_reg2i16_fomat(inst, insn))
+ 		return 0;
  
- 		if (wc->byte_len <
-@@ -563,6 +563,7 @@ static void recv_done(struct ib_cq *cq,
- 			return;
- 		}
- 
-+		remaining_data_length = le32_to_cpu(data_transfer->remaining_data_length);
- 		data_length = le32_to_cpu(data_transfer->data_length);
- 		data_offset = le32_to_cpu(data_transfer->data_offset);
- 		if (wc->byte_len < data_offset ||
-@@ -570,6 +571,14 @@ static void recv_done(struct ib_cq *cq,
- 			put_recvmsg(t, recvmsg);
- 			smb_direct_disconnect_rdma_connection(t);
- 			return;
-+		}
-+		if (remaining_data_length > t->max_fragmented_recv_size ||
-+		    data_length > t->max_fragmented_recv_size ||
-+		    (u64)remaining_data_length + (u64)data_length >
-+		    (u64)t->max_fragmented_recv_size) {
-+			put_recvmsg(t, recvmsg);
-+			smb_direct_disconnect_rdma_connection(t);
-+			return;
- 		}
- 
- 		if (data_length) {
+-	if (inst.word == 0)
++	if (inst.word == 0) {
++		/* andi $zero, $zero, 0x0 */
+ 		insn->type = INSN_NOP;
+-	else if (inst.reg0i15_format.opcode == break_op) {
+-		/* break */
++	} else if (inst.reg0i15_format.opcode == break_op &&
++		   inst.reg0i15_format.immediate == 0x0) {
++		/* break 0x0 */
++		insn->type = INSN_TRAP;
++	} else if (inst.reg0i15_format.opcode == break_op &&
++		   inst.reg0i15_format.immediate == 0x1) {
++		/* break 0x1 */
+ 		insn->type = INSN_BUG;
+ 	} else if (inst.reg2_format.opcode == ertn_op) {
+ 		/* ertn */
 
 
 
