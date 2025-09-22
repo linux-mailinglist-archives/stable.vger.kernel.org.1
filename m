@@ -1,102 +1,129 @@
-Return-Path: <stable+bounces-181418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E73B938BD
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 01:10:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25E1B9386C
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 01:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEEC190565E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 23:10:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABDD47AA3A2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 22:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E091C317706;
-	Mon, 22 Sep 2025 23:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A8C27FD54;
+	Mon, 22 Sep 2025 23:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="lJwABXWv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLkXlpPy"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7952F49E3;
-	Mon, 22 Sep 2025 23:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B82F1E833D
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 23:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758582618; cv=none; b=CLrB1ntK0jxnMNCYFsGgpIsIWAWWo7nXfmmxKLNj3UUWLEpmIxFkSIl2maJ57DIZEiJ0C1lmNfjQnRSWlpwZ9RuymFR5/ZoUNaCDn9lvcc0OwR8Vu54rVmUW3uuuBLfHwkHnKpWRR8Co4dkRCBGC6C58qJpEy8Van5TK/AgSx88=
+	t=1758582064; cv=none; b=AAnHIjQiI/DuZV73XTOJJj9HKlEJN2rFwaBAPz1CLZ8T0gJnaDiNuGR5AwDsPOTC3HKwlztXN8JaztL/4F+46N26BlWP/iGQVbudC+cfXyF70LScAe7bwtDf/ftPpQtOgEr5YF/dBkBDzHKNgMzLwjPAhvT1z1q+QL1iddiq8eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758582618; c=relaxed/simple;
-	bh=rUoj4tYcG/6wEz/Vqkhc/ccNirLpMOCICMtWHCPHTqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ap1BrMOu1Qxg25jCcKgIEaR0JJpr6V/3b01b+fmRaTlgQOicM6Lm1nUuBWYJbgVNcxHm1MuESS5LjuriKITzMYzdJ975Eu7/J3lUel8wQvnkbsTjI0+RLTolHpquEShE0Xjc32xai1JTso0iUBwqWD+KmzCh+2rKptlk11p2jDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=lJwABXWv; arc=none smtp.client-ip=192.19.144.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 67120C0005E6;
-	Mon, 22 Sep 2025 16:00:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 67120C0005E6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1758582015;
-	bh=rUoj4tYcG/6wEz/Vqkhc/ccNirLpMOCICMtWHCPHTqg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lJwABXWv2xWER7S5TxKSXrT+QQmAKt63jFB50zTfrwpYhrhFQiHuycpyYTkGynmI2
-	 bRhe5LAO4S6nPYqK87Sy02+EnZDDSMEptHJ20hHSoV2WYpYLofp0EQzPOhlm7xTPdg
-	 UtqqS312sqhy/sgUUNyz2O7eukIGucIxOky0tapI=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 0E0FD18000530;
-	Mon, 22 Sep 2025 16:00:15 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM SUB-ARCHITECTURES),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 6.6] ARM: bcm: Select ARM_GIC_V3 for ARCH_BRCMSTB
-Date: Mon, 22 Sep 2025 16:00:12 -0700
-Message-Id: <20250922230012.1373936-1-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1758582064; c=relaxed/simple;
+	bh=YF49FiKprncqneMObMSuDBid7JTl9NN4qkiSsmutA+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mc2Wi/1MtnaqhT7FKMRhdrbCunBM2P/k8IqCwYuIthmK5SI7ie6if2lFcjYBaIqlW8Wdur24y/3ePCRIHsejXEW0SAFqztUlLiIRssZH9npljgk1WS9rjIablOrrDd9YRA7QCigCom0Z8UTiRwGfSHy+aiYGqbOYjlRL9I2F6RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLkXlpPy; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-279e2554c8fso15011795ad.2
+        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 16:01:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758582063; x=1759186863; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eeNy2aiqf1BC85NqN+Fm2fdEOmzGU7K8Kz4tZyZLL3k=;
+        b=VLkXlpPyWxvPBTPGlnB1zEnHeGSbXRQ2vST1aQwTkBMgAMO7oLZWqCdwwP+mlKq8Ap
+         N+tNPB7JdT2Xr6jMCxkFOH8Rv00LUPo8TwF7RLoOeFV6+tQ9fNMra3eDK0E0oe5xcKRE
+         ioib/hD3sW4/6lhXl3vZtUbZB0ysGN8X013vAQemSL19gHdk754bdZ22tctGgPaoVLLa
+         +Yr6EZfyf8T5ylDmSCTOLM8p6OaezJ9+rUl2LAv+tuLW0QeTlkd8b/ZbZD7VPlPX7+qq
+         pc6qIdF040gBBeoIZ/NBw43osNGYEjGZWJ+NImz4GoDHAybcWVehfJqRGj7odrmRJTwn
+         jCjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758582063; x=1759186863;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eeNy2aiqf1BC85NqN+Fm2fdEOmzGU7K8Kz4tZyZLL3k=;
+        b=R2PXap2OEUOKoOx1x4aheHQxY9VJFza6LLaRotMTEjya6X+W02xcdR7yc0nVqJ2So3
+         0dxq+CflpGVX3IAbyte9JgofhQRXnQa5BR3zXNrV8BFUYAXrc3BosZdhfPXAmIsetx+9
+         R8TI4NPeMXgYjfr6+VH6SJz0TfLz+jVrFvBAp3hDMkoBCT56L2Znk38sBaMfknrH83iN
+         RM2IRuQE19Dt6TM9wwr8UWCWuVEFxSfeZA2Wnon24SRgCn3dAzOAsfhKy1RJGim3989y
+         U16V8xepNyiZpIo6jjlpcZJVY2L2f0kyYC6QF3QGN0PyhPPX8/MFWloYFMggZjKZ7he+
+         acPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVhxqSb2KC4msvl2JOixHDK2sJTbqtZE8UJ1AILT54L0asNIGi40u3E4O2M1iHE59PTlFuzJow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrHHnnhpTZPF8K4LDnydfz/6JJfxeyLF0FWdeVXWyj5skpOzII
+	+CSJQUjGYATxdKylYM54/k/GRcMhRkHjtikIctC1aTEOU2WWigghmVW4
+X-Gm-Gg: ASbGncuHdMJ7S/ORjWmSrO7WKomcYRtG5JNgLrIT8Gq3xq+Xlm6ie7aWJIiQKFYafMv
+	kbm6ZdXg1M4oaf49nTRIHF2qC4CTl792NVMhkmO1tL98zZL+UokTMAlOuQOCkpGd/9NA6X8YPWH
+	ZoDyhVCDUCKl2x82MFjhqIn+/XeqSPvVU+UuNVTbrUpnMT1D66prw2mqZP+he9ISqRc8RdkuXT9
+	vyEZxxtQC2wyK16z8Oo1v6oeOtvNSAbwaWpHBGOMRuEB+15u2d/tusbYqjjNUfdEDO0BCS9I5ff
+	eLIoRvtp952hi4FIMbOcR3OKedRM+vcDZ8tjt3TtWFpgNvZOzOrExUrYii7WMFaDolaI31HlAI3
+	u+WuTqULteeVP7AJAmxi6FtkS2rw+YsIQxQvTSRSqQdN5s9ihARMyTNyFjX+FrBJYHboIYfFegx
+	qcY/VwImva
+X-Google-Smtp-Source: AGHT+IEJUpXiZJYpDaJSVRMQpD6oGixikoujh15zTGcx9C53XnFLYqY6WqAGmtYFnuvTNfHs9MT4Lw==
+X-Received: by 2002:a17:903:1d2:b0:267:c8d3:531 with SMTP id d9443c01a7336-27cc48a03e7mr6204565ad.25.1758582062572;
+        Mon, 22 Sep 2025 16:01:02 -0700 (PDT)
+Received: from [10.255.83.133] (2.newark-18rh15rt.nj.dial-access.att.net. [12.75.221.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-271353b8792sm80534825ad.123.2025.09.22.16.01.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Sep 2025 16:01:01 -0700 (PDT)
+Message-ID: <b40b700e-6bff-44d6-9cbd-0a208889a40c@gmail.com>
+Date: Mon, 22 Sep 2025 16:00:59 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/105] 6.12.49-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20250922192408.913556629@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit 2b28fe75c7dbe7ec322e706eed4622964409e21d upstream
 
-A number of recent Broadcom STB SoCs utilize a GIC-600 interrupt
-controller thus requiring the use of the GICv3 driver.
 
-Link: https://lore.kernel.org/r/20240726233414.2305526-1-florian.fainelli@broadcom.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
-While technically not a bug fix, this allows me to properly build test
-6.6 on additional platforms within our test rack. Thanks!
+On 9/22/2025 12:28 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.49 release.
+> There are 105 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 24 Sep 2025 19:23:52 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.49-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
- arch/arm/mach-bcm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-diff --git a/arch/arm/mach-bcm/Kconfig b/arch/arm/mach-bcm/Kconfig
-index 8789d93a7c04..c705bec1410c 100644
---- a/arch/arm/mach-bcm/Kconfig
-+++ b/arch/arm/mach-bcm/Kconfig
-@@ -186,6 +186,7 @@ config ARCH_BRCMSTB
- 	select ARCH_HAS_RESET_CONTROLLER
- 	select ARM_AMBA
- 	select ARM_GIC
-+	select ARM_GIC_V3
- 	select ARM_ERRATA_798181 if SMP
- 	select HAVE_ARM_ARCH_TIMER
- 	select ZONE_DMA if ARM_LPAE
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.34.1
+Florian
 
 
