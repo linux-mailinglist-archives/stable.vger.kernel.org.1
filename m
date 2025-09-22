@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-181078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6850CB92D4A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E0CB92F14
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AC392A67DF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A40190740A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42DB2F0670;
-	Mon, 22 Sep 2025 19:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944132F1FDD;
+	Mon, 22 Sep 2025 19:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZKcO04y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EX6uBO/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAB827FB2D;
-	Mon, 22 Sep 2025 19:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D251C1ADB;
+	Mon, 22 Sep 2025 19:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569635; cv=none; b=Je7N5axtzzG7EqlJXRIq2TSykv9KzPUlNP5l/Qjbq3YUulffLyyI3E8LDqy6AuY2ty4A/t1E9+rP6IxN6mhPDBo81hqrtEsb08ASkfEpLYWh+8i27S/MnAxwLOAYn/Zj/XUfMQ42BF2mL41Idp5IsH6ozMA35b5nwtZ5ZnjQx14=
+	t=1758569981; cv=none; b=s6rSDV7po36p+h6kMcpIU1KwEOEDRjdkCDjntPZYiM46I9X/arDF1/oNSFuhTp78W6l0WEkybpunMxLUs1Un74oyD9YBKC0fZvHfG9XxJM6EnUPkMx4xje5MCruUeWyS4IWOHzpCycc8l82Hq1IO4zgC3GR/VxLxT96ffcx3p/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569635; c=relaxed/simple;
-	bh=1kUSaPTar/QedIT4qIdXwhnPQPWHnfgQsnspIgujXbU=;
+	s=arc-20240116; t=1758569981; c=relaxed/simple;
+	bh=3vv5DDxeiH2YtMJxjI3UcFOphbHMTV/++2N56omTSgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvJvhRHPNfhOokWpTVcSB8xp9pYUi+C01GNM7uj0sBBPBIlIV68vjX0SF7ygPIAeVqf6WiK5tuycks8yGYsEyrSHadNJ/h+AMySrO1CahKErTg2QsehSNrIqyqn0hRQGOFx3EZngcxgZO7OzNw8hMPCQFnYfkoqaf/aO3hCJvnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZKcO04y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8E6C4CEF0;
-	Mon, 22 Sep 2025 19:33:53 +0000 (UTC)
+	 MIME-Version; b=IMevdAP25vcvetoR6vInAIQqHxR3GKYaOJOgPY+JDsE/Prj3BqYqyOidjQ80vYgaeUpGC7SPdhqD9NWqgZm97Q48Z76YqgoQAqXhPQb8Px2yAaoW++QkzXTZygZ40lCjrtYhheHndswV4XV1ExNC3TrcGUwoK/rmUZiw0W2Vbok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EX6uBO/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BDBC4CEF7;
+	Mon, 22 Sep 2025 19:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569633;
-	bh=1kUSaPTar/QedIT4qIdXwhnPQPWHnfgQsnspIgujXbU=;
+	s=korg; t=1758569980;
+	bh=3vv5DDxeiH2YtMJxjI3UcFOphbHMTV/++2N56omTSgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZKcO04yZrIfrXUbeOaXV5PpP/gvVAaDna0seii6aXRkQW51Ew15IvJVBiMHBQpye
-	 7Hq1z/bYbu8azJmG7GgQMKa7s56++SG9E4b96OkZICYQRgmQ3h9ypKR0TIIkhdq39X
-	 eFXIoZYLwliakmQqmWy89WdvjYqYie7M435OyVNI=
+	b=EX6uBO/8Gn7qAIvz/04oprKwR5Bv9DmS/H3jLDj+5g5sIFjX+3BA4bWyXQ5S59oHB
+	 +vXovNdXoF8Cx+zNLMFS1sYkArIkA2bJri77I3x73+Rze0qq434C1GpbFe7e+ak9Rg
+	 y/SVqFmkpFXYFOXyi5qHpE7R0Q7sxTQCxBbAgD5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Paolo Abeni <pabeni@redhat.com>,
 	Mat Martineau <martineau@kernel.org>,
 	Geliang Tang <geliang@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 54/61] selftests: mptcp: connect: catch IO errors on listen side
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 064/105] selftests: mptcp: avoid spurious errors on TCP disconnect
 Date: Mon, 22 Sep 2025 21:29:47 +0200
-Message-ID: <20250922192405.116510779@linuxfoundation.org>
+Message-ID: <20250922192410.590538277@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 14e22b43df25dbd4301351b882486ea38892ae4f ]
+commit 8708c5d8b3fb3f6d5d3b9e6bfe01a505819f519a upstream.
 
-IO errors were correctly printed to stderr, and propagated up to the
-main loop for the server side, but the returned value was ignored. As a
-consequence, the program for the listener side was no longer exiting
-with an error code in case of IO issues.
+The disconnect test-case, with 'plain' TCP sockets generates spurious
+errors, e.g.
 
-Because of that, some issues might not have been seen. But very likely,
-most issues either had an effect on the client side, or the file
-transfer was not the expected one, e.g. the connection got reset before
-the end. Still, it is better to fix this.
+  07 ns1 TCP   -> ns1 (dead:beef:1::1:10006) MPTCP
+  read: Connection reset by peer
+  read: Connection reset by peer
+  (duration   155ms) [FAIL] client exit code 3, server 3
 
-The main consequence of this issue is the error that was reported by the
-selftests: the received and sent files were different, and the MIB
-counters were not printed. Also, when such errors happened during the
-'disconnect' tests, the program tried to continue until the timeout.
+  netns ns1-FloSdv (listener) socket stat for 10006:
+  TcpActiveOpens                  2                  0.0
+  TcpPassiveOpens                 2                  0.0
+  TcpEstabResets                  2                  0.0
+  TcpInSegs                       274                0.0
+  TcpOutSegs                      276                0.0
+  TcpOutRsts                      3                  0.0
+  TcpExtPruneCalled               2                  0.0
+  TcpExtRcvPruned                 1                  0.0
+  TcpExtTCPPureAcks               104                0.0
+  TcpExtTCPRcvCollapsed           2                  0.0
+  TcpExtTCPBacklogCoalesce        42                 0.0
+  TcpExtTCPRcvCoalesce            43                 0.0
+  TcpExtTCPChallengeACK           1                  0.0
+  TcpExtTCPFromZeroWindowAdv      42                 0.0
+  TcpExtTCPToZeroWindowAdv        41                 0.0
+  TcpExtTCPWantZeroWindowAdv      13                 0.0
+  TcpExtTCPOrigDataSent           164                0.0
+  TcpExtTCPDelivered              165                0.0
+  TcpExtTCPRcvQDrop               1                  0.0
 
-Now when an IO error is detected, the program exits directly with an
-error.
+In the failing scenarios (TCP -> MPTCP), the involved sockets are
+actually plain TCP ones, as fallbacks for passive sockets at 2WHS time
+cause the MPTCP listeners to actually create 'plain' TCP sockets.
 
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+Similar to commit 218cc166321f ("selftests: mptcp: avoid spurious errors
+on disconnect"), the root cause is in the user-space bits: the test
+program tries to disconnect as soon as all the pending data has been
+spooled, generating an RST. If such option reaches the peer before the
+connection has reached the closed status, the TCP socket will report an
+error to the user-space, as per protocol specification, causing the
+above failure. Note that it looks like this issue got more visible since
+the "tcp: receiver changes" series from commit 06baf9bfa6ca ("Merge
+branch 'tcp-receiver-changes'").
+
+Address the issue by explicitly waiting for the TCP sockets (-t) to
+reach a closed status before performing the disconnect. More precisely,
+the test program now waits for plain TCP sockets or TCP subflows in
+addition to the MPTCP sockets that were already monitored.
+
+While at it, use 'ss' with '-n' to avoid resolving service names, which
+is not needed here.
+
+Fixes: 218cc166321f ("selftests: mptcp: avoid spurious errors on disconnect")
 Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-2-d40e77cbbf02@kernel.org
+Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-3-d40e77cbbf02@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 --- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
 +++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1005,6 +1005,7 @@ int main_loop_s(int listensock)
- 	struct pollfd polls;
- 	socklen_t salen;
- 	int remotesock;
-+	int err = 0;
- 	int fd = 0;
+@@ -1234,7 +1234,7 @@ void xdisconnect(int fd)
+ 	else
+ 		xerror("bad family");
  
- again:
-@@ -1036,7 +1037,7 @@ again:
+-	strcpy(cmd, "ss -M | grep -q ");
++	strcpy(cmd, "ss -Mnt | grep -q ");
+ 	cmdlen = strlen(cmd);
+ 	if (!inet_ntop(addr.ss_family, raw_addr, &cmd[cmdlen],
+ 		       sizeof(cmd) - cmdlen))
+@@ -1244,7 +1244,7 @@ void xdisconnect(int fd)
  
- 		SOCK_TEST_TCPULP(remotesock, 0);
- 
--		copyfd_io(fd, remotesock, 1, true);
-+		err = copyfd_io(fd, remotesock, 1, true, &winfo);
- 	} else {
- 		perror("accept");
- 		return 1;
-@@ -1045,10 +1046,10 @@ again:
- 	if (cfg_input)
- 		close(fd);
- 
--	if (--cfg_repeat > 0)
-+	if (!err && --cfg_repeat > 0)
- 		goto again;
- 
--	return 0;
-+	return err;
- }
- 
- static void init_rng(void)
+ 	/*
+ 	 * wait until the pending data is completely flushed and all
+-	 * the MPTCP sockets reached the closed status.
++	 * the sockets reached the closed status.
+ 	 * disconnect will bypass/ignore/drop any pending data.
+ 	 */
+ 	for (i = 0; ; i += msec_sleep) {
 
 
 
