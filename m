@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6DEB92F2F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE76B930BC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A90188065C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FDB42A0B1D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1B72F1FDD;
-	Mon, 22 Sep 2025 19:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2E02F3C23;
+	Mon, 22 Sep 2025 19:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVJ7c59a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gaxn/zXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474702820D1;
-	Mon, 22 Sep 2025 19:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB952F1FE3;
+	Mon, 22 Sep 2025 19:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569993; cv=none; b=OLrHnn4Z7/SP4TF3kLxE4WzOD4r4l63wox6Tz1gZ1osGgtxUGPZEo+4nHQS3NsaawoIo7He8/xXhhjQbwYO5zmAnXkX+Tf0NyoP6ssfVAaLBenMAv4WG5QBprZoEU55wFzlj4tJpplBgffo3ebqIgM0UixDKfc+c9bjSbqXE7oA=
+	t=1758570292; cv=none; b=mqJb723g9b3rhU2OfLbT10eUhCw6mjOuRiYcjgizme1yrHgczAKuAIggEdJ4DgKgxqDiZuMCY0xa76n2RrVOo5JCYaX25064Q/3/ENyGqaeJCznSw6mbm94xJbLGag4vl0lxls340fwwV3sWlCVpRHBBEnpJANq6Ev9Rj52xik4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569993; c=relaxed/simple;
-	bh=JUkRALgoD7g31otr6fCeyYF8/SzRspztPgbzyekBliU=;
+	s=arc-20240116; t=1758570292; c=relaxed/simple;
+	bh=GjB5fNxDOjrryCP/HzfJ05rqsndtjbnB/AClmZwHp0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wu7yXB1iy76s604ZBrK42zub9nikgfvrWwAIdegiQqIQdKIMIrO3EStEe171JMO38aC/8caUIS8skfdBKX31+qlKUUKTnoGBye0WJdq1TI+G6NWG0mUpzFidd0MVddFdw1YtBg1CTfRgu0HISHwCy3SiJUnwOECi0VIaGlkiobM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVJ7c59a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39CCC4CEF0;
-	Mon, 22 Sep 2025 19:39:52 +0000 (UTC)
+	 MIME-Version; b=kYIFhd45BPQLV9C56anBcRlhuJTevOIYZV32bblszaysHjUOxRSMeK/5NFQIxeB2ZSsT8eb8gBR0ktB4CTT442x9XCJXHemOTTBJj6GSuX5Nw3hfovmyTs60TyTCPIwfSH4u6F6EHBV0kfA5J9VtI5y0j7GnFMsADknpqkRBoQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gaxn/zXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A3FC4CEF0;
+	Mon, 22 Sep 2025 19:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569993;
-	bh=JUkRALgoD7g31otr6fCeyYF8/SzRspztPgbzyekBliU=;
+	s=korg; t=1758570292;
+	bh=GjB5fNxDOjrryCP/HzfJ05rqsndtjbnB/AClmZwHp0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVJ7c59agkGvppwpTrlBcSLCByCXM23/JB5ou7Z5C3966ww3ln2BrAwCPDlvE0tyq
-	 ORXHkLrjXDxHCNf8B6ws9glZ1BZG7JeasYMWnJ3alnfqk10+mUJOe5opPRwIFVeTkE
-	 U3N6ytAo9aM2fokbG/KyG8nDDOf/IFRPBsU7l4Dk=
+	b=Gaxn/zXkJ+XdKUseN+b/6rwa/adHesZytbx0+XgHhQQyNj4Nj8dvnxn2K1AtE6Fka
+	 9Hcn1i2CwZMsi5ON1HY4K89v7m8Ov6ipEqKgWdjDpho+AQhZj2X+hfeHl6kHh+TWmx
+	 isJEsMt+XneYRMIxrKXmV1ex3mSaLxZbbhO7BbeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+baa2e0f4e02df602583e@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 069/105] io_uring/msg_ring: kill alloc_cache for io_kiocb allocations
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.16 092/149] x86/sev: Guard sev_evict_cache() with CONFIG_AMD_MEM_ENCRYPT
 Date: Mon, 22 Sep 2025 21:29:52 +0200
-Message-ID: <20250922192410.714652718@linuxfoundation.org>
+Message-ID: <20250922192415.207328819@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,134 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-Commit df8922afc37aa2111ca79a216653a629146763ad upstream.
+commit 7f830e126dc357fc086905ce9730140fd4528d66 upstream.
 
-A recent commit:
+The sev_evict_cache() is guest-related code and should be guarded by
+CONFIG_AMD_MEM_ENCRYPT, not CONFIG_KVM_AMD_SEV.
 
-fc582cd26e88 ("io_uring/msg_ring: ensure io_kiocb freeing is deferred for RCU")
+CONFIG_AMD_MEM_ENCRYPT=y is required for a guest to run properly as an SEV-SNP
+guest, but a guest kernel built with CONFIG_KVM_AMD_SEV=n would get the stub
+function of sev_evict_cache() instead of the version that performs the actual
+eviction. Move the function declarations under the appropriate #ifdef.
 
-fixed an issue with not deferring freeing of io_kiocb structs that
-msg_ring allocates to after the current RCU grace period. But this only
-covers requests that don't end up in the allocation cache. If a request
-goes into the alloc cache, it can get reused before it is sane to do so.
-A recent syzbot report would seem to indicate that there's something
-there, however it may very well just be because of the KASAN poisoning
-that the alloc_cache handles manually.
-
-Rather than attempt to make the alloc_cache sane for that use case, just
-drop the usage of the alloc_cache for msg_ring request payload data.
-
-Fixes: 50cf5f3842af ("io_uring/msg_ring: add an alloc cache for io_kiocb entries")
-Link: https://lore.kernel.org/io-uring/68cc2687.050a0220.139b6.0005.GAE@google.com/
-Reported-by: syzbot+baa2e0f4e02df602583e@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 7b306dfa326f ("x86/sev: Evict cache lines during SNP memory validation")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@kernel.org # 6.16.x
+Link: https://lore.kernel.org/r/70e38f2c4a549063de54052c9f64929705313526.1757708959.git.thomas.lendacky@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    3 ---
- io_uring/io_uring.c            |    5 -----
- io_uring/msg_ring.c            |   24 ++----------------------
- 3 files changed, 2 insertions(+), 30 deletions(-)
+ arch/x86/include/asm/sev.h |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -400,9 +400,6 @@ struct io_ring_ctx {
- 	struct callback_head		poll_wq_task_work;
- 	struct list_head		defer_list;
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -564,6 +564,24 @@ enum es_result sev_es_ghcb_hv_call(struc
  
--	struct io_alloc_cache		msg_cache;
--	spinlock_t			msg_lock;
+ extern struct ghcb *boot_ghcb;
+ 
++static inline void sev_evict_cache(void *va, int npages)
++{
++	volatile u8 val __always_unused;
++	u8 *bytes = va;
++	int page_idx;
++
++	/*
++	 * For SEV guests, a read from the first/last cache-lines of a 4K page
++	 * using the guest key is sufficient to cause a flush of all cache-lines
++	 * associated with that 4K page without incurring all the overhead of a
++	 * full CLFLUSH sequence.
++	 */
++	for (page_idx = 0; page_idx < npages; page_idx++) {
++		val = bytes[page_idx * PAGE_SIZE];
++		val = bytes[page_idx * PAGE_SIZE + PAGE_SIZE - 1];
++	}
++}
++
+ #else	/* !CONFIG_AMD_MEM_ENCRYPT */
+ 
+ #define snp_vmpl 0
+@@ -607,6 +625,7 @@ static inline int snp_send_guest_request
+ static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENODEV; }
+ static inline void __init snp_secure_tsc_prepare(void) { }
+ static inline void __init snp_secure_tsc_init(void) { }
++static inline void sev_evict_cache(void *va, int npages) {}
+ 
+ #endif	/* CONFIG_AMD_MEM_ENCRYPT */
+ 
+@@ -621,24 +640,6 @@ int rmp_make_shared(u64 pfn, enum pg_lev
+ void snp_leak_pages(u64 pfn, unsigned int npages);
+ void kdump_sev_callback(void);
+ void snp_fixup_e820_tables(void);
 -
- #ifdef CONFIG_NET_RX_BUSY_POLL
- 	struct list_head	napi_list;	/* track busy poll napi_id */
- 	spinlock_t		napi_lock;	/* napi_list lock */
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -316,9 +316,6 @@ static __cold struct io_ring_ctx *io_rin
- 			    sizeof(struct io_async_rw));
- 	ret |= io_alloc_cache_init(&ctx->uring_cache, IO_ALLOC_CACHE_MAX,
- 			    sizeof(struct uring_cache));
--	spin_lock_init(&ctx->msg_lock);
--	ret |= io_alloc_cache_init(&ctx->msg_cache, IO_ALLOC_CACHE_MAX,
--			    sizeof(struct io_kiocb));
- 	ret |= io_futex_cache_init(ctx);
- 	if (ret)
- 		goto free_ref;
-@@ -358,7 +355,6 @@ err:
- 	io_alloc_cache_free(&ctx->netmsg_cache, io_netmsg_cache_free);
- 	io_alloc_cache_free(&ctx->rw_cache, io_rw_cache_free);
- 	io_alloc_cache_free(&ctx->uring_cache, kfree);
--	io_alloc_cache_free(&ctx->msg_cache, io_msg_cache_free);
- 	io_futex_cache_free(ctx);
- 	kfree(ctx->cancel_table.hbs);
- 	kfree(ctx->cancel_table_locked.hbs);
-@@ -2743,7 +2739,6 @@ static __cold void io_ring_ctx_free(stru
- 	io_alloc_cache_free(&ctx->netmsg_cache, io_netmsg_cache_free);
- 	io_alloc_cache_free(&ctx->rw_cache, io_rw_cache_free);
- 	io_alloc_cache_free(&ctx->uring_cache, kfree);
--	io_alloc_cache_free(&ctx->msg_cache, io_msg_cache_free);
- 	io_futex_cache_free(ctx);
- 	io_destroy_buffers(ctx);
- 	mutex_unlock(&ctx->uring_lock);
---- a/io_uring/msg_ring.c
-+++ b/io_uring/msg_ring.c
-@@ -11,7 +11,6 @@
- #include "io_uring.h"
- #include "rsrc.h"
- #include "filetable.h"
--#include "alloc_cache.h"
- #include "msg_ring.h"
- 
- /* All valid masks for MSG_RING */
-@@ -76,13 +75,7 @@ static void io_msg_tw_complete(struct io
- 	struct io_ring_ctx *ctx = req->ctx;
- 
- 	io_add_aux_cqe(ctx, req->cqe.user_data, req->cqe.res, req->cqe.flags);
--	if (spin_trylock(&ctx->msg_lock)) {
--		if (io_alloc_cache_put(&ctx->msg_cache, req))
--			req = NULL;
--		spin_unlock(&ctx->msg_lock);
--	}
--	if (req)
--		kfree_rcu(req, rcu_head);
-+	kfree_rcu(req, rcu_head);
- 	percpu_ref_put(&ctx->refs);
- }
- 
-@@ -104,19 +97,6 @@ static int io_msg_remote_post(struct io_
- 	return 0;
- }
- 
--static struct io_kiocb *io_msg_get_kiocb(struct io_ring_ctx *ctx)
+-static inline void sev_evict_cache(void *va, int npages)
 -{
--	struct io_kiocb *req = NULL;
+-	volatile u8 val __always_unused;
+-	u8 *bytes = va;
+-	int page_idx;
 -
--	if (spin_trylock(&ctx->msg_lock)) {
--		req = io_alloc_cache_get(&ctx->msg_cache);
--		spin_unlock(&ctx->msg_lock);
--		if (req)
--			return req;
+-	/*
+-	 * For SEV guests, a read from the first/last cache-lines of a 4K page
+-	 * using the guest key is sufficient to cause a flush of all cache-lines
+-	 * associated with that 4K page without incurring all the overhead of a
+-	 * full CLFLUSH sequence.
+-	 */
+-	for (page_idx = 0; page_idx < npages; page_idx++) {
+-		val = bytes[page_idx * PAGE_SIZE];
+-		val = bytes[page_idx * PAGE_SIZE + PAGE_SIZE - 1];
 -	}
--	return kmem_cache_alloc(req_cachep, GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO);
 -}
--
- static int io_msg_data_remote(struct io_kiocb *req)
- {
- 	struct io_ring_ctx *target_ctx = req->file->private_data;
-@@ -124,7 +104,7 @@ static int io_msg_data_remote(struct io_
- 	struct io_kiocb *target;
- 	u32 flags = 0;
+ #else
+ static inline bool snp_probe_rmptable_info(void) { return false; }
+ static inline int snp_rmptable_init(void) { return -ENOSYS; }
+@@ -654,7 +655,6 @@ static inline int rmp_make_shared(u64 pf
+ static inline void snp_leak_pages(u64 pfn, unsigned int npages) {}
+ static inline void kdump_sev_callback(void) { }
+ static inline void snp_fixup_e820_tables(void) {}
+-static inline void sev_evict_cache(void *va, int npages) {}
+ #endif
  
--	target = io_msg_get_kiocb(req->ctx);
-+	target = kmem_cache_alloc(req_cachep, GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO);
- 	if (unlikely(!target))
- 		return -ENOMEM;
- 
+ #endif
 
 
 
