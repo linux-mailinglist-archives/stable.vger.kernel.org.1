@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD2CB92CE0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCC1B930E0
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A022F1905A8D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BD884809CD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F681FDA89;
-	Mon, 22 Sep 2025 19:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82592F39DE;
+	Mon, 22 Sep 2025 19:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D47O8Hh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGzXZSjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D61117A2EA;
-	Mon, 22 Sep 2025 19:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BE2F1FE3;
+	Mon, 22 Sep 2025 19:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569556; cv=none; b=e5/yUkTO69GTRV4ONlpS+SXjGFOdhM5sJu1QsVstsHMKaLh1fJG5Gl0e97pLi/7g2kcNwvlxtckeCQjTyyEV7kUwO78Dhwjj7g1sq0+BiwCFp7GfDzn8S161wHrw4wwoVvoZYzF9scy7Sqb7uGbU747B0u9zQ62dgKxQShajPks=
+	t=1758570272; cv=none; b=bUqcHX55uShmASMC8MZgI+MEXtf9Q7h7au/LMgslxcL0ohec5u5BNgbQlxJ1u2HAGwaT3FVKj3YsUh4OIgs4TKM707LR73da+UY7VuEqNd29FJgzY5XWkGfML251xx0aDfcqNOZ/Qdudxd7SGCCPe5pdq1bvl1rPUcNvMBYFzYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569556; c=relaxed/simple;
-	bh=rlKIa+fJIWQNRVEoJLp+aIwlO9oxH5zeio9SeotJIXA=;
+	s=arc-20240116; t=1758570272; c=relaxed/simple;
+	bh=gDYcfhcobfuljAwndTPJp7VEE+ajFlBDnP/bp3a0XOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNJDdfOX4MqSSOPSKPd7//hRdEpjpwlZjq6NZn95Q0PuWZwJ1Mba73mzQkjSOeHx67XeRfCdv+b1ysoAGBcW2kJLqSOWo+e0dKQR6zeMAGVV1Nrm50qjt0Z0SYKi/dK6dDOXG/NGayXtaLZkeyTsOo9GT0qnl9lAPinI7JFieVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D47O8Hh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25356C4CEF0;
-	Mon, 22 Sep 2025 19:32:35 +0000 (UTC)
+	 MIME-Version; b=aEOs/rq7ul2Dp2Dr+5DsvUpN7GCQXLpRUHaZbYV5kcbTRk7HlpGHEuGVqqqFRz0HENNS3dJjWWUx7387NyaecuTFOrs3l/rX8y7diidBVR9vGLwDnibz3Dey3dYrVBeR3Gh4YjJGcoj/OIh9SWmRVe+qySZjf1Pz6IjxJPMAvfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGzXZSjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E191EC4CEF0;
+	Mon, 22 Sep 2025 19:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569556;
-	bh=rlKIa+fJIWQNRVEoJLp+aIwlO9oxH5zeio9SeotJIXA=;
+	s=korg; t=1758570272;
+	bh=gDYcfhcobfuljAwndTPJp7VEE+ajFlBDnP/bp3a0XOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D47O8Hh9OfLgWF3kGMkeApu4/XOEa79Rvi3kRhm6Tvd7VyuESFuk6h8Qsxv5Mqii1
-	 hlePb801q3bYvb6RdbNXGYIy6cZ6C2Eo4CnLv4aYDrzn8HYX6+Y45WRbrut+Tcy5Ks
-	 1MAHeu9praiGaJ16Uz3juKm3lwqqqT1x/BeZ1pyY=
+	b=cGzXZSjjOkHTMDFbTHFmQLPAVbFIA0fXzDQi8Ndwzzki4O3Nz5pE0XsGVS3IZRbb6
+	 PDNbC2pRe4WbO+7Xr7suPFeaAHgyNkpEoPdjRXu0UrH9U27mMADuhTguTWqN4k9HGl
+	 0FJz6cYvlceu19J0BXY0QnF2FNWvgAk3JcmSS/uA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/61] ASoC: wm8974: Correct PLL rate rounding
+	Miguel Ojeda <ojeda@kernel.org>,
+	WANG Rui <wangrui@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.16 072/149] LoongArch: Handle jump tables options for RUST
 Date: Mon, 22 Sep 2025 21:29:32 +0200
-Message-ID: <20250922192404.646759674@linuxfoundation.org>
+Message-ID: <20250922192414.700724139@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 9b17d3724df55ecc2bc67978822585f2b023be48 ]
+commit 74f8295c6fb8436bec9995baf6ba463151b6fb68 upstream.
 
-Using a single value of 22500000 for both 48000Hz and 44100Hz audio
-will sometimes result in returning wrong dividers due to rounding.
-Update the code to use the actual value for both.
+When compiling with LLVM and CONFIG_RUST is set, there exist objtool
+warnings in rust/core.o and rust/kernel.o, like this:
 
-Fixes: 51b2bb3f2568 ("ASoC: wm8974: configure pll and mclk divider automatically")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250821082639.1301453-4-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    rust/core.o: warning: objtool:
+_RNvXs1_NtNtCs5QSdWC790r4_4core5ascii10ascii_charNtB5_9AsciiCharNtNtB9_3fmt5Debug3fmt+0x54:
+sibling call from callable instruction with modified stack frame
+
+For this special case, the related object file shows that there is no
+generated relocation section '.rela.discard.tablejump_annotate' for the
+table jump instruction jirl, thus objtool can not know that what is the
+actual destination address.
+
+If rustc has the option "-Cllvm-args=--loongarch-annotate-tablejump",
+pass the option to enable jump tables for objtool, otherwise it should
+pass "-Zno-jump-tables" to keep compatibility with older rustc.
+
+How to test:
+
+  $ rustup component add rust-src
+  $ make LLVM=1 rustavailable
+  $ make ARCH=loongarch LLVM=1 clean defconfig
+  $ scripts/config -d MODVERSIONS \
+    -e RUST -e SAMPLES -e SAMPLES_RUST \
+    -e SAMPLE_RUST_CONFIGFS -e SAMPLE_RUST_MINIMAL \
+    -e SAMPLE_RUST_MISC_DEVICE -e SAMPLE_RUST_PRINT \
+    -e SAMPLE_RUST_DMA -e SAMPLE_RUST_DRIVER_PCI \
+    -e SAMPLE_RUST_DRIVER_PLATFORM -e SAMPLE_RUST_DRIVER_FAUX \
+    -e SAMPLE_RUST_DRIVER_AUXILIARY -e SAMPLE_RUST_HOSTPROGS
+  $ make ARCH=loongarch LLVM=1 olddefconfig all
+
+Cc: stable@vger.kernel.org
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/rust-for-linux/CANiq72mNeCuPkCDrG2db3w=AX+O-zYrfprisDPmRac_qh65Dmg@mail.gmail.com/
+Suggested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8974.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/loongarch/Kconfig  |    4 ++++
+ arch/loongarch/Makefile |    5 +++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
-index 1becbf2c6ffad..587e200913767 100644
---- a/sound/soc/codecs/wm8974.c
-+++ b/sound/soc/codecs/wm8974.c
-@@ -419,10 +419,14 @@ static int wm8974_update_clocks(struct snd_soc_dai *dai)
- 	fs256 = 256 * priv->fs;
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -301,6 +301,10 @@ config AS_HAS_LVZ_EXTENSION
+ config CC_HAS_ANNOTATE_TABLEJUMP
+ 	def_bool $(cc-option,-mannotate-tablejump)
  
- 	f = wm8974_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
--
- 	if (f != priv->mclk) {
- 		/* The PLL performs best around 90MHz */
--		fpll = wm8974_get_mclkdiv(22500000, fs256, &mclkdiv);
-+		if (fs256 % 8000)
-+			f = 22579200;
-+		else
-+			f = 24576000;
++config RUSTC_HAS_ANNOTATE_TABLEJUMP
++	depends on RUST
++	def_bool $(rustc-option,-Cllvm-args=--loongarch-annotate-tablejump)
 +
-+		fpll = wm8974_get_mclkdiv(f, fs256, &mclkdiv);
- 	}
+ menu "Kernel type and options"
  
- 	wm8974_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
--- 
-2.51.0
-
+ source "kernel/Kconfig.hz"
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -106,6 +106,11 @@ KBUILD_CFLAGS			+= -mannotate-tablejump
+ else
+ KBUILD_CFLAGS			+= -fno-jump-tables # keep compatibility with older compilers
+ endif
++ifdef CONFIG_RUSTC_HAS_ANNOTATE_TABLEJUMP
++KBUILD_RUSTFLAGS		+= -Cllvm-args=--loongarch-annotate-tablejump
++else
++KBUILD_RUSTFLAGS		+= -Zno-jump-tables # keep compatibility with older compilers
++endif
+ ifdef CONFIG_LTO_CLANG
+ # The annotate-tablejump option can not be passed to LLVM backend when LTO is enabled.
+ # Ensure it is aware of linker with LTO, '--loongarch-annotate-tablejump' also needs to
 
 
 
