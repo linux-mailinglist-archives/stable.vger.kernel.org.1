@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01213B93029
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7071B92E48
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C8B19C05C5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BF2517B280
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502A22F291B;
-	Mon, 22 Sep 2025 19:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B552F0C5F;
+	Mon, 22 Sep 2025 19:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnRL1gw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtGh3Wzk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C349222590;
-	Mon, 22 Sep 2025 19:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C705425F780;
+	Mon, 22 Sep 2025 19:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570136; cv=none; b=i/e6SXnqyuNCK7Nk2ywoNT0NLxgm0QyGB+53l0rAq0sDzXs6W1LssRgy7QJcfLHaGkB0T0O3R4hCARKku0KtkJWu7IhxOzAvsQ88Bj5X23B6cQp4XVn1AS9bN1E6HzBU8p1JJ1HXlLDMHraUMoWDgkdWXr0dLHX/GU9s35XP0fQ=
+	t=1758569814; cv=none; b=IOHLTZ51w0l02DzhmtHo+KpFkewAmbru43jzFqysjajykLgEFBF4yRA5bGz0b8T+Tx15prKnSLWVN70L4nuHnHOxuZ48/ksaI+66pov7/aUck+f4uSf8r8XiSHSRhyjSzaQUIQZg4MA67yuEABGiiLx2C5wUserkFv8lXlFVTXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570136; c=relaxed/simple;
-	bh=LKJ11LYvVMffzwiowfrbccMYWA2hoqE/cc8Js4HKt9g=;
+	s=arc-20240116; t=1758569814; c=relaxed/simple;
+	bh=BtgGP0qkk4WOyPVaUoyzODdcgexn4g9OSfc4PjGvC5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsQYAZ8D2AyA47HGnW0tXbxPEq8tv5VIzoE3mlEo+ISo2B6VY/CYE4s5g27TNr9LAUkUunbzdKEt2okhs2iSSJC0lIS85IVzmqQpbbvduFptU6FkWnznI2kgZnr3MocSs/Ctuz4BkhEIsGh3i+HWgbgGI/3OKPUMK9CBkqmi/7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnRL1gw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A8CC4CEF0;
-	Mon, 22 Sep 2025 19:42:15 +0000 (UTC)
+	 MIME-Version; b=AZapQzcXBD+Fs559GvTESEIsrLgW65MWCo4E3MSIqwtoNP1XKseixySQrljtOLygE1AZE5s6hqDJmc0hUT+VKpDRzEnjJMRa/A30/HbAnNTdhsbnZpKnD4cMZD0oL9l7AZR1KLE60NYuIKADj0cemOmJ/AVXw3Zm9fMNVHaeJ/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtGh3Wzk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E382C4CEF0;
+	Mon, 22 Sep 2025 19:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570135;
-	bh=LKJ11LYvVMffzwiowfrbccMYWA2hoqE/cc8Js4HKt9g=;
+	s=korg; t=1758569814;
+	bh=BtgGP0qkk4WOyPVaUoyzODdcgexn4g9OSfc4PjGvC5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LnRL1gw3enWbgjM5YMzgqBB5Vlo2oLThOEM31Dsc5e4r8I8PFdHiMJiM9Sc2cRcbg
-	 HMgj8V/4/Y4pVFLFYrQIXEM3wk9tTWSBPOdtkTZeNhfZU/JWVrfLIxTP+1m7l2SWNH
-	 TPS2fgJt+GOflfB/0vBYAQUfjHuBqN8sOWpAuDEk=
+	b=rtGh3WzkPydV8u8EyGMSwKvDj9ScbwB3jp2lKFZ59UxzNKWCiL+wMC8Jt1Q5axJ0+
+	 pQaTwld5S2qxCrhdVXJnBejiYsDittjjuhzovqdJS3o1hqH9RGVGFqm4JtU0ppxcU8
+	 tMyKanR3Za0Mwo1yQx+Yv+otKYzoGhq+2P1z1KHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuling Ren <qren@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ajay Singh <ajay.kathat@microchip.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 024/149] bonding: set random address only when slaves already exist
+Subject: [PATCH 6.12 001/105] wifi: wilc1000: avoid buffer overflow in WID string configuration
 Date: Mon, 22 Sep 2025 21:28:44 +0200
-Message-ID: <20250922192413.481608433@linuxfoundation.org>
+Message-ID: <20250922192408.952807531@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Ajay.Kathat@microchip.com <Ajay.Kathat@microchip.com>
 
-[ Upstream commit 35ae4e86292ef7dfe4edbb9942955c884e984352 ]
+[ Upstream commit fe9e4d0c39311d0f97b024147a0d155333f388b5 ]
 
-After commit 5c3bf6cba791 ("bonding: assign random address if device
-address is same as bond"), bonding will erroneously randomize the MAC
-address of the first interface added to the bond if fail_over_mac =
-follow.
+Fix the following copy overflow warning identified by Smatch checker.
 
-Correct this by additionally testing for the bond being empty before
-randomizing the MAC.
+ drivers/net/wireless/microchip/wilc1000/wlan_cfg.c:184 wilc_wlan_parse_response_frame()
+        error: '__memcpy()' 'cfg->s[i]->str' copy overflow (512 vs 65537)
 
-Fixes: 5c3bf6cba791 ("bonding: assign random address if device address is same as bond")
-Reported-by: Qiuling Ren <qren@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250910024336.400253-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch introduces size check before accessing the memory buffer.
+The checks are base on the WID type of received data from the firmware.
+For WID string configuration, the size limit is determined by individual
+element size in 'struct wilc_cfg_str_vals' that is maintained in 'len' field
+of 'struct wilc_cfg_str'.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-wireless/aLFbr9Yu9j_TQTey@stanley.mountain
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+Link: https://patch.msgid.link/20250829225829.5423-1-ajay.kathat@microchip.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../wireless/microchip/wilc1000/wlan_cfg.c    | 37 ++++++++++++++-----
+ .../wireless/microchip/wilc1000/wlan_cfg.h    |  5 ++-
+ 2 files changed, 30 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index c4d53e8e7c152..e413340be2bff 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2115,6 +2115,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 		memcpy(ss.__data, bond_dev->dev_addr, bond_dev->addr_len);
- 	} else if (bond->params.fail_over_mac == BOND_FOM_FOLLOW &&
- 		   BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP &&
-+		   bond_has_slaves(bond) &&
- 		   memcmp(slave_dev->dev_addr, bond_dev->dev_addr, bond_dev->addr_len) == 0) {
- 		/* Set slave to random address to avoid duplicate mac
- 		 * address in later fail over.
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c
+index 131388886acbf..cfabd5aebb540 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c
+@@ -41,10 +41,10 @@ static const struct wilc_cfg_word g_cfg_word[] = {
+ };
+ 
+ static const struct wilc_cfg_str g_cfg_str[] = {
+-	{WID_FIRMWARE_VERSION, NULL},
+-	{WID_MAC_ADDR, NULL},
+-	{WID_ASSOC_RES_INFO, NULL},
+-	{WID_NIL, NULL}
++	{WID_FIRMWARE_VERSION, 0, NULL},
++	{WID_MAC_ADDR, 0, NULL},
++	{WID_ASSOC_RES_INFO, 0, NULL},
++	{WID_NIL, 0, NULL}
+ };
+ 
+ #define WILC_RESP_MSG_TYPE_CONFIG_REPLY		'R'
+@@ -147,44 +147,58 @@ static void wilc_wlan_parse_response_frame(struct wilc *wl, u8 *info, int size)
+ 
+ 		switch (FIELD_GET(WILC_WID_TYPE, wid)) {
+ 		case WID_CHAR:
++			len = 3;
++			if (len + 2  > size)
++				return;
++
+ 			while (cfg->b[i].id != WID_NIL && cfg->b[i].id != wid)
+ 				i++;
+ 
+ 			if (cfg->b[i].id == wid)
+ 				cfg->b[i].val = info[4];
+ 
+-			len = 3;
+ 			break;
+ 
+ 		case WID_SHORT:
++			len = 4;
++			if (len + 2  > size)
++				return;
++
+ 			while (cfg->hw[i].id != WID_NIL && cfg->hw[i].id != wid)
+ 				i++;
+ 
+ 			if (cfg->hw[i].id == wid)
+ 				cfg->hw[i].val = get_unaligned_le16(&info[4]);
+ 
+-			len = 4;
+ 			break;
+ 
+ 		case WID_INT:
++			len = 6;
++			if (len + 2  > size)
++				return;
++
+ 			while (cfg->w[i].id != WID_NIL && cfg->w[i].id != wid)
+ 				i++;
+ 
+ 			if (cfg->w[i].id == wid)
+ 				cfg->w[i].val = get_unaligned_le32(&info[4]);
+ 
+-			len = 6;
+ 			break;
+ 
+ 		case WID_STR:
++			len = 2 + get_unaligned_le16(&info[2]);
++
+ 			while (cfg->s[i].id != WID_NIL && cfg->s[i].id != wid)
+ 				i++;
+ 
+-			if (cfg->s[i].id == wid)
++			if (cfg->s[i].id == wid) {
++				if (len > cfg->s[i].len || (len + 2  > size))
++					return;
++
+ 				memcpy(cfg->s[i].str, &info[2],
+-				       get_unaligned_le16(&info[2]) + 2);
++				       len);
++			}
+ 
+-			len = 2 + get_unaligned_le16(&info[2]);
+ 			break;
+ 
+ 		default:
+@@ -384,12 +398,15 @@ int wilc_wlan_cfg_init(struct wilc *wl)
+ 	/* store the string cfg parameters */
+ 	wl->cfg.s[i].id = WID_FIRMWARE_VERSION;
+ 	wl->cfg.s[i].str = str_vals->firmware_version;
++	wl->cfg.s[i].len = sizeof(str_vals->firmware_version);
+ 	i++;
+ 	wl->cfg.s[i].id = WID_MAC_ADDR;
+ 	wl->cfg.s[i].str = str_vals->mac_address;
++	wl->cfg.s[i].len = sizeof(str_vals->mac_address);
+ 	i++;
+ 	wl->cfg.s[i].id = WID_ASSOC_RES_INFO;
+ 	wl->cfg.s[i].str = str_vals->assoc_rsp;
++	wl->cfg.s[i].len = sizeof(str_vals->assoc_rsp);
+ 	i++;
+ 	wl->cfg.s[i].id = WID_NIL;
+ 	wl->cfg.s[i].str = NULL;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h
+index 7038b74f8e8ff..5ae74bced7d74 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h
+@@ -24,12 +24,13 @@ struct wilc_cfg_word {
+ 
+ struct wilc_cfg_str {
+ 	u16 id;
++	u16 len;
+ 	u8 *str;
+ };
+ 
+ struct wilc_cfg_str_vals {
+-	u8 mac_address[7];
+-	u8 firmware_version[129];
++	u8 mac_address[8];
++	u8 firmware_version[130];
+ 	u8 assoc_rsp[WILC_MAX_ASSOC_RESP_FRAME_SIZE];
+ };
+ 
 -- 
 2.51.0
 
