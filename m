@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6ACB9309C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56219B92EE1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1279019074FB
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA4B719073AD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4927E2F39A9;
-	Mon, 22 Sep 2025 19:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5831131B105;
+	Mon, 22 Sep 2025 19:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZiNemJe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyycxvFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056002F2909;
-	Mon, 22 Sep 2025 19:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E072F1FE3;
+	Mon, 22 Sep 2025 19:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570230; cv=none; b=V37sfy0PZTDxSLh6ZPnSCs1XYj7Hwg9bLCfzH2sdhfINMbyPdjt2pLB2m7PZLfjljgMrz7Kfdv/O3R8g+TXtP7Rpdf7RAQpmhbOpP4tgpKF4KK13KNMyKiDNjF7VOScaPB4iJu4jTJB4wvs1hYELK3X3PfNjzZYgC9HZ1tPimrM=
+	t=1758569929; cv=none; b=Smp54FZcYlnV2d5nMu1EQR5cDaq6x5nrjVk1Y4DbfGz1Wa3UEhYv+16w49ZamIU9Oa/Ndz7S1a6pHqRFGPOVuGfWh6/xE8hLclbJkuDbWJrmrB7T9TvCwYmgRJpFTcCMz70oWqjW5VS/eUlBnN6nqbcZBId6E7GZJ2lQJivUnzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570230; c=relaxed/simple;
-	bh=98nYFWfKrQTDQ3Auv/Bl4Rhv1mXJp5nIefyfdkgIrMM=;
+	s=arc-20240116; t=1758569929; c=relaxed/simple;
+	bh=/f/gLZHFUyFl6eAzYG9bjxnINdLY6b3jvGLeWYtGNSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbFjzoSxoKgdha3X7rv41oJycRP0em5i0O/pfqJxXlYkCiRSoUWzC4Xxeh7BV3jV6sWCToxjGqil2no1i0AEgPnNmc7yml9+C61geKJiVPMTDo+nyiLvmpnctfl+y5UNEsRurhC5rE9efFfo2bHO17deoZ1qFU2rWncmEPfiMFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZiNemJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94609C4CEF5;
-	Mon, 22 Sep 2025 19:43:49 +0000 (UTC)
+	 MIME-Version; b=BMSJJoo+G+1rZm60Dvuh/YvAETX4wLcLdqQWWynW3d3ch1hdRu8bpjZhD7+fYIKHn6tRV/LoASPHbUDUuTxpkAvN0lXxWFNrpeZeP+IyrDg1/V3Uk/Jp1Id05++T3R0CLdtpURxZd9y0SLl3qJFnCEPUTe8We/bnqNfhMg+S5fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyycxvFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E07C4CEF7;
+	Mon, 22 Sep 2025 19:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570229;
-	bh=98nYFWfKrQTDQ3Auv/Bl4Rhv1mXJp5nIefyfdkgIrMM=;
+	s=korg; t=1758569929;
+	bh=/f/gLZHFUyFl6eAzYG9bjxnINdLY6b3jvGLeWYtGNSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZiNemJen3tz55gOkVH6ZEESv/DTh9dl8wVVMFdAoCJhEkX913m59rrwf/EEqF+Wi
-	 TaJG7Foyvqg0iH8T7n+srjNPDgPz5zb5vlJiAbRQ/Fg25Abso92ZLJx79PMeWrbBTF
-	 fhbw5I2MZKlJl6PS96SJbjx1uJIECqYQWmuQ5usM=
+	b=GyycxvFP57PWTNHBje2gZyQjDJTnso0ipEToM+pXTQjG/fWCEkiULbOMTBIXHQaqq
+	 XXF4G/+nsbsh8GL/R+uOvjdIrWyiHb2jbLtERQXVr9Ounhjy5un+27UdrNaX1uj833
+	 1YAhBfeQDwy/ObIHRNtPm2h4XnyV9laXLrsKs5SU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Dongsheng Yang <dongsheng.yang@linux.dev>
-Subject: [PATCH 6.16 057/149] dm-stripe: fix a possible integer overflow
+	Stefan Metzmacher <metze@samba.org>,
+	"Luigino Camastra, Aisle Research" <luigino.camastra@aisle.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 034/105] ksmbd: smbdirect: validate data_offset and data_length field of smb_direct_data_transfer
 Date: Mon, 22 Sep 2025 21:29:17 +0200
-Message-ID: <20250922192414.313030988@linuxfoundation.org>
+Message-ID: <20250922192409.806885688@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 1071d560afb4c245c2076494226df47db5a35708 upstream.
+commit 5282491fc49d5614ac6ddcd012e5743eecb6a67c upstream.
 
-There's a possible integer overflow in stripe_io_hints if we have too
-large chunk size. Test if the overflow happened, and if it did, don't set
-limits->io_min and limits->io_opt;
+If data_offset and data_length of smb_direct_data_transfer struct are
+invalid, out of bounds issue could happen.
+This patch validate data_offset and data_length field in recv_done.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Suggested-by: Dongsheng Yang <dongsheng.yang@linux.dev>
 Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Reported-by: Luigino Camastra, Aisle Research <luigino.camastra@aisle.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-stripe.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/smb/server/transport_rdma.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/md/dm-stripe.c
-+++ b/drivers/md/dm-stripe.c
-@@ -456,11 +456,15 @@ static void stripe_io_hints(struct dm_ta
- 			    struct queue_limits *limits)
- {
- 	struct stripe_c *sc = ti->private;
--	unsigned int chunk_size = sc->chunk_size << SECTOR_SHIFT;
-+	unsigned int io_min, io_opt;
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -553,7 +553,7 @@ static void recv_done(struct ib_cq *cq,
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_length;
++		unsigned int data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 	limits->chunk_sectors = sc->chunk_size;
--	limits->io_min = chunk_size;
--	limits->io_opt = chunk_size * sc->stripes;
-+
-+	if (!check_shl_overflow(sc->chunk_size, SECTOR_SHIFT, &io_min) &&
-+	    !check_mul_overflow(io_min, sc->stripes, &io_opt)) {
-+		limits->io_min = io_min;
-+		limits->io_opt = io_opt;
-+	}
- }
+ 		if (wc->byte_len <
+@@ -564,14 +564,15 @@ static void recv_done(struct ib_cq *cq,
+ 		}
  
- static struct target_type stripe_target = {
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+-		if (data_length) {
+-			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+-			    (u64)data_length) {
+-				put_recvmsg(t, recvmsg);
+-				smb_direct_disconnect_rdma_connection(t);
+-				return;
+-			}
++		data_offset = le32_to_cpu(data_transfer->data_offset);
++		if (wc->byte_len < data_offset ||
++		    wc->byte_len < (u64)data_offset + data_length) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
++		}
+ 
++		if (data_length) {
+ 			if (t->full_packet_received)
+ 				recvmsg->first_segment = true;
+ 
 
 
 
