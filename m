@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-181334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C83EB930D1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC6DB92EFF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DDD41907CC0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 562874478D3
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8086C2F39DE;
-	Mon, 22 Sep 2025 19:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E028311948;
+	Mon, 22 Sep 2025 19:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJR4jfTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moNgMwZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF9A2F0C5C;
-	Mon, 22 Sep 2025 19:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD402F0C52;
+	Mon, 22 Sep 2025 19:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570280; cv=none; b=bMFnQuR++Wb4EnHbUudEM/fCJQnHbL3ringbSudW0iGSjYyXlxqD58R4pdirMXwTeLFsuFPk8GOgYZZljogdRHdYRd7Afu83eacZf+YFtxagw+f3PGF80FtEYomETz4qzu8K2PKn+0HuSZSp8Cio0CW8oKQYrJLO6zpRK+CQX4s=
+	t=1758569948; cv=none; b=ekSfUo7CIEAlNDkWDJRzlwAtbhtorwTFMLIIlns5bz6XzSo5GPgfZmYshCcOj3Hu6PfVJrgJ2rPxSmxYLaqng2c6Naz/R/WjzzpKij5XFJB0OzlTUWduQKlidK32FPmP55YvtWogo9pl+jFrQku03hCA/lylTvhkkoKICyxC4BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570280; c=relaxed/simple;
-	bh=jcys/min0QlXdWznCnPq6wvju/1LI6hWp0XqI8rsUwY=;
+	s=arc-20240116; t=1758569948; c=relaxed/simple;
+	bh=8NTlvOueA/7oDB7JkzQ/20A9tOZdTUtWob+r3CxAk24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3z2+PYXLmBh3h2F3P7K3aIk/wjj+UFBo7ddKjzrHipod+t/Gnw/xBVWam76TEVrR0sJ0c98IHn/fgmTv9b+UJAvbp8r6BCgqmCC9dxDmXQ9hvXMeYs9eAkediVY+0vjLn175mifAtiehl9Kx/V4nolobvRbmHxu52x2vmuMTg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJR4jfTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68373C4CEF0;
-	Mon, 22 Sep 2025 19:44:39 +0000 (UTC)
+	 MIME-Version; b=uI4zKeXwhyTaubgeMvh/IYDXe18EPBB9c93Bv10B+xlV3g35d2j6EjIPMSKMKYFQLKGGHQwDK5QqHJ0pk0/7WH3ARWGgXpxUQdkqouz/+bFFzDieUgLgjc7MDt2efkMVvAtVWTZS5R5Bnwbq5zC+CbpAgc1uJ0mA44WI40+JO5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moNgMwZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BBAC4CEF0;
+	Mon, 22 Sep 2025 19:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570279;
-	bh=jcys/min0QlXdWznCnPq6wvju/1LI6hWp0XqI8rsUwY=;
+	s=korg; t=1758569948;
+	bh=8NTlvOueA/7oDB7JkzQ/20A9tOZdTUtWob+r3CxAk24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJR4jfTok+687vKJSKZvw/J6Dka3SetSctJp24Hy8NWYK1hSIRRX0QwWjAODsVdhT
-	 Lziq/GxoPhYJ/5ABJquNVl/fam5g61odtQnbK9WqiWurv+iO/WZgVYtSIjZzby9Y5e
-	 A/qzuftcbDmmBSKM9OPZM8u9/WTYEmDlNEe7YHGQ=
+	b=moNgMwZqHrXQrmrPSxcjljYf1ikx+QrP74llZnIZTiNeTcnovlARmKS+yt1DyHD3c
+	 u+wVes4fn5sokgoYwLQaFNn6CECXd8nSsxtYBFO0sEpL/9Q06XJm8hRSlGqLZ9WuHM
+	 FYs8PmpxsM6bsOZv4gov5KaiELL1Zl4RPyYil6Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 075/149] LoongArch: KVM: Avoid copy_*_user() with lock hold in kvm_eiointc_sw_status_access()
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.12 052/105] iommu/amd/pgtbl: Fix possible race while increase page table level
 Date: Mon, 22 Sep 2025 21:29:35 +0200
-Message-ID: <20250922192414.774526466@linuxfoundation.org>
+Message-ID: <20250922192410.277723153@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,132 +64,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-commit 01a8e68396a6d51f5ba92021ad1a4b8eaabdd0e7 upstream.
+commit 1e56310b40fd2e7e0b9493da9ff488af145bdd0c upstream.
 
-Function copy_from_user() and copy_to_user() may sleep because of page
-fault, and they cannot be called in spin_lock hold context. Here move
-funtcion calling of copy_from_user() and copy_to_user() out of function
-kvm_eiointc_sw_status_access().
+The AMD IOMMU host page table implementation supports dynamic page table levels
+(up to 6 levels), starting with a 3-level configuration that expands based on
+IOVA address. The kernel maintains a root pointer and current page table level
+to enable proper page table walks in alloc_pte()/fetch_pte() operations.
 
-Otherwise there will be possible warning such as:
+The IOMMU IOVA allocator initially starts with 32-bit address and onces its
+exhuasted it switches to 64-bit address (max address is determined based
+on IOMMU and device DMA capability). To support larger IOVA, AMD IOMMU
+driver increases page table level.
 
-BUG: sleeping function called from invalid context at include/linux/uaccess.h:192
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 6292, name: qemu-system-loo
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-INFO: lockdep is turned off.
-irq event stamp: 0
-hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-hardirqs last disabled at (0): [<9000000004c4a554>] copy_process+0x90c/0x1d40
-softirqs last  enabled at (0): [<9000000004c4a554>] copy_process+0x90c/0x1d40
-softirqs last disabled at (0): [<0000000000000000>] 0x0
-CPU: 41 UID: 0 PID: 6292 Comm: qemu-system-loo Tainted: G W 6.17.0-rc3+ #31 PREEMPT(full)
-Tainted: [W]=WARN
-Stack : 0000000000000076 0000000000000000 9000000004c28264 9000100092ff4000
-        9000100092ff7b80 9000100092ff7b88 0000000000000000 9000100092ff7cc8
-        9000100092ff7cc0 9000100092ff7cc0 9000100092ff7a00 0000000000000001
-        0000000000000001 9000100092ff7b88 947d2f9216a5e8b9 900010008773d880
-        00000000ffff8b9f fffffffffffffffe 0000000000000ba1 fffffffffffffffe
-        000000000000003e 900000000825a15b 000010007ad38000 9000100092ff7ec0
-        0000000000000000 0000000000000000 9000000006f3ac60 9000000007252000
-        0000000000000000 00007ff746ff2230 0000000000000053 9000200088a021b0
-        0000555556c9d190 0000000000000000 9000000004c2827c 000055556cfb5f40
-        00000000000000b0 0000000000000007 0000000000000007 0000000000071c1d
-Call Trace:
-[<9000000004c2827c>] show_stack+0x5c/0x180
-[<9000000004c20fac>] dump_stack_lvl+0x94/0xe4
-[<9000000004c99c7c>] __might_resched+0x26c/0x290
-[<9000000004f68968>] __might_fault+0x20/0x88
-[<ffff800002311de0>] kvm_eiointc_sw_status_access.isra.0+0x88/0x380 [kvm]
-[<ffff8000022f8514>] kvm_device_ioctl+0x194/0x290 [kvm]
-[<900000000506b0d8>] sys_ioctl+0x388/0x1010
-[<90000000063ed210>] do_syscall+0xb0/0x2d8
-[<9000000004c25ef8>] handle_syscall+0xb8/0x158
+But in unmap path (iommu_v1_unmap_pages()), fetch_pte() reads
+pgtable->[root/mode] without lock. So its possible that in exteme corner case,
+when increase_address_space() is updating pgtable->[root/mode], fetch_pte()
+reads wrong page table level (pgtable->mode). It does compare the value with
+level encoded in page table and returns NULL. This will result is
+iommu_unmap ops to fail and upper layer may retry/log WARN_ON.
 
+CPU 0                                         CPU 1
+------                                       ------
+map pages                                    unmap pages
+alloc_pte() -> increase_address_space()      iommu_v1_unmap_pages() -> fetch_pte()
+  pgtable->root = pte (new root value)
+                                             READ pgtable->[mode/root]
+					       Reads new root, old mode
+  Updates mode (pgtable->mode += 1)
+
+Since Page table level updates are infrequent and already synchronized with a
+spinlock, implement seqcount to enable lock-free read operations on the read path.
+
+Fixes: 754265bcab7 ("iommu/amd: Fix race in increase_address_space()")
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 Cc: stable@vger.kernel.org
-Fixes: 1ad7efa552fd5 ("LoongArch: KVM: Add EIOINTC user mode read and write functions")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/intc/eiointc.c |   29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ drivers/iommu/amd/amd_iommu_types.h |    1 +
+ drivers/iommu/amd/io_pgtable.c      |   25 +++++++++++++++++++++----
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -911,19 +911,17 @@ static int kvm_eiointc_regs_access(struc
+--- a/drivers/iommu/amd/amd_iommu_types.h
++++ b/drivers/iommu/amd/amd_iommu_types.h
+@@ -545,6 +545,7 @@ struct gcr3_tbl_info {
+ };
  
- static int kvm_eiointc_sw_status_access(struct kvm_device *dev,
- 					struct kvm_device_attr *attr,
--					bool is_write)
-+					bool is_write, int *data)
+ struct amd_io_pgtable {
++	seqcount_t		seqcount;	/* Protects root/mode update */
+ 	struct io_pgtable	pgtbl;
+ 	int			mode;
+ 	u64			*root;
+--- a/drivers/iommu/amd/io_pgtable.c
++++ b/drivers/iommu/amd/io_pgtable.c
+@@ -17,6 +17,7 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <linux/dma-mapping.h>
++#include <linux/seqlock.h>
+ 
+ #include <asm/barrier.h>
+ 
+@@ -144,8 +145,11 @@ static bool increase_address_space(struc
+ 
+ 	*pte = PM_LEVEL_PDE(pgtable->mode, iommu_virt_to_phys(pgtable->root));
+ 
++	write_seqcount_begin(&pgtable->seqcount);
+ 	pgtable->root  = pte;
+ 	pgtable->mode += 1;
++	write_seqcount_end(&pgtable->seqcount);
++
+ 	amd_iommu_update_and_flush_device_table(domain);
+ 
+ 	pte = NULL;
+@@ -167,6 +171,7 @@ static u64 *alloc_pte(struct amd_io_pgta
  {
- 	int addr, ret = 0;
- 	unsigned long flags;
- 	void *p = NULL;
--	void __user *data;
- 	struct loongarch_eiointc *s;
+ 	unsigned long last_addr = address + (page_size - 1);
+ 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
++	unsigned int seqcount;
+ 	int level, end_lvl;
+ 	u64 *pte, *page;
  
- 	s = dev->kvm->arch.eiointc;
- 	addr = attr->attr;
- 	addr &= 0xffff;
- 
--	data = (void __user *)attr->addr;
- 	switch (addr) {
- 	case KVM_DEV_LOONGARCH_EXTIOI_SW_STATUS_NUM_CPU:
- 		if (is_write)
-@@ -945,13 +943,10 @@ static int kvm_eiointc_sw_status_access(
- 		return -EINVAL;
+@@ -184,8 +189,14 @@ static u64 *alloc_pte(struct amd_io_pgta
  	}
- 	spin_lock_irqsave(&s->lock, flags);
--	if (is_write) {
--		if (copy_from_user(p, data, 4))
--			ret = -EFAULT;
--	} else {
--		if (copy_to_user(data, p, 4))
--			ret = -EFAULT;
--	}
-+	if (is_write)
-+		memcpy(p, data, 4);
-+	else
-+		memcpy(data, p, 4);
- 	spin_unlock_irqrestore(&s->lock, flags);
  
- 	return ret;
-@@ -973,7 +968,14 @@ static int kvm_eiointc_get_attr(struct k
  
- 		return ret;
- 	case KVM_DEV_LOONGARCH_EXTIOI_GRP_SW_STATUS:
--		return kvm_eiointc_sw_status_access(dev, attr, false);
-+		ret = kvm_eiointc_sw_status_access(dev, attr, false, &data);
-+		if (ret)
-+			return ret;
+-	level   = pgtable->mode - 1;
+-	pte     = &pgtable->root[PM_LEVEL_INDEX(level, address)];
++	do {
++		seqcount = read_seqcount_begin(&pgtable->seqcount);
 +
-+		if (copy_to_user((void __user *)attr->addr, &data, 4))
-+			ret = -EFAULT;
++		level   = pgtable->mode - 1;
++		pte     = &pgtable->root[PM_LEVEL_INDEX(level, address)];
++	} while (read_seqcount_retry(&pgtable->seqcount, seqcount));
 +
-+		return ret;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -993,7 +995,10 @@ static int kvm_eiointc_set_attr(struct k
++
+ 	address = PAGE_SIZE_ALIGN(address, page_size);
+ 	end_lvl = PAGE_SIZE_LEVEL(page_size);
  
- 		return kvm_eiointc_regs_access(dev, attr, true, &data);
- 	case KVM_DEV_LOONGARCH_EXTIOI_GRP_SW_STATUS:
--		return kvm_eiointc_sw_status_access(dev, attr, true);
-+		if (copy_from_user(&data, (void __user *)attr->addr, 4))
-+			return -EFAULT;
+@@ -262,6 +273,7 @@ static u64 *fetch_pte(struct amd_io_pgta
+ 		      unsigned long *page_size)
+ {
+ 	int level;
++	unsigned int seqcount;
+ 	u64 *pte;
+ 
+ 	*page_size = 0;
+@@ -269,8 +281,12 @@ static u64 *fetch_pte(struct amd_io_pgta
+ 	if (address > PM_LEVEL_SIZE(pgtable->mode))
+ 		return NULL;
+ 
+-	level	   =  pgtable->mode - 1;
+-	pte	   = &pgtable->root[PM_LEVEL_INDEX(level, address)];
++	do {
++		seqcount = read_seqcount_begin(&pgtable->seqcount);
++		level	   =  pgtable->mode - 1;
++		pte	   = &pgtable->root[PM_LEVEL_INDEX(level, address)];
++	} while (read_seqcount_retry(&pgtable->seqcount, seqcount));
 +
-+		return kvm_eiointc_sw_status_access(dev, attr, true, &data);
- 	default:
- 		return -EINVAL;
- 	}
+ 	*page_size =  PTE_LEVEL_PAGE_SIZE(level);
+ 
+ 	while (level > 0) {
+@@ -552,6 +568,7 @@ static struct io_pgtable *v1_alloc_pgtab
+ 	if (!pgtable->root)
+ 		return NULL;
+ 	pgtable->mode = PAGE_MODE_3_LEVEL;
++	seqcount_init(&pgtable->seqcount);
+ 
+ 	cfg->pgsize_bitmap  = amd_iommu_pgsize_bitmap;
+ 	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE;
 
 
 
