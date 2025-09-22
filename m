@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49955B92F3B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72170B930FB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25B91881FD3
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6A5818840B7
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047FB2F0C52;
-	Mon, 22 Sep 2025 19:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A502F28F9;
+	Mon, 22 Sep 2025 19:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWW18RXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/GPYuuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B6E2820D1;
-	Mon, 22 Sep 2025 19:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B442F2907;
+	Mon, 22 Sep 2025 19:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569995; cv=none; b=idrwykr1CfjS8JC5To7fqCmqiNK0oBFTsNXRQeTI+cIK2YKle/04Ko+8knGSQiUDydMDCm7y8bzdatRlkyDRLgXiY7tTnqae49J/Xwb3W4bNiZOsewx7KI1QbK89d48v1bfh2+w4MtNJ70zoC6sJY2qfuna1XISn5N16M6ag4sM=
+	t=1758570305; cv=none; b=HJDunqw3WrXnwWu4DpMHGhuAHn0tauc6SybUs5II2HixBg6dX5Mlrwo/CJ7pMiNAKTxtWPdw152AXd1X83zF2FXucplDPK+bg5yTfdUTXa7h6QAsT5JRThJL3ww8rCpOQUKd5rnxdBBam8kkUcXF9e1GcWv9sIVeX4MGzprTMHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569995; c=relaxed/simple;
-	bh=sGtjosNp28G7SNw6DZIypOe/tuh07DvmbJ6ZCX2bl/s=;
+	s=arc-20240116; t=1758570305; c=relaxed/simple;
+	bh=f+BCxr+NSjYly+iu/dDeF1pirzRGc/vNuMLR+GfCZ+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxpNvq2vemponMrAunI9D8t//BEMMjine79aAQAjATeaeiilm0YAOFZ7gIhKeGfcevTnGup4dP/KCI3aM/AiK3/FVw8AxUp6eh8yxONGHEG7rNA33Z+x5QYprUsAa9mk2Dvb25c+PfTZyVktctdUggzoa/XqGHMNJ3wS2yuI2Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWW18RXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAFBC4CEF0;
-	Mon, 22 Sep 2025 19:39:55 +0000 (UTC)
+	 MIME-Version; b=Kyzpx7nfDeGhkPPEVBdj5mv2+ear62y4XY7fvvtwR01cOdXm5OoRGqVdfXFWp4EIunXT2Zt26jAadnxAuq3nTowbcsF2RJHBZxWxHtxJg6gJzRMvOzffurW67PhEsTxPnxM4jn1rpiYV7638L2wv2CRzWPD5MBILlRDWGYVoCOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/GPYuuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F92BC4CEF0;
+	Mon, 22 Sep 2025 19:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569995;
-	bh=sGtjosNp28G7SNw6DZIypOe/tuh07DvmbJ6ZCX2bl/s=;
+	s=korg; t=1758570305;
+	bh=f+BCxr+NSjYly+iu/dDeF1pirzRGc/vNuMLR+GfCZ+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWW18RXpMtpj7AdVZJCiU5cR3doPaESSNNvCT5e1zqJGGytvWd3eRoGyue1fwdwni
-	 5V8z6KWtSXm5W8ghVTu2GVwPYsT1wY5CBb1WsKF2JLzeSKBuRmHUpKbThRcA7WX/Qx
-	 OqmiyveU8IO1XbDIOEGc6r888Ftnw9cHgq0tVNjk=
+	b=R/GPYuuS7GFJek83nd3t6L0vCthscUfFpMqhpSHE6v5RcOIJBwtFzETpvFEt+vNmA
+	 wbhRbp4NNwyCTaTiCBN6UHKp5tJnbxl9+2nYkuD6+QMZPgv8gxhNwhlEfZw6TULk1x
+	 LMNkemGhklO8F/XrofkYtxGWPWUzAQwvXSnhtpyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 060/105] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.16 083/149] btrfs: tree-checker: fix the incorrect inode ref size check
 Date: Mon, 22 Sep 2025 21:29:43 +0200
-Message-ID: <20250922192410.486862611@linuxfoundation.org>
+Message-ID: <20250922192414.977363537@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-commit b6f56a44e4c1014b08859dcf04ed246500e310e5 upstream.
+commit 96fa515e70f3e4b98685ef8cac9d737fc62f10e1 upstream.
 
-Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-device property") rfkill_find_type() gets called with the possibly
-uninitialized "const char *type_name;" local variable.
+[BUG]
+Inside check_inode_ref(), we need to make sure every structure,
+including the btrfs_inode_extref header, is covered by the item.  But
+our code is incorrectly using "sizeof(iref)", where @iref is just a
+pointer.
 
-On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
+This means "sizeof(iref)" will always be "sizeof(void *)", which is much
+smaller than "sizeof(struct btrfs_inode_extref)".
 
-        rfkill->type = (unsigned)id->driver_data;
+This will allow some bad inode extrefs to sneak in, defeating tree-checker.
 
-and there is no "type" property so device_property_read_string() will fail
-and leave type_name uninitialized, leading to a potential crash.
+[FIX]
+Fix the typo by calling "sizeof(*iref)", which is the same as
+"sizeof(struct btrfs_inode_extref)", and will be the correct behavior we
+want.
 
-rfkill_find_type() does accept a NULL pointer, fix the potential crash
-by initializing type_name to NULL.
-
-Note likely sofar this has not been caught because:
-
-1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-2. The stack happened to contain NULL where type_name is stored
-
-Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
-Cc: stable@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 71bf92a9b877 ("btrfs: tree-checker: Add check for INODE_REF")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
+ fs/btrfs/tree-checker.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -94,10 +94,10 @@ static const struct dmi_system_id rfkill
- static int rfkill_gpio_probe(struct platform_device *pdev)
- {
- 	struct rfkill_gpio_data *rfkill;
--	struct gpio_desc *gpio;
-+	const char *type_name = NULL;
- 	const char *name_property;
- 	const char *type_property;
--	const char *type_name;
-+	struct gpio_desc *gpio;
- 	int ret;
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1756,10 +1756,10 @@ static int check_inode_ref(struct extent
+ 	while (ptr < end) {
+ 		u16 namelen;
  
- 	if (dmi_check_system(rfkill_gpio_deny_table))
+-		if (unlikely(ptr + sizeof(iref) > end)) {
++		if (unlikely(ptr + sizeof(*iref) > end)) {
+ 			inode_ref_err(leaf, slot,
+ 			"inode ref overflow, ptr %lu end %lu inode_ref_size %zu",
+-				ptr, end, sizeof(iref));
++				ptr, end, sizeof(*iref));
+ 			return -EUCLEAN;
+ 		}
+ 
 
 
 
