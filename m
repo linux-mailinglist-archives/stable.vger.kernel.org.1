@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-181226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D518B92F41
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3ED3B92E21
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E45AB447767
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46EFC3A7F72
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A7A2F2609;
-	Mon, 22 Sep 2025 19:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CF42F0C5E;
+	Mon, 22 Sep 2025 19:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWmCoBvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8nkaA3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE61285C92;
-	Mon, 22 Sep 2025 19:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E7827B320;
+	Mon, 22 Sep 2025 19:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570003; cv=none; b=NxqFk5xRKJkfLPZQkkWooJM13hmFF1+99yO5r3OmjiRXsdZfDsfKz89uK701uVqO/JKqIAxXCF/RwfEIdwkGtm+pk3KAEKiAaU4UJECAhJi7xqTRtlI0nsGJnDwzx6BJSOqcmBXoEi5ZcZEaOoAQ0IcoplnW7lENjbFfAXOrMeY=
+	t=1758569785; cv=none; b=BQb4M2JBXRZZWHWPvQ+lCSbr4OHCuAOh0nilIok7/z1BpHAWE0o8UqvVknPINNamTIHbZgpfit/SHau8EOuHBIipPDsAl7mlha3y7KV/UnD3WYlmDL8fyaA/dLyoKHZEJEnZq5yMe6/8jO1hLRZS8GUPwrcV4KvbsqJtyW3q1O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570003; c=relaxed/simple;
-	bh=aItRL1nPMpeZf7MBEXBj2pkgSL7zvpjDfXa+s8ja9a8=;
+	s=arc-20240116; t=1758569785; c=relaxed/simple;
+	bh=aoyLESXHLG9nwBtnOkSnNqKxAJV1qwNio6hguJb5zcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XeVFwDQ5Dhj/7o62j0FRI3o5SpF7YUc35DzB7seeNg6T/pqPLmAxEGBrdn5bkl6wM9ZhpxYObll9MZ6FonRS3SrDKr4vaoVUT7IPII8r/A/IkqlT8pYsyMI9SAfZwBLzvN9LtFkWY6hen7EFONiPg8W6+Q2KrxiEvdHskr+LcQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWmCoBvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9BBC4CEF0;
-	Mon, 22 Sep 2025 19:40:02 +0000 (UTC)
+	 MIME-Version; b=nxlb9o4xamY/n9QoS0cjYkSOU4Wxy1q0InKvMIHmL0He18Ao3b8TcG/ldqy8VuyFpOKBvYlL/ezEvNJOYpKHmgXImO6Ww/X0i+1VkCEnmgCBOynL8MN5Ej/l8Ox4O5o6HjUlQNoN3hXdMMoILjptSxZHLIeBbgBP6ioN3MLO2s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8nkaA3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937DBC4CEF5;
+	Mon, 22 Sep 2025 19:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570003;
-	bh=aItRL1nPMpeZf7MBEXBj2pkgSL7zvpjDfXa+s8ja9a8=;
+	s=korg; t=1758569784;
+	bh=aoyLESXHLG9nwBtnOkSnNqKxAJV1qwNio6hguJb5zcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWmCoBvOViARMCVsjERcRJ8r5ZHOsP/FHDeLbUo8LilCbYfKVm4Zc6+MrsH+Qrahu
-	 Hd4bEjGcfldiWl30epuoLgX8Pg7eQhFPYZvr/nI6sxG5FXo5fPtQVcNr2ZP/jZ9Cc3
-	 3taIuArItyRkCAGGirVeaSbpjmEIvJBjtoqdeADY=
+	b=S8nkaA3yHJfQVJtypny/0VjOl1vHFaq2TPSD+wwZgKaBS7CDJwGlmhngHwIhwR8D/
+	 rv0htWU6Ma2ot5aJLJh4+17nHfKdypAuXNMOHNeeUabxGED/5vxf5VATdK+c0XuPFX
+	 gu955P3aX1IR5ec8jBF5LG0wlJ7RzSmBLAnX7kCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 085/105] platform/x86: asus-wmi: Fix ROG button mapping, tablet mode on ASUS ROG Z13
+	David Laight <David.Laight@aculab.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.6 68/70] minmax: simplify and clarify min_t()/max_t() implementation
 Date: Mon, 22 Sep 2025 21:30:08 +0200
-Message-ID: <20250922192411.128629919@linuxfoundation.org>
+Message-ID: <20250922192406.437051177@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,116 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 132bfcd24925d4d4531a19b87acb8474be82a017 upstream.
+[ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
 
-On commit 9286dfd5735b ("platform/x86: asus-wmi: Fix spurious rfkill on
-UX8406MA"), Mathieu adds a quirk for the Zenbook Duo to ignore the code
-0x5f (WLAN button disable). On that laptop, this code is triggered when
-the device keyboard is attached.
+This simplifies the min_t() and max_t() macros by no longer making them
+work in the context of a C constant expression.
 
-On the ASUS ROG Z13 2025, this code is triggered when pressing the side
-button of the device, which is used to open Armoury Crate in Windows.
+That means that you can no longer use them for static initializers or
+for array sizes in type definitions, but there were only a couple of
+such uses, and all of them were converted (famous last words) to use
+MIN_T/MAX_T instead.
 
-As this is becoming a pattern, where newer Asus laptops use this keycode
-for emitting events, let's convert the wlan ignore quirk to instead
-allow emitting codes, so that userspace programs can listen to it and
-so that it does not interfere with the rfkill state.
-
-With this patch, the Z13 wil emit KEY_PROG3 and the Duo will remain
-unchanged and emit no event. While at it, add a quirk for the Z13 to
-switch into tablet mode when removing the keyboard.
-
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://lore.kernel.org/r/20250808154710.8981-2-lkml@antheas.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c |   23 +++++++++++++++++++----
- drivers/platform/x86/asus-wmi.h    |    3 ++-
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ include/linux/minmax.h |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -146,7 +146,12 @@ static struct quirk_entry quirk_asus_ign
- };
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -45,17 +45,20 @@
  
- static struct quirk_entry quirk_asus_zenbook_duo_kbd = {
--	.ignore_key_wlan = true,
-+	.key_wlan_event = ASUS_WMI_KEY_IGNORE,
-+};
+ #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
+ 
+-#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
+-	typeof(x) unique_x = (x);			\
+-	typeof(y) unique_y = (y);			\
++#define __cmp_once_unique(op, type, x, y, ux, uy) \
++	({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
 +
-+static struct quirk_entry quirk_asus_z13 = {
-+	.key_wlan_event = ASUS_WMI_KEY_ARMOURY,
-+	.tablet_switch_mode = asus_wmi_kbd_dock_devid,
- };
++#define __cmp_once(op, type, x, y) \
++	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
++
++#define __careful_cmp_once(op, x, y) ({			\
+ 	static_assert(__types_ok(x, y),			\
+ 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
+-	__cmp(op, unique_x, unique_y); })
++	__cmp_once(op, __auto_type, x, y); })
  
- static int dmi_matched(const struct dmi_system_id *dmi)
-@@ -538,6 +543,15 @@ static const struct dmi_system_id asus_q
- 		},
- 		.driver_data = &quirk_asus_zenbook_duo_kbd,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "ASUS ROG Z13",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ROG Flow Z13"),
-+		},
-+		.driver_data = &quirk_asus_z13,
-+	},
- 	{},
- };
+ #define __careful_cmp(op, x, y)					\
+ 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+-		__cmp(op, x, y),				\
+-		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
++		__cmp(op, x, y), __careful_cmp_once(op, x, y))
  
-@@ -635,6 +649,7 @@ static const struct key_entry asus_nb_wm
- 	{ KE_IGNORE, 0xCF, },	/* AC mode */
- 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
- 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
-+	{ KE_KEY, ASUS_WMI_KEY_ARMOURY, { KEY_PROG3 } },
- 	{ KE_END, 0},
- };
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+@@ -158,7 +161,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
++#define min_t(type, x, y) __cmp_once(min, type, x, y)
  
-@@ -654,9 +669,9 @@ static void asus_nb_wmi_key_filter(struc
- 		if (atkbd_reports_vol_keys)
- 			*code = ASUS_WMI_KEY_IGNORE;
- 		break;
--	case 0x5F: /* Wireless console Disable */
--		if (quirks->ignore_key_wlan)
--			*code = ASUS_WMI_KEY_IGNORE;
-+	case 0x5F: /* Wireless console Disable / Special Key */
-+		if (quirks->key_wlan_event)
-+			*code = quirks->key_wlan_event;
- 		break;
- 	}
- }
---- a/drivers/platform/x86/asus-wmi.h
-+++ b/drivers/platform/x86/asus-wmi.h
-@@ -18,6 +18,7 @@
- #include <linux/i8042.h>
+ /**
+  * max_t - return maximum of two values, using the specified type
+@@ -166,7 +169,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
++#define max_t(type, x, y) __cmp_once(max, type, x, y)
  
- #define ASUS_WMI_KEY_IGNORE (-1)
-+#define ASUS_WMI_KEY_ARMOURY	0xffff01
- #define ASUS_WMI_BRN_DOWN	0x2e
- #define ASUS_WMI_BRN_UP		0x2f
- 
-@@ -40,7 +41,7 @@ struct quirk_entry {
- 	bool wmi_force_als_set;
- 	bool wmi_ignore_fan;
- 	bool filter_i8042_e1_extended_codes;
--	bool ignore_key_wlan;
-+	int key_wlan_event;
- 	enum asus_wmi_tablet_switch_mode tablet_switch_mode;
- 	int wapf;
- 	/*
+ /*
+  * Do not check the array parameter using __must_be_array().
 
 
 
