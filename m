@@ -1,213 +1,249 @@
-Return-Path: <stable+bounces-180903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F8FB8F9D6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 10:44:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D9EB8F9EB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 10:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41FC3177320
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:44:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6AF3B0D0E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1E4278E63;
-	Mon, 22 Sep 2025 08:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RyAMDgh0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ADE277CBF;
+	Mon, 22 Sep 2025 08:45:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB732765CA
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 08:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBB918A6A5;
+	Mon, 22 Sep 2025 08:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758530647; cv=none; b=ShO1i7g/T0YbP+WPllczMcfrvC8/SqxkcT0n67pA56MSLO8pmTs14WXtIRHZlgRvO9tWtRctCYBIRXeujCf4aqP8htX1sY5nMLb3SMNXEIIey3xMV41UkC38Hl1FDNikRa2xRKV3nkxAYa1O0RJx4Chg7sKAeoIN9e+IbygZvoU=
+	t=1758530740; cv=none; b=rpbU6TcC7dwzQ42vgZMMZUJlkHE2QUmIXZl9JyZXfdjTw2u6v/WiAMChrEGVU4CreLqbsYss/3Ys0Hj1pGCGCLnhTVdZKAhXxt4vtd4aS8kdriwA+vHQiPo1mul2Cdz5RutS2wrN1xDSCWTT/EgcuRTgX1aHuP0mb/ujzlrgxIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758530647; c=relaxed/simple;
-	bh=JEkA9srvwniqkGMuHIbqQi5XTnYhtmuwTcHw1pP5wdM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hIXz8OSZL+dQRnrMmhLhl7YhsGREfPb9M7a1bO5wJSyxAuxrGwkCbUdK9eMxkxpAQL00BwROLZMUG7QlDVLlNbENVc09Vf5WpA4SFccKVBgGIxCA9eMwuIRrn/5f4kFCiFJDeBwURwlxixaWXVN35OfZuI5mCjEzGglPN3nWXS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RyAMDgh0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758530645;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fNbblmYwXQAJmAimXaX95p9se1gdhktlvWJfKB3OPuY=;
-	b=RyAMDgh0d+fgm+LvR1f+O7sdZLfYQlgHj1Y9UqtCiHsXQKEFYxmz+MGCGOQ7h8Zq+nY+V0
-	jIsYH73IQ+KKe7Te3P9SlaREX6InBrmAl/bfIQWEDZkw4slro8WfxZUQHPC8hWOTPJUVJH
-	N6KZNwr4TJLemfbTjM3SwuYF+ot9TgY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-f4Tu3rc3OrK9h5BBop5NoA-1; Mon, 22 Sep 2025 04:44:03 -0400
-X-MC-Unique: f4Tu3rc3OrK9h5BBop5NoA-1
-X-Mimecast-MFC-AGG-ID: f4Tu3rc3OrK9h5BBop5NoA_1758530642
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ecdc9dbc5fso2552079f8f.1
-        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 01:44:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758530642; x=1759135442;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fNbblmYwXQAJmAimXaX95p9se1gdhktlvWJfKB3OPuY=;
-        b=gDHtzuasdlQ/CX/VH+TVti3WOjBrB4Ym2U3P0Fu9SpDTljcktFXhELxTj7B6+0UGdN
-         f5VmJjgG8z6vpvFHN//cRFbjFEoNTSsCN2sBdp1jxPHmYe9E6Gk6jz67FotTlzTw5Rnz
-         NsLKaqVsw0k3iwZ1GfXMoNtO/82ajnnz9uSv5Sm1iTOpJy4DKYx09JZu7dt6QZe/QcNR
-         /iM/Z7UpczyWxBMx6RJkxvpUKe4Zqf/F7p99ZdI1tudqjw/skBJXINuyF5s3At667idj
-         Y4/HSObbOH5I8edxT6HxR/nfs94GyvsJOFBxYXh8/6pVJ/CIQSjrLxTivOisjTdADOpx
-         skgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUa2xqZRMWzmyVsVFKZn6afZXdMkMvsBU6yvKtBtDnfliA4XuYPehl/pJ+wQ4v3FySjAj4Igao=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3xCRUF+uH1O8kz78Ld5y7LHfAAl3c7JJfCSv/mKta3+m+KVDO
-	c8x0X7IxJQZzDvOMiQM+Tdu8D7i9RGDGEGck+OcW5x6lcurfYa1X6xxv+XIjF7EP9tds0ZHthlX
-	EeV9krhMuVHX0i9PfOoGO2Ju3jOfHqFHMIuTFfTDuDi73oBIeV8/7e391BA==
-X-Gm-Gg: ASbGncs1a1m0WFzu4XHOb4pqkyWaCIv28qZwlefiUus9JazYsx4YfMGFheFehMpRKif
-	FJuBjp2zIFHjSwrz3XA7M8BBc3d7Scj/ZxlbKANKGs0UJ95umRjrzb9VaNVDXjgrHuFlxjcRsbY
-	Ik+mz9i/6+FzOXs0/3wcNFOC1sKYEOi1Hx3dDTD8G+VipTHf3DEjg5SbQ6fu9NAQpVJnhD+nLyG
-	N2v3w9yLFMAZ7ZOsuJATYFdwK+YGjVETtzCsfRkAdJFIT3P6nrSUsdlT3/pvqc0aIkbrBKhqM//
-	w1NCQcR7sOMegi51cI85fHIE4nLy3/CU/YGxMqW7Psq/I3CL8PyTH1ETIoreO1m4s/pDwbNo5w5
-	+7DRBgyrn2dVhjxV/JblTSc3SuleiteduZsqsOQ+2UkuNIFnymOYBICsuD3qrBfw=
-X-Received: by 2002:a5d:5889:0:b0:3ff:17ac:a34c with SMTP id ffacd0b85a97d-3ff17aca9ddmr1768855f8f.59.1758530642223;
-        Mon, 22 Sep 2025 01:44:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYSPgfAQpR87QujIxhC+Anu99wbrmH6Axzt/nVhnSYFZszFCU4AL8USJ6UiN63i2MrsjXhdQ==
-X-Received: by 2002:a5d:5889:0:b0:3ff:17ac:a34c with SMTP id ffacd0b85a97d-3ff17aca9ddmr1768815f8f.59.1758530641790;
-        Mon, 22 Sep 2025 01:44:01 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f2a:e200:f98f:8d71:83f:f88? (p200300d82f2ae200f98f8d71083f0f88.dip0.t-ipconnect.de. [2003:d8:2f2a:e200:f98f:8d71:83f:f88])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0fbc7107sm19834232f8f.30.2025.09.22.01.44.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Sep 2025 01:44:01 -0700 (PDT)
-Message-ID: <715052fa-2459-4785-87fa-04c8cf30debb@redhat.com>
-Date: Mon, 22 Sep 2025 10:43:59 +0200
+	s=arc-20240116; t=1758530740; c=relaxed/simple;
+	bh=vbKdgEGj+Nr6AxwJ+6W6+x69mUP+qFpAekN5T6aTStY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=epABNnPN3xYVYB5Am9Vg58HVNHIO+D2GDs/wr5D4Ll+njEpvMKwGmLFesps4/UOTERVFdyeRSYqRK2LoXHATA+tcayT12LOR5s70ykHT4GML4c4nicIzZNtE6QZbcMHGzhbg4OTXT+S6562hstoNTNAIhIRAA8KvgWpMdZ0YBmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-05 (Coremail) with SMTP id zQCowADniBKZDNFovBhHBA--.4477S2;
+	Mon, 22 Sep 2025 16:45:22 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: dpenkler@gmail.com,
+	gregkh@linuxfoundation.org,
+	matchstick@neverthere.org,
+	dominik.karol.piatkowski@protonmail.com,
+	arnd@arndb.de,
+	nichen@iscas.ac.cn,
+	paul.retourne@orange.fr,
+	dan.carpenter@linaro.org
+Cc: linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] staging: gpib: Fix device reference leak in fmh_gpib driver
+Date: Mon, 22 Sep 2025 16:45:12 +0800
+Message-Id: <20250922084512.9174-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:zQCowADniBKZDNFovBhHBA--.4477S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxtFW8Xw1xAFW8WF4kAw4UCFg_yoW7uw17pa
+	yxWa15KrW8twnaqF43Jw1UXFsYyw42y345uw47C343A3ZYvrWjyF4kKa4a9ryrtrWkJr45
+	trWjgr409FWDZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
+	v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUYv38UUUU
+	U
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] fs/proc/task_mmu: check p->vec_buf for NULL
-To: Jakub Acs <acsjakub@amazon.de>, linux-fsdevel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Jinjiang Tu <tujinjiang@huawei.com>, Suren Baghdasaryan <surenb@google.com>,
- Penglei Jiang <superman.xpt@gmail.com>, Mark Brown <broonie@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Andrei Vagin <avagin@gmail.com>,
- =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Muhammad Usama Anjum <usama.anjum@collabora.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250922082206.6889-1-acsjakub@amazon.de>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250922082206.6889-1-acsjakub@amazon.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 22.09.25 10:22, Jakub Acs wrote:
-> When PAGEMAP_SCAN ioctl invoked with vec_len = 0 reaches
-> pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
-> 
-> [   44.936808] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-> [   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-> [   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.0-rc6 #22 PREEMPT(none)
-> [   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> [   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
-> 
-> <snip registers, unreliable trace>
-> 
-> [   44.946828] Call Trace:
-> [   44.947030]  <TASK>
-> [   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
-> [   44.952593]  walk_pmd_range.isra.0+0x302/0x910
-> [   44.954069]  walk_pud_range.isra.0+0x419/0x790
-> [   44.954427]  walk_p4d_range+0x41e/0x620
-> [   44.954743]  walk_pgd_range+0x31e/0x630
-> [   44.955057]  __walk_page_range+0x160/0x670
-> [   44.956883]  walk_page_range_mm+0x408/0x980
-> [   44.958677]  walk_page_range+0x66/0x90
-> [   44.958984]  do_pagemap_scan+0x28d/0x9c0
-> [   44.961833]  do_pagemap_cmd+0x59/0x80
-> [   44.962484]  __x64_sys_ioctl+0x18d/0x210
-> [   44.962804]  do_syscall_64+0x5b/0x290
-> [   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> vec_len = 0 in pagemap_scan_init_bounce_buffer() means no buffers are
-> allocated and p->vec_buf remains set to NULL.
-> 
-> This breaks an assumption made later in pagemap_scan_backout_range(),
-> that page_region is always allocated for p->vec_buf_index.
-> 
-> Fix it by explicitly checking p->vec_buf for NULL before dereferencing.
-> 
-> Other sites that might run into same deref-issue are already (directly
-> or transitively) protected by checking p->vec_buf.
-> 
-> Note:
->  From PAGEMAP_SCAN man page, it seems vec_len = 0 is valid when no output
-> is requested and it's only the side effects caller is interested in,
-> hence it passes check in pagemap_scan_get_args().
-> 
-> This issue was found by syzkaller.
-> 
-> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+The fmh_gpib driver contains a device reference count leak in
+fmh_gpib_attach_impl() where driver_find_device() increases the
+reference count of the device by get_device() when matching but this
+reference is not properly decreased. Add put_device() in
+fmh_gpib_attach_impl() and add put_device() in fmh_gpib_detach(),
+which ensures that the reference count of the device is correctly
+managed.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Found by code review.
 
+Cc: stable@vger.kernel.org
+Fixes: 8e4841a0888c ("staging: gpib: Add Frank Mori Hess FPGA PCI GPIB driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- modified the free operations as suggestions. Thanks for dan carpenter's instructions.
+---
+ drivers/staging/gpib/fmh_gpib/fmh_gpib.c | 66 +++++++++++++++++++-----
+ 1 file changed, 54 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
+index 4138f3d2bae7..f5be24b44238 100644
+--- a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
++++ b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
+@@ -1396,7 +1396,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
+ 
+ 	retval = fmh_gpib_generic_attach(board);
+ 	if (retval)
+-		return retval;
++		goto err_put_device;
+ 
+ 	e_priv = board->private_data;
+ 	nec_priv = &e_priv->nec7210_priv;
+@@ -1404,14 +1404,16 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpib_control_status");
+ 	if (!res) {
+ 		dev_err(board->dev, "Unable to locate mmio resource\n");
+-		return -ENODEV;
++		retval = -ENODEV;
++		goto err_generic_detach;
+ 	}
+ 
+ 	if (request_mem_region(res->start,
+ 			       resource_size(res),
+ 			       pdev->name) == NULL) {
+ 		dev_err(board->dev, "cannot claim registers\n");
+-		return -ENXIO;
++		retval = -ENXIO;
++		goto err_generic_detach;
+ 	}
+ 	e_priv->gpib_iomem_res = res;
+ 
+@@ -1419,7 +1421,8 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
+ 				     resource_size(e_priv->gpib_iomem_res));
+ 	if (!nec_priv->mmiobase) {
+ 		dev_err(board->dev, "Could not map I/O memory\n");
+-		return -ENOMEM;
++		retval = -ENOMEM;
++		goto err_release_mmio_region;
+ 	}
+ 	dev_dbg(board->dev, "iobase %pr remapped to %p\n",
+ 		e_priv->gpib_iomem_res, nec_priv->mmiobase);
+@@ -1427,34 +1430,41 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dma_fifos");
+ 	if (!res) {
+ 		dev_err(board->dev, "Unable to locate mmio resource for gpib dma port\n");
+-		return -ENODEV;
++		retval = -ENODEV;
++		goto err_iounmap_mmio;
+ 	}
+ 	if (request_mem_region(res->start,
+ 			       resource_size(res),
+ 			       pdev->name) == NULL) {
+ 		dev_err(board->dev, "cannot claim registers\n");
+-		return -ENXIO;
++		retval = -ENXIO;
++		goto err_iounmap_mmio;
+ 	}
+ 	e_priv->dma_port_res = res;
++
+ 	e_priv->fifo_base = ioremap(e_priv->dma_port_res->start,
+ 				    resource_size(e_priv->dma_port_res));
+ 	if (!e_priv->fifo_base) {
+ 		dev_err(board->dev, "Could not map I/O memory for fifos\n");
+-		return -ENOMEM;
++		retval = -ENOMEM;
++		goto err_release_dma_region;
+ 	}
+ 	dev_dbg(board->dev, "dma fifos 0x%lx remapped to %p, length=%ld\n",
+ 		(unsigned long)e_priv->dma_port_res->start, e_priv->fifo_base,
+ 		(unsigned long)resource_size(e_priv->dma_port_res));
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
+-		return -EBUSY;
++	if (irq < 0) {
++		retval = -EBUSY;
++		goto err_iounmap_fifo;
++	}
++
+ 	retval = request_irq(irq, fmh_gpib_interrupt, IRQF_SHARED, pdev->name, board);
+ 	if (retval) {
+ 		dev_err(board->dev,
+ 			"cannot register interrupt handler err=%d\n",
+ 			retval);
+-		return retval;
++		goto err_iounmap_fifo;
+ 	}
+ 	e_priv->irq = irq;
+ 
+@@ -1462,9 +1472,11 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
+ 		e_priv->dma_channel = dma_request_slave_channel(board->dev, "rxtx");
+ 		if (!e_priv->dma_channel) {
+ 			dev_err(board->dev, "failed to acquire dma channel \"rxtx\".\n");
+-			return -EIO;
++			retval = -EIO;
++			goto err_free_irq;
+ 		}
+ 	}
++
+ 	/*
+ 	 * in the future we might want to know the half-fifo size
+ 	 * (dma_burst_length) even when not using dma, so go ahead an
+@@ -1473,7 +1485,32 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
+ 	e_priv->dma_burst_length = fifos_read(e_priv, FIFO_MAX_BURST_LENGTH_REG) &
+ 		fifo_max_burst_length_mask;
+ 
+-	return fmh_gpib_init(e_priv, board, handshake_mode);
++	retval = fmh_gpib_init(e_priv, board, handshake_mode);
++	if (retval)
++		goto err_release_dma;
++
++	return 0;
++
++err_release_dma:
++	if (acquire_dma && e_priv->dma_channel)
++		dma_release_channel(e_priv->dma_channel);
++err_free_irq:
++	free_irq(irq, board);
++err_iounmap_fifo:
++	iounmap(e_priv->fifo_base);
++err_release_dma_region:
++	release_mem_region(e_priv->dma_port_res->start,
++			   resource_size(e_priv->dma_port_res));
++err_iounmap_mmio:
++	iounmap(nec_priv->mmiobase);
++err_release_mmio_region:
++	release_mem_region(e_priv->gpib_iomem_res->start,
++			   resource_size(e_priv->gpib_iomem_res));
++err_generic_detach:
++	fmh_gpib_generic_detach(board);
++err_put_device:
++	put_device(board->dev);
++	return retval;
+ }
+ 
+ int fmh_gpib_attach_holdoff_all(struct gpib_board *board, const struct gpib_board_config *config)
+@@ -1517,6 +1554,11 @@ void fmh_gpib_detach(struct gpib_board *board)
+ 					   resource_size(e_priv->gpib_iomem_res));
+ 	}
+ 	fmh_gpib_generic_detach(board);
++
++	if (board->dev) {
++		put_device(board->dev);
++		board->dev = NULL;
++	}
+ }
+ 
+ static int fmh_gpib_pci_attach_impl(struct gpib_board *board,
 -- 
-Cheers
-
-David / dhildenb
+2.17.1
 
 
