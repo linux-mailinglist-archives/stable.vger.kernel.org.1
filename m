@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CAAB93131
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330F4B92F68
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A3671906DC1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36B5B2A81F3
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF762F3C2F;
-	Mon, 22 Sep 2025 19:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA33F31C59F;
+	Mon, 22 Sep 2025 19:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4Xw/RLs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMS2mKqU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3658C253B5C;
-	Mon, 22 Sep 2025 19:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54FB31CA4A;
+	Mon, 22 Sep 2025 19:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570342; cv=none; b=cKXAgKeJmBysgCoGv1/LSAji1GwvAh+wxz8QcTS9OZdPcTpNDfGaOoyRQDO6Qkkxjq0pcesJHxHUnQWP9ZK31eCsH1CarOMJlWmoNEdVxeTJB3l7LlnZfCn9FS7iOCztkR+E+iOHTaCjQ3YyeeK5NzBCtHKp18IW4R0WkH4UL7c=
+	t=1758570017; cv=none; b=RDC65DiomLKr9Uy+NvMI00f5BKh+gYMrAN+c89VICjNbPRdNhbGBPqm+8vY9pTNJdLIYCtX64ATXMtYP3rMlCk2Qbd4USVD4y3SNbTrHEGX047sjbC9y0iDGsmJncqCLMC2XI67quVEK8ulzZwGyFTiHPHzUAUYa98eoijthDwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570342; c=relaxed/simple;
-	bh=hWjWNrDCZ2LED/W/8YhOmDuT7LOJ5LZ5Hyp9uHS722Q=;
+	s=arc-20240116; t=1758570017; c=relaxed/simple;
+	bh=nUTjOb0/DpWB1k06olfa3M6hxtqcX/Gy/ueeF86Gd1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tL9j5d7CWI3q9sJpgx2H3gCaAWGsKPC6PKsKW4xzXFr2ylrUUG3uMppeCpgrxo1ncgCH/ugvxxdSWkOhqPvtLK5B1RI2i7VwzJOtYn1ZS7lgTm8YR9rJQjSQ6L35u/ShosL+sC64IiViOt8yren8Xys9nML+nGWd9tBbDcPHoGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4Xw/RLs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD4CC4CEF0;
-	Mon, 22 Sep 2025 19:45:41 +0000 (UTC)
+	 MIME-Version; b=Ljg64Qjpr6Hm3K/HNHslmLMFP82k0uAZdVicJ4P2WM9538pF1j7a6xpxpd6hIS4kGU4RoAea0KBCbMja+05cmcNhO//ihr+FHRaqFCJ8G6hbLNtNE6wP8QNkhNyq+NEzhxCSBk/yN2qOLo5RoSHNdRWORtqE6cWIwDNXe2BTM9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMS2mKqU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0202C4CEF0;
+	Mon, 22 Sep 2025 19:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570342;
-	bh=hWjWNrDCZ2LED/W/8YhOmDuT7LOJ5LZ5Hyp9uHS722Q=;
+	s=korg; t=1758570017;
+	bh=nUTjOb0/DpWB1k06olfa3M6hxtqcX/Gy/ueeF86Gd1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4Xw/RLs2HESuaja9HwdjcvjJX1VNvuuAhPqF3jwHvtwUxv/dU8xl7gs0Ifz9KhhK
-	 xz+E5Tu6HSg4goBNIi6kcW5pZxJMFhGCOn4OBsqGt83vZjXxoCfxtU2esqcQULn9hB
-	 3DpUQJxUggUABg9s9sJEL5BqfuMZOaE3qCU0TAIE=
+	b=BMS2mKqUpzH3Uz+NPENcd4w7a0T0ic+C9Yk1Q+ELmHkmrGh6hR/0m5eT49yMI7DQC
+	 +jbbIBhiqWFq80lRiAsL0kmNrS5roTo0ezKjsXg5KQi+qjc8gwi7mKASv43gzCRiTj
+	 U0Zcm/Gp+RyeuQFpKJ29rfhszMzaIk6gaQ3B62FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benedek Thaler <thaler@thaler.hu>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 099/149] io_uring: include dying ring in task_work "should cancel" state
-Date: Mon, 22 Sep 2025 21:29:59 +0200
-Message-ID: <20250922192415.381281604@linuxfoundation.org>
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 077/105] drm: bridge: anx7625: Fix NULL pointer dereference with early IRQ
+Date: Mon, 22 Sep 2025 21:30:00 +0200
+Message-ID: <20250922192410.910807487@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-commit 3539b1467e94336d5854ebf976d9627bfb65d6c3 upstream.
+[ Upstream commit a10f910c77f280327b481e77eab909934ec508f0 ]
 
-When running task_work for an exiting task, rather than perform the
-issue retry attempt, the task_work is canceled. However, this isn't
-done for a ring that has been closed. This can lead to requests being
-successfully completed post the ring being closed, which is somewhat
-confusing and surprising to an application.
+If the interrupt occurs before resource initialization is complete, the
+interrupt handler/worker may access uninitialized data such as the I2C
+tcpc_client device, potentially leading to NULL pointer dereference.
 
-Rather than just check the task exit state, also include the ring
-ref state in deciding whether or not to terminate a given request when
-run from task_work.
-
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://github.com/axboe/liburing/discussions/1459
-Reported-by: Benedek Thaler <thaler@thaler.hu>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Fixes: 8bdfc5dae4e3 ("drm/bridge: anx7625: Add anx7625 MIPI DSI/DPI to DP")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250709085438.56188-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c  |    6 ++++--
- io_uring/io_uring.h  |    4 ++--
- io_uring/poll.c      |    2 +-
- io_uring/timeout.c   |    2 +-
- io_uring/uring_cmd.c |    2 +-
- 5 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1371,8 +1371,10 @@ static void io_req_task_cancel(struct io
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index c036bbc92ba96..7244c3abb7f99 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2683,7 +2683,7 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 		ret = devm_request_threaded_irq(dev, platform->pdata.intp_irq,
+ 						NULL, anx7625_intr_hpd_isr,
+ 						IRQF_TRIGGER_FALLING |
+-						IRQF_ONESHOT,
++						IRQF_ONESHOT | IRQF_NO_AUTOEN,
+ 						"anx7625-intp", platform);
+ 		if (ret) {
+ 			DRM_DEV_ERROR(dev, "fail to request irq\n");
+@@ -2753,8 +2753,10 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 	}
  
- void io_req_task_submit(struct io_kiocb *req, io_tw_token_t tw)
- {
--	io_tw_lock(req->ctx, tw);
--	if (unlikely(io_should_terminate_tw()))
-+	struct io_ring_ctx *ctx = req->ctx;
-+
-+	io_tw_lock(ctx, tw);
-+	if (unlikely(io_should_terminate_tw(ctx)))
- 		io_req_defer_failed(req, -EFAULT);
- 	else if (req->flags & REQ_F_FORCE_ASYNC)
- 		io_queue_iowq(req);
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -470,9 +470,9 @@ static inline bool io_allowed_run_tw(str
-  * 2) PF_KTHREAD is set, in which case the invoker of the task_work is
-  *    our fallback task_work.
-  */
--static inline bool io_should_terminate_tw(void)
-+static inline bool io_should_terminate_tw(struct io_ring_ctx *ctx)
- {
--	return current->flags & (PF_KTHREAD | PF_EXITING);
-+	return (current->flags & (PF_KTHREAD | PF_EXITING)) || percpu_ref_is_dying(&ctx->refs);
- }
+ 	/* Add work function */
+-	if (platform->pdata.intp_irq)
++	if (platform->pdata.intp_irq) {
++		enable_irq(platform->pdata.intp_irq);
+ 		queue_work(platform->workqueue, &platform->work);
++	}
  
- static inline void io_req_queue_tw_complete(struct io_kiocb *req, s32 res)
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -224,7 +224,7 @@ static int io_poll_check_events(struct i
- {
- 	int v;
- 
--	if (unlikely(io_should_terminate_tw()))
-+	if (unlikely(io_should_terminate_tw(req->ctx)))
- 		return -ECANCELED;
- 
- 	do {
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -324,7 +324,7 @@ static void io_req_task_link_timeout(str
- 	int ret;
- 
- 	if (prev) {
--		if (!io_should_terminate_tw()) {
-+		if (!io_should_terminate_tw(req->ctx)) {
- 			struct io_cancel_data cd = {
- 				.ctx		= req->ctx,
- 				.data		= prev->cqe.user_data,
---- a/io_uring/uring_cmd.c
-+++ b/io_uring/uring_cmd.c
-@@ -123,7 +123,7 @@ static void io_uring_cmd_work(struct io_
- 	struct io_uring_cmd *ioucmd = io_kiocb_to_cmd(req, struct io_uring_cmd);
- 	unsigned int flags = IO_URING_F_COMPLETE_DEFER;
- 
--	if (io_should_terminate_tw())
-+	if (io_should_terminate_tw(req->ctx))
- 		flags |= IO_URING_F_TASK_DEAD;
- 
- 	/* task_work executor checks the deffered list completion */
+ 	if (platform->pdata.audio_en)
+ 		anx7625_register_audio(dev, platform);
+-- 
+2.51.0
+
 
 
 
