@@ -1,133 +1,131 @@
-Return-Path: <stable+bounces-180984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12068B92100
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:53:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0170BB92133
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9DF8169747
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:53:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 830321903DDA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E10302164;
-	Mon, 22 Sep 2025 15:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FE030DD11;
+	Mon, 22 Sep 2025 15:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="AJj3luLd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iL+zgoWg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C87307486;
-	Mon, 22 Sep 2025 15:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DCA2EC0A8
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 15:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758556383; cv=none; b=Wu88HAOhbKdvYW3pKYNBYd5NkYRvDEOKuLRDOQquWv1OgMbn6U2ZRXYGwVbpBmsmPVbi15QK9LxxTt9k+6SyaJwj4t7GrAOO1WOLRB7Zm0TLc5bRm+thXj7SYDbaNwevqgDQlIcHcSh9L5r+AomgLlAu7pPtGxJMrbnOGqbcbK0=
+	t=1758556428; cv=none; b=rYxzXFHNzaIdONKXIif7HlBhrD25J07J2ad/BGvtykWqxsDvPBWV8YJp/ZNUFiFklQTvW5/MqxRiUz9DlNK4K6S4BMMoigAj8ySX8DdCWN5g5ML2fZa1NzaCGxgXF2+je7kF9rxDm2wHGbuhIyTvugdmjbsvVxet+AdM1a+LKLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758556383; c=relaxed/simple;
-	bh=Ffwye/JbVrXIKu8cIrK/pOcB8IdFpHDSAu6vrUoG2SI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hOI3/EGjvd3xBTtaP9VYe6F5DbB3VnSLNVu/KNNeb/a2MLCPsJlMLGIlsO2xccJZBz5RZwSYgCFgu0LhV5dZdN/7U9lPToprKLlhj/23Yim9gVK7/EAD7f1MxKpS3hgnY+6G9ULVcHIpZdEW88fI/NTzhUb2y6M5HXBkWGV1Kgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=AJj3luLd; arc=none smtp.client-ip=80.12.242.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPA
-	id 0ihNv1uZQ6fJ30ihNvRBh2; Mon, 22 Sep 2025 17:43:33 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1758555813;
-	bh=FkpL0tmHxowKoCQg6KgQE7aVVXQ8VXFIV/me0DgJOe8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=AJj3luLdsdZm6Hh9cs8v3hu1Xrx/xtjz6njOnl5bdrsltRGWoLkcpzbo3ji7oS6mC
-	 5YZaQyvvjYyK1wwjrJP8l42XJEaw/Dq5KvFKbSBJWHzyAk+lqlHGJtxMIGEHBwgsf3
-	 pYd8pmC4hcZpAGD3ZdEPKpVlCzjgF8D97oDt92/q7T6CTj7umly4owlqUQfQSZ+sZw
-	 Zf/Kw+b9ryh7irWVLdjOEhvLQ2DEfal6jZBAZiSy5YmyFLth7HKC3Y17SdKeVQdC0l
-	 iC53qyWGA6KOu0Y98FUDUUbm0XISxieirL48iwVUOnd0qPfRJMgpsWp3P2EwI9YZN0
-	 DB2lcqiMlrCRw==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Mon, 22 Sep 2025 17:43:33 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <dcb6023b-8c14-4bbd-9bac-2933e91ef553@wanadoo.fr>
-Date: Mon, 22 Sep 2025 17:43:28 +0200
+	s=arc-20240116; t=1758556428; c=relaxed/simple;
+	bh=xmpykvsefbZg4Z3d0+EhES58b/1383121uJSOrYR/s8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dy4lv32tlhVDZLgJl+7GZNwv/Hs18fseu8poZnmUwl63nNk9WY5LMhke2FIizfwj21y34PpcRfadfeZ2k1imW3+zDArdJagTYMV5ltbQ1vyc3gn1QXxAPsZB0h+gSOquJkC9aSKg3MnTp9W4DO+IsrOSAPxbwCJnL2bR5pw1rkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iL+zgoWg; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2445805aa2eso46748505ad.1
+        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 08:53:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758556426; x=1759161226; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q61xyED0iZHvT227a823myA5nC6Bd8yB77AGxFVjBQs=;
+        b=iL+zgoWgN6zTX8jArXdOFpzYAiiPU2CQfKhPcEMUtVmH+8xWKGs+ftHIwq+TdcKHmm
+         SCDeaBxoGfR6RIcEH5uHXTCS/Z6awE65ZDx/3LFgkKma0FNLQxT2SttGujckCvEwO/3c
+         BsxGaqNdl0d6MTzEd10JHCfNbGgoJCZOh5a6ySYjfmMmH8KxNJYyZK1BepWjIEkeypZx
+         kHczk+rfU5kmvgdOPu6IbuSdC+hunG+nuQ5RIn5TCzKZH1Qo9PHzM9zCyzngtT+MuVvs
+         Fq1inofVb42mIPmqPKW2FEEcRKSl56ee8xUYoBfjNx0YJzJzZsSma9f2HkhpXdUx9/RP
+         KciA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758556426; x=1759161226;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q61xyED0iZHvT227a823myA5nC6Bd8yB77AGxFVjBQs=;
+        b=mBY4+mhH1sShJZK8A25tnJc3U7Nw1tBEnmTqbJnpV4mtKcZPwk/IDNA30oKATBOSwf
+         JcwFYb0bp9ZW7hx3pPmJu3WaF2qQV2pCkCoyg1LYrSbfrP9i/rBopyVK2tps840ptPqZ
+         IcRIaeh59ioPUv6E/pGSk53Vc5vDJqm9ijNm1UYv6YuF2H/OGOh1QIU2pzAPPxSWv9sN
+         n9L+Jmu4f9OfxM+mwsxMGkZErw74mrx70I0ozhAHwQ/BQB53lofTHqOJ+VqiJtqbWgmD
+         27OGp/TDu8O1neNMxMOpOu5rl8AhUhN4kCadBmlEpSpyf5zvukHRkBGjIiXcrXhA2gPP
+         +ZwA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkIsMBkO+NtRnROdrmxTMHnjJ+Und1E7Qkg8wP0RfJPZMTlfPClMGeLmoKGSn8gwC3tMbnUJg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/DaGAuFRArKIn+7nt4tunGdjGOVe1lqzjm3aNhN9KizEqK2Mr
+	shUVIienLO5Bw9bo0xZoIXS5jkgyio6Qfp8ZEvuPx1TFhwRVOo7dxP+I
+X-Gm-Gg: ASbGnctUAAF2+tiUFmppMa6m5Mn+sUs3xTD9+HHTKR6gkIUIstEpCMUt5hCnh1t7fdj
+	6JcD8eDU3PKEaPJ1n/wrZWt6e0dF/b22RQEhpWs+02U1uoOhaiFnimK1f7UPuDaDxns/ZK8tOxa
+	9ISZelAoaQnAHsYr0KRVa/tH1wTfy7Kgqxj3mG1STOji4dXtQa8xP4rJtZErCocg/aSyyxVhRu8
+	WklsG0Y6rXRLvUKyYVXvUqaOPLOSU/4zuAv2zhW5x8hpeip6RPhXYiNy93JKFHqS9RZb4ylB86N
+	S5iL1ds8druWD4asW+BanyFsvMvCUcYueZJZS/Mo7vb8cN9w4eZy853PLP38FNTJtMvGFHD364Q
+	KeqRs/E4nF0++RPmMVdFvaHdT
+X-Google-Smtp-Source: AGHT+IGEGQomxsa7WNV0T03rhAK/xcvrrheXR+pMEm9N4EM2OSbc4zcfLSj+YjG8nGLLs8dfNA9reg==
+X-Received: by 2002:a17:902:cec4:b0:275:2328:5d3e with SMTP id d9443c01a7336-275232861e2mr82210535ad.18.1758556426155;
+        Mon, 22 Sep 2025 08:53:46 -0700 (PDT)
+Received: from lgs.. ([2408:8418:1100:9530:3d9f:679e:4ddb:a104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698016bf96sm133924265ad.38.2025.09.22.08.53.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Sep 2025 08:53:45 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Victoria Milhoan (b42089)" <vicki.milhoan@freescale.com>,
+	Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+	Dan Douglass <dan.douglass@nxp.com>,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] crypto: caam: Add check for kcalloc() in test_len()
+Date: Mon, 22 Sep 2025 23:53:22 +0800
+Message-ID: <20250922155322.1825714-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ASoC: mediatek: mt8365: Add check for devm_kcalloc()
- in mt8365_afe_suspend()
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Alexandre Mergnat <amergnat@baylibre.com>, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Cc: stable@vger.kernel.org
-References: <20250922153448.1824447-1-lgs201920130244@gmail.com>
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Content-Language: en-US, fr-FR
-In-Reply-To: <20250922153448.1824447-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Le 22/09/2025 à 17:34, Guangshuo Li a écrit :
-> devm_kcalloc() may fail. mt8365_afe_suspend() uses afe->reg_back_up
-> unconditionally after allocation and writes afe->reg_back_up[i], which
-> can lead to a NULL pointer dereference under low-memory conditions.
-> 
-> Add a NULL check and bail out with -ENOMEM, making sure to disable the
-> main clock via the existing error path to keep clock state balanced.
-> 
-> Fixes: e1991d102bc2 ("ASoC: mediatek: mt8365: Add the AFE driver support")
-> Cc: stable@vger.kernel.org
-> ---
-> changelog:
-> v2:
-> - Return -ENOMEM directly on allocation failure without goto/label.
-> - Disable the main clock before returning to keep clock state balanced.
-> 
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+As kcalloc() may fail, check its return value to avoid a NULL pointer
+dereference when passing the buffer to rng->read().
 
-This should be above the ---
+Fixes: 2be0d806e25e ("crypto: caam - add a test for the RNG")
+Cc: stable@vger.kernel.org
+---
+changelog:
+v2:
+- Return -ENOMEM directly on allocation failure.
 
-> ---
->   sound/soc/mediatek/mt8365/mt8365-afe-pcm.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c b/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
-> index 10793bbe9275..55d832e05072 100644
-> --- a/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
-> +++ b/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
-> @@ -1975,11 +1975,15 @@ static int mt8365_afe_suspend(struct device *dev)
->   
->   	mt8365_afe_enable_main_clk(afe);
->   
-> -	if (!afe->reg_back_up)
-> +	if (!afe->reg_back_up) {
->   		afe->reg_back_up =
->   			devm_kcalloc(dev, afe->reg_back_up_list_num,
-> -				     sizeof(unsigned int), GFP_KERNEL);
-> -
-> +				    sizeof(unsigned int), GFP_KERNEL);
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/crypto/caam/caamrng.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-you should not remove a space here.
-
-CJ
-
-> +		if (!afe->reg_back_up) {
-> +			mt8365_afe_disable_main_clk(afe);
-> +			return -ENOMEM;
-> +		}
-> +	}
->   	for (i = 0; i < afe->reg_back_up_list_num; i++)
->   		regmap_read(regmap, afe->reg_back_up_list[i],
->   			    &afe->reg_back_up[i]);
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index b3d14a7f4dd1..357860ee532c 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -182,6 +182,9 @@ static inline void test_len(struct hwrng *rng, size_t len, bool wait)
+ 
+ 	buf = kcalloc(CAAM_RNG_MAX_FIFO_STORE_SIZE, sizeof(u8), GFP_KERNEL);
+ 
++	if (!buf) {
++		return -ENOMEM;
++	}
+ 	while (len > 0) {
+ 		read_len = rng->read(rng, buf, len, wait);
+ 
+-- 
+2.43.0
 
 
