@@ -1,233 +1,178 @@
-Return-Path: <stable+bounces-180875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF77BB8EDE4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 05:36:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 964E8B8EE78
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A935318990CB
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 03:37:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46B053AFA6B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 04:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EA81A9F9B;
-	Mon, 22 Sep 2025 03:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685C51CAA92;
+	Mon, 22 Sep 2025 04:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dYeIGHtX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YQOsXecL"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51442F56
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 03:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794EF249E5
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 04:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758512204; cv=none; b=KuPJE/acwIilmzi9eXe4KW41/5+M85PgXeSc/gReDCyB7GVePKEM8hzm5RpEarKHQWmBzJWns/INchOTI/aOUUIyPKsXFAG6hJwMbu/VTJUv1CBis0RHxk+54sNM8hjl2zsnL3p3eewecn0WB84+2ykfenpgdKjglxHJlbjChs4=
+	t=1758513942; cv=none; b=tWJuNpnv8xL0Gs8054Kzw32530H8Yoco2dtFMXfo1zsJG/dWiNMzTHawt/D0KttajjfFkwZZ8mylGEqgNO6lsmQm18Lnpm5meZ/lECl/HIh6QldcNBXQhVdwUf78YKXZLJ20O+IuW/lKhQAUelYuL8MI2ab8TI0/Zo0liv46/Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758512204; c=relaxed/simple;
-	bh=rs/upMHA5jSOkvRjTN31EXKDVfPg7QxREApmEdYNWpU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iGolHZf/j22hdnlspW7o14X40jdRKInbVl6x2NLv9tTjjG0Ko6p3KsfXwwppVZVG3/0pclIRN6D2Qkne8NciegBYN1blIOiKquKO1Ef3tOg5tbTQnxfJyT8BEYAhqebU8NBdHwwOptqh8PhEv9L8kF1byzi46pjx5gLFZAWlJGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dYeIGHtX; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <e4e82695-c03f-4105-bddd-9778d7e368d4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758512191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9/pAYjt1PTM1WTwOEAJ1ryShiXtBMZp1571RlbpsQfQ=;
-	b=dYeIGHtXEhwqRe5dY2kuaOhbMvjIC5LBJnI4MTLAavEHM28MO5fC1RBYYw1JQSenqd1Od+
-	ppNvqg9coKtIPXFQHgGtx3lExQK15m1zekX1RHO6FWDHA+ZXFNiB8BTagglJX3zuepxRoC
-	P2383CbGkK919uOabMZSgfcRGK4vAQ8=
-Date: Mon, 22 Sep 2025 11:36:11 +0800
+	s=arc-20240116; t=1758513942; c=relaxed/simple;
+	bh=ZBAPZD7FlI27vHYmhpxl/0A2E/Zd48kYCrtJKDwck7M=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=LOgcNfvjEbMLnSuz1aGLXU6UssYsCanWmnxtwCq5mF0pMSucVlJf2sWhwVjBw4qIOi9dwMbTYNRLHtEOWfFHjqZNXE87jM1BjGe83pzJfYMa+7Z2kYpuT4RoBRugoJTzIlAQrrCat65OcxfxNRuNXIuMaTdD7UjVPjbT00Hatow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YQOsXecL; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-ea63e86b79aso2771864276.2
+        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 21:05:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758513939; x=1759118739; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yR+MmVU86kQQ0FGDXbZD/BozlPJRQel7QCDmEGJXA2I=;
+        b=YQOsXecLuGitEbebrq6Y2YB2rxgwA5oMSdR2a6043y+ix0bkpGQHgtmxCvY1P79KuY
+         aikc7OuU+HOFR91hzgyAq8ougy+HVquruKx96rk+PwY2qcxJO+HlBy6qZiUka9ijUfXW
+         Isj34aOgSqnMx87zk+U5sKdtIIAj1XYDMqcBgh9rDf3Mp1/B6SObZMSBs3dJ6/Ifjbgk
+         LEUzKORiLYk08OWqBmhzlwucyw45R5Qtubhc/C73iWoIIfCbt5GTSPSwRPxoV7ajAdND
+         0sWVU/wr+ldCM6tDhZjUmU24kFJnApSXNh6ONGBRyY3+MNm0TTcvN5WhkIjgmCn45tCL
+         LBsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758513939; x=1759118739;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yR+MmVU86kQQ0FGDXbZD/BozlPJRQel7QCDmEGJXA2I=;
+        b=NG22kYRLs62zCGmrVP1kQDOramoobiGxP404/sXIG0StfJhcB8L0adoqFjuAtB/UEA
+         mooPqDdXM4kKT7Z1VAiT5PRTHZzIe5wxXGncf6+M/r6gaoy4jrJRAkAcnxe/m47jYX0i
+         wMG5FTw9wLMC0XwTbwhcEdk4FIihgqGqaxic+O7baIJhIifFiHkd3llW9SYZQJpvDJJH
+         WJofs15Qqoul6+Z8rwPXmNoZ3yh2HYx9F1xB18CL7IlaAC0ZurMq0XDlsmCuXBI0BMYc
+         Iz6dJiycONuRXf9uNGgg6OJNimttckC0bZ6znK1lidyag+nC/nVrPzQZwNgg3GGntxzR
+         pogw==
+X-Forwarded-Encrypted: i=1; AJvYcCUx4e8HUKp82F24gMs0eld4sdFuYb1EsH+lJqLMS0BUPo79mbOZpSL2YPKPqPb44yEclU/H3nE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziBFdx7PE4IjfosfNM5IDHFUUX6ZLvpl7neD0vMjfnhL3TztGN
+	TwrIJyeg0aK65Fd1Hq+qy6kXRw0IsaWxiRylD8AlcrLInc9SUHl9AYi09z/RBiEQ2w==
+X-Gm-Gg: ASbGnct0FbfKMWlow9skWKFQOKM4lNiGqf5xVQjf3afyEfWWJFDAevVoelTWX3kjgfP
+	Y1xlPdGq3tJwVxL35tVgF2xWdrkXZCyOkiP86Zisilu+GMU2ITk6s9I6kqacIWiB3YlgbjVvW+R
+	nN47OJxr5BINzirRfHsAGrFsmQ5++oCorY59jTxGYxzOP5LvcwmUvLAg5S6WJJc/VRKAnxIemIw
+	dfmB8VMmkFpk3m6VgzrX0QLvWKmj4JBlyGXUUIKphGLTA/P0UsPqnaBn/tbSgF4jM5wKE5N4qZs
+	qOP2P3yUl7rQPI2CoMVarqhEAZhYtN7krScWnKZCrj7MjDxnpYLcvIyVQlQI920YV1zU/CHcc0i
+	/wwxQPGc7TmBZOx0NPIjcNOYEJ+M6bS3Gn7Ts+nOlqkBUdSYLbiMy2iL4KVUORpnBRnzDFJ14yH
+	VPQy/OlHLJG5MlEFPE0g==
+X-Google-Smtp-Source: AGHT+IFio76maoN3Nn/X/zbU+83XIvDA2y40c8zpLBHK9et19anuGTLDGKs9T8kUHRfh5yaACrAaRg==
+X-Received: by 2002:a05:690c:6209:b0:73c:8359:d5ad with SMTP id 00721157ae682-73d3b0b8158mr89984157b3.29.1758513939216;
+        Sun, 21 Sep 2025 21:05:39 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-739718b98e4sm30981337b3.62.2025.09.21.21.05.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Sep 2025 21:05:38 -0700 (PDT)
+Date: Sun, 21 Sep 2025 21:05:35 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
+    Hugh Dickins <hughd@google.com>, David Hildenbrand <david@redhat.com>, 
+    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+    Axel Rasmussen <axelrasmussen@google.com>, Chris Li <chrisl@kernel.org>, 
+    Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+    Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>, 
+    Keir Fraser <keirf@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>, 
+    Li Zhe <lizhe.67@bytedance.com>, 
+    "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+    Peter Xu <peterx@redhat.com>, Rik van Riel <riel@surriel.com>, 
+    Shivank Garg <shivankg@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+    Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>, 
+    yangge <yangge1116@126.com>, Yuanchu Xie <yuanchu@google.com>, 
+    Yu Zhao <yuzhao@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.12.y] mm: folio_may_be_lru_cached() unless
+ folio_test_large()
+In-Reply-To: <2025092135-collie-parched-1244@gregkh>
+Message-ID: <b7e6758f-9942-81ca-c5fd-1753ce49aa32@google.com>
+References: <2025092142-easiness-blatancy-23af@gregkh> <20250921154134.2945191-1-sashal@kernel.org> <2025092135-collie-parched-1244@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- usamaarif642@gmail.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
- catalin.marinas@arm.com, cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
- kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
- roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
- dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, hughd@google.com, willy@infradead.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
- casper.li@mediatek.com, chinwen.chang@mediatek.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-mm@kvack.org, ioworker0@gmail.com,
- stable@vger.kernel.org, linux-riscv@lists.infradead.org,
- palmer@rivosinc.com, samuel.holland@sifive.com, charlie@rivosinc.com
-References: <20250922021458.68123-1-lance.yang@linux.dev>
- <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
 
-Cc: RISC-V folks
-
-On 2025/9/22 10:36, Zi Yan wrote:
-> On 21 Sep 2025, at 22:14, Lance Yang wrote:
+On Sun, 21 Sep 2025, Greg KH wrote:
+> On Sun, Sep 21, 2025 at 11:41:34AM -0400, Sasha Levin wrote:
+> > From: Hugh Dickins <hughd@google.com>
+> > 
+> > [ Upstream commit 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 ]
+> > 
+> > mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
+> > large folio is added: so collect_longterm_unpinnable_folios() just wastes
+> > effort when calling lru_add_drain[_all]() on a large folio.
+> > 
+> > But although there is good reason not to batch up PMD-sized folios, we
+> > might well benefit from batching a small number of low-order mTHPs (though
+> > unclear how that "small number" limitation will be implemented).
+> > 
+> > So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
+> > insulate those particular checks from future change.  Name preferred to
+> > "folio_is_batchable" because large folios can well be put on a batch: it's
+> > just the per-CPU LRU caches, drained much later, which need care.
+> > 
+> > Marked for stable, to counter the increase in lru_add_drain_all()s from
+> > "mm/gup: check ref_count instead of lru before migration".
+> > 
+> > Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
+> > Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+> > Cc: Axel Rasmussen <axelrasmussen@google.com>
+> > Cc: Chris Li <chrisl@kernel.org>
+> > Cc: Christoph Hellwig <hch@infradead.org>
+> > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> > Cc: Johannes Weiner <hannes@cmpxchg.org>
+> > Cc: John Hubbard <jhubbard@nvidia.com>
+> > Cc: Keir Fraser <keirf@google.com>
+> > Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+> > Cc: Li Zhe <lizhe.67@bytedance.com>
+> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > Cc: Peter Xu <peterx@redhat.com>
+> > Cc: Rik van Riel <riel@surriel.com>
+> > Cc: Shivank Garg <shivankg@amd.com>
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: Wei Xu <weixugc@google.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: yangge <yangge1116@126.com>
+> > Cc: Yuanchu Xie <yuanchu@google.com>
+> > Cc: Yu Zhao <yuzhao@google.com>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > [ adapted to drain_allow instead of drained ]
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
 > 
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> When both THP and MTE are enabled, splitting a THP and replacing its
->> zero-filled subpages with the shared zeropage can cause MTE tag mismatch
->> faults in userspace.
->>
->> Remapping zero-filled subpages to the shared zeropage is unsafe, as the
->> zeropage has a fixed tag of zero, which may not match the tag expected by
->> the userspace pointer.
->>
->> KSM already avoids this problem by using memcmp_pages(), which on arm64
->> intentionally reports MTE-tagged pages as non-identical to prevent unsafe
->> merging.
->>
->> As suggested by David[1], this patch adopts the same pattern, replacing the
->> memchr_inv() byte-level check with a call to pages_identical(). This
->> leverages existing architecture-specific logic to determine if a page is
->> truly identical to the shared zeropage.
->>
->> Having both the THP shrinker and KSM rely on pages_identical() makes the
->> design more future-proof, IMO. Instead of handling quirks in generic code,
->> we just let the architecture decide what makes two pages identical.
->>
->> [1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
->>
->> Cc: <stable@vger.kernel.org>
->> Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
->> Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
->> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->> Tested on x86_64 and on QEMU for arm64 (with and without MTE support),
->> and the fix works as expected.
-> 
->  From [1], I see you mentioned RISC-V also has the address masking feature.
-> Is it affected by this? And memcmp_pages() is only implemented by ARM64
-> for MTE. Should any arch with address masking always implement it to avoid
-> the same issue?
+> Does not apply as it conflicts with the other mm changes you sent right
+> before this one :(
 
-Yeah, I'm new to RISC-V, seems like RISC-V has a similar feature as
-described in Documentation/arch/riscv/uabi.rst, which is the Supm
-(Supervisor-mode Pointer Masking) extension.
+Thanks for grabbing all these, I'm sorry they are troublesome.
 
-```
-Pointer masking
----------------
+Though I'm usually able to work out what to do from the FAILED mails,
+in this case I'd just be guessing without the full contexts.
+So I'll wait until I see what goes into the various branches of
+linux-stable-rc.git before checking and adjusting where necessary.
 
-Support for pointer masking in userspace (the Supm extension) is 
-provided via
-the ``PR_SET_TAGGED_ADDR_CTRL`` and ``PR_GET_TAGGED_ADDR_CTRL`` ``prctl()``
-operations. Pointer masking is disabled by default. To enable it, userspace
-must call ``PR_SET_TAGGED_ADDR_CTRL`` with the ``PR_PMLEN`` field set to the
-number of mask/tag bits needed by the application. ``PR_PMLEN`` is 
-interpreted
-as a lower bound; if the kernel is unable to satisfy the request, the
-``PR_SET_TAGGED_ADDR_CTRL`` operation will fail. The actual number of 
-tag bits
-is returned in ``PR_PMLEN`` by the ``PR_GET_TAGGED_ADDR_CTRL`` operation.
-```
+(As usual, I'll tend towards minimal change, where Sasha tends
+towards maximal backporting of encroaching mods: we may disagree.)
 
-But, IIUC, Supm by itself only ensures that the upper bits are ignored on
-memory access :)
+The main commits contributing to the pinning failures that Will Deacon
+reported were commits going into 5.18 and 6.11.  So although I stand
+by my Fixes tag, I'm likely to conclude that 5.15 and 5.10 and 5.4
+are better left stable without any of it.
 
-So, RISC-V today would likely not be affected. However, once it implements
-full hardware tag checking, it will face the exact same zero-page problem.
-
-Anyway, any architecture with a feature like MTE in the future will need
-its own memcmp_pages() to prevent unsafe merges ;)
-
-> 
->>
->>   mm/huge_memory.c | 15 +++------------
->>   mm/migrate.c     |  8 +-------
->>   2 files changed, 4 insertions(+), 19 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 32e0ec2dde36..28d4b02a1aa5 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
->>   static bool thp_underused(struct folio *folio)
->>   {
->>   	int num_zero_pages = 0, num_filled_pages = 0;
->> -	void *kaddr;
->>   	int i;
->>
->>   	for (i = 0; i < folio_nr_pages(folio); i++) {
->> -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
->> -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
->> -			num_zero_pages++;
->> -			if (num_zero_pages > khugepaged_max_ptes_none) {
->> -				kunmap_local(kaddr);
->> +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
->> +			if (++num_zero_pages > khugepaged_max_ptes_none)
->>   				return true;
->> -			}
->>   		} else {
->>   			/*
->>   			 * Another path for early exit once the number
->>   			 * of non-zero filled pages exceeds threshold.
->>   			 */
->> -			num_filled_pages++;
->> -			if (num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none) {
->> -				kunmap_local(kaddr);
->> +			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
->>   				return false;
->> -			}
->>   		}
->> -		kunmap_local(kaddr);
->>   	}
->>   	return false;
->>   }
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index aee61a980374..ce83c2c3c287 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -300,9 +300,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->>   					  unsigned long idx)
->>   {
->>   	struct page *page = folio_page(folio, idx);
->> -	bool contains_data;
->>   	pte_t newpte;
->> -	void *addr;
->>
->>   	if (PageCompound(page))
->>   		return false;
->> @@ -319,11 +317,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->>   	 * this subpage has been non present. If the subpage is only zero-filled
->>   	 * then map it to the shared zeropage.
->>   	 */
->> -	addr = kmap_local_page(page);
->> -	contains_data = memchr_inv(addr, 0, PAGE_SIZE);
->> -	kunmap_local(addr);
->> -
->> -	if (contains_data)
->> +	if (!pages_identical(page, ZERO_PAGE(0)))
->>   		return false;
->>
->>   	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
->> -- 
->> 2.49.0
-> 
-> The changes look good to me. Thanks. Acked-by: Zi Yan <ziy@nvidia.com>
-
-Cheers!
-
+Thanks,
+Hugh
 
