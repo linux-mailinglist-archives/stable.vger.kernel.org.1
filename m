@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550FAB930B9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C63B92DB5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751801907B85
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02CD2189D73E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBFE2F3C23;
-	Mon, 22 Sep 2025 19:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360DD2EDD5D;
+	Mon, 22 Sep 2025 19:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaH9XZiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QItSH92S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5A02F2909;
-	Mon, 22 Sep 2025 19:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98E5222590;
+	Mon, 22 Sep 2025 19:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570260; cv=none; b=KSno3MzwqI1PAinYUsxrtFL/UrZSQcATDWx4E/jOLFtWAXeoQIYZrgXQJW3RtGVO4Mr8vABHVEjWhkPY77ocmKjBWsUyrwEmdkcQO9OfVNjrbM5rCft9NmNOKFC045E3dy1Av5SN0px3HtUwE1+jQSASRsvXAIrj7abiP2G5Ybs=
+	t=1758569713; cv=none; b=iU0M2quND0FuRgTgE0B/81TRBooFw73IScamC4oAGaIZkK+dsuWavyQJHjB6SrFJGqHVUezTBQlRqmkEFOKRj7TuKPaFbleU/HwgehliG5cCQ6EqNP9SWtKVgAJIJzrJm6J5JmdA0o7TKUYOIUlVTPpubIq99JFyVgopr6BirLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570260; c=relaxed/simple;
-	bh=GLvXu4lgQ5nXDffQTrijckeWzQrfQJdbeRxzcYFWwy4=;
+	s=arc-20240116; t=1758569713; c=relaxed/simple;
+	bh=N6UAcAUbYXCJhHLeOkgV1C9FS2gRGU3yFSNHjh5xp4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XL2WjbOzmQZPSHy9hpX4fohgtOvYVqL7PtWfZ1gYEHv66eFBTxKOL7ATTemdyRXq8hDL9nWibEXoxDyjZfx7J7X1qfqy5dxjTfoFp2qIyIDdCc/SLccq5SJKctWgTHywACHd9Zb/5I8v12/sRITWsCMvxcZMKeBkA37Lt/ss3/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaH9XZiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C424C4CEF0;
-	Mon, 22 Sep 2025 19:44:18 +0000 (UTC)
+	 MIME-Version; b=r3kNeGqSisDTkkW5LObU1DMVxTpmM+1cfcUKr5DxElgzkviiMAFK4Gug6BHt8Ij3e+3BiJ/cf74JSxZENiYVpt67BJvUgu8y3N0JCsLMwcR3zysiq5nTcl3PjX8FfleKQJNamx7YGn+jl8mZ/xx9b/6s3CtCvY9zEfJt9fHWRTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QItSH92S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831F5C4CEF0;
+	Mon, 22 Sep 2025 19:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570259;
-	bh=GLvXu4lgQ5nXDffQTrijckeWzQrfQJdbeRxzcYFWwy4=;
+	s=korg; t=1758569712;
+	bh=N6UAcAUbYXCJhHLeOkgV1C9FS2gRGU3yFSNHjh5xp4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaH9XZiDKTxi92f561NMMygukUPJqLk8b6GjsFIG1tZK6ZrRdysbFV7EsMCJzXXl3
-	 dKnMSA9VrdTSoAz2BroE/yeyWl6hwCWp9mgjipVuXCbF50TD1KarC9bA0pGS7Zqjw2
-	 gDwSdnv3rBn59hM5TuqEIkY52NuxSbFOlZn3WU1U=
+	b=QItSH92SbELLptL7317dcb0i/2Ja7OurdDjzEhhMTSrm+isBJh2/3yfZjI5KSaPQz
+	 RYrwdyu8Fmu3p/dkGKpT/XtihyQYsYeZ4xI2zLH5R3qB1NooDXbxhvjiU9gnhONGDD
+	 xTOeqz7yKSbkAWK4V61ivDRDPT93/Oy5hyFLj/Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.16 079/149] iommu/amd: Fix ivrs_base memleak in early_amd_iommu_init()
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 39/70] ASoC: qcom: q6apm-lpass-dais: Fix missing set_fmt DAI op for I2S
 Date: Mon, 22 Sep 2025 21:29:39 +0200
-Message-ID: <20250922192414.874376533@linuxfoundation.org>
+Message-ID: <20250922192405.665856035@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
 
-commit 923b70581cb6acede90f8aaf4afe5d1c58c67b71 upstream.
+commit 33b55b94bca904ca25a9585e3cd43d15f0467969 upstream.
 
-Fix a permanent ACPI table memory leak in early_amd_iommu_init() when
-CMPXCHG16B feature is not supported
+The q6i2s_set_fmt() function was defined but never linked into the
+I2S DAI operations, resulting DAI format settings is being ignored
+during stream setup. This change fixes the issue by properly linking
+the .set_fmt handler within the DAI ops.
 
-Fixes: 82582f85ed22 ("iommu/amd: Disable AMD IOMMU if CMPXCHG16B feature is not supported")
+Fixes: 30ad723b93ade ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/20250822024915.673427-1-zhen.ni@easystack.cn
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+Message-ID: <20250908053631.70978-3-mohammad.rafi.shaik@oss.qualcomm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3048,7 +3048,8 @@ static int __init early_amd_iommu_init(v
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -256,6 +256,7 @@ static const struct snd_soc_dai_ops q6i2
+ 	.shutdown	= q6apm_lpass_dai_shutdown,
+ 	.set_channel_map  = q6dma_set_channel_map,
+ 	.hw_params        = q6dma_hw_params,
++	.set_fmt	= q6i2s_set_fmt,
+ };
  
- 	if (!boot_cpu_has(X86_FEATURE_CX16)) {
- 		pr_err("Failed to initialize. The CMPXCHG16B feature is required.\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	/*
+ static const struct snd_soc_dai_ops q6hdmi_ops = {
 
 
 
