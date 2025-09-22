@@ -1,142 +1,137 @@
-Return-Path: <stable+bounces-180939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124C4B90420
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 12:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5660FB9043B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 12:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FB7D3AB6DB
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 10:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AF383AE3F6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 10:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F403019D0;
-	Mon, 22 Sep 2025 10:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A3E305E29;
+	Mon, 22 Sep 2025 10:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e+xlhDzD"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="qds18ubK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E5C286D56;
-	Mon, 22 Sep 2025 10:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210392472B1;
+	Mon, 22 Sep 2025 10:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758537849; cv=none; b=hbW9bruSlIbkQT8ADSlCu2GPEQfaLhG164RlpbqeiLCqf5wONIcyqsGFq05jLcHNekT9U063I0NCRe+iBlrL8/w+neGGnBjlOCCebQ3vpRMc+GFdfNHvxBZp0X5HFlpbDglMjeUAmbhfZq7vwJ5FjENwyKf7VVZbagXRPedyhxE=
+	t=1758537861; cv=none; b=K93IYpwqJ9a7htBAhHgHsJ7LkJcLmXsTpGkjqTTXekR9rWkJYGFeuYtNva0W7v+Fo0WXMYFzijhNQZ6HZ8HedLOch/vDadWo7TiB/3ZgADRefwFkCC1pOpDmUXwtlyeiYEltOBZzR6/u22ICxJXTlT5bJKRbC6Guj1xZNujsoxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758537849; c=relaxed/simple;
-	bh=Scu0SimwoCRkxOBYc7t64x6kXw6D/8lqrdYnldQqIz4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YoOfB6k9AZGzAUNE9KAPDTM7L2wWRuV/q5px3ZIhCKtpk5lVHqu8Na2O0jMRYDO8oyFBnPznnUQSvnp/ca3f5wDIPqXhsf98QU2SU8IkSNgviCTIkvA/EFC3CtdKm+lgojoeXoKcuBmPfv99WtoBg9beNNAGB+N+Gp6H/3p+c/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e+xlhDzD; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758537848; x=1790073848;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Scu0SimwoCRkxOBYc7t64x6kXw6D/8lqrdYnldQqIz4=;
-  b=e+xlhDzDCi+qdwymzneAfgTUrWWg2qdDX5PoNX4ViLFQP2DYYC4rMbdd
-   Bpxo+3qTZxq2hZI3/DzSU+NPcTTM3M5Iiv7C4zfd7ApU3PTeSyOCm+XPT
-   tccHMGkREdkhnm4Dk7n6hx+NKcwWe3m1PDEUd97nVTfIMie2/N2uCxihc
-   jYMG5gbd1C1ri9+VzayajKVZFqAG9T6LDNPwGvykVgDUVUtEEsrRBU7NX
-   hJbnNqGja6T3vuUPH5NBnfSAxUWQWJuPY+33SMbCaZzgf7fBlVM8qJDKe
-   ZCA3oM86ze/5oy07ZxS7DseEpiZdF5KHmQ92BmZ5ZS2CFEMQU0CYNqDQP
-   w==;
-X-CSE-ConnectionGUID: Pv8yjoPGTT+sXZdFpM07jw==
-X-CSE-MsgGUID: /IoALYeNQZqmL6nN6htkdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60852398"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="60852398"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 03:44:07 -0700
-X-CSE-ConnectionGUID: jt9e9kpgS1C9Ak14/yW+Sw==
-X-CSE-MsgGUID: uUk8EzvJR72Z1zRMDduf4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; 
-   d="scan'208";a="180461341"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.61])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 03:44:04 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 3C78211F967;
-	Mon, 22 Sep 2025 13:44:01 +0300 (EEST)
-Date: Mon, 22 Sep 2025 13:44:01 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: bingbu.cao@intel.com, lixu.zhang@intel.com,
-	stanislaw.gruszka@linux.intel.com, mchehab@kernel.org,
-	wentong.wu@intel.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] media: pci: intel: ivsc: fix error handling in
- mei_ace driver
-Message-ID: <aNEocYyaT2pig7So@kekkonen.localdomain>
-References: <20250922094335.28486-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1758537861; c=relaxed/simple;
+	bh=QqlkC4VIw2NMFJJssYh1tePKUDlKegBAeXoYEOJzzxc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RvcBF0ybnoaIEv8vEvQJEKqOAUdaXOfdRUWYZRFRQ3qa0+fKZjs/NYX9rPKr3sIyxiIitpL2gZ4XiUPAakZ3e6uvmUhikHefSoAn4vaeSOGbTK/QVqqbgKsuya2RdavtRv8DKqxYKDMDolIHnzmriDYQ0qCyXV9hR0f74P4J6kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=qds18ubK; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cVfqg3lPVz9tJ5;
+	Mon, 22 Sep 2025 12:44:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1758537855;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3ffQVE6RmN+mQv8c9pCzPipYza5TWS00xqFZeWOzO1Y=;
+	b=qds18ubKQf+nvMIt0edDffiF7oM1ut4ST9MkdavIwC/TheBCY75jPk8cpu8RTXfMLQpZ88
+	lT+mw6mu4Cs6xMPN4EvF1/2SzSNeu0ImlGThJ5REuq0pq3U5RFGDn/AcNXeL/iiQw5Jcqw
+	98/ZVsBtumpQDe2ulDYEFcKqwWbpMhiXAaalf6q5J/gRMcXF6n/RLaj7PFwOXPS8RHwDDa
+	+LFEqg3z9HF+EvNAt45OUlRLeCtvSl7Q2Dw6A/EyDFRc2K3J357JJU5FlqjD8Hivukvbgv
+	WEs0GO+0iBp7LxF9/gLKsc6GUJqILMYt2Xw9spK1WbzuWsRZYlloiPJBG2q/IQ==
+Message-ID: <575ae1bc-0478-4f69-9002-4a48742e04e8@mailbox.org>
+Date: Mon, 22 Sep 2025 12:44:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250922094335.28486-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH 1/2] PCI: rcar-host: Drop PMSR spinlock
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-pci@vger.kernel.org, Duy Nguyen <duy.nguyen.rh@renesas.com>,
+ Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>, stable@vger.kernel.org,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Magnus Damm <magnus.damm@gmail.com>, Manivannan Sadhasivam
+ <mani@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Rob Herring <robh@kernel.org>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-renesas-soc@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
+References: <20250909162707.13927-1-marek.vasut+renesas@mailbox.org>
+ <CAMuHMdXWWLGHJwxz6yYjhS2oQdmMO+Zfi4b3N3uTPN-NOeEpkA@mail.gmail.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <CAMuHMdXWWLGHJwxz6yYjhS2oQdmMO+Zfi4b3N3uTPN-NOeEpkA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: opnzcha5bkc3u47g71beyfr4aecqasn7
+X-MBO-RS-ID: 29c6735e9cbf14601cb
 
-Hi Ma,
+On 9/22/25 11:14 AM, Geert Uytterhoeven wrote:
 
-On Mon, Sep 22, 2025 at 05:43:35PM +0800, Ma Ke wrote:
-> The mei_ace driver contains a device reference count leak in
-> mei_ace_setup_dev_link() where device_find_child_by_name() increases
-> the reference count of the found device but this reference is not
-> properly decreased in the success path. Add put_device() in
-> mei_ace_setup_dev_link() and delete put_device() in mei_ace_remove(),
-> which ensures that the reference count of the device is correctly
-> managed regardless of whether the probe is successful or fails.
+Hello Geert,
+
+> On Tue, 9 Sept 2025 at 18:27, Marek Vasut
+> <marek.vasut+renesas@mailbox.org> wrote:
+>> The pmsr_lock spinlock used to be necessary to synchronize access to the
+>> PMSR register, because that access could have been triggered from either
+>> config space access in rcar_pcie_config_access() or an exception handler
+>> rcar_pcie_aarch32_abort_handler().
+>>
+>> The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
+>> commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
+>> which triggered an exception"), which performs more accurate, controlled
+>> invocation of the exception, and a fixup.
+>>
+>> This leaves rcar_pcie_config_access() as the only call site from which
+>> rcar_pcie_wakeup() is called. The rcar_pcie_config_access() can only be
+>> called from the controller struct pci_ops .read and .write callbacks,
+>> and those are serialized in drivers/pci/access.c using raw spinlock
+>> 'pci_lock' . CONFIG_PCI_LOCKLESS_CONFIG is never set on this platform.
+>>
+>> Since the 'pci_lock' is a raw spinlock , and the 'pmsr_lock' is not a
+>> raw spinlock, this constellation triggers 'BUG: Invalid wait context'
+>> with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+>>
+>> Remove the pmsr_lock to fix the locking.
+>>
+>> Fixes: a115b1bd3af0 ("PCI: rcar: Add L1 link state fix into data abort hook")
+>> Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+>> Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 > 
-> Found by code review.
+> Thanks for your patch!
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
-
-As this isn't a bug fix, I don't think we need these two tags. This should
-be taken into account in the subject and commit message as well.
-
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - modified the put_device() operations and the patch title as suggestions.
-> ---
->  drivers/media/pci/intel/ivsc/mei_ace.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Your reasoning above LGTM, so
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > 
-> diff --git a/drivers/media/pci/intel/ivsc/mei_ace.c b/drivers/media/pci/intel/ivsc/mei_ace.c
-> index 98310b8511b1..bb57656fc85a 100644
-> --- a/drivers/media/pci/intel/ivsc/mei_ace.c
-> +++ b/drivers/media/pci/intel/ivsc/mei_ace.c
-> @@ -420,6 +420,7 @@ static int mei_ace_setup_dev_link(struct mei_ace *ace)
->  		goto err_put;
->  	}
->  
-> +	put_device(csi_dev);
-
-You can do this right after calling device_link_add().
-
->  	ace->csi_dev = csi_dev;
->  
->  	return 0;
-> @@ -522,7 +523,6 @@ static void mei_ace_remove(struct mei_cl_device *cldev)
->  	cancel_work_sync(&ace->work);
->  
->  	device_link_del(ace->csi_link);
-> -	put_device(ace->csi_dev);
->  
->  	pm_runtime_disable(&cldev->dev);
->  	pm_runtime_set_suspended(&cldev->dev);
-
--- 
-Regards,
-
-Sakari Ailus
+> My only worry is that PCI_LOCKLESS_CONFIG may be selected on non-x86
+> one day, breaking your assumptions.  IMHO, the mechanism behind this
+> config option, introduced in commit 714fe383d6c9bd95 ("PCI: Provide
+> Kconfig option for lockless config space accessors") looks very fragile
+> to me: it is intended to be selected by an architecture, if "all" low
+> level PCI configuration space accessors use their own serialization or
+> can operate completely lockless.  Usually we use the safer, inverted
+> approach (PCI_NOLOCKLESS_CONFIG), to be selected by all drivers that
+> do not adhere to the assumption.
+> But perhaps I am missing something, and this does not depend on
+> individual PCIe host drivers?
+> 
+> Regardless, improving that is clearly out-of-scope for this patch...
+I could send a follow up patch which would add build-time assertion that 
+PCI_LOCKLESS_CONFIG must not be selected for this driver to work. Would 
+that be an option ?
 
