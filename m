@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-181357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EDBB93129
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FFDB92F3E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B6A019043A8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57091887D8D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F52F3613;
-	Mon, 22 Sep 2025 19:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3E52F1FDD;
+	Mon, 22 Sep 2025 19:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRWY8Cq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BN6VIZ+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEE92517AC;
-	Mon, 22 Sep 2025 19:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399112820D1;
+	Mon, 22 Sep 2025 19:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570339; cv=none; b=oszWLFbzz7VrJP6uiaE+P2PSBTtNEfsN4WjoYSkwD4kfo7ujeM8m5lvQKGf0kWoQTjIEJQxVDEaUBazOJw3siOgOSAkVg92l0Wvi8Z2fE6luRUJ5kR2fTg8P3XDG6xe5zKMLbsk8G7SgUavj6RSt+S2uGBzhfulTddnDmi3nssM=
+	t=1758569998; cv=none; b=qNARSmFn272DqDVB8fElk66aTsNE0zBDnEvAi1Hprkq5/lyt1DejEKMA+H3onixl4HlmQuIVR8VcirCqqxCAucmneLpHRNn7YlnQ+prFnFm5W99Cetiba+U0Toj1bpSZtggorVm3r+ThhbjDP/dM3DfdpIaNvsM628Rl/n6ZCg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570339; c=relaxed/simple;
-	bh=EsU0fYavsBxf9grkx85QV+Cfl2v5CfOp/DFEfFAGJQs=;
+	s=arc-20240116; t=1758569998; c=relaxed/simple;
+	bh=33j6wfpBTOnQNpNMCt2O2slgDpuq2tKzbyCbJz2pA8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptSOWOrrivwhFSJ4FNFXI83xSDwJb44TIAr+Lk1GGogVvg8nR8pNgvaqEFA5eXSnVGhGN24reZwyDCkSGUNNXF5pFal2p0rXxvDpn60xMj/Si4701XJqAtSyLX0uhdvFHtTZVRPrlY+7MZMnciNxb66hxBVQTNcnt18wnGWnh54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRWY8Cq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499ECC4CEF0;
-	Mon, 22 Sep 2025 19:45:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NBhMkI9UOYasYCEJn2WVtdfb6ElZ1tGSnpfalGcnXRFWOZzGNY7ViQimqgBLHVp6SsxNuKbYyi7LhMwAY0UjHet3U6fLeTvDukLy8lCVQ6VHzLFVnm45g7U9B5ASYaZrEjgZD1Vb9J/d3TNvFeOFfULrF1iLrH1fw9x63AopjeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BN6VIZ+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C404CC4CEF0;
+	Mon, 22 Sep 2025 19:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570339;
-	bh=EsU0fYavsBxf9grkx85QV+Cfl2v5CfOp/DFEfFAGJQs=;
+	s=korg; t=1758569998;
+	bh=33j6wfpBTOnQNpNMCt2O2slgDpuq2tKzbyCbJz2pA8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRWY8Cq4KmgRR/MHLamJhCnoRhHdy7a7D85Lv7Ak1bcHwu8zi5hg2P7sPyTqR9AZJ
-	 csHnlGr5YSVIoaROjTNQ4xq0S3h6hQuxrcBWsWpTssZRXcOo6LQGJyWcJIjZhQmPm+
-	 IO1VbhPKRyqymTYKiFRZzwX2eaH6WbiLxS5HOubk=
+	b=BN6VIZ+9+IW2lttekvZYMxB313F00If+U8TQANMLhLcNge/d99hx5QCgRuvPNdTyU
+	 kkF/SYXzznY3Pn8Bgc+daC21J+71nkRHA9TAkUrqF9m8ZG2CSXFf9FzMAgVpkWkBlK
+	 WJcxcgyfJKf5TD0m7/7AUEGZ6maFhbcG+gfE2WpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Fengnan Chang <changfengnan@bytedance.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 098/149] io_uring/io-wq: fix `max_workers` breakage and `nr_workers` underflow
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 075/105] ASoC: Intel: catpt: Expose correct bit depth to userspace
 Date: Mon, 22 Sep 2025 21:29:58 +0200
-Message-ID: <20250922192415.354953654@linuxfoundation.org>
+Message-ID: <20250922192410.862249071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-commit cd4ea81be3eb94047ad023c631afd9bd6c295400 upstream.
+[ Upstream commit 690aa09b1845c0d5c3c29dabd50a9d0488c97c48 ]
 
-Commit 88e6c42e40de ("io_uring/io-wq: add check free worker before
-create new worker") reused the variable `do_create` for something
-else, abusing it for the free worker check.
+Currently wrong bit depth is exposed in hw params, causing clipped
+volume during playback. Expose correct parameters.
 
-This caused the value to effectively always be `true` at the time
-`nr_workers < max_workers` was checked, but it should really be
-`false`.  This means the `max_workers` setting was ignored, and worse:
-if the limit had already been reached, incrementing `nr_workers` was
-skipped even though another worker would be created.
-
-When later lots of workers exit, the `nr_workers` field could easily
-underflow, making the problem worse because more and more workers
-would be created without incrementing `nr_workers`.
-
-The simple solution is to use a different variable for the free worker
-check instead of using one variable for two different things.
-
-Cc: stable@vger.kernel.org
-Fixes: 88e6c42e40de ("io_uring/io-wq: add check free worker before create new worker")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Fengnan Chang <changfengnan@bytedance.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a126750fc865 ("ASoC: Intel: catpt: PCM operations")
+Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Tested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Message-ID: <20250909092829.375953-1-amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/intel/catpt/pcm.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 17dfaa0395c4..1d03b2fc4b25 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -352,16 +352,16 @@ static void create_worker_cb(struct callback_head *cb)
- 	struct io_wq *wq;
- 
- 	struct io_wq_acct *acct;
--	bool do_create = false;
-+	bool activated_free_worker, do_create = false;
- 
- 	worker = container_of(cb, struct io_worker, create_work);
- 	wq = worker->wq;
- 	acct = worker->acct;
- 
- 	rcu_read_lock();
--	do_create = !io_acct_activate_free_worker(acct);
-+	activated_free_worker = io_acct_activate_free_worker(acct);
- 	rcu_read_unlock();
--	if (!do_create)
-+	if (activated_free_worker)
- 		goto no_need_create;
- 
- 	raw_spin_lock(&acct->workers_lock);
+diff --git a/sound/soc/intel/catpt/pcm.c b/sound/soc/intel/catpt/pcm.c
+index 81a2f0339e055..ff1fa01acb85b 100644
+--- a/sound/soc/intel/catpt/pcm.c
++++ b/sound/soc/intel/catpt/pcm.c
+@@ -568,8 +568,9 @@ static const struct snd_pcm_hardware catpt_pcm_hardware = {
+ 				  SNDRV_PCM_INFO_RESUME |
+ 				  SNDRV_PCM_INFO_NO_PERIOD_WAKEUP,
+ 	.formats		= SNDRV_PCM_FMTBIT_S16_LE |
+-				  SNDRV_PCM_FMTBIT_S24_LE |
+ 				  SNDRV_PCM_FMTBIT_S32_LE,
++	.subformats		= SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
++				  SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
+ 	.period_bytes_min	= PAGE_SIZE,
+ 	.period_bytes_max	= CATPT_BUFFER_MAX_SIZE / CATPT_PCM_PERIODS_MIN,
+ 	.periods_min		= CATPT_PCM_PERIODS_MIN,
+@@ -699,14 +700,18 @@ static struct snd_soc_dai_driver dai_drivers[] = {
+ 		.channels_min = 2,
+ 		.channels_max = 2,
+ 		.rates = SNDRV_PCM_RATE_48000,
+-		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
++		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
++		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
++			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
+ 	},
+ 	.capture = {
+ 		.stream_name = "Analog Capture",
+ 		.channels_min = 2,
+ 		.channels_max = 4,
+ 		.rates = SNDRV_PCM_RATE_48000,
+-		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
++		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
++		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
++			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
+ 	},
+ },
+ {
+@@ -718,7 +723,9 @@ static struct snd_soc_dai_driver dai_drivers[] = {
+ 		.channels_min = 2,
+ 		.channels_max = 2,
+ 		.rates = SNDRV_PCM_RATE_8000_192000,
+-		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
++		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
++		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
++			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
+ 	},
+ },
+ {
+@@ -730,7 +737,9 @@ static struct snd_soc_dai_driver dai_drivers[] = {
+ 		.channels_min = 2,
+ 		.channels_max = 2,
+ 		.rates = SNDRV_PCM_RATE_8000_192000,
+-		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
++		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
++		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
++			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
+ 	},
+ },
+ {
+@@ -742,7 +751,9 @@ static struct snd_soc_dai_driver dai_drivers[] = {
+ 		.channels_min = 2,
+ 		.channels_max = 2,
+ 		.rates = SNDRV_PCM_RATE_48000,
+-		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
++		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
++		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
++			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
+ 	},
+ },
+ {
 -- 
 2.51.0
 
