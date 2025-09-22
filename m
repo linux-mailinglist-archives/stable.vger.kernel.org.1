@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF88B92E9F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEA9B92D52
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EEA44474C4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A9019067EF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A90C285C92;
-	Mon, 22 Sep 2025 19:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43A52EDD5D;
+	Mon, 22 Sep 2025 19:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3tY1wKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjrXhjj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1612F1C1ADB;
-	Mon, 22 Sep 2025 19:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4C2C8E6;
+	Mon, 22 Sep 2025 19:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569887; cv=none; b=sMXB8i4FkH4uVDeJHidp2bSEHIQH/ScIFLA4Vt2k5mcP8Ubke5VmGQ+5DIXxTkJMgogg9RD5+qXfHxBUQnlKZ+F3twe/iKQL0hkFuJ8IEeqfZtmorOcsgt5Sb0tUk+Z8ETyCXH2QOPCdaYcHQ99Mz+FqvlwaNoAKga9e9eCXq/4=
+	t=1758569639; cv=none; b=VYoX1CXp7k3jU8+MaIKjfn7ngJkFiqPQve0eqaOvGbG3iTSgSNyvHvFFoQAduvUJ5tbV3jUXkWukMdh3jHYnA43aOut3sD1UGQYOFZydZJUY8RwjwJEjD9wYSNLHFbOxhjFZp7qCSxD2sTSK6naalGyZagNofTM0QMqFxty0UP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569887; c=relaxed/simple;
-	bh=5cnf9gj8YKh8lWjpEXsQkdZswuL5wnsaIwX1T/OWAMM=;
+	s=arc-20240116; t=1758569639; c=relaxed/simple;
+	bh=oVEq2wNXPoBTpj7ZFV7FB+GAcG6ZFqmT1Kvld+jBNSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sc9F5COs0ISoKehP2KscxaPKUT45AyxwbZjbSgOnIFoC3CjGrFYlzwTX6riO3L8Y4Uq/lM+kCgy1FTI0lATUJpjgybnN2i7kZvD5Qesxo1D7rMPtaS7z/pY11dA/hDGYT4IPw0tf2qBl0Fsa48bjqPm0v7wfpH2YKl2ZCgpJDmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3tY1wKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CDFC4CEF0;
-	Mon, 22 Sep 2025 19:38:06 +0000 (UTC)
+	 MIME-Version; b=aVB873Ge2Yv49T7L1ZmkJlX8SIhPaZRk9wrQ0IiYmr56m2hQM3qvYyaRX/t6CZvUt0qtTtIMaq+EGcaamVYmVkOjj4O4apcq8GkArO8F5QJFnaEIibRLNNSFbPJNhEf32k4sg56vzBLO3SZ3+16YzCYGCUN3pd3JjaEsGml77jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjrXhjj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93935C4CEF0;
+	Mon, 22 Sep 2025 19:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569887;
-	bh=5cnf9gj8YKh8lWjpEXsQkdZswuL5wnsaIwX1T/OWAMM=;
+	s=korg; t=1758569638;
+	bh=oVEq2wNXPoBTpj7ZFV7FB+GAcG6ZFqmT1Kvld+jBNSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3tY1wKXYq4l0mE6b2/4l+E8CfkjlhHXLPQx6KEL9tEtfze4KzSPW14skBcVPqB9Q
-	 L9gIGu24idtOM5Ijl/HNpGAxLWZ4GGnLPEsHtRKW8R4XO9DjrE4svePz0Co/jNzF35
-	 eLCgtGJ1VE4y174NqDY8vVXUJDdeRBJthU1SOSyk=
+	b=wjrXhjj73kPYJk8C4aZuXCVCVIIgOGYFjpnZbCQ4a39B7Bbp8SkyrXQ95w6MSq5hv
+	 SnIrcoAQWDGYUYB4uirLCM0JzxYt7e4qk7kTUjZkXn3jLtIRKLjsJY0fMzGh5zdN2A
+	 QG12HlUxDjjmXXmOKKFee6q2T8MvltaK23pSOolk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/105] tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().
+Subject: [PATCH 6.6 10/70] qed: Dont collect too many protection override GRC elements
 Date: Mon, 22 Sep 2025 21:29:10 +0200
-Message-ID: <20250922192409.623999377@linuxfoundation.org>
+Message-ID: <20250922192404.771842995@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-[ Upstream commit 45c8a6cc2bcd780e634a6ba8e46bffbdf1fc5c01 ]
+[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
 
-syzbot reported the splat below where a socket had tcp_sk(sk)->fastopen_rsk
-in the TCP_ESTABLISHED state. [0]
+In the protection override dump path, the firmware can return far too
+many GRC elements, resulting in attempting to write past the end of the
+previously-kmalloc'ed dump buffer.
 
-syzbot reused the server-side TCP Fast Open socket as a new client before
-the TFO socket completes 3WHS:
+This will result in a kernel panic with reason:
 
-  1. accept()
-  2. connect(AF_UNSPEC)
-  3. connect() to another destination
+ BUG: unable to handle kernel paging request at ADDRESS
 
-As of accept(), sk->sk_state is TCP_SYN_RECV, and tcp_disconnect() changes
-it to TCP_CLOSE and makes connect() possible, which restarts timers.
+where "ADDRESS" is just past the end of the protection override dump
+buffer. The start address of the buffer is:
+ p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
+and the size of the buffer is buf_size in the same data structure.
 
-Since tcp_disconnect() forgot to clear tcp_sk(sk)->fastopen_rsk, the
-retransmit timer triggered the warning and the intended packet was not
-retransmitted.
+The panic can be arrived at from either the qede Ethernet driver path:
 
-Let's call reqsk_fastopen_remove() in tcp_disconnect().
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc02662ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
+ qed_dbg_feature at ffffffffc026aa8f [qed]
+ qed_dbg_all_data at ffffffffc026b211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
+ devlink_health_do_dump at ffffffff82497f61
+ devlink_health_report at ffffffff8249cf29
+ qed_report_fatal_error at ffffffffc0272baf [qed]
+ qede_sp_task at ffffffffc045ed32 [qede]
+ process_one_work at ffffffff81d19783
 
-[0]:
-WARNING: CPU: 2 PID: 0 at net/ipv4/tcp_timer.c:542 tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Modules linked in:
-CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 6.17.0-rc5-g201825fb4278 #62 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Code: 41 55 41 54 55 53 48 8b af b8 08 00 00 48 89 fb 48 85 ed 0f 84 55 01 00 00 0f b6 47 12 3c 03 74 0c 0f b6 47 12 3c 04 74 04 90 <0f> 0b 90 48 8b 85 c0 00 00 00 48 89 ef 48 8b 40 30 e8 6a 4f 06 3e
-RSP: 0018:ffffc900002f8d40 EFLAGS: 00010293
-RAX: 0000000000000002 RBX: ffff888106911400 RCX: 0000000000000017
-RDX: 0000000002517619 RSI: ffffffff83764080 RDI: ffff888106911400
-RBP: ffff888106d5c000 R08: 0000000000000001 R09: ffffc900002f8de8
-R10: 00000000000000c2 R11: ffffc900002f8ff8 R12: ffff888106911540
-R13: ffff888106911480 R14: ffff888106911840 R15: ffffc900002f8de0
-FS:  0000000000000000(0000) GS:ffff88907b768000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8044d69d90 CR3: 0000000002c30003 CR4: 0000000000370ef0
-Call Trace:
- <IRQ>
- tcp_write_timer (net/ipv4/tcp_timer.c:738)
- call_timer_fn (kernel/time/timer.c:1747)
- __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2372)
- timer_expire_remote (kernel/time/timer.c:2385 kernel/time/timer.c:2376 kernel/time/timer.c:2135)
- tmigr_handle_remote_up (kernel/time/timer_migration.c:944 kernel/time/timer_migration.c:1035)
- __walk_groups.isra.0 (kernel/time/timer_migration.c:533 (discriminator 1))
- tmigr_handle_remote (kernel/time/timer_migration.c:1096)
- handle_softirqs (./arch/x86/include/asm/jump_label.h:36 ./include/trace/events/irq.h:142 kernel/softirq.c:580)
- irq_exit_rcu (kernel/softirq.c:614 kernel/softirq.c:453 kernel/softirq.c:680 kernel/softirq.c:696)
- sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1050 (discriminator 35) arch/x86/kernel/apic/apic.c:1050 (discriminator 35))
- </IRQ>
+or the qedf storage driver path:
 
-Fixes: 8336886f786f ("tcp: TCP Fast Open Server - support TFO listeners")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250915175800.118793-2-kuniyu@google.com
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc068b2ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
+ qed_dbg_feature at ffffffffc068fa8f [qed]
+ qed_dbg_all_data at ffffffffc0690211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
+ devlink_health_do_dump at ffffffff8aa95e51
+ devlink_health_report at ffffffff8aa9ae19
+ qed_report_fatal_error at ffffffffc0697baf [qed]
+ qed_hw_err_notify at ffffffffc06d32d7 [qed]
+ qed_spq_post at ffffffffc06b1011 [qed]
+ qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
+ qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
+ qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
+ fc_rport_work at ffffffffc02da715 [libfc]
+ process_one_work at ffffffff8a319663
+
+Resolve this by clamping the firmware's return value to the maximum
+number of legal elements the firmware should return.
+
+Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 156da81bce068..988992ff898b3 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3286,6 +3286,7 @@ int tcp_disconnect(struct sock *sk, int flags)
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int old_state = sk->sk_state;
-+	struct request_sock *req;
- 	u32 seq;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+index cdcead614e9fa..ae421c2707785 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+@@ -4461,10 +4461,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
+ 		goto out;
+ 	}
  
- 	if (old_state != TCP_CLOSE)
-@@ -3400,6 +3401,10 @@ int tcp_disconnect(struct sock *sk, int flags)
- 
- 
- 	/* Clean up fastopen related fields */
-+	req = rcu_dereference_protected(tp->fastopen_rsk,
-+					lockdep_sock_is_held(sk));
-+	if (req)
-+		reqsk_fastopen_remove(sk, req, false);
- 	tcp_free_fastopen_req(tp);
- 	inet_clear_bit(DEFER_CONNECT, sk);
- 	tp->fastopen_client_fail = 0;
+-	/* Add override window info to buffer */
++	/* Add override window info to buffer, preventing buffer overflow */
+ 	override_window_dwords =
+-		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
+-		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
++		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
++		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
++		PROTECTION_OVERRIDE_DEPTH_DWORDS);
+ 	if (override_window_dwords) {
+ 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
+ 		offset += qed_grc_dump_addr_range(p_hwfn,
 -- 
 2.51.0
 
