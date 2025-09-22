@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-181069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A41FB92D2C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 987CEB930F5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 043922A5EC5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC9A41883859
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18142E2847;
-	Mon, 22 Sep 2025 19:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7D2EDD5D;
+	Mon, 22 Sep 2025 19:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1LR/Fe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/qACkGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F26BC8E6;
-	Mon, 22 Sep 2025 19:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC67311948;
+	Mon, 22 Sep 2025 19:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569611; cv=none; b=kDKsEfv09yVuezkC5bl1k6fUIj7RSflCcZKzUHfgXM9vJkQ9bOtDpS56n8Xd3U4Fqicv6m4bh2CK31OUajjeqcybT9d+quhqlUvAa5w8juflgfvzfXLR3jEpYYUPX2BWFj1Z5PVygGs6C8/7Lfxtn5s4v1CrgCnJLj0Teth2BUM=
+	t=1758570302; cv=none; b=dIf2BViu5kYebF2hKMdm360ykBhXzXJ9FIUexBvBRcd1LyWleAp+0osZft+2yC4Mn3lZNoSKElQIvHUF6QQhBE1DqgkmQAWf42TThcikOQWmB8AsCJ9zr8a8PmMV87z4EGexIU3DAgZTuKv3FIeUAi5BkoRG/ggRfb56EpQ0tgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569611; c=relaxed/simple;
-	bh=d+OnAqRHKVfl4YYRFyedN3EkazoYsJUx87b3R6bDefY=;
+	s=arc-20240116; t=1758570302; c=relaxed/simple;
+	bh=2J6LTz6oAOpxeJpqg4vUPX5rNDi1gjxhEqsxqNF7oh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auOCFfUgiYVhwoibzvZ1uDOY/b0ldLSQ+VL++T7PEqVoCok5haDRS0WOFE5q5s9l/PGLMxksQPgGJ0HuEBkLV2O89Xy7UUIKI0f/y44Yyktq1m4FEVAaCkVciyNaET9eWV3fAuVnmKwnBTMk5Km8CjxsPdlSEXhv5KQbYLjgCjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1LR/Fe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1810CC4CEF0;
-	Mon, 22 Sep 2025 19:33:30 +0000 (UTC)
+	 MIME-Version; b=Dtsh4xQCaDoTUz52djg8iGEtjZwaWYy6gnPCvkx/BwGAUippPi9hhUfrA02BxBqCP62qlA3NlyS8tEVeygEXEFOcn7uy9uWOD86iodEx5lOqqYtGVwyTNsNlxmvw41bhDlP8uGAKWo5bO8psxJj5qazGb29hdDoAbrKXUs4RPF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/qACkGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FB9C4CEF0;
+	Mon, 22 Sep 2025 19:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569611;
-	bh=d+OnAqRHKVfl4YYRFyedN3EkazoYsJUx87b3R6bDefY=;
+	s=korg; t=1758570302;
+	bh=2J6LTz6oAOpxeJpqg4vUPX5rNDi1gjxhEqsxqNF7oh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1LR/Fe0Sz/FqFfnvpepEgKweMODyYl8s+MMKUV0tMM39cPanqkmSnWPVZIN9ed/3
-	 Q3e+BNOEdRZ5FhFKU84RwkSqHimIY9Ep6Sk6iMhz8+MUUpuP42n7ETBUREqVr3opK0
-	 q0lqRBVfUkc4YZLgFiyDSfwh8Ja96FiQpoHHw9kI=
+	b=d/qACkGPg5P1MXHnzCa5U8NLr6cr03T3AgxPUq0h4njBWe0nSXyznVG9hHuu8yLf7
+	 rWk3RC6utg+AhxK9itCJWgrecpqxfbfPbUgaQtqPb62Z94DGe/p+m6FqjiHtJhluvC
+	 K0Q6FN5bqE6EhDcNMQ48E7OmF8emXEqQ5X5up10w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 49/61] phy: Use device_get_match_data()
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.16 082/149] iommu/s390: Make attach succeed when the device was surprise removed
 Date: Mon, 22 Sep 2025 21:29:42 +0200
-Message-ID: <20250922192404.962200033@linuxfoundation.org>
+Message-ID: <20250922192414.950747064@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,323 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 21bf6fc47a1e45031ba8a7084343b7cfd09ed1d3 ]
+commit 9ffaf5229055fcfbb3b3d6f1c7e58d63715c3f73 upstream.
 
-Use preferred device_get_match_data() instead of of_match_device() to
-get the driver match data. With this, adjust the includes to explicitly
-include the correct headers.
+When a PCI device is removed with surprise hotplug, there may still be
+attempts to attach the device to the default domain as part of tear down
+via (__iommu_release_dma_ownership()), or because the removal happens
+during probe (__iommu_probe_device()). In both cases zpci_register_ioat()
+fails with a cc value indicating that the device handle is invalid. This
+is because the device is no longer part of the instance as far as the
+hypervisor is concerned.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20231009172923.2457844-15-robh@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently this leads to an error return and s390_iommu_attach_device()
+fails. This triggers the WARN_ON() in __iommu_group_set_domain_nofail()
+because attaching to the default domain must never fail.
+
+With the device fenced by the hypervisor no DMAs to or from memory are
+possible and the IOMMU translations have no effect. Proceed as if the
+registration was successful and let the hotplug event handling clean up
+the device.
+
+This is similar to how devices in the error state are handled since
+commit 59bbf596791b ("iommu/s390: Make attach succeed even if the device
+is in error state") except that for removal the domain will not be
+registered later. This approach was also previously discussed at the
+link.
+
+Handle both cases, error state and removal, in a helper which checks if
+the error needs to be propagated or ignored. Avoid magic number
+condition codes by using the pre-existing, but never used, defines for
+PCI load/store condition codes and rename them to reflect that they
+apply to all PCI instructions.
+
+Cc: stable@vger.kernel.org # v6.2
+Link: https://lore.kernel.org/linux-iommu/20240808194155.GD1985367@ziepe.ca/
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250904-iommu_succeed_attach_removed-v1-1-e7f333d2f80f@linux.ibm.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns-usb3.c   |    9 +++------
- drivers/phy/marvell/phy-berlin-usb.c     |    7 +++----
- drivers/phy/ralink/phy-ralink-usb.c      |   10 +++-------
- drivers/phy/rockchip/phy-rockchip-pcie.c |   11 ++++-------
- drivers/phy/rockchip/phy-rockchip-usb.c  |   10 +++-------
- drivers/phy/ti/phy-omap-control.c        |    9 ++-------
- drivers/phy/ti/phy-omap-usb2.c           |   11 ++++-------
- drivers/phy/ti/phy-ti-pipe3.c            |   14 ++++----------
- 8 files changed, 26 insertions(+), 55 deletions(-)
+ arch/s390/include/asm/pci_insn.h |   10 +++++-----
+ drivers/iommu/s390-iommu.c       |   26 +++++++++++++++++++-------
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
---- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-@@ -16,10 +16,11 @@
- #include <linux/iopoll.h>
- #include <linux/mdio.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <linux/phy/phy.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
+--- a/arch/s390/include/asm/pci_insn.h
++++ b/arch/s390/include/asm/pci_insn.h
+@@ -16,11 +16,11 @@
+ #define ZPCI_PCI_ST_FUNC_NOT_AVAIL		40
+ #define ZPCI_PCI_ST_ALREADY_IN_RQ_STATE		44
  
- #define BCM_NS_USB3_PHY_BASE_ADDR_REG	0x1f
-@@ -189,7 +190,6 @@ static int bcm_ns_usb3_mdio_phy_write(st
- static int bcm_ns_usb3_mdio_probe(struct mdio_device *mdiodev)
- {
- 	struct device *dev = &mdiodev->dev;
--	const struct of_device_id *of_id;
- 	struct phy_provider *phy_provider;
- 	struct device_node *syscon_np;
- 	struct bcm_ns_usb3 *usb3;
-@@ -203,10 +203,7 @@ static int bcm_ns_usb3_mdio_probe(struct
- 	usb3->dev = dev;
- 	usb3->mdiodev = mdiodev;
+-/* Load/Store return codes */
+-#define ZPCI_PCI_LS_OK				0
+-#define ZPCI_PCI_LS_ERR				1
+-#define ZPCI_PCI_LS_BUSY			2
+-#define ZPCI_PCI_LS_INVAL_HANDLE		3
++/* PCI instruction condition codes */
++#define ZPCI_CC_OK				0
++#define ZPCI_CC_ERR				1
++#define ZPCI_CC_BUSY				2
++#define ZPCI_CC_INVAL_HANDLE			3
  
--	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
--	if (!of_id)
--		return -EINVAL;
--	usb3->family = (uintptr_t)of_id->data;
-+	usb3->family = (enum bcm_ns_family)device_get_match_data(dev);
- 
- 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
- 	err = of_address_to_resource(syscon_np, 0, &res);
---- a/drivers/phy/marvell/phy-berlin-usb.c
-+++ b/drivers/phy/marvell/phy-berlin-usb.c
-@@ -8,9 +8,10 @@
- 
- #include <linux/io.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/phy/phy.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/reset.h>
- 
- #define USB_PHY_PLL		0x04
-@@ -162,8 +163,6 @@ MODULE_DEVICE_TABLE(of, phy_berlin_usb_o
- 
- static int phy_berlin_usb_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *match =
--		of_match_device(phy_berlin_usb_of_match, &pdev->dev);
- 	struct phy_berlin_usb_priv *priv;
- 	struct phy *phy;
- 	struct phy_provider *phy_provider;
-@@ -180,7 +179,7 @@ static int phy_berlin_usb_probe(struct p
- 	if (IS_ERR(priv->rst_ctrl))
- 		return PTR_ERR(priv->rst_ctrl);
- 
--	priv->pll_divider = *((u32 *)match->data);
-+	priv->pll_divider = *((u32 *)device_get_match_data(&pdev->dev));
- 
- 	phy = devm_phy_create(&pdev->dev, NULL, &phy_berlin_usb_ops);
- 	if (IS_ERR(phy)) {
---- a/drivers/phy/ralink/phy-ralink-usb.c
-+++ b/drivers/phy/ralink/phy-ralink-usb.c
-@@ -13,9 +13,10 @@
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
--#include <linux/of_platform.h>
-+#include <linux/of.h>
- #include <linux/phy/phy.h>
- #include <linux/platform_device.h>
-+#include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/reset.h>
- 
-@@ -171,18 +172,13 @@ static int ralink_usb_phy_probe(struct p
- {
- 	struct device *dev = &pdev->dev;
- 	struct phy_provider *phy_provider;
--	const struct of_device_id *match;
- 	struct ralink_usb_phy *phy;
- 
--	match = of_match_device(ralink_usb_phy_of_match, &pdev->dev);
--	if (!match)
--		return -ENODEV;
--
- 	phy = devm_kzalloc(dev, sizeof(*phy), GFP_KERNEL);
- 	if (!phy)
- 		return -ENOMEM;
- 
--	phy->clk = (uintptr_t)match->data;
-+	phy->clk = (uintptr_t)device_get_match_data(&pdev->dev);
- 	phy->base = NULL;
- 
- 	phy->sysctl = syscon_regmap_lookup_by_phandle(dev->of_node, "ralink,sysctl");
---- a/drivers/phy/rockchip/phy-rockchip-pcie.c
-+++ b/drivers/phy/rockchip/phy-rockchip-pcie.c
-@@ -12,10 +12,9 @@
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_address.h>
--#include <linux/of_platform.h>
- #include <linux/phy/phy.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/reset.h>
- 
-@@ -63,7 +62,7 @@ struct rockchip_pcie_data {
- };
- 
- struct rockchip_pcie_phy {
--	struct rockchip_pcie_data *phy_data;
-+	const struct rockchip_pcie_data *phy_data;
- 	struct regmap *reg_base;
- 	struct phy_pcie_instance {
- 		struct phy *phy;
-@@ -365,7 +364,6 @@ static int rockchip_pcie_phy_probe(struc
- 	struct rockchip_pcie_phy *rk_phy;
- 	struct phy_provider *phy_provider;
- 	struct regmap *grf;
--	const struct of_device_id *of_id;
- 	int i;
- 	u32 phy_num;
- 
-@@ -379,11 +377,10 @@ static int rockchip_pcie_phy_probe(struc
- 	if (!rk_phy)
- 		return -ENOMEM;
- 
--	of_id = of_match_device(rockchip_pcie_phy_dt_ids, &pdev->dev);
--	if (!of_id)
-+	rk_phy->phy_data = device_get_match_data(&pdev->dev);
-+	if (!rk_phy->phy_data)
- 		return -EINVAL;
- 
--	rk_phy->phy_data = (struct rockchip_pcie_data *)of_id->data;
- 	rk_phy->reg_base = grf;
- 
- 	mutex_init(&rk_phy->pcie_mutex);
---- a/drivers/phy/rockchip/phy-rockchip-usb.c
-+++ b/drivers/phy/rockchip/phy-rockchip-usb.c
-@@ -13,10 +13,9 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/of.h>
--#include <linux/of_address.h>
--#include <linux/of_platform.h>
- #include <linux/phy/phy.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/regulator/consumer.h>
- #include <linux/reset.h>
- #include <linux/regmap.h>
-@@ -458,7 +457,6 @@ static int rockchip_usb_phy_probe(struct
- 	struct device *dev = &pdev->dev;
- 	struct rockchip_usb_phy_base *phy_base;
- 	struct phy_provider *phy_provider;
--	const struct of_device_id *match;
- 	struct device_node *child;
- 	int err;
- 
-@@ -466,14 +464,12 @@ static int rockchip_usb_phy_probe(struct
- 	if (!phy_base)
- 		return -ENOMEM;
- 
--	match = of_match_device(dev->driver->of_match_table, dev);
--	if (!match || !match->data) {
-+	phy_base->pdata = device_get_match_data(dev);
-+	if (!phy_base->pdata) {
- 		dev_err(dev, "missing phy data\n");
- 		return -EINVAL;
+ /* Load/Store address space identifiers */
+ #define ZPCI_PCIAS_MEMIO_0			0
+--- a/drivers/iommu/s390-iommu.c
++++ b/drivers/iommu/s390-iommu.c
+@@ -611,6 +611,23 @@ static u64 get_iota_region_flag(struct s
  	}
+ }
  
--	phy_base->pdata = match->data;
--
- 	phy_base->dev = dev;
- 	phy_base->reg_base = ERR_PTR(-ENODEV);
- 	if (dev->parent && dev->parent->of_node)
---- a/drivers/phy/ti/phy-omap-control.c
-+++ b/drivers/phy/ti/phy-omap-control.c
-@@ -8,9 +8,9 @@
- 
- #include <linux/module.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/clk.h>
-@@ -268,20 +268,15 @@ MODULE_DEVICE_TABLE(of, omap_control_phy
- 
- static int omap_control_phy_probe(struct platform_device *pdev)
++static bool reg_ioat_propagate_error(int cc, u8 status)
++{
++	/*
++	 * If the device is in the error state the reset routine
++	 * will register the IOAT of the newly set domain on re-enable
++	 */
++	if (cc == ZPCI_CC_ERR && status == ZPCI_PCI_ST_FUNC_NOT_AVAIL)
++		return false;
++	/*
++	 * If the device was removed treat registration as success
++	 * and let the subsequent error event trigger tear down.
++	 */
++	if (cc == ZPCI_CC_INVAL_HANDLE)
++		return false;
++	return cc != ZPCI_CC_OK;
++}
++
+ static int s390_iommu_domain_reg_ioat(struct zpci_dev *zdev,
+ 				      struct iommu_domain *domain, u8 *status)
  {
--	const struct of_device_id *of_id;
- 	struct omap_control_phy *control_phy;
+@@ -695,7 +712,7 @@ static int s390_iommu_attach_device(stru
  
--	of_id = of_match_device(omap_control_phy_id_table, &pdev->dev);
--	if (!of_id)
--		return -EINVAL;
+ 	/* If we fail now DMA remains blocked via blocking domain */
+ 	cc = s390_iommu_domain_reg_ioat(zdev, domain, &status);
+-	if (cc && status != ZPCI_PCI_ST_FUNC_NOT_AVAIL)
++	if (reg_ioat_propagate_error(cc, status))
+ 		return -EIO;
+ 	zdev->dma_table = s390_domain->dma_table;
+ 	zdev_s390_domain_update(zdev, domain);
+@@ -1123,12 +1140,7 @@ static int s390_attach_dev_identity(stru
+ 
+ 	/* If we fail now DMA remains blocked via blocking domain */
+ 	cc = s390_iommu_domain_reg_ioat(zdev, domain, &status);
 -
- 	control_phy = devm_kzalloc(&pdev->dev, sizeof(*control_phy),
- 		GFP_KERNEL);
- 	if (!control_phy)
- 		return -ENOMEM;
+-	/*
+-	 * If the device is undergoing error recovery the reset code
+-	 * will re-establish the new domain.
+-	 */
+-	if (cc && status != ZPCI_PCI_ST_FUNC_NOT_AVAIL)
++	if (reg_ioat_propagate_error(cc, status))
+ 		return -EIO;
  
- 	control_phy->dev = &pdev->dev;
--	control_phy->type = *(enum omap_control_phy_type *)of_id->data;
-+	control_phy->type = *(enum omap_control_phy_type *)device_get_match_data(&pdev->dev);
- 
- 	if (control_phy->type == OMAP_CTRL_TYPE_OTGHS) {
- 		control_phy->otghs_control =
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -19,6 +19,7 @@
- #include <linux/phy/phy.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/sys_soc.h>
-@@ -371,16 +372,12 @@ static int omap_usb2_probe(struct platfo
- 	struct device_node *node = pdev->dev.of_node;
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
--	const struct of_device_id *of_id;
--	struct usb_phy_data *phy_data;
-+	const struct usb_phy_data *phy_data;
- 
--	of_id = of_match_device(omap_usb2_id_table, &pdev->dev);
--
--	if (!of_id)
-+	phy_data = device_get_match_data(&pdev->dev);
-+	if (!phy_data)
- 		return -EINVAL;
- 
--	phy_data = (struct usb_phy_data *)of_id->data;
--
- 	phy = devm_kzalloc(&pdev->dev, sizeof(*phy), GFP_KERNEL);
- 	if (!phy)
- 		return -ENOMEM;
---- a/drivers/phy/ti/phy-ti-pipe3.c
-+++ b/drivers/phy/ti/phy-ti-pipe3.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/module.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/phy/phy.h>
- #include <linux/of.h>
-@@ -791,23 +792,16 @@ static int ti_pipe3_probe(struct platfor
- 	struct phy_provider *phy_provider;
- 	struct device *dev = &pdev->dev;
- 	int ret;
--	const struct of_device_id *match;
--	struct pipe3_data *data;
-+	const struct pipe3_data *data;
- 
- 	phy = devm_kzalloc(dev, sizeof(*phy), GFP_KERNEL);
- 	if (!phy)
- 		return -ENOMEM;
- 
--	match = of_match_device(ti_pipe3_id_table, dev);
--	if (!match)
-+	data = device_get_match_data(dev);
-+	if (!data)
- 		return -EINVAL;
- 
--	data = (struct pipe3_data *)match->data;
--	if (!data) {
--		dev_err(dev, "no driver data\n");
--		return -EINVAL;
--	}
--
- 	phy->dev = dev;
- 	phy->mode = data->mode;
- 	phy->dpll_map = data->dpll_map;
+ 	zdev_s390_domain_update(zdev, domain);
 
 
 
