@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-181119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CDDB92DD3
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23E7B92EBA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A24631903F7F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03B62190724B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EBC2E2847;
-	Mon, 22 Sep 2025 19:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE42F291B;
+	Mon, 22 Sep 2025 19:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOrm5B8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTH/EnM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987F527B320;
-	Mon, 22 Sep 2025 19:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CD227B320;
+	Mon, 22 Sep 2025 19:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569737; cv=none; b=bFVZhiwZBnw8TiNXs90++KPb3jIRe2grBKFF7EeDctVfNq11uBM6dXSakzFJg7Af92OnzttpMmXvWuzL3J+uuTPNfv6JiRlweXaeeBZkgiw7HqIbBU4US2FmWZGrad8GH5QIxuhesDgG2flpkjaBkCx1jY2nqbXfU8X4SX7GPdA=
+	t=1758569907; cv=none; b=og0cGu0SHB+Vjm+gDXEEnmBtz0gQoO70ViPwMgR/8vrH4idwgVOKKY8PdzRAAK0cxSO/yYl1Zgbd6E8rhB2/PrQmpLuiEKt5xEeNnm3zz6R8Un4SpVKg8XZdb5oAa+QT9bLDM6j9CK5G2UX/P0V1jZB5bv1D8k55gKatlpBwIMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569737; c=relaxed/simple;
-	bh=tyZ9hZzHQy5DmXaBifh3KIKKyYN4JIrz1cfJewzNb2k=;
+	s=arc-20240116; t=1758569907; c=relaxed/simple;
+	bh=EbdCp+c6bcHdO1CEczbuBdv+/Qb2Jfr0KZRxESeocR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sksqMgjLUPHmUwfuThsRK32+wDAIwLs0nAp5wU4befbmG6Y1pWF8txN/RUjf5LNO+VFYWbJbXrpJiBhMrtkJsZ7wnROG1T9bP7/eM7pJc/Wk+RXKoDybyMxtygyqyGHKbla0jscVcqdhrrwyKwOeCQCzYd+tRp/708eFwDfEGDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOrm5B8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ED2C4CEF5;
-	Mon, 22 Sep 2025 19:35:37 +0000 (UTC)
+	 MIME-Version; b=ss9tdaOfSLkARTwIWhCdfH71bzQyPhmFPfA6NhcGiRBqyyuwcumUe/q47iGtbh/tKdQmYXvZzZzSBiyfw+Nz5EaNUkWAjOFY4gyIM+t8tu9ouyLyN065LcV2GEhdtXXiKqy+nUPz/EWnztemQ+RdL6Nf5B20MPWdJq1MC4k0oSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTH/EnM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77ED9C4CEF0;
+	Mon, 22 Sep 2025 19:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569737;
-	bh=tyZ9hZzHQy5DmXaBifh3KIKKyYN4JIrz1cfJewzNb2k=;
+	s=korg; t=1758569906;
+	bh=EbdCp+c6bcHdO1CEczbuBdv+/Qb2Jfr0KZRxESeocR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOrm5B8GBLYfQPegjf5xbp3yIyfMA/Nv2RXydVq8YUP64kZKNR0UgYNqAzu0hpJZl
-	 v7oWf9CW7mc0DrOwaOv4F1M/1emTNQAyoiyVhtUx9bTB4EBTzKmWE1VhpP/zFAE/H+
-	 o3zK46pVqG2Qz9BdbmqBxLgMHCgwojdb7IvITL44=
+	b=LTH/EnM8GTYPrIw/G2je5yGbqGhCE1FSRZZCCAh6rPG0WZ/KoYPRYh+dSWB6Ap27M
+	 +DTkYm2sbZQT2gef4yLUC/SVyKkDci5TYSo8IDk42Nh4jRwfsh5gLm5eKHsxiEiNFp
+	 PfHzYsrilmMV0u1Ydq5kYnjUWB7A9dlO16xk7J+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 28/70] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
-Date: Mon, 22 Sep 2025 21:29:28 +0200
-Message-ID: <20250922192405.335313974@linuxfoundation.org>
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 046/105] objtool/LoongArch: Mark special atomic instruction as INSN_BUG type
+Date: Mon, 22 Sep 2025 21:29:29 +0200
+Message-ID: <20250922192410.123330497@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
+commit 539d7344d4feaea37e05863e9aa86bd31f28e46f upstream.
 
-When accessing one of the files under /sys/fs/nilfs2/features when
-CONFIG_CFI_CLANG is enabled, there is a CFI violation:
+When compiling with LLVM and CONFIG_RUST is set, there exists the
+following objtool warning:
 
-  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
-  ...
-  Call Trace:
-   <TASK>
-   sysfs_kf_seq_show+0x2a6/0x390
-   ? __cfi_kobj_attr_show+0x10/0x10
-   kernfs_seq_show+0x104/0x15b
-   seq_read_iter+0x580/0xe2b
-  ...
+  rust/compiler_builtins.o: warning: objtool: __rust__unordsf2(): unexpected end of section .text.unlikely.
 
-When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
-is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
-nilfs_feature_attr_group is added to that kobject via
-sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
-which will call sysfs_kf_seq_show() when ->seq_show() is called.
-sysfs_kf_seq_show() in turn calls kobj_attr_show() through
-->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
-a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
-in the CFI violation since neither nilfs_feature_revision_show() nor
-nilfs_feature_README_show() match the prototype of ->show() in 'struct
-kobj_attribute'.
+objdump shows that the end of section .text.unlikely is an atomic
+instruction:
 
-Resolve the CFI violation by adjusting the second parameter in
-nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
-kobj_attribute' to match the expected prototype.
+  amswap.w        $zero, $ra, $zero
 
-Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
-Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+According to the LoongArch Reference Manual, if the amswap.w atomic
+memory access instruction has the same register number as rd and rj,
+the execution will trigger an Instruction Non-defined Exception, so
+mark the above instruction as INSN_BUG type to fix the warning.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sysfs.c |    4 ++--
- fs/nilfs2/sysfs.h |    8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ tools/arch/loongarch/include/asm/inst.h |   12 ++++++++++++
+ tools/objtool/arch/loongarch/decode.c   |   21 +++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -1075,7 +1075,7 @@ void nilfs_sysfs_delete_device_group(str
-  ************************************************************************/
- 
- static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
--					    struct attribute *attr, char *buf)
-+					    struct kobj_attribute *attr, char *buf)
- {
- 	return sysfs_emit(buf, "%d.%d\n",
- 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
-@@ -1087,7 +1087,7 @@ static const char features_readme_str[]
- 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
- 
- static ssize_t nilfs_feature_README_show(struct kobject *kobj,
--					 struct attribute *attr,
-+					 struct kobj_attribute *attr,
- 					 char *buf)
- {
- 	return sysfs_emit(buf, features_readme_str);
---- a/fs/nilfs2/sysfs.h
-+++ b/fs/nilfs2/sysfs.h
-@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
- 	struct completion sg_segments_kobj_unregister;
+--- a/tools/arch/loongarch/include/asm/inst.h
++++ b/tools/arch/loongarch/include/asm/inst.h
+@@ -51,6 +51,10 @@ enum reg2i16_op {
+ 	bgeu_op		= 0x1b,
  };
  
--#define NILFS_COMMON_ATTR_STRUCT(name) \
-+#define NILFS_KOBJ_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
- 	struct attribute attr; \
--	ssize_t (*show)(struct kobject *, struct attribute *, \
-+	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
- 			char *); \
--	ssize_t (*store)(struct kobject *, struct attribute *, \
-+	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
- 			 const char *, size_t); \
++enum reg3_op {
++	amswapw_op	= 0x70c0,
++};
++
+ struct reg0i15_format {
+ 	unsigned int immediate : 15;
+ 	unsigned int opcode : 17;
+@@ -96,6 +100,13 @@ struct reg2i16_format {
+ 	unsigned int opcode : 6;
+ };
+ 
++struct reg3_format {
++	unsigned int rd : 5;
++	unsigned int rj : 5;
++	unsigned int rk : 5;
++	unsigned int opcode : 17;
++};
++
+ union loongarch_instruction {
+ 	unsigned int word;
+ 	struct reg0i15_format	reg0i15_format;
+@@ -105,6 +116,7 @@ union loongarch_instruction {
+ 	struct reg2i12_format	reg2i12_format;
+ 	struct reg2i14_format	reg2i14_format;
+ 	struct reg2i16_format	reg2i16_format;
++	struct reg3_format	reg3_format;
+ };
+ 
+ #define LOONGARCH_INSN_SIZE	sizeof(union loongarch_instruction)
+--- a/tools/objtool/arch/loongarch/decode.c
++++ b/tools/objtool/arch/loongarch/decode.c
+@@ -281,6 +281,25 @@ static bool decode_insn_reg2i16_fomat(un
+ 	return true;
  }
  
--NILFS_COMMON_ATTR_STRUCT(feature);
-+NILFS_KOBJ_ATTR_STRUCT(feature);
++static bool decode_insn_reg3_fomat(union loongarch_instruction inst,
++				   struct instruction *insn)
++{
++	switch (inst.reg3_format.opcode) {
++	case amswapw_op:
++		if (inst.reg3_format.rd == LOONGARCH_GPR_ZERO &&
++		    inst.reg3_format.rk == LOONGARCH_GPR_RA &&
++		    inst.reg3_format.rj == LOONGARCH_GPR_ZERO) {
++			/* amswap.w $zero, $ra, $zero */
++			insn->type = INSN_BUG;
++		}
++		break;
++	default:
++		return false;
++	}
++
++	return true;
++}
++
+ int arch_decode_instruction(struct objtool_file *file, const struct section *sec,
+ 			    unsigned long offset, unsigned int maxlen,
+ 			    struct instruction *insn)
+@@ -312,6 +331,8 @@ int arch_decode_instruction(struct objto
+ 		return 0;
+ 	if (decode_insn_reg2i16_fomat(inst, insn))
+ 		return 0;
++	if (decode_insn_reg3_fomat(inst, insn))
++		return 0;
  
- #define NILFS_DEV_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
+ 	if (inst.word == 0) {
+ 		/* andi $zero, $zero, 0x0 */
 
 
 
