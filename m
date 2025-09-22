@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43623B92E90
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246A8B92D91
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8CB7447321
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98DB1906A97
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9D42F0C6C;
-	Mon, 22 Sep 2025 19:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EE52F0C63;
+	Mon, 22 Sep 2025 19:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB9fUFJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJqFXhI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290C525F780;
-	Mon, 22 Sep 2025 19:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E228CC8E6;
+	Mon, 22 Sep 2025 19:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569872; cv=none; b=Bp4eXmtCOelOJOnV8C6asyXePaOoFn/dEMJPsjJFfhNzN0tauft1fc61bGxjSZPcK6DJUzisVbHcRSeNl8Vsw+tcOl7xo/CKoq/eRYlD5C0gqfjSTb2rPU0TxQOzXAhi/UXQCx/YQXjsV9JcDP8pGc8xq/FgBRcAx5AVivWvJuU=
+	t=1758569684; cv=none; b=HkCYsVvaAqocMv3oKZrOtcxjMJ620GEKLLhGgZRQD99mAy8036SBHmpOOu1rmxVPIeT2ZpJfZWqz1WC+pJGRAymw5gc8J+U6PyUBCaX+Ev9WwJ5/mJsClZNTRByNoffx/HzumHAndwWXM6L1s//NGwzO7NpBkcktLlmXJKYS324=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569872; c=relaxed/simple;
-	bh=kBUlrZ+TuK+Tyt2vZtGch2aWym1JEd+1uFkdulCCDZI=;
+	s=arc-20240116; t=1758569684; c=relaxed/simple;
+	bh=BswaOVZ2ZASH06gzVz0PVvfOw+tEkAY83CVe5N0EefE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMIiMSttcKgjGUjgOWjtoELH60u/Z1YKt3D4GhwLUcIeXeithjgVXNFMH6YDr1mcc4/8XdtiVJUADRlSRQKRh948RYBPXGGN6E20iS0um/RNvMxamFNKFWy7/hh36vtw+Z7TsOCZIvEqnLPAN+lM/uC6h2BXGgDoqonXtgh1IXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB9fUFJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1458C4CEF0;
-	Mon, 22 Sep 2025 19:37:51 +0000 (UTC)
+	 MIME-Version; b=UBVqBuM0/TNXKnEQZTZ9fkH2DIabzl3S7qD0SEhbpZTetJLjDaenkYFrRa1l3YHXjICXO8IM099GBbyeBM6wduEZaf+PgvdZHUhzl0wi7sBvpiDjOzn32Pc65yD1Y5lBm3fGyIWsf61G97EE+pKeWeT9tW3fpMugz6oUsl2FPxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJqFXhI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF11C4CEF0;
+	Mon, 22 Sep 2025 19:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569872;
-	bh=kBUlrZ+TuK+Tyt2vZtGch2aWym1JEd+1uFkdulCCDZI=;
+	s=korg; t=1758569683;
+	bh=BswaOVZ2ZASH06gzVz0PVvfOw+tEkAY83CVe5N0EefE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bB9fUFJKU4ScbVTv/G/tLZMnAMSGbcsFQK49jfyd0XFB6C0D1qMc9o1ur9Hrk+mfa
-	 xrs0KCCHx9PZ/N1zd9PApN2AcF40MLBx/v6KClZqTI07ep49TsKJW7BUdXikuAkN8e
-	 MPdcfUXkq6UyZZr0ai6aKoBYyO9gYp8/qeeju9WM=
+	b=IJqFXhI9sl7P8P/AyNON/A4CJGrhdozAUvdz1JdeSuvZ36MxRioJoMGXsaPwJpMEZ
+	 w2sTOBgbYhO11ZNwk3wFREZJuy4Lnj7YyzsUoq05PV9LFb2WuYGUYK+3+I13WT7bA5
+	 r9XNvsV0iJYP87r2uVdJimP+8A+db/jI5nSA4l2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/105] octeontx2-pf: Fix use-after-free bugs in otx2_sync_tstamp()
+Subject: [PATCH 6.6 15/70] net: natsemi: fix `rx_dropped` double accounting on `netif_rx()` failure
 Date: Mon, 22 Sep 2025 21:29:15 +0200
-Message-ID: <20250922192409.752379913@linuxfoundation.org>
+Message-ID: <20250922192404.932790944@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-[ Upstream commit f8b4687151021db61841af983f1cb7be6915d4ef ]
+[ Upstream commit 93ab4881a4e2b9657bdce4b8940073bfb4ed5eab ]
 
-The original code relies on cancel_delayed_work() in otx2_ptp_destroy(),
-which does not ensure that the delayed work item synctstamp_work has fully
-completed if it was already running. This leads to use-after-free scenarios
-where otx2_ptp is deallocated by otx2_ptp_destroy(), while synctstamp_work
-remains active and attempts to dereference otx2_ptp in otx2_sync_tstamp().
-Furthermore, the synctstamp_work is cyclic, the likelihood of triggering
-the bug is nonnegligible.
+`netif_rx()` already increments `rx_dropped` core stat when it fails.
+The driver was also updating `ndev->stats.rx_dropped` in the same path.
+Since both are reported together via `ip -s -s` command, this resulted
+in drops being counted twice in user-visible stats.
 
-A typical race condition is illustrated below:
+Keep the driver update on `if (unlikely(!skb))`, but skip it after
+`netif_rx()` errors.
 
-CPU 0 (cleanup)           | CPU 1 (delayed work callback)
-otx2_remove()             |
-  otx2_ptp_destroy()      | otx2_sync_tstamp()
-    cancel_delayed_work() |
-    kfree(ptp)            |
-                          |   ptp = container_of(...); //UAF
-                          |   ptp-> //UAF
-
-This is confirmed by a KASAN report:
-
-BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
-Write of size 8 at addr ffff88800aa09a18 by task bash/136
-...
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_report+0xcf/0x610
- ? __run_timer_base.part.0+0x7d7/0x8c0
- kasan_report+0xb8/0xf0
- ? __run_timer_base.part.0+0x7d7/0x8c0
- __run_timer_base.part.0+0x7d7/0x8c0
- ? __pfx___run_timer_base.part.0+0x10/0x10
- ? __pfx_read_tsc+0x10/0x10
- ? ktime_get+0x60/0x140
- ? lapic_next_event+0x11/0x20
- ? clockevents_program_event+0x1d4/0x2a0
- run_timer_softirq+0xd1/0x190
- handle_softirqs+0x16a/0x550
- irq_exit_rcu+0xaf/0xe0
- sysvec_apic_timer_interrupt+0x70/0x80
- </IRQ>
-...
-Allocated by task 1:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- otx2_ptp_init+0xb1/0x860
- otx2_probe+0x4eb/0xc30
- local_pci_probe+0xdc/0x190
- pci_device_probe+0x2fe/0x470
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __driver_attach+0xd2/0x310
- bus_for_each_dev+0xed/0x170
- bus_add_driver+0x208/0x500
- driver_register+0x132/0x460
- do_one_initcall+0x89/0x300
- kernel_init_freeable+0x40d/0x720
- kernel_init+0x1a/0x150
- ret_from_fork+0x10c/0x1a0
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 136:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x3f/0x50
- kfree+0x137/0x370
- otx2_ptp_destroy+0x38/0x80
- otx2_remove+0x10d/0x4c0
- pci_device_remove+0xa6/0x1d0
- device_release_driver_internal+0xf8/0x210
- pci_stop_bus_device+0x105/0x150
- pci_stop_and_remove_bus_device_locked+0x15/0x30
- remove_store+0xcc/0xe0
- kernfs_fop_write_iter+0x2c3/0x440
- vfs_write+0x871/0xd70
- ksys_write+0xee/0x1c0
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the delayed work item is properly canceled before the otx2_ptp is
-deallocated.
-
-This bug was initially identified through static analysis. To reproduce
-and test it, I simulated the OcteonTX2 PCI device in QEMU and introduced
-artificial delays within the otx2_sync_tstamp() function to increase the
-likelihood of triggering the bug.
-
-Fixes: 2958d17a8984 ("octeontx2-pf: Add support for ptp 1-step mode on CN10K silicon")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Fixes: caf586e5f23c ("net: add a core netdev->rx_dropped counter")
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250913060135.35282-3-yyyynoom@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/natsemi/ns83820.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-index 63130ba37e9df..69b435ed8fbbe 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-@@ -491,7 +491,7 @@ void otx2_ptp_destroy(struct otx2_nic *pfvf)
- 	if (!ptp)
- 		return;
+diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
+index 998586872599b..c692d2e878b2e 100644
+--- a/drivers/net/ethernet/natsemi/ns83820.c
++++ b/drivers/net/ethernet/natsemi/ns83820.c
+@@ -820,7 +820,7 @@ static void rx_irq(struct net_device *ndev)
+ 	struct ns83820 *dev = PRIV(ndev);
+ 	struct rx_info *info = &dev->rx_info;
+ 	unsigned next_rx;
+-	int rx_rc, len;
++	int len;
+ 	u32 cmdsts;
+ 	__le32 *desc;
+ 	unsigned long flags;
+@@ -881,8 +881,10 @@ static void rx_irq(struct net_device *ndev)
+ 		if (likely(CMDSTS_OK & cmdsts)) {
+ #endif
+ 			skb_put(skb, len);
+-			if (unlikely(!skb))
++			if (unlikely(!skb)) {
++				ndev->stats.rx_dropped++;
+ 				goto netdev_mangle_me_harder_failed;
++			}
+ 			if (cmdsts & CMDSTS_DEST_MULTI)
+ 				ndev->stats.multicast++;
+ 			ndev->stats.rx_packets++;
+@@ -901,15 +903,12 @@ static void rx_irq(struct net_device *ndev)
+ 				__vlan_hwaccel_put_tag(skb, htons(ETH_P_IPV6), tag);
+ 			}
+ #endif
+-			rx_rc = netif_rx(skb);
+-			if (NET_RX_DROP == rx_rc) {
+-netdev_mangle_me_harder_failed:
+-				ndev->stats.rx_dropped++;
+-			}
++			netif_rx(skb);
+ 		} else {
+ 			dev_kfree_skb_irq(skb);
+ 		}
  
--	cancel_delayed_work(&pfvf->ptp->synctstamp_work);
-+	cancel_delayed_work_sync(&pfvf->ptp->synctstamp_work);
- 
- 	ptp_clock_unregister(ptp->ptp_clock);
- 	kfree(ptp);
++netdev_mangle_me_harder_failed:
+ 		nr++;
+ 		next_rx = info->next_rx;
+ 		desc = info->descs + (DESC_SIZE * next_rx);
 -- 
 2.51.0
 
