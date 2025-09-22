@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3986B930B0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7E0B92DDF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C33887A75E8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86E572A7625
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464942F2909;
-	Mon, 22 Sep 2025 19:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EAC2EDD5D;
+	Mon, 22 Sep 2025 19:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWbGGHe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdnKgyFu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021E82F39DE;
-	Mon, 22 Sep 2025 19:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6DD27B320;
+	Mon, 22 Sep 2025 19:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570290; cv=none; b=e50UBz6hxk+qtTVWGQyz8ZqeobKuAlupUyeTYSdPRKgz25+mX/qoEoHsB+6RID9jWUXq7Zs5mtEy2NuhIZUYg2+J4sseCCbAfm7fNmnyK0xK9yWtmPhRT1CHXdhD3djOrdAMcj7uOiJ1ZWTJJA2kpDmn19wwpe/Zw5umxaJCmMY=
+	t=1758569745; cv=none; b=V77OoUb2qL9TKKvZQleSUQXymPKCBmMZlBSoZv5I698jGKgTwv+y8cm1PGlAv413rAwYMGN6xGD7suK5FaOpivIT9r+gf78YrRaYygsNrepHrE/+/FxwbqpC8QXPAu4dPZmMel2gXxSk6QxxtSFdoNjpSjqEOwpnp2ti2dKUU2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570290; c=relaxed/simple;
-	bh=M3tpF8wx2xd63x74Glv7tAmANgrJRDYh4tJi7EqBKiY=;
+	s=arc-20240116; t=1758569745; c=relaxed/simple;
+	bh=yxlIa5f0j+oK/EP5NZ8LqDvOwE++VjYnS6yl8Td2TxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovAYfGmtAKuKLn8A6bqxkSkYUNvTGgUYgTxxMv+Q9wH3KPlq5v9LUu8NHuarVXq3l0at1ffhXXlKmwy5qfwimmnirjAxzBDKNJtKUNxk6etK5jkSKNlnPw283li+YG8qDF5PqCyHvyNL8SHkpQxjg2duyUzWlJtwQU0lruBLCn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWbGGHe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C4DC4CEF0;
-	Mon, 22 Sep 2025 19:44:49 +0000 (UTC)
+	 MIME-Version; b=g1UGKw/DGYh84x7IB9zyiDQrEDsanpELrxQe2lAVKh72Zgl1ii9wpeqy4XIHSurtkL2faa182q8cu+s0UC6a7FdYNgQ+bCA6ZrsfET+YKmTOLLfF45NlK8a5M3PCMJCgmDrdMSbi5o97WkQF7JPpH4sFEempCi0kdo2lcy7++Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdnKgyFu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C45C4CEF0;
+	Mon, 22 Sep 2025 19:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570289;
-	bh=M3tpF8wx2xd63x74Glv7tAmANgrJRDYh4tJi7EqBKiY=;
+	s=korg; t=1758569744;
+	bh=yxlIa5f0j+oK/EP5NZ8LqDvOwE++VjYnS6yl8Td2TxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWbGGHe9IdR17KqZecf9nUtbsZTy3dR/hZHU33i7FdLP/E52IwlKUY2zeEG5jcmY6
-	 kvoyHwcUyEGw8tCE/fuctqoY67t+cQZf44/Ct+eVV0t0FtRT6q+b/+J0dxtFsvv9F5
-	 xXrQSA1FOLwtdHJFwcdzwO7X+GVCw+TlYIFCkWtc=
+	b=LdnKgyFuLSr8/UdNFBog5ocu0+fxozSKePvwizYbnORp6KFcxoYn4A0KXm/L2iEhn
+	 LjA9DsAmt/8ZOHIofytdEU8KcdPZLDmJ3yeTMwstdxi1bNQfXbKOX8Mc/1MfIVmFZf
+	 dksbqxNd15T1/XzGp8M7Gl8qTRJ4TI8gLDVvuT6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.16 091/149] mmc: sdhci-uhs2: Fix calling incorrect sdhci_set_clock() function
-Date: Mon, 22 Sep 2025 21:29:51 +0200
-Message-ID: <20250922192415.180372768@linuxfoundation.org>
+	Colin Ian King <colin.i.king@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 52/70] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
+Date: Mon, 22 Sep 2025 21:29:52 +0200
+Message-ID: <20250922192406.003940044@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit 09c2b628f6403ad467fc73326a50020590603871 upstream.
+[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
 
-Fix calling incorrect sdhci_set_clock() in __sdhci_uhs2_set_ios() when the
-vendor defines its own sdhci_set_clock().
+The dev_err message is reporting an error about capture streams however
+it is using the incorrect variable num_playback instead of num_capture.
+Fix this by using the correct variable num_capture.
 
-Fixes: 10c8298a052b ("mmc: sdhci-uhs2: add set_ios()")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-uhs2.c |    2 +-
+ sound/soc/sof/intel/hda-stream.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-uhs2.c
-+++ b/drivers/mmc/host/sdhci-uhs2.c
-@@ -295,7 +295,7 @@ static void __sdhci_uhs2_set_ios(struct
- 	else
- 		sdhci_uhs2_set_power(host, ios->power_mode, ios->vdd);
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index 0b0087abcc50e..3bb743cb167a5 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -842,7 +842,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
  
--	sdhci_set_clock(host, ios->clock);
-+	host->ops->set_clock(host, ios->clock);
- 	host->clock = ios->clock;
- }
+ 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
+ 		dev_err(sdev->dev, "error: too many capture streams %d\n",
+-			num_playback);
++			num_capture);
+ 		return -EINVAL;
+ 	}
  
+-- 
+2.51.0
+
 
 
 
