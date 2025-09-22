@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-181158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BEBB92E63
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B7EB92E78
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43985447092
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE3E74474DC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3772F2617;
-	Mon, 22 Sep 2025 19:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70422820D1;
+	Mon, 22 Sep 2025 19:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6Vjh7tR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEs1210m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63D52820D1;
-	Mon, 22 Sep 2025 19:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53F3285C92;
+	Mon, 22 Sep 2025 19:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569834; cv=none; b=JsTof7HEOyNr+sZ9yOUwNEf1g4fLroqQEMVRZpGPtX0YcXNU4Bg4dASKlgrdFmI47qxpDd2VhVRWc4DvXX3m4BBtO0bxDqH+sC/k5uSvLBL617jxMFGkko+OgYxDs/RiIRI46rbAa0pHdHUfac93VTOAN4HkqYQ3KNr75JNaAH4=
+	t=1758569844; cv=none; b=c3rBuErxkzwISRXWwLV2N68xcirt8MSO2SRiFpEcdO3zmQ01tRhtRBFp/AE2TIr311YQBQul6Seqm8tDR5w5AgftS3GwRePkbeSpZw85H7CAGjvylRgluwInHC+y7gy/bR1watgycu1NS1LgUY+ZnPkFkP5KPRZASQK3Mv3Lxlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569834; c=relaxed/simple;
-	bh=DEtt31B0JPviNAsgYD0ZMzG/KO1Q/uqAspSVFVKxYls=;
+	s=arc-20240116; t=1758569844; c=relaxed/simple;
+	bh=LW7hCxJ+/v0BQ5mMASXQh+Y2lcx0nXn/EFxkJVC4fyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbnHq0O1s9xET34ISxya+nM+zLCLL2dDiLeZtc1qX2NabgCC5u/Vh7y4srkjqVwHnLNyzTHYYd0+OLNNfVLPiTxPeJwZlFgUZo9zLfHVlj6b4b6Y4jPKdZKbcsXDy6kQ95UMLmkvX6ndcv+LYU1xPtB+xBxf3UJDL0c1WzYVkL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6Vjh7tR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD18C4CEF5;
-	Mon, 22 Sep 2025 19:37:14 +0000 (UTC)
+	 MIME-Version; b=u+q04mMW9GaSFpPZzwgLxhfMi3PnZ1jjJbMR7uQCSlzJF90FpodWtXBxmU33s8jKM8faaNj+FMpNqZoOEz9mQgcQUIMRmPjhQ2b6nDtd+6v/MPnRQMMz65JNHquZdYDjRwAd1euzOhWgiKjLg42GFNIO0WtQxynE5RBzSJ1wLhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEs1210m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4A6C4CEF0;
+	Mon, 22 Sep 2025 19:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569834;
-	bh=DEtt31B0JPviNAsgYD0ZMzG/KO1Q/uqAspSVFVKxYls=;
+	s=korg; t=1758569844;
+	bh=LW7hCxJ+/v0BQ5mMASXQh+Y2lcx0nXn/EFxkJVC4fyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6Vjh7tRNmy1ob99BbNDbrlgddBOGd7ibBmp//F5gdgU4hV6pulsX2JA54/L03XVA
-	 d/TNS0FXaeMXhcygJdQ5WO1HQ0mUqTfwIf2J1KYhu6Cv4ssxAUWoeIaJ6lLic3A3j8
-	 zgKHeXeJ60tz1zfq04Y3+LZD5eyqc8h3BIdRQstQ=
+	b=CEs1210mPOKTsotsGx6rvCoqXrgFgzmg1Yd1KUtDnrjn+D5+aaP61sWDKk6DB0GdV
+	 liwdrteaim4nBkaA6kIyNP4p1BZc+nh+k9HUKvbuQVLbmRrMGuCMVKUKPBtc4Q+SQt
+	 yEdvD6BlOLmkSLcMzTw46EI7jUfCrHGfV1idBS2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/105] um: virtio_uml: Fix use-after-free after put_device in probe
-Date: Mon, 22 Sep 2025 21:28:52 +0200
-Message-ID: <20250922192409.145888296@linuxfoundation.org>
+Subject: [PATCH 6.12 010/105] um: Fix FD copy size in os_rcv_fd_msg()
+Date: Mon, 22 Sep 2025 21:28:53 +0200
+Message-ID: <20250922192409.168954642@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
 References: <20250922192408.913556629@linuxfoundation.org>
@@ -66,42 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 7ebf70cf181651fe3f2e44e95e7e5073d594c9c0 ]
+[ Upstream commit df447a3b4a4b961c9979b4b3ffb74317394b9b40 ]
 
-When register_virtio_device() fails in virtio_uml_probe(),
-the code sets vu_dev->registered = 1 even though
-the device was not successfully registered.
-This can lead to use-after-free or other issues.
+When copying FDs, the copy size should not include the control
+message header (cmsghdr). Fix it.
 
-Fixes: 04e5b1fb0183 ("um: virtio: Remove device on disconnect")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Fixes: 5cde6096a4dd ("um: generalize os_rcv_fd")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/virtio_uml.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/um/os-Linux/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/drivers/virtio_uml.c b/arch/um/drivers/virtio_uml.c
-index 2b6e701776b6b..e2cba5117fd25 100644
---- a/arch/um/drivers/virtio_uml.c
-+++ b/arch/um/drivers/virtio_uml.c
-@@ -1231,10 +1231,12 @@ static int virtio_uml_probe(struct platform_device *pdev)
- 	device_set_wakeup_capable(&vu_dev->vdev.dev, true);
+diff --git a/arch/um/os-Linux/file.c b/arch/um/os-Linux/file.c
+index f1d03cf3957fe..62c176a2c1ac4 100644
+--- a/arch/um/os-Linux/file.c
++++ b/arch/um/os-Linux/file.c
+@@ -556,7 +556,7 @@ ssize_t os_rcv_fd_msg(int fd, int *fds, unsigned int n_fds,
+ 	    cmsg->cmsg_type != SCM_RIGHTS)
+ 		return n;
  
- 	rc = register_virtio_device(&vu_dev->vdev);
--	if (rc)
-+	if (rc) {
- 		put_device(&vu_dev->vdev.dev);
-+		return rc;
-+	}
- 	vu_dev->registered = 1;
--	return rc;
-+	return 0;
+-	memcpy(fds, CMSG_DATA(cmsg), cmsg->cmsg_len);
++	memcpy(fds, CMSG_DATA(cmsg), cmsg->cmsg_len - CMSG_LEN(0));
+ 	return n;
+ }
  
- error_init:
- 	os_close_file(vu_dev->sock);
 -- 
 2.51.0
 
