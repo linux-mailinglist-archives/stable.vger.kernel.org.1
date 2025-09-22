@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-181122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7E0B92DDF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6DEB92F2F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86E572A7625
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A90188065C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EAC2EDD5D;
-	Mon, 22 Sep 2025 19:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1B72F1FDD;
+	Mon, 22 Sep 2025 19:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdnKgyFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVJ7c59a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6DD27B320;
-	Mon, 22 Sep 2025 19:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474702820D1;
+	Mon, 22 Sep 2025 19:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569745; cv=none; b=V77OoUb2qL9TKKvZQleSUQXymPKCBmMZlBSoZv5I698jGKgTwv+y8cm1PGlAv413rAwYMGN6xGD7suK5FaOpivIT9r+gf78YrRaYygsNrepHrE/+/FxwbqpC8QXPAu4dPZmMel2gXxSk6QxxtSFdoNjpSjqEOwpnp2ti2dKUU2s=
+	t=1758569993; cv=none; b=OLrHnn4Z7/SP4TF3kLxE4WzOD4r4l63wox6Tz1gZ1osGgtxUGPZEo+4nHQS3NsaawoIo7He8/xXhhjQbwYO5zmAnXkX+Tf0NyoP6ssfVAaLBenMAv4WG5QBprZoEU55wFzlj4tJpplBgffo3ebqIgM0UixDKfc+c9bjSbqXE7oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569745; c=relaxed/simple;
-	bh=yxlIa5f0j+oK/EP5NZ8LqDvOwE++VjYnS6yl8Td2TxE=;
+	s=arc-20240116; t=1758569993; c=relaxed/simple;
+	bh=JUkRALgoD7g31otr6fCeyYF8/SzRspztPgbzyekBliU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1UGKw/DGYh84x7IB9zyiDQrEDsanpELrxQe2lAVKh72Zgl1ii9wpeqy4XIHSurtkL2faa182q8cu+s0UC6a7FdYNgQ+bCA6ZrsfET+YKmTOLLfF45NlK8a5M3PCMJCgmDrdMSbi5o97WkQF7JPpH4sFEempCi0kdo2lcy7++Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdnKgyFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C45C4CEF0;
-	Mon, 22 Sep 2025 19:35:44 +0000 (UTC)
+	 MIME-Version; b=Wu7yXB1iy76s604ZBrK42zub9nikgfvrWwAIdegiQqIQdKIMIrO3EStEe171JMO38aC/8caUIS8skfdBKX31+qlKUUKTnoGBye0WJdq1TI+G6NWG0mUpzFidd0MVddFdw1YtBg1CTfRgu0HISHwCy3SiJUnwOECi0VIaGlkiobM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVJ7c59a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39CCC4CEF0;
+	Mon, 22 Sep 2025 19:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569744;
-	bh=yxlIa5f0j+oK/EP5NZ8LqDvOwE++VjYnS6yl8Td2TxE=;
+	s=korg; t=1758569993;
+	bh=JUkRALgoD7g31otr6fCeyYF8/SzRspztPgbzyekBliU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdnKgyFuLSr8/UdNFBog5ocu0+fxozSKePvwizYbnORp6KFcxoYn4A0KXm/L2iEhn
-	 LjA9DsAmt/8ZOHIofytdEU8KcdPZLDmJ3yeTMwstdxi1bNQfXbKOX8Mc/1MfIVmFZf
-	 dksbqxNd15T1/XzGp8M7Gl8qTRJ4TI8gLDVvuT6g=
+	b=KVJ7c59agkGvppwpTrlBcSLCByCXM23/JB5ou7Z5C3966ww3ln2BrAwCPDlvE0tyq
+	 ORXHkLrjXDxHCNf8B6ws9glZ1BZG7JeasYMWnJ3alnfqk10+mUJOe5opPRwIFVeTkE
+	 U3N6ytAo9aM2fokbG/KyG8nDDOf/IFRPBsU7l4Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 52/70] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
+	syzbot+baa2e0f4e02df602583e@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 069/105] io_uring/msg_ring: kill alloc_cache for io_kiocb allocations
 Date: Mon, 22 Sep 2025 21:29:52 +0200
-Message-ID: <20250922192406.003940044@linuxfoundation.org>
+Message-ID: <20250922192410.714652718@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
+Commit df8922afc37aa2111ca79a216653a629146763ad upstream.
 
-The dev_err message is reporting an error about capture streams however
-it is using the incorrect variable num_playback instead of num_capture.
-Fix this by using the correct variable num_capture.
+A recent commit:
 
-Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+fc582cd26e88 ("io_uring/msg_ring: ensure io_kiocb freeing is deferred for RCU")
+
+fixed an issue with not deferring freeing of io_kiocb structs that
+msg_ring allocates to after the current RCU grace period. But this only
+covers requests that don't end up in the allocation cache. If a request
+goes into the alloc cache, it can get reused before it is sane to do so.
+A recent syzbot report would seem to indicate that there's something
+there, however it may very well just be because of the KASAN poisoning
+that the alloc_cache handles manually.
+
+Rather than attempt to make the alloc_cache sane for that use case, just
+drop the usage of the alloc_cache for msg_ring request payload data.
+
+Fixes: 50cf5f3842af ("io_uring/msg_ring: add an alloc cache for io_kiocb entries")
+Link: https://lore.kernel.org/io-uring/68cc2687.050a0220.139b6.0005.GAE@google.com/
+Reported-by: syzbot+baa2e0f4e02df602583e@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/intel/hda-stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/io_uring_types.h |    3 ---
+ io_uring/io_uring.c            |    5 -----
+ io_uring/msg_ring.c            |   24 ++----------------------
+ 3 files changed, 2 insertions(+), 30 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
-index 0b0087abcc50e..3bb743cb167a5 100644
---- a/sound/soc/sof/intel/hda-stream.c
-+++ b/sound/soc/sof/intel/hda-stream.c
-@@ -842,7 +842,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -400,9 +400,6 @@ struct io_ring_ctx {
+ 	struct callback_head		poll_wq_task_work;
+ 	struct list_head		defer_list;
  
- 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
- 		dev_err(sdev->dev, "error: too many capture streams %d\n",
--			num_playback);
-+			num_capture);
- 		return -EINVAL;
- 	}
+-	struct io_alloc_cache		msg_cache;
+-	spinlock_t			msg_lock;
+-
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+ 	struct list_head	napi_list;	/* track busy poll napi_id */
+ 	spinlock_t		napi_lock;	/* napi_list lock */
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -316,9 +316,6 @@ static __cold struct io_ring_ctx *io_rin
+ 			    sizeof(struct io_async_rw));
+ 	ret |= io_alloc_cache_init(&ctx->uring_cache, IO_ALLOC_CACHE_MAX,
+ 			    sizeof(struct uring_cache));
+-	spin_lock_init(&ctx->msg_lock);
+-	ret |= io_alloc_cache_init(&ctx->msg_cache, IO_ALLOC_CACHE_MAX,
+-			    sizeof(struct io_kiocb));
+ 	ret |= io_futex_cache_init(ctx);
+ 	if (ret)
+ 		goto free_ref;
+@@ -358,7 +355,6 @@ err:
+ 	io_alloc_cache_free(&ctx->netmsg_cache, io_netmsg_cache_free);
+ 	io_alloc_cache_free(&ctx->rw_cache, io_rw_cache_free);
+ 	io_alloc_cache_free(&ctx->uring_cache, kfree);
+-	io_alloc_cache_free(&ctx->msg_cache, io_msg_cache_free);
+ 	io_futex_cache_free(ctx);
+ 	kfree(ctx->cancel_table.hbs);
+ 	kfree(ctx->cancel_table_locked.hbs);
+@@ -2743,7 +2739,6 @@ static __cold void io_ring_ctx_free(stru
+ 	io_alloc_cache_free(&ctx->netmsg_cache, io_netmsg_cache_free);
+ 	io_alloc_cache_free(&ctx->rw_cache, io_rw_cache_free);
+ 	io_alloc_cache_free(&ctx->uring_cache, kfree);
+-	io_alloc_cache_free(&ctx->msg_cache, io_msg_cache_free);
+ 	io_futex_cache_free(ctx);
+ 	io_destroy_buffers(ctx);
+ 	mutex_unlock(&ctx->uring_lock);
+--- a/io_uring/msg_ring.c
++++ b/io_uring/msg_ring.c
+@@ -11,7 +11,6 @@
+ #include "io_uring.h"
+ #include "rsrc.h"
+ #include "filetable.h"
+-#include "alloc_cache.h"
+ #include "msg_ring.h"
  
--- 
-2.51.0
-
+ /* All valid masks for MSG_RING */
+@@ -76,13 +75,7 @@ static void io_msg_tw_complete(struct io
+ 	struct io_ring_ctx *ctx = req->ctx;
+ 
+ 	io_add_aux_cqe(ctx, req->cqe.user_data, req->cqe.res, req->cqe.flags);
+-	if (spin_trylock(&ctx->msg_lock)) {
+-		if (io_alloc_cache_put(&ctx->msg_cache, req))
+-			req = NULL;
+-		spin_unlock(&ctx->msg_lock);
+-	}
+-	if (req)
+-		kfree_rcu(req, rcu_head);
++	kfree_rcu(req, rcu_head);
+ 	percpu_ref_put(&ctx->refs);
+ }
+ 
+@@ -104,19 +97,6 @@ static int io_msg_remote_post(struct io_
+ 	return 0;
+ }
+ 
+-static struct io_kiocb *io_msg_get_kiocb(struct io_ring_ctx *ctx)
+-{
+-	struct io_kiocb *req = NULL;
+-
+-	if (spin_trylock(&ctx->msg_lock)) {
+-		req = io_alloc_cache_get(&ctx->msg_cache);
+-		spin_unlock(&ctx->msg_lock);
+-		if (req)
+-			return req;
+-	}
+-	return kmem_cache_alloc(req_cachep, GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO);
+-}
+-
+ static int io_msg_data_remote(struct io_kiocb *req)
+ {
+ 	struct io_ring_ctx *target_ctx = req->file->private_data;
+@@ -124,7 +104,7 @@ static int io_msg_data_remote(struct io_
+ 	struct io_kiocb *target;
+ 	u32 flags = 0;
+ 
+-	target = io_msg_get_kiocb(req->ctx);
++	target = kmem_cache_alloc(req_cachep, GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO);
+ 	if (unlikely(!target))
+ 		return -ENOMEM;
+ 
 
 
 
