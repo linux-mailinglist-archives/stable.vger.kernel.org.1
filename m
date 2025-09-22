@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-181214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0648B92F29
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24888B92E09
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7E16447587
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 361501906E18
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48B62F2617;
-	Mon, 22 Sep 2025 19:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0796D2F28F6;
+	Mon, 22 Sep 2025 19:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZRn1egj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/y3J4EX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D79C2E285C;
-	Mon, 22 Sep 2025 19:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85572EDD5D;
+	Mon, 22 Sep 2025 19:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569973; cv=none; b=VBiyhqdwCvKGkE3HlC6XHYTodU9ad/J51cAroKm7lLUarJggIJHV+W05Aof4VISz0TGSL52ad6aB1uyl74ziLzZPkZBUpkSSvcMlanwV+S3vZqPWvD6Y4LK9Laf5rX48ulVHoqvbf+16qf/yl1qAl9VHtcg/4oJO/U7M/GDrhlM=
+	t=1758569777; cv=none; b=rwOBvtzc+/gJM2DO5fZ9mO5Hc9jjsQQUCouZhFwtSeOa66a45EHD3+18ONS1b4ytGALSc0pbmPBYT8zFgzwtvmxFDMOvNYzcK33O/aV5hYO9JynipTXJtEXPRNJGP/l8KGcrMxreSzUGGvgf7dul7SiIoacL+35jIzhpG2gG9Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569973; c=relaxed/simple;
-	bh=5F2fIni9MbngJcEiKgr5xDO3KKO6pgJtoZ8l3roQ1GM=;
+	s=arc-20240116; t=1758569777; c=relaxed/simple;
+	bh=U167C+QGuTBgb1He854QVnBKvVY1JfwN3YmT2oi8Zy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrHEuUDOkMZsiQ4JmrEeriQ3FTtjjK/7MV8b716AcB4rkkwia8/tq89oH0GBDTt8gl+5H/SWTiGuXPW8DYkmOu5dUqt3AUAkfTT7gWLhCRC5n556ZMzneST0NLnQOSa67/erkclf3mFJ9tEk4cbQE7obTG3RbbTDRlaccDUiorU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZRn1egj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3169BC4CEF0;
-	Mon, 22 Sep 2025 19:39:33 +0000 (UTC)
+	 MIME-Version; b=AZ2g84PGtNOETH8BD5oy2ZB+JpTEf5ZIiZd+hOVuTIm+xWX2EF5cGuL76d77EeaHQxG+/EoHl9O4tBNFbZlrvQ+SkWJ0HLeMD34tOSxw+NIjQnMOPQkK+xu518Frm2uaqXCOkBZHEtCLioOhuNSEK04xyAGbQ00AZJC7/ECMXTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/y3J4EX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2856C4CEF0;
+	Mon, 22 Sep 2025 19:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569973;
-	bh=5F2fIni9MbngJcEiKgr5xDO3KKO6pgJtoZ8l3roQ1GM=;
+	s=korg; t=1758569775;
+	bh=U167C+QGuTBgb1He854QVnBKvVY1JfwN3YmT2oi8Zy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZRn1egjLwNGuB+BCKeqaBN2hFwQYCLL/QGLUqpySmEG5Juwq6ig0enIqWS1cdT4g
-	 Pnnc1aA4wW0wlWCUYI3W9GEthJJN9ligoYMAy5X3kF3Btt3RKa1QTYNepwajdVgaVr
-	 Vi+FMBBXp4kewOM37Bv2Wr/iG0k31SAaQbSJLvTE=
+	b=J/y3J4EXkW4RqeiFZXXR7tu9KpeMfsZgmswJvOndD+RZLAwkXNZ6ExCumxMvZhgDh
+	 WXcfVadyodwbL2PBsK6nfYYv4l/TfRXpmmXzkI9DUD1Yu3TmxPiyTH87j2DBFfoLfB
+	 N0bpgS83rs+P1wAeIDC5GOyQRTjA1DRgI26FMslo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/105] ASoC: wm8974: Correct PLL rate rounding
+Subject: [PATCH 6.6 56/70] smb: client: fix smbdirect_recv_io leak in smbd_negotiate() error path
 Date: Mon, 22 Sep 2025 21:29:56 +0200
-Message-ID: <20250922192410.810321001@linuxfoundation.org>
+Message-ID: <20250922192406.105845403@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +68,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 9b17d3724df55ecc2bc67978822585f2b023be48 ]
+[ Upstream commit daac51c7032036a0ca5f1aa419ad1b0471d1c6e0 ]
 
-Using a single value of 22500000 for both 48000Hz and 44100Hz audio
-will sometimes result in returning wrong dividers due to rounding.
-Update the code to use the actual value for both.
+During tests of another unrelated patch I was able to trigger this
+error: Objects remaining on __kmem_cache_shutdown()
 
-Fixes: 51b2bb3f2568 ("ASoC: wm8974: configure pll and mclk divider automatically")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250821082639.1301453-4-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm8974.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
-index 0ee3655cad01f..c0a8fc867301c 100644
---- a/sound/soc/codecs/wm8974.c
-+++ b/sound/soc/codecs/wm8974.c
-@@ -419,10 +419,14 @@ static int wm8974_update_clocks(struct snd_soc_dai *dai)
- 	fs256 = 256 * priv->fs;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 713bd1dcd39cc..be9be8f363319 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1064,8 +1064,10 @@ static int smbd_negotiate(struct smbd_connection *info)
+ 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=0x%llx iov.length=%u iov.lkey=0x%x\n",
+ 		       rc, response->sge.addr,
+ 		       response->sge.length, response->sge.lkey);
+-	if (rc)
++	if (rc) {
++		put_receive_buffer(info, response);
+ 		return rc;
++	}
  
- 	f = wm8974_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
--
- 	if (f != priv->mclk) {
- 		/* The PLL performs best around 90MHz */
--		fpll = wm8974_get_mclkdiv(22500000, fs256, &mclkdiv);
-+		if (fs256 % 8000)
-+			f = 22579200;
-+		else
-+			f = 24576000;
-+
-+		fpll = wm8974_get_mclkdiv(f, fs256, &mclkdiv);
- 	}
- 
- 	wm8974_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
+ 	init_completion(&info->negotiate_completion);
+ 	info->negotiate_done = false;
 -- 
 2.51.0
 
