@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-181386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3B9B9319D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A7BB92FEA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0999919C04E6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A5CD3B83EC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4DF25A34F;
-	Mon, 22 Sep 2025 19:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17242F39DE;
+	Mon, 22 Sep 2025 19:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWals01x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3ZQ9xmj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F5118C2C;
-	Mon, 22 Sep 2025 19:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA432F2910;
+	Mon, 22 Sep 2025 19:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570412; cv=none; b=TrKsyEsO2OYae8mC7xrKVmo6fG90eBX5PVCP8VPu3E7+tw6EaNhKFskswG0V2NNTomvMwzaUgCuEyFYRasltoPY9KDIu+3N/8AFy3BMHcpJ3S//Z/npY5nSWVfIG7ArVU4yW/eAx3iip2qziOoBtmaDNeWwKwIifMGsMQuzTrTU=
+	t=1758570075; cv=none; b=UOVnD/FAEZp2FwWjA75AfFkCyfiETt0AvXVdxWwqOP9CASCjDqp4h8MHssrSY1/aohI1JHITzqHVglQ+ybi52mVXrcQ61jeNQSAx69BAMUPhsKH8UUp2B4lkcdVERf0APW37vAMKyePkXAnf7TYKQ8D1cIMRYTSAIHMBXg6ab3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570412; c=relaxed/simple;
-	bh=vyz8fwbwgyLHVuFCkwQBjEuq92S9vukhPRQTjoPXXuU=;
+	s=arc-20240116; t=1758570075; c=relaxed/simple;
+	bh=uvwvi6F3DHDbdGDUo4v33GSbAAgCL8VM0o+OQGRANqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hIbcjUZY/nLkl+xTUuwEYtdnNEDtID8XhKG+rdbT5ZtRZ7MzzLJk6p/mFXfJDkpOxk7Ovd7CudWbI8O6nSUdT5H3KiUQZgLlI0hN79Pr57s9iNVkN7HiyZm1NpITVpiVM846D/zqOrzPC4+u3fcqINI8v5FTnBAdQScSBJ8Aisc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWals01x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1A5C4CEF0;
-	Mon, 22 Sep 2025 19:46:51 +0000 (UTC)
+	 MIME-Version; b=OVZL5+RFpUrhXLwV7buF0aXem1JDxdtqOzjyGPVCYcnRouC0sK3z4ZnD7exFNy9UcF2yG0LeWB4RKoHXSm9qvrWHD2UBzGbAnpBN2lT0DEG6QAW8t1Hf3IEvOK7gk7L8bi4NZoufX92AIvmlhCxgf/IN4AkVDKAnH7JAuI2mxBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3ZQ9xmj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4935C4CEF0;
+	Mon, 22 Sep 2025 19:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570412;
-	bh=vyz8fwbwgyLHVuFCkwQBjEuq92S9vukhPRQTjoPXXuU=;
+	s=korg; t=1758570074;
+	bh=uvwvi6F3DHDbdGDUo4v33GSbAAgCL8VM0o+OQGRANqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWals01xCayvuviRMxThsXYExsgk/dUC/vjHzlbPjD0rF4rTFR4eRi2czOi9IeOC8
-	 WlIxFzQ8opWDZ/nsm4YMUkg+FnnurdK/yycQ7q2MPHmckI5emyQH/ihJ/jG4q1mz7G
-	 0/KcAwf2Duv+AlWOBo1DG02rodBK+lXhOFiHZ5LE=
+	b=e3ZQ9xmj90/4y4NRhiD3qzeViEFeqsoUIEXv/sziJojWxUdMQuYPCmAYamtqZaN2m
+	 mZbO6Yc2f6/sv+r1lYO0rCJRMs0WB+DEOz8xdPwFlxegLqzppIekL9fIRGemwbHnQd
+	 uMpds098XhiGLKXpSD+HgiEkGRXZj3ugDoJQJOQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 127/149] smb: client: make use of smbdirect_socket->recv_io.expected
-Date: Mon, 22 Sep 2025 21:30:27 +0200
-Message-ID: <20250922192416.077695912@linuxfoundation.org>
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.12 105/105] minmax.h: remove some #defines that are only expanded once
+Date: Mon, 22 Sep 2025 21:30:28 +0200
+Message-ID: <20250922192411.598566184@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,145 +72,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit bbdbd9ae47155da65aa0c1641698a44d85c2faa2 ]
+[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
 
-The expected incoming message type can be per connection.
+The bodies of __signed_type_use() and __unsigned_type_use() are much the
+same size as their names - so put the bodies in the only line that expands
+them.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: f57e53ea2523 ("smb: client: let recv_done verify data_offset, data_length and remaining_data_length")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Similarly __signed_type() is defined separately for 64bit and then used
+exactly once just below.
+
+Change the test for __signed_type from CONFIG_64BIT to one based on gcc
+defined macros so that the code is valid if it gets used outside of a
+kernel build.
+
+Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c | 22 ++++++++++++++--------
- fs/smb/client/smbdirect.h |  7 -------
- 2 files changed, 14 insertions(+), 15 deletions(-)
+ include/linux/minmax.h |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index b9bb531717a65..a6aa2c609dc3b 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -383,6 +383,7 @@ static bool process_negotiation_response(
- 			info->max_frmr_depth * PAGE_SIZE);
- 	info->max_frmr_depth = sp->max_read_write_size / PAGE_SIZE;
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -46,10 +46,8 @@
+  * comparison, and these expressions only need to be careful to not cause
+  * warnings for pointer use.
+  */
+-#define __signed_type_use(ux) (2 + __is_nonneg(ux))
+-#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
+ #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
+-	__signed_type_use(ux) : __unsigned_type_use(ux))
++	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
  
-+	sc->recv_io.expected = SMBDIRECT_EXPECT_DATA_TRANSFER;
- 	return true;
- }
+ /*
+  * Check whether a signed value is always non-negative.
+@@ -57,7 +55,7 @@
+  * A cast is needed to avoid any warnings from values that aren't signed
+  * integer types (in which case the result doesn't matter).
+  *
+- * On 64-bit any integer or pointer type can safely be cast to 'long'.
++ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
+  * But on 32-bit we need to avoid warnings about casting pointers to integers
+  * of different sizes without truncating 64-bit values so 'long' or 'long long'
+  * must be used depending on the size of the value.
+@@ -66,12 +64,12 @@
+  * them, but we do not use s128 types in the kernel (we do use 'u128',
+  * but they are handled by the !is_signed_type() case).
+  */
+-#ifdef CONFIG_64BIT
+-  #define __signed_type(ux) long
++#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
++#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
+ #else
+-  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
++#define __is_nonneg(ux) statically_true( \
++	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
+ #endif
+-#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
  
-@@ -408,7 +409,6 @@ static void smbd_post_send_credits(struct work_struct *work)
- 			if (!response)
- 				break;
- 
--			response->type = SMBD_TRANSFER_DATA;
- 			response->first_segment = false;
- 			rc = smbd_post_recv(info, response);
- 			if (rc) {
-@@ -445,10 +445,11 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	struct smbd_response *response =
- 		container_of(wc->wr_cqe, struct smbd_response, cqe);
- 	struct smbd_connection *info = response->info;
-+	struct smbdirect_socket *sc = &info->socket;
- 	int data_length = 0;
- 
- 	log_rdma_recv(INFO, "response=0x%p type=%d wc status=%d wc opcode %d byte_len=%d pkey_index=%u\n",
--		      response, response->type, wc->status, wc->opcode,
-+		      response, sc->recv_io.expected, wc->status, wc->opcode,
- 		      wc->byte_len, wc->pkey_index);
- 
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
-@@ -463,9 +464,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		response->sge.length,
- 		DMA_FROM_DEVICE);
- 
--	switch (response->type) {
-+	switch (sc->recv_io.expected) {
- 	/* SMBD negotiation response */
--	case SMBD_NEGOTIATE_RESP:
-+	case SMBDIRECT_EXPECT_NEGOTIATE_REP:
- 		dump_smbdirect_negotiate_resp(smbd_response_payload(response));
- 		info->full_packet_received = true;
- 		info->negotiate_done =
-@@ -475,7 +476,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		return;
- 
- 	/* SMBD data transfer packet */
--	case SMBD_TRANSFER_DATA:
-+	case SMBDIRECT_EXPECT_DATA_TRANSFER:
- 		data_transfer = smbd_response_payload(response);
- 		data_length = le32_to_cpu(data_transfer->data_length);
- 
-@@ -526,13 +527,17 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			put_receive_buffer(info, response);
- 
- 		return;
-+
-+	case SMBDIRECT_EXPECT_NEGOTIATE_REQ:
-+		/* Only server... */
-+		break;
- 	}
- 
- 	/*
- 	 * This is an internal error!
- 	 */
--	log_rdma_recv(ERR, "unexpected response type=%d\n", response->type);
--	WARN_ON_ONCE(response->type != SMBD_TRANSFER_DATA);
-+	log_rdma_recv(ERR, "unexpected response type=%d\n", sc->recv_io.expected);
-+	WARN_ON_ONCE(sc->recv_io.expected != SMBDIRECT_EXPECT_DATA_TRANSFER);
- error:
- 	put_receive_buffer(info, response);
- 	smbd_disconnect_rdma_connection(info);
-@@ -1067,10 +1072,11 @@ static int smbd_post_recv(
- /* Perform SMBD negotiate according to [MS-SMBD] 3.1.5.2 */
- static int smbd_negotiate(struct smbd_connection *info)
- {
-+	struct smbdirect_socket *sc = &info->socket;
- 	int rc;
- 	struct smbd_response *response = get_receive_buffer(info);
- 
--	response->type = SMBD_NEGOTIATE_RESP;
-+	sc->recv_io.expected = SMBDIRECT_EXPECT_NEGOTIATE_REP;
- 	rc = smbd_post_recv(info, response);
- 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=0x%llx iov.length=%u iov.lkey=0x%x\n",
- 		       rc, response->sge.addr,
-diff --git a/fs/smb/client/smbdirect.h b/fs/smb/client/smbdirect.h
-index ea04ce8a9763a..bf50544eaf02d 100644
---- a/fs/smb/client/smbdirect.h
-+++ b/fs/smb/client/smbdirect.h
-@@ -157,11 +157,6 @@ struct smbd_connection {
- 	unsigned int count_send_empty;
- };
- 
--enum smbd_message_type {
--	SMBD_NEGOTIATE_RESP,
--	SMBD_TRANSFER_DATA,
--};
--
- /* Maximum number of SGEs used by smbdirect.c in any send work request */
- #define SMBDIRECT_MAX_SEND_SGE	6
- 
-@@ -187,8 +182,6 @@ struct smbd_response {
- 	struct ib_cqe cqe;
- 	struct ib_sge sge;
- 
--	enum smbd_message_type type;
--
- 	/* Link to receive queue or reassembly queue */
- 	struct list_head list;
- 
--- 
-2.51.0
-
+ #define __types_ok(ux, uy) \
+ 	(__sign_use(ux) & __sign_use(uy))
 
 
 
