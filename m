@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-181034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E73B92CA8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57259B9303B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0A3719001E3
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A45172A7472
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47772EDD5D;
-	Mon, 22 Sep 2025 19:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B834315D43;
+	Mon, 22 Sep 2025 19:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbsFFUC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1J4Uttw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5522BC8E6;
-	Mon, 22 Sep 2025 19:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C3E2F0C52;
+	Mon, 22 Sep 2025 19:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569524; cv=none; b=MjFMdb4ELFe4Hjd/PrdniwN0cDNCj7XrPVAjC2sYdU75fvwJy6ykbeUZHl593ZXB/W7LNxcANT1DHbtxnl49A5Bt/BBFIezPwAFx8B+QGAZKNWMDGXpUFSs+RbnJUfR0sLY70fYnL9MAGNhRW3ipMKGfju5Pi8JrVa3ljPuDAOo=
+	t=1758570176; cv=none; b=m+3C2Ty3n0TxKH208l1Dyrx7L5aEuqB+8A+2wp//qEBIk8L+86zsKycojojwox+vs8qof80stFJ3KiCPKGlrcv+CwhS9rsDN9SgVfgrgxgjcp1wa8etuHWLSxR8NtBf9z0WWNGgTPVPIq2xxkKZxh4uhx6QI9yuTWYIvdBjxVZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569524; c=relaxed/simple;
-	bh=Oc7CiGH1/s5j8SCprChS6Jq1CRZnyVaCm7Z171vm8Cg=;
+	s=arc-20240116; t=1758570176; c=relaxed/simple;
+	bh=LZVFAzAkz14Y3PzlpPR9pgCME3fikYE98/LZNNSFZhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suLhVpQT38j/K7hrBTIbG9BoldPFRm0uDnRwTI2ZhXa4f37frHiGKmAdN7UtEZCjz3OoBwevSDc/fVqQq7DGnPEPKknBQI9SGzvp6mf4DvIai3Oea4j17lxnCFCpV/p6sma7ifrCcAb6EiTPR0Iy1SLuytJ1zErHfAW315U3jgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbsFFUC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97221C4CEF0;
-	Mon, 22 Sep 2025 19:32:03 +0000 (UTC)
+	 MIME-Version; b=IXuqtFWjnNX/edf9fxHpHp0VeXFusAad5m0K4TjL12sSBj/4kMRuHRO18QTLSuab4bg20J2JpbQzoT905sVoUCnR2ZlFAwlldl/3shRO+a4K0i/kG/0OydTKDm3r+ANlHO8DkaKaupEuRuCTJ78ZdGPvaKM95Mv+xtEMJuPx0BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1J4Uttw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20F6C4CEF0;
+	Mon, 22 Sep 2025 19:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569523;
-	bh=Oc7CiGH1/s5j8SCprChS6Jq1CRZnyVaCm7Z171vm8Cg=;
+	s=korg; t=1758570176;
+	bh=LZVFAzAkz14Y3PzlpPR9pgCME3fikYE98/LZNNSFZhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbsFFUC1CV5WXwq/UhhYcyKuGpW6FwGjURfAGgC5C80LFv/9w5tMlBtG5UyZsw2XI
-	 rAmqSO+5ZYvoB18+Uw6JEpIIYxQpIGNkZa6UuOe27FkR5HjJHrGOO24ChX1B9teRkT
-	 mOViOqw2h9Av51VJo62Dx3awOKF8lqakguigqSP8=
+	b=T1J4UttwB5Bjl/yLEIRkucsTcsnbG9qT9jYK0+IsMQWzJ6n1uerjCbhCkRt9lRAv8
+	 UPdT6rxPnlY0cujBqCXXKmimnYeevlNol/gEm9pnPg1HXB4nh70pofvgUmJnECj8v3
+	 for8CU2Ahr+n1XfTolNj9WvsNQU7PMjnMlbBLpfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/61] tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().
-Date: Mon, 22 Sep 2025 21:29:07 +0200
-Message-ID: <20250922192403.939013290@linuxfoundation.org>
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 048/149] ksmbd: smbdirect: verify remaining_data_length respects max_fragmented_recv_size
+Date: Mon, 22 Sep 2025 21:29:08 +0200
+Message-ID: <20250922192414.072735894@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +66,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 45c8a6cc2bcd780e634a6ba8e46bffbdf1fc5c01 ]
+commit e1868ba37fd27c6a68e31565402b154beaa65df0 upstream.
 
-syzbot reported the splat below where a socket had tcp_sk(sk)->fastopen_rsk
-in the TCP_ESTABLISHED state. [0]
+This is inspired by the check for data_offset + data_length.
 
-syzbot reused the server-side TCP Fast Open socket as a new client before
-the TFO socket completes 3WHS:
-
-  1. accept()
-  2. connect(AF_UNSPEC)
-  3. connect() to another destination
-
-As of accept(), sk->sk_state is TCP_SYN_RECV, and tcp_disconnect() changes
-it to TCP_CLOSE and makes connect() possible, which restarts timers.
-
-Since tcp_disconnect() forgot to clear tcp_sk(sk)->fastopen_rsk, the
-retransmit timer triggered the warning and the intended packet was not
-retransmitted.
-
-Let's call reqsk_fastopen_remove() in tcp_disconnect().
-
-[0]:
-WARNING: CPU: 2 PID: 0 at net/ipv4/tcp_timer.c:542 tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Modules linked in:
-CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 6.17.0-rc5-g201825fb4278 #62 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
-Code: 41 55 41 54 55 53 48 8b af b8 08 00 00 48 89 fb 48 85 ed 0f 84 55 01 00 00 0f b6 47 12 3c 03 74 0c 0f b6 47 12 3c 04 74 04 90 <0f> 0b 90 48 8b 85 c0 00 00 00 48 89 ef 48 8b 40 30 e8 6a 4f 06 3e
-RSP: 0018:ffffc900002f8d40 EFLAGS: 00010293
-RAX: 0000000000000002 RBX: ffff888106911400 RCX: 0000000000000017
-RDX: 0000000002517619 RSI: ffffffff83764080 RDI: ffff888106911400
-RBP: ffff888106d5c000 R08: 0000000000000001 R09: ffffc900002f8de8
-R10: 00000000000000c2 R11: ffffc900002f8ff8 R12: ffff888106911540
-R13: ffff888106911480 R14: ffff888106911840 R15: ffffc900002f8de0
-FS:  0000000000000000(0000) GS:ffff88907b768000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8044d69d90 CR3: 0000000002c30003 CR4: 0000000000370ef0
-Call Trace:
- <IRQ>
- tcp_write_timer (net/ipv4/tcp_timer.c:738)
- call_timer_fn (kernel/time/timer.c:1747)
- __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2372)
- timer_expire_remote (kernel/time/timer.c:2385 kernel/time/timer.c:2376 kernel/time/timer.c:2135)
- tmigr_handle_remote_up (kernel/time/timer_migration.c:944 kernel/time/timer_migration.c:1035)
- __walk_groups.isra.0 (kernel/time/timer_migration.c:533 (discriminator 1))
- tmigr_handle_remote (kernel/time/timer_migration.c:1096)
- handle_softirqs (./arch/x86/include/asm/jump_label.h:36 ./include/trace/events/irq.h:142 kernel/softirq.c:580)
- irq_exit_rcu (kernel/softirq.c:614 kernel/softirq.c:453 kernel/softirq.c:680 kernel/softirq.c:696)
- sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1050 (discriminator 35) arch/x86/kernel/apic/apic.c:1050 (discriminator 35))
- </IRQ>
-
-Fixes: 8336886f786f ("tcp: TCP Fast Open Server - support TFO listeners")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250915175800.118793-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/server/transport_rdma.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index b64d53590f25c..d94daa296d59d 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3130,6 +3130,7 @@ int tcp_disconnect(struct sock *sk, int flags)
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int old_state = sk->sk_state;
-+	struct request_sock *req;
- 	u32 seq;
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -554,7 +554,7 @@ static void recv_done(struct ib_cq *cq,
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_offset, data_length;
++		u32 remaining_data_length, data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 	if (old_state != TCP_CLOSE)
-@@ -3239,6 +3240,10 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 		if (wc->byte_len <
+@@ -564,6 +564,7 @@ static void recv_done(struct ib_cq *cq,
+ 			return;
+ 		}
  
++		remaining_data_length = le32_to_cpu(data_transfer->remaining_data_length);
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+ 		data_offset = le32_to_cpu(data_transfer->data_offset);
+ 		if (wc->byte_len < data_offset ||
+@@ -571,6 +572,14 @@ static void recv_done(struct ib_cq *cq,
+ 			put_recvmsg(t, recvmsg);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 			return;
++		}
++		if (remaining_data_length > t->max_fragmented_recv_size ||
++		    data_length > t->max_fragmented_recv_size ||
++		    (u64)remaining_data_length + (u64)data_length >
++		    (u64)t->max_fragmented_recv_size) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
+ 		}
  
- 	/* Clean up fastopen related fields */
-+	req = rcu_dereference_protected(tp->fastopen_rsk,
-+					lockdep_sock_is_held(sk));
-+	if (req)
-+		reqsk_fastopen_remove(sk, req, false);
- 	tcp_free_fastopen_req(tp);
- 	inet->defer_connect = 0;
- 	tp->fastopen_client_fail = 0;
--- 
-2.51.0
-
+ 		if (data_length) {
 
 
 
