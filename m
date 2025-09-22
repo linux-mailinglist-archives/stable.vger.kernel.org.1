@@ -1,195 +1,233 @@
-Return-Path: <stable+bounces-180874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1780B8ECA5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 04:39:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF77BB8EDE4
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 05:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A693B179C44
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 02:39:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A935318990CB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 03:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC491547CC;
-	Mon, 22 Sep 2025 02:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EA81A9F9B;
+	Mon, 22 Sep 2025 03:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dYeIGHtX"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFFA16CD33;
-	Mon, 22 Sep 2025 02:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51442F56
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 03:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758508756; cv=none; b=qkqEp3a1lHkI58Oo31ZBtNFOvgojkA0uQNI8HiOfcDDR3ITFxwhEj8d3N4cJMBN8CBzE9DtSTRGJUTbX+mj4An0MhMYXrLxqAAi1J11uv+dh8S2IMqo5kGycmRMmyJchh9Y0YIGITxQ5nBvF+N+Urmyss+3WwcSwIJWohMddx4k=
+	t=1758512204; cv=none; b=KuPJE/acwIilmzi9eXe4KW41/5+M85PgXeSc/gReDCyB7GVePKEM8hzm5RpEarKHQWmBzJWns/INchOTI/aOUUIyPKsXFAG6hJwMbu/VTJUv1CBis0RHxk+54sNM8hjl2zsnL3p3eewecn0WB84+2ykfenpgdKjglxHJlbjChs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758508756; c=relaxed/simple;
-	bh=2njLDJiojIEQxOF+htkPknhP0qErdIkYtULif4SAAOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=nr0i+JL2DgmMKnlOXt55oudfCYsKI8oGJKTSLL9nRwsP98/xdJnyDJuTFWw/pdB0y/ZTtsuYDWf6flAmLYdTQT1MhLHxYHhM8xJIlE/V3AB1SNXiNvdcpEweEWXmlphUTdDctD5uOGiYhtxiIp646b16eTJhQxH9NGNnUZYWAp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowAB3x4GpttBoZbgtBA--.19549S2;
-	Mon, 22 Sep 2025 10:38:56 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: dpenkler@gmail.com,
-	gregkh@linuxfoundation.org,
-	matchstick@neverthere.org,
-	dominik.karol.piatkowski@protonmail.com,
-	arnd@arndb.de,
-	nichen@iscas.ac.cn,
-	paul.retourne@orange.fr
-Cc: linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] staging: gpib: Fix device reference leak in fmh_gpib driver
-Date: Mon, 22 Sep 2025 10:38:31 +0800
-Message-Id: <20250922023831.21343-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowAB3x4GpttBoZbgtBA--.19549S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWF4fCr1UuF1kKrWkAF1UZFb_yoWrCF1Upa
-	17Xa1rKry0vrnaqF45Xr1UZFsayw4IyayYvw17C343Aa95Zry0ya1DW34ayryrAFykJr15
-	trW09r40gFWkZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
-	4UJVW0owAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4
-	vE14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
-	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOTmh
-	UUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1758512204; c=relaxed/simple;
+	bh=rs/upMHA5jSOkvRjTN31EXKDVfPg7QxREApmEdYNWpU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iGolHZf/j22hdnlspW7o14X40jdRKInbVl6x2NLv9tTjjG0Ko6p3KsfXwwppVZVG3/0pclIRN6D2Qkne8NciegBYN1blIOiKquKO1Ef3tOg5tbTQnxfJyT8BEYAhqebU8NBdHwwOptqh8PhEv9L8kF1byzi46pjx5gLFZAWlJGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dYeIGHtX; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <e4e82695-c03f-4105-bddd-9778d7e368d4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758512191;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9/pAYjt1PTM1WTwOEAJ1ryShiXtBMZp1571RlbpsQfQ=;
+	b=dYeIGHtXEhwqRe5dY2kuaOhbMvjIC5LBJnI4MTLAavEHM28MO5fC1RBYYw1JQSenqd1Od+
+	ppNvqg9coKtIPXFQHgGtx3lExQK15m1zekX1RHO6FWDHA+ZXFNiB8BTagglJX3zuepxRoC
+	P2383CbGkK919uOabMZSgfcRGK4vAQ8=
+Date: Mon, 22 Sep 2025 11:36:11 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ usamaarif642@gmail.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
+ catalin.marinas@arm.com, cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
+ kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
+ roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
+ dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
+ surenb@google.com, hughd@google.com, willy@infradead.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
+ casper.li@mediatek.com, chinwen.chang@mediatek.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-mm@kvack.org, ioworker0@gmail.com,
+ stable@vger.kernel.org, linux-riscv@lists.infradead.org,
+ palmer@rivosinc.com, samuel.holland@sifive.com, charlie@rivosinc.com
+References: <20250922021458.68123-1-lance.yang@linux.dev>
+ <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-The fmh_gpib driver contains a device reference count leak in
-fmh_gpib_attach_impl() where driver_find_device() increases the
-reference count of the device by get_device() when matching but this
-reference is not properly decreased. Add put_device() in
-fmh_gpib_attach_impl() and add put_device() in fmh_gpib_detach(),
-which ensures that the reference count of the device is correctly
-managed.
+Cc: RISC-V folks
 
-Found by code review.
+On 2025/9/22 10:36, Zi Yan wrote:
+> On 21 Sep 2025, at 22:14, Lance Yang wrote:
+> 
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> When both THP and MTE are enabled, splitting a THP and replacing its
+>> zero-filled subpages with the shared zeropage can cause MTE tag mismatch
+>> faults in userspace.
+>>
+>> Remapping zero-filled subpages to the shared zeropage is unsafe, as the
+>> zeropage has a fixed tag of zero, which may not match the tag expected by
+>> the userspace pointer.
+>>
+>> KSM already avoids this problem by using memcmp_pages(), which on arm64
+>> intentionally reports MTE-tagged pages as non-identical to prevent unsafe
+>> merging.
+>>
+>> As suggested by David[1], this patch adopts the same pattern, replacing the
+>> memchr_inv() byte-level check with a call to pages_identical(). This
+>> leverages existing architecture-specific logic to determine if a page is
+>> truly identical to the shared zeropage.
+>>
+>> Having both the THP shrinker and KSM rely on pages_identical() makes the
+>> design more future-proof, IMO. Instead of handling quirks in generic code,
+>> we just let the architecture decide what makes two pages identical.
+>>
+>> [1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+>> Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
+>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>> Tested on x86_64 and on QEMU for arm64 (with and without MTE support),
+>> and the fix works as expected.
+> 
+>  From [1], I see you mentioned RISC-V also has the address masking feature.
+> Is it affected by this? And memcmp_pages() is only implemented by ARM64
+> for MTE. Should any arch with address masking always implement it to avoid
+> the same issue?
 
-Cc: stable@vger.kernel.org
-Fixes: 8e4841a0888c ("staging: gpib: Add Frank Mori Hess FPGA PCI GPIB driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/staging/gpib/fmh_gpib/fmh_gpib.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+Yeah, I'm new to RISC-V, seems like RISC-V has a similar feature as
+described in Documentation/arch/riscv/uabi.rst, which is the Supm
+(Supervisor-mode Pointer Masking) extension.
 
-diff --git a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
-index 4138f3d2bae7..245c8fe87eaa 100644
---- a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
-+++ b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
-@@ -1395,14 +1395,17 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
- 	pdev = to_platform_device(board->dev);
- 
- 	retval = fmh_gpib_generic_attach(board);
--	if (retval)
-+	if (retval) {
-+		put_device(board->dev);
- 		return retval;
-+	}
- 
- 	e_priv = board->private_data;
- 	nec_priv = &e_priv->nec7210_priv;
- 
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpib_control_status");
- 	if (!res) {
-+		put_device(board->dev);
- 		dev_err(board->dev, "Unable to locate mmio resource\n");
- 		return -ENODEV;
- 	}
-@@ -1410,6 +1413,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
- 	if (request_mem_region(res->start,
- 			       resource_size(res),
- 			       pdev->name) == NULL) {
-+		put_device(board->dev);
- 		dev_err(board->dev, "cannot claim registers\n");
- 		return -ENXIO;
- 	}
-@@ -1418,6 +1422,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
- 	nec_priv->mmiobase = ioremap(e_priv->gpib_iomem_res->start,
- 				     resource_size(e_priv->gpib_iomem_res));
- 	if (!nec_priv->mmiobase) {
-+		put_device(board->dev);
- 		dev_err(board->dev, "Could not map I/O memory\n");
- 		return -ENOMEM;
- 	}
-@@ -1426,12 +1431,14 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
- 
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dma_fifos");
- 	if (!res) {
-+		put_device(board->dev);
- 		dev_err(board->dev, "Unable to locate mmio resource for gpib dma port\n");
- 		return -ENODEV;
- 	}
- 	if (request_mem_region(res->start,
- 			       resource_size(res),
- 			       pdev->name) == NULL) {
-+		put_device(board->dev);
- 		dev_err(board->dev, "cannot claim registers\n");
- 		return -ENXIO;
- 	}
-@@ -1439,6 +1446,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
- 	e_priv->fifo_base = ioremap(e_priv->dma_port_res->start,
- 				    resource_size(e_priv->dma_port_res));
- 	if (!e_priv->fifo_base) {
-+		put_device(board->dev);
- 		dev_err(board->dev, "Could not map I/O memory for fifos\n");
- 		return -ENOMEM;
- 	}
-@@ -1447,10 +1455,14 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
- 		(unsigned long)resource_size(e_priv->dma_port_res));
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
-+	if (irq < 0) {
-+		put_device(board->dev);
- 		return -EBUSY;
-+	}
-+
- 	retval = request_irq(irq, fmh_gpib_interrupt, IRQF_SHARED, pdev->name, board);
- 	if (retval) {
-+		put_device(board->dev);
- 		dev_err(board->dev,
- 			"cannot register interrupt handler err=%d\n",
- 			retval);
-@@ -1461,6 +1473,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
- 	if (acquire_dma) {
- 		e_priv->dma_channel = dma_request_slave_channel(board->dev, "rxtx");
- 		if (!e_priv->dma_channel) {
-+			put_device(board->dev);
- 			dev_err(board->dev, "failed to acquire dma channel \"rxtx\".\n");
- 			return -EIO;
- 		}
-@@ -1517,6 +1530,12 @@ void fmh_gpib_detach(struct gpib_board *board)
- 					   resource_size(e_priv->gpib_iomem_res));
- 	}
- 	fmh_gpib_generic_detach(board);
-+
-+	if (board->dev) {
-+		dev_set_drvdata(board->dev, NULL);
-+		put_device(board->dev);
-+		board->dev = NULL;
-+	}
- }
- 
- static int fmh_gpib_pci_attach_impl(struct gpib_board *board,
--- 
-2.17.1
+```
+Pointer masking
+---------------
+
+Support for pointer masking in userspace (the Supm extension) is 
+provided via
+the ``PR_SET_TAGGED_ADDR_CTRL`` and ``PR_GET_TAGGED_ADDR_CTRL`` ``prctl()``
+operations. Pointer masking is disabled by default. To enable it, userspace
+must call ``PR_SET_TAGGED_ADDR_CTRL`` with the ``PR_PMLEN`` field set to the
+number of mask/tag bits needed by the application. ``PR_PMLEN`` is 
+interpreted
+as a lower bound; if the kernel is unable to satisfy the request, the
+``PR_SET_TAGGED_ADDR_CTRL`` operation will fail. The actual number of 
+tag bits
+is returned in ``PR_PMLEN`` by the ``PR_GET_TAGGED_ADDR_CTRL`` operation.
+```
+
+But, IIUC, Supm by itself only ensures that the upper bits are ignored on
+memory access :)
+
+So, RISC-V today would likely not be affected. However, once it implements
+full hardware tag checking, it will face the exact same zero-page problem.
+
+Anyway, any architecture with a feature like MTE in the future will need
+its own memcmp_pages() to prevent unsafe merges ;)
+
+> 
+>>
+>>   mm/huge_memory.c | 15 +++------------
+>>   mm/migrate.c     |  8 +-------
+>>   2 files changed, 4 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 32e0ec2dde36..28d4b02a1aa5 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
+>>   static bool thp_underused(struct folio *folio)
+>>   {
+>>   	int num_zero_pages = 0, num_filled_pages = 0;
+>> -	void *kaddr;
+>>   	int i;
+>>
+>>   	for (i = 0; i < folio_nr_pages(folio); i++) {
+>> -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+>> -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>> -			num_zero_pages++;
+>> -			if (num_zero_pages > khugepaged_max_ptes_none) {
+>> -				kunmap_local(kaddr);
+>> +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+>> +			if (++num_zero_pages > khugepaged_max_ptes_none)
+>>   				return true;
+>> -			}
+>>   		} else {
+>>   			/*
+>>   			 * Another path for early exit once the number
+>>   			 * of non-zero filled pages exceeds threshold.
+>>   			 */
+>> -			num_filled_pages++;
+>> -			if (num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none) {
+>> -				kunmap_local(kaddr);
+>> +			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
+>>   				return false;
+>> -			}
+>>   		}
+>> -		kunmap_local(kaddr);
+>>   	}
+>>   	return false;
+>>   }
+>> diff --git a/mm/migrate.c b/mm/migrate.c
+>> index aee61a980374..ce83c2c3c287 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -300,9 +300,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>>   					  unsigned long idx)
+>>   {
+>>   	struct page *page = folio_page(folio, idx);
+>> -	bool contains_data;
+>>   	pte_t newpte;
+>> -	void *addr;
+>>
+>>   	if (PageCompound(page))
+>>   		return false;
+>> @@ -319,11 +317,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>>   	 * this subpage has been non present. If the subpage is only zero-filled
+>>   	 * then map it to the shared zeropage.
+>>   	 */
+>> -	addr = kmap_local_page(page);
+>> -	contains_data = memchr_inv(addr, 0, PAGE_SIZE);
+>> -	kunmap_local(addr);
+>> -
+>> -	if (contains_data)
+>> +	if (!pages_identical(page, ZERO_PAGE(0)))
+>>   		return false;
+>>
+>>   	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>> -- 
+>> 2.49.0
+> 
+> The changes look good to me. Thanks. Acked-by: Zi Yan <ziy@nvidia.com>
+
+Cheers!
 
 
