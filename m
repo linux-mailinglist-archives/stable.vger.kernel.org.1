@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-181032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C7CB92CAA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A01B92EAE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109413B6DAA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C568D19071A1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5869C2DF714;
-	Mon, 22 Sep 2025 19:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7B61C1ADB;
+	Mon, 22 Sep 2025 19:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6Awb21K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVIp2P0+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F641FDA89;
-	Mon, 22 Sep 2025 19:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CE727B320;
+	Mon, 22 Sep 2025 19:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569519; cv=none; b=Y3CrxV32QIDLgSuuZQehGXsvDbX6xnYMqqW0AxlA9x4MH5dWU7G298uMjqf9+c7X699siJ64atRiC8KkGcbuesoDImmCNnw4lVOTiW+8OOq3lsq4xUC7xCLWizM/3c2H3Wv8Hs0lFdKwXmf7Y0Pebs2/1iPHdCpDvGHklxEWsMQ=
+	t=1758569899; cv=none; b=IgJ2Zxonx3QwlPiMK5G2a3BIooRXH6jCHTrGKaqOrIVoVb1H3cDuVTku/oWa/DuGC2oKaI35aSq/6OWsnae8ESsbO7b+F3hXp9nrZHIXOtQnKxc8sOuAranfL9GqET8RTdrOb3m7kzWqtnQ9aUc4nH7TCgeck8SggFUxJirMSzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569519; c=relaxed/simple;
-	bh=6f5ZxwgtlD0LXzpj3kHJNAVOWKNiKLTOoYZBER6nwM4=;
+	s=arc-20240116; t=1758569899; c=relaxed/simple;
+	bh=NmcV47SRVRnbJmVC1h3O9ORsWnN/wf/D6Qf8wq91Ex0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAZyRcD7aVLTClUl/oBYDb8rwnsRNUZEGEtlJFc3Zi7hVy4w84TblxTQPZmEoelJJomYgsisi1xAhPrMnsea6CZmB5q6ed8SsruiMCMCuc9Tk+tJ86l+yexW5e/RZAljCSS01wGLU5uffn0T7qM0otJtMThHSH3L6HVxrDj7WBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6Awb21K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF33C4CEF0;
-	Mon, 22 Sep 2025 19:31:58 +0000 (UTC)
+	 MIME-Version; b=gx/zkjfs5wEq+NzTu65B819LDj/wU2KoOW6DrR58Pwsfxva532ymMRZr+2Nh9X6vnK/uc5dqGYus54i0bqbeilTerfnGJLEo21hqc5hO5AWoWI3I3Gib+cvK1joV2+EhPxbY/HQAQH7ldRgedVKDH42+NBP2uemLn9hWGA/0QR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVIp2P0+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8D7C4CEF0;
+	Mon, 22 Sep 2025 19:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569518;
-	bh=6f5ZxwgtlD0LXzpj3kHJNAVOWKNiKLTOoYZBER6nwM4=;
+	s=korg; t=1758569899;
+	bh=NmcV47SRVRnbJmVC1h3O9ORsWnN/wf/D6Qf8wq91Ex0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6Awb21Kcx4MlPLuElvB4Mmzllier8gcbtwqju6zdbRrzX5iH5ngaD2zDsU8ZIsj5
-	 qb4396uvH7uZMXZ6TbVVyJ7qIWGsR3f/tU/1Z9YxmLV/K3/aou77pvHhIdxLx2Tq/V
-	 h+aCI7tjJEjR7nxhPfL7P+qme9rfijzaRYeQMLBY=
+	b=KVIp2P0+v8jxBSnnKanefdOuAY2csjfWTom8slIAZ+ij9xPiAtCU+RKw9L0x1Vp2u
+	 mhlioeP/Cs9WWieIplvCtVvLO4XNnaTuiRXI953vvMzZ59T3tJA45nzEdnKhtFuRH/
+	 yu/M5srGkoL/Vrmtjs8hfjOp1/T/0FASYkax49/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.1 24/61] power: supply: bq27xxx: restrict no-battery detection to bq27000
-Date: Mon, 22 Sep 2025 21:29:17 +0200
-Message-ID: <20250922192404.217909867@linuxfoundation.org>
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 035/105] ksmbd: smbdirect: verify remaining_data_length respects max_fragmented_recv_size
+Date: Mon, 22 Sep 2025 21:29:18 +0200
+Message-ID: <20250922192409.835051635@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +66,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 1e451977e1703b6db072719b37cd1b8e250b9cc9 upstream.
+commit e1868ba37fd27c6a68e31565402b154beaa65df0 upstream.
 
-There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may in some
-cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not be
-interpreted as "no battery" like for a disconnected battery with some built
-in bq27000 chip.
+This is inspired by the check for data_offset + data_length.
 
-So restrict the no-battery detection originally introduced by
-
-    commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to the bq27000.
-
-There is no need to backport further because this was hidden before
-
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
 Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/transport_rdma.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1872,8 +1872,8 @@ static void bq27xxx_battery_update_unloc
- 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -553,7 +553,7 @@ static void recv_done(struct ib_cq *cq,
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_offset, data_length;
++		u32 remaining_data_length, data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
--	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -ENODEV; /* read error */
-+	if (di->chip == BQ27000 && (cache.flags & 0xff) == 0xff)
-+		cache.flags = -ENODEV; /* bq27000 hdq read error */
- 	if (cache.flags >= 0) {
- 		cache.temperature = bq27xxx_battery_read_temperature(di);
- 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
+ 		if (wc->byte_len <
+@@ -563,6 +563,7 @@ static void recv_done(struct ib_cq *cq,
+ 			return;
+ 		}
+ 
++		remaining_data_length = le32_to_cpu(data_transfer->remaining_data_length);
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+ 		data_offset = le32_to_cpu(data_transfer->data_offset);
+ 		if (wc->byte_len < data_offset ||
+@@ -570,6 +571,14 @@ static void recv_done(struct ib_cq *cq,
+ 			put_recvmsg(t, recvmsg);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 			return;
++		}
++		if (remaining_data_length > t->max_fragmented_recv_size ||
++		    data_length > t->max_fragmented_recv_size ||
++		    (u64)remaining_data_length + (u64)data_length >
++		    (u64)t->max_fragmented_recv_size) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
+ 		}
+ 
+ 		if (data_length) {
 
 
 
