@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-181116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D189B92DD6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444DBB92D0D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F305C3ABF41
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97242A5BC2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB502EDD5D;
-	Mon, 22 Sep 2025 19:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BA025F780;
+	Mon, 22 Sep 2025 19:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+QW/HsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ScOur/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5EB285C92;
-	Mon, 22 Sep 2025 19:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734A9C8E6;
+	Mon, 22 Sep 2025 19:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569730; cv=none; b=cHUAM05SIL+8eSJNuvD0W+xy9E0Q2yNdueTXNJcuzcAEhOgvvlGy9TAv5FGrLbD+HGHhuefv1P3VllPLlUgfT7MOyinx1sYzCqgKMV8cr9VRSwlyEqnd1F7iHedWAFfC+xr0z7RNk1d60W5zMPA/OcCQQ5mrePBXwIR02p6jq4o=
+	t=1758569594; cv=none; b=cxT9DiqGwHKt5HfrRbpvD4DO7XICiSWuqAnIfF3u8STj9FMHc2LzoTBYI1FQ1XX7thQ7DNFZso5ZzEf0CrNUAsHG/7wGbx59E6tNgnn4jjbB027iHPaTVe6MprEhr+kGjK33IkEdnx7SynWWg/gS/UMJBAjL7jscrSeuR5E3pM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569730; c=relaxed/simple;
-	bh=w4RSo0Cz1aClUIVaPcF2CfUxSdsSLw9zQmp1Crn2Nfw=;
+	s=arc-20240116; t=1758569594; c=relaxed/simple;
+	bh=rEofYuHiVp4aT1zObbtngoEfsMEYK5lGMoYKnnvHbk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzVAnsMDKYi4KZ5cWa/hFyklcbjeYGA/wVjM7lD+7qbJbU6zp6dRkSKr1jOZUAiFOk26kcjcVp8H2k7g3Y8mEO2rPYWCE7Sx3DzlwbUDmor+eiVjlsLrUtU0ISa9cv882x/BxOQbddyLzoGMGEDmvL+Vk2yFqlGkt7GcgHvnC40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+QW/HsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A20C4CEF0;
-	Mon, 22 Sep 2025 19:35:29 +0000 (UTC)
+	 MIME-Version; b=Y8ZyhhRXDdhHRfUCemgRwNO3rEB6LhOVPJNjdhkf0QqC33dGMbcVsrgwS+uzXVHCrdsc9Vy5xK+dV4WAb3zj1AMvrA80JF6gIXpUwuq1F9ATjbLg/HEfKsp4c7QAEyqX2abmzUgnalY53v/evfLL0cXOftu1aHnJuZIF2p0nCTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ScOur/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA6AC4CEF0;
+	Mon, 22 Sep 2025 19:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569730;
-	bh=w4RSo0Cz1aClUIVaPcF2CfUxSdsSLw9zQmp1Crn2Nfw=;
+	s=korg; t=1758569594;
+	bh=rEofYuHiVp4aT1zObbtngoEfsMEYK5lGMoYKnnvHbk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+QW/HsPukNqTpxvqFV2JNkJ4b2XFFyQJKY0v4pf+iK/ttrdfZJ0FaE3bCBpUz1Di
-	 rP71JnTsEl+f+Riy6g81ybJ4yQM/sfjEq/+ShxBha/3XQLzmtxrvb/AuNk+7GSUiy7
-	 DxzPdCb8kYEwaukbnFJg8h5EVtHgl3PjppX3O6Yc=
+	b=1ScOur/cbyuCsrKl9g8U7aMx0qp2q63FASe7zc/UG8vAVGL73YkMaEWrN56rVjL73
+	 fSLBvcH4tLCtO8fE5QsUsRkZU+ZGh1KGvGm/lxydo/yesiG/i/+UiEeEB9mTbm1c5P
+	 AThyGe8GAYghBERPJJp0MUxOiJWXPt3bnFmLhNsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Koira <eugkoira@amazon.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.6 35/70] iommu/vt-d: Fix __domain_mapping()s usage of switch_to_super_page()
+	Hulk Robot <hulkci@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 42/61] drm: bridge: cdns-mhdp8546: Fix missing mutex unlock on error path
 Date: Mon, 22 Sep 2025 21:29:35 +0200
-Message-ID: <20250922192405.551794743@linuxfoundation.org>
+Message-ID: <20250922192404.734071508@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Koira <eugkoira@amazon.com>
+From: Qi Xi <xiqi2@huawei.com>
 
-commit dce043c07ca1ac19cfbe2844a6dc71e35c322353 upstream.
+[ Upstream commit 288dac9fb6084330d968459c750c838fd06e10e6 ]
 
-switch_to_super_page() assumes the memory range it's working on is aligned
-to the target large page level. Unfortunately, __domain_mapping() doesn't
-take this into account when using it, and will pass unaligned ranges
-ultimately freeing a PTE range larger than expected.
+Add missing mutex unlock before returning from the error path in
+cdns_mhdp_atomic_enable().
 
-Take for example a mapping with the following iov_pfn range [0x3fe400,
-0x4c0600), which should be backed by the following mappings:
-
-   iov_pfn [0x3fe400, 0x3fffff] covered by 2MiB pages
-   iov_pfn [0x400000, 0x4bffff] covered by 1GiB pages
-   iov_pfn [0x4c0000, 0x4c05ff] covered by 2MiB pages
-
-Under this circumstance, __domain_mapping() will pass [0x400000, 0x4c05ff]
-to switch_to_super_page() at a 1 GiB granularity, which will in turn
-free PTEs all the way to iov_pfn 0x4fffff.
-
-Mitigate this by rounding down the iov_pfn range passed to
-switch_to_super_page() in __domain_mapping()
-to the target large page level.
-
-Additionally add range alignment checks to switch_to_super_page.
-
-Fixes: 9906b9352a35 ("iommu/vt-d: Avoid duplicate removing in __domain_mapping()")
-Signed-off-by: Eugene Koira <eugkoira@amazon.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://lore.kernel.org/r/20250826143816.38686-1-eugkoira@amazon.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 935a92a1c400 ("drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250904034447.665427-1-xiqi2@huawei.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2168,6 +2168,10 @@ static void switch_to_super_page(struct
- 	struct dma_pte *pte = NULL;
- 	unsigned long i;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index 1b7c14d7c5ee3..aaa9f44d27be5 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2042,8 +2042,10 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
  
-+	if (WARN_ON(!IS_ALIGNED(start_pfn, lvl_pages) ||
-+		    !IS_ALIGNED(end_pfn + 1, lvl_pages)))
-+		return;
-+
- 	while (start_pfn <= end_pfn) {
- 		if (!pte)
- 			pte = pfn_to_dma_pte(domain, start_pfn, &level,
-@@ -2241,7 +2245,8 @@ __domain_mapping(struct dmar_domain *dom
- 				unsigned long pages_to_remove;
+ 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
+-	if (!mhdp_state->current_mode)
+-		return;
++	if (!mhdp_state->current_mode) {
++		ret = -EINVAL;
++		goto out;
++	}
  
- 				pteval |= DMA_PTE_LARGE_PAGE;
--				pages_to_remove = min_t(unsigned long, nr_pages,
-+				pages_to_remove = min_t(unsigned long,
-+							round_down(nr_pages, lvl_pages),
- 							nr_pte_to_next_page(pte) * lvl_pages);
- 				end_pfn = iov_pfn + pages_to_remove - 1;
- 				switch_to_super_page(domain, iov_pfn, end_pfn, largepage_lvl);
+ 	drm_mode_set_name(mhdp_state->current_mode);
+ 
+-- 
+2.51.0
+
 
 
 
