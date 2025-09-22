@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D185AB92E0F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14793B930B3
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0498447213
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ED8716B57F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080472F0C5E;
-	Mon, 22 Sep 2025 19:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F632F49E3;
+	Mon, 22 Sep 2025 19:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwJt+9//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPJCzFLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45902F0C45;
-	Mon, 22 Sep 2025 19:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835342F1FE3;
+	Mon, 22 Sep 2025 19:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569767; cv=none; b=sH7qycYHvgNSOUuYJ9zrT5cHcGf+lgyKGU8cs99wa6MuG2utWpBiyV0H0cFSDArjLUr9Obc+Q10qp2Z3ASDSkFELQX5BmKeZTBCZlT80SpNIwFPLtd4vf87pXQdwXnNJ14dskWTilmKNpvuQ3dmdAtr/2tCKulZnPp24SzhoOHE=
+	t=1758570287; cv=none; b=NoFl3Z5TQT4dim9fHeFpmZ0aDSYzhId9RX1elV7lHLy9p9ZAQa3HF/nYWi7ZPODljXy4rtao0UTgpqNpJvl2uCiFAuagKFCKetmvQfyjuk5dh3F7iV8TobJuFGI1Edk3v3QRSH7PUbLOlf/JZ+muKR1UlTJhOYCoEN6EYneb8w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569767; c=relaxed/simple;
-	bh=nJNuJQW34AfxCMw8IU7RuEwZkOxxuuy+owKJ8/KTHqE=;
+	s=arc-20240116; t=1758570287; c=relaxed/simple;
+	bh=yZ6w/bySmrHm2s5O1of+d1W5ppALhHd3CqtXoXm3GyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQUedwu67vGMCHdCcW87wqiR85MaGWc97q6RwYwUlIvMl74dIFtWqCzISP7/DVz2MojwlhRqnX+j5TZO/3NlRvWBRrV3FMhNRmif3zTjZ7BFqrM24YvHyITc4KiDWKBY+4QbPQ9/vPT995ktQRRcKS6pc0s8loH1fzwr+mTwx7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwJt+9//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6EFC4CEF0;
-	Mon, 22 Sep 2025 19:36:07 +0000 (UTC)
+	 MIME-Version; b=r2SZH9HannV7NRSbl15U/fWC9Lh8a6SbXEQcQlf7CnooO3tn6bff2ggM+2HgkPW0YUCR2eoP/YErjQdY2VgmWyogSrrrnJVl/7QsiwQrvNw2Wbt8XV34wlfuy9ZoJbyPCggaz5fHfsL+EbQ7FQXb6vgZy+yKH0sMoV2gnT/m86s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPJCzFLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA3AC4CEF0;
+	Mon, 22 Sep 2025 19:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569767;
-	bh=nJNuJQW34AfxCMw8IU7RuEwZkOxxuuy+owKJ8/KTHqE=;
+	s=korg; t=1758570287;
+	bh=yZ6w/bySmrHm2s5O1of+d1W5ppALhHd3CqtXoXm3GyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwJt+9//670asZFFCP3v2JOpQ5heklrVSij/ZS56wlvlbJzu3H/bH4m7gnYqusIAi
-	 4u/hsCynmkv3/6F9wXtmNKzs0A3lZxdSzJHA5IDs+waDVSyMWeeGyJF96Mb2g+4lxH
-	 ZgCHQYcwRLM/6G60Swoe/3Qxx8WkmujQgwCfW+qM=
+	b=FPJCzFLSfTEuHNxQpYh4OWLRohrhMrLx9pmPtI2xnL78F1t4bL1zb8cMjwRuoE9wK
+	 Ay4HKBLsQd5lGDeaxAPLGkElEYYkY1GsrbmZ4mTCYqbSpkAfE2QJbnjW4ZGLj3N3o5
+	 c68lwtNalf4oY2weYrfYKruVFLrAVKfTZBhXi5GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankur Tyagi <ankur.tyagi85@gmail.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 49/70] ASoC: wm8940: Correct PLL rate rounding
-Date: Mon, 22 Sep 2025 21:29:49 +0200
-Message-ID: <20250922192405.925738630@linuxfoundation.org>
+	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.16 090/149] mmc: sdhci-pci-gli: GL9767: Fix initializing the UHS-II interface during a power-on
+Date: Mon, 22 Sep 2025 21:29:50 +0200
+Message-ID: <20250922192415.154966189@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
-[ Upstream commit d05afb53c683ef7ed1228b593c3360f4d3126c58 ]
+commit 77a436c93d10d68201bfd4941d1ca3230dfd1f40 upstream.
 
-Using a single value of 22500000 for both 48000Hz and 44100Hz audio
-will sometimes result in returning wrong dividers due to rounding.
-Update the code to use the actual value for both.
+According to the power structure of IC hardware design for UHS-II
+interface, reset control and timing must be added to the initialization
+process of powering on the UHS-II interface.
 
-Fixes: 294833fc9eb4 ("ASoC: wm8940: Rewrite code to set proper clocks")
-Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Link: https://patch.msgid.link/20250821082639.1301453-2-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 27dd3b82557a ("mmc: sdhci-pci-gli: enable UHS-II mode for GL9767")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8940.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-gli.c |   68 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
-index b9432f8b64e5b..eff7d1369d01a 100644
---- a/sound/soc/codecs/wm8940.c
-+++ b/sound/soc/codecs/wm8940.c
-@@ -693,7 +693,12 @@ static int wm8940_update_clocks(struct snd_soc_dai *dai)
- 	f = wm8940_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
- 	if (f != priv->mclk) {
- 		/* The PLL performs best around 90MHz */
--		fpll = wm8940_get_mclkdiv(22500000, fs256, &mclkdiv);
-+		if (fs256 % 8000)
-+			f = 22579200;
-+		else
-+			f = 24576000;
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -283,6 +283,8 @@
+ #define   PCIE_GLI_9767_UHS2_CTL2_ZC_VALUE	  0xb
+ #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL	  BIT(6)
+ #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL_VALUE	  0x1
++#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN	BIT(13)
++#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE	BIT(14)
+ 
+ #define GLI_MAX_TUNING_LOOP 40
+ 
+@@ -1179,6 +1181,65 @@ static void gl9767_set_low_power_negotia
+ 	gl9767_vhs_read(pdev);
+ }
+ 
++static void sdhci_gl9767_uhs2_phy_reset(struct sdhci_host *host, bool assert)
++{
++	struct sdhci_pci_slot *slot = sdhci_priv(host);
++	struct pci_dev *pdev = slot->chip->pdev;
++	u32 value, set, clr;
 +
-+		fpll = wm8940_get_mclkdiv(f, fs256, &mclkdiv);
++	if (assert) {
++		/* Assert reset, set RESETN and clean RESETN_VALUE */
++		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
++		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
++	} else {
++		/* De-assert reset, clean RESETN and set RESETN_VALUE */
++		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
++		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
++	}
++
++	gl9767_vhs_write(pdev);
++	pci_read_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, &value);
++	value |= set;
++	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
++	value &= ~clr;
++	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
++	gl9767_vhs_read(pdev);
++}
++
++static void __gl9767_uhs2_set_power(struct sdhci_host *host, unsigned char mode, unsigned short vdd)
++{
++	u8 pwr = 0;
++
++	if (mode != MMC_POWER_OFF) {
++		pwr = sdhci_get_vdd_value(vdd);
++		if (!pwr)
++			WARN(1, "%s: Invalid vdd %#x\n",
++			     mmc_hostname(host->mmc), vdd);
++		pwr |= SDHCI_VDD2_POWER_180;
++	}
++
++	if (host->pwr == pwr)
++		return;
++
++	host->pwr = pwr;
++
++	if (pwr == 0) {
++		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
++	} else {
++		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
++
++		pwr |= SDHCI_POWER_ON;
++		sdhci_writeb(host, pwr & 0xf, SDHCI_POWER_CONTROL);
++		usleep_range(5000, 6250);
++
++		/* Assert reset */
++		sdhci_gl9767_uhs2_phy_reset(host, true);
++		pwr |= SDHCI_VDD2_POWER_ON;
++		sdhci_writeb(host, pwr, SDHCI_POWER_CONTROL);
++		usleep_range(5000, 6250);
++	}
++}
++
+ static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
+ {
+ 	struct sdhci_pci_slot *slot = sdhci_priv(host);
+@@ -1205,6 +1266,11 @@ static void sdhci_gl9767_set_clock(struc
  	}
  
- 	wm8940_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
--- 
-2.51.0
-
+ 	sdhci_enable_clk(host, clk);
++
++	if (mmc_card_uhs2(host->mmc))
++		/* De-assert reset */
++		sdhci_gl9767_uhs2_phy_reset(host, false);
++
+ 	gl9767_set_low_power_negotiation(pdev, true);
+ }
+ 
+@@ -1476,7 +1542,7 @@ static void sdhci_gl9767_set_power(struc
+ 		gl9767_vhs_read(pdev);
+ 
+ 		sdhci_gli_overcurrent_event_enable(host, false);
+-		sdhci_uhs2_set_power(host, mode, vdd);
++		__gl9767_uhs2_set_power(host, mode, vdd);
+ 		sdhci_gli_overcurrent_event_enable(host, true);
+ 	} else {
+ 		gl9767_vhs_write(pdev);
 
 
 
