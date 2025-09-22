@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4269DB92FA4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD80B93175
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B927D2E0323
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5187944178B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D1D2F3613;
-	Mon, 22 Sep 2025 19:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DAC2F39CE;
+	Mon, 22 Sep 2025 19:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCGDJKJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ts33+vkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687072F0C52;
-	Mon, 22 Sep 2025 19:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD23221F00;
+	Mon, 22 Sep 2025 19:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570069; cv=none; b=nCrWpKjLtHWG0xEG2uzoOTOkY3WsE/kzZrBja8A/o56ugL5VrGDxYyiY3naEsORLRMjTMyLo3eLLGOARTq91GSO7OdLCs8iUq0l9TqFMmMzCz9gXo+rJ+SMer3hRxOtqbL2F6S5kiS7TxE3FeHL0XDYN4B44quH1gUdR2Eec6KY=
+	t=1758570377; cv=none; b=CfknKo0CfAD187LY0KjQdeLctRYmElz0SHcAWuVUtUCJuNZHp9lN8XEZwdIbsDN4udhQsWu6TI8HuF6mV11ZOIADgbDBOYdN2w19cbFXoFn+l6XeDMiDqr2eVzDTEi53MPGGmytv1sFDH2bdV6GaMJJaP0/a+y0oWWReRVpYUD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570069; c=relaxed/simple;
-	bh=lb/NJVixgtLmi+G9bPDmLUJd9RNMHt4m4HIAVHjXv9Q=;
+	s=arc-20240116; t=1758570377; c=relaxed/simple;
+	bh=zWRwZfZAShoVoqbvZYwGWjdg5MzNGYOoQa5pjaHWmvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObhSqnhbeP8srtuaszR+sjUNNXQefSi4dJSqa8LWTdEHdcIGGcvcXNOAjkUXCb5/h/RgcgZga6n0tMI0HTHs1sphaEnOArpska32bfwPeANv1E0clv2+wtqmTWN4iCdypNyq5y852Z9zC1Qh5HxcFUNMnBdGhKoUTVMXhTmOeRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCGDJKJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B2BC4CEF0;
-	Mon, 22 Sep 2025 19:41:08 +0000 (UTC)
+	 MIME-Version; b=SRhqGqJCI6yjWWdaWlwRg9W58VaEikXf518+Eo1Kppo40pBUbhedjdgtr81a2NN0pDErJ+TtCpEUlzYehO1fBWyRCiYeY7Bmnb9qwFQWjScGiNdFGDkmtvhnOsoKAssAxMEDk0/UWu5SJkbSC9TUhPI97hXlDXq+AnxK1uWs0gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ts33+vkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5334C4CEF0;
+	Mon, 22 Sep 2025 19:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570069;
-	bh=lb/NJVixgtLmi+G9bPDmLUJd9RNMHt4m4HIAVHjXv9Q=;
+	s=korg; t=1758570377;
+	bh=zWRwZfZAShoVoqbvZYwGWjdg5MzNGYOoQa5pjaHWmvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCGDJKJk5WpBbM0vnczrZGCMhyaeB11F86rUx70hxK016+vrp5w3aUlaWAIKaxaU8
-	 DCItx/KLwptMCkPDJziJpW1B4p2dOrcgb11vLwXVYOGcYhrARaSmT7ZwkL9Ji+VffL
-	 MRpzaNpTg6nwrVKlKy5jXO/PKRpPAKxyDkfn9IcU=
+	b=ts33+vkAa6sj+Eyj5fnFOZeKU9/Q4+7185j5v14winWG/ynASQNUCg8KPcWQGtwRF
+	 eCC1jU8HeG4A3VrQheqAbQsFNm9NR3jV4znmsaK77E8TacOUfY9nNbkw2dMxR3sEkY
+	 V3jahmLDPz/8qeYenGSuRVVMvqDdgtC8t70oZKso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Larabel <Michael@michaellarabel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 089/105] KVM: SVM: Set/clear SRSOs BP_SPEC_REDUCE on 0 <=> 1 VM count transitions
-Date: Mon, 22 Sep 2025 21:30:12 +0200
-Message-ID: <20250922192411.237774445@linuxfoundation.org>
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 113/149] ASoC: SDCA: Fix return value in sdca_regmap_mbq_size()
+Date: Mon, 22 Sep 2025 21:30:13 +0200
+Message-ID: <20250922192415.725755780@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit e3417ab75ab2e7dca6372a1bfa26b1be3ac5889e upstream.
+[ Upstream commit f81e63047600d023cbfda372b6de8f2821ff6839 ]
 
-Set the magic BP_SPEC_REDUCE bit to mitigate SRSO when running VMs if and
-only if KVM has at least one active VM.  Leaving the bit set at all times
-unfortunately degrades performance by a wee bit more than expected.
+The MBQ size function returns an integer representing the size of a
+Control. Currently if the Control is not found the function will return
+false which makes little sense. Correct this typo to return -EINVAL.
 
-Use a dedicated spinlock and counter instead of hooking virtualization
-enablement, as changing the behavior of kvm.enable_virt_at_load based on
-SRSO_BP_SPEC_REDUCE is painful, and has its own drawbacks, e.g. could
-result in performance issues for flows that are sensitive to VM creation
-latency.
-
-Defer setting BP_SPEC_REDUCE until VMRUN is imminent to avoid impacting
-performance on CPUs that aren't running VMs, e.g. if a setup is using
-housekeeping CPUs.  Setting BP_SPEC_REDUCE in task context, i.e. without
-blasting IPIs to all CPUs, also helps avoid serializing 1<=>N transitions
-without incurring a gross amount of complexity (see the Link for details
-on how ugly coordinating via IPIs gets).
-
-Link: https://lore.kernel.org/all/aBOnzNCngyS_pQIW@google.com
-Fixes: 8442df2b49ed ("x86/bugs: KVM: Add support for SRSO_MSR_FIX")
-Reported-by: Michael Larabel <Michael@michaellarabel.com>
-Closes: https://www.phoronix.com/review/linux-615-amd-regression
-Cc: Borislav Petkov <bp@alien8.de>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20250505180300.973137-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e3f7caf74b79 ("ASoC: SDCA: Add generic regmap SDCA helpers")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Message-ID: <20250820163717.1095846-2-ckeepax@opensource.cirrus.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |   71 ++++++++++++++++++++++++++++++++++++++++++++-----
- arch/x86/kvm/svm/svm.h |    2 +
- 2 files changed, 67 insertions(+), 6 deletions(-)
+ sound/soc/sdca/sdca_regmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -608,9 +608,6 @@ static void svm_disable_virtualization_c
- 	kvm_cpu_svm_disable();
+diff --git a/sound/soc/sdca/sdca_regmap.c b/sound/soc/sdca/sdca_regmap.c
+index c41c67c2204a4..ff1f8fe2a39bb 100644
+--- a/sound/soc/sdca/sdca_regmap.c
++++ b/sound/soc/sdca/sdca_regmap.c
+@@ -196,7 +196,7 @@ int sdca_regmap_mbq_size(struct sdca_function_data *function, unsigned int reg)
  
- 	amd_pmu_disable_virt();
--
--	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
--		msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
+ 	control = function_find_control(function, reg);
+ 	if (!control)
+-		return false;
++		return -EINVAL;
+ 
+ 	return clamp_val(control->nbits / BITS_PER_BYTE, sizeof(u8), sizeof(u32));
  }
- 
- static int svm_enable_virtualization_cpu(void)
-@@ -688,9 +685,6 @@ static int svm_enable_virtualization_cpu
- 		rdmsr(MSR_TSC_AUX, sev_es_host_save_area(sd)->tsc_aux, msr_hi);
- 	}
- 
--	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
--		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
--
- 	return 0;
- }
- 
-@@ -1513,6 +1507,63 @@ static void svm_vcpu_free(struct kvm_vcp
- 	__free_pages(virt_to_page(svm->msrpm), get_order(MSRPM_SIZE));
- }
- 
-+#ifdef CONFIG_CPU_MITIGATIONS
-+static DEFINE_SPINLOCK(srso_lock);
-+static atomic_t srso_nr_vms;
-+
-+static void svm_srso_clear_bp_spec_reduce(void *ign)
-+{
-+	struct svm_cpu_data *sd = this_cpu_ptr(&svm_data);
-+
-+	if (!sd->bp_spec_reduce_set)
-+		return;
-+
-+	msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
-+	sd->bp_spec_reduce_set = false;
-+}
-+
-+static void svm_srso_vm_destroy(void)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
-+		return;
-+
-+	if (atomic_dec_return(&srso_nr_vms))
-+		return;
-+
-+	guard(spinlock)(&srso_lock);
-+
-+	/*
-+	 * Verify a new VM didn't come along, acquire the lock, and increment
-+	 * the count before this task acquired the lock.
-+	 */
-+	if (atomic_read(&srso_nr_vms))
-+		return;
-+
-+	on_each_cpu(svm_srso_clear_bp_spec_reduce, NULL, 1);
-+}
-+
-+static void svm_srso_vm_init(void)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
-+		return;
-+
-+	/*
-+	 * Acquire the lock on 0 => 1 transitions to ensure a potential 1 => 0
-+	 * transition, i.e. destroying the last VM, is fully complete, e.g. so
-+	 * that a delayed IPI doesn't clear BP_SPEC_REDUCE after a vCPU runs.
-+	 */
-+	if (atomic_inc_not_zero(&srso_nr_vms))
-+		return;
-+
-+	guard(spinlock)(&srso_lock);
-+
-+	atomic_inc(&srso_nr_vms);
-+}
-+#else
-+static void svm_srso_vm_init(void) { }
-+static void svm_srso_vm_destroy(void) { }
-+#endif
-+
- static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
-@@ -1545,6 +1596,11 @@ static void svm_prepare_switch_to_guest(
- 	    (!boot_cpu_has(X86_FEATURE_V_TSC_AUX) || !sev_es_guest(vcpu->kvm)))
- 		kvm_set_user_return_msr(tsc_aux_uret_slot, svm->tsc_aux, -1ull);
- 
-+	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE) &&
-+	    !sd->bp_spec_reduce_set) {
-+		sd->bp_spec_reduce_set = true;
-+		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
-+	}
- 	svm->guest_state_loaded = true;
- }
- 
-@@ -5010,6 +5066,8 @@ static void svm_vm_destroy(struct kvm *k
- {
- 	avic_vm_destroy(kvm);
- 	sev_vm_destroy(kvm);
-+
-+	svm_srso_vm_destroy();
- }
- 
- static int svm_vm_init(struct kvm *kvm)
-@@ -5035,6 +5093,7 @@ static int svm_vm_init(struct kvm *kvm)
- 			return ret;
- 	}
- 
-+	svm_srso_vm_init();
- 	return 0;
- }
- 
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -335,6 +335,8 @@ struct svm_cpu_data {
- 	u32 next_asid;
- 	u32 min_asid;
- 
-+	bool bp_spec_reduce_set;
-+
- 	struct vmcb *save_area;
- 	unsigned long save_area_pa;
- 
+-- 
+2.51.0
+
 
 
 
