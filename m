@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-181369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778A2B93125
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4978AB92F7E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33E4B7AE342
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2062A8230
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E0B315D43;
-	Mon, 22 Sep 2025 19:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94644314A6A;
+	Mon, 22 Sep 2025 19:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUuWauk0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DA2DicpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EAA2F28F9;
-	Mon, 22 Sep 2025 19:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1522E285C;
+	Mon, 22 Sep 2025 19:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570370; cv=none; b=BsbSEBrdzlGqgnNp/9UpHpcp6N0Dq6ZfkJTaMI+wK9Swnmj1g01NDrpVXn619s0ZHm0vZ1P+oLS0Y1cJuGoufjiuChLHXesb1C7WjN+wmWv1yMQrpTABi3/GZ0tC4M5bsrJJrfO3dYovSeBlSQCSQVa252MS6YD+OtxrFrcXwPo=
+	t=1758570040; cv=none; b=jGcleYCdaA3tiQgyunLYO1H9iQYDGWJfNldGEfskdl4td2vVUZCK1TfMPQPhXAqEisGDsCU8j0fXY5bHxLk/pvvkYwQO+Xdz7IO8E1a0TeE64p0GzMh+h5k3wuQxNZRfEuBKFAMGIpqrWCgno6OamN6rVL333LfGedzPB+JU56w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570370; c=relaxed/simple;
-	bh=TXWbr2+raW5r44R1TfE0BjxNKjoDhZLe+4+J+JXZFxA=;
+	s=arc-20240116; t=1758570040; c=relaxed/simple;
+	bh=yuFs4WU2xKxQDqXKjB9YUJ11LzfN59D3vIsw0Jr17Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFh4tFvyMsY2tDCKTFY7s5dSCpQgYwIA/W8gsoEL2XL1REjtquaqWPkherfnjWvSGmJ5KWGSZRoSkpwn3VNVnIggDWQWgUdd9IrvJqh3zSIT9BPyMDLVQc0g0HK7ivwLFvcH5IZKOompfXyOvMEAsvCVL24nX27yA6ZPf1aFozQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUuWauk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F568C4CEF0;
-	Mon, 22 Sep 2025 19:46:09 +0000 (UTC)
+	 MIME-Version; b=hXH16OlP2Kig3FLp3Dj48Y2Ro6TUmmDfB9HH1l0X4WOMItl4kk2Q0lazB/93SdiwHNEe5kf9TxAy8T/3+f8DWygKZRMmG9H3+LxZSKNZMsKGihBgqC4vMFR9AbC+pGj2swMNMzj0dZrpVe5cjVJ7/5qo0KnbiGku1mdtT5qbsdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DA2DicpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627BCC4CEF5;
+	Mon, 22 Sep 2025 19:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570369;
-	bh=TXWbr2+raW5r44R1TfE0BjxNKjoDhZLe+4+J+JXZFxA=;
+	s=korg; t=1758570039;
+	bh=yuFs4WU2xKxQDqXKjB9YUJ11LzfN59D3vIsw0Jr17Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUuWauk0HrmsO86k/kIfKJNqppd0pNdRT7P3NIfzaiOON0RSWE7pU5KNBvu2X3of/
-	 FI5rnGroNmlf3G94e88hMnRmDIxLUGCiIkNH6hUWXIG6BVhSpiEkC+moqJf/8uikzg
-	 SYQBevWhLv4O16SEQ2Uw+w5RVD9hrJjy2La50iQI=
+	b=DA2DicpYaJ8eUSfRfFWkTXKxtMR7VNXrJ7mJen/WZ4aTm+zAvaUZ/hJV6lkmYGIKA
+	 CzXW5KOlzdbR5P7VBW+dUJMjBc5JXQaFKK+IxVBF8n3XmhtkKyU89gvkR2ukO4c0cV
+	 0qDUk6AG7VhFFhl/iaFiR5coBTYJtnHD/4FXWmwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 6.16 122/149] ALSA: usb: qcom: Fix false-positive address space check
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.12 099/105] minmax.h: add whitespace around operators and after commas
 Date: Mon, 22 Sep 2025 21:30:22 +0200
-Message-ID: <20250922192415.951488214@linuxfoundation.org>
+Message-ID: <20250922192411.464650300@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,212 +72,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 44499ecb4f2817743c37d861bdb3e95f37d3d9cd ]
+[ Upstream commit 71ee9b16251ea4bf7c1fe222517c82bdb3220acc ]
 
-The sanity check previously added to uaudio_transfer_buffer_setup()
-assumed the allocated buffer being linear-mapped.  But the buffer
-allocated via usb_alloc_coherent() isn't always so, rather to be used
-with (SG-)DMA API.  This leaded to a false-positive warning and the
-driver failed to work.
+Patch series "minmax.h: Cleanups and minor optimisations".
 
-Actually uaudio_transfer_buffer_setup() deals only with the DMA-API
-addresses for MEM_XFER_BUF type, while other callers of
-uaudio_iommu_map() are with pages with physical addresses for
-MEM_EVENT_RING and MEM_XFER_RING types.  So this patch splits the
-mapping helper function to two different ones, uaudio_iommu_map() for
-the DMA pages and uaudio_iommu_map_pa() for the latter, in order to
-handle mapping differently for each type.  Along with it, the
-unnecessary address check that caused probe error is dropped, too.
+Some tidyups and minor changes to minmax.h.
 
-Fixes: 3335a1bbd624 ("ALSA: qc_audio_offload: try to reduce address space confusion")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Reported-and-tested-by: Luca Weiss <luca.weiss@fairphone.com>
-Closes: https://lore.kernel.org/DBR2363A95M1.L9XBNC003490@fairphone.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch (of 7):
+
+Link: https://lkml.kernel.org/r/c50365d214e04f9ba256d417c8bebbc0@AcuMS.aculab.com
+Link: https://lkml.kernel.org/r/f04b2e1310244f62826267346fde0553@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/qcom/qc_audio_offload.c | 92 ++++++++++++++++---------------
- 1 file changed, 48 insertions(+), 44 deletions(-)
+ include/linux/minmax.h |   34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audio_offload.c
-index a25c5a5316901..9ad76fff741b8 100644
---- a/sound/usb/qcom/qc_audio_offload.c
-+++ b/sound/usb/qcom/qc_audio_offload.c
-@@ -538,38 +538,33 @@ static void uaudio_iommu_unmap(enum mem_type mtype, unsigned long iova,
- 			umap_size, iova, mapped_iova_size);
- }
- 
-+static int uaudio_iommu_map_prot(bool dma_coherent)
-+{
-+	int prot = IOMMU_READ | IOMMU_WRITE;
-+
-+	if (dma_coherent)
-+		prot |= IOMMU_CACHE;
-+	return prot;
-+}
-+
- /**
-- * uaudio_iommu_map() - maps iommu memory for adsp
-+ * uaudio_iommu_map_pa() - maps iommu memory for adsp
-  * @mtype: ring type
-  * @dma_coherent: dma coherent
-  * @pa: physical address for ring/buffer
-  * @size: size of memory region
-- * @sgt: sg table for memory region
-  *
-  * Maps the XHCI related resources to a memory region that is assigned to be
-  * used by the adsp.  This will be mapped to the domain, which is created by
-  * the ASoC USB backend driver.
-  *
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -51,10 +51,10 @@
+  * only need to be careful to not cause warnings for
+  * pointer use.
   */
--static unsigned long uaudio_iommu_map(enum mem_type mtype, bool dma_coherent,
--				      phys_addr_t pa, size_t size,
--				      struct sg_table *sgt)
-+static unsigned long uaudio_iommu_map_pa(enum mem_type mtype, bool dma_coherent,
-+					 phys_addr_t pa, size_t size)
- {
--	struct scatterlist *sg;
- 	unsigned long iova = 0;
--	size_t total_len = 0;
--	unsigned long iova_sg;
--	phys_addr_t pa_sg;
- 	bool map = true;
--	size_t sg_len;
--	int prot;
--	int ret;
--	int i;
--
--	prot = IOMMU_READ | IOMMU_WRITE;
--
--	if (dma_coherent)
--		prot |= IOMMU_CACHE;
-+	int prot = uaudio_iommu_map_prot(dma_coherent);
+-#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
+-#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
+-#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
+-	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
++#define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
++#define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
++#define __sign_use(x, ux) (is_signed_type(typeof(ux)) ? \
++	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
  
- 	switch (mtype) {
- 	case MEM_EVENT_RING:
-@@ -583,20 +578,41 @@ static unsigned long uaudio_iommu_map(enum mem_type mtype, bool dma_coherent,
- 				     &uaudio_qdev->xfer_ring_iova_size,
- 				     &uaudio_qdev->xfer_ring_list, size);
- 		break;
--	case MEM_XFER_BUF:
--		iova = uaudio_get_iova(&uaudio_qdev->curr_xfer_buf_iova,
--				     &uaudio_qdev->xfer_buf_iova_size,
--				     &uaudio_qdev->xfer_buf_list, size);
--		break;
- 	default:
- 		dev_err(uaudio_qdev->data->dev, "unknown mem type %d\n", mtype);
- 	}
+ /*
+  * To avoid warnings about casting pointers to integers
+@@ -74,15 +74,15 @@
+ #ifdef CONFIG_64BIT
+   #define __signed_type(ux) long
+ #else
+-  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
++  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
+ #endif
+-#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
++#define __is_nonneg(x, ux) statically_true((__signed_type(ux))(x) >= 0)
  
- 	if (!iova || !map)
--		goto done;
-+		return 0;
-+
-+	iommu_map(uaudio_qdev->data->domain, iova, pa, size, prot, GFP_KERNEL);
+-#define __types_ok(x,y,ux,uy) \
+-	(__sign_use(x,ux) & __sign_use(y,uy))
++#define __types_ok(x, y, ux, uy) \
++	(__sign_use(x, ux) & __sign_use(y, uy))
  
--	if (!sgt)
--		goto skip_sgt_map;
-+	return iova;
-+}
-+
-+static unsigned long uaudio_iommu_map_xfer_buf(bool dma_coherent, size_t size,
-+					       struct sg_table *sgt)
-+{
-+	struct scatterlist *sg;
-+	unsigned long iova = 0;
-+	size_t total_len = 0;
-+	unsigned long iova_sg;
-+	phys_addr_t pa_sg;
-+	size_t sg_len;
-+	int prot = uaudio_iommu_map_prot(dma_coherent);
-+	int ret;
-+	int i;
-+
-+	prot = IOMMU_READ | IOMMU_WRITE;
-+
-+	if (dma_coherent)
-+		prot |= IOMMU_CACHE;
-+
-+	iova = uaudio_get_iova(&uaudio_qdev->curr_xfer_buf_iova,
-+			       &uaudio_qdev->xfer_buf_iova_size,
-+			       &uaudio_qdev->xfer_buf_list, size);
-+	if (!iova)
-+		goto done;
+-#define __types_ok3(x,y,z,ux,uy,uz) \
+-	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
++#define __types_ok3(x, y, z, ux, uy, uz) \
++	(__sign_use(x, ux) & __sign_use(y, uy) & __sign_use(z, uz))
  
- 	iova_sg = iova;
- 	for_each_sg(sgt->sgl, sg, sgt->nents, i) {
-@@ -618,11 +634,6 @@ static unsigned long uaudio_iommu_map(enum mem_type mtype, bool dma_coherent,
- 		uaudio_iommu_unmap(MEM_XFER_BUF, iova, size, total_len);
- 		iova = 0;
- 	}
--	return iova;
--
--skip_sgt_map:
--	iommu_map(uaudio_qdev->data->domain, iova, pa, size, prot, GFP_KERNEL);
--
- done:
- 	return iova;
- }
-@@ -1020,7 +1031,6 @@ static int uaudio_transfer_buffer_setup(struct snd_usb_substream *subs,
- 	struct sg_table xfer_buf_sgt;
- 	dma_addr_t xfer_buf_dma;
- 	void *xfer_buf;
--	phys_addr_t xfer_buf_pa;
- 	u32 len = xfer_buf_len;
- 	bool dma_coherent;
- 	dma_addr_t xfer_buf_dma_sysdev;
-@@ -1051,18 +1061,12 @@ static int uaudio_transfer_buffer_setup(struct snd_usb_substream *subs,
- 	if (!xfer_buf)
- 		return -ENOMEM;
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -97,7 +97,7 @@
  
--	/* Remapping is not possible if xfer_buf is outside of linear map */
--	xfer_buf_pa = virt_to_phys(xfer_buf);
--	if (WARN_ON(!page_is_ram(PFN_DOWN(xfer_buf_pa)))) {
--		ret = -ENXIO;
--		goto unmap_sync;
--	}
- 	dma_get_sgtable(subs->dev->bus->sysdev, &xfer_buf_sgt, xfer_buf,
- 			xfer_buf_dma, len);
+ #define __careful_cmp_once(op, x, y, ux, uy) ({		\
+ 	__auto_type ux = (x); __auto_type uy = (y);	\
+-	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
++	BUILD_BUG_ON_MSG(!__types_ok(x, y, ux, uy),	\
+ 		#op"("#x", "#y") signedness error");	\
+ 	__cmp(op, ux, uy); })
  
- 	/* map the physical buffer into sysdev as well */
--	xfer_buf_dma_sysdev = uaudio_iommu_map(MEM_XFER_BUF, dma_coherent,
--					       xfer_buf_pa, len, &xfer_buf_sgt);
-+	xfer_buf_dma_sysdev = uaudio_iommu_map_xfer_buf(dma_coherent,
-+							len, &xfer_buf_sgt);
- 	if (!xfer_buf_dma_sysdev) {
- 		ret = -ENOMEM;
- 		goto unmap_sync;
-@@ -1143,8 +1147,8 @@ uaudio_endpoint_setup(struct snd_usb_substream *subs,
- 	sg_free_table(sgt);
+@@ -114,7 +114,7 @@
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
++	BUILD_BUG_ON_MSG(!__types_ok3(val, lo, hi, uval, ulo, uhi),		\
+ 		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
  
- 	/* data transfer ring */
--	iova = uaudio_iommu_map(MEM_XFER_RING, dma_coherent, tr_pa,
--			      PAGE_SIZE, NULL);
-+	iova = uaudio_iommu_map_pa(MEM_XFER_RING, dma_coherent, tr_pa,
-+				   PAGE_SIZE);
- 	if (!iova) {
- 		ret = -ENOMEM;
- 		goto clear_pa;
-@@ -1207,8 +1211,8 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
- 	mem_info->dma = sg_dma_address(sgt->sgl);
- 	sg_free_table(sgt);
+@@ -154,7 +154,7 @@
  
--	iova = uaudio_iommu_map(MEM_EVENT_RING, dma_coherent, er_pa,
--			      PAGE_SIZE, NULL);
-+	iova = uaudio_iommu_map_pa(MEM_EVENT_RING, dma_coherent, er_pa,
-+				   PAGE_SIZE);
- 	if (!iova) {
- 		ret = -ENOMEM;
- 		goto clear_pa;
--- 
-2.51.0
-
+ #define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
+ 	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
+-	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
++	BUILD_BUG_ON_MSG(!__types_ok3(x, y, z, ux, uy, uz),		\
+ 		#op"3("#x", "#y", "#z") signedness error");		\
+ 	__cmp(op, ux, __cmp(op, uy, uz)); })
+ 
+@@ -326,9 +326,9 @@ static inline bool in_range32(u32 val, u
+  * Use these carefully: no type checking, and uses the arguments
+  * multiple times. Use for obvious constants only.
+  */
+-#define MIN(a,b) __cmp(min,a,b)
+-#define MAX(a,b) __cmp(max,a,b)
+-#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
+-#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
++#define MIN(a, b) __cmp(min, a, b)
++#define MAX(a, b) __cmp(max, a, b)
++#define MIN_T(type, a, b) __cmp(min, (type)(a), (type)(b))
++#define MAX_T(type, a, b) __cmp(max, (type)(a), (type)(b))
+ 
+ #endif	/* _LINUX_MINMAX_H */
 
 
 
