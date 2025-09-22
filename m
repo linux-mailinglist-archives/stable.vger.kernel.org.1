@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8CCB92E2A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC3CB93149
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B9DB16F6EA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0607D3A98CB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217912F0C5E;
-	Mon, 22 Sep 2025 19:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79D62E765E;
+	Mon, 22 Sep 2025 19:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frLyq8Ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzfDs0h8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D1C27B320;
-	Mon, 22 Sep 2025 19:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C562F49E3;
+	Mon, 22 Sep 2025 19:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569804; cv=none; b=t7tGIYyIMu8GcBXfav9dpRC3wZWQUxH7miiOhdg2/UQbURAIl4ZwDyOZHsTmLdZ/bjpeM8xROVs+SvyeSI8Dlr8adOWH/ZZQXOE5zB8aJq3iI/rx2D8Iv1GcKwyVTGHMUQ/Iiz0Ft7jWhBKKh0PEwt8CU5g5V5hnh60tZqShhDg=
+	t=1758570352; cv=none; b=iy7e45YK72WwpKhESYZiIHEcYaGPrUGAeB8BESpIPE5gN0z2yNGK6IjmZIOIcEtieZpfvGAzNu5UB0I8StMWhkDBrBUYDyaxyoLbbuvJHKvqICgX2MMx04bLLZ02/8QCHNkFHMAJRTZvqkAG0Jf9PyoRF1FeJvfQq8l2kJgIQF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569804; c=relaxed/simple;
-	bh=J4sDDASNib1DGiyfwOplGalAALzXvwhuz42TXppVFCo=;
+	s=arc-20240116; t=1758570352; c=relaxed/simple;
+	bh=zjWarqywUWDeAspNy0K9fTI7N/rjtwbEqygH9Oezvz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cc7nmP0ab5gMZe2UxKCLzzlq3PtWJkl2Xu7iXLdgCRV3TBr0I8mpnBPiZ0o4o9YMUTwEnd9jZDUlPItg3zoes3FS0/1ykOgEG4/Ketv9i7O6dymzD89c0PBwmg0AI8eeGR+j52+J+dlhoqCdgv/ThLz3EqtE2SFcqfz79CVEZcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frLyq8Ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EB2C4CEF0;
-	Mon, 22 Sep 2025 19:36:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NAq3SQ2OBfXgxtcaJADjTcDPC/54CrKKkqL4OhkRQwXJCLy0C5rJujlSgyEHtqqjgJ4VQQ6tKOqDIKd0S/g//BkJZt0ohg1noz6xV2yh1mDKEzN+O/K8yQ0BgKznSpDdPQcLYGZYxOUAfSKh2IBk0UU8bYZ1kIBUXJGFObtubO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzfDs0h8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D0AC4AF09;
+	Mon, 22 Sep 2025 19:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569804;
-	bh=J4sDDASNib1DGiyfwOplGalAALzXvwhuz42TXppVFCo=;
+	s=korg; t=1758570352;
+	bh=zjWarqywUWDeAspNy0K9fTI7N/rjtwbEqygH9Oezvz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frLyq8OkES43QyOcjgdUvS1Ixyv0OM8prp4BY4C4/NjRXcYdSazZUsntrBET7Z0BH
-	 Kf1yLTOhOpthXI1k0Wp9WslwYK9P03yhlHfWj9D2F6e1iI3LlGCqk1lvNt9XEc9G3N
-	 IlSsBEw0qD3qR3dhys21idXjo57e9NI5LiDLelUc=
+	b=yzfDs0h8rse8ospQCvcWmSUfAxwiBZZRSCt8/eZtFP3bLuOK5QIuapiJQI87IOgqv
+	 5rkHVGZMZPxVKLRJ+Rvvi2NguR+Dt3eOuxV4e1XXTDrqgIE5vbuyftaEhdbVHGB7Gb
+	 OtCjfSGp6RnRMwNABQWW/zN+dzJhgYUsaoz90cPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 63/70] xhci: dbc: Fix full DbC transfer ring after several reconnects
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 103/149] rds: ib: Increment i_fastreg_wrs before bailing out
 Date: Mon, 22 Sep 2025 21:30:03 +0200
-Message-ID: <20250922192406.295583832@linuxfoundation.org>
+Message-ID: <20250922192415.481702777@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,94 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-[ Upstream commit a5c98e8b1398534ae1feb6e95e2d3ee5215538ed ]
+commit 4351ca3fcb3ffecf12631b4996bf085a2dad0db6 upstream.
 
-Pending requests will be flushed on disconnect, and the corresponding
-TRBs will be turned into No-op TRBs, which are ignored by the xHC
-controller once it starts processing the ring.
+We need to increment i_fastreg_wrs before we bail out from
+rds_ib_post_reg_frmr().
 
-If the USB debug cable repeatedly disconnects before ring is started
-then the ring will eventually be filled with No-op TRBs.
-No new transfers can be queued when the ring is full, and driver will
-print the following error message:
+We have a fixed budget of how many FRWR operations that can be
+outstanding using the dedicated QP used for memory registrations and
+de-registrations. This budget is enforced by the atomic_t
+i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
+"leak" the possibility of posting an FRWR operation, and if that
+accumulates, no FRWR operation can be carried out.
 
-    "xhci_hcd 0000:00:14.0: failed to queue trbs"
-
-This is a normal case for 'in' transfers where TRBs are always enqueued
-in advance, ready to take on incoming data. If no data arrives, and
-device is disconnected, then ring dequeue will remain at beginning of
-the ring while enqueue points to first free TRB after last cancelled
-No-op TRB.
-s
-Solve this by reinitializing the rings when the debug cable disconnects
-and DbC is leaving the configured state.
-Clear the whole ring buffer and set enqueue and dequeue to the beginning
-of ring, and set cycle bit to its initial state.
-
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
 Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
+Link: https://patch.msgid.link/20250911133336.451212-1-haakon.bugge@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ net/rds/ib_frmr.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -447,6 +447,25 @@ static void xhci_dbc_ring_init(struct xh
- 	xhci_initialize_ring_info(ring, 1);
- }
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct r
  
-+static int xhci_dbc_reinit_ep_rings(struct xhci_dbc *dbc)
-+{
-+	struct xhci_ring *in_ring = dbc->eps[BULK_IN].ring;
-+	struct xhci_ring *out_ring = dbc->eps[BULK_OUT].ring;
-+
-+	if (!in_ring || !out_ring || !dbc->ctx) {
-+		dev_warn(dbc->dev, "Can't re-init unallocated endpoints\n");
-+		return -ENODEV;
+ 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
+ 				&off, PAGE_SIZE);
+-	if (unlikely(ret != ibmr->sg_dma_len))
+-		return ret < 0 ? ret : -EINVAL;
++	if (unlikely(ret != ibmr->sg_dma_len)) {
++		ret = ret < 0 ? ret : -EINVAL;
++		goto out_inc;
 +	}
-+
-+	xhci_dbc_ring_init(in_ring);
-+	xhci_dbc_ring_init(out_ring);
-+
-+	/* set ep context enqueue, dequeue, and cycle to initial values */
-+	xhci_dbc_init_ep_contexts(dbc);
-+
-+	return 0;
-+}
-+
- static struct xhci_ring *
- xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
- {
-@@ -871,7 +890,7 @@ static enum evtreturn xhci_dbc_do_handle
- 			dev_info(dbc->dev, "DbC cable unplugged\n");
- 			dbc->state = DS_ENABLED;
- 			xhci_dbc_flush_requests(dbc);
--
-+			xhci_dbc_reinit_ep_rings(dbc);
- 			return EVT_DISC;
- 		}
  
-@@ -881,7 +900,7 @@ static enum evtreturn xhci_dbc_do_handle
- 			writel(portsc, &dbc->regs->portsc);
- 			dbc->state = DS_ENABLED;
- 			xhci_dbc_flush_requests(dbc);
--
-+			xhci_dbc_reinit_ep_rings(dbc);
- 			return EVT_DISC;
- 		}
+-	if (cmpxchg(&frmr->fr_state,
+-		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
+-		return -EBUSY;
++	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
++		ret = -EBUSY;
++		goto out_inc;
++	}
+ 
+ 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
+ 
+@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 		/* Failure here can be because of -ENOMEM as well */
+ 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
+ 
+-		atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 		if (printk_ratelimit())
+ 			pr_warn("RDS/IB: %s returned error(%d)\n",
+ 				__func__, ret);
+-		goto out;
++		goto out_inc;
+ 	}
+ 
+ 	/* Wait for the registration to complete in order to prevent an invalid
+@@ -179,8 +181,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 	 */
+ 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
+ 
+-out:
++	return ret;
+ 
++out_inc:
++	atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 	return ret;
+ }
  
 
 
