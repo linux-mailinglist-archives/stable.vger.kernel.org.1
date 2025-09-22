@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-181203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0205B92EF9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837E6B92DC7
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25680447ABA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3F62A7559
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1102F2910;
-	Mon, 22 Sep 2025 19:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159EB27FB2D;
+	Mon, 22 Sep 2025 19:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiNxmXnt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYK6jMJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A112E285C;
-	Mon, 22 Sep 2025 19:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ECC1FDA89;
+	Mon, 22 Sep 2025 19:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569946; cv=none; b=f7/ngnhRmn+uUaVMzY6DRcb+swgCHvCtIWZXcPhiqX+MJa09wnO5+hL2PB++VE6ZUg78/TWp0Zvx/03UQYgP/DpavyCUNwqSPkhJyfPNHIvzuRdW2AaFJ/a9am64vt6QXyFCk+Lc993AV3JEsQoITGZi+tjVb/YE09tCnThZZ8I=
+	t=1758569727; cv=none; b=sbbEPYHdtjnggsihxde5s3CfNYLFj82HCC5j+7tfgfNTEm+Z/3FHRZV6/PCdZD7Yy6tPFZZ7fqjZ+Hfiykanzafxhh0MRLFZujluJZG6vHjKXPk98LKGM7rzOSrpGAio7hScTk3d231+5VRQ4SGrg0y3azVD7/S8rr8DzzFv9Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569946; c=relaxed/simple;
-	bh=azBgL02JVSHYiF0RzpkUUu0allSAduv3qHHApN7uQ9k=;
+	s=arc-20240116; t=1758569727; c=relaxed/simple;
+	bh=MKIdmqTMbpv6dKcnEuo5pR94u7BxEI0NrWbvKEeskic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=erZT3U/eMvrsxSgZc8sOdft/g3qOIQ2oyuGklrS+K1RTOpDGd/3AJIGosoxZ8qDnnVx61MzO65+CHXuwVZDB6eNXVUAmnO7/FJzdOu5lvrg9d+FlAL9q3EZzBiENSLW4k3y2q9gfPdPnDqhqM3nsHTWDQ2pMmvafaqY+QpXISE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiNxmXnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7952C4CEF0;
-	Mon, 22 Sep 2025 19:39:05 +0000 (UTC)
+	 MIME-Version; b=qxpZHG42GQcYy5MYhPl36Zvg3oBgLsUgY6qWd7U/yLHKLgsGN8fkBGO4OLvCZmRjXUfYJ4eK6mFJ0tPxPl4M8SOnRRIVrLjiMfJ0afQ0fOXP3sqXvbCXGkCBYr7qeDGiY3kf/51HwCAfeRLt+6ez7VB+GCadMT1J5g+1394YPIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYK6jMJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0E0C4CEF0;
+	Mon, 22 Sep 2025 19:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569946;
-	bh=azBgL02JVSHYiF0RzpkUUu0allSAduv3qHHApN7uQ9k=;
+	s=korg; t=1758569727;
+	bh=MKIdmqTMbpv6dKcnEuo5pR94u7BxEI0NrWbvKEeskic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YiNxmXntiptafkrzFEAE/+4El41sq82tsfU46PmoqHEq1BWh2RTw5CNlmUiEpugsD
-	 cFdJhkQ5T93XcJSMTY2l572MM4S+lyYsu4RSPtykgqIUHtpKLfd8NYCLJL9QZDuCug
-	 5NlYgPpeQbj6V/LmIQeRiLsuvusDIB/rp25jy0yU=
+	b=xYK6jMJ8i1V9gogQBLCcmbK6P2Dg+NeCtlnpem5RpF8kux8Kmh3Kb98KbqXgARCLf
+	 WMQNpAYknt9L8+qf/RVe2ARk6+AFUwRS/ZKQcxzUEcK5+yb5e9/dzNs8FQRkAqq0OU
+	 hk16z174r1YY9mYrzOjoXj9y77kfh/dx+55Y7bxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Koira <eugkoira@amazon.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 051/105] iommu/vt-d: Fix __domain_mapping()s usage of switch_to_super_page()
+	Tao Cui <cuitao@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 34/70] LoongArch: Check the return value when creating kobj
 Date: Mon, 22 Sep 2025 21:29:34 +0200
-Message-ID: <20250922192410.251319210@linuxfoundation.org>
+Message-ID: <20250922192405.521818108@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Koira <eugkoira@amazon.com>
+From: Tao Cui <cuitao@kylinos.cn>
 
-commit dce043c07ca1ac19cfbe2844a6dc71e35c322353 upstream.
+commit 51adb03e6b865c0c6790f29659ff52d56742de2e upstream.
 
-switch_to_super_page() assumes the memory range it's working on is aligned
-to the target large page level. Unfortunately, __domain_mapping() doesn't
-take this into account when using it, and will pass unaligned ranges
-ultimately freeing a PTE range larger than expected.
+Add a check for the return value of kobject_create_and_add(), to ensure
+that the kobj allocation succeeds for later use.
 
-Take for example a mapping with the following iov_pfn range [0x3fe400,
-0x4c0600), which should be backed by the following mappings:
-
-   iov_pfn [0x3fe400, 0x3fffff] covered by 2MiB pages
-   iov_pfn [0x400000, 0x4bffff] covered by 1GiB pages
-   iov_pfn [0x4c0000, 0x4c05ff] covered by 2MiB pages
-
-Under this circumstance, __domain_mapping() will pass [0x400000, 0x4c05ff]
-to switch_to_super_page() at a 1 GiB granularity, which will in turn
-free PTEs all the way to iov_pfn 0x4fffff.
-
-Mitigate this by rounding down the iov_pfn range passed to
-switch_to_super_page() in __domain_mapping()
-to the target large page level.
-
-Additionally add range alignment checks to switch_to_super_page.
-
-Fixes: 9906b9352a35 ("iommu/vt-d: Avoid duplicate removing in __domain_mapping()")
-Signed-off-by: Eugene Koira <eugkoira@amazon.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://lore.kernel.org/r/20250826143816.38686-1-eugkoira@amazon.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/env.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -1768,6 +1768,10 @@ static void switch_to_super_page(struct
- 	unsigned long lvl_pages = lvl_to_nr_pages(level);
- 	struct dma_pte *pte = NULL;
+--- a/arch/loongarch/kernel/env.c
++++ b/arch/loongarch/kernel/env.c
+@@ -72,6 +72,8 @@ static int __init boardinfo_init(void)
+ 	struct kobject *loongson_kobj;
  
-+	if (WARN_ON(!IS_ALIGNED(start_pfn, lvl_pages) ||
-+		    !IS_ALIGNED(end_pfn + 1, lvl_pages)))
-+		return;
-+
- 	while (start_pfn <= end_pfn) {
- 		if (!pte)
- 			pte = pfn_to_dma_pte(domain, start_pfn, &level,
-@@ -1844,7 +1848,8 @@ __domain_mapping(struct dmar_domain *dom
- 				unsigned long pages_to_remove;
+ 	loongson_kobj = kobject_create_and_add("loongson", firmware_kobj);
++	if (!loongson_kobj)
++		return -ENOMEM;
  
- 				pteval |= DMA_PTE_LARGE_PAGE;
--				pages_to_remove = min_t(unsigned long, nr_pages,
-+				pages_to_remove = min_t(unsigned long,
-+							round_down(nr_pages, lvl_pages),
- 							nr_pte_to_next_page(pte) * lvl_pages);
- 				end_pfn = iov_pfn + pages_to_remove - 1;
- 				switch_to_super_page(domain, iov_pfn, end_pfn, largepage_lvl);
+ 	return sysfs_create_file(loongson_kobj, &boardinfo_attr.attr);
+ }
 
 
 
