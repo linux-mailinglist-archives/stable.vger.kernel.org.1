@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-181015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F610B92A32
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 20:45:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF596B92A23
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 20:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27A3A7A792C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 18:43:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B822B4E2911
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 18:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9440E31A550;
-	Mon, 22 Sep 2025 18:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2DB31A569;
+	Mon, 22 Sep 2025 18:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWYj8cuw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAy6cHdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFC831A072;
-	Mon, 22 Sep 2025 18:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F080A31A55C
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 18:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758566695; cv=none; b=jXHWa4SBzoqeimVEMts1fo+HI0d+deppSd0THFyKe9VaSaZPT+83EPOZT34z0badRPUrT9z9tclmMFJ1MTy37gv1cvqTDNt9K4ACkEzRGggr0zUReGl6pDz/bux0aOAEzNRKlgfHcbWQOFIp3FpaR14ISEHG7rgzNnMro1R4mQU=
+	t=1758566696; cv=none; b=MHZKnBablBO3Kck1BzEKdBt2dKPzg1JRZNF+O6KKYPqOEtWsT7sHQJsJUiJshgdDAhvHgqDQFfkLRVlRrm8VbgXhJ606DPoEkvEQgjM5s96JVhGCp3SdcX6ZD22AkjDG5tb/8zx4zhSNQ/WOmdB1/Da6vSxbblqpWvOUeb1jc+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758566695; c=relaxed/simple;
-	bh=nDihmTHN0i+Udss+eRUPYurGFwIdLxD8LvfaHe21yig=;
+	s=arc-20240116; t=1758566696; c=relaxed/simple;
+	bh=eG9k2p/nPod4HW6UYyx4PZ5iKt/Mekb6gK3vgGV1yZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVRF89Ti7hIhIvfhpQFxtXfPbE/hMHGLw3WuAGAbXsfNGnPeuSSfNhl8kNqZY85p55laDT1Exq4EMzbgjlOZ+TWIRXHqzNSgOpQXFT0ztDYwPCxcHf31qLKxdLKTttMz0VGalET6w2r1cWF8Y+5zTlgyFQuZj0qw8DJ+G7S1BdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWYj8cuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A29C4CEF0;
-	Mon, 22 Sep 2025 18:44:53 +0000 (UTC)
+	 MIME-Version; b=QzUy/Bl5iXshUNdDCMJMRjZFl97g/Z9psH/jkETn6Wed/wk2rEbNirkooZQ6epmMBtJ5pAER8lOYtsZBelwv7z6WStBnE7OyxwKVUSASHQhRO990u7ScxuPvhGZ190wMICiZPelUEb/PVmMQjELYlcjusuOxgKmtet3RZkk9UFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAy6cHdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125D3C4CEF7;
+	Mon, 22 Sep 2025 18:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758566694;
-	bh=nDihmTHN0i+Udss+eRUPYurGFwIdLxD8LvfaHe21yig=;
+	s=k20201202; t=1758566695;
+	bh=eG9k2p/nPod4HW6UYyx4PZ5iKt/Mekb6gK3vgGV1yZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWYj8cuwziAItxd6hvXp1sEsLX9ovM4ff61s/AxjQvDBOKHvx5XU+t07zoihLY2Hm
-	 EWMAGSKWQ6Eg0b1gCCNGZMCt1FTiDz3mQEGPXBYo7XX/Fs6I3295l9aU6MuHObzOkA
-	 7AyweoMw5kNCNmx27aMUiuQrlLFkJ20bCDl6T3/dm2S/uAu9VnGG3ioqgN4Qw7pDad
-	 EJQKtUCJxUZi7gNXeYyv1OXjYBqirLkKyFMz8UH5GwkKtc3i3fJl3P/q+OrtQiQVz6
-	 mdAC6A/KctKxaB1m0+/Nurn3rNLg5XPjjyHoDD9AzpvyV5w2dLxKq+Xs+hW1qWtYlO
-	 8/3G/U7Bov8eQ==
+	b=jAy6cHdlRYOiSyDV2kdh12B4ti/1IcfulNsJ73RdfWrPEjcU9z5O1RZJ7P6k6yQte
+	 5zyZd2UyELsRkwFudb1+qZoeuaeq3dY/9Q//cYtl14YBqsqdXJqZGI3LJkllJFFxjV
+	 vFO38fBTqUmONlxk2wFptDdQTSq3vVb4Ax9DoTH3b9WFkrN7o1l/83t3H/9O7pz6ty
+	 VhSMyY6cfrFRtt63fD9hLRQDXVWUoz4G0B2BK5lpOHd/CKi5m7CZLgUz/o+nUjcY6w
+	 vVKjrBfSuaMrpWFjzhX/ctc4ku8ZNerxvjpDWrOXHZCfpGocXUsPmHPWdaHEjAfept
+	 op1uCtO2+gLiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-crypto@vger.kernel.org,
-	netdev@vger.kernel.org,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] crypto: af_alg: Convert af_alg_sendpage() to use MSG_SPLICE_PAGES
-Date: Mon, 22 Sep 2025 14:44:48 -0400
-Message-ID: <20250922184449.3864288-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
+Date: Mon, 22 Sep 2025 14:44:49 -0400
+Message-ID: <20250922184449.3864288-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025092107-making-cough-9671@gregkh>
+In-Reply-To: <20250922184449.3864288-1-sashal@kernel.org>
 References: <2025092107-making-cough-9671@gregkh>
+ <20250922184449.3864288-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,98 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Howells <dhowells@redhat.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit fb800fa4c1f5aee1238267252e88a7837e645c02 ]
+[ Upstream commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 ]
 
-Convert af_alg_sendpage() to use sendmsg() with MSG_SPLICE_PAGES rather
-than directly splicing in the pages itself.
+Issuing two writes to the same af_alg socket is bogus as the
+data will be interleaved in an unpredictable fashion.  Furthermore,
+concurrent writes may create inconsistencies in the internal
+socket state.
 
-This allows ->sendpage() to be replaced by something that can handle
-multiple multipage folios in a single transaction.
+Disallow this by adding a new ctx->write field that indiciates
+exclusive ownership for writing.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Jens Axboe <axboe@kernel.dk>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: linux-crypto@vger.kernel.org
-cc: netdev@vger.kernel.org
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c | 52 ++++++++-----------------------------------------
- 1 file changed, 8 insertions(+), 44 deletions(-)
+ crypto/af_alg.c         |  7 +++++++
+ include/crypto/if_alg.h | 10 ++++++----
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index fef69d2a6b183..303225c674558 100644
+index 303225c674558..cd3f0a625fb19 100644
 --- a/crypto/af_alg.c
 +++ b/crypto/af_alg.c
-@@ -988,53 +988,17 @@ EXPORT_SYMBOL_GPL(af_alg_sendmsg);
- ssize_t af_alg_sendpage(struct socket *sock, struct page *page,
- 			int offset, size_t size, int flags)
- {
--	struct sock *sk = sock->sk;
--	struct alg_sock *ask = alg_sk(sk);
--	struct af_alg_ctx *ctx = ask->private;
--	struct af_alg_tsgl *sgl;
--	int err = -EINVAL;
-+	struct bio_vec bvec;
-+	struct msghdr msg = {
-+		.msg_flags = flags | MSG_SPLICE_PAGES,
-+	};
+@@ -859,6 +859,12 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	}
  
- 	if (flags & MSG_SENDPAGE_NOTLAST)
--		flags |= MSG_MORE;
--
--	lock_sock(sk);
--	if (!ctx->more && ctx->used)
--		goto unlock;
--
--	if (!size)
--		goto done;
--
--	if (!af_alg_writable(sk)) {
--		err = af_alg_wait_for_wmem(sk, flags);
--		if (err)
--			goto unlock;
--	}
--
--	err = af_alg_alloc_tsgl(sk);
--	if (err)
--		goto unlock;
--
--	ctx->merge = 0;
--	sgl = list_entry(ctx->tsgl_list.prev, struct af_alg_tsgl, list);
--
--	if (sgl->cur)
--		sg_unmark_end(sgl->sg + sgl->cur - 1);
--
--	sg_mark_end(sgl->sg + sgl->cur);
--
--	get_page(page);
--	sg_set_page(sgl->sg + sgl->cur, page, size, offset);
--	sgl->cur++;
--	ctx->used += size;
--
--done:
--	ctx->more = flags & MSG_MORE;
--
--unlock:
--	af_alg_data_wakeup(sk);
--	release_sock(sk);
-+		msg.msg_flags |= MSG_MORE;
+ 	lock_sock(sk);
++	if (ctx->write) {
++		release_sock(sk);
++		return -EBUSY;
++	}
++	ctx->write = true;
++
+ 	if (ctx->init && !ctx->more) {
+ 		if (ctx->used) {
+ 			err = -EINVAL;
+@@ -969,6 +975,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
  
--	return err ?: size;
-+	bvec_set_page(&bvec, page, size, offset);
-+	iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-+	return sock_sendmsg(sock, &msg);
- }
- EXPORT_SYMBOL_GPL(af_alg_sendpage);
+ unlock:
+ 	af_alg_data_wakeup(sk);
++	ctx->write = false;
+ 	release_sock(sk);
+ 
+ 	return copied ?: err;
+diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
+index a406e281ae571..1424200fe88cf 100644
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -136,6 +136,7 @@ struct af_alg_async_req {
+  *			SG?
+  * @enc:		Cryptographic operation to be performed when
+  *			recvmsg is invoked.
++ * @write:		True if we are in the middle of a write.
+  * @init:		True if metadata has been sent.
+  * @len:		Length of memory allocated for this data structure.
+  * @inflight:		Non-zero when AIO requests are in flight.
+@@ -151,10 +152,11 @@ struct af_alg_ctx {
+ 	size_t used;
+ 	atomic_t rcvused;
+ 
+-	bool more;
+-	bool merge;
+-	bool enc;
+-	bool init;
++	u32		more:1,
++			merge:1,
++			enc:1,
++			write:1,
++			init:1;
+ 
+ 	unsigned int len;
  
 -- 
 2.51.0
