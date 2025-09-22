@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-181292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D069B93026
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BEBB92E63
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09A9A172175
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43985447092
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF72D2F2909;
-	Mon, 22 Sep 2025 19:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3772F2617;
+	Mon, 22 Sep 2025 19:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbE57hnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6Vjh7tR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCD22F0C52;
-	Mon, 22 Sep 2025 19:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63D52820D1;
+	Mon, 22 Sep 2025 19:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570168; cv=none; b=gUQbgbHvhQiENqIqMrKC+UHt2nlrIuyML4uLeK56kkIryAtmLF71DI/OsovIKaE7AFWsBEVesvxmDpDee1B74nPs0HXV+76jxDAiD1rWCQMdWn5A8Ju6BORnCNbyWjJshByKE+XVqNz40TJuE7kjyfOkRx0TSRWbEu0ypiJ6I9g=
+	t=1758569834; cv=none; b=JsTof7HEOyNr+sZ9yOUwNEf1g4fLroqQEMVRZpGPtX0YcXNU4Bg4dASKlgrdFmI47qxpDd2VhVRWc4DvXX3m4BBtO0bxDqH+sC/k5uSvLBL617jxMFGkko+OgYxDs/RiIRI46rbAa0pHdHUfac93VTOAN4HkqYQ3KNr75JNaAH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570168; c=relaxed/simple;
-	bh=bqzdgY/LvEsVVDZR7bp9JtVvNcUw7yUb+6FIjujVaHM=;
+	s=arc-20240116; t=1758569834; c=relaxed/simple;
+	bh=DEtt31B0JPviNAsgYD0ZMzG/KO1Q/uqAspSVFVKxYls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjMrbL+KaACQ6TtfxC9fhxWwKjmfGXEprle873iEXfYiuXSFWO1c2pxHhFqzWyk11JgxiXGXDnVOfwbTLOxRl00rgaZ7Y4LmTGtd+Te61QuV0X8VLFOWgAVroCcj46LQuAI4iEFAC9dM2X/l59/REgvwKBJCU4f+4WSdowxHdjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbE57hnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D82C4CEF0;
-	Mon, 22 Sep 2025 19:42:47 +0000 (UTC)
+	 MIME-Version; b=qbnHq0O1s9xET34ISxya+nM+zLCLL2dDiLeZtc1qX2NabgCC5u/Vh7y4srkjqVwHnLNyzTHYYd0+OLNNfVLPiTxPeJwZlFgUZo9zLfHVlj6b4b6Y4jPKdZKbcsXDy6kQ95UMLmkvX6ndcv+LYU1xPtB+xBxf3UJDL0c1WzYVkL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6Vjh7tR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD18C4CEF5;
+	Mon, 22 Sep 2025 19:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570168;
-	bh=bqzdgY/LvEsVVDZR7bp9JtVvNcUw7yUb+6FIjujVaHM=;
+	s=korg; t=1758569834;
+	bh=DEtt31B0JPviNAsgYD0ZMzG/KO1Q/uqAspSVFVKxYls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbE57hnrLfbeMUsNdweXjDAUtrIYol5IGWfimOXxsgTMOW+tY5lPvtLQy5mh1RmNf
-	 2L/LbDPUtTKZwMuApoezdj29SEJfg0ayTJ0sNI3URrazP8XIzQVTo0YdokkRKDKAtH
-	 vqXMJZ6RgMVhy2at9GwizSpltVNCxuAo3mO63A5c=
+	b=G6Vjh7tRNmy1ob99BbNDbrlgddBOGd7ibBmp//F5gdgU4hV6pulsX2JA54/L03XVA
+	 d/TNS0FXaeMXhcygJdQ5WO1HQ0mUqTfwIf2J1KYhu6Cv4ssxAUWoeIaJ6lLic3A3j8
+	 zgKHeXeJ60tz1zfq04Y3+LZD5eyqc8h3BIdRQstQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.16 032/149] ixgbe: initialize aci.lock before its used
+	Miaoqian Lin <linmq006@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 009/105] um: virtio_uml: Fix use-after-free after put_device in probe
 Date: Mon, 22 Sep 2025 21:28:52 +0200
-Message-ID: <20250922192413.676333639@linuxfoundation.org>
+Message-ID: <20250922192409.145888296@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,102 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit b85936e95a4bd2a07e134af71e2c0750a69d2b8b ]
+[ Upstream commit 7ebf70cf181651fe3f2e44e95e7e5073d594c9c0 ]
 
-Currently aci.lock is initialized too late. A bunch of ACI callbacks
-using the lock are called prior it's initialized.
+When register_virtio_device() fails in virtio_uml_probe(),
+the code sets vu_dev->registered = 1 even though
+the device was not successfully registered.
+This can lead to use-after-free or other issues.
 
-Commit 337369f8ce9e ("locking/mutex: Add MUTEX_WARN_ON() into fast path")
-highlights that issue what results in call trace.
-
-[    4.092899] DEBUG_LOCKS_WARN_ON(lock->magic != lock)
-[    4.092910] WARNING: CPU: 0 PID: 578 at kernel/locking/mutex.c:154 mutex_lock+0x6d/0x80
-[    4.098757] Call Trace:
-[    4.098847]  <TASK>
-[    4.098922]  ixgbe_aci_send_cmd+0x8c/0x1e0 [ixgbe]
-[    4.099108]  ? hrtimer_try_to_cancel+0x18/0x110
-[    4.099277]  ixgbe_aci_get_fw_ver+0x52/0xa0 [ixgbe]
-[    4.099460]  ixgbe_check_fw_error+0x1fc/0x2f0 [ixgbe]
-[    4.099650]  ? usleep_range_state+0x69/0xd0
-[    4.099811]  ? usleep_range_state+0x8c/0xd0
-[    4.099964]  ixgbe_probe+0x3b0/0x12d0 [ixgbe]
-[    4.100132]  local_pci_probe+0x43/0xa0
-[    4.100267]  work_for_cpu_fn+0x13/0x20
-[    4.101647]  </TASK>
-
-Move aci.lock mutex initialization to ixgbe_sw_init() before any ACI
-command is sent. Along with that move also related SWFW semaphore in
-order to reduce size of ixgbe_probe() and that way all locks are
-initialized in ixgbe_sw_init().
-
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Fixes: 4600cdf9f5ac ("ixgbe: Enable link management in E610 device")
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 04e5b1fb0183 ("um: virtio: Remove device on disconnect")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/um/drivers/virtio_uml.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index cba860f0e1f15..2a857037dd102 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -6801,6 +6801,13 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
- 		break;
- 	}
+diff --git a/arch/um/drivers/virtio_uml.c b/arch/um/drivers/virtio_uml.c
+index 2b6e701776b6b..e2cba5117fd25 100644
+--- a/arch/um/drivers/virtio_uml.c
++++ b/arch/um/drivers/virtio_uml.c
+@@ -1231,10 +1231,12 @@ static int virtio_uml_probe(struct platform_device *pdev)
+ 	device_set_wakeup_capable(&vu_dev->vdev.dev, true);
  
-+	/* Make sure the SWFW semaphore is in a valid state */
-+	if (hw->mac.ops.init_swfw_sync)
-+		hw->mac.ops.init_swfw_sync(hw);
-+
-+	if (hw->mac.type == ixgbe_mac_e610)
-+		mutex_init(&hw->aci.lock);
-+
- #ifdef IXGBE_FCOE
- 	/* FCoE support exists, always init the FCoE lock */
- 	spin_lock_init(&adapter->fcoe.lock);
-@@ -11474,10 +11481,6 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (err)
- 		goto err_sw_init;
+ 	rc = register_virtio_device(&vu_dev->vdev);
+-	if (rc)
++	if (rc) {
+ 		put_device(&vu_dev->vdev.dev);
++		return rc;
++	}
+ 	vu_dev->registered = 1;
+-	return rc;
++	return 0;
  
--	/* Make sure the SWFW semaphore is in a valid state */
--	if (hw->mac.ops.init_swfw_sync)
--		hw->mac.ops.init_swfw_sync(hw);
--
- 	if (ixgbe_check_fw_error(adapter))
- 		return ixgbe_recovery_probe(adapter);
- 
-@@ -11681,8 +11684,6 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	ether_addr_copy(hw->mac.addr, hw->mac.perm_addr);
- 	ixgbe_mac_set_default_filter(adapter);
- 
--	if (hw->mac.type == ixgbe_mac_e610)
--		mutex_init(&hw->aci.lock);
- 	timer_setup(&adapter->service_timer, ixgbe_service_timer, 0);
- 
- 	if (ixgbe_removed(hw->hw_addr)) {
-@@ -11838,9 +11839,9 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	devl_unlock(adapter->devlink);
- 	ixgbe_release_hw_control(adapter);
- 	ixgbe_clear_interrupt_scheme(adapter);
-+err_sw_init:
- 	if (hw->mac.type == ixgbe_mac_e610)
- 		mutex_destroy(&adapter->hw.aci.lock);
--err_sw_init:
- 	ixgbe_disable_sriov(adapter);
- 	adapter->flags2 &= ~IXGBE_FLAG2_SEARCH_FOR_SFP;
- 	iounmap(adapter->io_addr);
+ error_init:
+ 	os_close_file(vu_dev->sock);
 -- 
 2.51.0
 
