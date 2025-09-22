@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-181345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28E8B93101
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BABCCB92D04
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F651884920
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764EC44596E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02613176ED;
-	Mon, 22 Sep 2025 19:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA0527B320;
+	Mon, 22 Sep 2025 19:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WA5fdqqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uxpp0NQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0522F3626;
-	Mon, 22 Sep 2025 19:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C045AC8E6;
+	Mon, 22 Sep 2025 19:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570307; cv=none; b=ftXutzhAoVxks2C1EXUvyXZ59SwafGnn2jZzYfF5HKBEIoabiQzjwqpxMnhN+5IPowjETswY923I5/fUf/8YYEXYjI6KCNK0VAaZ2i9hNhlx7j0gWUxKA+dN36ING0JYUdKtzBhgVO0EXLLvIuU+cHX8N6662VbUU6gGs0+s3Lo=
+	t=1758569586; cv=none; b=qBeImAbFB3IpDc2xMCahZwJ4mDgDz/aru7wEpqD3v0XWoXTSx5/shiYPKKhVVBfUDCP3m1huaL3ZJ40XT3ce89uN+0o1LZayZoqg3enAHP2CwYUcq56S2z8hZkgsSbV6psUMiVGkAY7tw+lDY+XIGj/zDwAe4AyJDQikMYiQ0So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570307; c=relaxed/simple;
-	bh=+g6BC0aESKzJcRQ+AZqClLcm1SunYw1vVUq3IDcjJ9g=;
+	s=arc-20240116; t=1758569586; c=relaxed/simple;
+	bh=I3eIHly3eD+8uEtUMMw1XmOxxzsQs6sssT/M8iqlhoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzMercbQEgmL4tMR6v3ykXDvGNt/Nm0TsfiE1+8U0MZyulUk8scMNzMmwbxNFyUI2R1Fhjwh6138CwX2oNjdC4OQ1CG+Jom9JYW4JnA56nG/oIuWt+XRyge5Mr0H11d+KhSBsmW7LE8jIKSVDDCMhDyWsPZpTx7KH3JmAwRgia0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WA5fdqqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265F9C4CEF0;
-	Mon, 22 Sep 2025 19:45:07 +0000 (UTC)
+	 MIME-Version; b=ukTKFMzzJYr1sFLOTsyN6WCk/INa4xu78Ahes2m4Lo8gH0wO4jRELGem4sZhUPwX5zw3HV3PFxwc8Q4oeg8spUHV9NTCKRNj/17dNtdVoY2NRnvlZ0r8PQFLidUjN4AZmvj6JZnKe2zYMACOHkuhrWSqlAF1D/gUB2Xg53Y6UK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uxpp0NQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52561C4CEF0;
+	Mon, 22 Sep 2025 19:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570307;
-	bh=+g6BC0aESKzJcRQ+AZqClLcm1SunYw1vVUq3IDcjJ9g=;
+	s=korg; t=1758569586;
+	bh=I3eIHly3eD+8uEtUMMw1XmOxxzsQs6sssT/M8iqlhoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WA5fdqqpiCLZVZNaw5ktpwva8X/z+bDoe+Jh2PeLaDC2SuZWLjFmYGIh1afGpLOJ0
-	 ZXtsBp0uTSFBVGwu16lY8mRTu0CKMc4OUwxJ0PzEfH7lVf5XCNQqKQGGWup6P30N++
-	 6qFbjqwn0Ba4i7N7me19wOpkveeX6cNhrtq9KhwQ=
+	b=Uxpp0NQfd9PY2JKiSvk5lQdZJtTVlNHpvPZ4BY8WiskISAewe+X6zSf3PZjwehz41
+	 24rM7Zx126DtlOJMAxtG33kW2W+oweC5NF6EYEFpmcimAuLg+t4nGEpAmDcYdcqjKI
+	 dyKnC0Z9XY5XwrtH/MAckWAXVjdFPh1zM4M8Isgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Strozek <mstrozek@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.16 084/149] ASoC: SDCA: Add quirk for incorrect function types for 3 systems
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 51/61] xhci: dbc: decouple endpoint allocation from initialization
 Date: Mon, 22 Sep 2025 21:29:44 +0200
-Message-ID: <20250922192415.005928426@linuxfoundation.org>
+Message-ID: <20250922192405.026221112@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Strozek <mstrozek@opensource.cirrus.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 28edfaa10ca1b370b1a27fde632000d35c43402c upstream.
+[ Upstream commit 220a0ffde02f962c13bc752b01aa570b8c65a37b ]
 
-Certain systems have CS42L43 DisCo that claims to conform to version 0.6.28
-but uses the function types from the 1.0 spec. Add a quirk as a workaround.
+Decouple allocation of endpoint ring buffer from initialization
+of the buffer, and initialization of endpoint context parts from
+from the rest of the contexts.
 
-Closes: https://github.com/thesofproject/linux/issues/5515
+It allows driver to clear up and reinitialize endpoint rings
+after disconnect without reallocating everything.
+
+This is a prerequisite for the next patch that prevents the transfer
+ring from filling up with cancelled (no-op) TRBs if a debug cable is
+reconnected several times without transferring anything.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20250901151518.3197941-1-mstrozek@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/sdca.h            |    1 +
- sound/soc/sdca/sdca_device.c    |   20 ++++++++++++++++++++
- sound/soc/sdca/sdca_functions.c |   13 ++++++++-----
- 3 files changed, 29 insertions(+), 5 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c |   71 ++++++++++++++++++++++++++---------------
+ 1 file changed, 46 insertions(+), 25 deletions(-)
 
---- a/include/sound/sdca.h
-+++ b/include/sound/sdca.h
-@@ -46,6 +46,7 @@ struct sdca_device_data {
- 
- enum sdca_quirk {
- 	SDCA_QUIRKS_RT712_VB,
-+	SDCA_QUIRKS_SKIP_FUNC_TYPE_PATCHING,
- };
- 
- #if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_SND_SOC_SDCA)
---- a/sound/soc/sdca/sdca_device.c
-+++ b/sound/soc/sdca/sdca_device.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/acpi.h>
-+#include <linux/dmi.h>
- #include <linux/module.h>
- #include <linux/property.h>
- #include <linux/soundwire/sdw.h>
-@@ -55,11 +56,30 @@ static bool sdca_device_quirk_rt712_vb(s
- 	return false;
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -86,13 +86,34 @@ static u32 xhci_dbc_populate_strings(str
+ 	return string_length;
  }
  
-+static bool sdca_device_quirk_skip_func_type_patching(struct sdw_slave *slave)
++static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
 +{
-+	const char *vendor, *sku;
++	struct xhci_ep_ctx      *ep_ctx;
++	unsigned int		max_burst;
++	dma_addr_t		deq;
 +
-+	vendor = dmi_get_system_info(DMI_SYS_VENDOR);
-+	sku = dmi_get_system_info(DMI_PRODUCT_SKU);
++	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
 +
-+	if (vendor && sku &&
-+	    !strcmp(vendor, "Dell Inc.") &&
-+	    (!strcmp(sku, "0C62") || !strcmp(sku, "0C63") || !strcmp(sku, "0C6B")) &&
-+	    slave->sdca_data.interface_revision == 0x061c &&
-+	    slave->id.mfg_id == 0x01fa && slave->id.part_id == 0x4243)
-+		return true;
++	/* Populate bulk out endpoint context: */
++	ep_ctx                  = dbc_bulkout_ctx(dbc);
++	deq                     = dbc_bulkout_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
 +
-+	return false;
++	/* Populate bulk in endpoint context: */
++	ep_ctx                  = dbc_bulkin_ctx(dbc);
++	deq                     = dbc_bulkin_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
 +}
 +
- bool sdca_device_quirk_match(struct sdw_slave *slave, enum sdca_quirk quirk)
+ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
  {
- 	switch (quirk) {
- 	case SDCA_QUIRKS_RT712_VB:
- 		return sdca_device_quirk_rt712_vb(slave);
-+	case SDCA_QUIRKS_SKIP_FUNC_TYPE_PATCHING:
-+		return sdca_device_quirk_skip_func_type_patching(slave);
- 	default:
- 		break;
- 	}
---- a/sound/soc/sdca/sdca_functions.c
-+++ b/sound/soc/sdca/sdca_functions.c
-@@ -89,6 +89,7 @@ static int find_sdca_function(struct acp
+ 	struct dbc_info_context	*info;
+-	struct xhci_ep_ctx	*ep_ctx;
+ 	u32			dev_info;
+-	dma_addr_t		deq, dma;
+-	unsigned int		max_burst;
++	dma_addr_t		dma;
+ 
+ 	if (!dbc)
+ 		return;
+@@ -106,20 +127,8 @@ static void xhci_dbc_init_contexts(struc
+ 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
+ 	info->length		= cpu_to_le32(string_length);
+ 
+-	/* Populate bulk out endpoint context: */
+-	ep_ctx			= dbc_bulkout_ctx(dbc);
+-	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
+-	deq			= dbc_bulkout_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
+-
+-	/* Populate bulk in endpoint context: */
+-	ep_ctx			= dbc_bulkin_ctx(dbc);
+-	deq			= dbc_bulkin_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
++	/* Populate bulk in and out endpoint contexts: */
++	xhci_dbc_init_ep_contexts(dbc);
+ 
+ 	/* Set DbC context and info registers: */
+ 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
+@@ -421,6 +430,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t
+ 	return ctx;
+ }
+ 
++static void xhci_dbc_ring_init(struct xhci_ring *ring)
++{
++	struct xhci_segment *seg = ring->first_seg;
++
++	/* clear all trbs on ring in case of old ring */
++	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
++
++	/* Only event ring does not use link TRB */
++	if (ring->type != TYPE_EVENT) {
++		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
++
++		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
++		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
++	}
++	xhci_initialize_ring_info(ring, 1);
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
  {
- 	struct fwnode_handle *function_node = acpi_fwnode_handle(adev);
- 	struct sdca_device_data *sdca_data = data;
-+	struct sdw_slave *slave = container_of(sdca_data, struct sdw_slave, sdca_data);
- 	struct device *dev = &adev->dev;
- 	struct fwnode_handle *control5; /* used to identify function type */
- 	const char *function_name;
-@@ -136,11 +137,13 @@ static int find_sdca_function(struct acp
- 		return ret;
- 	}
+@@ -449,15 +475,10 @@ xhci_dbc_ring_alloc(struct device *dev,
  
--	ret = patch_sdca_function_type(sdca_data->interface_revision, &function_type);
--	if (ret < 0) {
--		dev_err(dev, "SDCA version %#x invalid function type %d\n",
--			sdca_data->interface_revision, function_type);
--		return ret;
-+	if (!sdca_device_quirk_match(slave, SDCA_QUIRKS_SKIP_FUNC_TYPE_PATCHING)) {
-+		ret = patch_sdca_function_type(sdca_data->interface_revision, &function_type);
-+		if (ret < 0) {
-+			dev_err(dev, "SDCA version %#x invalid function type %d\n",
-+				sdca_data->interface_revision, function_type);
-+			return ret;
-+		}
- 	}
+ 	seg->dma = dma;
  
- 	function_name = get_sdca_function_name(function_type);
+-	/* Only event ring does not use link TRB */
+-	if (type != TYPE_EVENT) {
+-		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
+-
+-		trb->link.segment_ptr = cpu_to_le64(dma);
+-		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
+-	}
+ 	INIT_LIST_HEAD(&ring->td_list);
+-	xhci_initialize_ring_info(ring, 1);
++
++	xhci_dbc_ring_init(ring);
++
+ 	return ring;
+ dma_fail:
+ 	kfree(seg);
 
 
 
