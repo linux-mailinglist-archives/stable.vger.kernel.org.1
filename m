@@ -1,144 +1,221 @@
-Return-Path: <stable+bounces-180866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3328B8EA42
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 02:56:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF4DB8EAA1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 03:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF52218966BF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 00:56:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CC6E189A23D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 01:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A0E6BB5B;
-	Mon, 22 Sep 2025 00:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9354B156236;
+	Mon, 22 Sep 2025 01:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duYszCyB"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Eufm3Y2x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEC33596D
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 00:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6A7481DD;
+	Mon, 22 Sep 2025 01:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758502577; cv=none; b=nayT9k8i8FCblGf6oCWl4JIJ+opVCN8bEu4zT/lA7DhU7R7l85M5lHXEnKQgNDk1fPbXmUg42vdP4ZSYjRHk5G75r6KhL8bvBYy2Qc0d/pKyraLV4LNghho77AyQvxMdenLwjynVXkr1ICpVqJ4WJKFvLRwZgfW5Cz9esdYAc4k=
+	t=1758503948; cv=none; b=gc24yRsbkR7ePCxsKZ38MpuaF6wg5UjPuaSDdhmHDtjbWrtw8Nv7W+L0g1oLAycp42VMJTjrASnKCcHN/KpVUur4z0j2YL7xg6zfDQ0KoTzXqYtPYNH0MOf27/9W3fsfSqbVMhA4a88MMRqpdR8joRfk5lUjYGf5kFMGbnwMITw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758502577; c=relaxed/simple;
-	bh=ZD3JsEDuY71fOB+G4C9aBWFjIfPVuxWP34jNgUzbXQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nc8Q+YTxvpiWEPlu4sZ3Rauvzy1AlTDkGUKBU1tLhvHAoPpwWB0gtDEsrkYvX+kRASZxH0JoAjM4E/QucNAyHDrBVQ3+XLlyDjdtEwHL8jN7DLJCUXrywJjxZSVrGVEcJJD6sS5EB6U885dOesIkWAl4Fb6AKePZvETQQs+t97o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duYszCyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ACEC4CEE7;
-	Mon, 22 Sep 2025 00:56:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758502575;
-	bh=ZD3JsEDuY71fOB+G4C9aBWFjIfPVuxWP34jNgUzbXQw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duYszCyBmtJ1HH+9QS8RAgjHkYE8IniGx06DyTLp5REfwVHB/GaU07SfTe6QzD3a3
-	 8gUBuXA3l37z/y/xg7tSEhaHYxHL71IglNECRkXO13SexAj9k/K9tkNL3lYPi5QdTG
-	 hvuQId1zYAOeFRTxpVJ2mq3u9bhDTfHWS8hf43p3RlPurgL0cY5HbjCZy2x+sSuGX4
-	 71aNOPLNPWtyIRr2cra5EvDSOXlG+7FW5i6L7rGtnhHlJN/gtBXgzCGCtzX8/uZpDl
-	 WpSiRM87j2skjX4SQzgOj4+zB2Glsgg0BV2cf7Hz0Ca4oUWCpHggJyZL2VD7LTQ1hD
-	 6DApTD4IoJt1g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: propagate shutdown to subflows when possible
-Date: Sun, 21 Sep 2025 20:56:12 -0400
-Message-ID: <20250922005613.3111681-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025092143-detonator-snowcap-57d7@gregkh>
-References: <2025092143-detonator-snowcap-57d7@gregkh>
+	s=arc-20240116; t=1758503948; c=relaxed/simple;
+	bh=wPn9cvRHGOjpYsmWC0ojlvksHsDIjUJHt/jZvBQB3Zk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UQH3Ay6/2xmcaoKBCm7IVdttbadyK2VWXRb/BeaAJc0ujheImj2VpcO7af8EsTHxMzvMF/qSerS6wfxbp8gBiaFGqzKwSGMB85vr0rkVUnlgzjGAeYlf7+k4dFeduYyxaHud7fNW8ogHONnB0sjze6Oom9L5HB+pBXiQrz2OIzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Eufm3Y2x; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58M1IeUsA3495560, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1758503920; bh=p7LZFSgA0/HcOqDv17nbjQEtOaBU2w78E1Qh3nWgL6I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=Eufm3Y2xbtC/NBXJsW6p2bNTOFLEuaTSyB4kGWNaximkrSuZdmU2uVuwuvXDoIY5Q
+	 lClschGMNFuBgouBMdvCQafGQGs/8p6OpPv4yYAezBqvysUl+8viyFRYR9GQCtuj4D
+	 K3Y0xr0qxp1yM9dVQUDALBO63R0Eps09KpF7FJO/3qKy1ybBjw2ckmK0pCXkgz87W7
+	 zptl7vBCP0ElmUWEbHKjYUYKkpNvD0dQKsh2+HfVMahfjhYX/R9yeRU+Vic83ikPd2
+	 fJfRDgjQMOeF+GoCV7s8nGCRxbKOufSz2kKeX7GmGDKm6L/edroMJVdUtz3z4B3roE
+	 pvkwOulCV+rFA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58M1IeUsA3495560
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Sep 2025 09:18:40 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 22 Sep 2025 09:18:39 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 22 Sep 2025 09:18:39 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Mon, 22 Sep 2025 09:18:39 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fedor Pchelkin <pchelkin@ispras.ru>,
+        Zong-Zhe Yang
+	<kevin_yang@realtek.com>
+CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Bernie Huang
+	<phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH rtw-next v5 1/4] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+Thread-Topic: [PATCH rtw-next v5 1/4] wifi: rtw89: fix use-after-free in
+ rtw89_core_tx_kick_off_and_wait()
+Thread-Index: AQHcKanJdlLBn5PAWkut4UDGgRk+3LSeajjw
+Date: Mon, 22 Sep 2025 01:18:38 +0000
+Message-ID: <eaf2925504f14e9db946978a366fcbdf@realtek.com>
+References: <20250919210852.823912-1-pchelkin@ispras.ru>
+ <20250919210852.823912-2-pchelkin@ispras.ru>
+In-Reply-To: <20250919210852.823912-2-pchelkin@ispras.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> There is a bug observed when rtw89_core_tx_kick_off_and_wait() tries to
+> access already freed skb_data:
+>=20
+>  BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait
+> drivers/net/wireless/realtek/rtw89/core.c:1110
+>=20
+>  CPU: 6 UID: 0 PID: 41377 Comm: kworker/u64:24 Not tainted  6.17.0-rc1+ #=
+1 PREEMPT(lazy)
+>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-2025052=
+3-14.fc42 05/23/2025
+>  Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+>=20
+>  Use-after-free write at 0x0000000020309d9d (in kfence-#251):
+>  rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.=
+c:1110
+>  rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+>  rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+>  rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+>  rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.h:141
+>  rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+>  rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+>  rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+>  process_one_work kernel/workqueue.c:3241
+>  worker_thread kernel/workqueue.c:3400
+>  kthread kernel/kthread.c:463
+>  ret_from_fork arch/x86/kernel/process.c:154
+>  ret_from_fork_asm arch/x86/entry/entry_64.S:258
+>=20
+>  kfence-#251: 0x0000000056e2393d-0x000000009943cb62, size=3D232, cache=3D=
+skbuff_head_cache
+>=20
+>  allocated by task 41377 on cpu 6 at 77869.159548s (0.009551s ago):
+>  __alloc_skb net/core/skbuff.c:659
+>  __netdev_alloc_skb net/core/skbuff.c:734
+>  ieee80211_nullfunc_get net/mac80211/tx.c:5844
+>  rtw89_core_send_nullfunc drivers/net/wireless/realtek/rtw89/core.c:3431
+>  rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+>  rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+>  rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+>  rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.c:3194
+>  rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+>  rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+>  rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+>  process_one_work kernel/workqueue.c:3241
+>  worker_thread kernel/workqueue.c:3400
+>  kthread kernel/kthread.c:463
+>  ret_from_fork arch/x86/kernel/process.c:154
+>  ret_from_fork_asm arch/x86/entry/entry_64.S:258
+>=20
+>  freed by task 1045 on cpu 9 at 77869.168393s (0.001557s ago):
+>  ieee80211_tx_status_skb net/mac80211/status.c:1117
+>  rtw89_pci_release_txwd_skb drivers/net/wireless/realtek/rtw89/pci.c:564
+>  rtw89_pci_release_tx_skbs.isra.0 drivers/net/wireless/realtek/rtw89/pci.=
+c:651
+>  rtw89_pci_release_tx drivers/net/wireless/realtek/rtw89/pci.c:676
+>  rtw89_pci_napi_poll drivers/net/wireless/realtek/rtw89/pci.c:4238
+>  __napi_poll net/core/dev.c:7495
+>  net_rx_action net/core/dev.c:7557 net/core/dev.c:7684
+>  handle_softirqs kernel/softirq.c:580
+>  do_softirq.part.0 kernel/softirq.c:480
+>  __local_bh_enable_ip kernel/softirq.c:407
+>  rtw89_pci_interrupt_threadfn drivers/net/wireless/realtek/rtw89/pci.c:92=
+7
+>  irq_thread_fn kernel/irq/manage.c:1133
+>  irq_thread kernel/irq/manage.c:1257
+>  kthread kernel/kthread.c:463
+>  ret_from_fork arch/x86/kernel/process.c:154
+>  ret_from_fork_asm arch/x86/entry/entry_64.S:258
+>=20
+> It is a consequence of a race between the waiting and the signaling side
+> of the completion:
+>=20
+>             Waiting thread                            Completing thread
+>=20
+> rtw89_core_tx_kick_off_and_wait()
+>   rcu_assign_pointer(skb_data->wait, wait)
+>   /* start waiting */
+>   wait_for_completion_timeout()
+>                                                 rtw89_pci_tx_status()
+>                                                   rtw89_core_tx_wait_comp=
+lete()
+>                                                     rcu_read_lock()
+>                                                     /* signals completion=
+ and
+>                                                      * proceeds further
+>                                                      */
+>                                                     complete(&wait->compl=
+etion)
+>                                                     rcu_read_unlock()
+>                                                   ...
+>                                                   /* frees skb_data */
+>                                                   ieee80211_tx_status_ni(=
+)
+>   /* returns (exit status doesn't matter) */
+>   wait_for_completion_timeout()
+>   ...
+>   /* accesses the already freed skb_data */
+>   rcu_assign_pointer(skb_data->wait, NULL)
+>=20
+> The completing side might proceed and free the underlying skb even before
+> the waiting side is fully awoken and run to execution.  Actually the race
+> happens regardless of wait_for_completion_timeout() exit status, e.g.
+> the waiting side may hit a timeout and the concurrent completing side is
+> still able to free the skb.
+>=20
+> Skbs which are sent by rtw89_core_tx_kick_off_and_wait() are owned by the
+> driver.  They don't come from core ieee80211 stack so no need to pass the=
+m
+> to ieee80211_tx_status_ni() on completing side.
+>=20
+> Introduce a work function which will act as a garbage collector for
+> rtw89_tx_wait_info objects and the associated skbs.  Thus no potentially
+> heavy locks are required on the completing side.
+>=20
+> Found by Linux Verification Center (linuxtesting.org).
+>=20
+> Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of=
+ TX skbs")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b ]
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
-metadata to exchange, and all subflows can be safely shutdown.
-
-Before this patch, the subflows were actually terminated at 'close()'
-time. That's certainly fine most of the time, but not when the userspace
-'shutdown()' a connection, without close()ing it. When doing so, the
-subflows were staying in LAST_ACK state on one side -- and consequently
-in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
-socket.
-
-Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
-consequence of this is that the TCP 'FIN' flag can be set earlier now,
-but the end result is the same. This affects the packetdrill tests
-looking at the end of the MPTCP connections, but for a good reason.
-
-Note that tcp_shutdown() will check the subflow state, so no need to do
-that again before calling it.
-
-Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
-Cc: stable@vger.kernel.org
-Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mptcp/protocol.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index bf2b9ba1c734a..490fd8b188894 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -354,6 +354,19 @@ static void mptcp_close_wake_up(struct sock *sk)
- 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
- }
- 
-+static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+		unlock_sock_fast(ssk, slow);
-+	}
-+}
- static bool mptcp_pending_data_fin_ack(struct sock *sk)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
-@@ -377,6 +390,7 @@ static void mptcp_check_data_fin_ack(struct sock *sk)
- 			break;
- 		case TCP_CLOSING:
- 		case TCP_LAST_ACK:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		}
-@@ -539,6 +553,7 @@ static bool mptcp_check_data_fin(struct sock *sk)
- 			inet_sk_state_store(sk, TCP_CLOSING);
- 			break;
- 		case TCP_FIN_WAIT2:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		default:
--- 
-2.51.0
 
 
