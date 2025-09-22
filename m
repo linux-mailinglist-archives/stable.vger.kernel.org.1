@@ -1,110 +1,127 @@
-Return-Path: <stable+bounces-181011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDFCB929A2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 20:33:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054E9B92A0B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 20:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5EBA445E6B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 18:33:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A4B07AB32D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 18:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EB93126BB;
-	Mon, 22 Sep 2025 18:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A2A31A555;
+	Mon, 22 Sep 2025 18:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=oscillator.se header.i=@oscillator.se header.b="emwnlFtY"
-X-Original-To: stable@vger.kernel.org
-Received: from sv9.manufrog.com (sv9.manufrog.com [46.246.119.84])
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ebwaCkxH"
+X-Original-To: Stable@vger.kernel.org
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A24548EE;
-	Mon, 22 Sep 2025 18:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.246.119.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841F92EAB64;
+	Mon, 22 Sep 2025 18:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758565997; cv=none; b=sktD6Blj+7g4h5T1xpPYUv5vslRt/NeFcBO+/31l6sVSBbubzOS4DOxdQCR9fsPBtuqCDR7uUPUBpfOEiEaSigjUCeIu+5JGqF8rMvNkzd4k+xvBmASYccN4eCKesUmn2qxPv3dxCtzbejqy2SrPpyll6SiqdboDOoTx5OBSmU4=
+	t=1758566646; cv=none; b=bx8HLSZEokhdD+8K1Ijry70ogecwg+5N8FRybl88hVSRVVDQL4qxQ/mwGP6GTDHXqnKD8FGjaswe8oTLpAbSnTvSb/e/t4CKAE7GyBQ4ZJ7WzcyEFpu2lmikfoJ4FMUieqqdj/RKFxf5F5NBzhs33nHy+F7PDrDC0buElHpxfiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758565997; c=relaxed/simple;
-	bh=XdGBiNg8TBwn4eBBkY16k9IX+wOVuGrJsvgd296IEp8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=dXm1YsLUgHopWzt7nSpAgHU3xZXSwk2em2TD0u1nwuSnqIKUAK3Hl9kFCKsIhvvVSKbMpipmz7CcpMHpKYCegWzC2zTSwPkPhYbonheuWgWq0r2aOd2hXjKDR6UUobgOpM6PuORVf7JOKlDWBBbU2cZ24626SdeOiA+HZEE827Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oscillator.se; spf=pass smtp.mailfrom=oscillator.se; dkim=pass (2048-bit key) header.d=oscillator.se header.i=@oscillator.se header.b=emwnlFtY; arc=none smtp.client-ip=46.246.119.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oscillator.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oscillator.se
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oscillator.se; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=mnzsiREZ105BZTytHd/QqUUYjLw2IRFwIKQqvFV4GsA=; b=emwnlFtYuRakkFf38X7qRmohb4
-	ODirxNiPJiYboox4HRMekGJqUZaDEHeZOoBQLemRvcwGQMfkfBj11I2vL+w1MFJU+/ooVWtkggFqp
-	MjTM6qQYonEU52HlaYKJ2FyDzHvNa+kZuyCrxtLqZbm9dj2kvUGv5LMsFASqV/w4Ot/f+VWSIgsvX
-	gixowmT8Iwm0IIzeRSEC0faIWItvRb8ABZ9cL5u44RUie7RI5Ik77zguScr6NY0H81O+j/5V2OEVt
-	RTrA1U27JWVyBkwQQqmdTrBYSprDojMQPRJ9Q3caD3r9kduB9iefn45WF7gLST2TShgp3y4+aJYX6
-	+8kHE8qw==;
-Received: from [::1] (port=50132 helo=sv9.manufrog.com)
-	by sv9.manufrog.com with esmtpa (Exim 4.98.2)
-	(envelope-from <staffan.melin@oscillator.se>)
-	id 1v0lLU-0000000ABge-0Yjq;
-	Mon, 22 Sep 2025 20:33:03 +0200
+	s=arc-20240116; t=1758566646; c=relaxed/simple;
+	bh=qJ+biJM2TwoXnGA56XQYa05itNz8yBOcvDagz+NFrGU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D/46b346d3wCrvDYdNycR4NZgaJ5yVCEFWSaIVJYmyb/FmB58ujFXam+EVmkW6j2c9feSexafBb1y5zcJrSSlUmdVh4TCDoygRBUQa7VpD4/GbmrelOE/VVn9KbOY9GEcTBsc3cskIjGdF3DxX9hw0jPOAm03oEs0gMNHvA7tp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ebwaCkxH; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1758566642;
+	bh=qJ+biJM2TwoXnGA56XQYa05itNz8yBOcvDagz+NFrGU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ebwaCkxHDAGHYS4qE8QPgOdYsJO6p5SHToqt6R/xmZUc2nyC5YmOn1TmNIH/TLIjX
+	 WqaAwY4noR5s0Roa9ac1OaDa08wQIQDT6xtmUmg25QzyM8HdIb/icMWquGIN7i50Cz
+	 elcNukL3U+BSecVNtDaJ1/FrVAKZ98CZ5meoEr5Ka+9DcoeRlPY51n4WpjBQXiUsMe
+	 vO8OkI5Nx7asWoNczggXDG3Uf9wjsfjoAZdZrarvAxelWxxsVVmCeEQSEPNHFOyA1b
+	 iebbRxnZKeQtOGMZluTaAKXwTQpVc64UzS9xBlkkGxOz3a9JBfwITtxRt2q7RpTsuw
+	 mPVBEYdQmhrXw==
+Received: from [192.168.13.179] (unknown [IPv6:2606:6d00:10:aee0::5ac])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CAF7517E124A;
+	Mon, 22 Sep 2025 20:44:00 +0200 (CEST)
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Subject: [PATCH 0/2] media: verisilicon: Fix Hantro G2 handling of invalid
+ DPB index
+Date: Mon, 22 Sep 2025 14:43:37 -0400
+Message-Id: <20250922-imx8mq-hantro-g2-hang-v1-0-67d00eb6a548@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 22 Sep 2025 20:33:00 +0200
-From: Staffan Melin <staffan.melin@oscillator.se>
-To: zhangheng <zhangheng@kylinos.cn>
-Cc: Terry Junge <linuxhid@cosmicgizmosystems.com>, Salvatore Bonaccorso
- <carnil@debian.org>, Jiri Kosina <jkosina@suse.com>, Benjamin Tissoires
- <bentiss@kernel.org>, linux-input@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org, 1114557@bugs.debian.org
-Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
- SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
- Composite Device
-In-Reply-To: <01ce8d55-6054-4efa-bed5-ce4c6c6bc0e6@kylinos.cn>
-References: <aL2gYJaXoB6p_oyM@eldamar.lan>
- <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
- <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
- <aMUxHZF-7p7--1qS@eldamar.lan> <aMUxg6FLqDetwiGu@eldamar.lan>
- <f08669ec112d6ab2f62e35c0c96d1f06@oscillator.se>
- <94520aac-2a68-40d2-b188-80f9e361d6de@kylinos.cn>
- <735c20da-c052-4528-ad91-185a835ca40c@cosmicgizmosystems.com>
- <54b4b55c-ef29-40ae-a576-0c0b35ea9625@kylinos.cn>
- <3c299b65351c489fea95ec8b93518b6b@oscillator.se>
- <01ce8d55-6054-4efa-bed5-ce4c6c6bc0e6@kylinos.cn>
-User-Agent: Roundcube Webmail/1.6.11
-Message-ID: <11f1363dcdec98f4275e4df3145e4f24@oscillator.se>
-X-Sender: staffan.melin@oscillator.se
-Organization: Oscillator
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - sv9.manufrog.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oscillator.se
-X-Get-Message-Sender-Via: sv9.manufrog.com: authenticated_id: staffan.melin@oscillator.se
-X-Authenticated-Sender: sv9.manufrog.com: staffan.melin@oscillator.se
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-B4-Tracking: v=1; b=H4sIANmY0WgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDS0NL3czcCovcQl2gXElRvm66EYiVrpucZGCSkpxiYJ5oYaIE1FtQlJq
+ WWQE2Nzq2thYAdneXa2cAAAA=
+X-Change-ID: 20250919-imx8mq-hantro-g2-hang-cb04dcd07a84
+To: Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Hans Verkuil <hverkuil@kernel.org>, 
+ Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, kernel@collabora.com, 
+ Stable@vger.kernel.org, Nicolas Dufresne <nicolas.dufresne@collabora.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1598;
+ i=nicolas.dufresne@collabora.com; h=from:subject:message-id;
+ bh=qJ+biJM2TwoXnGA56XQYa05itNz8yBOcvDagz+NFrGU=;
+ b=owGbwMvMwCV203FKoGZC0RfG02pJDBkXZ3yovtPKc/bayuTVDL5Te89tm/FbdErJsc2fd4XbV
+ 7fkbXyo1FHKwiDGxSArpsjynjeoUfTI4UNSLPlCMHNYmUCGMHBxCsBEihkZ/odfUsnYEhFo8fR7
+ rNdNKW3pL4opq9dsnJ82w0Q2ereLgSDDf/8GueoZh8xYDdZ+yG/fINd6z3b93u8P9u5lXcdVuL+
+ 8nBsA
+X-Developer-Key: i=nicolas.dufresne@collabora.com; a=openpgp;
+ fpr=EF0D528115C4C3C21A046F12D9419451296072F4
 
-Thank you,
+First patch hardens the IRQ handler so the driver can resume after
+hitting bus errors (presumably AXI errors). This will reduce the
+risk of having to reboot the system in order to recover.
 
-I can confirm that this patch fixes the touchscreen issue on my GPD DUO.
+The second patch actually fix the issue, ensuring the decoder won't be
+instructed to use address 0x0 as a reference anymore.
 
-Tested-by: staffan.melin@oscillator.se
+The issues was discovered using GStreamer. A bug in the userspace lead
+to skippable (RASL) frames not being skipped if its past reference are
+missing. This will happen when seeking inside a video that makes use of
+this GOP configuration. The probably could also have been hit in lossy
+streaming use cases, such as WebRTC. The JCT-VC-HEVC_V1 ITU tests still
+results in 141/147 with two concurrent decoders.
 
-Thank you for your work!
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+---
+Nicolas Dufresne (2):
+      media: verisilicon: Fix CPU stalls on G2 bus error
+      media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
 
-Staffan
+ drivers/media/platform/verisilicon/hantro_g2.c     | 88 +++++++++++++++++-----
+ .../platform/verisilicon/hantro_g2_hevc_dec.c      | 17 ++++-
+ .../media/platform/verisilicon/hantro_g2_regs.h    | 13 ++++
+ .../media/platform/verisilicon/hantro_g2_vp9_dec.c |  2 -
+ drivers/media/platform/verisilicon/hantro_hw.h     |  1 +
+ drivers/media/platform/verisilicon/imx8m_vpu_hw.c  |  2 +
+ 6 files changed, 98 insertions(+), 25 deletions(-)
+---
+base-commit: 40b7a19f321e65789612ebaca966472055dab48c
+change-id: 20250919-imx8mq-hantro-g2-hang-cb04dcd07a84
 
-On 2025-09-22 11:21, zhangheng wrote:
-> Please help test this patch, I will push it to the kernel community. 
-> Currently, the microphone device is functioning normally
+Best regards,
+-- 
+Nicolas Dufresne <nicolas.dufresne@collabora.com>
+
 
