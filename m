@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-180944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00DEB91112
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 14:08:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 161CDB91133
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 14:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71F2616B337
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 12:08:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 089994E21B0
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 12:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329592F0C50;
-	Mon, 22 Sep 2025 12:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AFB305E3A;
+	Mon, 22 Sep 2025 12:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auqXFbyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIbB47RU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C462823E32D
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 12:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EA24A1E;
+	Mon, 22 Sep 2025 12:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758542923; cv=none; b=YOMpDyWzfEPYTac/kCrcmYrzZKU2dVN0RPMnL4qqF2zDkB7En4CqyeDSXO8GpvmSnqwUjSoR8EXf3yhlR87h8iniDF7y/01F6/qdu/oZzbhqXz8EpGvGyiZ0M3E4Ou8rnS4mtBNHJHYGYANqk2RnIH9OoSevyg+D5VcoqNc8ke0=
+	t=1758543265; cv=none; b=thTvLKYa2jFhygvQjCoAyblFQqvM9Bng8CthKH0guZs0AnjLa/Y6jjr+3bUSkHy92nVUZycO9auFhCSX0PKJzmLPAuNnSrRCCZfaQ+IhpG+8IEiEpW/s8UcX7SuXlUI8MuChZqGpCptzPl3bMd2f4eefAYNUAu1p8kfpsdZUliE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758542923; c=relaxed/simple;
-	bh=wrcZ3/91ymNiun9mweuuCT67E9YXfxXGCO2YOHlNKvg=;
+	s=arc-20240116; t=1758543265; c=relaxed/simple;
+	bh=TDTFZJj2QTvyW4Hbg4G/kP6ud3sGTvtQVt8ZwaMK08E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sVCRHYyxyy44+DAj/oboaIYITOq7KNWBLscv11CuDIbzW0ZW1LjlbukkmPDmMej6qBFKrGPuhxeMyaM3An82odx3/SQdd7qYS6rAnCVzMXe87vE5tG2Wp11+hz9bWdH8QubYZna2v2wBEhJRTJEtgginvFMN5MaO92Gkau1TsEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auqXFbyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7101BC4CEF0;
-	Mon, 22 Sep 2025 12:08:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CEFuDgHGpgJk1p3A7qUToakkHMmcrhvQi7OSM4roPL9vjNGBCGVDa7EiBnCyqCZuw/gBFKMHWbTOARkBGYWx1OCgot1qomY1lny2pIKI+qPBYFUNxy5BcsITnnQNEIbDI02RyNkyKiABkUMfUMfu2v/iVaTTo2mHqRYAcVkMaBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIbB47RU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE04C4CEF0;
+	Mon, 22 Sep 2025 12:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758542923;
-	bh=wrcZ3/91ymNiun9mweuuCT67E9YXfxXGCO2YOHlNKvg=;
+	s=korg; t=1758543264;
+	bh=TDTFZJj2QTvyW4Hbg4G/kP6ud3sGTvtQVt8ZwaMK08E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=auqXFbyZeRGUov9mzy14HBDkiOqTIRjfehyKgjMn6cqT5t50E+/tAx4i6PA64SQ/k
-	 ub0WRz5qonHAx48NkX8iXnCABGCFALFZW+wk3SZIZLppWill8TbEykyJntZfsCSTd2
-	 55pVOx+KF/PA2LhEnffR+kB3alD9PeVsB28YWFIU=
-Date: Mon, 22 Sep 2025 14:08:38 +0200
+	b=SIbB47RULrzNJvE7CoV2xMQnfr2wUQBd3k+l/7mzrBPRCpsENPr9BSuYb4F1IVcYE
+	 ZhMInUV4rtwFb5jKrga7EdfZYIOgiBRzBT24UK2O17wk8PjJ4XWBjUamuAjUg3yw/y
+	 yGIenUzgJEJ+p55JZxHRJa/qBzLExbOmwj/aKlq0=
+Date: Mon, 22 Sep 2025 14:14:19 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH 6.6.y] x86/cpu/amd: Always try detect_extended_topology()
- on AMD processors
-Message-ID: <2025092251-depravity-encircle-9daa@gregkh>
-References: <2025091431-craftily-size-46c6@gregkh>
- <20250915051825.1793-1-kprateek.nayak@amd.com>
- <2025092105-pager-plethora-13be@gregkh>
- <32ad856f-1078-4133-b2f7-89c5eb2d271d@amd.com>
+To: Eliav Farber <farbere@amazon.com>
+Cc: akpm@linux-foundation.org, David.Laight@aculab.com, arnd@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Pedro Falcato <pedro.falcato@gmail.com>
+Subject: Re: [PATCH 5/7 6.12.y] minmax.h: move all the clamp() definitions
+ after the min/max() ones
+Message-ID: <2025092204-reoccupy-fax-6b7a@gregkh>
+References: <20250922103123.14538-1-farbere@amazon.com>
+ <20250922103123.14538-6-farbere@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,54 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <32ad856f-1078-4133-b2f7-89c5eb2d271d@amd.com>
+In-Reply-To: <20250922103123.14538-6-farbere@amazon.com>
 
-On Mon, Sep 22, 2025 at 12:00:08PM +0530, K Prateek Nayak wrote:
-> Hello Greg,
+On Mon, Sep 22, 2025 at 10:31:21AM +0000, Eliav Farber wrote:
+> From: David Laight <David.Laight@ACULAB.COM>
 > 
-> On 9/21/2025 10:45 PM, Greg KH wrote:
-> > On Mon, Sep 15, 2025 at 05:18:25AM +0000, K Prateek Nayak wrote:
-> >> commit cba4262a19afae21665ee242b3404bcede5a94d7 upstream.
+> [ Upstream commit c3939872ee4a6b8bdcd0e813c66823b31e6e26f7 ]
 > 
-> [..snip..]
+> At some point the definitions for clamp() got added in the middle of the
+> ones for min() and max().  Re-order the definitions so they are more
+> sensibly grouped.
 > 
-> >>
-> >>   [ prateek: Adapted the fix from the original commit to stable kernel
-> >>     which doesn't contain the x86 topology rewrite, renamed
-> >>     cpu_parse_topology_ext() with the erstwhile
-> >>     detect_extended_topology() function in commit message, dropped
-> >>     references to extended topology leaf 0x80000026 which the stable
-> >>     kernels aren't aware of, make a note of "cpu_die_id" parsing
-> >>     nuances in detect_extended_topology() and why AMD processors should
-> >>     still rely on TOPOEXT leaf for "cpu_die_id". ]
-> > 
-> > That's a lot of changes.  Why not just use a newer kernel for this new
-> > hardware?  Why backport this in such a different way?
-> 
-> We are mostly solving problems of virtualization with this one for
-> now.
-> 
-> QEMU can create a guest with more than 256vCPUs and tell the guest that
-> each CPU is an individual core leading to weird handling of the
-> CPUID 0x8000001e leaf when CoreId > 255
-> https://github.com/qemu/qemu/commit/35ac5dfbcaa4b.
-> 
-> QEMU expects the guest to discover the topology using 0xb leaf which,
-> the PPR says, is not dependent on the TOPOEXT feature.
+> Link: https://lkml.kernel.org/r/8bb285818e4846469121c8abc3dfb6e2@AcuMS.aculab.com
+> Signed-off-by: David Laight <david.laight@aculab.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Arnd Bergmann <arnd@kernel.org>
+> Cc: Christoph Hellwig <hch@infradead.org>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mateusz Guzik <mjguzik@gmail.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Pedro Falcato <pedro.falcato@gmail.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
+> ---
+>  include/linux/minmax.h | 109 +++++++++++++++++++----------------------
+>  1 file changed, 51 insertions(+), 58 deletions(-)
 
-Great, so these are new guests, use a new kernel!  :)
+This diff looks odd.  The upstream commit diffstat is:
 
-> > That is going to
-> > cause other changes in the future to be harder to backport in the
-> > future.
-> 
-> Thomas thinks this fix should be backported
-> (https://lore.kernel.org/all/87o6rirrvc.ffs@tglx/) and for any future
-> conflicts in this area, I'll be more than happy to help out resolve
-> them.
+include/linux/minmax.h |  131 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------------
+1 file changed, 62 insertions(+), 69 deletions(-)
 
-Ok, if you get the maintainers to sign off on the change, I'll be glad
-to take the patch.
+which does not match this diffstat, nor the diff itself.
+
+But, if I backport the original commit myself, it matches up exactly
+with what you show here, which is odd.
+
+diff is "fun", ugh...
+
+Anyway, not a complaint, just something that others might note if they
+are comparing diffs here like I do.
 
 thanks,
 
