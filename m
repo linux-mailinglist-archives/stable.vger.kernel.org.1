@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08D1B92C98
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:31:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B0DB92D4F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1DF2189A4F1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456601906809
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD28A1FDA89;
-	Mon, 22 Sep 2025 19:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75162F0C45;
+	Mon, 22 Sep 2025 19:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJ0jrYn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJy1wBzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DD617A2EA;
-	Mon, 22 Sep 2025 19:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5362EDD5D;
+	Mon, 22 Sep 2025 19:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569504; cv=none; b=MxNAgXzlXMSxx9o6bbxPfPzAA/Yvi4ggs5YWW6b3WOTUEQBAJb0+2paWDZ10/Q9jdBBhdHoFCuYGzGnkSzcPwm03ThLKN5HGJf8W8G2JCY5+F+PV8Jgg2EIC0PUnijmGP1fPWAwCvdXJ2EGhz6K5Ha9tKcTXhfDuO2q2iHD5TCo=
+	t=1758569636; cv=none; b=e30EIDGqd6FtjkxQk6ZhbUKKBoX4Dan/4aQXgOutrcICE6zlz56ezq+WPyDxh+AFIVxE2VgRdmBYo4zsSwLANk2OGao0AssCF1VU7lLHm0Vd8nabmgiSluuQy9+0hkACd5YdRS7L2u1zmMKcIAIgvzUh8YiKIEijnfKbRnzVVVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569504; c=relaxed/simple;
-	bh=epuEB0g8bJHtYBjWAToAzHgO/mtx2n7y8wd3iweiyfc=;
+	s=arc-20240116; t=1758569636; c=relaxed/simple;
+	bh=IibfRGR8D9lSXgfPHrXeD23MqblElygWPceXJ8j8v38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ry/Btq6eVDCYFigx+sTsiXT7VUbG1SoW6MTUqJvY016S9myaT7LGkszV0SOfZYOicq7Z8IRDPX+/6CoEbSlMG3Ed5hK1JZkpw+xi2EV+1egbqC9CjQc0PuSZxKpoLwRDJnMw3wdur8L5zZ/vF57Gd5nqN/bmIMXfmP+i2y07aJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJ0jrYn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16A4C4CEF0;
-	Mon, 22 Sep 2025 19:31:43 +0000 (UTC)
+	 MIME-Version; b=WDsfMM/C2vxEUPQ4uOzKEvPf4y8yINMrl1fUpRWg/e+TuXPYL3SZ0NqHxVyw6NX0nBuT1IJre9LA88qdhUuPJxnjU/jptfiYwfLqhwWA5ppvfa1AxW0CWVC12ipoBVakB3y2q1luf4TdX3HCHMA2dIggJwL0eP9BBD+9Ux5yn6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJy1wBzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F18C4CEF7;
+	Mon, 22 Sep 2025 19:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569504;
-	bh=epuEB0g8bJHtYBjWAToAzHgO/mtx2n7y8wd3iweiyfc=;
+	s=korg; t=1758569636;
+	bh=IibfRGR8D9lSXgfPHrXeD23MqblElygWPceXJ8j8v38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJ0jrYn+eApM1xGnPdoVloSUTs1sDV5olxI8mNRp6IjOn2lSNg3xQRzK3dRf1E1Zm
-	 X2edzujPY92csrnW4uAJZgMmil5iTSpXpNNfgL0HPoaGfvJ2FtYxNgdKRqIcFQHZxi
-	 ls4TAe2fyqvYMEdUnwgw1UO5EqeptIyDMBZRxSI0=
+	b=aJy1wBzWcTIazwqPIOAJUSNqqakAX68fXKatexEQo3FjOqVXdGzkFuVqO2EVfB64d
+	 PhkwHuAavqL0ugbRnDHqLxjvbiUZok0QU13MQ8hp1qiY/zuPRyjXm2ol5eQZr6Z706
+	 52dTx5YoFpQEr1cQnqO8drNJ8+hfhS7I3EiI9kZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ajay Singh <ajay.kathat@microchip.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/61] dpaa2-switch: fix buffer pool seeding for control traffic
+Subject: [PATCH 6.6 01/70] wifi: wilc1000: avoid buffer overflow in WID string configuration
 Date: Mon, 22 Sep 2025 21:29:01 +0200
-Message-ID: <20250922192403.777691328@linuxfoundation.org>
+Message-ID: <20250922192404.501824119@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Ajay.Kathat@microchip.com <Ajay.Kathat@microchip.com>
 
-[ Upstream commit 2690cb089502b80b905f2abdafd1bf2d54e1abef ]
+[ Upstream commit fe9e4d0c39311d0f97b024147a0d155333f388b5 ]
 
-Starting with commit c50e7475961c ("dpaa2-switch: Fix error checking in
-dpaa2_switch_seed_bp()"), the probing of a second DPSW object errors out
-like below.
+Fix the following copy overflow warning identified by Smatch checker.
 
-fsl_dpaa2_switch dpsw.1: fsl_mc_driver_probe failed: -12
-fsl_dpaa2_switch dpsw.1: probe with driver fsl_dpaa2_switch failed with error -12
+ drivers/net/wireless/microchip/wilc1000/wlan_cfg.c:184 wilc_wlan_parse_response_frame()
+        error: '__memcpy()' 'cfg->s[i]->str' copy overflow (512 vs 65537)
 
-The aforementioned commit brought to the surface the fact that seeding
-buffers into the buffer pool destined for control traffic is not
-successful and an access violation recoverable error can be seen in the
-MC firmware log:
+This patch introduces size check before accessing the memory buffer.
+The checks are base on the WID type of received data from the firmware.
+For WID string configuration, the size limit is determined by individual
+element size in 'struct wilc_cfg_str_vals' that is maintained in 'len' field
+of 'struct wilc_cfg_str'.
 
-[E, qbman_rec_isr:391, QBMAN]  QBMAN recoverable event 0x1000000
-
-This happens because the driver incorrectly used the ID of the DPBP
-object instead of the hardware buffer pool ID when trying to release
-buffers into it.
-
-This is because any DPSW object uses two buffer pools, one managed by
-the Linux driver and destined for control traffic packet buffers and the
-other one managed by the MC firmware and destined only for offloaded
-traffic. And since the buffer pool managed by the MC firmware does not
-have an external facing DPBP equivalent, any subsequent DPBP objects
-created after the first DPSW will have a DPBP id different to the
-underlying hardware buffer ID.
-
-The issue was not caught earlier because these two numbers can be
-identical when all DPBP objects are created before the DPSW objects are.
-This is the case when the DPL file is used to describe the entire DPAA2
-object layout and objects are created at boot time and it's also true
-for the first DPSW being created dynamically using ls-addsw.
-
-Fix this by using the buffer pool ID instead of the DPBP id when
-releasing buffers into the pool.
-
-Fixes: 2877e4f7e189 ("staging: dpaa2-switch: setup buffer pool and RX path rings")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://patch.msgid.link/20250910144825.2416019-1-ioana.ciornei@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-wireless/aLFbr9Yu9j_TQTey@stanley.mountain
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+Link: https://patch.msgid.link/20250829225829.5423-1-ajay.kathat@microchip.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../wireless/microchip/wilc1000/wlan_cfg.c    | 37 ++++++++++++++-----
+ .../wireless/microchip/wilc1000/wlan_cfg.h    |  5 ++-
+ 2 files changed, 30 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 732fd2e389c41..e928fea16e841 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -2680,7 +2680,7 @@ static int dpaa2_switch_setup_dpbp(struct ethsw_core *ethsw)
- 		dev_err(dev, "dpsw_ctrl_if_set_pools() failed\n");
- 		goto err_get_attr;
- 	}
--	ethsw->bpid = dpbp_attrs.id;
-+	ethsw->bpid = dpbp_attrs.bpid;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c
+index 131388886acbf..cfabd5aebb540 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.c
+@@ -41,10 +41,10 @@ static const struct wilc_cfg_word g_cfg_word[] = {
+ };
  
- 	return 0;
+ static const struct wilc_cfg_str g_cfg_str[] = {
+-	{WID_FIRMWARE_VERSION, NULL},
+-	{WID_MAC_ADDR, NULL},
+-	{WID_ASSOC_RES_INFO, NULL},
+-	{WID_NIL, NULL}
++	{WID_FIRMWARE_VERSION, 0, NULL},
++	{WID_MAC_ADDR, 0, NULL},
++	{WID_ASSOC_RES_INFO, 0, NULL},
++	{WID_NIL, 0, NULL}
+ };
+ 
+ #define WILC_RESP_MSG_TYPE_CONFIG_REPLY		'R'
+@@ -147,44 +147,58 @@ static void wilc_wlan_parse_response_frame(struct wilc *wl, u8 *info, int size)
+ 
+ 		switch (FIELD_GET(WILC_WID_TYPE, wid)) {
+ 		case WID_CHAR:
++			len = 3;
++			if (len + 2  > size)
++				return;
++
+ 			while (cfg->b[i].id != WID_NIL && cfg->b[i].id != wid)
+ 				i++;
+ 
+ 			if (cfg->b[i].id == wid)
+ 				cfg->b[i].val = info[4];
+ 
+-			len = 3;
+ 			break;
+ 
+ 		case WID_SHORT:
++			len = 4;
++			if (len + 2  > size)
++				return;
++
+ 			while (cfg->hw[i].id != WID_NIL && cfg->hw[i].id != wid)
+ 				i++;
+ 
+ 			if (cfg->hw[i].id == wid)
+ 				cfg->hw[i].val = get_unaligned_le16(&info[4]);
+ 
+-			len = 4;
+ 			break;
+ 
+ 		case WID_INT:
++			len = 6;
++			if (len + 2  > size)
++				return;
++
+ 			while (cfg->w[i].id != WID_NIL && cfg->w[i].id != wid)
+ 				i++;
+ 
+ 			if (cfg->w[i].id == wid)
+ 				cfg->w[i].val = get_unaligned_le32(&info[4]);
+ 
+-			len = 6;
+ 			break;
+ 
+ 		case WID_STR:
++			len = 2 + get_unaligned_le16(&info[2]);
++
+ 			while (cfg->s[i].id != WID_NIL && cfg->s[i].id != wid)
+ 				i++;
+ 
+-			if (cfg->s[i].id == wid)
++			if (cfg->s[i].id == wid) {
++				if (len > cfg->s[i].len || (len + 2  > size))
++					return;
++
+ 				memcpy(cfg->s[i].str, &info[2],
+-				       get_unaligned_le16(&info[2]) + 2);
++				       len);
++			}
+ 
+-			len = 2 + get_unaligned_le16(&info[2]);
+ 			break;
+ 
+ 		default:
+@@ -384,12 +398,15 @@ int wilc_wlan_cfg_init(struct wilc *wl)
+ 	/* store the string cfg parameters */
+ 	wl->cfg.s[i].id = WID_FIRMWARE_VERSION;
+ 	wl->cfg.s[i].str = str_vals->firmware_version;
++	wl->cfg.s[i].len = sizeof(str_vals->firmware_version);
+ 	i++;
+ 	wl->cfg.s[i].id = WID_MAC_ADDR;
+ 	wl->cfg.s[i].str = str_vals->mac_address;
++	wl->cfg.s[i].len = sizeof(str_vals->mac_address);
+ 	i++;
+ 	wl->cfg.s[i].id = WID_ASSOC_RES_INFO;
+ 	wl->cfg.s[i].str = str_vals->assoc_rsp;
++	wl->cfg.s[i].len = sizeof(str_vals->assoc_rsp);
+ 	i++;
+ 	wl->cfg.s[i].id = WID_NIL;
+ 	wl->cfg.s[i].str = NULL;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h
+index 7038b74f8e8ff..5ae74bced7d74 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan_cfg.h
+@@ -24,12 +24,13 @@ struct wilc_cfg_word {
+ 
+ struct wilc_cfg_str {
+ 	u16 id;
++	u16 len;
+ 	u8 *str;
+ };
+ 
+ struct wilc_cfg_str_vals {
+-	u8 mac_address[7];
+-	u8 firmware_version[129];
++	u8 mac_address[8];
++	u8 firmware_version[130];
+ 	u8 assoc_rsp[WILC_MAX_ASSOC_RESP_FRAME_SIZE];
+ };
  
 -- 
 2.51.0
