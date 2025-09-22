@@ -1,55 +1,76 @@
-Return-Path: <stable+bounces-181335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BE7B930E6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FCDB92EDE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DEF53A8E49
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 182B62A7D8C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E046E306494;
-	Mon, 22 Sep 2025 19:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DA431A548;
+	Mon, 22 Sep 2025 19:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQm9CEod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uR4T5rjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE0C2F0C5C;
-	Mon, 22 Sep 2025 19:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E42A3164C1;
+	Mon, 22 Sep 2025 19:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570282; cv=none; b=iP7S/Ou6iu/Qy7OCyMPAuIkMCu2lCrFGXIMYbZjImQ96YUKPdYSW9m4fO/E4ryjUU2up2NqCnkp2LuLmdpfVUCD8f1dL5Ft/5QhRraBJE8kz2/j5Yi0htlCGDyQfH49Rf7pCNBbtT1q3uw1DdM6T9Uq6x8ncbQhHqfTAu7ZTVNs=
+	t=1758569926; cv=none; b=EGZZ3AvYkv/oUGMICizz4cdbrCRGYHPnifn3TLU4Kkvip/SjCUnby6/owjzVJMF9R89xqndR/3fNCElWGXLUD995kezqoxxyDnZVgORxDdQF8ELBvdhwnQ4B2SWOTczojAx6qskAyCLTFVDxQKrHXXOxDT7uDEbDm38+9K/P+yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570282; c=relaxed/simple;
-	bh=lafH5kJiaqeRgxFRdUdoQ04DiPl4juTv6X+mnlBiLeY=;
+	s=arc-20240116; t=1758569926; c=relaxed/simple;
+	bh=Mq31xIRopZv4aJPid/Jq7LbPb9hDi4NuIhUlSBcldM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyw0cXTbmIrRsBDWov7g5dJu8JTs4UWmQAmJnPXsQVwRENjlBO6cME8qAYQcLnVV9uGEDiLQKGH3oX4Sio3p9qHpdJefHCAHn9SSjBUXxcVjf28GHLTMlI0H3W2UNb1uUFXhasxOM+ZvRW8olOLNyD/QMj4jfmHUWWPlDzdQ114=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQm9CEod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF866C4CEF0;
-	Mon, 22 Sep 2025 19:44:41 +0000 (UTC)
+	 MIME-Version; b=UM62QjaJNw8qqBLnHpYNLuyqvHoPf5BZ4TqdW62PJ5+W0WG9mi+9n2JEzaOV98dUWi8ZxxaXVMFiVpWL0IWyvqDuHX1kv10GHPV+KhsBLoQtk1c4/ExRwmPwyzbS6wwKIT3Y5te+xWi1VL8+cXbSr5wz59h4XrSpsjy7ayqmrSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uR4T5rjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132C8C4CEF5;
+	Mon, 22 Sep 2025 19:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570282;
-	bh=lafH5kJiaqeRgxFRdUdoQ04DiPl4juTv6X+mnlBiLeY=;
+	s=korg; t=1758569926;
+	bh=Mq31xIRopZv4aJPid/Jq7LbPb9hDi4NuIhUlSBcldM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQm9CEodlDP8dhxcwD/heVSPMSZIOj0aWFrgi04gb9I4ddM0iY9Fg20/uwOr5eAk4
-	 Owag9Mmik/Tir7y8uhGRnin5uA+b+JqRQ0uwj7Rh3ZK8iRCh/0tMMcHrJsO/vuJXhS
-	 Floy8zdHLcxhMxDVWRoWhANDMGY8bEN0XU/RtFkA=
+	b=uR4T5rjHwAMguMUJydHNb8fbxkycXQeF+c2m/lFkmZEzTosX/jVsFGvM8Qp5GAHE4
+	 3pgbm8ssy1vF7RaYmGimsRc4ZSR5IxUx2Ovdu6tEuZsJsXAKI53vl/FbH49PAF3p4t
+	 6G8yJPNLPNgSB/mQJU2f8mbka1n2GpYG+SMTHYyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 066/149] objtool/LoongArch: Mark special atomic instruction as INSN_BUG type
+	Hugh Dickins <hughd@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Keir Fraser <keirf@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Li Zhe <lizhe.67@bytedance.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Wei Xu <weixugc@google.com>,
+	Will Deacon <will@kernel.org>,
+	yangge <yangge1116@126.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 043/105] mm: revert "mm: vmscan.c: fix OOM on swap stress test"
 Date: Mon, 22 Sep 2025 21:29:26 +0200
-Message-ID: <20250922192414.546521469@linuxfoundation.org>
+Message-ID: <20250922192410.046426847@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +82,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Hugh Dickins <hughd@google.com>
 
-commit 539d7344d4feaea37e05863e9aa86bd31f28e46f upstream.
+commit 8d79ed36bfc83d0583ab72216b7980340478cdfb upstream.
 
-When compiling with LLVM and CONFIG_RUST is set, there exists the
-following objtool warning:
+This reverts commit 0885ef470560: that was a fix to the reverted
+33dfe9204f29b415bbc0abb1a50642d1ba94f5e9.
 
-  rust/compiler_builtins.o: warning: objtool: __rust__unordsf2(): unexpected end of section .text.unlikely.
-
-objdump shows that the end of section .text.unlikely is an atomic
-instruction:
-
-  amswap.w        $zero, $ra, $zero
-
-According to the LoongArch Reference Manual, if the amswap.w atomic
-memory access instruction has the same register number as rd and rj,
-the execution will trigger an Instruction Non-defined Exception, so
-mark the above instruction as INSN_BUG type to fix the warning.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lkml.kernel.org/r/aa0e9d67-fbcd-9d79-88a1-641dfbe1d9d1@google.com
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/arch/loongarch/include/asm/inst.h |   12 ++++++++++++
- tools/objtool/arch/loongarch/decode.c   |   21 +++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ mm/vmscan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/arch/loongarch/include/asm/inst.h
-+++ b/tools/arch/loongarch/include/asm/inst.h
-@@ -51,6 +51,10 @@ enum reg2i16_op {
- 	bgeu_op		= 0x1b,
- };
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4352,7 +4352,7 @@ static bool sort_folio(struct lruvec *lr
+ 	}
  
-+enum reg3_op {
-+	amswapw_op	= 0x70c0,
-+};
-+
- struct reg0i15_format {
- 	unsigned int immediate : 15;
- 	unsigned int opcode : 17;
-@@ -96,6 +100,13 @@ struct reg2i16_format {
- 	unsigned int opcode : 6;
- };
- 
-+struct reg3_format {
-+	unsigned int rd : 5;
-+	unsigned int rj : 5;
-+	unsigned int rk : 5;
-+	unsigned int opcode : 17;
-+};
-+
- union loongarch_instruction {
- 	unsigned int word;
- 	struct reg0i15_format	reg0i15_format;
-@@ -105,6 +116,7 @@ union loongarch_instruction {
- 	struct reg2i12_format	reg2i12_format;
- 	struct reg2i14_format	reg2i14_format;
- 	struct reg2i16_format	reg2i16_format;
-+	struct reg3_format	reg3_format;
- };
- 
- #define LOONGARCH_INSN_SIZE	sizeof(union loongarch_instruction)
---- a/tools/objtool/arch/loongarch/decode.c
-+++ b/tools/objtool/arch/loongarch/decode.c
-@@ -278,6 +278,25 @@ static bool decode_insn_reg2i16_fomat(un
- 	return true;
- }
- 
-+static bool decode_insn_reg3_fomat(union loongarch_instruction inst,
-+				   struct instruction *insn)
-+{
-+	switch (inst.reg3_format.opcode) {
-+	case amswapw_op:
-+		if (inst.reg3_format.rd == LOONGARCH_GPR_ZERO &&
-+		    inst.reg3_format.rk == LOONGARCH_GPR_RA &&
-+		    inst.reg3_format.rj == LOONGARCH_GPR_ZERO) {
-+			/* amswap.w $zero, $ra, $zero */
-+			insn->type = INSN_BUG;
-+		}
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- int arch_decode_instruction(struct objtool_file *file, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    struct instruction *insn)
-@@ -309,6 +328,8 @@ int arch_decode_instruction(struct objto
- 		return 0;
- 	if (decode_insn_reg2i16_fomat(inst, insn))
- 		return 0;
-+	if (decode_insn_reg3_fomat(inst, insn))
-+		return 0;
- 
- 	if (inst.word == 0) {
- 		/* andi $zero, $zero, 0x0 */
+ 	/* ineligible */
+-	if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
++	if (zone > sc->reclaim_idx) {
+ 		gen = folio_inc_gen(lruvec, folio, false);
+ 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
+ 		return true;
 
 
 
