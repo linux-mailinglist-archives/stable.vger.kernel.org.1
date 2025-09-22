@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-180856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB51B8E9AA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 01:46:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A712B8E9D8
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 02:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0736618969CE
-	for <lists+stable@lfdr.de>; Sun, 21 Sep 2025 23:47:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0D6D7AB3F5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 00:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03221D416E;
-	Sun, 21 Sep 2025 23:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CFB23CB;
+	Mon, 22 Sep 2025 00:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CfQA4Hee"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNhn81Vx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA81A55
-	for <stable@vger.kernel.org>; Sun, 21 Sep 2025 23:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D979800
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 00:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758498393; cv=none; b=qnLkHlsoQPhWlyvMpqllJ+qjLiKsw0WBH64jIUy7KEf0dgjnTB+eMK/Z7ThV0gYshyowGsQsPzeWuLZAtaaKmoB8tDyGErqGvkHMQ++sOb8FKyHqyN4yA08AUra57WCjd4g3rEg4ez0+CQgo3mpC/dQsI85nr3zC5IZCIxnTs2U=
+	t=1758499601; cv=none; b=TmebUqov7IdBYVMMgs72QebjkBDpy9jZoAMy9XjkJ9Dmsqnrp7SGYlAw/KQ5bp+l67kif6KR20WfOiDC9fSfAYZCSJhFZWtgcj+BGZTnlOJpzBioV3RprzCki4jwK5NYHzTr2ujyWo5pxLcUxr0wFcaPUXiYO9f2sRZu49cd4yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758498393; c=relaxed/simple;
-	bh=YhaGovhPIdosN3MQ5iLJkoSuNO0QTXekjkbpJykj8C8=;
+	s=arc-20240116; t=1758499601; c=relaxed/simple;
+	bh=XouJ6O1G6ZSvMQwFa7wkigVRDoR32BtWV0QXd0gOb6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHHkXpsh6+5Gj4NZr6HXB/5uuGQEA4nFXT/lGyrDLdKwuL0HhUoWnLLpzJRcuT6pgbrnRgq2uvJi993d11PyuTydPzNJ27Suj5kNoxH6oMudQ+unFJiZE6Po4sjBy+dZRzNQUAsnzNgnezNqlSVnOn4kXFwJoko0n0PWPs6Ps+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfQA4Hee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D22C116B1;
-	Sun, 21 Sep 2025 23:46:32 +0000 (UTC)
+	 MIME-Version; b=YlCYA281iw8fjQvyH7M4uOTtrVtfyol26VDjTD9GNs59SuOeGzo8wzs4MSsWG7CQOs+zMtW4mLrg0tweEGCrlqB4RFBoaLO3oT3/BiPdUkqBsa13BEizKvoMQLXcTIZ3inecoUaMzB9X6fPw3rgLtrFInL0mmHHiXtbVUw7pwM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNhn81Vx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DC9C4CEE7;
+	Mon, 22 Sep 2025 00:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758498393;
-	bh=YhaGovhPIdosN3MQ5iLJkoSuNO0QTXekjkbpJykj8C8=;
+	s=k20201202; t=1758499600;
+	bh=XouJ6O1G6ZSvMQwFa7wkigVRDoR32BtWV0QXd0gOb6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfQA4Hee8BQMCXRIuHdfWJxaNCmBHk2SQ8O5SfG9LvZEseRfFgRCDlQrve892bUbu
-	 5hxsxx7+bluh5m0JNT9n4+IV2wHt7cYJYyL0Q/5CaS5m/eNmivYZtcBhi/1QlpjPWM
-	 fUvGNd/Myr0nR5DwafnJKr7zMtv5PdjadN6AyeirImrgtGmsXuVrqCxcXMU3WAT47A
-	 x+du83PltKDo/PzkAF2c/aSEMXKsPhCgUg5Uhh7w/UnvKH/3ONLraK/Ua3IcmQ8aLh
-	 DMnSty+qOqKakWKd+AX1avvDfiWQPE8tzoiJRwrhONgdAClAKUO44eHrT78otB2aVr
-	 k6iQzQnip8qIg==
+	b=qNhn81VxitK715cuv2Jcj+ZmdQ8wPKt/wY0VuZqTSd5Kti4wkZmaTyeVNS7aibYhB
+	 0gyxUrcGV4PR9P4AGusn1tQPD/6ER1+thIRRGPL1jN0dDeUTBErChS1pPGgyzCiCaS
+	 l5B4U/sOzJhv8y30xga8kHnJGogaG52HVFKyGu6nx69TQohBdmZcKvy+dU7evdlYnh
+	 K4GDuI4tbK6PNVEvZiE3qdJ32CIPnozrrmchHq/dvBAbYFHxRsNMpd7lE/JXiwVj6r
+	 vlGYHLBa9zmlmD3BCxb7ldXKOCJOyoLJbxKZaieF0p5fVoDCCu6gPP0QYHMJQ5eeej
+	 JdlzAmW6+STVw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hans de Goede <hansg@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
-Date: Sun, 21 Sep 2025 19:46:30 -0400
-Message-ID: <20250921234630.3087563-2-sashal@kernel.org>
+Subject: [PATCH 5.4.y 1/2] net: rfkill: gpio: add DT support
+Date: Sun, 21 Sep 2025 20:06:36 -0400
+Message-ID: <20250922000637.3095532-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250921234630.3087563-1-sashal@kernel.org>
-References: <2025092156-postal-sappiness-e1ac@gregkh>
- <20250921234630.3087563-1-sashal@kernel.org>
+In-Reply-To: <2025092157-imagines-darkroom-e5c5@gregkh>
+References: <2025092157-imagines-darkroom-e5c5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,59 +60,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hansg@kernel.org>
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-[ Upstream commit b6f56a44e4c1014b08859dcf04ed246500e310e5 ]
+[ Upstream commit d64c732dfc9edcd57feb693c23162117737e426b ]
 
-Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-device property") rfkill_find_type() gets called with the possibly
-uninitialized "const char *type_name;" local variable.
+Allow probing rfkill-gpio via device tree. This hooks up the already
+existing support that was started in commit 262c91ee5e52 ("net:
+rfkill: gpio: prepare for DT and ACPI support") via the "rfkill-gpio"
+compatible, with the "name" and "type" properties renamed to "label"
+and "radio-type", respectively, in the device tree case.
 
-On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
-
-        rfkill->type = (unsigned)id->driver_data;
-
-and there is no "type" property so device_property_read_string() will fail
-and leave type_name uninitialized, leading to a potential crash.
-
-rfkill_find_type() does accept a NULL pointer, fix the potential crash
-by initializing type_name to NULL.
-
-Note likely sofar this has not been caught because:
-
-1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-2. The stack happened to contain NULL where type_name is stored
-
-Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
-Cc: stable@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Link: https://lore.kernel.org/r/20230102-rfkill-gpio-dt-v2-2-d1b83758c16d@pengutronix.de
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: b6f56a44e4c1 ("net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/rfkill/rfkill-gpio.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-index ecfb766c47d08..1a3560cdba3e9 100644
+index 2df5bf240b64a..ecfb766c47d08 100644
 --- a/net/rfkill/rfkill-gpio.c
 +++ b/net/rfkill/rfkill-gpio.c
-@@ -78,10 +78,10 @@ static int rfkill_gpio_acpi_probe(struct device *dev,
- static int rfkill_gpio_probe(struct platform_device *pdev)
+@@ -79,6 +79,8 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
  {
  	struct rfkill_gpio_data *rfkill;
--	struct gpio_desc *gpio;
-+	const char *type_name = NULL;
- 	const char *name_property;
- 	const char *type_property;
--	const char *type_name;
-+	struct gpio_desc *gpio;
+ 	struct gpio_desc *gpio;
++	const char *name_property;
++	const char *type_property;
+ 	const char *type_name;
  	int ret;
  
- 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
+@@ -86,8 +88,15 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
+ 	if (!rfkill)
+ 		return -ENOMEM;
+ 
+-	device_property_read_string(&pdev->dev, "name", &rfkill->name);
+-	device_property_read_string(&pdev->dev, "type", &type_name);
++	if (dev_of_node(&pdev->dev)) {
++		name_property = "label";
++		type_property = "radio-type";
++	} else {
++		name_property = "name";
++		type_property = "type";
++	}
++	device_property_read_string(&pdev->dev, name_property, &rfkill->name);
++	device_property_read_string(&pdev->dev, type_property, &type_name);
+ 
+ 	if (!rfkill->name)
+ 		rfkill->name = dev_name(&pdev->dev);
+@@ -169,12 +178,19 @@ static const struct acpi_device_id rfkill_acpi_match[] = {
+ MODULE_DEVICE_TABLE(acpi, rfkill_acpi_match);
+ #endif
+ 
++static const struct of_device_id rfkill_of_match[] __maybe_unused = {
++	{ .compatible = "rfkill-gpio", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, rfkill_of_match);
++
+ static struct platform_driver rfkill_gpio_driver = {
+ 	.probe = rfkill_gpio_probe,
+ 	.remove = rfkill_gpio_remove,
+ 	.driver = {
+ 		.name = "rfkill_gpio",
+ 		.acpi_match_table = ACPI_PTR(rfkill_acpi_match),
++		.of_match_table = of_match_ptr(rfkill_of_match),
+ 	},
+ };
+ 
 -- 
 2.51.0
 
