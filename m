@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-181217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E0CB92F14
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68EDB92DFA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A40190740A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773422A7740
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944132F1FDD;
-	Mon, 22 Sep 2025 19:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B00311594;
+	Mon, 22 Sep 2025 19:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EX6uBO/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppAaZD2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D251C1ADB;
-	Mon, 22 Sep 2025 19:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE162F2617;
+	Mon, 22 Sep 2025 19:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569981; cv=none; b=s6rSDV7po36p+h6kMcpIU1KwEOEDRjdkCDjntPZYiM46I9X/arDF1/oNSFuhTp78W6l0WEkybpunMxLUs1Un74oyD9YBKC0fZvHfG9XxJM6EnUPkMx4xje5MCruUeWyS4IWOHzpCycc8l82Hq1IO4zgC3GR/VxLxT96ffcx3p/8=
+	t=1758569765; cv=none; b=tHFVkR/2tXPRno9S9mWjczGNuMGBZOQW/UnKKZFqN9cMq74FIQbCGSRVuXYUrm0i19wGE7mLMWFH5hm6SGt1//W9M1E/bfjvZ6C3EbDh07g29sRuIbdEp7tU/4acLrHeJXhM2RUneRkXV/BO43pEj346pvI54/kflpsORo4LfmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569981; c=relaxed/simple;
-	bh=3vv5DDxeiH2YtMJxjI3UcFOphbHMTV/++2N56omTSgQ=;
+	s=arc-20240116; t=1758569765; c=relaxed/simple;
+	bh=n2yZ5DQwrsW8CDwm2VjukjInu34dNBGLnKdypy1NgEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMevdAP25vcvetoR6vInAIQqHxR3GKYaOJOgPY+JDsE/Prj3BqYqyOidjQ80vYgaeUpGC7SPdhqD9NWqgZm97Q48Z76YqgoQAqXhPQb8Px2yAaoW++QkzXTZygZ40lCjrtYhheHndswV4XV1ExNC3TrcGUwoK/rmUZiw0W2Vbok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EX6uBO/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BDBC4CEF7;
-	Mon, 22 Sep 2025 19:39:40 +0000 (UTC)
+	 MIME-Version; b=no6calibV/elr5I3mc9s97nym+sQ4CAJHd1L4E2XPcdXfOggpfhYFQVlbkJC7WQbrOvYh+EUumQenwDnWhM/SO9nlVyqGodxpUS/2mN1d+a0r11MvQPoUqj05ZzSx3JZSG811jHe8ULxf4YOva1kxOnMDrpivAJ+F2owcSFF+hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppAaZD2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB473C4CEF0;
+	Mon, 22 Sep 2025 19:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569980;
-	bh=3vv5DDxeiH2YtMJxjI3UcFOphbHMTV/++2N56omTSgQ=;
+	s=korg; t=1758569765;
+	bh=n2yZ5DQwrsW8CDwm2VjukjInu34dNBGLnKdypy1NgEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EX6uBO/8Gn7qAIvz/04oprKwR5Bv9DmS/H3jLDj+5g5sIFjX+3BA4bWyXQ5S59oHB
-	 +vXovNdXoF8Cx+zNLMFS1sYkArIkA2bJri77I3x73+Rze0qq434C1GpbFe7e+ak9Rg
-	 y/SVqFmkpFXYFOXyi5qHpE7R0Q7sxTQCxBbAgD5k=
+	b=ppAaZD2stuCyOtscVsHuI2+R07Olfr9ypUT4PdHxY59dbIVY9M8oJb8mKxJSXQnws
+	 8fQy0IlsZwt/bu1SU168KYmFI5G8oT5ox9F6d//aOhq2Mbi8eyKOvACt3LOumZA+Pi
+	 SOh1KbvP69Ioc6FdUAq6foT8PPUjTFcbxlRU46qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 064/105] selftests: mptcp: avoid spurious errors on TCP disconnect
-Date: Mon, 22 Sep 2025 21:29:47 +0200
-Message-ID: <20250922192410.590538277@linuxfoundation.org>
+	Benedek Thaler <thaler@thaler.hu>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 48/70] io_uring: include dying ring in task_work "should cancel" state
+Date: Mon, 22 Sep 2025 21:29:48 +0200
+Message-ID: <20250922192405.900266742@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 8708c5d8b3fb3f6d5d3b9e6bfe01a505819f519a upstream.
+Commit 3539b1467e94336d5854ebf976d9627bfb65d6c3 upstream.
 
-The disconnect test-case, with 'plain' TCP sockets generates spurious
-errors, e.g.
+When running task_work for an exiting task, rather than perform the
+issue retry attempt, the task_work is canceled. However, this isn't
+done for a ring that has been closed. This can lead to requests being
+successfully completed post the ring being closed, which is somewhat
+confusing and surprising to an application.
 
-  07 ns1 TCP   -> ns1 (dead:beef:1::1:10006) MPTCP
-  read: Connection reset by peer
-  read: Connection reset by peer
-  (duration   155ms) [FAIL] client exit code 3, server 3
+Rather than just check the task exit state, also include the ring
+ref state in deciding whether or not to terminate a given request when
+run from task_work.
 
-  netns ns1-FloSdv (listener) socket stat for 10006:
-  TcpActiveOpens                  2                  0.0
-  TcpPassiveOpens                 2                  0.0
-  TcpEstabResets                  2                  0.0
-  TcpInSegs                       274                0.0
-  TcpOutSegs                      276                0.0
-  TcpOutRsts                      3                  0.0
-  TcpExtPruneCalled               2                  0.0
-  TcpExtRcvPruned                 1                  0.0
-  TcpExtTCPPureAcks               104                0.0
-  TcpExtTCPRcvCollapsed           2                  0.0
-  TcpExtTCPBacklogCoalesce        42                 0.0
-  TcpExtTCPRcvCoalesce            43                 0.0
-  TcpExtTCPChallengeACK           1                  0.0
-  TcpExtTCPFromZeroWindowAdv      42                 0.0
-  TcpExtTCPToZeroWindowAdv        41                 0.0
-  TcpExtTCPWantZeroWindowAdv      13                 0.0
-  TcpExtTCPOrigDataSent           164                0.0
-  TcpExtTCPDelivered              165                0.0
-  TcpExtTCPRcvQDrop               1                  0.0
-
-In the failing scenarios (TCP -> MPTCP), the involved sockets are
-actually plain TCP ones, as fallbacks for passive sockets at 2WHS time
-cause the MPTCP listeners to actually create 'plain' TCP sockets.
-
-Similar to commit 218cc166321f ("selftests: mptcp: avoid spurious errors
-on disconnect"), the root cause is in the user-space bits: the test
-program tries to disconnect as soon as all the pending data has been
-spooled, generating an RST. If such option reaches the peer before the
-connection has reached the closed status, the TCP socket will report an
-error to the user-space, as per protocol specification, causing the
-above failure. Note that it looks like this issue got more visible since
-the "tcp: receiver changes" series from commit 06baf9bfa6ca ("Merge
-branch 'tcp-receiver-changes'").
-
-Address the issue by explicitly waiting for the TCP sockets (-t) to
-reach a closed status before performing the disconnect. More precisely,
-the test program now waits for plain TCP sockets or TCP subflows in
-addition to the MPTCP sockets that were already monitored.
-
-While at it, use 'ss' with '-n' to avoid resolving service names, which
-is not needed here.
-
-Fixes: 218cc166321f ("selftests: mptcp: avoid spurious errors on disconnect")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-3-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # 6.1+
+Link: https://github.com/axboe/liburing/discussions/1459
+Reported-by: Benedek Thaler <thaler@thaler.hu>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |    6 ++++--
+ io_uring/io_uring.h |    4 ++--
+ io_uring/poll.c     |    2 +-
+ io_uring/timeout.c  |    2 +-
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1234,7 +1234,7 @@ void xdisconnect(int fd)
- 	else
- 		xerror("bad family");
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1459,8 +1459,10 @@ static void io_req_task_cancel(struct io
  
--	strcpy(cmd, "ss -M | grep -q ");
-+	strcpy(cmd, "ss -Mnt | grep -q ");
- 	cmdlen = strlen(cmd);
- 	if (!inet_ntop(addr.ss_family, raw_addr, &cmd[cmdlen],
- 		       sizeof(cmd) - cmdlen))
-@@ -1244,7 +1244,7 @@ void xdisconnect(int fd)
+ void io_req_task_submit(struct io_kiocb *req, struct io_tw_state *ts)
+ {
+-	io_tw_lock(req->ctx, ts);
+-	if (unlikely(io_should_terminate_tw()))
++	struct io_ring_ctx *ctx = req->ctx;
++
++	io_tw_lock(ctx, ts);
++	if (unlikely(io_should_terminate_tw(ctx)))
+ 		io_req_defer_failed(req, -EFAULT);
+ 	else if (req->flags & REQ_F_FORCE_ASYNC)
+ 		io_queue_iowq(req);
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -402,9 +402,9 @@ static inline bool io_allowed_run_tw(str
+  * 2) PF_KTHREAD is set, in which case the invoker of the task_work is
+  *    our fallback task_work.
+  */
+-static inline bool io_should_terminate_tw(void)
++static inline bool io_should_terminate_tw(struct io_ring_ctx *ctx)
+ {
+-	return current->flags & (PF_KTHREAD | PF_EXITING);
++	return (current->flags & (PF_KTHREAD | PF_EXITING)) || percpu_ref_is_dying(&ctx->refs);
+ }
  
- 	/*
- 	 * wait until the pending data is completely flushed and all
--	 * the MPTCP sockets reached the closed status.
-+	 * the sockets reached the closed status.
- 	 * disconnect will bypass/ignore/drop any pending data.
- 	 */
- 	for (i = 0; ; i += msec_sleep) {
+ static inline void io_req_queue_tw_complete(struct io_kiocb *req, s32 res)
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -258,7 +258,7 @@ static int io_poll_check_events(struct i
+ {
+ 	int v;
+ 
+-	if (unlikely(io_should_terminate_tw()))
++	if (unlikely(io_should_terminate_tw(req->ctx)))
+ 		return -ECANCELED;
+ 
+ 	do {
+--- a/io_uring/timeout.c
++++ b/io_uring/timeout.c
+@@ -307,7 +307,7 @@ static void io_req_task_link_timeout(str
+ 	int ret = -ENOENT;
+ 
+ 	if (prev) {
+-		if (!io_should_terminate_tw()) {
++		if (!io_should_terminate_tw(req->ctx)) {
+ 			struct io_cancel_data cd = {
+ 				.ctx		= req->ctx,
+ 				.data		= prev->cqe.user_data,
 
 
 
