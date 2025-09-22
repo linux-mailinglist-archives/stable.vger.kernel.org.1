@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCC1B930E0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E581BB92EF3
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BD884809CD
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF01A447A6F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82592F39DE;
-	Mon, 22 Sep 2025 19:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBA52F28FA;
+	Mon, 22 Sep 2025 19:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGzXZSjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN8Ipcbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BE2F1FE3;
-	Mon, 22 Sep 2025 19:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB0A2F0C52;
+	Mon, 22 Sep 2025 19:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570272; cv=none; b=bUqcHX55uShmASMC8MZgI+MEXtf9Q7h7au/LMgslxcL0ohec5u5BNgbQlxJ1u2HAGwaT3FVKj3YsUh4OIgs4TKM707LR73da+UY7VuEqNd29FJgzY5XWkGfML251xx0aDfcqNOZ/Qdudxd7SGCCPe5pdq1bvl1rPUcNvMBYFzYM=
+	t=1758569941; cv=none; b=VZJWb4gr9KLvFy++TliiE+2aTrWRS2sJ6u2QzX/vGbdu2Ipp5f9T5NJpJgTUsve8Py3RCBj+G9UQq5nUYPANYp++/ql9qUxKaCzuhiPgnA4b2RKyaDP7YoxCpOkVP7gvk3W4mQWRzC3jAbvZUWboy4Qx/fLy/wVGgtlH8sEG9Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570272; c=relaxed/simple;
-	bh=gDYcfhcobfuljAwndTPJp7VEE+ajFlBDnP/bp3a0XOw=;
+	s=arc-20240116; t=1758569941; c=relaxed/simple;
+	bh=1jty8S9YkvmHXl6nL/JCHBPIjIYzwihWhdzy38nC0do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aEOs/rq7ul2Dp2Dr+5DsvUpN7GCQXLpRUHaZbYV5kcbTRk7HlpGHEuGVqqqFRz0HENNS3dJjWWUx7387NyaecuTFOrs3l/rX8y7diidBVR9vGLwDnibz3Dey3dYrVBeR3Gh4YjJGcoj/OIh9SWmRVe+qySZjf1Pz6IjxJPMAvfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGzXZSjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E191EC4CEF0;
-	Mon, 22 Sep 2025 19:44:31 +0000 (UTC)
+	 MIME-Version; b=RlwMgrEDG/AQo//TzSzws9xR/t61q1ztk/pGvVL2klHGlmPiZ9lbp34a4Hrt2eg2RMFRTNK/KuWnwMNCTNVo5KkAUbJPt0yYveiVR4bun/YKliyxrEqOfltTw0M2FWPlodwUZo+2KXSvwNF3ed8ckB8skWQ6FwW4RqimKLr6NpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN8Ipcbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0940DC4CEF0;
+	Mon, 22 Sep 2025 19:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570272;
-	bh=gDYcfhcobfuljAwndTPJp7VEE+ajFlBDnP/bp3a0XOw=;
+	s=korg; t=1758569941;
+	bh=1jty8S9YkvmHXl6nL/JCHBPIjIYzwihWhdzy38nC0do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGzXZSjjOkHTMDFbTHFmQLPAVbFIA0fXzDQi8Ndwzzki4O3Nz5pE0XsGVS3IZRbb6
-	 PDNbC2pRe4WbO+7Xr7suPFeaAHgyNkpEoPdjRXu0UrH9U27mMADuhTguTWqN4k9HGl
-	 0FJz6cYvlceu19J0BXY0QnF2FNWvgAk3JcmSS/uA=
+	b=vN8IpcbpXiXgVAPq2kyKm2j1ojO8ytJhigituCpiXwtXhmlh/zotN20iE/XUUvTtW
+	 ZRkdFXQpu35hlC13B0WAC99b+cODZpX7U60B+trJymicSYj2JQAUUFlJ5CyjOErRAM
+	 FnlebK1rlIg2RAQ7i8jPqHHg/M7W4cCT1GLdYVVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	WANG Rui <wangrui@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 072/149] LoongArch: Handle jump tables options for RUST
+Subject: [PATCH 6.12 049/105] LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled
 Date: Mon, 22 Sep 2025 21:29:32 +0200
-Message-ID: <20250922192414.700724139@linuxfoundation.org>
+Message-ID: <20250922192410.201780057@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 74f8295c6fb8436bec9995baf6ba463151b6fb68 upstream.
+commit a9d13433fe17be0e867e51e71a1acd2731fbef8d upstream.
 
-When compiling with LLVM and CONFIG_RUST is set, there exist objtool
-warnings in rust/core.o and rust/kernel.o, like this:
+ARCH_STRICT_ALIGN is used for hardware without UAL, now it only control
+the -mstrict-align flag. However, ACPI structures are packed by default
+so will cause unaligned accesses.
 
-    rust/core.o: warning: objtool:
-_RNvXs1_NtNtCs5QSdWC790r4_4core5ascii10ascii_charNtB5_9AsciiCharNtNtB9_3fmt5Debug3fmt+0x54:
-sibling call from callable instruction with modified stack frame
-
-For this special case, the related object file shows that there is no
-generated relocation section '.rela.discard.tablejump_annotate' for the
-table jump instruction jirl, thus objtool can not know that what is the
-actual destination address.
-
-If rustc has the option "-Cllvm-args=--loongarch-annotate-tablejump",
-pass the option to enable jump tables for objtool, otherwise it should
-pass "-Zno-jump-tables" to keep compatibility with older rustc.
-
-How to test:
-
-  $ rustup component add rust-src
-  $ make LLVM=1 rustavailable
-  $ make ARCH=loongarch LLVM=1 clean defconfig
-  $ scripts/config -d MODVERSIONS \
-    -e RUST -e SAMPLES -e SAMPLES_RUST \
-    -e SAMPLE_RUST_CONFIGFS -e SAMPLE_RUST_MINIMAL \
-    -e SAMPLE_RUST_MISC_DEVICE -e SAMPLE_RUST_PRINT \
-    -e SAMPLE_RUST_DMA -e SAMPLE_RUST_DRIVER_PCI \
-    -e SAMPLE_RUST_DRIVER_PLATFORM -e SAMPLE_RUST_DRIVER_FAUX \
-    -e SAMPLE_RUST_DRIVER_AUXILIARY -e SAMPLE_RUST_HOSTPROGS
-  $ make ARCH=loongarch LLVM=1 olddefconfig all
+To avoid this, define ACPI_MISALIGNMENT_NOT_SUPPORTED in asm/acenv.h to
+align ACPI structures if ARCH_STRICT_ALIGN enabled.
 
 Cc: stable@vger.kernel.org
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/rust-for-linux/CANiq72mNeCuPkCDrG2db3w=AX+O-zYrfprisDPmRac_qh65Dmg@mail.gmail.com/
-Suggested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Reported-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Suggested-by: Xi Ruoyao <xry111@xry111.site>
+Suggested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/Kconfig  |    4 ++++
- arch/loongarch/Makefile |    5 +++++
- 2 files changed, 9 insertions(+)
+ arch/loongarch/include/asm/acenv.h |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -301,6 +301,10 @@ config AS_HAS_LVZ_EXTENSION
- config CC_HAS_ANNOTATE_TABLEJUMP
- 	def_bool $(cc-option,-mannotate-tablejump)
+--- a/arch/loongarch/include/asm/acenv.h
++++ b/arch/loongarch/include/asm/acenv.h
+@@ -10,9 +10,8 @@
+ #ifndef _ASM_LOONGARCH_ACENV_H
+ #define _ASM_LOONGARCH_ACENV_H
  
-+config RUSTC_HAS_ANNOTATE_TABLEJUMP
-+	depends on RUST
-+	def_bool $(rustc-option,-Cllvm-args=--loongarch-annotate-tablejump)
-+
- menu "Kernel type and options"
+-/*
+- * This header is required by ACPI core, but we have nothing to fill in
+- * right now. Will be updated later when needed.
+- */
++#ifdef CONFIG_ARCH_STRICT_ALIGN
++#define ACPI_MISALIGNMENT_NOT_SUPPORTED
++#endif /* CONFIG_ARCH_STRICT_ALIGN */
  
- source "kernel/Kconfig.hz"
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -106,6 +106,11 @@ KBUILD_CFLAGS			+= -mannotate-tablejump
- else
- KBUILD_CFLAGS			+= -fno-jump-tables # keep compatibility with older compilers
- endif
-+ifdef CONFIG_RUSTC_HAS_ANNOTATE_TABLEJUMP
-+KBUILD_RUSTFLAGS		+= -Cllvm-args=--loongarch-annotate-tablejump
-+else
-+KBUILD_RUSTFLAGS		+= -Zno-jump-tables # keep compatibility with older compilers
-+endif
- ifdef CONFIG_LTO_CLANG
- # The annotate-tablejump option can not be passed to LLVM backend when LTO is enabled.
- # Ensure it is aware of linker with LTO, '--loongarch-annotate-tablejump' also needs to
+ #endif /* _ASM_LOONGARCH_ACENV_H */
 
 
 
