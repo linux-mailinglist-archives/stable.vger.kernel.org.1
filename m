@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41818B92D84
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 094EBB92CF2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7DF1906A55
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E06819061F6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856132F067B;
-	Mon, 22 Sep 2025 19:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C5627B320;
+	Mon, 22 Sep 2025 19:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IohRbFXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahQ8YXAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420FEC8E6;
-	Mon, 22 Sep 2025 19:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DAA17A2EA;
+	Mon, 22 Sep 2025 19:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569676; cv=none; b=I2nuvG5RHn5C11F5Y196sSssRVFLCjXBgJ8/R1M293aLaQ5ia3iIZyJ9+2qjFvOjRQIy6QZVu+/sxlcwzvGp/w4RNtg1kOV6BZV2gry1zedDTOB+6i1GQRGvnh4MUOJNZlXLkwNX58kNAvRFn8EM8/ZDRjN6GRI7jm32yp39CmU=
+	t=1758569571; cv=none; b=gzOzhd45TNEC0rjOWZPjAijay8/E1xuYyDEycF38B+StGuBrp/DNTsGqq+S5G4lylDsrNeHXH17MsPp4RfkrMXi6kbIAiLUUteYgCkbKYtuO+TCUbaG6iqTNc/WZaSOEpXcRxHL0pPeurmebugHsHPzwFXUaxs7zE3CRIc8GnNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569676; c=relaxed/simple;
-	bh=780xiQTpst6u6TOqLrWfwvVhcZBGnU6zW516yaQcC3k=;
+	s=arc-20240116; t=1758569571; c=relaxed/simple;
+	bh=tcf70qyc2G0cIrotQbdKxyQXrej1kY0CWWEgi/O3XYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=To5edhd4GG2x/cYevsJwtaB12zI4vngxhQmmmboDkIfqTIfDUvoR7Q7av+uJFxtoQ1yqrG/nX/RcZZ4G/6nrQyj7PEav+FmVE2PEFuqGD18bCak/JPFnSYkXkf8gC9TsexXtp9hOJlNDatb8qjKH1BgE3jgBm+0h3XzmtVux2Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IohRbFXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09B3C4CEF0;
-	Mon, 22 Sep 2025 19:34:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lkO6t8oaNbZWtgBxs6GkwCLgUbybo3kwRVtjgbZjhwUp2uJVWfhGezWcxbkxEkwKrXKIPmk8jScIOFnRbYMft6Zv3t5F90eo8SujQnB5ivcmxeduYC9N8xoX/gT0PhO4m6yM4LBfe7uXEx/bVut/vRmDR3gZTohib7Ca4Es1aME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahQ8YXAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216B4C4CEF0;
+	Mon, 22 Sep 2025 19:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569676;
-	bh=780xiQTpst6u6TOqLrWfwvVhcZBGnU6zW516yaQcC3k=;
+	s=korg; t=1758569571;
+	bh=tcf70qyc2G0cIrotQbdKxyQXrej1kY0CWWEgi/O3XYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IohRbFXqb8ogj7PlFFx+NSG0IeG9jkHH+ATTrGBu4lO25C5N6fmF7JX54UDgk+Wa1
-	 zoU2mpNHtphNEo7Pe5lVsfXfsXjFxHhPorJ7Ql8psIIL8WTOBe2GYyRhqqXCYagFUQ
-	 NAGjf1/AfCkmOMUqWvY5rHHL8YNHpWA52jRnBeB4=
+	b=ahQ8YXAH4J3w6WUEVBxqxMuuYN/dmL3q6qCRqsVJ+ORKqCc1+XKryiIkRBS9krJIf
+	 BSph8OXWaej90FxWI6FJsJxDoaPZq71tSJGWQhlsdp2/u0QaRl8hhOyBoXc0MJQMa8
+	 UZjiiyKIBMRNtGuaJChNcgIPrkqQehEbeYzrv2cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/70] octeontx2-pf: Fix use-after-free bugs in otx2_sync_tstamp()
-Date: Mon, 22 Sep 2025 21:29:25 +0200
-Message-ID: <20250922192405.242083280@linuxfoundation.org>
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 33/61] rds: ib: Increment i_fastreg_wrs before bailing out
+Date: Mon, 22 Sep 2025 21:29:26 +0200
+Message-ID: <20250922192404.469414635@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-[ Upstream commit f8b4687151021db61841af983f1cb7be6915d4ef ]
+commit 4351ca3fcb3ffecf12631b4996bf085a2dad0db6 upstream.
 
-The original code relies on cancel_delayed_work() in otx2_ptp_destroy(),
-which does not ensure that the delayed work item synctstamp_work has fully
-completed if it was already running. This leads to use-after-free scenarios
-where otx2_ptp is deallocated by otx2_ptp_destroy(), while synctstamp_work
-remains active and attempts to dereference otx2_ptp in otx2_sync_tstamp().
-Furthermore, the synctstamp_work is cyclic, the likelihood of triggering
-the bug is nonnegligible.
+We need to increment i_fastreg_wrs before we bail out from
+rds_ib_post_reg_frmr().
 
-A typical race condition is illustrated below:
+We have a fixed budget of how many FRWR operations that can be
+outstanding using the dedicated QP used for memory registrations and
+de-registrations. This budget is enforced by the atomic_t
+i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
+"leak" the possibility of posting an FRWR operation, and if that
+accumulates, no FRWR operation can be carried out.
 
-CPU 0 (cleanup)           | CPU 1 (delayed work callback)
-otx2_remove()             |
-  otx2_ptp_destroy()      | otx2_sync_tstamp()
-    cancel_delayed_work() |
-    kfree(ptp)            |
-                          |   ptp = container_of(...); //UAF
-                          |   ptp-> //UAF
-
-This is confirmed by a KASAN report:
-
-BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
-Write of size 8 at addr ffff88800aa09a18 by task bash/136
-...
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_report+0xcf/0x610
- ? __run_timer_base.part.0+0x7d7/0x8c0
- kasan_report+0xb8/0xf0
- ? __run_timer_base.part.0+0x7d7/0x8c0
- __run_timer_base.part.0+0x7d7/0x8c0
- ? __pfx___run_timer_base.part.0+0x10/0x10
- ? __pfx_read_tsc+0x10/0x10
- ? ktime_get+0x60/0x140
- ? lapic_next_event+0x11/0x20
- ? clockevents_program_event+0x1d4/0x2a0
- run_timer_softirq+0xd1/0x190
- handle_softirqs+0x16a/0x550
- irq_exit_rcu+0xaf/0xe0
- sysvec_apic_timer_interrupt+0x70/0x80
- </IRQ>
-...
-Allocated by task 1:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- otx2_ptp_init+0xb1/0x860
- otx2_probe+0x4eb/0xc30
- local_pci_probe+0xdc/0x190
- pci_device_probe+0x2fe/0x470
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __driver_attach+0xd2/0x310
- bus_for_each_dev+0xed/0x170
- bus_add_driver+0x208/0x500
- driver_register+0x132/0x460
- do_one_initcall+0x89/0x300
- kernel_init_freeable+0x40d/0x720
- kernel_init+0x1a/0x150
- ret_from_fork+0x10c/0x1a0
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 136:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x3f/0x50
- kfree+0x137/0x370
- otx2_ptp_destroy+0x38/0x80
- otx2_remove+0x10d/0x4c0
- pci_device_remove+0xa6/0x1d0
- device_release_driver_internal+0xf8/0x210
- pci_stop_bus_device+0x105/0x150
- pci_stop_and_remove_bus_device_locked+0x15/0x30
- remove_store+0xcc/0xe0
- kernfs_fop_write_iter+0x2c3/0x440
- vfs_write+0x871/0xd70
- ksys_write+0xee/0x1c0
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the delayed work item is properly canceled before the otx2_ptp is
-deallocated.
-
-This bug was initially identified through static analysis. To reproduce
-and test it, I simulated the OcteonTX2 PCI device in QEMU and introduced
-artificial delays within the otx2_sync_tstamp() function to increase the
-likelihood of triggering the bug.
-
-Fixes: 2958d17a8984 ("octeontx2-pf: Add support for ptp 1-step mode on CN10K silicon")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
+Cc: stable@vger.kernel.org
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
+Link: https://patch.msgid.link/20250911133336.451212-1-haakon.bugge@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rds/ib_frmr.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-index 3a72b0793d4a7..82725923555c5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-@@ -476,7 +476,7 @@ void otx2_ptp_destroy(struct otx2_nic *pfvf)
- 	if (!ptp)
- 		return;
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct r
  
--	cancel_delayed_work(&pfvf->ptp->synctstamp_work);
-+	cancel_delayed_work_sync(&pfvf->ptp->synctstamp_work);
+ 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
+ 				&off, PAGE_SIZE);
+-	if (unlikely(ret != ibmr->sg_dma_len))
+-		return ret < 0 ? ret : -EINVAL;
++	if (unlikely(ret != ibmr->sg_dma_len)) {
++		ret = ret < 0 ? ret : -EINVAL;
++		goto out_inc;
++	}
  
- 	ptp_clock_unregister(ptp->ptp_clock);
- 	kfree(ptp);
--- 
-2.51.0
-
+-	if (cmpxchg(&frmr->fr_state,
+-		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
+-		return -EBUSY;
++	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
++		ret = -EBUSY;
++		goto out_inc;
++	}
+ 
+ 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
+ 
+@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 		/* Failure here can be because of -ENOMEM as well */
+ 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
+ 
+-		atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 		if (printk_ratelimit())
+ 			pr_warn("RDS/IB: %s returned error(%d)\n",
+ 				__func__, ret);
+-		goto out;
++		goto out_inc;
+ 	}
+ 
+ 	/* Wait for the registration to complete in order to prevent an invalid
+@@ -179,8 +181,10 @@ static int rds_ib_post_reg_frmr(struct r
+ 	 */
+ 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
+ 
+-out:
++	return ret;
+ 
++out_inc:
++	atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 	return ret;
+ }
+ 
 
 
 
