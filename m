@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-181201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E581BB92EF3
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B4AB92DCA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF01A447A6F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA45F3A6B7D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBA52F28FA;
-	Mon, 22 Sep 2025 19:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFE62F0690;
+	Mon, 22 Sep 2025 19:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN8Ipcbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTAri95u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB0A2F0C52;
-	Mon, 22 Sep 2025 19:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2681B222590;
+	Mon, 22 Sep 2025 19:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569941; cv=none; b=VZJWb4gr9KLvFy++TliiE+2aTrWRS2sJ6u2QzX/vGbdu2Ipp5f9T5NJpJgTUsve8Py3RCBj+G9UQq5nUYPANYp++/ql9qUxKaCzuhiPgnA4b2RKyaDP7YoxCpOkVP7gvk3W4mQWRzC3jAbvZUWboy4Qx/fLy/wVGgtlH8sEG9Dc=
+	t=1758569723; cv=none; b=kQQhsNQwibbjyxwbm6Y42vOrnXF4rang9aHnDlMTkWkuT70JiYXta2KcavFTyEgZeQbEPbI2bU4mfFt5d7JLYsXL+VE2HhYglcDA12Lecna2x79/zvE36dCA1KtNFJg8pD0orDvVmtslmZCKYkdM6CV2AJMSs4NSVbofogBWLIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569941; c=relaxed/simple;
-	bh=1jty8S9YkvmHXl6nL/JCHBPIjIYzwihWhdzy38nC0do=;
+	s=arc-20240116; t=1758569723; c=relaxed/simple;
+	bh=rqq6Tl8FnsK3L2aMQi9ZHL6+fpg8SmlkAJ2giQpXGXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlwMgrEDG/AQo//TzSzws9xR/t61q1ztk/pGvVL2klHGlmPiZ9lbp34a4Hrt2eg2RMFRTNK/KuWnwMNCTNVo5KkAUbJPt0yYveiVR4bun/YKliyxrEqOfltTw0M2FWPlodwUZo+2KXSvwNF3ed8ckB8skWQ6FwW4RqimKLr6NpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN8Ipcbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0940DC4CEF0;
-	Mon, 22 Sep 2025 19:39:00 +0000 (UTC)
+	 MIME-Version; b=oatsw79ecmc/2qs3NG2ns/rzxMZo2bYbeJbOY4fUrdcPTItqjFo5wgxqOBdlRYJTSmmqwOLzGPWDuZo5lULPrYkNrS/c4CRQ/1gWM4siGw2ftMsj7U6MyIU0w3eWZEgJGPmDV4UI7Dxa4npgnyaKMMUuN7bM7NF6jItFc6aBqVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTAri95u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E02C4CEF0;
+	Mon, 22 Sep 2025 19:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569941;
-	bh=1jty8S9YkvmHXl6nL/JCHBPIjIYzwihWhdzy38nC0do=;
+	s=korg; t=1758569722;
+	bh=rqq6Tl8FnsK3L2aMQi9ZHL6+fpg8SmlkAJ2giQpXGXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vN8IpcbpXiXgVAPq2kyKm2j1ojO8ytJhigituCpiXwtXhmlh/zotN20iE/XUUvTtW
-	 ZRkdFXQpu35hlC13B0WAC99b+cODZpX7U60B+trJymicSYj2JQAUUFlJ5CyjOErRAM
-	 FnlebK1rlIg2RAQ7i8jPqHHg/M7W4cCT1GLdYVVk=
+	b=FTAri95uNjIo2hzurjaIUIGfiLqqkoYmCcEM9t6jKUc+ddJYytU66+E8lSCTvUZou
+	 MN/kfERzSFE2GcZuMtn3tT65DtXRIAOmb5X7Blx2BySaSH8ndm55ITDmYGjAtQ/cjT
+	 FuoXaZgYOOjTyAqIn0DYn1Jze1emxfVQRhOPzcUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 049/105] LoongArch: Align ACPI structures if ARCH_STRICT_ALIGN enabled
+Subject: [PATCH 6.6 32/70] LoongArch: Update help info of ARCH_STRICT_ALIGN
 Date: Mon, 22 Sep 2025 21:29:32 +0200
-Message-ID: <20250922192410.201780057@linuxfoundation.org>
+Message-ID: <20250922192405.460517213@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit a9d13433fe17be0e867e51e71a1acd2731fbef8d upstream.
+commit f5003098e2f337d8e8a87dc636250e3fa978d9ad upstream.
 
-ARCH_STRICT_ALIGN is used for hardware without UAL, now it only control
-the -mstrict-align flag. However, ACPI structures are packed by default
-so will cause unaligned accesses.
+Loongson-3A6000 and 3C6000 CPUs also support unaligned memory access, so
+the current description is out of date to some extent.
 
-To avoid this, define ACPI_MISALIGNMENT_NOT_SUPPORTED in asm/acenv.h to
-align ACPI structures if ARCH_STRICT_ALIGN enabled.
+Actually, all of Loongson-3 series processors based on LoongArch support
+unaligned memory access, this hardware capability is indicated by the bit
+20 (UAL) of CPUCFG1 register, update the help info to reflect the reality.
 
 Cc: stable@vger.kernel.org
-Reported-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Suggested-by: Xi Ruoyao <xry111@xry111.site>
-Suggested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/acenv.h |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/loongarch/Kconfig |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/acenv.h
-+++ b/arch/loongarch/include/asm/acenv.h
-@@ -10,9 +10,8 @@
- #ifndef _ASM_LOONGARCH_ACENV_H
- #define _ASM_LOONGARCH_ACENV_H
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -503,10 +503,14 @@ config ARCH_STRICT_ALIGN
+ 	  -mstrict-align build parameter to prevent unaligned accesses.
  
--/*
-- * This header is required by ACPI core, but we have nothing to fill in
-- * right now. Will be updated later when needed.
-- */
-+#ifdef CONFIG_ARCH_STRICT_ALIGN
-+#define ACPI_MISALIGNMENT_NOT_SUPPORTED
-+#endif /* CONFIG_ARCH_STRICT_ALIGN */
+ 	  CPUs with h/w unaligned access support:
+-	  Loongson-2K2000/2K3000/3A5000/3C5000/3D5000.
++	  Loongson-2K2000/2K3000 and all of Loongson-3 series processors
++	  based on LoongArch.
  
- #endif /* _ASM_LOONGARCH_ACENV_H */
+ 	  CPUs without h/w unaligned access support:
+-	  Loongson-2K500/2K1000.
++	  Loongson-2K0300/2K0500/2K1000.
++
++	  If you want to make sure whether to support unaligned memory access
++	  on your hardware, please read the bit 20 (UAL) of CPUCFG1 register.
+ 
+ 	  This option is enabled by default to make the kernel be able to run
+ 	  on all LoongArch systems. But you can disable it manually if you want
 
 
 
