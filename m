@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23E7B92EBA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F23B92DAF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03B62190724B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74AF61883A1D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE42F291B;
-	Mon, 22 Sep 2025 19:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14462E2847;
+	Mon, 22 Sep 2025 19:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTH/EnM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMgZkY9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CD227B320;
-	Mon, 22 Sep 2025 19:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE91191F66;
+	Mon, 22 Sep 2025 19:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569907; cv=none; b=og0cGu0SHB+Vjm+gDXEEnmBtz0gQoO70ViPwMgR/8vrH4idwgVOKKY8PdzRAAK0cxSO/yYl1Zgbd6E8rhB2/PrQmpLuiEKt5xEeNnm3zz6R8Un4SpVKg8XZdb5oAa+QT9bLDM6j9CK5G2UX/P0V1jZB5bv1D8k55gKatlpBwIMs=
+	t=1758569706; cv=none; b=d1AFp9p7nnVo9oSW+1cY9hBBprOnN6qIHFR82gy2vOK6B7fhkLF75epRo9QSOq3pn8kJpnBJYdwGuMfdjUT5qQ2ezSdJYPVK1/B8NjLaArOlNt6PWC5LlselE77FUwYs4KIM1MbrW6Vxdi4jkTRtg8I2I2Is0ibUC1+S+rHq7Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569907; c=relaxed/simple;
-	bh=EbdCp+c6bcHdO1CEczbuBdv+/Qb2Jfr0KZRxESeocR0=;
+	s=arc-20240116; t=1758569706; c=relaxed/simple;
+	bh=7zeZlM939qvrgRATpOfh+6GEzlGEanXNH6mgG4eYW7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ss9tdaOfSLkARTwIWhCdfH71bzQyPhmFPfA6NhcGiRBqyyuwcumUe/q47iGtbh/tKdQmYXvZzZzSBiyfw+Nz5EaNUkWAjOFY4gyIM+t8tu9ouyLyN065LcV2GEhdtXXiKqy+nUPz/EWnztemQ+RdL6Nf5B20MPWdJq1MC4k0oSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTH/EnM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77ED9C4CEF0;
-	Mon, 22 Sep 2025 19:38:26 +0000 (UTC)
+	 MIME-Version; b=mW5nv6LH44am+wnAPIvkF+EoBk5bD2ha+SgtqoZc//TgyoGaickIYHk68ggmiC8iQpx2vEhDo0QO8mvn1ozOALMBm6JG7XdBuvEpwORZg6QGuui0o+g4e15Ajulj3TpuFbzld9N4GkxOrf1WKHBh+TqVdm8BrDjCyS0Y8P5C3tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMgZkY9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD66C4CEF0;
+	Mon, 22 Sep 2025 19:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569906;
-	bh=EbdCp+c6bcHdO1CEczbuBdv+/Qb2Jfr0KZRxESeocR0=;
+	s=korg; t=1758569706;
+	bh=7zeZlM939qvrgRATpOfh+6GEzlGEanXNH6mgG4eYW7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTH/EnM8GTYPrIw/G2je5yGbqGhCE1FSRZZCCAh6rPG0WZ/KoYPRYh+dSWB6Ap27M
-	 +DTkYm2sbZQT2gef4yLUC/SVyKkDci5TYSo8IDk42Nh4jRwfsh5gLm5eKHsxiEiNFp
-	 PfHzYsrilmMV0u1Ydq5kYnjUWB7A9dlO16xk7J+c=
+	b=YMgZkY9HSF/kZ9+ma3xenleeLTIzhzJ1ah6CiSyql206MU+RS96BChvwtOfIqlK9P
+	 U3jdJhlL3TYNKCTsyL2yCh/UrbggNlp/ynFHGzdGKiAvcibceytTtZvezChQYQLJ1b
+	 FhTXbIssfI2cCnEsgPhAVkP9xPYeIIf+5fEjtgas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 046/105] objtool/LoongArch: Mark special atomic instruction as INSN_BUG type
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 29/70] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
 Date: Mon, 22 Sep 2025 21:29:29 +0200
-Message-ID: <20250922192410.123330497@linuxfoundation.org>
+Message-ID: <20250922192405.367140476@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 539d7344d4feaea37e05863e9aa86bd31f28e46f upstream.
+commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 upstream.
 
-When compiling with LLVM and CONFIG_RUST is set, there exists the
-following objtool warning:
+Issuing two writes to the same af_alg socket is bogus as the
+data will be interleaved in an unpredictable fashion.  Furthermore,
+concurrent writes may create inconsistencies in the internal
+socket state.
 
-  rust/compiler_builtins.o: warning: objtool: __rust__unordsf2(): unexpected end of section .text.unlikely.
+Disallow this by adding a new ctx->write field that indiciates
+exclusive ownership for writing.
 
-objdump shows that the end of section .text.unlikely is an atomic
-instruction:
-
-  amswap.w        $zero, $ra, $zero
-
-According to the LoongArch Reference Manual, if the amswap.w atomic
-memory access instruction has the same register number as rd and rj,
-the execution will trigger an Instruction Non-defined Exception, so
-mark the above instruction as INSN_BUG type to fix the warning.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/arch/loongarch/include/asm/inst.h |   12 ++++++++++++
- tools/objtool/arch/loongarch/decode.c   |   21 +++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ crypto/af_alg.c         |    7 +++++++
+ include/crypto/if_alg.h |   10 ++++++----
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
---- a/tools/arch/loongarch/include/asm/inst.h
-+++ b/tools/arch/loongarch/include/asm/inst.h
-@@ -51,6 +51,10 @@ enum reg2i16_op {
- 	bgeu_op		= 0x1b,
- };
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -969,6 +969,12 @@ int af_alg_sendmsg(struct socket *sock,
+ 	}
  
-+enum reg3_op {
-+	amswapw_op	= 0x70c0,
-+};
-+
- struct reg0i15_format {
- 	unsigned int immediate : 15;
- 	unsigned int opcode : 17;
-@@ -96,6 +100,13 @@ struct reg2i16_format {
- 	unsigned int opcode : 6;
- };
- 
-+struct reg3_format {
-+	unsigned int rd : 5;
-+	unsigned int rj : 5;
-+	unsigned int rk : 5;
-+	unsigned int opcode : 17;
-+};
-+
- union loongarch_instruction {
- 	unsigned int word;
- 	struct reg0i15_format	reg0i15_format;
-@@ -105,6 +116,7 @@ union loongarch_instruction {
- 	struct reg2i12_format	reg2i12_format;
- 	struct reg2i14_format	reg2i14_format;
- 	struct reg2i16_format	reg2i16_format;
-+	struct reg3_format	reg3_format;
- };
- 
- #define LOONGARCH_INSN_SIZE	sizeof(union loongarch_instruction)
---- a/tools/objtool/arch/loongarch/decode.c
-+++ b/tools/objtool/arch/loongarch/decode.c
-@@ -281,6 +281,25 @@ static bool decode_insn_reg2i16_fomat(un
- 	return true;
- }
- 
-+static bool decode_insn_reg3_fomat(union loongarch_instruction inst,
-+				   struct instruction *insn)
-+{
-+	switch (inst.reg3_format.opcode) {
-+	case amswapw_op:
-+		if (inst.reg3_format.rd == LOONGARCH_GPR_ZERO &&
-+		    inst.reg3_format.rk == LOONGARCH_GPR_RA &&
-+		    inst.reg3_format.rj == LOONGARCH_GPR_ZERO) {
-+			/* amswap.w $zero, $ra, $zero */
-+			insn->type = INSN_BUG;
-+		}
-+		break;
-+	default:
-+		return false;
+ 	lock_sock(sk);
++	if (ctx->write) {
++		release_sock(sk);
++		return -EBUSY;
 +	}
++	ctx->write = true;
 +
-+	return true;
-+}
-+
- int arch_decode_instruction(struct objtool_file *file, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
- 			    struct instruction *insn)
-@@ -312,6 +331,8 @@ int arch_decode_instruction(struct objto
- 		return 0;
- 	if (decode_insn_reg2i16_fomat(inst, insn))
- 		return 0;
-+	if (decode_insn_reg3_fomat(inst, insn))
-+		return 0;
+ 	if (ctx->init && !ctx->more) {
+ 		if (ctx->used) {
+ 			err = -EINVAL;
+@@ -1103,6 +1109,7 @@ int af_alg_sendmsg(struct socket *sock,
  
- 	if (inst.word == 0) {
- 		/* andi $zero, $zero, 0x0 */
+ unlock:
+ 	af_alg_data_wakeup(sk);
++	ctx->write = false;
+ 	release_sock(sk);
+ 
+ 	return copied ?: err;
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -134,6 +134,7 @@ struct af_alg_async_req {
+  *			SG?
+  * @enc:		Cryptographic operation to be performed when
+  *			recvmsg is invoked.
++ * @write:		True if we are in the middle of a write.
+  * @init:		True if metadata has been sent.
+  * @len:		Length of memory allocated for this data structure.
+  * @inflight:		Non-zero when AIO requests are in flight.
+@@ -149,10 +150,11 @@ struct af_alg_ctx {
+ 	size_t used;
+ 	atomic_t rcvused;
+ 
+-	bool more;
+-	bool merge;
+-	bool enc;
+-	bool init;
++	u32		more:1,
++			merge:1,
++			enc:1,
++			write:1,
++			init:1;
+ 
+ 	unsigned int len;
+ 
 
 
 
