@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-181186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A5AB92EB4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016C2B930C2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BAC519070E7
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0C5B19080BB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87A52F0C5C;
-	Mon, 22 Sep 2025 19:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44632F49E3;
+	Mon, 22 Sep 2025 19:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/QggWxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfbM0mMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C8C1C1ADB;
-	Mon, 22 Sep 2025 19:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D182F1FE3;
+	Mon, 22 Sep 2025 19:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569904; cv=none; b=sZiCs3/on1jOoWnNK6I+6Bum0r7YWli2qnLAnKYKroXjH0wthniwSZd9fp5j2Q1mqJnd4isdNFVJLYUd6j8ynm8gQDJbGkaws7wrqdedsJBgh9uuPeli0kYFj67yfNCWCDNAubn28/oq/w1wcqWGFxgvX6FNySZpwKRQglLBHCQ=
+	t=1758570263; cv=none; b=FJ/VQ8L20MMso0nA7Vtdf1h5CDHI/HWtDwPNS8GYu1qs1lIV02xJm121WfH6rI1tmQdGeWgEsJDXoaqI2ZO7nbaMN+GptsgagoN3uo/KfQMTQYoXUyCRDFEXM+EJQcweld7RkKDM1NSQi/nUMj6IzqtcHKL3oH+gX8lTFbaVtUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569904; c=relaxed/simple;
-	bh=DfX/ERQPFljgTtUMIuui5HKGClzYFa2otPEaRqtJhTs=;
+	s=arc-20240116; t=1758570263; c=relaxed/simple;
+	bh=1BgTo53oJGiDG5m7ln1ns7Tl6bv69DWtV5vUpyLK/V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghlY9pgUfiqbzcBuNl4GV/TZHqYBnHD2yYMPPenuobhRtRy7DDfSnOgTW0lu1gayAsQ6zynCZbL89CFHP70pUhfFpdsCC/Tl9CJ2RMR/Sog8xEOWHTS27giIDwUshCFY3kkTUd0H0La7pmUtrVBM0Hjw5zJCpOOELg8pq+eSQ9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/QggWxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034A3C4CEF0;
-	Mon, 22 Sep 2025 19:38:23 +0000 (UTC)
+	 MIME-Version; b=NFlpQK0ETzLe0Ck6ox7csUE+goeCdw+HVzXUlXgdXofpPMuEeOAeT8kifW3weOdANKb/46+TWlT7x7PKjtipLtNVSUwhCDC00mvEY+o+odaku0+oWFIVYi0X80JUasQcMoqc4A7YkuGGZGGUupY+kk9s9Fxm66d5dqv4jEfz/Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfbM0mMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9B8C4CEF0;
+	Mon, 22 Sep 2025 19:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569904;
-	bh=DfX/ERQPFljgTtUMIuui5HKGClzYFa2otPEaRqtJhTs=;
+	s=korg; t=1758570262;
+	bh=1BgTo53oJGiDG5m7ln1ns7Tl6bv69DWtV5vUpyLK/V0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/QggWxYnVkkhnx3e25mTzUgFNrORMEVRAXB+p5wQV9o0uqYkU/8mYmsmGAZLfQw5
-	 m6zCfpgvg6+FxrgxXkMAPCeLHUMgv3ha3k8pimnhcBT8zM1xzayYXBFif1qpollDoZ
-	 cNJIaRC79rDSWko7hWC+SXYolSFJpbv5LRgXogSw=
+	b=DfbM0mMzUWdPjuyAWj4ZOnA2I9iOJYZaR7z3eE+mD6I69JdLFm4+sBBOH1Kfr9Z8A
+	 MEXZN1nP1mB9VDXLqnFevpZU0Se89s5xuLJ2x5LZDX9ES86tflfdqm0viNUYdMXZ06
+	 ZL+J94vTEHMRuxQimFKdKxPWnjA3rBXS/uS1USyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Rui <wangrui@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Guangshuo Li <202321181@mail.sdu.edu.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 045/105] objtool/LoongArch: Mark types based on break immediate code
+Subject: [PATCH 6.16 068/149] LoongArch: vDSO: Check kcalloc() result in init_vdso()
 Date: Mon, 22 Sep 2025 21:29:28 +0200
-Message-ID: <20250922192410.097890670@linuxfoundation.org>
+Message-ID: <20250922192414.602064969@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Guangshuo Li <202321181@mail.sdu.edu.cn>
 
-commit baad7830ee9a56756b3857348452fe756cb0a702 upstream.
+commit ac398f570724c41e5e039d54e4075519f6af7408 upstream.
 
-If the break immediate code is 0, it should mark the type as
-INSN_TRAP. If the break immediate code is 1, it should mark the
-type as INSN_BUG.
-
-While at it, format the code style and add the code comment for nop.
+Add a NULL-pointer check after the kcalloc() call in init_vdso(). If
+allocation fails, return -ENOMEM to prevent a possible dereference of
+vdso_info.code_mapping.pages when it is NULL.
 
 Cc: stable@vger.kernel.org
-Suggested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Fixes: 2ed119aef60d ("LoongArch: Set correct size for vDSO code mapping")
+Signed-off-by: Guangshuo Li <202321181@mail.sdu.edu.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/arch/loongarch/decode.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/loongarch/kernel/vdso.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/objtool/arch/loongarch/decode.c
-+++ b/tools/objtool/arch/loongarch/decode.c
-@@ -313,10 +313,16 @@ int arch_decode_instruction(struct objto
- 	if (decode_insn_reg2i16_fomat(inst, insn))
- 		return 0;
+--- a/arch/loongarch/kernel/vdso.c
++++ b/arch/loongarch/kernel/vdso.c
+@@ -54,6 +54,9 @@ static int __init init_vdso(void)
+ 	vdso_info.code_mapping.pages =
+ 		kcalloc(vdso_info.size / PAGE_SIZE, sizeof(struct page *), GFP_KERNEL);
  
--	if (inst.word == 0)
-+	if (inst.word == 0) {
-+		/* andi $zero, $zero, 0x0 */
- 		insn->type = INSN_NOP;
--	else if (inst.reg0i15_format.opcode == break_op) {
--		/* break */
-+	} else if (inst.reg0i15_format.opcode == break_op &&
-+		   inst.reg0i15_format.immediate == 0x0) {
-+		/* break 0x0 */
-+		insn->type = INSN_TRAP;
-+	} else if (inst.reg0i15_format.opcode == break_op &&
-+		   inst.reg0i15_format.immediate == 0x1) {
-+		/* break 0x1 */
- 		insn->type = INSN_BUG;
- 	} else if (inst.reg2_format.opcode == ertn_op) {
- 		/* ertn */
++	if (!vdso_info.code_mapping.pages)
++		return -ENOMEM;
++
+ 	pfn = __phys_to_pfn(__pa_symbol(vdso_info.vdso));
+ 	for (i = 0; i < vdso_info.size / PAGE_SIZE; i++)
+ 		vdso_info.code_mapping.pages[i] = pfn_to_page(pfn + i);
 
 
 
