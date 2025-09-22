@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-181156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2BFB92E31
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA2EB93023
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17971906E47
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 853D916294B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D0F2F0C52;
-	Mon, 22 Sep 2025 19:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480BC2F2910;
+	Mon, 22 Sep 2025 19:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SQXT/Km"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXWzFbFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE76285C92;
-	Mon, 22 Sep 2025 19:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031F0222590;
+	Mon, 22 Sep 2025 19:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569829; cv=none; b=LS08yNFZGVulqsq9aynMnff76Z65SVbnhS34q/35rYHAto2dCSXJwA039kVXamzHd9Zixq1sEInTlvUCgO1ctr93ahmWaei1Tvydkx7mnJITOmwvC9hjwKZ5C8SyQ4zuOUYofCJrlbixyyJeg/WKIQ5q9LI8GhCLkzQl6UePVTA=
+	t=1758570166; cv=none; b=XfjDWuwtg05ZIpWcECTJ7TAOrQlzWkeXx8pQC34OmDs+NDDaXHqFEbI6yurc5m30Jql/0Os0jllqmKg8rwjLgM0QQXH3Y/J/eoDKRzOLiwrH+J36kGx7pIFNEhjXwbA4MiZhDbd8uRFuBkFPQYllDLoJ0GmY2W7rldg8yA/JLUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569829; c=relaxed/simple;
-	bh=w3TGYuYoBIQsP7HuZiCD6ziilTy3AFKCIBO1+BB69UQ=;
+	s=arc-20240116; t=1758570166; c=relaxed/simple;
+	bh=FHrCxBQyDMvOURtycSjTIAYs1zRMQ7rpf8L04K+fPNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q4K8LTHuH2Ix0jbgESvOP14c7ntNsvDQVqjn486dITWu3eqND+Opo8tT1ot74H6rfyzk5Tomo59ngitQD1jKwpA3WfSFFxsBNYkfkkw0L1X9qWW7y1ANgGC8oMeDjwLh3Cdl8U+mYVbm4J7IgsC+PcrGIrILshWVHfAlJQrPSP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SQXT/Km; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D30C4CEF0;
-	Mon, 22 Sep 2025 19:37:09 +0000 (UTC)
+	 MIME-Version; b=J9AqAADY0gF8oKxdNeR8Um923MT0KDDjYGyPBhagi9g9M7YxcEkRvxZhksHljCjx1uyd4DqQMXhzaXiIbnqQwuadQkKzfcpGrxLAIniwsCQt+B9DwRaCfVN/5Pkv6KE4pTybLZvnM8ESXJwlM5Z4QkpNW9uXfvjau/fUHxUwgKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXWzFbFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8927AC4CEF0;
+	Mon, 22 Sep 2025 19:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569829;
-	bh=w3TGYuYoBIQsP7HuZiCD6ziilTy3AFKCIBO1+BB69UQ=;
+	s=korg; t=1758570165;
+	bh=FHrCxBQyDMvOURtycSjTIAYs1zRMQ7rpf8L04K+fPNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SQXT/KmK63lT6/c4PSDtV0aL0LLsAwSoRjd9rwmn2R6RcmFWDzaVEQxynTwW305r
-	 NiTdMzGj3P0tCVrLWsimNP36h+DogpY26Nf/52ilFMsFgbndgq3Pz/xpi0hHz9iJ8A
-	 Z2DU/9q0rzjjgJq2NkOqNqjBrKG51IpjsTBEU/aA=
+	b=cXWzFbFUMKlDfpuN62FloU0x6eLwLDO3304xZaMqE9Nbfo0VLM8XmoGCjeq7QHzil
+	 Gp4KJND2Mih4rK5gjkRMtr9Mc8lvqXHn9+B3Mikzl9jhCGl6NX5CX9ihlTGN2gn2f9
+	 fhGbvOYrDGlqC7b7n2eyMxGG1zZ8JZX0SdHzJvvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Yingjie <gaoyingjie@uniontech.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Teju Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/105] cgroup: split cgroup_destroy_wq into 3 workqueues
-Date: Mon, 22 Sep 2025 21:28:50 +0200
-Message-ID: <20250922192409.097354814@linuxfoundation.org>
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.16 031/149] i40e: remove redundant memory barrier when cleaning Tx descs
+Date: Mon, 22 Sep 2025 21:28:51 +0200
+Message-ID: <20250922192413.649111625@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 79f919a89c9d06816dbdbbd168fa41d27411a7f9 ]
+[ Upstream commit e37084a26070c546ae7961ee135bbfb15fbe13fd ]
 
-A hung task can occur during [1] LTP cgroup testing when repeatedly
-mounting/unmounting perf_event and net_prio controllers with
-systemd.unified_cgroup_hierarchy=1. The hang manifests in
-cgroup_lock_and_drain_offline() during root destruction.
+i40e has a feature which writes to memory location last descriptor
+successfully sent. Memory barrier in i40e_clean_tx_irq() was used to
+avoid forward-reading descriptor fields in case DD bit was not set.
+Having mentioned feature in place implies that such situation will not
+happen as we know in advance how many descriptors HW has dealt with.
 
-Related case:
-cgroup_fj_function_perf_event cgroup_fj_function.sh perf_event
-cgroup_fj_function_net_prio cgroup_fj_function.sh net_prio
+Besides, this barrier placement was wrong. Idea is to have this
+protection *after* reading DD bit from HW descriptor, not before.
+Digging through git history showed me that indeed barrier was before DD
+bit check, anyways the commit introducing i40e_get_head() should have
+wiped it out altogether.
 
-Call Trace:
-	cgroup_lock_and_drain_offline+0x14c/0x1e8
-	cgroup_destroy_root+0x3c/0x2c0
-	css_free_rwork_fn+0x248/0x338
-	process_one_work+0x16c/0x3b8
-	worker_thread+0x22c/0x3b0
-	kthread+0xec/0x100
-	ret_from_fork+0x10/0x20
+Also, there was one commit doing s/read_barrier_depends/smp_rmb when get
+head feature was already in place, but it was only theoretical based on
+ixgbe experiences, which is different in these terms as that driver has
+to read DD bit from HW descriptor.
 
-Root Cause:
-
-CPU0                            CPU1
-mount perf_event                umount net_prio
-cgroup1_get_tree                cgroup_kill_sb
-rebind_subsystems               // root destruction enqueues
-				// cgroup_destroy_wq
-// kill all perf_event css
-                                // one perf_event css A is dying
-                                // css A offline enqueues cgroup_destroy_wq
-                                // root destruction will be executed first
-                                css_free_rwork_fn
-                                cgroup_destroy_root
-                                cgroup_lock_and_drain_offline
-                                // some perf descendants are dying
-                                // cgroup_destroy_wq max_active = 1
-                                // waiting for css A to die
-
-Problem scenario:
-1. CPU0 mounts perf_event (rebind_subsystems)
-2. CPU1 unmounts net_prio (cgroup_kill_sb), queuing root destruction work
-3. A dying perf_event CSS gets queued for offline after root destruction
-4. Root destruction waits for offline completion, but offline work is
-   blocked behind root destruction in cgroup_destroy_wq (max_active=1)
-
-Solution:
-Split cgroup_destroy_wq into three dedicated workqueues:
-cgroup_offline_wq – Handles CSS offline operations
-cgroup_release_wq – Manages resource release
-cgroup_free_wq – Performs final memory deallocation
-
-This separation eliminates blocking in the CSS free path while waiting for
-offline operations to complete.
-
-[1] https://github.com/linux-test-project/ltp/blob/master/runtest/controllers
-Fixes: 334c3679ec4b ("cgroup: reimplement rebind_subsystems() using cgroup_apply_control() and friends")
-Reported-by: Gao Yingjie <gaoyingjie@uniontech.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Suggested-by: Teju Heo <tj@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 1943d8ba9507 ("i40e/i40evf: enable hardware feature head write back")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 43 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 62933468aaf46..5fc2801ee921c 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -123,8 +123,31 @@ DEFINE_PERCPU_RWSEM(cgroup_threadgroup_rwsem);
-  * of concurrent destructions.  Use a separate workqueue so that cgroup
-  * destruction work items don't end up filling up max_active of system_wq
-  * which may lead to deadlock.
-+ *
-+ * A cgroup destruction should enqueue work sequentially to:
-+ * cgroup_offline_wq: use for css offline work
-+ * cgroup_release_wq: use for css release work
-+ * cgroup_free_wq: use for free work
-+ *
-+ * Rationale for using separate workqueues:
-+ * The cgroup root free work may depend on completion of other css offline
-+ * operations. If all tasks were enqueued to a single workqueue, this could
-+ * create a deadlock scenario where:
-+ * - Free work waits for other css offline work to complete.
-+ * - But other css offline work is queued after free work in the same queue.
-+ *
-+ * Example deadlock scenario with single workqueue (cgroup_destroy_wq):
-+ * 1. umount net_prio
-+ * 2. net_prio root destruction enqueues work to cgroup_destroy_wq (CPUx)
-+ * 3. perf_event CSS A offline enqueues work to same cgroup_destroy_wq (CPUx)
-+ * 4. net_prio cgroup_destroy_root->cgroup_lock_and_drain_offline.
-+ * 5. net_prio root destruction blocks waiting for perf_event CSS A offline,
-+ *    which can never complete as it's behind in the same queue and
-+ *    workqueue's max_active is 1.
-  */
--static struct workqueue_struct *cgroup_destroy_wq;
-+static struct workqueue_struct *cgroup_offline_wq;
-+static struct workqueue_struct *cgroup_release_wq;
-+static struct workqueue_struct *cgroup_free_wq;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index c006f716a3bdb..ca7517a68a2c3 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -947,9 +947,6 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
+ 		if (!eop_desc)
+ 			break;
  
- /* generate an array of cgroup subsystem pointers */
- #define SUBSYS(_x) [_x ## _cgrp_id] = &_x ## _cgrp_subsys,
-@@ -5541,7 +5564,7 @@ static void css_release_work_fn(struct work_struct *work)
- 	cgroup_unlock();
- 
- 	INIT_RCU_WORK(&css->destroy_rwork, css_free_rwork_fn);
--	queue_rcu_work(cgroup_destroy_wq, &css->destroy_rwork);
-+	queue_rcu_work(cgroup_free_wq, &css->destroy_rwork);
- }
- 
- static void css_release(struct percpu_ref *ref)
-@@ -5550,7 +5573,7 @@ static void css_release(struct percpu_ref *ref)
- 		container_of(ref, struct cgroup_subsys_state, refcnt);
- 
- 	INIT_WORK(&css->destroy_work, css_release_work_fn);
--	queue_work(cgroup_destroy_wq, &css->destroy_work);
-+	queue_work(cgroup_release_wq, &css->destroy_work);
- }
- 
- static void init_and_link_css(struct cgroup_subsys_state *css,
-@@ -5685,7 +5708,7 @@ static struct cgroup_subsys_state *css_create(struct cgroup *cgrp,
- err_free_css:
- 	list_del_rcu(&css->rstat_css_node);
- 	INIT_RCU_WORK(&css->destroy_rwork, css_free_rwork_fn);
--	queue_rcu_work(cgroup_destroy_wq, &css->destroy_rwork);
-+	queue_rcu_work(cgroup_free_wq, &css->destroy_rwork);
- 	return ERR_PTR(err);
- }
- 
-@@ -5918,7 +5941,7 @@ static void css_killed_ref_fn(struct percpu_ref *ref)
- 
- 	if (atomic_dec_and_test(&css->online_cnt)) {
- 		INIT_WORK(&css->destroy_work, css_killed_work_fn);
--		queue_work(cgroup_destroy_wq, &css->destroy_work);
-+		queue_work(cgroup_offline_wq, &css->destroy_work);
- 	}
- }
- 
-@@ -6296,8 +6319,14 @@ static int __init cgroup_wq_init(void)
- 	 * We would prefer to do this in cgroup_init() above, but that
- 	 * is called before init_workqueues(): so leave this until after.
- 	 */
--	cgroup_destroy_wq = alloc_workqueue("cgroup_destroy", 0, 1);
--	BUG_ON(!cgroup_destroy_wq);
-+	cgroup_offline_wq = alloc_workqueue("cgroup_offline", 0, 1);
-+	BUG_ON(!cgroup_offline_wq);
-+
-+	cgroup_release_wq = alloc_workqueue("cgroup_release", 0, 1);
-+	BUG_ON(!cgroup_release_wq);
-+
-+	cgroup_free_wq = alloc_workqueue("cgroup_free", 0, 1);
-+	BUG_ON(!cgroup_free_wq);
- 	return 0;
- }
- core_initcall(cgroup_wq_init);
+-		/* prevent any other reads prior to eop_desc */
+-		smp_rmb();
+-
+ 		i40e_trace(clean_tx_irq, tx_ring, tx_desc, tx_buf);
+ 		/* we have caught up to head, no work left to do */
+ 		if (tx_head == tx_desc)
 -- 
 2.51.0
 
