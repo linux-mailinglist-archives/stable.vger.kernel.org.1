@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-181175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B529B92E87
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A62BB9307A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F67A190706E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568F719C0415
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB142F1FDA;
-	Mon, 22 Sep 2025 19:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6E12F1FE3;
+	Mon, 22 Sep 2025 19:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHqNPs1W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ysYCoH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1841F2F0C5F;
-	Mon, 22 Sep 2025 19:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A67A2F3608;
+	Mon, 22 Sep 2025 19:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569877; cv=none; b=cSzZFmlEYXxF+MQoyGUJepIe0YLcJjep/Fy8bP/oR/P2a37ArLDf2wl5yV2oEYTPAfh0Gj3yUzkCPPeBNpQtv+dibRZ4vrT06jta1yvq8JuU8UEl5dE6pTqeNR9a9TOMGutZK8dzgTFYpa4KVKkuLEnEWD/O+v8+Z2DdMtbtJzk=
+	t=1758570205; cv=none; b=Ys7odJBlV+izny2GBg4wWc3/8QzJQm82I8XJ+1w2bNPkwP2h7jcuBwwpQDRG1LPeHfk+3vOeAPcn3HeYI5QLCp7G7wupD7gP1f9iUPkq2WwXTyxhf+dtXEOdA1vdK2NuhzZmWobtLlj+J7wTSANnlpOxjkrWgDwtCJ+inpaBVY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569877; c=relaxed/simple;
-	bh=kN8IVcQZkCaq+VDw9HzdMNOLWWPxKG4KtfNRI6GDdAI=;
+	s=arc-20240116; t=1758570205; c=relaxed/simple;
+	bh=UD2liwUQki7lsYr3zsG6qcGN7cXgRTDJV0SoW+AH3b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlS+9VXPuahLtgwEzRQWSdNcgAUgHK9V7ZUQCPKxepLIZB9EKUJZuBfNKEvAXhHw2DmvlbRxR7H1oFkEgdtKwV0PWsJwVKZKnQE9k8JpNpY+CuecjIS9kEPP5c4lZboiQ0ssqb2hhmRvrjR4xJ+3HUVbrhmUppWfo9rd11sC4v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHqNPs1W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51B4C4CEF0;
-	Mon, 22 Sep 2025 19:37:56 +0000 (UTC)
+	 MIME-Version; b=cOV0G45Yz8wmtJAuOD0CkKHwJCFv9vu/BO5QY7mlsCPlHce5XaeKpA038OOYXp2h2JXfD20FpO9JkZnNvqzfELLsspwPhYRZv7czop1bu644OeN5w2YiOmQqt22Jxf7bBu9rzc9TYRFzWRB8hx8iTCTUIJqNRi+3TRmLedya9cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ysYCoH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50BBC4CEF0;
+	Mon, 22 Sep 2025 19:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569877;
-	bh=kN8IVcQZkCaq+VDw9HzdMNOLWWPxKG4KtfNRI6GDdAI=;
+	s=korg; t=1758570205;
+	bh=UD2liwUQki7lsYr3zsG6qcGN7cXgRTDJV0SoW+AH3b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHqNPs1W4t+mzANczd4uE92WadW/MLfYGqBwhJhqsKl7j6vECIY4x80l9BFt4C77u
-	 IE70K/IxkS45ZEiKGeXJyKCWi1L+BzjPvuG9M8PPLYzja5fn1lLOaBIqQniU6mMeWp
-	 w4OJB5FimTWVa4txsS0gHz1NBZ/mfixoUAnl3Qf0=
+	b=1ysYCoH8bDUUcIMW9CMOu4AOIM77p79XR/7a6NqrhU/8GSa9C2w6N/Ia7cfjBacMM
+	 YfRFZYrxj2SH/ixi4co5qZUbjU7+FB+9bl2I0tYZ7UdR1MQoLDWqV8lc5A18syYW4V
+	 qeyTjzDCtzbc8KWGBnv/AuMTb6cGYSsVLh9oVJYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/105] igc: dont fail igc_probe() on LED setup error
+Subject: [PATCH 6.16 046/149] octeontx2-pf: Fix use-after-free bugs in otx2_sync_tstamp()
 Date: Mon, 22 Sep 2025 21:29:06 +0200
-Message-ID: <20250922192409.518721995@linuxfoundation.org>
+Message-ID: <20250922192414.025020490@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,113 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 528eb4e19ec0df30d0c9ae4074ce945667dde919 ]
+[ Upstream commit f8b4687151021db61841af983f1cb7be6915d4ef ]
 
-When igc_led_setup() fails, igc_probe() fails and triggers kernel panic
-in free_netdev() since unregister_netdev() is not called. [1]
-This behavior can be tested using fault-injection framework, especially
-the failslab feature. [2]
+The original code relies on cancel_delayed_work() in otx2_ptp_destroy(),
+which does not ensure that the delayed work item synctstamp_work has fully
+completed if it was already running. This leads to use-after-free scenarios
+where otx2_ptp is deallocated by otx2_ptp_destroy(), while synctstamp_work
+remains active and attempts to dereference otx2_ptp in otx2_sync_tstamp().
+Furthermore, the synctstamp_work is cyclic, the likelihood of triggering
+the bug is nonnegligible.
 
-Since LED support is not mandatory, treat LED setup failures as
-non-fatal and continue probe with a warning message, consequently
-avoiding the kernel panic.
+A typical race condition is illustrated below:
 
-[1]
- kernel BUG at net/core/dev.c:12047!
- Oops: invalid opcode: 0000 [#1] SMP NOPTI
- CPU: 0 UID: 0 PID: 937 Comm: repro-igc-led-e Not tainted 6.17.0-rc4-enjuk-tnguy-00865-gc4940196ab02 #64 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- RIP: 0010:free_netdev+0x278/0x2b0
- [...]
- Call Trace:
-  <TASK>
-  igc_probe+0x370/0x910
-  local_pci_probe+0x3a/0x80
-  pci_device_probe+0xd1/0x200
- [...]
+CPU 0 (cleanup)           | CPU 1 (delayed work callback)
+otx2_remove()             |
+  otx2_ptp_destroy()      | otx2_sync_tstamp()
+    cancel_delayed_work() |
+    kfree(ptp)            |
+                          |   ptp = container_of(...); //UAF
+                          |   ptp-> //UAF
 
-[2]
- #!/bin/bash -ex
+This is confirmed by a KASAN report:
 
- FAILSLAB_PATH=/sys/kernel/debug/failslab/
- DEVICE=0000:00:05.0
- START_ADDR=$(grep " igc_led_setup" /proc/kallsyms \
-         | awk '{printf("0x%s", $1)}')
- END_ADDR=$(printf "0x%x" $((START_ADDR + 0x100)))
+BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+Write of size 8 at addr ffff88800aa09a18 by task bash/136
+...
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x55/0x70
+ print_report+0xcf/0x610
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ kasan_report+0xb8/0xf0
+ ? __run_timer_base.part.0+0x7d7/0x8c0
+ __run_timer_base.part.0+0x7d7/0x8c0
+ ? __pfx___run_timer_base.part.0+0x10/0x10
+ ? __pfx_read_tsc+0x10/0x10
+ ? ktime_get+0x60/0x140
+ ? lapic_next_event+0x11/0x20
+ ? clockevents_program_event+0x1d4/0x2a0
+ run_timer_softirq+0xd1/0x190
+ handle_softirqs+0x16a/0x550
+ irq_exit_rcu+0xaf/0xe0
+ sysvec_apic_timer_interrupt+0x70/0x80
+ </IRQ>
+...
+Allocated by task 1:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ otx2_ptp_init+0xb1/0x860
+ otx2_probe+0x4eb/0xc30
+ local_pci_probe+0xdc/0x190
+ pci_device_probe+0x2fe/0x470
+ really_probe+0x1ca/0x5c0
+ __driver_probe_device+0x248/0x310
+ driver_probe_device+0x44/0x120
+ __driver_attach+0xd2/0x310
+ bus_for_each_dev+0xed/0x170
+ bus_add_driver+0x208/0x500
+ driver_register+0x132/0x460
+ do_one_initcall+0x89/0x300
+ kernel_init_freeable+0x40d/0x720
+ kernel_init+0x1a/0x150
+ ret_from_fork+0x10c/0x1a0
+ ret_from_fork_asm+0x1a/0x30
 
- echo $START_ADDR > $FAILSLAB_PATH/require-start
- echo $END_ADDR > $FAILSLAB_PATH/require-end
- echo 1 > $FAILSLAB_PATH/times
- echo 100 > $FAILSLAB_PATH/probability
- echo N > $FAILSLAB_PATH/ignore-gfp-wait
+Freed by task 136:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x3f/0x50
+ kfree+0x137/0x370
+ otx2_ptp_destroy+0x38/0x80
+ otx2_remove+0x10d/0x4c0
+ pci_device_remove+0xa6/0x1d0
+ device_release_driver_internal+0xf8/0x210
+ pci_stop_bus_device+0x105/0x150
+ pci_stop_and_remove_bus_device_locked+0x15/0x30
+ remove_store+0xcc/0xe0
+ kernfs_fop_write_iter+0x2c3/0x440
+ vfs_write+0x871/0xd70
+ ksys_write+0xee/0x1c0
+ do_syscall_64+0xac/0x280
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
 
- echo $DEVICE > /sys/bus/pci/drivers/igc/bind
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the delayed work item is properly canceled before the otx2_ptp is
+deallocated.
 
-Fixes: ea578703b03d ("igc: Add support for LEDs on i225/i226")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+This bug was initially identified through static analysis. To reproduce
+and test it, I simulated the OcteonTX2 PCI device in QEMU and introduced
+artificial delays within the otx2_sync_tstamp() function to increase the
+likelihood of triggering the bug.
+
+Fixes: 2958d17a8984 ("octeontx2-pf: Add support for ptp 1-step mode on CN10K silicon")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc.h      |  1 +
- drivers/net/ethernet/intel/igc/igc_main.c | 12 +++++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index 323db1e2be388..79d5fc5ac4fce 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -336,6 +336,7 @@ struct igc_adapter {
- 	/* LEDs */
- 	struct mutex led_mutex;
- 	struct igc_led_classdev *leds;
-+	bool leds_available;
- };
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
+@@ -491,7 +491,7 @@ void otx2_ptp_destroy(struct otx2_nic *p
+ 	if (!ptp)
+ 		return;
  
- void igc_up(struct igc_adapter *adapter);
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index aadc0667fa04a..9ba41a427e141 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -7169,8 +7169,14 @@ static int igc_probe(struct pci_dev *pdev,
+-	cancel_delayed_work(&pfvf->ptp->synctstamp_work);
++	cancel_delayed_work_sync(&pfvf->ptp->synctstamp_work);
  
- 	if (IS_ENABLED(CONFIG_IGC_LEDS)) {
- 		err = igc_led_setup(adapter);
--		if (err)
--			goto err_register;
-+		if (err) {
-+			netdev_warn_once(netdev,
-+					 "LED init failed (%d); continuing without LED support\n",
-+					 err);
-+			adapter->leds_available = false;
-+		} else {
-+			adapter->leds_available = true;
-+		}
- 	}
- 
- 	return 0;
-@@ -7226,7 +7232,7 @@ static void igc_remove(struct pci_dev *pdev)
- 	cancel_work_sync(&adapter->watchdog_task);
- 	hrtimer_cancel(&adapter->hrtimer);
- 
--	if (IS_ENABLED(CONFIG_IGC_LEDS))
-+	if (IS_ENABLED(CONFIG_IGC_LEDS) && adapter->leds_available)
- 		igc_led_free(adapter);
- 
- 	/* Release control of h/w to f/w.  If f/w is AMT enabled, this
--- 
-2.51.0
-
+ 	ptp_clock_unregister(ptp->ptp_clock);
+ 	kfree(ptp);
 
 
 
