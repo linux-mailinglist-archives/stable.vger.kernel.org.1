@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-181235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D859B92F6B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6593B92E2E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B30552E00C9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EEBE174138
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79C83148C0;
-	Mon, 22 Sep 2025 19:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6502F0C5C;
+	Mon, 22 Sep 2025 19:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5vckWpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meKyzRRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E592F0C52;
-	Mon, 22 Sep 2025 19:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B90725F780;
+	Mon, 22 Sep 2025 19:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570027; cv=none; b=nOeAtvwbY/yvhGKfi2mqG+jN9OYkHMtE+oZwPzoVqZGTCzhWu7Q5LqZU8su0tYXh9imcEqhwbAdQJzO3iYG7+kXXvphihUPNrgEhZIVUUMvl/U8KlQWPvzubw0DNq4oGRSB0XGOvia4t4/5BHy2XtkPPjS0JJBPxcAdTtrhJ7LU=
+	t=1758569807; cv=none; b=ZBcCSkpRdqtMoKlZLgHM8u9Ozun173rsr16c+cg1kdbfZlwh6cYAvxdUjLldFz89oNLlkxwFrf9nNb3rk4sqxJXzJjUuQEbIUk5wobH1NNy7SED2DukuvSSDLCwxUFkT/8e1XDHo3AZ4yL+dpMEY9MhpT2FiUkOFgWyhbHdjYqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570027; c=relaxed/simple;
-	bh=ANFUOxyKeTKQiJ7hKOVummYz1agVnanljXCIX36ml0c=;
+	s=arc-20240116; t=1758569807; c=relaxed/simple;
+	bh=NW3YjLCaqvbY43GNjfgpWTe0oRX4oA5WuMAhw5k3knE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNrlMki4AtcrxBolsyUj2r7uBxpykQmmMerHc7vFvdKg4s/Fnpdik76d0by/mXMTEVbT7IPweFo9JD8mD8onmyLDF2E2aKb61/wEDMlYhjia7/Y/yW77UawWU2N+L0ckXmKjXJ1bkLBjzfmXgjKpXu1Vy0EXGvB1D0hGuKzk08A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5vckWpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AADBC4CEF5;
-	Mon, 22 Sep 2025 19:40:27 +0000 (UTC)
+	 MIME-Version; b=cdwawFDYwkl4wZVVtYn8+jv+Z8pfByYw5h/ysjT2JmKUsKjw6g5zVmSnVcBXNKq8ILfFejrOhU7SqQT9WO87JzyJDe+TdQLIHZ930K/Ek6KglO4ZkC6iPT0YrEBizBI/l2GOc6uQ+4V6SAob9CRfmTfEOqC7/klNeakrzdzecfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meKyzRRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8900C4CEF0;
+	Mon, 22 Sep 2025 19:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570027;
-	bh=ANFUOxyKeTKQiJ7hKOVummYz1agVnanljXCIX36ml0c=;
+	s=korg; t=1758569807;
+	bh=NW3YjLCaqvbY43GNjfgpWTe0oRX4oA5WuMAhw5k3knE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5vckWpTOKzbkaDdiU8v0tdgtNO17O0wacoCgsXZ35V5nCbK2ozMpkemoY2hqUk6H
-	 AKRENri1szCINBfAddJ4iQFuzmsVxJNNLt6f2jM5pkvM4CviK5CA+vX9xowJzEtE6o
-	 4vD7uR0IGoAfJoNpjb1NWP+wZQ994e/HNEUU0T7o=
+	b=meKyzRRbGE+/RchNC+MWiCSujz/6NqWiWNeFvFf1rR6zbedfgtij8l2UllRm7TRUu
+	 ZAF9CTbcY7Ucv4va0pgVtyNMaZe+rjHMevluOXZXVIAAWcMJTwSECjXUWgw1Q23HHc
+	 PY4Kc7aIO/lPioQ3g++1iEwBN+Oqixv+wA8TJPds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/105] smb: client: let smbd_destroy() call disable_work_sync(&info->post_send_credits_work)
+Subject: [PATCH 6.6 64/70] iommu/amd/pgtbl: Fix possible race while increase page table level
 Date: Mon, 22 Sep 2025 21:30:04 +0200
-Message-ID: <20250922192411.019798849@linuxfoundation.org>
+Message-ID: <20250922192406.321492658@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +65,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit d9dcbbcf9145b68aa85c40947311a6907277e097 ]
+[ Upstream commit 1e56310b40fd2e7e0b9493da9ff488af145bdd0c ]
 
-In smbd_destroy() we may destroy the memory so we better
-wait until post_send_credits_work is no longer pending
-and will never be started again.
+The AMD IOMMU host page table implementation supports dynamic page table levels
+(up to 6 levels), starting with a 3-level configuration that expands based on
+IOVA address. The kernel maintains a root pointer and current page table level
+to enable proper page table walks in alloc_pte()/fetch_pte() operations.
 
-I actually just hit the case using rxe:
+The IOMMU IOVA allocator initially starts with 32-bit address and onces its
+exhuasted it switches to 64-bit address (max address is determined based
+on IOMMU and device DMA capability). To support larger IOVA, AMD IOMMU
+driver increases page table level.
 
-WARNING: CPU: 0 PID: 138 at drivers/infiniband/sw/rxe/rxe_verbs.c:1032 rxe_post_recv+0x1ee/0x480 [rdma_rxe]
-...
-[ 5305.686979] [    T138]  smbd_post_recv+0x445/0xc10 [cifs]
-[ 5305.687135] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687149] [    T138]  ? __kasan_check_write+0x14/0x30
-[ 5305.687185] [    T138]  ? __pfx_smbd_post_recv+0x10/0x10 [cifs]
-[ 5305.687329] [    T138]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[ 5305.687356] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687368] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687378] [    T138]  ? _raw_spin_unlock_irqrestore+0x11/0x60
-[ 5305.687389] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687399] [    T138]  ? get_receive_buffer+0x168/0x210 [cifs]
-[ 5305.687555] [    T138]  smbd_post_send_credits+0x382/0x4b0 [cifs]
-[ 5305.687701] [    T138]  ? __pfx_smbd_post_send_credits+0x10/0x10 [cifs]
-[ 5305.687855] [    T138]  ? __pfx___schedule+0x10/0x10
-[ 5305.687865] [    T138]  ? __pfx__raw_spin_lock_irq+0x10/0x10
-[ 5305.687875] [    T138]  ? queue_delayed_work_on+0x8e/0xa0
-[ 5305.687889] [    T138]  process_one_work+0x629/0xf80
-[ 5305.687908] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687917] [    T138]  ? __kasan_check_write+0x14/0x30
-[ 5305.687933] [    T138]  worker_thread+0x87f/0x1570
-...
+But in unmap path (iommu_v1_unmap_pages()), fetch_pte() reads
+pgtable->[root/mode] without lock. So its possible that in exteme corner case,
+when increase_address_space() is updating pgtable->[root/mode], fetch_pte()
+reads wrong page table level (pgtable->mode). It does compare the value with
+level encoded in page table and returns NULL. This will result is
+iommu_unmap ops to fail and upper layer may retry/log WARN_ON.
 
-It means rxe_post_recv was called after rdma_destroy_qp().
-This happened because put_receive_buffer() was triggered
-by ib_drain_qp() and called:
-queue_work(info->workqueue, &info->post_send_credits_work);
+CPU 0                                         CPU 1
+------                                       ------
+map pages                                    unmap pages
+alloc_pte() -> increase_address_space()      iommu_v1_unmap_pages() -> fetch_pte()
+  pgtable->root = pte (new root value)
+                                             READ pgtable->[mode/root]
+					       Reads new root, old mode
+  Updates mode (pgtable->mode += 1)
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Since Page table level updates are infrequent and already synchronized with a
+spinlock, implement seqcount to enable lock-free read operations on the read path.
+
+Fixes: 754265bcab7 ("iommu/amd: Fix race in increase_address_space()")
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Cc: stable@vger.kernel.org
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+[ Adapted pgtable->mode and pgtable->root to use domain->iop.mode and domain->iop.root ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/amd/amd_iommu_types.h |    1 +
+ drivers/iommu/amd/io_pgtable.c      |   26 ++++++++++++++++++++++----
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index b9bb531717a65..6284252aa4882 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1308,6 +1308,9 @@ void smbd_destroy(struct TCP_Server_Info *server)
- 			sc->status == SMBDIRECT_SOCKET_DISCONNECTED);
+--- a/drivers/iommu/amd/amd_iommu_types.h
++++ b/drivers/iommu/amd/amd_iommu_types.h
+@@ -540,6 +540,7 @@ struct amd_irte_ops;
+ 	container_of((x), struct amd_io_pgtable, pgtbl_cfg)
+ 
+ struct amd_io_pgtable {
++	seqcount_t		seqcount;	/* Protects root/mode update */
+ 	struct io_pgtable_cfg	pgtbl_cfg;
+ 	struct io_pgtable	iop;
+ 	int			mode;
+--- a/drivers/iommu/amd/io_pgtable.c
++++ b/drivers/iommu/amd/io_pgtable.c
+@@ -17,6 +17,7 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <linux/dma-mapping.h>
++#include <linux/seqlock.h>
+ 
+ #include <asm/barrier.h>
+ 
+@@ -171,8 +172,11 @@ static bool increase_address_space(struc
+ 
+ 	*pte = PM_LEVEL_PDE(domain->iop.mode, iommu_virt_to_phys(domain->iop.root));
+ 
++	write_seqcount_begin(&domain->iop.seqcount);
+ 	domain->iop.root  = pte;
+ 	domain->iop.mode += 1;
++	write_seqcount_end(&domain->iop.seqcount);
++
+ 	amd_iommu_update_and_flush_device_table(domain);
+ 	amd_iommu_domain_flush_complete(domain);
+ 
+@@ -199,6 +203,7 @@ static u64 *alloc_pte(struct protection_
+ 		      gfp_t gfp,
+ 		      bool *updated)
+ {
++	unsigned int seqcount;
+ 	int level, end_lvl;
+ 	u64 *pte, *page;
+ 
+@@ -214,8 +219,14 @@ static u64 *alloc_pte(struct protection_
  	}
  
-+	log_rdma_event(INFO, "cancelling post_send_credits_work\n");
-+	disable_work_sync(&info->post_send_credits_work);
+ 
+-	level   = domain->iop.mode - 1;
+-	pte     = &domain->iop.root[PM_LEVEL_INDEX(level, address)];
++	do {
++		seqcount = read_seqcount_begin(&domain->iop.seqcount);
 +
- 	log_rdma_event(INFO, "destroying qp\n");
- 	ib_drain_qp(sc->ib.qp);
- 	rdma_destroy_qp(sc->rdma.cm_id);
--- 
-2.51.0
-
++		level   = domain->iop.mode - 1;
++		pte     = &domain->iop.root[PM_LEVEL_INDEX(level, address)];
++	} while (read_seqcount_retry(&domain->iop.seqcount, seqcount));
++
++
+ 	address = PAGE_SIZE_ALIGN(address, page_size);
+ 	end_lvl = PAGE_SIZE_LEVEL(page_size);
+ 
+@@ -292,6 +303,7 @@ static u64 *fetch_pte(struct amd_io_pgta
+ 		      unsigned long *page_size)
+ {
+ 	int level;
++	unsigned int seqcount;
+ 	u64 *pte;
+ 
+ 	*page_size = 0;
+@@ -299,8 +311,12 @@ static u64 *fetch_pte(struct amd_io_pgta
+ 	if (address > PM_LEVEL_SIZE(pgtable->mode))
+ 		return NULL;
+ 
+-	level	   =  pgtable->mode - 1;
+-	pte	   = &pgtable->root[PM_LEVEL_INDEX(level, address)];
++	do {
++		seqcount = read_seqcount_begin(&pgtable->seqcount);
++		level	   =  pgtable->mode - 1;
++		pte	   = &pgtable->root[PM_LEVEL_INDEX(level, address)];
++	} while (read_seqcount_retry(&pgtable->seqcount, seqcount));
++
+ 	*page_size =  PTE_LEVEL_PAGE_SIZE(level);
+ 
+ 	while (level > 0) {
+@@ -524,6 +540,8 @@ static struct io_pgtable *v1_alloc_pgtab
+ 	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE,
+ 	cfg->tlb            = &v1_flush_ops;
+ 
++	seqcount_init(&pgtable->seqcount);
++
+ 	pgtable->iop.ops.map_pages    = iommu_v1_map_pages;
+ 	pgtable->iop.ops.unmap_pages  = iommu_v1_unmap_pages;
+ 	pgtable->iop.ops.iova_to_phys = iommu_v1_iova_to_phys;
 
 
 
