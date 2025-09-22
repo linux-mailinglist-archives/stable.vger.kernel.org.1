@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-181063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7907BB92D13
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB4DB930D7
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1AB9E4E2957
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA6F6480691
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AA32EDD5D;
-	Mon, 22 Sep 2025 19:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2247F2F3C11;
+	Mon, 22 Sep 2025 19:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19wjZ0P3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1RxO8W3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8FDC8E6;
-	Mon, 22 Sep 2025 19:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19FE2F0C64;
+	Mon, 22 Sep 2025 19:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569596; cv=none; b=OSowsJXo3idLWjieZmGm+XemvmR3WH8Mi8vTdwtOhxqKtE3ufu/wPezr7jc4A6Mc1AOX/k7gghc3edWKV2RQxWDyUr8y24nrgoSskZRVk9PdKBm4IOG5D74Q5ZF0t/qMMtsKJlSKbzZpL8e337gV1TgjLGjAlRWU9/QkVuGDs10=
+	t=1758570251; cv=none; b=Dq+swHS2GoA4jNlDJWXB3lsjKJhegJofJwdhdIzGmsMaHRnirek8FOyCuMh5a3Md63BAhGer7yn+HACN2NYGCsceTIq8mWSorq5VAZh55LbqfBrYlq+9IBy4d3pICGsadTMuMcpf1b+XINPkP0kHdMRCTBL57GzpP1cyZ43oBLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569596; c=relaxed/simple;
-	bh=sfT+IJse1FrSPI1QrtOhgBawGx7fENamNyLEGl6DQCQ=;
+	s=arc-20240116; t=1758570251; c=relaxed/simple;
+	bh=Ca/4zOsLRleHgaCwcvc+DIP7aTxfbw12DxhIRCaMAIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/5TjzfWY7tpa+111WVzKw1KYafN7ECGcIreVKRYu66yEpslT5qHWR0QwoQ2tM7YcpNZIfmstaEN331j5Y1hi6VLgNQQZ9yVCyYCJUcvr3fJ4fK1M8UQshHdhD8Ihl9x6h7GCjHxS3Gfpy65HKJNeO1fR1/IZUIG2DivDso4g9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19wjZ0P3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4CCC4CEF0;
-	Mon, 22 Sep 2025 19:33:16 +0000 (UTC)
+	 MIME-Version; b=kLyPgE8o/nf09MK7ZbRE/T2l2E4j6V/lyLW2fLIiWAd9yxDmvLbgI5Bv+Isi6817wJULC9lUAIzBLJizQYeQLEDeFLv2OTEDCv5rAgp7oQHQMYMandgY5y04qPS1/DwN8SAxjzdVYiGIXLxhhqfF/JbFU6eyog2BF0eE0RMmggQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1RxO8W3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62850C4CEF5;
+	Mon, 22 Sep 2025 19:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569596;
-	bh=sfT+IJse1FrSPI1QrtOhgBawGx7fENamNyLEGl6DQCQ=;
+	s=korg; t=1758570251;
+	bh=Ca/4zOsLRleHgaCwcvc+DIP7aTxfbw12DxhIRCaMAIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19wjZ0P3zj2FO9YarwEjb0Q51ScXiGZlJJLakxhYFNt7mrax7hxbZcwbeHjElOiK0
-	 XqIg7jqWZi3Mu/cS4Ar2pMEvHa2VTuBXCOS5vNlvkA7du0M2eXnUfHs2Woo5trFvdN
-	 rbcKQ7CCeiRQnJLz8ZdCx40ZLigpIPZryHTqr2Kk=
+	b=Q1RxO8W3XurT/lf8RhwACKVyqph0GHuqO0CFsfrfRpmDzMbSaHdiwYkpMm2OEHh1C
+	 blfpN9i7Ak/UfaWn+nDHYKFmDytI5KUydaJyLE7y2J4hoPkFzGlH+MkctYeXGuGAf/
+	 hp/ojUjrck581gukCQ47MXCMU2vYiMgrfje6jkmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-crypto@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/61] crypto: af_alg: Indent the loop in af_alg_sendmsg()
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.16 076/149] LoongArch: KVM: Avoid copy_*_user() with lock hold in kvm_pch_pic_regs_access()
 Date: Mon, 22 Sep 2025 21:29:36 +0200
-Message-ID: <20250922192404.764714238@linuxfoundation.org>
+Message-ID: <20250922192414.798518931@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit 73d7409cfdad7fd08a9203eb2912c1c77e527776 ]
+commit 8dc5245673cf7f33743e5c0d2a4207c0b8df3067 upstream.
 
-Put the loop in af_alg_sendmsg() into an if-statement to indent it to make
-the next patch easier to review as that will add another branch to handle
-MSG_SPLICE_PAGES to the if-statement.
+Function copy_from_user() and copy_to_user() may sleep because of page
+fault, and they cannot be called in spin_lock hold context. Here move
+function calling of copy_from_user() and copy_to_user() out of spinlock
+context in function kvm_pch_pic_regs_access().
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Jens Axboe <axboe@kernel.dk>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: linux-crypto@vger.kernel.org
-cc: netdev@vger.kernel.org
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 9574b2330dbd ("crypto: af_alg - Set merge to zero early in af_alg_sendmsg")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Otherwise there will be possible warning such as:
+
+BUG: sleeping function called from invalid context at include/linux/uaccess.h:192
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 6292, name: qemu-system-loo
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+INFO: lockdep is turned off.
+irq event stamp: 0
+hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+hardirqs last disabled at (0): [<9000000004c4a554>] copy_process+0x90c/0x1d40
+softirqs last  enabled at (0): [<9000000004c4a554>] copy_process+0x90c/0x1d40
+softirqs last disabled at (0): [<0000000000000000>] 0x0
+CPU: 41 UID: 0 PID: 6292 Comm: qemu-system-loo Tainted: G W 6.17.0-rc3+ #31 PREEMPT(full)
+Tainted: [W]=WARN
+Stack : 0000000000000076 0000000000000000 9000000004c28264 9000100092ff4000
+        9000100092ff7b80 9000100092ff7b88 0000000000000000 9000100092ff7cc8
+        9000100092ff7cc0 9000100092ff7cc0 9000100092ff7a00 0000000000000001
+        0000000000000001 9000100092ff7b88 947d2f9216a5e8b9 900010008773d880
+        00000000ffff8b9f fffffffffffffffe 0000000000000ba1 fffffffffffffffe
+        000000000000003e 900000000825a15b 000010007ad38000 9000100092ff7ec0
+        0000000000000000 0000000000000000 9000000006f3ac60 9000000007252000
+        0000000000000000 00007ff746ff2230 0000000000000053 9000200088a021b0
+        0000555556c9d190 0000000000000000 9000000004c2827c 000055556cfb5f40
+        00000000000000b0 0000000000000007 0000000000000007 0000000000071c1d
+Call Trace:
+[<9000000004c2827c>] show_stack+0x5c/0x180
+[<9000000004c20fac>] dump_stack_lvl+0x94/0xe4
+[<9000000004c99c7c>] __might_resched+0x26c/0x290
+[<9000000004f68968>] __might_fault+0x20/0x88
+[<ffff800002311de0>] kvm_pch_pic_regs_access.isra.0+0x88/0x380 [kvm]
+[<ffff8000022f8514>] kvm_device_ioctl+0x194/0x290 [kvm]
+[<900000000506b0d8>] sys_ioctl+0x388/0x1010
+[<90000000063ed210>] do_syscall+0xb0/0x2d8
+[<9000000004c25ef8>] handle_syscall+0xb8/0x158
+
+Cc: stable@vger.kernel.org
+Fixes: d206d95148732 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c | 51 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 27 insertions(+), 24 deletions(-)
+ arch/loongarch/kvm/intc/pch_pic.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index fef69d2a6b183..d5a8368a47c5c 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -927,35 +927,38 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 		if (sgl->cur)
- 			sg_unmark_end(sg + sgl->cur - 1);
+--- a/arch/loongarch/kvm/intc/pch_pic.c
++++ b/arch/loongarch/kvm/intc/pch_pic.c
+@@ -348,6 +348,7 @@ static int kvm_pch_pic_regs_access(struc
+ 				struct kvm_device_attr *attr,
+ 				bool is_write)
+ {
++	char buf[8];
+ 	int addr, offset, len = 8, ret = 0;
+ 	void __user *data;
+ 	void *p = NULL;
+@@ -397,17 +398,23 @@ static int kvm_pch_pic_regs_access(struc
+ 		return -EINVAL;
+ 	}
  
--		do {
--			struct page *pg;
--			unsigned int i = sgl->cur;
-+		if (1 /* TODO check MSG_SPLICE_PAGES */) {
-+			do {
-+				struct page *pg;
-+				unsigned int i = sgl->cur;
+-	spin_lock(&s->lock);
+-	/* write or read value according to is_write */
+ 	if (is_write) {
+-		if (copy_from_user(p, data, len))
+-			ret = -EFAULT;
+-	} else {
+-		if (copy_to_user(data, p, len))
+-			ret = -EFAULT;
++		if (copy_from_user(buf, data, len))
++			return -EFAULT;
+ 	}
++
++	spin_lock(&s->lock);
++	if (is_write)
++		memcpy(p, buf, len);
++	else
++		memcpy(buf, p, len);
+ 	spin_unlock(&s->lock);
  
--			plen = min_t(size_t, len, PAGE_SIZE);
-+				plen = min_t(size_t, len, PAGE_SIZE);
++	if (!is_write) {
++		if (copy_to_user(data, buf, len))
++			return -EFAULT;
++	}
++
+ 	return ret;
+ }
  
--			pg = alloc_page(GFP_KERNEL);
--			if (!pg) {
--				err = -ENOMEM;
--				goto unlock;
--			}
-+				pg = alloc_page(GFP_KERNEL);
-+				if (!pg) {
-+					err = -ENOMEM;
-+					goto unlock;
-+				}
- 
--			sg_assign_page(sg + i, pg);
-+				sg_assign_page(sg + i, pg);
- 
--			err = memcpy_from_msg(page_address(sg_page(sg + i)),
--					      msg, plen);
--			if (err) {
--				__free_page(sg_page(sg + i));
--				sg_assign_page(sg + i, NULL);
--				goto unlock;
--			}
-+				err = memcpy_from_msg(
-+					page_address(sg_page(sg + i)),
-+					msg, plen);
-+				if (err) {
-+					__free_page(sg_page(sg + i));
-+					sg_assign_page(sg + i, NULL);
-+					goto unlock;
-+				}
- 
--			sg[i].length = plen;
--			len -= plen;
--			ctx->used += plen;
--			copied += plen;
--			size -= plen;
--			sgl->cur++;
--		} while (len && sgl->cur < MAX_SGL_ENTS);
-+				sg[i].length = plen;
-+				len -= plen;
-+				ctx->used += plen;
-+				copied += plen;
-+				size -= plen;
-+				sgl->cur++;
-+			} while (len && sgl->cur < MAX_SGL_ENTS);
-+		}
- 
- 		if (!size)
- 			sg_mark_end(sg + sgl->cur - 1);
--- 
-2.51.0
-
 
 
 
