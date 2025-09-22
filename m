@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B5DB92F4A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12198B93162
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57F1B18944F5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711BA1885867
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE2A2E285C;
-	Mon, 22 Sep 2025 19:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3363C2DF714;
+	Mon, 22 Sep 2025 19:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pFd1s/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEhamLEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D1C285C92;
-	Mon, 22 Sep 2025 19:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E575F1C1ADB;
+	Mon, 22 Sep 2025 19:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570008; cv=none; b=dlUhjXXgxlv7qPHIaHW7Z7ueCzpVAaJkf+8sOrRr7YVb46/ytTBeNP9ZCArFvkvFJRLFDoXTetmQsd8DVZBL+N19x1JhQwv0pLObRskAEvNsWeA9nUGTV3h+i0NrT2y5kqBz6z4gt2nAP9rq74j32lPwD/8xDzT+9RhIigjV8N8=
+	t=1758570395; cv=none; b=CDRFWuy6a8WLzS//uz8GKCnKifLA6DUpTXDjLF2xop/d+pdqyayRWEdM+qFlpwwnXPgFQqMEsoJ1Gc6EVhpBQBEYQ6m9JqJt5LUZVYjadnnau4IFJmXpFimA+3ZAfeMhOKfcL+s/22XRsCZYOh+3zgiv5ZGrnoPW9wtUUARowOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570008; c=relaxed/simple;
-	bh=34xiGBIquLqfxd90j+p+6ADCk6Q+OAvg3C/WMqSqOQw=;
+	s=arc-20240116; t=1758570395; c=relaxed/simple;
+	bh=qkM8shYCYEVUq/7R/NJx/rDLGQVOA7Q0JeVRWXanv3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UROlmsBQbvGbsvU+3VaHvZWe+bgpqLkGHbMj612CDqW+hdAa8Vrf8nrppehY7m6gzkl7414wd5X+hDoXNahkuWTuoRzYwRSPoBsFweDS9cncPeHvd694DbQxV2U6PhqBei5/priy8hF4OAgBZdiqKyB2UUs8SiUeuWkmLsjMhtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pFd1s/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58D2C4CEF0;
-	Mon, 22 Sep 2025 19:40:07 +0000 (UTC)
+	 MIME-Version; b=FsmlgeZ9xk/0fjDeFOEvSToWIdR9ZIIQVpyhLG95+SruuEYZV6z12OYo3FGWQRPkAbgoa/ewFQdE3jnmY0kV+DpN9jcY2ZdfTCaQ56dblVnBdSmoY4tGZJS2FXNMePZNiRNJFMP8bC5oKefiT+HNG0qXzVfgeSWLUEChZoMnEC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEhamLEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC9BC4CEF5;
+	Mon, 22 Sep 2025 19:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570008;
-	bh=34xiGBIquLqfxd90j+p+6ADCk6Q+OAvg3C/WMqSqOQw=;
+	s=korg; t=1758570394;
+	bh=qkM8shYCYEVUq/7R/NJx/rDLGQVOA7Q0JeVRWXanv3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pFd1s/E+KEbLrRe0PFwIjisy0RqFqPMAGhQsBKY7P2uG7sxrYOFKy6ATPPe8GDQN
-	 RU0h7b4QeE/MGCHxtP1ooQqlrTD1RBjk8gIWp0wsrzo21BSyQbQ7fgAAKelPy39lKJ
-	 V5coTn0kRV3B809DmSCwOLoPUSLB9YDeuiyKhn7E=
+	b=tEhamLEYxZUwSJV1LXCHyXynNy9GN0qbIIi5e3H+cWtczO89YRPuNmQpaMuCwotN/
+	 3FBpzRmi+Vqgo4j2Fz3Y9QUCGNc0NZBbjZXWlYFQfhqGZ0eUE5jQTI881Y/kPBu6yZ
+	 7ZWqVDUUHg/Liiwa570SCWLlkWOtkxXjzXn7kkEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 087/105] x86/bugs: Add SRSO_USER_KERNEL_NO support
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 110/149] ASoC: wm8974: Correct PLL rate rounding
 Date: Mon, 22 Sep 2025 21:30:10 +0200
-Message-ID: <20250922192411.177790312@linuxfoundation.org>
+Message-ID: <20250922192415.649930237@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 877818802c3e970f67ccb53012facc78bef5f97a upstream.
+[ Upstream commit 9b17d3724df55ecc2bc67978822585f2b023be48 ]
 
-If the machine has:
+Using a single value of 22500000 for both 48000Hz and 44100Hz audio
+will sometimes result in returning wrong dividers due to rounding.
+Update the code to use the actual value for both.
 
-  CPUID Fn8000_0021_EAX[30] (SRSO_USER_KERNEL_NO) -- If this bit is 1,
-  it indicates the CPU is not subject to the SRSO vulnerability across
-  user/kernel boundaries.
-
-have it fall back to IBPB on VMEXIT only, in the case it is going to run
-VMs:
-
-  Speculative Return Stack Overflow: Mitigation: IBPB on VMEXIT only
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/20241202120416.6054-2-bp@kernel.org
-[ Harshit: Conflicts resolved as this commit: 7c62c442b6eb ("x86/vmscape:
-  Enumerate VMSCAPE bug") has been applied already to 6.12.y ]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 51b2bb3f2568 ("ASoC: wm8974: configure pll and mclk divider automatically")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250821082639.1301453-4-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    1 +
- arch/x86/kernel/cpu/bugs.c         |    4 ++++
- 2 files changed, 5 insertions(+)
+ sound/soc/codecs/wm8974.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -464,6 +464,7 @@
- #define X86_FEATURE_SBPB		(20*32+27) /* Selective Branch Prediction Barrier */
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* CPU is not affected by SRSO */
-+#define X86_FEATURE_SRSO_USER_KERNEL_NO	(20*32+30) /* CPU is not affected by SRSO across user/kernel boundaries */
+diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
+index bdf437a5403fe..db16d893a2351 100644
+--- a/sound/soc/codecs/wm8974.c
++++ b/sound/soc/codecs/wm8974.c
+@@ -419,10 +419,14 @@ static int wm8974_update_clocks(struct snd_soc_dai *dai)
+ 	fs256 = 256 * priv->fs;
  
- /*
-  * Extended auxiliary flags: Linux defined - for features scattered in various
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2810,6 +2810,9 @@ static void __init srso_select_mitigatio
- 		break;
- 
- 	case SRSO_CMD_SAFE_RET:
-+		if (boot_cpu_has(X86_FEATURE_SRSO_USER_KERNEL_NO))
-+			goto ibpb_on_vmexit;
+ 	f = wm8974_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
+-
+ 	if (f != priv->mclk) {
+ 		/* The PLL performs best around 90MHz */
+-		fpll = wm8974_get_mclkdiv(22500000, fs256, &mclkdiv);
++		if (fs256 % 8000)
++			f = 22579200;
++		else
++			f = 24576000;
 +
- 		if (IS_ENABLED(CONFIG_MITIGATION_SRSO)) {
- 			/*
- 			 * Enable the return thunk for generated code
-@@ -2861,6 +2864,7 @@ static void __init srso_select_mitigatio
- 		}
- 		break;
++		fpll = wm8974_get_mclkdiv(f, fs256, &mclkdiv);
+ 	}
  
-+ibpb_on_vmexit:
- 	case SRSO_CMD_IBPB_ON_VMEXIT:
- 		if (IS_ENABLED(CONFIG_MITIGATION_IBPB_ENTRY)) {
- 			if (has_microcode) {
+ 	wm8974_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
+-- 
+2.51.0
+
 
 
 
