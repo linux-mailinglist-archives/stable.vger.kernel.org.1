@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E8CB930BF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1F9B92DE2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E9AB17914F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E32F2A7646
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44075311594;
-	Mon, 22 Sep 2025 19:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68DD2E2847;
+	Mon, 22 Sep 2025 19:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8dc5dg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWNV6Wds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E932F39DE;
-	Mon, 22 Sep 2025 19:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A9C27B320;
+	Mon, 22 Sep 2025 19:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570295; cv=none; b=UVrCAZ8Tyr0vAcMxKjcdQernR6hx8WpblY3XbkvoXQDlB8ZPpJGcdLFtSqCXKzHytc1KX7B03Ms9UjaZf+/IC0rmI8tysObcKTvuzdKu2HO4Zg77MvjoHDXsMSf3Wv+66FTFQ3Q0V4hBCpQQZ9scKw6S/l4ORIIGcl0zFqnXNbE=
+	t=1758569747; cv=none; b=lvdXbxNPxt6lMDi7eOQDgeNWY9zOKq+kQGCJi88EKw4116M9T6BBAQNaWHIJcRx1f0Zqc6Zq5Nt1NelY5UOvV1vo0lyiSkNlKS65zTSqMDzjvgoagaMv4DEJSLednTPhKaUDut5WDdvxng6nCJOp5aRRLJc3Pa6Ebud33/V8YRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570295; c=relaxed/simple;
-	bh=2RrojkHOcdhrTHya8xb48yLHrFdn+0KXjtWR2fuZrno=;
+	s=arc-20240116; t=1758569747; c=relaxed/simple;
+	bh=UpylKxcnQEAROy3nqe2mhgxn63++W8dtQTM/ch+jIvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cuxo8UoPMO1XwCr1NC0ovTDOUGV3I3XEBFpFvpTPZAajxZQ9ulHnwGSA5/oy5g4m1x+5MDm+r4qQALCzUCQigt2td+6+S0VFlxJG1VrIfyrqgSSYnvRlwQoLK3X3FCzJphPvUQUT17mDmakj/QLHPpmTzLoozl5Lg9L4o48Wwzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8dc5dg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D076C4CEF0;
-	Mon, 22 Sep 2025 19:44:54 +0000 (UTC)
+	 MIME-Version; b=K4QWTQ8rdl2O1Yzun9GonS/gU7ReEt6IOJICegdQazv5UZTgXySn1vmjAgHj6aI1lwDXrk7XMC2vCAQWgtVTiSZ6Xzv1lay6ynqUzVti4zWTH1aDm+Q/EsL1tJAnG2SznEp2cC2xvUMelj8EiQ+fnVEvicNpto3A+Fm3UGk51q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWNV6Wds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E942C4CEF0;
+	Mon, 22 Sep 2025 19:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570294;
-	bh=2RrojkHOcdhrTHya8xb48yLHrFdn+0KXjtWR2fuZrno=;
+	s=korg; t=1758569747;
+	bh=UpylKxcnQEAROy3nqe2mhgxn63++W8dtQTM/ch+jIvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8dc5dg4VjDpub/wLUHCPDqxfurcfx2w8O+W2BURzF3UPVtOjM5rbQA2AI7PY3Gip
-	 T5QbrDE7WOXntCS2uMFo58wpYweLj4OlijEBqnaBk4EXhwxRxrOU7bHBNfsEGFiv4b
-	 i2V1watoMP49Er1syHkqZ65XCKVDSdyjDDgyU5fU=
+	b=RWNV6WdsgH1jsIPeFA8p61eyO9Hq6K1uRNYUMkx3A98w8MFig8GWdSD2XVkM+1bt+
+	 pQS3IIhoI2dVLKv4TpOuV8QkzvbvhvnLajHBZ8en13Bs5PQnLSUALhSdEukUoPJGaE
+	 E4vBK62KyJAVSHzRqADUFr4CS8+en5nxqVCd7Zig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.16 093/149] KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 53/70] drm: bridge: anx7625: Fix NULL pointer dereference with early IRQ
 Date: Mon, 22 Sep 2025 21:29:53 +0200
-Message-ID: <20250922192415.231702417@linuxfoundation.org>
+Message-ID: <20250922192406.030397419@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-commit d02e48830e3fce9701265f6c5a58d9bdaf906a76 upstream.
+[ Upstream commit a10f910c77f280327b481e77eab909934ec508f0 ]
 
-Commit 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
-inhibited pre-VMRUN sync of TPR from LAPIC into VMCB::V_TPR in
-sync_lapic_to_cr8() when AVIC is active.
+If the interrupt occurs before resource initialization is complete, the
+interrupt handler/worker may access uninitialized data such as the I2C
+tcpc_client device, potentially leading to NULL pointer dereference.
 
-AVIC does automatically sync between these two fields, however it does
-so only on explicit guest writes to one of these fields, not on a bare
-VMRUN.
-
-This meant that when AVIC is enabled host changes to TPR in the LAPIC
-state might not get automatically copied into the V_TPR field of VMCB.
-
-This is especially true when it is the userspace setting LAPIC state via
-KVM_SET_LAPIC ioctl() since userspace does not have access to the guest
-VMCB.
-
-Practice shows that it is the V_TPR that is actually used by the AVIC to
-decide whether to issue pending interrupts to the CPU (not TPR in TASKPRI),
-so any leftover value in V_TPR will cause serious interrupt delivery issues
-in the guest when AVIC is enabled.
-
-Fix this issue by doing pre-VMRUN TPR sync from LAPIC into VMCB::V_TPR
-even when AVIC is enabled.
-
-Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Link: https://lore.kernel.org/r/c231be64280b1461e854e1ce3595d70cde3a2e9d.1756139678.git.maciej.szmigiero@oracle.com
-[sean: tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Fixes: 8bdfc5dae4e3 ("drm/bridge: anx7625: Add anx7625 MIPI DSI/DPI to DP")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250709085438.56188-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4204,8 +4204,7 @@ static inline void sync_lapic_to_cr8(str
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	u64 cr8;
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index ddf944651c55a..08885a5ba826e 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2705,7 +2705,7 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 		ret = devm_request_threaded_irq(dev, platform->pdata.intp_irq,
+ 						NULL, anx7625_intr_hpd_isr,
+ 						IRQF_TRIGGER_FALLING |
+-						IRQF_ONESHOT,
++						IRQF_ONESHOT | IRQF_NO_AUTOEN,
+ 						"anx7625-intp", platform);
+ 		if (ret) {
+ 			DRM_DEV_ERROR(dev, "fail to request irq\n");
+@@ -2775,8 +2775,10 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 	}
  
--	if (nested_svm_virtualize_tpr(vcpu) ||
--	    kvm_vcpu_apicv_active(vcpu))
-+	if (nested_svm_virtualize_tpr(vcpu))
- 		return;
+ 	/* Add work function */
+-	if (platform->pdata.intp_irq)
++	if (platform->pdata.intp_irq) {
++		enable_irq(platform->pdata.intp_irq);
+ 		queue_work(platform->workqueue, &platform->work);
++	}
  
- 	cr8 = kvm_get_cr8(vcpu);
+ 	if (platform->pdata.audio_en)
+ 		anx7625_register_audio(dev, platform);
+-- 
+2.51.0
+
 
 
 
