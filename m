@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA1EB92C80
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:31:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0722BB93059
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3511898DE6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:31:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A991693C6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4AE27B320;
-	Mon, 22 Sep 2025 19:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CED2F3608;
+	Mon, 22 Sep 2025 19:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZRUpcDm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQdJMtTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473A5C8E6;
-	Mon, 22 Sep 2025 19:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD402F0C5C;
+	Mon, 22 Sep 2025 19:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569484; cv=none; b=hnh4+qLDcEcBTXGM/stXns8SW+VOvb2PzZdTzfe5RNKWv4B24NzfViR1s0x4+s0wvLV16gohMuPyDbRc+Kz2PZwmwuVD3W1PuB2bbxZa1Ao8aF+bUisG5GK5SQ+phk1NMuMVaOOXDo3JyRs5iTY3sF+ru89fMwgZS6n/Yl/PPgY=
+	t=1758570197; cv=none; b=RaxPlIHDgRsZUTb3uPeXLO26/OS2GJXjlks5hRPBBocSIksPaWJlm3ZBnEhmqzH3pvgoZYQ0uoVkNsJiC9NAVSfvILIn1+oa7zrDK3xWfWixu6dQsqbFp2sg45HAie6CqAKKjBf5gsUshcStzfP5meRmxepazuefyXGutX/n8cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569484; c=relaxed/simple;
-	bh=L6rDeb1hlh9t4gwBLm+RZT0XTardFQN62SYEanFuEEw=;
+	s=arc-20240116; t=1758570197; c=relaxed/simple;
+	bh=8dBvb8DSp3dNnpXP48lEx6o4tYUcb9OWJrn3SpZYm58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYXaax96m6SRZOoniGE34X2N8t9HtIAMTU19ue4d/3zFVHrQx+vEpxICKg42W/dqBU9YngHOLjCKQkNSBupGuf2rIRHys7wB8j1jxOr2gZCE1cm/ujNjVU8Oj5iAg8z8yRR0/ZMDdPT4twWgSj0cQQAab5S2GouOAgQcc3SfRnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZRUpcDm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81557C4CEF0;
-	Mon, 22 Sep 2025 19:31:23 +0000 (UTC)
+	 MIME-Version; b=Y3tRpdkm8MrFkM1SQLT/O43ytPVEPjnS09OYy+yqooPfzuX4BpV6AxYjYGPL7wsBITcNny1E8bWoemDss4HoubhxuOYht750MsA6ZcEOCzweNdWFdeR/k+ePYQGo7ixnxNPZG4DCJ369ZvhiRm1VqciOUBNabClUl8NFpmyUEPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQdJMtTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC15FC4CEF5;
+	Mon, 22 Sep 2025 19:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569483;
-	bh=L6rDeb1hlh9t4gwBLm+RZT0XTardFQN62SYEanFuEEw=;
+	s=korg; t=1758570197;
+	bh=8dBvb8DSp3dNnpXP48lEx6o4tYUcb9OWJrn3SpZYm58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZRUpcDmqHLiVnVuDgqzO6p8gWjgV8VS3zRImyyTBsUOvkHz1LfzhrkWIpLxUUi+h
-	 gbPSytvIdNAg57ciY1hVAx5hbKEZ+s7RM1TbAnRQlxp5Cqe2L3WwMMvrLaIDVqGKST
-	 VxBC4BhbVhfDeWEFVDtD/x7+l13DJUhKxW/iRaaU=
+	b=XQdJMtTzLl3Pig6S5LpfEleHsjZCWgNFysiTg2xS2Q3PAJjT9FvtWVDEnnSLn0R87
+	 aCru1xu64Fdv21n55FsYgNAzzSHDUyRc30AU+HCgwliVHIr3e2/oDfF9I62vSn9ak2
+	 2LqsdBOdERfXzAjtdEUjSSI7YA6KzeD0kxQXoMVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Andrei Vagin <avagin@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/61] mptcp: set remote_deny_join_id0 on SYN recv
+Subject: [PATCH 6.16 043/149] net: clear sk->sk_ino in sk_set_socket(sk, NULL)
 Date: Mon, 22 Sep 2025 21:29:03 +0200
-Message-ID: <20250922192403.831896713@linuxfoundation.org>
+Message-ID: <20250922192413.952284388@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 96939cec994070aa5df852c10fad5fc303a97ea3 ]
+[ Upstream commit 87ebb628a5acb892eba41ef1d8989beb8f036034 ]
 
-When a SYN containing the 'C' flag (deny join id0) was received, this
-piece of information was not propagated to the path-manager.
+Andrei Vagin reported that blamed commit broke CRIU.
 
-Even if this flag is mainly set on the server side, a client can also
-tell the server it cannot try to establish new subflows to the client's
-initial IP address and port. The server's PM should then record such
-info when received, and before sending events about the new connection.
+Indeed, while we want to keep sk_uid unchanged when a socket
+is cloned, we want to clear sk->sk_ino.
 
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-1-40171884ade8@kernel.org
+Otherwise, sock_diag might report multiple sockets sharing
+the same inode number.
+
+Move the clearing part from sock_orphan() to sk_set_socket(sk, NULL),
+called both from sock_orphan() and sk_clone_lock().
+
+Fixes: 5d6b58c932ec ("net: lockless sock_i_ino()")
+Closes: https://lore.kernel.org/netdev/aMhX-VnXkYDpKd9V@google.com/
+Closes: https://github.com/checkpoint-restore/criu/issues/2744
+Reported-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Andrei Vagin <avagin@google.com>
+Link: https://patch.msgid.link/20250917135337.1736101-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/sock.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index cff2328106928..2ff72b7940fe9 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -773,6 +773,10 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 				goto fallback;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index a348ae145eda4..6e9f4c126672d 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2061,6 +2061,9 @@ static inline void sk_set_socket(struct sock *sk, struct socket *sock)
+ 	if (sock) {
+ 		WRITE_ONCE(sk->sk_uid, SOCK_INODE(sock)->i_uid);
+ 		WRITE_ONCE(sk->sk_ino, SOCK_INODE(sock)->i_ino);
++	} else {
++		/* Note: sk_uid is unchanged. */
++		WRITE_ONCE(sk->sk_ino, 0);
+ 	}
+ }
  
- 			owner = mptcp_sk(ctx->conn);
-+
-+			if (mp_opt.deny_join_id0)
-+				WRITE_ONCE(owner->pm.remote_deny_join_id0, true);
-+
- 			mptcp_pm_new_connection(owner, child, 1);
+@@ -2082,8 +2085,6 @@ static inline void sock_orphan(struct sock *sk)
+ 	sock_set_flag(sk, SOCK_DEAD);
+ 	sk_set_socket(sk, NULL);
+ 	sk->sk_wq  = NULL;
+-	/* Note: sk_uid is unchanged. */
+-	WRITE_ONCE(sk->sk_ino, 0);
+ 	write_unlock_bh(&sk->sk_callback_lock);
+ }
  
- 			/* with OoO packets we can reach here without ingress
 -- 
 2.51.0
 
