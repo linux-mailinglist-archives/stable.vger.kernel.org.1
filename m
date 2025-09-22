@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-181392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3490B9317E
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0E5B9316F
 	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B55B2A629F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7400219C02A5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BBC2F39BE;
-	Mon, 22 Sep 2025 19:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAEC1F91E3;
+	Mon, 22 Sep 2025 19:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lN599GFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cglUL37I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8064825A34F;
-	Mon, 22 Sep 2025 19:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73311C1ADB;
+	Mon, 22 Sep 2025 19:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570427; cv=none; b=XU2H/bET31hYInxmaD2NeV759VwoS3aAbiqaxlmnsSTzweJM2nipZ7G5PjhF24ab9BQQTkKjKKz+WCUp8XBpi+U06GHjZxb+qv8VlHGSKoGMCcubRSfoytryHo6wbmx8pu1nNzq+QYKmHMcr/jkHM2BI1t8SnjbOPkhFPCC/mkQ=
+	t=1758570400; cv=none; b=JtcKN3v+jMqLOm7p5IX5/6fRl+Cu2yPi/g6MFnLuEbjkXGq0NB5WEHP0ecqy79qFFhuwYo8EnYkHOuR/focfsTuwPLD4rfSBWdVQ9yznPw6RR+EjkWpMdy769WPBFnk9sHj3JMelEVHAdJWJZ1GGOdOGUdYAsrKUBcPIr/1/x8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570427; c=relaxed/simple;
-	bh=SHtso6K0zRVL/GUgJGChR/gSJuWzFtjbG+1hdG1c2fc=;
+	s=arc-20240116; t=1758570400; c=relaxed/simple;
+	bh=W2kEUUsoekU1tWT0cxlNuZafpBQYxzb8WxIY1LiGY6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZh/WS3Gf27F4byMT6P3gsl6vTvFjvr5Tz6f7m/Fbz9v3nHQpBxvmntB2Iz6ndVsGvmw+FYCPdlliLL2o0NIEccbU/AjIJoxV5DJHSf9ihiZOTrH05ySkNgti7H+PuwMJXM3qWKj8/4cfHP/x/tCxlhBkNjc9Wo+frc0X1bHE/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lN599GFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C04C4CEF0;
-	Mon, 22 Sep 2025 19:47:06 +0000 (UTC)
+	 MIME-Version; b=Azg8svt1cimA34eWgJbOlAvIeTrRq1RYS7WA2PjSoXr/sKVhysBfBKya33UNULQx32mOr18tBbLb+1YAxqcS02CGp+Dv0JOz7BkZOE/Vhi40rpjp0s+F2pdH6sbvUn1XBj+dO3LBwDw2hij/aLPnH93PXiJ1cwKxwsqxBtHqXIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cglUL37I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809B7C4CEF0;
+	Mon, 22 Sep 2025 19:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570427;
-	bh=SHtso6K0zRVL/GUgJGChR/gSJuWzFtjbG+1hdG1c2fc=;
+	s=korg; t=1758570399;
+	bh=W2kEUUsoekU1tWT0cxlNuZafpBQYxzb8WxIY1LiGY6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lN599GFwfDXHQLpPPN3BoJ6zVW40aoZIJlu0P1mNZr+BAp7YeiSOFulIu866do6Np
-	 6ZizqIwsYV4mcT2Rn3RzpMDjPVKfMGb0oSyJNYGBLGJMuEBK87zECsBJpLIb7I5XHL
-	 /9lJFjsnbU6aFsqDc2eHNFY+rIGzLSfsOzSX/VPM=
+	b=cglUL37Ix7m4MK6hZZbk7o9L650RimKVZfdipMYibuUCBmnAIFMOP7lUMfpzfTeNJ
+	 xxMmkEZPZwqhw+UE7OUtMBZRsO21WtdQSlNIhJLewQGJUTCfwcgj42nJhT9sh2Efpn
+	 uUOF2a4ZSXN63qrAPpBHIO5P2tjKAKuV9Ufv9Gls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 133/149] smb: client: let smbd_destroy() call disable_work_sync(&info->post_send_credits_work)
-Date: Mon, 22 Sep 2025 21:30:33 +0200
-Message-ID: <20250922192416.223784333@linuxfoundation.org>
+Subject: [PATCH 6.16 134/149] crypto: af_alg - Set merge to zero early in af_alg_sendmsg
+Date: Mon, 22 Sep 2025 21:30:34 +0200
+Message-ID: <20250922192416.248632865@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
 References: <20250922192412.885919229@linuxfoundation.org>
@@ -72,72 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit d9dcbbcf9145b68aa85c40947311a6907277e097 ]
+[ Upstream commit 9574b2330dbd2b5459b74d3b5e9619d39299fc6f ]
 
-In smbd_destroy() we may destroy the memory so we better
-wait until post_send_credits_work is no longer pending
-and will never be started again.
+If an error causes af_alg_sendmsg to abort, ctx->merge may contain
+a garbage value from the previous loop.  This may then trigger a
+crash on the next entry into af_alg_sendmsg when it attempts to do
+a merge that can't be done.
 
-I actually just hit the case using rxe:
+Fix this by setting ctx->merge to zero near the start of the loop.
 
-WARNING: CPU: 0 PID: 138 at drivers/infiniband/sw/rxe/rxe_verbs.c:1032 rxe_post_recv+0x1ee/0x480 [rdma_rxe]
-...
-[ 5305.686979] [    T138]  smbd_post_recv+0x445/0xc10 [cifs]
-[ 5305.687135] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687149] [    T138]  ? __kasan_check_write+0x14/0x30
-[ 5305.687185] [    T138]  ? __pfx_smbd_post_recv+0x10/0x10 [cifs]
-[ 5305.687329] [    T138]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[ 5305.687356] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687368] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687378] [    T138]  ? _raw_spin_unlock_irqrestore+0x11/0x60
-[ 5305.687389] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687399] [    T138]  ? get_receive_buffer+0x168/0x210 [cifs]
-[ 5305.687555] [    T138]  smbd_post_send_credits+0x382/0x4b0 [cifs]
-[ 5305.687701] [    T138]  ? __pfx_smbd_post_send_credits+0x10/0x10 [cifs]
-[ 5305.687855] [    T138]  ? __pfx___schedule+0x10/0x10
-[ 5305.687865] [    T138]  ? __pfx__raw_spin_lock_irq+0x10/0x10
-[ 5305.687875] [    T138]  ? queue_delayed_work_on+0x8e/0xa0
-[ 5305.687889] [    T138]  process_one_work+0x629/0xf80
-[ 5305.687908] [    T138]  ? srso_alias_return_thunk+0x5/0xfbef5
-[ 5305.687917] [    T138]  ? __kasan_check_write+0x14/0x30
-[ 5305.687933] [    T138]  worker_thread+0x87f/0x1570
-...
-
-It means rxe_post_recv was called after rdma_destroy_qp().
-This happened because put_receive_buffer() was triggered
-by ib_drain_qp() and called:
-queue_work(info->workqueue, &info->post_send_credits_work);
-
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 3 +++
- 1 file changed, 3 insertions(+)
+ crypto/af_alg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 8c6e766078e14..8b920410cd2fe 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1335,6 +1335,9 @@ void smbd_destroy(struct TCP_Server_Info *server)
- 			sc->status == SMBDIRECT_SOCKET_DISCONNECTED);
- 	}
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index f02c5586a8ab3..ca6fdcc6c54ac 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1025,6 +1025,8 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			continue;
+ 		}
  
-+	log_rdma_event(INFO, "cancelling post_send_credits_work\n");
-+	disable_work_sync(&info->post_send_credits_work);
++		ctx->merge = 0;
 +
- 	log_rdma_event(INFO, "destroying qp\n");
- 	ib_drain_qp(sc->ib.qp);
- 	rdma_destroy_qp(sc->rdma.cm_id);
+ 		if (!af_alg_writable(sk)) {
+ 			err = af_alg_wait_for_wmem(sk, msg->msg_flags);
+ 			if (err)
+@@ -1064,7 +1066,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			ctx->used += plen;
+ 			copied += plen;
+ 			size -= plen;
+-			ctx->merge = 0;
+ 		} else {
+ 			do {
+ 				struct page *pg;
 -- 
 2.51.0
 
