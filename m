@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3095B93053
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61EBB92E47
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798F344830B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F8A2A542A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1191D2F1FE3;
-	Mon, 22 Sep 2025 19:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8E62F0C5C;
+	Mon, 22 Sep 2025 19:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTWxuwcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBA3oAuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29EC2F0C5C;
-	Mon, 22 Sep 2025 19:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4931627B320;
+	Mon, 22 Sep 2025 19:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570150; cv=none; b=HkV8uhICZbZsAJmBOCCQUzsolwqWl6eoKqxCSBVLgo2ib0ed8jbqAToxkWLbXAEsZ/LgxDqZYTQDbheVdUHM+AvVMCFDS0VKn17HKuSP6YV3hoZGw9TMR3Ao7XKz/aPOcBNsE7mdQv8tkHJdedZFmMi1gQEHCuDmp+lAYhwSYd4=
+	t=1758569817; cv=none; b=OqOh2WmmUZYqmJDMeo28ViKGylCqkR6teGV0mL91TBnrk23ZlTTv8MbO5qMRJkLwJq3Z0AlnXry7XWdeMIH1FvShGFNAt+coJfx4S7SatfwYaRSXsaapHjyPLjn5eVX9KNbuH1mh6saTeEUHq+bJHnhrl+uqf158sO/tZeA1Mr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570150; c=relaxed/simple;
-	bh=LWoOU8CACM7p94LcRqQKJVzie7jBUoR6uzvz/ngD9eE=;
+	s=arc-20240116; t=1758569817; c=relaxed/simple;
+	bh=lWF8iIgQBnpIg9sDIud6XGMwOB0KkibCUwF7nu4Ssrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsbsHgzZduVJR5Dl3wpVJqXGr3a+ueb/R6mxJKmNCLdL00CsNu8PkrZc+Yt9O9tdQNDCHEq8RiXA3EDKGPjJPSaAAd/asjjYtNm7+yLdcjfU+ob5YXtSVHCGnKe71WV5UmRgW3Iu1S+N5Ne/WnZNoxxG7lsNCRdPlp5cv8pkIQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTWxuwcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B952C4CEF0;
-	Mon, 22 Sep 2025 19:42:30 +0000 (UTC)
+	 MIME-Version; b=A3j9IMfGkBht7RhKoRXiBaOor9tPiowU6nT6RGsG4TeJy9xluoSZKPqd4PzEJf2F5pjzCgimDCAP3Ogxu7bx2+yGrhS4VZ0K2KJLDF+60Z37CZsxp1C+BUHDbgtzx/mEtGxZflLxQ+06bTIQN6aXlqgOxHijXfD0Vouu5v0VSi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBA3oAuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2807C4CEF0;
+	Mon, 22 Sep 2025 19:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570150;
-	bh=LWoOU8CACM7p94LcRqQKJVzie7jBUoR6uzvz/ngD9eE=;
+	s=korg; t=1758569817;
+	bh=lWF8iIgQBnpIg9sDIud6XGMwOB0KkibCUwF7nu4Ssrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTWxuwcuEan4Uv5UKoO2xaSECLGUYxVZ2tUBTnArJn87BJUv7u9+3fLjwU2dnkIYi
-	 ytzRJA26afZVNCltf3bhJqub3QdS+OJN+vd60rg83HUZidLgf+7J9YaQdH1P7JlcRG
-	 ++UbwHqhohn+3ubqFHSffhqdg1zEGOhmXgXmSaj8=
+	b=TBA3oAuD3Jb/vDuVY4qoZECUPlNQL1hfrHBNpl8SmpbBBeqkYvPy49I5tnWeZuY/T
+	 wesg5R31ldsNsjEOzuHdsOhXe7ifc6btT1AqzHSkHg2yk55zheo3VzE+hW7+Doti/j
+	 2wnuQl2qv5VrSe0dKkvDjzxMcwe9/dTr7p/8wvD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 025/149] mptcp: set remote_deny_join_id0 on SYN recv
+Subject: [PATCH 6.12 002/105] nvme: fix PI insert on write
 Date: Mon, 22 Sep 2025 21:28:45 +0200
-Message-ID: <20250922192413.504838629@linuxfoundation.org>
+Message-ID: <20250922192408.976486542@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 96939cec994070aa5df852c10fad5fc303a97ea3 ]
+[ Upstream commit 7ac3c2889bc060c3f67cf44df0dbb093a835c176 ]
 
-When a SYN containing the 'C' flag (deny join id0) was received, this
-piece of information was not propagated to the path-manager.
+I recently ran into an issue where the PI generated using the block layer
+integrity code differs from that from a kernel using the PRACT fallback
+when the block layer integrity code is disabled, and I tracked this down
+to us using PRACT incorrectly.
 
-Even if this flag is mainly set on the server side, a client can also
-tell the server it cannot try to establish new subflows to the client's
-initial IP address and port. The server's PM should then record such
-info when received, and before sending events about the new connection.
+The NVM Command Set Specification (section 5.33 in 1.2, similar in older
+versions) specifies the PRACT insert behavior as:
 
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-1-40171884ade8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  Inserted protection information consists of the computed CRC for the
+  protection information format (refer to section 5.3.1) in the Guard
+  field, the LBAT field value in the Application Tag field, the LBST
+  field value in the Storage Tag field, if defined, and the computed
+  reference tag in the Logical Block Reference Tag.
+
+Where the computed reference tag is defined as following for type 1 and
+type 2 using the text below that is duplicated in the respective bullet
+points:
+
+  the value of the computed reference tag for the first logical block of
+  the command is the value contained in the Initial Logical Block
+  Reference Tag (ILBRT) or Expected Initial Logical Block Reference Tag
+  (EILBRT) field in the command, and the computed reference tag is
+  incremented for each subsequent logical block.
+
+So we need to set ILBRT field, but we currently don't.  Interestingly
+this works fine on my older type 1 formatted SSD, but Qemu trips up on
+this.  We already set ILBRT for Write Same since commit aeb7bb061be5
+("nvme: set the PRACT bit when using Write Zeroes with T10 PI").
+
+To ease this, move the PI type check into nvme_set_ref_tag.
+
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvme/host/core.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 1802bc5435a1a..d77a2e374a7ae 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -882,6 +882,10 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 9e223574db7f7..24d82d35041b5 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -890,6 +890,15 @@ static void nvme_set_ref_tag(struct nvme_ns *ns, struct nvme_command *cmnd,
+ 	u32 upper, lower;
+ 	u64 ref48;
  
- 			ctx->subflow_id = 1;
- 			owner = mptcp_sk(ctx->conn);
++	/* only type1 and type 2 PI formats have a reftag */
++	switch (ns->head->pi_type) {
++	case NVME_NS_DPS_PI_TYPE1:
++	case NVME_NS_DPS_PI_TYPE2:
++		break;
++	default:
++		return;
++	}
 +
-+			if (mp_opt.deny_join_id0)
-+				WRITE_ONCE(owner->pm.remote_deny_join_id0, true);
-+
- 			mptcp_pm_new_connection(owner, child, 1);
+ 	/* both rw and write zeroes share the same reftag format */
+ 	switch (ns->head->guard_type) {
+ 	case NVME_NVM_NS_16B_GUARD:
+@@ -929,13 +938,7 @@ static inline blk_status_t nvme_setup_write_zeroes(struct nvme_ns *ns,
  
- 			/* with OoO packets we can reach here without ingress
+ 	if (nvme_ns_has_pi(ns->head)) {
+ 		cmnd->write_zeroes.control |= cpu_to_le16(NVME_RW_PRINFO_PRACT);
+-
+-		switch (ns->head->pi_type) {
+-		case NVME_NS_DPS_PI_TYPE1:
+-		case NVME_NS_DPS_PI_TYPE2:
+-			nvme_set_ref_tag(ns, cmnd, req);
+-			break;
+-		}
++		nvme_set_ref_tag(ns, cmnd, req);
+ 	}
+ 
+ 	return BLK_STS_OK;
+@@ -1014,6 +1017,7 @@ static inline blk_status_t nvme_setup_rw(struct nvme_ns *ns,
+ 			if (WARN_ON_ONCE(!nvme_ns_has_pi(ns->head)))
+ 				return BLK_STS_NOTSUPP;
+ 			control |= NVME_RW_PRINFO_PRACT;
++			nvme_set_ref_tag(ns, cmnd, req);
+ 		}
+ 
+ 		switch (ns->head->pi_type) {
 -- 
 2.51.0
 
