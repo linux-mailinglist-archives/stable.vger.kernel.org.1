@@ -1,270 +1,222 @@
-Return-Path: <stable+bounces-180887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197A5B8F246
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:29:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83A7B8F24C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED78A188BB39
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:29:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D6A81897A90
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4166323D7E0;
-	Mon, 22 Sep 2025 06:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BE7C2E0;
+	Mon, 22 Sep 2025 06:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZTHAWmcp"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HazJb9cy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011061.outbound.protection.outlook.com [52.101.57.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD10188734
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 06:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758522540; cv=none; b=aDQAhfLXzJbutcxe1pJpWgBTwyNjuDBGAvS0BSYxnxxLCCxv0Qxlhmc6/JI3wvBaPhMxe6Wn5Z4lLj7zyxkGjEziFeMJ9auM0e6ko/Il790f9vfhds6Q2zyM0c+MYsrGQSLmldQiWKuJFb9hmAfBMh8zdaX9jP/euuz44yXLfAQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758522540; c=relaxed/simple;
-	bh=jS7CeHrv/AeGZdOQ/WoM0enjwVnBDM2WkTpACOOaB8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m/6QTihuWFhGLZevw82kOmTUivOTCkgDcc2UOuLoXeBYcJrT0JYPtcfS+5VHct9iJBxvsNxJyFPhl9p1gXJ/EuDSoPbjcfOvFNVOKn/I0QeLnGK8xDu90iQmnhL594wAd200f5Hh+XFZfrPHmdlakv1g1NuhTBk79/Qe17elseE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZTHAWmcp; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3ecde0be34eso2490021f8f.1
-        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 23:28:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758522536; x=1759127336; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ZLlyj1lrTQJXPVDMgRBgvEm8gNKaL9UfywhFXowTYg=;
-        b=ZTHAWmcpm3OyJKN8XoWT1WF2E+hQUCexKvpGkwv9x4vA0NN8Fs3urJZtlzkoJ3qkwP
-         6Itrs6PIHQgC+pZkVJkzPYl5yNT15V8cVqXEr3EtWfDSq2ASIeulGZrpanAY7fcyI6ah
-         IVGmFZyAnCjCPC8l58ghF/Xnpsqf6cca1QPIbZlYbCn9rc14jR/21XgUv1e23znb3cdg
-         /eWgUe4fewpsOrSpGf1HIVDh3/gzcWA3MrosfjSVdvFQ586LdNYy/GnBGABXIh+VPDWu
-         tU9xvY3d1QF+7wRjPhiIrmiRlGI8fhaRlY89NObd/+BnzY2eziwcGesZN1yVgh7GxT7W
-         iemQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758522536; x=1759127336;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7ZLlyj1lrTQJXPVDMgRBgvEm8gNKaL9UfywhFXowTYg=;
-        b=n2NjMlQDDpUPRLWLso/pga6d/JPRd0qFX9MMRi/f97VbokdGs1S71KSeC3uBrKaIR+
-         aq5m85q22sGp+ZYN+nsZYtp1YUO2DTpqYmbq3TdiNwpjWDBvg1FIwiwb2Hj1viG+Jhkk
-         9yiiGnsWdoL2/PtnDy6uSsaakGOQ5tADs8B4062gwhymLdwuJ9PPE1XBMdBX0JCavupD
-         APPmh18T7I+tA4542l92fvABjlOwp9nwTzYQ2ofvVDfwSgqE6nEm7UK+ulp36xQYqrFW
-         W47XGC/aZs1jiobrqEt15yFbXCbj/2b8iPA7p7EdLuRVLS3MpaIX56Znizr7DUQbDqYK
-         j+wA==
-X-Forwarded-Encrypted: i=1; AJvYcCUL7/VwM6GkpHAVjkCFam9JTjDDWnivKEmoNkjsD6kkLmhWOjpmYFtnJCfw5rHLquXUHcr7qMM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZXKUQYkArhODfW5FK92b+VXhSJ3Eo2DmN/04io6QSiQ1mFK2V
-	t1+SuKWkVCwRYY8eAqTJtTpMKYT4Q5tnlHLnamQAkKP/C4nPqYSKYqCjkjfOfNs6AAU=
-X-Gm-Gg: ASbGncvcy4BNLxRUFWYvdbnmhusRUBXnoqCV0F/Rh7qGzGifyf2H9atbf5xrlaIH1RO
-	MYWN4OBpMpVfx/zwt3Oyq3sf0ArhmsniJqts1zgGOnOhG6mESgJceMYxTey4HX9lUIf2e7+/yOd
-	eHKTjCB6BHz6AnXec52NQ7PMXQ+mK4CoMg8fsSQIjyZeYoqS3vii4MmjYXKrOZvKNcksd9KHB9Y
-	nupFUPUjbVYbVdts6lcHnGF6h5aScgzsqBB4n+X6/X5xH0iTbqZbaAX+OmiXwi1u/xrN/F993oG
-	Oq1WxdsXg91hUmDjJkF0LP6nPgaIwbwWQv8+V/LdG+jtaZvvqRd7u31Rea5q8fqKYi9aYoF/4up
-	K3p//+uGe1wdFZ77xrfoCJgK3eQyL
-X-Google-Smtp-Source: AGHT+IEi7y+wmyoeJmcLrzMj7JBQYxtJq3v3U/Csxfuh3DcOz0vyeFncb6QmMd0G2jzMcncIY5GShg==
-X-Received: by 2002:a05:6000:248a:b0:3df:22a3:d240 with SMTP id ffacd0b85a97d-3edd43ac9ebmr12498231f8f.4.1758522536140;
-        Sun, 21 Sep 2025 23:28:56 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-464f0aac3fdsm183666865e9.1.2025.09.21.23.28.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Sep 2025 23:28:55 -0700 (PDT)
-Date: Mon, 22 Sep 2025 09:28:52 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: dpenkler@gmail.com, gregkh@linuxfoundation.org,
-	matchstick@neverthere.org, dominik.karol.piatkowski@protonmail.com,
-	arnd@arndb.de, nichen@iscas.ac.cn, paul.retourne@orange.fr,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH] staging: gpib: Fix device reference leak in fmh_gpib
- driver
-Message-ID: <aNDspDsgj5I5KGLe@stanley.mountain>
-References: <20250922023831.21343-1-make24@iscas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890714C83
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 06:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758522624; cv=fail; b=Z+h/XMFeCd/bFbunUtb8/uMrcKtKpGaa7iaoB7EC48v22PDwqq/shZywzuWVVyzrPFjQwb7BPp2RlDLBqpI5CT+Z6lLOXSopH3KROdDQvZbRMo2aoCvvwbQAOhMKUFQyF3y7jCp0etVYYovghWCwvwaBLUc2LDZlQrCvxa5vWlI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758522624; c=relaxed/simple;
+	bh=DAcPJMnSvrC2EoY6TZkSBvnvK2JtKCz146kTvLGCuho=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XYd4O8isF6F/n0rrONuo7NFI3qS4JnR0bn3YCQpiLvHFAV8cpeFUGSKsrxEw8AnCYUSJfPkhT2xwyVSjCHSWc40l7cUZ5WjIE4Ytht/OQxfYRTZc7op0vBOT8i7WIA8nJGYhXckBjJHw1rYSb0bJG1mk0rvLIA6Rm20JhoB/mkA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HazJb9cy; arc=fail smtp.client-ip=52.101.57.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MoU/SfuVa5Cya700YcA2YGyx1sKhEzldindLnOj9AxmkaNU3+vTDROWaN/Mmr/WdZYEfv94Bucuj2BgbDj6Ql9SpTpXrY9ckf8sGcBrpVbdtq/EBdb+pywcyifpJdG/WO4V+gfoM9rztXxGkVA9qSWDFquA1qUEMBeXk/fMOwbmxwVq7jav1xUjhUQByVmlTMBxDUnU5sDwQLU8WI+a3JJ39CRHnjdjFwoFd++uSbgqhpgPFqcmqTp6lZz0ksXR5uYU85i7n60jpW0OwgCtMWwZFyHG+6RiR+Ul/NBLDjEe2y4KUFMg6wwEtSP0a7/0An+FUQZFZhla73N4OjCbVog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f7km6DalXCxGCd/vLdzzq3tSsI0M3qxlenVlNlgMa/o=;
+ b=ot36UtJ94WFAOP5iHNFA0JNuycrfhd1uueksJx+vfMYMBqawBQminYQUqClEop2Lmnm+nG+asqCxiNXKHpz92DstJ+NXTUqY8IgJ5p4kE02vypVJ25egqdpivYPPFe32cPBlKj7iFfg4zMkjvg2uAIKhSKttGOI2RLSys62eu4oIKihR3cG7joFwhYC+MIJ+mubqAntoINNBSrSnXxEGlGgsx1BpF/a222FCPpMy1+u+9Zsk/iou+rjzkEFh39W7Mr+BTbMvfrWVwaL61GFeV+BvmA/2yVr+sQUHPjzfHvKkRpPlQIrHwAZLId4OcDJXcQBHyN0T8EHJukAxHszz+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 165.204.84.17) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=amd.com; dmarc=temperror action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f7km6DalXCxGCd/vLdzzq3tSsI0M3qxlenVlNlgMa/o=;
+ b=HazJb9cyEhA1BSwj/wC7Kh7PZDOQk+qzMX1oRM1i9W0uSqev/B5YpIOMrl8572vgXdIPSHEVxNi78jwJ1PsAa3mYrdGKu7zM5zZTfuwRnjH2kwjf+NkYeftdbpALsS6ypqTVf0f/5Okh75f9fPahhokgk97Q8i4KI0PzV4e1v+w=
+Received: from BN0PR02CA0058.namprd02.prod.outlook.com (2603:10b6:408:e5::33)
+ by CH2PR12MB4229.namprd12.prod.outlook.com (2603:10b6:610:a5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Mon, 22 Sep
+ 2025 06:30:17 +0000
+Received: from BL02EPF00029929.namprd02.prod.outlook.com
+ (2603:10b6:408:e5:cafe::9a) by BN0PR02CA0058.outlook.office365.com
+ (2603:10b6:408:e5::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.19 via Frontend Transport; Mon,
+ 22 Sep 2025 06:30:17 +0000
+X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is
+ 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=temperror action=none header.from=amd.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of amd.com: DNS Timeout)
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BL02EPF00029929.mail.protection.outlook.com (10.167.249.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9137.12 via Frontend Transport; Mon, 22 Sep 2025 06:30:16 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 21 Sep
+ 2025 23:30:16 -0700
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 21 Sep
+ 2025 23:30:15 -0700
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Sun, 21 Sep 2025 23:30:12 -0700
+Message-ID: <32ad856f-1078-4133-b2f7-89c5eb2d271d@amd.com>
+Date: Mon, 22 Sep 2025 12:00:08 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250922023831.21343-1-make24@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y] x86/cpu/amd: Always try detect_extended_topology()
+ on AMD processors
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
+ Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Naveen N Rao <naveen@kernel.org>
+References: <2025091431-craftily-size-46c6@gregkh>
+ <20250915051825.1793-1-kprateek.nayak@amd.com>
+ <2025092105-pager-plethora-13be@gregkh>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <2025092105-pager-plethora-13be@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00029929:EE_|CH2PR12MB4229:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51f5dd83-a362-4382-ba7a-08ddf9a17e8e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M1JJV3dXRllkRExTUFQrTXFxUkhUSERMSjM5a2FJOGkzcWo5OHBxcU4vMHRl?=
+ =?utf-8?B?RnoxQVp5U0oyc3BsMDh0UFVIczJycDdFNzdVOUh5cVVsdnhzQUl2eEcrOHZO?=
+ =?utf-8?B?SnVaUThMTmVtWmRUZElEZk1QeW5kdzhPUzZvRUlsVU9CdWcxU2pNVUdjUDBZ?=
+ =?utf-8?B?alBUeUc3Qk1HWjA3ZTZhaXFxRXpSQ1FabGY0SkZvL0d1M0g3K3JnZGV3amRF?=
+ =?utf-8?B?dk5ZZk82OUY0aG1KYjA1OE9veEZqUWFXQUl3T1I0WjlFalYxWExrbk1hYS9j?=
+ =?utf-8?B?SXF2a2ZDVkVtY0F1RVNPTDk4NndHOU9kZFhkcjZTVHh2SjRHRW9IeVlSU0RH?=
+ =?utf-8?B?a0hqU1ZseXdXRFA0Y1J4QTFVRVJFQ215SkFweWJQdUgzVXMyQU90UXBxa3Zp?=
+ =?utf-8?B?NDdZUmlRRml4NTR3TlZSNWp4YWkrQWpBMVZzU3hEVStsWXdFdHpHRDhnd3pm?=
+ =?utf-8?B?T0JyVk15ZnNPUjRXRE9QT1FBVi95VWFYSCtEenZvVGcrWS94RmFlSFJRbUxE?=
+ =?utf-8?B?Z2p1RVBkMDk1dFVCMjNVQjlpOGwranovd1h0M3U1MkZCeU55MlNRaHpzbXZx?=
+ =?utf-8?B?OWI5ZUQ1Z2htWnJsOEJJL09uRmpGRVZTYUdmaVg0VVdTZVVBZ21OaWx3QnJ6?=
+ =?utf-8?B?QS9QQXUvSFhDL0htQVhZQnA5WnUrTWI3R21RUk1rb0g2VTA0aXNrdVJ3Yk9t?=
+ =?utf-8?B?L1k0eGFsWFFkWU1pT2FFdWlGamlKUzdiTWVHNG5odkpLVkh4RTh1K2hTSlU4?=
+ =?utf-8?B?Z3YvY3M2Y0FlMC85U3poREIxT0hJdEF0dFNDZGlVWno4ZVZneXFNMzVzbFpB?=
+ =?utf-8?B?K1BmZlhGYzJqT1lIZDRtNjJOTXhlSHVGUk1SSUJtQlArK3pmM0I5SnE5by9w?=
+ =?utf-8?B?TVcrRE8vQXZYSFQxTUw3TmVGZTBENzh5bEludEJRckQzQzQwK3EwMlgwSFFS?=
+ =?utf-8?B?bUFaWWF5bTZEWlExNzNMcVp5SERoc3RLbHF4L0x6T3JHRkhRTXA1K3ZxNnQw?=
+ =?utf-8?B?K3luYnd2aGhjb3VYMlFjM3g1d3oyTGQvejg3Q2lmSEtVWUxLaSs4RHdSN2Fp?=
+ =?utf-8?B?Nk5HRE9Ya2FycTU0SGtOUU0yMWVZNDZrWUxlSElWTnBQV09PRG53ZklZR0Zs?=
+ =?utf-8?B?aVgyV1hueWd6WTA2RkZvQXhXRHp5dGxtanlxa2VTRi84VTJVbkx2S1dmSkVD?=
+ =?utf-8?B?SFpyd3YwQS9yaW9BRW5aU25ta3l3VzZ6TVVaeWVhR3lEcHpDTENuQ1pEaTZ6?=
+ =?utf-8?B?bWRVT05DUFVNZFgxV3ZwWVJteE5MNE4xN1V4R1BobFE0cUJXMFRETSsxUUg3?=
+ =?utf-8?B?Uzd6VjViRCt5cWk2VFZlb3hLNXJRQ2RLQnpkVUtGbUxqUjlhRnpKTGdPRkVZ?=
+ =?utf-8?B?aElUQzRXSlNQMmNWVTljL1lBTUdNbGdGU3E4cTFYZlpoRUdJSnNYVzNqSkJx?=
+ =?utf-8?B?cUtYWVJoQzZrMzlad0RSVW5DM2FmUkVsV2l2TTJFdVY4TGNnd0swMDM2ODhL?=
+ =?utf-8?B?dGpya1kwUTlTTExXY0Q4STU5MmF0YkFLR0tQSWFGU2VvT3pEQk1yNkM5VUxZ?=
+ =?utf-8?B?b1NtSy9kekFqZEQxM2p0eVhzL3pLZlFTWkRuM0grTEdlVTdGN1ZzRkxhQUNj?=
+ =?utf-8?B?SUdwdit0ZkRFRVBydzU4eThUU29kZGtsSGJTQUwzYzN2UWVnV053d2dCVXY1?=
+ =?utf-8?B?WDZqNlNMQzNYSlpGZWZvYnliQlFIVWJNYkwybU03bmVHVXV3TitPY3ZxY3Nk?=
+ =?utf-8?B?U3hjc2Y0MkNRMUQ3cGk3dDB0NEhuMllRVFlzSXQ0M3FpbVRjajQ0UGc0RTBl?=
+ =?utf-8?B?eFFIbXNYWTdqZUdjbTZ3blBNUFo1R2piRG5rWHRMaE92b0hjWTduemJjSnVP?=
+ =?utf-8?B?cmx4anJQRlh4YnZ4K2ZlNWRpSk1scnJFR0FWdEJHaFhVSFdyNUViRjhieXRD?=
+ =?utf-8?B?SGowYUtMdmpkYWZ2dk9vVGpaNUQ4UzJwY1ZzRXBNamRlWUJlTVZGUk5rallo?=
+ =?utf-8?Q?EsubyKwd0bdMJnHVHIVGgstEH6TUR4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 06:30:16.4399
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51f5dd83-a362-4382-ba7a-08ddf9a17e8e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF00029929.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4229
 
-On Mon, Sep 22, 2025 at 10:38:31AM +0800, Ma Ke wrote:
-> The fmh_gpib driver contains a device reference count leak in
-> fmh_gpib_attach_impl() where driver_find_device() increases the
-> reference count of the device by get_device() when matching but this
-> reference is not properly decreased. Add put_device() in
-> fmh_gpib_attach_impl() and add put_device() in fmh_gpib_detach(),
-> which ensures that the reference count of the device is correctly
-> managed.
+Hello Greg,
+
+On 9/21/2025 10:45 PM, Greg KH wrote:
+> On Mon, Sep 15, 2025 at 05:18:25AM +0000, K Prateek Nayak wrote:
+>> commit cba4262a19afae21665ee242b3404bcede5a94d7 upstream.
+
+[..snip..]
+
+>>
+>>   [ prateek: Adapted the fix from the original commit to stable kernel
+>>     which doesn't contain the x86 topology rewrite, renamed
+>>     cpu_parse_topology_ext() with the erstwhile
+>>     detect_extended_topology() function in commit message, dropped
+>>     references to extended topology leaf 0x80000026 which the stable
+>>     kernels aren't aware of, make a note of "cpu_die_id" parsing
+>>     nuances in detect_extended_topology() and why AMD processors should
+>>     still rely on TOPOEXT leaf for "cpu_die_id". ]
 > 
-> Found by code review.
+> That's a lot of changes.  Why not just use a newer kernel for this new
+> hardware?  Why backport this in such a different way?
+
+We are mostly solving problems of virtualization with this one for
+now.
+
+QEMU can create a guest with more than 256vCPUs and tell the guest that
+each CPU is an individual core leading to weird handling of the
+CPUID 0x8000001e leaf when CoreId > 255
+https://github.com/qemu/qemu/commit/35ac5dfbcaa4b.
+
+QEMU expects the guest to discover the topology using 0xb leaf which,
+the PPR says, is not dependent on the TOPOEXT feature.
+
+> That is going to
+> cause other changes in the future to be harder to backport in the
+> future.
+
+Thomas thinks this fix should be backported
+(https://lore.kernel.org/all/87o6rirrvc.ffs@tglx/) and for any future
+conflicts in this area, I'll be more than happy to help out resolve
+them.
+
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 8e4841a0888c ("staging: gpib: Add Frank Mori Hess FPGA PCI GPIB driver")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/staging/gpib/fmh_gpib/fmh_gpib.c | 23 +++++++++++++++++++++--
->  1 file changed, 21 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
-> index 4138f3d2bae7..245c8fe87eaa 100644
-> --- a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
-> +++ b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
-> @@ -1395,14 +1395,17 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
->  	pdev = to_platform_device(board->dev);
->  
->  	retval = fmh_gpib_generic_attach(board);
-> -	if (retval)
-> +	if (retval) {
-> +		put_device(board->dev);
->  		return retval;
+> What's driving the requirement to run new hardware on old kernels?
 
-Do this with an unwind goto.
+Mostly large guests on an older platform running stable kernels is a
+concern given QEMU allows a large number of vCPUs for a singe VM
+currently.
 
-	if (reval)
-		goto put_dev;
+If you think the maintenance burden outweighs the benefit, please
+feel free to drop this fix out of older stable trees for now and we
+can opt for a reactive approach if users are having trouble down
+the line.
 
-	...
+These users can be instructed to enable the topoext feature which
+isn't enabled by default when using '-cpu host' cmdline on QEMU for
+other historic reasons
+https://bugzilla.redhat.com/show_bug.cgi?id=1613277.
 
-	retval = fmh_gpib_init(...);  /* this bug wasn't fixed btw */
-	if (retval)
-		goto put_dev;
-
-	return 0;
-
-put_dev:
-	put_device(board->dev);
-	return retval;
-
-Actually, this function needs a bunch of other frees as well.  See
-my blog for more details:
-
-https://staticthinking.wordpress.com/2022/04/28/free-the-last-thing-style/
-
-> +	}
->  
->  	e_priv = board->private_data;
->  	nec_priv = &e_priv->nec7210_priv;
->  
->  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpib_control_status");
->  	if (!res) {
-> +		put_device(board->dev);
->  		dev_err(board->dev, "Unable to locate mmio resource\n");
->  		return -ENODEV;
->  	}
-> @@ -1410,6 +1413,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
->  	if (request_mem_region(res->start,
->  			       resource_size(res),
->  			       pdev->name) == NULL) {
-> +		put_device(board->dev);
->  		dev_err(board->dev, "cannot claim registers\n");
->  		return -ENXIO;
->  	}
-
-request_mem_region() needs a release_region().
-
-> @@ -1418,6 +1422,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
->  	nec_priv->mmiobase = ioremap(e_priv->gpib_iomem_res->start,
->  				     resource_size(e_priv->gpib_iomem_res));
->  	if (!nec_priv->mmiobase) {
-> +		put_device(board->dev);
->  		dev_err(board->dev, "Could not map I/O memory\n");
->  		return -ENOMEM;
->  	}
-
-ioremap() needs an iounmap();
-
-> @@ -1426,12 +1431,14 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
->  
->  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dma_fifos");
->  	if (!res) {
-> +		put_device(board->dev);
->  		dev_err(board->dev, "Unable to locate mmio resource for gpib dma port\n");
->  		return -ENODEV;
->  	}
->  	if (request_mem_region(res->start,
->  			       resource_size(res),
->  			       pdev->name) == NULL) {
-> +		put_device(board->dev);
->  		dev_err(board->dev, "cannot claim registers\n");
->  		return -ENXIO;
->  	}
-
-release_region()
-
-> @@ -1439,6 +1446,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
->  	e_priv->fifo_base = ioremap(e_priv->dma_port_res->start,
->  				    resource_size(e_priv->dma_port_res));
->  	if (!e_priv->fifo_base) {
-> +		put_device(board->dev);
->  		dev_err(board->dev, "Could not map I/O memory for fifos\n");
->  		return -ENOMEM;
->  	}
-
-iounmap();
-
-> @@ -1447,10 +1455,14 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
->  		(unsigned long)resource_size(e_priv->dma_port_res));
->  
->  	irq = platform_get_irq(pdev, 0);
-> -	if (irq < 0)
-> +	if (irq < 0) {
-> +		put_device(board->dev);
->  		return -EBUSY;
-> +	}
-> +
->  	retval = request_irq(irq, fmh_gpib_interrupt, IRQF_SHARED, pdev->name, board);
->  	if (retval) {
-> +		put_device(board->dev);
->  		dev_err(board->dev,
->  			"cannot register interrupt handler err=%d\n",
->  			retval);
-
-request_irq() needs a release_irq()
-
-> @@ -1461,6 +1473,7 @@ static int fmh_gpib_attach_impl(struct gpib_board *board, const struct gpib_boar
->  	if (acquire_dma) {
->  		e_priv->dma_channel = dma_request_slave_channel(board->dev, "rxtx");
->  		if (!e_priv->dma_channel) {
-> +			put_device(board->dev);
->  			dev_err(board->dev, "failed to acquire dma channel \"rxtx\".\n");
->  			return -EIO;
->  		}
-
-This needs a free too.  There may be other things outside of what I
-can see in this email.
-
-> @@ -1517,6 +1530,12 @@ void fmh_gpib_detach(struct gpib_board *board)
->  					   resource_size(e_priv->gpib_iomem_res));
->  	}
->  	fmh_gpib_generic_detach(board);
-> +
-> +	if (board->dev) {
-> +		dev_set_drvdata(board->dev, NULL);
-> +		put_device(board->dev);
-> +		board->dev = NULL;
-
-I explain this in my blog, that the free function should be a cut
-and paste of the cleanup.  So this stuff isn't done in the cleanup
-so one or the other of these is not correct.
-
-The question is should this be done in one patch or several patches?
-Adding cleanup to one function is generally considered One Thing
-in terms of One Thing Per Path.  If we were going to backport bits
-of cleanup to different stable kernels then we would want to break
-it up into the easiest way for backporting.  But realistically we're
-not going to do that here because this doesn't affect real life
-users generally.  It's just from review.  It's not a security patch.
-And this is staging as well so the standards for backports are not
-necessarily as strict.  (Staging drivers are often really really bad).
-
-regards,
-dan carpenter
+-- 
+Thanks and Regards,
+Prateek
 
 
