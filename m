@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002D6B92ED2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACE6B92CE9
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3055544763F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE3E73AFE90
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2CF3164A6;
-	Mon, 22 Sep 2025 19:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC0527B320;
+	Mon, 22 Sep 2025 19:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iod4Ll+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkqjQ//n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4A3314A6A;
-	Mon, 22 Sep 2025 19:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0A0C8E6;
+	Mon, 22 Sep 2025 19:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569919; cv=none; b=V/4AOZRODKxGKpEBfqoPn0b2iVQc7eNcCE6A6yf1zxiESPvmPOFwpXJp/6/j/0DN/DDiaMy+J/gw1bcM5uCNjnxlVMos/ICyRFBI/3CxnXHPCWbdIkEuZxkr5+UVoS0w38XI1bIasAUL76E1Rj41WMVR0pWRiWiPIn9GkQyCFhY=
+	t=1758569564; cv=none; b=lYHyZ6V/u9YNh3xXHyHcfTzNvPSDMR6mEtKxdBcJNHBnnxksSXKk6OBhQhB9+2ZtstLSVwv2NkbqRRWhigWi9aEeLMf2F3pOFUlZcyG1Bscfkl2/mgB/STY4i1a1nU7UVnVQhDWeFypzzBTrt2eLOHNlko/+iPSY9WUfvmImmKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569919; c=relaxed/simple;
-	bh=qpBHLLWr2lihmJ2CASeV67Xe+7ErXeskBK/hEU++xUg=;
+	s=arc-20240116; t=1758569564; c=relaxed/simple;
+	bh=u+EYXCHdbAu5uEdOL4pjngCmeIiWrThj9TwklyORGfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIA+HysNOlMi4jSpF9Tz98i8Xu3qluVKWeUsZu8mQp17DSap98+oRbYhYhSTSrS3gDIypmhVjxy5OIZMUkWs+zEYnihI0GmgvzH7q+G8xH/NAiTAV159NhR3gwqmT0POBxKJv2Szgqpc9o5D0NyFsOeRAO7baM7gD5o8nQmft+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iod4Ll+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6220C4CEF5;
-	Mon, 22 Sep 2025 19:38:38 +0000 (UTC)
+	 MIME-Version; b=WBUO3dZ/zNexfPQjTquecviDSb5P6o8jZMFg4cOdc3UTxDDE/W4Br/MPPapLFy70b0iPu0vUeYv5FeFDB7ZhwaxJMv/71CGn27PMveS62vLDVQsI2oskr3VEay+XSJcwJQt3VnwVgbUISCzfD7z4q2CEM7JyCIsy/1AAQBIlvgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkqjQ//n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913EAC4CEF0;
+	Mon, 22 Sep 2025 19:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569919;
-	bh=qpBHLLWr2lihmJ2CASeV67Xe+7ErXeskBK/hEU++xUg=;
+	s=korg; t=1758569564;
+	bh=u+EYXCHdbAu5uEdOL4pjngCmeIiWrThj9TwklyORGfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iod4Ll+E5hG6pdBhaL6lufmv0KIls5iuOASIA2sZQNn3gJTidFZKSxpVeujANRDzG
-	 1qMr6ImoeWAVmvx8fXDWTGoyE7WXGPdcdZWtMpHlMpx4BLVSUzxl/zi+3/cIJXX669
-	 VwcAsYgZjIenrXSboTVnWFT0sDWmxMDY+YNMJ5Uc=
+	b=IkqjQ//nRAnIpIO6zeLgRiNya1NgBa3dYMGbor9ysH2vTHxCqg6hASRBHu0gpZSZi
+	 mBesxJ2puNa5zu8vBfYCt7ksRkUv7EBD1FuH6EgT6Dl/iakLV33dYJRjEMWUFUE1LA
+	 V4lITBm1XIr7phsLCLXEoPsK/8oBf8AoYycM+Mc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 040/105] dm-raid: dont set io_min and io_opt for raid1
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 30/61] ASoC: qcom: q6apm-lpass-dais: Fix missing set_fmt DAI op for I2S
 Date: Mon, 22 Sep 2025 21:29:23 +0200
-Message-ID: <20250922192409.965650112@linuxfoundation.org>
+Message-ID: <20250922192404.381408211@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
 
-commit a86556264696b797d94238d99d8284d0d34ed960 upstream.
+commit 33b55b94bca904ca25a9585e3cd43d15f0467969 upstream.
 
-These commands
- modprobe brd rd_size=1048576
- vgcreate vg /dev/ram*
- lvcreate -m4 -L10 -n lv vg
-trigger the following warnings:
-device-mapper: table: 252:10: adding target device (start sect 0 len 24576) caused an alignment inconsistency
-device-mapper: table: 252:10: adding target device (start sect 0 len 24576) caused an alignment inconsistency
+The q6i2s_set_fmt() function was defined but never linked into the
+I2S DAI operations, resulting DAI format settings is being ignored
+during stream setup. This change fixes the issue by properly linking
+the .set_fmt handler within the DAI ops.
 
-The warnings are caused by the fact that io_min is 512 and physical block
-size is 4096.
-
-If there's chunk-less raid, such as raid1, io_min shouldn't be set to zero
-because it would be raised to 512 and it would trigger the warning.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 30ad723b93ade ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
 Cc: stable@vger.kernel.org
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+Message-ID: <20250908053631.70978-3-mohammad.rafi.shaik@oss.qualcomm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -3811,8 +3811,10 @@ static void raid_io_hints(struct dm_targ
- 	struct raid_set *rs = ti->private;
- 	unsigned int chunk_size_bytes = to_bytes(rs->md.chunk_sectors);
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -204,6 +204,7 @@ static const struct snd_soc_dai_ops q6dm
+ 	.shutdown	= q6apm_lpass_dai_shutdown,
+ 	.set_channel_map  = q6dma_set_channel_map,
+ 	.hw_params        = q6dma_hw_params,
++	.set_fmt	= q6i2s_set_fmt,
+ };
  
--	limits->io_min = chunk_size_bytes;
--	limits->io_opt = chunk_size_bytes * mddev_data_stripes(rs);
-+	if (chunk_size_bytes) {
-+		limits->io_min = chunk_size_bytes;
-+		limits->io_opt = chunk_size_bytes * mddev_data_stripes(rs);
-+	}
- }
- 
- static void raid_presuspend(struct dm_target *ti)
+ static const struct snd_soc_dai_ops q6i2s_ops = {
 
 
 
