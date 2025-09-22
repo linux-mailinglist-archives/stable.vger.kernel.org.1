@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-181336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C77B930E9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4869B92EED
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C26A3AA0B2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C8DB19072DD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1AC2F3C23;
-	Mon, 22 Sep 2025 19:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594542F2609;
+	Mon, 22 Sep 2025 19:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuXCDNMx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAxldoll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099E62F1FE3;
-	Mon, 22 Sep 2025 19:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BAB2F0C78;
+	Mon, 22 Sep 2025 19:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570285; cv=none; b=eL7j/K2dLK3Wy0WWv4RMGMsaAuAF3Y0d9nhE8oryNiJz0AqiltJ/Uq3tBDS6hc1Q/OEogCWGMzHQgRff6O5PHMOa9vtcyxxJlb7PIg0a3eKgvaXJ5QWwpJj1nE/xMS1Dsa+9AIl8Fe91W85OetwQhUe9TgOacbYbzZTwqVD+aLs=
+	t=1758569939; cv=none; b=mjyqFVBVeOHuhbu9oKkL4AXtPh39mmNU7ioOu+V9MKcbIO/Cjdmo1eWmrVNZp9nKRPLBDEe6yZ2adpaI7maA/74gF6pu7T8pXqrCLmonHFDw21wvp3owUuOwlFhu+VaO047CCaHaC1L8ZXg3Qq+HqLuPiJZQNtrGUoS/b+O5TdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570285; c=relaxed/simple;
-	bh=Oej1X57aR5DqAwJ3atgr+cUaxl/d8S3pNfjZEMWTZVc=;
+	s=arc-20240116; t=1758569939; c=relaxed/simple;
+	bh=lBuRInhTL2XX34QZJrnslI9nfM461wQjY7ytG9CBe7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBU6+rL1a+/wqSvw5NTtH5WssEceLULhLlt82DXnmqYRQxW87mfKgzKB7jyLywPd6BeJEtBzPerH0u86TTmx1ZB7FiUjBDOaeEyQIWEtcz+EP/5+3IcZLi+b+9IsAppAkkwVPgyZVJOSymhDUXTLyIw27pUbtZz5gai5/T5KaTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuXCDNMx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975DFC4CEF0;
-	Mon, 22 Sep 2025 19:44:44 +0000 (UTC)
+	 MIME-Version; b=tOv2RAdZ3t0MlA2atHc7WicO2ecXKgsgDCXX/24EhsyrmmHzgyHhL4F6ljo/UUl1ok/lPghY019k2sqxZvIQe5Oxa3FfZjdxKsBVKPNOftAUtDVE+QVjKKAj11c9ri0rSJDMZvlh55S7nEYIhHIH0vEMXufhmfn3F9RDWKMGH3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAxldoll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F92CC4CEF0;
+	Mon, 22 Sep 2025 19:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570284;
-	bh=Oej1X57aR5DqAwJ3atgr+cUaxl/d8S3pNfjZEMWTZVc=;
+	s=korg; t=1758569938;
+	bh=lBuRInhTL2XX34QZJrnslI9nfM461wQjY7ytG9CBe7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nuXCDNMxQq5eUQWGTv7FHhkvnT0HiU25BPx6tOJCzheZA11k3XdJU25e+icuAGXFC
-	 HWQEXbw90uQG43BflAcHPiWYMfagHJEXmlxpovfg974eD0NOtwUsIEsh2Cog9rdclr
-	 Z614eyocQHKYdBPyVwTfmOBknC6yT8aTSGXuq5EY=
+	b=kAxldollt+ZqHsEhgkiNhpia9obFPFwcXy8koFIZRBt3jVmqe+7+N9kI1EWL3lP31
+	 HN+DK4whcPfetDyXbID1guhm8oULhMb34COwK4UeWpXHnPPWEWsqP79MAs2DJarVt3
+	 TBpyCSCchmasfafu8OzPQu2P9eRaiYTw5Pt/R3Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cam Miller <cam@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.16 081/149] iommu/s390: Fix memory corruption when using identity domain
-Date: Mon, 22 Sep 2025 21:29:41 +0200
-Message-ID: <20250922192414.925672937@linuxfoundation.org>
+	Sun peng Li <sunpeng.li@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 059/105] drm/amd/display: Allow RX6xxx & RX7700 to invoke amdgpu_irq_get/put
+Date: Mon, 22 Sep 2025 21:29:42 +0200
+Message-ID: <20250922192410.462101939@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Rosato <mjrosato@linux.ibm.com>
+From: Ivan Lipski <ivan.lipski@amd.com>
 
-commit b3506e9bcc777ed6af2ab631c86a9990ed97b474 upstream.
+commit 29a2f430475357f760679b249f33e7282688e292 upstream.
 
-zpci_get_iommu_ctrs() returns counter information to be reported as part
-of device statistics; these counters are stored as part of the s390_domain.
-The problem, however, is that the identity domain is not backed by an
-s390_domain and so the conversion via to_s390_domain() yields a bad address
-that is zero'd initially and read on-demand later via a sysfs read.
-These counters aren't necessary for the identity domain; just return NULL
-in this case.
+[Why&How]
+As reported on https://gitlab.freedesktop.org/drm/amd/-/issues/3936,
+SMU hang can occur if the interrupts are not enabled appropriately,
+causing a vblank timeout.
 
-This issue was discovered via KASAN with reports that look like:
-BUG: KASAN: global-out-of-bounds in zpci_fmb_enable_device
-when using the identity domain for a device on s390.
+This patch reverts commit 5009628d8509 ("drm/amd/display: Remove unnecessary
+amdgpu_irq_get/put"), but only for RX6xxx & RX7700 GPUs, on which the
+issue was observed.
 
+This will re-enable interrupts regardless of whether the user space needed
+it or not.
+
+Fixes: 5009628d8509 ("drm/amd/display: Remove unnecessary amdgpu_irq_get/put")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3936
+Suggested-by: Sun peng Li <sunpeng.li@amd.com>
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 95d168b367aa28a59f94fc690ff76ebf69312c6d)
 Cc: stable@vger.kernel.org
-Fixes: 64af12c6ec3a ("iommu/s390: implement iommu passthrough via identity domain")
-Reported-by: Cam Miller <cam@linux.ibm.com>
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Tested-by: Cam Miller <cam@linux.ibm.com>
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250827210828.274527-1-mjrosato@linux.ibm.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/s390-iommu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   39 +++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/s390-iommu.c
-+++ b/drivers/iommu/s390-iommu.c
-@@ -1031,7 +1031,8 @@ struct zpci_iommu_ctrs *zpci_get_iommu_c
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8462,7 +8462,16 @@ static int amdgpu_dm_encoder_init(struct
+ static void manage_dm_interrupts(struct amdgpu_device *adev,
+ 				 struct amdgpu_crtc *acrtc,
+ 				 struct dm_crtc_state *acrtc_state)
+-{
++{	/*
++	 * We cannot be sure that the frontend index maps to the same
++	 * backend index - some even map to more than one.
++	 * So we have to go through the CRTC to find the right IRQ.
++	 */
++	int irq_type = amdgpu_display_crtc_idx_to_irq_type(
++			adev,
++			acrtc->crtc_id);
++	struct drm_device *dev = adev_to_drm(adev);
++
+ 	struct drm_vblank_crtc_config config = {0};
+ 	struct dc_crtc_timing *timing;
+ 	int offdelay;
+@@ -8515,7 +8524,35 @@ static void manage_dm_interrupts(struct
  
- 	lockdep_assert_held(&zdev->dom_lock);
- 
--	if (zdev->s390_domain->type == IOMMU_DOMAIN_BLOCKED)
-+	if (zdev->s390_domain->type == IOMMU_DOMAIN_BLOCKED ||
-+	    zdev->s390_domain->type == IOMMU_DOMAIN_IDENTITY)
- 		return NULL;
- 
- 	s390_domain = to_s390_domain(zdev->s390_domain);
+ 		drm_crtc_vblank_on_config(&acrtc->base,
+ 					  &config);
++		/* Allow RX6xxx, RX7700, RX7800 GPUs to call amdgpu_irq_get.*/
++		switch (amdgpu_ip_version(adev, DCE_HWIP, 0)) {
++		case IP_VERSION(3, 0, 0):
++		case IP_VERSION(3, 0, 2):
++		case IP_VERSION(3, 0, 3):
++		case IP_VERSION(3, 2, 0):
++			if (amdgpu_irq_get(adev, &adev->pageflip_irq, irq_type))
++				drm_err(dev, "DM_IRQ: Cannot get pageflip irq!\n");
++#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
++			if (amdgpu_irq_get(adev, &adev->vline0_irq, irq_type))
++				drm_err(dev, "DM_IRQ: Cannot get vline0 irq!\n");
++#endif
++		}
++
+ 	} else {
++		/* Allow RX6xxx, RX7700, RX7800 GPUs to call amdgpu_irq_put.*/
++		switch (amdgpu_ip_version(adev, DCE_HWIP, 0)) {
++		case IP_VERSION(3, 0, 0):
++		case IP_VERSION(3, 0, 2):
++		case IP_VERSION(3, 0, 3):
++		case IP_VERSION(3, 2, 0):
++#if defined(CONFIG_DRM_AMD_SECURE_DISPLAY)
++			if (amdgpu_irq_put(adev, &adev->vline0_irq, irq_type))
++				drm_err(dev, "DM_IRQ: Cannot put vline0 irq!\n");
++#endif
++			if (amdgpu_irq_put(adev, &adev->pageflip_irq, irq_type))
++				drm_err(dev, "DM_IRQ: Cannot put pageflip irq!\n");
++		}
++
+ 		drm_crtc_vblank_off(&acrtc->base);
+ 	}
+ }
 
 
 
