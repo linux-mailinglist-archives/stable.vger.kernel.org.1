@@ -1,76 +1,56 @@
-Return-Path: <stable+bounces-181320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91034B930CE
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DCFB92DB2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 516CF3A678D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBBD7446AB1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C69E2F39BF;
-	Mon, 22 Sep 2025 19:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6509B285C92;
+	Mon, 22 Sep 2025 19:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLZPouzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO2Yi7O6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC32E2F2909;
-	Mon, 22 Sep 2025 19:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BFA191F66;
+	Mon, 22 Sep 2025 19:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570243; cv=none; b=s97xrh7UB3EtMpQ2kQhArTcmrESWvXAiZDUEGqWHHX5cCp+1IDV+7BUpmbt5SH+pNQgocfli9fXiPjpK22zC1LImY2nTA3fUdCh6dnFxKrt9KvmUDncpL0RUHFrGw/tX30Dm2jvNUh7eT+rv1P3C9Hery44NodKEAtcauw6X3fA=
+	t=1758569701; cv=none; b=qBYOZWUSX5lzJsqEzCYGH9hQJmigVWbbiFDgXimwwREj/povX2xgRZP/gsf7muMmwFk7+PxYDiAf/8mjA5NikrRvBpyqwLeY/2usFD2vM9aHQizxDIU+m1FGhGvDH4HtXPKND8m8FQ+6ZuNX1uEZ313dBBF/aWWdSHn/j5WTyio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570243; c=relaxed/simple;
-	bh=Fte7vkDdIQrq3psNyhJHNM5RGqsw0khzh4N1KkyolQU=;
+	s=arc-20240116; t=1758569701; c=relaxed/simple;
+	bh=UZnfHnJF2Ek5MiBF/FSur8X8rpz6u7OUA/+BqOE6RHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLOIvOjoJP7Piq3XtrVF48NCXYggLz+mwaSTRnIAUCrC4010oUOMi2uA3J+wwUWrDi0/f2zLn2vWktDjUDiHobjNSXl5M47vPbqkBUyg6F1wRyzEVVQ6V0RFQrc0DSBtluX0/znHRRSIGECEArVuan9b/SgZqjA1uiEMB5ezYO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLZPouzj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC89C4CEF0;
-	Mon, 22 Sep 2025 19:44:03 +0000 (UTC)
+	 MIME-Version; b=UwP9jr+7vZhd0QrrgI+vOlpQ/wNWT/Z41Duggp52mj7k83er35+J7cBiIhmEObFo0Q9gjsrZ6xZUEEmm1VUffWV7le2oP9IHdrs5pRCaM6TxLAi9GvxRdzgSz6uoeUT7UqEYAfUxBnd42AhwF0URdnDzslPYGtRPhdGtCblNq24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO2Yi7O6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB54C4CEF0;
+	Mon, 22 Sep 2025 19:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570243;
-	bh=Fte7vkDdIQrq3psNyhJHNM5RGqsw0khzh4N1KkyolQU=;
+	s=korg; t=1758569701;
+	bh=UZnfHnJF2Ek5MiBF/FSur8X8rpz6u7OUA/+BqOE6RHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLZPouzjUonUkAG5kirOSa6ciubtJf0AxgMfXrU3CJMXZNQSnwk50uw1Wcc2PpCoX
-	 q58xWjHSHbK4a7DWws/QERHjpo6Ys1DCiin+Nf5/1/zf7tIlMlV32JmNir5H2113mv
-	 VENaSVaG16gpG4O6RDSkiRdEv+um551FmvqhMk9s=
+	b=WO2Yi7O6otIIElOwvey56a6WQq50WOwPyjT7eFdpLvAFuvCqb13puCWiUKAvAIM5u
+	 FnL+zteCdFGpVAAeLe/RAz49JJ8Izvih9wZfemf8GG3nOG1TpYCj0tHFENf4vzRytB
+	 uOemo7qRGk0/icOmpcMCyUvG7Rqtjj8Yk9tr/FQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 062/149] mm: revert "mm: vmscan.c: fix OOM on swap stress test"
+	Jakub Kicinski <kuba@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 22/70] Revert "net/mlx5e: Update and set Xon/Xoff upon port speed set"
 Date: Mon, 22 Sep 2025 21:29:22 +0200
-Message-ID: <20250922192414.447705571@linuxfoundation.org>
+Message-ID: <20250922192405.156458650@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -82,58 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Tariq Toukan <tariqt@nvidia.com>
 
-commit 8d79ed36bfc83d0583ab72216b7980340478cdfb upstream.
+[ Upstream commit 3fbfe251cc9f6d391944282cdb9bcf0bd02e01f8 ]
 
-This reverts commit 0885ef470560: that was a fix to the reverted
-33dfe9204f29b415bbc0abb1a50642d1ba94f5e9.
+This reverts commit d24341740fe48add8a227a753e68b6eedf4b385a.
+It causes errors when trying to configure QoS, as well as
+loss of L2 connectivity (on multi-host devices).
 
-Link: https://lkml.kernel.org/r/aa0e9d67-fbcd-9d79-88a1-641dfbe1d9d1@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/20250910170011.70528106@kernel.org
+Fixes: d24341740fe4 ("net/mlx5e: Update and set Xon/Xoff upon port speed set")
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4505,7 +4505,7 @@ static bool sort_folio(struct lruvec *lr
- 	}
- 
- 	/* ineligible */
--	if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
-+	if (zone > sc->reclaim_idx) {
- 		gen = folio_inc_gen(lruvec, folio, false);
- 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
- 		return true;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index d378aa55f22f9..09ba60b2e744b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -109,8 +109,6 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
+ 	if (up) {
+ 		netdev_info(priv->netdev, "Link up\n");
+ 		netif_carrier_on(priv->netdev);
+-		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
+-						NULL, NULL, NULL);
+ 	} else {
+ 		netdev_info(priv->netdev, "Link down\n");
+ 		netif_carrier_off(priv->netdev);
+-- 
+2.51.0
+
 
 
 
