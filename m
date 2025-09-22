@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99A1B9306E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C14B92D7F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 424DF177E6E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C99221906A01
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1472A2F291B;
-	Mon, 22 Sep 2025 19:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609E42EDD5D;
+	Mon, 22 Sep 2025 19:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEFPTGgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzmSqTSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B452F0C52;
-	Mon, 22 Sep 2025 19:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD212E2847;
+	Mon, 22 Sep 2025 19:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570218; cv=none; b=jmjZnmSW18AJ7h3gTU+HRofH0nMdgtTkNwoiZ0YaHrtRidh2EdJr3JA15tywImtCvCVb7dC5FLSCI7o7B1PokXnHD5OtuM101Fndt2LRGXQK4rZkBjgiMZ4+PxMdq4znDhb1fWNvV2EFRWrETGr6jNnMkl/pisLzGJXI/7h+B0w=
+	t=1758569674; cv=none; b=swheEZIIftD6QdhTu/ZoYvQaG3/WIDB/CsWzwZmK3JtG+nVlBhUz/FtkZdps7JDBQw7otO02CnhaXjTCH0ef1sjh7mdlZsdmggCus2R2Eut9mWCOdAS9KEbkEzBqTlDRnUKk5fotHKSRp8u5HGwdGtvdBYiqXVga4ZqdXR6r3wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570218; c=relaxed/simple;
-	bh=iEH+EyvyfXb4hVldapZka32S4tw7fSTexm/jnSPtH5c=;
+	s=arc-20240116; t=1758569674; c=relaxed/simple;
+	bh=0AzPbMtc3w4WiW1M9ZNHh8J2zURSkbYVyE/RkFbC7XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAqNzdh5K3giXRw+ryL75MZnkAPRF/aZ1l6IkGDYYlaK6IymkKTtBTZ374+sHz2N33ldD0K1aKncVqdnlM7mLs4nqBzR1kIwKxVkvmCNGt5mZWhW6OVSCTa5ImGMzFWQrKAKzl9pVzPyK4IYZ2AjVgtfgNmFe9HTHNk7Bjy/GtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEFPTGgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED3EC4CEF0;
-	Mon, 22 Sep 2025 19:43:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=odMa1tEvNMh+cT3ZNySXied4QZRkaibnpmcYBFotwYcMI0MSHgl+dHoYaak1X1iDx2D9njKmSx6l0IXVRjBSzyykk75OV6xVWDBq4cbSt17KHOzDpjKQYDNwAYBUN5s6LovVUZY5+aQ9paSeFblGZEKfsM1PUJMW+gRIfLcQypI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzmSqTSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58608C4CEF0;
+	Mon, 22 Sep 2025 19:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570218;
-	bh=iEH+EyvyfXb4hVldapZka32S4tw7fSTexm/jnSPtH5c=;
+	s=korg; t=1758569673;
+	bh=0AzPbMtc3w4WiW1M9ZNHh8J2zURSkbYVyE/RkFbC7XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEFPTGgL8r5oFpw1tdG43rPsHl+5dFixDY6S6qTHzwP51XNqI9Re4iHtP2m8gyC4i
-	 3X8nlcMpEOK/aWX+1NN/dycgW+qnRHW8/F87HeZ4chJ4JeVI8+7aMgp1fsb4FG/CiW
-	 HhkazlgxGynaoh9BmtulPvg9U0O3CqTLssKZjxLw=
+	b=VzmSqTSLnTSwn94RATt1pG+eeR6403zeS/Vl0vIHBcybwIS7lX68O8Z0WgwMlTh97
+	 70xay4rJz+VZeWCA6s+oeEqrI/6s4ozLdjBYmDIi/16TUkaxUl20q8W56LCwbjUQ1J
+	 1Z2yNcCDy79mnLaB2fFLepFHC157K718GD7ZHE2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 064/149] LoongArch: Update help info of ARCH_STRICT_ALIGN
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 24/70] cnic: Fix use-after-free bugs in cnic_delete_task
 Date: Mon, 22 Sep 2025 21:29:24 +0200
-Message-ID: <20250922192414.497370578@linuxfoundation.org>
+Message-ID: <20250922192405.214298464@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit f5003098e2f337d8e8a87dc636250e3fa978d9ad upstream.
+[ Upstream commit cfa7d9b1e3a8604afc84e9e51d789c29574fb216 ]
 
-Loongson-3A6000 and 3C6000 CPUs also support unaligned memory access, so
-the current description is out of date to some extent.
+The original code uses cancel_delayed_work() in cnic_cm_stop_bnx2x_hw(),
+which does not guarantee that the delayed work item 'delete_task' has
+fully completed if it was already running. Additionally, the delayed work
+item is cyclic, the flush_workqueue() in cnic_cm_stop_bnx2x_hw() only
+blocks and waits for work items that were already queued to the
+workqueue prior to its invocation. Any work items submitted after
+flush_workqueue() is called are not included in the set of tasks that the
+flush operation awaits. This means that after the cyclic work items have
+finished executing, a delayed work item may still exist in the workqueue.
+This leads to use-after-free scenarios where the cnic_dev is deallocated
+by cnic_free_dev(), while delete_task remains active and attempt to
+dereference cnic_dev in cnic_delete_task().
 
-Actually, all of Loongson-3 series processors based on LoongArch support
-unaligned memory access, this hardware capability is indicated by the bit
-20 (UAL) of CPUCFG1 register, update the help info to reflect the reality.
+A typical race condition is illustrated below:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU 0 (cleanup)              | CPU 1 (delayed work callback)
+cnic_netdev_event()          |
+  cnic_stop_hw()             | cnic_delete_task()
+    cnic_cm_stop_bnx2x_hw()  | ...
+      cancel_delayed_work()  | /* the queue_delayed_work()
+      flush_workqueue()      |    executes after flush_workqueue()*/
+                             | queue_delayed_work()
+  cnic_free_dev(dev)//free   | cnic_delete_task() //new instance
+                             |   dev = cp->dev; //use
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the cyclic delayed work item is properly canceled and that any
+ongoing execution of the work item completes before the cnic_dev is
+deallocated. Furthermore, since cancel_delayed_work_sync() uses
+__flush_work(work, true) to synchronously wait for any currently
+executing instance of the work item to finish, the flush_workqueue()
+becomes redundant and should be removed.
+
+This bug was identified through static analysis. To reproduce the issue
+and validate the fix, I simulated the cnic PCI device in QEMU and
+introduced intentional delays — such as inserting calls to ssleep()
+within the cnic_delete_task() function — to increase the likelihood
+of triggering the bug.
+
+Fixes: fdf24086f475 ("cnic: Defer iscsi connection cleanup")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Kconfig |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/cnic.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -566,10 +566,14 @@ config ARCH_STRICT_ALIGN
- 	  -mstrict-align build parameter to prevent unaligned accesses.
+diff --git a/drivers/net/ethernet/broadcom/cnic.c b/drivers/net/ethernet/broadcom/cnic.c
+index 7926aaef8f0c5..ad2745c07c1ae 100644
+--- a/drivers/net/ethernet/broadcom/cnic.c
++++ b/drivers/net/ethernet/broadcom/cnic.c
+@@ -4220,8 +4220,7 @@ static void cnic_cm_stop_bnx2x_hw(struct cnic_dev *dev)
  
- 	  CPUs with h/w unaligned access support:
--	  Loongson-2K2000/2K3000/3A5000/3C5000/3D5000.
-+	  Loongson-2K2000/2K3000 and all of Loongson-3 series processors
-+	  based on LoongArch.
+ 	cnic_bnx2x_delete_wait(dev, 0);
  
- 	  CPUs without h/w unaligned access support:
--	  Loongson-2K500/2K1000.
-+	  Loongson-2K0300/2K0500/2K1000.
-+
-+	  If you want to make sure whether to support unaligned memory access
-+	  on your hardware, please read the bit 20 (UAL) of CPUCFG1 register.
+-	cancel_delayed_work(&cp->delete_task);
+-	flush_workqueue(cnic_wq);
++	cancel_delayed_work_sync(&cp->delete_task);
  
- 	  This option is enabled by default to make the kernel be able to run
- 	  on all LoongArch systems. But you can disable it manually if you want
+ 	if (atomic_read(&cp->iscsi_conn) != 0)
+ 		netdev_warn(dev->netdev, "%d iSCSI connections not destroyed\n",
+-- 
+2.51.0
+
 
 
 
