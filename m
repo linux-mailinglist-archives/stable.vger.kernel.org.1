@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00876B9313B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D368B92FB4
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6D0B7AE75D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5222D1907ADC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246602E765E;
-	Mon, 22 Sep 2025 19:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E818B2F2910;
+	Mon, 22 Sep 2025 19:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXuEwwV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFBgT8Zy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60071547CC;
-	Mon, 22 Sep 2025 19:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BD22F3623;
+	Mon, 22 Sep 2025 19:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570384; cv=none; b=fz82xjH38geNULM87QydzxMK9RdfeIAhENoyHUcE+UbSOt6AkhbC8vTkCAL2sPA5fPP0/vit/zKe+NNQ8rquWPByRB+CrBHalg/gN0mVudFfB4+Os960OBJwI+WA4VOyJRrYEIUcSVmN5Jp4Wqey5vGXFD+wQ8LouNDx1fBBgUc=
+	t=1758570054; cv=none; b=Pz8zyjYBxdEIQGuaknSpozNkhRQv/4XMkL6L+SCJ6eKE243aKL103vRTVbjEuFXgJ16rUbwLiBFmIuVF67Z22bDBpuQi67NVsDSPtaXD12pbH/WSUl/cy9rUIS78kkaxEccX3MeowQyfVnZXTxhGRCo+0YfCTz5RYVjbwn8YshE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570384; c=relaxed/simple;
-	bh=1gKZXUq5BHLEWOUGc9GB6lCNWkdEgsLJ0JSJY7B8txo=;
+	s=arc-20240116; t=1758570054; c=relaxed/simple;
+	bh=Ou+IegcwJw//EYjUgkTuO3dynB9t9dSIJree1jcEl9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+gdcyYkZCPI5uBca4P030MXOd6dzudeRO1Rj13aXG1oZEAbFVYRSwH75sa2Fvp8aX0dkaTaqYqztdFo5sT+ivilgHdEA0hE5mo1LqCWyru5ABDCBLrj+G9ofOsr9EFToKe2CZNLywQf1KxfEYIj+KERPCmJotHns50eI8o31xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXuEwwV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9B2C4CEF0;
-	Mon, 22 Sep 2025 19:46:24 +0000 (UTC)
+	 MIME-Version; b=PXR8AveVM3/aB/P96hW4qDR2AjpOe+bResx1JXAhOm7II3eO27zMFKMf8A9E9C2WVPhPmRuw0r9v6kIqO5fHXF3rSD2dMGtPurEtz3BTq8BJ/8llKL9mHU5Wz5qHx7JtN96Fu6DR4icvrFvLafuDj4ev16umFT7oariwa7T5Xw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFBgT8Zy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361C7C4CEF0;
+	Mon, 22 Sep 2025 19:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570384;
-	bh=1gKZXUq5BHLEWOUGc9GB6lCNWkdEgsLJ0JSJY7B8txo=;
+	s=korg; t=1758570054;
+	bh=Ou+IegcwJw//EYjUgkTuO3dynB9t9dSIJree1jcEl9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXuEwwV6FFHM05oVHU7w2VS+G2R+GUEp5if7D0VVvJk3FPnv3Mmb5TmCFtRNpiJws
-	 Mj3iFnD9uXUkLA5WUCUDY+zMYkr+iC8bzHHvxBN47VRquMYfJydq1yyCvPOwVXp0vO
-	 rLYfi+oQbRXD+Rqav0K0m1gFCWR32icotIHgS4D8=
+	b=uFBgT8Zyuwj+Xx1Fc/cs2stBU5YIwlgmZjZsZ44O998XQJ29ZRdM711eMFSNvp+Bd
+	 fV2WaNxx95Tgkn0lDFm4kTgvMB9IuqM9I7pCnwv9Q0P04gJXGd5Q3Ib5sL6kKlC1nN
+	 dmU0VU+pbnPx+h8qO2zVld8b7/wfGHmchYzMUHT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 116/149] ASoC: amd: acp: Fix incorrect retrival of acp_chip_info
+	Marek Majkowski <marek@cloudflare.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 093/105] mptcp: pm: nl: announce deny-join-id0 flag
 Date: Mon, 22 Sep 2025 21:30:16 +0200
-Message-ID: <20250922192415.800903355@linuxfoundation.org>
+Message-ID: <20250922192411.337136523@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit d7871f400cad1da376f1d7724209a1c49226c456 ]
+commit 2293c57484ae64c9a3c847c8807db8c26a3a4d41 upstream.
 
-Use dev_get_drvdata(dev->parent) instead of dev_get_platdata(dev)
-to correctly obtain acp_chip_info members in the acp I2S driver.
-Previously, some members were not updated properly due to incorrect
-data access, which could potentially lead to null pointer
-dereferences.
+During the connection establishment, a peer can tell the other one that
+it cannot establish new subflows to the initial IP address and port by
+setting the 'C' flag [1]. Doing so makes sense when the sender is behind
+a strict NAT, operating behind a legacy Layer 4 load balancer, or using
+anycast IP address for example.
 
-This issue was missed in the earlier commit
-("ASoC: amd: acp: Fix NULL pointer deref in acp_i2s_set_tdm_slot"),
-which only addressed set_tdm_slot(). This change ensures that all
-relevant functions correctly retrieve acp_chip_info, preventing
-further null pointer dereference issues.
+When this 'C' flag is set, the path-managers must then not try to
+establish new subflows to the other peer's initial IP address and port.
+The in-kernel PM has access to this info, but the userspace PM didn't.
 
-Fixes: e3933683b25e ("ASoC: amd: acp: Remove redundant acp_dev_data structure")
+The RFC8684 [1] is strict about that:
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250910171419.3682468-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  (...) therefore the receiver MUST NOT try to open any additional
+  subflows toward this address and port.
+
+So it is important to tell the userspace about that as it is responsible
+for the respect of this flag.
+
+When a new connection is created and established, the Netlink events
+now contain the existing but not currently used 'flags' attribute. When
+MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 is set, it means no other subflows
+to the initial IP address and port -- info that are also part of the
+event -- can be established.
+
+Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.1-20.6 [1]
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Reported-by: Marek Majkowski <marek@cloudflare.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/532
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-2-40171884ade8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_pm.yaml, because the indentation has been modified
+  in commit ec362192aa9e ("netlink: specs: fix up indentation errors"),
+  which is not in this version. Applying the same modifications, but at
+  a different level. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/acp-i2s.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ Documentation/netlink/specs/mptcp_pm.yaml |    4 ++--
+ include/uapi/linux/mptcp.h                |    2 ++
+ include/uapi/linux/mptcp_pm.h             |    4 ++--
+ net/mptcp/pm_netlink.c                    |    7 +++++++
+ 4 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
-index 70fa54d568ef6..4d9589b67099e 100644
---- a/sound/soc/amd/acp/acp-i2s.c
-+++ b/sound/soc/amd/acp/acp-i2s.c
-@@ -72,7 +72,7 @@ static int acp_i2s_set_fmt(struct snd_soc_dai *cpu_dai,
- 			   unsigned int fmt)
+--- a/Documentation/netlink/specs/mptcp_pm.yaml
++++ b/Documentation/netlink/specs/mptcp_pm.yaml
+@@ -28,13 +28,13 @@ definitions:
+         traffic-patterns it can take a long time until the
+         MPTCP_EVENT_ESTABLISHED is sent.
+         Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, server-side.
++        dport, server-side, [flags].
+      -
+       name: established
+       doc: >-
+         A MPTCP connection is established (can start new subflows).
+         Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6, sport,
+-        dport, server-side.
++        dport, server-side, [flags].
+      -
+       name: closed
+       doc: >-
+--- a/include/uapi/linux/mptcp.h
++++ b/include/uapi/linux/mptcp.h
+@@ -31,6 +31,8 @@
+ #define MPTCP_INFO_FLAG_FALLBACK		_BITUL(0)
+ #define MPTCP_INFO_FLAG_REMOTE_KEY_RECEIVED	_BITUL(1)
+ 
++#define MPTCP_PM_EV_FLAG_DENY_JOIN_ID0		_BITUL(0)
++
+ #define MPTCP_PM_ADDR_FLAG_SIGNAL                      (1 << 0)
+ #define MPTCP_PM_ADDR_FLAG_SUBFLOW                     (1 << 1)
+ #define MPTCP_PM_ADDR_FLAG_BACKUP                      (1 << 2)
+--- a/include/uapi/linux/mptcp_pm.h
++++ b/include/uapi/linux/mptcp_pm.h
+@@ -16,10 +16,10 @@
+  *   good time to allocate memory and send ADD_ADDR if needed. Depending on the
+  *   traffic-patterns it can take a long time until the MPTCP_EVENT_ESTABLISHED
+  *   is sent. Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side.
++ *   sport, dport, server-side, [flags].
+  * @MPTCP_EVENT_ESTABLISHED: A MPTCP connection is established (can start new
+  *   subflows). Attributes: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport, server-side.
++ *   sport, dport, server-side, [flags].
+  * @MPTCP_EVENT_CLOSED: A MPTCP connection has stopped. Attribute: token.
+  * @MPTCP_EVENT_ANNOUNCED: A new address has been announced by the peer.
+  *   Attributes: token, rem_id, family, daddr4 | daddr6 [, dport].
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -2211,6 +2211,7 @@ static int mptcp_event_created(struct sk
+ 			       const struct sock *ssk)
  {
- 	struct device *dev = cpu_dai->component->dev;
--	struct acp_chip_info *chip = dev_get_platdata(dev);
-+	struct acp_chip_info *chip = dev_get_drvdata(dev->parent);
- 	int mode;
+ 	int err = nla_put_u32(skb, MPTCP_ATTR_TOKEN, READ_ONCE(msk->token));
++	u16 flags = 0;
  
- 	mode = fmt & SND_SOC_DAIFMT_FORMAT_MASK;
-@@ -196,7 +196,7 @@ static int acp_i2s_hwparams(struct snd_pcm_substream *substream, struct snd_pcm_
- 	u32 reg_val, fmt_reg, tdm_fmt;
- 	u32 lrclk_div_val, bclk_div_val;
+ 	if (err)
+ 		return err;
+@@ -2218,6 +2219,12 @@ static int mptcp_event_created(struct sk
+ 	if (nla_put_u8(skb, MPTCP_ATTR_SERVER_SIDE, READ_ONCE(msk->pm.server_side)))
+ 		return -EMSGSIZE;
  
--	chip = dev_get_platdata(dev);
-+	chip = dev_get_drvdata(dev->parent);
- 	rsrc = chip->rsrc;
++	if (READ_ONCE(msk->pm.remote_deny_join_id0))
++		flags |= MPTCP_PM_EV_FLAG_DENY_JOIN_ID0;
++
++	if (flags && nla_put_u16(skb, MPTCP_ATTR_FLAGS, flags))
++		return -EMSGSIZE;
++
+ 	return mptcp_event_add_subflow(skb, ssk);
+ }
  
- 	/* These values are as per Hardware Spec */
-@@ -383,7 +383,7 @@ static int acp_i2s_trigger(struct snd_pcm_substream *substream, int cmd, struct
- {
- 	struct acp_stream *stream = substream->runtime->private_data;
- 	struct device *dev = dai->component->dev;
--	struct acp_chip_info *chip = dev_get_platdata(dev);
-+	struct acp_chip_info *chip = dev_get_drvdata(dev->parent);
- 	struct acp_resource *rsrc = chip->rsrc;
- 	u32 val, period_bytes, reg_val, ier_val, water_val, buf_size, buf_reg;
- 
-@@ -513,14 +513,13 @@ static int acp_i2s_trigger(struct snd_pcm_substream *substream, int cmd, struct
- static int acp_i2s_prepare(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
- {
- 	struct device *dev = dai->component->dev;
--	struct acp_chip_info *chip = dev_get_platdata(dev);
-+	struct acp_chip_info *chip = dev_get_drvdata(dev->parent);
- 	struct acp_resource *rsrc = chip->rsrc;
- 	struct acp_stream *stream = substream->runtime->private_data;
- 	u32 reg_dma_size = 0, reg_fifo_size = 0, reg_fifo_addr = 0;
- 	u32 phy_addr = 0, acp_fifo_addr = 0, ext_int_ctrl;
- 	unsigned int dir = substream->stream;
- 
--	chip = dev_get_platdata(dev);
- 	switch (dai->driver->id) {
- 	case I2S_SP_INSTANCE:
- 		if (dir == SNDRV_PCM_STREAM_PLAYBACK) {
-@@ -629,7 +628,7 @@ static int acp_i2s_startup(struct snd_pcm_substream *substream, struct snd_soc_d
- {
- 	struct acp_stream *stream = substream->runtime->private_data;
- 	struct device *dev = dai->component->dev;
--	struct acp_chip_info *chip = dev_get_platdata(dev);
-+	struct acp_chip_info *chip = dev_get_drvdata(dev->parent);
- 	struct acp_resource *rsrc = chip->rsrc;
- 	unsigned int dir = substream->stream;
- 	unsigned int irq_bit = 0;
--- 
-2.51.0
-
 
 
 
