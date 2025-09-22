@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576D4B92EC0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CFAB92CE3
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98F80190720A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 485F71905BDF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987E52DEA79;
-	Mon, 22 Sep 2025 19:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7586A29BDB5;
+	Mon, 22 Sep 2025 19:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOWRmOFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whFpKGo3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DA627B320;
-	Mon, 22 Sep 2025 19:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261BB17A2EA;
+	Mon, 22 Sep 2025 19:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569914; cv=none; b=YZzBSy0OqnEa7/pVbb1ItyGJe0noqHG8g/pATqPZvMoT3cfHn5pbEXp9JZQl/iA88OuhXtW1IIdIMUjPHfmk73yAom38b85I5U58HKc26de1K7Rvdscl3yNomIbDxrh8Bs8Ft9xprmZPsQSKXUlK9YdIn2C3mB923CGwnsPsquI=
+	t=1758569559; cv=none; b=jBMLuGaUBPcoDukdg303LIWKMnMCIFeT460ju4goRjwmqJV7HDlMS1NDgnh9TGjT+q3TvGpEkW1hDeDEX4SUiJMbzN9/WSX0i3GNUHQTxIylJL1CCk9LS5ade/FcOzmMa8lOggk7AdYYS1y1nBd8jTx0+SGj4UVqD2F3GmcUj1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569914; c=relaxed/simple;
-	bh=fGY274266P41hyO6Y4g/Glr0TDS9XtTaA72xmUiCyW8=;
+	s=arc-20240116; t=1758569559; c=relaxed/simple;
+	bh=5yxKekCAJtTPONS0DgP3jd12yvvYKDE3mx8QuZoCD9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCuLJMxhXR3T53KToLgaZNqfFYv3mZ6sC7iL1cokB0Bnk7yeo31p1QQhgRsppd3U6hB/3z1dA7vlH2uXbPZ9s7f0YgzOhoQOkIPPGVAhTgY7b+VEJBF9NTQUJGtjsdMbTteib2HdsTdc6Ph4yFjw1DoDugV4J9OkAgyT6BFjFCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOWRmOFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E30C4CEF0;
-	Mon, 22 Sep 2025 19:38:33 +0000 (UTC)
+	 MIME-Version; b=Ve8F/cin/nJapv36KanKyLeeapIFyQnZiZFhnpMkjAm9WBtk12+bVoVT8nKB5Uxn5K4IiQ+6Nu7/SZelMXaV0OVRpp9WIwCHVyB6f+UyW6kmf68Gw6F+v5tuIfmkwk3xfDHnXWVE+EL+Mj4rMRnjEcgH+GbPIQ2zMpgx7J49Ac4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whFpKGo3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54DAC4CEF0;
+	Mon, 22 Sep 2025 19:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569914;
-	bh=fGY274266P41hyO6Y4g/Glr0TDS9XtTaA72xmUiCyW8=;
+	s=korg; t=1758569559;
+	bh=5yxKekCAJtTPONS0DgP3jd12yvvYKDE3mx8QuZoCD9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOWRmOFTO+jMj8zYR3gpKLqHaLbO5WVS6fkjt4dZVtTtyBohD/cE+cQub9QhqB8RP
-	 rmSE1WTeqyQgjyzhI4tONLkmTNH7hrY2zCVEOMF2JrAUrt3pcm0FI7w3lJknFJmKxl
-	 TT69BoNux8flXOclSACF2KrUE/Cfmkz3/Wpk6DSY=
+	b=whFpKGo3IgF2AAG8iB59T0pxU9ethYtFjfV3AHT8vX41B2EkV7ugTfMIOVItJTQl7
+	 BcVaOrb6zDbp+9GVaO1YTLmPBsKwBswumLmNpdhp4zKey5Uw2rlI1oK6hWe/CelMk9
+	 IlWaeAz6oo8nzUjiEWopNuPovFPr+4LvFBghtjiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.12 038/105] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 28/61] btrfs: tree-checker: fix the incorrect inode ref size check
 Date: Mon, 22 Sep 2025 21:29:21 +0200
-Message-ID: <20250922192409.914043808@linuxfoundation.org>
+Message-ID: <20250922192404.326530795@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 2c334d038466ac509468fbe06905a32d202117db upstream.
+commit 96fa515e70f3e4b98685ef8cac9d737fc62f10e1 upstream.
 
-Since commit
+[BUG]
+Inside check_inode_ref(), we need to make sure every structure,
+including the btrfs_inode_extref header, is covered by the item.  But
+our code is incorrectly using "sizeof(iref)", where @iref is just a
+pointer.
 
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+This means "sizeof(iref)" will always be "sizeof(void *)", which is much
+smaller than "sizeof(struct btrfs_inode_extref)".
 
-the console log of some devices with hdq enabled but no bq27000 battery
-(like e.g. the Pandaboard) is flooded with messages like:
+This will allow some bad inode extrefs to sneak in, defeating tree-checker.
 
-[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
+[FIX]
+Fix the typo by calling "sizeof(*iref)", which is the same as
+"sizeof(struct btrfs_inode_extref)", and will be the correct behavior we
+want.
 
-as soon as user-space is finding a /sys entry and trying to read the
-"status" property.
-
-It turns out that the offending commit changes the logic to now return the
-value of cache.flags if it is <0. This is likely under the assumption that
-it is an error number. In normal errors from bq27xxx_read() this is indeed
-the case.
-
-But there is special code to detect if no bq27000 is installed or accessible
-through hdq/1wire and wants to report this. In that case, the cache.flags
-are set historically by
-
-	commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to constant -1 which did make reading properties return -ENODEV. So everything
-appeared to be fine before the return value was passed upwards.
-
-Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
-condition in power_supply_format_property() which then floods the console log.
-
-So we change the detection of missing bq27000 battery to simply set
-
-	cache.flags = -ENODEV
-
-instead of -1.
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Cc: Jerry Lv <Jerry.Lv@axis.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 71bf92a9b877 ("btrfs: tree-checker: Add check for INODE_REF")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/tree-checker.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1910,7 +1910,7 @@ static void bq27xxx_battery_update_unloc
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1612,10 +1612,10 @@ static int check_inode_ref(struct extent
+ 	while (ptr < end) {
+ 		u16 namelen;
  
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
- 	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -1; /* read error */
-+		cache.flags = -ENODEV; /* read error */
- 	if (cache.flags >= 0) {
- 		cache.capacity = bq27xxx_battery_read_soc(di);
+-		if (unlikely(ptr + sizeof(iref) > end)) {
++		if (unlikely(ptr + sizeof(*iref) > end)) {
+ 			inode_ref_err(leaf, slot,
+ 			"inode ref overflow, ptr %lu end %lu inode_ref_size %zu",
+-				ptr, end, sizeof(iref));
++				ptr, end, sizeof(*iref));
+ 			return -EUCLEAN;
+ 		}
  
 
 
