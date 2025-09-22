@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468D3B92CDA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D1EB92EFC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB452A3980
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FC62A7E56
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FD927B320;
-	Mon, 22 Sep 2025 19:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA9C1C1ADB;
+	Mon, 22 Sep 2025 19:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPEZHmQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dDVaH9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDCB191F66;
-	Mon, 22 Sep 2025 19:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62C32E285C;
+	Mon, 22 Sep 2025 19:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569551; cv=none; b=MN8i1f5X+GWEyjuLFJPeq/4rriJG/uWI++mGo/A03NzW1FC1QsaizFbEIUPqqKjXR9g2+mL6cOLkLJt4hRukla/ux9OPb5HhoO0Qm9c3EYHI+5dCGd4Y4xs54ZGzmCXLrm8P2t21CVhm3irPvhVFmb5tcn7pAtoesCUo8uAf48E=
+	t=1758569962; cv=none; b=b0j+7E0tSaZ4E6nJMG7J7QxkvmRGzSlbCrdE3V/ivlsq6AYvMF/1Z8X8CyDU7JR73ywgsLKFRDeGsAs8tXzfpz3MzBUzZoHTsBNaftODyT8D19iqfyviqLTskasN/JkPFRzoerCf0gpxN3zn1MDBLq+PBLbXDqTgURSjjDg1a0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569551; c=relaxed/simple;
-	bh=r0nFz5QU6r8ocGJ9ZaIurnZdJodthIRQFHK3dqKjSYc=;
+	s=arc-20240116; t=1758569962; c=relaxed/simple;
+	bh=L9cpiQ1Y2KJ9DJBtA/XidW1hhlFUCoWmwgoxQFegMtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sz/TH78O8KFDu6IxS4kJDEHW1olEgu6sQXFhN8xHGeSsel+KVy+E3UIz2Un+pHaFCRrWgAEdWAUi06YlvdOV+FVo3/caYmzkQOuU970eDDYx3cTDb/FGIMG2e2ubnj6FZsivuMo2y/1lPj68YDHpIOc5HXPRpiDzIYrgAtFP5WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPEZHmQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A58FC4CEF0;
-	Mon, 22 Sep 2025 19:32:30 +0000 (UTC)
+	 MIME-Version; b=GcrRgRZWkTLucFeoeCZRZHDaQ8tqYYzZdJTxsQeHkQRs/bCe/ezEculECSEOBBNTUhcNvvJNuaB2dceho+o/uLC5SOzy7kMpAj/cgjV/9PgEEmqpaqZBVy60y3JiCuWuCEALJ2k1UCP+FXXD07+fB0Rhp39P2w5xYT1rPNU5X6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dDVaH9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46F4C4CEF0;
+	Mon, 22 Sep 2025 19:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569551;
-	bh=r0nFz5QU6r8ocGJ9ZaIurnZdJodthIRQFHK3dqKjSYc=;
+	s=korg; t=1758569961;
+	bh=L9cpiQ1Y2KJ9DJBtA/XidW1hhlFUCoWmwgoxQFegMtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPEZHmQyV4P9U7fvqL6wG3S8yUnwumhFrrINPhgyWc1+KZSFdPfU9BEgvne1Ta0Ok
-	 GOd6YJsycdpvs0C3w70R6c/MJFhMHIPJZmkHdg4o3cgHkZDAEr5775WVlwj/+aT6Ih
-	 ae9nJBN91MvRoqs/3+ojJ/Tbd9SFVMY9t6gfwABA=
+	b=1dDVaH9jLwxxkkmyYHbXASeeMgCVzW/vuQUn95lvYA3JQvTvTXO2jj67HeUo72NRN
+	 CoK4ISe6TS3/qATZTgwc1yH/E+UB/LJJPPvhMjs7GMl9kY++09EVADZu9PnhgxH0pX
+	 2BFh4UgDzQLkG5FS47YHP1h3zq4riibh5ARLQ87w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benedek Thaler <thaler@thaler.hu>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 37/61] io_uring: include dying ring in task_work "should cancel" state
+	Xi Zhang <zhangxi@kylinos.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 047/105] LoongArch: Fix unreliable stack for live patching
 Date: Mon, 22 Sep 2025 21:29:30 +0200
-Message-ID: <20250922192404.585006404@linuxfoundation.org>
+Message-ID: <20250922192410.151234043@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-Commit 3539b1467e94336d5854ebf976d9627bfb65d6c3 upstream.
+commit 677d4a52d4dc4a147d5e84af9ff207832578be70 upstream.
 
-When running task_work for an exiting task, rather than perform the
-issue retry attempt, the task_work is canceled. However, this isn't
-done for a ring that has been closed. This can lead to requests being
-successfully completed post the ring being closed, which is somewhat
-confusing and surprising to an application.
+When testing the kernel live patching with "modprobe livepatch-sample",
+there is a timeout over 15 seconds from "starting patching transition"
+to "patching complete". The dmesg command shows "unreliable stack" for
+user tasks in debug mode, here is one of the messages:
 
-Rather than just check the task exit state, also include the ring
-ref state in deciding whether or not to terminate a given request when
-run from task_work.
+  livepatch: klp_try_switch_task: bash:1193 has an unreliable stack
 
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://github.com/axboe/liburing/discussions/1459
-Reported-by: Benedek Thaler <thaler@thaler.hu>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The "unreliable stack" is because it can not unwind from do_syscall()
+to its previous frame handle_syscall(). It should use fp to find the
+original stack top due to secondary stack in do_syscall(), but fp is
+not used for some other functions, then fp can not be restored by the
+next frame of do_syscall(), so it is necessary to save fp if task is
+not current, in order to get the stack top of do_syscall().
+
+Here are the call chains:
+
+  klp_enable_patch()
+    klp_try_complete_transition()
+      klp_try_switch_task()
+        klp_check_and_switch_task()
+          klp_check_stack()
+            stack_trace_save_tsk_reliable()
+              arch_stack_walk_reliable()
+
+When executing "rmmod livepatch-sample", there exists a similar issue.
+With this patch, it takes a short time for patching and unpatching.
+
+Before:
+
+  # modprobe livepatch-sample
+  # dmesg -T | tail -3
+  [Sat Sep  6 11:00:20 2025] livepatch: 'livepatch_sample': starting patching transition
+  [Sat Sep  6 11:00:35 2025] livepatch: signaling remaining tasks
+  [Sat Sep  6 11:00:36 2025] livepatch: 'livepatch_sample': patching complete
+
+  # echo 0 > /sys/kernel/livepatch/livepatch_sample/enabled
+  # rmmod livepatch_sample
+  rmmod: ERROR: Module livepatch_sample is in use
+  # rmmod livepatch_sample
+  # dmesg -T | tail -3
+  [Sat Sep  6 11:06:05 2025] livepatch: 'livepatch_sample': starting unpatching transition
+  [Sat Sep  6 11:06:20 2025] livepatch: signaling remaining tasks
+  [Sat Sep  6 11:06:21 2025] livepatch: 'livepatch_sample': unpatching complete
+
+After:
+
+  # modprobe livepatch-sample
+  # dmesg -T | tail -2
+  [Tue Sep 16 16:19:30 2025] livepatch: 'livepatch_sample': starting patching transition
+  [Tue Sep 16 16:19:31 2025] livepatch: 'livepatch_sample': patching complete
+
+  # echo 0 > /sys/kernel/livepatch/livepatch_sample/enabled
+  # rmmod livepatch_sample
+  # dmesg -T | tail -2
+  [Tue Sep 16 16:19:36 2025] livepatch: 'livepatch_sample': starting unpatching transition
+  [Tue Sep 16 16:19:37 2025] livepatch: 'livepatch_sample': unpatching complete
+
+Cc: stable@vger.kernel.org # v6.9+
+Fixes: 199cc14cb4f1 ("LoongArch: Add kernel livepatching support")
+Reported-by: Xi Zhang <zhangxi@kylinos.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   12 ++++++++----
- io_uring/io_uring.h |    4 ++--
- io_uring/poll.c     |    2 +-
- io_uring/timeout.c  |    2 +-
- 4 files changed, 12 insertions(+), 8 deletions(-)
+ arch/loongarch/kernel/stacktrace.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1248,8 +1248,10 @@ static void io_req_task_cancel(struct io
+--- a/arch/loongarch/kernel/stacktrace.c
++++ b/arch/loongarch/kernel/stacktrace.c
+@@ -51,12 +51,13 @@ int arch_stack_walk_reliable(stack_trace
+ 	if (task == current) {
+ 		regs->regs[3] = (unsigned long)__builtin_frame_address(0);
+ 		regs->csr_era = (unsigned long)__builtin_return_address(0);
++		regs->regs[22] = 0;
+ 	} else {
+ 		regs->regs[3] = thread_saved_fp(task);
+ 		regs->csr_era = thread_saved_ra(task);
++		regs->regs[22] = task->thread.reg22;
+ 	}
+ 	regs->regs[1] = 0;
+-	regs->regs[22] = 0;
  
- void io_req_task_submit(struct io_kiocb *req, bool *locked)
- {
--	io_tw_lock(req->ctx, locked);
--	if (likely(!io_should_terminate_tw()))
-+	struct io_ring_ctx *ctx = req->ctx;
-+
-+	io_tw_lock(ctx, locked);
-+	if (likely(!io_should_terminate_tw(ctx)))
- 		io_queue_sqe(req);
- 	else
- 		io_req_complete_failed(req, -EFAULT);
-@@ -1771,8 +1773,10 @@ static int io_issue_sqe(struct io_kiocb
- 
- int io_poll_issue(struct io_kiocb *req, bool *locked)
- {
--	io_tw_lock(req->ctx, locked);
--	if (unlikely(io_should_terminate_tw()))
-+	struct io_ring_ctx *ctx = req->ctx;
-+
-+	io_tw_lock(ctx, locked);
-+	if (unlikely(io_should_terminate_tw(ctx)))
- 		return -EFAULT;
- 	return io_issue_sqe(req, IO_URING_F_NONBLOCK|IO_URING_F_MULTISHOT);
- }
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -403,9 +403,9 @@ static inline bool io_allowed_run_tw(str
-  * 2) PF_KTHREAD is set, in which case the invoker of the task_work is
-  *    our fallback task_work.
-  */
--static inline bool io_should_terminate_tw(void)
-+static inline bool io_should_terminate_tw(struct io_ring_ctx *ctx)
- {
--	return current->flags & (PF_KTHREAD | PF_EXITING);
-+	return (current->flags & (PF_KTHREAD | PF_EXITING)) || percpu_ref_is_dying(&ctx->refs);
- }
- 
- static inline void io_req_queue_tw_complete(struct io_kiocb *req, s32 res)
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -241,7 +241,7 @@ static int io_poll_check_events(struct i
- 	struct io_ring_ctx *ctx = req->ctx;
- 	int v;
- 
--	if (unlikely(io_should_terminate_tw()))
-+	if (unlikely(io_should_terminate_tw(ctx)))
- 		return -ECANCELED;
- 
- 	do {
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -275,7 +275,7 @@ static void io_req_task_link_timeout(str
- 	int ret = -ENOENT;
- 
- 	if (prev) {
--		if (!io_should_terminate_tw()) {
-+		if (!io_should_terminate_tw(req->ctx)) {
- 			struct io_cancel_data cd = {
- 				.ctx		= req->ctx,
- 				.data		= prev->cqe.user_data,
+ 	for (unwind_start(&state, task, regs);
+ 	     !unwind_done(&state) && !unwind_error(&state); unwind_next_frame(&state)) {
 
 
 
