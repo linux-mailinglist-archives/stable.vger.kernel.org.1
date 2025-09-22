@@ -1,112 +1,62 @@
-Return-Path: <stable+bounces-180871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF05B8EC15
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 04:16:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71593B8EC3D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 04:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68DF63B2CDB
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 02:16:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC3C3AA0CB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 02:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E132F069E;
-	Mon, 22 Sep 2025 02:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F99C274B5E;
+	Mon, 22 Sep 2025 02:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4w9eYjX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FF72ECD1D
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 02:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9DA15855E;
+	Mon, 22 Sep 2025 02:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758507321; cv=none; b=PefTqrzA46Ni+puO4hLsF651B9/JqPgpr5OOvfOK9ZYKg0Y9763f8bnvORY12r+O7G0SdGVkp01O13aVKnqyC6GoVPRiCT5AZUAqDLlE+QCy4CdmBBrtkG7tER7f1ZeVhDehchUSh4SnQt0KbRQ7SN69BHTNNj9qVcua+zPXFlM=
+	t=1758507557; cv=none; b=EJlsjyNGa1TQq36kzeyti1AB/FjdeO6YgtVMeKn1lQdVrcWyPDPAsaPxXlLXbT081O0v381ssbH1cCWt0Gcod3d5RKmwco2kCyzG0kHq0jJNY52u+Vv5il7hpNoyayQ9XekFS1E2BhzsAgPDGaK7xkyYDOPoaPaoBRh3eznVeDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758507321; c=relaxed/simple;
-	bh=BYnznYR20E7iDSy2NfKKv95IxuqDSX7OPcdghEr/WPU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UHu6q1smopaeHFllWmbs2Jaor2U4exI9JggsIhDJpfKg3jmG8riJU4KLTPrGKRirNxZ/Rd837YQPRY3TG3kmbJmUlApiZmw6c+S7PMl3Ph0+BZJABLvDi89dlcKKD9fAtrps1iYQFBaD+Uxvu/L4kU8yqcydPUUI9tj2FBy34LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-46b7580f09eso5174145e9.2
-        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 19:15:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758507317; x=1759112117;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SPCqIDb+yNYcV+5yEAWwdEaCDvI8BD77bbTSTfws3Yw=;
-        b=Vn6hzQ2zMssPSP8mckR8qUNZEwwJ/5JfE0scdw46XhKxidgrwMuOUnskteS2jbxq4B
-         cD+BIFHWQe8T/MnTtTztCUv/V9hpNnX3eCq78lrj1FqlsVF72rNTVWvNS+CINBkPGc7N
-         a8Kxbr8rIoerxQzLdwviiXrS4Olw1LuaGYeZrHDtMhXcT4G6BOeG+fmaIzlAeQadQWxB
-         p4oAGkv5lBObVguArN6nbyranPShH0MHwaIt79WJY0Y0mEbglo2RFjbrIv42pd7VO7mp
-         2HT3Ola1fyz9unoWbVRgADJS5Sms4QrqIn/JtvQjUgjgz6NEVxiEr1PFGSDIlBOLZ9PD
-         hg+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWCoynWiyRkF7HBp8RPDV5DaX6ich8/GzJcvktNqw/M1Mg71pgCiwDAJqnScIC6NiN2ypKnsG0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiAL3fyDe5lFC5jS0apzNAztJz4A5IX7ApHdNowg9psTDxYeG5
-	dD1QQL2CwEO58ez8imnwYBJYvoNq7GGniGl1104A+LsyMtAixunPnUGX
-X-Gm-Gg: ASbGncvxQJiZfFdpGTiKf5H4EPXRBbriVqzEg3FEot8mUqPlurbmdzn0BHyf0zH/VHe
-	xLMGai0Bvbj60pb/KKR8EGtj8gF8QLCNnYNep535Fo03lr5PdkNBt7knjfo8SkFLL0VQUV6C5z/
-	cN3BnxjrrGnSydPC43KOVv/Q9grvEF45JOaI7cM4p2jRsGOeu8qAN8dLmYeX+/kfQgtceJT2094
-	XLHEl0XM91qqw96Ah6knsFPDXEGFQCZys6nWjzgyOCuLqkjT3xZmMqZ4AXqt6cdgk7Qh5jsgYtT
-	SaU6CGtyOGra2yf1aCRSn2HdD737PdUfCkrgsDasLLkgnpudg3sBn7HcJAqNz9RkRqvEsW4sfjm
-	rydLAMUF8
-X-Google-Smtp-Source: AGHT+IH9s1cY1E+H2vTOe2w6B4oa+af+uNdUi3NtjrXEcg2rWJv7ohFVr7kLsZhy27UnUnTj0ObGrQ==
-X-Received: by 2002:a05:600c:630e:b0:46c:9e81:ad0 with SMTP id 5b1f17b1804b1-46c9e904ffamr24190015e9.0.1758507313301;
-        Sun, 21 Sep 2025 19:15:13 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::3086])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613dccb5e2sm220376635e9.17.2025.09.21.19.15.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 21 Sep 2025 19:15:13 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com
-Cc: usamaarif642@gmail.com,
-	yuzhao@google.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	voidice@gmail.com,
-	Liam.Howlett@oracle.com,
-	catalin.marinas@arm.com,
-	cerasuolodomenico@gmail.com,
-	hannes@cmpxchg.org,
-	kaleshsingh@google.com,
-	npache@redhat.com,
-	riel@surriel.com,
-	roman.gushchin@linux.dev,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	ryncsn@gmail.com,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	hughd@google.com,
-	willy@infradead.org,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	qun-wei.lin@mediatek.com,
-	Andrew.Yang@mediatek.com,
-	casper.li@mediatek.com,
-	chinwen.chang@mediatek.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-mm@kvack.org,
-	ioworker0@gmail.com,
-	stable@vger.kernel.org,
-	Qun-wei Lin <Qun-wei.Lin@mediatek.com>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing zero-filled subpages
-Date: Mon, 22 Sep 2025 10:14:58 +0800
-Message-ID: <20250922021458.68123-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1758507557; c=relaxed/simple;
+	bh=/8/3wh8ghIq+NEYS38vos0EhKZoXmD895oOEHwHz8fg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=e8LY88m+ZaQ7STUl/4z9J33bKb7YqajQASWaxxwgjn6ifEDaK2fXnCewNzctEPSTuqIWa1dg9fcesr/ufxTZWZJ8vEsu8c6CShCgd20432TTcipTwSQHLbmEO4ywiLmtjW29pRgnzN9dBdSKAqYzr6Z9EhKitOTk30IkXwW8Jcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4w9eYjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576DCC4CEE7;
+	Mon, 22 Sep 2025 02:19:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758507554;
+	bh=/8/3wh8ghIq+NEYS38vos0EhKZoXmD895oOEHwHz8fg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=S4w9eYjX1aPQ8M8xJIaZloA66xbRBENymiYBQqJmDaP9Oxzy+tEDbae0iTenmxeM6
+	 lIMFY8MtVvZ2poohTfe3wY8zJIRWDD5Zo/2fnquYuUDnccNV4DBheycKNywIbNhUYJ
+	 8tIZkglZ0lzXaW2Y/jPc98Lqs4a1lRTrwB6MUX60BFcpyO/pmRqWFn2z5Nh/Io3Fau
+	 tN4LXPZewRHlPIyL31cW1C6Ha0CRR/dTNhAub3rl4qAfbS5IpCtkoW2CcRmCypvKAB
+	 tpLOr1RGl77jpbLLIw8DX3bfCIMpGYO41obHgiS933/j9/oM8Nly2acVgCE7RKAXA3
+	 HX/1xKW6rBLpg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Stefan Metzmacher <metze@samba.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] ksmbd: smbdirect: verify remaining_data_length respects max_fragmented_recv_size
+Date: Sun, 21 Sep 2025 22:19:08 -0400
+Message-ID: <20250922021908.3142096-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025092135-estate-gander-564d@gregkh>
+References: <2025092135-estate-gander-564d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -115,110 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Stefan Metzmacher <metze@samba.org>
 
-When both THP and MTE are enabled, splitting a THP and replacing its
-zero-filled subpages with the shared zeropage can cause MTE tag mismatch
-faults in userspace.
+[ Upstream commit e1868ba37fd27c6a68e31565402b154beaa65df0 ]
 
-Remapping zero-filled subpages to the shared zeropage is unsafe, as the
-zeropage has a fixed tag of zero, which may not match the tag expected by
-the userspace pointer.
+This is inspired by the check for data_offset + data_length.
 
-KSM already avoids this problem by using memcmp_pages(), which on arm64
-intentionally reports MTE-tagged pages as non-identical to prevent unsafe
-merging.
-
-As suggested by David[1], this patch adopts the same pattern, replacing the
-memchr_inv() byte-level check with a call to pages_identical(). This
-leverages existing architecture-specific logic to determine if a page is
-truly identical to the shared zeropage.
-
-Having both the THP shrinker and KSM rely on pages_identical() makes the
-design more future-proof, IMO. Instead of handling quirks in generic code,
-we just let the architecture decide what makes two pages identical.
-
-[1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
-
-Cc: <stable@vger.kernel.org>
-Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
-Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ No data_offset ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Tested on x86_64 and on QEMU for arm64 (with and without MTE support),
-and the fix works as expected.
+ fs/ksmbd/transport_rdma.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
- mm/huge_memory.c | 15 +++------------
- mm/migrate.c     |  8 +-------
- 2 files changed, 4 insertions(+), 19 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 32e0ec2dde36..28d4b02a1aa5 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
- static bool thp_underused(struct folio *folio)
- {
- 	int num_zero_pages = 0, num_filled_pages = 0;
--	void *kaddr;
- 	int i;
+diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
+index 2f02632905842..53e543129fe12 100644
+--- a/fs/ksmbd/transport_rdma.c
++++ b/fs/ksmbd/transport_rdma.c
+@@ -548,7 +548,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_length;
++		u32 remaining_data_length, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
--		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
--		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
--			num_zero_pages++;
--			if (num_zero_pages > khugepaged_max_ptes_none) {
--				kunmap_local(kaddr);
-+		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
-+			if (++num_zero_pages > khugepaged_max_ptes_none)
- 				return true;
--			}
- 		} else {
- 			/*
- 			 * Another path for early exit once the number
- 			 * of non-zero filled pages exceeds threshold.
- 			 */
--			num_filled_pages++;
--			if (num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none) {
--				kunmap_local(kaddr);
-+			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
- 				return false;
--			}
+ 		if (wc->byte_len <
+@@ -558,7 +558,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			return;
  		}
--		kunmap_local(kaddr);
- 	}
- 	return false;
- }
-diff --git a/mm/migrate.c b/mm/migrate.c
-index aee61a980374..ce83c2c3c287 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -300,9 +300,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 					  unsigned long idx)
- {
- 	struct page *page = folio_page(folio, idx);
--	bool contains_data;
- 	pte_t newpte;
--	void *addr;
  
- 	if (PageCompound(page))
- 		return false;
-@@ -319,11 +317,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 	 * this subpage has been non present. If the subpage is only zero-filled
- 	 * then map it to the shared zeropage.
- 	 */
--	addr = kmap_local_page(page);
--	contains_data = memchr_inv(addr, 0, PAGE_SIZE);
--	kunmap_local(addr);
--
--	if (contains_data)
-+	if (!pages_identical(page, ZERO_PAGE(0)))
- 		return false;
- 
- 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
++		remaining_data_length = le32_to_cpu(data_transfer->remaining_data_length);
+ 		data_length = le32_to_cpu(data_transfer->data_length);
++		if (remaining_data_length > t->max_fragmented_recv_size ||
++		    data_length > t->max_fragmented_recv_size ||
++		    (u64)remaining_data_length + (u64)data_length >
++		    (u64)t->max_fragmented_recv_size) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
++		}
+ 		if (data_length) {
+ 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+ 			    (u64)data_length) {
 -- 
-2.49.0
+2.51.0
 
 
