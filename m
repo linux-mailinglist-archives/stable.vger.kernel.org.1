@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF88CB92E28
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3748B93128
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E01B2447321
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD6263A31CD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A88C285C92;
-	Mon, 22 Sep 2025 19:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7687C2F28F9;
+	Mon, 22 Sep 2025 19:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEFar+am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZL4WZA/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563CA2F1FDD;
-	Mon, 22 Sep 2025 19:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3249B2517AC;
+	Mon, 22 Sep 2025 19:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569790; cv=none; b=VWPjv3/azx1FCipF7HPu/x7A9Bmu8/lxRVrEzi+QlHIU71ncD4eGRQ2/3jIIOxL3jkn4+dHikjHILZGJaRDakXW4u4OGwLfGAXZRnFgJdlH79fAZZnHMRGQ8DliYmjeQRFObTSdkQFnhBuYjBZgL3TEB+qp1F/w0Fu+kYjYQmU8=
+	t=1758570327; cv=none; b=ETz34Hmr86q8Ed5xasjGYEfZ8HGepkMzZ23Wu3lhX5l+fadtHVkLdUua7LDsIQIwa8iSde+4PMTnGrcP6A5yBM1pTWxkWeTV1zZsIYGeRvFPBcwYJDcqocw1VLJT+LxWnqCT2bho1LsobVSkidycpxyHXKHFQTm8d2ZKPz/tMHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569790; c=relaxed/simple;
-	bh=mu6MInHChtZwsvyig1MNMJJFV+DIpAoMFsfixexogu8=;
+	s=arc-20240116; t=1758570327; c=relaxed/simple;
+	bh=wZ793RLk0g3en9na4lEz6iDtQoHFo0IhKHSH0QnkIuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uu9B2NWsJMyxicNDCykY9N9AxU19VjLAMnx89c9AmEGVNJLLDbgy7O/pJGYqFgzIC4mIIGjy4OSMzhEm6qC5ED0Vr6mwP+NKvJCidVeEoU2nwJsesbw2PgcyT8b91k/AibYUkJWgOSCAkNl0zr63Kx0pcF1os6mUCRxRunwaQ3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEFar+am; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC4FC4CEF0;
-	Mon, 22 Sep 2025 19:36:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mIeeKw7TsnELNFO9yv8RaW5yzfkjHrtKSAOP9sXNCXN3a0apkF97gjsSZkGfZOouuHyGNuC6hd9qIqokpeoixkV4o5KQyeIfuEsGVU/H0hB97VnjLzwwR9ItwT9sGy3ic8Dvo8FZV91/A+U+QqmZFXQbj7K5BaswKCINIlfmrqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZL4WZA/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01A1C4CEF0;
+	Mon, 22 Sep 2025 19:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569789;
-	bh=mu6MInHChtZwsvyig1MNMJJFV+DIpAoMFsfixexogu8=;
+	s=korg; t=1758570327;
+	bh=wZ793RLk0g3en9na4lEz6iDtQoHFo0IhKHSH0QnkIuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEFar+amrrMj0tMt0ZYHveD9Zqc6Bg6ZTcWjLsNUdFNzn5xRiNcqSZImLdeAiLIXy
-	 qJSYcQRBsLcNfyRMTVO9hC1LRileqtZndfkgeovmm4/E9ubZzomcDFm5VCV+L6hNXa
-	 QkVutBoKbzfQRVSYBwCDYUmAvTOxUIB9vVBCPKJQ=
+	b=ZL4WZA/oSz/00hVRkhDxt0zDfFNZPJepiUfU4O4cm0LuckwvGkDd50WdaYM38Y+bW
+	 r2w0KN4HcQUw+MR+RaNJGiTMEChIep5TEbdAogdpayJXPfOtGwnNw6VTi921p1oST1
+	 r+P4w1wSAcTtyrGSHmAiPhz17EJzdvl3e01/dYLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH 6.6 57/70] vmxnet3: unregister xdp rxq info in the reset path
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20L=C3=A9cuyer?= <jerome.4a4c@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.16 097/149] drm/amd: Only restore cached manual clock settings in restore if OD enabled
 Date: Mon, 22 Sep 2025 21:29:57 +0200
-Message-ID: <20250922192406.132680350@linuxfoundation.org>
+Message-ID: <20250922192415.331193907@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 0dd765fae295832934bf28e45dd5a355e0891ed4 upstream.
+commit f9b80514a7227c589291792cb6743b0ddf41c2bc upstream.
 
-vmxnet3 does not unregister xdp rxq info in the
-vmxnet3_reset_work() code path as vmxnet3_rq_destroy()
-is not invoked in this code path. So, we get below message with a
-backtrace.
+If OD is not enabled then restoring cached clock settings doesn't make
+sense and actually leads to errors in resume.
 
-Missing unregister, handled but fix driver
-WARNING: CPU:48 PID: 500 at net/core/xdp.c:182
-__xdp_rxq_info_reg+0x93/0xf0
+Check if enabled before restoring settings.
 
-This patch fixes the problem by moving the unregister
-code of XDP from vmxnet3_rq_destroy() to vmxnet3_rq_cleanup().
-
-Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
-Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Link: https://patch.msgid.link/20250320045522.57892-1-sankararaman.jayaraman@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Ajay: Modified to apply on v6.6, v6.12 ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Fixes: 4e9526924d09 ("drm/amd: Restore cached manual clock settings during resume")
+Reported-by: Jérôme Lécuyer <jerome.4a4c@gmail.com>
+Closes: https://lore.kernel.org/amd-gfx/0ffe2692-7bfa-4821-856e-dd0f18e2c32b@amd.com/T/#me6db8ddb192626360c462b7570ed7eba0c6c9733
+Suggested-by: Jérôme Lécuyer <jerome.4a4c@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1a4dd33cc6e1baaa81efdbe68227a19f51c50f20)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -1981,6 +1981,11 @@ vmxnet3_rq_cleanup(struct vmxnet3_rx_que
- 
- 	rq->comp_ring.gen = VMXNET3_INIT_GEN;
- 	rq->comp_ring.next2proc = 0;
-+
-+	if (xdp_rxq_info_is_reg(&rq->xdp_rxq))
-+		xdp_rxq_info_unreg(&rq->xdp_rxq);
-+	page_pool_destroy(rq->page_pool);
-+	rq->page_pool = NULL;
- }
- 
- 
-@@ -2021,11 +2026,6 @@ static void vmxnet3_rq_destroy(struct vm
- 		}
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -2185,7 +2185,7 @@ static int smu_resume(struct amdgpu_ip_b
+ 			return ret;
  	}
  
--	if (xdp_rxq_info_is_reg(&rq->xdp_rxq))
--		xdp_rxq_info_unreg(&rq->xdp_rxq);
--	page_pool_destroy(rq->page_pool);
--	rq->page_pool = NULL;
--
- 	if (rq->data_ring.base) {
- 		dma_free_coherent(&adapter->pdev->dev,
- 				  rq->rx_ring[0].size * rq->data_ring.desc_size,
+-	if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
++	if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL && smu->od_enabled) {
+ 		ret = smu_od_edit_dpm_table(smu, PP_OD_COMMIT_DPM_TABLE, NULL, 0);
+ 		if (ret)
+ 			return ret;
 
 
 
