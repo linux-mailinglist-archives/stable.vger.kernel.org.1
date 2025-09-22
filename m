@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FFDB92F3E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9110FB92F83
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57091887D8D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CD7A19077C6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3E52F1FDD;
-	Mon, 22 Sep 2025 19:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC5031C587;
+	Mon, 22 Sep 2025 19:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BN6VIZ+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnvO2nXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399112820D1;
-	Mon, 22 Sep 2025 19:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D531C57B;
+	Mon, 22 Sep 2025 19:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569998; cv=none; b=qNARSmFn272DqDVB8fElk66aTsNE0zBDnEvAi1Hprkq5/lyt1DejEKMA+H3onixl4HlmQuIVR8VcirCqqxCAucmneLpHRNn7YlnQ+prFnFm5W99Cetiba+U0Toj1bpSZtggorVm3r+ThhbjDP/dM3DfdpIaNvsM628Rl/n6ZCg4=
+	t=1758570014; cv=none; b=pYiehfZZJOyDi2xQmXsmQjTytKaQ2GFqnrmwwHxjvlvYF6G3tAHAzd9+9NuoBTTYCEVX0yIjlT6lf1cTGFENR7w0DxNTg6kQETMpsziNC7FhcnzYHMFpkT075yvqgnWFdgC24IJB7fN9llpNUwN9oth8DwpWLtQwwRUElfEud0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569998; c=relaxed/simple;
-	bh=33j6wfpBTOnQNpNMCt2O2slgDpuq2tKzbyCbJz2pA8o=;
+	s=arc-20240116; t=1758570014; c=relaxed/simple;
+	bh=QP2hKpTZRQ3zxndFKZXgtWtgw5k12ckoClCPf71XHWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NBhMkI9UOYasYCEJn2WVtdfb6ElZ1tGSnpfalGcnXRFWOZzGNY7ViQimqgBLHVp6SsxNuKbYyi7LhMwAY0UjHet3U6fLeTvDukLy8lCVQ6VHzLFVnm45g7U9B5ASYaZrEjgZD1Vb9J/d3TNvFeOFfULrF1iLrH1fw9x63AopjeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BN6VIZ+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C404CC4CEF0;
-	Mon, 22 Sep 2025 19:39:57 +0000 (UTC)
+	 MIME-Version; b=UU55BM5O544q/4QOhfWdeKJNxXz2t1d0bKy6A0K2c7c5EYst7CJt1lvhTtm+BG2y4En2XgMF3uKVaxJx2rcCQUEKl+uysWLycTfXtl9b3qN4VPlMOMFMx2PxHuBNgekgloT8Gq87JPJ5+owrdohEhMWmhS0Qr0AQmp4D1ttbchs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnvO2nXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1929BC116C6;
+	Mon, 22 Sep 2025 19:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569998;
-	bh=33j6wfpBTOnQNpNMCt2O2slgDpuq2tKzbyCbJz2pA8o=;
+	s=korg; t=1758570013;
+	bh=QP2hKpTZRQ3zxndFKZXgtWtgw5k12ckoClCPf71XHWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BN6VIZ+9+IW2lttekvZYMxB313F00If+U8TQANMLhLcNge/d99hx5QCgRuvPNdTyU
-	 kkF/SYXzznY3Pn8Bgc+daC21J+71nkRHA9TAkUrqF9m8ZG2CSXFf9FzMAgVpkWkBlK
-	 WJcxcgyfJKf5TD0m7/7AUEGZ6maFhbcG+gfE2WpU=
+	b=MnvO2nXlje37o5Pl7g3s3Fg69HYwouxjbQccBd5GeGfw/mlQ3Fpy/BT+UGXoenlhE
+	 1+VQt8YB8yCZKq77f2Di5+8r5WiFcpLMSG7XB0UbEfChctOkM6vECee6T7hSHqbO+j
+	 aWMDm3VzedXQNMiTlBVVU3FVPy1cdvdLT/i9/VeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/105] ASoC: Intel: catpt: Expose correct bit depth to userspace
-Date: Mon, 22 Sep 2025 21:29:58 +0200
-Message-ID: <20250922192410.862249071@linuxfoundation.org>
+Subject: [PATCH 6.12 076/105] drm/xe/tile: Release kobject for the failure path
+Date: Mon, 22 Sep 2025 21:29:59 +0200
+Message-ID: <20250922192410.887466867@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
 References: <20250922192408.913556629@linuxfoundation.org>
@@ -62,101 +63,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 690aa09b1845c0d5c3c29dabd50a9d0488c97c48 ]
+[ Upstream commit 013e484dbd687a9174acf8f4450217bdb86ad788 ]
 
-Currently wrong bit depth is exposed in hw params, causing clipped
-volume during playback. Expose correct parameters.
+Call kobject_put() for the failure path to release the kobject
 
-Fixes: a126750fc865 ("ASoC: Intel: catpt: PCM operations")
-Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Tested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Message-ID: <20250909092829.375953-1-amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+v2: remove extra newline. (Matt)
+
+Fixes: e3d0839aa501 ("drm/xe/tile: Abort driver load for sysfs creation failure")
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://lore.kernel.org/r/20250819153950.2973344-2-shuicheng.lin@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit b98775bca99511cc22ab459a2de646cd2fa7241f)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/catpt/pcm.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/xe_tile_sysfs.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/intel/catpt/pcm.c b/sound/soc/intel/catpt/pcm.c
-index 81a2f0339e055..ff1fa01acb85b 100644
---- a/sound/soc/intel/catpt/pcm.c
-+++ b/sound/soc/intel/catpt/pcm.c
-@@ -568,8 +568,9 @@ static const struct snd_pcm_hardware catpt_pcm_hardware = {
- 				  SNDRV_PCM_INFO_RESUME |
- 				  SNDRV_PCM_INFO_NO_PERIOD_WAKEUP,
- 	.formats		= SNDRV_PCM_FMTBIT_S16_LE |
--				  SNDRV_PCM_FMTBIT_S24_LE |
- 				  SNDRV_PCM_FMTBIT_S32_LE,
-+	.subformats		= SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
-+				  SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
- 	.period_bytes_min	= PAGE_SIZE,
- 	.period_bytes_max	= CATPT_BUFFER_MAX_SIZE / CATPT_PCM_PERIODS_MIN,
- 	.periods_min		= CATPT_PCM_PERIODS_MIN,
-@@ -699,14 +700,18 @@ static struct snd_soc_dai_driver dai_drivers[] = {
- 		.channels_min = 2,
- 		.channels_max = 2,
- 		.rates = SNDRV_PCM_RATE_48000,
--		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
-+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-+		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
-+			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
- 	},
- 	.capture = {
- 		.stream_name = "Analog Capture",
- 		.channels_min = 2,
- 		.channels_max = 4,
- 		.rates = SNDRV_PCM_RATE_48000,
--		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
-+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-+		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
-+			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
- 	},
- },
- {
-@@ -718,7 +723,9 @@ static struct snd_soc_dai_driver dai_drivers[] = {
- 		.channels_min = 2,
- 		.channels_max = 2,
- 		.rates = SNDRV_PCM_RATE_8000_192000,
--		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
-+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-+		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
-+			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
- 	},
- },
- {
-@@ -730,7 +737,9 @@ static struct snd_soc_dai_driver dai_drivers[] = {
- 		.channels_min = 2,
- 		.channels_max = 2,
- 		.rates = SNDRV_PCM_RATE_8000_192000,
--		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
-+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-+		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
-+			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
- 	},
- },
- {
-@@ -742,7 +751,9 @@ static struct snd_soc_dai_driver dai_drivers[] = {
- 		.channels_min = 2,
- 		.channels_max = 2,
- 		.rates = SNDRV_PCM_RATE_48000,
--		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
-+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-+		.subformats = SNDRV_PCM_SUBFMTBIT_MSBITS_24 |
-+			      SNDRV_PCM_SUBFMTBIT_MSBITS_MAX,
- 	},
- },
- {
+diff --git a/drivers/gpu/drm/xe/xe_tile_sysfs.c b/drivers/gpu/drm/xe/xe_tile_sysfs.c
+index b804234a65516..9e1236a9ec673 100644
+--- a/drivers/gpu/drm/xe/xe_tile_sysfs.c
++++ b/drivers/gpu/drm/xe/xe_tile_sysfs.c
+@@ -44,16 +44,18 @@ int xe_tile_sysfs_init(struct xe_tile *tile)
+ 	kt->tile = tile;
+ 
+ 	err = kobject_add(&kt->base, &dev->kobj, "tile%d", tile->id);
+-	if (err) {
+-		kobject_put(&kt->base);
+-		return err;
+-	}
++	if (err)
++		goto err_object;
+ 
+ 	tile->sysfs = &kt->base;
+ 
+ 	err = xe_vram_freq_sysfs_init(tile);
+ 	if (err)
+-		return err;
++		goto err_object;
+ 
+ 	return devm_add_action_or_reset(xe->drm.dev, tile_sysfs_fini, tile);
++
++err_object:
++	kobject_put(&kt->base);
++	return err;
+ }
 -- 
 2.51.0
 
