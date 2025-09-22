@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-181147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6593B92E2E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D935B92F93
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EEBE174138
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60D741907EF6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6502F0C5C;
-	Mon, 22 Sep 2025 19:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC242F28F6;
+	Mon, 22 Sep 2025 19:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meKyzRRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kstgEd5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B90725F780;
-	Mon, 22 Sep 2025 19:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5983A2DEA79;
+	Mon, 22 Sep 2025 19:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569807; cv=none; b=ZBcCSkpRdqtMoKlZLgHM8u9Ozun173rsr16c+cg1kdbfZlwh6cYAvxdUjLldFz89oNLlkxwFrf9nNb3rk4sqxJXzJjUuQEbIUk5wobH1NNy7SED2DukuvSSDLCwxUFkT/8e1XDHo3AZ4yL+dpMEY9MhpT2FiUkOFgWyhbHdjYqg=
+	t=1758570031; cv=none; b=topiZZHLeCClwrgP1vSrs46cYdI1pvnrHq5idvo6XCJsKKidYqBA76o28beCbFIrpBquQa7XjKAHR5BsF+N0i/+4KSou9TDl25LSZ0axu5HFStZtY3hblfBGrKVsA/9x5pR7/jVF+B36aIej/RBuLtwXyfoF2cgfZsEYL/FhUZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569807; c=relaxed/simple;
-	bh=NW3YjLCaqvbY43GNjfgpWTe0oRX4oA5WuMAhw5k3knE=;
+	s=arc-20240116; t=1758570031; c=relaxed/simple;
+	bh=iq1uhupk6+IGqiAMyYVU7H34u6gmdfPESPhA/993m5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdwawFDYwkl4wZVVtYn8+jv+Z8pfByYw5h/ysjT2JmKUsKjw6g5zVmSnVcBXNKq8ILfFejrOhU7SqQT9WO87JzyJDe+TdQLIHZ930K/Ek6KglO4ZkC6iPT0YrEBizBI/l2GOc6uQ+4V6SAob9CRfmTfEOqC7/klNeakrzdzecfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meKyzRRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8900C4CEF0;
-	Mon, 22 Sep 2025 19:36:46 +0000 (UTC)
+	 MIME-Version; b=Vfv6MxBCYmaNmfIN4K2CUi+PR5kb5K2/zh3dp13OePqDhLCacWvocsVULGSUMWS7c8p8mTbqbw0kJlSgkFVgD8sbbouNP4Q5kEgY5vAJNWsS+RKtqQaogbKQrSne97WqAI/+rY722t8h3EM7buDJjVlMZmeQZ29NbhPS4SGSYLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kstgEd5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBB0C4CEF0;
+	Mon, 22 Sep 2025 19:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569807;
-	bh=NW3YjLCaqvbY43GNjfgpWTe0oRX4oA5WuMAhw5k3knE=;
+	s=korg; t=1758570029;
+	bh=iq1uhupk6+IGqiAMyYVU7H34u6gmdfPESPhA/993m5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=meKyzRRbGE+/RchNC+MWiCSujz/6NqWiWNeFvFf1rR6zbedfgtij8l2UllRm7TRUu
-	 ZAF9CTbcY7Ucv4va0pgVtyNMaZe+rjHMevluOXZXVIAAWcMJTwSECjXUWgw1Q23HHc
-	 PY4Kc7aIO/lPioQ3g++1iEwBN+Oqixv+wA8TJPds=
+	b=kstgEd5Lvn7wJN7G3LHbcujR/hdK0WOQZJOZU6XiSt6O6bdUPwUspPe9VfLbS4238
+	 r7qmR7kmGIL98NDkCX6bwYcS1B94SLB/HPynlE6NN0CimbK8KZxE1TLZyzKO2Ggxyn
+	 FbYgcrtN8qS0xdsqdc8gqAaKKh+KL0yfPA5f1oRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 64/70] iommu/amd/pgtbl: Fix possible race while increase page table level
-Date: Mon, 22 Sep 2025 21:30:04 +0200
-Message-ID: <20250922192406.321492658@linuxfoundation.org>
+Subject: [PATCH 6.12 082/105] crypto: af_alg - Set merge to zero early in af_alg_sendmsg
+Date: Mon, 22 Sep 2025 21:30:05 +0200
+Message-ID: <20250922192411.047919676@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,147 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 1e56310b40fd2e7e0b9493da9ff488af145bdd0c ]
+[ Upstream commit 9574b2330dbd2b5459b74d3b5e9619d39299fc6f ]
 
-The AMD IOMMU host page table implementation supports dynamic page table levels
-(up to 6 levels), starting with a 3-level configuration that expands based on
-IOVA address. The kernel maintains a root pointer and current page table level
-to enable proper page table walks in alloc_pte()/fetch_pte() operations.
+If an error causes af_alg_sendmsg to abort, ctx->merge may contain
+a garbage value from the previous loop.  This may then trigger a
+crash on the next entry into af_alg_sendmsg when it attempts to do
+a merge that can't be done.
 
-The IOMMU IOVA allocator initially starts with 32-bit address and onces its
-exhuasted it switches to 64-bit address (max address is determined based
-on IOMMU and device DMA capability). To support larger IOVA, AMD IOMMU
-driver increases page table level.
+Fix this by setting ctx->merge to zero near the start of the loop.
 
-But in unmap path (iommu_v1_unmap_pages()), fetch_pte() reads
-pgtable->[root/mode] without lock. So its possible that in exteme corner case,
-when increase_address_space() is updating pgtable->[root/mode], fetch_pte()
-reads wrong page table level (pgtable->mode). It does compare the value with
-level encoded in page table and returns NULL. This will result is
-iommu_unmap ops to fail and upper layer may retry/log WARN_ON.
-
-CPU 0                                         CPU 1
-------                                       ------
-map pages                                    unmap pages
-alloc_pte() -> increase_address_space()      iommu_v1_unmap_pages() -> fetch_pte()
-  pgtable->root = pte (new root value)
-                                             READ pgtable->[mode/root]
-					       Reads new root, old mode
-  Updates mode (pgtable->mode += 1)
-
-Since Page table level updates are infrequent and already synchronized with a
-spinlock, implement seqcount to enable lock-free read operations on the read path.
-
-Fixes: 754265bcab7 ("iommu/amd: Fix race in increase_address_space()")
-Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Cc: stable@vger.kernel.org
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-[ Adapted pgtable->mode and pgtable->root to use domain->iop.mode and domain->iop.root ]
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/amd_iommu_types.h |    1 +
- drivers/iommu/amd/io_pgtable.c      |   26 ++++++++++++++++++++++----
- 2 files changed, 23 insertions(+), 4 deletions(-)
+ crypto/af_alg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -540,6 +540,7 @@ struct amd_irte_ops;
- 	container_of((x), struct amd_io_pgtable, pgtbl_cfg)
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index f02c5586a8ab3..ca6fdcc6c54ac 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1025,6 +1025,8 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			continue;
+ 		}
  
- struct amd_io_pgtable {
-+	seqcount_t		seqcount;	/* Protects root/mode update */
- 	struct io_pgtable_cfg	pgtbl_cfg;
- 	struct io_pgtable	iop;
- 	int			mode;
---- a/drivers/iommu/amd/io_pgtable.c
-+++ b/drivers/iommu/amd/io_pgtable.c
-@@ -17,6 +17,7 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/dma-mapping.h>
-+#include <linux/seqlock.h>
- 
- #include <asm/barrier.h>
- 
-@@ -171,8 +172,11 @@ static bool increase_address_space(struc
- 
- 	*pte = PM_LEVEL_PDE(domain->iop.mode, iommu_virt_to_phys(domain->iop.root));
- 
-+	write_seqcount_begin(&domain->iop.seqcount);
- 	domain->iop.root  = pte;
- 	domain->iop.mode += 1;
-+	write_seqcount_end(&domain->iop.seqcount);
++		ctx->merge = 0;
 +
- 	amd_iommu_update_and_flush_device_table(domain);
- 	amd_iommu_domain_flush_complete(domain);
- 
-@@ -199,6 +203,7 @@ static u64 *alloc_pte(struct protection_
- 		      gfp_t gfp,
- 		      bool *updated)
- {
-+	unsigned int seqcount;
- 	int level, end_lvl;
- 	u64 *pte, *page;
- 
-@@ -214,8 +219,14 @@ static u64 *alloc_pte(struct protection_
- 	}
- 
- 
--	level   = domain->iop.mode - 1;
--	pte     = &domain->iop.root[PM_LEVEL_INDEX(level, address)];
-+	do {
-+		seqcount = read_seqcount_begin(&domain->iop.seqcount);
-+
-+		level   = domain->iop.mode - 1;
-+		pte     = &domain->iop.root[PM_LEVEL_INDEX(level, address)];
-+	} while (read_seqcount_retry(&domain->iop.seqcount, seqcount));
-+
-+
- 	address = PAGE_SIZE_ALIGN(address, page_size);
- 	end_lvl = PAGE_SIZE_LEVEL(page_size);
- 
-@@ -292,6 +303,7 @@ static u64 *fetch_pte(struct amd_io_pgta
- 		      unsigned long *page_size)
- {
- 	int level;
-+	unsigned int seqcount;
- 	u64 *pte;
- 
- 	*page_size = 0;
-@@ -299,8 +311,12 @@ static u64 *fetch_pte(struct amd_io_pgta
- 	if (address > PM_LEVEL_SIZE(pgtable->mode))
- 		return NULL;
- 
--	level	   =  pgtable->mode - 1;
--	pte	   = &pgtable->root[PM_LEVEL_INDEX(level, address)];
-+	do {
-+		seqcount = read_seqcount_begin(&pgtable->seqcount);
-+		level	   =  pgtable->mode - 1;
-+		pte	   = &pgtable->root[PM_LEVEL_INDEX(level, address)];
-+	} while (read_seqcount_retry(&pgtable->seqcount, seqcount));
-+
- 	*page_size =  PTE_LEVEL_PAGE_SIZE(level);
- 
- 	while (level > 0) {
-@@ -524,6 +540,8 @@ static struct io_pgtable *v1_alloc_pgtab
- 	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE,
- 	cfg->tlb            = &v1_flush_ops;
- 
-+	seqcount_init(&pgtable->seqcount);
-+
- 	pgtable->iop.ops.map_pages    = iommu_v1_map_pages;
- 	pgtable->iop.ops.unmap_pages  = iommu_v1_unmap_pages;
- 	pgtable->iop.ops.iova_to_phys = iommu_v1_iova_to_phys;
+ 		if (!af_alg_writable(sk)) {
+ 			err = af_alg_wait_for_wmem(sk, msg->msg_flags);
+ 			if (err)
+@@ -1064,7 +1066,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			ctx->used += plen;
+ 			copied += plen;
+ 			size -= plen;
+-			ctx->merge = 0;
+ 		} else {
+ 			do {
+ 				struct page *pg;
+-- 
+2.51.0
+
 
 
 
