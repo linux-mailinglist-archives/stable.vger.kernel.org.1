@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246A8B92D91
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA38B93093
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98DB1906A97
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CE61908248
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EE52F0C63;
-	Mon, 22 Sep 2025 19:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10EE2F39DE;
+	Mon, 22 Sep 2025 19:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJqFXhI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNvVshHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E228CC8E6;
-	Mon, 22 Sep 2025 19:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E42F2909;
+	Mon, 22 Sep 2025 19:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569684; cv=none; b=HkCYsVvaAqocMv3oKZrOtcxjMJ620GEKLLhGgZRQD99mAy8036SBHmpOOu1rmxVPIeT2ZpJfZWqz1WC+pJGRAymw5gc8J+U6PyUBCaX+Ev9WwJ5/mJsClZNTRByNoffx/HzumHAndwWXM6L1s//NGwzO7NpBkcktLlmXJKYS324=
+	t=1758570224; cv=none; b=lRzwqfko8BEOW9H562IjLbBXapezPC8j1hac/4la+k0/2a3W2ZKNoBi5AdKoq+LxMIgmVVa38PyyLGHG5wIXm0cQc5I10eXKgIm3FIIrjQEivZVokR2aVgBczzY6XJFXpd9MMJY/oG3OA21X6liIHRPVPA7Oh4VOS598kODTV0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569684; c=relaxed/simple;
-	bh=BswaOVZ2ZASH06gzVz0PVvfOw+tEkAY83CVe5N0EefE=;
+	s=arc-20240116; t=1758570224; c=relaxed/simple;
+	bh=bRV92q0l9t5k6J/kRI0NcfBqDTIi05EdafOIaTY8Rqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBVqBuM0/TNXKnEQZTZ9fkH2DIabzl3S7qD0SEhbpZTetJLjDaenkYFrRa1l3YHXjICXO8IM099GBbyeBM6wduEZaf+PgvdZHUhzl0wi7sBvpiDjOzn32Pc65yD1Y5lBm3fGyIWsf61G97EE+pKeWeT9tW3fpMugz6oUsl2FPxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJqFXhI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF11C4CEF0;
-	Mon, 22 Sep 2025 19:34:43 +0000 (UTC)
+	 MIME-Version; b=lbrwZaeqqVR/wiDAoJyQm0vJCUoVVMMgMQLXbcWb+0js02aLWQKjw7dVc3MalE7TYi1tZqd7G+SDfDsaVlSmEAG1A/OU+TXFOzoIwLvWR6s9PtZl0XSAdMZo8NSru8FN+YB8kF1nyKRQRHykanVPfUkJJcp13rNq4Xyj5cXRjw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNvVshHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252CFC4CEF0;
+	Mon, 22 Sep 2025 19:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569683;
-	bh=BswaOVZ2ZASH06gzVz0PVvfOw+tEkAY83CVe5N0EefE=;
+	s=korg; t=1758570224;
+	bh=bRV92q0l9t5k6J/kRI0NcfBqDTIi05EdafOIaTY8Rqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJqFXhI9sl7P8P/AyNON/A4CJGrhdozAUvdz1JdeSuvZ36MxRioJoMGXsaPwJpMEZ
-	 w2sTOBgbYhO11ZNwk3wFREZJuy4Lnj7YyzsUoq05PV9LFb2WuYGUYK+3+I13WT7bA5
-	 r9XNvsV0iJYP87r2uVdJimP+8A+db/jI5nSA4l2A=
+	b=lNvVshHnj+CEgeLT/AYrzeBu2xKkpH2vKQbZR2yHYotXQgMTY87PDxmhiOUG3+osJ
+	 30yAzQ9Ur2aisau3/Gzkw5bn/OiGWVNRGtHhdxxjw4GyM8VAqyleyZMRCVIAjfv9kQ
+	 xvQPeJlfGZbhsh+f0h//dHnZZgJYoY1OhhO2hozs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/70] net: natsemi: fix `rx_dropped` double accounting on `netif_rx()` failure
+	Filipe Manana <fdmanana@suse.com>,
+	austinchang <austinchang@synology.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.16 055/149] btrfs: initialize inode::file_extent_tree after i_mode has been set
 Date: Mon, 22 Sep 2025 21:29:15 +0200
-Message-ID: <20250922192404.932790944@linuxfoundation.org>
+Message-ID: <20250922192414.249015858@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: austinchang <austinchang@synology.com>
 
-[ Upstream commit 93ab4881a4e2b9657bdce4b8940073bfb4ed5eab ]
+commit 8679d2687c351824d08cf1f0e86f3b65f22a00fe upstream.
 
-`netif_rx()` already increments `rx_dropped` core stat when it fails.
-The driver was also updating `ndev->stats.rx_dropped` in the same path.
-Since both are reported together via `ip -s -s` command, this resulted
-in drops being counted twice in user-visible stats.
+btrfs_init_file_extent_tree() uses S_ISREG() to determine if the file is
+a regular file. In the beginning of btrfs_read_locked_inode(), the i_mode
+hasn't been read from inode item, then file_extent_tree won't be used at
+all in volumes without NO_HOLES.
 
-Keep the driver update on `if (unlikely(!skb))`, but skip it after
-`netif_rx()` errors.
+Fix this by calling btrfs_init_file_extent_tree() after i_mode is
+initialized in btrfs_read_locked_inode().
 
-Fixes: caf586e5f23c ("net: add a core netdev->rx_dropped counter")
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250913060135.35282-3-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d7db6e8bd22e6 ("btrfs: don't allocate file extent tree for non regular files")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: austinchang <austinchang@synology.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/natsemi/ns83820.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ fs/btrfs/delayed-inode.c |    3 ---
+ fs/btrfs/inode.c         |   11 +++++------
+ 2 files changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/natsemi/ns83820.c b/drivers/net/ethernet/natsemi/ns83820.c
-index 998586872599b..c692d2e878b2e 100644
---- a/drivers/net/ethernet/natsemi/ns83820.c
-+++ b/drivers/net/ethernet/natsemi/ns83820.c
-@@ -820,7 +820,7 @@ static void rx_irq(struct net_device *ndev)
- 	struct ns83820 *dev = PRIV(ndev);
- 	struct rx_info *info = &dev->rx_info;
- 	unsigned next_rx;
--	int rx_rc, len;
-+	int len;
- 	u32 cmdsts;
- 	__le32 *desc;
- 	unsigned long flags;
-@@ -881,8 +881,10 @@ static void rx_irq(struct net_device *ndev)
- 		if (likely(CMDSTS_OK & cmdsts)) {
- #endif
- 			skb_put(skb, len);
--			if (unlikely(!skb))
-+			if (unlikely(!skb)) {
-+				ndev->stats.rx_dropped++;
- 				goto netdev_mangle_me_harder_failed;
-+			}
- 			if (cmdsts & CMDSTS_DEST_MULTI)
- 				ndev->stats.multicast++;
- 			ndev->stats.rx_packets++;
-@@ -901,15 +903,12 @@ static void rx_irq(struct net_device *ndev)
- 				__vlan_hwaccel_put_tag(skb, htons(ETH_P_IPV6), tag);
- 			}
- #endif
--			rx_rc = netif_rx(skb);
--			if (NET_RX_DROP == rx_rc) {
--netdev_mangle_me_harder_failed:
--				ndev->stats.rx_dropped++;
--			}
-+			netif_rx(skb);
- 		} else {
- 			dev_kfree_skb_irq(skb);
- 		}
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -1843,7 +1843,6 @@ static void fill_stack_inode_item(struct
  
-+netdev_mangle_me_harder_failed:
- 		nr++;
- 		next_rx = info->next_rx;
- 		desc = info->descs + (DESC_SIZE * next_rx);
--- 
-2.51.0
-
+ int btrfs_fill_inode(struct btrfs_inode *inode, u32 *rdev)
+ {
+-	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+ 	struct btrfs_delayed_node *delayed_node;
+ 	struct btrfs_inode_item *inode_item;
+ 	struct inode *vfs_inode = &inode->vfs_inode;
+@@ -1864,8 +1863,6 @@ int btrfs_fill_inode(struct btrfs_inode
+ 	i_uid_write(vfs_inode, btrfs_stack_inode_uid(inode_item));
+ 	i_gid_write(vfs_inode, btrfs_stack_inode_gid(inode_item));
+ 	btrfs_i_size_write(inode, btrfs_stack_inode_size(inode_item));
+-	btrfs_inode_set_file_extent_range(inode, 0,
+-			round_up(i_size_read(vfs_inode), fs_info->sectorsize));
+ 	vfs_inode->i_mode = btrfs_stack_inode_mode(inode_item);
+ 	set_nlink(vfs_inode, btrfs_stack_inode_nlink(inode_item));
+ 	inode_set_bytes(vfs_inode, btrfs_stack_inode_nbytes(inode_item));
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -3881,10 +3881,6 @@ static int btrfs_read_locked_inode(struc
+ 	bool filled = false;
+ 	int first_xattr_slot;
+ 
+-	ret = btrfs_init_file_extent_tree(inode);
+-	if (ret)
+-		goto out;
+-
+ 	ret = btrfs_fill_inode(inode, &rdev);
+ 	if (!ret)
+ 		filled = true;
+@@ -3916,8 +3912,6 @@ static int btrfs_read_locked_inode(struc
+ 	i_uid_write(vfs_inode, btrfs_inode_uid(leaf, inode_item));
+ 	i_gid_write(vfs_inode, btrfs_inode_gid(leaf, inode_item));
+ 	btrfs_i_size_write(inode, btrfs_inode_size(leaf, inode_item));
+-	btrfs_inode_set_file_extent_range(inode, 0,
+-			round_up(i_size_read(vfs_inode), fs_info->sectorsize));
+ 
+ 	inode_set_atime(vfs_inode, btrfs_timespec_sec(leaf, &inode_item->atime),
+ 			btrfs_timespec_nsec(leaf, &inode_item->atime));
+@@ -3948,6 +3942,11 @@ static int btrfs_read_locked_inode(struc
+ 	btrfs_update_inode_mapping_flags(inode);
+ 
+ cache_index:
++	ret = btrfs_init_file_extent_tree(inode);
++	if (ret)
++		goto out;
++	btrfs_inode_set_file_extent_range(inode, 0,
++			round_up(i_size_read(vfs_inode), fs_info->sectorsize));
+ 	/*
+ 	 * If we were modified in the current generation and evicted from memory
+ 	 * and then re-read we need to do a full sync since we don't have any
 
 
 
