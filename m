@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-181298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0214FB9308A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C0EB92EA2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34FB43B519B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59F31445E7F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310F42F49E3;
-	Mon, 22 Sep 2025 19:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFD71C1ADB;
+	Mon, 22 Sep 2025 19:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZWgmLMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb18PYV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D8F2F39DE;
-	Mon, 22 Sep 2025 19:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC36827B320;
+	Mon, 22 Sep 2025 19:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570184; cv=none; b=OUd80ib8cVYKSM/z8DdOWw8grsnm0oaWFPLkPiWxfYlj6vqi9kazI81JkosFz8qll4GQklpOZUWf9wqMMDtte60NtN1Up8S7LTfv87kXsr+qqMv5bbRig0pomzJHKrxC2YyYdXRNrSHqOnOLkH0C5Q8uo3A6PNzkNK2xmSQE594=
+	t=1758569889; cv=none; b=ZYQDsyKlsJWkuoCCzlF6p2S5AAJDU6oqt3VX7shUc/xAnWNO9qWtDbhrxNtSrdHk7oh8WxptqpQACc3WduJzKuXW0id+UW6FaIAbBeN3K0ONJDJ4QEbEytg/F9aLjg1ly0aElhIsiLgitn/Cj7ksX2+27zQ1fFmdiekoBHaxQ5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570184; c=relaxed/simple;
-	bh=T/fGLcQNbL3P/xfigHHca8nRVJL545dhy1Fh1Y4aL+E=;
+	s=arc-20240116; t=1758569889; c=relaxed/simple;
+	bh=Toggt+ExFUh8pyZj7LKnp+2W6RUWJyvemvVvWwgSBnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opxM8jNotGQkIyMYUPFPOcj3j9/gRJEoEj/KnBJgUIgldAR0iOAarqT7C/aAJuMAQZ/3NGs4ya+eOdzhHCfigFQDxLjfs5/X5KDYdNO4dmx07UEZQTuXhRmwoFcPuiqodcwavCR+qfuWnWrUqASrNMqx0OnZIECfQe47S1afDUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZWgmLMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78979C4CEF0;
-	Mon, 22 Sep 2025 19:43:03 +0000 (UTC)
+	 MIME-Version; b=ko4X006Wo4SsEu2dguOTzrBAmG5nTfznqeZbzRq+nFAgRPQ3irYFDrSUaiOlTMKvKYV8nHm++PVrDYNtFvAdinf8IYywsFkeEg2YSTmsIF7Pi7aaMJqB86XyzfCPHNLr0TdOZs0VNx0e+bQaorgV1azzTQtNackU39a2aLnO4Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb18PYV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA6AC4CEF0;
+	Mon, 22 Sep 2025 19:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570183;
-	bh=T/fGLcQNbL3P/xfigHHca8nRVJL545dhy1Fh1Y4aL+E=;
+	s=korg; t=1758569889;
+	bh=Toggt+ExFUh8pyZj7LKnp+2W6RUWJyvemvVvWwgSBnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZWgmLMJ87PyxUi7/FgA3V8LqHYW7uhUznq+11cfeEiS8VBTPNb/Q3WIekVh32gKs
-	 cJmb+D3GF6ButeFt1CC+mhkN2aa5tZiiCMtv1qqG1wrdux7GhsNssPhYNi6xRGdxrt
-	 OLMcyXTWeG0zjAIYC+2FMtnQS3NJqGkdAmdT8nPA=
+	b=Xb18PYV46Ulx2gWJWyFKLQQyBEc4y9zDa6cJV0dNjBWwTnvl770WiM9PrT8X9Xknf
+	 lan7xtsG1O74eE1MwO+qU/4N7SGf8T21Vq9vlFmh0/1yNElJea8BCxoyrzEw19ShQ6
+	 9SgogCXB7qV6Jw4SkXYQ0mnocosaxbbvQAkgOO0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.16 051/149] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
+	Lee Jones <lee@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 028/105] tls: make sure to abort the stream if headers are bogus
 Date: Mon, 22 Sep 2025 21:29:11 +0200
-Message-ID: <20250922192414.143428592@linuxfoundation.org>
+Message-ID: <20250922192409.648840789@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 upstream.
+[ Upstream commit 0aeb54ac4cd5cf8f60131b4d9ec0b6dc9c27b20d ]
 
-Issuing two writes to the same af_alg socket is bogus as the
-data will be interleaved in an unpredictable fashion.  Furthermore,
-concurrent writes may create inconsistencies in the internal
-socket state.
+Normally we wait for the socket to buffer up the whole record
+before we service it. If the socket has a tiny buffer, however,
+we read out the data sooner, to prevent connection stalls.
+Make sure that we abort the connection when we find out late
+that the record is actually invalid. Retrying the parsing is
+fine in itself but since we copy some more data each time
+before we parse we can overflow the allocated skb space.
 
-Disallow this by adding a new ctx->write field that indiciates
-exclusive ownership for writing.
+Constructing a scenario in which we're under pressure without
+enough data in the socket to parse the length upfront is quite
+hard. syzbot figured out a way to do this by serving us the header
+in small OOB sends, and then filling in the recvbuf with a large
+normal send.
 
-Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure that tls_rx_msg_size() aborts strp, if we reach
+an invalid record there's really no way to recover.
+
+Reported-by: Lee Jones <lee@kernel.org>
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250917002814.1743558-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c         |    7 +++++++
- include/crypto/if_alg.h |   10 ++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ net/tls/tls.h      |  1 +
+ net/tls/tls_strp.c | 14 +++++++++-----
+ net/tls/tls_sw.c   |  3 +--
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -970,6 +970,12 @@ int af_alg_sendmsg(struct socket *sock,
- 	}
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index e1eaf12b37426..fca0c0e170047 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -141,6 +141,7 @@ void update_sk_prot(struct sock *sk, struct tls_context *ctx);
  
- 	lock_sock(sk);
-+	if (ctx->write) {
-+		release_sock(sk);
-+		return -EBUSY;
+ int wait_on_pending_writer(struct sock *sk, long *timeo);
+ void tls_err_abort(struct sock *sk, int err);
++void tls_strp_abort_strp(struct tls_strparser *strp, int err);
+ 
+ int init_prot_info(struct tls_prot_info *prot,
+ 		   const struct tls_crypto_info *crypto_info,
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index d71643b494a1a..98e12f0ff57e5 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -13,7 +13,7 @@
+ 
+ static struct workqueue_struct *tls_strp_wq;
+ 
+-static void tls_strp_abort_strp(struct tls_strparser *strp, int err)
++void tls_strp_abort_strp(struct tls_strparser *strp, int err)
+ {
+ 	if (strp->stopped)
+ 		return;
+@@ -211,11 +211,17 @@ static int tls_strp_copyin_frag(struct tls_strparser *strp, struct sk_buff *skb,
+ 				struct sk_buff *in_skb, unsigned int offset,
+ 				size_t in_len)
+ {
++	unsigned int nfrag = skb->len / PAGE_SIZE;
+ 	size_t len, chunk;
+ 	skb_frag_t *frag;
+ 	int sz;
+ 
+-	frag = &skb_shinfo(skb)->frags[skb->len / PAGE_SIZE];
++	if (unlikely(nfrag >= skb_shinfo(skb)->nr_frags)) {
++		DEBUG_NET_WARN_ON_ONCE(1);
++		return -EMSGSIZE;
 +	}
-+	ctx->write = true;
 +
- 	if (ctx->init && !ctx->more) {
- 		if (ctx->used) {
- 			err = -EINVAL;
-@@ -1104,6 +1110,7 @@ int af_alg_sendmsg(struct socket *sock,
++	frag = &skb_shinfo(skb)->frags[nfrag];
  
- unlock:
- 	af_alg_data_wakeup(sk);
-+	ctx->write = false;
- 	release_sock(sk);
+ 	len = in_len;
+ 	/* First make sure we got the header */
+@@ -520,10 +526,8 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
+ 	tls_strp_load_anchor_with_queue(strp, inq);
+ 	if (!strp->stm.full_len) {
+ 		sz = tls_rx_msg_size(strp, strp->anchor);
+-		if (sz < 0) {
+-			tls_strp_abort_strp(strp, sz);
++		if (sz < 0)
+ 			return sz;
+-		}
  
- 	return copied ?: err;
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -135,6 +135,7 @@ struct af_alg_async_req {
-  *			SG?
-  * @enc:		Cryptographic operation to be performed when
-  *			recvmsg is invoked.
-+ * @write:		True if we are in the middle of a write.
-  * @init:		True if metadata has been sent.
-  * @len:		Length of memory allocated for this data structure.
-  * @inflight:		Non-zero when AIO requests are in flight.
-@@ -151,10 +152,11 @@ struct af_alg_ctx {
- 	size_t used;
- 	atomic_t rcvused;
+ 		strp->stm.full_len = sz;
  
--	bool more;
--	bool merge;
--	bool enc;
--	bool init;
-+	u32		more:1,
-+			merge:1,
-+			enc:1,
-+			write:1,
-+			init:1;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index ee92ce3255f93..f46550b96061e 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2440,8 +2440,7 @@ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb)
+ 	return data_len + TLS_HEADER_SIZE;
  
- 	unsigned int len;
+ read_failure:
+-	tls_err_abort(strp->sk, ret);
+-
++	tls_strp_abort_strp(strp, ret);
+ 	return ret;
+ }
  
+-- 
+2.51.0
+
 
 
 
