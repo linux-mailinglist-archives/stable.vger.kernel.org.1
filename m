@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A3AB92E7B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335BCB92D83
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C83631907037
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4927F446AE2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33EE2820D1;
-	Mon, 22 Sep 2025 19:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B49C2F3608;
+	Mon, 22 Sep 2025 19:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI2yLRsm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaTl3wXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE872F0C5C;
-	Mon, 22 Sep 2025 19:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91592F0C5E;
+	Mon, 22 Sep 2025 19:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569869; cv=none; b=CkBBfdqV5nGABhRxfaXDsDB+I7xeqA9qn6gJ9eplpRKyxzWxvech3vnEtARc7wfLr/crXqkCoBCSF7G/c0eShEomojxAS/8Yh3UiWzQlKfQXLDimOPV+QBCkKOOL0IdOQLz/zxV4VrOxbyTBMhoyDTmhgHTkokiMytb0EOQ7J48=
+	t=1758569668; cv=none; b=J+aP0YArxLHk+Pj7Pe5y2e03zAslhO1/LBiO4FiVXzQ3CzgZPHeuXSqbpjHpGu5oNrg1tDmGp8tZmINumQQEOHE63RjO6j6NrOhznYDbJ361UsnWn1a84+wA3D+iLlahE+QrU8/OFYAvGT5mA0CHS9NXIJBtYAqC9cq+jU54z74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569869; c=relaxed/simple;
-	bh=x+H7XW8u2acmSK3NYItdRKfVfjlR5mIM2aaJLdTdB44=;
+	s=arc-20240116; t=1758569668; c=relaxed/simple;
+	bh=0J8XijI1nvbWz5FYvTnIvaxwYQwOvF0KsZ6k7mLQMJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qcsUnCIfOoCwjBSuq4zLeiYHDY5U9bUWZ72T3IBwvRNXqy/VlwUVOcBovtzXhE/8pFNtgMB8jWvwsMTQzPZQATE/P7Pmvri+9D8uvD5CTZuN5EGx4BEZ5oJ8sWAPYdhyth3+EHv1hTEL9PVvxaHs9zSX1kKN4spL9YbCMeYEOG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI2yLRsm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352D4C4CEF0;
-	Mon, 22 Sep 2025 19:37:49 +0000 (UTC)
+	 MIME-Version; b=T/woKTAKLaeWTmwvkeNCdGtn5EMeaFOWmc11udVkGZs19aohNMaQAJPdqIAeCWQjGBlt1GBEL7jd2KzW9b5b9whzh+ZcFTpW/8XyVogR12dDQ9UoIq8WsLBPsy6LY+WT/TyEAF/nkrlXw84n2MJAURQCm3FhpcERrF25BvgD7w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaTl3wXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73526C4CEF0;
+	Mon, 22 Sep 2025 19:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569869;
-	bh=x+H7XW8u2acmSK3NYItdRKfVfjlR5mIM2aaJLdTdB44=;
+	s=korg; t=1758569668;
+	bh=0J8XijI1nvbWz5FYvTnIvaxwYQwOvF0KsZ6k7mLQMJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YI2yLRsm19888/n10mpUIovIIakfY3h8O1sPYkh3vhSVVGd283ntyd3KDBq9E8lYU
-	 pGY17C/ZuC2A6ULm1teSUR8fa5c5dl9bk4pDl8dGv1RD33/9EaJMghaLMVby7HWu4e
-	 IsTHXkV52tXEvYLuiSA8of9XydmGotf+Eaz7+bhA=
+	b=FaTl3wXvNpLMIlfXgV2C0DWt8l7F8e9QibCea78l8AXuzQ9n1dH+vrfq09ttyvN8S
+	 ejFq/704NS7SzOApejJ+T1GdG2J7by1B0ilIK4LYgsM2pD43z+A5gLQMh2ZHeK5uqX
+	 mnv73jA16GFzKiwRmrHlGTAvmlPXOMKA2Cpdl/XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/105] cnic: Fix use-after-free bugs in cnic_delete_task
+Subject: [PATCH 6.6 14/70] selftests: mptcp: sockopt: fix error messages
 Date: Mon, 22 Sep 2025 21:29:14 +0200
-Message-ID: <20250922192409.724149850@linuxfoundation.org>
+Message-ID: <20250922192404.900623676@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit cfa7d9b1e3a8604afc84e9e51d789c29574fb216 ]
+[ Upstream commit b86418beade11d45540a2d20c4ec1128849b6c27 ]
 
-The original code uses cancel_delayed_work() in cnic_cm_stop_bnx2x_hw(),
-which does not guarantee that the delayed work item 'delete_task' has
-fully completed if it was already running. Additionally, the delayed work
-item is cyclic, the flush_workqueue() in cnic_cm_stop_bnx2x_hw() only
-blocks and waits for work items that were already queued to the
-workqueue prior to its invocation. Any work items submitted after
-flush_workqueue() is called are not included in the set of tasks that the
-flush operation awaits. This means that after the cyclic work items have
-finished executing, a delayed work item may still exist in the workqueue.
-This leads to use-after-free scenarios where the cnic_dev is deallocated
-by cnic_free_dev(), while delete_task remains active and attempt to
-dereference cnic_dev in cnic_delete_task().
+This patch fixes several issues in the error reporting of the MPTCP sockopt
+selftest:
 
-A typical race condition is illustrated below:
+1. Fix diff not printed: The error messages for counter mismatches had
+   the actual difference ('diff') as argument, but it was missing in the
+   format string. Displaying it makes the debugging easier.
 
-CPU 0 (cleanup)              | CPU 1 (delayed work callback)
-cnic_netdev_event()          |
-  cnic_stop_hw()             | cnic_delete_task()
-    cnic_cm_stop_bnx2x_hw()  | ...
-      cancel_delayed_work()  | /* the queue_delayed_work()
-      flush_workqueue()      |    executes after flush_workqueue()*/
-                             | queue_delayed_work()
-  cnic_free_dev(dev)//free   | cnic_delete_task() //new instance
-                             |   dev = cp->dev; //use
+2. Fix variable usage: The error check for 'mptcpi_bytes_acked' incorrectly
+   used 'ret2' (sent bytes) for both the expected value and the difference
+   calculation. It now correctly uses 'ret' (received bytes), which is the
+   expected value for bytes_acked.
 
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the cyclic delayed work item is properly canceled and that any
-ongoing execution of the work item completes before the cnic_dev is
-deallocated. Furthermore, since cancel_delayed_work_sync() uses
-__flush_work(work, true) to synchronously wait for any currently
-executing instance of the work item to finish, the flush_workqueue()
-becomes redundant and should be removed.
+3. Fix off-by-one in diff: The calculation for the 'mptcpi_rcv_delta' diff
+   was 's.mptcpi_rcv_delta - ret', which is off-by-one. It has been
+   corrected to 's.mptcpi_rcv_delta - (ret + 1)' to match the expected
+   value in the condition above it.
 
-This bug was identified through static analysis. To reproduce the issue
-and validate the fix, I simulated the cnic PCI device in QEMU and
-introduced intentional delays — such as inserting calls to ssleep()
-within the cnic_delete_task() function — to increase the likelihood
-of triggering the bug.
-
-Fixes: fdf24086f475 ("cnic: Defer iscsi connection cleanup")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Fixes: 5dcff89e1455 ("selftests: mptcp: explicitly tests aggregate counters")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-5-40171884ade8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/cnic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../testing/selftests/net/mptcp/mptcp_sockopt.c  | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/cnic.c b/drivers/net/ethernet/broadcom/cnic.c
-index a9040c42d2ff9..6e97a5a7daaf9 100644
---- a/drivers/net/ethernet/broadcom/cnic.c
-+++ b/drivers/net/ethernet/broadcom/cnic.c
-@@ -4230,8 +4230,7 @@ static void cnic_cm_stop_bnx2x_hw(struct cnic_dev *dev)
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+index 926b0be87c990..1dc2bd6ee4a50 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+@@ -658,22 +658,26 @@ static void process_one_client(int fd, int pipefd)
  
- 	cnic_bnx2x_delete_wait(dev, 0);
+ 	do_getsockopts(&s, fd, ret, ret2);
+ 	if (s.mptcpi_rcv_delta != (uint64_t)ret + 1)
+-		xerror("mptcpi_rcv_delta %" PRIu64 ", expect %" PRIu64, s.mptcpi_rcv_delta, ret + 1, s.mptcpi_rcv_delta - ret);
++		xerror("mptcpi_rcv_delta %" PRIu64 ", expect %" PRIu64 ", diff %" PRId64,
++		       s.mptcpi_rcv_delta, ret + 1, s.mptcpi_rcv_delta - (ret + 1));
  
--	cancel_delayed_work(&cp->delete_task);
--	flush_workqueue(cnic_wq);
-+	cancel_delayed_work_sync(&cp->delete_task);
+ 	/* be nice when running on top of older kernel */
+ 	if (s.pkt_stats_avail) {
+ 		if (s.last_sample.mptcpi_bytes_sent != ret2)
+-			xerror("mptcpi_bytes_sent %" PRIu64 ", expect %" PRIu64,
++			xerror("mptcpi_bytes_sent %" PRIu64 ", expect %" PRIu64
++			       ", diff %" PRId64,
+ 			       s.last_sample.mptcpi_bytes_sent, ret2,
+ 			       s.last_sample.mptcpi_bytes_sent - ret2);
+ 		if (s.last_sample.mptcpi_bytes_received != ret)
+-			xerror("mptcpi_bytes_received %" PRIu64 ", expect %" PRIu64,
++			xerror("mptcpi_bytes_received %" PRIu64 ", expect %" PRIu64
++			       ", diff %" PRId64,
+ 			       s.last_sample.mptcpi_bytes_received, ret,
+ 			       s.last_sample.mptcpi_bytes_received - ret);
+ 		if (s.last_sample.mptcpi_bytes_acked != ret)
+-			xerror("mptcpi_bytes_acked %" PRIu64 ", expect %" PRIu64,
+-			       s.last_sample.mptcpi_bytes_acked, ret2,
+-			       s.last_sample.mptcpi_bytes_acked - ret2);
++			xerror("mptcpi_bytes_acked %" PRIu64 ", expect %" PRIu64
++			       ", diff %" PRId64,
++			       s.last_sample.mptcpi_bytes_acked, ret,
++			       s.last_sample.mptcpi_bytes_acked - ret);
+ 	}
  
- 	if (atomic_read(&cp->iscsi_conn) != 0)
- 		netdev_warn(dev->netdev, "%d iSCSI connections not destroyed\n",
+ 	close(fd);
 -- 
 2.51.0
 
