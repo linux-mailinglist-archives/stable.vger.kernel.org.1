@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B30B92CC2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF88B92E9F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865A83B0141
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EEA44474C4
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314622DF714;
-	Mon, 22 Sep 2025 19:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A90C285C92;
+	Mon, 22 Sep 2025 19:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDX+ydwH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3tY1wKX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E260829BDB5;
-	Mon, 22 Sep 2025 19:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1612F1C1ADB;
+	Mon, 22 Sep 2025 19:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569533; cv=none; b=IqnUzGOWzrJcPg0nys10kpwbSFCWYcvPIRokaLKREuChREoLOFkUaZ/e+PQOrc7aKrX3bR8Fpy7suBOTH4sy6JwrVkDrAUeWBASWFwNxtOd+r0ga+FzEkJKUvkRRXMECVSALsO7SxzVkwmrgFZ0nRwQ1fCBixZdlRHtbBlMjI+s=
+	t=1758569887; cv=none; b=sMXB8i4FkH4uVDeJHidp2bSEHIQH/ScIFLA4Vt2k5mcP8Ubke5VmGQ+5DIXxTkJMgogg9RD5+qXfHxBUQnlKZ+F3twe/iKQL0hkFuJ8IEeqfZtmorOcsgt5Sb0tUk+Z8ETyCXH2QOPCdaYcHQ99Mz+FqvlwaNoAKga9e9eCXq/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569533; c=relaxed/simple;
-	bh=954TOxy8rWi3bk4HMOXvPGz6MmysrHyTGOlGpmmmrpM=;
+	s=arc-20240116; t=1758569887; c=relaxed/simple;
+	bh=5cnf9gj8YKh8lWjpEXsQkdZswuL5wnsaIwX1T/OWAMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0HLKzIIInmW+ZmgeO1vm5XZgJHOL3ouJ+v0T9UApMaN45bpdT+T7PjuDXluV83VenAnbRPz2ZhyjnmM4sHorG3WAT+dYCC3UXTanYoi6HSQoVw98G8CaJ57noMoG+GvuadxXLOiAS+3Sc4aySoWUW1scVSrWRqWflmx46s8KmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDX+ydwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348F2C4CEF0;
-	Mon, 22 Sep 2025 19:32:11 +0000 (UTC)
+	 MIME-Version; b=sc9F5COs0ISoKehP2KscxaPKUT45AyxwbZjbSgOnIFoC3CjGrFYlzwTX6riO3L8Y4Uq/lM+kCgy1FTI0lATUJpjgybnN2i7kZvD5Qesxo1D7rMPtaS7z/pY11dA/hDGYT4IPw0tf2qBl0Fsa48bjqPm0v7wfpH2YKl2ZCgpJDmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3tY1wKX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CDFC4CEF0;
+	Mon, 22 Sep 2025 19:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569531;
-	bh=954TOxy8rWi3bk4HMOXvPGz6MmysrHyTGOlGpmmmrpM=;
+	s=korg; t=1758569887;
+	bh=5cnf9gj8YKh8lWjpEXsQkdZswuL5wnsaIwX1T/OWAMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDX+ydwHCLUenZS56HtKir6mljeN4i1JWd1F0q6QR2POU5hu+0uQTQukBXcHs9HQq
-	 0F4C/dW7HTFpShCMSP+qYKAE6/lbJplIbe9beiitg0+/pu3qrJaKXAGRrXlZGOaycf
-	 h8rtCsY7LMRF2eEfgeSXVPJ/kvUf5piMRc3tZCG0=
+	b=B3tY1wKXYq4l0mE6b2/4l+E8CfkjlhHXLPQx6KEL9tEtfze4KzSPW14skBcVPqB9Q
+	 L9gIGu24idtOM5Ijl/HNpGAxLWZ4GGnLPEsHtRKW8R4XO9DjrE4svePz0Co/jNzF35
+	 eLCgtGJ1VE4y174NqDY8vVXUJDdeRBJthU1SOSyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/61] net: liquidio: fix overflow in octeon_init_instr_queue()
+Subject: [PATCH 6.12 027/105] tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().
 Date: Mon, 22 Sep 2025 21:29:10 +0200
-Message-ID: <20250922192404.021113914@linuxfoundation.org>
+Message-ID: <20250922192409.623999377@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit cca7b1cfd7b8a0eff2a3510c5e0f10efe8fa3758 ]
+[ Upstream commit 45c8a6cc2bcd780e634a6ba8e46bffbdf1fc5c01 ]
 
-The expression `(conf->instr_type == 64) << iq_no` can overflow because
-`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
-operand to `u64` ensures correct 64-bit arithmetic.
+syzbot reported the splat below where a socket had tcp_sk(sk)->fastopen_rsk
+in the TCP_ESTABLISHED state. [0]
 
-Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+syzbot reused the server-side TCP Fast Open socket as a new client before
+the TFO socket completes 3WHS:
+
+  1. accept()
+  2. connect(AF_UNSPEC)
+  3. connect() to another destination
+
+As of accept(), sk->sk_state is TCP_SYN_RECV, and tcp_disconnect() changes
+it to TCP_CLOSE and makes connect() possible, which restarts timers.
+
+Since tcp_disconnect() forgot to clear tcp_sk(sk)->fastopen_rsk, the
+retransmit timer triggered the warning and the intended packet was not
+retransmitted.
+
+Let's call reqsk_fastopen_remove() in tcp_disconnect().
+
+[0]:
+WARNING: CPU: 2 PID: 0 at net/ipv4/tcp_timer.c:542 tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
+Modules linked in:
+CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 6.17.0-rc5-g201825fb4278 #62 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
+Code: 41 55 41 54 55 53 48 8b af b8 08 00 00 48 89 fb 48 85 ed 0f 84 55 01 00 00 0f b6 47 12 3c 03 74 0c 0f b6 47 12 3c 04 74 04 90 <0f> 0b 90 48 8b 85 c0 00 00 00 48 89 ef 48 8b 40 30 e8 6a 4f 06 3e
+RSP: 0018:ffffc900002f8d40 EFLAGS: 00010293
+RAX: 0000000000000002 RBX: ffff888106911400 RCX: 0000000000000017
+RDX: 0000000002517619 RSI: ffffffff83764080 RDI: ffff888106911400
+RBP: ffff888106d5c000 R08: 0000000000000001 R09: ffffc900002f8de8
+R10: 00000000000000c2 R11: ffffc900002f8ff8 R12: ffff888106911540
+R13: ffff888106911480 R14: ffff888106911840 R15: ffffc900002f8de0
+FS:  0000000000000000(0000) GS:ffff88907b768000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8044d69d90 CR3: 0000000002c30003 CR4: 0000000000370ef0
+Call Trace:
+ <IRQ>
+ tcp_write_timer (net/ipv4/tcp_timer.c:738)
+ call_timer_fn (kernel/time/timer.c:1747)
+ __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2372)
+ timer_expire_remote (kernel/time/timer.c:2385 kernel/time/timer.c:2376 kernel/time/timer.c:2135)
+ tmigr_handle_remote_up (kernel/time/timer_migration.c:944 kernel/time/timer_migration.c:1035)
+ __walk_groups.isra.0 (kernel/time/timer_migration.c:533 (discriminator 1))
+ tmigr_handle_remote (kernel/time/timer_migration.c:1096)
+ handle_softirqs (./arch/x86/include/asm/jump_label.h:36 ./include/trace/events/irq.h:142 kernel/softirq.c:580)
+ irq_exit_rcu (kernel/softirq.c:614 kernel/softirq.c:453 kernel/softirq.c:680 kernel/softirq.c:696)
+ sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1050 (discriminator 35) arch/x86/kernel/apic/apic.c:1050 (discriminator 35))
+ </IRQ>
+
+Fixes: 8336886f786f ("tcp: TCP Fast Open Server - support TFO listeners")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250915175800.118793-2-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-index 8e59c2825533a..2a066f193bca1 100644
---- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
-+++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-@@ -135,7 +135,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
- 	oct->io_qmask.iq |= BIT_ULL(iq_no);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 156da81bce068..988992ff898b3 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3286,6 +3286,7 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	int old_state = sk->sk_state;
++	struct request_sock *req;
+ 	u32 seq;
  
- 	/* Set the 32B/64B mode for each input queue */
--	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
-+	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
- 	iq->iqcmd_64B = (conf->instr_type == 64);
+ 	if (old_state != TCP_CLOSE)
+@@ -3400,6 +3401,10 @@ int tcp_disconnect(struct sock *sk, int flags)
  
- 	oct->fn_list.setup_iq_regs(oct, iq_no);
+ 
+ 	/* Clean up fastopen related fields */
++	req = rcu_dereference_protected(tp->fastopen_rsk,
++					lockdep_sock_is_held(sk));
++	if (req)
++		reqsk_fastopen_remove(sk, req, false);
+ 	tcp_free_fastopen_req(tp);
+ 	inet_clear_bit(DEFER_CONNECT, sk);
+ 	tp->fastopen_client_fail = 0;
 -- 
 2.51.0
 
