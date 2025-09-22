@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0B7B92DD9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC52B92D01
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344221905A24
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2127444595F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6023E2F0C5C;
-	Mon, 22 Sep 2025 19:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D5325F780;
+	Mon, 22 Sep 2025 19:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Mam6kcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nue+4k8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D12927B320;
-	Mon, 22 Sep 2025 19:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB03C8E6;
+	Mon, 22 Sep 2025 19:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569740; cv=none; b=aJiCpa40wwhKwWQcbFFZIRmZjScIASvoKncF6tr5nepOsz2FDZdGbhWIJONo5SHYrKrJ93J4gQtQmA/fK+dgRFuaQm4yXFaYp587E32pC8GsFM8v2Z6i8a3p+kBspoCob7jAP+ZL0WtAvqs+Ydu58Xf1axs2vq5cO3qU2v2rvy4=
+	t=1758569584; cv=none; b=T9H2D4K4dhDSX6L4Ylb3+kFzv76e5tPYMe07ktzsYAsLFR6Xu0RhIGmGCNtjBydS7eIA1q/Mro1LVsF3gHtjC5VUq2YlnGI6v4n2ULq9KI8A3SkSIh3YIvOfXjZuuTHkYJyGz7ADkw65RAGqBSOoA4Ge8NSybz+kGMz7ZCVm7Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569740; c=relaxed/simple;
-	bh=RTUZwhcPe+jmMiD0l67l41IpfSgeliBCvQkp+VabuI4=;
+	s=arc-20240116; t=1758569584; c=relaxed/simple;
+	bh=mgYy49SUbNJGvTlk/nPTLHHxogx8IvWfcEfcXmlNbHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCbdDPurOKs1KB9obiDw8AbDX0281mnxY2xfa/TD+YbTkcQMZ7N7T9OfMBXUJqvh476og7pGMO5PzhsJ+XKpifUOpUYDvquR8rJQoQJGw1iLa19jNb/Q6iaqparpLjD2xn/XVtnXrlt0Cwq+6/2rY1Jx/slS0fSTi9EoaZzSUoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Mam6kcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA34AC4CEF0;
-	Mon, 22 Sep 2025 19:35:39 +0000 (UTC)
+	 MIME-Version; b=XRiwY+206H+m0LaUMrgn5mliMDdwAZdFgujzm+pGCG+y4QAbTkTat68qlc1pzkYIKrsgGTcZfp35EMPuzUXo20Kljd34H6xD4wwooMErRivbbUhhPlTT4JL6lcLmfwwLiNGd2NBHt0BaZdZy5pL4wD5YyxLMWdk+sszLETqLvhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nue+4k8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD239C4CEF0;
+	Mon, 22 Sep 2025 19:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569740;
-	bh=RTUZwhcPe+jmMiD0l67l41IpfSgeliBCvQkp+VabuI4=;
+	s=korg; t=1758569584;
+	bh=mgYy49SUbNJGvTlk/nPTLHHxogx8IvWfcEfcXmlNbHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Mam6kcwYtZINgsraCVfjEk8HhhqIW/l46zTfJcrTxf1H7pE4Fm8XLIGUvDipNCjb
-	 i6HxOpaJpS8479HbWTfsJ71/r73kBZtiLiSaoR0Vnwbl6ykxktPP/pmtEi4drpy3gZ
-	 2TiSBjPNFzXQ1LvWlwPVSqnbSeSJVfWp7UnqGjLA=
+	b=Nue+4k8os4ByInCVgCpm9SALnkvb5bbUWmzIcQAAf4rqX9gH7Yaks1HYzzfxir51c
+	 1yFdM4699cQPnMLHVIVgWDRBwFrBul4b4WD1Z63M4VAg+yK1jJbQ2KskE1oafgs/nF
+	 WpRx7IjWovXBOyktwoyHl1duzFFX3KUDTdt+BZrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 42/70] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
-Date: Mon, 22 Sep 2025 21:29:42 +0200
-Message-ID: <20250922192405.746172092@linuxfoundation.org>
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 50/61] phy: ti: omap-usb2: fix device leak at unbind
+Date: Mon, 22 Sep 2025 21:29:43 +0200
+Message-ID: <20250922192404.993922051@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit b6f56a44e4c1014b08859dcf04ed246500e310e5 upstream.
+[ Upstream commit 64961557efa1b98f375c0579779e7eeda1a02c42 ]
 
-Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-device property") rfkill_find_type() gets called with the possibly
-uninitialized "const char *type_name;" local variable.
+Make sure to drop the reference to the control device taken by
+of_find_device_by_node() during probe when the driver is unbound.
 
-On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
-
-        rfkill->type = (unsigned)id->driver_data;
-
-and there is no "type" property so device_property_read_string() will fail
-and leave type_name uninitialized, leading to a potential crash.
-
-rfkill_find_type() does accept a NULL pointer, fix the potential crash
-by initializing type_name to NULL.
-
-Note likely sofar this has not been caught because:
-
-1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-2. The stack happened to contain NULL where type_name is stored
-
-Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
-Cc: stable@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 478b6c7436c2 ("usb: phy: omap-usb2: Don't use omap_get_control_dev()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20250724131206.2211-3-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/ti/phy-omap-usb2.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -79,10 +79,10 @@ static int rfkill_gpio_acpi_probe(struct
- static int rfkill_gpio_probe(struct platform_device *pdev)
- {
- 	struct rfkill_gpio_data *rfkill;
--	struct gpio_desc *gpio;
-+	const char *type_name = NULL;
- 	const char *name_property;
- 	const char *type_property;
--	const char *type_name;
-+	struct gpio_desc *gpio;
- 	int ret;
+--- a/drivers/phy/ti/phy-omap-usb2.c
++++ b/drivers/phy/ti/phy-omap-usb2.c
+@@ -363,6 +363,13 @@ static void omap_usb2_init_errata(struct
+ 		phy->flags |= OMAP_USB2_DISABLE_CHRG_DET;
+ }
  
- 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
++static void omap_usb2_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int omap_usb2_probe(struct platform_device *pdev)
+ {
+ 	struct omap_usb	*phy;
+@@ -373,6 +380,7 @@ static int omap_usb2_probe(struct platfo
+ 	struct device_node *control_node;
+ 	struct platform_device *control_pdev;
+ 	const struct usb_phy_data *phy_data;
++	int ret;
+ 
+ 	phy_data = device_get_match_data(&pdev->dev);
+ 	if (!phy_data)
+@@ -423,6 +431,11 @@ static int omap_usb2_probe(struct platfo
+ 			return -EINVAL;
+ 		}
+ 		phy->control_dev = &control_pdev->dev;
++
++		ret = devm_add_action_or_reset(&pdev->dev, omap_usb2_put_device,
++					       phy->control_dev);
++		if (ret)
++			return ret;
+ 	} else {
+ 		if (of_property_read_u32_index(node,
+ 					       "syscon-phy-power", 1,
 
 
 
