@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-181384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2BAB931A8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2754EB931BE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23BDD447CA7
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEFE916A23A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBC922F14C;
-	Mon, 22 Sep 2025 19:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC50E18C2C;
+	Mon, 22 Sep 2025 19:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLboT4ie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDABrjz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747BE1547CC;
-	Mon, 22 Sep 2025 19:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692371C1ADB;
+	Mon, 22 Sep 2025 19:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570407; cv=none; b=dizrLFZRPs6+9Xq7RV0iXcugwgcAlOs/noqoIj2R10q3wC/v2kacMjESnIZTqNhdK5oLxD7p/yrNK6CWOWlbf7+GBDcYn8VsUrSQLCYoFj+AAbKuBHdc0/rrioPSXSKJuBWbvt8kPr0T6rfKM8XN21TlgOOApw46ifeZriklIek=
+	t=1758570460; cv=none; b=Mlk6qc0HMrYKxdcgByOhBa4lfv6CfKD7gnWR04PG/3CUOuhRW5jURijS/hEXGDO/xLTd0q6AXiAJCGeEOZS1vmkEgNr+Fu5hE4u4s6Thphi/myU4U+66PYawyucBGbbtWPzUdTlk9MLjT587bqj+wc5XVeX4EKUxAIoS85Kw6EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570407; c=relaxed/simple;
-	bh=XGxslejsWoPrlbZ2bhtQgpfkLWpHAsrsvJlgJBqLvaM=;
+	s=arc-20240116; t=1758570460; c=relaxed/simple;
+	bh=seNCmIiVOzs0m2w2s7kmie017ykVIeQB4wR0qts0Czo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWy+R/xskxDupDkvMKxFUhS6RgvHbTx7Lx2sD3sStrakk4Hl0LKLu58Fs91sp8W5FWliwm1EakoJGuzQ4M5ngfJxaXZRC72xk1qh67TyDR8gD3337wKe/JmKYcDc+1huxyUj2Cv3d6qBUN07zUTLjuF02TqrLilZqGBccOh+Y+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLboT4ie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5DAC4CEF0;
-	Mon, 22 Sep 2025 19:46:46 +0000 (UTC)
+	 MIME-Version; b=F+7zDPP6Rh6MpMhP3N6wfV2wsLdOt0cNZJJ/z7QsvpDJFp0I2AKcGEllqpWQS6eWAmQwhnoj0xFohGqryn/PLYeDX1j0ml5S0SJdnhAo4Osc2CUj24t+9aRcALS/SNwTiWOD/ffSjo9lTm2QXoh2SXzqutMTUmRAcRQH3SC9yG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDABrjz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8955EC4CEF0;
+	Mon, 22 Sep 2025 19:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570407;
-	bh=XGxslejsWoPrlbZ2bhtQgpfkLWpHAsrsvJlgJBqLvaM=;
+	s=korg; t=1758570459;
+	bh=seNCmIiVOzs0m2w2s7kmie017ykVIeQB4wR0qts0Czo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLboT4ie7IXAXifrZIfMH/3LH1B74bY1QAEx/CYzy5+nYnggDdoYi8Z8mc9tq8P7v
-	 5vd+nb2s/mzkffC41Kjv9/ggWzSlWlK2BpyProoUQQBZP8jdJgZOcESFPJJKCnJQxy
-	 sczkZvIllgCIZpcMiWTUk6e1NekluUSkClhEqacU=
+	b=YDABrjz/9oxGFFfRTupc6hiPXQcFs8vAlY7zw3wnc7GjOK6g74yLBDfhiEbc80eMC
+	 tZHxdQMmYHKjwn1WTDHU1w4Iv+WF74tzZ9/T/vAwGM6UW5bkCLPTjwx6vs82cS5vfu
+	 is2jRrLUFy9DOjMpQlqzgc/M8lPaL/KDUpBunnAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	Yang Xiuwei <yangxiuwei@kylinos.cn>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 137/149] smb: client: fix smbdirect_recv_io leak in smbd_negotiate() error path
-Date: Mon, 22 Sep 2025 21:30:37 +0200
-Message-ID: <20250922192416.320514082@linuxfoundation.org>
+Subject: [PATCH 6.16 138/149] io_uring: fix incorrect io_kiocb reference in io_link_skb
+Date: Mon, 22 Sep 2025 21:30:38 +0200
+Message-ID: <20250922192416.347490317@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
 References: <20250922192412.885919229@linuxfoundation.org>
@@ -72,43 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Yang Xiuwei <yangxiuwei@kylinos.cn>
 
-[ Upstream commit daac51c7032036a0ca5f1aa419ad1b0471d1c6e0 ]
+[ Upstream commit 2c139a47eff8de24e3350dadb4c9d5e3426db826 ]
 
-During tests of another unrelated patch I was able to trigger this
-error: Objects remaining on __kmem_cache_shutdown()
+In io_link_skb function, there is a bug where prev_notif is incorrectly
+assigned using 'nd' instead of 'prev_nd'. This causes the context
+validation check to compare the current notification with itself instead
+of comparing it with the previous notification.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix by using the correct prev_nd parameter when obtaining prev_notif.
+
+Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+Fixes: 6fe4220912d19 ("io_uring/notif: implement notification stacking")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ io_uring/notif.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 8b920410cd2fe..6dd2a1c66df3d 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1101,8 +1101,10 @@ static int smbd_negotiate(struct smbd_connection *info)
- 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=0x%llx iov.length=%u iov.lkey=0x%x\n",
- 		       rc, response->sge.addr,
- 		       response->sge.length, response->sge.lkey);
--	if (rc)
-+	if (rc) {
-+		put_receive_buffer(info, response);
- 		return rc;
-+	}
+diff --git a/io_uring/notif.c b/io_uring/notif.c
+index 9a6f6e92d7424..ea9c0116cec2d 100644
+--- a/io_uring/notif.c
++++ b/io_uring/notif.c
+@@ -85,7 +85,7 @@ static int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg)
+ 		return -EEXIST;
  
- 	init_completion(&info->negotiate_completion);
- 	info->negotiate_done = false;
+ 	prev_nd = container_of(prev_uarg, struct io_notif_data, uarg);
+-	prev_notif = cmd_to_io_kiocb(nd);
++	prev_notif = cmd_to_io_kiocb(prev_nd);
+ 
+ 	/* make sure all noifications can be finished in the same task_work */
+ 	if (unlikely(notif->ctx != prev_notif->ctx ||
 -- 
 2.51.0
 
