@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA38B93093
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC8CB92CA5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CE61908248
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72B8C1901ADF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10EE2F39DE;
-	Mon, 22 Sep 2025 19:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F98C2F067B;
+	Mon, 22 Sep 2025 19:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNvVshHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyb0QTWG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E42F2909;
-	Mon, 22 Sep 2025 19:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0824191F66;
+	Mon, 22 Sep 2025 19:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570224; cv=none; b=lRzwqfko8BEOW9H562IjLbBXapezPC8j1hac/4la+k0/2a3W2ZKNoBi5AdKoq+LxMIgmVVa38PyyLGHG5wIXm0cQc5I10eXKgIm3FIIrjQEivZVokR2aVgBczzY6XJFXpd9MMJY/oG3OA21X6liIHRPVPA7Oh4VOS598kODTV0Q=
+	t=1758569516; cv=none; b=ajn6V/ufsQHsI7ChOZXRb6v1ddp8h5iPrmUfSwNOkznnM2h7lEUUgWLyrp9GMIYDOstEQZa2tD36rtTudwAhfaYhF1jrozi+TBNFw7u+OfWqDMf9OTZvfGCYrnGeCaUC66uTsrN8Ezid00Cdk5LevqckN0R0FhA9XFGcfi/0SWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570224; c=relaxed/simple;
-	bh=bRV92q0l9t5k6J/kRI0NcfBqDTIi05EdafOIaTY8Rqc=;
+	s=arc-20240116; t=1758569516; c=relaxed/simple;
+	bh=TwYEtDF4wRTiwmfBVu912lyTYmal8JkR4kzNrHfth1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbrwZaeqqVR/wiDAoJyQm0vJCUoVVMMgMQLXbcWb+0js02aLWQKjw7dVc3MalE7TYi1tZqd7G+SDfDsaVlSmEAG1A/OU+TXFOzoIwLvWR6s9PtZl0XSAdMZo8NSru8FN+YB8kF1nyKRQRHykanVPfUkJJcp13rNq4Xyj5cXRjw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNvVshHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252CFC4CEF0;
-	Mon, 22 Sep 2025 19:43:43 +0000 (UTC)
+	 MIME-Version; b=dkFqvDFaFfBweXf9NF8trPA+l6WMsjtUdSMDbVkwQgWyUg1YCDaylPlmEtZKsx25UZdO3YF6fqjDi4aZ6Nnm1JmcfSaef2hfQ+lxR0DBm17EeV4PfmxjsO46bSttN0927j0/VBJgl9XNA3khoYkzCWaaYTxnz4JzFSXOe4jBJys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyb0QTWG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBA5C4CEF0;
+	Mon, 22 Sep 2025 19:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570224;
-	bh=bRV92q0l9t5k6J/kRI0NcfBqDTIi05EdafOIaTY8Rqc=;
+	s=korg; t=1758569516;
+	bh=TwYEtDF4wRTiwmfBVu912lyTYmal8JkR4kzNrHfth1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNvVshHnj+CEgeLT/AYrzeBu2xKkpH2vKQbZR2yHYotXQgMTY87PDxmhiOUG3+osJ
-	 30yAzQ9Ur2aisau3/Gzkw5bn/OiGWVNRGtHhdxxjw4GyM8VAqyleyZMRCVIAjfv9kQ
-	 xvQPeJlfGZbhsh+f0h//dHnZZgJYoY1OhhO2hozs=
+	b=Dyb0QTWGv5d326x/+x8roEv51wNDHSzE1+X/0+pbfch73sY0BztWFOO7NwrrVdR95
+	 xKVOLW3IrjFpeqKMWIveNKnl0DlFyeLpHuYup4INUpWzfmvOG7IUIUUGvoZrzSbrkC
+	 iQnNzKWeAshJSIGdZxDDdel1cmjIliuRF0lxqIAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	austinchang <austinchang@synology.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.16 055/149] btrfs: initialize inode::file_extent_tree after i_mode has been set
-Date: Mon, 22 Sep 2025 21:29:15 +0200
-Message-ID: <20250922192414.249015858@linuxfoundation.org>
+	Jerry Lv <Jerry.Lv@axis.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 23/61] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+Date: Mon, 22 Sep 2025 21:29:16 +0200
+Message-ID: <20250922192404.188398667@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: austinchang <austinchang@synology.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-commit 8679d2687c351824d08cf1f0e86f3b65f22a00fe upstream.
+commit 2c334d038466ac509468fbe06905a32d202117db upstream.
 
-btrfs_init_file_extent_tree() uses S_ISREG() to determine if the file is
-a regular file. In the beginning of btrfs_read_locked_inode(), the i_mode
-hasn't been read from inode item, then file_extent_tree won't be used at
-all in volumes without NO_HOLES.
+Since commit
 
-Fix this by calling btrfs_init_file_extent_tree() after i_mode is
-initialized in btrfs_read_locked_inode().
+	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
 
-Fixes: 3d7db6e8bd22e6 ("btrfs: don't allocate file extent tree for non regular files")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: austinchang <austinchang@synology.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+the console log of some devices with hdq enabled but no bq27000 battery
+(like e.g. the Pandaboard) is flooded with messages like:
+
+[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
+
+as soon as user-space is finding a /sys entry and trying to read the
+"status" property.
+
+It turns out that the offending commit changes the logic to now return the
+value of cache.flags if it is <0. This is likely under the assumption that
+it is an error number. In normal errors from bq27xxx_read() this is indeed
+the case.
+
+But there is special code to detect if no bq27000 is installed or accessible
+through hdq/1wire and wants to report this. In that case, the cache.flags
+are set historically by
+
+	commit 3dd843e1c26a ("bq27000: report missing device better.")
+
+to constant -1 which did make reading properties return -ENODEV. So everything
+appeared to be fine before the return value was passed upwards.
+
+Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
+condition in power_supply_format_property() which then floods the console log.
+
+So we change the detection of missing bq27000 battery to simply set
+
+	cache.flags = -ENODEV
+
+instead of -1.
+
+Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Cc: Jerry Lv <Jerry.Lv@axis.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-inode.c |    3 ---
- fs/btrfs/inode.c         |   11 +++++------
- 2 files changed, 5 insertions(+), 9 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1843,7 +1843,6 @@ static void fill_stack_inode_item(struct
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1873,7 +1873,7 @@ static void bq27xxx_battery_update_unloc
  
- int btrfs_fill_inode(struct btrfs_inode *inode, u32 *rdev)
- {
--	struct btrfs_fs_info *fs_info = inode->root->fs_info;
- 	struct btrfs_delayed_node *delayed_node;
- 	struct btrfs_inode_item *inode_item;
- 	struct inode *vfs_inode = &inode->vfs_inode;
-@@ -1864,8 +1863,6 @@ int btrfs_fill_inode(struct btrfs_inode
- 	i_uid_write(vfs_inode, btrfs_stack_inode_uid(inode_item));
- 	i_gid_write(vfs_inode, btrfs_stack_inode_gid(inode_item));
- 	btrfs_i_size_write(inode, btrfs_stack_inode_size(inode_item));
--	btrfs_inode_set_file_extent_range(inode, 0,
--			round_up(i_size_read(vfs_inode), fs_info->sectorsize));
- 	vfs_inode->i_mode = btrfs_stack_inode_mode(inode_item);
- 	set_nlink(vfs_inode, btrfs_stack_inode_nlink(inode_item));
- 	inode_set_bytes(vfs_inode, btrfs_stack_inode_nbytes(inode_item));
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3881,10 +3881,6 @@ static int btrfs_read_locked_inode(struc
- 	bool filled = false;
- 	int first_xattr_slot;
- 
--	ret = btrfs_init_file_extent_tree(inode);
--	if (ret)
--		goto out;
--
- 	ret = btrfs_fill_inode(inode, &rdev);
- 	if (!ret)
- 		filled = true;
-@@ -3916,8 +3912,6 @@ static int btrfs_read_locked_inode(struc
- 	i_uid_write(vfs_inode, btrfs_inode_uid(leaf, inode_item));
- 	i_gid_write(vfs_inode, btrfs_inode_gid(leaf, inode_item));
- 	btrfs_i_size_write(inode, btrfs_inode_size(leaf, inode_item));
--	btrfs_inode_set_file_extent_range(inode, 0,
--			round_up(i_size_read(vfs_inode), fs_info->sectorsize));
- 
- 	inode_set_atime(vfs_inode, btrfs_timespec_sec(leaf, &inode_item->atime),
- 			btrfs_timespec_nsec(leaf, &inode_item->atime));
-@@ -3948,6 +3942,11 @@ static int btrfs_read_locked_inode(struc
- 	btrfs_update_inode_mapping_flags(inode);
- 
- cache_index:
-+	ret = btrfs_init_file_extent_tree(inode);
-+	if (ret)
-+		goto out;
-+	btrfs_inode_set_file_extent_range(inode, 0,
-+			round_up(i_size_read(vfs_inode), fs_info->sectorsize));
- 	/*
- 	 * If we were modified in the current generation and evicted from memory
- 	 * and then re-read we need to do a full sync since we don't have any
+ 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+ 	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -1; /* read error */
++		cache.flags = -ENODEV; /* read error */
+ 	if (cache.flags >= 0) {
+ 		cache.temperature = bq27xxx_battery_read_temperature(di);
+ 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
 
 
 
