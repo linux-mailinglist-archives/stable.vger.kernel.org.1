@@ -1,103 +1,138 @@
-Return-Path: <stable+bounces-180885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73F49B8F237
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3E5B8F19E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6841A7AB1FC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:23:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCE23AA664
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA532F0C5F;
-	Mon, 22 Sep 2025 06:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C2823C50F;
+	Mon, 22 Sep 2025 06:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nPpM8eY2"
 X-Original-To: stable@vger.kernel.org
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EA32D592D;
-	Mon, 22 Sep 2025 06:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA9317332C;
+	Mon, 22 Sep 2025 06:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758522264; cv=none; b=sLkzrjuNA5b6a/e+5pjzM/maNgV1ecYUnaDDgRqF5wXLfmQzMwI01tTzhEmFcyZltbOejzGhBHjsSeCc484MuJg7JS8toNOHqwHg/agNtlUhwHXlsXaSzSu73MTrruI6uilickLytBorsYWwQ/WkEciswCafnTT53zE3mOtari8=
+	t=1758522069; cv=none; b=RfEVxc94tyAErNJ7XerafiawFGIdQmzYkoUVp/3XCxljEHiqann7RUyYF38Lyi6BgC+s9YNfDJhcAeqwLYavyQqwuQOTn3kopQgvCoKSxkcoIYwSdhpSh75102DqsriguSCwr3V1WDTdEvLGguiL8DcTH7+3NcZ3j80POlj/N9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758522264; c=relaxed/simple;
-	bh=zLaj/kEorTU+TDsrPw5VwC2WYQbDrFDJtAW7FmpzXOo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ADfpfYd6VaKoDM848AZqyyW5bTVkm3i0inFK0Ww7lZl04ZoJVnCZmH/BoWQgt8dlF/8htZLfbFpWKOeUH+cnxkYdBovLHHx3iWp70CD9e6SPp9lOx5+EtoBqcwzkGQ1BX5G5Oyan9//86qEjEQW2GPFBCbRML5Vs67jJilgj2kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 55DE05830BC;
-	Mon, 22 Sep 2025 06:20:09 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 60CB1443C6;
-	Mon, 22 Sep 2025 06:19:57 +0000 (UTC)
-Message-ID: <bfffde06-5d4c-4e2c-adfe-e48590bf2f3d@ghiti.fr>
-Date: Mon, 22 Sep 2025 08:19:55 +0200
+	s=arc-20240116; t=1758522069; c=relaxed/simple;
+	bh=9HiLbM40Ej70qCxUe+2HWgi1HQvvNJ4S7zpy/HKrHEY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g9VgSgnpJkJRhPHLDjrUwjvSFXNz41s0n2eI58WKEvq4iCl6AidCPpGNwFQCoo3kxje8vZZ+NFDu4YQQFqmJ+jlFVzUaBeCsOUx2O6fBJo6zeuD9ybB9b/uPAMpdrKF9fvQTEJQ96lpKHwJ8lhAsKxWePp3mi36P3AD4/KokJCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nPpM8eY2; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758522068; x=1790058068;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9HiLbM40Ej70qCxUe+2HWgi1HQvvNJ4S7zpy/HKrHEY=;
+  b=nPpM8eY2DKfNhPqh2zf5uxz7+3eO228WkxFrDgmoPDHYBVl4/ZLgQ965
+   gsqFm7+fpXzXemlXHssG3lJP/jGGQFy1QnyzWPy3Z/XPia3ssrCnm5oH0
+   o+VaklOZDmHE8s5LPEFCOPi+NJvBaENPpND3W+sFzgKfccx66eigIA6Y2
+   ozoxYMkFhnN+LW5HNEmHEntjxuHiZm+f1B5L9E4SdPQxCzUo4MPtB9qd0
+   LrLz+6SAVZdETNZGUUOqQjnG5tDOli1xd5erGBhM1CiXkbKAyWUJo4EvT
+   rpRrHCY0TBlzoGmb9JsN4hMuX4tviEIRhAU4SfW/V0GG6mVk3DWjXcJSC
+   w==;
+X-CSE-ConnectionGUID: ry3Nl9RsS4SyBxUnkCR/Hg==
+X-CSE-MsgGUID: 2KfctUv4RfKy92v66H52PA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="86214258"
+X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
+   d="scan'208";a="86214258"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 23:21:06 -0700
+X-CSE-ConnectionGUID: Zkp1zbnXSCeJFwwYNv5mkA==
+X-CSE-MsgGUID: rLyaRBoCQu+fHTOJz0grtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
+   d="scan'208";a="176833457"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.61])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 23:21:03 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 0BDE711F982;
+	Mon, 22 Sep 2025 09:21:01 +0300 (EEST)
+Date: Mon, 22 Sep 2025 09:21:00 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: bingbu.cao@intel.com, lixu.zhang@intel.com,
+	stanislaw.gruszka@linux.intel.com, mchehab@kernel.org,
+	wentong.wu@intel.com, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] media: pci: intel: ivsc: fix error handling in
+ scan_one_device()
+Message-ID: <aNDqzIXpHHKZRiju@kekkonen.localdomain>
+References: <20250920134252.8612-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] riscv: Use an atomic xchg in pudp_huge_get_and_clear()
-To: Paul Walmsley <pjw@kernel.org>, Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250814-dev-alex-thp_pud_xchg-v1-1-b4704dfae206@rivosinc.com>
- <c8afb3b4-e5d5-628b-6bce-0b1b3137a667@kernel.org>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <c8afb3b4-e5d5-628b-6bce-0b1b3137a667@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehjeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhephffhuddtveegleeggeefledtudfhudelvdetudfhgeffffeigffgkeethfejudejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelfedrfeefrdehjedrudelleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleefrdeffedrheejrdduleelpdhhvghloheplgduledvrdduieekrddvvddruddtudgnpdhmrghilhhfrhhomheprghlvgigsehghhhithhirdhfrhdpnhgspghrtghpthhtohepkedprhgtphhtthhopehpjhifsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgihghhhithhisehrihhvohhsihhntgdrtghomhdprhgtphhtthhopehprghulhdrfigrlhhmshhlvgihsehsihhfihhvvgdrtghomhdprhgtphhtthhopehprghlmhgvrhesuggrsggsvghlthdrtghomhdprhgtphhtthhopegrohhusegvvggtshdrsggvrhhkvghlvgihrdgvughupdhrtghpthhtohepl
- hhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: alex@ghiti.fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250920134252.8612-1-make24@iscas.ac.cn>
 
-On 9/20/25 03:39, Paul Walmsley wrote:
-> Hi Alex,
->
-> On Thu, 14 Aug 2025, Alexandre Ghiti wrote:
->
->> Make sure we return the right pud value and not a value that could
->> have been overwritten in between by a different core.
->>
->> Fixes: c3cc2a4a3a23 ("riscv: Add support for PUD THP")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
->> ---
->> Note that this will conflict with
->> https://lore.kernel.org/linux-riscv/20250625063753.77511-1-ajd@linux.ibm.com/
->> if applied after 6.17.
-> Two quick questions on this one:
->
-> - I see that you're using atomic_long_xchg() here and in some similar
-> functions in pgtable.h, rather than xchg().  Was curious about the
-> rationale for that?
+Hi Ma,
 
+Thank you for the patch.
 
-Both functions amount to the same, I just used the same function as for 
-existing similar functions.
+On Sat, Sep 20, 2025 at 09:42:52PM +0800, Ma Ke wrote:
+> The mei_ace driver contains a device reference count leak in
+> mei_ace_setup_dev_link() where device_find_child_by_name() increases
+> the reference count of the found device but this reference is not
+> properly decreased in the success path. Add put_device() in
+> mei_ace_setup_dev_link() and delete put_device() in mei_ace_remove(),
+> which ensures that the reference count of the device is correctly
+> managed regardless of whether the probe is successful or fails.
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/media/pci/intel/ivsc/mei_ace.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/pci/intel/ivsc/mei_ace.c b/drivers/media/pci/intel/ivsc/mei_ace.c
+> index 98310b8511b1..261b30788118 100644
+> --- a/drivers/media/pci/intel/ivsc/mei_ace.c
+> +++ b/drivers/media/pci/intel/ivsc/mei_ace.c
+> @@ -421,6 +421,7 @@ static int mei_ace_setup_dev_link(struct mei_ace *ace)
+>  	}
+>  
+>  	ace->csi_dev = csi_dev;
+> +	put_device(csi_dev);
+>  
+>  	return 0;
+>  
+> @@ -522,7 +523,6 @@ static void mei_ace_remove(struct mei_cl_device *cldev)
+>  	cancel_work_sync(&ace->work);
+>  
+>  	device_link_del(ace->csi_link);
+> -	put_device(ace->csi_dev);
+>  
+>  	pm_runtime_disable(&cldev->dev);
+>  	pm_runtime_set_suspended(&cldev->dev);
 
+Is this a bug?
 
->
-> - x86 avoids the xchg() for !CONFIG_SMP.  Should we do the same?
+device_link_add() will get both devices in success case so you could
+unconditionally put the csi_dev right after calling device_link_add().
 
+-- 
+Regards,
 
-Sounds like micro optimization to me, but up to you.
-
-
->
-> thanks,
->
-> - Paul
->
+Sakari Ailus
 
