@@ -1,138 +1,135 @@
-Return-Path: <stable+bounces-180883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC3E5B8F19E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:21:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C5DB8F1E9
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCE23AA664
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF6D17A26A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C2823C50F;
-	Mon, 22 Sep 2025 06:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E532441A0;
+	Mon, 22 Sep 2025 06:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nPpM8eY2"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="qxInE8uD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA9317332C;
-	Mon, 22 Sep 2025 06:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BD7242938
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 06:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758522069; cv=none; b=RfEVxc94tyAErNJ7XerafiawFGIdQmzYkoUVp/3XCxljEHiqann7RUyYF38Lyi6BgC+s9YNfDJhcAeqwLYavyQqwuQOTn3kopQgvCoKSxkcoIYwSdhpSh75102DqsriguSCwr3V1WDTdEvLGguiL8DcTH7+3NcZ3j80POlj/N9c=
+	t=1758522137; cv=none; b=JkeLmdUnfKeHrTBzCRVAVAgkmjnY2IoWweoPVBGb9Km6CN0e6Y1mTEdAdQCUPp54TBpEZTiJzWe4wIgDaL876D2ar9pzSpK/1+gJVr8mSqvE+qQ+82DqhyNiGiJ7XOsyl1WQGlhUIFQ1ysgND0iXSEk+XyHyFExsjKuI6cC2zOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758522069; c=relaxed/simple;
-	bh=9HiLbM40Ej70qCxUe+2HWgi1HQvvNJ4S7zpy/HKrHEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g9VgSgnpJkJRhPHLDjrUwjvSFXNz41s0n2eI58WKEvq4iCl6AidCPpGNwFQCoo3kxje8vZZ+NFDu4YQQFqmJ+jlFVzUaBeCsOUx2O6fBJo6zeuD9ybB9b/uPAMpdrKF9fvQTEJQ96lpKHwJ8lhAsKxWePp3mi36P3AD4/KokJCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nPpM8eY2; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758522068; x=1790058068;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9HiLbM40Ej70qCxUe+2HWgi1HQvvNJ4S7zpy/HKrHEY=;
-  b=nPpM8eY2DKfNhPqh2zf5uxz7+3eO228WkxFrDgmoPDHYBVl4/ZLgQ965
-   gsqFm7+fpXzXemlXHssG3lJP/jGGQFy1QnyzWPy3Z/XPia3ssrCnm5oH0
-   o+VaklOZDmHE8s5LPEFCOPi+NJvBaENPpND3W+sFzgKfccx66eigIA6Y2
-   ozoxYMkFhnN+LW5HNEmHEntjxuHiZm+f1B5L9E4SdPQxCzUo4MPtB9qd0
-   LrLz+6SAVZdETNZGUUOqQjnG5tDOli1xd5erGBhM1CiXkbKAyWUJo4EvT
-   rpRrHCY0TBlzoGmb9JsN4hMuX4tviEIRhAU4SfW/V0GG6mVk3DWjXcJSC
-   w==;
-X-CSE-ConnectionGUID: ry3Nl9RsS4SyBxUnkCR/Hg==
-X-CSE-MsgGUID: 2KfctUv4RfKy92v66H52PA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="86214258"
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="86214258"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 23:21:06 -0700
-X-CSE-ConnectionGUID: Zkp1zbnXSCeJFwwYNv5mkA==
-X-CSE-MsgGUID: rLyaRBoCQu+fHTOJz0grtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="176833457"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.61])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 23:21:03 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 0BDE711F982;
-	Mon, 22 Sep 2025 09:21:01 +0300 (EEST)
-Date: Mon, 22 Sep 2025 09:21:00 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: bingbu.cao@intel.com, lixu.zhang@intel.com,
-	stanislaw.gruszka@linux.intel.com, mchehab@kernel.org,
-	wentong.wu@intel.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: pci: intel: ivsc: fix error handling in
- scan_one_device()
-Message-ID: <aNDqzIXpHHKZRiju@kekkonen.localdomain>
-References: <20250920134252.8612-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1758522137; c=relaxed/simple;
+	bh=0bm+f1WSxzWfn/wCQJSel8ny/PQe+ST1oMkROWbrLTE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Upj6MYblgFS384URXlCSRZX5rDWZXOMmTZ1jpyrHrYOyFtUKBYasD8XrJ0DhuCCNpNHoxzFNfavmvU8jpgL9xufM3Gc3By9puDsf4COj4gywXvR8Mgg4b+7tIU6j2fIOvJKLR8weO4hyYsDStkShmp1/F3wbMQnyDBqqtcrhPNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=qxInE8uD; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ece0e4c5faso4722918f8f.1
+        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 23:22:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1758522131; x=1759126931; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Uc6eTzZkXXgyCcWWDhbnFU5MdPrnO6H7v+FW7/g/zSM=;
+        b=qxInE8uDt8Pd7W2CKV9qDKTqjom6rahPfW73avH+3/eZ/R+MLvFz8DrNxlXI54cLlX
+         ekwYiRuaGYwXrRDJP6tEtG1W0Y2PsBUokmep/Est2ZPdajrN22iEjEUC3Kw5tqigJKEP
+         xJNd7H/StKMH2eyBzWDadBWF9eEyXwLcdrg8UyAxuGgvmEBhqJ6ZvKjXO2lUTDKphBhP
+         ep1uU/rq645CzvDLB4ELuFMp1NtJmd/mkzLwsEz+S05Xx+6HhBsUfDQkd3snymmHHE9N
+         Zpak/TY3qJgS1ZQh9SPSGKYDXKfMxjMv760nvmzu93ry/LOJz9HKMOzviB363gPkPsVp
+         L+Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758522131; x=1759126931;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uc6eTzZkXXgyCcWWDhbnFU5MdPrnO6H7v+FW7/g/zSM=;
+        b=SUcS0ndJJRyorZ2ic9hbaB8TGN4y+2O3ChSDrDUvkD17Iilt/Luu06wJde6ReyjJgW
+         i8nV0E9gQbODqehso+QfKr+1cblSF6dkYNzcd7Ai0BU93dNdJcNcC8SWC6UXyAZDm3Fe
+         d7hXtuM5kZZSjRFW2aKfy2U/eMODchdf4WZnSDoj2W2ouz6EpKgOV6u0E9LbSWeu8D8V
+         R75c1zPI9A2CFvqgqtN+Owbo8srm0JabRHwnrlAIdD9ztzvWJWxgXx6Td+8I/4snbShY
+         wFyCMCXudSP5vyfTmwFdmAv4p6lifu9XSyokagInYPFFZrGk8SMr89Rj5qDJZeXQWHp1
+         ZjZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVznEmgPnrFbJCUgCw1mZYHRdWeF6YFQPiz5xlnWwMQkQ0P+I8zKktZTbyHycBMOnki5QxQVp8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCTt/DDCryzV5ilyo03vNEeku7FqzRDuJJJjDvEEHkfnGjrt+z
+	KGtdeR3U5CVuSEOBgXS8PFA1HKudQuJnLVui+tGg0wX6VVH43kQhuqwTD9ov+2KFU/VRGZ8sUHK
+	6PewrRWM=
+X-Gm-Gg: ASbGncvA64j+xCyL+Z9s3FNEayIPteiV2n8nYWAnSeCRaTJ7A5yVy7ZrwzJc/Rp3fQT
+	1NnL7hMtl5cmBgIzeOUyy8C+64UcUht7ubc1evdzqoUhGNp5cfPYgNrmIXb1bsRwaGHIju5RybI
+	J25zQJ4uzZbnII/OU4L4/E1xcNYNeS+0wQcZ/dvx6t2l0Jj50NlSbhSWJG4DwCiqYBpccIO/WRG
+	wWIQsjIAenfYQPaDX0lBNAsjj16XPu+nJTHHWAEAxvdI3nSd8Pvmd9+ku3MdFVDGQda+PT7Y5TZ
+	CjoAXpSnkDDeqPhxfTd6scbfDEgU8+SCUixYVjvPpbf8ZjfvEI9aPKLdCDkpOYraiO+BL6pG4in
+	px+WTdCbOrhmH1ES7iIU3
+X-Google-Smtp-Source: AGHT+IH4eX5bTOxcWYBSQXC/CIEwPwNNMy2VX4YvoQjeswtMwsZrzl/pHLFLCq9U5ClrMYRGZ1ISbg==
+X-Received: by 2002:a05:6000:18a7:b0:3fd:bf1d:15ac with SMTP id ffacd0b85a97d-3fdbf1d1ac4mr1713547f8f.20.1758522131034;
+        Sun, 21 Sep 2025 23:22:11 -0700 (PDT)
+Received: from [172.17.2.81] ([178.208.16.192])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3f88de2d075sm6977946f8f.35.2025.09.21.23.22.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 21 Sep 2025 23:22:10 -0700 (PDT)
+Message-ID: <c4b98918-fb7d-4927-b750-0f1f5e28a0bc@kernel.dk>
+Date: Mon, 22 Sep 2025 00:22:09 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250920134252.8612-1-make24@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring: include dying ring in task_work
+ "should cancel"" failed to apply to 6.12-stable tree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: thaler@thaler.hu, stable@vger.kernel.org
+References: <2025092127-synthetic-squash-4d57@gregkh>
+ <bc33927c-a7ed-4518-92e6-e97fc5fde5e8@kernel.dk>
+ <2025092206-identical-bonded-c86f@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2025092206-identical-bonded-c86f@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Ma,
-
-Thank you for the patch.
-
-On Sat, Sep 20, 2025 at 09:42:52PM +0800, Ma Ke wrote:
-> The mei_ace driver contains a device reference count leak in
-> mei_ace_setup_dev_link() where device_find_child_by_name() increases
-> the reference count of the found device but this reference is not
-> properly decreased in the success path. Add put_device() in
-> mei_ace_setup_dev_link() and delete put_device() in mei_ace_remove(),
-> which ensures that the reference count of the device is correctly
-> managed regardless of whether the probe is successful or fails.
+On 9/21/25 11:59 PM, Greg KH wrote:
+> On Sun, Sep 21, 2025 at 06:44:45AM -0600, Jens Axboe wrote:
+>> On 9/21/25 6:32 AM, gregkh@linuxfoundation.org wrote:
+>>>
+>>> The patch below does not apply to the 6.12-stable tree.
+>>> If someone wants it applied there, or to any other stable or longterm
+>>> tree, then please email the backport, including the original git commit
+>>> id to <stable@vger.kernel.org>.
+>>>
+>>> To reproduce the conflict and resubmit, you may use the following commands:
+>>>
+>>> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+>>> git checkout FETCH_HEAD
+>>> git cherry-pick -x 3539b1467e94336d5854ebf976d9627bfb65d6c3
+>>> # <resolve conflicts, build, test, etc.>
+>>> git commit -s
+>>> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092127-synthetic-squash-4d57@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+>>>
+>>> Possible dependencies:
+>>
+>> Here's this and the others marked for 6.12-stable, already prepared them
+>> last week as I knew I'd be traveling.
 > 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/media/pci/intel/ivsc/mei_ace.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/pci/intel/ivsc/mei_ace.c b/drivers/media/pci/intel/ivsc/mei_ace.c
-> index 98310b8511b1..261b30788118 100644
-> --- a/drivers/media/pci/intel/ivsc/mei_ace.c
-> +++ b/drivers/media/pci/intel/ivsc/mei_ace.c
-> @@ -421,6 +421,7 @@ static int mei_ace_setup_dev_link(struct mei_ace *ace)
->  	}
->  
->  	ace->csi_dev = csi_dev;
-> +	put_device(csi_dev);
->  
->  	return 0;
->  
-> @@ -522,7 +523,6 @@ static void mei_ace_remove(struct mei_cl_device *cldev)
->  	cancel_work_sync(&ace->work);
->  
->  	device_link_del(ace->csi_link);
-> -	put_device(ace->csi_dev);
->  
->  	pm_runtime_disable(&cldev->dev);
->  	pm_runtime_set_suspended(&cldev->dev);
+> As you have backported commit b6f58a3f4aa8 ("io_uring: move struct
+> io_kiocb from task_struct to io_uring_task") does that mean we should
+> also add commit 69a62e03f896 ("io_uring/msg_ring: don't leave
+> potentially dangling ->tctx pointer") which claims to fix it?
 
-Is this a bug?
-
-device_link_add() will get both devices in success case so you could
-unconditionally put the csi_dev right after calling device_link_add().
+No, the b6f58a3f4aa8 commit backport just backports the
+io_should_terminate_tw() helper. That original commit should've likely
+been split upstream, which is what made the backport only partial. It
+doesn't backport the parts that moves from using task_struct to
+io_uring_task.
 
 -- 
-Regards,
-
-Sakari Ailus
+Jens Axboe
 
