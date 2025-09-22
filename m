@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-181089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97537B92D73
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B4BB92E99
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FF3C2A7006
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9262F4471F5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AC82F1FDA;
-	Mon, 22 Sep 2025 19:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86C72F0C78;
+	Mon, 22 Sep 2025 19:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT31dqMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLVnbL0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7083F2F0C5F;
-	Mon, 22 Sep 2025 19:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E5427B320;
+	Mon, 22 Sep 2025 19:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569661; cv=none; b=SpFZkU37oH+xVSqiwHkDe5jZA7rcFC3rz+CTJGasx/LYYTigA20Wq0zopA4daOow9abadxwMRqNJGF2bTX8D6eqouLz1roJPDPxMHtKzIpZjhCmqqr+WwHsGivjoMs7Tw5G3Q2Qy3HHs9l28jLChX8Lt5HrbRgcnps1fiehoXDE=
+	t=1758569884; cv=none; b=DTsrtRXWb3pq7DFB2buSG+9tMA7BlxZ4eOZLi2De1pbC8V60NMSigv7D39X6e5D2iPMGrb8yhuI0mDUm1hXA49mDsrAkB1W4YcaKCdUtHSk8W526neZKtgjfP05pIDORMw2o7kDfGDRpm8h+dJFxTh27G5sn9kOtKpjfCjIDA50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569661; c=relaxed/simple;
-	bh=O95EqnRdJggBdCRjeb1IsUPnzn7995LuALcYw6rPGJ8=;
+	s=arc-20240116; t=1758569884; c=relaxed/simple;
+	bh=1bU0VlgmipZYlam4RahH16yrrJExF/DB6YAQHCKCybw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwOPvheqgiHgOnn2+AO9VOculPVIdvNkLHaeEHCf2UrrUa+ulWy7o7MJ5vfn7PGhyZLN/RhWg3zz7QFzOin/uk5xdu+W1XFlIcLNfxN/hWEly2lw1dCBAP48mf2oAkIBLwaX3Jehpo4SL0gNwFi29F1vrmzK9IzWpERNWjEk1Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT31dqMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D39BC4CEF0;
-	Mon, 22 Sep 2025 19:34:20 +0000 (UTC)
+	 MIME-Version; b=A3oYNNr+C1ig0MvlLafEJo/FQNfWrmkB1eWQHniu25fZ/j1rJjlTzJUHU5qdtycvE2ec90ZWm1xJUEQintUUFQ904DZDRfqP+kVBwlwpIjRp79irtvs6xakzBvvujhX2G331KpHCwixqOKDOapYhQiYtviUz9rST6QKKu6wLM0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLVnbL0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C29C4CEF0;
+	Mon, 22 Sep 2025 19:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569661;
-	bh=O95EqnRdJggBdCRjeb1IsUPnzn7995LuALcYw6rPGJ8=;
+	s=korg; t=1758569881;
+	bh=1bU0VlgmipZYlam4RahH16yrrJExF/DB6YAQHCKCybw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bT31dqMBOR9JJBIRUf5KwZdIKeTQLGUsunVCOjIP7TkKZ/ZO71j2BEGLvUA8gvum/
-	 CHX6p1e4zt55HZsBHHp9bY0qNiDhvZ9vTpcRC3QurIQ0VlZT9FxvG16CZi/C11g8Mi
-	 kp+HtjyOkegdxE/CUtwdHHR0pWBwCwQ6fDpEhU7s=
+	b=MLVnbL0LnMyhoDonriGnZWGPEQfmktFv919yx3gPI5o6Y8l5wtDLX9pphQ/ZnOj1h
+	 6ZFZTNunEpJEVk7Zvvtp6dzp8457FDuJPFYuz/aIk/1kAUpX+tYPiabCKLiDnXWhCw
+	 TSp31xYigQ7k4Akn70WeD5/+496X0DZT7nqizoi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	David Wilder <wilder@us.ibm.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 08/70] um: virtio_uml: Fix use-after-free after put_device in probe
+Subject: [PATCH 6.12 025/105] bonding: dont set oif to bond dev when getting NS target destination
 Date: Mon, 22 Sep 2025 21:29:08 +0200
-Message-ID: <20250922192404.702360177@linuxfoundation.org>
+Message-ID: <20250922192409.572459564@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 7ebf70cf181651fe3f2e44e95e7e5073d594c9c0 ]
+[ Upstream commit a8ba87f04ca9cdec06776ce92dce1395026dc3bb ]
 
-When register_virtio_device() fails in virtio_uml_probe(),
-the code sets vu_dev->registered = 1 even though
-the device was not successfully registered.
-This can lead to use-after-free or other issues.
+Unlike IPv4, IPv6 routing strictly requires the source address to be valid
+on the outgoing interface. If the NS target is set to a remote VLAN interface,
+and the source address is also configured on a VLAN over a bond interface,
+setting the oif to the bond device will fail to retrieve the correct
+destination route.
 
-Fixes: 04e5b1fb0183 ("um: virtio: Remove device on disconnect")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix this by not setting the oif to the bond device when retrieving the NS
+target destination. This allows the correct destination device (the VLAN
+interface) to be determined, so that bond_verify_device_path can return the
+proper VLAN tags for sending NS messages.
+
+Reported-by: David Wilder <wilder@us.ibm.com>
+Closes: https://lore.kernel.org/netdev/aGOKggdfjv0cApTO@fedora/
+Suggested-by: Jay Vosburgh <jv@jvosburgh.net>
+Tested-by: David Wilder <wilder@us.ibm.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20250916080127.430626-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/virtio_uml.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/um/drivers/virtio_uml.c b/arch/um/drivers/virtio_uml.c
-index 8adca2000e519..d790acfc2c674 100644
---- a/arch/um/drivers/virtio_uml.c
-+++ b/arch/um/drivers/virtio_uml.c
-@@ -1229,10 +1229,12 @@ static int virtio_uml_probe(struct platform_device *pdev)
- 	device_set_wakeup_capable(&vu_dev->vdev.dev, true);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 952737a98751e..00204e42de2e7 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3338,7 +3338,6 @@ static void bond_ns_send_all(struct bonding *bond, struct slave *slave)
+ 		/* Find out through which dev should the packet go */
+ 		memset(&fl6, 0, sizeof(struct flowi6));
+ 		fl6.daddr = targets[i];
+-		fl6.flowi6_oif = bond->dev->ifindex;
  
- 	rc = register_virtio_device(&vu_dev->vdev);
--	if (rc)
-+	if (rc) {
- 		put_device(&vu_dev->vdev.dev);
-+		return rc;
-+	}
- 	vu_dev->registered = 1;
--	return rc;
-+	return 0;
- 
- error_init:
- 	os_close_file(vu_dev->sock);
+ 		dst = ip6_route_output(dev_net(bond->dev), NULL, &fl6);
+ 		if (dst->error) {
 -- 
 2.51.0
 
