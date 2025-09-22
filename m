@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C148B930C5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950FFB92F20
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 094781721DB
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3420D4477CB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60822F3C23;
-	Mon, 22 Sep 2025 19:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7692F2617;
+	Mon, 22 Sep 2025 19:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0AMq7Oz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vu8PiziJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D792F2909;
-	Mon, 22 Sep 2025 19:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE04F2820D1;
+	Mon, 22 Sep 2025 19:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570297; cv=none; b=Jkzq5yE1xHrN8NmyWayCkaydwbSlRybVgpBp2vgV6tw1AWWzhGl/fbtW2ehoGgRPRJbzrlwl5LrqY1fMPMHVVL1pMdF1iqecSDNZ1R1xxij7Z7vknN6rDStyApnLtmrMuPZWbsbRRxPSjBfUe6H7sQcl5qwPK2NPCeX2eAsmLgU=
+	t=1758569968; cv=none; b=q4xp3kUGwDUQZcDo/juDYSICNxoGdAW4p1sTKBSRxt1cx2mFEmO2zA9GMBgKxwEdwqoJGlkKhp4yyxAyRUK6gN8AT5lajfqw4FXgTN+fvXmD5mzh8abt7gTWkeW36GTsPxg4XaGoPHj+MbLVH/NiMevWMvNftBt8iIgC0u1a7QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570297; c=relaxed/simple;
-	bh=TpsX0u1b63KMo5ZPfjn0xUrZ0VD72tZAItLL6DsY+FQ=;
+	s=arc-20240116; t=1758569968; c=relaxed/simple;
+	bh=H7sguuAodPDZJuMqswIbGNCkzzzY2vA/JRG0e2wXibk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVbdVTCPKFF03uOs1+22ZfG6kosAO+QwhRjj7Kzm8j0NWBa1sBqSgUVtrCmQenzLXYjc/HNMqCmcl4TqRCxHawM8f5rTQlW6oFy2N8lScC+rvWiBArz+8eTCJZJyOgYlJjvJuiYtw3HL7Og88zKOpejLTHkI1BkCy0VOfzrVJZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0AMq7Oz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE68C4CEF0;
-	Mon, 22 Sep 2025 19:44:56 +0000 (UTC)
+	 MIME-Version; b=HWg+Ogeyls7mA5DmKK58zQr8TbgTLWQ46KWi9ls+N0/XC9L+sOCVOJolHdvdtmxJ3i5vZs7TRVpGh1W4xWaQqzFIg+KYAzhgwX6bhh7NuqNVBmAvvmb/fJ5uyCKWEt7IXfhYVXPtB4ZFb3w88MqD/omBXBsCuMZnWGXOwZwH29g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vu8PiziJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C48C4CEF5;
+	Mon, 22 Sep 2025 19:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570297;
-	bh=TpsX0u1b63KMo5ZPfjn0xUrZ0VD72tZAItLL6DsY+FQ=;
+	s=korg; t=1758569968;
+	bh=H7sguuAodPDZJuMqswIbGNCkzzzY2vA/JRG0e2wXibk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V0AMq7OzaMsL7BBPSWU/b1HGOnI7JYKgnFhhTHnVbT7zdpBoy0OdJ0WhY5Ke9Jd7S
-	 1Pl/FtfyL1U/e1yEDeJW+l9CAEvdk4ipJYfXTMTHLIAsNUTRFtMbpdx8ta/3MaLX4j
-	 0Yknj6SpEKx+rK9fmhvhfnZ/N5LluTV0ILeFNMQo=
+	b=Vu8PiziJ0ZIAGHU3oE4OTWaeC3/yQDbJJsrOTP6J4AI+kr0qtI2naUgKSVRz7sdFP
+	 Meoqj44xGkZWeZHRMZGiylN07uO5GU/y4SlnA99r80r7NsnoAtW+pkx7K1GstoACWj
+	 naF9KIZOuSLxzJMp8XmW/J0Zq8UtYGp0/jUW0RfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	David Perry <david.perry@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 094/149] drm/amdkfd: add proper handling for S0ix
+	Ankur Tyagi <ankur.tyagi85@gmail.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 071/105] ASoC: wm8940: Correct PLL rate rounding
 Date: Mon, 22 Sep 2025 21:29:54 +0200
-Message-ID: <20250922192415.257701476@linuxfoundation.org>
+Message-ID: <20250922192410.762143720@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 2ade36eaa9ac05e4913e9785df19c2cde8f912fb upstream.
+[ Upstream commit d05afb53c683ef7ed1228b593c3360f4d3126c58 ]
 
-When in S0i3, the GFX state is retained, so all we need to do
-is stop the runlist so GFX can enter gfxoff.
+Using a single value of 22500000 for both 48000Hz and 44100Hz audio
+will sometimes result in returning wrong dividers due to rounding.
+Update the code to use the actual value for both.
 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: David Perry <david.perry@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4bfa8609934dbf39bbe6e75b4f971469384b50b1)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 294833fc9eb4 ("ASoC: wm8940: Rewrite code to set proper clocks")
+Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Link: https://patch.msgid.link/20250821082639.1301453-2-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c |   16 +++++++++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h |   12 +++++++++
- drivers/gpu/drm/amd/amdkfd/kfd_device.c    |   36 +++++++++++++++++++++++++++++
- 3 files changed, 60 insertions(+), 4 deletions(-)
+ sound/soc/codecs/wm8940.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -250,16 +250,24 @@ void amdgpu_amdkfd_interrupt(struct amdg
- 
- void amdgpu_amdkfd_suspend(struct amdgpu_device *adev, bool suspend_proc)
- {
--	if (adev->kfd.dev)
--		kgd2kfd_suspend(adev->kfd.dev, suspend_proc);
-+	if (adev->kfd.dev) {
-+		if (adev->in_s0ix)
-+			kgd2kfd_stop_sched_all_nodes(adev->kfd.dev);
+diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
+index 8a532f7d750c8..5e8ed8a2c270a 100644
+--- a/sound/soc/codecs/wm8940.c
++++ b/sound/soc/codecs/wm8940.c
+@@ -693,7 +693,12 @@ static int wm8940_update_clocks(struct snd_soc_dai *dai)
+ 	f = wm8940_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
+ 	if (f != priv->mclk) {
+ 		/* The PLL performs best around 90MHz */
+-		fpll = wm8940_get_mclkdiv(22500000, fs256, &mclkdiv);
++		if (fs256 % 8000)
++			f = 22579200;
 +		else
-+			kgd2kfd_suspend(adev->kfd.dev, suspend_proc);
-+	}
- }
++			f = 24576000;
++
++		fpll = wm8940_get_mclkdiv(f, fs256, &mclkdiv);
+ 	}
  
- int amdgpu_amdkfd_resume(struct amdgpu_device *adev, bool resume_proc)
- {
- 	int r = 0;
- 
--	if (adev->kfd.dev)
--		r = kgd2kfd_resume(adev->kfd.dev, resume_proc);
-+	if (adev->kfd.dev) {
-+		if (adev->in_s0ix)
-+			r = kgd2kfd_start_sched_all_nodes(adev->kfd.dev);
-+		else
-+			r = kgd2kfd_resume(adev->kfd.dev, resume_proc);
-+	}
- 
- 	return r;
- }
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-@@ -426,7 +426,9 @@ void kgd2kfd_smi_event_throttle(struct k
- int kgd2kfd_check_and_lock_kfd(void);
- void kgd2kfd_unlock_kfd(void);
- int kgd2kfd_start_sched(struct kfd_dev *kfd, uint32_t node_id);
-+int kgd2kfd_start_sched_all_nodes(struct kfd_dev *kfd);
- int kgd2kfd_stop_sched(struct kfd_dev *kfd, uint32_t node_id);
-+int kgd2kfd_stop_sched_all_nodes(struct kfd_dev *kfd);
- bool kgd2kfd_compute_active(struct kfd_dev *kfd, uint32_t node_id);
- bool kgd2kfd_vmfault_fast_path(struct amdgpu_device *adev, struct amdgpu_iv_entry *entry,
- 			       bool retry_fault);
-@@ -516,10 +518,20 @@ static inline int kgd2kfd_start_sched(st
- 	return 0;
- }
- 
-+static inline int kgd2kfd_start_sched_all_nodes(struct kfd_dev *kfd)
-+{
-+	return 0;
-+}
-+
- static inline int kgd2kfd_stop_sched(struct kfd_dev *kfd, uint32_t node_id)
- {
- 	return 0;
- }
-+
-+static inline int kgd2kfd_stop_sched_all_nodes(struct kfd_dev *kfd)
-+{
-+	return 0;
-+}
- 
- static inline bool kgd2kfd_compute_active(struct kfd_dev *kfd, uint32_t node_id)
- {
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -1501,6 +1501,25 @@ int kgd2kfd_start_sched(struct kfd_dev *
- 	return ret;
- }
- 
-+int kgd2kfd_start_sched_all_nodes(struct kfd_dev *kfd)
-+{
-+	struct kfd_node *node;
-+	int i, r;
-+
-+	if (!kfd->init_complete)
-+		return 0;
-+
-+	for (i = 0; i < kfd->num_nodes; i++) {
-+		node = kfd->nodes[i];
-+		r = node->dqm->ops.unhalt(node->dqm);
-+		if (r) {
-+			dev_err(kfd_device, "Error in starting scheduler\n");
-+			return r;
-+		}
-+	}
-+	return 0;
-+}
-+
- int kgd2kfd_stop_sched(struct kfd_dev *kfd, uint32_t node_id)
- {
- 	struct kfd_node *node;
-@@ -1518,6 +1537,23 @@ int kgd2kfd_stop_sched(struct kfd_dev *k
- 	return node->dqm->ops.halt(node->dqm);
- }
- 
-+int kgd2kfd_stop_sched_all_nodes(struct kfd_dev *kfd)
-+{
-+	struct kfd_node *node;
-+	int i, r;
-+
-+	if (!kfd->init_complete)
-+		return 0;
-+
-+	for (i = 0; i < kfd->num_nodes; i++) {
-+		node = kfd->nodes[i];
-+		r = node->dqm->ops.halt(node->dqm);
-+		if (r)
-+			return r;
-+	}
-+	return 0;
-+}
-+
- bool kgd2kfd_compute_active(struct kfd_dev *kfd, uint32_t node_id)
- {
- 	struct kfd_node *node;
+ 	wm8940_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
+-- 
+2.51.0
+
 
 
 
