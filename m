@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-181127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFDBB92DF4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C46FB93104
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA7EE1906B8C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330921885126
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71FD2F3608;
-	Mon, 22 Sep 2025 19:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA3E2F5A1A;
+	Mon, 22 Sep 2025 19:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjpPzmeJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z99uQW2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943172F28FA;
-	Mon, 22 Sep 2025 19:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A812F39CE;
+	Mon, 22 Sep 2025 19:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569757; cv=none; b=qM9KXjoEfKWZ98pCDP+VC2WJMOBCSlc3DI+3MV/KlhpbKGPWgQYMgJ8KpFxY28cRocnVCug5zb/S5aGwJovDxCZ8H7zbTeY7Uvbew1Pa0vyCLZxzCY22P+0Ra1pBKfgCJIUjaNTTUPKnjaODB95Rbo1et+Hi16j2la9yUq3Zupc=
+	t=1758570310; cv=none; b=ojctF1Op7x7MorO6K8kT/Skol0qdCuXhXDSPLgQmYogJnNw9I4Rf6F1HynSEmdrQOUUtjUue7u6Ui0HicUmHKBy33KyzPdp2NLNvaZaFF0ab8NNEg3Z0ZvSENvpTHKKITNnYNw1YKG+zS8zQkUqBrsip0k1F7E8LfYXXiuFaH4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569757; c=relaxed/simple;
-	bh=jMwOLJ3agRrJj9wcUU7m++6gZRYrwv1/7bGixpyaVXM=;
+	s=arc-20240116; t=1758570310; c=relaxed/simple;
+	bh=8eY3TbBNL6e2AuJaBbFVxluJI6dfcu/Fetiy8EtHOEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fi5CZpLc6ehmTt4lKzSwWGciO+5j8D+kPJ5ultYlWTfGIFGD8tx18fyXr/beueQ6Gsek2VeW9JWi4oi7NZ0JqMgz5tOiak9qTUlvKwaCfDYxqMs07ocxcn+TLBaZPGcyDmAWRj2SvUsT9YsTGBgQl8fTB2l7Io0qoBwiDnXhJ+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjpPzmeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A06BC4CEF0;
-	Mon, 22 Sep 2025 19:35:57 +0000 (UTC)
+	 MIME-Version; b=X5/U3kiissebEQDErp01qTuwYO5TsqHQ2oS7EFIKOkqQlHXzwRNPMcwb69VKFB+lOYCO9iIMC1/h4RBF/G5M82Ol8RHGcoHristC0Y+CzxMSk7GPUeiFBB8UrKlMTOyRUWpWPNDJKPnz825twHMmcRU3AtO2FqS6IN7zOgg7/VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z99uQW2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4848C4CEF0;
+	Mon, 22 Sep 2025 19:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569757;
-	bh=jMwOLJ3agRrJj9wcUU7m++6gZRYrwv1/7bGixpyaVXM=;
+	s=korg; t=1758570310;
+	bh=8eY3TbBNL6e2AuJaBbFVxluJI6dfcu/Fetiy8EtHOEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QjpPzmeJPl3I0avpHgrMlPrJv2hb6D0wHzHmx7HMxTVKJnMfisn+JKlGp+s2VDQUT
-	 sQqaMCgFyM+wMBxm/9K9Wyw1a6oeJhLuFAWffNeeuCaC3MHur+Xb6TjP6x6V/ciXk6
-	 snRrpGQB71yg0HNmugsjDv3Jro4KBaZTSSjVYY44=
+	b=z99uQW2ptSALSwZSkYX5PbGyc7Jnh6NAuX37kr9jFvxZKWS1RY/CgQ8EOzGKqLx6b
+	 apLlvYUabwn1LSIQaSRZE81TfdOszd7uv3hkqWfdaIU8ZiYtD0XJ7xbw10bKH0d8u5
+	 qeBL67Z6LtyrT7xb1Fn+YG+eFtk6ZYlG2TirrbQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 45/70] selftests: mptcp: avoid spurious errors on TCP disconnect
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.16 085/149] ASoC: qcom: audioreach: Fix lpaif_type configuration for the I2S interface
 Date: Mon, 22 Sep 2025 21:29:45 +0200
-Message-ID: <20250922192405.822856093@linuxfoundation.org>
+Message-ID: <20250922192415.029563502@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
 
-commit 8708c5d8b3fb3f6d5d3b9e6bfe01a505819f519a upstream.
+commit 5f1af203ef964e7f7bf9d32716dfa5f332cc6f09 upstream.
 
-The disconnect test-case, with 'plain' TCP sockets generates spurious
-errors, e.g.
+Fix missing lpaif_type configuration for the I2S interface.
+The proper lpaif interface type required to allow DSP to vote
+appropriate clock setting for I2S interface.
 
-  07 ns1 TCP   -> ns1 (dead:beef:1::1:10006) MPTCP
-  read: Connection reset by peer
-  read: Connection reset by peer
-  (duration   155ms) [FAIL] client exit code 3, server 3
-
-  netns ns1-FloSdv (listener) socket stat for 10006:
-  TcpActiveOpens                  2                  0.0
-  TcpPassiveOpens                 2                  0.0
-  TcpEstabResets                  2                  0.0
-  TcpInSegs                       274                0.0
-  TcpOutSegs                      276                0.0
-  TcpOutRsts                      3                  0.0
-  TcpExtPruneCalled               2                  0.0
-  TcpExtRcvPruned                 1                  0.0
-  TcpExtTCPPureAcks               104                0.0
-  TcpExtTCPRcvCollapsed           2                  0.0
-  TcpExtTCPBacklogCoalesce        42                 0.0
-  TcpExtTCPRcvCoalesce            43                 0.0
-  TcpExtTCPChallengeACK           1                  0.0
-  TcpExtTCPFromZeroWindowAdv      42                 0.0
-  TcpExtTCPToZeroWindowAdv        41                 0.0
-  TcpExtTCPWantZeroWindowAdv      13                 0.0
-  TcpExtTCPOrigDataSent           164                0.0
-  TcpExtTCPDelivered              165                0.0
-  TcpExtTCPRcvQDrop               1                  0.0
-
-In the failing scenarios (TCP -> MPTCP), the involved sockets are
-actually plain TCP ones, as fallbacks for passive sockets at 2WHS time
-cause the MPTCP listeners to actually create 'plain' TCP sockets.
-
-Similar to commit 218cc166321f ("selftests: mptcp: avoid spurious errors
-on disconnect"), the root cause is in the user-space bits: the test
-program tries to disconnect as soon as all the pending data has been
-spooled, generating an RST. If such option reaches the peer before the
-connection has reached the closed status, the TCP socket will report an
-error to the user-space, as per protocol specification, causing the
-above failure. Note that it looks like this issue got more visible since
-the "tcp: receiver changes" series from commit 06baf9bfa6ca ("Merge
-branch 'tcp-receiver-changes'").
-
-Address the issue by explicitly waiting for the TCP sockets (-t) to
-reach a closed status before performing the disconnect. More precisely,
-the test program now waits for plain TCP sockets or TCP subflows in
-addition to the MPTCP sockets that were already monitored.
-
-While at it, use 'ss' with '-n' to avoid resolving service names, which
-is not needed here.
-
-Fixes: 218cc166321f ("selftests: mptcp: avoid spurious errors on disconnect")
+Fixes: 25ab80db6b133 ("ASoC: qdsp6: audioreach: add module configuration command helpers")
 Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-3-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+Message-ID: <20250908053631.70978-2-mohammad.rafi.shaik@oss.qualcomm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/qcom/qdsp6/audioreach.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1234,7 +1234,7 @@ void xdisconnect(int fd)
- 	else
- 		xerror("bad family");
+--- a/sound/soc/qcom/qdsp6/audioreach.c
++++ b/sound/soc/qcom/qdsp6/audioreach.c
+@@ -971,6 +971,7 @@ static int audioreach_i2s_set_media_form
+ 	param_data->param_id = PARAM_ID_I2S_INTF_CFG;
+ 	param_data->param_size = ic_sz - APM_MODULE_PARAM_DATA_SIZE;
  
--	strcpy(cmd, "ss -M | grep -q ");
-+	strcpy(cmd, "ss -Mnt | grep -q ");
- 	cmdlen = strlen(cmd);
- 	if (!inet_ntop(addr.ss_family, raw_addr, &cmd[cmdlen],
- 		       sizeof(cmd) - cmdlen))
-@@ -1244,7 +1244,7 @@ void xdisconnect(int fd)
++	intf_cfg->cfg.lpaif_type = module->hw_interface_type;
+ 	intf_cfg->cfg.intf_idx = module->hw_interface_idx;
+ 	intf_cfg->cfg.sd_line_idx = module->sd_line_idx;
  
- 	/*
- 	 * wait until the pending data is completely flushed and all
--	 * the MPTCP sockets reached the closed status.
-+	 * the sockets reached the closed status.
- 	 * disconnect will bypass/ignore/drop any pending data.
- 	 */
- 	for (i = 0; ; i += msec_sleep) {
 
 
 
