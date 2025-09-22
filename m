@@ -1,129 +1,195 @@
-Return-Path: <stable+bounces-180976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B62B91DB8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FFAB91ED5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1427189E9A0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16B9F1904B2C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD532DEA77;
-	Mon, 22 Sep 2025 15:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604062E2DF3;
+	Mon, 22 Sep 2025 15:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EYVJ7PfF"
+	dkim=pass (2048-bit key) header.d=cyano.uk header.i=@cyano.uk header.b="tUOuC2v+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jupiter.guys.cyano.uk (jupiter.guys.cyano.uk [45.63.120.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449F726E711
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 15:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C59B2E2EF0;
+	Mon, 22 Sep 2025 15:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.63.120.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758553846; cv=none; b=H55UHS2AovfRnNCeqcEgsL5lHzLYmINV7IU4wEMUuI/pH5l3iUid8RnLtme6y/N7+Xry1Xsvtx8x6QDIiJD1eEvvouIOXicqQpy8GgJ/HvfNs3r/baAAr1yr3A1Rwm/uIRRxElmygLTeVC+m0gmPfsrgXWMj31xob/w3p4sDrF0=
+	t=1758554900; cv=none; b=hmdy7Jxn3hnhEng2uRqyfPPbmpCelbQO6gTo5lzocn9ptXglXlfK1nspNzCozrUHVpwl6B1lN9rgMkBcyD1infH5GwBA+FIlUcygoiuJuvhz9hLgH4GrjQuob6b79Hnc6iLGfedpAl6K6eNrLHJQAOqg+4voFIGNkvLLpS8fEh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758553846; c=relaxed/simple;
-	bh=shbNuIMNTIvGPcWi4JkSEiRj/eJEUs+EDGP+qunsASU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E7N7/GVviLCRm8e3UtPK8C7KjlSNEzKk7vfoi3IN/1hkagbSOLemN45IUvuFQQbuAD6ZKH4iYSnuWnOwBceHSVtIdJhQ+esJS2G8a0+K8ivHCDbziDmSr6j+0Q6/Y9Co7f1A3r/03ZPd3rZut9u7ujLOPIDjYWFF4wOAu+9L3MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EYVJ7PfF; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-269639879c3so45346955ad.2
-        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 08:10:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758553844; x=1759158644; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QeKEMoq0INFY9SFzoLjx1GtUOLFalE390u+VhOEOs1M=;
-        b=EYVJ7PfFjSfLOKau/jKasLl7nQJdViXiZ5n/VZ2TTlF0tjghV0yAl1gFJvKVYEjs+Z
-         xpvlS5OLmCQndRquF8TxUHSKIody51f5UU9ihusrb+KPTbE0gMdOrPLLNxR3i20JSUfJ
-         iG/qLpM9ZpnUkgcjEf3tw287BN8r+wo9lHH0tbSrDtyfT2x9hWa1m4z3UtWE5vgkwXhn
-         cFhQH45TD/X7pa7N6dVGqoW9z+cmdBODc3T61sm4tGZQNiIV24KhkDJ5jtNvWxZt/MOL
-         Ec6ODpiWyUbbG02MqvM78mPedCFcQo2Zlk90V51qjUD2AKW5iQX6xwYyiDLxmhhuk+fM
-         WZ4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758553844; x=1759158644;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QeKEMoq0INFY9SFzoLjx1GtUOLFalE390u+VhOEOs1M=;
-        b=QGWhprD6vIHT38nnuPa8I2MtIMH3lBonUCNEX6iOFJWshpeEoQmju0lADUazZ6uVpO
-         A7hZkM+iyp79GfuhyJNVqWyrmJLMuCWWioSkCkg+yMIRSxyKGPpXLv4zKWWgNA7qVVUR
-         gGhEb3wbMevboqOT3pf6icjVH3VIS/sI9mxMUshXdbvOCouw8i4EgBxKJob/ylt71wKQ
-         AXdWYuR2rq/gxysejNcRAN1EW5vohV9f2e1jnIqDAPxKOvR6Ex3ULTT2eHyQtN155o7L
-         sjCVcfQTt4YsvEz3uhrfnY+oIVVDjAvzQFrQwsqEcGC4O8OxVTqq0d24U1tV0RWAllXt
-         BDFQ==
-X-Gm-Message-State: AOJu0YzHxlDTGSI1Mz9pND/9BwzPljhaTr9l/FMMWKhZjtnTQNxKeQFG
-	swrrq3Qc4jX9TzZHGZN98PoxSKKx2AStnWhN3xLZ/xaejkqL70ybPSHE
-X-Gm-Gg: ASbGncufPr7U2heoSFnouI5vvJxcYY+HCoJMcxmxhfvg+AzfjVDFKdPMeSZQRm8EjUE
-	gx5xGbGcOCyLiMt/8nioOylwu1KrCui1iEw1Yoe7i9OhCkHgw6k4qGSIzL9a5AL0PTa/vESnLgr
-	BAfI51jnh+BIRytNohfs5w5R4/McWmAVICVzaXLARbutUzPd5ocf8Oapt9ZXIRcwF5WqaS8gCki
-	7e1qSp3KtkRAUOpe8sgtok7Z20OLJiLIxQCARBTSSUrtl9o72Z3q/Hair0h0cUFSCFbFKuthJY4
-	o1CIYX1GT5NjxumjblGBLcSDiapKGHJ93uJycc2/dgVxW/18Knc7ak8M/H4npgjp3elDSTUK9iN
-	nlRbMiveIkt7cN+KWmHFhEMZS
-X-Google-Smtp-Source: AGHT+IEvD9hsVBCMMBEEbvP8hFwp/v5gBhfqce58IDIzHbs1uD6mT1IGXhLlfqK/ToCU+antLZSz6Q==
-X-Received: by 2002:a17:902:db0e:b0:267:cdc8:b30b with SMTP id d9443c01a7336-269ba554c27mr147031635ad.53.1758553844543;
-        Mon, 22 Sep 2025 08:10:44 -0700 (PDT)
-Received: from lgs.. ([2408:8418:1100:9530:3d9f:679e:4ddb:a104])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-26980180bdesm134733995ad.56.2025.09.22.08.10.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 08:10:44 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	"Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2] powerpc/smp: Add check for kcalloc() failure in parse_thread_groups()
-Date: Mon, 22 Sep 2025 23:10:25 +0800
-Message-ID: <20250922151025.1821411-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1758554900; c=relaxed/simple;
+	bh=XHSCUTanGtCRbEHdPAn8oxyZAecdpBrHzSnvSqDFdgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S/EXi59Sb2uUtA77fDHXZNTwRbq8ZL4f7oujDspSPSN8tonoHHBJo0ohhz0Q3Bwh5VWZz0qs5RfKtsR6cBbn/EjWTXRgrs62XI8eHrPF+HYKKH2f7WRPl4b8l2WvUVsQKE0zJFSK7ZujIuMsJFAISlQrEbUUWk2uqEOVSuPr+/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cyano.uk; spf=pass smtp.mailfrom=cyano.uk; dkim=pass (2048-bit key) header.d=cyano.uk header.i=@cyano.uk header.b=tUOuC2v+; arc=none smtp.client-ip=45.63.120.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cyano.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyano.uk
+From: Xinhui Yang <cyan@cyano.uk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyano.uk; s=dkim;
+	t=1758554895;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5+VQLc5Bk8KM/HhHN/dIMbUbv2CwDDwUBSUL5xfEoFY=;
+	b=tUOuC2v+Hrrb6aaaVi1PVtgfHwXsYwHXSRhm/5UCL89BBnTa7X+V1OodQHq8Zicsno4G+y
+	2gnO9uc2SpOruokkL0YPD4lXv69uaHPlWEq4E0mGvNdSH+n+oIDg1wgqQqiVuV9CP6qptH
+	8AYeM7Lb6SemnY87WeMJ4gOiDjGUOCjzpponP402SGJd4IV6xzs5LAydh1RV2X3z8mln9/
+	RWsvsnj4Kao3NSlWf/KrH2bTGWHMKO6wgZ//JRHw3MfwUf4dWSeuxNMDR22Tkhhd6nlNj6
+	lMH0Ay1ehl9ncYP06y3ifxDE1Xj1WghtW34dhq3Vqtx7ATRC9seSDPzSrtMAxg==
+Authentication-Results: jupiter.guys.cyano.uk;
+	auth=pass smtp.mailfrom=cyan@cyano.uk
+To: linux-scsi@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	Xinhui Yang <cyan@cyano.uk>,
+	Oliver Neukum <oliver@neukum.org>,
+	Ali Akcaagac <aliakc@web.de>,
+	Jamie Lenehan <lenehan@twibble.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2] scsi: dc395x: correctly discard the return value in certain reads
+Date: Mon, 22 Sep 2025 23:26:08 +0800
+Message-ID: <20250922152609.827311-1-cyan@cyano.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: /
 
-As kcalloc() may fail, check its return value to avoid a NULL pointer
-dereference when passing it to of_property_read_u32_array().
+There are certain read operations performed in this code which doesn't
+really don't need its return value. Those read operations either clears
+the FIFO buffer, or clears the interruption status. However, unused read
+triggers compiler warnings. With CONFIG_WERROR on, these warnings get
+converted into errors:
 
-Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+drivers/scsi/dc395x.c: In function ‘__dc395x_eh_bus_reset’:
+drivers/scsi/dc395x.c:97:49: error: value computed is not used [-Werror=unused-value]
+   97 | #define DC395x_read8(acb,address)               (u8)(inb(acb->io_port_base + (address)))
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/scsi/dc395x.c:1003:9: note: in expansion of macro ‘DC395x_read8’
+ 1003 |         DC395x_read8(acb, TRM_S1040_SCSI_INTSTATUS);
+      |         ^~~~~~~~~~~~
+drivers/scsi/dc395x.c: In function ‘data_io_transfer’:
+drivers/scsi/dc395x.c:97:49: error: value computed is not used [-Werror=unused-value]
+   97 | #define DC395x_read8(acb,address)               (u8)(inb(acb->io_port_base + (address)))
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/scsi/dc395x.c:2032:33: note: in expansion of macro ‘DC395x_read8’
+ 2032 |                                 DC395x_read8(acb, TRM_S1040_SCSI_FIFO);
+
+Create a new macro DC395x_peek8() to deliberately cast the return value
+to void, which tells the compiler we really don't need the return value
+of such read operations.
+
+Other changes:
+* Also slightly modify the formatting of the DC395x_* macros.
+
 Cc: stable@vger.kernel.org
----
-changelog:
-v2:
-- Return -ENOMEM directly on allocation failure.
+Signed-off-by: Xinhui Yang <cyan@cyano.uk>
 
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- arch/powerpc/kernel/smp.c | 2 ++
- 1 file changed, 2 insertions(+)
+Changes since v1 [1]:
+- Add Cc: tag to include this patch to the stable tree.
+- Add additional description about the formatting changes.
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 5ac7084eebc0..cfccb9389760 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -822,6 +822,8 @@ static int parse_thread_groups(struct device_node *dn,
+[1]: https://lore.kernel.org/linux-scsi/20250922143619.824129-1-cyan@cyano.uk
+---
+ drivers/scsi/dc395x.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/scsi/dc395x.c b/drivers/scsi/dc395x.c
+index 386c8359e1cc..013d0d5277d6 100644
+--- a/drivers/scsi/dc395x.c
++++ b/drivers/scsi/dc395x.c
+@@ -91,15 +91,21 @@
+ #endif
  
- 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
- 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
-+	if (!thread_group_array)
-+		return -ENOMEM;
- 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
- 					 thread_group_array, count);
- 	if (ret)
+ 
+-#define DC395x_LOCK_IO(dev,flags)		spin_lock_irqsave(((struct Scsi_Host *)dev)->host_lock, flags)
+-#define DC395x_UNLOCK_IO(dev,flags)		spin_unlock_irqrestore(((struct Scsi_Host *)dev)->host_lock, flags)
++#define DC395x_LOCK_IO(dev, flags)		spin_lock_irqsave(((struct Scsi_Host *)dev)->host_lock, flags)
++#define DC395x_UNLOCK_IO(dev, flags)		spin_unlock_irqrestore(((struct Scsi_Host *)dev)->host_lock, flags)
+ 
+-#define DC395x_read8(acb,address)		(u8)(inb(acb->io_port_base + (address)))
+-#define DC395x_read16(acb,address)		(u16)(inw(acb->io_port_base + (address)))
+-#define DC395x_read32(acb,address)		(u32)(inl(acb->io_port_base + (address)))
+-#define DC395x_write8(acb,address,value)	outb((value), acb->io_port_base + (address))
+-#define DC395x_write16(acb,address,value)	outw((value), acb->io_port_base + (address))
+-#define DC395x_write32(acb,address,value)	outl((value), acb->io_port_base + (address))
++/*
++ * read operations that may trigger side effects in the hardware,
++ * but the value can or should be discarded.
++ */
++#define DC395x_peek8(acb, address)		((void)(inb(acb->io_port_base + (address))))
++/* Normal read write operations goes here. */
++#define DC395x_read8(acb, address)		((u8)    (inb(acb->io_port_base + (address))))
++#define DC395x_read16(acb, address)		((u16)   (inw(acb->io_port_base + (address))))
++#define DC395x_read32(acb, address)		((u32)   (inl(acb->io_port_base + (address))))
++#define DC395x_write8(acb, address, value)	(outb((value), acb->io_port_base + (address)))
++#define DC395x_write16(acb, address, value)	(outw((value), acb->io_port_base + (address)))
++#define DC395x_write32(acb, address, value)	(outl((value), acb->io_port_base + (address)))
+ 
+ #define TAG_NONE 255
+ 
+@@ -1000,7 +1006,7 @@ static int __dc395x_eh_bus_reset(struct scsi_cmnd *cmd)
+ 	DC395x_write8(acb, TRM_S1040_DMA_CONTROL, CLRXFIFO);
+ 	clear_fifo(acb, "eh_bus_reset");
+ 	/* Delete pending IRQ */
+-	DC395x_read8(acb, TRM_S1040_SCSI_INTSTATUS);
++	DC395x_peek8(acb, TRM_S1040_SCSI_INTSTATUS);
+ 	set_basic_config(acb);
+ 
+ 	reset_dev_param(acb);
+@@ -2029,8 +2035,8 @@ static void data_io_transfer(struct AdapterCtlBlk *acb,
+ 			DC395x_write8(acb, TRM_S1040_SCSI_CONFIG2,
+ 				      CFG2_WIDEFIFO);
+ 			if (io_dir & DMACMD_DIR) {
+-				DC395x_read8(acb, TRM_S1040_SCSI_FIFO);
+-				DC395x_read8(acb, TRM_S1040_SCSI_FIFO);
++				DC395x_peek8(acb, TRM_S1040_SCSI_FIFO);
++				DC395x_peek8(acb, TRM_S1040_SCSI_FIFO);
+ 			} else {
+ 				/* Danger, Robinson: If you find KGs
+ 				 * scattered over the wide disk, the driver
+@@ -2044,7 +2050,7 @@ static void data_io_transfer(struct AdapterCtlBlk *acb,
+ 			/* Danger, Robinson: If you find a collection of Ks on your disk
+ 			 * something broke :-( */
+ 			if (io_dir & DMACMD_DIR)
+-				DC395x_read8(acb, TRM_S1040_SCSI_FIFO);
++				DC395x_peek8(acb, TRM_S1040_SCSI_FIFO);
+ 			else
+ 				DC395x_write8(acb, TRM_S1040_SCSI_FIFO, 'K');
+ 		}
+@@ -2892,7 +2898,7 @@ static void set_basic_config(struct AdapterCtlBlk *acb)
+ 	    DMA_FIFO_HALF_HALF | DMA_ENHANCE /*| DMA_MEM_MULTI_READ */ ;
+ 	DC395x_write16(acb, TRM_S1040_DMA_CONFIG, wval);
+ 	/* Clear pending interrupt status */
+-	DC395x_read8(acb, TRM_S1040_SCSI_INTSTATUS);
++	DC395x_peek8(acb, TRM_S1040_SCSI_INTSTATUS);
+ 	/* Enable SCSI interrupt    */
+ 	DC395x_write8(acb, TRM_S1040_SCSI_INTEN, 0x7F);
+ 	DC395x_write8(acb, TRM_S1040_DMA_INTEN, EN_SCSIINTR | EN_DMAXFERERROR
+@@ -3799,7 +3805,7 @@ static void adapter_uninit_chip(struct AdapterCtlBlk *acb)
+ 		reset_scsi_bus(acb);
+ 
+ 	/* clear any pending interrupt state */
+-	DC395x_read8(acb, TRM_S1040_SCSI_INTSTATUS);
++	DC395x_peek8(acb, TRM_S1040_SCSI_INTSTATUS);
+ }
+ 
+ 
 -- 
-2.43.0
+2.51.0
 
 
