@@ -1,58 +1,76 @@
-Return-Path: <stable+bounces-181102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED9AB92DAC
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD45B930C8
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5CDA445BD2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB912448390
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296D32E2847;
-	Mon, 22 Sep 2025 19:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280152F3608;
+	Mon, 22 Sep 2025 19:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjgXihW8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HtAb9pD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7517191F66;
-	Mon, 22 Sep 2025 19:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58D02F0C52;
+	Mon, 22 Sep 2025 19:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569693; cv=none; b=pp5NDedoB7zDiO82bNeezSyRIW+QtkhOpf3kEHP9wATjeRTq2Cwe822grtmP/JKGYKGmIZC54g19CaLw4N/s5nEQPAiZy/7rcw6U0jNgoLUFwvyNyZdaiOQJvE0qaFfkTk3bfTz4zxeLVdTwH8TeuZpVOqLo6vDHQkoXO2HKE3I=
+	t=1758570235; cv=none; b=oNcSLiqrdeosCXwzgyOHjHTgGZc43BqeE5Go+eQK8Qk/HWxx25AR5S6I2dOkSXE3MSxaU13pxlrgolFcbhb0gYM/sw76PazEg4/5fTPaAlQVwyzB7xT5Qp831SKks+Z9ZFg30Jnoe3IIScFvXwFPRGbx01Dyp79ZBzQM4Iy1AH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569693; c=relaxed/simple;
-	bh=0nQQoDdrvYw2KvBxjX5tHWdFPeo8EjNkNwbO0gWAgwM=;
+	s=arc-20240116; t=1758570235; c=relaxed/simple;
+	bh=rMOef0Hw6gd46wClK/k+vQG6mwU92V2AM7g5uE7E6PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qypnFZ48vDO7GMblaXUJbmsLSh06subR5YJI8RhM6cWsVTNKLzLj3HsrRXPwgiWyMzdpsVYuczxPgLofY01O0Rdad7g/tNpJPmrTuGjLTitPFrcaqOPuxmz8pkVW+LR+6FUx4yXDsk69FEha+039L1nJntmxuBmplc2ZR2Y92lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjgXihW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19802C4CEF0;
-	Mon, 22 Sep 2025 19:34:52 +0000 (UTC)
+	 MIME-Version; b=Z03ounde88r/v2BDSYubQtUq5re2nZrLm60TKGs6ZhQWYAULAzUSS3jf5Bhn0PSevpQA1/89FcvXu61ohNuG3q9xs0QM02p8oISLoPHguO5CRoNvq8gnDxrXeYQ9EvGY832JS9apdI1U4RQ7pcWNXXofnfOd4YRkWPVn8kQQRf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HtAb9pD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473B1C4CEF0;
+	Mon, 22 Sep 2025 19:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569693;
-	bh=0nQQoDdrvYw2KvBxjX5tHWdFPeo8EjNkNwbO0gWAgwM=;
+	s=korg; t=1758570235;
+	bh=rMOef0Hw6gd46wClK/k+vQG6mwU92V2AM7g5uE7E6PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjgXihW8qSAt0d7p0H0giEwQIAaGgW/dlYL3DgvkNdqPGqXrTINr+IoDJpjHyt39Y
-	 ifrkF9fLoyPhQK8Nrz2x9dWMamYosolE+IYHRHsdkSP1YjJhp1lqpyZuVh/QogAXvW
-	 UyuraXVH/gXHT6NdPofkLI6aslTvBQEfI5FxYz3Y=
+	b=2HtAb9pDwd7mYG2ukbY9YuHIe/iy+muVTBBKEjw4r6GzGMsY4d/1uDhu3+s1GBs8n
+	 u+aS0fBBw8SG9rnVe8UL1ruFmEhXhNRAw1hV6UbY//q2uYOpLn5e78Z7vvVw0/Tc9v
+	 dSGzC8cewk8EMzlEt+MadgsLR5qCZzvZGV5Xsajk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wilder <wilder@us.ibm.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 19/70] bonding: dont set oif to bond dev when getting NS target destination
+	Hugh Dickins <hughd@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Keir Fraser <keirf@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Li Zhe <lizhe.67@bytedance.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Wei Xu <weixugc@google.com>,
+	Will Deacon <will@kernel.org>,
+	yangge <yangge1116@126.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 059/149] mm: revert "mm/gup: clear the LRU flag of a page before adding to LRU batch"
 Date: Mon, 22 Sep 2025 21:29:19 +0200
-Message-ID: <20250922192405.070765154@linuxfoundation.org>
+Message-ID: <20250922192414.368294277@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +82,205 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit a8ba87f04ca9cdec06776ce92dce1395026dc3bb ]
+commit afb99e9f500485160f34b8cad6d3763ada3e80e8 upstream.
 
-Unlike IPv4, IPv6 routing strictly requires the source address to be valid
-on the outgoing interface. If the NS target is set to a remote VLAN interface,
-and the source address is also configured on a VLAN over a bond interface,
-setting the oif to the bond device will fail to retrieve the correct
-destination route.
+This reverts commit 33dfe9204f29: now that
+collect_longterm_unpinnable_folios() is checking ref_count instead of lru,
+and mlock/munlock do not participate in the revised LRU flag clearing,
+those changes are misleading, and enlarge the window during which
+mlock/munlock may miss an mlock_count update.
 
-Fix this by not setting the oif to the bond device when retrieving the NS
-target destination. This allows the correct destination device (the VLAN
-interface) to be determined, so that bond_verify_device_path can return the
-proper VLAN tags for sending NS messages.
+It is possible (I'd hesitate to claim probable) that the greater
+likelihood of missed mlock_count updates would explain the "Realtime
+threads delayed due to kcompactd0" observed on 6.12 in the Link below.  If
+that is the case, this reversion will help; but a complete solution needs
+also a further patch, beyond the scope of this series.
 
-Reported-by: David Wilder <wilder@us.ibm.com>
-Closes: https://lore.kernel.org/netdev/aGOKggdfjv0cApTO@fedora/
-Suggested-by: Jay Vosburgh <jv@jvosburgh.net>
-Tested-by: David Wilder <wilder@us.ibm.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250916080127.430626-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Included some 80-column cleanup around folio_batch_add_and_move().
+
+The role of folio_test_clear_lru() (before taking per-memcg lru_lock) is
+questionable since 6.13 removed mem_cgroup_move_account() etc; but perhaps
+there are still some races which need it - not examined here.
+
+Link: https://lore.kernel.org/linux-mm/DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/
+Link: https://lkml.kernel.org/r/05905d7b-ed14-68b1-79d8-bdec30367eba@google.com
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ mm/swap.c |   50 ++++++++++++++++++++++++++------------------------
+ 1 file changed, 26 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 291f33c772161..f7ed129fc8110 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3261,7 +3261,6 @@ static void bond_ns_send_all(struct bonding *bond, struct slave *slave)
- 		/* Find out through which dev should the packet go */
- 		memset(&fl6, 0, sizeof(struct flowi6));
- 		fl6.daddr = targets[i];
--		fl6.flowi6_oif = bond->dev->ifindex;
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -164,6 +164,10 @@ static void folio_batch_move_lru(struct
+ 	for (i = 0; i < folio_batch_count(fbatch); i++) {
+ 		struct folio *folio = fbatch->folios[i];
  
- 		dst = ip6_route_output(dev_net(bond->dev), NULL, &fl6);
- 		if (dst->error) {
--- 
-2.51.0
-
++		/* block memcg migration while the folio moves between lru */
++		if (move_fn != lru_add && !folio_test_clear_lru(folio))
++			continue;
++
+ 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
+ 		move_fn(lruvec, folio);
+ 
+@@ -176,14 +180,10 @@ static void folio_batch_move_lru(struct
+ }
+ 
+ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+-		struct folio *folio, move_fn_t move_fn,
+-		bool on_lru, bool disable_irq)
++		struct folio *folio, move_fn_t move_fn, bool disable_irq)
+ {
+ 	unsigned long flags;
+ 
+-	if (on_lru && !folio_test_clear_lru(folio))
+-		return;
+-
+ 	folio_get(folio);
+ 
+ 	if (disable_irq)
+@@ -191,8 +191,8 @@ static void __folio_batch_add_and_move(s
+ 	else
+ 		local_lock(&cpu_fbatches.lock);
+ 
+-	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) || folio_test_large(folio) ||
+-	    lru_cache_disabled())
++	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
++			folio_test_large(folio) || lru_cache_disabled())
+ 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 
+ 	if (disable_irq)
+@@ -201,13 +201,13 @@ static void __folio_batch_add_and_move(s
+ 		local_unlock(&cpu_fbatches.lock);
+ }
+ 
+-#define folio_batch_add_and_move(folio, op, on_lru)						\
+-	__folio_batch_add_and_move(								\
+-		&cpu_fbatches.op,								\
+-		folio,										\
+-		op,										\
+-		on_lru,										\
+-		offsetof(struct cpu_fbatches, op) >= offsetof(struct cpu_fbatches, lock_irq)	\
++#define folio_batch_add_and_move(folio, op)		\
++	__folio_batch_add_and_move(			\
++		&cpu_fbatches.op,			\
++		folio,					\
++		op,					\
++		offsetof(struct cpu_fbatches, op) >=	\
++		offsetof(struct cpu_fbatches, lock_irq)	\
+ 	)
+ 
+ static void lru_move_tail(struct lruvec *lruvec, struct folio *folio)
+@@ -231,10 +231,10 @@ static void lru_move_tail(struct lruvec
+ void folio_rotate_reclaimable(struct folio *folio)
+ {
+ 	if (folio_test_locked(folio) || folio_test_dirty(folio) ||
+-	    folio_test_unevictable(folio))
++	    folio_test_unevictable(folio) || !folio_test_lru(folio))
+ 		return;
+ 
+-	folio_batch_add_and_move(folio, lru_move_tail, true);
++	folio_batch_add_and_move(folio, lru_move_tail);
+ }
+ 
+ void lru_note_cost(struct lruvec *lruvec, bool file,
+@@ -323,10 +323,11 @@ static void folio_activate_drain(int cpu
+ 
+ void folio_activate(struct folio *folio)
+ {
+-	if (folio_test_active(folio) || folio_test_unevictable(folio))
++	if (folio_test_active(folio) || folio_test_unevictable(folio) ||
++	    !folio_test_lru(folio))
+ 		return;
+ 
+-	folio_batch_add_and_move(folio, lru_activate, true);
++	folio_batch_add_and_move(folio, lru_activate);
+ }
+ 
+ #else
+@@ -502,7 +503,7 @@ void folio_add_lru(struct folio *folio)
+ 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+ 		folio_set_active(folio);
+ 
+-	folio_batch_add_and_move(folio, lru_add, false);
++	folio_batch_add_and_move(folio, lru_add);
+ }
+ EXPORT_SYMBOL(folio_add_lru);
+ 
+@@ -680,13 +681,13 @@ void lru_add_drain_cpu(int cpu)
+ void deactivate_file_folio(struct folio *folio)
+ {
+ 	/* Deactivating an unevictable folio will not accelerate reclaim */
+-	if (folio_test_unevictable(folio))
++	if (folio_test_unevictable(folio) || !folio_test_lru(folio))
+ 		return;
+ 
+ 	if (lru_gen_enabled() && lru_gen_clear_refs(folio))
+ 		return;
+ 
+-	folio_batch_add_and_move(folio, lru_deactivate_file, true);
++	folio_batch_add_and_move(folio, lru_deactivate_file);
+ }
+ 
+ /*
+@@ -699,13 +700,13 @@ void deactivate_file_folio(struct folio
+  */
+ void folio_deactivate(struct folio *folio)
+ {
+-	if (folio_test_unevictable(folio))
++	if (folio_test_unevictable(folio) || !folio_test_lru(folio))
+ 		return;
+ 
+ 	if (lru_gen_enabled() ? lru_gen_clear_refs(folio) : !folio_test_active(folio))
+ 		return;
+ 
+-	folio_batch_add_and_move(folio, lru_deactivate, true);
++	folio_batch_add_and_move(folio, lru_deactivate);
+ }
+ 
+ /**
+@@ -718,10 +719,11 @@ void folio_deactivate(struct folio *foli
+ void folio_mark_lazyfree(struct folio *folio)
+ {
+ 	if (!folio_test_anon(folio) || !folio_test_swapbacked(folio) ||
++	    !folio_test_lru(folio) ||
+ 	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
+ 		return;
+ 
+-	folio_batch_add_and_move(folio, lru_lazyfree, true);
++	folio_batch_add_and_move(folio, lru_lazyfree);
+ }
+ 
+ void lru_add_drain(void)
 
 
 
