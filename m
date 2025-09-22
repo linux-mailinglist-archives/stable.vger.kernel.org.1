@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-180988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BA5B92348
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 18:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC53FB922CA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 18:17:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3C4190407D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 16:21:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D0B23AD483
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 16:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0ED831196B;
-	Mon, 22 Sep 2025 16:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12ABB3112BD;
+	Mon, 22 Sep 2025 16:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="cX2QzIr8"
 X-Original-To: stable@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178AE3115B0;
-	Mon, 22 Sep 2025 16:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDF63112A1;
+	Mon, 22 Sep 2025 16:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758558038; cv=none; b=AdLnQ2GahUfV9T2WXgcMXfJc05C/Mf8Ubj1HX1EO0/jWi9UbApzlogYX4La68naXwnHEfAgkU2rlPtRGIpSut3B4a/iMNLU/VAXV7iX+mF9maDkhrAaX6NiiZ0OMu2k456/6USn7z4cAp4+TYAUXV1khJH19Ig2XFYEmPvRYmV0=
+	t=1758557827; cv=none; b=tAktHYH0jUmaDoPlA3anV67K0KI+5j6IRWV3alRavD1VHDCu6+lxzLjDEY9csciRsKiqhtu8h7N6u3KFit+wfLca1QyAMptHkzrl98s4TGopNGrql6TaMH31Lq0BEK4DwcRqbuZN1Tt7+6M8hBL+GvSzZKCJvetq6aa8yKYCJ70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758558038; c=relaxed/simple;
-	bh=w3Rks/o7ddO724oJ4zZ5VCqBo/PbM7CidoyxIls/Z48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c/urluN0S1sqnYRVZc0BtblC/gLe5f7SKIjPe5SmXf/J4rz2imc6dVJ3MlUyNjxoRwLBRsrqAP8JmcD4O9riuRPPcIHs+4vvEgHCyrXVd5rvpky3iUsuWzakGqDiDsTJw24vr249NYfa9nsTXXXoc8hzM7AtmeRKNiI2VC9Gz94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cVp180JGjz9sSR;
-	Mon, 22 Sep 2025 18:07:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Ld71iZbvQBsJ; Mon, 22 Sep 2025 18:07:55 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cVp176jLFz9sSN;
-	Mon, 22 Sep 2025 18:07:55 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D70678B768;
-	Mon, 22 Sep 2025 18:07:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id uyoeSwRWo3u9; Mon, 22 Sep 2025 18:07:55 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8E8198B763;
-	Mon, 22 Sep 2025 18:07:54 +0200 (CEST)
-Message-ID: <496a8ed4-b416-47f9-be1f-cda5472d004d@csgroup.eu>
-Date: Mon, 22 Sep 2025 18:07:53 +0200
+	s=arc-20240116; t=1758557827; c=relaxed/simple;
+	bh=6RF4WqwGow6+r/Y+6HnhvBn/j7oUcG6s0+waKyr36Ww=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Renqp67wV3e2/BYjZs5FeY/fb2YD2s1E60kykIN9MB2wYrhgBDbuA00Rhyta/yG3Ej7gXR4Xb9KDJ53Cd7FqrUTNnQFehtljRG9D1a6KaypVRcWpCQJo6o9pmOmWkmM1RBApuqmSe3AU0UH7EofXwK0yinF6UK74Pba3gnx4hlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=cX2QzIr8; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1758557810; x=1759162610; i=markus.elfring@web.de;
+	bh=I8Jm+BtLCOfPFPkOJcSYGezIXJ1kj0/IaJCMO99n4jY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=cX2QzIr8hD+Uxilr6Lp5I9cvUno244j48PuEKqUhV1smOWgIruTWVqnVi5a/WpqA
+	 cXl0PQvqwRdMw2bzBQ40rx/aVMG2U+HgHAvp95oj9pXsgpDvZzH94z3vhTrXKHufA
+	 0VGlN53IkkomVa4RMmhra2Q9Aw3x6tnhuY6tKSxea9NoH/q4gJOLJHKX7bexsd4bM
+	 dFUeWjk4a01wYOneVAwFqBH2BJ2F1XXMHQ2qzEBHvbo5+HnTsFG2IoBnC7oktqmPj
+	 SuYuw9KPH9h1pPb8sP6+QXf0n/ktvPsxSudS5RlKfwzMQ1YmPE7ZgzMOqN3Tqq+UZ
+	 PycikOS4T9JWto0hHw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.175]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N0Zo6-1u6gBa0OA8-011N67; Mon, 22
+ Sep 2025 18:16:50 +0200
+Message-ID: <d1c2e56b-2ef9-4ab1-a4f8-3834d1857386@web.de>
+Date: Mon, 22 Sep 2025 18:16:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,83 +57,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/smp: Add check for kcalloc() failure in
- parse_thread_groups()
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Guangshuo Li <lgs201920130244@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250922151025.1821411-1-lgs201920130244@gmail.com>
- <a7453bdc-16f3-43e6-a06d-bd6144eeae72@wanadoo.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <a7453bdc-16f3-43e6-a06d-bd6144eeae72@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Alain Volmat <alain.volmat@foss.st.com>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>
+References: <20250922122012.27407-1-johan@kernel.org>
+Subject: Re: [PATCH] drm: sti: fix device leaks at component probe
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250922122012.27407-1-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:a+AtYotd606Xa21CbGi3o7GaI5bhai9FYkRwUp61htil2YrJ/+c
+ FyRvqii7mj/w9zncs2ubBjvbKUa4J7YuKI9wz9zt/LTX8O/CxO4WUxDLkJm4uSESmRiYgD1
+ BZNXUrgfr5kPg6tX9YO8kDGaOpXyA+V88WX+CqriyupwwcE9Lymovitrg19K8YIS0TSqYhf
+ bDkowCv5EDjXR4K3dGKmQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:GkWc9pE//4E=;2AdirriGddFOhYmYm096rakQFlM
+ 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
+ R1jSo8jNmXNuedbXprfMkiOgYolr
+
+> Make sure to drop the references taken to the vtg devices by
+
+                                                VTG device?
 
 
+> of_find_device_by_node() when looking up their driver data during
+> component probe.
+=E2=80=A6
 
-Le 22/09/2025 à 17:38, Christophe JAILLET a écrit :
-> Le 22/09/2025 à 17:10, Guangshuo Li a écrit :
->> As kcalloc() may fail, check its return value to avoid a NULL pointer
->> dereference when passing it to of_property_read_u32_array().
->>
->> Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with 
->> multiple properties")
->> Cc: stable@vger.kernel.org
-> 
-> Signed-off-by that was part of v1, is missing in v2.
+How do you think about to increase the application of scope-based resource=
+ management?
+https://elixir.bootlin.com/linux/v6.17-rc7/source/include/linux/device.h#L=
+1180
 
-I see it below the ---
+Can a summary phrase like =E2=80=9CPrevent device leak in of_vtg_find()=E2=
+=80=9D be nicer?
 
-> 
->> ---
->> changelog:
->> v2:
->> - Return -ENOMEM directly on allocation failure.
-> 
-> Except for a newline that is removed, v2 is the same as v1, or I miss 
-> something?
-
-v1 was:
-
-+       if (!thread_group_array) {
-+               ret = -ENOMEM;
-+               goto out_free;
-+       }
-
-Which was wrong.
-
-Well maybe there was several v1, I'm talking about 
-https://lore.kernel.org/all/20250918131513.3557422-1-lgs201920130244@gmail.com/
-
-> 
-> CJ
-> 
->>
->> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
->> ---
->>   arch/powerpc/kernel/smp.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
->> index 5ac7084eebc0..cfccb9389760 100644
->> --- a/arch/powerpc/kernel/smp.c
->> +++ b/arch/powerpc/kernel/smp.c
->> @@ -822,6 +822,8 @@ static int parse_thread_groups(struct device_node 
->> *dn,
->>       count = of_property_count_u32_elems(dn, "ibm,thread-groups");
->>       thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
->> +    if (!thread_group_array)
->> +        return -ENOMEM;
->>       ret = of_property_read_u32_array(dn, "ibm,thread-groups",
->>                        thread_group_array, count);
->>       if (ret)
-> 
-
+Regards,
+Markus
 
