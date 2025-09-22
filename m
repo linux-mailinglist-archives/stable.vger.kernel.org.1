@@ -1,135 +1,93 @@
-Return-Path: <stable+bounces-180884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C5DB8F1E9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:23:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8238DB8F23D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 08:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF6D17A26A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:23:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 38E7D4E1B9C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 06:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E532441A0;
-	Mon, 22 Sep 2025 06:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70879263C8F;
+	Mon, 22 Sep 2025 06:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="qxInE8uD"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CwsjDxxl";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wu4D2YFm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BD7242938
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 06:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C2C16CD33;
+	Mon, 22 Sep 2025 06:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758522137; cv=none; b=JkeLmdUnfKeHrTBzCRVAVAgkmjnY2IoWweoPVBGb9Km6CN0e6Y1mTEdAdQCUPp54TBpEZTiJzWe4wIgDaL876D2ar9pzSpK/1+gJVr8mSqvE+qQ+82DqhyNiGiJ7XOsyl1WQGlhUIFQ1ysgND0iXSEk+XyHyFExsjKuI6cC2zOw=
+	t=1758522397; cv=none; b=Ov0UnjCMlEy9Q6TOoTL39HbNJ1reXImPPWOETnenC74zxjzHcEFjssp5EKcVaJTeExbzMHCQHEnDa3qFeAkZBT6NaA4ZsOGL7eQg/brkbagWECdj2D1aio6PSh7YB1ekWzxB3DBY/5sdvE7wmWaqSuLVw0eqqp8sTQ6a+ja+PJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758522137; c=relaxed/simple;
-	bh=0bm+f1WSxzWfn/wCQJSel8ny/PQe+ST1oMkROWbrLTE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Upj6MYblgFS384URXlCSRZX5rDWZXOMmTZ1jpyrHrYOyFtUKBYasD8XrJ0DhuCCNpNHoxzFNfavmvU8jpgL9xufM3Gc3By9puDsf4COj4gywXvR8Mgg4b+7tIU6j2fIOvJKLR8weO4hyYsDStkShmp1/F3wbMQnyDBqqtcrhPNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=qxInE8uD; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ece0e4c5faso4722918f8f.1
-        for <stable@vger.kernel.org>; Sun, 21 Sep 2025 23:22:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1758522131; x=1759126931; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Uc6eTzZkXXgyCcWWDhbnFU5MdPrnO6H7v+FW7/g/zSM=;
-        b=qxInE8uDt8Pd7W2CKV9qDKTqjom6rahPfW73avH+3/eZ/R+MLvFz8DrNxlXI54cLlX
-         ekwYiRuaGYwXrRDJP6tEtG1W0Y2PsBUokmep/Est2ZPdajrN22iEjEUC3Kw5tqigJKEP
-         xJNd7H/StKMH2eyBzWDadBWF9eEyXwLcdrg8UyAxuGgvmEBhqJ6ZvKjXO2lUTDKphBhP
-         ep1uU/rq645CzvDLB4ELuFMp1NtJmd/mkzLwsEz+S05Xx+6HhBsUfDQkd3snymmHHE9N
-         Zpak/TY3qJgS1ZQh9SPSGKYDXKfMxjMv760nvmzu93ry/LOJz9HKMOzviB363gPkPsVp
-         L+Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758522131; x=1759126931;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uc6eTzZkXXgyCcWWDhbnFU5MdPrnO6H7v+FW7/g/zSM=;
-        b=SUcS0ndJJRyorZ2ic9hbaB8TGN4y+2O3ChSDrDUvkD17Iilt/Luu06wJde6ReyjJgW
-         i8nV0E9gQbODqehso+QfKr+1cblSF6dkYNzcd7Ai0BU93dNdJcNcC8SWC6UXyAZDm3Fe
-         d7hXtuM5kZZSjRFW2aKfy2U/eMODchdf4WZnSDoj2W2ouz6EpKgOV6u0E9LbSWeu8D8V
-         R75c1zPI9A2CFvqgqtN+Owbo8srm0JabRHwnrlAIdD9ztzvWJWxgXx6Td+8I/4snbShY
-         wFyCMCXudSP5vyfTmwFdmAv4p6lifu9XSyokagInYPFFZrGk8SMr89Rj5qDJZeXQWHp1
-         ZjZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVznEmgPnrFbJCUgCw1mZYHRdWeF6YFQPiz5xlnWwMQkQ0P+I8zKktZTbyHycBMOnki5QxQVp8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCTt/DDCryzV5ilyo03vNEeku7FqzRDuJJJjDvEEHkfnGjrt+z
-	KGtdeR3U5CVuSEOBgXS8PFA1HKudQuJnLVui+tGg0wX6VVH43kQhuqwTD9ov+2KFU/VRGZ8sUHK
-	6PewrRWM=
-X-Gm-Gg: ASbGncvA64j+xCyL+Z9s3FNEayIPteiV2n8nYWAnSeCRaTJ7A5yVy7ZrwzJc/Rp3fQT
-	1NnL7hMtl5cmBgIzeOUyy8C+64UcUht7ubc1evdzqoUhGNp5cfPYgNrmIXb1bsRwaGHIju5RybI
-	J25zQJ4uzZbnII/OU4L4/E1xcNYNeS+0wQcZ/dvx6t2l0Jj50NlSbhSWJG4DwCiqYBpccIO/WRG
-	wWIQsjIAenfYQPaDX0lBNAsjj16XPu+nJTHHWAEAxvdI3nSd8Pvmd9+ku3MdFVDGQda+PT7Y5TZ
-	CjoAXpSnkDDeqPhxfTd6scbfDEgU8+SCUixYVjvPpbf8ZjfvEI9aPKLdCDkpOYraiO+BL6pG4in
-	px+WTdCbOrhmH1ES7iIU3
-X-Google-Smtp-Source: AGHT+IH4eX5bTOxcWYBSQXC/CIEwPwNNMy2VX4YvoQjeswtMwsZrzl/pHLFLCq9U5ClrMYRGZ1ISbg==
-X-Received: by 2002:a05:6000:18a7:b0:3fd:bf1d:15ac with SMTP id ffacd0b85a97d-3fdbf1d1ac4mr1713547f8f.20.1758522131034;
-        Sun, 21 Sep 2025 23:22:11 -0700 (PDT)
-Received: from [172.17.2.81] ([178.208.16.192])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3f88de2d075sm6977946f8f.35.2025.09.21.23.22.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Sep 2025 23:22:10 -0700 (PDT)
-Message-ID: <c4b98918-fb7d-4927-b750-0f1f5e28a0bc@kernel.dk>
-Date: Mon, 22 Sep 2025 00:22:09 -0600
+	s=arc-20240116; t=1758522397; c=relaxed/simple;
+	bh=mTlCST+NV6monq4VDOGsq1nkeaCC9gjKSnK3woeXd44=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=vE5fw6KmIJATxmGCIjO11ILPCZm2BvaRJhtqQCWGPv2+A7f0IZ1vKxnMFbLDsEfeGYLcetA7LONJg3hfwLg+OaK04v8Gp7XCrTj2mcojdGArC29C2pt09J+sgrhvGb1ft35GjeBV3zLc+yPmV3QTFFp1PGgi9NvDGml2tMPhwlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CwsjDxxl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wu4D2YFm; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1758522392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mTlCST+NV6monq4VDOGsq1nkeaCC9gjKSnK3woeXd44=;
+	b=CwsjDxxlHNkml+W3XMI/NH9FoEPr3tY3Yipw6ooOdoWPglQmbvWmxh7WpyqD6T/rnr1BoX
+	x8EYY1ToGm6T15s2flEIA8Q+uVu9Fq5dU8PF8pRGRdAafezhgagsUgH7RwPZlfCKbEOwiw
+	EtuQntYV9GyksLRZB3WvX5we5IdsgxClxjspoVdEtlYXRd9NN+JM9cWUE3BuPNeUgB7Mn7
+	M0tov5A0Vry0YCWPREOJp41V58SeLiQ2Z6ivWgjTeQutq8gPRP6RMxrlhlz04m7jgkIWuX
+	uVZ8im9wantJn0jr1Tha+FXSv9cLYzCSrkyYAkJFjjG3YFDDbbifEgpdKbIZ0g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1758522392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mTlCST+NV6monq4VDOGsq1nkeaCC9gjKSnK3woeXd44=;
+	b=wu4D2YFmKcfY9Afa/rL7Stcq7Qf4DibBFtqNw42AMRXDqiOqDyv4xakDvdI1GbFVrge3Sr
+	CiNMfbqm2yd4ErDg==
+To: Mateusz Guzik <mjguzik@gmail.com>, Khazhy Kumykov <khazhy@chromium.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Shuah Khan
+ <shuah@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Soheil Hassas
+ Yeganeh <soheil@google.com>, Willem de Bruijn <willemb@google.com>, Eric
+ Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
+In-Reply-To: <CAGudoHF8pKE3ODqY-WnbV=ZpjC9hH+U+COq_KE=aH7mEW8fsKQ@mail.gmail.com>
+References: <cover.1752824628.git.namcao@linutronix.de>
+ <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
+ <aflo53gea7i6cyy22avn7mqxb3xboakgjwnmj4bqmjp6oafejj@owgv35lly7zq>
+ <87zfat19i7.fsf@yellow.woof>
+ <CAGudoHFLrkk_FBgFJ_ppr60ARSoJT7JLji4soLdKbrKBOxTR1Q@mail.gmail.com>
+ <CAGudoHE=iaZp66pTBYTpgcqis25rU--wFJecJP-fq78hmPViCg@mail.gmail.com>
+ <CACGdZYKcQmJtEVt8xoO9Gk53Rq1nmdginH4o5CmS4Kp3yVyM-Q@mail.gmail.com>
+ <CACGdZYLByXsRruwv+BNWG-EqK+-f6V0inki+6gg31PGw5oa90A@mail.gmail.com>
+ <CAGudoHF8pKE3ODqY-WnbV=ZpjC9hH+U+COq_KE=aH7mEW8fsKQ@mail.gmail.com>
+Date: Mon, 22 Sep 2025 08:26:30 +0200
+Message-ID: <87qzvz9f55.fsf@yellow.woof>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring: include dying ring in task_work
- "should cancel"" failed to apply to 6.12-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: thaler@thaler.hu, stable@vger.kernel.org
-References: <2025092127-synthetic-squash-4d57@gregkh>
- <bc33927c-a7ed-4518-92e6-e97fc5fde5e8@kernel.dk>
- <2025092206-identical-bonded-c86f@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2025092206-identical-bonded-c86f@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 9/21/25 11:59 PM, Greg KH wrote:
-> On Sun, Sep 21, 2025 at 06:44:45AM -0600, Jens Axboe wrote:
->> On 9/21/25 6:32 AM, gregkh@linuxfoundation.org wrote:
->>>
->>> The patch below does not apply to the 6.12-stable tree.
->>> If someone wants it applied there, or to any other stable or longterm
->>> tree, then please email the backport, including the original git commit
->>> id to <stable@vger.kernel.org>.
->>>
->>> To reproduce the conflict and resubmit, you may use the following commands:
->>>
->>> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
->>> git checkout FETCH_HEAD
->>> git cherry-pick -x 3539b1467e94336d5854ebf976d9627bfb65d6c3
->>> # <resolve conflicts, build, test, etc.>
->>> git commit -s
->>> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092127-synthetic-squash-4d57@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
->>>
->>> Possible dependencies:
->>
->> Here's this and the others marked for 6.12-stable, already prepared them
->> last week as I knew I'd be traveling.
-> 
-> As you have backported commit b6f58a3f4aa8 ("io_uring: move struct
-> io_kiocb from task_struct to io_uring_task") does that mean we should
-> also add commit 69a62e03f896 ("io_uring/msg_ring: don't leave
-> potentially dangling ->tctx pointer") which claims to fix it?
+Mateusz Guzik <mjguzik@gmail.com> writes:
+> a sequence counter around shenanigans will sort it out, but I don't
+> know if it is worth it and don't really want to investigate myself.
 
-No, the b6f58a3f4aa8 commit backport just backports the
-io_should_terminate_tw() helper. That original commit should've likely
-been split upstream, which is what made the backport only partial. It
-doesn't backport the parts that moves from using task_struct to
-io_uring_task.
+The original commit did mention "1% CPU/RPC reduction in RPC benchmarks".
+I'm not sure what "RPC" stands for and which benchmark it is. But if it
+is really important, we must have heard by now.
 
--- 
-Jens Axboe
+Nam
 
