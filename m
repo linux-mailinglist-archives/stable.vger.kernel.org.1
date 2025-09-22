@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E53DB92D61
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995D1B93077
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070B32A5CA6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B60FB1907C29
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056AB2DF714;
-	Mon, 22 Sep 2025 19:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7542F3608;
+	Mon, 22 Sep 2025 19:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gqBHCJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbZ+lEFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B638125F780;
-	Mon, 22 Sep 2025 19:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5950E2F0C52;
+	Mon, 22 Sep 2025 19:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569651; cv=none; b=tzqIJetYfTU+XQKEbW/ea9oMfe2pZs5Nm4x5cdHrNylKF+2A7osVrfWfhWAmhQX7QIHgEcPCkvEBx9zNSAZA0GMTcJ7+VLAb1Wb4JzX6aGub2szI3qmkCRlqMfSb5DlpH+czoJvFjiQEIQwAeLbqK8XRDqaBOZKQYj0Zwd5lOUE=
+	t=1758570202; cv=none; b=msn3aNmKvBEWYlNZHkPS99ivn60Eri4hUCzGPqIXta9ry1aRDDljSgBCJTF7Q6cY+5XATxekj+QGlEZ6fd3N764W/Ek9Iz0OurqeX2r+wWv5j3BcNBebrxqhxoqPazINT8ODZ8My507HjLfCSTL1mOvZHRYDSRsuOhU2h9W4moI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569651; c=relaxed/simple;
-	bh=ZX3BmobO+KlexnpurRx9Mnb5/nYEmVDSHMOp1Yzc5FI=;
+	s=arc-20240116; t=1758570202; c=relaxed/simple;
+	bh=P8lMQIwH1GM7dst8cuFl/O3RtFkortwlyLPS+KfJM/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7YhrxriEXN9p8tPO/Cl6yd83egnYWrOk5WEFawC5hMtZUYLCGvgft3lyVBCKb3Kb0T/zMBy8ygzb82CLQ969KdoUn+Uqyz9cicrzrZ3ylQA4/FsknIHyWmGWiEIPWL+R4H6Tlct4tEDU6Xwna/wDgV/nvJ83azHKw4xRDx6TE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gqBHCJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FAEC4CEF0;
-	Mon, 22 Sep 2025 19:34:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MJx75oOa/ym3++UQxrLFlyEYFfKwb9rkOZgEeO3LiuT7sgS+8f6mt4dCFjBm9BvbCC1pJZTH5G5r/4PKr4eJ2c9RyuEbNY0x00/IYEuiqbp8I4EuJXEhfeRUzK6QuKIYJfQrwbzyKnxYv73pHzC/BxBnb/b5LHyMwkDe0woTOA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbZ+lEFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C4BC4CEF0;
+	Mon, 22 Sep 2025 19:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569651;
-	bh=ZX3BmobO+KlexnpurRx9Mnb5/nYEmVDSHMOp1Yzc5FI=;
+	s=korg; t=1758570202;
+	bh=P8lMQIwH1GM7dst8cuFl/O3RtFkortwlyLPS+KfJM/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gqBHCJ+j9z9SJOxtIZY0kK/XcUtygQ+WnEbOWI16mxwh54gKypo40nCoFP6iekEc
-	 htMr5GSaMXNTaWPJ1iQcUpzfcc4Wi7nTS6BIFQFC7H/XuYVOaOwvSwPO4RfZU6roAZ
-	 3Z/XSZ9YuV62UHZnMQMLUxC7/Hrt20T9kP56C8A0=
+	b=AbZ+lEFvTBPGrsVnuK3YEemri2lD9kJ03CRV9BWTeT7mXXWN9mMPh3UE+Y3ZFByDA
+	 IFiq+NTXSGB0k+VPCBu+KwFcMpUXTrUYEIU721jHKY4ua9Mm1VnNVGByA1GI4CLyof
+	 BKljKPNB3zJqg6DQaJZC4SKACAzE8IE5gx++LTGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Yuanhong <liaoyuanhong@vivo.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/70] wifi: mac80211: fix incorrect type for ret
-Date: Mon, 22 Sep 2025 21:29:04 +0200
-Message-ID: <20250922192404.586990440@linuxfoundation.org>
+Subject: [PATCH 6.16 045/149] cnic: Fix use-after-free bugs in cnic_delete_task
+Date: Mon, 22 Sep 2025 21:29:05 +0200
+Message-ID: <20250922192414.000992405@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit a33b375ab5b3a9897a0ab76be8258d9f6b748628 ]
+[ Upstream commit cfa7d9b1e3a8604afc84e9e51d789c29574fb216 ]
 
-The variable ret is declared as a u32 type, but it is assigned a value
-of -EOPNOTSUPP. Since unsigned types cannot correctly represent negative
-values, the type of ret should be changed to int.
+The original code uses cancel_delayed_work() in cnic_cm_stop_bnx2x_hw(),
+which does not guarantee that the delayed work item 'delete_task' has
+fully completed if it was already running. Additionally, the delayed work
+item is cyclic, the flush_workqueue() in cnic_cm_stop_bnx2x_hw() only
+blocks and waits for work items that were already queued to the
+workqueue prior to its invocation. Any work items submitted after
+flush_workqueue() is called are not included in the set of tasks that the
+flush operation awaits. This means that after the cyclic work items have
+finished executing, a delayed work item may still exist in the workqueue.
+This leads to use-after-free scenarios where the cnic_dev is deallocated
+by cnic_free_dev(), while delete_task remains active and attempt to
+dereference cnic_dev in cnic_delete_task().
 
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-Link: https://patch.msgid.link/20250825022911.139377-1-liaoyuanhong@vivo.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+A typical race condition is illustrated below:
+
+CPU 0 (cleanup)              | CPU 1 (delayed work callback)
+cnic_netdev_event()          |
+  cnic_stop_hw()             | cnic_delete_task()
+    cnic_cm_stop_bnx2x_hw()  | ...
+      cancel_delayed_work()  | /* the queue_delayed_work()
+      flush_workqueue()      |    executes after flush_workqueue()*/
+                             | queue_delayed_work()
+  cnic_free_dev(dev)//free   | cnic_delete_task() //new instance
+                             |   dev = cp->dev; //use
+
+Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+that the cyclic delayed work item is properly canceled and that any
+ongoing execution of the work item completes before the cnic_dev is
+deallocated. Furthermore, since cancel_delayed_work_sync() uses
+__flush_work(work, true) to synchronously wait for any currently
+executing instance of the work item to finish, the flush_workqueue()
+becomes redundant and should be removed.
+
+This bug was identified through static analysis. To reproduce the issue
+and validate the fix, I simulated the cnic PCI device in QEMU and
+introduced intentional delays — such as inserting calls to ssleep()
+within the cnic_delete_task() function — to increase the likelihood
+of triggering the bug.
+
+Fixes: fdf24086f475 ("cnic: Defer iscsi connection cleanup")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/driver-ops.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/cnic.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 78aa3bc51586e..5f8f72ca2769c 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1273,7 +1273,7 @@ drv_get_ftm_responder_stats(struct ieee80211_local *local,
- 			    struct ieee80211_sub_if_data *sdata,
- 			    struct cfg80211_ftm_responder_stats *ftm_stats)
- {
--	u32 ret = -EOPNOTSUPP;
-+	int ret = -EOPNOTSUPP;
+diff --git a/drivers/net/ethernet/broadcom/cnic.c b/drivers/net/ethernet/broadcom/cnic.c
+index a9040c42d2ff9..6e97a5a7daaf9 100644
+--- a/drivers/net/ethernet/broadcom/cnic.c
++++ b/drivers/net/ethernet/broadcom/cnic.c
+@@ -4230,8 +4230,7 @@ static void cnic_cm_stop_bnx2x_hw(struct cnic_dev *dev)
  
- 	if (local->ops->get_ftm_responder_stats)
- 		ret = local->ops->get_ftm_responder_stats(&local->hw,
+ 	cnic_bnx2x_delete_wait(dev, 0);
+ 
+-	cancel_delayed_work(&cp->delete_task);
+-	flush_workqueue(cnic_wq);
++	cancel_delayed_work_sync(&cp->delete_task);
+ 
+ 	if (atomic_read(&cp->iscsi_conn) != 0)
+ 		netdev_warn(dev->netdev, "%d iSCSI connections not destroyed\n",
 -- 
 2.51.0
 
