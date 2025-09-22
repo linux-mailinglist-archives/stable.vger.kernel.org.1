@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9BCB92E18
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EDBB93129
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75ABB1906C77
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B6A019043A8
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC432F1FDD;
-	Mon, 22 Sep 2025 19:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F52F3613;
+	Mon, 22 Sep 2025 19:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/AYpn3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRWY8Cq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B112F0C5F;
-	Mon, 22 Sep 2025 19:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEE92517AC;
+	Mon, 22 Sep 2025 19:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569792; cv=none; b=IxtAB0bvx85+yc8p5Kc3IE7TW2lg4/q02hgm1K4J7+1pmMpszP+de/d4LzbV1Nx3hMs+Fhli+JuHuImlEcXrK2r40Nfcu/oQCCa74gNd0u7w9MbMim4UquG0L59yM9Ok1vGuzN8Zp7sJpNpsssIFeV8nuwF7tYROxs9752kK20E=
+	t=1758570339; cv=none; b=oszWLFbzz7VrJP6uiaE+P2PSBTtNEfsN4WjoYSkwD4kfo7ujeM8m5lvQKGf0kWoQTjIEJQxVDEaUBazOJw3siOgOSAkVg92l0Wvi8Z2fE6luRUJ5kR2fTg8P3XDG6xe5zKMLbsk8G7SgUavj6RSt+S2uGBzhfulTddnDmi3nssM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569792; c=relaxed/simple;
-	bh=QvAC5SbQmzHtyleNyzo/mCpic92Hsbk+MQZyL9BFcXA=;
+	s=arc-20240116; t=1758570339; c=relaxed/simple;
+	bh=EsU0fYavsBxf9grkx85QV+Cfl2v5CfOp/DFEfFAGJQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INYcbnrRjPOlaptgnbI176gMYQv/0NVqFqSeYPdK0ogbp1/9uJSTIQ+rtewkFUT2f+YG7a/69hG1Km7Cp89ztfht/pe4ACaaraDA1uL5EiLAk89DCxBhl+xRwhTdMDG/o6Lhu9Pd1KQE8l7vl+JRhiQbddI+VOtIymPqfH9MQuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/AYpn3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF0BC4CEF0;
-	Mon, 22 Sep 2025 19:36:31 +0000 (UTC)
+	 MIME-Version; b=ptSOWOrrivwhFSJ4FNFXI83xSDwJb44TIAr+Lk1GGogVvg8nR8pNgvaqEFA5eXSnVGhGN24reZwyDCkSGUNNXF5pFal2p0rXxvDpn60xMj/Si4701XJqAtSyLX0uhdvFHtTZVRPrlY+7MZMnciNxb66hxBVQTNcnt18wnGWnh54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRWY8Cq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499ECC4CEF0;
+	Mon, 22 Sep 2025 19:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569792;
-	bh=QvAC5SbQmzHtyleNyzo/mCpic92Hsbk+MQZyL9BFcXA=;
+	s=korg; t=1758570339;
+	bh=EsU0fYavsBxf9grkx85QV+Cfl2v5CfOp/DFEfFAGJQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/AYpn3I9moPw+BqvP8xWmYUqN2pSokpMU8vCJw/e5IIOKeLtfnf8GWpDKePS6wUZ
-	 wBzKh3T9gX26DZBSwGdr8sZGID5WGKTWqk8t4Y59mECXt+KF3Wkfh8H4VxT4pbwcjK
-	 IHGZlz4/pmP1uoaagdAQAmp2q/DuUTNEaFZ5esNM=
+	b=zRWY8Cq4KmgRR/MHLamJhCnoRhHdy7a7D85Lv7Ak1bcHwu8zi5hg2P7sPyTqR9AZJ
+	 csHnlGr5YSVIoaROjTNQ4xq0S3h6hQuxrcBWsWpTssZRXcOo6LQGJyWcJIjZhQmPm+
+	 IO1VbhPKRyqymTYKiFRZzwX2eaH6WbiLxS5HOubk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Majkowski <marek@cloudflare.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 58/70] mptcp: pm: nl: announce deny-join-id0 flag
+	Max Kellermann <max.kellermann@ionos.com>,
+	Fengnan Chang <changfengnan@bytedance.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.16 098/149] io_uring/io-wq: fix `max_workers` breakage and `nr_workers` underflow
 Date: Mon, 22 Sep 2025 21:29:58 +0200
-Message-ID: <20250922192406.158522686@linuxfoundation.org>
+Message-ID: <20250922192415.354953654@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit 2293c57484ae64c9a3c847c8807db8c26a3a4d41 upstream.
+commit cd4ea81be3eb94047ad023c631afd9bd6c295400 upstream.
 
-During the connection establishment, a peer can tell the other one that
-it cannot establish new subflows to the initial IP address and port by
-setting the 'C' flag [1]. Doing so makes sense when the sender is behind
-a strict NAT, operating behind a legacy Layer 4 load balancer, or using
-anycast IP address for example.
+Commit 88e6c42e40de ("io_uring/io-wq: add check free worker before
+create new worker") reused the variable `do_create` for something
+else, abusing it for the free worker check.
 
-When this 'C' flag is set, the path-managers must then not try to
-establish new subflows to the other peer's initial IP address and port.
-The in-kernel PM has access to this info, but the userspace PM didn't.
+This caused the value to effectively always be `true` at the time
+`nr_workers < max_workers` was checked, but it should really be
+`false`.  This means the `max_workers` setting was ignored, and worse:
+if the limit had already been reached, incrementing `nr_workers` was
+skipped even though another worker would be created.
 
-The RFC8684 [1] is strict about that:
+When later lots of workers exit, the `nr_workers` field could easily
+underflow, making the problem worse because more and more workers
+would be created without incrementing `nr_workers`.
 
-  (...) therefore the receiver MUST NOT try to open any additional
-  subflows toward this address and port.
+The simple solution is to use a different variable for the free worker
+check instead of using one variable for two different things.
 
-So it is important to tell the userspace about that as it is responsible
-for the respect of this flag.
-
-When a new connection is created and established, the Netlink events
-now contain the existing but not currently used 'flags' attribute. When
-MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 is set, it means no other subflows
-to the initial IP address and port -- info that are also part of the
-event -- can be established.
-
-Link: https://datatracker.ietf.org/doc/html/rfc8684#section-3.1-20.6 [1]
-Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
-Reported-by: Marek Majkowski <marek@cloudflare.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/532
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-2-40171884ade8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in mptcp_pm.yaml, and mptcp_pm.h, because these files have
-  been added later by commit bc8aeb2045e2 ("Documentation: netlink: add
-  a YAML spec for mptcp"), and commit 9d1ed17f93ce ("uapi: mptcp: use
-  header file generated from YAML spec"), which are not in this version.
-  Applying the same modifications, but only in mptcp.h.
-  Conflict in pm_netlink.c, because of a difference in the context,
-  introduced by commit b9f4554356f6 ("mptcp: annotate lockless access
-  for token"), which is not in this version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 88e6c42e40de ("io_uring/io-wq: add check free worker before create new worker")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Fengnan Chang <changfengnan@bytedance.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/mptcp.h |    6 ++++--
- net/mptcp/pm_netlink.c     |    7 +++++++
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ io_uring/io-wq.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/include/uapi/linux/mptcp.h
-+++ b/include/uapi/linux/mptcp.h
-@@ -81,6 +81,8 @@ enum {
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 17dfaa0395c4..1d03b2fc4b25 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -352,16 +352,16 @@ static void create_worker_cb(struct callback_head *cb)
+ 	struct io_wq *wq;
  
- #define MPTCP_PM_ADDR_ATTR_MAX (__MPTCP_PM_ADDR_ATTR_MAX - 1)
+ 	struct io_wq_acct *acct;
+-	bool do_create = false;
++	bool activated_free_worker, do_create = false;
  
-+#define MPTCP_PM_EV_FLAG_DENY_JOIN_ID0		_BITUL(0)
-+
- #define MPTCP_PM_ADDR_FLAG_SIGNAL			(1 << 0)
- #define MPTCP_PM_ADDR_FLAG_SUBFLOW			(1 << 1)
- #define MPTCP_PM_ADDR_FLAG_BACKUP			(1 << 2)
-@@ -132,13 +134,13 @@ struct mptcp_info {
+ 	worker = container_of(cb, struct io_worker, create_work);
+ 	wq = worker->wq;
+ 	acct = worker->acct;
  
- /*
-  * MPTCP_EVENT_CREATED: token, family, saddr4 | saddr6, daddr4 | daddr6,
-- *                      sport, dport
-+ *                      sport, dport, server-side, [flags]
-  * A new MPTCP connection has been created. It is the good time to allocate
-  * memory and send ADD_ADDR if needed. Depending on the traffic-patterns
-  * it can take a long time until the MPTCP_EVENT_ESTABLISHED is sent.
-  *
-  * MPTCP_EVENT_ESTABLISHED: token, family, saddr4 | saddr6, daddr4 | daddr6,
-- *			    sport, dport
-+ *			    sport, dport, server-side, [flags]
-  * A MPTCP connection is established (can start new subflows).
-  *
-  * MPTCP_EVENT_CLOSED: token
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -2252,6 +2252,7 @@ static int mptcp_event_created(struct sk
- 			       const struct sock *ssk)
- {
- 	int err = nla_put_u32(skb, MPTCP_ATTR_TOKEN, msk->token);
-+	u16 flags = 0;
+ 	rcu_read_lock();
+-	do_create = !io_acct_activate_free_worker(acct);
++	activated_free_worker = io_acct_activate_free_worker(acct);
+ 	rcu_read_unlock();
+-	if (!do_create)
++	if (activated_free_worker)
+ 		goto no_need_create;
  
- 	if (err)
- 		return err;
-@@ -2259,6 +2260,12 @@ static int mptcp_event_created(struct sk
- 	if (nla_put_u8(skb, MPTCP_ATTR_SERVER_SIDE, READ_ONCE(msk->pm.server_side)))
- 		return -EMSGSIZE;
- 
-+	if (READ_ONCE(msk->pm.remote_deny_join_id0))
-+		flags |= MPTCP_PM_EV_FLAG_DENY_JOIN_ID0;
-+
-+	if (flags && nla_put_u16(skb, MPTCP_ATTR_FLAGS, flags))
-+		return -EMSGSIZE;
-+
- 	return mptcp_event_add_subflow(skb, ssk);
- }
- 
+ 	raw_spin_lock(&acct->workers_lock);
+-- 
+2.51.0
+
 
 
 
