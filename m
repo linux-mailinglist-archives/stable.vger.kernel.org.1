@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-181221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABABB92F2C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A9FB92D3A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E1AB2A7E19
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BACC5445B0C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3CF2F0C52;
-	Mon, 22 Sep 2025 19:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661F42E2847;
+	Mon, 22 Sep 2025 19:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jkQmUa8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dtu9qdJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF0C2820D1;
-	Mon, 22 Sep 2025 19:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217D1C8E6;
+	Mon, 22 Sep 2025 19:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569990; cv=none; b=VQxjXrROEnbfaFQC02VqeDfSSVV+lsq67pI2idppvwiBkaGCl3ChkDXYzaQ8/KsxyTc6QFaAHuDq6g89D8WuejkvMoitAi4m09BU/VU40QsOjsdvTVDHjbnctqVoUvMIXn1ueyBNrqcdaT8IICnGuUL89tflKjUqpNL1Ryz8xA4=
+	t=1758569624; cv=none; b=BhHFQc30ZcwmaQguI6HOxpPeBIcr4KjoaX1KyJ2Z084yvCij+fiffx429cMcQSD6fwkTkXYnpKlA02AvPTYJVSD+KlkjZhSvTVM8phfLb1qt+u5+YmrFT3BM9lULssFMTZaC/T+jjjOlWmxRhYK0VWgwSvLobJDtID6F7rp2r18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569990; c=relaxed/simple;
-	bh=xraCf5WCc6Bf9bUejpn6O3J/gywUYtdYeM5TxxZekeI=;
+	s=arc-20240116; t=1758569624; c=relaxed/simple;
+	bh=8q5AYCovZ+61sPXu2691z2GYdzoshjz9aTbM/Pk+azU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0zNX3YTPBqvcJVQDatN+QoY3trFWO5G/Z5LxmlrtREx0liqf5zdk8dvrcJAT2+UJdXb0DOeoveJ7meN9IAJL89gUfdcF6ih7PIjR9/aaMDkW/mrpxcbCFC8gxZG6yAt4/eUYn7bobSa4GAtnWeoa3RdYAXPNr8R7VQNqzdL2iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jkQmUa8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BFCC4CEF0;
-	Mon, 22 Sep 2025 19:39:50 +0000 (UTC)
+	 MIME-Version; b=iXhcjv+TJgaJgN7jEc3iyg2utqndi+iQq+Q/Our0qE/RhQguedD3AM/N7o2vsfbuvwSdZVKIU0g0IkFInBS4V5LjRLfyxrTntgv3YPFCJzkepqNk7q08CzJJ1jGwHG6W9x0BXFTLzRD5wMTeeKlm6VieEMUPCLlbTIjFaB8KHbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dtu9qdJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9942C4CEF7;
+	Mon, 22 Sep 2025 19:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569990;
-	bh=xraCf5WCc6Bf9bUejpn6O3J/gywUYtdYeM5TxxZekeI=;
+	s=korg; t=1758569624;
+	bh=8q5AYCovZ+61sPXu2691z2GYdzoshjz9aTbM/Pk+azU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jkQmUa8v2DAV2uHpp+ojAsTNQW87pXo99gJUVYkg6v9zI/UK+sXjBKD0rXc0UB17
-	 /Hcw5u/gDba1fGnjVy3mnUpWedOdwMYrja7P0NG6e9DFdkOogyjS+vqI2ngMYpT4TN
-	 EPwnfS9jPV1kJlviZQ6iDsvJWQF5m+HNSYSYNTko=
+	b=Dtu9qdJFKLj1Rd5QOMIzxUJotfJ5ddPYEL0hDtcaidCmn7aLLVofVJvDqMBrsx+Us
+	 yacYTrBqe6VQAMdHeyujkdcOgoK0LvTCe5x4ishJ/7mL0/w/qX/cs8rOIQBYI/LfRW
+	 pmjLJn5yAjHQZxCqGwptkGxWzxt3CpgteP67pHMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benedek Thaler <thaler@thaler.hu>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 068/105] io_uring: include dying ring in task_work "should cancel" state
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 58/61] ASoC: q6apm-lpass-dai: close graph on prepare errors
 Date: Mon, 22 Sep 2025 21:29:51 +0200
-Message-ID: <20250922192410.689653392@linuxfoundation.org>
+Message-ID: <20250922192405.235183679@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-Commit 3539b1467e94336d5854ebf976d9627bfb65d6c3 upstream.
+[ Upstream commit be1fae62cf253a5b67526cee9fbc07689b97c125 ]
 
-When running task_work for an exiting task, rather than perform the
-issue retry attempt, the task_work is canceled. However, this isn't
-done for a ring that has been closed. This can lead to requests being
-successfully completed post the ring being closed, which is somewhat
-confusing and surprising to an application.
+There is an issue around with error handling and graph management with
+the exising code, none of the error paths close the graph, which result in
+leaving the loaded graph in dsp, however the driver thinks otherwise.
 
-Rather than just check the task exit state, also include the ring
-ref state in deciding whether or not to terminate a given request when
-run from task_work.
+This can have a nasty side effect specially when we try to load the same
+graph to dsp, dsp returns error which leaves the board with no sound and
+requires restart.
 
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://github.com/axboe/liburing/discussions/1459
-Reported-by: Benedek Thaler <thaler@thaler.hu>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix this by properly closing the graph when we hit errors between
+open and close.
+
+Fixes: 30ad723b93ad ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # X13s
+Link: https://lore.kernel.org/r/20240613-q6apm-fixes-v1-1-d88953675ab3@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 68f27f7c7708 ("ASoC: qcom: q6apm-lpass-dais: Fix NULL pointer dereference if source graph failed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c  |    6 ++++--
- io_uring/io_uring.h  |    4 ++--
- io_uring/poll.c      |    2 +-
- io_uring/timeout.c   |    2 +-
- io_uring/uring_cmd.c |    2 +-
- 5 files changed, 9 insertions(+), 7 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |   32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1358,8 +1358,10 @@ static void io_req_task_cancel(struct io
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -109,14 +109,17 @@ static void q6apm_lpass_dai_shutdown(str
+ 	struct q6apm_lpass_dai_data *dai_data = dev_get_drvdata(dai->dev);
+ 	int rc;
  
- void io_req_task_submit(struct io_kiocb *req, struct io_tw_state *ts)
- {
--	io_tw_lock(req->ctx, ts);
--	if (unlikely(io_should_terminate_tw()))
-+	struct io_ring_ctx *ctx = req->ctx;
-+
-+	io_tw_lock(ctx, ts);
-+	if (unlikely(io_should_terminate_tw(ctx)))
- 		io_req_defer_failed(req, -EFAULT);
- 	else if (req->flags & REQ_F_FORCE_ASYNC)
- 		io_queue_iowq(req);
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -429,9 +429,9 @@ static inline bool io_allowed_run_tw(str
-  * 2) PF_KTHREAD is set, in which case the invoker of the task_work is
-  *    our fallback task_work.
-  */
--static inline bool io_should_terminate_tw(void)
-+static inline bool io_should_terminate_tw(struct io_ring_ctx *ctx)
- {
--	return current->flags & (PF_KTHREAD | PF_EXITING);
-+	return (current->flags & (PF_KTHREAD | PF_EXITING)) || percpu_ref_is_dying(&ctx->refs);
+-	if (!dai_data->is_port_started[dai->id])
+-		return;
+-	rc = q6apm_graph_stop(dai_data->graph[dai->id]);
+-	if (rc < 0)
+-		dev_err(dai->dev, "fail to close APM port (%d)\n", rc);
++	if (dai_data->is_port_started[dai->id]) {
++		rc = q6apm_graph_stop(dai_data->graph[dai->id]);
++		dai_data->is_port_started[dai->id] = false;
++		if (rc < 0)
++			dev_err(dai->dev, "fail to close APM port (%d)\n", rc);
++	}
+ 
+-	q6apm_graph_close(dai_data->graph[dai->id]);
+-	dai_data->is_port_started[dai->id] = false;
++	if (dai_data->graph[dai->id]) {
++		q6apm_graph_close(dai_data->graph[dai->id]);
++		dai_data->graph[dai->id] = NULL;
++	}
  }
  
- static inline void io_req_queue_tw_complete(struct io_kiocb *req, s32 res)
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -265,7 +265,7 @@ static int io_poll_check_events(struct i
- {
- 	int v;
+ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
+@@ -131,8 +134,10 @@ static int q6apm_lpass_dai_prepare(struc
+ 		q6apm_graph_stop(dai_data->graph[dai->id]);
+ 		dai_data->is_port_started[dai->id] = false;
  
--	if (unlikely(io_should_terminate_tw()))
-+	if (unlikely(io_should_terminate_tw(req->ctx)))
- 		return -ECANCELED;
+-		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
++		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 			q6apm_graph_close(dai_data->graph[dai->id]);
++			dai_data->graph[dai->id] = NULL;
++		}
+ 	}
  
- 	do {
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -303,7 +303,7 @@ static void io_req_task_link_timeout(str
- 	int ret = -ENOENT;
+ 	/**
+@@ -151,26 +156,29 @@ static int q6apm_lpass_dai_prepare(struc
  
- 	if (prev) {
--		if (!io_should_terminate_tw()) {
-+		if (!io_should_terminate_tw(req->ctx)) {
- 			struct io_cancel_data cd = {
- 				.ctx		= req->ctx,
- 				.data		= prev->cqe.user_data,
---- a/io_uring/uring_cmd.c
-+++ b/io_uring/uring_cmd.c
-@@ -118,7 +118,7 @@ static void io_uring_cmd_work(struct io_
- 	struct io_uring_cmd *ioucmd = io_kiocb_to_cmd(req, struct io_uring_cmd);
- 	unsigned int flags = IO_URING_F_COMPLETE_DEFER;
+ 	cfg->direction = substream->stream;
+ 	rc = q6apm_graph_media_format_pcm(dai_data->graph[dai->id], cfg);
+-
+ 	if (rc) {
+ 		dev_err(dai->dev, "Failed to set media format %d\n", rc);
+-		return rc;
++		goto err;
+ 	}
  
--	if (io_should_terminate_tw())
-+	if (io_should_terminate_tw(req->ctx))
- 		flags |= IO_URING_F_TASK_DEAD;
+ 	rc = q6apm_graph_prepare(dai_data->graph[dai->id]);
+ 	if (rc) {
+ 		dev_err(dai->dev, "Failed to prepare Graph %d\n", rc);
+-		return rc;
++		goto err;
+ 	}
  
- 	/* task_work executor checks the deffered list completion */
+ 	rc = q6apm_graph_start(dai_data->graph[dai->id]);
+ 	if (rc < 0) {
+ 		dev_err(dai->dev, "fail to start APM port %x\n", dai->id);
+-		return rc;
++		goto err;
+ 	}
+ 	dai_data->is_port_started[dai->id] = true;
+ 
+ 	return 0;
++err:
++	q6apm_graph_close(dai_data->graph[dai->id]);
++	dai_data->graph[dai->id] = NULL;
++	return rc;
+ }
+ 
+ static int q6apm_lpass_dai_startup(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
 
 
 
