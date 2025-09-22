@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-181205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59214B92F00
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7907BB92D13
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95AD544776E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1AB9E4E2957
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F9B2F0C5F;
-	Mon, 22 Sep 2025 19:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AA32EDD5D;
+	Mon, 22 Sep 2025 19:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTm//THJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19wjZ0P3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0A71C1ADB;
-	Mon, 22 Sep 2025 19:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8FDC8E6;
+	Mon, 22 Sep 2025 19:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569951; cv=none; b=GNq6v/fr0ZLlZIsq3ka1V6dii6sF3ABu8UDicePLhVrSbfy4WTd+leyIBjJrtLtRHTD1/sDg2uNsNWG6DTukI8GlYn0da5WH8hc3fnxPfa2zFtDLLK67zn8AWzgGPyBVNb6OsS61EB7VnnGk0zHbthsPietddgJhu98Ka1Qj7OI=
+	t=1758569596; cv=none; b=OSowsJXo3idLWjieZmGm+XemvmR3WH8Mi8vTdwtOhxqKtE3ufu/wPezr7jc4A6Mc1AOX/k7gghc3edWKV2RQxWDyUr8y24nrgoSskZRVk9PdKBm4IOG5D74Q5ZF0t/qMMtsKJlSKbzZpL8e337gV1TgjLGjAlRWU9/QkVuGDs10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569951; c=relaxed/simple;
-	bh=vdRhyoF+f67Dkylm054p+MoX0HFbuWdQ525p0FfEWPo=;
+	s=arc-20240116; t=1758569596; c=relaxed/simple;
+	bh=sfT+IJse1FrSPI1QrtOhgBawGx7fENamNyLEGl6DQCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMjYHzQSheZvqesDrwSpd8k1gNbS52jN0fTJf6wv2Jf4IeGPNNCt3tun3Rj/ajqDeIuzF1xv8kmGEC0bY8GGpdbs0869BJgrD2WevCTn+BMOl6w6Tj0LLRjs6yRo2dELUmeho/DVhIaTY7mFysP30wBFUGsK739c9+XcmRIF2OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTm//THJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE6DC4CEF0;
-	Mon, 22 Sep 2025 19:39:10 +0000 (UTC)
+	 MIME-Version; b=W/5TjzfWY7tpa+111WVzKw1KYafN7ECGcIreVKRYu66yEpslT5qHWR0QwoQ2tM7YcpNZIfmstaEN331j5Y1hi6VLgNQQZ9yVCyYCJUcvr3fJ4fK1M8UQshHdhD8Ihl9x6h7GCjHxS3Gfpy65HKJNeO1fR1/IZUIG2DivDso4g9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19wjZ0P3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4CCC4CEF0;
+	Mon, 22 Sep 2025 19:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569951;
-	bh=vdRhyoF+f67Dkylm054p+MoX0HFbuWdQ525p0FfEWPo=;
+	s=korg; t=1758569596;
+	bh=sfT+IJse1FrSPI1QrtOhgBawGx7fENamNyLEGl6DQCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTm//THJ2zy0wC6ruGhdLiByCRCv3CMx8T+wpvy4SHO8EX5CzL6rGLGirnW9GVJ6r
-	 8AFLh15HzWxUNyDPy9K65TbATMoo2i3ffZDkvCJMQ/YyD4TEu/GTiVDGVN56xB13ia
-	 xNTpJKB8rWNuYNYla9Jg9sEs0vh8KE5GbWpuTXOI=
+	b=19wjZ0P3zj2FO9YarwEjb0Q51ScXiGZlJJLakxhYFNt7mrax7hxbZcwbeHjElOiK0
+	 XqIg7jqWZi3Mu/cS4Ar2pMEvHa2VTuBXCOS5vNlvkA7du0M2eXnUfHs2Woo5trFvdN
+	 rbcKQ7CCeiRQnJLz8ZdCx40ZLigpIPZryHTqr2Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 053/105] btrfs: tree-checker: fix the incorrect inode ref size check
+	David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-crypto@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 43/61] crypto: af_alg: Indent the loop in af_alg_sendmsg()
 Date: Mon, 22 Sep 2025 21:29:36 +0200
-Message-ID: <20250922192410.303744774@linuxfoundation.org>
+Message-ID: <20250922192404.764714238@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +70,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 96fa515e70f3e4b98685ef8cac9d737fc62f10e1 upstream.
+[ Upstream commit 73d7409cfdad7fd08a9203eb2912c1c77e527776 ]
 
-[BUG]
-Inside check_inode_ref(), we need to make sure every structure,
-including the btrfs_inode_extref header, is covered by the item.  But
-our code is incorrectly using "sizeof(iref)", where @iref is just a
-pointer.
+Put the loop in af_alg_sendmsg() into an if-statement to indent it to make
+the next patch easier to review as that will add another branch to handle
+MSG_SPLICE_PAGES to the if-statement.
 
-This means "sizeof(iref)" will always be "sizeof(void *)", which is much
-smaller than "sizeof(struct btrfs_inode_extref)".
-
-This will allow some bad inode extrefs to sneak in, defeating tree-checker.
-
-[FIX]
-Fix the typo by calling "sizeof(*iref)", which is the same as
-"sizeof(struct btrfs_inode_extref)", and will be the correct behavior we
-want.
-
-Fixes: 71bf92a9b877 ("btrfs: tree-checker: Add check for INODE_REF")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Herbert Xu <herbert@gondor.apana.org.au>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Jens Axboe <axboe@kernel.dk>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: linux-crypto@vger.kernel.org
+cc: netdev@vger.kernel.org
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 9574b2330dbd ("crypto: af_alg - Set merge to zero early in af_alg_sendmsg")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ crypto/af_alg.c | 51 ++++++++++++++++++++++++++-----------------------
+ 1 file changed, 27 insertions(+), 24 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1744,10 +1744,10 @@ static int check_inode_ref(struct extent
- 	while (ptr < end) {
- 		u16 namelen;
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index fef69d2a6b183..d5a8368a47c5c 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -927,35 +927,38 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 		if (sgl->cur)
+ 			sg_unmark_end(sg + sgl->cur - 1);
  
--		if (unlikely(ptr + sizeof(iref) > end)) {
-+		if (unlikely(ptr + sizeof(*iref) > end)) {
- 			inode_ref_err(leaf, slot,
- 			"inode ref overflow, ptr %lu end %lu inode_ref_size %zu",
--				ptr, end, sizeof(iref));
-+				ptr, end, sizeof(*iref));
- 			return -EUCLEAN;
- 		}
+-		do {
+-			struct page *pg;
+-			unsigned int i = sgl->cur;
++		if (1 /* TODO check MSG_SPLICE_PAGES */) {
++			do {
++				struct page *pg;
++				unsigned int i = sgl->cur;
  
+-			plen = min_t(size_t, len, PAGE_SIZE);
++				plen = min_t(size_t, len, PAGE_SIZE);
+ 
+-			pg = alloc_page(GFP_KERNEL);
+-			if (!pg) {
+-				err = -ENOMEM;
+-				goto unlock;
+-			}
++				pg = alloc_page(GFP_KERNEL);
++				if (!pg) {
++					err = -ENOMEM;
++					goto unlock;
++				}
+ 
+-			sg_assign_page(sg + i, pg);
++				sg_assign_page(sg + i, pg);
+ 
+-			err = memcpy_from_msg(page_address(sg_page(sg + i)),
+-					      msg, plen);
+-			if (err) {
+-				__free_page(sg_page(sg + i));
+-				sg_assign_page(sg + i, NULL);
+-				goto unlock;
+-			}
++				err = memcpy_from_msg(
++					page_address(sg_page(sg + i)),
++					msg, plen);
++				if (err) {
++					__free_page(sg_page(sg + i));
++					sg_assign_page(sg + i, NULL);
++					goto unlock;
++				}
+ 
+-			sg[i].length = plen;
+-			len -= plen;
+-			ctx->used += plen;
+-			copied += plen;
+-			size -= plen;
+-			sgl->cur++;
+-		} while (len && sgl->cur < MAX_SGL_ENTS);
++				sg[i].length = plen;
++				len -= plen;
++				ctx->used += plen;
++				copied += plen;
++				size -= plen;
++				sgl->cur++;
++			} while (len && sgl->cur < MAX_SGL_ENTS);
++		}
+ 
+ 		if (!size)
+ 			sg_mark_end(sg + sgl->cur - 1);
+-- 
+2.51.0
+
 
 
 
