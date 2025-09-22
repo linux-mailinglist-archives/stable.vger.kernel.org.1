@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-181128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870C2B92E06
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D7AB92F11
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34471444477
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA56C19073E0
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623FC2F3C11;
-	Mon, 22 Sep 2025 19:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307142F0C5F;
+	Mon, 22 Sep 2025 19:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fK0A+HUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXX3M9hK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDF22F0C5F;
-	Mon, 22 Sep 2025 19:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08E51C1ADB;
+	Mon, 22 Sep 2025 19:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569760; cv=none; b=tRb77GfVz7Qv3tTuBtVTz3iytEBuHjGljvEihA4Oib1dRd4lACYJ6oR0S/8BlbLhLaonn7JS6Zjy5LsRwoOURSVGqiW4sdSD3Efni46gpZYtLsTAwjSIO20jCr3NIgoEfj+OhEOdz4QBaOo4U9efHgtjHmFS49RrFTfiL+wWE+g=
+	t=1758569979; cv=none; b=QHplahUIllLn2Ty+GCt4ah5kb1zwyymeNj67hFfeKC+pyzXiWFRQPX2lXzbyOtEk9StbbBik4dVjqpabUdhK5U4zisoMqtFUcE4P5ZLJIN6gugG5C6n0jux+lYmaNKt9ik6wDtz792mzuk+b5sEGoz/oa5smZgZCxrYWWO8wo6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569760; c=relaxed/simple;
-	bh=J206l71c2u5t0Z/cnvQ986tGEfkbbbreGJcBIvgbba8=;
+	s=arc-20240116; t=1758569979; c=relaxed/simple;
+	bh=vB9ZZ3jJAwwfzhyKCC44K1qEE8i3xPs8FbBDU1ekoq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0knuleG8sWPKjN3UZpT/Zwc/f3qLejLHztO55MLSurs5Zww+oC9Q2U4r+VVrYHz+Dtr39qOBSppg43jeC6C9vm0MKNgC2P3osgoEKk56mpf5k1AyXee/wugM1lxUdKlZFF+8jj2reLhpZhgpj3av4SNPAEuJ4BGrAoSktCSigY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fK0A+HUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5F7C4CEF0;
-	Mon, 22 Sep 2025 19:35:59 +0000 (UTC)
+	 MIME-Version; b=ljE6KBd2InxV0HMnFA6xciFMxBWf+it7YkfKz80W0vApZsoCJtrGoTKq+8ie4zLhvunYjmLf/AYOK4QX/rIVWFDI3B80FbNdk3uugkYUbKQAHCeWgcXmMeniQZaKFrkH2E0wDtNe8k0aM9yR46rOXckcOcjaxBhL0JhliZcIYms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXX3M9hK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D324C4CEF0;
+	Mon, 22 Sep 2025 19:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569760;
-	bh=J206l71c2u5t0Z/cnvQ986tGEfkbbbreGJcBIvgbba8=;
+	s=korg; t=1758569978;
+	bh=vB9ZZ3jJAwwfzhyKCC44K1qEE8i3xPs8FbBDU1ekoq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fK0A+HURscwBDSnIWQGZVN5Uofgc1sWsW4gE8GvQTvBnfbrc64B7NOA0aTZMT/mBW
-	 hGzfh9ASNZlDvE1dWC30+Cdv2wAXoqCVXBlIluNw3eABJuLlHVonzrTeqAH+2Jx5q7
-	 3d7jbbL9aHYmZ6muome4XbRxOOwZzq1UrFglc/oI=
+	b=pXX3M9hK2pFNonAjVStI292XWaRIgHN0MI6o20t3Et+D9FFmUQfAW3UuCMjBNwG5/
+	 MfY8IWTNFY15KAnbPjpYLSYv3uaQPek1K0VCMOeL08MDQBK5QU5gG5b+osvcZZsUp3
+	 wc70lZc6J8cw1ZN9JDA8dVcjmcYURnWCo/AlA+sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praful Adiga <praful.adiga@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 46/70] ALSA: hda/realtek: Fix mute led for HP Laptop 15-dw4xx
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 063/105] selftests: mptcp: connect: catch IO errors on listen side
 Date: Mon, 22 Sep 2025 21:29:46 +0200
-Message-ID: <20250922192405.850119668@linuxfoundation.org>
+Message-ID: <20250922192410.561908082@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praful Adiga <praful.adiga@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit d33c3471047fc54966621d19329e6a23ebc8ec50 upstream.
+commit 14e22b43df25dbd4301351b882486ea38892ae4f upstream.
 
-This laptop uses the ALC236 codec with COEF 0x7 and idx 1 to
-control the mute LED. Enable the existing quirk for this device.
+IO errors were correctly printed to stderr, and propagated up to the
+main loop for the server side, but the returned value was ignored. As a
+consequence, the program for the listener side was no longer exiting
+with an error code in case of IO issues.
 
-Signed-off-by: Praful Adiga <praful.adiga@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Because of that, some issues might not have been seen. But very likely,
+most issues either had an effect on the client side, or the file
+transfer was not the expected one, e.g. the connection got reset before
+the end. Still, it is better to fix this.
+
+The main consequence of this issue is the error that was reported by the
+selftests: the received and sent files were different, and the MIB
+counters were not printed. Also, when such errors happened during the
+'disconnect' tests, the program tried to continue until the timeout.
+
+Now when an IO error is detected, the program exits directly with an
+error.
+
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-2-d40e77cbbf02@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10161,6 +10161,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8992, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8994, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8995, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x89a0, "HP Laptop 15-dw4xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x89a4, "HP ProBook 440 G9", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x89a6, "HP ProBook 450 G9", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x89aa, "HP EliteBook 630 G9", ALC236_FIXUP_HP_GPIO_LED),
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1079,6 +1079,7 @@ int main_loop_s(int listensock)
+ 	struct pollfd polls;
+ 	socklen_t salen;
+ 	int remotesock;
++	int err = 0;
+ 	int fd = 0;
+ 
+ again:
+@@ -1111,7 +1112,7 @@ again:
+ 		SOCK_TEST_TCPULP(remotesock, 0);
+ 
+ 		memset(&winfo, 0, sizeof(winfo));
+-		copyfd_io(fd, remotesock, 1, true, &winfo);
++		err = copyfd_io(fd, remotesock, 1, true, &winfo);
+ 	} else {
+ 		perror("accept");
+ 		return 1;
+@@ -1120,10 +1121,10 @@ again:
+ 	if (cfg_input)
+ 		close(fd);
+ 
+-	if (--cfg_repeat > 0)
++	if (!err && --cfg_repeat > 0)
+ 		goto again;
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static void init_rng(void)
 
 
 
