@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D8CB92CEF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAB8B9308B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3795219061AF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A725B1907F09
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C5527FB2D;
-	Mon, 22 Sep 2025 19:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F62F0C52;
+	Mon, 22 Sep 2025 19:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kb5m3B0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnIMMU4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1670AC8E6;
-	Mon, 22 Sep 2025 19:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952902F2909;
+	Mon, 22 Sep 2025 19:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569569; cv=none; b=QVYIFPzqCr6EnQPjpNEEH58x01v89aPKF7sh1pxASKNjoG0IsaCiAFDAtG/iuX2BOEFP3Qy3cI0+ri6KI5hX1TgMcmkVBZfyfoGjxyz+V0gD76+kKJYzVychY8k6IEpzr8sSglPC6s+b8jKwXC+YzyXNjJfcx4mnKpgLSFUVYuQ=
+	t=1758570221; cv=none; b=sxEEx7crxFhmUH8ucG6nEvu2jB+wDizn8bUFG56aDb58zPMnJ9cLpU6xpbQ9CRUnAgF9E7++kYEImwyGXY6M9r8Y0cazOyhHo1MpDkigUFt+94uhIraTKJCD8+JvlZW3Nm7hbqr4NrR1092/SCs52GKhqjOagwbIc8c4yI7cYpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569569; c=relaxed/simple;
-	bh=raMlwHVnNKmbnkZRkkInO97psvOaoP4KkVdcvxrXru0=;
+	s=arc-20240116; t=1758570221; c=relaxed/simple;
+	bh=Pf9jYeKEZxUFH0X0HZqUR7YhWbHMmk9r+n3btA6NSCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9kkEV9wnhgB3HAPZStPMeVbP4egJpDtIR2KjXHVjtCRAVj0RzdpHghv/F9evMzgYB9IvOIQrE1I1E7u54M2vZbemqSyWi1XrLbtP+eM24rWSl40+Det6h4L5tk5hPAYbqKoX/R4LELD6SShjvCeWDU+u03UdXWAKJOyEagnqoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kb5m3B0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AABC4CEF0;
-	Mon, 22 Sep 2025 19:32:48 +0000 (UTC)
+	 MIME-Version; b=k2GDAHInep4/bTi/x84wdVMvQXTNYBiPRV+SqO1flLbdzFLyZezTtpnlYZwEjO/YVskqMhAUUoYkjndqoCC0ul9//wxhVSxhO3zkfGvD6AIuYnxUuNbveTgSO46U37K5jqeBaKRXHj6pWJVFAmjdyngSkW8G7JA09vnCytP2mDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnIMMU4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF1AC4CEF0;
+	Mon, 22 Sep 2025 19:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569569;
-	bh=raMlwHVnNKmbnkZRkkInO97psvOaoP4KkVdcvxrXru0=;
+	s=korg; t=1758570221;
+	bh=Pf9jYeKEZxUFH0X0HZqUR7YhWbHMmk9r+n3btA6NSCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kb5m3B0qOO4f3ocNiGxJd1F3lhnHoNt1QKnMb8J1wiTfv7zEgtGEUM6pGkNKB7wDK
-	 +He2+765F/F9oT0LLdC/oA8472Wgaw5zr0Qht3M62HHae1RV+IrNG31IMOo1eu3KTK
-	 pqjjm04TI7T79JSlTEg4DMr3dvedpYrRfr6Ub3Fo=
+	b=wnIMMU4V3whtzjYnYzpswTLU+I+9uc4KwG+BB/pb2oHgTAIMFe4mlDR1BBYrISzHd
+	 dy7WF0MH0u1dTGu6LEZiIeKV2sayzk7fXxTZQ0CuGcdsx7JROfQDH/m5/ZTDBMJ1El
+	 YqgZgpMrhWXmHz4EZrEw5hCj2Oc73Q7nitXnDXT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 32/61] KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active
+	WANG Rui <wangrui@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.16 065/149] objtool/LoongArch: Mark types based on break immediate code
 Date: Mon, 22 Sep 2025 21:29:25 +0200
-Message-ID: <20250922192404.436563463@linuxfoundation.org>
+Message-ID: <20250922192414.522254731@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit d02e48830e3fce9701265f6c5a58d9bdaf906a76 upstream.
+commit baad7830ee9a56756b3857348452fe756cb0a702 upstream.
 
-Commit 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
-inhibited pre-VMRUN sync of TPR from LAPIC into VMCB::V_TPR in
-sync_lapic_to_cr8() when AVIC is active.
+If the break immediate code is 0, it should mark the type as
+INSN_TRAP. If the break immediate code is 1, it should mark the
+type as INSN_BUG.
 
-AVIC does automatically sync between these two fields, however it does
-so only on explicit guest writes to one of these fields, not on a bare
-VMRUN.
+While at it, format the code style and add the code comment for nop.
 
-This meant that when AVIC is enabled host changes to TPR in the LAPIC
-state might not get automatically copied into the V_TPR field of VMCB.
-
-This is especially true when it is the userspace setting LAPIC state via
-KVM_SET_LAPIC ioctl() since userspace does not have access to the guest
-VMCB.
-
-Practice shows that it is the V_TPR that is actually used by the AVIC to
-decide whether to issue pending interrupts to the CPU (not TPR in TASKPRI),
-so any leftover value in V_TPR will cause serious interrupt delivery issues
-in the guest when AVIC is enabled.
-
-Fix this issue by doing pre-VMRUN TPR sync from LAPIC into VMCB::V_TPR
-even when AVIC is enabled.
-
-Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
 Cc: stable@vger.kernel.org
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Link: https://lore.kernel.org/r/c231be64280b1461e854e1ce3595d70cde3a2e9d.1756139678.git.maciej.szmigiero@oracle.com
-[sean: tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Suggested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/objtool/arch/loongarch/decode.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3834,8 +3834,7 @@ static inline void sync_lapic_to_cr8(str
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	u64 cr8;
+--- a/tools/objtool/arch/loongarch/decode.c
++++ b/tools/objtool/arch/loongarch/decode.c
+@@ -310,10 +310,16 @@ int arch_decode_instruction(struct objto
+ 	if (decode_insn_reg2i16_fomat(inst, insn))
+ 		return 0;
  
--	if (nested_svm_virtualize_tpr(vcpu) ||
--	    kvm_vcpu_apicv_active(vcpu))
-+	if (nested_svm_virtualize_tpr(vcpu))
- 		return;
- 
- 	cr8 = kvm_get_cr8(vcpu);
+-	if (inst.word == 0)
++	if (inst.word == 0) {
++		/* andi $zero, $zero, 0x0 */
+ 		insn->type = INSN_NOP;
+-	else if (inst.reg0i15_format.opcode == break_op) {
+-		/* break */
++	} else if (inst.reg0i15_format.opcode == break_op &&
++		   inst.reg0i15_format.immediate == 0x0) {
++		/* break 0x0 */
++		insn->type = INSN_TRAP;
++	} else if (inst.reg0i15_format.opcode == break_op &&
++		   inst.reg0i15_format.immediate == 0x1) {
++		/* break 0x1 */
+ 		insn->type = INSN_BUG;
+ 	} else if (inst.reg2_format.opcode == ertn_op) {
+ 		/* ertn */
 
 
 
