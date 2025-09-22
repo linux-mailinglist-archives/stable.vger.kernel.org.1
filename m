@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-181306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A62BB9307A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D48CB92E96
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568F719C0415
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41D06446D7D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6E12F1FE3;
-	Mon, 22 Sep 2025 19:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E204D1C1ADB;
+	Mon, 22 Sep 2025 19:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ysYCoH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnV2w6Xl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A67A2F3608;
-	Mon, 22 Sep 2025 19:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F9A2820D1;
+	Mon, 22 Sep 2025 19:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570205; cv=none; b=Ys7odJBlV+izny2GBg4wWc3/8QzJQm82I8XJ+1w2bNPkwP2h7jcuBwwpQDRG1LPeHfk+3vOeAPcn3HeYI5QLCp7G7wupD7gP1f9iUPkq2WwXTyxhf+dtXEOdA1vdK2NuhzZmWobtLlj+J7wTSANnlpOxjkrWgDwtCJ+inpaBVY8=
+	t=1758569879; cv=none; b=CxpnrvfEiTmZjYjceMKprIULWqJGNDLZUsxukl1GH85JcB/Q8zXCLn/CzfF88PPIHV6WBNig/l8zYTtSpVq/VskK0vo3vmKJVZaTbNechglLvsrTTnfXbZItniXVFV+qUk9n9bnwn2euX97SKhgxA/albQ65thMZQvIYMNgDUgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570205; c=relaxed/simple;
-	bh=UD2liwUQki7lsYr3zsG6qcGN7cXgRTDJV0SoW+AH3b8=;
+	s=arc-20240116; t=1758569879; c=relaxed/simple;
+	bh=jIFko9DtB6wZseTzEQfjjqqG/LCy8iF6sOO0WX1mx8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOV0G45Yz8wmtJAuOD0CkKHwJCFv9vu/BO5QY7mlsCPlHce5XaeKpA038OOYXp2h2JXfD20FpO9JkZnNvqzfELLsspwPhYRZv7czop1bu644OeN5w2YiOmQqt22Jxf7bBu9rzc9TYRFzWRB8hx8iTCTUIJqNRi+3TRmLedya9cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ysYCoH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50BBC4CEF0;
-	Mon, 22 Sep 2025 19:43:24 +0000 (UTC)
+	 MIME-Version; b=T4r89moXvBmy3iEjL3kytjZXHjZbJTI1/UERs6K+lL7RWZf/mc6wmj9HqXBs6qEg9yCooZ3dgVMFybgdBEuwq82irsmI4Xrf/brP+ILs15dSKfFw+cfTIbTBtF5w+wFSM5WOyBZMYt+Y+/xLmo86UJ96d7QBSXzoEW0PGiFcMCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnV2w6Xl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A6EC4CEF0;
+	Mon, 22 Sep 2025 19:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570205;
-	bh=UD2liwUQki7lsYr3zsG6qcGN7cXgRTDJV0SoW+AH3b8=;
+	s=korg; t=1758569879;
+	bh=jIFko9DtB6wZseTzEQfjjqqG/LCy8iF6sOO0WX1mx8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ysYCoH8bDUUcIMW9CMOu4AOIM77p79XR/7a6NqrhU/8GSa9C2w6N/Ia7cfjBacMM
-	 YfRFZYrxj2SH/ixi4co5qZUbjU7+FB+9bl2I0tYZ7UdR1MQoLDWqV8lc5A18syYW4V
-	 qeyTjzDCtzbc8KWGBnv/AuMTb6cGYSsVLh9oVJYs=
+	b=UnV2w6XlMKByDhmy9Z66o0bp783tqNsNmsVfNrKOIk53iWiGOv+XZQ+ANfYNNGNVI
+	 dDpSW2KmatrHBthJy6SEHPk8+q1j9UQD43vUS/8rw6iik8PdxkPXX+kVAULfOtFFHf
+	 1qPLG/+iihrrlDEQ5mQtbmoL8Gmpp0EC/h/HB/9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 046/149] octeontx2-pf: Fix use-after-free bugs in otx2_sync_tstamp()
-Date: Mon, 22 Sep 2025 21:29:06 +0200
-Message-ID: <20250922192414.025020490@linuxfoundation.org>
+Subject: [PATCH 6.12 024/105] net/mlx5e: Harden uplink netdev access against device unbind
+Date: Mon, 22 Sep 2025 21:29:07 +0200
+Message-ID: <20250922192409.545662613@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +66,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit f8b4687151021db61841af983f1cb7be6915d4ef ]
+[ Upstream commit 6b4be64fd9fec16418f365c2d8e47a7566e9eba5 ]
 
-The original code relies on cancel_delayed_work() in otx2_ptp_destroy(),
-which does not ensure that the delayed work item synctstamp_work has fully
-completed if it was already running. This leads to use-after-free scenarios
-where otx2_ptp is deallocated by otx2_ptp_destroy(), while synctstamp_work
-remains active and attempts to dereference otx2_ptp in otx2_sync_tstamp().
-Furthermore, the synctstamp_work is cyclic, the likelihood of triggering
-the bug is nonnegligible.
+The function mlx5_uplink_netdev_get() gets the uplink netdevice
+pointer from mdev->mlx5e_res.uplink_netdev. However, the netdevice can
+be removed and its pointer cleared when unbound from the mlx5_core.eth
+driver. This results in a NULL pointer, causing a kernel panic.
 
-A typical race condition is illustrated below:
+ BUG: unable to handle page fault for address: 0000000000001300
+ at RIP: 0010:mlx5e_vport_rep_load+0x22a/0x270 [mlx5_core]
+ Call Trace:
+  <TASK>
+  mlx5_esw_offloads_rep_load+0x68/0xe0 [mlx5_core]
+  esw_offloads_enable+0x593/0x910 [mlx5_core]
+  mlx5_eswitch_enable_locked+0x341/0x420 [mlx5_core]
+  mlx5_devlink_eswitch_mode_set+0x17e/0x3a0 [mlx5_core]
+  devlink_nl_eswitch_set_doit+0x60/0xd0
+  genl_family_rcv_msg_doit+0xe0/0x130
+  genl_rcv_msg+0x183/0x290
+  netlink_rcv_skb+0x4b/0xf0
+  genl_rcv+0x24/0x40
+  netlink_unicast+0x255/0x380
+  netlink_sendmsg+0x1f3/0x420
+  __sock_sendmsg+0x38/0x60
+  __sys_sendto+0x119/0x180
+  do_syscall_64+0x53/0x1d0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-CPU 0 (cleanup)           | CPU 1 (delayed work callback)
-otx2_remove()             |
-  otx2_ptp_destroy()      | otx2_sync_tstamp()
-    cancel_delayed_work() |
-    kfree(ptp)            |
-                          |   ptp = container_of(...); //UAF
-                          |   ptp-> //UAF
+Ensure the pointer is valid before use by checking it for NULL. If it
+is valid, immediately call netdev_hold() to take a reference, and
+preventing the netdevice from being freed while it is in use.
 
-This is confirmed by a KASAN report:
-
-BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
-Write of size 8 at addr ffff88800aa09a18 by task bash/136
-...
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x55/0x70
- print_report+0xcf/0x610
- ? __run_timer_base.part.0+0x7d7/0x8c0
- kasan_report+0xb8/0xf0
- ? __run_timer_base.part.0+0x7d7/0x8c0
- __run_timer_base.part.0+0x7d7/0x8c0
- ? __pfx___run_timer_base.part.0+0x10/0x10
- ? __pfx_read_tsc+0x10/0x10
- ? ktime_get+0x60/0x140
- ? lapic_next_event+0x11/0x20
- ? clockevents_program_event+0x1d4/0x2a0
- run_timer_softirq+0xd1/0x190
- handle_softirqs+0x16a/0x550
- irq_exit_rcu+0xaf/0xe0
- sysvec_apic_timer_interrupt+0x70/0x80
- </IRQ>
-...
-Allocated by task 1:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- otx2_ptp_init+0xb1/0x860
- otx2_probe+0x4eb/0xc30
- local_pci_probe+0xdc/0x190
- pci_device_probe+0x2fe/0x470
- really_probe+0x1ca/0x5c0
- __driver_probe_device+0x248/0x310
- driver_probe_device+0x44/0x120
- __driver_attach+0xd2/0x310
- bus_for_each_dev+0xed/0x170
- bus_add_driver+0x208/0x500
- driver_register+0x132/0x460
- do_one_initcall+0x89/0x300
- kernel_init_freeable+0x40d/0x720
- kernel_init+0x1a/0x150
- ret_from_fork+0x10c/0x1a0
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 136:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3a/0x60
- __kasan_slab_free+0x3f/0x50
- kfree+0x137/0x370
- otx2_ptp_destroy+0x38/0x80
- otx2_remove+0x10d/0x4c0
- pci_device_remove+0xa6/0x1d0
- device_release_driver_internal+0xf8/0x210
- pci_stop_bus_device+0x105/0x150
- pci_stop_and_remove_bus_device_locked+0x15/0x30
- remove_store+0xcc/0xe0
- kernfs_fop_write_iter+0x2c3/0x440
- vfs_write+0x871/0xd70
- ksys_write+0xee/0x1c0
- do_syscall_64+0xac/0x280
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
-
-Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
-that the delayed work item is properly canceled before the otx2_ptp is
-deallocated.
-
-This bug was initially identified through static analysis. To reproduce
-and test it, I simulated the OcteonTX2 PCI device in QEMU and introduced
-artificial delays within the otx2_sync_tstamp() function to increase the
-likelihood of triggering the bug.
-
-Fixes: 2958d17a8984 ("octeontx2-pf: Add support for ptp 1-step mode on CN10K silicon")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Fixes: 7a9fb35e8c3a ("net/mlx5e: Do not reload ethernet ports when changing eswitch mode")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1757939074-617281-2-git-send-email-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/en_rep.c  | 27 +++++++++++++++----
+ .../net/ethernet/mellanox/mlx5/core/esw/qos.c |  1 +
+ .../ethernet/mellanox/mlx5/core/lib/mlx5.h    | 15 ++++++++++-
+ include/linux/mlx5/driver.h                   |  1 +
+ 4 files changed, 38 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-@@ -491,7 +491,7 @@ void otx2_ptp_destroy(struct otx2_nic *p
- 	if (!ptp)
- 		return;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index 18ec392d17404..b561358474c4f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -1497,12 +1497,21 @@ static const struct mlx5e_profile mlx5e_uplink_rep_profile = {
+ static int
+ mlx5e_vport_uplink_rep_load(struct mlx5_core_dev *dev, struct mlx5_eswitch_rep *rep)
+ {
+-	struct mlx5e_priv *priv = netdev_priv(mlx5_uplink_netdev_get(dev));
+ 	struct mlx5e_rep_priv *rpriv = mlx5e_rep_to_rep_priv(rep);
++	struct net_device *netdev;
++	struct mlx5e_priv *priv;
++	int err;
++
++	netdev = mlx5_uplink_netdev_get(dev);
++	if (!netdev)
++		return 0;
  
--	cancel_delayed_work(&pfvf->ptp->synctstamp_work);
-+	cancel_delayed_work_sync(&pfvf->ptp->synctstamp_work);
++	priv = netdev_priv(netdev);
+ 	rpriv->netdev = priv->netdev;
+-	return mlx5e_netdev_change_profile(priv, &mlx5e_uplink_rep_profile,
+-					   rpriv);
++	err = mlx5e_netdev_change_profile(priv, &mlx5e_uplink_rep_profile,
++					  rpriv);
++	mlx5_uplink_netdev_put(dev, netdev);
++	return err;
+ }
  
- 	ptp_clock_unregister(ptp->ptp_clock);
- 	kfree(ptp);
+ static void
+@@ -1629,8 +1638,16 @@ mlx5e_vport_rep_unload(struct mlx5_eswitch_rep *rep)
+ {
+ 	struct mlx5e_rep_priv *rpriv = mlx5e_rep_to_rep_priv(rep);
+ 	struct net_device *netdev = rpriv->netdev;
+-	struct mlx5e_priv *priv = netdev_priv(netdev);
+-	void *ppriv = priv->ppriv;
++	struct mlx5e_priv *priv;
++	void *ppriv;
++
++	if (!netdev) {
++		ppriv = rpriv;
++		goto free_ppriv;
++	}
++
++	priv = netdev_priv(netdev);
++	ppriv = priv->ppriv;
+ 
+ 	if (rep->vport == MLX5_VPORT_UPLINK) {
+ 		mlx5e_vport_uplink_rep_unload(rpriv);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 02a3563f51ad2..d8c304427e2ab 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -733,6 +733,7 @@ static u32 mlx5_esw_qos_lag_link_speed_get_locked(struct mlx5_core_dev *mdev)
+ 		speed = lksettings.base.speed;
+ 
+ out:
++	mlx5_uplink_netdev_put(mdev, slave);
+ 	return speed;
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/mlx5.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/mlx5.h
+index 37d5f445598c7..a7486e6d0d5ef 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/mlx5.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/mlx5.h
+@@ -52,7 +52,20 @@ static inline struct net *mlx5_core_net(struct mlx5_core_dev *dev)
+ 
+ static inline struct net_device *mlx5_uplink_netdev_get(struct mlx5_core_dev *mdev)
+ {
+-	return mdev->mlx5e_res.uplink_netdev;
++	struct mlx5e_resources *mlx5e_res = &mdev->mlx5e_res;
++	struct net_device *netdev;
++
++	mutex_lock(&mlx5e_res->uplink_netdev_lock);
++	netdev = mlx5e_res->uplink_netdev;
++	netdev_hold(netdev, &mlx5e_res->tracker, GFP_KERNEL);
++	mutex_unlock(&mlx5e_res->uplink_netdev_lock);
++	return netdev;
++}
++
++static inline void mlx5_uplink_netdev_put(struct mlx5_core_dev *mdev,
++					  struct net_device *netdev)
++{
++	netdev_put(netdev, &mdev->mlx5e_res.tracker);
+ }
+ 
+ struct mlx5_sd;
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index da9749739abde..9a8eb644f6707 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -689,6 +689,7 @@ struct mlx5e_resources {
+ 		bool			   tisn_valid;
+ 	} hw_objs;
+ 	struct net_device *uplink_netdev;
++	netdevice_tracker tracker;
+ 	struct mutex uplink_netdev_lock;
+ 	struct mlx5_crypto_dek_priv *dek_priv;
+ };
+-- 
+2.51.0
+
 
 
 
