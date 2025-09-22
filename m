@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42264B930F2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF3DB92E2F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE71118836D9
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FDB175402
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C2B311594;
-	Mon, 22 Sep 2025 19:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2CE285C92;
+	Mon, 22 Sep 2025 19:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idvpmZdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzbsUGsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEA42F2909;
-	Mon, 22 Sep 2025 19:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCBE2E2847;
+	Mon, 22 Sep 2025 19:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570300; cv=none; b=uss3R3gs6+j0JexCut1IHcYkZylB/pjP6G9NpEUwvtiOh7SDAxJNu5tKtXz265GXzFkcdbT1tYCWloPX5akIZp3XxfiGCRwGQX3Hkq+rWe3TMDYgNFNnrCFruyhIvnG0po+soG5EbkJUuPuADW8Ntcmsficl5kWSYkPYYvbMtOs=
+	t=1758569809; cv=none; b=mdSQniYIlmFutOrBoTFDx7XRhhedAUNiME2tA85keiv3jdijPjMkb7VT0SDI4M8TbDa0+QFKaBkbYEH5fzHzLharNR4C2dhPWyBOJv7tbEanE5W7TLcucWJ9zKjuD9Sw4INVQwv6zrqIgurS1W7MtACNKl0kSdBQf0eZe2W6xgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570300; c=relaxed/simple;
-	bh=zdroLY2p9wIMbaC6UhhvvrPBFDaxPfW/96yhjjv0Uvc=;
+	s=arc-20240116; t=1758569809; c=relaxed/simple;
+	bh=rk/DxQ+ChFHUbqXiVvDJaH7kHh0+mq9kmcu9oMmD4x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFYAxketOPAJgLowT+w9s4++kGISj+E4rYo4UFFREm3GWPy3Nu5b4F1aTXU+J0uOfIR3xd8oJv8f0OdJ277gUZUBTK8KNTd+1KPfdBveVXfSnRCg7x7jmQbUAlkyo72liyi46EaAlQLY3hh2l/b1ghQ77QpE24uSOvC1SaM1upY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idvpmZdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5E2C4CEF0;
-	Mon, 22 Sep 2025 19:44:59 +0000 (UTC)
+	 MIME-Version; b=Roi/IGUIUoYSQdFfQWjj95/++UvWW/uFemBH7c+Llq0uNfFrhxOluc4GgBrwNeEf7Hdk8xEc7QqDtMwjfX6RdTu1/FLO+pgIzOCj+MWKs55YCFMzaltIYxnugMFeuQdhkc6PaL8yrlGy7YgwdKdsBix6fqBSBuh3QFmAlB8hCdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzbsUGsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669C9C4CEF0;
+	Mon, 22 Sep 2025 19:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570299;
-	bh=zdroLY2p9wIMbaC6UhhvvrPBFDaxPfW/96yhjjv0Uvc=;
+	s=korg; t=1758569809;
+	bh=rk/DxQ+ChFHUbqXiVvDJaH7kHh0+mq9kmcu9oMmD4x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idvpmZdXVwOtVgeX+A9bY6c3NjeBHWurYfyE/HwoQquTxWsY7io62oAaM5YRkyPRr
-	 S9DgDFls+rG6p6iGdpYRCjMmP5emo6p5fbIivTCj4tnEopTpc1ypezNAt9B8iMfbgC
-	 TynnXMcs9yj33MW4uMCurP2AZGUkTvoqUCb9jRlQ=
+	b=wzbsUGsVbvlOYHsvylUQMZCAbHeIUhF6sQVbWV0yryMo/TEDmXaAzhVjry4zzxasi
+	 0AfPT1okep2U6x2ki5H4awqbFGFp7fb1ixXetVvV4pL4s2d6YnMLkWYEnV0+C/AIbr
+	 qd088C+u03heV0RzhEizJ1J/NqOfD+Us8+KYKiUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	David Perry <david.perry@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 095/149] drm/amdgpu: suspend KFD and KGD user queues for S0ix
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 55/70] crypto: af_alg - Set merge to zero early in af_alg_sendmsg
 Date: Mon, 22 Sep 2025 21:29:55 +0200
-Message-ID: <20250922192415.282501328@linuxfoundation.org>
+Message-ID: <20250922192406.081774571@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 9272bb34b066993f5f468b219b4a26ba3f2b25a1 upstream.
+[ Upstream commit 9574b2330dbd2b5459b74d3b5e9619d39299fc6f ]
 
-We need to make sure the user queues are preempted so
-GFX can enter gfxoff.
+If an error causes af_alg_sendmsg to abort, ctx->merge may contain
+a garbage value from the previous loop.  This may then trigger a
+crash on the next entry into af_alg_sendmsg when it attempts to do
+a merge that can't be done.
 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: David Perry <david.perry@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f8b367e6fa1716cab7cc232b9e3dff29187fc99d)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by setting ctx->merge to zero near the start of the loop.
+
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ crypto/af_alg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5055,7 +5055,7 @@ int amdgpu_device_suspend(struct drm_dev
- 	adev->in_suspend = true;
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index dbddcf52b9920..886eccb97b041 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1024,6 +1024,8 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			continue;
+ 		}
  
- 	if (amdgpu_sriov_vf(adev)) {
--		if (!adev->in_s0ix && !adev->in_runpm)
-+		if (!adev->in_runpm)
- 			amdgpu_amdkfd_suspend_process(adev);
- 		amdgpu_virt_fini_data_exchange(adev);
- 		r = amdgpu_virt_request_full_gpu(adev, false);
-@@ -5075,10 +5075,8 @@ int amdgpu_device_suspend(struct drm_dev
- 
- 	amdgpu_device_ip_suspend_phase1(adev);
- 
--	if (!adev->in_s0ix) {
--		amdgpu_amdkfd_suspend(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
--		amdgpu_userq_suspend(adev);
--	}
-+	amdgpu_amdkfd_suspend(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
-+	amdgpu_userq_suspend(adev);
- 
- 	r = amdgpu_device_evict_resources(adev);
- 	if (r)
-@@ -5141,15 +5139,13 @@ int amdgpu_device_resume(struct drm_devi
- 		goto exit;
- 	}
- 
--	if (!adev->in_s0ix) {
--		r = amdgpu_amdkfd_resume(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
--		if (r)
--			goto exit;
-+	r = amdgpu_amdkfd_resume(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
-+	if (r)
-+		goto exit;
- 
--		r = amdgpu_userq_resume(adev);
--		if (r)
--			goto exit;
--	}
-+	r = amdgpu_userq_resume(adev);
-+	if (r)
-+		goto exit;
- 
- 	r = amdgpu_device_ip_late_init(adev);
- 	if (r)
-@@ -5162,7 +5158,7 @@ exit:
- 		amdgpu_virt_init_data_exchange(adev);
- 		amdgpu_virt_release_full_gpu(adev, true);
- 
--		if (!adev->in_s0ix && !r && !adev->in_runpm)
-+		if (!r && !adev->in_runpm)
- 			r = amdgpu_amdkfd_resume_process(adev);
- 	}
- 
++		ctx->merge = 0;
++
+ 		if (!af_alg_writable(sk)) {
+ 			err = af_alg_wait_for_wmem(sk, msg->msg_flags);
+ 			if (err)
+@@ -1063,7 +1065,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			ctx->used += plen;
+ 			copied += plen;
+ 			size -= plen;
+-			ctx->merge = 0;
+ 		} else {
+ 			do {
+ 				struct page *pg;
+-- 
+2.51.0
+
 
 
 
