@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942D3B92ECF
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB10B92CEC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613802A7C90
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FE39445867
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC0B2F28E0;
-	Mon, 22 Sep 2025 19:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD61A2DF714;
+	Mon, 22 Sep 2025 19:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G86ncNgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvy7LOYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5EB2820D1;
-	Mon, 22 Sep 2025 19:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F9BC8E6;
+	Mon, 22 Sep 2025 19:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569921; cv=none; b=ZBC6yfjenJuhvZQmeM6k3jjoEoj7UT9XMp6u+UgR/hcZ4dxdYYSLcTJRoH74dJURDj3i5B9Vy0wyJ9WheiTcLxec2Z/pldwDDfKJviwACnbu0zLgouXHNoSZpjEv0NZ5OAK3pLdU6CWh099MCOwstoF3JpaUH9D0nu7BKoZ4LCo=
+	t=1758569566; cv=none; b=mwW0peRDS7qYTNCeYvhDezAzyJ0n1+512l6KxpRPqwg6kGPXa3+ctQbjTAPpPFh8egYtqqXwQCX5ev5c1MEdnBfn/gtbq64m/nExNXdJneWnYUuHol/FCZed3kTZNHmOCTg3v6fblLQlEwfFP9f5n+PxU0mwB2DZprDO/Oby0dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569921; c=relaxed/simple;
-	bh=QLn8X0ylLalcq2XFdn5Fv6p/UagEmsGOt9fFLMM8vWs=;
+	s=arc-20240116; t=1758569566; c=relaxed/simple;
+	bh=YRb2D7Vh4nVRCTCz8xiOWZBXLsDMtzt0bSpv4GZBqPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+GRYU9uk+RwhQYUPWS+AX975Lh4iwNIWHiYyEP/MN6WZDbFGOZvIwHIKrNET1+nM+H5Dc4IXXz2WVFCB5Kon6IxfFMR6YYJlXSdrrQHhQ2XL96BnrkwtIOO3IqjenuTaE99Kb/4t3mhiIHyKf0M8pR/O2ghx5kA/FU/Sajnv68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G86ncNgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573A7C4CEF0;
-	Mon, 22 Sep 2025 19:38:41 +0000 (UTC)
+	 MIME-Version; b=EEBvPxzbS0UJNIXyV025Efqoj1V18PY7hvA+N89k3oNs0BQ5WqBm640mW6Xs8+N2BBvWRgOXxs+B72CVBrFTRHFFckPagjCy1wkQgzY8OUzywu/RVhdhnak4rDfKEsf0FI/FTBa0Fc4uREmb5Ok6sIGfpW+ARKiDOqdV1GJ8DaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvy7LOYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F47C4CEF0;
+	Mon, 22 Sep 2025 19:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569921;
-	bh=QLn8X0ylLalcq2XFdn5Fv6p/UagEmsGOt9fFLMM8vWs=;
+	s=korg; t=1758569566;
+	bh=YRb2D7Vh4nVRCTCz8xiOWZBXLsDMtzt0bSpv4GZBqPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G86ncNgnzSESjt2tA+sM6Uc5X9HN9uLf3ibB/K6UqcdbGWUpOBRaSQxk+xtx0lUqc
-	 CXKZiOeiGMLihDlJmc0H+qLvZGnbuwBOcHwnJuOG4wuFBPd0/jlkQQSknShknjXwwY
-	 5bXbZyd5/CSdHF3MoOhJogvq1YJcB8n4goLu244I=
+	b=zvy7LOYgHEvo64X1HsgdZ4krJhTXmhD43EljHYzTsucEYSIz+z7YpETyZNYnGcNjU
+	 JFcNISo7RalseMl4liLNVAJdL7nV/oWteMqbJDM2mtPsrhPR/q8zxUoiBLXRN/4MAv
+	 PutHev3gcncCrrJ1aP6k0mzlUXwQvFFfqoD3gR4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Dongsheng Yang <dongsheng.yang@linux.dev>
-Subject: [PATCH 6.12 041/105] dm-stripe: fix a possible integer overflow
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 31/61] mmc: mvsdio: Fix dma_unmap_sg() nents value
 Date: Mon, 22 Sep 2025 21:29:24 +0200
-Message-ID: <20250922192409.992574108@linuxfoundation.org>
+Message-ID: <20250922192404.408023502@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 1071d560afb4c245c2076494226df47db5a35708 upstream.
+commit 8ab2f1c35669bff7d7ed1bb16bf5cc989b3e2e17 upstream.
 
-There's a possible integer overflow in stripe_io_hints if we have too
-large chunk size. Test if the overflow happened, and if it did, don't set
-limits->io_min and limits->io_opt;
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Suggested-by: Dongsheng Yang <dongsheng.yang@linux.dev>
+Fixes: 236caa7cc351 ("mmc: SDIO driver for Marvell SoCs")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-stripe.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/mmc/host/mvsdio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-stripe.c
-+++ b/drivers/md/dm-stripe.c
-@@ -457,11 +457,15 @@ static void stripe_io_hints(struct dm_ta
- 			    struct queue_limits *limits)
- {
- 	struct stripe_c *sc = ti->private;
--	unsigned int chunk_size = sc->chunk_size << SECTOR_SHIFT;
-+	unsigned int io_min, io_opt;
+--- a/drivers/mmc/host/mvsdio.c
++++ b/drivers/mmc/host/mvsdio.c
+@@ -292,7 +292,7 @@ static u32 mvsd_finish_data(struct mvsd_
+ 		host->pio_ptr = NULL;
+ 		host->pio_size = 0;
+ 	} else {
+-		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_frags,
++		dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
+ 			     mmc_get_dma_dir(data));
+ 	}
  
- 	limits->chunk_sectors = sc->chunk_size;
--	limits->io_min = chunk_size;
--	limits->io_opt = chunk_size * sc->stripes;
-+
-+	if (!check_shl_overflow(sc->chunk_size, SECTOR_SHIFT, &io_min) &&
-+	    !check_mul_overflow(io_min, sc->stripes, &io_opt)) {
-+		limits->io_min = io_min;
-+		limits->io_opt = io_opt;
-+	}
- }
- 
- static struct target_type stripe_target = {
 
 
 
