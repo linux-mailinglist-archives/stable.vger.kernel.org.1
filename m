@@ -1,118 +1,130 @@
-Return-Path: <stable+bounces-180982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4A4B91FF5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:40:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC99B91FFB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAB2A3A869D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:40:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 320892A40D1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F012E8B72;
-	Mon, 22 Sep 2025 15:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D67C2EA72A;
+	Mon, 22 Sep 2025 15:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="WjH5A3gT"
+	dkim=pass (2048-bit key) header.d=zanders.be header.i=@zanders.be header.b="RgxdkXik"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [94.124.121.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B650A2EA731;
-	Mon, 22 Sep 2025 15:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD113C0C
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 15:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758555608; cv=none; b=cfHyi+ml0hUcG32aCyLBh0OuQym84tBXkSPzzpYR2dIYd+25lnIKVwh+aJSvRF2+9EibgiON0ODds8y6yzmjEhw3B8pdhJP+NcxPVpfT7r2fJUgz+MR22hqVu0DecdobCpDnCYoT0E0h3H0q0ZA1HZzmjG3c7TX7mwIoMBO0aRs=
+	t=1758555648; cv=none; b=qHl7+HRG74EAsWmyPbBFjT+mA+Ob2/l+arAwVmI1MMJeGs0NqW35QuukbMbLltfzB4wsCRJUU+N6SPvzO1wkKhhe8Z15hZ6PVKHpAvGpchKDPnlJkvtwn1CX+fYvs9KwAZhMWN9vrJcsESUSsm7xc9nhkj5AqeOrqcmuiqAJVQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758555608; c=relaxed/simple;
-	bh=PZ1kMf+7vAyT7H+4UuB5PxqYsoANEJ1LL/IEn5lyBYM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eYBgyy10f+tixnTDRbM7vs62wjIKLRZotWVVmDyjXJrVK2/QvfbYddFQn9WVVnfHxfZiV6qda9rw/zJEc905YUhvqa8Jdx9BeF9ssjRh06w6hzu9v8UEr6rZGrN6FA0t9Ucm9qzMOZ5o1fIs2L6bwX1SiDLBMGVl9s59IHh9g4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=WjH5A3gT; arc=none smtp.client-ip=80.12.242.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPA
-	id 0ictvBDlTbkOW0ictvpHmD; Mon, 22 Sep 2025 17:38:53 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1758555533;
-	bh=V2p0dOk8nY38bVB5z/4E1OBvSqe8R/NqMBDLVbvEpuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=WjH5A3gTeEuFhNiV/B2GK5o5zo4aJPBHMJZKCSJn88Z3vjHhHunVXfNgG7ne+JHhj
-	 dkWTWzVNM1MtalryFtHg8wJ5Bf7KUg9JyG5pBUjZACfRTLNcjhtbxYLmX1dCURrXDW
-	 lGJoQGlN15G80bkx/vwTIjR5kr6SREILz+4jJV0++xF+dmFjE+8ynWpd6DQnVRKQAc
-	 T0MGwJxpyrtN1MSS6OC1NCIuJLs2ll5vpYgrNBo9uYTk7vAG11n7cQiWiGNCEl2i03
-	 gfcmed8rR5wu8eDBzhta+pMOub0lNqEfIPoBINJl8BB2q3HR/5XnVWP8gCW6sHGnwx
-	 rHRjAoAIALE9Q==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Mon, 22 Sep 2025 17:38:53 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <a7453bdc-16f3-43e6-a06d-bd6144eeae72@wanadoo.fr>
-Date: Mon, 22 Sep 2025 17:38:51 +0200
+	s=arc-20240116; t=1758555648; c=relaxed/simple;
+	bh=lTqVCEjcxikwMjepirSLpSNK6L3IHAlxdl5A38gWUoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nnyvbQbdV+SLWQMQwAA+1ezvSp9VlV3xSErkS3MVvvkdOT3uxKPnVI0begkBt7QGxCWLDD1WuLtWLiSG3QeUBf/6ReFGL6yd0KFtmbOI52hzTxYEF3mSwqrdSPBPP/e1lD+cb+KUCMpITr50igxnZ05uUXRQz0Lj6GNLOeyElQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zanders.be; spf=pass smtp.mailfrom=zanders.be; dkim=pass (2048-bit key) header.d=zanders.be header.i=@zanders.be header.b=RgxdkXik; arc=none smtp.client-ip=94.124.121.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zanders.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zanders.be
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=zanders.be; s=202002;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=4m4XxfeOnQfD8SjFcUdl5itKBGk9YX/dPDna0jtQUXw=;
+	b=RgxdkXikJ4C1IUraDotl7A2lAWMKaHYSAdsmuRZvm8BojeT9lKz3aDSFV1hDbNaweRDCh65I7biJD
+	 QEURI2TTb330OHUuQRBgLjMiQYEsiY89rmaIZc+Zg7vZkcH3LOBVNDNHABrjRM4BsfWVCBqHGImtje
+	 KIuRjKZLZQOHMX/CGGZEXlXcOBO6n5SZOdErPH88gOy0+aJ1meSxnI2ZdQJroQyPfJccylXC5/mFX5
+	 E0odx9cc8O4C/CrXGk+VMvpqDBnOsLLJwCy4dWjPUB7fO6l/tCtfVGxCW1cOPzsn/26JdD5BMOIbYg
+	 Njis3hRXa303t/tc+Vdoq4kKIaUpNaw==
+X-MSG-ID: 78c8b809-97ca-11f0-867b-0050568164d1
+From: Maarten Zanders <maarten@zanders.be>
+To: Han Xu <han.xu@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Maarten Zanders <maarten@zanders.be>,
+	stable@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mtd: nand: raw: gpmi: fix clocks when CONFIG_PM=N
+Date: Mon, 22 Sep 2025 17:39:38 +0200
+Message-ID: <20250922153938.743640-2-maarten@zanders.be>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/smp: Add check for kcalloc() failure in
- parse_thread_groups()
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250922151025.1821411-1-lgs201920130244@gmail.com>
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Content-Language: en-US, fr-FR
-In-Reply-To: <20250922151025.1821411-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Le 22/09/2025 à 17:10, Guangshuo Li a écrit :
-> As kcalloc() may fail, check its return value to avoid a NULL pointer
-> dereference when passing it to of_property_read_u32_array().
-> 
-> Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
-> Cc: stable@vger.kernel.org
+Commit f04ced6d545e ("mtd: nand: raw: gpmi: improve power management
+handling") moved all clock handling into PM callbacks. With CONFIG_PM
+disabled, those callbacks are missing, leaving the driver unusable.
 
-Signed-off-by that was part of v1, is missing in v2.
+Add clock init/teardown for !CONFIG_PM builds to restore basic operation.
+Keeping the driver working without requiring CONFIG_PM is preferred over
+adding a Kconfig dependency.
 
-> ---
-> changelog:
-> v2:
-> - Return -ENOMEM directly on allocation failure.
+Fixes: f04ced6d545e ("mtd: nand: raw: gpmi: improve power management handling")
+Signed-off-by: Maarten Zanders <maarten@zanders.be>
+Cc: stable@vger.kernel.org
+---
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-Except for a newline that is removed, v2 is the same as v1, or I miss 
-something?
-
-CJ
-
-> 
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->   arch/powerpc/kernel/smp.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 5ac7084eebc0..cfccb9389760 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -822,6 +822,8 @@ static int parse_thread_groups(struct device_node *dn,
->   
->   	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
->   	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
-> +	if (!thread_group_array)
-> +		return -ENOMEM;
->   	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
->   					 thread_group_array, count);
->   	if (ret)
+diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+index f4e68008ea03..a750f5839e34 100644
+--- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+@@ -145,6 +145,9 @@ static int __gpmi_enable_clk(struct gpmi_nand_data *this, bool v)
+ 	return ret;
+ }
+ 
++#define gpmi_enable_clk(x)	__gpmi_enable_clk(x, true)
++#define gpmi_disable_clk(x)	__gpmi_enable_clk(x, false)
++
+ static int gpmi_init(struct gpmi_nand_data *this)
+ {
+ 	struct resources *r = &this->resources;
+@@ -2765,6 +2768,11 @@ static int gpmi_nand_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, 500);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
++#ifndef CONFIG_PM
++	ret = gpmi_enable_clk(this);
++	if (ret)
++		goto exit_acquire_resources;
++#endif
+ 
+ 	ret = gpmi_init(this);
+ 	if (ret)
+@@ -2800,6 +2808,9 @@ static void gpmi_nand_remove(struct platform_device *pdev)
+ 	release_resources(this);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++#ifndef CONFIG_PM
++	gpmi_disable_clk(this);
++#endif
+ }
+ 
+ static int gpmi_pm_suspend(struct device *dev)
+@@ -2846,9 +2857,6 @@ static int gpmi_pm_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-#define gpmi_enable_clk(x)	__gpmi_enable_clk(x, true)
+-#define gpmi_disable_clk(x)	__gpmi_enable_clk(x, false)
+-
+ static int gpmi_runtime_suspend(struct device *dev)
+ {
+ 	struct gpmi_nand_data *this = dev_get_drvdata(dev);
+-- 
+2.51.0
 
 
