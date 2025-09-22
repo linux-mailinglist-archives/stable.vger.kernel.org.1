@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018AFB930A1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC6EB92C9B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E77C3BB301
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B25C1898BFD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15952F39DE;
-	Mon, 22 Sep 2025 19:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4779827FB2D;
+	Mon, 22 Sep 2025 19:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDcjW2z3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAIpFQiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FE62F0C5C;
-	Mon, 22 Sep 2025 19:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AF9C8E6;
+	Mon, 22 Sep 2025 19:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570194; cv=none; b=kdm09z39qFquLUX3rqN3kTa1Aj4Kww90r1vbk+tkw8msqQWevlynqMFOBDj8co6w9SU+BGxa20eYAQfgupBIC/guf8cXCKlKWSkU4x7USSyKQTCpcJU6vQObs//wvILPvESgHV0C28xyN9b8N1A0kPadNAM8O+hys4yYs6IGwlE=
+	t=1758569508; cv=none; b=SRUP26jKGNGwSqGBoqAzUSw3pnsuxjwEiOTw7ubsYabW71FC5DkMU9t9li/RBLPF1V1qgLAPInryER/iy64X1305jeV/Jluui09K+uaEAwN1gxATI00tV3nJmqmVqZVwX9ak/klqoyuGhETFoPLY0m8IV0b6g81XDJ0LCyb+17A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570194; c=relaxed/simple;
-	bh=ZUU7DFydGrSZ6SGCDE9d0x7Co+3nxyWz065RLl+B0jI=;
+	s=arc-20240116; t=1758569508; c=relaxed/simple;
+	bh=LvbzLfrlA7bP8jMd7xk9sVVY9nWvft44qjiV/Ut7OQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fkk78Zv2f5om7u6Z5f24YLa30HRqxj8cP+gTTDrTWrzph0BUN+kty24Bq+WkoVG0PYNQRdPVx5vTVcWWpai8Z0jkLnmQw1sVVI9wy4JNdYGVL+Lni8W74jm9G0tdNbbmFY5MlsiSIVZpqJGHF/GfO6J5G5YdZeZRQk0RVb2EnYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDcjW2z3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C687C4CEF0;
-	Mon, 22 Sep 2025 19:43:13 +0000 (UTC)
+	 MIME-Version; b=Q2r2jHwuXRyLYmmHhyJpqGkLck2Jn2yNaj/CqAL7oc6pFmXIrJgVWw57hJp6W7KsmPs6LLzV6Ls5GLAelu7JV9av8FnRUdQcW3QJw09Ya15PHOvpzrbxAZWDYAzWoJCa2P3+njC5ctr5Po55QOmjo4/Fl3xGg3PlqILoELOWT/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAIpFQiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0F4C4CEF0;
+	Mon, 22 Sep 2025 19:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570194;
-	bh=ZUU7DFydGrSZ6SGCDE9d0x7Co+3nxyWz065RLl+B0jI=;
+	s=korg; t=1758569506;
+	bh=LvbzLfrlA7bP8jMd7xk9sVVY9nWvft44qjiV/Ut7OQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDcjW2z3uO8Z5e8LmSwIrqw64VCRoSMpy5Y9i0B14+rW1me3DjZwCOwOFRcRbQ2bO
-	 zgNpIKAgo2ppKJoci5fM1HGSOa+F2Xq5TQIbU+7YQ5pNxbOvz5/yH6KK1wS5ci4S8J
-	 4E1SS/7srkCupMETmoGR6s0VoFp+CGj2CiBK1NT4=
+	b=eAIpFQiUG3Jh6k5ATb4OCbGnONoMPdwRZSiZjUXQm5FEl3dHUD/2kuCQlsmWIkrG9
+	 FmyyFoqPeDPQ7miBaEZBCzCRs4o/HX2EgVBO+CslRm9u9RuX6TxzfizcWic9rnAbKC
+	 eVD/Egelv9NJc/8cY9PStPbLh6XAZbWq9EXkiv6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 042/149] Revert "net/mlx5e: Update and set Xon/Xoff upon port speed set"
+Subject: [PATCH 6.1 09/61] qed: Dont collect too many protection override GRC elements
 Date: Mon, 22 Sep 2025 21:29:02 +0200
-Message-ID: <20250922192413.925576490@linuxfoundation.org>
+Message-ID: <20250922192403.803984852@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tariq Toukan <tariqt@nvidia.com>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-[ Upstream commit 3fbfe251cc9f6d391944282cdb9bcf0bd02e01f8 ]
+[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
 
-This reverts commit d24341740fe48add8a227a753e68b6eedf4b385a.
-It causes errors when trying to configure QoS, as well as
-loss of L2 connectivity (on multi-host devices).
+In the protection override dump path, the firmware can return far too
+many GRC elements, resulting in attempting to write past the end of the
+previously-kmalloc'ed dump buffer.
 
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/20250910170011.70528106@kernel.org
-Fixes: d24341740fe4 ("net/mlx5e: Update and set Xon/Xoff upon port speed set")
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+This will result in a kernel panic with reason:
+
+ BUG: unable to handle kernel paging request at ADDRESS
+
+where "ADDRESS" is just past the end of the protection override dump
+buffer. The start address of the buffer is:
+ p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
+and the size of the buffer is buf_size in the same data structure.
+
+The panic can be arrived at from either the qede Ethernet driver path:
+
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc02662ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
+ qed_dbg_feature at ffffffffc026aa8f [qed]
+ qed_dbg_all_data at ffffffffc026b211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
+ devlink_health_do_dump at ffffffff82497f61
+ devlink_health_report at ffffffff8249cf29
+ qed_report_fatal_error at ffffffffc0272baf [qed]
+ qede_sp_task at ffffffffc045ed32 [qede]
+ process_one_work at ffffffff81d19783
+
+or the qedf storage driver path:
+
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc068b2ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
+ qed_dbg_feature at ffffffffc068fa8f [qed]
+ qed_dbg_all_data at ffffffffc0690211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
+ devlink_health_do_dump at ffffffff8aa95e51
+ devlink_health_report at ffffffff8aa9ae19
+ qed_report_fatal_error at ffffffffc0697baf [qed]
+ qed_hw_err_notify at ffffffffc06d32d7 [qed]
+ qed_spq_post at ffffffffc06b1011 [qed]
+ qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
+ qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
+ qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
+ fc_rport_work at ffffffffc02da715 [libfc]
+ process_one_work at ffffffff8a319663
+
+Resolve this by clamping the firmware's return value to the maximum
+number of legal elements the firmware should return.
+
+Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index e39c51cfc8e6c..f0142d32b648f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -136,8 +136,6 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
- 	if (up) {
- 		netdev_info(priv->netdev, "Link up\n");
- 		netif_carrier_on(priv->netdev);
--		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
--						NULL, NULL, NULL);
- 	} else {
- 		netdev_info(priv->netdev, "Link down\n");
- 		netif_carrier_off(priv->netdev);
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+index cdcead614e9fa..ae421c2707785 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+@@ -4461,10 +4461,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
+ 		goto out;
+ 	}
+ 
+-	/* Add override window info to buffer */
++	/* Add override window info to buffer, preventing buffer overflow */
+ 	override_window_dwords =
+-		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
+-		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
++		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
++		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
++		PROTECTION_OVERRIDE_DEPTH_DWORDS);
+ 	if (override_window_dwords) {
+ 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
+ 		offset += qed_grc_dump_addr_range(p_hwfn,
 -- 
 2.51.0
 
