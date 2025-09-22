@@ -1,152 +1,132 @@
-Return-Path: <stable+bounces-180992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDCFB92610
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:17:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC097B92684
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE9301904694
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:18:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A14C92A68A4
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BA2313271;
-	Mon, 22 Sep 2025 17:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=janestreet.com header.i=@janestreet.com header.b="gE5718K9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EFC3128AA;
+	Mon, 22 Sep 2025 17:24:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mxout5.mail.janestreet.com (mxout5.mail.janestreet.com [64.215.233.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8938B1DA23
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 17:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.215.233.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BAE1FDA82;
+	Mon, 22 Sep 2025 17:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758561459; cv=none; b=ambEdSa9qXZJbWagxJzVSIArUo2IiIVt7K2PMDg31+++EytTfdzDRDNFO5ZltXsA0f/ApHm7/5uSGCMSUe8HRnlmD6X1SX8O+UcTFKCOp3iS10KO9Q/ZwujQUDhRB19FGrkMFlILWYCJA2hD+DyFFH+C6LzDOcZF86nSgaDVUlU=
+	t=1758561883; cv=none; b=PBjhXLur3AdGWX1qJOyMqRB6MAyDVeifY69PZ5Z4LzMwZ6i8WLRcYQgP3m0czPUxTaM9AJK5L0CVw35Al7KGzGS3Jq0lbLDyInMlYpze+jVGNEslDs7ShealpVyK2oAlwqUOuu4LHNC951rw6ruHwDHPIBFjUV7nbFgINp/hWGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758561459; c=relaxed/simple;
-	bh=S4xN49pFSnTdw5ThYmz+Wn6pjq+tsVauICQ1qMWCpnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gJx6xdsoqmS9xxuG+1noHUuqlUkl4XevBtT3ls9wU3Q02sJZ/sxmViC5mms1k4j/4Vt7CRAVl2FgKojYbCiEOP9p0Ti+edZjZ6vdQWfovlQGt1m24hu9oxsl0fmDCfq/+6YKUsX4l9SEyhSQ6xP3Pk123Zd+hEpsm+5FEDx3SEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=janestreet.com; spf=pass smtp.mailfrom=janestreet.com; dkim=pass (2048-bit key) header.d=janestreet.com header.i=@janestreet.com header.b=gE5718K9; arc=none smtp.client-ip=64.215.233.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=janestreet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=janestreet.com
-From: Eric Hagberg <ehagberg@janestreet.com>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
- 	jack@suse.cz,
- 	Eric Hagberg <ehagberg@janestreet.com>
-Subject: [PATCH] Revert "loop: Avoid updating block size under exclusive owner"
-Date: Mon, 22 Sep 2025 13:17:04 -0400
-Message-ID: <20250922171704.3863333-1-ehagberg@janestreet.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1758561883; c=relaxed/simple;
+	bh=oxPhOJCQ/qZoiBIau7Zcl2ipPtFqQVDVZ14kTjBCDoY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mMyeCkomcsM3DT9K7GaW2exw6rzOur1wcM1YV2bv/KVgCm4k3x9F3Rzcg/ktiQng6nYB1Wsi3wZNs5PJrgehtyosbozqcM3nWuJXMAYj6Y9ysypbhdbkEKGryLa1Wdr7FshLrTrKZAExK0eGKRCKkJeWctmq/c/6QqptkpfwCOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AACC4CEF0;
+	Mon, 22 Sep 2025 17:24:36 +0000 (UTC)
+Date: Mon, 22 Sep 2025 18:24:33 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+	usamaarif642@gmail.com, yuzhao@google.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, baohua@kernel.org, voidice@gmail.com,
+	Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com,
+	hannes@cmpxchg.org, kaleshsingh@google.com, npache@redhat.com,
+	riel@surriel.com, roman.gushchin@linux.dev, rppt@kernel.org,
+	ryan.roberts@arm.com, dev.jain@arm.com, ryncsn@gmail.com,
+	shakeel.butt@linux.dev, surenb@google.com, hughd@google.com,
+	willy@infradead.org, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
+	casper.li@mediatek.com, chinwen.chang@mediatek.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-mm@kvack.org,
+	ioworker0@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+Message-ID: <aNGGUXLCn_bWlne5@arm.com>
+References: <20250922021458.68123-1-lance.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=janestreet.com;
-  s=waixah; t=1758561456;
-  bh=D6UkrGFKZSIXKn1LHMGQGcdRlspiSD4TG+RBYmQeVRU=;
-  h=From:To:Cc:Subject:Date;
-  b=gE5718K9sKqecUKfLjNm2LGOVgnGXYonOOKxC0Qkw098sAZPBeq5n9SozGsbtGDdd
-  NaR5IEnTzMJ6eHpXbJdbYZiTwXUcudALvY9fkaNqZdbRyT6oeEtm6CiJcp1B2KynIt
-  2Tup/QWarb/8sChMkUt8OWcy6DmdWQwZCzHSbqmBfU9P3oJE5jFRXzHSMKuwp97JOI
-  G3hhNAc+7ZAxOYS3nsj3y6Jyej80bVj6B/S5iMlvi0BEeMLkvswG26b2HQ9wwb+zaw
-  lrHsW23iKLq737djB2JTKSvIJM2uwQ6g2gEH993fFU5gp/eqcY94xgSVhPjHRUNUn3
-  ZVhBmd80xsXYA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250922021458.68123-1-lance.yang@linux.dev>
 
-This reverts commit ce8da5d13d8c ("loop: Avoid updating block size under
-exclusive owner") for the 6.6 kernel, because if the LTP ioctl_loop06 test is
-run with this patch in place, the test will fail, it leaves the host unable to
-kexec into the kernel again (hangs forever) and "losetup -a" will hang on
-attempting to access the /dev/loopN device that the test has set up.
+On Mon, Sep 22, 2025 at 10:14:58AM +0800, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> When both THP and MTE are enabled, splitting a THP and replacing its
+> zero-filled subpages with the shared zeropage can cause MTE tag mismatch
+> faults in userspace.
+> 
+> Remapping zero-filled subpages to the shared zeropage is unsafe, as the
+> zeropage has a fixed tag of zero, which may not match the tag expected by
+> the userspace pointer.
+> 
+> KSM already avoids this problem by using memcmp_pages(), which on arm64
+> intentionally reports MTE-tagged pages as non-identical to prevent unsafe
+> merging.
+> 
+> As suggested by David[1], this patch adopts the same pattern, replacing the
+> memchr_inv() byte-level check with a call to pages_identical(). This
+> leverages existing architecture-specific logic to determine if a page is
+> truly identical to the shared zeropage.
+> 
+> Having both the THP shrinker and KSM rely on pages_identical() makes the
+> design more future-proof, IMO. Instead of handling quirks in generic code,
+> we just let the architecture decide what makes two pages identical.
+> 
+> [1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
+> 
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+> Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
+> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 
-The patch doesn't need to be reverted from 6.12, as it works fine there.
+Functionally, the patch looks fine, both with and without MTE.
 
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Eric Hagberg <ehagberg@janestreet.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
----
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 32e0ec2dde36..28d4b02a1aa5 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
+>  static bool thp_underused(struct folio *folio)
+>  {
+>  	int num_zero_pages = 0, num_filled_pages = 0;
+> -	void *kaddr;
+>  	int i;
+>  
+>  	for (i = 0; i < folio_nr_pages(folio); i++) {
+> -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+> -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+> -			num_zero_pages++;
+> -			if (num_zero_pages > khugepaged_max_ptes_none) {
+> -				kunmap_local(kaddr);
+> +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+> +			if (++num_zero_pages > khugepaged_max_ptes_none)
+>  				return true;
 
---- b/drivers/block/loop.c
-+++ a/drivers/block/loop.c
-@@ -1472,36 +1472,19 @@
- 	return error;
- }
- 
-+static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
--static int loop_set_block_size(struct loop_device *lo, blk_mode_t mode,
--			       struct block_device *bdev, unsigned long arg)
- {
- 	int err = 0;
- 
-+	if (lo->lo_state != Lo_bound)
-+		return -ENXIO;
--	/*
--	 * If we don't hold exclusive handle for the device, upgrade to it
--	 * here to avoid changing device under exclusive owner.
--	 */
--	if (!(mode & BLK_OPEN_EXCL)) {
--		err = bd_prepare_to_claim(bdev, loop_set_block_size, NULL);
--		if (err)
--			return err;
--	}
--
--	err = mutex_lock_killable(&lo->lo_mutex);
--	if (err)
--		goto abort_claim;
--
--	if (lo->lo_state != Lo_bound) {
--		err = -ENXIO;
--		goto unlock;
--	}
- 
- 	err = blk_validate_block_size(arg);
- 	if (err)
- 		return err;
- 
- 	if (lo->lo_queue->limits.logical_block_size == arg)
-+		return 0;
--		goto unlock;
- 
- 	sync_blockdev(lo->lo_device);
- 	invalidate_bdev(lo->lo_device);
-@@ -1513,11 +1496,6 @@
- 	loop_update_dio(lo);
- 	blk_mq_unfreeze_queue(lo->lo_queue);
- 
--unlock:
--	mutex_unlock(&lo->lo_mutex);
--abort_claim:
--	if (!(mode & BLK_OPEN_EXCL))
--		bd_abort_claiming(bdev, loop_set_block_size);
- 	return err;
- }
- 
-@@ -1536,6 +1514,9 @@
- 	case LOOP_SET_DIRECT_IO:
- 		err = loop_set_dio(lo, arg);
- 		break;
-+	case LOOP_SET_BLOCK_SIZE:
-+		err = loop_set_block_size(lo, arg);
-+		break;
- 	default:
- 		err = -EINVAL;
- 	}
-@@ -1590,12 +1571,9 @@
- 		break;
- 	case LOOP_GET_STATUS64:
- 		return loop_get_status64(lo, argp);
--	case LOOP_SET_BLOCK_SIZE:
--		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
--			return -EPERM;
--		return loop_set_block_size(lo, mode, bdev, arg);
- 	case LOOP_SET_CAPACITY:
- 	case LOOP_SET_DIRECT_IO:
-+	case LOOP_SET_BLOCK_SIZE:
- 		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
- 			return -EPERM;
- 		fallthrough;
+I wonder what the overhead of doing a memcmp() vs memchr_inv() is. The
+former will need to read from two places. If it's noticeable, it would
+affect architectures that don't have an MTE equivalent.
+
+Alternatively we could introduce something like folio_has_metadata()
+which on arm64 simply checks PG_mte_tagged.
+
+-- 
+Catalin
 
