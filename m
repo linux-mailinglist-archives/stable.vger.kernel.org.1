@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3444AB92F0E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4296B93107
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 280C3190737F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E6C33A03C8
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F29E2F0C52;
-	Mon, 22 Sep 2025 19:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE662773C2;
+	Mon, 22 Sep 2025 19:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vALcySVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thaxws3b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5471C1ADB;
-	Mon, 22 Sep 2025 19:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE852517AC;
+	Mon, 22 Sep 2025 19:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569976; cv=none; b=hmHvvUtl/YZPej6IHNgGpFB82QOYiPUuG1P/qb1C3QdqaZeSGBMY6mpXfSsnZw72aYoFFtps9gxyTyhEg32lN5K2MwlMJYJFXUf63Wo0JBjSWOOWJ7K8hzGiU35l9rsfIVEuiQ04S1P5aBKHR3ehXNd0KKChY+DzRFm22rZ1s8w=
+	t=1758570313; cv=none; b=NVnB6iJtq/rcEnsSKRpMrsHnq39UJI7wyIAjwGyUtvXm++HWjgD1fc4AHVty6pF/joRorucl+a+snUXhUJ9WH5ymcGn9I7rKMU7nfAXNhPBEDfZBKM0h+WjhRQS/eIW7j0xDKee2Fw1ovwk2gvGJjB8A1FloPC43jAgwGzOsi4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569976; c=relaxed/simple;
-	bh=oqUMBEz65Cw/yV7ly/dgR3c+iHXdjoLlT9o+noAj8qw=;
+	s=arc-20240116; t=1758570313; c=relaxed/simple;
+	bh=UpfTa5Q+MQxBnJxw0Yb9jlbFaMp1CWwixybNpakeVwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3HhILV+kw9RDRR82uXuTfRY9nCM25RVhblaeem+AEWnWGGTJ9hFwm5gwxwT1QmTCAaPX/354I194uYdHwb6/aDf4KlgDsmAr9brv0qkjdFHn8bxKCAkYwWKTvFuukSGiPMvIxj4Uye5pmzmi+b/VFTjmZ8jkySJMIo660Fm2ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vALcySVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51A1C4CEF0;
-	Mon, 22 Sep 2025 19:39:35 +0000 (UTC)
+	 MIME-Version; b=f9UsOtUzFWii3vvzBwLYO9TWjDUb2IpWD2C32SF3tVPswGCAcPq0nebuZqG+fFsDekSB5vy2nO/NtvQGBeSA02Op6Hwh6J/VL8g/p21PTIJGaLKcvOsrz7gPjIucKfYso83XvTopW21/t/lcBAaHT9a8q1gP5EmvNRSiaUIrlOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thaxws3b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D75BC4CEF0;
+	Mon, 22 Sep 2025 19:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569976;
-	bh=oqUMBEz65Cw/yV7ly/dgR3c+iHXdjoLlT9o+noAj8qw=;
+	s=korg; t=1758570312;
+	bh=UpfTa5Q+MQxBnJxw0Yb9jlbFaMp1CWwixybNpakeVwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vALcySVV6kBES36IHtuolAiIWWhlquUWqFk09eXeXNoTyOpjk12T6b35pgLnaE1jz
-	 L69oDalNxrNtlWBdZwHlpU4gi7yiuTZrpESw+TazJaMLe9w7zb7w7p7UobRRik9O2y
-	 h2R8AgWvSgKtzk7DrupZL2rGFfQcNKMMlStLlJ5Q=
+	b=thaxws3b2iQz4UmH0kXEQ4bjFYn3hVaWLberNvEcTadkH1w0uU5QYg/9LqX3133e/
+	 Il4JfEi93q+siZj0Lla3JsPiTK1Y7P8ws47UzvGqlr0dwf0MrGSUB4JbMsjKtbW/AK
+	 jmsJRVwsNmzZRqH+oGn7M+QFuFRz6AGXZiDOU64w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 062/105] mptcp: propagate shutdown to subflows when possible
-Date: Mon, 22 Sep 2025 21:29:45 +0200
-Message-ID: <20250922192410.539702554@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.16 086/149] ASoC: qcom: q6apm-lpass-dais: Fix NULL pointer dereference if source graph failed
+Date: Mon, 22 Sep 2025 21:29:46 +0200
+Message-ID: <20250922192415.055748973@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b upstream.
+commit 68f27f7c7708183e7873c585ded2f1b057ac5b97 upstream.
 
-When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
-metadata to exchange, and all subflows can be safely shutdown.
+If earlier opening of source graph fails (e.g. ADSP rejects due to
+incorrect audioreach topology), the graph is closed and
+"dai_data->graph[dai->id]" is assigned NULL.  Preparing the DAI for sink
+graph continues though and next call to q6apm_lpass_dai_prepare()
+receives dai_data->graph[dai->id]=NULL leading to NULL pointer
+exception:
 
-Before this patch, the subflows were actually terminated at 'close()'
-time. That's certainly fine most of the time, but not when the userspace
-'shutdown()' a connection, without close()ing it. When doing so, the
-subflows were staying in LAST_ACK state on one side -- and consequently
-in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
-socket.
+  qcom-apm gprsvc:service:2:1: Error (1) Processing 0x01001002 cmd
+  qcom-apm gprsvc:service:2:1: DSP returned error[1001002] 1
+  q6apm-lpass-dais 30000000.remoteproc:glink-edge:gpr:service@1:bedais: fail to start APM port 78
+  q6apm-lpass-dais 30000000.remoteproc:glink-edge:gpr:service@1:bedais: ASoC: error at snd_soc_pcm_dai_prepare on TX_CODEC_DMA_TX_3: -22
+  Unable to handle kernel NULL pointer dereference at virtual address 00000000000000a8
+  ...
+  Call trace:
+   q6apm_graph_media_format_pcm+0x48/0x120 (P)
+   q6apm_lpass_dai_prepare+0x110/0x1b4
+   snd_soc_pcm_dai_prepare+0x74/0x108
+   __soc_pcm_prepare+0x44/0x160
+   dpcm_be_dai_prepare+0x124/0x1c0
 
-Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
-consequence of this is that the TCP 'FIN' flag can be set earlier now,
-but the end result is the same. This affects the packetdrill tests
-looking at the end of the MPTCP connections, but for a good reason.
-
-Note that tcp_shutdown() will check the subflow state, so no need to do
-that again before calling it.
-
-Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
+Fixes: 30ad723b93ad ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
 Cc: stable@vger.kernel.org
-Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Message-ID: <20250904101849.121503-2-krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -413,6 +413,20 @@ static void mptcp_close_wake_up(struct s
- 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -213,8 +213,10 @@ static int q6apm_lpass_dai_prepare(struc
+ 
+ 	return 0;
+ err:
+-	q6apm_graph_close(dai_data->graph[dai->id]);
+-	dai_data->graph[dai->id] = NULL;
++	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
++		q6apm_graph_close(dai_data->graph[dai->id]);
++		dai_data->graph[dai->id] = NULL;
++	}
+ 	return rc;
  }
  
-+static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+		unlock_sock_fast(ssk, slow);
-+	}
-+}
-+
- /* called under the msk socket lock */
- static bool mptcp_pending_data_fin_ack(struct sock *sk)
- {
-@@ -437,6 +451,7 @@ static void mptcp_check_data_fin_ack(str
- 			break;
- 		case TCP_CLOSING:
- 		case TCP_LAST_ACK:
-+			mptcp_shutdown_subflows(msk);
- 			mptcp_set_state(sk, TCP_CLOSE);
- 			break;
- 		}
-@@ -605,6 +620,7 @@ static bool mptcp_check_data_fin(struct
- 			mptcp_set_state(sk, TCP_CLOSING);
- 			break;
- 		case TCP_FIN_WAIT2:
-+			mptcp_shutdown_subflows(msk);
- 			mptcp_set_state(sk, TCP_CLOSE);
- 			break;
- 		default:
 
 
 
