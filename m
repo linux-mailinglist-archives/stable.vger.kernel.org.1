@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-181206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B52B92F05
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B59B930B6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA791447AFE
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04DA41907B83
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156AF31194D;
-	Mon, 22 Sep 2025 19:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C37C2F1FE3;
+	Mon, 22 Sep 2025 19:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mgz8KEtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jL0xpL6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56E2306494;
-	Mon, 22 Sep 2025 19:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9B92F0C52;
+	Mon, 22 Sep 2025 19:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569953; cv=none; b=FeRTp3ysGSeHNIzZKm1kkkraPLXCDy/49rQCOX4nuTbCLKsY8sOOqacckZYaFdky6gYP9aS62tfDUyxwqnfaF8IRbVZVitoLyLiDflPVvUbvx13aDfVom5qNuc0jtO0T/uSaUEBvKorVohjTZRxwW1464d712USsP2SGdnB/vHk=
+	t=1758570257; cv=none; b=nY+GxRXMNAHsVMsqgOWS8OwMtw9Khhf+JeCJYhI2OLr0CG1SffDP3lWsb+mZYJAHBroPsKUbTtnxlFuBIaTW2nIGvs7KM6FraVrTbpwXUT+cS1PToaxOfbkhQNTpU2QuAaWS0bZXfedvW5IRXNhFVEX6OXcmng7uxUU7EZ6sf6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569953; c=relaxed/simple;
-	bh=ax7APLxVM/qYcj03auzZph1PdP7oSB4XPf0bWuj9Fmc=;
+	s=arc-20240116; t=1758570257; c=relaxed/simple;
+	bh=X5uYsqRYzicbobVkpzBZT9FvOUKPeXKjTqallLbWvrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pr7bIwnJmS3jhuTbhOFpk24ZbU9wlLxI2BOKItsfYCRcpSGTHYeCqkfXmNAJUfvLzsk0eRJ8PG5pYWa0H1NFhAZNZbslo+4RUZi1oTAtKB9yLVJcm78UQVNTLtX4bWcOAJegxgo4SahLMdXjXc374bHM81lJEiVPjLgJhB0CJYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mgz8KEtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA24C4CEF5;
-	Mon, 22 Sep 2025 19:39:13 +0000 (UTC)
+	 MIME-Version; b=qCjwGmaBF+ThsgZU85lcXp7Q+LhJv1Oest/hiq+NnfzWXTTXBhTi2iVrlCEPEGSqTkvG86zSuRJMcNhyZsnYgVEj5CMrewj07NsBC6UCqMngAlvBGmfTS6jMFSjTW8ZQETGcBQZxGIo4HjQFF0Bz4sGWmLkkxcILIPU3LabFRAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jL0xpL6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A97C4CEF0;
+	Mon, 22 Sep 2025 19:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569953;
-	bh=ax7APLxVM/qYcj03auzZph1PdP7oSB4XPf0bWuj9Fmc=;
+	s=korg; t=1758570256;
+	bh=X5uYsqRYzicbobVkpzBZT9FvOUKPeXKjTqallLbWvrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mgz8KEtDFWhr+rIhGf2UuoWeHN6aH32jv1cJDMTzUBkYTUVFGZ2NwDBM/erCKmWH8
-	 D4adOgxbBNfh2u66eNFgBlZ0bVUbxiKEiMupsVryHnMi5KNN1mEu7dFWpbMTVTiBQC
-	 I7Y4Dv7b/Y41Gv0pcpRwZ5OocgmwXI/e7NdRlRUE=
+	b=jL0xpL6Ow3mpvhOSuSo+GbXFL5in2ElCVYb4s3MPhRLOIfg/zW8D5wreTV2yE0dRH
+	 sj9Me5ubJJqzN/aREOR3cieqPkIacEYaqJaplbA47oa/u39hGQEBt0zGLVzHrvsZCY
+	 0RdlDPoxg3Ie43mu0nO3NC12r5TwIgPOCJnGaL3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 054/105] ASoC: qcom: audioreach: Fix lpaif_type configuration for the I2S interface
-Date: Mon, 22 Sep 2025 21:29:37 +0200
-Message-ID: <20250922192410.332808346@linuxfoundation.org>
+	Eugene Koira <eugkoira@amazon.com>,
+	Nicolas Saenz Julienne <nsaenz@amazon.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.16 078/149] iommu/vt-d: Fix __domain_mapping()s usage of switch_to_super_page()
+Date: Mon, 22 Sep 2025 21:29:38 +0200
+Message-ID: <20250922192414.850962300@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+From: Eugene Koira <eugkoira@amazon.com>
 
-commit 5f1af203ef964e7f7bf9d32716dfa5f332cc6f09 upstream.
+commit dce043c07ca1ac19cfbe2844a6dc71e35c322353 upstream.
 
-Fix missing lpaif_type configuration for the I2S interface.
-The proper lpaif interface type required to allow DSP to vote
-appropriate clock setting for I2S interface.
+switch_to_super_page() assumes the memory range it's working on is aligned
+to the target large page level. Unfortunately, __domain_mapping() doesn't
+take this into account when using it, and will pass unaligned ranges
+ultimately freeing a PTE range larger than expected.
 
-Fixes: 25ab80db6b133 ("ASoC: qdsp6: audioreach: add module configuration command helpers")
+Take for example a mapping with the following iov_pfn range [0x3fe400,
+0x4c0600), which should be backed by the following mappings:
+
+   iov_pfn [0x3fe400, 0x3fffff] covered by 2MiB pages
+   iov_pfn [0x400000, 0x4bffff] covered by 1GiB pages
+   iov_pfn [0x4c0000, 0x4c05ff] covered by 2MiB pages
+
+Under this circumstance, __domain_mapping() will pass [0x400000, 0x4c05ff]
+to switch_to_super_page() at a 1 GiB granularity, which will in turn
+free PTEs all the way to iov_pfn 0x4fffff.
+
+Mitigate this by rounding down the iov_pfn range passed to
+switch_to_super_page() in __domain_mapping()
+to the target large page level.
+
+Additionally add range alignment checks to switch_to_super_page.
+
+Fixes: 9906b9352a35 ("iommu/vt-d: Avoid duplicate removing in __domain_mapping()")
+Signed-off-by: Eugene Koira <eugkoira@amazon.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
-Message-ID: <20250908053631.70978-2-mohammad.rafi.shaik@oss.qualcomm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://lore.kernel.org/r/20250826143816.38686-1-eugkoira@amazon.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/audioreach.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/intel/iommu.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/audioreach.c
-+++ b/sound/soc/qcom/qdsp6/audioreach.c
-@@ -971,6 +971,7 @@ static int audioreach_i2s_set_media_form
- 	param_data->param_id = PARAM_ID_I2S_INTF_CFG;
- 	param_data->param_size = ic_sz - APM_MODULE_PARAM_DATA_SIZE;
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1592,6 +1592,10 @@ static void switch_to_super_page(struct
+ 	unsigned long lvl_pages = lvl_to_nr_pages(level);
+ 	struct dma_pte *pte = NULL;
  
-+	intf_cfg->cfg.lpaif_type = module->hw_interface_type;
- 	intf_cfg->cfg.intf_idx = module->hw_interface_idx;
- 	intf_cfg->cfg.sd_line_idx = module->sd_line_idx;
++	if (WARN_ON(!IS_ALIGNED(start_pfn, lvl_pages) ||
++		    !IS_ALIGNED(end_pfn + 1, lvl_pages)))
++		return;
++
+ 	while (start_pfn <= end_pfn) {
+ 		if (!pte)
+ 			pte = pfn_to_dma_pte(domain, start_pfn, &level,
+@@ -1667,7 +1671,8 @@ __domain_mapping(struct dmar_domain *dom
+ 				unsigned long pages_to_remove;
  
+ 				pteval |= DMA_PTE_LARGE_PAGE;
+-				pages_to_remove = min_t(unsigned long, nr_pages,
++				pages_to_remove = min_t(unsigned long,
++							round_down(nr_pages, lvl_pages),
+ 							nr_pte_to_next_page(pte) * lvl_pages);
+ 				end_pfn = iov_pfn + pages_to_remove - 1;
+ 				switch_to_super_page(domain, iov_pfn, end_pfn, largepage_lvl);
 
 
 
