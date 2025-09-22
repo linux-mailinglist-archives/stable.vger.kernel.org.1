@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-181354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE19B93137
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247A9B92F32
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2FA63A40B5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D0982A7EC7
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DEA2F3612;
-	Mon, 22 Sep 2025 19:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175D72F0C78;
+	Mon, 22 Sep 2025 19:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZibbkSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSKs81q+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314352E765E;
-	Mon, 22 Sep 2025 19:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96262820D1;
+	Mon, 22 Sep 2025 19:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570332; cv=none; b=gZVKimHP6qntkoNCq81xIkhASNI5QuTLBE2UBdsS/fidyAexcioACETuE7GIYGv8LaKPwsgeLYC6G3W37+XrFFdOfSqLk73OADRchp/foaw5fSajjJCSL2RD33hHkz8zxuHyy1Sk+GbIlUKbI15/MSL0afyk5vYuN97oh+zwEeU=
+	t=1758570000; cv=none; b=onmUCF2+BcOWasq6c8GYrazf7fp0Ubh81e5y3zKV/7I1S4kStroZfgpzbG4XM1eSRCmnFZKOkdWvgUeEMxuskrLgSIrwIbLZYlTousH3KcFWUbPjtvuuUectnpPClR30rU0YjerNWqTRETzUX53SJWRZbzpm6RGKV6Q4btDPmIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570332; c=relaxed/simple;
-	bh=ql8bxpdWGIWop5zFV/hnqC3T3pthrYZPyYidyxyrWd8=;
+	s=arc-20240116; t=1758570000; c=relaxed/simple;
+	bh=x4BEnhQF4Ac486yDUv42WZnGPKNHq6h6IwgL7+ETBH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRMuXyhKolArPzwhZfJ4Z8uQgPFzZntab4FEAtayToVAzHk/fB+SKMLGHDlvKkoxWd3iAVVQm1Msi+SR6VenNI4SMXflVMCVVFdCBSHtSXJxpBiwZVeVUFsDId0eu/D+tegDtZl+5RGQHY/xrEQ+7cLZOqJLeRK3YCFyiBwMRWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZibbkSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF469C4CEF0;
-	Mon, 22 Sep 2025 19:45:31 +0000 (UTC)
+	 MIME-Version; b=Y8lx/3GdIeqt5VigDObzH57TGY3w1X5Atp23Hpq/nst704Y+WW65hGLmURSVd+8SPzgO30+Yhok19gUMFcnANnbob8dIfA7PEf6ca1wkofzl2gOqImRM/TAn+yN4dshCWQT5dF3UkA0YsYW6e4DpnNSkakciFXBN52faa/zxxPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSKs81q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFAEC4CEF0;
+	Mon, 22 Sep 2025 19:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570332;
-	bh=ql8bxpdWGIWop5zFV/hnqC3T3pthrYZPyYidyxyrWd8=;
+	s=korg; t=1758570000;
+	bh=x4BEnhQF4Ac486yDUv42WZnGPKNHq6h6IwgL7+ETBH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZibbkSI1hALzRxPaWFH7jHvuKMY8uuaeqww+Z4/bUufcMd35rCG72HpoGl7V/G5s
-	 CCAnBFRgzNS2iq52mw9n6kJ+9TstXQQe+tHH13gJH9e6weTq964MN0VpaCm7xlTvv8
-	 V+RtuVqDlU8EjyXvUtIVxkxJ5DecedEiU2XzFqMc=
+	b=uSKs81q+NJQFwgHpP038o5w/vuivO2TPr12FCAtCdu1/4lqrcHyPTLEIGQ+1e9Ggz
+	 BHiePwlkQXkbsrrudZ/U21OYREBEMrNIXqjkGZVmM9JUDML2MUKUKYo7VcjX8/nWJS
+	 G40Rc3Eeijjn4rw1eWKOoHuyKqI0GGtnIeabvmJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praful Adiga <praful.adiga@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.16 107/149] ALSA: hda/realtek: Fix mute led for HP Laptop 15-dw4xx
+	Yang Xiuwei <yangxiuwei@kylinos.cn>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 084/105] io_uring: fix incorrect io_kiocb reference in io_link_skb
 Date: Mon, 22 Sep 2025 21:30:07 +0200
-Message-ID: <20250922192415.578869467@linuxfoundation.org>
+Message-ID: <20250922192411.102315027@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praful Adiga <praful.adiga@gmail.com>
+From: Yang Xiuwei <yangxiuwei@kylinos.cn>
 
-commit d33c3471047fc54966621d19329e6a23ebc8ec50 upstream.
+[ Upstream commit 2c139a47eff8de24e3350dadb4c9d5e3426db826 ]
 
-This laptop uses the ALC236 codec with COEF 0x7 and idx 1 to
-control the mute LED. Enable the existing quirk for this device.
+In io_link_skb function, there is a bug where prev_notif is incorrectly
+assigned using 'nd' instead of 'prev_nd'. This causes the context
+validation check to compare the current notification with itself instead
+of comparing it with the previous notification.
 
-Signed-off-by: Praful Adiga <praful.adiga@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by using the correct prev_nd parameter when obtaining prev_notif.
+
+Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+Fixes: 6fe4220912d19 ("io_uring/notif: implement notification stacking")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ io_uring/notif.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10752,6 +10752,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8992, "HP EliteBook 845 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8994, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8995, "HP EliteBook 855 G9", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x89a0, "HP Laptop 15-dw4xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x89a4, "HP ProBook 440 G9", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x89a6, "HP ProBook 450 G9", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x89aa, "HP EliteBook 630 G9", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/io_uring/notif.c b/io_uring/notif.c
+index 28859ae3ee6eb..d4cf5a1328e63 100644
+--- a/io_uring/notif.c
++++ b/io_uring/notif.c
+@@ -85,7 +85,7 @@ static int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg)
+ 		return -EEXIST;
+ 
+ 	prev_nd = container_of(prev_uarg, struct io_notif_data, uarg);
+-	prev_notif = cmd_to_io_kiocb(nd);
++	prev_notif = cmd_to_io_kiocb(prev_nd);
+ 
+ 	/* make sure all noifications can be finished in the same task_work */
+ 	if (unlikely(notif->ctx != prev_notif->ctx ||
+-- 
+2.51.0
+
 
 
 
