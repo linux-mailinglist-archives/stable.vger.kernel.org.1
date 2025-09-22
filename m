@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDB3B93047
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B30B92CC2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08D6F2E02A0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865A83B0141
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F91131194D;
-	Mon, 22 Sep 2025 19:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314622DF714;
+	Mon, 22 Sep 2025 19:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBAomgVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDX+ydwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD902F3613;
-	Mon, 22 Sep 2025 19:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E260829BDB5;
+	Mon, 22 Sep 2025 19:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570181; cv=none; b=iC5S+/wIU5YxAnO+SauLhABu68V8WSC5Jl7SqyFoGZdKuEjvedmbRtYpW/howqdQDLanX2tiqFBiaF9KJqZSL04jSCHmc29lIKjZVGok3PhEptRxGseOU3yJRFXYyTBINWBbnpOFDwpSKLyHfi6bJ+GunCsMfiJKcBI4U6MwSVY=
+	t=1758569533; cv=none; b=IqnUzGOWzrJcPg0nys10kpwbSFCWYcvPIRokaLKREuChREoLOFkUaZ/e+PQOrc7aKrX3bR8Fpy7suBOTH4sy6JwrVkDrAUeWBASWFwNxtOd+r0ga+FzEkJKUvkRRXMECVSALsO7SxzVkwmrgFZ0nRwQ1fCBixZdlRHtbBlMjI+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570181; c=relaxed/simple;
-	bh=CKPnYtsmT0/tnAtnbkvO97V48qHakEUy/ohCoKwMkWw=;
+	s=arc-20240116; t=1758569533; c=relaxed/simple;
+	bh=954TOxy8rWi3bk4HMOXvPGz6MmysrHyTGOlGpmmmrpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pri85nd7L/OKdMYo/u0SB4Q1moo8vYTYrTbwkM8LozuVo6JscUciScP6uH4z7Oc4R+vqZYxrVSo2AEVF2ipstRNdi4zEtIpoRXI8On5xbc8vL4eb0wWlKUC9h/VbEoXMHwrJ0Y1vdVdTswZjbPxG/n2a8/Pzoli9/jqcbyThLmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBAomgVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA74AC19422;
-	Mon, 22 Sep 2025 19:43:00 +0000 (UTC)
+	 MIME-Version; b=J0HLKzIIInmW+ZmgeO1vm5XZgJHOL3ouJ+v0T9UApMaN45bpdT+T7PjuDXluV83VenAnbRPz2ZhyjnmM4sHorG3WAT+dYCC3UXTanYoi6HSQoVw98G8CaJ57noMoG+GvuadxXLOiAS+3Sc4aySoWUW1scVSrWRqWflmx46s8KmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDX+ydwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348F2C4CEF0;
+	Mon, 22 Sep 2025 19:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570181;
-	bh=CKPnYtsmT0/tnAtnbkvO97V48qHakEUy/ohCoKwMkWw=;
+	s=korg; t=1758569531;
+	bh=954TOxy8rWi3bk4HMOXvPGz6MmysrHyTGOlGpmmmrpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBAomgVy3dOPQzA30IfD1PA0t4pVJIWObD1Cw3cd8XtrSUO/6kmHTnkMu4GXZCefV
-	 wtw/Hy72wMnmRPfgQQFtk1Yz+X18ykODQU9ECIa+aWyBOMkfbKqfbUiw3hIqAFOOPu
-	 CMCSwRbDkdtkGHJnGZwJHsHcMiwMI2u8KyBYBb8o=
+	b=JDX+ydwHCLUenZS56HtKir6mljeN4i1JWd1F0q6QR2POU5hu+0uQTQukBXcHs9HQq
+	 0F4C/dW7HTFpShCMSP+qYKAE6/lbJplIbe9beiitg0+/pu3qrJaKXAGRrXlZGOaycf
+	 h8rtCsY7LMRF2eEfgeSXVPJ/kvUf5piMRc3tZCG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 050/149] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 17/61] net: liquidio: fix overflow in octeon_init_instr_queue()
 Date: Mon, 22 Sep 2025 21:29:10 +0200
-Message-ID: <20250922192414.120628211@linuxfoundation.org>
+Message-ID: <20250922192404.021113914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Alexey Nepomnyashih <sdl@nppct.ru>
 
-commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
+[ Upstream commit cca7b1cfd7b8a0eff2a3510c5e0f10efe8fa3758 ]
 
-When accessing one of the files under /sys/fs/nilfs2/features when
-CONFIG_CFI_CLANG is enabled, there is a CFI violation:
+The expression `(conf->instr_type == 64) << iq_no` can overflow because
+`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
+operand to `u64` ensures correct 64-bit arithmetic.
 
-  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
-  ...
-  Call Trace:
-   <TASK>
-   sysfs_kf_seq_show+0x2a6/0x390
-   ? __cfi_kobj_attr_show+0x10/0x10
-   kernfs_seq_show+0x104/0x15b
-   seq_read_iter+0x580/0xe2b
-  ...
-
-When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
-is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
-nilfs_feature_attr_group is added to that kobject via
-sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
-which will call sysfs_kf_seq_show() when ->seq_show() is called.
-sysfs_kf_seq_show() in turn calls kobj_attr_show() through
-->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
-a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
-in the CFI violation since neither nilfs_feature_revision_show() nor
-nilfs_feature_README_show() match the prototype of ->show() in 'struct
-kobj_attribute'.
-
-Resolve the CFI violation by adjusting the second parameter in
-nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
-kobj_attribute' to match the expected prototype.
-
-Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
-Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/sysfs.c |    4 ++--
- fs/nilfs2/sysfs.h |    8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -1075,7 +1075,7 @@ void nilfs_sysfs_delete_device_group(str
-  ************************************************************************/
+diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+index 8e59c2825533a..2a066f193bca1 100644
+--- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
++++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+@@ -135,7 +135,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
+ 	oct->io_qmask.iq |= BIT_ULL(iq_no);
  
- static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
--					    struct attribute *attr, char *buf)
-+					    struct kobj_attribute *attr, char *buf)
- {
- 	return sysfs_emit(buf, "%d.%d\n",
- 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
-@@ -1087,7 +1087,7 @@ static const char features_readme_str[]
- 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
+ 	/* Set the 32B/64B mode for each input queue */
+-	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
++	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
+ 	iq->iqcmd_64B = (conf->instr_type == 64);
  
- static ssize_t nilfs_feature_README_show(struct kobject *kobj,
--					 struct attribute *attr,
-+					 struct kobj_attribute *attr,
- 					 char *buf)
- {
- 	return sysfs_emit(buf, features_readme_str);
---- a/fs/nilfs2/sysfs.h
-+++ b/fs/nilfs2/sysfs.h
-@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
- 	struct completion sg_segments_kobj_unregister;
- };
- 
--#define NILFS_COMMON_ATTR_STRUCT(name) \
-+#define NILFS_KOBJ_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
- 	struct attribute attr; \
--	ssize_t (*show)(struct kobject *, struct attribute *, \
-+	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
- 			char *); \
--	ssize_t (*store)(struct kobject *, struct attribute *, \
-+	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
- 			 const char *, size_t); \
- }
- 
--NILFS_COMMON_ATTR_STRUCT(feature);
-+NILFS_KOBJ_ATTR_STRUCT(feature);
- 
- #define NILFS_DEV_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
+ 	oct->fn_list.setup_iq_regs(oct, iq_no);
+-- 
+2.51.0
+
 
 
 
