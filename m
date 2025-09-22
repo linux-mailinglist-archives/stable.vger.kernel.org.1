@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26D3B92D6D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C88E0B9307D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9005619068CD
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF3118904EE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800A2F0C46;
-	Mon, 22 Sep 2025 19:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75B62F2909;
+	Mon, 22 Sep 2025 19:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HugmjQIq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOuKs4Rd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810A25F780;
-	Mon, 22 Sep 2025 19:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8473A2F0C52;
+	Mon, 22 Sep 2025 19:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569659; cv=none; b=d/WDQO2eGEYkCiZyFdqo9JwJsmgB3cbyzEHajekAhP7G32geCqwoQOJBHr3zAnBKX/qkzu1YA12ZAM3KtK6qEo/qHgmp0DtO/ED8R455bBwPK9ahTX+2lp2VVvSl9FbkfBbJXxeLK4vpbsq9QW7Yq6KcXS8O8kt2BnmCuY/EuLY=
+	t=1758570207; cv=none; b=YbOtNOPZjyq+E1vG4nF1pnIRCracVZUuUDji5eMNnfF39HbyR5DmADaaXU27zUt0SDKddgjBpDkAvd8FuTIKWDS8B+SdxxCxx7ng5KLncKFtGtTfWbhU43b9ZLHlI/asES4l8O4s8QbdSBC4vJ4BOw9v69q660OLX2m2hMs4RhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569659; c=relaxed/simple;
-	bh=CSX3AooNSQURSKFQDmGAE0OJ6Ay417oG9gl0KZkixQo=;
+	s=arc-20240116; t=1758570207; c=relaxed/simple;
+	bh=lVyV+apTjMaeqHJOaDRHdj3HOSKCtu+0ynLsnWqqg0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wqjimc9ceLtzmBDYrfkUjir7Aunj/aOOojuwlGRVrdLr2XZpjd/JTRqJxV8EV5xrB7udQC1SKDBb0NR2eTlLsMiRylKjsTH6dIbdO0FMbqZA6hhBlxveIIbA0Gtg2gj8oKQQBNyHUQdGy8kDIwKFNTm35fsvYSVMksaBh0LPIsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HugmjQIq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8116AC4CEF0;
-	Mon, 22 Sep 2025 19:34:18 +0000 (UTC)
+	 MIME-Version; b=Iypu6AfhhuqNaK3GxQTnuDl+xSivmVQtRKyPRnBC9icFBUJmKH/qSLHK5bhYsWrXHHtYITeOtZfP9SfMQgqzFrwVx8/CqLIgN66wbGzdVOcPwRZ4HeStO6iy4x8/T4SckmKE8WaTu0EZaB6+RdVw5TEMvKYfilzA8NQYf0kB/MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOuKs4Rd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE08C4CEF0;
+	Mon, 22 Sep 2025 19:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569658;
-	bh=CSX3AooNSQURSKFQDmGAE0OJ6Ay417oG9gl0KZkixQo=;
+	s=korg; t=1758570207;
+	bh=lVyV+apTjMaeqHJOaDRHdj3HOSKCtu+0ynLsnWqqg0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HugmjQIqAFFFlb6rSX6n0MholktYGykDwp5VNtSZtFvqOKdCDMLgFNwbz6LAr2BmT
-	 I6g5oTJgxblbohj7k9jSK6lFjcuF5fZ6vuHBosJ4m5o635KBHCnp8H+Epnl9qE3SGS
-	 88JhpbdvkhTX10cSKu7svRB2hmHZd3eRDhaAI1fs=
+	b=bOuKs4Rd9r/WsUTyPnsyaHg1BdthMdZ97ywalwqczdBlqevR9ggxzBe/A6e4aHEEA
+	 TWYK331AIgnPHB0qZqDjpyMPVkc/9Ptcd5qm3CoT5hTJcwh/BzRTQD3qhDWy+XFYdD
+	 9kQSI5sm8PPx2x9GTL38btYHykxBciomUJis3WgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 07/70] btrfs: fix invalid extref key setup when replaying dentry
+	Stefan Metzmacher <metze@samba.org>,
+	"Luigino Camastra, Aisle Research" <luigino.camastra@aisle.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 047/149] ksmbd: smbdirect: validate data_offset and data_length field of smb_direct_data_transfer
 Date: Mon, 22 Sep 2025 21:29:07 +0200
-Message-ID: <20250922192404.674106364@linuxfoundation.org>
+Message-ID: <20250922192414.050024563@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit b62fd63ade7cb573b114972ef8f9fa505be8d74a ]
+commit 5282491fc49d5614ac6ddcd012e5743eecb6a67c upstream.
 
-The offset for an extref item's key is not the object ID of the parent
-dir, otherwise we would not need the extref item and would use plain ref
-items. Instead the offset is the result of a hash computation that uses
-the object ID of the parent dir and the name associated to the entry.
-So fix this by setting the key offset at replay_one_name() to be the
-result of calling btrfs_extref_hash().
+If data_offset and data_length of smb_direct_data_transfer struct are
+invalid, out of bounds issue could happen.
+This patch validate data_offset and data_length field in recv_done.
 
-Fixes: 725af92a6251 ("btrfs: Open-code name_in_log_ref in replay_one_name")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Reported-by: Luigino Camastra, Aisle Research <luigino.camastra@aisle.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index e5d6bc1bb5e5d..4b53e19f7520f 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1998,7 +1998,7 @@ static noinline int replay_one_name(struct btrfs_trans_handle *trans,
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -554,7 +554,7 @@ static void recv_done(struct ib_cq *cq,
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_length;
++		unsigned int data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 	search_key.objectid = log_key.objectid;
- 	search_key.type = BTRFS_INODE_EXTREF_KEY;
--	search_key.offset = key->objectid;
-+	search_key.offset = btrfs_extref_hash(key->objectid, name.name, name.len);
- 	ret = backref_in_log(root->log_root, &search_key, key->objectid, &name);
- 	if (ret < 0) {
- 		goto out;
--- 
-2.51.0
-
+ 		if (wc->byte_len <
+@@ -565,14 +565,15 @@ static void recv_done(struct ib_cq *cq,
+ 		}
+ 
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+-		if (data_length) {
+-			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+-			    (u64)data_length) {
+-				put_recvmsg(t, recvmsg);
+-				smb_direct_disconnect_rdma_connection(t);
+-				return;
+-			}
++		data_offset = le32_to_cpu(data_transfer->data_offset);
++		if (wc->byte_len < data_offset ||
++		    wc->byte_len < (u64)data_offset + data_length) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
++		}
+ 
++		if (data_length) {
+ 			if (t->full_packet_received)
+ 				recvmsg->first_segment = true;
+ 
 
 
 
