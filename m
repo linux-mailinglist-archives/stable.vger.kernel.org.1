@@ -1,76 +1,57 @@
-Return-Path: <stable+bounces-181195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FCDB92EDE
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A6FB92D8B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 182B62A7D8C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF6F51906A49
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DA431A548;
-	Mon, 22 Sep 2025 19:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495AE2F0C45;
+	Mon, 22 Sep 2025 19:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uR4T5rjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOrMyFXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E42A3164C1;
-	Mon, 22 Sep 2025 19:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000062DF714;
+	Mon, 22 Sep 2025 19:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569926; cv=none; b=EGZZ3AvYkv/oUGMICizz4cdbrCRGYHPnifn3TLU4Kkvip/SjCUnby6/owjzVJMF9R89xqndR/3fNCElWGXLUD995kezqoxxyDnZVgORxDdQF8ELBvdhwnQ4B2SWOTczojAx6qskAyCLTFVDxQKrHXXOxDT7uDEbDm38+9K/P+yM=
+	t=1758569679; cv=none; b=QBiRghywTuQAwgvw2MiCQU9hkx3f/8Lu3TCrqS0b1LgPA8/OU4bhAZc9k1iMM7PPYP1hbA4lnGltoqJbrAkUwqO4OQskDCqA73mC2/n3sRl7Xi7oiGdWwZBZ9h37zO97vcdXZ8RdAs/Su13LAGuI65cTqqrXWeENzB4R2VKVLTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569926; c=relaxed/simple;
-	bh=Mq31xIRopZv4aJPid/Jq7LbPb9hDi4NuIhUlSBcldM8=;
+	s=arc-20240116; t=1758569679; c=relaxed/simple;
+	bh=i5acwSpoxP/ZUzdDm8vF/abfMHQoynFibu421C91/iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UM62QjaJNw8qqBLnHpYNLuyqvHoPf5BZ4TqdW62PJ5+W0WG9mi+9n2JEzaOV98dUWi8ZxxaXVMFiVpWL0IWyvqDuHX1kv10GHPV+KhsBLoQtk1c4/ExRwmPwyzbS6wwKIT3Y5te+xWi1VL8+cXbSr5wz59h4XrSpsjy7ayqmrSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uR4T5rjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132C8C4CEF5;
-	Mon, 22 Sep 2025 19:38:46 +0000 (UTC)
+	 MIME-Version; b=DGrPRfE9tIBMd2k04Cb6pmzsN15y5GZDkaK7RKrjonXKGvHuUAcV6hlhnzGNVWY18Uvq8XQ2e280Ao5S39JrP1d3npKSap8GlzaALK5dkOeID9H7L3e8ZZI2JWWkzcXqjet8bVN831Pr6rHLysowOCiYHhVX1PPkpR+2F/n9mXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOrMyFXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B19C4CEF0;
+	Mon, 22 Sep 2025 19:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569926;
-	bh=Mq31xIRopZv4aJPid/Jq7LbPb9hDi4NuIhUlSBcldM8=;
+	s=korg; t=1758569678;
+	bh=i5acwSpoxP/ZUzdDm8vF/abfMHQoynFibu421C91/iA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uR4T5rjHwAMguMUJydHNb8fbxkycXQeF+c2m/lFkmZEzTosX/jVsFGvM8Qp5GAHE4
-	 3pgbm8ssy1vF7RaYmGimsRc4ZSR5IxUx2Ovdu6tEuZsJsXAKI53vl/FbH49PAF3p4t
-	 6G8yJPNLPNgSB/mQJU2f8mbka1n2GpYG+SMTHYyE=
+	b=fOrMyFXluT23w12dKFAnVyBWi7fnSzeSBAYLXrv2whQOjbgV760T9yMEJjbFQgP7f
+	 1QSifjTmPJYLbkGjscBWfdi/ITz5zuSjYNQJMHZHMo4yMqiaLbwRtF/5fakogME+dZ
+	 WFzF4N+P0Pj6aiJ06SgDf2b4LJ0YHY8AXXjr9STk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 043/105] mm: revert "mm: vmscan.c: fix OOM on swap stress test"
+	Stefan Metzmacher <metze@samba.org>,
+	"Luigino Camastra, Aisle Research" <luigino.camastra@aisle.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 26/70] ksmbd: smbdirect: validate data_offset and data_length field of smb_direct_data_transfer
 Date: Mon, 22 Sep 2025 21:29:26 +0200
-Message-ID: <20250922192410.046426847@linuxfoundation.org>
+Message-ID: <20250922192405.276602656@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -82,58 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 8d79ed36bfc83d0583ab72216b7980340478cdfb upstream.
+commit 5282491fc49d5614ac6ddcd012e5743eecb6a67c upstream.
 
-This reverts commit 0885ef470560: that was a fix to the reverted
-33dfe9204f29b415bbc0abb1a50642d1ba94f5e9.
+If data_offset and data_length of smb_direct_data_transfer struct are
+invalid, out of bounds issue could happen.
+This patch validate data_offset and data_length field in recv_done.
 
-Link: https://lkml.kernel.org/r/aa0e9d67-fbcd-9d79-88a1-641dfbe1d9d1@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Reported-by: Luigino Camastra, Aisle Research <luigino.camastra@aisle.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4352,7 +4352,7 @@ static bool sort_folio(struct lruvec *lr
- 	}
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -553,7 +553,7 @@ static void recv_done(struct ib_cq *cq,
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_length;
++		unsigned int data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 	/* ineligible */
--	if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
-+	if (zone > sc->reclaim_idx) {
- 		gen = folio_inc_gen(lruvec, folio, false);
- 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
- 		return true;
+ 		if (wc->byte_len <
+@@ -564,14 +564,15 @@ static void recv_done(struct ib_cq *cq,
+ 		}
+ 
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+-		if (data_length) {
+-			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+-			    (u64)data_length) {
+-				put_recvmsg(t, recvmsg);
+-				smb_direct_disconnect_rdma_connection(t);
+-				return;
+-			}
++		data_offset = le32_to_cpu(data_transfer->data_offset);
++		if (wc->byte_len < data_offset ||
++		    wc->byte_len < (u64)data_offset + data_length) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
++		}
+ 
++		if (data_length) {
+ 			if (t->full_packet_received)
+ 				recvmsg->first_segment = true;
+ 
 
 
 
