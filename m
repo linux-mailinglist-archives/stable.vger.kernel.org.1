@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-181322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C128B930D4
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB5CB92D9D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBDCD3A677E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7438D4468DC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0D32F3613;
-	Mon, 22 Sep 2025 19:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37742F2609;
+	Mon, 22 Sep 2025 19:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOqpi9yu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4j67MVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3928C2F0C52;
-	Mon, 22 Sep 2025 19:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EBF1FDA89;
+	Mon, 22 Sep 2025 19:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570249; cv=none; b=J4+TR9EVeRP3StshGeiMZopKToU5G+Go1Ys0skDmMpJR2r6o6BRgSSAN+g6bGxCq3gUYO6AvLjbh7VHV76qc0tgaNGCIb+ubA6c5Q5AGIK3AiwKQSAWO4YiESJ17S9xPMgGY6wVY7k2AsVaUWmaccr3kUMkhD8caaxXKjRXLswk=
+	t=1758569681; cv=none; b=ZIWb2IY63wDebG2EOqNLJQGOeiUl/rVVEGFelZ79FREgdWeuR3wWWtTC1fT+8l2jTnmx0aKG0muzCf+hDcATS4Zk6t4I7Bal2uelojURdp0J4X6fzH/ySQ23St5qtFZ92A/JDuhPiRbkyktsBBuXF8G73kJq6LLxP/SYbrtICgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570249; c=relaxed/simple;
-	bh=ImaWNKbQL/njaLSxAgXkUBnfoTMJnLVmcGo9r3ySbK8=;
+	s=arc-20240116; t=1758569681; c=relaxed/simple;
+	bh=dcjT9okpzy3BmcRq28rgo4MjdnV7GQkdXUYS/0z49dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z5SWbqIef3Vlbf6ncsOOcwhK+K+1mYsEqy2dnxtn9WxUEZGFTGWINShLWrWeZv/0wBPT58bwLmDL1tDUT/TQwRPDuUi7CLtOarnFLtECr4gcQ/pGDXcda7TxOFlyToLkNuuxGJPKG9ckk//vI+ECZj5dMjz2adnh27dbJmxnJLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOqpi9yu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4501C4CEF0;
-	Mon, 22 Sep 2025 19:44:08 +0000 (UTC)
+	 MIME-Version; b=VZYqAgZwiz22T0bECSU104V3JSgUixZhFFFiq9u6Qq+YTMXzigt56lJdap6sJz+LwS52KTM8c0BB3Ycdg1U8eCbk6o9cbSHCbIm3k87wjhPbWOIK4QljvNV2QO1ngj03V95N3BZB0xqaFtcFa/TOdLWG9ENbT+mav3gI65V8jb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4j67MVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87F5C4CEF0;
+	Mon, 22 Sep 2025 19:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570249;
-	bh=ImaWNKbQL/njaLSxAgXkUBnfoTMJnLVmcGo9r3ySbK8=;
+	s=korg; t=1758569681;
+	bh=dcjT9okpzy3BmcRq28rgo4MjdnV7GQkdXUYS/0z49dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOqpi9yu5I7Cegi5Qr1Mgk0BN7JPEF3997a525od6H/EYXDvkOjmFjPyTQ+/hiz5h
-	 BMN9DduuzM/xIVruhJ40NMzCCVVI2hPRBKEclUZUr9bkRheEc91JFr9lgDN4FMaEGd
-	 6y0OSwVw6R4vKWmhqry6elew9IOVxdU/0X4JZSyY=
+	b=c4j67MVm4OKT/dsl/Fk/VN0sP8VZPzDhq8tY3a1Cd0S0fizfJ1KN/TI3j3ASahDOT
+	 sTA9ye1Xylgu4fTdjcq3ZvTbHRgGuRKgsX21r1lYlVm+CTCd1aMZolk61S//uYc1kr
+	 3HrXAGbErr2yxPvZF8XYwWh4S+OfHh/0rUeeQgao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Zhang <zhangxi@kylinos.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 067/149] LoongArch: Fix unreliable stack for live patching
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 27/70] ksmbd: smbdirect: verify remaining_data_length respects max_fragmented_recv_size
 Date: Mon, 22 Sep 2025 21:29:27 +0200
-Message-ID: <20250922192414.574061689@linuxfoundation.org>
+Message-ID: <20250922192405.307453170@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +66,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 677d4a52d4dc4a147d5e84af9ff207832578be70 upstream.
+commit e1868ba37fd27c6a68e31565402b154beaa65df0 upstream.
 
-When testing the kernel live patching with "modprobe livepatch-sample",
-there is a timeout over 15 seconds from "starting patching transition"
-to "patching complete". The dmesg command shows "unreliable stack" for
-user tasks in debug mode, here is one of the messages:
+This is inspired by the check for data_offset + data_length.
 
-  livepatch: klp_try_switch_task: bash:1193 has an unreliable stack
-
-The "unreliable stack" is because it can not unwind from do_syscall()
-to its previous frame handle_syscall(). It should use fp to find the
-original stack top due to secondary stack in do_syscall(), but fp is
-not used for some other functions, then fp can not be restored by the
-next frame of do_syscall(), so it is necessary to save fp if task is
-not current, in order to get the stack top of do_syscall().
-
-Here are the call chains:
-
-  klp_enable_patch()
-    klp_try_complete_transition()
-      klp_try_switch_task()
-        klp_check_and_switch_task()
-          klp_check_stack()
-            stack_trace_save_tsk_reliable()
-              arch_stack_walk_reliable()
-
-When executing "rmmod livepatch-sample", there exists a similar issue.
-With this patch, it takes a short time for patching and unpatching.
-
-Before:
-
-  # modprobe livepatch-sample
-  # dmesg -T | tail -3
-  [Sat Sep  6 11:00:20 2025] livepatch: 'livepatch_sample': starting patching transition
-  [Sat Sep  6 11:00:35 2025] livepatch: signaling remaining tasks
-  [Sat Sep  6 11:00:36 2025] livepatch: 'livepatch_sample': patching complete
-
-  # echo 0 > /sys/kernel/livepatch/livepatch_sample/enabled
-  # rmmod livepatch_sample
-  rmmod: ERROR: Module livepatch_sample is in use
-  # rmmod livepatch_sample
-  # dmesg -T | tail -3
-  [Sat Sep  6 11:06:05 2025] livepatch: 'livepatch_sample': starting unpatching transition
-  [Sat Sep  6 11:06:20 2025] livepatch: signaling remaining tasks
-  [Sat Sep  6 11:06:21 2025] livepatch: 'livepatch_sample': unpatching complete
-
-After:
-
-  # modprobe livepatch-sample
-  # dmesg -T | tail -2
-  [Tue Sep 16 16:19:30 2025] livepatch: 'livepatch_sample': starting patching transition
-  [Tue Sep 16 16:19:31 2025] livepatch: 'livepatch_sample': patching complete
-
-  # echo 0 > /sys/kernel/livepatch/livepatch_sample/enabled
-  # rmmod livepatch_sample
-  # dmesg -T | tail -2
-  [Tue Sep 16 16:19:36 2025] livepatch: 'livepatch_sample': starting unpatching transition
-  [Tue Sep 16 16:19:37 2025] livepatch: 'livepatch_sample': unpatching complete
-
-Cc: stable@vger.kernel.org # v6.9+
-Fixes: 199cc14cb4f1 ("LoongArch: Add kernel livepatching support")
-Reported-by: Xi Zhang <zhangxi@kylinos.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/stacktrace.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/stacktrace.c
-+++ b/arch/loongarch/kernel/stacktrace.c
-@@ -51,12 +51,13 @@ int arch_stack_walk_reliable(stack_trace
- 	if (task == current) {
- 		regs->regs[3] = (unsigned long)__builtin_frame_address(0);
- 		regs->csr_era = (unsigned long)__builtin_return_address(0);
-+		regs->regs[22] = 0;
- 	} else {
- 		regs->regs[3] = thread_saved_fp(task);
- 		regs->csr_era = thread_saved_ra(task);
-+		regs->regs[22] = task->thread.reg22;
- 	}
- 	regs->regs[1] = 0;
--	regs->regs[22] = 0;
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -553,7 +553,7 @@ static void recv_done(struct ib_cq *cq,
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_offset, data_length;
++		u32 remaining_data_length, data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 	for (unwind_start(&state, task, regs);
- 	     !unwind_done(&state) && !unwind_error(&state); unwind_next_frame(&state)) {
+ 		if (wc->byte_len <
+@@ -563,6 +563,7 @@ static void recv_done(struct ib_cq *cq,
+ 			return;
+ 		}
+ 
++		remaining_data_length = le32_to_cpu(data_transfer->remaining_data_length);
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+ 		data_offset = le32_to_cpu(data_transfer->data_offset);
+ 		if (wc->byte_len < data_offset ||
+@@ -570,6 +571,14 @@ static void recv_done(struct ib_cq *cq,
+ 			put_recvmsg(t, recvmsg);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 			return;
++		}
++		if (remaining_data_length > t->max_fragmented_recv_size ||
++		    data_length > t->max_fragmented_recv_size ||
++		    (u64)remaining_data_length + (u64)data_length >
++		    (u64)t->max_fragmented_recv_size) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
+ 		}
+ 
+ 		if (data_length) {
 
 
 
