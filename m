@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-181411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF966B936DE
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 00:07:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FFAB937C4
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 00:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE80819079A7
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 22:07:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27DC8175FCF
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 22:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68D52F657C;
-	Mon, 22 Sep 2025 22:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCBE27A906;
+	Mon, 22 Sep 2025 22:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GpKsQtwj"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AlxR0kwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BB52F0C78;
-	Mon, 22 Sep 2025 22:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC63121D3F5;
+	Mon, 22 Sep 2025 22:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758578824; cv=none; b=rhFijZeLxIrWeUqXfDUDWoLhizcqclPBE2Me5FfDj6mLa/BWAF22XMrLUPAcTwJDZH/WKSON3HqTEvPbSbavL9kCNIwulKR/UVXDmVNvGo470iC5Elizy4AylD1StzCiZzwsZ49WDjg8xGglo5aK2ySZ+KiMP7W/UgO/O1FhFw4=
+	t=1758580310; cv=none; b=b4A6Nz3VIzupHiJVMLmyD+sJdhEwBDIUJaDupNgSEidak0Dnmhe8s2dtTT7DiJeE0cl0iTwkyoTj67cfdaHf6SXJT73uo473Xug5Nc+1aaO/R7xNCAJPD/ecK13GhBi0KgDUE2KxbQfq2wXqH5pnTyVXDVlxjFHER5h152ZEEtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758578824; c=relaxed/simple;
-	bh=hi+17J+o2mONkoE3CGSvOksR/o9zi2ueZLj6pvXsxTE=;
-	h=Date:To:From:Subject:Message-Id; b=RZqzJgbE4TsYBVkMr9RJlmAC2pecJ/MSGh9GG3GvPBoxhMy5ijHkO/KA6AZZi2MClmnz6ruyih0fuu6RCEV9gj/XSwBVIlrP99eAgmY4hiil+PNsQWE2CVlSkMPB1ZiBEfq7W/rtClI+dqR14IWKjeSovUgVt1mhDVdwmw5ebrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GpKsQtwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1342C4CEF0;
-	Mon, 22 Sep 2025 22:07:00 +0000 (UTC)
+	s=arc-20240116; t=1758580310; c=relaxed/simple;
+	bh=IRVE3RzrnmzqED9rH5Kl1EzZeTA3qBfY7avoHEPz9WI=;
+	h=Date:To:From:Subject:Message-Id; b=o260ClqBFEpvNUe5tfpLCDSFACBoVws1Q4Y2+mnIvDBdHerYT2Ipk6VxCGghTEkkrxSbiqsG7S+MdLIpp9B3qnUTYAeBRm+t+RnmmyP99Ok7J4Pgl+MWc1twvGSV9kUp4I8RcvSICkHZB8iyqvRKiyLhRmrDIvqkFAI57xvHtuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AlxR0kwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54029C4CEF0;
+	Mon, 22 Sep 2025 22:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758578821;
-	bh=hi+17J+o2mONkoE3CGSvOksR/o9zi2ueZLj6pvXsxTE=;
+	s=korg; t=1758580309;
+	bh=IRVE3RzrnmzqED9rH5Kl1EzZeTA3qBfY7avoHEPz9WI=;
 	h=Date:To:From:Subject:From;
-	b=GpKsQtwjwPMSEuatt0SNybb/nU3UWtyhLXNpRIOdeJaTLvnFKZnyqs/PRSiq5iQI+
-	 WuFAJYmPxlcR8IHMM9AshehB4bJnMuJqxQqoQ/5IIvuU8UETEcOGiGDoxgvXVSYdXz
-	 R2styw1Dnc8fiIKuAvoCAH+WllhhkxW3Dr26BheQ=
-Date: Mon, 22 Sep 2025 15:07:00 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,usama.anjum@collabora.com,tujinjiang@huawei.com,surenb@google.com,superman.xpt@gmail.com,stable@vger.kernel.org,sfr@canb.auug.org.au,ryan.roberts@arm.com,mirq-linux@rere.qmqm.pl,lorenzo.stoakes@oracle.com,david@redhat.com,broonie@kernel.org,baolin.wang@linux.alibaba.com,avagin@gmail.com,acsjakub@amazon.de,akpm@linux-foundation.org
+	b=AlxR0kwFrCdOkw185VDUV42gEPN8eoALoHrJfub2mHU5T+hlmsIk64kpc6y5YNfru
+	 9fHdrEcogJG5Jw30zlRuwCQrT6EPpvZf2Ve8L8PsJhwsNzvnZgZSoiywbiLc7xPRAE
+	 muAjE2GqWdjByeEiaWDnTbVfowhZBfbfPLH/hWik=
+Date: Mon, 22 Sep 2025 15:31:48 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,ying.huang@linux.alibaba.com,willy@infradead.org,usamaarif642@gmail.com,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,samuel.holland@sifive.com,ryncsn@gmail.com,ryan.roberts@arm.com,rppt@kernel.org,roman.gushchin@linux.dev,riel@surriel.com,rakie.kim@sk.com,Qun-wei.Lin@mediatek.com,palmer@rivosinc.com,npache@redhat.com,matthew.brost@intel.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kaleshsingh@google.com,joshua.hahnjy@gmail.com,hughd@google.com,hannes@cmpxchg.org,gourry@gourry.net,dev.jain@arm.com,david@redhat.com,chinwen.chang@mediatek.com,charlie@rivosinc.com,cerasuolodomenico@gmail.com,catalin.marinas@arm.com,byungchul@sk.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,apopple@nvidia.com,andrew.yang@mediatek.com,lance.yang@linux.dev,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fs-proc-task_mmu-check-p-vec_buf-for-null.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250922220700.E1342C4CEF0@smtp.kernel.org>
+Subject: + mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250922223149.54029C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: fs/proc/task_mmu: check p->vec_buf for NULL
+     Subject: mm/thp: fix MTE tag mismatch when replacing zero-filled subpages
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fs-proc-task_mmu-check-p-vec_buf-for-null.patch
+     mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-check-p-vec_buf-for-null.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,94 +73,152 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Jakub Acs <acsjakub@amazon.de>
-Subject: fs/proc/task_mmu: check p->vec_buf for NULL
-Date: Mon, 22 Sep 2025 08:22:05 +0000
+From: Lance Yang <lance.yang@linux.dev>
+Subject: mm/thp: fix MTE tag mismatch when replacing zero-filled subpages
+Date: Mon, 22 Sep 2025 10:14:58 +0800
 
-When the PAGEMAP_SCAN ioctl is invoked with vec_len = 0 reaches
-pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
 
-[   44.936808] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-[   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.0-rc6 #22 PREEMPT(none)
-[   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
+When both THP and MTE are enabled, splitting a THP and replacing its
+zero-filled subpages with the shared zeropage can cause MTE tag mismatch
+faults in userspace.
 
-<snip registers, unreliable trace>
+Remapping zero-filled subpages to the shared zeropage is unsafe, as the
+zeropage has a fixed tag of zero, which may not match the tag expected by
+the userspace pointer.
 
-[   44.946828] Call Trace:
-[   44.947030]  <TASK>
-[   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
-[   44.952593]  walk_pmd_range.isra.0+0x302/0x910
-[   44.954069]  walk_pud_range.isra.0+0x419/0x790
-[   44.954427]  walk_p4d_range+0x41e/0x620
-[   44.954743]  walk_pgd_range+0x31e/0x630
-[   44.955057]  __walk_page_range+0x160/0x670
-[   44.956883]  walk_page_range_mm+0x408/0x980
-[   44.958677]  walk_page_range+0x66/0x90
-[   44.958984]  do_pagemap_scan+0x28d/0x9c0
-[   44.961833]  do_pagemap_cmd+0x59/0x80
-[   44.962484]  __x64_sys_ioctl+0x18d/0x210
-[   44.962804]  do_syscall_64+0x5b/0x290
-[   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+KSM already avoids this problem by using memcmp_pages(), which on arm64
+intentionally reports MTE-tagged pages as non-identical to prevent unsafe
+merging.
 
-vec_len = 0 in pagemap_scan_init_bounce_buffer() means no buffers are
-allocated and p->vec_buf remains set to NULL.
+As suggested by David[1], this patch adopts the same pattern, replacing the
+memchr_inv() byte-level check with a call to pages_identical(). This
+leverages existing architecture-specific logic to determine if a page is
+truly identical to the shared zeropage.
 
-This breaks an assumption made later in pagemap_scan_backout_range(), that
-page_region is always allocated for p->vec_buf_index.
+Having both the THP shrinker and KSM rely on pages_identical() makes the
+design more future-proof, IMO. Instead of handling quirks in generic code,
+we just let the architecture decide what makes two pages identical.
 
-Fix it by explicitly checking p->vec_buf for NULL before dereferencing.
+[1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
 
-Other sites that might run into same deref-issue are already (directly or
-transitively) protected by checking p->vec_buf.
-
-Note:
-From PAGEMAP_SCAN man page, it seems vec_len = 0 is valid when no output
-is requested and it's only the side effects caller is interested in,
-hence it passes check in pagemap_scan_get_args().
-
-This issue was found by syzkaller.
-
-Link: https://lkml.kernel.org/r/20250922082206.6889-1-acsjakub@amazon.de
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lkml.kernel.org/r/20250922021458.68123-1-lance.yang@linux.dev
+Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
 Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Penglei Jiang <superman.xpt@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
+Acked-by: Usama Arif <usamaarif642@gmail.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: andrew.yang <andrew.yang@mediatek.com>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mariano Pache <npache@redhat.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/proc/task_mmu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ mm/huge_memory.c |   15 +++------------
+ mm/migrate.c     |    8 +-------
+ 2 files changed, 4 insertions(+), 19 deletions(-)
 
---- a/fs/proc/task_mmu.c~fs-proc-task_mmu-check-p-vec_buf-for-null
-+++ a/fs/proc/task_mmu.c
-@@ -2417,6 +2417,9 @@ static void pagemap_scan_backout_range(s
+--- a/mm/huge_memory.c~mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages
++++ a/mm/huge_memory.c
+@@ -4115,32 +4115,23 @@ static unsigned long deferred_split_coun
+ static bool thp_underused(struct folio *folio)
  {
- 	struct page_region *cur_buf = &p->vec_buf[p->vec_buf_index];
+ 	int num_zero_pages = 0, num_filled_pages = 0;
+-	void *kaddr;
+ 	int i;
  
-+	if (!p->vec_buf)
-+		return;
-+
- 	if (cur_buf->start != addr)
- 		cur_buf->end = addr;
- 	else
+ 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+ 		return false;
+ 
+ 	for (i = 0; i < folio_nr_pages(folio); i++) {
+-		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+-		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+-			num_zero_pages++;
+-			if (num_zero_pages > khugepaged_max_ptes_none) {
+-				kunmap_local(kaddr);
++		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
++			if (++num_zero_pages > khugepaged_max_ptes_none)
+ 				return true;
+-			}
+ 		} else {
+ 			/*
+ 			 * Another path for early exit once the number
+ 			 * of non-zero filled pages exceeds threshold.
+ 			 */
+-			num_filled_pages++;
+-			if (num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none) {
+-				kunmap_local(kaddr);
++			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
+ 				return false;
+-			}
+ 		}
+-		kunmap_local(kaddr);
+ 	}
+ 	return false;
+ }
+--- a/mm/migrate.c~mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages
++++ a/mm/migrate.c
+@@ -301,9 +301,7 @@ static bool try_to_map_unused_to_zeropag
+ 					  unsigned long idx)
+ {
+ 	struct page *page = folio_page(folio, idx);
+-	bool contains_data;
+ 	pte_t newpte;
+-	void *addr;
+ 
+ 	if (PageCompound(page))
+ 		return false;
+@@ -320,11 +318,7 @@ static bool try_to_map_unused_to_zeropag
+ 	 * this subpage has been non present. If the subpage is only zero-filled
+ 	 * then map it to the shared zeropage.
+ 	 */
+-	addr = kmap_local_page(page);
+-	contains_data = memchr_inv(addr, 0, PAGE_SIZE);
+-	kunmap_local(addr);
+-
+-	if (contains_data)
++	if (!pages_identical(page, ZERO_PAGE(0)))
+ 		return false;
+ 
+ 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
 _
 
-Patches currently in -mm which might be from acsjakub@amazon.de are
+Patches currently in -mm which might be from lance.yang@linux.dev are
 
-fs-proc-task_mmu-check-p-vec_buf-for-null.patch
+hung_task-fix-warnings-caused-by-unaligned-lock-pointers.patch
+mm-thp-fix-mte-tag-mismatch-when-replacing-zero-filled-subpages.patch
+selftests-mm-skip-soft-dirty-tests-when-config_mem_soft_dirty-is-disabled.patch
 
 
