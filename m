@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51465B9302F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D30B92E2C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 700BE1907F04
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AA41906CB0
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F47E2F3608;
-	Mon, 22 Sep 2025 19:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1341D2DEA79;
+	Mon, 22 Sep 2025 19:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN+SkSsB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7ylkuIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB28222590;
-	Mon, 22 Sep 2025 19:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C525725F780;
+	Mon, 22 Sep 2025 19:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570153; cv=none; b=n73LCQdn8EW3rWEuotmvYhvkK/wy1TCBX8fHCy1ImrOTN2aouUsFpXstdLCAKEzdwtwpGNU4b8dqO7nDjMw73C+kII6QBcjcJnofPgcvS5N/CWoCMjaIZvdmE9yGo90NuSeznPtjN//LgWLtSjv8bKqYPcDL6LFD09TOwMKnIiw=
+	t=1758569819; cv=none; b=LJbV4LEW2iyT4AmtnCVH6gMlQIvwXwt2il9pii+e7KguEavqQ7FBSHg8LIAbR6Tk5zmsZ4pqJv7tMfVH05cejBsPK5ZZGmbhyXAyz+o+kunIrCntINc8fhOHw+Q1OIz3UNxa9rp66Lb6a+C6i10CJzmZf/X3cINLa60iVREpy5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570153; c=relaxed/simple;
-	bh=Flz1jdDEqc7JpmBq+Nxi6SgKfLl6dsSzpE0KoXPEDJs=;
+	s=arc-20240116; t=1758569819; c=relaxed/simple;
+	bh=K84La6NX5Qjl1UcBwp2yQvsf8MGLOMbinBBvBFtFZg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKnUra7W1trieNqBONaYL8XVdKJp1FGxoleSxEn2nCrEgcp2BURr03CQioak0zkCN5lJf8+//Z6LQQSVyDp3YVXWkCdik+8o5rnIp7W1WwqYMnAhB0c+7T+U4hpC04Qpe+0NaCPrcqgcQLhZZdfjqjcGec4Y6RnwS2FaiV1FHDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN+SkSsB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4477C4CEF0;
-	Mon, 22 Sep 2025 19:42:32 +0000 (UTC)
+	 MIME-Version; b=HSYzJWW4FTE0SUI8/3MDdBkbwF9j2TsO7d3uHsYJ5XF82Y0S+CtcprnqqpMoEPSJjRqESat8gv7i3shdxQRrm7/g5csGfhgUnIgv6Ypkl/PBclFvlLlqEJZ3adRlX2jLg6dPe3wB4/zWRbdwn9FhadDbsnN5neW+hmpzTwoUZm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7ylkuIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAA4C4CEF0;
+	Mon, 22 Sep 2025 19:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570153;
-	bh=Flz1jdDEqc7JpmBq+Nxi6SgKfLl6dsSzpE0KoXPEDJs=;
+	s=korg; t=1758569819;
+	bh=K84La6NX5Qjl1UcBwp2yQvsf8MGLOMbinBBvBFtFZg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TN+SkSsBotol0Cxd9LxqyRMwWnuflhlrUaGNmDdqxxKd2V83oBA10e0duQqWRzkG1
-	 sD11dvG1bsa34js8p0T5MOaNKzI9lbVOtcWSYxfEofT1KUlVVPpbbovE7SRJzdxDSX
-	 xQ+cPtx3OYkDdPCOaMBkND17GE9cEKtWjKGF2Sug=
+	b=Z7ylkuIY5fGe/+7grogUCi58phAmHX5GwrPoRzXbTX7ObIc1NGXxYwYrItsXKRbKg
+	 KXta10Bf3QuchwMv8qCBmjhn2FR6HFQdwSI9pbsNeqQtwdZpxmx9MJ3Hd+pLsh4akp
+	 Bx5dP4M2XmaYuxJwsWhfRULuv58Cj+ZR6csRts98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 026/149] selftests: mptcp: userspace pm: validate deny-join-id0 flag
+Subject: [PATCH 6.12 003/105] ALSA: firewire-motu: drop EPOLLOUT from poll return values as write is not supported
 Date: Mon, 22 Sep 2025 21:28:46 +0200
-Message-ID: <20250922192413.528533073@linuxfoundation.org>
+Message-ID: <20250922192409.001124920@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 24733e193a0d68f20d220e86da0362460c9aa812 ]
+[ Upstream commit aea3493246c474bc917d124d6fb627663ab6bef0 ]
 
-The previous commit adds the MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 flag. Make
-sure it is correctly announced by the other peer when it has been
-received.
+The ALSA HwDep character device of the firewire-motu driver incorrectly
+returns EPOLLOUT in poll(2), even though the driver implements no operation
+for write(2). This misleads userspace applications to believe write() is
+allowed, potentially resulting in unnecessarily wakeups.
 
-pm_nl_ctl will now display 'deny_join_id0:1' when monitoring the events,
-and when this flag was set by the other peer.
+This issue dates back to the driver's initial code added by a commit
+71c3797779d3 ("ALSA: firewire-motu: add hwdep interface"), and persisted
+when POLLOUT was updated to EPOLLOUT by a commit a9a08845e9ac ('vfs: do
+bulk POLL* -> EPOLL* replacement("").').
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+This commit fixes the bug.
 
-Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-3-40171884ade8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/20250829233749.366222-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/pm_nl_ctl.c     |  7 +++++++
- tools/testing/selftests/net/mptcp/userspace_pm.sh | 14 +++++++++++---
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ sound/firewire/motu/motu-hwdep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-index 994a556f46c15..93fea3442216c 100644
---- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-+++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-@@ -188,6 +188,13 @@ static int capture_events(int fd, int event_group)
- 					fprintf(stderr, ",error:%u", *(__u8 *)RTA_DATA(attrs));
- 				else if (attrs->rta_type == MPTCP_ATTR_SERVER_SIDE)
- 					fprintf(stderr, ",server_side:%u", *(__u8 *)RTA_DATA(attrs));
-+				else if (attrs->rta_type == MPTCP_ATTR_FLAGS) {
-+					__u16 flags = *(__u16 *)RTA_DATA(attrs);
-+
-+					/* only print when present, easier */
-+					if (flags & MPTCP_PM_EV_FLAG_DENY_JOIN_ID0)
-+						fprintf(stderr, ",deny_join_id0:1");
-+				}
+diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
+index 88d1f4b56e4be..a220ac0c8eb83 100644
+--- a/sound/firewire/motu/motu-hwdep.c
++++ b/sound/firewire/motu/motu-hwdep.c
+@@ -111,7 +111,7 @@ static __poll_t hwdep_poll(struct snd_hwdep *hwdep, struct file *file,
+ 		events = 0;
+ 	spin_unlock_irq(&motu->lock);
  
- 				attrs = RTA_NEXT(attrs, msg_len);
- 			}
-diff --git a/tools/testing/selftests/net/mptcp/userspace_pm.sh b/tools/testing/selftests/net/mptcp/userspace_pm.sh
-index 333064b0b5ac0..97819e18578f4 100755
---- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
-+++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
-@@ -201,6 +201,9 @@ make_connection()
- 		is_v6="v4"
- 	fi
+-	return events | EPOLLOUT;
++	return events;
+ }
  
-+	# set this on the client side only: will not affect the rest
-+	ip netns exec "$ns2" sysctl -q net.mptcp.allow_join_initial_addr_port=0
-+
- 	:>"$client_evts"
- 	:>"$server_evts"
- 
-@@ -223,23 +226,28 @@ make_connection()
- 	local client_token
- 	local client_port
- 	local client_serverside
-+	local client_nojoin
- 	local server_token
- 	local server_serverside
-+	local server_nojoin
- 
- 	client_token=$(mptcp_lib_evts_get_info token "$client_evts")
- 	client_port=$(mptcp_lib_evts_get_info sport "$client_evts")
- 	client_serverside=$(mptcp_lib_evts_get_info server_side "$client_evts")
-+	client_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$client_evts")
- 	server_token=$(mptcp_lib_evts_get_info token "$server_evts")
- 	server_serverside=$(mptcp_lib_evts_get_info server_side "$server_evts")
-+	server_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$server_evts")
- 
- 	print_test "Established IP${is_v6} MPTCP Connection ns2 => ns1"
--	if [ "$client_token" != "" ] && [ "$server_token" != "" ] && [ "$client_serverside" = 0 ] &&
--		   [ "$server_serverside" = 1 ]
-+	if [ "${client_token}" != "" ] && [ "${server_token}" != "" ] &&
-+	   [ "${client_serverside}" = 0 ] && [ "${server_serverside}" = 1 ] &&
-+	   [ "${client_nojoin:-0}" = 0 ] && [ "${server_nojoin:-0}" = 1 ]
- 	then
- 		test_pass
- 		print_title "Connection info: ${client_addr}:${client_port} -> ${connect_addr}:${app_port}"
- 	else
--		test_fail "Expected tokens (c:${client_token} - s:${server_token}) and server (c:${client_serverside} - s:${server_serverside})"
-+		test_fail "Expected tokens (c:${client_token} - s:${server_token}), server (c:${client_serverside} - s:${server_serverside}), nojoin (c:${client_nojoin} - s:${server_nojoin})"
- 		mptcp_lib_result_print_all_tap
- 		exit ${KSFT_FAIL}
- 	fi
+ static int hwdep_get_info(struct snd_motu *motu, void __user *arg)
 -- 
 2.51.0
 
