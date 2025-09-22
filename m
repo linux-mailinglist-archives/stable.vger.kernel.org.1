@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-181061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D71B92D0A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07044B92E0C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71DC944595F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E283B516C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036A027B320;
-	Mon, 22 Sep 2025 19:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23B22F1FE3;
+	Mon, 22 Sep 2025 19:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ3TjGzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzCf5ZJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AC7C8E6;
-	Mon, 22 Sep 2025 19:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9013B2F0C6C;
+	Mon, 22 Sep 2025 19:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569591; cv=none; b=S6Yw1SvBO50490uL61R6horVI0tAWmm6iu8CIg+HySMeLabyycsQw08RRAmJ1v1KIsurwpWf6LO6Jl6XiIO1AlovJnIjf/r6JxpIlsydqt5hjeHnaYeJgdJgMZaKvQKZZiFTEHajcjJfIulNwtXmJQjGQT71ShJcdTFz9OAi/F4=
+	t=1758569762; cv=none; b=HRilrb9+kN+PiOBHl8YexQV0p1kHo70BYlkQimECgjp6SQJJdEDySMoq1ioPvtrDt+JbTFIKimsBZmpuDZX5kfqQDLKzBDhogx9Do5SabnLcW5xW6NrbHXIovECVUf9KTfJZKEkltOnEvuRGw+1m2s4TdX3fhIxeiGF62LXE36M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569591; c=relaxed/simple;
-	bh=29C8sZKh1o+boNgsg0crxwDr86uQs3WmEG2Hl1ppx/c=;
+	s=arc-20240116; t=1758569762; c=relaxed/simple;
+	bh=93FOMFpooQKOVxf+kAUR88MyuiZyHHIf/XqMHXv87YY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIRSMFU8bT4TvncCMZqWEGm3sGLYBxYjOds9ueFh3FCeO5ctkO8A36mHzLSDaXQa08IzepKOLQsDSB0XFpmZjOChsTj5hDp8l8ROOPys93uYr6KHl2237tncrFmzXe2hOS24vZ8szMTo+xP/P8QZ1+rxFNK1wl0gaPYVtG/wnng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ3TjGzJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4951CC4CEF0;
-	Mon, 22 Sep 2025 19:33:11 +0000 (UTC)
+	 MIME-Version; b=XtW+DWWSHUF62E8+XYnx0xRxdJz7G8TJ/Xv4G9NOc5+pCvNVLXJL85FVdxZAVpib6lXURuWcke1ra3L024AFhAZM2Lcy0CeNysI3wywn5+v2uhRBgmMxJ5LNvnR4b0KgtAO7x+r/GMWWnBpl2QDIGk2QYHnNzcnhhBXiITVS9xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzCf5ZJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2F6C4CEF5;
+	Mon, 22 Sep 2025 19:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569591;
-	bh=29C8sZKh1o+boNgsg0crxwDr86uQs3WmEG2Hl1ppx/c=;
+	s=korg; t=1758569762;
+	bh=93FOMFpooQKOVxf+kAUR88MyuiZyHHIf/XqMHXv87YY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZ3TjGzJ7CTTpynB6y98F6pk4if//vWNtoanKi5oT5iX0xtl80VWRXpgKX29C1Ewk
-	 dtJQZ7K5it0K/utAxr6/ww3dDbYj+bzr+M5I1Q6hSMRLOdKATiGHeja3pgjy2D/yMU
-	 lQheskdKTx8m36AJHMbtWuO4NpPYBxNqkgIqje4Q=
+	b=SzCf5ZJBBO8Qx3Liy1NQY1ZLpuQ64r7wqwhn0QtucRyZkegT265sfBU5fS8ZnOfJr
+	 PZHV3sJZJmUdx2Ggcr1IEO0gRCz0lIldvOPnDifR42nTgoyuQ6a2vu+H3owg7Or057
+	 nxlWrbzKEeRZigeYWUVxlykGL3Igf237ljuyRJP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/61] mptcp: propagate shutdown to subflows when possible
-Date: Mon, 22 Sep 2025 21:29:46 +0200
-Message-ID: <20250922192405.087296413@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 47/70] io_uring: backport io_should_terminate_tw()
+Date: Mon, 22 Sep 2025 21:29:47 +0200
+Message-ID: <20250922192405.874781794@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +60,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b ]
+Parts of commit b6f58a3f4aa8dba424356c7a69388a81f4459300 upstream.
 
-When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
-metadata to exchange, and all subflows can be safely shutdown.
+Backport io_should_terminate_tw() helper to judge whether task_work
+should be run or terminated.
 
-Before this patch, the subflows were actually terminated at 'close()'
-time. That's certainly fine most of the time, but not when the userspace
-'shutdown()' a connection, without close()ing it. When doing so, the
-subflows were staying in LAST_ACK state on one side -- and consequently
-in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
-socket.
-
-Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
-consequence of this is that the TCP 'FIN' flag can be set earlier now,
-but the end result is the same. This affects the packetdrill tests
-looking at the end of the MPTCP connections, but for a good reason.
-
-Note that tcp_shutdown() will check the subflow state, so no need to do
-that again before calling it.
-
-Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
-Cc: stable@vger.kernel.org
-Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ io_uring/io_uring.c |    3 +--
+ io_uring/io_uring.h |   13 +++++++++++++
+ io_uring/poll.c     |    3 +--
+ io_uring/timeout.c  |    2 +-
+ 4 files changed, 16 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -425,6 +425,19 @@ static void mptcp_close_wake_up(struct s
- 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1460,8 +1460,7 @@ static void io_req_task_cancel(struct io
+ void io_req_task_submit(struct io_kiocb *req, struct io_tw_state *ts)
+ {
+ 	io_tw_lock(req->ctx, ts);
+-	/* req->task == current here, checking PF_EXITING is safe */
+-	if (unlikely(req->task->flags & PF_EXITING))
++	if (unlikely(io_should_terminate_tw()))
+ 		io_req_defer_failed(req, -EFAULT);
+ 	else if (req->flags & REQ_F_FORCE_ASYNC)
+ 		io_queue_iowq(req);
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -394,6 +394,19 @@ static inline bool io_allowed_run_tw(str
+ 		      ctx->submitter_task == current);
  }
  
-+static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
++/*
++ * Terminate the request if either of these conditions are true:
++ *
++ * 1) It's being executed by the original task, but that task is marked
++ *    with PF_EXITING as it's exiting.
++ * 2) PF_KTHREAD is set, in which case the invoker of the task_work is
++ *    our fallback task_work.
++ */
++static inline bool io_should_terminate_tw(void)
 +{
-+	struct mptcp_subflow_context *subflow;
-+
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+		unlock_sock_fast(ssk, slow);
-+	}
++	return current->flags & (PF_KTHREAD | PF_EXITING);
 +}
- static bool mptcp_pending_data_fin_ack(struct sock *sk)
++
+ static inline void io_req_queue_tw_complete(struct io_kiocb *req, s32 res)
  {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
-@@ -448,6 +461,7 @@ static void mptcp_check_data_fin_ack(str
- 			break;
- 		case TCP_CLOSING:
- 		case TCP_LAST_ACK:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		}
-@@ -615,6 +629,7 @@ static bool mptcp_check_data_fin(struct
- 			inet_sk_state_store(sk, TCP_CLOSING);
- 			break;
- 		case TCP_FIN_WAIT2:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		default:
+ 	io_req_set_res(req, res, 0);
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -258,8 +258,7 @@ static int io_poll_check_events(struct i
+ {
+ 	int v;
+ 
+-	/* req->task == current here, checking PF_EXITING is safe */
+-	if (unlikely(req->task->flags & PF_EXITING))
++	if (unlikely(io_should_terminate_tw()))
+ 		return -ECANCELED;
+ 
+ 	do {
+--- a/io_uring/timeout.c
++++ b/io_uring/timeout.c
+@@ -307,7 +307,7 @@ static void io_req_task_link_timeout(str
+ 	int ret = -ENOENT;
+ 
+ 	if (prev) {
+-		if (!(req->task->flags & PF_EXITING)) {
++		if (!io_should_terminate_tw()) {
+ 			struct io_cancel_data cd = {
+ 				.ctx		= req->ctx,
+ 				.data		= prev->cqe.user_data,
 
 
 
