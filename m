@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837E6B92DC7
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95E2B92CFE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3F62A7559
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE7101906247
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159EB27FB2D;
-	Mon, 22 Sep 2025 19:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6E927FB2D;
+	Mon, 22 Sep 2025 19:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYK6jMJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7Xv4lCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ECC1FDA89;
-	Mon, 22 Sep 2025 19:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A5017A2EA;
+	Mon, 22 Sep 2025 19:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569727; cv=none; b=sbbEPYHdtjnggsihxde5s3CfNYLFj82HCC5j+7tfgfNTEm+Z/3FHRZV6/PCdZD7Yy6tPFZZ7fqjZ+Hfiykanzafxhh0MRLFZujluJZG6vHjKXPk98LKGM7rzOSrpGAio7hScTk3d231+5VRQ4SGrg0y3azVD7/S8rr8DzzFv9Jw=
+	t=1758569581; cv=none; b=cOR2etJp2EYhgtxm357I8hFGYiEN//8Y2xzrE6lVY35lQdO2u9tQYtLKtMmR/hKUsweQWtyRcTudnYeVy44nxHXyUtWGTAhX5jWN4eKvuvi3NSVc38nKA1PagBJ+EMak4vm2SNS1AOAD6QE1QllBpitg7rsRHxFnguwThSyoNLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569727; c=relaxed/simple;
-	bh=MKIdmqTMbpv6dKcnEuo5pR94u7BxEI0NrWbvKEeskic=;
+	s=arc-20240116; t=1758569581; c=relaxed/simple;
+	bh=y8In/KbXwM469K+r6cc8CZuz67dDLt+yzyh+2T0Zgyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxpZHG42GQcYy5MYhPl36Zvg3oBgLsUgY6qWd7U/yLHKLgsGN8fkBGO4OLvCZmRjXUfYJ4eK6mFJ0tPxPl4M8SOnRRIVrLjiMfJ0afQ0fOXP3sqXvbCXGkCBYr7qeDGiY3kf/51HwCAfeRLt+6ez7VB+GCadMT1J5g+1394YPIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYK6jMJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0E0C4CEF0;
-	Mon, 22 Sep 2025 19:35:27 +0000 (UTC)
+	 MIME-Version; b=lAovSwmDX9bffFEerk9VjcB/ByFSlJ/moPR6Pa6Ky0MmBV5bXCzkwkfAlrMTdYdt4ZvtSDY9FZ3dFnonaBzVLRam2BQV+99eum9xO4gSPxxYvK+qlzn+5Za6p+ii2OZsSowp+QGTpBmW+w2pt87GMDUynh45QAitape2PYB23l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7Xv4lCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6A1C4CEF0;
+	Mon, 22 Sep 2025 19:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569727;
-	bh=MKIdmqTMbpv6dKcnEuo5pR94u7BxEI0NrWbvKEeskic=;
+	s=korg; t=1758569581;
+	bh=y8In/KbXwM469K+r6cc8CZuz67dDLt+yzyh+2T0Zgyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYK6jMJ8i1V9gogQBLCcmbK6P2Dg+NeCtlnpem5RpF8kux8Kmh3Kb98KbqXgARCLf
-	 WMQNpAYknt9L8+qf/RVe2ARk6+AFUwRS/ZKQcxzUEcK5+yb5e9/dzNs8FQRkAqq0OU
-	 hk16z174r1YY9mYrzOjoXj9y77kfh/dx+55Y7bxc=
+	b=i7Xv4lCvzSs5hEBnNsE66NhaNDyHnZNv8LH+I9HVoZJVPeZaxbi2tJpwpgJCFKXdb
+	 lOz0kkXmQdJPMQqJ7Ai0gdGfcTyW22uR36jqhMdGTf+kJq0y546jpVtGNDWy8MXR1V
+	 LIMlD8PkBVieEuoWaj0EWWdc6rs30OY65lrp33ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Cui <cuitao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 34/70] LoongArch: Check the return value when creating kobj
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 41/61] drm: bridge: anx7625: Fix NULL pointer dereference with early IRQ
 Date: Mon, 22 Sep 2025 21:29:34 +0200
-Message-ID: <20250922192405.521818108@linuxfoundation.org>
+Message-ID: <20250922192404.703112947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Cui <cuitao@kylinos.cn>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-commit 51adb03e6b865c0c6790f29659ff52d56742de2e upstream.
+[ Upstream commit a10f910c77f280327b481e77eab909934ec508f0 ]
 
-Add a check for the return value of kobject_create_and_add(), to ensure
-that the kobj allocation succeeds for later use.
+If the interrupt occurs before resource initialization is complete, the
+interrupt handler/worker may access uninitialized data such as the I2C
+tcpc_client device, potentially leading to NULL pointer dereference.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Fixes: 8bdfc5dae4e3 ("drm/bridge: anx7625: Add anx7625 MIPI DSI/DPI to DP")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250709085438.56188-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/env.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kernel/env.c
-+++ b/arch/loongarch/kernel/env.c
-@@ -72,6 +72,8 @@ static int __init boardinfo_init(void)
- 	struct kobject *loongson_kobj;
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index e14c9fdabe2ba..690a0e7f5f6e2 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2697,7 +2697,7 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 		ret = devm_request_threaded_irq(dev, platform->pdata.intp_irq,
+ 						NULL, anx7625_intr_hpd_isr,
+ 						IRQF_TRIGGER_FALLING |
+-						IRQF_ONESHOT,
++						IRQF_ONESHOT | IRQF_NO_AUTOEN,
+ 						"anx7625-intp", platform);
+ 		if (ret) {
+ 			DRM_DEV_ERROR(dev, "fail to request irq\n");
+@@ -2767,8 +2767,10 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 	}
  
- 	loongson_kobj = kobject_create_and_add("loongson", firmware_kobj);
-+	if (!loongson_kobj)
-+		return -ENOMEM;
+ 	/* Add work function */
+-	if (platform->pdata.intp_irq)
++	if (platform->pdata.intp_irq) {
++		enable_irq(platform->pdata.intp_irq);
+ 		queue_work(platform->workqueue, &platform->work);
++	}
  
- 	return sysfs_create_file(loongson_kobj, &boardinfo_attr.attr);
- }
+ 	if (platform->pdata.audio_en)
+ 		anx7625_register_audio(dev, platform);
+-- 
+2.51.0
+
 
 
 
