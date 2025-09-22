@@ -1,127 +1,200 @@
-Return-Path: <stable+bounces-180973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB4BB91D79
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:05:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29561B91DA3
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 386D23BC14B
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:05:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57A3420DC0
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CEC2DD61E;
-	Mon, 22 Sep 2025 15:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833402DE6E1;
+	Mon, 22 Sep 2025 15:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NtmW1BKG"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="q0eZveY3";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="I1uIievU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79481263C8C
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 15:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838624DCE2;
+	Mon, 22 Sep 2025 15:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758553494; cv=none; b=FIiPlT0+Fob50DYeztHg5bGNjZOL5Dkblt80p9CFqBv4geZQMtu0DgJGMNKU2odhD+GnxupsgA6Lr+TFml88mxBrW0E/n7IwoFlXLoo9G3BuFJoKOdlonFPJh23xm5CMlaYfoCFxRLEA+Oyrr/ePF47knYFMU2Ei44eUdAoeKnw=
+	t=1758553732; cv=none; b=Ma7s/6EBUSgrGV7zGLjQFf5NFjWnRDKnT1oTrLg0VEWhoEBFTW/EyZgbLh2X8p8lTtqFBtNBAd7DNFO3Qhg8BTfFBgsFhppxm3DGOZD2YACguf37nHjEmlcnPeHJ1Ku5a9cEvlknvJH/7HhrY1J96YGocK3nEc5pAt0g3HsLeuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758553494; c=relaxed/simple;
-	bh=F3TQtbkViaiam8gUJt5ndCncukrSdnsgNg2kTTZJSK4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ay06KIMiEgHdiCJv7YMcef6YcllU7pdwHy9C2AfThrp5wgPhCPn05Hio8DmGUTkNZVuWiitY7oLyKpXHKAUNOcNb+foo7A+51DrN1xneYXHRgKJ70uj/ckM86zQ2cx01AHS+LJ6vPvC8kdhY49/b9YyXIHyJzxqU7dC3wKbWvR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NtmW1BKG; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-77f454c57dbso558214b3a.2
-        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 08:04:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758553493; x=1759158293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0Wzhr2GBiLR9XupCOurqAE0qKgHtMmqWf9RdNsZ+l0=;
-        b=NtmW1BKGGXMF4akKDR7W8Y3PfmjDMZtzHAxyMgSBdtVcQyd+6B5f+Nj+v7Xk4DvqhS
-         QwZzU3bc/2wWI6zpVqCNUZyZamT81yzm5FEe863uLw+UoqSBC9BT23aeALwkgvefQChl
-         PMoe59/atJf2iQg3NC53bNUuONEWjIgFc5VQqjRfy6YU/TApf9E5Nxtlcj/aP8Js60P7
-         ZubE89DEB1fUrfabpCP8ZxBWdz8D9HRLHgrvUs6auqKvNQdVMZv/on65p0MXB+km4KSv
-         PlUpv68WyNLitxpzGXrhZgpFc9ql7Od4ch2AqROWBeJbBf2ny6lrNAgyL4xzgwX/D3qs
-         Y7/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758553493; x=1759158293;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R0Wzhr2GBiLR9XupCOurqAE0qKgHtMmqWf9RdNsZ+l0=;
-        b=suLGt0h4bvenwziL6YN54q6hA2tKsfUyrdgKEeCk1ehjDWvAtx4TM7EMXuaoc8qSzm
-         76/kWH/txWIgEvF6Ywee7Zplwh2+NDAafZDW0+KH6fGxAjakxBabLC3goSKeOhmko28y
-         HUZWKxIOBypLnG1MvjYRUP4cmCx3ob4yjxMVpdix3BS7JiU3kN0ds3q9NFw6GJJvicJ4
-         949MLWMLqgIww2PfHyadYmxbmMJ9q7RopyauHgaOKBk/2SlOqA8JDkznDgBAKEcbZeS5
-         GO/PlliKgqJi0yQ0kh5YBUj3I6BK9r6D+W71ctckL9Utdke/PxCMMFmt4xPC+39prkKq
-         zkPg==
-X-Gm-Message-State: AOJu0YzAddjqPzM2zrW8XqrQSD88ghrQEQQgF29ZBDBckDlHgpePb8v7
-	QJPYsaPVXBgdemrXui5iyrzLhJ3CX+YR/pQqBlS/XsGE8azM8uRughqm
-X-Gm-Gg: ASbGncsz/gcWjyCw64wLV9WD2WAtqfvP3DxngAu4s9A6gXP2gLEfnFvTjT1nGjaKw5E
-	tl9NZiBRS1bQCeRS18LyfehfQfJ0UgRuHr7zZmEG94HOYLC12kob5OtXABH8vByji1iBco4GG/s
-	9qa329sBTaPko7jR34QVsl/Lzp9KM4vxuDhQELOd3A0O2dmknPzP+WC3knXZutGSedAor7aK6RX
-	MEME1L7Sx8UGFUDGXt3rli00S/vfqZAk1s6uDVU9Ey4XC1QrR2s0xSrgI90gd6QOxDhNln5sSfL
-	Y3lzSZGXI25Hr8tAAEnd8SLXgdBwYDDbmyfPlmfPyTnJMnWA1TG3QZq3MAoIjB9c6ewvA1i3tQT
-	MMHvpOj6KnwOUXZteaOTEVQ==
-X-Google-Smtp-Source: AGHT+IFeAHlS4iAJPoHh7ZOm/cwEens/eNTaBkhmdeLozkDog20ChhiRrPA5x5jaDTgoFT+gLSoGCw==
-X-Received: by 2002:a05:6a00:9289:b0:77f:2ab3:32d0 with SMTP id d2e1a72fcca58-77f2ab33626mr6873061b3a.31.1758553492759;
-        Mon, 22 Sep 2025 08:04:52 -0700 (PDT)
-Received: from lgs.. ([101.76.246.176])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77f315029c0sm4101850b3a.47.2025.09.22.08.04.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 08:04:52 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	linux-sound@vger.kernel.org,
+	s=arc-20240116; t=1758553732; c=relaxed/simple;
+	bh=Zbs78Nc1dg8s/oapblfN+yFQqJ1eep5DVjpPreRzEY8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WuRoM7BGF7CNi8rk53rAkBXu4UtSP4Lz+xuA2xgwRiKBFZkfnRJ3oMwJi8BXre6c4wsiei4oAUF0FJcMMLPeZTRhUCtSbL4Y7QlJGfgEr4VqdhJucnUUAMhJVX/QPU/EYUOgXG14uFBDf13KdUi0JzydKqADqw7icrkfqcjLAVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=q0eZveY3; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=I1uIievU; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4cVmhp1t38z9tfK;
+	Mon, 22 Sep 2025 17:08:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1758553722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2ZMASazH2tqE9wH24FtNKE/H5QmQBrIjyM7uFPibD+k=;
+	b=q0eZveY3sj2xA1anv2vds2ex+MgpP2WyGgrGyqlHLbeqF6p/NiPwGP8PgFctEyZhNB96a9
+	LfpGD25L2XBxusql168syZPtIjoMPIXWNKTeS4GxyefPyTa5qdl1AA3eGQKnMvbCPxmMVF
+	aL54RecCJiawIHTsiIK6dVUykJ6RJHMFZHvMVFNs9vGyEiAL6zQhUK2gLy3vV4y6HVuH9U
+	MpDd5yxUo3Nu/ze/o/gV/KPbc6AO+y1ZoVXxsYp3n5pYNGqw9+nKPCYg5V+D3YHpZ2bTHF
+	LknDQp7JOwg/dX3VzsVcIzghrS6lIIqQabftaUs3NfM4JAXOk0pknxuqOPyX/Q==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=I1uIievU;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut+renesas@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=marek.vasut+renesas@mailbox.org
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1758553719;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2ZMASazH2tqE9wH24FtNKE/H5QmQBrIjyM7uFPibD+k=;
+	b=I1uIievUjGylN+Zyk+3v84KBYNIbG+ktUB11DnxOBuxk5AOxv5v4xEkp7cAwRSpzYQBqMr
+	hATfRqE1rjp5GLR7Nq9+uwzB3CG6ssZb5ZF6QzRixMri6mZ4OlyL1qLdTH3NUoLWnNCg1E
+	KKbN5A2PQtfy8QPaIR/MKiPv0M079KtMhzEAnz58PVdB3d9GzIqlH9/SC/3axiq9OaYDJv
+	nTMCxoS+U7crQ26bkShW3R4aO5fZUEeNXN4DmnxjB7UI6EMNxnVWXYldMu45+k2OFfKKwf
+	P9kw+z5T5Q1Ith/WLn1ss5KhlBkHc1jua+9rJMB3/q9r893iVeFOLF0MwPvpzg==
+To: linux-pci@vger.kernel.org
+Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	stable@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] powerpc/smp: Add check for kcalloc() in parse_thread_groups()
-Date: Mon, 22 Sep 2025 23:04:42 +0800
-Message-ID: <20250922150442.1820675-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	linux-tegra@vger.kernel.org
+Subject: [PATCH] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
+Date: Mon, 22 Sep 2025 17:07:48 +0200
+Message-ID: <20250922150811.88450-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: e023a2e4296406a9770
+X-MBO-RS-META: g99nkdyejwjh34us8r1hnna15cgyjkxf
+X-Rspamd-Queue-Id: 4cVmhp1t38z9tfK
 
-As kcalloc() may fail, check its return value to avoid a NULL pointer
-dereference when passing it to of_property_read_u32_array().
+The tegra_msi_irq_unmask() function may be called from a PCI driver
+request_threaded_irq() function. This triggers kernel/irq/manage.c
+__setup_irq() which locks raw spinlock &desc->lock descriptor lock
+and with that descriptor lock held, calls tegra_msi_irq_unmask().
 
-Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+Since the &desc->lock descriptor lock is a raw spinlock , and the
+tegra_msi .mask_lock is not a raw spinlock, this setup triggers
+'BUG: Invalid wait context' with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+
+Use scoped_guard() to simplify the locking.
+
+Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 ---
- arch/powerpc/kernel/smp.c | 3 +++
- 1 file changed, 3 insertions(+)
+Cc: "Krzysztof Wilczyński" <kwilczynski@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+---
+NOTE: I don't have tegra hardware to test, this is based on input from Geert
+      https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
+---
+ drivers/pci/controller/pci-tegra.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 5ac7084eebc0..2da064e00d0d 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -822,6 +822,9 @@ static int parse_thread_groups(struct device_node *dn,
+diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
+index bb88767a37979..942ddfca3bf6b 100644
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -14,6 +14,7 @@
+  */
  
- 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
- 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
-+	if (!thread_group_array)
-+		return -ENOMEM;
-+
- 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
- 					 thread_group_array, count);
- 	if (ret)
+ #include <linux/clk.h>
++#include <linux/cleanup.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/export.h>
+@@ -270,7 +271,7 @@ struct tegra_msi {
+ 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
+ 	struct irq_domain *domain;
+ 	struct mutex map_lock;
+-	spinlock_t mask_lock;
++	raw_spinlock_t mask_lock;
+ 	void *virt;
+ 	dma_addr_t phys;
+ 	int irq;
+@@ -1581,14 +1582,13 @@ static void tegra_msi_irq_mask(struct irq_data *d)
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
+ 
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value &= ~BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value &= ~BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
+ 
+ static void tegra_msi_irq_unmask(struct irq_data *d)
+@@ -1596,14 +1596,13 @@ static void tegra_msi_irq_unmask(struct irq_data *d)
+ 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
+ 	struct tegra_pcie *pcie = msi_to_pcie(msi);
+ 	unsigned int index = d->hwirq / 32;
+-	unsigned long flags;
+ 	u32 value;
+ 
+-	spin_lock_irqsave(&msi->mask_lock, flags);
+-	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
+-	value |= BIT(d->hwirq % 32);
+-	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
+-	spin_unlock_irqrestore(&msi->mask_lock, flags);
++	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
++		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
++		value |= BIT(d->hwirq % 32);
++		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
++	}
+ }
+ 
+ static void tegra_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
+@@ -1711,7 +1710,7 @@ static int tegra_pcie_msi_setup(struct tegra_pcie *pcie)
+ 	int err;
+ 
+ 	mutex_init(&msi->map_lock);
+-	spin_lock_init(&msi->mask_lock);
++	raw_spin_lock_init(&msi->mask_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+ 		err = tegra_allocate_domains(msi);
 -- 
-2.43.0
+2.51.0
 
 
