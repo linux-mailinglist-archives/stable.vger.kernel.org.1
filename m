@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B014BB92E7C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6CCB93094
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F6317490C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F13A480E19
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7342F1FDA;
-	Mon, 22 Sep 2025 19:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B492F2910;
+	Mon, 22 Sep 2025 19:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D26HuJtm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWibgx5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AFB2F0C5C;
-	Mon, 22 Sep 2025 19:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DE02F0C52;
+	Mon, 22 Sep 2025 19:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569859; cv=none; b=DnP09iGvJaOfuv0OQFfGPm3AY2ysbbRvfectMAK+hAihP/I4yYR99iwliYLbC7wYKNYe4xeCBnOQzQRM5debHJwK3eTQiDgSfcZyxY0e4PA64tqIHrT+HN/qzJLfo27V67lvBfeDSF7paUv9qyQgr0T0ffJGKpW/Swdejero0Ic=
+	t=1758570189; cv=none; b=QfZMJ0ofybrHRbXJPvphg7IQDuWX1uHGfKzld6U7XdoYVyTfdSKHDtFABaIwW3bZ8vzM7GuKl2vh8E4Q7XUlCJwy0s8Km5ltDUCWZKb/pIerhj4EQhCLTym8LieFkJG5lYCbf3MjaziImKMbhEViiMzF+v2IdAZhOqfqoll+yK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569859; c=relaxed/simple;
-	bh=tyHjxJG4K2FrewJKIF/hPZwxvW1226lP8AeUeUpSCnA=;
+	s=arc-20240116; t=1758570189; c=relaxed/simple;
+	bh=syUo8Bukrxpz4ZwNdz/EyQVtMULRHT8J1Fyho5fMTI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AteZv75H+kyXNSxrikmfWpJkl+qm4GR7Ly5sckBNmdA23XeIiD6el8rRdiZM7nlMaxVHwKnECxhUxjKMQYl7WPMWJP5MlmbazOfBeAkOMQAyuQjgrVCg924nmP7ZLPo0RxRJ0auLJPMe9/y+cVi61wGHOvTr6hGIC4g/JQAfAEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D26HuJtm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE2AC4CEF0;
-	Mon, 22 Sep 2025 19:37:39 +0000 (UTC)
+	 MIME-Version; b=U6n2cYzuvwrQNhHdXoULvJBLjJTd2EuGjXJNIYrcbvSUtw2UghA7GpuiPHPr3j7dcTeQw4mQVbwb/fYIuMm29a2kIH4tL0Tf4dncoMnwBr49Rs3RL2BfYxWw3cRMzwO/ide3ZiUg7aIf18dbE4yKgS10gGUwdBrRjO2hpmj0y3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWibgx5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE254C4CEF5;
+	Mon, 22 Sep 2025 19:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569859;
-	bh=tyHjxJG4K2FrewJKIF/hPZwxvW1226lP8AeUeUpSCnA=;
+	s=korg; t=1758570189;
+	bh=syUo8Bukrxpz4ZwNdz/EyQVtMULRHT8J1Fyho5fMTI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D26HuJtmBuCRFFFeAku4jdHoue69i15CUfD0s3eKlC/z0lXtYVkWHbrYS5c99acnN
-	 mIR0kKwDxEYocTbZ+xtfFrYpWwIlYU53qlDgH0po7E0/9F9vAp/1QbD+Jpc+jyWrk1
-	 QH29aZfB4TRLa26cmMEETFQCBwklxqTididL2eO8=
+	b=rWibgx5Lae5Z2LuXOe684ZwWMKxC2XVlR6QkqMd043s5pXm2r7Sl6uP1sxNslFl2L
+	 KRX+J7ChLsUz+lzi9wNUONCjsFU/i2vNo2dbzQOXrscYPIDIaLTjguvxMRCi55MNyL
+	 9WeTrfPS3KsTkhEIBwSAp7ODGoZ2wX+K+Nl3bEDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/105] selftests: mptcp: userspace pm: validate deny-join-id0 flag
-Date: Mon, 22 Sep 2025 21:28:59 +0200
-Message-ID: <20250922192409.333642678@linuxfoundation.org>
+Subject: [PATCH 6.16 040/149] tcp: Clear tcp_sk(sk)->fastopen_rsk in tcp_disconnect().
+Date: Mon, 22 Sep 2025 21:29:00 +0200
+Message-ID: <20250922192413.874278897@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 24733e193a0d68f20d220e86da0362460c9aa812 ]
+[ Upstream commit 45c8a6cc2bcd780e634a6ba8e46bffbdf1fc5c01 ]
 
-The previous commit adds the MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 flag. Make
-sure it is correctly announced by the other peer when it has been
-received.
+syzbot reported the splat below where a socket had tcp_sk(sk)->fastopen_rsk
+in the TCP_ESTABLISHED state. [0]
 
-pm_nl_ctl will now display 'deny_join_id0:1' when monitoring the events,
-and when this flag was set by the other peer.
+syzbot reused the server-side TCP Fast Open socket as a new client before
+the TFO socket completes 3WHS:
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+  1. accept()
+  2. connect(AF_UNSPEC)
+  3. connect() to another destination
 
-Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-3-40171884ade8@kernel.org
+As of accept(), sk->sk_state is TCP_SYN_RECV, and tcp_disconnect() changes
+it to TCP_CLOSE and makes connect() possible, which restarts timers.
+
+Since tcp_disconnect() forgot to clear tcp_sk(sk)->fastopen_rsk, the
+retransmit timer triggered the warning and the intended packet was not
+retransmitted.
+
+Let's call reqsk_fastopen_remove() in tcp_disconnect().
+
+[0]:
+WARNING: CPU: 2 PID: 0 at net/ipv4/tcp_timer.c:542 tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
+Modules linked in:
+CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 6.17.0-rc5-g201825fb4278 #62 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:tcp_retransmit_timer (net/ipv4/tcp_timer.c:542 (discriminator 7))
+Code: 41 55 41 54 55 53 48 8b af b8 08 00 00 48 89 fb 48 85 ed 0f 84 55 01 00 00 0f b6 47 12 3c 03 74 0c 0f b6 47 12 3c 04 74 04 90 <0f> 0b 90 48 8b 85 c0 00 00 00 48 89 ef 48 8b 40 30 e8 6a 4f 06 3e
+RSP: 0018:ffffc900002f8d40 EFLAGS: 00010293
+RAX: 0000000000000002 RBX: ffff888106911400 RCX: 0000000000000017
+RDX: 0000000002517619 RSI: ffffffff83764080 RDI: ffff888106911400
+RBP: ffff888106d5c000 R08: 0000000000000001 R09: ffffc900002f8de8
+R10: 00000000000000c2 R11: ffffc900002f8ff8 R12: ffff888106911540
+R13: ffff888106911480 R14: ffff888106911840 R15: ffffc900002f8de0
+FS:  0000000000000000(0000) GS:ffff88907b768000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8044d69d90 CR3: 0000000002c30003 CR4: 0000000000370ef0
+Call Trace:
+ <IRQ>
+ tcp_write_timer (net/ipv4/tcp_timer.c:738)
+ call_timer_fn (kernel/time/timer.c:1747)
+ __run_timers (kernel/time/timer.c:1799 kernel/time/timer.c:2372)
+ timer_expire_remote (kernel/time/timer.c:2385 kernel/time/timer.c:2376 kernel/time/timer.c:2135)
+ tmigr_handle_remote_up (kernel/time/timer_migration.c:944 kernel/time/timer_migration.c:1035)
+ __walk_groups.isra.0 (kernel/time/timer_migration.c:533 (discriminator 1))
+ tmigr_handle_remote (kernel/time/timer_migration.c:1096)
+ handle_softirqs (./arch/x86/include/asm/jump_label.h:36 ./include/trace/events/irq.h:142 kernel/softirq.c:580)
+ irq_exit_rcu (kernel/softirq.c:614 kernel/softirq.c:453 kernel/softirq.c:680 kernel/softirq.c:696)
+ sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1050 (discriminator 35) arch/x86/kernel/apic/apic.c:1050 (discriminator 35))
+ </IRQ>
+
+Fixes: 8336886f786f ("tcp: TCP Fast Open Server - support TFO listeners")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250915175800.118793-2-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/pm_nl_ctl.c     |  7 +++++++
- tools/testing/selftests/net/mptcp/userspace_pm.sh | 14 +++++++++++---
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ net/ipv4/tcp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-index 994a556f46c15..93fea3442216c 100644
---- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-+++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-@@ -188,6 +188,13 @@ static int capture_events(int fd, int event_group)
- 					fprintf(stderr, ",error:%u", *(__u8 *)RTA_DATA(attrs));
- 				else if (attrs->rta_type == MPTCP_ATTR_SERVER_SIDE)
- 					fprintf(stderr, ",server_side:%u", *(__u8 *)RTA_DATA(attrs));
-+				else if (attrs->rta_type == MPTCP_ATTR_FLAGS) {
-+					__u16 flags = *(__u16 *)RTA_DATA(attrs);
-+
-+					/* only print when present, easier */
-+					if (flags & MPTCP_PM_EV_FLAG_DENY_JOIN_ID0)
-+						fprintf(stderr, ",deny_join_id0:1");
-+				}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 461a9ab540af0..98da33e0c308b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3330,6 +3330,7 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	int old_state = sk->sk_state;
++	struct request_sock *req;
+ 	u32 seq;
  
- 				attrs = RTA_NEXT(attrs, msg_len);
- 			}
-diff --git a/tools/testing/selftests/net/mptcp/userspace_pm.sh b/tools/testing/selftests/net/mptcp/userspace_pm.sh
-index 3651f73451cf8..cc682bf675b2b 100755
---- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
-+++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
-@@ -173,6 +173,9 @@ make_connection()
- 		is_v6="v4"
- 	fi
+ 	if (old_state != TCP_CLOSE)
+@@ -3445,6 +3446,10 @@ int tcp_disconnect(struct sock *sk, int flags)
  
-+	# set this on the client side only: will not affect the rest
-+	ip netns exec "$ns2" sysctl -q net.mptcp.allow_join_initial_addr_port=0
-+
- 	:>"$client_evts"
- 	:>"$server_evts"
  
-@@ -195,23 +198,28 @@ make_connection()
- 	local client_token
- 	local client_port
- 	local client_serverside
-+	local client_nojoin
- 	local server_token
- 	local server_serverside
-+	local server_nojoin
- 
- 	client_token=$(mptcp_lib_evts_get_info token "$client_evts")
- 	client_port=$(mptcp_lib_evts_get_info sport "$client_evts")
- 	client_serverside=$(mptcp_lib_evts_get_info server_side "$client_evts")
-+	client_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$client_evts")
- 	server_token=$(mptcp_lib_evts_get_info token "$server_evts")
- 	server_serverside=$(mptcp_lib_evts_get_info server_side "$server_evts")
-+	server_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$server_evts")
- 
- 	print_test "Established IP${is_v6} MPTCP Connection ns2 => ns1"
--	if [ "$client_token" != "" ] && [ "$server_token" != "" ] && [ "$client_serverside" = 0 ] &&
--		   [ "$server_serverside" = 1 ]
-+	if [ "${client_token}" != "" ] && [ "${server_token}" != "" ] &&
-+	   [ "${client_serverside}" = 0 ] && [ "${server_serverside}" = 1 ] &&
-+	   [ "${client_nojoin:-0}" = 0 ] && [ "${server_nojoin:-0}" = 1 ]
- 	then
- 		test_pass
- 		print_title "Connection info: ${client_addr}:${client_port} -> ${connect_addr}:${app_port}"
- 	else
--		test_fail "Expected tokens (c:${client_token} - s:${server_token}) and server (c:${client_serverside} - s:${server_serverside})"
-+		test_fail "Expected tokens (c:${client_token} - s:${server_token}), server (c:${client_serverside} - s:${server_serverside}), nojoin (c:${client_nojoin} - s:${server_nojoin})"
- 		mptcp_lib_result_print_all_tap
- 		exit ${KSFT_FAIL}
- 	fi
+ 	/* Clean up fastopen related fields */
++	req = rcu_dereference_protected(tp->fastopen_rsk,
++					lockdep_sock_is_held(sk));
++	if (req)
++		reqsk_fastopen_remove(sk, req, false);
+ 	tcp_free_fastopen_req(tp);
+ 	inet_clear_bit(DEFER_CONNECT, sk);
+ 	tp->fastopen_client_fail = 0;
 -- 
 2.51.0
 
