@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-181207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862E9B92EF0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C743EB92DBE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D60219071D1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C94593A1C63
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D985E2F2609;
-	Mon, 22 Sep 2025 19:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777DD27FB2D;
+	Mon, 22 Sep 2025 19:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHgjz0iD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmLXsJY2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A992820D1;
-	Mon, 22 Sep 2025 19:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33262191F66;
+	Mon, 22 Sep 2025 19:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569957; cv=none; b=JgD2cK3kp42HZq341/jhkNLHi78ioL8JYwrp+wRjH3hZitKD+4uqsiCXZjywMgBEDW1BUOOw8SQ/9WML2mxd538gRiVo6gCShGdpAkbMG4T1Pz0Zt/5XQidE3v4QgaTeRT9sYwzu6QqgqorbWWyfjSBJ51DMR+J10w7VqFnP7aE=
+	t=1758569710; cv=none; b=ShWvYQrOTLXglIrxXdyJ8tTvRlssgnXHznE4A3kkU4AZTGKSrHnjtYTupiqW9rpXwAhHV+fLvMcgNAEjzqYabQF+VW8ayENpVxaHnoNqfhJSPdpjjZdH6ZvAuhsbrxDwUMaicHbTy1hNDXBoGEPAHrZsAS9mXqrgD2PbJ9Ufi9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569957; c=relaxed/simple;
-	bh=LvDJAFHF0ZX8OJoUbq0YgQ/3KfXmHJZLK2pMP99Grs0=;
+	s=arc-20240116; t=1758569710; c=relaxed/simple;
+	bh=WW+zsyaqgI8gc78tCf7Acd/6rFTYU1Cn+ogiJASDQOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IR/AYJ9j6jpwFstqMsl4R0CRNK8uRMpk6beu/ZIiCtvVN9DVLpYbDkJk6lZYWImw2ZReheskBm1nNlFsdR73RVOoO9x8SkJpSQpXMbG3XUfwgXwRtVhaGIm9P56Uy3eXd1TlR8ugC60BP171USDxbrdOPrCtiRdHkQo9Qe6aS3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHgjz0iD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE2BC113D0;
-	Mon, 22 Sep 2025 19:39:15 +0000 (UTC)
+	 MIME-Version; b=ILkaCNYRxvcU7iIDfWFO17Hon9JGoxyNt5fjbTM/9Q9QJqTRg9hD7/ByPw5ABIX4JdFEbQnBqtUTMTgua9h94nqKbytq7JOQ3GpkTeL368T8im9GyAGzXJ2QEugAk7a3HdkPrLMJCoRTrM9HNUD2Ef0yiKV6eqqasCSe87G4Puw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmLXsJY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A361FC4CEF0;
+	Mon, 22 Sep 2025 19:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569956;
-	bh=LvDJAFHF0ZX8OJoUbq0YgQ/3KfXmHJZLK2pMP99Grs0=;
+	s=korg; t=1758569710;
+	bh=WW+zsyaqgI8gc78tCf7Acd/6rFTYU1Cn+ogiJASDQOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHgjz0iDddLZjqAOE/btOYBWkLZoA8MI0brf3ZTRcwhuhhQtsr7dCiQ6H8GURdoqw
-	 sByq+J6QLr+1lLPJTK5kSpwpJFlhcamuFMBgAxul3xykLoKhldqkenrsSy4NH8rP5z
-	 827v6S48MD70xR98oMJ5SqJPgVcHeU6Q8t+lJmnA=
+	b=VmLXsJY2fO1+spYSoJES1Nf+1ad+CoEMtXIjLU2mLkQCQPwmRq9ADxwC7rD/xFnjS
+	 n6BU65Hj/C5/E94IlgbeJNFXPaqQyLFh/OsNT0ggLfgvbfTN4bGl9/YV8B8eYG0+xy
+	 U9TO+fSkjV6AMOIzzvND9OjXZTGoa7fKy+rAjT50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 055/105] ASoC: qcom: q6apm-lpass-dais: Fix NULL pointer dereference if source graph failed
+Subject: [PATCH 6.6 38/70] ASoC: qcom: q6apm-lpass-dais: Fix NULL pointer dereference if source graph failed
 Date: Mon, 22 Sep 2025 21:29:38 +0200
-Message-ID: <20250922192410.357178384@linuxfoundation.org>
+Message-ID: <20250922192405.640729661@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -103,7 +103,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
 +++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-@@ -213,8 +213,10 @@ static int q6apm_lpass_dai_prepare(struc
+@@ -207,8 +207,10 @@ static int q6apm_lpass_dai_prepare(struc
  
  	return 0;
  err:
