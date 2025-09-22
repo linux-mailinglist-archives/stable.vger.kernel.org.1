@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-181041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33266B92CCE
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BE3B92CA6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E25893B4BD2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCC642A18C2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235521FDA89;
-	Mon, 22 Sep 2025 19:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635802F1FDD;
+	Mon, 22 Sep 2025 19:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7EdgjeH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLTKV1QV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D306817A2EA;
-	Mon, 22 Sep 2025 19:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7552F0C64;
+	Mon, 22 Sep 2025 19:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569541; cv=none; b=r6A7vNzKQ/DyiVGe75bmdwWDw6njrGaiC276rwoWwttBtPI9dC/t9mj2XlOzRakSZcszeVnm/zKmtmS1OBnw10OBtQG0sNQmz+d13ig1t/mv2uRD9CbwgJ46zOESPZA8KLD7sG9G3cb0td9YRjcKkvpeQrv19Vf0Az7IbivzAyg=
+	t=1758569514; cv=none; b=BD5ZmevmFN8CDCpYR6DGB9ZOS/nyyG7N3eQ0QjQBuzSZXcz14Qa9HM25Sqhe3V1t6hWvHRRpA6lj6Vf6iEsUtqojTLKNIeuV6NHtluhR+33zMHYvpqV779j5C2R5y+rniDPLojslmninbWwRfxxQO06m+YKEdBoKfaw4zjrrmr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569541; c=relaxed/simple;
-	bh=HU/LkVE4xK7U6YYazTC/lhk+ASfRqyKfhcWbdecCmLo=;
+	s=arc-20240116; t=1758569514; c=relaxed/simple;
+	bh=PIBz8LgnT1Yh6Lk5lXd7KREL3wqyrFbBj9tqKCIGfrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0/Tcbz2VZAmqdtelRJ0tW9UytR/aqVCdqiTiKxMI0K4bPWQ9/4K0e/tlKrTYgBiaxl4MjvNSF5IIMSGlWs1AGtcNJV/pSJZqdB1j5+tAHyx3j7ULRiVnPvKlOQ8YqxAlZW4NaSEJKY8hA4qNaDXPlIKwFP3R1gJvDo8a9Zqo/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7EdgjeH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288FEC4CEF0;
-	Mon, 22 Sep 2025 19:32:21 +0000 (UTC)
+	 MIME-Version; b=s8cHwfXrM4I5jd+BSkoimpEIJQwIDfG9XiAl+FXrVaKX1/p++nsNduRXFLy6WlLrMSc5ktOBL2ghWa02Ye2HCAiF9RR802FtOx0gdiEUW3u7Wm4Nzh62TGKFYWRlmXn5dWu/EHfhaoNGWERX1tertml55A3p3ajGnlepsg/m6q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLTKV1QV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4B9C4CEF0;
+	Mon, 22 Sep 2025 19:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569541;
-	bh=HU/LkVE4xK7U6YYazTC/lhk+ASfRqyKfhcWbdecCmLo=;
+	s=korg; t=1758569514;
+	bh=PIBz8LgnT1Yh6Lk5lXd7KREL3wqyrFbBj9tqKCIGfrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7EdgjeHmTSdUpHOemZlldwEImHZN/ZAZ6jelnQZV9ksOQK18HOL4b9d61NOU06Dg
-	 D6BhG6AnS/SyTdOfl4f6kPErdO44DKHSz7Yrki1ZKsO1kYIZDKPekXqDUOR3V37u3B
-	 +JsD99p7e60xiHKK1AMhPu+HB0M+fateJrWgADrk=
+	b=uLTKV1QVNmyVXeuRiXmAnhqzVt629rTi4X5VhH3Ibv0oUJ1+Bbw/+/X+4IYzcp0i7
+	 sz46aipndB7MQrMZ0KbzY7qeZYKcrI4Gu4dejhbEe/4P18jFRRmFFZnoD96Efs94uO
+	 QEFI0mZC5qz9B3Dw2SPBtNSeNRhI0cAskzXajt40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 21/61] ksmbd: smbdirect: verify remaining_data_length respects max_fragmented_recv_size
-Date: Mon, 22 Sep 2025 21:29:14 +0200
-Message-ID: <20250922192404.133503441@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 22/61] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
+Date: Mon, 22 Sep 2025 21:29:15 +0200
+Message-ID: <20250922192404.161881924@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
 References: <20250922192403.524848428@linuxfoundation.org>
@@ -70,60 +67,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit e1868ba37fd27c6a68e31565402b154beaa65df0 upstream.
+commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
 
-This is inspired by the check for data_offset + data_length.
+When accessing one of the files under /sys/fs/nilfs2/features when
+CONFIG_CFI_CLANG is enabled, there is a CFI violation:
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Cc: stable@vger.kernel.org
-Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
+  ...
+  Call Trace:
+   <TASK>
+   sysfs_kf_seq_show+0x2a6/0x390
+   ? __cfi_kobj_attr_show+0x10/0x10
+   kernfs_seq_show+0x104/0x15b
+   seq_read_iter+0x580/0xe2b
+  ...
+
+When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
+is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
+nilfs_feature_attr_group is added to that kobject via
+sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
+which will call sysfs_kf_seq_show() when ->seq_show() is called.
+sysfs_kf_seq_show() in turn calls kobj_attr_show() through
+->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
+a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
+in the CFI violation since neither nilfs_feature_revision_show() nor
+nilfs_feature_README_show() match the prototype of ->show() in 'struct
+kobj_attribute'.
+
+Resolve the CFI violation by adjusting the second parameter in
+nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
+kobj_attribute' to match the expected prototype.
+
+Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
+Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/nilfs2/sysfs.c |    4 ++--
+ fs/nilfs2/sysfs.h |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -548,7 +548,7 @@ static void recv_done(struct ib_cq *cq,
- 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
- 		struct smb_direct_data_transfer *data_transfer =
- 			(struct smb_direct_data_transfer *)recvmsg->packet;
--		unsigned int data_offset, data_length;
-+		u32 remaining_data_length, data_offset, data_length;
- 		int avail_recvmsg_count, receive_credits;
+--- a/fs/nilfs2/sysfs.c
++++ b/fs/nilfs2/sysfs.c
+@@ -1075,7 +1075,7 @@ void nilfs_sysfs_delete_device_group(str
+  ************************************************************************/
  
- 		if (wc->byte_len <
-@@ -558,6 +558,7 @@ static void recv_done(struct ib_cq *cq,
- 			return;
- 		}
+ static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
+-					    struct attribute *attr, char *buf)
++					    struct kobj_attribute *attr, char *buf)
+ {
+ 	return sysfs_emit(buf, "%d.%d\n",
+ 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
+@@ -1087,7 +1087,7 @@ static const char features_readme_str[]
+ 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
  
-+		remaining_data_length = le32_to_cpu(data_transfer->remaining_data_length);
- 		data_length = le32_to_cpu(data_transfer->data_length);
- 		data_offset = le32_to_cpu(data_transfer->data_offset);
- 		if (wc->byte_len < data_offset ||
-@@ -565,6 +566,14 @@ static void recv_done(struct ib_cq *cq,
- 			put_recvmsg(t, recvmsg);
- 			smb_direct_disconnect_rdma_connection(t);
- 			return;
-+		}
-+		if (remaining_data_length > t->max_fragmented_recv_size ||
-+		    data_length > t->max_fragmented_recv_size ||
-+		    (u64)remaining_data_length + (u64)data_length >
-+		    (u64)t->max_fragmented_recv_size) {
-+			put_recvmsg(t, recvmsg);
-+			smb_direct_disconnect_rdma_connection(t);
-+			return;
- 		}
+ static ssize_t nilfs_feature_README_show(struct kobject *kobj,
+-					 struct attribute *attr,
++					 struct kobj_attribute *attr,
+ 					 char *buf)
+ {
+ 	return sysfs_emit(buf, features_readme_str);
+--- a/fs/nilfs2/sysfs.h
++++ b/fs/nilfs2/sysfs.h
+@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
+ 	struct completion sg_segments_kobj_unregister;
+ };
  
- 		if (data_length) {
+-#define NILFS_COMMON_ATTR_STRUCT(name) \
++#define NILFS_KOBJ_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
+ 	struct attribute attr; \
+-	ssize_t (*show)(struct kobject *, struct attribute *, \
++	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
+ 			char *); \
+-	ssize_t (*store)(struct kobject *, struct attribute *, \
++	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
+ 			 const char *, size_t); \
+ }
+ 
+-NILFS_COMMON_ATTR_STRUCT(feature);
++NILFS_KOBJ_ATTR_STRUCT(feature);
+ 
+ #define NILFS_DEV_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
 
 
 
