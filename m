@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F55B9304D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428C2B92EA5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5DC2E0E8D
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57CB5447257
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D832F39DE;
-	Mon, 22 Sep 2025 19:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D8427B320;
+	Mon, 22 Sep 2025 19:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgjzkOU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oBujByc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8405E2F0C52;
-	Mon, 22 Sep 2025 19:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506872820D1;
+	Mon, 22 Sep 2025 19:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570186; cv=none; b=CVgoJ3rX/hIplDbnBBhwfTpxvea0fo+T571pJv8hn2d4RZLnmROT50JyI7Iz6V7HS4+nLqxZuEccBMsMdhdiJs2931YPazqbzksxpJxZ3bgS4SWcqnWz8OdN9aWVMG43IBqARU65UYqK8OhtxVjTonN9oPmmkdwSqCaBaHaRI1w=
+	t=1758569893; cv=none; b=YMEPYvtMG2IgC6x2p1S3zo0smmnmUVk1WVJ6RhUMg3lBwRrfHlz84dEBwaIEdmCUfJX1XGk7RjPYLtopGENmQZ6ew1qqX5EYrTn2SYzhsRfTp1mzod0sejwWMFxa+7jn+wf0d8cRRwg2C/jtDKC3b+SPs3EUu1WGJKIl7bBF0W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570186; c=relaxed/simple;
-	bh=j/MO9K5/Cas5KfbAFljPsAz0Qo/3flH5/Qg7NHGl3cI=;
+	s=arc-20240116; t=1758569893; c=relaxed/simple;
+	bh=VKlEI2KIu+zixvANU1fMBH4xVsWZD5fjHmfVN1qVvfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lais5wzLuF20VGQXsDwlK7Y2Kx7OqHj90Tw7QCtCfiTHYITYjhEFIP3hAIs1b18/1dJSVZJ1QjvHbevgk/y04I0f/T3r/yG+3xhLT3F19Q2U7ZlctiIT/56ltoAmAwa/A3BecqdFFmRghdFiHhmWPcX+leRU3Uzi+3D2Horf6Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgjzkOU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1C5C4CEF0;
-	Mon, 22 Sep 2025 19:43:05 +0000 (UTC)
+	 MIME-Version; b=h0lRT9HuxPtw93YqbkqU981WrYjCyNvcn32sn4mpgoxojgwM/0d2CQgGag1ju1JLhS49NS2oo+BC0gXKmkmzV//Tp1y/e9/oisZNhJC6+sdcKjiU9uOzP/TfaTqdFPI3nIKcdt5yUNOG6jIoBeuOD8KFbXMMnRkqOFhQlDOusYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oBujByc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA7FC4CEF0;
+	Mon, 22 Sep 2025 19:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570186;
-	bh=j/MO9K5/Cas5KfbAFljPsAz0Qo/3flH5/Qg7NHGl3cI=;
+	s=korg; t=1758569891;
+	bh=VKlEI2KIu+zixvANU1fMBH4xVsWZD5fjHmfVN1qVvfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgjzkOU6i9uFbn1EPYa/LlF91eNLMYCGZR4YAJPXDzNiIZ1AyBlA1JK3CdNE+2edM
-	 NQQ3O+j8zK/TbFN1R+/HwLDZDOu8JFtMKOXkkuIFmpu5oDxeg3B/7XV/rzSpOMbLj2
-	 VhBZv5x8JtLJ2K6wHA2Vky1WxBpWlfTxMmiMYd/8=
+	b=2oBujByc7uHysAE1mQm4+FI5kkCpFIkLjMH3I3Rp0q6lYM2V1eELbirNKq9CVLrey
+	 3he3v8O13ZlcAI9tov8K7g63TDiE9aP9Wrq2DIcPURU4yDcitplu4n9PSDI3Aw9/Cf
+	 N7OZPSDFEdemwVh8BHdXKAAJW/+saN8pYmIzGAOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.16 052/149] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+	Jakub Kicinski <kuba@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 029/105] Revert "net/mlx5e: Update and set Xon/Xoff upon port speed set"
 Date: Mon, 22 Sep 2025 21:29:12 +0200
-Message-ID: <20250922192414.166378577@linuxfoundation.org>
+Message-ID: <20250922192409.675171117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Tariq Toukan <tariqt@nvidia.com>
 
-commit 2c334d038466ac509468fbe06905a32d202117db upstream.
+[ Upstream commit 3fbfe251cc9f6d391944282cdb9bcf0bd02e01f8 ]
 
-Since commit
+This reverts commit d24341740fe48add8a227a753e68b6eedf4b385a.
+It causes errors when trying to configure QoS, as well as
+loss of L2 connectivity (on multi-host devices).
 
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-
-the console log of some devices with hdq enabled but no bq27000 battery
-(like e.g. the Pandaboard) is flooded with messages like:
-
-[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
-
-as soon as user-space is finding a /sys entry and trying to read the
-"status" property.
-
-It turns out that the offending commit changes the logic to now return the
-value of cache.flags if it is <0. This is likely under the assumption that
-it is an error number. In normal errors from bq27xxx_read() this is indeed
-the case.
-
-But there is special code to detect if no bq27000 is installed or accessible
-through hdq/1wire and wants to report this. In that case, the cache.flags
-are set historically by
-
-	commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to constant -1 which did make reading properties return -ENODEV. So everything
-appeared to be fine before the return value was passed upwards.
-
-Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
-condition in power_supply_format_property() which then floods the console log.
-
-So we change the detection of missing bq27000 battery to simply set
-
-	cache.flags = -ENODEV
-
-instead of -1.
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Cc: Jerry Lv <Jerry.Lv@axis.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/20250910170011.70528106@kernel.org
+Fixes: d24341740fe4 ("net/mlx5e: Update and set Xon/Xoff upon port speed set")
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1920,7 +1920,7 @@ static void bq27xxx_battery_update_unloc
- 
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
- 	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -1; /* read error */
-+		cache.flags = -ENODEV; /* read error */
- 	if (cache.flags >= 0) {
- 		cache.capacity = bq27xxx_battery_read_soc(di);
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 6176457b846bc..de2327ffb0f78 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -135,8 +135,6 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
+ 	if (up) {
+ 		netdev_info(priv->netdev, "Link up\n");
+ 		netif_carrier_on(priv->netdev);
+-		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
+-						NULL, NULL, NULL);
+ 	} else {
+ 		netdev_info(priv->netdev, "Link down\n");
+ 		netif_carrier_off(priv->netdev);
+-- 
+2.51.0
+
 
 
 
