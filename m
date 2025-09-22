@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-181253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF95B92FD2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:42:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3B9B9319D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 896A51908269
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0999919C04E6
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6966E222590;
-	Mon, 22 Sep 2025 19:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4DF25A34F;
+	Mon, 22 Sep 2025 19:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIF1drV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWals01x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258982E285C;
-	Mon, 22 Sep 2025 19:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F5118C2C;
+	Mon, 22 Sep 2025 19:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570072; cv=none; b=gXVAL253KdefsUwHV/FrHbq+p8YkxDuB3oNttWITX6V7ox3d4aO5nW/GYbASZr31YITqNAPh7o1mTbv0EB5+fZNXjvmiM+g5J17nUB4KQIrkkaREUji7H5JKq3OpxqEnoSJQQyuXHD4pJc95w5P2vEXo3MSQOQlXAdxiAPrcrro=
+	t=1758570412; cv=none; b=TrKsyEsO2OYae8mC7xrKVmo6fG90eBX5PVCP8VPu3E7+tw6EaNhKFskswG0V2NNTomvMwzaUgCuEyFYRasltoPY9KDIu+3N/8AFy3BMHcpJ3S//Z/npY5nSWVfIG7ArVU4yW/eAx3iip2qziOoBtmaDNeWwKwIifMGsMQuzTrTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570072; c=relaxed/simple;
-	bh=6X+PW+vRjf4mGgnH1RyG/vvbxg7eTeywqNduZO0Rhsw=;
+	s=arc-20240116; t=1758570412; c=relaxed/simple;
+	bh=vyz8fwbwgyLHVuFCkwQBjEuq92S9vukhPRQTjoPXXuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AehoPNLPb2194P/ekORR74SZbZJ2suZs1G4R3/S5eUcEdbOsznvXtZmMQ+xQiFZfwc+MRxW8PcxgIRqt6bn6HqM63l7J972YdiudUaGv3ID7k3mkBzWu8tOfYSf54+5plp6aX23gbymBadi0rkQGJtFIDSVgKTatUUbM/r+lsnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIF1drV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FEDC4CEF0;
-	Mon, 22 Sep 2025 19:41:11 +0000 (UTC)
+	 MIME-Version; b=hIbcjUZY/nLkl+xTUuwEYtdnNEDtID8XhKG+rdbT5ZtRZ7MzzLJk6p/mFXfJDkpOxk7Ovd7CudWbI8O6nSUdT5H3KiUQZgLlI0hN79Pr57s9iNVkN7HiyZm1NpITVpiVM846D/zqOrzPC4+u3fcqINI8v5FTnBAdQScSBJ8Aisc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWals01x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1A5C4CEF0;
+	Mon, 22 Sep 2025 19:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570071;
-	bh=6X+PW+vRjf4mGgnH1RyG/vvbxg7eTeywqNduZO0Rhsw=;
+	s=korg; t=1758570412;
+	bh=vyz8fwbwgyLHVuFCkwQBjEuq92S9vukhPRQTjoPXXuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIF1drV4cCSKXPRMKSbHSEM1MUe/qDvlwWjAA6zSGESql2V26lKXrS56D+TxPcUJx
-	 wxAaeXOQ2OEiKHa9VpC60OaLKkHPEzGJZ2UFKQINIxNj2w+s3YMnaYoMMvvc4Ul+GK
-	 FOLBXqI+pOiALM0Dn2El+gUa+45m+ZFd+hT8BySE=
+	b=GWals01xCayvuviRMxThsXYExsgk/dUC/vjHzlbPjD0rF4rTFR4eRi2czOi9IeOC8
+	 WlIxFzQ8opWDZ/nsm4YMUkg+FnnurdK/yycQ7q2MPHmckI5emyQH/ihJ/jG4q1mz7G
+	 0/KcAwf2Duv+AlWOBo1DG02rodBK+lXhOFiHZ5LE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.12 104/105] minmax.h: simplify the variants of clamp()
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 127/149] smb: client: make use of smbdirect_socket->recv_io.expected
 Date: Mon, 22 Sep 2025 21:30:27 +0200
-Message-ID: <20250922192411.577435194@linuxfoundation.org>
+Message-ID: <20250922192416.077695912@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +67,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 495bba17cdf95e9703af1b8ef773c55ef0dfe703 ]
+[ Upstream commit bbdbd9ae47155da65aa0c1641698a44d85c2faa2 ]
 
-Always pass a 'type' through to __clamp_once(), pass '__auto_type' from
-clamp() itself.
+The expected incoming message type can be per connection.
 
-The expansion of __types_ok3() is reasonable so it isn't worth the added
-complexity of avoiding it when a fixed type is used for all three values.
-
-Link: https://lkml.kernel.org/r/8f69f4deac014f558bab186444bac2e8@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: f57e53ea2523 ("smb: client: let recv_done verify data_offset, data_length and remaining_data_length")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ fs/smb/client/smbdirect.c | 22 ++++++++++++++--------
+ fs/smb/client/smbdirect.h |  7 -------
+ 2 files changed, 14 insertions(+), 15 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -183,29 +183,29 @@
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index b9bb531717a65..a6aa2c609dc3b 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -383,6 +383,7 @@ static bool process_negotiation_response(
+ 			info->max_frmr_depth * PAGE_SIZE);
+ 	info->max_frmr_depth = sp->max_read_write_size / PAGE_SIZE;
  
--#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
--	__auto_type uval = (val);						\
--	__auto_type ulo = (lo);							\
--	__auto_type uhi = (hi);							\
-+#define __clamp_once(type, val, lo, hi, uval, ulo, uhi) ({			\
-+	type uval = (val);							\
-+	type ulo = (lo);							\
-+	type uhi = (hi);							\
- 	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
- 	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
- 		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
++	sc->recv_io.expected = SMBDIRECT_EXPECT_DATA_TRANSFER;
+ 	return true;
+ }
  
--#define __careful_clamp(val, lo, hi) \
--	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-+#define __careful_clamp(type, val, lo, hi) \
-+	__clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+@@ -408,7 +409,6 @@ static void smbd_post_send_credits(struct work_struct *work)
+ 			if (!response)
+ 				break;
  
- /**
-- * clamp - return a value clamped to a given range with strict typechecking
-+ * clamp - return a value clamped to a given range with typechecking
-  * @val: current value
-  * @lo: lowest allowable value
-  * @hi: highest allowable value
-  *
-- * This macro does strict typechecking of @lo/@hi to make sure they are of the
-- * same type as @val.  See the unnecessary pointer comparisons.
-+ * This macro checks @val/@lo/@hi to make sure they have compatible
-+ * signedness.
-  */
--#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
-+#define clamp(val, lo, hi) __careful_clamp(__auto_type, val, lo, hi)
+-			response->type = SMBD_TRANSFER_DATA;
+ 			response->first_segment = false;
+ 			rc = smbd_post_recv(info, response);
+ 			if (rc) {
+@@ -445,10 +445,11 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	struct smbd_response *response =
+ 		container_of(wc->wr_cqe, struct smbd_response, cqe);
+ 	struct smbd_connection *info = response->info;
++	struct smbdirect_socket *sc = &info->socket;
+ 	int data_length = 0;
  
- /**
-  * clamp_t - return a value clamped to a given range using a given type
-@@ -217,7 +217,7 @@
-  * This macro does no typechecking and uses temporary variables of type
-  * @type to make all the comparisons.
-  */
--#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
-+#define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
+ 	log_rdma_recv(INFO, "response=0x%p type=%d wc status=%d wc opcode %d byte_len=%d pkey_index=%u\n",
+-		      response, response->type, wc->status, wc->opcode,
++		      response, sc->recv_io.expected, wc->status, wc->opcode,
+ 		      wc->byte_len, wc->pkey_index);
  
- /**
-  * clamp_val - return a value clamped to a given range using val's type
-@@ -230,7 +230,7 @@
-  * type and @lo and @hi are literals that will otherwise be assigned a signed
-  * integer type.
-  */
--#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
-+#define clamp_val(val, lo, hi) __careful_clamp(typeof(val), val, lo, hi)
+ 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
+@@ -463,9 +464,9 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		response->sge.length,
+ 		DMA_FROM_DEVICE);
  
- /*
-  * Do not check the array parameter using __must_be_array().
+-	switch (response->type) {
++	switch (sc->recv_io.expected) {
+ 	/* SMBD negotiation response */
+-	case SMBD_NEGOTIATE_RESP:
++	case SMBDIRECT_EXPECT_NEGOTIATE_REP:
+ 		dump_smbdirect_negotiate_resp(smbd_response_payload(response));
+ 		info->full_packet_received = true;
+ 		info->negotiate_done =
+@@ -475,7 +476,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		return;
+ 
+ 	/* SMBD data transfer packet */
+-	case SMBD_TRANSFER_DATA:
++	case SMBDIRECT_EXPECT_DATA_TRANSFER:
+ 		data_transfer = smbd_response_payload(response);
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+ 
+@@ -526,13 +527,17 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			put_receive_buffer(info, response);
+ 
+ 		return;
++
++	case SMBDIRECT_EXPECT_NEGOTIATE_REQ:
++		/* Only server... */
++		break;
+ 	}
+ 
+ 	/*
+ 	 * This is an internal error!
+ 	 */
+-	log_rdma_recv(ERR, "unexpected response type=%d\n", response->type);
+-	WARN_ON_ONCE(response->type != SMBD_TRANSFER_DATA);
++	log_rdma_recv(ERR, "unexpected response type=%d\n", sc->recv_io.expected);
++	WARN_ON_ONCE(sc->recv_io.expected != SMBDIRECT_EXPECT_DATA_TRANSFER);
+ error:
+ 	put_receive_buffer(info, response);
+ 	smbd_disconnect_rdma_connection(info);
+@@ -1067,10 +1072,11 @@ static int smbd_post_recv(
+ /* Perform SMBD negotiate according to [MS-SMBD] 3.1.5.2 */
+ static int smbd_negotiate(struct smbd_connection *info)
+ {
++	struct smbdirect_socket *sc = &info->socket;
+ 	int rc;
+ 	struct smbd_response *response = get_receive_buffer(info);
+ 
+-	response->type = SMBD_NEGOTIATE_RESP;
++	sc->recv_io.expected = SMBDIRECT_EXPECT_NEGOTIATE_REP;
+ 	rc = smbd_post_recv(info, response);
+ 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=0x%llx iov.length=%u iov.lkey=0x%x\n",
+ 		       rc, response->sge.addr,
+diff --git a/fs/smb/client/smbdirect.h b/fs/smb/client/smbdirect.h
+index ea04ce8a9763a..bf50544eaf02d 100644
+--- a/fs/smb/client/smbdirect.h
++++ b/fs/smb/client/smbdirect.h
+@@ -157,11 +157,6 @@ struct smbd_connection {
+ 	unsigned int count_send_empty;
+ };
+ 
+-enum smbd_message_type {
+-	SMBD_NEGOTIATE_RESP,
+-	SMBD_TRANSFER_DATA,
+-};
+-
+ /* Maximum number of SGEs used by smbdirect.c in any send work request */
+ #define SMBDIRECT_MAX_SEND_SGE	6
+ 
+@@ -187,8 +182,6 @@ struct smbd_response {
+ 	struct ib_cqe cqe;
+ 	struct ib_sge sge;
+ 
+-	enum smbd_message_type type;
+-
+ 	/* Link to receive queue or reassembly queue */
+ 	struct list_head list;
+ 
+-- 
+2.51.0
+
 
 
 
