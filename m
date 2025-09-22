@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-181073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89CAEB92D37
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9EFB92DFD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49DD6445A3E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E5952A77B9
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB3B27FB2D;
-	Mon, 22 Sep 2025 19:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D382F39BF;
+	Mon, 22 Sep 2025 19:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDIxKvLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/1gkgsT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9975FC8E6;
-	Mon, 22 Sep 2025 19:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7552E285C;
+	Mon, 22 Sep 2025 19:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569621; cv=none; b=kMcVWXaCrHxJdk5qLlsK3haxLfsRJS7kHYQz/mJ4qvGTFK3vywYrnHZxu5pU+gEzUc2FM+lJp7TdwLm9fvpMtztOGgPXcbZ4CJg28Y7PGugrCU+fF/op1wFaJAYU6OwFOqdWF2LE+Evo39U39MEdoQTER+6Ehi32fFivE+39w+k=
+	t=1758569770; cv=none; b=DB/vBtZXIs553illi9iTvfVXJQVy6uyqOaXNfPPaMRYEbpISUUQdSi2GAGHoD3TUl5DhTmfqV9RrtjH0VWuni9lH+8qIi7Xh0+lg/5y3+LMiF9204YQs690kCdfDnIL+9dDArE2gnHz715jqC7keb1VqY6pB6QAM5uKChRdgGNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569621; c=relaxed/simple;
-	bh=gstpobnaU9uYt/GVWO2hSRTHIQgRpmRRsOyUmBJvODc=;
+	s=arc-20240116; t=1758569770; c=relaxed/simple;
+	bh=JjM9vMMWmw7ibm6gnV/OXnghTDEb9zkBy6N4HoPolgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buEjXwIaWJnI6svyi6GI61TH1Bfmt+HnIyOxj/ukAKDG7JPPkUR3pWR1lRnFbiOgWPuBhFOrqxhotjtqCK3nirZFRK0xX5xEojHL8KoJjbs2xDan9lrvzd9N57ALTCeteeXDohzzSmHitEgfdEcZEvXJ1iSbpCfdIRoM7GOhijc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDIxKvLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD09C4CEF0;
-	Mon, 22 Sep 2025 19:33:41 +0000 (UTC)
+	 MIME-Version; b=cYMuhBvp/v/BZZoU/UkSK6GdEqG4I4YS83t07FJXb1OEUyBrHs2TUX7pWy2+pT1xJCVhTlBTEssdXZ8FOh4F3HiET9o9OeCRCbN13oh4wEg2rKVrauVO6W6FiWOO9SoA4RzbCbuJDLCp16msJ/MbpNtGdAW4bGtvuzS+8ylP10g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/1gkgsT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D436EC4CEF0;
+	Mon, 22 Sep 2025 19:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569621;
-	bh=gstpobnaU9uYt/GVWO2hSRTHIQgRpmRRsOyUmBJvODc=;
+	s=korg; t=1758569770;
+	bh=JjM9vMMWmw7ibm6gnV/OXnghTDEb9zkBy6N4HoPolgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDIxKvLmoNIO6G++547C2h59pdswSfMsKqMKU/iEZmZXMGEsXLsaWy20ubi1Qd8h6
-	 hRsktIsrjb5n8LiiqSh1ebQJbBU5Nr3CNrwwOovM/vbr+DDnOoaJwMvYsff0NXBGxO
-	 L2Q07DxsN5rbN0/Qp2j2hJH047Bd7v3ny2XUKbSg=
+	b=1/1gkgsTvpkHAuRVcxwtkdYnMkwmNlkXQC+Adt+oypeXjzImUmvKQgWKaUYL/8N6N
+	 ikMWhL8+iptkquQRi7QEsRjL64dtb6VUoHCjB/AynAMm3PbKVQLO7tdOxh7VCpPgJ2
+	 Uxl7Flc5bjF2DHAy8bGmcSTv6GLm/4DEEX6u+7mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Ankur Tyagi <ankur.tyagi85@gmail.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 57/61] ASoC: qcom: q6apm-lpass-dai: close graphs before opening a new one
+Subject: [PATCH 6.6 50/70] ASoC: wm8940: Correct typo in control name
 Date: Mon, 22 Sep 2025 21:29:50 +0200
-Message-ID: <20250922192405.202314697@linuxfoundation.org>
+Message-ID: <20250922192405.952267245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit c52615e494f17f44b076ac8ae5a53cfc0041a0dd ]
+[ Upstream commit b4799520dcd6fe1e14495cecbbe9975d847cd482 ]
 
-On multiple prepare calls, its possible that the playback graphs are
-not unloaded from the DSP, which can have some wierd side-effects,
-one of them is that the data not consumed without any errors.
-
-Fixes: c2ac3aec474d("ASoC: qcom: q6apm-lpass-dai: unprepare stream if its already prepared")
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230323164403.6654-2-srinivas.kandagatla@linaro.org
+Fixes: 0b5e92c5e020 ("ASoC WM8940 Driver")
+Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Link: https://patch.msgid.link/20250821082639.1301453-3-ckeepax@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 68f27f7c7708 ("ASoC: qcom: q6apm-lpass-dais: Fix NULL pointer dereference if source graph failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/wm8940.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-@@ -130,6 +130,9 @@ static int q6apm_lpass_dai_prepare(struc
- 	if (dai_data->is_port_started[dai->id]) {
- 		q6apm_graph_stop(dai_data->graph[dai->id]);
- 		dai_data->is_port_started[dai->id] = false;
-+
-+		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+			q6apm_graph_close(dai_data->graph[dai->id]);
- 	}
- 
- 	/**
+diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
+index eff7d1369d01a..39d2c8e85d9db 100644
+--- a/sound/soc/codecs/wm8940.c
++++ b/sound/soc/codecs/wm8940.c
+@@ -220,7 +220,7 @@ static const struct snd_kcontrol_new wm8940_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Digital Capture Volume", WM8940_ADCVOL,
+ 		       0, 255, 0, wm8940_adc_tlv),
+ 	SOC_ENUM("Mic Bias Level", wm8940_mic_bias_level_enum),
+-	SOC_SINGLE_TLV("Capture Boost Volue", WM8940_ADCBOOST,
++	SOC_SINGLE_TLV("Capture Boost Volume", WM8940_ADCBOOST,
+ 		       8, 1, 0, wm8940_capture_boost_vol_tlv),
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", WM8940_SPKVOL,
+ 		       0, 63, 0, wm8940_spk_vol_tlv),
+-- 
+2.51.0
+
 
 
 
