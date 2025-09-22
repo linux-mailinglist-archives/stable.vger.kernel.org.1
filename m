@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-181346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C46FB93104
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C51B92D07
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330921885126
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2BEA190585A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA3E2F5A1A;
-	Mon, 22 Sep 2025 19:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD912DF714;
+	Mon, 22 Sep 2025 19:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z99uQW2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkVwmyp1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A812F39CE;
-	Mon, 22 Sep 2025 19:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77947C8E6;
+	Mon, 22 Sep 2025 19:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570310; cv=none; b=ojctF1Op7x7MorO6K8kT/Skol0qdCuXhXDSPLgQmYogJnNw9I4Rf6F1HynSEmdrQOUUtjUue7u6Ui0HicUmHKBy33KyzPdp2NLNvaZaFF0ab8NNEg3Z0ZvSENvpTHKKITNnYNw1YKG+zS8zQkUqBrsip0k1F7E8LfYXXiuFaH4Q=
+	t=1758569589; cv=none; b=W2jtPs4du2u4Knn5eXUAU0YmnkjaBwF8FAB75pl1rgrvRxWzcANmmeqB0nKxDbJJH76+7ZjHBsdE9InntroOu6Hkj2NDcPbWZBXdbqYkpo0bDS0pOug9++HbUgZ/Wqa6hFpECR5Y49PVK6RwiZv4PTv8aHUHm9Ugdbr/BWKnbQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570310; c=relaxed/simple;
-	bh=8eY3TbBNL6e2AuJaBbFVxluJI6dfcu/Fetiy8EtHOEs=;
+	s=arc-20240116; t=1758569589; c=relaxed/simple;
+	bh=2ByDSLs7NqvWFbJLkjSBrvZ+BUTyCEhlXonp8/hdato=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5/U3kiissebEQDErp01qTuwYO5TsqHQ2oS7EFIKOkqQlHXzwRNPMcwb69VKFB+lOYCO9iIMC1/h4RBF/G5M82Ol8RHGcoHristC0Y+CzxMSk7GPUeiFBB8UrKlMTOyRUWpWPNDJKPnz825twHMmcRU3AtO2FqS6IN7zOgg7/VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z99uQW2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4848C4CEF0;
-	Mon, 22 Sep 2025 19:45:09 +0000 (UTC)
+	 MIME-Version; b=DLEvXjRt+AjUUNiMdKBxnJoIahuwTl3WT8g/pacwNBv5gxV7qRcSOFTFpV+aEE1+qrsLr96iydJ2QhSk9F6dQtkEwmh+nglX8rhMBaPwANv6g7ZSwfPIZ9BOoUv4NFwftN2NlMLfaCObmOARGu+nO8HVpXkui+qEF61Cmtn6ZEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkVwmyp1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0E2C4CEF0;
+	Mon, 22 Sep 2025 19:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570310;
-	bh=8eY3TbBNL6e2AuJaBbFVxluJI6dfcu/Fetiy8EtHOEs=;
+	s=korg; t=1758569589;
+	bh=2ByDSLs7NqvWFbJLkjSBrvZ+BUTyCEhlXonp8/hdato=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z99uQW2ptSALSwZSkYX5PbGyc7Jnh6NAuX37kr9jFvxZKWS1RY/CgQ8EOzGKqLx6b
-	 apLlvYUabwn1LSIQaSRZE81TfdOszd7uv3hkqWfdaIU8ZiYtD0XJ7xbw10bKH0d8u5
-	 qeBL67Z6LtyrT7xb1Fn+YG+eFtk6ZYlG2TirrbQ8=
+	b=qkVwmyp1pghv42tgtXBkiUr2WGE2pKoD8EIffGHvLRVKmqeUEnYLd9ukAJZ9TX5xK
+	 fjGZd4CKVCh3lOciE6aOW9YrJKEcQgawGHW8yZiuDA+F3SiRZi6PDqdQgA0h76UU2b
+	 U9cLJlkdTPztyvVFhBwVVpNSxBQ4HIJebUk9KiK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.16 085/149] ASoC: qcom: audioreach: Fix lpaif_type configuration for the I2S interface
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 52/61] xhci: dbc: Fix full DbC transfer ring after several reconnects
 Date: Mon, 22 Sep 2025 21:29:45 +0200
-Message-ID: <20250922192415.029563502@linuxfoundation.org>
+Message-ID: <20250922192405.060107640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 5f1af203ef964e7f7bf9d32716dfa5f332cc6f09 upstream.
+[ Upstream commit a5c98e8b1398534ae1feb6e95e2d3ee5215538ed ]
 
-Fix missing lpaif_type configuration for the I2S interface.
-The proper lpaif interface type required to allow DSP to vote
-appropriate clock setting for I2S interface.
+Pending requests will be flushed on disconnect, and the corresponding
+TRBs will be turned into No-op TRBs, which are ignored by the xHC
+controller once it starts processing the ring.
 
-Fixes: 25ab80db6b133 ("ASoC: qdsp6: audioreach: add module configuration command helpers")
+If the USB debug cable repeatedly disconnects before ring is started
+then the ring will eventually be filled with No-op TRBs.
+No new transfers can be queued when the ring is full, and driver will
+print the following error message:
+
+    "xhci_hcd 0000:00:14.0: failed to queue trbs"
+
+This is a normal case for 'in' transfers where TRBs are always enqueued
+in advance, ready to take on incoming data. If no data arrives, and
+device is disconnected, then ring dequeue will remain at beginning of
+the ring while enqueue points to first free TRB after last cancelled
+No-op TRB.
+s
+Solve this by reinitializing the rings when the debug cable disconnects
+and DbC is leaving the configured state.
+Clear the whole ring buffer and set enqueue and dequeue to the beginning
+of ring, and set cycle bit to its initial state.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
-Message-ID: <20250908053631.70978-2-mohammad.rafi.shaik@oss.qualcomm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/audioreach.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-dbgcap.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/audioreach.c
-+++ b/sound/soc/qcom/qdsp6/audioreach.c
-@@ -971,6 +971,7 @@ static int audioreach_i2s_set_media_form
- 	param_data->param_id = PARAM_ID_I2S_INTF_CFG;
- 	param_data->param_size = ic_sz - APM_MODULE_PARAM_DATA_SIZE;
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -447,6 +447,25 @@ static void xhci_dbc_ring_init(struct xh
+ 	xhci_initialize_ring_info(ring, 1);
+ }
  
-+	intf_cfg->cfg.lpaif_type = module->hw_interface_type;
- 	intf_cfg->cfg.intf_idx = module->hw_interface_idx;
- 	intf_cfg->cfg.sd_line_idx = module->sd_line_idx;
++static int xhci_dbc_reinit_ep_rings(struct xhci_dbc *dbc)
++{
++	struct xhci_ring *in_ring = dbc->eps[BULK_IN].ring;
++	struct xhci_ring *out_ring = dbc->eps[BULK_OUT].ring;
++
++	if (!in_ring || !out_ring || !dbc->ctx) {
++		dev_warn(dbc->dev, "Can't re-init unallocated endpoints\n");
++		return -ENODEV;
++	}
++
++	xhci_dbc_ring_init(in_ring);
++	xhci_dbc_ring_init(out_ring);
++
++	/* set ep context enqueue, dequeue, and cycle to initial values */
++	xhci_dbc_init_ep_contexts(dbc);
++
++	return 0;
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -871,7 +890,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 			dev_info(dbc->dev, "DbC cable unplugged\n");
+ 			dbc->state = DS_ENABLED;
+ 			xhci_dbc_flush_requests(dbc);
+-
++			xhci_dbc_reinit_ep_rings(dbc);
+ 			return EVT_DISC;
+ 		}
+ 
+@@ -881,7 +900,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 			writel(portsc, &dbc->regs->portsc);
+ 			dbc->state = DS_ENABLED;
+ 			xhci_dbc_flush_requests(dbc);
+-
++			xhci_dbc_reinit_ep_rings(dbc);
+ 			return EVT_DISC;
+ 		}
  
 
 
