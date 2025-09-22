@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-181230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9110FB92F83
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:41:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0B6B92E29
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CD7A19077C6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:41:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17ABD447298
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC5031C587;
-	Mon, 22 Sep 2025 19:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4562F0C64;
+	Mon, 22 Sep 2025 19:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnvO2nXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tML+A54M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D531C57B;
-	Mon, 22 Sep 2025 19:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31CC2F0C5C;
+	Mon, 22 Sep 2025 19:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570014; cv=none; b=pYiehfZZJOyDi2xQmXsmQjTytKaQ2GFqnrmwwHxjvlvYF6G3tAHAzd9+9NuoBTTYCEVX0yIjlT6lf1cTGFENR7w0DxNTg6kQETMpsziNC7FhcnzYHMFpkT075yvqgnWFdgC24IJB7fN9llpNUwN9oth8DwpWLtQwwRUElfEud0Y=
+	t=1758569795; cv=none; b=dgtYigEC/gnAxNyFPy/2krAsXYWD9f43ogI4CVrLZG2BWodxDsbDrz+v+27nCTcDbybN+Eqem+dU+2mpQgWpORi1AScydQvRoh29x4mjIV4JAiz0aDYhUwE3nJfqeH9MoV4EUYHmX8Dq5ZIe4gqm394WqYmZgRQ4lAFVwOG6dwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570014; c=relaxed/simple;
-	bh=QP2hKpTZRQ3zxndFKZXgtWtgw5k12ckoClCPf71XHWU=;
+	s=arc-20240116; t=1758569795; c=relaxed/simple;
+	bh=hdNPuewVEG/0/jFF9KCu3Ldqm8roAHH3pugLA8IXilw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UU55BM5O544q/4QOhfWdeKJNxXz2t1d0bKy6A0K2c7c5EYst7CJt1lvhTtm+BG2y4En2XgMF3uKVaxJx2rcCQUEKl+uysWLycTfXtl9b3qN4VPlMOMFMx2PxHuBNgekgloT8Gq87JPJ5+owrdohEhMWmhS0Qr0AQmp4D1ttbchs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnvO2nXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1929BC116C6;
-	Mon, 22 Sep 2025 19:40:12 +0000 (UTC)
+	 MIME-Version; b=rWyhafzcxSSoA7VNOjJMIRBD9OhbFiPJmsdciX5SoQq9FWEZhJGJ89VR0cBpFgURNjZFyqbl08jDoRc5WI1MkJPobeTJldVOtOT5XYLwW7JusZouc5loaJXj7Ondr2y8TcHSI0QwZMUtAGCJmjEkOE554RH8Ska5eJfWekVS+sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tML+A54M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8806FC4CEF0;
+	Mon, 22 Sep 2025 19:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570013;
-	bh=QP2hKpTZRQ3zxndFKZXgtWtgw5k12ckoClCPf71XHWU=;
+	s=korg; t=1758569794;
+	bh=hdNPuewVEG/0/jFF9KCu3Ldqm8roAHH3pugLA8IXilw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnvO2nXlje37o5Pl7g3s3Fg69HYwouxjbQccBd5GeGfw/mlQ3Fpy/BT+UGXoenlhE
-	 1+VQt8YB8yCZKq77f2Di5+8r5WiFcpLMSG7XB0UbEfChctOkM6vECee6T7hSHqbO+j
-	 aWMDm3VzedXQNMiTlBVVU3FVPy1cdvdLT/i9/VeU=
+	b=tML+A54Mr6cPPZMFnboGGHq+sppOUiCI6ryT9b90Sd3xxvKJoCgR5cYsU5c5wU7zZ
+	 578KSzXn8+GmGo7IKaLLAyqEUWONqFIdtLrx71CexX61BEb98Zketsk3Fen5tEWYUB
+	 6omutWt7sSJCS28rXW36nnXG+zcN+LA2l35EnDgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/105] drm/xe/tile: Release kobject for the failure path
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 59/70] selftests: mptcp: userspace pm: validate deny-join-id0 flag
 Date: Mon, 22 Sep 2025 21:29:59 +0200
-Message-ID: <20250922192410.887466867@linuxfoundation.org>
+Message-ID: <20250922192406.183370035@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 013e484dbd687a9174acf8f4450217bdb86ad788 ]
+commit 24733e193a0d68f20d220e86da0362460c9aa812 upstream.
 
-Call kobject_put() for the failure path to release the kobject
+The previous commit adds the MPTCP_PM_EV_FLAG_DENY_JOIN_ID0 flag. Make
+sure it is correctly announced by the other peer when it has been
+received.
 
-v2: remove extra newline. (Matt)
+pm_nl_ctl will now display 'deny_join_id0:1' when monitoring the events,
+and when this flag was set by the other peer.
 
-Fixes: e3d0839aa501 ("drm/xe/tile: Abort driver load for sysfs creation failure")
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://lore.kernel.org/r/20250819153950.2973344-2-shuicheng.lin@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit b98775bca99511cc22ab459a2de646cd2fa7241f)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-3-40171884ade8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in userspace_pm.sh, because of a difference in the context,
+  introduced by commit c66fb480a330 ("selftests: userspace pm: avoid
+  relaunching pm events"), which is not in this version. The same lines
+  can still be added at the same place. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_tile_sysfs.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/mptcp/pm_nl_ctl.c     |    7 +++++++
+ tools/testing/selftests/net/mptcp/userspace_pm.sh |   14 +++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_tile_sysfs.c b/drivers/gpu/drm/xe/xe_tile_sysfs.c
-index b804234a65516..9e1236a9ec673 100644
---- a/drivers/gpu/drm/xe/xe_tile_sysfs.c
-+++ b/drivers/gpu/drm/xe/xe_tile_sysfs.c
-@@ -44,16 +44,18 @@ int xe_tile_sysfs_init(struct xe_tile *tile)
- 	kt->tile = tile;
- 
- 	err = kobject_add(&kt->base, &dev->kobj, "tile%d", tile->id);
--	if (err) {
--		kobject_put(&kt->base);
--		return err;
--	}
-+	if (err)
-+		goto err_object;
- 
- 	tile->sysfs = &kt->base;
- 
- 	err = xe_vram_freq_sysfs_init(tile);
- 	if (err)
--		return err;
-+		goto err_object;
- 
- 	return devm_add_action_or_reset(xe->drm.dev, tile_sysfs_fini, tile);
+--- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
++++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+@@ -194,6 +194,13 @@ static int capture_events(int fd, int ev
+ 					fprintf(stderr, ",error:%u", *(__u8 *)RTA_DATA(attrs));
+ 				else if (attrs->rta_type == MPTCP_ATTR_SERVER_SIDE)
+ 					fprintf(stderr, ",server_side:%u", *(__u8 *)RTA_DATA(attrs));
++				else if (attrs->rta_type == MPTCP_ATTR_FLAGS) {
++					__u16 flags = *(__u16 *)RTA_DATA(attrs);
 +
-+err_object:
-+	kobject_put(&kt->base);
-+	return err;
- }
--- 
-2.51.0
-
++					/* only print when present, easier */
++					if (flags & MPTCP_PM_EV_FLAG_DENY_JOIN_ID0)
++						fprintf(stderr, ",deny_join_id0:1");
++				}
+ 
+ 				attrs = RTA_NEXT(attrs, msg_len);
+ 			}
+--- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
++++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+@@ -196,6 +196,9 @@ make_connection()
+ 		is_v6="v4"
+ 	fi
+ 
++	# set this on the client side only: will not affect the rest
++	ip netns exec "$ns2" sysctl -q net.mptcp.allow_join_initial_addr_port=0
++
+ 	# Capture netlink events over the two network namespaces running
+ 	# the MPTCP client and server
+ 	if [ -z "$client_evts" ]; then
+@@ -227,23 +230,28 @@ make_connection()
+ 	local client_token
+ 	local client_port
+ 	local client_serverside
++	local client_nojoin
+ 	local server_token
+ 	local server_serverside
++	local server_nojoin
+ 
+ 	client_token=$(mptcp_lib_evts_get_info token "$client_evts")
+ 	client_port=$(mptcp_lib_evts_get_info sport "$client_evts")
+ 	client_serverside=$(mptcp_lib_evts_get_info server_side "$client_evts")
++	client_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$client_evts")
+ 	server_token=$(mptcp_lib_evts_get_info token "$server_evts")
+ 	server_serverside=$(mptcp_lib_evts_get_info server_side "$server_evts")
++	server_nojoin=$(mptcp_lib_evts_get_info deny_join_id0 "$server_evts")
+ 
+ 	print_test "Established IP${is_v6} MPTCP Connection ns2 => ns1"
+-	if [ "$client_token" != "" ] && [ "$server_token" != "" ] && [ "$client_serverside" = 0 ] &&
+-		   [ "$server_serverside" = 1 ]
++	if [ "${client_token}" != "" ] && [ "${server_token}" != "" ] &&
++	   [ "${client_serverside}" = 0 ] && [ "${server_serverside}" = 1 ] &&
++	   [ "${client_nojoin:-0}" = 0 ] && [ "${server_nojoin:-0}" = 1 ]
+ 	then
+ 		test_pass
+ 		print_title "Connection info: ${client_addr}:${client_port} -> ${connect_addr}:${app_port}"
+ 	else
+-		test_fail "Expected tokens (c:${client_token} - s:${server_token}) and server (c:${client_serverside} - s:${server_serverside})"
++		test_fail "Expected tokens (c:${client_token} - s:${server_token}), server (c:${client_serverside} - s:${server_serverside}), nojoin (c:${client_nojoin} - s:${server_nojoin})"
+ 		mptcp_lib_result_print_all_tap
+ 		exit 1
+ 	fi
 
 
 
