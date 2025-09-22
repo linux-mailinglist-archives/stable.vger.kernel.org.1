@@ -1,200 +1,139 @@
-Return-Path: <stable+bounces-180975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29561B91DA3
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:08:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E97B91D9A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 17:08:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57A3420DC0
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:08:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 188282A2B9D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 15:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833402DE6E1;
-	Mon, 22 Sep 2025 15:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA1C2D8365;
+	Mon, 22 Sep 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="q0eZveY3";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="I1uIievU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e2pmWWJH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NomrlLZ0"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838624DCE2;
-	Mon, 22 Sep 2025 15:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDC02472A5;
+	Mon, 22 Sep 2025 15:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758553732; cv=none; b=Ma7s/6EBUSgrGV7zGLjQFf5NFjWnRDKnT1oTrLg0VEWhoEBFTW/EyZgbLh2X8p8lTtqFBtNBAd7DNFO3Qhg8BTfFBgsFhppxm3DGOZD2YACguf37nHjEmlcnPeHJ1Ku5a9cEvlknvJH/7HhrY1J96YGocK3nEc5pAt0g3HsLeuo=
+	t=1758553719; cv=none; b=V2CPdoTqfTPze7crkCBkB+UwroZh7tfCeajbYRr27XTBPIN87iLkoSTAnuOeH91BsM+ztuwV3JCYTUjK3+qfiIvYC9MaVys4l4PWh6fvayfUBVyMCUWPQRJLNEO15I7A1PHAZMC30FwGmXtgAsEyo4djp3dgI0TlUaevJ/q3snA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758553732; c=relaxed/simple;
-	bh=Zbs78Nc1dg8s/oapblfN+yFQqJ1eep5DVjpPreRzEY8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WuRoM7BGF7CNi8rk53rAkBXu4UtSP4Lz+xuA2xgwRiKBFZkfnRJ3oMwJi8BXre6c4wsiei4oAUF0FJcMMLPeZTRhUCtSbL4Y7QlJGfgEr4VqdhJucnUUAMhJVX/QPU/EYUOgXG14uFBDf13KdUi0JzydKqADqw7icrkfqcjLAVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=q0eZveY3; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=I1uIievU; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4cVmhp1t38z9tfK;
-	Mon, 22 Sep 2025 17:08:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1758553722;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2ZMASazH2tqE9wH24FtNKE/H5QmQBrIjyM7uFPibD+k=;
-	b=q0eZveY3sj2xA1anv2vds2ex+MgpP2WyGgrGyqlHLbeqF6p/NiPwGP8PgFctEyZhNB96a9
-	LfpGD25L2XBxusql168syZPtIjoMPIXWNKTeS4GxyefPyTa5qdl1AA3eGQKnMvbCPxmMVF
-	aL54RecCJiawIHTsiIK6dVUykJ6RJHMFZHvMVFNs9vGyEiAL6zQhUK2gLy3vV4y6HVuH9U
-	MpDd5yxUo3Nu/ze/o/gV/KPbc6AO+y1ZoVXxsYp3n5pYNGqw9+nKPCYg5V+D3YHpZ2bTHF
-	LknDQp7JOwg/dX3VzsVcIzghrS6lIIqQabftaUs3NfM4JAXOk0pknxuqOPyX/Q==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=I1uIievU;
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut+renesas@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=marek.vasut+renesas@mailbox.org
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1758553719;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2ZMASazH2tqE9wH24FtNKE/H5QmQBrIjyM7uFPibD+k=;
-	b=I1uIievUjGylN+Zyk+3v84KBYNIbG+ktUB11DnxOBuxk5AOxv5v4xEkp7cAwRSpzYQBqMr
-	hATfRqE1rjp5GLR7Nq9+uwzB3CG6ssZb5ZF6QzRixMri6mZ4OlyL1qLdTH3NUoLWnNCg1E
-	KKbN5A2PQtfy8QPaIR/MKiPv0M079KtMhzEAnz58PVdB3d9GzIqlH9/SC/3axiq9OaYDJv
-	nTMCxoS+U7crQ26bkShW3R4aO5fZUEeNXN4DmnxjB7UI6EMNxnVWXYldMu45+k2OFfKKwf
-	P9kw+z5T5Q1Ith/WLn1ss5KhlBkHc1jua+9rJMB3/q9r893iVeFOLF0MwPvpzg==
-To: linux-pci@vger.kernel.org
-Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	stable@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH] PCI: tegra: Convert struct tegra_msi mask_lock into raw spinlock
-Date: Mon, 22 Sep 2025 17:07:48 +0200
-Message-ID: <20250922150811.88450-1-marek.vasut+renesas@mailbox.org>
+	s=arc-20240116; t=1758553719; c=relaxed/simple;
+	bh=LnaYjDNVDDpRfnQ+0cx0wyO+3y5HGPz+Eo2XZYOsIwE=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=eX23W8GbAXemJdgpjfqZpoypH19J/zZiCCWTgRdvd3JCcWfpJfif6DgzHExZ5ambi0jT+/VyLE5/pboTP8GvpbehqscjJrbMUEd7vAKKfYLJdjNZBFbPy8cCqv3WKqLb6qNQeAV64Do3bNSAU/Fc9Y/wt+aCJ523zrfrQykwBNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e2pmWWJH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NomrlLZ0; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 22 Sep 2025 15:08:29 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1758553714;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uqHx+FCqfW/ilWKgNBamj/Qr2VHNuXNAIDaLW+7mwcs=;
+	b=e2pmWWJH8ayqh10B6L+YlCcdXrUXbSI9egovU72VgF2akzfNV9XCcC7mysqku/nmT57JDS
+	tqVrov2FH15sIW2mnmRmfppLepRpPCZi6BaQAzYynwau6dUdn8JDwIfKVb/Pm6fxQy7/vN
+	53z5TrWTLcvkvuK8T61mPbqJbMNwlepmQMh+X3ksHNd8YozfwCrS9cedTH5IeivczgEDLd
+	YheknEKsBAT+dVdRZm0fdU/1fq24ZKAOH/8GSWM5yvVKbmaUAf8mjja/gY5/uCPbzldxGs
+	U94WLL2hsj76HV75aJA8/EDHUTr2vxpwtUyblO6ADpiBhgvp6o2agzpWAZsRfw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1758553714;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uqHx+FCqfW/ilWKgNBamj/Qr2VHNuXNAIDaLW+7mwcs=;
+	b=NomrlLZ0xFnGr84vqheRUSavDwqr6TL4XtEuV3Tyh38r/v8RBlSvzMkYKhUaCJHZEHZheP
+	81iaetAQ1xgZjgCQ==
+From: "tip-bot2 for Alexander Popov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/Kconfig: Reenable PTDUMP on i386
+Cc: Alexander Popov <alex.popov@linux.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250921205819.332773-1-alex.popov@linux.com>
+References: <20250921205819.332773-1-alex.popov@linux.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: e023a2e4296406a9770
-X-MBO-RS-META: g99nkdyejwjh34us8r1hnna15cgyjkxf
-X-Rspamd-Queue-Id: 4cVmhp1t38z9tfK
+Message-ID: <175855371001.709179.12697961090213182246.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-The tegra_msi_irq_unmask() function may be called from a PCI driver
-request_threaded_irq() function. This triggers kernel/irq/manage.c
-__setup_irq() which locks raw spinlock &desc->lock descriptor lock
-and with that descriptor lock held, calls tegra_msi_irq_unmask().
+The following commit has been merged into the x86/urgent branch of tip:
 
-Since the &desc->lock descriptor lock is a raw spinlock , and the
-tegra_msi .mask_lock is not a raw spinlock, this setup triggers
-'BUG: Invalid wait context' with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+Commit-ID:     4f115596133fa168bac06bb34c6efd8f4d84c22e
+Gitweb:        https://git.kernel.org/tip/4f115596133fa168bac06bb34c6efd8f4d8=
+4c22e
+Author:        Alexander Popov <alex.popov@linux.com>
+AuthorDate:    Sun, 21 Sep 2025 23:58:15 +03:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 22 Sep 2025 14:40:17 +02:00
 
-Use scoped_guard() to simplify the locking.
+x86/Kconfig: Reenable PTDUMP on i386
 
-Fixes: 2c99e55f7955 ("PCI: tegra: Convert to MSI domains")
+The commit
+
+  f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
+
+has broken PTDUMP and the Kconfig options that use it on ARCH=3Di386, includi=
+ng
+CONFIG_DEBUG_WX.
+
+CONFIG_GENERIC_PTDUMP was renamed into CONFIG_ARCH_HAS_PTDUMP, but it was
+mistakenly moved from "config X86" to "config X86_64". That made PTDUMP
+unavailable for i386.
+
+Move CONFIG_ARCH_HAS_PTDUMP back to "config X86" to fix it.
+
+  [ bp: Massage commit message. ]
+
+Fixes: f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 ---
-Cc: "Krzysztof Wilczyński" <kwilczynski@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-pci@vger.kernel.org
-Cc: linux-tegra@vger.kernel.org
----
-NOTE: I don't have tegra hardware to test, this is based on input from Geert
-      https://patchwork.kernel.org/project/linux-pci/patch/20250909162707.13927-2-marek.vasut+renesas@mailbox.org/#26574451
----
- drivers/pci/controller/pci-tegra.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
-index bb88767a37979..942ddfca3bf6b 100644
---- a/drivers/pci/controller/pci-tegra.c
-+++ b/drivers/pci/controller/pci-tegra.c
-@@ -14,6 +14,7 @@
-  */
- 
- #include <linux/clk.h>
-+#include <linux/cleanup.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/export.h>
-@@ -270,7 +271,7 @@ struct tegra_msi {
- 	DECLARE_BITMAP(used, INT_PCI_MSI_NR);
- 	struct irq_domain *domain;
- 	struct mutex map_lock;
--	spinlock_t mask_lock;
-+	raw_spinlock_t mask_lock;
- 	void *virt;
- 	dma_addr_t phys;
- 	int irq;
-@@ -1581,14 +1582,13 @@ static void tegra_msi_irq_mask(struct irq_data *d)
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
- 
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value &= ~BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value &= ~BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
-+	}
- }
- 
- static void tegra_msi_irq_unmask(struct irq_data *d)
-@@ -1596,14 +1596,13 @@ static void tegra_msi_irq_unmask(struct irq_data *d)
- 	struct tegra_msi *msi = irq_data_get_irq_chip_data(d);
- 	struct tegra_pcie *pcie = msi_to_pcie(msi);
- 	unsigned int index = d->hwirq / 32;
--	unsigned long flags;
- 	u32 value;
- 
--	spin_lock_irqsave(&msi->mask_lock, flags);
--	value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
--	value |= BIT(d->hwirq % 32);
--	afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
--	spin_unlock_irqrestore(&msi->mask_lock, flags);
-+	scoped_guard(raw_spinlock_irqsave, &msi->mask_lock) {
-+		value = afi_readl(pcie, AFI_MSI_EN_VEC(index));
-+		value |= BIT(d->hwirq % 32);
-+		afi_writel(pcie, value, AFI_MSI_EN_VEC(index));
-+	}
- }
- 
- static void tegra_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
-@@ -1711,7 +1710,7 @@ static int tegra_pcie_msi_setup(struct tegra_pcie *pcie)
- 	int err;
- 
- 	mutex_init(&msi->map_lock);
--	spin_lock_init(&msi->mask_lock);
-+	raw_spin_lock_init(&msi->mask_lock);
- 
- 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
- 		err = tegra_allocate_domains(msi);
--- 
-2.51.0
-
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 52c8910..0588030 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -26,7 +26,6 @@ config X86_64
+ 	depends on 64BIT
+ 	# Options that are inherently 64-bit kernel only:
+ 	select ARCH_HAS_GIGANTIC_PAGE
+-	select ARCH_HAS_PTDUMP
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+@@ -99,6 +98,7 @@ config X86
+ 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PMEM_API		if X86_64
+ 	select ARCH_HAS_PREEMPT_LAZY
++	select ARCH_HAS_PTDUMP
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_HW_PTE_YOUNG
+ 	select ARCH_HAS_NONLEAF_PMD_YOUNG	if PGTABLE_LEVELS > 2
 
