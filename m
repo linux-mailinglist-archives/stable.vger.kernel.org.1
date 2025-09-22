@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-181185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87797B92EB1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C128B930D4
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CB8F2A7B9F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBDCD3A677E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4505D285C92;
-	Mon, 22 Sep 2025 19:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0D32F3613;
+	Mon, 22 Sep 2025 19:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvl1r5Rs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOqpi9yu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001DF27B320;
-	Mon, 22 Sep 2025 19:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3928C2F0C52;
+	Mon, 22 Sep 2025 19:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569902; cv=none; b=I6O4iIBiWhB2iurfoHqhRQ8lw4P4OM/o6ThgtlLA86siHSzc4ubI7PMfkFzeEUJg3eHj/+BnbZ41kcsa+uHcVLn4Tp3YjoNgohL/UfxlBXIXSZcbqptH1O5vS4XVEMnCpL5QU22u2saCSb5FSphFLlzu78qTeazuXHMpFa6dQtw=
+	t=1758570249; cv=none; b=J4+TR9EVeRP3StshGeiMZopKToU5G+Go1Ys0skDmMpJR2r6o6BRgSSAN+g6bGxCq3gUYO6AvLjbh7VHV76qc0tgaNGCIb+ubA6c5Q5AGIK3AiwKQSAWO4YiESJ17S9xPMgGY6wVY7k2AsVaUWmaccr3kUMkhD8caaxXKjRXLswk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569902; c=relaxed/simple;
-	bh=20bxNPjk271TquIjBDfCHU9gCabreZQlCEateRXdacg=;
+	s=arc-20240116; t=1758570249; c=relaxed/simple;
+	bh=ImaWNKbQL/njaLSxAgXkUBnfoTMJnLVmcGo9r3ySbK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoYQAKJGmlbjvOVL/PPcAGPiCo6FRIl8CsNLgdZZjGHyhcrxuE8zxiiVGgCZTJiwCRsgrPpDSP4YNyuamniOoESZ9qWB5560Z13Txvhi/Ooy7CQRokylOl9Gair2BM99KIdIeCr4ewYXFhrr8mLnLWu8BMamTOWitNqhdwku3tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvl1r5Rs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82697C4CEF0;
-	Mon, 22 Sep 2025 19:38:21 +0000 (UTC)
+	 MIME-Version; b=Z5SWbqIef3Vlbf6ncsOOcwhK+K+1mYsEqy2dnxtn9WxUEZGFTGWINShLWrWeZv/0wBPT58bwLmDL1tDUT/TQwRPDuUi7CLtOarnFLtECr4gcQ/pGDXcda7TxOFlyToLkNuuxGJPKG9ckk//vI+ECZj5dMjz2adnh27dbJmxnJLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOqpi9yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4501C4CEF0;
+	Mon, 22 Sep 2025 19:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569901;
-	bh=20bxNPjk271TquIjBDfCHU9gCabreZQlCEateRXdacg=;
+	s=korg; t=1758570249;
+	bh=ImaWNKbQL/njaLSxAgXkUBnfoTMJnLVmcGo9r3ySbK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lvl1r5Rs8KDc8uiWfnFWTgJM8VTgbBEcYyum4ynYlKovnO7Fv8S/3mdtPY7ixbgHj
-	 wweNWYS6O/Uk4FPZYY5L1oZ1Le/5iEbtlxj04a4NDSXmB7uz1dd8CQvmpIKb3a+qMQ
-	 6UGbY+W9ChURxGpQ73bCHKDuqf3YEO+gjmDDsGgs=
+	b=nOqpi9yu5I7Cegi5Qr1Mgk0BN7JPEF3997a525od6H/EYXDvkOjmFjPyTQ+/hiz5h
+	 BMN9DduuzM/xIVruhJ40NMzCCVVI2hPRBKEclUZUr9bkRheEc91JFr9lgDN4FMaEGd
+	 6y0OSwVw6R4vKWmhqry6elew9IOVxdU/0X4JZSyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Xi Zhang <zhangxi@kylinos.cn>,
 	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 044/105] LoongArch: Update help info of ARCH_STRICT_ALIGN
+Subject: [PATCH 6.16 067/149] LoongArch: Fix unreliable stack for live patching
 Date: Mon, 22 Sep 2025 21:29:27 +0200
-Message-ID: <20250922192410.072127888@linuxfoundation.org>
+Message-ID: <20250922192414.574061689@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit f5003098e2f337d8e8a87dc636250e3fa978d9ad upstream.
+commit 677d4a52d4dc4a147d5e84af9ff207832578be70 upstream.
 
-Loongson-3A6000 and 3C6000 CPUs also support unaligned memory access, so
-the current description is out of date to some extent.
+When testing the kernel live patching with "modprobe livepatch-sample",
+there is a timeout over 15 seconds from "starting patching transition"
+to "patching complete". The dmesg command shows "unreliable stack" for
+user tasks in debug mode, here is one of the messages:
 
-Actually, all of Loongson-3 series processors based on LoongArch support
-unaligned memory access, this hardware capability is indicated by the bit
-20 (UAL) of CPUCFG1 register, update the help info to reflect the reality.
+  livepatch: klp_try_switch_task: bash:1193 has an unreliable stack
 
-Cc: stable@vger.kernel.org
+The "unreliable stack" is because it can not unwind from do_syscall()
+to its previous frame handle_syscall(). It should use fp to find the
+original stack top due to secondary stack in do_syscall(), but fp is
+not used for some other functions, then fp can not be restored by the
+next frame of do_syscall(), so it is necessary to save fp if task is
+not current, in order to get the stack top of do_syscall().
+
+Here are the call chains:
+
+  klp_enable_patch()
+    klp_try_complete_transition()
+      klp_try_switch_task()
+        klp_check_and_switch_task()
+          klp_check_stack()
+            stack_trace_save_tsk_reliable()
+              arch_stack_walk_reliable()
+
+When executing "rmmod livepatch-sample", there exists a similar issue.
+With this patch, it takes a short time for patching and unpatching.
+
+Before:
+
+  # modprobe livepatch-sample
+  # dmesg -T | tail -3
+  [Sat Sep  6 11:00:20 2025] livepatch: 'livepatch_sample': starting patching transition
+  [Sat Sep  6 11:00:35 2025] livepatch: signaling remaining tasks
+  [Sat Sep  6 11:00:36 2025] livepatch: 'livepatch_sample': patching complete
+
+  # echo 0 > /sys/kernel/livepatch/livepatch_sample/enabled
+  # rmmod livepatch_sample
+  rmmod: ERROR: Module livepatch_sample is in use
+  # rmmod livepatch_sample
+  # dmesg -T | tail -3
+  [Sat Sep  6 11:06:05 2025] livepatch: 'livepatch_sample': starting unpatching transition
+  [Sat Sep  6 11:06:20 2025] livepatch: signaling remaining tasks
+  [Sat Sep  6 11:06:21 2025] livepatch: 'livepatch_sample': unpatching complete
+
+After:
+
+  # modprobe livepatch-sample
+  # dmesg -T | tail -2
+  [Tue Sep 16 16:19:30 2025] livepatch: 'livepatch_sample': starting patching transition
+  [Tue Sep 16 16:19:31 2025] livepatch: 'livepatch_sample': patching complete
+
+  # echo 0 > /sys/kernel/livepatch/livepatch_sample/enabled
+  # rmmod livepatch_sample
+  # dmesg -T | tail -2
+  [Tue Sep 16 16:19:36 2025] livepatch: 'livepatch_sample': starting unpatching transition
+  [Tue Sep 16 16:19:37 2025] livepatch: 'livepatch_sample': unpatching complete
+
+Cc: stable@vger.kernel.org # v6.9+
+Fixes: 199cc14cb4f1 ("LoongArch: Add kernel livepatching support")
+Reported-by: Xi Zhang <zhangxi@kylinos.cn>
 Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/Kconfig |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/stacktrace.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -540,10 +540,14 @@ config ARCH_STRICT_ALIGN
- 	  -mstrict-align build parameter to prevent unaligned accesses.
+--- a/arch/loongarch/kernel/stacktrace.c
++++ b/arch/loongarch/kernel/stacktrace.c
+@@ -51,12 +51,13 @@ int arch_stack_walk_reliable(stack_trace
+ 	if (task == current) {
+ 		regs->regs[3] = (unsigned long)__builtin_frame_address(0);
+ 		regs->csr_era = (unsigned long)__builtin_return_address(0);
++		regs->regs[22] = 0;
+ 	} else {
+ 		regs->regs[3] = thread_saved_fp(task);
+ 		regs->csr_era = thread_saved_ra(task);
++		regs->regs[22] = task->thread.reg22;
+ 	}
+ 	regs->regs[1] = 0;
+-	regs->regs[22] = 0;
  
- 	  CPUs with h/w unaligned access support:
--	  Loongson-2K2000/2K3000/3A5000/3C5000/3D5000.
-+	  Loongson-2K2000/2K3000 and all of Loongson-3 series processors
-+	  based on LoongArch.
- 
- 	  CPUs without h/w unaligned access support:
--	  Loongson-2K500/2K1000.
-+	  Loongson-2K0300/2K0500/2K1000.
-+
-+	  If you want to make sure whether to support unaligned memory access
-+	  on your hardware, please read the bit 20 (UAL) of CPUCFG1 register.
- 
- 	  This option is enabled by default to make the kernel be able to run
- 	  on all LoongArch systems. But you can disable it manually if you want
+ 	for (unwind_start(&state, task, regs);
+ 	     !unwind_done(&state) && !unwind_error(&state); unwind_next_frame(&state)) {
 
 
 
