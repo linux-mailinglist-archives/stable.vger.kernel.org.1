@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-181133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B497B92E12
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 862E9B92EE7
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC8F54472D5
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41EE1190767C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668E82F28E0;
-	Mon, 22 Sep 2025 19:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F302F49E3;
+	Mon, 22 Sep 2025 19:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMVAf8T1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOAJXilY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA1A2EDD5D;
-	Mon, 22 Sep 2025 19:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813B02F0C52;
+	Mon, 22 Sep 2025 19:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569773; cv=none; b=jsy5m82lW9scLuKUvoef2EVYX5pKxMi5SJPHfVFlzuxxi1gPX98Cvj8sftMvr9fu0GFNmEXeXcmAlyFR4LxmfmvHCuWVYas+OjPvocXHgiUpr2MFxg3mcxE2xVKdps/Qb7abGS6zyyn0G1o1FoRn/Cnh7RORnAbfEU55/RfvYB8=
+	t=1758569936; cv=none; b=ppHDldecxrzVsRcKf26FSGgrSrYzHgmkkfr+ik4aGIkIDUzePTFesrG1wd8JRdFQia64+dAcGKaQKwu7MtE7iUq5HCkmqY547O7StJTRic/p0HyDJt8+A8gC2jwE7rodNHyQRxaF/b+rQJiiTSdriW1HJ8/53JOmc4DcIOiUhZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569773; c=relaxed/simple;
-	bh=F5oTZeF7v/UVu/Rg0HNZRxT0ivErx1lRHEGjaVzVXQg=;
+	s=arc-20240116; t=1758569936; c=relaxed/simple;
+	bh=JbAR2i1tLG0qgor1eEXXWmayOC8Zpkg+6vTop9Rd2Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aw52zawPVIN+NUf6l3ErfLMnoN72URywyHVDkmcoJFRqHkjuHTSEGCPaJkCGBe/FRDcIED0mgti2Nnt4+gzq/gpi3IFgQVYw2PGKhe8cFMBLS9f5JTjSXew5TgNkHP1AU9q+ZIsBXWUP2xsVCWCxi1VxBeBb951r8RedwJJ9Qrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMVAf8T1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FABC4CEF0;
-	Mon, 22 Sep 2025 19:36:12 +0000 (UTC)
+	 MIME-Version; b=m6GsXVhaF3phAowdrT9Du80eVEVO6bDuTb1ls/x6bZpMFiFbh4qjCvwlZh8lntOuDmvPa6B0u5mrkMgnjEkEUX3rA+URSNJ/mf31fp4c7x81xexgaTdy6K0qVtqJih8wBaruLMwqvxNpAFXSZk4YCKimOgf4D7AHd8rR+MnCla0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOAJXilY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B87DC4CEF0;
+	Mon, 22 Sep 2025 19:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569772;
-	bh=F5oTZeF7v/UVu/Rg0HNZRxT0ivErx1lRHEGjaVzVXQg=;
+	s=korg; t=1758569936;
+	bh=JbAR2i1tLG0qgor1eEXXWmayOC8Zpkg+6vTop9Rd2Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMVAf8T1Fu9raq/fJeuA5gyFe3tQ9nrRjWEoX+zYDXU4cKALlJtDkq0d/3w7Qcv2B
-	 cBD+4mdGBxzmSzGL9LVi84I2fLiiAQJk7ZyvQN59zZKm0wxYlwNVX1Ao5h6W9FgXAh
-	 Vcql4EU6bNwoZewMbPFFeIiQlTalJth2SiSymKtI=
+	b=eOAJXilY97VLf6Kb2RnJbGP0xdVDhxrGeRaY+OmSEk5yXAovWnmVdYOpieDlSjp9H
+	 0u0ZX2tiXxAFf3QEkbUeR1r2q8auvX5Xd9EkG1LDSUvSuXG2kKETR+QRy6H+2Vg0As
+	 8//WDjCKahoIfTHNMraHMdyQFaPZSn18P5b5vOTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
 	"Naveen N Rao (AMD)" <naveen@kernel.org>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 41/70] KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active
+Subject: [PATCH 6.12 058/105] KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active
 Date: Mon, 22 Sep 2025 21:29:41 +0200
-Message-ID: <20250922192405.720081603@linuxfoundation.org>
+Message-ID: <20250922192410.436237046@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -107,7 +107,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -4029,8 +4029,7 @@ static inline void sync_lapic_to_cr8(str
+@@ -4044,8 +4044,7 @@ static inline void sync_lapic_to_cr8(str
  	struct vcpu_svm *svm = to_svm(vcpu);
  	u64 cr8;
  
