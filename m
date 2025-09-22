@@ -1,76 +1,56 @@
-Return-Path: <stable+bounces-181319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EF3B930A7
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36EB9B92EC9
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1ED1886C58
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAF74170A1F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E022F2910;
-	Mon, 22 Sep 2025 19:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1757D2F2910;
+	Mon, 22 Sep 2025 19:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/R907Zn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PentoVJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219F82F0C52;
-	Mon, 22 Sep 2025 19:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69412F2617;
+	Mon, 22 Sep 2025 19:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570241; cv=none; b=kFT2Lmj6ST06Fvb4czEdw3UUfovi68eeZr1Wr1BwxOspof49NEJyIe1mt8jYrPaS0WHNPY8boTzPP6lmcoNi/H45sHyN3LPoM3eFsKmXWmQYnbyEyDTm0pfEK6BL6r3FiFGqREKmSCAABRYEZWXbdQE0tOjvmVlNeTcOTVJ1kzU=
+	t=1758569916; cv=none; b=gPPv++gREzzp5jyhBalQRsrMNlU0RX55wU9r0sY4C6z+hMO4RjbGeHxqBPUArlSPVhjoOpcYVorO8SMhcheZvFZOVxzx+IA02MXYQ939G4TzUQyS0AeE9LKsLaJTco+uLNmOquwiXejYnKbl2lxlJm6owdUnTd0H9NbILFVTpEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570241; c=relaxed/simple;
-	bh=4/FlbNyk14T/84dH6be2H1bk1/Hm0/bOebmlRLRqIfk=;
+	s=arc-20240116; t=1758569916; c=relaxed/simple;
+	bh=VlP3k7yT8JTI0S+TGL/Lqq9Jr/NqxERy2LXgwjsu4CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2C1fWrtUWWwIjcK8ooW16LKFmAtjcKChHciOuDvwS+g82tLf028vxXOB0YTcVxu5kb4U5LLurodHG9QoZHzv2LR2f9QP3NZBV4FZ9XxgGL5OTthsnz0/M/RkP5BztlwdL4ZB5K0GDk+c937+ABzzim/4aRuRR8cVhnobwbFNcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/R907Zn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A218C4CEF0;
-	Mon, 22 Sep 2025 19:44:00 +0000 (UTC)
+	 MIME-Version; b=d7+OfnuojzH+opnyb1UKALkbBrYsyL9znNirzbNTfOtfDzfNOcnWHK1GpRs+uQQs2MrnKHkY8B+8XlUKD56WlEd/ucvOLF96oG/jung8e/l5EKnQCX4IP+CsQbGaDUkSU+0FfsMS/80t4vOVsSgNrM98V5BbGzSNkTQn/t8bOko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PentoVJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D27C113D0;
+	Mon, 22 Sep 2025 19:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570241;
-	bh=4/FlbNyk14T/84dH6be2H1bk1/Hm0/bOebmlRLRqIfk=;
+	s=korg; t=1758569916;
+	bh=VlP3k7yT8JTI0S+TGL/Lqq9Jr/NqxERy2LXgwjsu4CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/R907ZnDiAkf1jHvkUwGW9ZkPuCJ9pEwuLNQ1vVmPdDZ07xWICdI3qa9YUKk+1uX
-	 c/+hFMvIZ4G42LQ8ay7ExRFLdjnARXsVS6LRc5Vi7DWqOBzfXZ9GYjHdVtaF2AhG8B
-	 Hmd+vTsEcbar4LygP+kKbBj+MubGuB45EDweQi0k=
+	b=PentoVJfN3XfBwF41HJ0x7C08/DgVN0+IUd5vW6Jhj5Ee62QFvl/J8Jh2zLIqoMtI
+	 Ts8Uo4xYRJ1feQVIXO6nJODmaJpg1w5rrL84lA8wFOzafDUDvYg6mF5FCIDOOt7Gmt
+	 sfYMhWGYjtLGB1km4qqPAihWciWRHjrn37+omtbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 061/149] mm/gup: local lru_add_drain() to avoid lru_add_drain_all()
-Date: Mon, 22 Sep 2025 21:29:21 +0200
-Message-ID: <20250922192414.422164822@linuxfoundation.org>
+	Jerry Lv <Jerry.Lv@axis.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.12 039/105] power: supply: bq27xxx: restrict no-battery detection to bq27000
+Date: Mon, 22 Sep 2025 21:29:22 +0200
+Message-ID: <20250922192409.938927963@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -82,87 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-commit a09a8a1fbb374e0053b97306da9dbc05bd384685 upstream.
+commit 1e451977e1703b6db072719b37cd1b8e250b9cc9 upstream.
 
-In many cases, if collect_longterm_unpinnable_folios() does need to drain
-the LRU cache to release a reference, the cache in question is on this
-same CPU, and much more efficiently drained by a preliminary local
-lru_add_drain(), than the later cross-CPU lru_add_drain_all().
+There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may in some
+cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not be
+interpreted as "no battery" like for a disconnected battery with some built
+in bq27000 chip.
 
-Marked for stable, to counter the increase in lru_add_drain_all()s from
-"mm/gup: check ref_count instead of lru before migration".  Note for clean
-backports: can take 6.16 commit a03db236aebf ("gup: optimize longterm
-pin_user_pages() for large folio") first.
+So restrict the no-battery detection originally introduced by
 
-Link: https://lkml.kernel.org/r/66f2751f-283e-816d-9530-765db7edc465@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    commit 3dd843e1c26a ("bq27000: report missing device better.")
+
+to the bq27000.
+
+There is no need to backport further because this was hidden before
+
+	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+
+Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/gup.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2333,8 +2333,8 @@ static unsigned long collect_longterm_un
- 		struct pages_or_folios *pofs)
- {
- 	unsigned long collected = 0;
--	bool drain_allow = true;
- 	struct folio *folio;
-+	int drained = 0;
- 	long i = 0;
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1909,8 +1909,8 @@ static void bq27xxx_battery_update_unloc
+ 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
  
- 	for (folio = pofs_get_folio(pofs, i); folio;
-@@ -2353,10 +2353,17 @@ static unsigned long collect_longterm_un
- 			continue;
- 		}
+ 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+-	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -ENODEV; /* read error */
++	if (di->chip == BQ27000 && (cache.flags & 0xff) == 0xff)
++		cache.flags = -ENODEV; /* bq27000 hdq read error */
+ 	if (cache.flags >= 0) {
+ 		cache.capacity = bq27xxx_battery_read_soc(di);
  
--		if (drain_allow && folio_ref_count(folio) !=
--				   folio_expected_ref_count(folio) + 1) {
-+		if (drained == 0 &&
-+				folio_ref_count(folio) !=
-+				folio_expected_ref_count(folio) + 1) {
-+			lru_add_drain();
-+			drained = 1;
-+		}
-+		if (drained == 1 &&
-+				folio_ref_count(folio) !=
-+				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
--			drain_allow = false;
-+			drained = 2;
- 		}
- 
- 		if (!folio_isolate_lru(folio))
 
 
 
