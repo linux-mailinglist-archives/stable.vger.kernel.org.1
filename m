@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-181308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9802B93065
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CF7B92C92
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44DD816F6D1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 199C9189B29B
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1011E2F3608;
-	Mon, 22 Sep 2025 19:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A6D27FB2D;
+	Mon, 22 Sep 2025 19:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjBqJ91W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ly2VMnfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2A42F1FE3;
-	Mon, 22 Sep 2025 19:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619AB170A37;
+	Mon, 22 Sep 2025 19:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570210; cv=none; b=aTs/R7m4vSgdabAtkCM1PQoFUaA4+JVWNFBpZJDw1uelvnDzME5UpS8zU6HSWQeim0/PluOMoO9ZbtakwVi+69khTFsGEMUpGl8fxfnI1IZlh8rR/GFLyj6sjtvrniKiMhcDTgr9+geG5tej+Mx0SLHL3kJ/S/uEU+lndXCiI10=
+	t=1758569499; cv=none; b=msp1zIvQvT3TaEPKCXUfdicQwGdTa7MrjzxeYf40PeCVvKICRjYwNVz/MQ8k4KKKZrpCzger4+h7z2LRCVn6LjY35QY+l8OkOfhUGxHQCOFSvcVP2b3t0o4nq4lcMHhzjRAr4FrtMxyUfSZeowSNefF7cedr1qmsLsSbDClZdrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570210; c=relaxed/simple;
-	bh=c+Nn5cttclDOQW7ZS4WNZ1ZPTndCSrm3n8cobW0VNto=;
+	s=arc-20240116; t=1758569499; c=relaxed/simple;
+	bh=cYJOf2CspkV5noJVzN+V3mHxwUSU/Q3NorIA6xLPg0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exZtE/yJ4Rh/pxuLTwS/RXfCCh7r1PmiCIFd5ngCIvjI+d1d5uaA+VG12MqXajN7od7QtEAWWBLCuiJ74oVW9Znss67/M9fyunBvNXD2WotjaTHrbRN4ECJBZKHjGrEp+QpevUvriWnCPKBlSq2SB0NOF9bMzQmi/j3SmmnkuZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjBqJ91W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F7FC4CEF0;
-	Mon, 22 Sep 2025 19:43:29 +0000 (UTC)
+	 MIME-Version; b=NITM6XEJ9Oi+OsUef6H9priP9BsyQqZdFPPJcxDcnkJYecLsP68UAE+Zv+sCmf+ctmf1BHZn12wrIZPJD+GUqOidS763pf4FRIPQg4/zuDEDgMtwRyt3YnDBa9aVKBePvpaFxp+pVU4yzntdvs1lRHbmNXyUbuQFSpBNbPO0rYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ly2VMnfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA716C4CEF0;
+	Mon, 22 Sep 2025 19:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570210;
-	bh=c+Nn5cttclDOQW7ZS4WNZ1ZPTndCSrm3n8cobW0VNto=;
+	s=korg; t=1758569499;
+	bh=cYJOf2CspkV5noJVzN+V3mHxwUSU/Q3NorIA6xLPg0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjBqJ91WADjUOt0zgEb4LWHprZZkJu296Gh1pzjb6t2PfNNnZXWFe9gSUB4H0Nw13
-	 5+9cPore615m24B8MC1LARi1pYZPJ/sHAjMpIrPu8NVTZ4uGmLcyfKrtq8kNJdBaGY
-	 3GI4noHPyHJWM1JjPx1WuRGmAVkO98CM7x0kGqHw=
+	b=Ly2VMnfezm85zCa1gloPSmPR9Jf4CfWaFqD+4o00rrxEqQqJIB6qb9LbhB52lg0If
+	 YvOsUzc5/ATt44BMKKfwiF3dfh0BEzsuLHfgGy7oTzkvmPvxieQICXmYxKOorpzM9M
+	 JqLrbO8Pc747FLlxkAJIUsbwNsoA1ZCRNkfXV2Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wilder <wilder@us.ibm.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 038/149] bonding: dont set oif to bond dev when getting NS target destination
-Date: Mon, 22 Sep 2025 21:28:58 +0200
-Message-ID: <20250922192413.825680115@linuxfoundation.org>
+Subject: [PATCH 6.1 06/61] btrfs: fix invalid extref key setup when replaying dentry
+Date: Mon, 22 Sep 2025 21:28:59 +0200
+Message-ID: <20250922192403.720802566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a8ba87f04ca9cdec06776ce92dce1395026dc3bb ]
+[ Upstream commit b62fd63ade7cb573b114972ef8f9fa505be8d74a ]
 
-Unlike IPv4, IPv6 routing strictly requires the source address to be valid
-on the outgoing interface. If the NS target is set to a remote VLAN interface,
-and the source address is also configured on a VLAN over a bond interface,
-setting the oif to the bond device will fail to retrieve the correct
-destination route.
+The offset for an extref item's key is not the object ID of the parent
+dir, otherwise we would not need the extref item and would use plain ref
+items. Instead the offset is the result of a hash computation that uses
+the object ID of the parent dir and the name associated to the entry.
+So fix this by setting the key offset at replay_one_name() to be the
+result of calling btrfs_extref_hash().
 
-Fix this by not setting the oif to the bond device when retrieving the NS
-target destination. This allows the correct destination device (the VLAN
-interface) to be determined, so that bond_verify_device_path can return the
-proper VLAN tags for sending NS messages.
-
-Reported-by: David Wilder <wilder@us.ibm.com>
-Closes: https://lore.kernel.org/netdev/aGOKggdfjv0cApTO@fedora/
-Suggested-by: Jay Vosburgh <jv@jvosburgh.net>
-Tested-by: David Wilder <wilder@us.ibm.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20250916080127.430626-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 725af92a6251 ("btrfs: Open-code name_in_log_ref in replay_one_name")
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/btrfs/tree-log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index e413340be2bff..e23195dd74776 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3339,7 +3339,6 @@ static void bond_ns_send_all(struct bonding *bond, struct slave *slave)
- 		/* Find out through which dev should the packet go */
- 		memset(&fl6, 0, sizeof(struct flowi6));
- 		fl6.daddr = targets[i];
--		fl6.flowi6_oif = bond->dev->ifindex;
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 6e8e90bce0467..e4cc287eee993 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1934,7 +1934,7 @@ static noinline int replay_one_name(struct btrfs_trans_handle *trans,
  
- 		dst = ip6_route_output(dev_net(bond->dev), NULL, &fl6);
- 		if (dst->error) {
+ 	search_key.objectid = log_key.objectid;
+ 	search_key.type = BTRFS_INODE_EXTREF_KEY;
+-	search_key.offset = key->objectid;
++	search_key.offset = btrfs_extref_hash(key->objectid, name.name, name.len);
+ 	ret = backref_in_log(root->log_root, &search_key, key->objectid, &name);
+ 	if (ret < 0) {
+ 		goto out;
 -- 
 2.51.0
 
