@@ -1,197 +1,132 @@
-Return-Path: <stable+bounces-180878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5FFB8EFB2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 07:02:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E92B8F0BE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 07:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AA893BDFF1
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 05:02:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9BA116EFDD
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 05:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333FC2236E9;
-	Mon, 22 Sep 2025 05:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE7A1E521D;
+	Mon, 22 Sep 2025 05:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcNVWZn6"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="C7CF/riN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70552C148;
-	Mon, 22 Sep 2025 05:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D654627455;
+	Mon, 22 Sep 2025 05:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758517333; cv=none; b=WBECRCx1R8F7kTNTcagnzxArnF43MW479u8HGGAMhlZvlB/VjgsqF2ErA6pgUWstKhBs7OqMnqvO6tDR8Zjr/anfAd+C4HygXS9ZnJSXP1zkSn8SuZVmOY1m0qawGdyoLE0DPNl78xR/3St2OGg3xOEO3aqQ8H/w7CORuBTSuXc=
+	t=1758520151; cv=none; b=uQxhfaXBbJ0AYQOVjPvdVE/lx6qQZ/e1BUoSgr696dPYRuP5TfOSQx3qvPi1apEv2CKYfU/3YW/IoEiAykHNQU9y+dkpae+fm+neIjgw6sO1WbIEpMi4QSbDvEFNcPfgPKOo60q5eCipFqHn8PQ9NsSRG+eztuR7MJj4sCGoScg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758517333; c=relaxed/simple;
-	bh=/nk8xPLOsGXuSw5wS41Jy4q570vGloBiPOCZp2/irX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WWoTP1eV0IW5JcNDQIZ3a0JzZCn0kPAtsTpcGxzybql9nw2ENzifIuqgGz2ODAmDzW+iz+kjm83zZHvvV/iuSWlKt/bpuTlt3TA0Ex9esZ0dtq15QIiwr7kRfTCrBCfFZHOVvQJ6dSesO4iJruzIc5OKsPjhYFBO5CKYivzF2mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcNVWZn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A858C4CEF5;
-	Mon, 22 Sep 2025 05:02:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758517333;
-	bh=/nk8xPLOsGXuSw5wS41Jy4q570vGloBiPOCZp2/irX0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BcNVWZn6zT4Gv/IUZ2C0NZn/XQ5pAMMpsZzcS58NBPYxD2oFH/k4xQ1OcYygH2JDO
-	 qM8XphYZH6pOzc+c2uakvnfuiVmB28vwfNolajwWxIrag0Gc1iZ0LiKuoKaX4EXv7U
-	 h1tGLKcFUdBrn8iKhoSlB6ijAzBdHBAHMrirLbcw=
-Date: Mon, 22 Sep 2025 07:02:08 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Farber, Eliav" <farbere@amazon.com>
-Cc: "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"jdike@addtoit.com" <jdike@addtoit.com>,
-	"richard@nod.at" <richard@nod.at>,
-	"anton.ivanov@cambridgegreys.com" <anton.ivanov@cambridgegreys.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"qiuxu.zhuo@intel.com" <qiuxu.zhuo@intel.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"rric@kernel.org" <rric@kernel.org>,
-	"harry.wentland@amd.com" <harry.wentland@amd.com>,
-	"sunpeng.li@amd.com" <sunpeng.li@amd.com>,
-	"alexander.deucher@amd.com" <alexander.deucher@amd.com>,
-	"christian.koenig@amd.com" <christian.koenig@amd.com>,
-	"airlied@linux.ie" <airlied@linux.ie>,
-	"daniel@ffwll.ch" <daniel@ffwll.ch>,
-	"evan.quan@amd.com" <evan.quan@amd.com>,
-	"james.qian.wang@arm.com" <james.qian.wang@arm.com>,
-	"liviu.dudau@arm.com" <liviu.dudau@arm.com>,
-	"mihail.atanassov@arm.com" <mihail.atanassov@arm.com>,
-	"brian.starkey@arm.com" <brian.starkey@arm.com>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"mripard@kernel.org" <mripard@kernel.org>,
-	"tzimmermann@suse.de" <tzimmermann@suse.de>,
-	"robdclark@gmail.com" <robdclark@gmail.com>,
-	"sean@poorly.run" <sean@poorly.run>,
-	"jdelvare@suse.com" <jdelvare@suse.com>,
-	"linux@roeck-us.net" <linux@roeck-us.net>,
-	"fery@cypress.com" <fery@cypress.com>,
-	"dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-	"agk@redhat.com" <agk@redhat.com>,
-	"snitzer@redhat.com" <snitzer@redhat.com>,
-	"dm-devel@redhat.com" <dm-devel@redhat.com>,
-	"rajur@chelsio.com" <rajur@chelsio.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"peppe.cavallaro@st.com" <peppe.cavallaro@st.com>,
-	"alexandre.torgue@st.com" <alexandre.torgue@st.com>,
-	"joabreu@synopsys.com" <joabreu@synopsys.com>,
-	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-	"malattia@linux.it" <malattia@linux.it>,
-	"hdegoede@redhat.com" <hdegoede@redhat.com>,
-	"mgross@linux.intel.com" <mgross@linux.intel.com>,
-	"intel-linux-scu@intel.com" <intel-linux-scu@intel.com>,
-	"artur.paszkiewicz@intel.com" <artur.paszkiewicz@intel.com>,
-	"jejb@linux.ibm.com" <jejb@linux.ibm.com>,
-	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-	"sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
-	"clm@fb.com" <clm@fb.com>,
-	"josef@toxicpanda.com" <josef@toxicpanda.com>,
-	"dsterba@suse.com" <dsterba@suse.com>,
-	"jack@suse.com" <jack@suse.com>, "tytso@mit.edu" <tytso@mit.edu>,
-	"adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>,
-	"dushistov@mail.ru" <dushistov@mail.ru>,
-	"luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
-	"rostedt@goodmis.org" <rostedt@goodmis.org>,
-	"pmladek@suse.com" <pmladek@suse.com>,
-	"sergey.senozhatsky@gmail.com" <sergey.senozhatsky@gmail.com>,
-	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
-	"linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
-	"minchan@kernel.org" <minchan@kernel.org>,
-	"ngupta@vflare.org" <ngupta@vflare.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"kuznet@ms2.inr.ac.ru" <kuznet@ms2.inr.ac.ru>,
-	"yoshfuji@linux-ipv6.org" <yoshfuji@linux-ipv6.org>,
-	"pablo@netfilter.org" <pablo@netfilter.org>,
-	"kadlec@netfilter.org" <kadlec@netfilter.org>,
-	"fw@strlen.de" <fw@strlen.de>,
-	"jmaloy@redhat.com" <jmaloy@redhat.com>,
-	"ying.xue@windriver.com" <ying.xue@windriver.com>,
-	"willy@infradead.org" <willy@infradead.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"ruanjinjie@huawei.com" <ruanjinjie@huawei.com>,
-	"David.Laight@aculab.com" <David.Laight@aculab.com>,
-	"herve.codina@bootlin.com" <herve.codina@bootlin.com>,
-	"Jason@zx2c4.com" <Jason@zx2c4.com>,
-	"bvanassche@acm.org" <bvanassche@acm.org>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"freedreno@lists.freedesktop.org" <freedreno@lists.freedesktop.org>,
-	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
-	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
-	"coreteam@netfilter.org" <coreteam@netfilter.org>,
-	"tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"Chocron, Jonathan" <jonnyc@amazon.com>
-Subject: Re: [PATCH 00/27 5.10.y] Backport minmax.h updates from v6.17-rc6
-Message-ID: <2025092203-untreated-sloppily-23b5@gregkh>
-References: <20250919101727.16152-1-farbere@amazon.com>
- <2025092136-unelected-skirt-d91d@gregkh>
- <4f497306c58240a88c0bb001786c3ad2@amazon.com>
+	s=arc-20240116; t=1758520151; c=relaxed/simple;
+	bh=xLznKOPCZJxUINUg6ogY4rcZGSnCqCh6PHSXO/zoNl0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m2WpOsTlFarF1LUswV35NCGAL93iKkuBEKCRfywDv2QmBftPYH4WjRmiUdYSPr7wCVQgCsMMgQZ0EjIgPGUkfYZRc5r4+SZlRrZWJuobLfsd9dLYRJntqijLS9AbDyApsElsjgctazFisro8ohvlRyH42uq+8kTf4etwHcAWv38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=C7CF/riN reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cVXGz2Gfbz1FXSV;
+	Mon, 22 Sep 2025 07:48:59 +0200 (CEST)
+Received: from [10.10.15.9] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cVXGz0Gx3z1FXSX;
+	Mon, 22 Sep 2025 07:48:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1758520139;
+	bh=OtRjZMliMamb/V4HMei//Y9bvbkSRWDtwSqjtwGbWTM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=C7CF/riNw5nkFMWvCk6RcdVD4xQcy5Q03qeD27YEPK2pxwJEmm2cJWOulwfd57C1q
+	 bLUMKTWcHAZZ7G9bF8wZougelLI7Xe0CZXKSGXKSpFR8R3zW5iQBFgW6aQ8RkiY/Kd
+	 QlXnEMn4epa4CliUeOcTeHPpI/pxJFnxfYrF1/5cMdbhzKhbQ6zHJldd/pYJTE+0dL
+	 ZkSJGNBLcM5wSTfGqdTnxWmKRNsWIQdGcBcivNFzaj5fTjQqKQMFBPbXZXBbUL5O8P
+	 6sFWcqBiiYpYUYo0gxTr2s2RJZzPn8Ft2NRfLLr4w8Rts+Q94ukPZClxJNcaZxsPPE
+	 eonlLD/dp9qKw==
+Message-ID: <93a6baf0-bafe-4855-8679-aec375debaa6@gaisler.com>
+Date: Mon, 22 Sep 2025 07:48:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4f497306c58240a88c0bb001786c3ad2@amazon.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] sparc: fix error handling in scan_one_device()
+To: Ma Ke <make24@iscas.ac.cn>, davem@davemloft.net
+Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250920125312.3588-1-make24@iscas.ac.cn>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20250920125312.3588-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Sep 21, 2025 at 09:37:02PM +0000, Farber, Eliav wrote:
-> > On Fri, Sep 19, 2025 at 10:17:00AM +0000, Eliav Farber wrote:
-> > > This series includes a total of 27 patches, to align minmax.h of
-> > > v5.15.y with v6.17-rc6.
-> > >
-> > > The set consists of 24 commits that directly update minmax.h:
-> > > 1) 92d23c6e9415 ("overflow, tracing: Define the is_signed_type() macro
-> > >    once")
-> >
-> > But this isn't in 5.15.y, so how is this syncing things up?
-> >
-> > I'm all for this, but I got confused here, at the first commit :)
+On 2025-09-20 14:53, Ma Ke wrote:
+> Once of_device_register() failed, we should call put_device() to
+> decrement reference count for cleanup. Or it could cause memory leak.
+> So fix this by calling put_device(), then the name can be freed in
+> kobject_cleanup().
 > 
-> It's a typo.
-> It should be 5.10.y and not 5.15.y.
+> Calling path: of_device_register() -> of_device_add() -> device_add().
+> As comment of device_add() says, 'if device_add() succeeds, you should
+> call device_del() when you want to get rid of it. If device_add() has
+> not succeeded, use only put_device() to drop the reference count'.
 > 
-> > Some of these are also only in newer kernels, which, as you know, is
-> > generally a bad thing (i.e. I can't take patches only for older
-> > kernels.)
-> >
-> > I want these changes, as they are great, but can you perhaps provide
-> > patch series for newer kernels first so that I can then take these?
+> Found by code review.
 > 
-> So you'd first like first to align 6.16 with 6.17, then 6.15 with 6.16,
-> then 6.12 with 6.15, then 6.6 with 6.12, and so on until we eventually
-> align 5.10 and even 5.4?
+> Cc: stable@vger.kernel.org
+> Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+> Changes in v3:
+> - also fixed the same problem in arch/sparc/kernel/of_device_32.c as suggestions.
+> Changes in v2:
+> - retained kfree() manually due to the lack of a release callback function.
+> ---
+>  arch/sparc/kernel/of_device_32.c | 1 +
+>  arch/sparc/kernel/of_device_64.c | 1 +
+>  2 files changed, 2 insertions(+)
+> 
+> diff --git a/arch/sparc/kernel/of_device_32.c b/arch/sparc/kernel/of_device_32.c
+> index 06012e68bdca..284a4cafa432 100644
+> --- a/arch/sparc/kernel/of_device_32.c
+> +++ b/arch/sparc/kernel/of_device_32.c
+> @@ -387,6 +387,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
+>  
+>  	if (of_device_register(op)) {
+>  		printk("%pOF: Could not register of device.\n", dp);
+> +		put_device(&op->dev);
+>  		kfree(op);
+>  		op = NULL;
+>  	}
+> diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
+> index f98c2901f335..f53092b07b9e 100644
+> --- a/arch/sparc/kernel/of_device_64.c
+> +++ b/arch/sparc/kernel/of_device_64.c
+> @@ -677,6 +677,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
+>  
+>  	if (of_device_register(op)) {
+>  		printk("%pOF: Could not register of device.\n", dp);
+> +		put_device(&op->dev);
+>  		kfree(op);
+>  		op = NULL;
+>  	}
 
-Yes please!
+
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+
+Picking this up to my for-next.
+
+Thanks,
+Andreas
 
 
