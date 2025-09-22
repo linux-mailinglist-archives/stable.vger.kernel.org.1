@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-181129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07044B92E0C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD56B93113
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E283B516C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E60913A168D
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23B22F1FE3;
-	Mon, 22 Sep 2025 19:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5822517AC;
+	Mon, 22 Sep 2025 19:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzCf5ZJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6rq/3B0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9013B2F0C6C;
-	Mon, 22 Sep 2025 19:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CD6253B5C;
+	Mon, 22 Sep 2025 19:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569762; cv=none; b=HRilrb9+kN+PiOBHl8YexQV0p1kHo70BYlkQimECgjp6SQJJdEDySMoq1ioPvtrDt+JbTFIKimsBZmpuDZX5kfqQDLKzBDhogx9Do5SabnLcW5xW6NrbHXIovECVUf9KTfJZKEkltOnEvuRGw+1m2s4TdX3fhIxeiGF62LXE36M=
+	t=1758570315; cv=none; b=n1zLkPoe89naT0tHWpTD7bGxe+fZESg36nsYUW1GuKrGx0sq99QS/t7eZjrhD3J2ZUX0n2udckNSPA+RclBW3Fg0PEJ4AtUMCuNBlYJaCO/SM5DoFkq5Pxevum8eu0DLB3j96P7cY4QIUZVWwRdOrUoJ63VhKUBx1pnWyBS+6Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569762; c=relaxed/simple;
-	bh=93FOMFpooQKOVxf+kAUR88MyuiZyHHIf/XqMHXv87YY=;
+	s=arc-20240116; t=1758570315; c=relaxed/simple;
+	bh=WDg2Da3X7gw2eU3Lprar6XdhZfISpLyMgU2TaznuIik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtW+DWWSHUF62E8+XYnx0xRxdJz7G8TJ/Xv4G9NOc5+pCvNVLXJL85FVdxZAVpib6lXURuWcke1ra3L024AFhAZM2Lcy0CeNysI3wywn5+v2uhRBgmMxJ5LNvnR4b0KgtAO7x+r/GMWWnBpl2QDIGk2QYHnNzcnhhBXiITVS9xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzCf5ZJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2F6C4CEF5;
-	Mon, 22 Sep 2025 19:36:02 +0000 (UTC)
+	 MIME-Version; b=T9tsBK+UasZupT9GcPvHumC2OxK6dx8Z4rls6vaJuG4uTTl2knBPXVO8FBwLgCgUCSgqbutkN5i6kZo8ICxfDsMWWHPh52Qk8EOfqF6F0S/1lle+rKNxRzvwpPZNp/wV6FF+J5x1u5eAJZ0+WpkbR44eODge/eO0h6pKxNK2PqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6rq/3B0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C20C4CEF0;
+	Mon, 22 Sep 2025 19:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569762;
-	bh=93FOMFpooQKOVxf+kAUR88MyuiZyHHIf/XqMHXv87YY=;
+	s=korg; t=1758570315;
+	bh=WDg2Da3X7gw2eU3Lprar6XdhZfISpLyMgU2TaznuIik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzCf5ZJBBO8Qx3Liy1NQY1ZLpuQ64r7wqwhn0QtucRyZkegT265sfBU5fS8ZnOfJr
-	 PZHV3sJZJmUdx2Ggcr1IEO0gRCz0lIldvOPnDifR42nTgoyuQ6a2vu+H3owg7Or057
-	 nxlWrbzKEeRZigeYWUVxlykGL3Igf237ljuyRJP4=
+	b=i6rq/3B0fvIEbLKBn1j9NtWEp8znbUNXNGD/am10I8D5lzTpHnxpnm2PmVWVh5JG7
+	 QHcz1IqMc5wGdgugMghK8RFQ5SNfS+dZxKXL/c6NXLUHeGnutJfcit7cAM4rc65Qqy
+	 TYk7KLagGuE4AS0RS+txiOGW11FZ65eJSSh/DrzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 47/70] io_uring: backport io_should_terminate_tw()
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.16 087/149] ASoC: qcom: q6apm-lpass-dais: Fix missing set_fmt DAI op for I2S
 Date: Mon, 22 Sep 2025 21:29:47 +0200
-Message-ID: <20250922192405.874781794@linuxfoundation.org>
+Message-ID: <20250922192415.079710566@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
-References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
 
-Parts of commit b6f58a3f4aa8dba424356c7a69388a81f4459300 upstream.
+commit 33b55b94bca904ca25a9585e3cd43d15f0467969 upstream.
 
-Backport io_should_terminate_tw() helper to judge whether task_work
-should be run or terminated.
+The q6i2s_set_fmt() function was defined but never linked into the
+I2S DAI operations, resulting DAI format settings is being ignored
+during stream setup. This change fixes the issue by properly linking
+the .set_fmt handler within the DAI ops.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 30ad723b93ade ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+Message-ID: <20250908053631.70978-3-mohammad.rafi.shaik@oss.qualcomm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    3 +--
- io_uring/io_uring.h |   13 +++++++++++++
- io_uring/poll.c     |    3 +--
- io_uring/timeout.c  |    2 +-
- 4 files changed, 16 insertions(+), 5 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1460,8 +1460,7 @@ static void io_req_task_cancel(struct io
- void io_req_task_submit(struct io_kiocb *req, struct io_tw_state *ts)
- {
- 	io_tw_lock(req->ctx, ts);
--	/* req->task == current here, checking PF_EXITING is safe */
--	if (unlikely(req->task->flags & PF_EXITING))
-+	if (unlikely(io_should_terminate_tw()))
- 		io_req_defer_failed(req, -EFAULT);
- 	else if (req->flags & REQ_F_FORCE_ASYNC)
- 		io_queue_iowq(req);
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -394,6 +394,19 @@ static inline bool io_allowed_run_tw(str
- 		      ctx->submitter_task == current);
- }
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -262,6 +262,7 @@ static const struct snd_soc_dai_ops q6i2
+ 	.shutdown	= q6apm_lpass_dai_shutdown,
+ 	.set_channel_map  = q6dma_set_channel_map,
+ 	.hw_params        = q6dma_hw_params,
++	.set_fmt	= q6i2s_set_fmt,
+ };
  
-+/*
-+ * Terminate the request if either of these conditions are true:
-+ *
-+ * 1) It's being executed by the original task, but that task is marked
-+ *    with PF_EXITING as it's exiting.
-+ * 2) PF_KTHREAD is set, in which case the invoker of the task_work is
-+ *    our fallback task_work.
-+ */
-+static inline bool io_should_terminate_tw(void)
-+{
-+	return current->flags & (PF_KTHREAD | PF_EXITING);
-+}
-+
- static inline void io_req_queue_tw_complete(struct io_kiocb *req, s32 res)
- {
- 	io_req_set_res(req, res, 0);
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -258,8 +258,7 @@ static int io_poll_check_events(struct i
- {
- 	int v;
- 
--	/* req->task == current here, checking PF_EXITING is safe */
--	if (unlikely(req->task->flags & PF_EXITING))
-+	if (unlikely(io_should_terminate_tw()))
- 		return -ECANCELED;
- 
- 	do {
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -307,7 +307,7 @@ static void io_req_task_link_timeout(str
- 	int ret = -ENOENT;
- 
- 	if (prev) {
--		if (!(req->task->flags & PF_EXITING)) {
-+		if (!io_should_terminate_tw()) {
- 			struct io_cancel_data cd = {
- 				.ctx		= req->ctx,
- 				.data		= prev->cqe.user_data,
+ static const struct snd_soc_dai_ops q6hdmi_ops = {
 
 
 
