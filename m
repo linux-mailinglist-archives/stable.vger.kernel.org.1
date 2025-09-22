@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A8BB93086
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FAFB92E9C
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1732172290
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8E0178C11
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA012F2909;
-	Mon, 22 Sep 2025 19:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DB22F0C78;
+	Mon, 22 Sep 2025 19:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRYFmZsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTBj9mEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690A72F0C52;
-	Mon, 22 Sep 2025 19:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7346B285C92;
+	Mon, 22 Sep 2025 19:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570246; cv=none; b=TPjwYeTkAchRlOBlkOT9QGNyYWec0tIG5AjuihP8FVaBwGfAraGWsPHxgrqB1gqjJjSKkMFuqB3EqvwvWnVO77cQMN30jlRYOHvC5muKfsDwxTvYhbw9d20Y/RxS9IdUmu1gCNvEiRLA+egE4F1qgdrUZkG9y7ktiNKh6MJlSi0=
+	t=1758569894; cv=none; b=NbQIAa/6a87YMepznl1r/8eKJgNbjm8mLEUvhok8kLOvILdHpPKoA8Lc4UvCiA0fFHwFXn4sk9C4sLqUEL0md9IPuPO9z23wHg482GifgXp04XfDiE8HDyto2rxmUw/59798w5kdnJEny4OGMOkzaPvFAk+A22T9JzZ8EuVkgeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570246; c=relaxed/simple;
-	bh=G8PmkeiUMNDn0aN+UInXhte93C1Z0HNx8e9iLjk7ijA=;
+	s=arc-20240116; t=1758569894; c=relaxed/simple;
+	bh=1UiOja34AIWGiOYjffT8EcytZOLXh3+p+U5hzoVIsBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7VynoFJBia8/MIj80hPlEde2j6i6MqCx/jcnOkNdOZl9b7gnAIRP/n6BvNOyenSAhq1CLKZ+/Bvc0l6vJXVqnVG0sLrYobPv0pNX47+Znh3dXfeFfhJ5WKopUpmYEBpC5PAnDLSyJOSKtPnCyKSIvtTm6RZFepTMBWhGiYhKPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRYFmZsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01861C4CEF0;
-	Mon, 22 Sep 2025 19:44:05 +0000 (UTC)
+	 MIME-Version; b=Ke8u4atM+L0AE1XoV0icAXr3dj0/5M4MbSi0lznH20lYP/PijxaCAQF99QuWTuVadDFkNlqJgv9/fkNvPOtNJ2ie1HQkZs2MH3gwjBezian7iTTYMYzczs4dHFs+lnyV1hTp01Gvbke8vKx7IrQOkq2dnb0gkSmJdZGGSm3pNfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTBj9mEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C11BC4CEF5;
+	Mon, 22 Sep 2025 19:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570246;
-	bh=G8PmkeiUMNDn0aN+UInXhte93C1Z0HNx8e9iLjk7ijA=;
+	s=korg; t=1758569894;
+	bh=1UiOja34AIWGiOYjffT8EcytZOLXh3+p+U5hzoVIsBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRYFmZsyg6WK7cFT8l3QH+1y33GwA++YDR1Ms9UmS5XbLFx4xLgXZzFXwYRnvAk04
-	 Ed9pWqiPSkoK/lm+mPGtL4MM42YxpNXbgyrC5c6lwbcPMQXxEGtxRd5A/w3m8CEahj
-	 /Cbo1ASDxzD2vosYy2KM1c7a3dGxNcE1Gi3/Ee18=
+	b=wTBj9mEK8zGTmeYKZfn+NFHbXzvAsaqgG/UMd6emAMUkBXO5Ptffcs5VXmkZyv26p
+	 TMHhiL3wr733Vmv0JQvxBMsdBQWwmXovo/F0lUzXbL0JfNSMmsWtqiNLCeavRqfy/N
+	 FH2+B6a5g/XJAzFVucDFAlq/DoFm7GmA04QtqEv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.16 053/149] power: supply: bq27xxx: restrict no-battery detection to bq27000
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 030/105] net: liquidio: fix overflow in octeon_init_instr_queue()
 Date: Mon, 22 Sep 2025 21:29:13 +0200
-Message-ID: <20250922192414.192896502@linuxfoundation.org>
+Message-ID: <20250922192409.699937726@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Alexey Nepomnyashih <sdl@nppct.ru>
 
-commit 1e451977e1703b6db072719b37cd1b8e250b9cc9 upstream.
+[ Upstream commit cca7b1cfd7b8a0eff2a3510c5e0f10efe8fa3758 ]
 
-There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may in some
-cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not be
-interpreted as "no battery" like for a disconnected battery with some built
-in bq27000 chip.
+The expression `(conf->instr_type == 64) << iq_no` can overflow because
+`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
+operand to `u64` ensures correct 64-bit arithmetic.
 
-So restrict the no-battery detection originally introduced by
-
-    commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to the bq27000.
-
-There is no need to backport further because this was hidden before
-
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1919,8 +1919,8 @@ static void bq27xxx_battery_update_unloc
- 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
+diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+index de8a6ce86ad7e..12105ffb5dac6 100644
+--- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
++++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+@@ -126,7 +126,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
+ 	oct->io_qmask.iq |= BIT_ULL(iq_no);
  
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
--	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -ENODEV; /* read error */
-+	if (di->chip == BQ27000 && (cache.flags & 0xff) == 0xff)
-+		cache.flags = -ENODEV; /* bq27000 hdq read error */
- 	if (cache.flags >= 0) {
- 		cache.capacity = bq27xxx_battery_read_soc(di);
+ 	/* Set the 32B/64B mode for each input queue */
+-	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
++	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
+ 	iq->iqcmd_64B = (conf->instr_type == 64);
  
+ 	oct->fn_list.setup_iq_regs(oct, iq_no);
+-- 
+2.51.0
+
 
 
 
