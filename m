@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF592B92F08
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42264B930F2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD9AF19075AE
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE71118836D9
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AFE2F1FE3;
-	Mon, 22 Sep 2025 19:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C2B311594;
+	Mon, 22 Sep 2025 19:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+qHabQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idvpmZdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A9D1C1ADB;
-	Mon, 22 Sep 2025 19:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEA42F2909;
+	Mon, 22 Sep 2025 19:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569971; cv=none; b=EoRigJPnrV/+hu6fkBERFR598nSXESqFRKtnIIWOrRPHXW351KibN/8zFWm6Xb6OK53H2J8K0TLYQhc1y63Dg6+M/jGFFVv2NNs+YdT5DZAN8Dq3j4DLE4S7dW7AwgLFIwnKd9tVc+tGMroMWUGUHU7Za9h6Fy2IS8QUFyMsJgg=
+	t=1758570300; cv=none; b=uss3R3gs6+j0JexCut1IHcYkZylB/pjP6G9NpEUwvtiOh7SDAxJNu5tKtXz265GXzFkcdbT1tYCWloPX5akIZp3XxfiGCRwGQX3Hkq+rWe3TMDYgNFNnrCFruyhIvnG0po+soG5EbkJUuPuADW8Ntcmsficl5kWSYkPYYvbMtOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569971; c=relaxed/simple;
-	bh=lhTmVlUG6RW89bZOJRqWJMDbNHDk3xDdIcwJeoDQpoE=;
+	s=arc-20240116; t=1758570300; c=relaxed/simple;
+	bh=zdroLY2p9wIMbaC6UhhvvrPBFDaxPfW/96yhjjv0Uvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0DrnvMKRHeHBEfXA8oG0v9om+gVNXNYJ24pdSzQ60NKhZymjmaEoyTt+MCef7e+wnZPq5dZ31buqIGh4ad/xNYxziwz13ZSHyTA0o+B2mv+VNKIgpw+bHspfli/HRVb5QhkE5KdzrsnEAyaMfx1nMX0JOVpmok2CTRQGzOfu9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+qHabQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF60C4CEF0;
-	Mon, 22 Sep 2025 19:39:30 +0000 (UTC)
+	 MIME-Version; b=IFYAxketOPAJgLowT+w9s4++kGISj+E4rYo4UFFREm3GWPy3Nu5b4F1aTXU+J0uOfIR3xd8oJv8f0OdJ277gUZUBTK8KNTd+1KPfdBveVXfSnRCg7x7jmQbUAlkyo72liyi46EaAlQLY3hh2l/b1ghQ77QpE24uSOvC1SaM1upY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idvpmZdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5E2C4CEF0;
+	Mon, 22 Sep 2025 19:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569971;
-	bh=lhTmVlUG6RW89bZOJRqWJMDbNHDk3xDdIcwJeoDQpoE=;
+	s=korg; t=1758570299;
+	bh=zdroLY2p9wIMbaC6UhhvvrPBFDaxPfW/96yhjjv0Uvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+qHabQ/AodNoqOc9HUqk2TrLOQPZY3lJJj+Q72Fl29AEvg6haRJOOEwWlajU22Ll
-	 hLjJ5IhjR+7tonkatQA0JxII6epw92x/tz0XIZSwKyFqCsa21TIuBroc3O9nn5vFrQ
-	 ctpS3NgxZMNWdjWLfqkoZICR9h9DLlPKJ4ma/kqU=
+	b=idvpmZdXVwOtVgeX+A9bY6c3NjeBHWurYfyE/HwoQquTxWsY7io62oAaM5YRkyPRr
+	 S9DgDFls+rG6p6iGdpYRCjMmP5emo6p5fbIivTCj4tnEopTpc1ypezNAt9B8iMfbgC
+	 TynnXMcs9yj33MW4uMCurP2AZGUkTvoqUCb9jRlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankur Tyagi <ankur.tyagi85@gmail.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/105] ASoC: wm8940: Correct typo in control name
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	David Perry <david.perry@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 095/149] drm/amdgpu: suspend KFD and KGD user queues for S0ix
 Date: Mon, 22 Sep 2025 21:29:55 +0200
-Message-ID: <20250922192410.786992254@linuxfoundation.org>
+Message-ID: <20250922192415.282501328@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit b4799520dcd6fe1e14495cecbbe9975d847cd482 ]
+commit 9272bb34b066993f5f468b219b4a26ba3f2b25a1 upstream.
 
-Fixes: 0b5e92c5e020 ("ASoC WM8940 Driver")
-Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Link: https://patch.msgid.link/20250821082639.1301453-3-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We need to make sure the user queues are preempted so
+GFX can enter gfxoff.
+
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Tested-by: David Perry <david.perry@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f8b367e6fa1716cab7cc232b9e3dff29187fc99d)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8940.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
-index 5e8ed8a2c270a..808a4d4b6f80b 100644
---- a/sound/soc/codecs/wm8940.c
-+++ b/sound/soc/codecs/wm8940.c
-@@ -220,7 +220,7 @@ static const struct snd_kcontrol_new wm8940_snd_controls[] = {
- 	SOC_SINGLE_TLV("Digital Capture Volume", WM8940_ADCVOL,
- 		       0, 255, 0, wm8940_adc_tlv),
- 	SOC_ENUM("Mic Bias Level", wm8940_mic_bias_level_enum),
--	SOC_SINGLE_TLV("Capture Boost Volue", WM8940_ADCBOOST,
-+	SOC_SINGLE_TLV("Capture Boost Volume", WM8940_ADCBOOST,
- 		       8, 1, 0, wm8940_capture_boost_vol_tlv),
- 	SOC_SINGLE_TLV("Speaker Playback Volume", WM8940_SPKVOL,
- 		       0, 63, 0, wm8940_spk_vol_tlv),
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5055,7 +5055,7 @@ int amdgpu_device_suspend(struct drm_dev
+ 	adev->in_suspend = true;
+ 
+ 	if (amdgpu_sriov_vf(adev)) {
+-		if (!adev->in_s0ix && !adev->in_runpm)
++		if (!adev->in_runpm)
+ 			amdgpu_amdkfd_suspend_process(adev);
+ 		amdgpu_virt_fini_data_exchange(adev);
+ 		r = amdgpu_virt_request_full_gpu(adev, false);
+@@ -5075,10 +5075,8 @@ int amdgpu_device_suspend(struct drm_dev
+ 
+ 	amdgpu_device_ip_suspend_phase1(adev);
+ 
+-	if (!adev->in_s0ix) {
+-		amdgpu_amdkfd_suspend(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
+-		amdgpu_userq_suspend(adev);
+-	}
++	amdgpu_amdkfd_suspend(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
++	amdgpu_userq_suspend(adev);
+ 
+ 	r = amdgpu_device_evict_resources(adev);
+ 	if (r)
+@@ -5141,15 +5139,13 @@ int amdgpu_device_resume(struct drm_devi
+ 		goto exit;
+ 	}
+ 
+-	if (!adev->in_s0ix) {
+-		r = amdgpu_amdkfd_resume(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
+-		if (r)
+-			goto exit;
++	r = amdgpu_amdkfd_resume(adev, !amdgpu_sriov_vf(adev) && !adev->in_runpm);
++	if (r)
++		goto exit;
+ 
+-		r = amdgpu_userq_resume(adev);
+-		if (r)
+-			goto exit;
+-	}
++	r = amdgpu_userq_resume(adev);
++	if (r)
++		goto exit;
+ 
+ 	r = amdgpu_device_ip_late_init(adev);
+ 	if (r)
+@@ -5162,7 +5158,7 @@ exit:
+ 		amdgpu_virt_init_data_exchange(adev);
+ 		amdgpu_virt_release_full_gpu(adev, true);
+ 
+-		if (!adev->in_s0ix && !r && !adev->in_runpm)
++		if (!r && !adev->in_runpm)
+ 			r = amdgpu_amdkfd_resume_process(adev);
+ 	}
+ 
 
 
 
