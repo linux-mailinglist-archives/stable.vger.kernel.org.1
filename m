@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-181059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABCCB92D04
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8801B92DF1
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764EC44596E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0533442677
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA0527B320;
-	Mon, 22 Sep 2025 19:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3EF2F0C5F;
+	Mon, 22 Sep 2025 19:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uxpp0NQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg0TW5Ht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C045AC8E6;
-	Mon, 22 Sep 2025 19:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279D6285C92;
+	Mon, 22 Sep 2025 19:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569586; cv=none; b=qBeImAbFB3IpDc2xMCahZwJ4mDgDz/aru7wEpqD3v0XWoXTSx5/shiYPKKhVVBfUDCP3m1huaL3ZJ40XT3ce89uN+0o1LZayZoqg3enAHP2CwYUcq56S2z8hZkgsSbV6psUMiVGkAY7tw+lDY+XIGj/zDwAe4AyJDQikMYiQ0So=
+	t=1758569755; cv=none; b=DeqqgM90R/qeU6BYoblqy3iw9NUR3HzEZYYE0I6ScCc6kGlRS0KZR1OpxFm6F81Nb8TubX5dKvgjsl6vTu7B2Mv4FDfJLMnOmj9Lv+/H11089XRvMLcLbAt/yONpOvs5mqKiMRg4kEQmtC2QCAY9gO+3pGrsQSov4yP1IynUNMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569586; c=relaxed/simple;
-	bh=I3eIHly3eD+8uEtUMMw1XmOxxzsQs6sssT/M8iqlhoU=;
+	s=arc-20240116; t=1758569755; c=relaxed/simple;
+	bh=MIkqEtTCGoanBmSMEDkj8hI8UJbFa1dlivIZdgtoswo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukTKFMzzJYr1sFLOTsyN6WCk/INa4xu78Ahes2m4Lo8gH0wO4jRELGem4sZhUPwX5zw3HV3PFxwc8Q4oeg8spUHV9NTCKRNj/17dNtdVoY2NRnvlZ0r8PQFLidUjN4AZmvj6JZnKe2zYMACOHkuhrWSqlAF1D/gUB2Xg53Y6UK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uxpp0NQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52561C4CEF0;
-	Mon, 22 Sep 2025 19:33:06 +0000 (UTC)
+	 MIME-Version; b=EibkKtDdFILSzd3sfzxHuF23L9MTvdLob5KuI+vV0/VoSnBUj4p4KRcr8Le1BWxEHuNWgX31/vZkdHEysx2XmXf1qmhwBuX793sTENuZnjaRhSkbzM8AfQ6bNDw0Jp5lZk6UVHxs+Y0OkPB05OIaFxwgaw8eDG8+RlHPfXuXvIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qg0TW5Ht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D6AC113D0;
+	Mon, 22 Sep 2025 19:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569586;
-	bh=I3eIHly3eD+8uEtUMMw1XmOxxzsQs6sssT/M8iqlhoU=;
+	s=korg; t=1758569754;
+	bh=MIkqEtTCGoanBmSMEDkj8hI8UJbFa1dlivIZdgtoswo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uxpp0NQfd9PY2JKiSvk5lQdZJtTVlNHpvPZ4BY8WiskISAewe+X6zSf3PZjwehz41
-	 24rM7Zx126DtlOJMAxtG33kW2W+oweC5NF6EYEFpmcimAuLg+t4nGEpAmDcYdcqjKI
-	 dyKnC0Z9XY5XwrtH/MAckWAXVjdFPh1zM4M8Isgk=
+	b=Qg0TW5HtagqxUcFIttkfHu9FeTvqdBI3C95an7koM4xJ6dpx8hNo6ynyCaLTTGH8p
+	 oE3c/O3IubZ0ZPd+33ztLSYmsrQ9Pof2ywgfCTHqgjeFO70aEAkFBJx30nHWj7DhTx
+	 y57iXAS21q4+QeIUETwIfzMzzl2fNEwCjhYhxTLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/61] xhci: dbc: decouple endpoint allocation from initialization
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 44/70] selftests: mptcp: connect: catch IO errors on listen side
 Date: Mon, 22 Sep 2025 21:29:44 +0200
-Message-ID: <20250922192405.026221112@linuxfoundation.org>
+Message-ID: <20250922192405.797143176@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 220a0ffde02f962c13bc752b01aa570b8c65a37b ]
+commit 14e22b43df25dbd4301351b882486ea38892ae4f upstream.
 
-Decouple allocation of endpoint ring buffer from initialization
-of the buffer, and initialization of endpoint context parts from
-from the rest of the contexts.
+IO errors were correctly printed to stderr, and propagated up to the
+main loop for the server side, but the returned value was ignored. As a
+consequence, the program for the listener side was no longer exiting
+with an error code in case of IO issues.
 
-It allows driver to clear up and reinitialize endpoint rings
-after disconnect without reallocating everything.
+Because of that, some issues might not have been seen. But very likely,
+most issues either had an effect on the client side, or the file
+transfer was not the expected one, e.g. the connection got reset before
+the end. Still, it is better to fix this.
 
-This is a prerequisite for the next patch that prevents the transfer
-ring from filling up with cancelled (no-op) TRBs if a debug cable is
-reconnected several times without transferring anything.
+The main consequence of this issue is the error that was reported by the
+selftests: the received and sent files were different, and the MIB
+counters were not printed. Also, when such errors happened during the
+'disconnect' tests, the program tried to continue until the timeout.
 
+Now when an IO error is detected, the program exits directly with an
+error.
+
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
 Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250902105306.877476-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-2-d40e77cbbf02@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.c |   71 ++++++++++++++++++++++++++---------------
- 1 file changed, 46 insertions(+), 25 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -86,13 +86,34 @@ static u32 xhci_dbc_populate_strings(str
- 	return string_length;
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1079,6 +1079,7 @@ int main_loop_s(int listensock)
+ 	struct pollfd polls;
+ 	socklen_t salen;
+ 	int remotesock;
++	int err = 0;
+ 	int fd = 0;
+ 
+ again:
+@@ -1111,7 +1112,7 @@ again:
+ 		SOCK_TEST_TCPULP(remotesock, 0);
+ 
+ 		memset(&winfo, 0, sizeof(winfo));
+-		copyfd_io(fd, remotesock, 1, true, &winfo);
++		err = copyfd_io(fd, remotesock, 1, true, &winfo);
+ 	} else {
+ 		perror("accept");
+ 		return 1;
+@@ -1120,10 +1121,10 @@ again:
+ 	if (cfg_input)
+ 		close(fd);
+ 
+-	if (--cfg_repeat > 0)
++	if (!err && --cfg_repeat > 0)
+ 		goto again;
+ 
+-	return 0;
++	return err;
  }
  
-+static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
-+{
-+	struct xhci_ep_ctx      *ep_ctx;
-+	unsigned int		max_burst;
-+	dma_addr_t		deq;
-+
-+	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
-+
-+	/* Populate bulk out endpoint context: */
-+	ep_ctx                  = dbc_bulkout_ctx(dbc);
-+	deq                     = dbc_bulkout_enq(dbc);
-+	ep_ctx->ep_info         = 0;
-+	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
-+	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
-+
-+	/* Populate bulk in endpoint context: */
-+	ep_ctx                  = dbc_bulkin_ctx(dbc);
-+	deq                     = dbc_bulkin_enq(dbc);
-+	ep_ctx->ep_info         = 0;
-+	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
-+	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
-+}
-+
- static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
- {
- 	struct dbc_info_context	*info;
--	struct xhci_ep_ctx	*ep_ctx;
- 	u32			dev_info;
--	dma_addr_t		deq, dma;
--	unsigned int		max_burst;
-+	dma_addr_t		dma;
- 
- 	if (!dbc)
- 		return;
-@@ -106,20 +127,8 @@ static void xhci_dbc_init_contexts(struc
- 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
- 	info->length		= cpu_to_le32(string_length);
- 
--	/* Populate bulk out endpoint context: */
--	ep_ctx			= dbc_bulkout_ctx(dbc);
--	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
--	deq			= dbc_bulkout_enq(dbc);
--	ep_ctx->ep_info		= 0;
--	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
--	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
--
--	/* Populate bulk in endpoint context: */
--	ep_ctx			= dbc_bulkin_ctx(dbc);
--	deq			= dbc_bulkin_enq(dbc);
--	ep_ctx->ep_info		= 0;
--	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
--	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
-+	/* Populate bulk in and out endpoint contexts: */
-+	xhci_dbc_init_ep_contexts(dbc);
- 
- 	/* Set DbC context and info registers: */
- 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
-@@ -421,6 +430,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t
- 	return ctx;
- }
- 
-+static void xhci_dbc_ring_init(struct xhci_ring *ring)
-+{
-+	struct xhci_segment *seg = ring->first_seg;
-+
-+	/* clear all trbs on ring in case of old ring */
-+	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
-+
-+	/* Only event ring does not use link TRB */
-+	if (ring->type != TYPE_EVENT) {
-+		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
-+
-+		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
-+		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
-+	}
-+	xhci_initialize_ring_info(ring, 1);
-+}
-+
- static struct xhci_ring *
- xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
- {
-@@ -449,15 +475,10 @@ xhci_dbc_ring_alloc(struct device *dev,
- 
- 	seg->dma = dma;
- 
--	/* Only event ring does not use link TRB */
--	if (type != TYPE_EVENT) {
--		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
--
--		trb->link.segment_ptr = cpu_to_le64(dma);
--		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
--	}
- 	INIT_LIST_HEAD(&ring->td_list);
--	xhci_initialize_ring_info(ring, 1);
-+
-+	xhci_dbc_ring_init(ring);
-+
- 	return ring;
- dma_fail:
- 	kfree(seg);
+ static void init_rng(void)
 
 
 
