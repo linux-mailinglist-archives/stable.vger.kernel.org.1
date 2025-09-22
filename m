@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-181303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0722BB93059
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD205B92D5E
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A991693C6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A48445AFC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CED2F3608;
-	Mon, 22 Sep 2025 19:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE2127FB2D;
+	Mon, 22 Sep 2025 19:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQdJMtTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBeCqmgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD402F0C5C;
-	Mon, 22 Sep 2025 19:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC23725F780;
+	Mon, 22 Sep 2025 19:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570197; cv=none; b=RaxPlIHDgRsZUTb3uPeXLO26/OS2GJXjlks5hRPBBocSIksPaWJlm3ZBnEhmqzH3pvgoZYQ0uoVkNsJiC9NAVSfvILIn1+oa7zrDK3xWfWixu6dQsqbFp2sg45HAie6CqAKKjBf5gsUshcStzfP5meRmxepazuefyXGutX/n8cc=
+	t=1758569649; cv=none; b=bLmOLyZGxJkUN45f8GwGD8vFUFkq+E+9NnJMMnQ4OAlOFeJkr54RZ6ihl9eaDUt8IvQ+Xe0nb1TMaaDFl24bOalZwNM4/+BUzC5f85kawKvhlwyHgpjIIbaohJc0CXT0aqyFcR5gxolkj38qioN/jcd6YCvobNsTtcUooS20Ab0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570197; c=relaxed/simple;
-	bh=8dBvb8DSp3dNnpXP48lEx6o4tYUcb9OWJrn3SpZYm58=;
+	s=arc-20240116; t=1758569649; c=relaxed/simple;
+	bh=hFqzmN9+yCxmYhzYpOpJFD3WQOu7K1/m59G/J9whqFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3tRpdkm8MrFkM1SQLT/O43ytPVEPjnS09OYy+yqooPfzuX4BpV6AxYjYGPL7wsBITcNny1E8bWoemDss4HoubhxuOYht750MsA6ZcEOCzweNdWFdeR/k+ePYQGo7ixnxNPZG4DCJ369ZvhiRm1VqciOUBNabClUl8NFpmyUEPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQdJMtTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC15FC4CEF5;
-	Mon, 22 Sep 2025 19:43:16 +0000 (UTC)
+	 MIME-Version; b=s/nzt1cXf8WPjOeB7WRmv37n1XGoLC4SMQTnIFhsqnenH+6PfVo9ctkXtqgZQouwtu+MqdK7sR4bq9AUXdAECcR4TBVCFroMSmU9KURRNQ0ajGliCHALTW/OMd1t5ZcUvD00RdPyOf8zSu+k8p+e5rJB8GZa8nIXZZu81zOTqs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBeCqmgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8380FC4CEF5;
+	Mon, 22 Sep 2025 19:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570197;
-	bh=8dBvb8DSp3dNnpXP48lEx6o4tYUcb9OWJrn3SpZYm58=;
+	s=korg; t=1758569648;
+	bh=hFqzmN9+yCxmYhzYpOpJFD3WQOu7K1/m59G/J9whqFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQdJMtTzLl3Pig6S5LpfEleHsjZCWgNFysiTg2xS2Q3PAJjT9FvtWVDEnnSLn0R87
-	 aCru1xu64Fdv21n55FsYgNAzzSHDUyRc30AU+HCgwliVHIr3e2/oDfF9I62vSn9ak2
-	 2LqsdBOdERfXzAjtdEUjSSI7YA6KzeD0kxQXoMVE=
+	b=rBeCqmgtW+1MlseM/Vf4Ncibj5wXINBf+YyfOWgNRzF/GOcgCL6HM9hkVSGXrtIGk
+	 pWxmFQ0i3VoQeDwK1EqCu+mozUeD7vicLl3vnzHrCbheabcfoVjaUy5+qfViC4qa1U
+	 h19GL8dD0QBczRFlo0hfJb6a4O8nQnzNmRfA4omg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Vagin <avagin@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 043/149] net: clear sk->sk_ino in sk_set_socket(sk, NULL)
+Subject: [PATCH 6.6 03/70] wifi: mac80211: increase scan_ies_len for S1G
 Date: Mon, 22 Sep 2025 21:29:03 +0200
-Message-ID: <20250922192413.952284388@linuxfoundation.org>
+Message-ID: <20250922192404.558718817@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-[ Upstream commit 87ebb628a5acb892eba41ef1d8989beb8f036034 ]
+[ Upstream commit 7e2f3213e85eba00acb4cfe6d71647892d63c3a1 ]
 
-Andrei Vagin reported that blamed commit broke CRIU.
+Currently the S1G capability element is not taken into account
+for the scan_ies_len, which leads to a buffer length validation
+failure in ieee80211_prep_hw_scan() and subsequent WARN in
+__ieee80211_start_scan(). This prevents hw scanning from functioning.
+To fix ensure we accommodate for the S1G capability length.
 
-Indeed, while we want to keep sk_uid unchanged when a socket
-is cloned, we want to clear sk->sk_ino.
-
-Otherwise, sock_diag might report multiple sockets sharing
-the same inode number.
-
-Move the clearing part from sock_orphan() to sk_set_socket(sk, NULL),
-called both from sock_orphan() and sk_clone_lock().
-
-Fixes: 5d6b58c932ec ("net: lockless sock_i_ino()")
-Closes: https://lore.kernel.org/netdev/aMhX-VnXkYDpKd9V@google.com/
-Closes: https://github.com/checkpoint-restore/criu/issues/2744
-Reported-by: Andrei Vagin <avagin@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Andrei Vagin <avagin@google.com>
-Link: https://patch.msgid.link/20250917135337.1736101-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250826085437.3493-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mac80211/main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index a348ae145eda4..6e9f4c126672d 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2061,6 +2061,9 @@ static inline void sk_set_socket(struct sock *sk, struct socket *sock)
- 	if (sock) {
- 		WRITE_ONCE(sk->sk_uid, SOCK_INODE(sock)->i_uid);
- 		WRITE_ONCE(sk->sk_ino, SOCK_INODE(sock)->i_ino);
-+	} else {
-+		/* Note: sk_uid is unchanged. */
-+		WRITE_ONCE(sk->sk_ino, 0);
- 	}
- }
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 3a6fff98748b8..80b143bde93d6 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -965,7 +965,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	int result, i;
+ 	enum nl80211_band band;
+ 	int channels, max_bitrates;
+-	bool supp_ht, supp_vht, supp_he, supp_eht;
++	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g;
+ 	struct cfg80211_chan_def dflt_chandef = {};
  
-@@ -2082,8 +2085,6 @@ static inline void sock_orphan(struct sock *sk)
- 	sock_set_flag(sk, SOCK_DEAD);
- 	sk_set_socket(sk, NULL);
- 	sk->sk_wq  = NULL;
--	/* Note: sk_uid is unchanged. */
--	WRITE_ONCE(sk->sk_ino, 0);
- 	write_unlock_bh(&sk->sk_callback_lock);
- }
+ 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
+@@ -1081,6 +1081,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	supp_vht = false;
+ 	supp_he = false;
+ 	supp_eht = false;
++	supp_s1g = false;
+ 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
+ 		struct ieee80211_supported_band *sband;
  
+@@ -1127,6 +1128,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 			max_bitrates = sband->n_bitrates;
+ 		supp_ht = supp_ht || sband->ht_cap.ht_supported;
+ 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
++		supp_s1g = supp_s1g || sband->s1g_cap.s1g;
+ 
+ 		for (i = 0; i < sband->n_iftype_data; i++) {
+ 			const struct ieee80211_sband_iftype_data *iftd;
+@@ -1253,6 +1255,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		local->scan_ies_len +=
+ 			2 + sizeof(struct ieee80211_vht_cap);
+ 
++	if (supp_s1g)
++		local->scan_ies_len += 2 + sizeof(struct ieee80211_s1g_cap);
++
+ 	/*
+ 	 * HE cap element is variable in size - set len to allow max size */
+ 	if (supp_he) {
 -- 
 2.51.0
 
