@@ -1,144 +1,141 @@
-Return-Path: <stable+bounces-180864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3D9B8EA0C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 02:44:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41610B8EA21
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 02:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B7AE3BD5BA
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 00:44:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16B2B7A4ABA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 00:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E75D79CD;
-	Mon, 22 Sep 2025 00:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YYN+nNTI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B22449659;
+	Mon, 22 Sep 2025 00:50:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1C378F20
-	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 00:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBA82EB10
+	for <stable@vger.kernel.org>; Mon, 22 Sep 2025 00:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758501850; cv=none; b=Pz/bQ0Sv3kPRpg73HZT7JOdOvt3tzVkfNISkxXYPHzNk6sloDZaF+5h2hRC4fJE0eD/+WxZhcOzGEPc0GKyg/Y59vbbtPQE8viq9aGr+VGfTp70Tij3+SlMwGyIX0vODmwBHyDj6a0wZMoc+XTJUS5XnXx9JO9IYwmoEMcBAXr8=
+	t=1758502207; cv=none; b=g0LFfnUlj5j6Go8JJKBiES3gcBRwFiT9VnAml4kkZi3C3wnEjEkBs+tTCAmToYAWYzGkel1lR23yH/3GJF7r5gzo/9pI5dbFWmyJayQO23wWeN/rZOjoXCTwByg5AmRXakoEUpkJTlHrZowu+Dftr/LstEHneRk7NM0sybQ7O2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758501850; c=relaxed/simple;
-	bh=vd0kUDpIz1SA/MxYOcZ0L1mmd01IFxbmgC6Ni92diAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xvtqcr8nHVhVEZzXJnc+6dMfLcBBcfwHzEy43XBkOBTIlSbWbOLn6q669gTxhdufVkT+zcB83GRQDFjd7Vwoee4t0UPXVG1yvA+i5uN2RrBEC2x6ZUzIW/5ZbCxq8vX/Zz49VTPmj8ezhwO8RTsABuA5wdPp+81V/MfTFBC4ALQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YYN+nNTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1DCC4CEE7;
-	Mon, 22 Sep 2025 00:44:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758501848;
-	bh=vd0kUDpIz1SA/MxYOcZ0L1mmd01IFxbmgC6Ni92diAY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYN+nNTIRsdh10Hg3H14y4K9lZ0T6Xawg4mpbgDNwJdgkg7+5BZDQRkOE327HZOA1
-	 6ECuM/epVpYI5JANGC3o0DaabClQonHUVDCM9XxUUc3lT0IYNyOfGqVV26xaju4/Wc
-	 GkbyScqxN/CvKcAx/R5tpiqnKGMqaZ8seubSNLHZ+QsPbeukd2kFwydiIfknY7QJCy
-	 xAa3sxpJeVIGzqEY1qGu+0Lr2GUNLZtue7jD/q5mMbaaF8THqkztMQ4bBmgFqf/CVC
-	 UZl/m30C5VIo+PZrK4EJ67FdgtYjoKO214dLV/G9QFT492QkfQXjaGFQkUPVXK9Jzm
-	 NMlDCDrpDax7g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: propagate shutdown to subflows when possible
-Date: Sun, 21 Sep 2025 20:44:04 -0400
-Message-ID: <20250922004404.3108078-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025092142-stingily-broadside-f761@gregkh>
-References: <2025092142-stingily-broadside-f761@gregkh>
+	s=arc-20240116; t=1758502207; c=relaxed/simple;
+	bh=dfOjHd92qFVxhXcfKi+jz3DvM2VpBo023wV+c6K7R9c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=aYac8So/8SG7y+l1EwvtAXWmqM7h1/cMotmbZfbMz799gHyzX0/2jACzjjVUUQKsAEcx5mwcCeFpUS+EloBwy9iVZkANai55Ot31lVjP4rH6YBp+esvP1EV8Zg8Ys3KqNQV4LEg4GvGBTr3ym/obv6OTFZDh+zTy0NZFn1daLFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.198])
+	by gateway (Coremail) with SMTP id _____8AxztIyndBoVAINAA--.27687S3;
+	Mon, 22 Sep 2025 08:49:54 +0800 (CST)
+Received: from chenhuacai$loongson.cn ( [223.64.68.198] ) by
+ ajax-webmail-front1 (Coremail) ; Mon, 22 Sep 2025 08:49:52 +0800
+ (GMT+08:00)
+Date: Mon, 22 Sep 2025 08:49:52 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
+To: "Greg KH" <gregkh@linuxfoundation.org>
+Cc: cuitao@kylinos.cn, stable@vger.kernel.org, chenhuacai@kernel.org
+Subject: Re: Re: WTF: patch "[PATCH] LoongArch: Replace sprintf() with
+ sysfs_emit()" was seriously submitted to be applied to the 6.16-stable
+ tree?
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250609(354f7833) Copyright (c) 2002-2025 www.mailtech.cn loongson
+In-Reply-To: <2025092104-stubbly-nimble-b45f@gregkh>
+References: <2025092101-lushly-steering-6b45@gregkh>
+ <2025092104-stubbly-nimble-b45f@gregkh>
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: O1QcPWZvb3Rlcl90eHQ9MjMwNTo2MTg=
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <4e587b43.187e2.1996ee604c2.Coremail.chenhuacai@loongson.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:qMiowJAxgcIwndBonmWkAA--.14881W
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQEMBmjPk6cEAwABsf
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZryftrWrCrW8Kr4rCF1ktFc_yoW8Kw4xpa
+	4fAa43KF4kJr1DCw1qka12grWYqa97GF13WFs5Gry8Cas8uFnagFyxZ34xWFyktryrGFy0
+	qrs7Kr9xtFW8G3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUdYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAa7VCE64xvF2IEb7IF0Fy264xvF2IEb7IF0Fy264
+	kE64k0F2IE7I0Y6sxI4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2
+	zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7V
+	C2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4xv
+	F2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwCF04k20xvY0x0EwIxGrwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j
+	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64
+	vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0x
+	vEx4A2jsIEc7CjxVAFwI0_Jr0_Gr1l6VACY4xI67k04243AbIYCTnIWIevJa73UjIFyTuY
+	vjxUeNtxUUUUU
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-
-[ Upstream commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b ]
-
-When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
-metadata to exchange, and all subflows can be safely shutdown.
-
-Before this patch, the subflows were actually terminated at 'close()'
-time. That's certainly fine most of the time, but not when the userspace
-'shutdown()' a connection, without close()ing it. When doing so, the
-subflows were staying in LAST_ACK state on one side -- and consequently
-in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
-socket.
-
-Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
-consequence of this is that the TCP 'FIN' flag can be set earlier now,
-but the end result is the same. This affects the packetdrill tests
-looking at the end of the MPTCP connections, but for a good reason.
-
-Note that tcp_shutdown() will check the subflow state, so no need to do
-that again before calling it.
-
-Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
-Cc: stable@vger.kernel.org
-Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mptcp/protocol.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 883efcbb8dfc3..ea715a1282425 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -425,6 +425,19 @@ static void mptcp_close_wake_up(struct sock *sk)
- 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
- }
- 
-+static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+		unlock_sock_fast(ssk, slow);
-+	}
-+}
- static bool mptcp_pending_data_fin_ack(struct sock *sk)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
-@@ -448,6 +461,7 @@ static void mptcp_check_data_fin_ack(struct sock *sk)
- 			break;
- 		case TCP_CLOSING:
- 		case TCP_LAST_ACK:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		}
-@@ -615,6 +629,7 @@ static bool mptcp_check_data_fin(struct sock *sk)
- 			inet_sk_state_store(sk, TCP_CLOSING);
- 			break;
- 		case TCP_FIN_WAIT2:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		default:
--- 
-2.51.0
+CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiR3JlZyBLSCIgPGdyZWdr
+aEBsaW51eGZvdW5kYXRpb24ub3JnPgo+IOWPkemAgeaXtumXtDoyMDI1LTA5LTIxIDIwOjI2OjI3
+ICjmmJ/mnJ/ml6UpCj4g5pS25Lu25Lq6OiBjdWl0YW9Aa3lsaW5vcy5jbiwgY2hlbmh1YWNhaUBs
+b29uZ3Nvbi5jbgo+IOaKhOmAgTogc3RhYmxlQHZnZXIua2VybmVsLm9yZwo+IOS4u+mimDogUmU6
+IFdURjogcGF0Y2ggIltQQVRDSF0gTG9vbmdBcmNoOiBSZXBsYWNlIHNwcmludGYoKSB3aXRoIHN5
+c2ZzX2VtaXQoKSIgd2FzIHNlcmlvdXNseSBzdWJtaXR0ZWQgdG8gYmUgYXBwbGllZCB0byB0aGUg
+Ni4xNi1zdGFibGUgdHJlZT8KPiAKPiBPbiBTdW4sIFNlcCAyMSwgMjAyNSBhdCAwMjoyNDowMVBN
+ICswMjAwLCBncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZyB3cm90ZToKPiA+IFRoZSBwYXRjaCBi
+ZWxvdyB3YXMgc3VibWl0dGVkIHRvIGJlIGFwcGxpZWQgdG8gdGhlIDYuMTYtc3RhYmxlIHRyZWUu
+Cj4gPiAKPiA+IEkgZmFpbCB0byBzZWUgaG93IHRoaXMgcGF0Y2ggbWVldHMgdGhlIHN0YWJsZSBr
+ZXJuZWwgcnVsZXMgYXMgZm91bmQgYXQKPiA+IERvY3VtZW50YXRpb24vcHJvY2Vzcy9zdGFibGUt
+a2VybmVsLXJ1bGVzLnJzdC4KPiA+IAo+ID4gSSBjb3VsZCBiZSB0b3RhbGx5IHdyb25nLCBhbmQg
+aWYgc28sIHBsZWFzZSByZXNwb25kIHRvIAo+ID4gPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+IGFu
+ZCBsZXQgbWUga25vdyB3aHkgdGhpcyBwYXRjaCBzaG91bGQgYmUKPiA+IGFwcGxpZWQuICBPdGhl
+cndpc2UsIGl0IGlzIG5vdyBkcm9wcGVkIGZyb20gbXkgcGF0Y2ggcXVldWVzLCBuZXZlciB0byBi
+ZQo+ID4gc2VlbiBhZ2Fpbi4KPiA+IAo+ID4gdGhhbmtzLAo+ID4gCj4gPiBncmVnIGstaAo+ID4g
+Cj4gPiAtLS0tLS0tLS0tLS0tLS0tLS0gb3JpZ2luYWwgY29tbWl0IGluIExpbnVzJ3MgdHJlZSAt
+LS0tLS0tLS0tLS0tLS0tLS0KPiA+IAo+ID4gPkZyb20gZDZkNjlmMGVkZGU2M2I1NTMzNDVkNGVm
+YWNlYjdkYWVkODlmZTA0YyBNb24gU2VwIDE3IDAwOjAwOjAwIDIwMDEKPiA+IEZyb206IFRhbyBD
+dWkgPGN1aXRhb0BreWxpbm9zLmNuPgo+ID4gRGF0ZTogVGh1LCAxOCBTZXAgMjAyNSAxOTo0NDow
+NCArMDgwMAo+ID4gU3ViamVjdDogW1BBVENIXSBMb29uZ0FyY2g6IFJlcGxhY2Ugc3ByaW50Zigp
+IHdpdGggc3lzZnNfZW1pdCgpCj4gPiAKPiA+IEFzIERvY3VtZW50YXRpb24vZmlsZXN5c3RlbXMv
+c3lzZnMucnN0IHN1Z2dlc3RlZCwgc2hvdygpIHNob3VsZCBvbmx5IHVzZQo+ID4gc3lzZnNfZW1p
+dCgpIG9yIHN5c2ZzX2VtaXRfYXQoKSB3aGVuIGZvcm1hdHRpbmcgdGhlIHZhbHVlIHRvIGJlIHJl
+dHVybmVkCj4gPiB0byB1c2VyIHNwYWNlLgo+ID4gCj4gPiBObyBmdW5jdGlvbmFsIGNoYW5nZSBp
+bnRlbmRlZC4KPiA+IAo+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiA+IFNpZ25lZC1v
+ZmYtYnk6IFRhbyBDdWkgPGN1aXRhb0BreWxpbm9zLmNuPgo+ID4gU2lnbmVkLW9mZi1ieTogSHVh
+Y2FpIENoZW4gPGNoZW5odWFjYWlAbG9vbmdzb24uY24+Cj4gPiAKPiA+IGRpZmYgLS1naXQgYS9h
+cmNoL2xvb25nYXJjaC9rZXJuZWwvZW52LmMgYi9hcmNoL2xvb25nYXJjaC9rZXJuZWwvZW52LmMK
+PiA+IGluZGV4IGJlMzA5YTcxZjIwNC4uMjNiZDVhZTIyMTJjIDEwMDY0NAo+ID4gLS0tIGEvYXJj
+aC9sb29uZ2FyY2gva2VybmVsL2Vudi5jCj4gPiArKysgYi9hcmNoL2xvb25nYXJjaC9rZXJuZWwv
+ZW52LmMKPiA+IEBAIC04Niw3ICs4Niw3IEBAIGxhdGVfaW5pdGNhbGwoZmR0X2NwdV9jbGtfaW5p
+dCk7Cj4gPiAgc3RhdGljIHNzaXplX3QgYm9hcmRpbmZvX3Nob3coc3RydWN0IGtvYmplY3QgKmtv
+YmosCj4gPiAgCQkJICAgICAgc3RydWN0IGtvYmpfYXR0cmlidXRlICphdHRyLCBjaGFyICpidWYp
+Cj4gPiAgewo+ID4gLQlyZXR1cm4gc3ByaW50ZihidWYsCj4gPiArCXJldHVybiBzeXNmc19lbWl0
+KGJ1ZiwKPiA+ICAJCSJCSU9TIEluZm9ybWF0aW9uXG4iCj4gPiAgCQkiVmVuZG9yXHRcdFx0OiAl
+c1xuIgo+ID4gIAkJIlZlcnNpb25cdFx0XHQ6ICVzXG4iCj4gCj4gQWxzbywgdGhpcyBzaG91bGQg
+Tk9UIGJlIGEgc3lzZnMgZmlsZS4gIHN5c2ZzIGZpbGVzIGFyZSAib25lIHZhbHVlIHBlcgo+IGZp
+bGUiLCB0aGlzIHNob3VsZCBiZSBtdWx0aXBsZSBkaWZmZXJlbnQgc3lzZnMgZmlsZS4gIFBsZWFz
+ZSBmaXggdGhhdAo+IHVwLgpIaSwgQ3VpdGFvLAoKUGxlYXNlIGRvdWJsZSBjaGVjayB3aGV0aGVy
+IHlvdXIgY29kZSBpcyBjb3JyZWN0LCB0aGFua3MuCgpIdWFjYWkKCj4gCj4gdGhhbmtzLAo+IAo+
+IGdyZWcgay1oCg0KDQrmnKzpgq7ku7blj4rlhbbpmYTku7blkKvmnInpvpnoiq/kuK3np5HnmoTl
+lYbkuJrnp5jlr4bkv6Hmga/vvIzku4XpmZDkuo7lj5HpgIHnu5nkuIrpnaLlnLDlnYDkuK3liJfl
+h7rnmoTkuKrkurrmiJbnvqTnu4TjgILnpoHmraLku7vkvZXlhbbku5bkurrku6Xku7vkvZXlvaLl
+vI/kvb/nlKjvvIjljIXmi6zkvYbkuI3pmZDkuo7lhajpg6jmiJbpg6jliIblnLDms4TpnLLjgIHl
+pI3liLbmiJbmlaPlj5HvvInmnKzpgq7ku7blj4rlhbbpmYTku7bkuK3nmoTkv6Hmga/jgILlpoLm
+npzmgqjplJnmlLbmnKzpgq7ku7bvvIzor7fmgqjnq4vljbPnlLXor53miJbpgq7ku7bpgJrnn6Xl
+j5Hku7bkurrlubbliKDpmaTmnKzpgq7ku7bjgIIgDQpUaGlzIGVtYWlsIGFuZCBpdHMgYXR0YWNo
+bWVudHMgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gZnJvbSBMb29uZ3NvbiBUZWNo
+bm9sb2d5ICwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3IgdGhlIHBlcnNvbiBvciBlbnRpdHkg
+d2hvc2UgYWRkcmVzcyBpcyBsaXN0ZWQgYWJvdmUuIEFueSB1c2Ugb2YgdGhlIGluZm9ybWF0aW9u
+IGNvbnRhaW5lZCBoZXJlaW4gaW4gYW55IHdheSAoaW5jbHVkaW5nLCBidXQgbm90IGxpbWl0ZWQg
+dG8sIHRvdGFsIG9yIHBhcnRpYWwgZGlzY2xvc3VyZSwgcmVwcm9kdWN0aW9uIG9yIGRpc3NlbWlu
+YXRpb24pIGJ5IHBlcnNvbnMgb3RoZXIgdGhhbiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpIGlz
+IHByb2hpYml0ZWQuIElmIHlvdSByZWNlaXZlIHRoaXMgZW1haWwgaW4gZXJyb3IsIHBsZWFzZSBu
+b3RpZnkgdGhlIHNlbmRlciBieSBwaG9uZSBvciBlbWFpbCBpbW1lZGlhdGVseSBhbmQgZGVsZXRl
+IGl0LiANCg0KDQo=
 
 
