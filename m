@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-181212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950FFB92F20
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:39:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFC0B92D49
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3420D4477CB
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:39:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6FD77A2228
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7692F2617;
-	Mon, 22 Sep 2025 19:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40F1C8E6;
+	Mon, 22 Sep 2025 19:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vu8PiziJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kuh2loti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE04F2820D1;
-	Mon, 22 Sep 2025 19:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924BA1FDA89;
+	Mon, 22 Sep 2025 19:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569968; cv=none; b=q4xp3kUGwDUQZcDo/juDYSICNxoGdAW4p1sTKBSRxt1cx2mFEmO2zA9GMBgKxwEdwqoJGlkKhp4yyxAyRUK6gN8AT5lajfqw4FXgTN+fvXmD5mzh8abt7gTWkeW36GTsPxg4XaGoPHj+MbLVH/NiMevWMvNftBt8iIgC0u1a7QQ=
+	t=1758569631; cv=none; b=rHf6lIjZksiv5ULaGF+964FBeFadio0IczT5oOTdrExAN8E6UVjoHh/5QSCRoWyhH/+PkhJxvcl2pd6gwpcm0kLy712OXHzByXofYPZNHgpYCXxxLMKOdm3yD5rJtwLyrOOvn3qFn2fO+BSI7s2iETCfiMdYZDJPlUG2ydHIlPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569968; c=relaxed/simple;
-	bh=H7sguuAodPDZJuMqswIbGNCkzzzY2vA/JRG0e2wXibk=;
+	s=arc-20240116; t=1758569631; c=relaxed/simple;
+	bh=AoGOgp240CXNEvXRz/uCs1AI6Co2G1BFzB2UdHly7m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HWg+Ogeyls7mA5DmKK58zQr8TbgTLWQ46KWi9ls+N0/XC9L+sOCVOJolHdvdtmxJ3i5vZs7TRVpGh1W4xWaQqzFIg+KYAzhgwX6bhh7NuqNVBmAvvmb/fJ5uyCKWEt7IXfhYVXPtB4ZFb3w88MqD/omBXBsCuMZnWGXOwZwH29g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vu8PiziJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C48C4CEF5;
-	Mon, 22 Sep 2025 19:39:28 +0000 (UTC)
+	 MIME-Version; b=jXsOx87toJJQSFiR6RscvTIlWFv5D9lzw0sjzP5oHoBNessumahqm9hTacbglvPjxVpwfUevTFYoQ9Kc5VOAGeuICQZTabviu3NPBd9zg/s5Jf52KXvL1+fmxzJBGDR0R7HmC3fUoYTJpKfstS/1FYXxwEMl4SMlAAo1n0Wyoeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kuh2loti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B5BC4CEF0;
+	Mon, 22 Sep 2025 19:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569968;
-	bh=H7sguuAodPDZJuMqswIbGNCkzzzY2vA/JRG0e2wXibk=;
+	s=korg; t=1758569631;
+	bh=AoGOgp240CXNEvXRz/uCs1AI6Co2G1BFzB2UdHly7m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vu8PiziJ0ZIAGHU3oE4OTWaeC3/yQDbJJsrOTP6J4AI+kr0qtI2naUgKSVRz7sdFP
-	 Meoqj44xGkZWeZHRMZGiylN07uO5GU/y4SlnA99r80r7NsnoAtW+pkx7K1GstoACWj
-	 naF9KIZOuSLxzJMp8XmW/J0Zq8UtYGp0/jUW0RfY=
+	b=Kuh2lotiLeswCviBqKqWdLCNqS4ePwGcXR64L2uLN4QwRTNOfKUV7EUEyDt0OhM0o
+	 FuV725FflFOmzBIuie61kYuudVJXkWMqIlhC7NpCiVfrW/sTFxvG1JgYJ5dI2qzXtF
+	 +Wl6sgOTGBf3OS1+hvCrP1FnEKZ9NC2KrgdgEjQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankur Tyagi <ankur.tyagi85@gmail.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/105] ASoC: wm8940: Correct PLL rate rounding
+Subject: [PATCH 6.1 61/61] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
 Date: Mon, 22 Sep 2025 21:29:54 +0200
-Message-ID: <20250922192410.762143720@linuxfoundation.org>
+Message-ID: <20250922192405.324997225@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit d05afb53c683ef7ed1228b593c3360f4d3126c58 ]
+[ Upstream commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 ]
 
-Using a single value of 22500000 for both 48000Hz and 44100Hz audio
-will sometimes result in returning wrong dividers due to rounding.
-Update the code to use the actual value for both.
+Issuing two writes to the same af_alg socket is bogus as the
+data will be interleaved in an unpredictable fashion.  Furthermore,
+concurrent writes may create inconsistencies in the internal
+socket state.
 
-Fixes: 294833fc9eb4 ("ASoC: wm8940: Rewrite code to set proper clocks")
-Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Link: https://patch.msgid.link/20250821082639.1301453-2-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Disallow this by adding a new ctx->write field that indiciates
+exclusive ownership for writing.
+
+Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
+Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8940.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ crypto/af_alg.c         |    7 +++++++
+ include/crypto/if_alg.h |   10 ++++++----
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
-index 8a532f7d750c8..5e8ed8a2c270a 100644
---- a/sound/soc/codecs/wm8940.c
-+++ b/sound/soc/codecs/wm8940.c
-@@ -693,7 +693,12 @@ static int wm8940_update_clocks(struct snd_soc_dai *dai)
- 	f = wm8940_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
- 	if (f != priv->mclk) {
- 		/* The PLL performs best around 90MHz */
--		fpll = wm8940_get_mclkdiv(22500000, fs256, &mclkdiv);
-+		if (fs256 % 8000)
-+			f = 22579200;
-+		else
-+			f = 24576000;
-+
-+		fpll = wm8940_get_mclkdiv(f, fs256, &mclkdiv);
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -859,6 +859,12 @@ int af_alg_sendmsg(struct socket *sock,
  	}
  
- 	wm8940_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
--- 
-2.51.0
-
+ 	lock_sock(sk);
++	if (ctx->write) {
++		release_sock(sk);
++		return -EBUSY;
++	}
++	ctx->write = true;
++
+ 	if (ctx->init && !ctx->more) {
+ 		if (ctx->used) {
+ 			err = -EINVAL;
+@@ -974,6 +980,7 @@ int af_alg_sendmsg(struct socket *sock,
+ 
+ unlock:
+ 	af_alg_data_wakeup(sk);
++	ctx->write = false;
+ 	release_sock(sk);
+ 
+ 	return copied ?: err;
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -136,6 +136,7 @@ struct af_alg_async_req {
+  *			SG?
+  * @enc:		Cryptographic operation to be performed when
+  *			recvmsg is invoked.
++ * @write:		True if we are in the middle of a write.
+  * @init:		True if metadata has been sent.
+  * @len:		Length of memory allocated for this data structure.
+  * @inflight:		Non-zero when AIO requests are in flight.
+@@ -151,10 +152,11 @@ struct af_alg_ctx {
+ 	size_t used;
+ 	atomic_t rcvused;
+ 
+-	bool more;
+-	bool merge;
+-	bool enc;
+-	bool init;
++	u32		more:1,
++			merge:1,
++			enc:1,
++			write:1,
++			init:1;
+ 
+ 	unsigned int len;
+ 
 
 
 
