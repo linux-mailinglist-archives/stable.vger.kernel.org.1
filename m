@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE00B92D26
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B497B92E12
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCA1190658F
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC8F54472D5
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E502E2847;
-	Mon, 22 Sep 2025 19:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668E82F28E0;
+	Mon, 22 Sep 2025 19:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciBLcIo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMVAf8T1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DB8191F66;
-	Mon, 22 Sep 2025 19:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA1A2EDD5D;
+	Mon, 22 Sep 2025 19:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569609; cv=none; b=dNLj5uXMjMP+USRIPChgfvwygyg/8zWipu26dWRhSpyG8JKCIXECJjLtF9Aq9HGpipvmgWvvXnemkGeg25X1XIdHSB17Xd8aWNxnMKpS0uy1ePQGheGGJ82SMR2NcHvn69wOKc6DnznhqsJYDp39PWP9VdI+2Enwd0BfWrURa2I=
+	t=1758569773; cv=none; b=jsy5m82lW9scLuKUvoef2EVYX5pKxMi5SJPHfVFlzuxxi1gPX98Cvj8sftMvr9fu0GFNmEXeXcmAlyFR4LxmfmvHCuWVYas+OjPvocXHgiUpr2MFxg3mcxE2xVKdps/Qb7abGS6zyyn0G1o1FoRn/Cnh7RORnAbfEU55/RfvYB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569609; c=relaxed/simple;
-	bh=z5Mzoh4EpHT7qupwkRlPNieNmHF/ForOSviCfDCz9Fw=;
+	s=arc-20240116; t=1758569773; c=relaxed/simple;
+	bh=F5oTZeF7v/UVu/Rg0HNZRxT0ivErx1lRHEGjaVzVXQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/wbCaf0rkwqZpEdaGk/4+X24tEUK0LEfFIlzMV2CTG5eUa31QQ0RKah869220sZs5BISpc8c+yzw6gABeD6dF5tpG2eRNWzGsLkSYTPYZNwAIKEyUuqMUtsULJ4odf0k1Q4RA1zzmg3rqjTDkzmb8Lf+DGQVwsg6k+Wx5NcT0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciBLcIo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BE5C4CEF0;
-	Mon, 22 Sep 2025 19:33:28 +0000 (UTC)
+	 MIME-Version; b=aw52zawPVIN+NUf6l3ErfLMnoN72URywyHVDkmcoJFRqHkjuHTSEGCPaJkCGBe/FRDcIED0mgti2Nnt4+gzq/gpi3IFgQVYw2PGKhe8cFMBLS9f5JTjSXew5TgNkHP1AU9q+ZIsBXWUP2xsVCWCxi1VxBeBb951r8RedwJJ9Qrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMVAf8T1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FABC4CEF0;
+	Mon, 22 Sep 2025 19:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569608;
-	bh=z5Mzoh4EpHT7qupwkRlPNieNmHF/ForOSviCfDCz9Fw=;
+	s=korg; t=1758569772;
+	bh=F5oTZeF7v/UVu/Rg0HNZRxT0ivErx1lRHEGjaVzVXQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ciBLcIo1+ZLiO9NAETHDnJwN25v1kTs0y8GN2pe5S3bHKrx1WiHjuMIgUrjyT3IhN
-	 6kIsOhYro1zAi9nQ3le0uwgsen0w7kNF3t/0FTPEYY6Bxqo6qd1NVaflLZF04+GPGC
-	 IHHDFRqF1j8wlEiZhgL9vAMjy0vsOKNCyF3i+1Ds=
+	b=bMVAf8T1Fu9raq/fJeuA5gyFe3tQ9nrRjWEoX+zYDXU4cKALlJtDkq0d/3w7Qcv2B
+	 cBD+4mdGBxzmSzGL9LVi84I2fLiiAQJk7ZyvQN59zZKm0wxYlwNVX1Ao5h6W9FgXAh
+	 Vcql4EU6bNwoZewMbPFFeIiQlTalJth2SiSymKtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 48/61] phy: broadcom: ns-usb3: fix Wvoid-pointer-to-enum-cast warning
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+	"Naveen N Rao (AMD)" <naveen@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 41/70] KVM: SVM: Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active
 Date: Mon, 22 Sep 2025 21:29:41 +0200
-Message-ID: <20250922192404.927856381@linuxfoundation.org>
+Message-ID: <20250922192405.720081603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-References: <20250922192403.524848428@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+References: <20250922192404.455120315@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-[ Upstream commit bd6e74a2f0a0c76dda8e44d26f9b91a797586c3b ]
+commit d02e48830e3fce9701265f6c5a58d9bdaf906a76 upstream.
 
-'family' is an enum, thus cast of pointer on 64-bit compile test with
-W=1 causes:
+Commit 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
+inhibited pre-VMRUN sync of TPR from LAPIC into VMCB::V_TPR in
+sync_lapic_to_cr8() when AVIC is active.
 
-  drivers/phy/broadcom/phy-bcm-ns-usb3.c:209:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+AVIC does automatically sync between these two fields, however it does
+so only on explicit guest writes to one of these fields, not on a bare
+VMRUN.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230810111958.205705-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This meant that when AVIC is enabled host changes to TPR in the LAPIC
+state might not get automatically copied into the V_TPR field of VMCB.
+
+This is especially true when it is the userspace setting LAPIC state via
+KVM_SET_LAPIC ioctl() since userspace does not have access to the guest
+VMCB.
+
+Practice shows that it is the V_TPR that is actually used by the AVIC to
+decide whether to issue pending interrupts to the CPU (not TPR in TASKPRI),
+so any leftover value in V_TPR will cause serious interrupt delivery issues
+in the guest when AVIC is enabled.
+
+Fix this issue by doing pre-VMRUN TPR sync from LAPIC into VMCB::V_TPR
+even when AVIC is enabled.
+
+Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Link: https://lore.kernel.org/r/c231be64280b1461e854e1ce3595d70cde3a2e9d.1756139678.git.maciej.szmigiero@oracle.com
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns-usb3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-@@ -206,7 +206,7 @@ static int bcm_ns_usb3_mdio_probe(struct
- 	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
- 	if (!of_id)
- 		return -EINVAL;
--	usb3->family = (enum bcm_ns_family)of_id->data;
-+	usb3->family = (uintptr_t)of_id->data;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4029,8 +4029,7 @@ static inline void sync_lapic_to_cr8(str
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	u64 cr8;
  
- 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
- 	err = of_address_to_resource(syscon_np, 0, &res);
+-	if (nested_svm_virtualize_tpr(vcpu) ||
+-	    kvm_vcpu_apicv_active(vcpu))
++	if (nested_svm_virtualize_tpr(vcpu))
+ 		return;
+ 
+ 	cr8 = kvm_get_cr8(vcpu);
 
 
 
