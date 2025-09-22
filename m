@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-181170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884A6B92E8A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:38:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D069B93026
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496484473D8
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09A9A172175
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83512F0C5C;
-	Mon, 22 Sep 2025 19:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF72D2F2909;
+	Mon, 22 Sep 2025 19:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT/lUQ7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbE57hnr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42732F0C5F;
-	Mon, 22 Sep 2025 19:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCD22F0C52;
+	Mon, 22 Sep 2025 19:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758569864; cv=none; b=GxXWD8DCfPBFSIosL0PiF/ZLJ8BqtrXYc4ovs0gPXWNsI163stwhMQSJJ/nPywp6foVr4tpCk3ANq4PrBiGrpuxAaS4bYqwYc3sOOj622dacBPI+q1Fa1KjAKUb7/GDO+cvfCPzyxw2neeSUR92FGifD7Piy5MWsLaeTxY6PIlM=
+	t=1758570168; cv=none; b=gUQbgbHvhQiENqIqMrKC+UHt2nlrIuyML4uLeK56kkIryAtmLF71DI/OsovIKaE7AFWsBEVesvxmDpDee1B74nPs0HXV+76jxDAiD1rWCQMdWn5A8Ju6BORnCNbyWjJshByKE+XVqNz40TJuE7kjyfOkRx0TSRWbEu0ypiJ6I9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758569864; c=relaxed/simple;
-	bh=AZ4mRvYvZdYVqBsX7uHUsg/8+mbXlOQRozTVHEnpBd4=;
+	s=arc-20240116; t=1758570168; c=relaxed/simple;
+	bh=bqzdgY/LvEsVVDZR7bp9JtVvNcUw7yUb+6FIjujVaHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihDU+Sc/X3/1/B0Z1COwfXT2Ydhd7INcN+9M+7DgQjG8Z2NHVMYFeGkACk55FJQ5ad3Wo6GGtRQ3j3QpFfvuzuo5aHxk/88JZZtQ+k7gWLMXNVsR7dYNQt+8Jo252zvMWG19YlalUQHvBhr70aWJnjfdUZLrM82DJ4YS9KBVzmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT/lUQ7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349D4C4CEF0;
-	Mon, 22 Sep 2025 19:37:44 +0000 (UTC)
+	 MIME-Version; b=KjMrbL+KaACQ6TtfxC9fhxWwKjmfGXEprle873iEXfYiuXSFWO1c2pxHhFqzWyk11JgxiXGXDnVOfwbTLOxRl00rgaZ7Y4LmTGtd+Te61QuV0X8VLFOWgAVroCcj46LQuAI4iEFAC9dM2X/l59/REgvwKBJCU4f+4WSdowxHdjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbE57hnr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D82C4CEF0;
+	Mon, 22 Sep 2025 19:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758569864;
-	bh=AZ4mRvYvZdYVqBsX7uHUsg/8+mbXlOQRozTVHEnpBd4=;
+	s=korg; t=1758570168;
+	bh=bqzdgY/LvEsVVDZR7bp9JtVvNcUw7yUb+6FIjujVaHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AT/lUQ7bc6ysLTxh/cqQPF6JNT7N1U7CsxiicrufwVU3os7ecxpYpzsNc7KtIZFTP
-	 kMWfUcNNWdx9GAtaywFrKL6DJ9+Of684w/j1mSLfVyALG/gaBlZgl6ECeEG8/Vl1Gl
-	 0V5xNQygCiXjDpq0e5bKK4u6guchwioOhDTB95As=
+	b=JbE57hnrLfbeMUsNdweXjDAUtrIYol5IGWfimOXxsgTMOW+tY5lPvtLQy5mh1RmNf
+	 2L/LbDPUtTKZwMuApoezdj29SEJfg0ayTJ0sNI3URrazP8XIzQVTo0YdokkRKDKAtH
+	 vqXMJZ6RgMVhy2at9GwizSpltVNCxuAo3mO63A5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/105] btrfs: fix invalid extref key setup when replaying dentry
-Date: Mon, 22 Sep 2025 21:28:51 +0200
-Message-ID: <20250922192409.121629866@linuxfoundation.org>
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.16 032/149] ixgbe: initialize aci.lock before its used
+Date: Mon, 22 Sep 2025 21:28:52 +0200
+Message-ID: <20250922192413.676333639@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-References: <20250922192408.913556629@linuxfoundation.org>
+In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
+References: <20250922192412.885919229@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +67,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit b62fd63ade7cb573b114972ef8f9fa505be8d74a ]
+[ Upstream commit b85936e95a4bd2a07e134af71e2c0750a69d2b8b ]
 
-The offset for an extref item's key is not the object ID of the parent
-dir, otherwise we would not need the extref item and would use plain ref
-items. Instead the offset is the result of a hash computation that uses
-the object ID of the parent dir and the name associated to the entry.
-So fix this by setting the key offset at replay_one_name() to be the
-result of calling btrfs_extref_hash().
+Currently aci.lock is initialized too late. A bunch of ACI callbacks
+using the lock are called prior it's initialized.
 
-Fixes: 725af92a6251 ("btrfs: Open-code name_in_log_ref in replay_one_name")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Commit 337369f8ce9e ("locking/mutex: Add MUTEX_WARN_ON() into fast path")
+highlights that issue what results in call trace.
+
+[    4.092899] DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+[    4.092910] WARNING: CPU: 0 PID: 578 at kernel/locking/mutex.c:154 mutex_lock+0x6d/0x80
+[    4.098757] Call Trace:
+[    4.098847]  <TASK>
+[    4.098922]  ixgbe_aci_send_cmd+0x8c/0x1e0 [ixgbe]
+[    4.099108]  ? hrtimer_try_to_cancel+0x18/0x110
+[    4.099277]  ixgbe_aci_get_fw_ver+0x52/0xa0 [ixgbe]
+[    4.099460]  ixgbe_check_fw_error+0x1fc/0x2f0 [ixgbe]
+[    4.099650]  ? usleep_range_state+0x69/0xd0
+[    4.099811]  ? usleep_range_state+0x8c/0xd0
+[    4.099964]  ixgbe_probe+0x3b0/0x12d0 [ixgbe]
+[    4.100132]  local_pci_probe+0x43/0xa0
+[    4.100267]  work_for_cpu_fn+0x13/0x20
+[    4.101647]  </TASK>
+
+Move aci.lock mutex initialization to ixgbe_sw_init() before any ACI
+command is sent. Along with that move also related SWFW semaphore in
+order to reduce size of ixgbe_probe() and that way all locks are
+initialized in ixgbe_sw_init().
+
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Fixes: 4600cdf9f5ac ("ixgbe: Enable link management in E610 device")
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index f917fdae7e672..0022ad003791f 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1946,7 +1946,7 @@ static noinline int replay_one_name(struct btrfs_trans_handle *trans,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index cba860f0e1f15..2a857037dd102 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -6801,6 +6801,13 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
+ 		break;
+ 	}
  
- 	search_key.objectid = log_key.objectid;
- 	search_key.type = BTRFS_INODE_EXTREF_KEY;
--	search_key.offset = key->objectid;
-+	search_key.offset = btrfs_extref_hash(key->objectid, name.name, name.len);
- 	ret = backref_in_log(root->log_root, &search_key, key->objectid, &name);
- 	if (ret < 0) {
- 		goto out;
++	/* Make sure the SWFW semaphore is in a valid state */
++	if (hw->mac.ops.init_swfw_sync)
++		hw->mac.ops.init_swfw_sync(hw);
++
++	if (hw->mac.type == ixgbe_mac_e610)
++		mutex_init(&hw->aci.lock);
++
+ #ifdef IXGBE_FCOE
+ 	/* FCoE support exists, always init the FCoE lock */
+ 	spin_lock_init(&adapter->fcoe.lock);
+@@ -11474,10 +11481,6 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (err)
+ 		goto err_sw_init;
+ 
+-	/* Make sure the SWFW semaphore is in a valid state */
+-	if (hw->mac.ops.init_swfw_sync)
+-		hw->mac.ops.init_swfw_sync(hw);
+-
+ 	if (ixgbe_check_fw_error(adapter))
+ 		return ixgbe_recovery_probe(adapter);
+ 
+@@ -11681,8 +11684,6 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	ether_addr_copy(hw->mac.addr, hw->mac.perm_addr);
+ 	ixgbe_mac_set_default_filter(adapter);
+ 
+-	if (hw->mac.type == ixgbe_mac_e610)
+-		mutex_init(&hw->aci.lock);
+ 	timer_setup(&adapter->service_timer, ixgbe_service_timer, 0);
+ 
+ 	if (ixgbe_removed(hw->hw_addr)) {
+@@ -11838,9 +11839,9 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	devl_unlock(adapter->devlink);
+ 	ixgbe_release_hw_control(adapter);
+ 	ixgbe_clear_interrupt_scheme(adapter);
++err_sw_init:
+ 	if (hw->mac.type == ixgbe_mac_e610)
+ 		mutex_destroy(&adapter->hw.aci.lock);
+-err_sw_init:
+ 	ixgbe_disable_sriov(adapter);
+ 	adapter->flags2 &= ~IXGBE_FLAG2_SEARCH_FOR_SFP;
+ 	iounmap(adapter->io_addr);
 -- 
 2.51.0
 
