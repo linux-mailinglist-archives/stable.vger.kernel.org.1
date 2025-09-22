@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-181290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AE7B93042
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2BFB92E31
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D19A1906287
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17971906E47
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4362F0C78;
-	Mon, 22 Sep 2025 19:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D0F2F0C52;
+	Mon, 22 Sep 2025 19:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CvQywXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SQXT/Km"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF32222590;
-	Mon, 22 Sep 2025 19:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE76285C92;
+	Mon, 22 Sep 2025 19:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570163; cv=none; b=lCE3sndKVe/T6kDVR/lbbwY8aO+/Oiwy4SXN9vNHztjIqE4gCf5Vxd5qWAYupCsb4JWt+xE2dpNIwGyxFvkpwZOWv3yjQNf/fchyoiTEufPCGecVz1O6HRcS1lvSFw6Fhh1cXR3gBGCD9ns2bsvj4TbZ07W2kLXPlTKmjFIm39Q=
+	t=1758569829; cv=none; b=LS08yNFZGVulqsq9aynMnff76Z65SVbnhS34q/35rYHAto2dCSXJwA039kVXamzHd9Zixq1sEInTlvUCgO1ctr93ahmWaei1Tvydkx7mnJITOmwvC9hjwKZ5C8SyQ4zuOUYofCJrlbixyyJeg/WKIQ5q9LI8GhCLkzQl6UePVTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570163; c=relaxed/simple;
-	bh=YewC1B/Go7mJD3nPx5k3r/TV714Jj2M/TV+dB5O+AXg=;
+	s=arc-20240116; t=1758569829; c=relaxed/simple;
+	bh=w3TGYuYoBIQsP7HuZiCD6ziilTy3AFKCIBO1+BB69UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXxk3fT72sNj+c2D7tgnLj3yYfRvaHO8qDgOTuiZlRqaqvumrxOiDjJD7IYu1C9IOmzNyMGvQ6sRu9mfFKE+Q6p4nFyb7Sai0Y17IW7V6KpIYu7C00WsajCxraMm/4U2lzTkjTw1RljdJcsFLMPGk73HA/JT9pgaKQ+eOC7SwOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CvQywXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045E0C4CEF0;
-	Mon, 22 Sep 2025 19:42:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q4K8LTHuH2Ix0jbgESvOP14c7ntNsvDQVqjn486dITWu3eqND+Opo8tT1ot74H6rfyzk5Tomo59ngitQD1jKwpA3WfSFFxsBNYkfkkw0L1X9qWW7y1ANgGC8oMeDjwLh3Cdl8U+mYVbm4J7IgsC+PcrGIrILshWVHfAlJQrPSP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SQXT/Km; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D30C4CEF0;
+	Mon, 22 Sep 2025 19:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570163;
-	bh=YewC1B/Go7mJD3nPx5k3r/TV714Jj2M/TV+dB5O+AXg=;
+	s=korg; t=1758569829;
+	bh=w3TGYuYoBIQsP7HuZiCD6ziilTy3AFKCIBO1+BB69UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1CvQywXhPaddd59l0d+CWVHVL8gmH+axK+98fQ9z4F+0H5bmcMp9APhu7Ih2gFmaG
-	 zID41z+hFLHZpRvtQ2ABPYFclqj2T/AAqqrrqHpoTmSiOJPgM/Xc7cNgC1+9egRgHf
-	 7GR1YVeWiBXQMXdRCwEacxJnBLZ+jJj59B4Kzehc=
+	b=2SQXT/KmK63lT6/c4PSDtV0aL0LLsAwSoRjd9rwmn2R6RcmFWDzaVEQxynTwW305r
+	 NiTdMzGj3P0tCVrLWsimNP36h+DogpY26Nf/52ilFMsFgbndgq3Pz/xpi0hHz9iJ8A
+	 Z2DU/9q0rzjjgJq2NkOqNqjBrKG51IpjsTBEU/aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Petrausch <christoph.petrausch@deepl.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Priya Singh <priyax.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.16 030/149] ice: fix Rx page leak on multi-buffer frames
+	Gao Yingjie <gaoyingjie@uniontech.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Teju Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 007/105] cgroup: split cgroup_destroy_wq into 3 workqueues
 Date: Mon, 22 Sep 2025 21:28:50 +0200
-Message-ID: <20250922192413.625052669@linuxfoundation.org>
+Message-ID: <20250922192409.097354814@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,278 +61,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 84bf1ac85af84d354c7a2fdbdc0d4efc8aaec34b ]
+[ Upstream commit 79f919a89c9d06816dbdbbd168fa41d27411a7f9 ]
 
-The ice_put_rx_mbuf() function handles calling ice_put_rx_buf() for each
-buffer in the current frame. This function was introduced as part of
-handling multi-buffer XDP support in the ice driver.
+A hung task can occur during [1] LTP cgroup testing when repeatedly
+mounting/unmounting perf_event and net_prio controllers with
+systemd.unified_cgroup_hierarchy=1. The hang manifests in
+cgroup_lock_and_drain_offline() during root destruction.
 
-It works by iterating over the buffers from first_desc up to 1 plus the
-total number of fragments in the frame, cached from before the XDP program
-was executed.
+Related case:
+cgroup_fj_function_perf_event cgroup_fj_function.sh perf_event
+cgroup_fj_function_net_prio cgroup_fj_function.sh net_prio
 
-If the hardware posts a descriptor with a size of 0, the logic used in
-ice_put_rx_mbuf() breaks. Such descriptors get skipped and don't get added
-as fragments in ice_add_xdp_frag. Since the buffer isn't counted as a
-fragment, we do not iterate over it in ice_put_rx_mbuf(), and thus we don't
-call ice_put_rx_buf().
+Call Trace:
+	cgroup_lock_and_drain_offline+0x14c/0x1e8
+	cgroup_destroy_root+0x3c/0x2c0
+	css_free_rwork_fn+0x248/0x338
+	process_one_work+0x16c/0x3b8
+	worker_thread+0x22c/0x3b0
+	kthread+0xec/0x100
+	ret_from_fork+0x10/0x20
 
-Because we don't call ice_put_rx_buf(), we don't attempt to re-use the
-page or free it. This leaves a stale page in the ring, as we don't
-increment next_to_alloc.
+Root Cause:
 
-The ice_reuse_rx_page() assumes that the next_to_alloc has been incremented
-properly, and that it always points to a buffer with a NULL page. Since
-this function doesn't check, it will happily recycle a page over the top
-of the next_to_alloc buffer, losing track of the old page.
+CPU0                            CPU1
+mount perf_event                umount net_prio
+cgroup1_get_tree                cgroup_kill_sb
+rebind_subsystems               // root destruction enqueues
+				// cgroup_destroy_wq
+// kill all perf_event css
+                                // one perf_event css A is dying
+                                // css A offline enqueues cgroup_destroy_wq
+                                // root destruction will be executed first
+                                css_free_rwork_fn
+                                cgroup_destroy_root
+                                cgroup_lock_and_drain_offline
+                                // some perf descendants are dying
+                                // cgroup_destroy_wq max_active = 1
+                                // waiting for css A to die
 
-Note that this leak only occurs for multi-buffer frames. The
-ice_put_rx_mbuf() function always handles at least one buffer, so a
-single-buffer frame will always get handled correctly. It is not clear
-precisely why the hardware hands us descriptors with a size of 0 sometimes,
-but it happens somewhat regularly with "jumbo frames" used by 9K MTU.
+Problem scenario:
+1. CPU0 mounts perf_event (rebind_subsystems)
+2. CPU1 unmounts net_prio (cgroup_kill_sb), queuing root destruction work
+3. A dying perf_event CSS gets queued for offline after root destruction
+4. Root destruction waits for offline completion, but offline work is
+   blocked behind root destruction in cgroup_destroy_wq (max_active=1)
 
-To fix ice_put_rx_mbuf(), we need to make sure to call ice_put_rx_buf() on
-all buffers between first_desc and next_to_clean. Borrow the logic of a
-similar function in i40e used for this same purpose. Use the same logic
-also in ice_get_pgcnts().
+Solution:
+Split cgroup_destroy_wq into three dedicated workqueues:
+cgroup_offline_wq – Handles CSS offline operations
+cgroup_release_wq – Manages resource release
+cgroup_free_wq – Performs final memory deallocation
 
-Instead of iterating over just the number of fragments, use a loop which
-iterates until the current index reaches to the next_to_clean element just
-past the current frame. Unlike i40e, the ice_put_rx_mbuf() function does
-call ice_put_rx_buf() on the last buffer of the frame indicating the end of
-packet.
+This separation eliminates blocking in the CSS free path while waiting for
+offline operations to complete.
 
-For non-linear (multi-buffer) frames, we need to take care when adjusting
-the pagecnt_bias. An XDP program might release fragments from the tail of
-the frame, in which case that fragment page is already released. Only
-update the pagecnt_bias for the first descriptor and fragments still
-remaining post-XDP program. Take care to only access the shared info for
-fragmented buffers, as this avoids a significant cache miss.
-
-The xdp_xmit value only needs to be updated if an XDP program is run, and
-only once per packet. Drop the xdp_xmit pointer argument from
-ice_put_rx_mbuf(). Instead, set xdp_xmit in the ice_clean_rx_irq() function
-directly. This avoids needing to pass the argument and avoids an extra
-bit-wise OR for each buffer in the frame.
-
-Move the increment of the ntc local variable to ensure its updated *before*
-all calls to ice_get_pgcnts() or ice_put_rx_mbuf(), as the loop logic
-requires the index of the element just after the current frame.
-
-Now that we use an index pointer in the ring to identify the packet, we no
-longer need to track or cache the number of fragments in the rx_ring.
-
-Cc: Christoph Petrausch <christoph.petrausch@deepl.com>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Closes: https://lore.kernel.org/netdev/CAK8fFZ4hY6GUJNENz3wY9jaYLZXGfpr7dnZxzGMYoE44caRbgw@mail.gmail.com/
-Fixes: 743bbd93cf29 ("ice: put Rx buffers after being done with current frame")
-Tested-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Tested-by: Priya Singh <priyax.singh@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[1] https://github.com/linux-test-project/ltp/blob/master/runtest/controllers
+Fixes: 334c3679ec4b ("cgroup: reimplement rebind_subsystems() using cgroup_apply_control() and friends")
+Reported-by: Gao Yingjie <gaoyingjie@uniontech.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Suggested-by: Teju Heo <tj@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 80 ++++++++++-------------
- drivers/net/ethernet/intel/ice/ice_txrx.h |  1 -
- 2 files changed, 34 insertions(+), 47 deletions(-)
+ kernel/cgroup/cgroup.c | 43 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index c50cf3ad190e9..4766597ac5550 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -865,10 +865,6 @@ ice_add_xdp_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++, rx_buf->page,
- 				   rx_buf->page_offset, size);
- 	sinfo->xdp_frags_size += size;
--	/* remember frag count before XDP prog execution; bpf_xdp_adjust_tail()
--	 * can pop off frags but driver has to handle it on its own
--	 */
--	rx_ring->nr_frags = sinfo->nr_frags;
- 
- 	if (page_is_pfmemalloc(rx_buf->page))
- 		xdp_buff_set_frag_pfmemalloc(xdp);
-@@ -939,20 +935,20 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
- /**
-  * ice_get_pgcnts - grab page_count() for gathered fragments
-  * @rx_ring: Rx descriptor ring to store the page counts on
-+ * @ntc: the next to clean element (not included in this frame!)
-  *
-  * This function is intended to be called right before running XDP
-  * program so that the page recycling mechanism will be able to take
-  * a correct decision regarding underlying pages; this is done in such
-  * way as XDP program can change the refcount of page
-  */
--static void ice_get_pgcnts(struct ice_rx_ring *rx_ring)
-+static void ice_get_pgcnts(struct ice_rx_ring *rx_ring, unsigned int ntc)
- {
--	u32 nr_frags = rx_ring->nr_frags + 1;
- 	u32 idx = rx_ring->first_desc;
- 	struct ice_rx_buf *rx_buf;
- 	u32 cnt = rx_ring->count;
- 
--	for (int i = 0; i < nr_frags; i++) {
-+	while (idx != ntc) {
- 		rx_buf = &rx_ring->rx_buf[idx];
- 		rx_buf->pgcnt = page_count(rx_buf->page);
- 
-@@ -1125,62 +1121,51 @@ ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf)
- }
- 
- /**
-- * ice_put_rx_mbuf - ice_put_rx_buf() caller, for all frame frags
-+ * ice_put_rx_mbuf - ice_put_rx_buf() caller, for all buffers in frame
-  * @rx_ring: Rx ring with all the auxiliary data
-  * @xdp: XDP buffer carrying linear + frags part
-- * @xdp_xmit: XDP_TX/XDP_REDIRECT verdict storage
-- * @ntc: a current next_to_clean value to be stored at rx_ring
-+ * @ntc: the next to clean element (not included in this frame!)
-  * @verdict: return code from XDP program execution
-  *
-- * Walk through gathered fragments and satisfy internal page
-- * recycle mechanism; we take here an action related to verdict
-- * returned by XDP program;
-+ * Called after XDP program is completed, or on error with verdict set to
-+ * ICE_XDP_CONSUMED.
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 62933468aaf46..5fc2801ee921c 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -123,8 +123,31 @@ DEFINE_PERCPU_RWSEM(cgroup_threadgroup_rwsem);
+  * of concurrent destructions.  Use a separate workqueue so that cgroup
+  * destruction work items don't end up filling up max_active of system_wq
+  * which may lead to deadlock.
 + *
-+ * Walk through buffers from first_desc to the end of the frame, releasing
-+ * buffers and satisfying internal page recycle mechanism. The action depends
-+ * on verdict from XDP program.
++ * A cgroup destruction should enqueue work sequentially to:
++ * cgroup_offline_wq: use for css offline work
++ * cgroup_release_wq: use for css release work
++ * cgroup_free_wq: use for free work
++ *
++ * Rationale for using separate workqueues:
++ * The cgroup root free work may depend on completion of other css offline
++ * operations. If all tasks were enqueued to a single workqueue, this could
++ * create a deadlock scenario where:
++ * - Free work waits for other css offline work to complete.
++ * - But other css offline work is queued after free work in the same queue.
++ *
++ * Example deadlock scenario with single workqueue (cgroup_destroy_wq):
++ * 1. umount net_prio
++ * 2. net_prio root destruction enqueues work to cgroup_destroy_wq (CPUx)
++ * 3. perf_event CSS A offline enqueues work to same cgroup_destroy_wq (CPUx)
++ * 4. net_prio cgroup_destroy_root->cgroup_lock_and_drain_offline.
++ * 5. net_prio root destruction blocks waiting for perf_event CSS A offline,
++ *    which can never complete as it's behind in the same queue and
++ *    workqueue's max_active is 1.
   */
- static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
--			    u32 *xdp_xmit, u32 ntc, u32 verdict)
-+			    u32 ntc, u32 verdict)
- {
--	u32 nr_frags = rx_ring->nr_frags + 1;
- 	u32 idx = rx_ring->first_desc;
- 	u32 cnt = rx_ring->count;
--	u32 post_xdp_frags = 1;
- 	struct ice_rx_buf *buf;
--	int i;
-+	u32 xdp_frags = 0;
-+	int i = 0;
+-static struct workqueue_struct *cgroup_destroy_wq;
++static struct workqueue_struct *cgroup_offline_wq;
++static struct workqueue_struct *cgroup_release_wq;
++static struct workqueue_struct *cgroup_free_wq;
  
- 	if (unlikely(xdp_buff_has_frags(xdp)))
--		post_xdp_frags += xdp_get_shared_info_from_buff(xdp)->nr_frags;
-+		xdp_frags = xdp_get_shared_info_from_buff(xdp)->nr_frags;
+ /* generate an array of cgroup subsystem pointers */
+ #define SUBSYS(_x) [_x ## _cgrp_id] = &_x ## _cgrp_subsys,
+@@ -5541,7 +5564,7 @@ static void css_release_work_fn(struct work_struct *work)
+ 	cgroup_unlock();
  
--	for (i = 0; i < post_xdp_frags; i++) {
-+	while (idx != ntc) {
- 		buf = &rx_ring->rx_buf[idx];
-+		if (++idx == cnt)
-+			idx = 0;
- 
--		if (verdict & (ICE_XDP_TX | ICE_XDP_REDIR)) {
-+		/* An XDP program could release fragments from the end of the
-+		 * buffer. For these, we need to keep the pagecnt_bias as-is.
-+		 * To do this, only adjust pagecnt_bias for fragments up to
-+		 * the total remaining after the XDP program has run.
-+		 */
-+		if (verdict != ICE_XDP_CONSUMED)
- 			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
--			*xdp_xmit |= verdict;
--		} else if (verdict & ICE_XDP_CONSUMED) {
-+		else if (i++ <= xdp_frags)
- 			buf->pagecnt_bias++;
--		} else if (verdict == ICE_XDP_PASS) {
--			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
--		}
- 
- 		ice_put_rx_buf(rx_ring, buf);
--
--		if (++idx == cnt)
--			idx = 0;
--	}
--	/* handle buffers that represented frags released by XDP prog;
--	 * for these we keep pagecnt_bias as-is; refcount from struct page
--	 * has been decremented within XDP prog and we do not have to increase
--	 * the biased refcnt
--	 */
--	for (; i < nr_frags; i++) {
--		buf = &rx_ring->rx_buf[idx];
--		ice_put_rx_buf(rx_ring, buf);
--		if (++idx == cnt)
--			idx = 0;
- 	}
- 
- 	xdp->data = NULL;
- 	rx_ring->first_desc = ntc;
--	rx_ring->nr_frags = 0;
+ 	INIT_RCU_WORK(&css->destroy_rwork, css_free_rwork_fn);
+-	queue_rcu_work(cgroup_destroy_wq, &css->destroy_rwork);
++	queue_rcu_work(cgroup_free_wq, &css->destroy_rwork);
  }
  
- /**
-@@ -1260,6 +1245,10 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 		/* retrieve a buffer from the ring */
- 		rx_buf = ice_get_rx_buf(rx_ring, size, ntc);
+ static void css_release(struct percpu_ref *ref)
+@@ -5550,7 +5573,7 @@ static void css_release(struct percpu_ref *ref)
+ 		container_of(ref, struct cgroup_subsys_state, refcnt);
  
-+		/* Increment ntc before calls to ice_put_rx_mbuf() */
-+		if (++ntc == cnt)
-+			ntc = 0;
+ 	INIT_WORK(&css->destroy_work, css_release_work_fn);
+-	queue_work(cgroup_destroy_wq, &css->destroy_work);
++	queue_work(cgroup_release_wq, &css->destroy_work);
+ }
+ 
+ static void init_and_link_css(struct cgroup_subsys_state *css,
+@@ -5685,7 +5708,7 @@ static struct cgroup_subsys_state *css_create(struct cgroup *cgrp,
+ err_free_css:
+ 	list_del_rcu(&css->rstat_css_node);
+ 	INIT_RCU_WORK(&css->destroy_rwork, css_free_rwork_fn);
+-	queue_rcu_work(cgroup_destroy_wq, &css->destroy_rwork);
++	queue_rcu_work(cgroup_free_wq, &css->destroy_rwork);
+ 	return ERR_PTR(err);
+ }
+ 
+@@ -5918,7 +5941,7 @@ static void css_killed_ref_fn(struct percpu_ref *ref)
+ 
+ 	if (atomic_dec_and_test(&css->online_cnt)) {
+ 		INIT_WORK(&css->destroy_work, css_killed_work_fn);
+-		queue_work(cgroup_destroy_wq, &css->destroy_work);
++		queue_work(cgroup_offline_wq, &css->destroy_work);
+ 	}
+ }
+ 
+@@ -6296,8 +6319,14 @@ static int __init cgroup_wq_init(void)
+ 	 * We would prefer to do this in cgroup_init() above, but that
+ 	 * is called before init_workqueues(): so leave this until after.
+ 	 */
+-	cgroup_destroy_wq = alloc_workqueue("cgroup_destroy", 0, 1);
+-	BUG_ON(!cgroup_destroy_wq);
++	cgroup_offline_wq = alloc_workqueue("cgroup_offline", 0, 1);
++	BUG_ON(!cgroup_offline_wq);
 +
- 		if (!xdp->data) {
- 			void *hard_start;
- 
-@@ -1268,24 +1257,23 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			xdp_prepare_buff(xdp, hard_start, offset, size, !!offset);
- 			xdp_buff_clear_frags_flag(xdp);
- 		} else if (ice_add_xdp_frag(rx_ring, xdp, rx_buf, size)) {
--			ice_put_rx_mbuf(rx_ring, xdp, NULL, ntc, ICE_XDP_CONSUMED);
-+			ice_put_rx_mbuf(rx_ring, xdp, ntc, ICE_XDP_CONSUMED);
- 			break;
- 		}
--		if (++ntc == cnt)
--			ntc = 0;
- 
- 		/* skip if it is NOP desc */
- 		if (ice_is_non_eop(rx_ring, rx_desc))
- 			continue;
- 
--		ice_get_pgcnts(rx_ring);
-+		ice_get_pgcnts(rx_ring, ntc);
- 		xdp_verdict = ice_run_xdp(rx_ring, xdp, xdp_prog, xdp_ring, rx_desc);
- 		if (xdp_verdict == ICE_XDP_PASS)
- 			goto construct_skb;
- 		total_rx_bytes += xdp_get_buff_len(xdp);
- 		total_rx_pkts++;
- 
--		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
-+		ice_put_rx_mbuf(rx_ring, xdp, ntc, xdp_verdict);
-+		xdp_xmit |= xdp_verdict & (ICE_XDP_TX | ICE_XDP_REDIR);
- 
- 		continue;
- construct_skb:
-@@ -1298,7 +1286,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			rx_ring->ring_stats->rx_stats.alloc_buf_failed++;
- 			xdp_verdict = ICE_XDP_CONSUMED;
- 		}
--		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
-+		ice_put_rx_mbuf(rx_ring, xdp, ntc, xdp_verdict);
- 
- 		if (!skb)
- 			break;
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index a4b1e95146327..07155e615f75a 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -358,7 +358,6 @@ struct ice_rx_ring {
- 	struct ice_tx_ring *xdp_ring;
- 	struct ice_rx_ring *next;	/* pointer to next ring in q_vector */
- 	struct xsk_buff_pool *xsk_pool;
--	u32 nr_frags;
- 	u16 max_frame;
- 	u16 rx_buf_len;
- 	dma_addr_t dma;			/* physical address of ring */
++	cgroup_release_wq = alloc_workqueue("cgroup_release", 0, 1);
++	BUG_ON(!cgroup_release_wq);
++
++	cgroup_free_wq = alloc_workqueue("cgroup_free", 0, 1);
++	BUG_ON(!cgroup_free_wq);
+ 	return 0;
+ }
+ core_initcall(cgroup_wq_init);
 -- 
 2.51.0
 
