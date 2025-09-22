@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-181309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403A0B93080
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33266B92CCE
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4820E189930A
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E25893B4BD2
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779822F0C52;
-	Mon, 22 Sep 2025 19:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235521FDA89;
+	Mon, 22 Sep 2025 19:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rskKq3wd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7EdgjeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347242F0C5C;
-	Mon, 22 Sep 2025 19:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D306817A2EA;
+	Mon, 22 Sep 2025 19:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570213; cv=none; b=G8lg5PvaDuPFp6nvnSrMTovFMeMBrdj3OwUf9//0nK0gpsmfpOeAiW/ylKKxjrQB7N0cDcpUorxPOEVMhQLK8AXiXfLhQ/dgqek0YJh5GtrJoTBsz4MNgJlNYwGOl87ARuDn9MtoQICxjNUB9/0YMiplQrvi9+7Vvc1EZKj+wqg=
+	t=1758569541; cv=none; b=r6A7vNzKQ/DyiVGe75bmdwWDw6njrGaiC276rwoWwttBtPI9dC/t9mj2XlOzRakSZcszeVnm/zKmtmS1OBnw10OBtQG0sNQmz+d13ig1t/mv2uRD9CbwgJ46zOESPZA8KLD7sG9G3cb0td9YRjcKkvpeQrv19Vf0Az7IbivzAyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570213; c=relaxed/simple;
-	bh=jivfD8tEK48UZWPfq94v42/n3FoVQaF5BqsrugQvuCM=;
+	s=arc-20240116; t=1758569541; c=relaxed/simple;
+	bh=HU/LkVE4xK7U6YYazTC/lhk+ASfRqyKfhcWbdecCmLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y/VwjE9njDINaW9NCyw2AUSSub/rB20zdCscKCUIT7b73I4knGyeeN5zD1U8QIh2Lhm7wA/NSngMbRDc+5+sJIaCNmnwfPJAJ9gy/1Ex900YmRuKtRabk7vnd1iaaZYIVtKcMEZks//HjYQy3GZQcywVzNZ4XwY5b7Ut4Cu555U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rskKq3wd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18E0C4CEF0;
-	Mon, 22 Sep 2025 19:43:32 +0000 (UTC)
+	 MIME-Version; b=S0/Tcbz2VZAmqdtelRJ0tW9UytR/aqVCdqiTiKxMI0K4bPWQ9/4K0e/tlKrTYgBiaxl4MjvNSF5IIMSGlWs1AGtcNJV/pSJZqdB1j5+tAHyx3j7ULRiVnPvKlOQ8YqxAlZW4NaSEJKY8hA4qNaDXPlIKwFP3R1gJvDo8a9Zqo/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7EdgjeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288FEC4CEF0;
+	Mon, 22 Sep 2025 19:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570213;
-	bh=jivfD8tEK48UZWPfq94v42/n3FoVQaF5BqsrugQvuCM=;
+	s=korg; t=1758569541;
+	bh=HU/LkVE4xK7U6YYazTC/lhk+ASfRqyKfhcWbdecCmLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rskKq3wdGySozUnIYJeboA0vk6UeDCHqxRzOypRfdcHcZcyxzzy9DOLlRkvEnOUF1
-	 vl86P1aZPJWvPMX0rrFdmTcTMMWuX789zz2WyyUpEo41pBcsH2UAYsyWM+eDWeLsDF
-	 zVi+UXK+BqYUJ+e0EfddWP7QsiCxVYnrt/ey1xAE=
+	b=J7EdgjeHmTSdUpHOemZlldwEImHZN/ZAZ6jelnQZV9ksOQK18HOL4b9d61NOU06Dg
+	 D6BhG6AnS/SyTdOfl4f6kPErdO44DKHSz7Yrki1ZKsO1kYIZDKPekXqDUOR3V37u3B
+	 +JsD99p7e60xiHKK1AMhPu+HB0M+fateJrWgADrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Changwoo Min <changwoo@igalia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.16 054/149] Revert "sched_ext: Skip per-CPU tasks in scx_bpf_reenqueue_local()"
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 21/61] ksmbd: smbdirect: verify remaining_data_length respects max_fragmented_recv_size
 Date: Mon, 22 Sep 2025 21:29:14 +0200
-Message-ID: <20250922192414.221600309@linuxfoundation.org>
+Message-ID: <20250922192404.133503441@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +64,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 0b47b6c3543efd65f2e620e359b05f4938314fbd upstream.
+commit e1868ba37fd27c6a68e31565402b154beaa65df0 upstream.
 
-scx_bpf_reenqueue_local() can be called from ops.cpu_release() when a
-CPU is taken by a higher scheduling class to give tasks queued to the
-CPU's local DSQ a chance to be migrated somewhere else, instead of
-waiting indefinitely for that CPU to become available again.
+This is inspired by the check for data_offset + data_length.
 
-In doing so, we decided to skip migration-disabled tasks, under the
-assumption that they cannot be migrated anyway.
-
-However, when a higher scheduling class preempts a CPU, the running task
-is always inserted at the head of the local DSQ as a migration-disabled
-task. This means it is always skipped by scx_bpf_reenqueue_local(), and
-ends up being confined to the same CPU even if that CPU is heavily
-contended by other higher scheduling class tasks.
-
-As an example, let's consider the following scenario:
-
- $ schedtool -a 0,1, -e yes > /dev/null
- $ sudo schedtool -F -p 99 -a 0, -e \
-   stress-ng -c 1 --cpu-load 99 --cpu-load-slice 1000
-
-The first task (SCHED_EXT) can run on CPU0 or CPU1. The second task
-(SCHED_FIFO) is pinned to CPU0 and consumes ~99% of it. If the SCHED_EXT
-task initially runs on CPU0, it will remain there because it always sees
-CPU0 as "idle" in the short gaps left by the RT task, resulting in ~1%
-utilization while CPU1 stays idle:
-
-    0[||||||||||||||||||||||100.0%]   8[                        0.0%]
-    1[                        0.0%]   9[                        0.0%]
-    2[                        0.0%]  10[                        0.0%]
-    3[                        0.0%]  11[                        0.0%]
-    4[                        0.0%]  12[                        0.0%]
-    5[                        0.0%]  13[                        0.0%]
-    6[                        0.0%]  14[                        0.0%]
-    7[                        0.0%]  15[                        0.0%]
-  PID USER       PRI  NI  S CPU  CPU%▽MEM%   TIME+  Command
- 1067 root        RT   0  R   0  99.0  0.2  0:31.16 stress-ng-cpu [run]
-  975 arighi      20   0  R   0   1.0  0.0  0:26.32 yes
-
-By allowing scx_bpf_reenqueue_local() to re-enqueue migration-disabled
-tasks, the scheduler can choose to migrate them to other CPUs (CPU1 in
-this case) via ops.enqueue(), leading to better CPU utilization:
-
-    0[||||||||||||||||||||||100.0%]   8[                        0.0%]
-    1[||||||||||||||||||||||100.0%]   9[                        0.0%]
-    2[                        0.0%]  10[                        0.0%]
-    3[                        0.0%]  11[                        0.0%]
-    4[                        0.0%]  12[                        0.0%]
-    5[                        0.0%]  13[                        0.0%]
-    6[                        0.0%]  14[                        0.0%]
-    7[                        0.0%]  15[                        0.0%]
-  PID USER       PRI  NI  S CPU  CPU%▽MEM%   TIME+  Command
-  577 root        RT   0  R   0 100.0  0.2  0:23.17 stress-ng-cpu [run]
-  555 arighi      20   0  R   1 100.0  0.0  0:28.67 yes
-
-It's debatable whether per-CPU tasks should be re-enqueued as well, but
-doing so is probably safer: the scheduler can recognize re-enqueued
-tasks through the %SCX_ENQ_REENQ flag, reassess their placement, and
-either put them back at the head of the local DSQ or let another task
-attempt to take the CPU.
-
-This also prevents giving per-CPU tasks an implicit priority boost,
-which would otherwise make them more likely to reclaim CPUs preempted by
-higher scheduling classes.
-
-Fixes: 97e13ecb02668 ("sched_ext: Skip per-CPU tasks in scx_bpf_reenqueue_local()")
-Cc: stable@vger.kernel.org # v6.15+
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Acked-by: Changwoo Min <changwoo@igalia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: stable@vger.kernel.org
+Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/smb/server/transport_rdma.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6794,12 +6794,8 @@ __bpf_kfunc u32 scx_bpf_reenqueue_local(
- 		 * CPUs disagree, they use %ENQUEUE_RESTORE which is bypassed to
- 		 * the current local DSQ for running tasks and thus are not
- 		 * visible to the BPF scheduler.
--		 *
--		 * Also skip re-enqueueing tasks that can only run on this
--		 * CPU, as they would just be re-added to the same local
--		 * DSQ without any benefit.
- 		 */
--		if (p->migration_pending || is_migration_disabled(p) || p->nr_cpus_allowed == 1)
-+		if (p->migration_pending)
- 			continue;
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -548,7 +548,7 @@ static void recv_done(struct ib_cq *cq,
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+-		unsigned int data_offset, data_length;
++		u32 remaining_data_length, data_offset, data_length;
+ 		int avail_recvmsg_count, receive_credits;
  
- 		dispatch_dequeue(rq, p);
+ 		if (wc->byte_len <
+@@ -558,6 +558,7 @@ static void recv_done(struct ib_cq *cq,
+ 			return;
+ 		}
+ 
++		remaining_data_length = le32_to_cpu(data_transfer->remaining_data_length);
+ 		data_length = le32_to_cpu(data_transfer->data_length);
+ 		data_offset = le32_to_cpu(data_transfer->data_offset);
+ 		if (wc->byte_len < data_offset ||
+@@ -565,6 +566,14 @@ static void recv_done(struct ib_cq *cq,
+ 			put_recvmsg(t, recvmsg);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 			return;
++		}
++		if (remaining_data_length > t->max_fragmented_recv_size ||
++		    data_length > t->max_fragmented_recv_size ||
++		    (u64)remaining_data_length + (u64)data_length >
++		    (u64)t->max_fragmented_recv_size) {
++			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
++			return;
+ 		}
+ 
+ 		if (data_length) {
 
 
 
