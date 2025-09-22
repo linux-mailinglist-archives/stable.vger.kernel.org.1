@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-181325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B59B930B6
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:44:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97435B92D1F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04DA41907B83
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:44:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7210A2A5CEB
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C37C2F1FE3;
-	Mon, 22 Sep 2025 19:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF15F27B320;
+	Mon, 22 Sep 2025 19:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jL0xpL6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpwEf1nm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9B92F0C52;
-	Mon, 22 Sep 2025 19:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89588C8E6;
+	Mon, 22 Sep 2025 19:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570257; cv=none; b=nY+GxRXMNAHsVMsqgOWS8OwMtw9Khhf+JeCJYhI2OLr0CG1SffDP3lWsb+mZYJAHBroPsKUbTtnxlFuBIaTW2nIGvs7KM6FraVrTbpwXUT+cS1PToaxOfbkhQNTpU2QuAaWS0bZXfedvW5IRXNhFVEX6OXcmng7uxUU7EZ6sf6g=
+	t=1758569601; cv=none; b=HxSVkEFzDz/1gh00rhEHCAkjKN08q7f26j5+eC4qLS4f0lZplgogpq1uEn920iOm/H53dekoTapKFrbOqVVC1yeROhOfIiBw3d15Ce0CJvR6i7DM4SjZRh4/LeDRB1h93EhoBzqrejP6WR77x6veN/IoTJBZJK9EBjV72lcH2OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570257; c=relaxed/simple;
-	bh=X5uYsqRYzicbobVkpzBZT9FvOUKPeXKjTqallLbWvrI=;
+	s=arc-20240116; t=1758569601; c=relaxed/simple;
+	bh=BLVtAvvOI9l9nyKOakCo6O3gEHUseulk5jE5cAtPVRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCjwGmaBF+ThsgZU85lcXp7Q+LhJv1Oest/hiq+NnfzWXTTXBhTi2iVrlCEPEGSqTkvG86zSuRJMcNhyZsnYgVEj5CMrewj07NsBC6UCqMngAlvBGmfTS6jMFSjTW8ZQETGcBQZxGIo4HjQFF0Bz4sGWmLkkxcILIPU3LabFRAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jL0xpL6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A97C4CEF0;
-	Mon, 22 Sep 2025 19:44:16 +0000 (UTC)
+	 MIME-Version; b=f6w0DjA2Pp6haAYwRg6OwY8aBDhGlmlTEV2ecZHEPiCbiqpB6tct57h7C5nUGcb+SDzvcStpbh8XoEup8BL4DJeZ8zbwMAojnaZ3A1eEP0h0YT6yXc7i/RcGyzoeG0f4XWHXpqod2Xf6PXOh62GQXYrzS5CHYQsN9oXqediI8JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpwEf1nm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B05C4CEF0;
+	Mon, 22 Sep 2025 19:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570256;
-	bh=X5uYsqRYzicbobVkpzBZT9FvOUKPeXKjTqallLbWvrI=;
+	s=korg; t=1758569601;
+	bh=BLVtAvvOI9l9nyKOakCo6O3gEHUseulk5jE5cAtPVRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jL0xpL6Ow3mpvhOSuSo+GbXFL5in2ElCVYb4s3MPhRLOIfg/zW8D5wreTV2yE0dRH
-	 sj9Me5ubJJqzN/aREOR3cieqPkIacEYaqJaplbA47oa/u39hGQEBt0zGLVzHrvsZCY
-	 0RdlDPoxg3Ie43mu0nO3NC12r5TwIgPOCJnGaL3U=
+	b=KpwEf1nmHDK1pb2FJk40NxIBkHjODdb/4xfInxJtSLpEsi7j3QkfPdpfbuxzTXC4P
+	 KzU7LtkTES4gA7w7tzaQTCdTWyd7BnKFXSFO+al1pcpGnM1UPKZ7Hv5BEZyWClzQb8
+	 Rog6aqIsSnYhwOGSJebxi1pizcN694Jwy1DUyIqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Koira <eugkoira@amazon.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.16 078/149] iommu/vt-d: Fix __domain_mapping()s usage of switch_to_super_page()
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 45/61] smb: client: fix smbdirect_recv_io leak in smbd_negotiate() error path
 Date: Mon, 22 Sep 2025 21:29:38 +0200
-Message-ID: <20250922192414.850962300@linuxfoundation.org>
+Message-ID: <20250922192404.830838087@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+References: <20250922192403.524848428@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +68,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Koira <eugkoira@amazon.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit dce043c07ca1ac19cfbe2844a6dc71e35c322353 upstream.
+[ Upstream commit daac51c7032036a0ca5f1aa419ad1b0471d1c6e0 ]
 
-switch_to_super_page() assumes the memory range it's working on is aligned
-to the target large page level. Unfortunately, __domain_mapping() doesn't
-take this into account when using it, and will pass unaligned ranges
-ultimately freeing a PTE range larger than expected.
+During tests of another unrelated patch I was able to trigger this
+error: Objects remaining on __kmem_cache_shutdown()
 
-Take for example a mapping with the following iov_pfn range [0x3fe400,
-0x4c0600), which should be backed by the following mappings:
-
-   iov_pfn [0x3fe400, 0x3fffff] covered by 2MiB pages
-   iov_pfn [0x400000, 0x4bffff] covered by 1GiB pages
-   iov_pfn [0x4c0000, 0x4c05ff] covered by 2MiB pages
-
-Under this circumstance, __domain_mapping() will pass [0x400000, 0x4c05ff]
-to switch_to_super_page() at a 1 GiB granularity, which will in turn
-free PTEs all the way to iov_pfn 0x4fffff.
-
-Mitigate this by rounding down the iov_pfn range passed to
-switch_to_super_page() in __domain_mapping()
-to the target large page level.
-
-Additionally add range alignment checks to switch_to_super_page.
-
-Fixes: 9906b9352a35 ("iommu/vt-d: Avoid duplicate removing in __domain_mapping()")
-Signed-off-by: Eugene Koira <eugkoira@amazon.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://lore.kernel.org/r/20250826143816.38686-1-eugkoira@amazon.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/smb/client/smbdirect.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -1592,6 +1592,10 @@ static void switch_to_super_page(struct
- 	unsigned long lvl_pages = lvl_to_nr_pages(level);
- 	struct dma_pte *pte = NULL;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index d47eae133a202..b648bb30401d5 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1084,8 +1084,10 @@ static int smbd_negotiate(struct smbd_connection *info)
+ 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=0x%llx iov.length=%u iov.lkey=0x%x\n",
+ 		       rc, response->sge.addr,
+ 		       response->sge.length, response->sge.lkey);
+-	if (rc)
++	if (rc) {
++		put_receive_buffer(info, response);
+ 		return rc;
++	}
  
-+	if (WARN_ON(!IS_ALIGNED(start_pfn, lvl_pages) ||
-+		    !IS_ALIGNED(end_pfn + 1, lvl_pages)))
-+		return;
-+
- 	while (start_pfn <= end_pfn) {
- 		if (!pte)
- 			pte = pfn_to_dma_pte(domain, start_pfn, &level,
-@@ -1667,7 +1671,8 @@ __domain_mapping(struct dmar_domain *dom
- 				unsigned long pages_to_remove;
- 
- 				pteval |= DMA_PTE_LARGE_PAGE;
--				pages_to_remove = min_t(unsigned long, nr_pages,
-+				pages_to_remove = min_t(unsigned long,
-+							round_down(nr_pages, lvl_pages),
- 							nr_pte_to_next_page(pte) * lvl_pages);
- 				end_pfn = iov_pfn + pages_to_remove - 1;
- 				switch_to_super_page(domain, iov_pfn, end_pfn, largepage_lvl);
+ 	init_completion(&info->negotiate_completion);
+ 	info->negotiate_done = false;
+-- 
+2.51.0
+
 
 
 
