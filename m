@@ -1,118 +1,107 @@
-Return-Path: <stable+bounces-180911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-180912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F305B8FD11
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 11:44:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED50B8FD7A
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 11:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 499C02A007C
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 09:44:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C57DC7AB1DC
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 09:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5E0296BBB;
-	Mon, 22 Sep 2025 09:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBDE427F73A;
+	Mon, 22 Sep 2025 09:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lChbdvKP"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B51428850E;
-	Mon, 22 Sep 2025 09:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE651DDC07;
+	Mon, 22 Sep 2025 09:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758534253; cv=none; b=t2RmyMJDwrf8GOwF/8IRwJc0/CHuQqlWKsNqN0McR1nR+zsZ0cxWk/oUH5p722seHK/a6/kkTWbd43FZQLBYwszTe8RaOnoEds+5gKig5dTmSWk5RH1lhGD+EmBJlvzaiNa+vkqbNIsHLDJeqIf6u8zRDJD6vPxnef6hWe5016E=
+	t=1758534551; cv=none; b=jHVsydlnrj4nsWxdmXFZNGdYECrTvIl1cP+BqzbUQL1ZGGczGCvQbvJq+VEYSSe8ckFLUxYFATQUI2nrBLIZX80fvF80gSMqLfC2EABzqQylyLVjTDYE1QaiMZRMYN/c+0WbkTnh41+ee1pn1vImFRnkEi6fn1fjRtMTg3nKFiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758534253; c=relaxed/simple;
-	bh=VZ3iUdo+zRonvSmJvqG/7y454o4YwOc/OMKUJZLBmM8=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=lWnD+fjAnurVdi/0IvIaGQSK02RsbZm3I3opjdp5/+GglVn3ZZM86W6n4o69Vada61tDuDjTP90t6ggYd/owOqCKHMoa7xLYuH4tRhkrSNhz7Yaz1ePB2zPz7OEpKiQpckxZpkV+KiTwPnWuDyxmFNsq01xoitdwBMM3NfaZxKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAAXfRZIGtFoHvtIBA--.21682S2;
-	Mon, 22 Sep 2025 17:43:56 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: sakari.ailus@linux.intel.com,
-	bingbu.cao@intel.com,
-	lixu.zhang@intel.com,
-	stanislaw.gruszka@linux.intel.com,
-	mchehab@kernel.org,
-	wentong.wu@intel.com
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] media: pci: intel: ivsc: fix error handling in mei_ace driver
-Date: Mon, 22 Sep 2025 17:43:35 +0800
-Message-Id: <20250922094335.28486-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowAAXfRZIGtFoHvtIBA--.21682S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KFW5CF48Ar15Wry5Kw1fCrg_yoW8XFyDpr
-	Z2gFWv9FW5Xr1jgryUua1UuFy5JwnIya9xGry7Ga18Wan5Zry7tryjqa47Cay0qF9FyFyU
-	tF13GrWfAr4kJw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeF4EDUUU
-	U
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1758534551; c=relaxed/simple;
+	bh=Q8hjHHI92FUJG/Q9OirXfeSxmjvtPo3DNGshQrBVLfo=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jJMD0KnTvJt4rnV7si5C59R/7+uKOwlC9HQgTjcbyIHFeAZuZABRZUaqHViKiaFQ0BGmAzui8dnBfW0gEJK5RPvHkBG3MDRfd7Y1mxRZDSstpmqwNH6l/36JQ+j9ee6+1avf5f5NJvTWl7vHdWyeAjE4xvy6NaMv6x2yJeSttiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lChbdvKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E83C4CEF0;
+	Mon, 22 Sep 2025 09:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758534551;
+	bh=Q8hjHHI92FUJG/Q9OirXfeSxmjvtPo3DNGshQrBVLfo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lChbdvKP8hZRmrL0wTHisczsxZTG4Yzmtzn6kTQt7pTg+Ufu96TVo8/PbnezqCuzl
+	 +0VXq8AzRrULvqbM04A7vS0f4NTSf6K67gyw0DZAlG34kxcr+esudGqmzOnvq4JUp/
+	 j5g3neL9X3hIN5RiuttjwsRajrgn/U1dy0G8MxKmUq6HTqzBIOd+Sw8VgkTgG/fpFE
+	 wcUAEKaBaKXwosnzGa9qgsQkifbJBQA2qLgKVm7gVZqMWwyTjWHjCn/O2QE1GO3UEP
+	 QHWZTHWWQ731ef5RZj3qfRHG8MiCJ8AuOjvfLneTrMhCqLTbhMo0+dk611gM1IhSV0
+	 aWsfVuIAcmIQw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1v0dAS-00000008MKt-3Twz;
+	Mon, 22 Sep 2025 09:49:08 +0000
+Date: Mon, 22 Sep 2025 10:49:08 +0100
+Message-ID: <86h5wu24x7.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: linux-pci@vger.kernel.org,	Duy Nguyen <duy.nguyen.rh@renesas.com>,	Thuan
+ Nguyen <thuan.nguyen-hong@banvien.com.vn>,	stable@vger.kernel.org,
+	Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?= <kwilczynski@kernel.org>,	Bjorn
+ Helgaas <bhelgaas@google.com>,	Geert Uytterhoeven
+ <geert+renesas@glider.be>,	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Magnus Damm <magnus.damm@gmail.com>,	Manivannan Sadhasivam
+ <mani@kernel.org>,	Rob Herring <robh@kernel.org>,	Yoshihiro Shimoda
+ <yoshihiro.shimoda.uh@renesas.com>,	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH 2/2] PCI: rcar-host: Convert struct rcar_msi mask_lock into raw spinlock
+In-Reply-To: <20250909162707.13927-2-marek.vasut+renesas@mailbox.org>
+References: <20250909162707.13927-1-marek.vasut+renesas@mailbox.org>
+	<20250909162707.13927-2-marek.vasut+renesas@mailbox.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: marek.vasut+renesas@mailbox.org, linux-pci@vger.kernel.org, duy.nguyen.rh@renesas.com, thuan.nguyen-hong@banvien.com.vn, stable@vger.kernel.org, kwilczynski@kernel.org, bhelgaas@google.com, geert+renesas@glider.be, lpieralisi@kernel.org, magnus.damm@gmail.com, mani@kernel.org, robh@kernel.org, yoshihiro.shimoda.uh@renesas.com, linux-renesas-soc@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The mei_ace driver contains a device reference count leak in
-mei_ace_setup_dev_link() where device_find_child_by_name() increases
-the reference count of the found device but this reference is not
-properly decreased in the success path. Add put_device() in
-mei_ace_setup_dev_link() and delete put_device() in mei_ace_remove(),
-which ensures that the reference count of the device is correctly
-managed regardless of whether the probe is successful or fails.
+On Tue, 09 Sep 2025 17:26:25 +0100,
+Marek Vasut <marek.vasut+renesas@mailbox.org> wrote:
+> 
+> The rcar_msi_irq_unmask() function may be called from a PCI driver
+> request_threaded_irq() function. This triggers kernel/irq/manage.c
+> __setup_irq() which locks raw spinlock &desc->lock descriptor lock
+> and with that descriptor lock held, calls rcar_msi_irq_unmask().
+> 
+> Since the &desc->lock descriptor lock is a raw spinlock , and the
+> rcar_msi .mask_lock is not a raw spinlock, this setup triggers
+> 'BUG: Invalid wait context' with CONFIG_PROVE_RAW_LOCK_NESTING=y .
+> 
+> Use scoped_guard() to simplify the locking.
+> 
+> Fixes: 83ed8d4fa656 ("PCI: rcar: Convert to MSI domains")
+> Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+> Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-Found by code review.
+Acked-by: Marc Zyngier <maz@kernel.org>
 
-Cc: stable@vger.kernel.org
-Fixes: 78876f71b3e9 ("media: pci: intel: ivsc: Add ACE submodule")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- modified the put_device() operations and the patch title as suggestions.
----
- drivers/media/pci/intel/ivsc/mei_ace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	M.
 
-diff --git a/drivers/media/pci/intel/ivsc/mei_ace.c b/drivers/media/pci/intel/ivsc/mei_ace.c
-index 98310b8511b1..bb57656fc85a 100644
---- a/drivers/media/pci/intel/ivsc/mei_ace.c
-+++ b/drivers/media/pci/intel/ivsc/mei_ace.c
-@@ -420,6 +420,7 @@ static int mei_ace_setup_dev_link(struct mei_ace *ace)
- 		goto err_put;
- 	}
- 
-+	put_device(csi_dev);
- 	ace->csi_dev = csi_dev;
- 
- 	return 0;
-@@ -522,7 +523,6 @@ static void mei_ace_remove(struct mei_cl_device *cldev)
- 	cancel_work_sync(&ace->work);
- 
- 	device_link_del(ace->csi_link);
--	put_device(ace->csi_dev);
- 
- 	pm_runtime_disable(&cldev->dev);
- 	pm_runtime_set_suspended(&cldev->dev);
 -- 
-2.17.1
-
+Without deviation from the norm, progress is not possible.
 
