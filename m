@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-181284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C04B9300E
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:43:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76954B92E6F
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 21:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D23ED2E0CF2
-	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:42:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272051906FBA
+	for <lists+stable@lfdr.de>; Mon, 22 Sep 2025 19:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C30D2F0C52;
-	Mon, 22 Sep 2025 19:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6352285C92;
+	Mon, 22 Sep 2025 19:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBYP+g94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vjh795dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57487222590;
-	Mon, 22 Sep 2025 19:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A014527B320;
+	Mon, 22 Sep 2025 19:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570148; cv=none; b=es0xtyxeozHdjZyMx7be0xAWpSBs0ui5Xs8BNdNfCuYhAPkSW0jqTTZ/o5NfEHyi0XSqO4ZwznJxU2SOcZbkxjeNi0wPjVV1xyu0lJxwWgDrloE8cv1iUccYwpDCz8y8C/Fy7Ky9832DpSyjgLk9hrmF1811QZ8NgAyGp6oa7VE=
+	t=1758569854; cv=none; b=jffbrwy8/2t4K7DHAajpnlEVXjspDB+G8fJ6qAHg1X3IAYSXwiVg+NzP+ooRj38Aik1SmxLch9S2FKqVNhDak64n6nbjt0mgfCJWS7cQ7k0IhWnwpD8ROmMBweH1skph4rlhB3NuBVQjtV5hA+PHboXRMMLqOp04CEmRcPpMgx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570148; c=relaxed/simple;
-	bh=B7FZYyOBDT+3A+/jD2i1p2owmz/Zlin7bzCmTiksi8Y=;
+	s=arc-20240116; t=1758569854; c=relaxed/simple;
+	bh=vmwxmg6W46GnV8Toc2QjaFDzRyv3nrFLt/DnmO+06K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/wqwUap31MWYDrat884aen9YYeru+/ieGMzTN1aUA6SDVxhoibMTIxw7ki+Vc4b6jL/1+nWdDV14l22W9YVJIchs3TlUUv5b9O6YJQzeYDbXqbDP+ZR0tzKeVQ1314TnoV8aNU2NOiDci9nSpfRmRJLaBcggq53ehY2CSM22ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBYP+g94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBE4C4CEF0;
-	Mon, 22 Sep 2025 19:42:27 +0000 (UTC)
+	 MIME-Version; b=J0OsyFm+eZEbmgf8KuLYKMV5H5xRjMR+iEUnpw9RMlfUrMgOkzGVNH/FaEjGInn99GShJuErOndA+hIh95Que5InuVQ7EYiSdu3u/GJzFrcTADYxOKqcLa0u1cHqa1bO+4Xsif+Xoe861JBd7ALb8gKmbUuREENPORZrA6MJTVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vjh795dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383AAC4CEF0;
+	Mon, 22 Sep 2025 19:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1758570148;
-	bh=B7FZYyOBDT+3A+/jD2i1p2owmz/Zlin7bzCmTiksi8Y=;
+	s=korg; t=1758569854;
+	bh=vmwxmg6W46GnV8Toc2QjaFDzRyv3nrFLt/DnmO+06K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBYP+g94lmIcDyct9ztLQipioWyfYKnGjO2w7LOpun4zS9rFdm9r8YZU8314FmPd+
-	 gHmwMqLR//NV5KtLBMV2sjEdDk9OHm83RhNZ7pVRqD6FziGjvzUpkwkoTjiEBJbEtF
-	 h1rEmEKnxwY95rIctwlG7whbuOCTvKF8rW9fONQk=
+	b=Vjh795dnH7CB+X49DZRhGxBJrdPKzdnbIDdWQQzjpEPktoASaSOvHKkLvGM4ankQt
+	 VQQguGY0xZUHWYAKtc0Vhz72GHLQ4Ber+xPtvdooEMm5i/bTQGx1MQhxf8PGf0oooa
+	 Lx6U46sf6MR1+IN/9uKLzW4H/pHPCJTpCY1Zk9PY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Chris Mi <cmi@nvidia.com>,
-	Lama Kayal <lkayal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Qiuling Ren <qren@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 037/149] net/mlx5e: Add a miss level for ipsec crypto offload
+Subject: [PATCH 6.12 014/105] bonding: set random address only when slaves already exist
 Date: Mon, 22 Sep 2025 21:28:57 +0200
-Message-ID: <20250922192413.801432373@linuxfoundation.org>
+Message-ID: <20250922192409.277234794@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
+In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
+References: <20250922192408.913556629@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lama Kayal <lkayal@nvidia.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 7601a0a46216f4ba05adff2de75923b4e8e585c2 ]
+[ Upstream commit 35ae4e86292ef7dfe4edbb9942955c884e984352 ]
 
-The cited commit adds a miss table for switchdev mode. But it
-uses the same level as policy table. Will hit the following error
-when running command:
+After commit 5c3bf6cba791 ("bonding: assign random address if device
+address is same as bond"), bonding will erroneously randomize the MAC
+address of the first interface added to the bond if fail_over_mac =
+follow.
 
- # ip xfrm state add src 192.168.1.22 dst 192.168.1.21 proto	\
-	esp spi 1001 reqid 10001 aead 'rfc4106(gcm(aes))'	\
-	0x3a189a7f9374955d3817886c8587f1da3df387ff 128		\
-	mode tunnel offload dev enp8s0f0 dir in
- Error: mlx5_core: Device failed to offload this state.
+Correct this by additionally testing for the bond being empty before
+randomizing the MAC.
 
-The dmesg error is:
-
- mlx5_core 0000:03:00.0: ipsec_miss_create:578:(pid 311797): fail to create IPsec miss_rule err=-22
-
-Fix it by adding a new miss level to avoid the error.
-
-Fixes: 7d9e292ecd67 ("net/mlx5e: Move IPSec policy check after decryption")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Chris Mi <cmi@nvidia.com>
-Signed-off-by: Lama Kayal <lkayal@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1757939074-617281-4-git-send-email-tariqt@nvidia.com
+Fixes: 5c3bf6cba791 ("bonding: assign random address if device address is same as bond")
+Reported-by: Qiuling Ren <qren@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20250910024336.400253-1-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/fs.h             | 1 +
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h    | 1 +
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 3 ++-
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c           | 4 ++--
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/bonding/bond_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-index 9560fcba643f5..ac65e31914802 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-@@ -92,6 +92,7 @@ enum {
- 	MLX5E_ACCEL_FS_ESP_FT_LEVEL = MLX5E_INNER_TTC_FT_LEVEL + 1,
- 	MLX5E_ACCEL_FS_ESP_FT_ERR_LEVEL,
- 	MLX5E_ACCEL_FS_POL_FT_LEVEL,
-+	MLX5E_ACCEL_FS_POL_MISS_FT_LEVEL,
- 	MLX5E_ACCEL_FS_ESP_FT_ROCE_LEVEL,
- #endif
- };
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-index ffcd0cdeb7754..23703f28386ad 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-@@ -185,6 +185,7 @@ struct mlx5e_ipsec_rx_create_attr {
- 	u32 family;
- 	int prio;
- 	int pol_level;
-+	int pol_miss_level;
- 	int sa_level;
- 	int status_level;
- 	enum mlx5_flow_namespace_type chains_ns;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-index 98b6a3a623f99..65dc3529283b6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-@@ -747,6 +747,7 @@ static void ipsec_rx_create_attr_set(struct mlx5e_ipsec *ipsec,
- 	attr->family = family;
- 	attr->prio = MLX5E_NIC_PRIO;
- 	attr->pol_level = MLX5E_ACCEL_FS_POL_FT_LEVEL;
-+	attr->pol_miss_level = MLX5E_ACCEL_FS_POL_MISS_FT_LEVEL;
- 	attr->sa_level = MLX5E_ACCEL_FS_ESP_FT_LEVEL;
- 	attr->status_level = MLX5E_ACCEL_FS_ESP_FT_ERR_LEVEL;
- 	attr->chains_ns = MLX5_FLOW_NAMESPACE_KERNEL;
-@@ -833,7 +834,7 @@ static int ipsec_rx_chains_create_miss(struct mlx5e_ipsec *ipsec,
- 
- 	ft_attr.max_fte = 1;
- 	ft_attr.autogroup.max_num_groups = 1;
--	ft_attr.level = attr->pol_level;
-+	ft_attr.level = attr->pol_miss_level;
- 	ft_attr.prio = attr->prio;
- 
- 	ft = mlx5_create_auto_grouped_flow_table(attr->ns, &ft_attr);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 29ce09af59aef..3b57ef6b3de38 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -114,9 +114,9 @@
- #define ETHTOOL_NUM_PRIOS 11
- #define ETHTOOL_MIN_LEVEL (KERNEL_MIN_LEVEL + ETHTOOL_NUM_PRIOS)
- /* Vlan, mac, ttc, inner ttc, {UDP/ANY/aRFS/accel/{esp, esp_err}}, IPsec policy,
-- * {IPsec RoCE MPV,Alias table},IPsec RoCE policy
-+ * IPsec policy miss, {IPsec RoCE MPV,Alias table},IPsec RoCE policy
-  */
--#define KERNEL_NIC_PRIO_NUM_LEVELS 10
-+#define KERNEL_NIC_PRIO_NUM_LEVELS 11
- #define KERNEL_NIC_NUM_PRIOS 1
- /* One more level for tc, and one more for promisc */
- #define KERNEL_MIN_LEVEL (KERNEL_NIC_PRIO_NUM_LEVELS + 2)
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 52ff0f9e04e07..952737a98751e 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2117,6 +2117,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 		memcpy(ss.__data, bond_dev->dev_addr, bond_dev->addr_len);
+ 	} else if (bond->params.fail_over_mac == BOND_FOM_FOLLOW &&
+ 		   BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP &&
++		   bond_has_slaves(bond) &&
+ 		   memcmp(slave_dev->dev_addr, bond_dev->dev_addr, bond_dev->addr_len) == 0) {
+ 		/* Set slave to random address to avoid duplicate mac
+ 		 * address in later fail over.
 -- 
 2.51.0
 
