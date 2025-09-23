@@ -1,157 +1,238 @@
-Return-Path: <stable+bounces-181434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461E5B949F6
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 08:52:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 618A8B94A01
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 08:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04DE47B4CC3
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 06:51:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1028E17FC6A
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 06:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624CE30F928;
-	Tue, 23 Sep 2025 06:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33B030DEDA;
+	Tue, 23 Sep 2025 06:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AThyBQ/b"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8AD23D7D9;
-	Tue, 23 Sep 2025 06:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A6B26CE2D
+	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 06:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758610366; cv=none; b=EUjkX8Bg/kOgEbNRDd3lMQqRvIZ9YK7nTl/qfIL41YHIt9nAoDCo0gf/Qw/h8gsA4N1mPyq5C0rN0eh0AAUuRoEoVBd99mQz3c1XleOz9mjfe35y8uOD94KOnE8l/fO90dpvnkBU3WLir+kI3qZD9yBdN831bWzkVP5hWy1xNwU=
+	t=1758610446; cv=none; b=AWmqMWkZrmAQlNpGuqEDoGHVrjiXTwWthZrEJyTGfkl0EQ1N0akRMQd9Ou+Db0+3q06x712YoqVIyy7U2hRfDMh2bgKAEvKtgbbUUBpqdxJVc2yG51GtL7bCiuWlOcA+DtkY2reYPweJTo0wNgvSGWk8ivoIcOdg9nTCIa3mV84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758610366; c=relaxed/simple;
-	bh=CoLm98uYumbAk5h8TZr7S+qj5AyP9SBU/K8xQqwoijg=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=Kr7ex5K2SnaaF9/gyEWgIaYPUKDbHbX4OuVQIG4P6BGh47ATaC0nkxqYqmDPNzP9JcgMC8wJimbEciO91E3YHKy/K8U/vv0rbvd7EF5c0Lb2q4QvpPrGqqgw/fcYiUkc/PtexJA83RZvq5t2m0vc6ad2eduwipBrYZvWHJXaApU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAAXuBGdQ9Jo7DpzBA--.56991S2;
-	Tue, 23 Sep 2025 14:52:22 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: srini@kernel.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	pierre-louis.bossart@linux.dev,
-	dmitry.baryshkov@oss.qualcomm.com
-Cc: linux-sound@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()
-Date: Tue, 23 Sep 2025 14:52:12 +0800
-Message-Id: <20250923065212.26660-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowAAXuBGdQ9Jo7DpzBA--.56991S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXFy5JFy7JFWUJr47GryUKFg_yoW5CF1kp3
-	yDCFWag3s8GrnF9r4FyrW8Aa4IkFWj9w1fAr48K34I9ws09ry3KFy0q3WjqFZxtFWfAF1U
-	Xry7Zr18CF4UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r47MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjgdbUUU
-	UUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1758610446; c=relaxed/simple;
+	bh=PecQcC4+BQ71O05AhvWFsvUVyIVtp/6jKO4vNBvVtow=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EoaD36wsyXOmBLFOvdV+HU2lj5eoW3qxbw9Pf/LfPbncj231TZh3n8dyNxeY7SQUZDAABy0hMBtSL7A1BF9B5OZm2tWplxxy3pDaaFIeyO0RtvJe5lyYtw2zaOEoEv1BsOFEfs3k26GrZf7WpwcN3gbWlEPiSBCF6hoHXnYvzGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AThyBQ/b; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-27c369f898fso9462635ad.3
+        for <stable@vger.kernel.org>; Mon, 22 Sep 2025 23:54:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758610444; x=1759215244; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=quv8k6pC8nE0ORHmfxh5FwNCkCgEWH1STYAQdnqAQ6g=;
+        b=AThyBQ/bW46B38UcyUmYB7fkCSYJ8uT8DMX61cb1Vm0ddVAYMOCP7BayIbFoboSFls
+         I7EbNV6QWK03/mX3xLgUhk/EnqQKo1MSIHD3k3mShp7QaTO1lRuUR4zMxDyf/S+gBdZW
+         hUs8gyyERlPiA3fI6nS3KxAVycbf9ORDxdbIbqzI09oETSNtOnGO5dX+bWQVM8fHJ+zK
+         Yrtc2ebqSBeY2tyFRRlw6BdhQ6WiqekpdIpC92cR85d7EIpBGqQ+3PQVGuGoO/5CxUI2
+         r1KM0bKOfNk4RjMYDAp6WDqFMrKpgCprKCMYRhYZ9GCYMmjO7nENam/9MNehFFyGHy5G
+         NRtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758610444; x=1759215244;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=quv8k6pC8nE0ORHmfxh5FwNCkCgEWH1STYAQdnqAQ6g=;
+        b=fB5TgkHG+S8l6/oV+Mm3xdd3NCBUro6hnzqz/9ntIi9MxsEg8xCaOWe74kT061JHDY
+         g1HE2imAq/vMZnNlx8mWV3VCT9Wpovvq3QadhlcbsTJTlp9j27c3VrAcGV14gCVmp9mI
+         skZxlkThX2bANYYNb/qiQS11PoaLKXNhKYbi/65wPB5tjkjADS9cQb67TR8uI10oQZVj
+         E5VdpE6Ya8rgHpuwF5r3tkCbNSrgXoG9qo2PVDc7XUpM3M3I8YRVTusBOFLtQvq96H1C
+         OeSKN1ad098+bHJBcGmCxUvmAtgCkWoVUuvP1OmwIvZGAOzxDXlDHC/j/ih5bGHZCsXf
+         ELtg==
+X-Gm-Message-State: AOJu0Ywb3EZk/eySLagfivGH8AsrrfZ+tUHw+FBtSEF72pXNX+fl809F
+	3SO7FZUdkGpzKRjuFGBMjA6r8jij4I9alBtBpryQxQJNJkjS3lHaeIW5ahU1CxLTo5gnjVO5Uu8
+	zd+egBmdhg6PhwScpSyptz+R2G5E2I8bMj75XsILvSA==
+X-Gm-Gg: ASbGncuOGIXQZzZTAfL/I5ScbGNDfiVJv3ijc25B646a/Cu0fyud2mOatnDSKLItnC7
+	TOJ1lPomADXbcdioKpJdb1cKkty8cJ2GYJekpezbYG9v5qGHpy985fs0awzfaqq7dweRe3jmIT7
+	djtzKTKWJ2nW+e7ptMr9ArCfTs3eKZL7E2bKFn1H76qK1XAwpyhw2fj2x0hNZ3UNcZFWjvzXYiq
+	mu52Jz/LF3qegdC5jI85D8jop0xiN1+Iq9VJq1g
+X-Google-Smtp-Source: AGHT+IFZS84i47apfj07NDSNB5OlTx6jsX675G3VHWBcxqxxMy1Hh3VbasuQ4IRSHg/XZUTRQHb9JUEfx8v0gq96qyA=
+X-Received: by 2002:a17:903:46cd:b0:24d:f9f:de8f with SMTP id
+ d9443c01a7336-27cc21f8272mr23361255ad.17.1758610443986; Mon, 22 Sep 2025
+ 23:54:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250922192404.455120315@linuxfoundation.org>
+In-Reply-To: <20250922192404.455120315@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 23 Sep 2025 12:23:52 +0530
+X-Gm-Features: AS18NWA_NdAUcwHvfO7RUgz8JOg6_pm8wUdc7xt68AD3PFrIDqYjdPrecl-sjG0
+Message-ID: <CA+G9fYuAtATgt4RLzPnVUeyK+4Xdu3u0GPUYqAQSH-904eFwSw@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/70] 6.6.108-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-wcd934x_codec_parse_data() contains a device reference count leak in
-of_slim_get_device() where device_find_child() increases the reference
-count of the device but this reference is not properly decreased in
-the success path. Add put_device() in wcd934x_codec_parse_data() and
-add devm_add_action_or_reset() in the probe function, which ensures
-that the reference count of the device is correctly managed.
+On Tue, 23 Sept 2025 at 01:04, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.108 release.
+> There are 70 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 24 Sep 2025 19:23:52 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.108-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Memory leak in regmap_init_slimbus() as the allocated regmap is not
-released when the device is removed. Using devm_regmap_init_slimbus()
-instead of regmap_init_slimbus() to ensure automatic regmap cleanup on
-device removal.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Calling path: of_slim_get_device() -> of_find_slim_device() ->
-device_find_child(). As comment of device_find_child() says, 'NOTE:
-you will need to drop the reference with put_device() after use.'.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Found by code review.
+## Build
+* kernel: 6.6.108-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 6bd7f2a12b28f0583cde5d70941e17ef05e62d17
+* git describe: v6.6.107-71-g6bd7f2a12b28
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
+07-71-g6bd7f2a12b28
 
-Cc: stable@vger.kernel.org
-Fixes: a61f3b4f476e ("ASoC: wcd934x: add support to wcd9340/wcd9341 codec")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v4:
-- removed the redundant NULL check as put_device() can handle the NULL dev;
-Changes in v3:
-- added a wrapper function due to the warning report from kernel test robot;
-Changes in v2:
-- modified the handling in the success path and fixed the memory leak for regmap as suggestions.
----
- sound/soc/codecs/wcd934x.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+## Test Regressions (compared to v6.6.105-110-g08094cf55442)
 
-diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
-index 1bb7e1dc7e6b..e92939068bf7 100644
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -5831,6 +5831,13 @@ static const struct snd_soc_component_driver wcd934x_component_drv = {
- 	.endianness = 1,
- };
- 
-+static void wcd934x_put_device_action(void *data)
-+{
-+	struct device *dev = data;
-+
-+	put_device(dev);
-+}
-+
- static int wcd934x_codec_parse_data(struct wcd934x_codec *wcd)
- {
- 	struct device *dev = &wcd->sdev->dev;
-@@ -5847,11 +5854,13 @@ static int wcd934x_codec_parse_data(struct wcd934x_codec *wcd)
- 		return dev_err_probe(dev, -EINVAL, "Unable to get SLIM Interface device\n");
- 
- 	slim_get_logical_addr(wcd->sidev);
--	wcd->if_regmap = regmap_init_slimbus(wcd->sidev,
-+	wcd->if_regmap = devm_regmap_init_slimbus(wcd->sidev,
- 				  &wcd934x_ifc_regmap_config);
--	if (IS_ERR(wcd->if_regmap))
-+	if (IS_ERR(wcd->if_regmap)) {
-+		put_device(&wcd->sidev->dev);
- 		return dev_err_probe(dev, PTR_ERR(wcd->if_regmap),
- 				     "Failed to allocate ifc register map\n");
-+	}
- 
- 	of_property_read_u32(dev->parent->of_node, "qcom,dmic-sample-rate",
- 			     &wcd->dmic_sample_rate);
-@@ -5893,6 +5902,10 @@ static int wcd934x_codec_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	ret = devm_add_action_or_reset(dev, wcd934x_put_device_action, &wcd->sidev->dev);
-+	if (ret)
-+		return ret;
-+
- 	/* set default rate 9P6MHz */
- 	regmap_update_bits(wcd->regmap, WCD934X_CODEC_RPM_CLK_MCLK_CFG,
- 			   WCD934X_CODEC_RPM_CLK_MCLK_CFG_MCLK_MASK,
--- 
-2.17.1
+## Metric Regressions (compared to v6.6.105-110-g08094cf55442)
 
+## Test Fixes (compared to v6.6.105-110-g08094cf55442)
+
+## Metric Fixes (compared to v6.6.105-110-g08094cf55442)
+
+## Test result summary
+total: 279461, pass: 260568, fail: 5659, skip: 12881, xfail: 353
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 129 total, 129 passed, 0 failed
+* arm64: 44 total, 44 passed, 0 failed
+* i386: 23 total, 23 passed, 0 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 32 total, 31 passed, 1 failed
+* riscv: 15 total, 15 passed, 0 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 37 total, 36 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
