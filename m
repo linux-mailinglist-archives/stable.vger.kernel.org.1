@@ -1,164 +1,100 @@
-Return-Path: <stable+bounces-181466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C98B95930
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 13:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 983EBB95ACC
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 13:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FC674A3F86
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 11:08:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1D0447601
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 11:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDC6320CB3;
-	Tue, 23 Sep 2025 11:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bqYTjiRB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC67A321282;
+	Tue, 23 Sep 2025 11:36:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m3288.qiye.163.com (mail-m3288.qiye.163.com [220.197.32.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CFC321457
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 11:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23571B4231;
+	Tue, 23 Sep 2025 11:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758625692; cv=none; b=Z+Pnr0ON4ZEP7fde3JeTz71aUArqdUGhHuIvBwHRb0vWiCpc99WfyCuvs89mEfbRiDoN6FSZTlSxJkrQchVklZrl/rScSOwnvzNdc5HsvCmCbhDFg+hNUbLXsYbtS8jYta7e/JNWmcfX5bZxurlrdGEGlXkvQ1naWGhtuFD0MEY=
+	t=1758627409; cv=none; b=UuzOHi3Fk0xqhiBlO+hoBLR8CnsuztrRyipcDQxeozgOngI9EuH12DIsJSFB1jW9oBCRJgeVm2hOOAVeRGXEUbo4yEFpWOFQJyJYF/CUTqcUXrUrwBzEQtAsh5co/H+2qvXIgom1WyycxizZgf6DSad3ZrZFSoY0pZeM3oOvC/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758625692; c=relaxed/simple;
-	bh=/XZsuYZiVJXloC6rrE97OTbLdirXXVYnP1HJQkVSPy4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sth9/r+JXKdy32YoZ2tnUf3tQAJo9BLISQYAX0QvYz2++6XAdKVbvXfW+INcUQhW/fUF2vf6JLTizpMubjnnX143EXmYkiqOxR9cbsAlUqJOCBUf+chSKjaKz0JOUveZhuG7Av80nwhrY3WfPzd1uzYa2WpvmIbCPQAwCO66+kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bqYTjiRB; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-62fa84c6916so11286a12.0
-        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 04:08:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758625689; x=1759230489; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V2nNizs4EXcS6KdJvj0JrfZmsBGMOILUvFCRBf/9eF8=;
-        b=bqYTjiRBUd6WehS77qKkZZ/Jyt+yuisivITRGxPEcCqprD88Ot1ZsMINk4JzeqeC5w
-         Jiozv2UR//8SsKYs2EvD9lH+91HjU1cOS1I6hJ6wZS1hHtU53Y8u/iOwepdXE3vS0nE8
-         9NqyheTgpoh42f6xaE7kFXIn0gDIxSMVlHR61p/rYLGoV+VJE6kXxPAAeZDU5W6PTtPb
-         wj7I75TPH32wHLvcqKdRd+AAZiZx7DKaVIeS6K0V4Ahm6lHQSHMFRtrcs66moGU7KRdA
-         KolPLykc25/JiweeQhABKQoUzBvgR0tgSP09xmxt6P+dSfN/Zt8+5fRtqhoze8NUrbDp
-         zE5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758625689; x=1759230489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V2nNizs4EXcS6KdJvj0JrfZmsBGMOILUvFCRBf/9eF8=;
-        b=bBPs9kZISBA3odVa2EaTmt53ZKOBcDLEPRrJDmicZiPQwwJawt5Hb5ab6VtwbqCLam
-         QAIc99e1k3vR2c8skrGwChrX9T6r0Snq23nWTPY0eI5JopGCrDGqDflLbmNoU/RFLV8r
-         2htmkeHea/g4kSI8uRfpQ192G2uxU0OEahWU71V2aIq38xz16zNdygTCZ0MuQLgEnKM6
-         ImbzRlzPGoZM7Q7aMRU9GvYH5OHW24IWe3akiapiWZ3OTCyDzJnmR4HmbJPpx04WZ087
-         AICz1xYISZmqt9SqYVVfztLyc4hTKHU3Ljpj/AhfWLDgiuIwwrPeNNwHUU/Ex8u2W0xw
-         2/dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDYtoFXkmXshC4RbmK+oEpLczLz6nJqvWs3w1fPcaQENAiaromQ2voEzZQ3VTALPJet6Sh0QI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9peRcJZuWOQ8+XpHp4F2PnDGXnRa8PsUQTFZVtMjWnRnl69e8
-	ESoOOuIUNa0oujZw8ayNWM4vcrnazRgBWy9b7eBbR4MyfaX5kvfD6RybYjeWeJooGZ4aJ60Z/ww
-	EggEQmtouhZ+EzJLOeYZL/pqaM9f5zVxrnijZhmecDE8z8rsw5L/YnvwqN+Q=
-X-Gm-Gg: ASbGncskKgRsIFISTRD6qdDNYR17O4COiRRfqneCfCb56qgmRA4cwsY1ONspbE8fWMy
-	WpOMshzSCMO8o1QZ4gaM/ZeBxbAK9EMGDTmOXEsknj3/DstZOPLnsavJCTAAyPi8PhlLrgCzoIB
-	GsBOWLqXJQp6qfPRKvt+nU/gAOYNxZo5nH/whx6poF+03Oe/58jeFWPV0c7tSFNsvy1SC/qSLGQ
-	xZE5yQ5MiIZ
-X-Google-Smtp-Source: AGHT+IHOG4WkpDAtV/b73oGn6Rwke1EUIyIWRMd8NKkWBm8ULAtIMX19l+qwsw2RlB89gRURbDqwg9zWE9ZKCbG8XBI=
-X-Received: by 2002:a05:6402:1d1a:b0:633:2321:a07b with SMTP id
- 4fb4d7f45d1cf-63466aa27aemr55515a12.0.1758625688454; Tue, 23 Sep 2025
- 04:08:08 -0700 (PDT)
+	s=arc-20240116; t=1758627409; c=relaxed/simple;
+	bh=nffp39x/M7Ks1yMwtuJB7i6A9V8frjNYTRLBRUbDvqE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=F439MEOtChoKWNXjXxvXbJHxxMHgY7mRqiI5TwKVne6ShIGP6+GVI8Noz9Ct62NU1rN4B2Z+o3gWDhKVryHMGtZP7S0jlhtBVc0KkDOaK55MTsb2xk/jJ+Ex8nEUkWKl8VFHg6YmhqpWF87AQH2u7bD7h0Af21x0fhYK5d5/ZK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=220.197.32.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 10a123ea3;
+	Tue, 23 Sep 2025 19:21:22 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: andersson@kernel.org,
+	mathieu.poirier@linaro.org
+Cc: linux-remoteproc@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] remoteproc: pru: Fix potential NULL pointer dereference in pru_rproc_set_ctable()
+Date: Tue, 23 Sep 2025 19:21:09 +0800
+Message-Id: <20250923112109.1165126-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20250923083848.1147347-1-zhen.ni@easystack.cn>
+References: <20250923083848.1147347-1-zhen.ni@easystack.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250330164229.2174672-1-varadgautam@google.com>
- <CAOLDJO+=+hcz498KRc+95dF5y3hZdtm+3y35o2rBC9qAOF-vDg@mail.gmail.com>
- <CAOLDJOKiEmde5Max0BnTBVpNmfpm-wwYLJ4Etv8D2KZKPHyFzw@mail.gmail.com>
- <CAOLDJOJ=QcQ065UTAdGayO2kbpGMOwCtdEGVm8TvQO8Wf8CSMw@mail.gmail.com>
- <CAOLDJOJ98EccMJ4O3FyX4mSFtHnbQ4iwwXsHT2EbLL+KrXfvtw@mail.gmail.com> <f74d9899-6aba-4c8e-87b1-cd6ecc7772e6@app.fastmail.com>
-In-Reply-To: <f74d9899-6aba-4c8e-87b1-cd6ecc7772e6@app.fastmail.com>
-From: Varad Gautam <varadgautam@google.com>
-Date: Tue, 23 Sep 2025 13:07:57 +0200
-X-Gm-Features: AS18NWDiaK8IssKPSakKKBWc2hagHQKHETrpRj1q8Sp4WHHDh4oDk9ZMPOZEQX0
-Message-ID: <CAOLDJO+8JApK5_qjtn+DhCnQoF+Lp-x1KP_QQvJUqecp744T1w@mail.gmail.com>
-Subject: Re: [PATCH] asm-generic/io.h: Skip trace helpers if rwmmio events are disabled
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, 
-	Sai Prakash Ranjan <quic_saipraka@quicinc.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a99764e8a850229kunm03720d87fe104
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSkNJVhoeHxpMSk9MGBoeH1YVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lCQ0JKVUpLS1
+	VLWQY+
 
-Hey Arnd,
+pru_rproc_set_ctable() accessed rproc->priv before the IS_ERR_OR_NULL
+check, which could lead to a null pointer dereference. Move the pru
+assignment, ensuring we never dereference a NULL rproc pointer.
 
-On Sat, Jul 26, 2025 at 6:22=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> On Thu, Jul 24, 2025, at 13:49, Varad Gautam wrote:
-> > On Wed, May 28, 2025 at 5:28=E2=80=AFPM Varad Gautam <varadgautam@googl=
-e.com> wrote:
-> >>
-> >> On Mon, Apr 28, 2025 at 9:41=E2=80=AFPM Varad Gautam <varadgautam@goog=
-le.com> wrote:
-> >> >
-> >> > On Mon, Apr 7, 2025 at 6:13=E2=80=AFPM Varad Gautam <varadgautam@goo=
-gle.com> wrote:
-> >> > >
-> >> > > On Sun, Mar 30, 2025 at 6:42=E2=80=AFPM Varad Gautam <varadgautam@=
-google.com> wrote:
-> >> > > >
-> >> > > > With `CONFIG_TRACE_MMIO_ACCESS=3Dy`, the `{read,write}{b,w,l,q}{=
-_relaxed}()`
-> >> > > > mmio accessors unconditionally call `log_{post_}{read,write}_mmi=
-o()`
-> >> > > > helpers, which in turn call the ftrace ops for `rwmmio` trace ev=
-ents
-> >> > > >
-> >> > > > This adds a performance penalty per mmio accessor call, even whe=
-n
-> >> > > > `rwmmio` events are disabled at runtime (~80% overhead on local
-> >> > > > measurement).
-> >> > > >
-> >> > > > Guard these with `tracepoint_enabled()`.
-> >> > > >
-> >> > > > Signed-off-by: Varad Gautam <varadgautam@google.com>
-> >> > > > Fixes: 210031971cdd ("asm-generic/io: Add logging support for MM=
-IO accessors")
-> >> > > > Cc: <stable@vger.kernel.org>
-> >> > >
-> >> > > Ping.
-> >> > >
-> >> >
-> >> > Ping.
-> >> >
-> >>
-> >> Ping. Arnd, can this be picked up into the asm-generic tree?
-> >>
-> >
-> > Ping.
->
-> I'm sorry I keep missing this one. It's really too late again for
-> the merge window, so it won't be in 6.17 either, but I've applied
-> it locally in my asm-generic branch that I'm planning for 6.18
-> so I hope I won't miss it again.
->
+Fixes: 102853400321 ("remoteproc: pru: Add pru_rproc_set_ctable() function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+v2:
+- Changed "null" to "NULL"
+- Added " pru:" prefix
+---
+ drivers/remoteproc/pru_rproc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Can I follow this along somewhere? (I don't see it on arnd/asm-generic.git =
-atm.)
+diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+index 842e4b6cc5f9..5e3eb7b86a0e 100644
+--- a/drivers/remoteproc/pru_rproc.c
++++ b/drivers/remoteproc/pru_rproc.c
+@@ -340,7 +340,7 @@ EXPORT_SYMBOL_GPL(pru_rproc_put);
+  */
+ int pru_rproc_set_ctable(struct rproc *rproc, enum pru_ctable_idx c, u32 addr)
+ {
+-	struct pru_rproc *pru = rproc->priv;
++	struct pru_rproc *pru;
+ 	unsigned int reg;
+ 	u32 mask, set;
+ 	u16 idx;
+@@ -352,6 +352,7 @@ int pru_rproc_set_ctable(struct rproc *rproc, enum pru_ctable_idx c, u32 addr)
+ 	if (!rproc->dev.parent || !is_pru_rproc(rproc->dev.parent))
+ 		return -ENODEV;
+ 
++	pru = rproc->priv;
+ 	/* pointer is 16 bit and index is 8-bit so mask out the rest */
+ 	idx_mask = (c >= PRU_C28) ? 0xFFFF : 0xFF;
+ 
+-- 
+2.20.1
 
-The unnecessary log_*_mmio() calls are showing up on enough Pixel devices
-as a CPU cycles wastage, and I'm sure other Androids see it too.
-
-Thanks,
-Varad
-
-> I currently have nothing queued up for 6.17 at all, but I already
-> have some of my own patches that I plan to submit for review after
-> the merge window and merge through the asm-generic tree.
->
->      Arnd
 
