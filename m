@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-181526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB7CB96A76
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:48:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3353B96C5C
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 18:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8EC47A5C31
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:46:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3FC23A9338
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 16:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6B8264A92;
-	Tue, 23 Sep 2025 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EFD30DD37;
+	Tue, 23 Sep 2025 16:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cL4raWTm"
 X-Original-To: stable@vger.kernel.org
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F01A23815C;
-	Tue, 23 Sep 2025 15:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5B22E62D4;
+	Tue, 23 Sep 2025 16:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758642473; cv=none; b=A0H6eBLxJB6Eca+K5GgcNl4AyXMEllGp5VFQUHcyeHObItW20jjNnaFvZtR3MTOYjWDb5GB0BQS5hHSP1iwVrV/bfgQ4b5WnyDOoEOYw4Qxq0nM+SqzQ7mj3jdOCKE+6CzXXVNim4LQhwulIOJXJMshTeuhi8fdJMPFEn5Fjk4s=
+	t=1758644074; cv=none; b=qjX0Pz6uk5a6+SBbrzur3T2OGShPQVe1dKvN30LcI/7QNHUddv9wx/1dMMmXus8lxlEwvtUj3KEC0XAcSiwx1Iow/UdQpA4RRcjBw6Uc3eD18jK/1w4j+4KV1AlMYrDnq+MrcagDKeplSWTcmBCIMQKa+88IdVo6hYvTL4DF0Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758642473; c=relaxed/simple;
-	bh=ExbNrBUxZz4jaMeIL7GyUCv6mgFwjLV9B32HM3yyxuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ctd9JjPiwP/2BB0ejD3XoQIOno9OCrBuG8iyIixSM4/Z6uE6RA+X4qG8pHTu8FxV4w9h/QAFI87o1LT7j5ui+6nrcTt/vQEF4UGrt2G+yquIfXKvWYNJlK4WGrEAJkDJ2NuOCtIgS1Co/PaB/WjLVnipku9m8Cleb52TFTbS9ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: 9/t0SQo+QIqN5T6NqyHqMw==
-X-CSE-MsgGUID: 2CycLQvbQz+ZWDfthuQXRw==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 24 Sep 2025 00:47:44 +0900
-Received: from demon-pc.localdomain (unknown [10.226.93.64])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 981DE40062C5;
-	Wed, 24 Sep 2025 00:47:40 +0900 (JST)
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-To: 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thierry Bultel <thierry.bultel.yh@bp.renesas.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	s=arc-20240116; t=1758644074; c=relaxed/simple;
+	bh=zD5sKdXV69qCCacGjQGgmY4agFKeIb7FzIobZ/nErdY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WvF8Gx6btW2KfSEFFB8dn0RJkN2M/8ODL2a/krSU1Y7clSs/VM3NY8lsiAm15j2hIhglCE381F+k8e1cDSvPLboyABcYE0jKnbSEev7r63okUBpNbuEYyT/otM4H7jCj8agsxdMkW4oSgZsmk50/rVJwpAcMPdMQ0q9wdcSQTsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cL4raWTm; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=zD
+	5sKdXV69qCCacGjQGgmY4agFKeIb7FzIobZ/nErdY=; b=cL4raWTm5RLTDHOqPW
+	mAdVLoF/si3CMENCSmyRwq3jjvGmO7QxMcUbN1vowVqBUYHfQ0yE/qZcbxf7YIra
+	Fxi7pYkzdUWsdkPMfzGpIAdVGlSgNWjxSeQjxRcgwdEyncJeoqybsDITK7Of6BO1
+	6YnIYAqSuhRFIHHX1Vr6vlAkI=
+Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAnUT5Dx9Jorc2cDQ--.63331S2;
+	Wed, 24 Sep 2025 00:13:56 +0800 (CST)
+From: GuangFei Luo <luogf2025@163.com>
+To: rafael@kernel.org
+Cc: michal.wilczynski@intel.com,
+	dan.carpenter@linaro.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	linux-pm@vger.kernel.org,
+	lkp@intel.com,
+	sre@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] tty: serial: sh-sci: fix RSCI FIFO overrun handling
-Date: Tue, 23 Sep 2025 18:47:06 +0300
-Message-ID: <20250923154707.1089900-1-cosmin-gabriel.tanislav.xa@renesas.com>
-X-Mailer: git-send-email 2.51.0
+Subject: Re:[PATCH v6] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
+Date: Wed, 24 Sep 2025 00:13:54 +0800
+Message-ID: <20250923161354.1307251-1-luogf2025@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAJZ5v0guEkbMuMjS=aQRQdiiyUG_hxgu0imBX0kgho2womB0Hw@mail.gmail.com>
+References: <CAJZ5v0guEkbMuMjS=aQRQdiiyUG_hxgu0imBX0kgho2womB0Hw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,119 +64,22 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAnUT5Dx9Jorc2cDQ--.63331S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUaPfQUUUUU
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/xtbBXwrRmWjSxDJVoQAAsl
 
-The receive error handling code is shared between RSCI and all other
-SCIF port types, but the RSCI overrun_reg is specified as a memory
-offset, while for other SCIF types it is an enum value used to index
-into the sci_port_params->regs array, as mentioned above the
-sci_serial_in() function.
+The functions battery_hook_add_battery(), battery_hook_remove_battery(),
+and sysfs_remove_battery() already acquire locks, so their internal
+accesses are safe.
 
-For RSCI, the overrun_reg is CSR (0x48), causing the sci_getreg() call
-inside the sci_handle_fifo_overrun() function to index outside the
-bounds of the regs array, which currently has a size of 20, as specified
-by SCI_NR_REGS.
+acpi_battery_refresh() does check battery->bat, but its child
+functions (sysfs_add_battery() and sysfs_remove_battery()) already
+handle locking.
 
-Because of this, we end up accessing memory outside of RSCI's
-rsci_port_params structure, which, when interpreted as a plat_sci_reg,
-happens to have a non-zero size, causing the following WARN when
-sci_serial_in() is called, as the accidental size does not match the
-supported register sizes.
-
-The existence of the overrun_reg needs to be checked because
-SCIx_SH3_SCIF_REGTYPE has overrun_reg set to SCLSR, but SCLSR is not
-present in the regs array.
-
-Avoid calling sci_getreg() for port types which don't use standard
-register handling.
-
-Use the ops->read_reg() and ops->write_reg() functions to properly read
-and write registers for RSCI, and change the type of the status variable
-to accommodate the 32-bit CSR register.
-
-sci_getreg() and sci_serial_in() are also called with overrun_reg in the
-sci_mpxed_interrupt() interrupt handler, but that code path is not used
-for RSCI, as it does not have a muxed interrupt.
-
-------------[ cut here ]------------
-Invalid register access
-WARNING: CPU: 0 PID: 0 at drivers/tty/serial/sh-sci.c:522 sci_serial_in+0x38/0xac
-Modules linked in: renesas_usbhs at24 rzt2h_adc industrialio_adc sha256 cfg80211 bluetooth ecdh_generic ecc rfkill fuse drm backlight ipv6
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.17.0-rc1+ #30 PREEMPT
-Hardware name: Renesas RZ/T2H EVK Board based on r9a09g077m44 (DT)
-pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : sci_serial_in+0x38/0xac
-lr : sci_serial_in+0x38/0xac
-sp : ffff800080003e80
-x29: ffff800080003e80 x28: ffff800082195b80 x27: 000000000000000d
-x26: ffff8000821956d0 x25: 0000000000000000 x24: ffff800082195b80
-x23: ffff000180e0d800 x22: 0000000000000010 x21: 0000000000000000
-x20: 0000000000000010 x19: ffff000180e72000 x18: 000000000000000a
-x17: ffff8002bcee7000 x16: ffff800080000000 x15: 0720072007200720
-x14: 0720072007200720 x13: 0720072007200720 x12: 0720072007200720
-x11: 0000000000000058 x10: 0000000000000018 x9 : ffff8000821a6a48
-x8 : 0000000000057fa8 x7 : 0000000000000406 x6 : ffff8000821fea48
-x5 : ffff00033ef88408 x4 : ffff8002bcee7000 x3 : ffff800082195b80
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff800082195b80
-Call trace:
- sci_serial_in+0x38/0xac (P)
- sci_handle_fifo_overrun.isra.0+0x70/0x134
- sci_er_interrupt+0x50/0x39c
- __handle_irq_event_percpu+0x48/0x140
- handle_irq_event+0x44/0xb0
- handle_fasteoi_irq+0xf4/0x1a0
- handle_irq_desc+0x34/0x58
- generic_handle_domain_irq+0x1c/0x28
- gic_handle_irq+0x4c/0x140
- call_on_irq_stack+0x30/0x48
- do_interrupt_handler+0x80/0x84
- el1_interrupt+0x34/0x68
- el1h_64_irq_handler+0x18/0x24
- el1h_64_irq+0x6c/0x70
- default_idle_call+0x28/0x58 (P)
- do_idle+0x1f8/0x250
- cpu_startup_entry+0x34/0x3c
- rest_init+0xd8/0xe0
- console_on_rootfs+0x0/0x6c
- __primary_switched+0x88/0x90
----[ end trace 0000000000000000 ]---
-
-Cc: stable@vger.kernel.org
-Fixes: 0666e3fe95ab ("serial: sh-sci: Add support for RZ/T2H SCI")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
----
- drivers/tty/serial/sh-sci.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 538b2f991609..62bb62b82cbe 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -1014,16 +1014,18 @@ static int sci_handle_fifo_overrun(struct uart_port *port)
- 	struct sci_port *s = to_sci_port(port);
- 	const struct plat_sci_reg *reg;
- 	int copied = 0;
--	u16 status;
-+	u32 status;
- 
--	reg = sci_getreg(port, s->params->overrun_reg);
--	if (!reg->size)
--		return 0;
-+	if (s->type != SCI_PORT_RSCI) {
-+		reg = sci_getreg(port, s->params->overrun_reg);
-+		if (!reg->size)
-+			return 0;
-+	}
- 
--	status = sci_serial_in(port, s->params->overrun_reg);
-+	status = s->ops->read_reg(port, s->params->overrun_reg);
- 	if (status & s->params->overrun_mask) {
- 		status &= ~s->params->overrun_mask;
--		sci_serial_out(port, s->params->overrun_reg, status);
-+		s->ops->write_reg(port, s->params->overrun_reg, status);
- 
- 		port->icount.overrun++;
- 
--- 
-2.51.0
+In acpi_battery_notify(), battery->bat has no lock. However, the
+check of battery->bat is at the very end of the function. During
+earlier calls, battery->bat has already been protected by locks, so
+re-entry will not cause issues.
 
 
