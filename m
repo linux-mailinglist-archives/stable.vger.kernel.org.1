@@ -1,61 +1,48 @@
-Return-Path: <stable+bounces-181458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5919EB955A4
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 11:58:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF31B955B4
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 12:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6849B18A6A23
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 09:58:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D127B170860
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 10:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9040F320CBD;
-	Tue, 23 Sep 2025 09:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="c6MGZdNM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7309D30F959;
+	Tue, 23 Sep 2025 09:59:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF978320CA4;
-	Tue, 23 Sep 2025 09:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF47B320CA4;
+	Tue, 23 Sep 2025 09:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758621471; cv=none; b=g8WwMD3T3y0GZZ3d4a70Gtchp/Hqksc7CTLFrIUYT4mz446cq0jj21nduSmcm1pqOd+Rv/IEVTvAdmFRGarrDR76EcDJcEuNYBT75CZ78Q5llpXOxg2zdfRUrxo0pWTKCYru5kXmPD3nb+d5lPeh4NL+f/yCuYtt/6Z09VFbI14=
+	t=1758621593; cv=none; b=VsXOTZ2TYVFG+jnUGOhXMZkv4T7/G9H194b2/vohtZx0/BmjE3H35K2uMVw7xdZZi5IQ2VfRpEgnq+S9boaPyKq48E0AWW3wpXlGHjOlxEWmqWH30I8MMKlrajEffy0gZQdJbGPguy7Ce2kMXXUX1JXR+eUJ2CiEVKtCjc0P39k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758621471; c=relaxed/simple;
-	bh=zPfKwdSR9oddwO9eHQJWJzuNQMmJ/mcIvCmXT6qq4Jo=;
+	s=arc-20240116; t=1758621593; c=relaxed/simple;
+	bh=WlM1UNKJdjEPQROZEe0K8me5Dwhi2ipouQ0Tu7WciJM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bk44b5cCJQbnfcKBLrd3Q30P+Cx4ABGx5aKh5i4JcUfgK6uCpdD5DW3VF4aZdXICQP/gPvLXLBQqQdy35DfP9bMN2UQ46f5lGgC+dxmRt2zXWsb7f2u0eH+eDnYtLeWnVz8o+1e/eBZTIA9Cn9IbdNBItdNlO7OjRGCs00XryhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=c6MGZdNM; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:MIME-Version:References:Message-ID:Subject:Cc:To:
-	From:Date:cc:to:subject:message-id:date:from:reply-to;
-	bh=3ogVVRy+gjYuWJTEKyXU9wHZ16J+s+nW7RolmVRVlEg=; b=c6MGZdNMuuglNGPv2YGzuDT2p1
-	92oDMzfePYwJb7yqHuiwsmC0tcggR8xWbli0EXOH4gocPAbajRzD0g+MeicFa+OQGyn446UHQHUmL
-	ic5h53vqNS0YePGX49A0E09Q8h/IQD68WD1DYlyeAUlJ73U7aLS4VKOQmTn06DAmvHJRCApzJETx7
-	Msxx+rrdpl+eiab2vrnYO3NZ8EqDj8OPRe8FVikco5hyAO2Wma98OWyQ8RLzxb+tkkUthPDRtiqQ9
-	Cut/+6DXeDm7KOODKwW12MqjLm3wKKmIpB/JQbCSwJGIz97G6Fkl6WoahMptTgQZXz4JjvA4xJ8XW
-	VFYyshVQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1v0zmB-007e9Z-01;
-	Tue, 23 Sep 2025 17:57:36 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 23 Sep 2025 17:57:35 +0800
-Date: Tue, 23 Sep 2025 17:57:35 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Cc: davem@davemloft.net, smueller@chronox.de, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
-	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
-	tapas.kundu@broadcom.com, vamsi-krishna.brahmajosyula@broadcom.com,
-	srinidhi.rao@broadcom.com, stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: zero initialize memory allocated via sock_kmalloc
-Message-ID: <aNJvD53QPva4Z7yo@gondor.apana.org.au>
-References: <20250923074515.295899-1-shivani.agarwal@broadcom.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=vDDblualeyfUF/EitSN8D8DXEuBIZXlxr6uUCLoS2UougpeK6MpgcLgLgKIM8YQk9hSP27cBTD3m8WLYogWWbSMtsiO2E09Zy55kHcdk3RGVfN+/mMueBUnEZrYzBXn3jcHaKmcky1VaSgwnUftYclPwZyGd0X8PGC88snBjSbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D03C1497;
+	Tue, 23 Sep 2025 02:59:42 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A69613F694;
+	Tue, 23 Sep 2025 02:59:49 -0700 (PDT)
+Date: Tue, 23 Sep 2025 10:59:46 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: gregkh@linuxfoundation.org, dakr@kernel.org, rafael@kernel.org,
+	Sudeep Holla <sudeep.holla@arm.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] arch_topology: Fix incorrect error check in
+ topology_parse_cpu_capacity()
+Message-ID: <20250923-lurking-gaur-of-flowers-bb68f6@sudeepholla>
+References: <20250923094514.4068326-1-kaushlendra.kumar@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,85 +51,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250923074515.295899-1-shivani.agarwal@broadcom.com>
+In-Reply-To: <20250923094514.4068326-1-kaushlendra.kumar@intel.com>
 
-On Tue, Sep 23, 2025 at 12:45:15AM -0700, Shivani Agarwal wrote:
->
-> diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-> index ca6fdcc6c54a..6c271e55f44d 100644
-> --- a/crypto/af_alg.c
-> +++ b/crypto/af_alg.c
-> @@ -1212,15 +1212,14 @@ struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
->  	if (unlikely(!areq))
->  		return ERR_PTR(-ENOMEM);
->  
-> +	memset(areq, 0, areqlen);
-> +
->  	ctx->inflight = true;
->  
->  	areq->areqlen = areqlen;
->  	areq->sk = sk;
->  	areq->first_rsgl.sgl.sgt.sgl = areq->first_rsgl.sgl.sgl;
-> -	areq->last_rsgl = NULL;
->  	INIT_LIST_HEAD(&areq->rsgl_list);
-> -	areq->tsgl = NULL;
-> -	areq->tsgl_entries = 0;
->  
->  	return areq;
->  }
-> diff --git a/crypto/algif_hash.c b/crypto/algif_hash.c
-> index e3f1a4852737..4d3dfc60a16a 100644
-> --- a/crypto/algif_hash.c
-> +++ b/crypto/algif_hash.c
-> @@ -416,9 +416,8 @@ static int hash_accept_parent_nokey(void *private, struct sock *sk)
->  	if (!ctx)
->  		return -ENOMEM;
->  
-> -	ctx->result = NULL;
-> +	memset(ctx, 0, len);
->  	ctx->len = len;
-> -	ctx->more = false;
->  	crypto_init_wait(&ctx->wait);
->  
->  	ask->private = ctx;
-> diff --git a/crypto/algif_rng.c b/crypto/algif_rng.c
-> index 10c41adac3b1..1a86e40c8372 100644
-> --- a/crypto/algif_rng.c
-> +++ b/crypto/algif_rng.c
-> @@ -248,9 +248,8 @@ static int rng_accept_parent(void *private, struct sock *sk)
->  	if (!ctx)
->  		return -ENOMEM;
->  
-> +	memset(ctx, 0, len);
->  	ctx->len = len;
-> -	ctx->addtl = NULL;
-> -	ctx->addtl_len = 0;
->  
->  	/*
->  	 * No seeding done at that point -- if multiple accepts are
+On Tue, Sep 23, 2025 at 03:15:14PM +0530, Kaushlendra Kumar wrote:
+> Fix incorrect use of PTR_ERR_OR_ZERO() in topology_parse_cpu_capacity()
+> which causes the code to proceed with NULL clock pointers. The current
+> logic uses !PTR_ERR_OR_ZERO(cpu_clk) which evaluates to true for both
+> valid pointers and NULL, leading to potential NULL pointer dereference
+> in clk_get_rate().
+> 
+> Per include/linux/err.h documentation, PTR_ERR_OR_ZERO(ptr) returns:
+> "The error code within @ptr if it is an error pointer; 0 otherwise."
+> 
+> This means PTR_ERR_OR_ZERO() returns 0 for both valid pointers AND NULL
+> pointers. Therefore !PTR_ERR_OR_ZERO(cpu_clk) evaluates to true (proceed)
+> when cpu_clk is either valid or NULL, causing clk_get_rate(NULL) to be
+> called when of_clk_get() returns NULL.
+> 
+> Replace with !IS_ERR_OR_NULL(cpu_clk) which only proceeds for valid
+> pointers, preventing potential NULL pointer dereference in clk_get_rate().
+> 
+> Fixes: b8fe128dad8f ("arch_topology: Adjust initial CPU capacities with current freq")
+> Cc: stable@vger.kernel.org
+> 
 
-These changes look good.
+I wonder if you missed my response on v1[1] before you sent v2/v3 so quickly.
+The reviewed by tag still stands, just for sake of tools:
 
-> diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
-> index 125d395c5e00..f4ce5473324f 100644
-> --- a/crypto/algif_skcipher.c
-> +++ b/crypto/algif_skcipher.c
-> @@ -70,6 +70,7 @@ static int algif_skcipher_export(struct sock *sk, struct skcipher_request *req)
->  	if (!ctx->state)
->  		return -ENOMEM;
->  
-> +	memset(ctx->state, 0, statesize);
->  	err = crypto_skcipher_export(req, ctx->state);
->  	if (err) {
->  		sock_kzfree_s(sk, ctx->state, statesize);
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
-But this one should be dropped.  The ctx->state will immediately
-be overwritten by crypto_skcipher_export.  Even if it fails, the
-memory is immediately freed so no harm is done.
-
-Thanks,
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Regards,
+Sudeep
+
+[1] https://lore.kernel.org/all/20250923-spectral-rich-shellfish-3ab26c@sudeepholla/
 
