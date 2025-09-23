@@ -1,124 +1,155 @@
-Return-Path: <stable+bounces-181510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4C5B965BE
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 16:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24897B9664E
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 16:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F1111891D05
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 14:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6F631B206A7
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 14:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D1425E469;
-	Tue, 23 Sep 2025 14:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB188202960;
+	Tue, 23 Sep 2025 14:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="LTxgTabt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C57N7P+w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BA1226D1D
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 14:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD98413AD05
+	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 14:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758638377; cv=none; b=X+Ixz7iCtN3ihS6JgZ67DJAjqXDN+O2JAQJCI9Rc5/fZntelC5wrYVm/G2sQ/yNWQyn7iV0xOuXKfzQH30KfIMWNRljZImQ6c/5AT3BtcfNrLaU2wDMWUtfIQ8AwTUTlg0+z9lntUJ42IDb8wZskz+1GcALl2INfL0FX11QatfE=
+	t=1758638650; cv=none; b=WCvXIwTzamI9n6FElnz1n+jPuxKAZa0RzhJfFTFG2o4C77shqnFeP7AwvqGA115Al9LDlvEzIS3++G4+L4FgKJlczL8c5cFUoTtDziFMn9tld5mLVLygeekCLF8T681J+b5033V3ZUZ9z2h1H2Ur1n0bru0v3SbnTHVuFIfxiDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758638377; c=relaxed/simple;
-	bh=2W1p1PVxEkh/5Jzxzj8mbMEaZhGYn3Pso3aH49N+ygo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bL7qaC+QsqIb/GT+Fy0XqqAGjtOOrRU3GPtagjB/rz+aABwa3mbDL8EWTv0yUebEn6zvccFMP4hlM5PPSnZaWPR7iR71douEEAEoabyKQmDEt4T2SzBTwhjUZoPUKu6O6et9fmkIUrP/73fErUHRtvrAIimF/zGmLns+6IGNvNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=LTxgTabt; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3f99ac9acc4so2316657f8f.3
-        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 07:39:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1758638374; x=1759243174; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=G03TPrIwIbXqqIw62bjb6NY2zbYfnOY1m550GCrJAlU=;
-        b=LTxgTabtLX9stgUg0gZFEPh5AYuQHFgSrhkKbDILlPaG+5CETU1t76X504yvPOy2+I
-         rd1omQgcNtTsMDfO6wczUMqo3AGb/HBxPepW+fBFZYZmOpkYbhqMeHmiC6gGAN+zMPUD
-         RXm+tbZo0VUb2yMHksiPdzA098+TZHrSLPjTxLyrfq7cZuG6daB3PYTmyRqZE+SB7Pa2
-         rjMxo/vdsKf1mGkDVbYGuwtNkri4dZl9TpcqxEqLAjKitiJAwuXNYH58MTzG6NrSwPHb
-         /Ljii+DGBKYUCC9WGN8GtRRtufHqJ7M40OxJOslUSNfcoGwDUsKjjh+X26UZQ/9TZssJ
-         yDJA==
+	s=arc-20240116; t=1758638650; c=relaxed/simple;
+	bh=1f/iNpa8REp0q5IifN2/u+4le7ji9XIT3CznMWHDGTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LWjq/wvYflJQemgakrmrcC30PIP6Mn0pYNqnwV/LQCfv3B4EnQaKkN8llppQ3zGp+dLCBz6R2EsRn826jPvVcAdalr4X0ob5BpiArhaIJnr96LCrXY6O2JxHcXYaJBm2YFDPe8Z6OhWGAWPYQdAs6xugbHmxDmHdm+eTfOMMIW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C57N7P+w; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758638647;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AfHkQLmJzDaguPM1LLGZDRbh3ErHlcNdVQv+rG4OVec=;
+	b=C57N7P+w894RXj82SOY3Tse3SzrC0pQQDcCXn2LEagNqr3jb0xZoXCA4JYfeqPNt8QqgLu
+	HJkmIJIhycfC28t6Tucqt3nsCJBlbTx2jKM4S1UI0PGsv9mw2cUW2JmFo6nAYHXNpY+6yG
+	5fSIH1Jyzr4beXjzfuQxcBWWNTSgr7U=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-kZ2UXBDzMRmJdo-iJi3YCw-1; Tue, 23 Sep 2025 10:44:06 -0400
+X-MC-Unique: kZ2UXBDzMRmJdo-iJi3YCw-1
+X-Mimecast-MFC-AGG-ID: kZ2UXBDzMRmJdo-iJi3YCw_1758638645
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e19ee1094so18815535e9.0
+        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 07:44:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758638374; x=1759243174;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G03TPrIwIbXqqIw62bjb6NY2zbYfnOY1m550GCrJAlU=;
-        b=ewwOsP19Vzzf1xdTxE98tPvLj9+sFKXwRCypw+7D0CDsh1Y9sE5ZGyBUbZVmIbzGpT
-         0nXBYKiRmwccrB3HcCz8RKSTeoWSIfWkx0deQNqELyxSQ/1wvlchOhjdFBauVATHJ9eV
-         agD99u9Yd0YCZAUhwsnGzyHgyVtHmufdmW/0uGlTmzrQ5MzjnLOvHifBf5cPC3flDTT6
-         Hc+ANsZHEPg+a/WWtvWlOEYwtTLuAO7eEj9lR0mr3KTRgxSpLeL+X1ZqlBCn6ssN9JAw
-         UHt4d7F+zXmLd13IdQXMpu0epH3n3Zvw0kKkzpWS3AjLvHogcS6oPMuttLSLcWCc7zU/
-         EI+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX+EYtOMATsumSeV7f4Ukqu7XeRGLRCsauoYWFISV6MNI8nnVrGyLB54YKMPllt+ageuC5wERo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvjcfAI/D3h2yErOJFvjz+zwAlIeeHzBSvJ6iOhqAe+lU1eCVR
-	ZrYD0VAzk9Q84NSaS4bIQBGIReGlpgGSf1wlUKjwD9KUzaUAW0+vGM8=
-X-Gm-Gg: ASbGnct4DfomYzaSEXAVTxAdXPz+CVVSi5JyrSTvTD3Q97F0XaE5KfBF0GrFGmWGmBW
-	2Q9Vc8QkXATrQROATkst9vYGv+I+MsbFvM2XZEIYDcTBTbKZ3LXDM/9xHGnXuYOT7jEbsvxfWL5
-	zNATiHSSN9dyJd0goAykNNokS6xzQPaH1hLMz/XkVyh8UPZOMhckmA8/G0beV/yHGgxc7iH7X11
-	VPyKAe/GuswIOgqG2sKsZOccMHuE2+CPTNMUsulLUVJ7i6Z0WrS6g7HFaiE0RiUn05uU+romWYj
-	a0MqTt9TJcvys3vt3Zum157/YUVJ7Etnd/mNEgGR2lmBvnKB+0SlcALaM8QhBlBhE6D1PIRVCp+
-	DOrY3wLOSfg4Sc1v7ycds71MTYKl5HZMGXJNXRIozSepG45ybnqMwTSXjUogZtH0eRR/ChiiUME
-	yL
-X-Google-Smtp-Source: AGHT+IESPIKuTD5INgzVqUCgOWgsSMbYvBp254k7b3uOL7WxECIr1xPMPZTeONsx6mtFF/O0lx3uqA==
-X-Received: by 2002:a05:6000:2287:b0:3e7:4265:66de with SMTP id ffacd0b85a97d-405c47b97ebmr2400311f8f.8.1758638373611;
-        Tue, 23 Sep 2025 07:39:33 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac1a7.dip0.t-ipconnect.de. [91.42.193.167])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e1d98093dsm16253415e9.3.2025.09.23.07.39.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Sep 2025 07:39:32 -0700 (PDT)
-Message-ID: <6bb6c4ea-3ece-4799-848d-a961b96bc8d6@googlemail.com>
-Date: Tue, 23 Sep 2025 16:39:32 +0200
+        d=1e100.net; s=20230601; t=1758638645; x=1759243445;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AfHkQLmJzDaguPM1LLGZDRbh3ErHlcNdVQv+rG4OVec=;
+        b=mqkQ+F20tsIpKTw/qawjAxd4QFU84A2iG/B0GcNWwF1TgAMfjZgclfingUeukrQ3RF
+         /qC4NbCFfhKBu8a8fKOr6Er1HC64caVQWMIwyiNfDwX8BSpODLm8CUJf/i11p//7so8x
+         X/CPltTxRjFZ17aHlyS/07vLyh+vVfod75hYHB2TDCXIqe8YPC4ajjENGh+RQhnP/ddx
+         w89a/BeodXI04fi92G8ie2NjX472PvmHkWz7FuRKjqTG08M4pFCI2uGg8sUayNoXQq3K
+         2mspQPG2HrVklf6e8MvLNoHFOoV2mJ8nJv3hz6vzUXgRPxtEEy9AdozqASwUuC3tfE2C
+         t0sg==
+X-Forwarded-Encrypted: i=1; AJvYcCUC9vtbcx9mdG7oGHylitkiEX08GUd1yM8dCtNa907oW3fsfMafiHoXjuMzUxNzE1XbKzBH/q4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx928/a8NQVPmQ1gbwEJp25ETwfKLowaPOPi5oRRI/x0IHrNCSa
+	SRmrV60DrzkMw/JHrg/6JsHEGonMTRx0E3F8FJSTCAfg42ACwV13fAgJVR0ySzu1OJ0Z49qOtcM
+	H3TZYbS6KsgFGqb3KFyrUiqTIVBsDrOfr3csaMmVV0MTW1+V5TiNDtFT7Iw==
+X-Gm-Gg: ASbGncs/98NJSjR4hX+kMXHsD+KerF82g4DZhIBkKknNFLy5UJiqr0Vc2ykcNzHu/Xn
+	/l2z62rFI5HECtaAh8dkdHEJN9cZ05nyWtalACR3M3isyw5Pi87fGDY0HgyWUqHIiGf8zuYb4Qg
+	jBB7kqUlFBdtYoKLu1NwRhsPTYt5DGleM+eUiyoAGu6mt/STA1lot+Je4a8XaCE7IUcznKoXkTd
+	kt82sPeGFgzKnptEJxlL04LnlhooELVEiRRMAlQPxff2/ubgAFuBsrFMFYRefWgszjX3DN8HrAW
+	tL8Hs0ha9FlM0xHs28zYjgJ7kpsHEgXxf3Ifw85rJt9s6wARoQ==
+X-Received: by 2002:a05:600c:4f42:b0:46e:1afb:b131 with SMTP id 5b1f17b1804b1-46e1d975235mr32497685e9.6.1758638645188;
+        Tue, 23 Sep 2025 07:44:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtR/o9bQUXEdS+Oi31bQdhk8BctYD1m5Uah5+e9/ilwUN9948r0etgePRaDlcvqrdV4w3WVA==
+X-Received: by 2002:a05:600c:4f42:b0:46e:1afb:b131 with SMTP id 5b1f17b1804b1-46e1d975235mr32497385e9.6.1758638644622;
+        Tue, 23 Sep 2025 07:44:04 -0700 (PDT)
+Received: from holism.lzampier.com ([148.252.9.235])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0fbd63a2sm24054261f8f.48.2025.09.23.07.44.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 07:44:04 -0700 (PDT)
+From: Lucas Zampieri <lzampier@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Lucas Zampieri <lzampier@redhat.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	stable@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jia Wang <wangjia@ultrarisc.com>,
+	Charles Mirabile <cmirabil@redhat.com>
+Subject: [PATCH v2] irqchip/sifive-plic: avoid interrupt ID 0 handling during suspend/resume
+Date: Tue, 23 Sep 2025 15:43:19 +0100
+Message-ID: <20250923144319.955868-1-lzampier@redhat.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.16 000/149] 6.16.9-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250922192412.885919229@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 22.09.2025 um 21:28 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.16.9 release.
-> There are 149 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+According to the PLIC specification[1], global interrupt sources are
+assigned small unsigned integer identifiers beginning at the value 1.
+An interrupt ID of 0 is reserved to mean "no interrupt".
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+The current plic_irq_resume() and plic_irq_suspend() functions incorrectly
+start the loop from index 0, which accesses the register space for the
+reserved interrupt ID 0.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Change the loop to start from index 1, skipping the reserved
+interrupt ID 0 as per the PLIC specification.
 
+This prevents potential undefined behavior when accessing the reserved
+register space during suspend/resume cycles.
 
-Beste Grüße,
-Peter Schneider
+Link: https://github.com/riscv/riscv-plic-spec/releases/tag/1.0.0
 
+Fixes: e80f0b6a2cf3 ("irqchip/irq-sifive-plic: Add syscore callbacks for hibernation")
+Co-developed-by: Jia Wang <wangjia@ultrarisc.com>
+Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+Co-developed-by: Charles Mirabile <cmirabil@redhat.com>
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Signed-off-by: Lucas Zampieri <lzampier@redhat.com>
+---
+ drivers/irqchip/irq-sifive-plic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index bf69a4802b71e..9c4af7d588463 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -252,7 +252,8 @@ static int plic_irq_suspend(void)
+ 
+ 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
+ 
+-	for (i = 0; i < priv->nr_irqs; i++) {
++	/* irq ID 0 is reserved */
++	for (i = 1; i < priv->nr_irqs; i++) {
+ 		__assign_bit(i, priv->prio_save,
+ 			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
+ 	}
+@@ -283,7 +284,8 @@ static void plic_irq_resume(void)
+ 
+ 	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
+ 
+-	for (i = 0; i < priv->nr_irqs; i++) {
++	/* irq ID 0 is reserved */
++	for (i = 1; i < priv->nr_irqs; i++) {
+ 		index = BIT_WORD(i);
+ 		writel((priv->prio_save[index] & BIT_MASK(i)) ? 1 : 0,
+ 		       priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID);
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.51.0
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
