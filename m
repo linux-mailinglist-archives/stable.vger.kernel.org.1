@@ -1,226 +1,164 @@
-Return-Path: <stable+bounces-181463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE15B956FF
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 12:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D681DB95873
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 12:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5EAA2E5E80
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 10:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 567B3166BE4
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 10:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4507931FEC3;
-	Tue, 23 Sep 2025 10:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95399321457;
+	Tue, 23 Sep 2025 10:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L0VAFkZK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gmhrueqC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA9426E6FA
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 10:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70396313E16;
+	Tue, 23 Sep 2025 10:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758623431; cv=none; b=hisQWC0oEaaUDdOFKilaS0j6qeOVc/Qttuj5gKxgpRobSStFxw4J7iENccvmG6/n0hWsIAAhIC6vuIe13STrOTS+h8Yukx1v/wFzxdipeC/0RNGwunbopveW7CA9GHkEU3H/vxmaHDdVQwyyJsdPwLN4xNuY7RBpHdSZX+n2oYM=
+	t=1758624992; cv=none; b=sl/KsgzRLH3+n2+ZWV61jxdnRsMxIZs5VMmtSDZs5FPUm1WViiYQqEFoB1GP/ERv7C2g3YwjKri0TrAAb7dhjlRFosuj5jCxXZHDWgZgRebIu8jwJoVCkR0KaK7AVcZ+hMmDVL1TDTM7kRB7pCmOm582SGXmI0E/uxNUFSVEX0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758623431; c=relaxed/simple;
-	bh=nQYDG7/ESRE6NVpQ8N3MVFRC1NTmVZPp0DyEPgDS3Uk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dv2vEJmnHKSD+wdUAw09Lfzp+Hv58kca3iB4YumJM380CVbep4KfqkJLImKw4zpi7Iyk3QZ4+DTQvaNpgAiRT6ISVYqmztVUFnekopP8HeDQYZqLLGbHBn1WC3Gyky4O21wFI6fv2rIe7a4PnltIQsGIaX6VvySjWl0xnqNF4io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L0VAFkZK; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-26e68904f0eso32922855ad.0
-        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 03:30:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758623428; x=1759228228; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HMRYr8OtOqO/HFrezWjaR8f9pLA6E/Ty5wzBOjw1mXE=;
-        b=L0VAFkZKYADuCHGrwacw/T3ZPmd7NmGjvJpkskxYCaZaZSssvxrzk6HC0vikqq0Hhq
-         Ulr+WKxfMGQCDM4I0FbbqPccU7gLjf0OWl7i4tY4VS80/o74HWhecFQOS1FJCAqRf3Li
-         q4rxPNdt9AC9HIFCHh3OVVAs+akJDAHjr+fu+KHPYCKbMUkauZlQja1Jhlxfx9zkN4dp
-         5CGzo6FgamGwyRcE2d5DU7d7KRVTndj9ZekbOpz+5Yl7mh80te3yY7H0rET4qLhgP38D
-         opf2/1K81A4rQiLwVEvbagspfRJrIMARbMU1aCAEakwqACWOSeMG7OAuMOIBjtO5BUl0
-         IiPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758623428; x=1759228228;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HMRYr8OtOqO/HFrezWjaR8f9pLA6E/Ty5wzBOjw1mXE=;
-        b=h47xvjda85kVQZE50cqzFQ5mBfeeVLn8szW9Tf+IGz51Um7UkSuoOW8qkbaWad2gcj
-         oi2jZC1kPUdSueb7ADh36lntoy1MaZvBKQU1hFe6AowGd1Ybbu8QeTHUE8SqXdsF077D
-         rXhVeTLIVT83X7JhHbyz2CryUeSLs98vzu5gOC+oQ0canAkgDg5DH2xqel1ERsD8xJLR
-         X0OlaWeTd/px1jBFBcxT/Tb4SBaeO0ne9eJhEMrQGaDWHz9Amjjg8Fg1OBC9FcINNc88
-         HK620JAd4OsFVe5ALdf9VTpjbAqjYPZAA8ctZX9SuhEGvAyQzCn/FR7iBNFGV08YiwfX
-         af5A==
-X-Gm-Message-State: AOJu0YzLrrpZaBOHg3KhY+wy145RyyaOspWePLug3jP2A1zc3Cerivjp
-	waq4fiB8v1O0goWIsMpzhev5VMOvBGMsP6i5vC/yF+q0RszQAvEfQj8gwSYAMWKf7gYcAI5Ul3E
-	WZCpFetinmXQFIxcekbGz9YmliOMNeCkRzz2l277fDsOZv0kgpTEAlN1x0Q==
-X-Gm-Gg: ASbGncuH9NM024Ea4wTtbio/UBOB8LqFY7pVRo8O9NcpzSzLzL93925ATyz9+rSgacC
-	4R3j52YBLPwGRLF0h7s2SQA5XHRSAcbLfRjRtKNoEzhcxRamywTLJ2jh6jJnTplmISdMUik+l67
-	XYMjfInDejgIG+kEEbTYan2Slf+88ZtO4GWvCKkahZHvkpqepRLTTCRKS007qQRZBoeyl/u4paP
-	27JGkhXRuiuLusU61+KpZH6FOJYPWaD+ftWIae7
-X-Google-Smtp-Source: AGHT+IGCbLaovnWzmpLxnAHxOBtwxFY93rFcE1czzzxjsg6cIsdwcN546zJG2Fui5rFNOkdh8TTlG2kvVI6evYMjiRY=
-X-Received: by 2002:a17:903:11c3:b0:267:95ad:8cb8 with SMTP id
- d9443c01a7336-27cc874d3edmr25011055ad.44.1758623428016; Tue, 23 Sep 2025
- 03:30:28 -0700 (PDT)
+	s=arc-20240116; t=1758624992; c=relaxed/simple;
+	bh=rZpX1cqpB/ZIey8M6xVk2BFhszygIMBGOCqDy8inSU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uQQxSQ/vOgzKIJoqxlMBJhuyiHhKljwK7yBt0CBIO7Rs4STCRZ3NgcrXzsm50GGH9/I1eHklXV2Ie+jiKbg4qgfsQCp2XJJwnRWfhiRoit5vRy49Ea65dXqLEVkc4WjKAwFGqhicLlkBjWUugdtZR6RvH1oPExPHtQCQuyB7QbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gmhrueqC; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758624990; x=1790160990;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rZpX1cqpB/ZIey8M6xVk2BFhszygIMBGOCqDy8inSU8=;
+  b=gmhrueqC4N+YxeSUXbXjKTCdBTwlOIGAaPpZyZ4XifrpKAYCrz0nfb2N
+   lSGjLlaPOXSx8UQinPbb9keJa7EpFzHfkx+GwgxzDXPgIYSm9Fuwe3/i1
+   3kGRqZW/D6eiQQWbRfzTVBQdi9JAl4YkSaXybHrGo4ylwbH3afvBNc/mr
+   Xfbvb0xY85LCHGJUDDuMII/0ytv4rWl2J8B3hMBD4/TnLCuHvokX+b82o
+   CIxtCnSTn5Auno/y8EN9GTlUsMCjo+c1zmfqxwHievcXwfggGNkQAdPzj
+   cR7vy/wrfE8jDp/qFvOP8tvNtSuv8Svq2UQjt6N2RH3GtPvfOb/RJZYPR
+   A==;
+X-CSE-ConnectionGUID: AOVrKvbTTj2cnWL/UjJrBg==
+X-CSE-MsgGUID: 52I4GKV4SUeKT5u8SgDDpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60118418"
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
+   d="scan'208";a="60118418"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 03:56:29 -0700
+X-CSE-ConnectionGUID: d4pNVhNKRqqTzpQ3WvrWqA==
+X-CSE-MsgGUID: dHmrTC5PRU+gRttYCgYMHw==
+X-ExtLoop1: 1
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by fmviesa003.fm.intel.com with ESMTP; 23 Sep 2025 03:56:25 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v10h5-00032H-2B;
+	Tue, 23 Sep 2025 10:56:23 +0000
+Date: Tue, 23 Sep 2025 18:56:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+	Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Victoria Milhoan (b42089)" <vicki.milhoan@freescale.com>,
+	Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
+	Dan Douglass <dan.douglass@nxp.com>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Guangshuo Li <lgs201920130244@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] crypto: caam: Add check for kcalloc() in test_len()
+Message-ID: <202509231807.ZFBBKMM4-lkp@intel.com>
+References: <20250922155322.1825714-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250922192403.524848428@linuxfoundation.org>
-In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 23 Sep 2025 16:00:16 +0530
-X-Gm-Features: AS18NWBtNIoXbscRPGhjJ8JgJD1DACVC-p7XxDGqa1-ukOiEjaqrJ9qSh5X3TZU
-Message-ID: <CA+G9fYujv6g69Pmpr-yZ8fy-P1ywrnhwe7Tip3X1HPPjfP=L5w@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/61] 6.1.154-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250922155322.1825714-1-lgs201920130244@gmail.com>
 
-On Tue, 23 Sept 2025 at 01:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.154 release.
-> There are 61 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 24 Sep 2025 19:23:52 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.154-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Guangshuo,
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+kernel test robot noticed the following build errors:
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+[auto build test ERROR on herbert-cryptodev-2.6/master]
+[also build test ERROR on herbert-crypto-2.6/master linus/master v6.17-rc7 next-20250922]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-## Build
-* kernel: 6.1.154-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: bd7dff6dbcf5b16eefef05f2750607b70bfe727c
-* git describe: v6.1.153-62-gbd7dff6dbcf5
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
-53-62-gbd7dff6dbcf5
+url:    https://github.com/intel-lab-lkp/linux/commits/Guangshuo-Li/crypto-caam-Add-check-for-kcalloc-in-test_len/20250922-235723
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git master
+patch link:    https://lore.kernel.org/r/20250922155322.1825714-1-lgs201920130244%40gmail.com
+patch subject: [PATCH v2] crypto: caam: Add check for kcalloc() in test_len()
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20250923/202509231807.ZFBBKMM4-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250923/202509231807.ZFBBKMM4-lkp@intel.com/reproduce)
 
-## Test Regressions (compared to v6.1.151-87-gb31770c84f52)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509231807.ZFBBKMM4-lkp@intel.com/
 
-## Metric Regressions (compared to v6.1.151-87-gb31770c84f52)
+All errors (new ones prefixed by >>):
 
-## Test Fixes (compared to v6.1.151-87-gb31770c84f52)
+   drivers/crypto/caam/caamrng.c: In function 'test_len':
+>> drivers/crypto/caam/caamrng.c:186:24: error: 'return' with a value, in function returning void [-Wreturn-mismatch]
+     186 |                 return -ENOMEM;
+         |                        ^
+   drivers/crypto/caam/caamrng.c:176:20: note: declared here
+     176 | static inline void test_len(struct hwrng *rng, size_t len, bool wait)
+         |                    ^~~~~~~~
 
-## Metric Fixes (compared to v6.1.151-87-gb31770c84f52)
 
-## Test result summary
-total: 227967, pass: 212169, fail: 4614, skip: 10926, xfail: 258
+vim +/return +186 drivers/crypto/caam/caamrng.c
 
-## Build Summary
-* arc: 5 total, 4 passed, 0 failed, 1 skipped
-* arm: 133 total, 133 passed, 0 failed
-* arm64: 41 total, 41 passed, 0 failed
-* i386: 21 total, 21 passed, 0 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 32 total, 31 passed, 1 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 14 total, 14 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 33 total, 33 passed, 0 failed
+   174	
+   175	#ifdef CONFIG_CRYPTO_DEV_FSL_CAAM_RNG_TEST
+   176	static inline void test_len(struct hwrng *rng, size_t len, bool wait)
+   177	{
+   178		u8 *buf;
+   179		int read_len;
+   180		struct caam_rng_ctx *ctx = to_caam_rng_ctx(rng);
+   181		struct device *dev = ctx->ctrldev;
+   182	
+   183		buf = kcalloc(CAAM_RNG_MAX_FIFO_STORE_SIZE, sizeof(u8), GFP_KERNEL);
+   184	
+   185		if (!buf) {
+ > 186			return -ENOMEM;
+   187		}
+   188		while (len > 0) {
+   189			read_len = rng->read(rng, buf, len, wait);
+   190	
+   191			if (read_len < 0 || (read_len == 0 && wait)) {
+   192				dev_err(dev, "RNG Read FAILED received %d bytes\n",
+   193					read_len);
+   194				kfree(buf);
+   195				return;
+   196			}
+   197	
+   198			print_hex_dump_debug("random bytes@: ",
+   199				DUMP_PREFIX_ADDRESS, 16, 4,
+   200				buf, read_len, 1);
+   201	
+   202			len = len - read_len;
+   203		}
+   204	
+   205		kfree(buf);
+   206	}
+   207	
 
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
