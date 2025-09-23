@@ -1,740 +1,608 @@
-Return-Path: <stable+bounces-181451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD29B95200
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 11:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B578BB952CF
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 11:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395B82A7C90
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 09:05:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA50178B8D
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 09:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88A031E888;
-	Tue, 23 Sep 2025 09:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F3F31C584;
+	Tue, 23 Sep 2025 09:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xB4oossn"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rdsOOVRD"
 X-Original-To: stable@vger.kernel.org
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010052.outbound.protection.outlook.com [52.101.201.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF5822097
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 09:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758618294; cv=fail; b=PTajZFBdq7Ltm7viEHideBSEWGDxsMxtQbNBFt7nmiaisS7q1XFoYiCNr24gpeJuZzzew5a9pHvhJnGJyq4QvZExaPUQzCNYjNXr1ItNQc8q6UN7EwA9wuZDa9a5aBi2HGjbznSLCguUzUug2thbMqMdpG2fBV6vSfl4FaGywpc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758618294; c=relaxed/simple;
-	bh=Km9JHVnURf8EB9u9qyAzEdKoynsJgwSPMuNY4pCtyDw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vi3hrqtTeWbv2TwYynJxdV3uFUwPh09SSybRazqRfdYu7x/mUgKgNRby7i+3Rinb5bTe3pn43t53AszUBoC6ZZhmdnpsdyNxdOXSQFSL8VGgzcRH+pkUi3/6WFAx2av6i65rOQBfKUtELp9XNvCndNT3XDAU5M5fyfXGTfakK0E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xB4oossn; arc=fail smtp.client-ip=52.101.201.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j/sk1YvX25CjKG3rn943t0OhYQbwchSwMJppgVp+VmRHZvoLiw7OfjttUFQxJVaoBxg3eFo69mvoHaN8w8JX0J/c8/8VN7rMdWMrG34Zwa1aiatJc+//vtM2NWdWphuxJAmgSEmLxqmW0PwmQ0oCWcN8QTPeIdb+pepZJzGsg5xiUp5wxm2ccZ+7lagyLUfVrjM3v+xnBP6CkhYruzP3XoflgnZUn9bhcqrEQWVdmWfpf1rYib7H/0Kzz8NWuhFHIrPy1UY7oUEJaG8brmsy0woakCVrN9JEsMweotXctkfnXh8jzak+PrpI//GT09/PO/0Q9zA0xVQnbkMNW++9Kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mwvALHu1oGxKMrpmkV2lQm97sLEcUuefhLPyLZbCi8A=;
- b=MxkRVY0vYSo6Rhli1D7E3I58tyWmUt5LhbfvpVSOlRLXneCgdnGOCPqGGk9Jp1ry07N0s9t2C0ASDsPOrmAYzp9ewLhzakV1QRX03EOJ41FtcYuWp5sAzIydB3PLVeHiDscxV4NVnC/Mnkxi+KFRxdu0NltS6ny2P39+axLK4k/4BRcfhq46mzC3YC4jprcwoIU5iQwdxCdTqO0rnxb/LB5IupbTYG4Heyles1UoDG1r7sRLpsymevPqSq93d2RjkndzFXGcul7kwSl6qrjQuxizNon8esloCr2fcxI1Gc5waLgHDCHrax7XppTJ5FdgwyC3EnBO9qitZ06iqXz1CA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mwvALHu1oGxKMrpmkV2lQm97sLEcUuefhLPyLZbCi8A=;
- b=xB4oossni4oLPv50M6KjNZ8Wlm0l3GYmUZQPzqxK7uIR2MrL3Bjggk5Fgxj3sY8T/QbPgwVBu/QiEe2F0daZqxRdmd+Wf4bto52lM0FRlH0a4GJrRnfYTZ6ZD5droWWdkSHXH7TMlPkAPtA2HQOSFpzXhrVi425Y62ccMsC8P4A=
-Received: from BN0PR03CA0054.namprd03.prod.outlook.com (2603:10b6:408:e7::29)
- by CH3PR12MB9170.namprd12.prod.outlook.com (2603:10b6:610:199::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Tue, 23 Sep
- 2025 09:04:48 +0000
-Received: from BL6PEPF0001AB58.namprd02.prod.outlook.com
- (2603:10b6:408:e7:cafe::9d) by BN0PR03CA0054.outlook.office365.com
- (2603:10b6:408:e7::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.21 via Frontend Transport; Tue,
- 23 Sep 2025 09:04:48 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0001AB58.mail.protection.outlook.com (10.167.241.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 09:04:48 +0000
-Received: from arun-nv33.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 23 Sep
- 2025 02:04:37 -0700
-From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-To: <christian.koenig@amd.com>, <matthew.auld@intel.com>,
-	<dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
-CC: <alexander.deucher@amd.com>, <jani.nikula@linux.intel.com>,
-	<peterz@infradead.org>, <samuel.pitoiset@gmail.com>, Arunpravin Paneer Selvam
-	<Arunpravin.PaneerSelvam@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH v7 2/3] drm/buddy: Separate clear and dirty free block trees
-Date: Tue, 23 Sep 2025 14:32:41 +0530
-Message-ID: <20250923090242.60649-2-Arunpravin.PaneerSelvam@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250923090242.60649-1-Arunpravin.PaneerSelvam@amd.com>
-References: <20250923090242.60649-1-Arunpravin.PaneerSelvam@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F4C3203A1
+	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 09:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758618722; cv=none; b=nIvScfvFywqChBFN4rioUxiI4BRNzqT4f/Ecx5eyTxdUCBVWa7nWUCA8BJb8TTJV3Rxuuqlm3e2px18G7yONz+2A9T8mxx12lIksWhiKUkwIiMKsqs/Srt/U5aE9+vV9jewWfsRF9Q9Bgm72peo7qFsB/cw2a1lY3oV16twFveA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758618722; c=relaxed/simple;
+	bh=lO6XNYKk1A+drbqhtT/FltmXv4UgeVDxFYhm3l/Dofw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=mp/J5iwu+8ru1oxmCvTzhrxTGaOgSJkJ+gDJNu6UWF48Y/ulr6dkdU/zxSTlPTt1DnjmOwtQzx6bYcE1y1DQVvo7LliMrPVLc2yUfQMyKrRbPbHPrqVO05PweQ/kP7ulGsX9X6zQGJhqT8r9LkM9FTr3aHXu/cnieq8H4yRm3FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rdsOOVRD; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-ea5bcc26849so4009352276.1
+        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 02:11:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758618716; x=1759223516; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1g6i16D4bYNhzUvc3NCMZjroQ5BzhD+L2h8rh53wGx0=;
+        b=rdsOOVRDPWagD3UUroO6C18KISW2RQ5fiZIkQDhnpzZXfjSxFYiT4v9PMkBODfQAZj
+         x3lHnNJMDmvlpSceTo6EPsIPiDVxOY95BnIdrM4ExftXEFfte+QMO9KBVM2Z9p4phuEm
+         RrXEwxUa+BoLyzTBPPMJdpWhOa0BMfVTifRItnofzLUi38yTv10RjSNPoYdU/d9j/++c
+         gs7++0ZSAp1fnXeZJkBk1JrLXQyBy+ZgosQKqY9ZJYyB8XhK8fBQiNGxtYl67f08T1Tq
+         aFgKEabsZ0wv0pdOqiv2WrXTWPbQughUbJ5ADPTbMnDgvOyXzKqAgFCEv1FSHEOVs5wc
+         iuNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758618716; x=1759223516;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1g6i16D4bYNhzUvc3NCMZjroQ5BzhD+L2h8rh53wGx0=;
+        b=tUHlez+/If1Y5yfqZWpJ0xNHq/HMJHczIgOfkaq6it5bct5dE9wALMPpNnvq0pgulN
+         l+kpowqdIDTiaLB/qniodWoX31n2HMIj2rHb7DnoxemaKwfYhcZj7jTC42+R9yB/Q4Pg
+         7pSKK+f98WIs7XTYmm4zwp12/Lc5jkb49sUtVObWOuPgAL9ncmDKJCOS8tvQOPpqkuW9
+         10Bu8InNGGlAdLfiEAHwHi2cRKgeY8XfIK4X5aCccXrRpktzxlzbPcGDJ9mfNHsqzq+g
+         cq3lTB+96qwCewvEgbY0HYn3riEMseY6S6Farrl2jD5R+bjWbITRyzMQoWm9/HY+ZRw1
+         6g2g==
+X-Forwarded-Encrypted: i=1; AJvYcCX3OE7OlW16HNB6iaPrmFqUo6L+3qPfjPELSVfmmHEPz8AhWSMJhIagX7cUrRjIKoI3l4MCp+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQxY+CjaAW+Y1/6U4TQc3fecR/M7Rtdq4DPoWZXSu7TFsoo+TC
+	fGb8bpiCHu9D9clJXB2PhD28OvdlZ0BcL8gPL8pTXboyQdRjK+S/Sh9TXiLi9skfCQ==
+X-Gm-Gg: ASbGnctm5uGXuAX16/A+W6SJDaagDoBkT4T/+lRdKAEiKBWD5CNk5tcE8ZToPyln8Ow
+	vlfjiHgZ0LltKsDNmBUW6WmlpeBQhFbIZ81eqDadmI68vCzpuUWPuPI9+k+Vb66mqN8BjNj1vD0
+	EqDwC3Htu8JjERsX3evG1hR5hAsnNw7XRc0R/akJ5c0SrAj4Ifc/n4RgCkFvmMdVBbhtfKnk73a
+	rpYvpC/5i4KMYc1N7aSn610G2gfSYf6lrFIJ7kb5cRkOI8NZtjfdh4CeQkoHg2XZq71AlTWajnL
+	Psv6CkzyIIxegP3KVHNvKpph8Svt2duaJhO05nDN6S0o6CQjLbFF7kogNmNautE8XUXi1J8oQZb
+	R04Ky7Fz2lt6R4qfKGdhHhhkdLbuSZTsJMBEMd+rI9RkNcR3x+oX+960rfcQ87vLGRQNF31cZTg
+	NqM412KkAdq6+R1A==
+X-Google-Smtp-Source: AGHT+IE+43mDWjc1QUxjSzKPYUViD3zDfGYxWARaGe403kbwzj+BdYLUOXxtV8Pghl+F0EVHj5V+kg==
+X-Received: by 2002:a05:6902:2742:b0:e98:9eaa:d036 with SMTP id 3f1490d57ef6-eb33077246emr1535504276.39.1758618715386;
+        Tue, 23 Sep 2025 02:11:55 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-ea5ce971473sm4857284276.23.2025.09.23.02.11.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 02:11:53 -0700 (PDT)
+Date: Tue, 23 Sep 2025 02:11:39 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+cc: Sasha Levin <sashal@kernel.org>, Will Deacon <will@kernel.org>, 
+    Hugh Dickins <hughd@google.com>, Greg KH <gregkh@linuxfoundation.org>, 
+    stable@vger.kernel.org, David Hildenbrand <david@redhat.com>, 
+    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+    Axel Rasmussen <axelrasmussen@google.com>, Chris Li <chrisl@kernel.org>, 
+    Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+    Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>, 
+    Keir Fraser <keirf@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>, 
+    Li Zhe <lizhe.67@bytedance.com>, 
+    "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+    Peter Xu <peterx@redhat.com>, Rik van Riel <riel@surriel.com>, 
+    Shivank Garg <shivankg@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+    Wei Xu <weixugc@google.com>, yangge <yangge1116@126.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Yu Zhao <yuzhao@google.com>, 
+    Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.12.y] mm: folio_may_be_lru_cached() unless
+ folio_test_large()
+In-Reply-To: <aNFjZVvcOaXLJh82@laps>
+Message-ID: <67da8221-7382-818b-3a82-52d7903b1cd3@google.com>
+References: <2025092142-easiness-blatancy-23af@gregkh> <20250921154134.2945191-1-sashal@kernel.org> <2025092135-collie-parched-1244@gregkh> <b7e6758f-9942-81ca-c5fd-1753ce49aa32@google.com> <aNEbqzso0rloTd-V@willie-the-truck> <aNFjZVvcOaXLJh82@laps>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB58:EE_|CH3PR12MB9170:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9e7cd75-011d-4ca4-b22c-08ddfa803f75
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uG5QJDBDuZIU4MEDneHKnpZKJuc0ihvcXmcSKVaE5lrK4abySaYtd71JWFI0?=
- =?us-ascii?Q?uHrsoOTVhxS2ypsnTjrP96wFsZS9VftqmsgKoMSkjAYVVlAH0+Uo4O+Vt3Si?=
- =?us-ascii?Q?u9Yd8mj9g6q26d9Kw8Zzn0KsM5MYhrUEz4tCqvXHcbFGstVycG45CrWsBRjn?=
- =?us-ascii?Q?NCfZurrZmmKvlQ4eNRhewRQhsHkDXClxocywC1b2x08O4KGZk1HbS+axcAxr?=
- =?us-ascii?Q?o5fJpZpULvuT+4MJyF0robIgFtGKBBoUfQop93r8SjYnQZkVmudld9C6Hm4w?=
- =?us-ascii?Q?hgCKZoR1alvGTyDiSGUTS5StKNm5JkVKTRsaUBa/gjfg+0qd08Fkm5g9e5YJ?=
- =?us-ascii?Q?EIMfYaom9EOlLWLUduv38PU3tQOyOnGIXOMGHwYN6Pa7EfUHUdXesbVAGNBd?=
- =?us-ascii?Q?ZNapiLHApangTtukH+ExgYfKLfLofUpiInT/BjU0fGVg6sAn+qr86djgIAGe?=
- =?us-ascii?Q?V2Uw7Bsb47vpCbr1OnDuclh27wCPb5+NNfQkpJFxXF3EuY/9suy13Tmer4+R?=
- =?us-ascii?Q?bTAW/pgG5fPDYVnanQFDCjt4meLjQ0QkcEnxVfdmR6BN2aMRoRZi5zn1yMic?=
- =?us-ascii?Q?p6LB//TXIaOosdx9ZkoTVRUnVFO5XVVo5KG+Xdpz3UKwF244qDhWphBv3tYo?=
- =?us-ascii?Q?bbkL/MAMiU//2arF+B2ynJlMDoXnllePGNx8vvo6gcyF4po3anL3Am4dxiNi?=
- =?us-ascii?Q?as4Gm7VA7HN+z8jTdohVBZICCJTGkTcYj2/ZZoNpBXUsWrjBFbFJ42E7cHnB?=
- =?us-ascii?Q?uK1YE5KlEDM6l/TUo/1A0c8X0IfgfPVN49WRcx/CJWZ0o8muHTga6PmiCxW/?=
- =?us-ascii?Q?6VryZw3VDMRpvNwQvbhWYlaNZ3aS0BJoxtweGt8HsKCQutewzxd3c+yl2JwS?=
- =?us-ascii?Q?lvahSzLuv6A8ATUwVvfqGDDNrPfCPkQ2mk8sioqJLQql4w8SHKkOJnp2tEgN?=
- =?us-ascii?Q?zk/Yl+NO+c8e7uSh31eHzIJ687gtYyTeXgsPxUjN3siIUmAxxNumUcvpdoya?=
- =?us-ascii?Q?nx5q/0hZ0RWz+726VwvPHM8vT3ba88SVDoFPvYVRVjZi9PDOhra1/RI63wTg?=
- =?us-ascii?Q?gaYSVHS8VaQD50pmorMTlYSXZAR5bf6E87/hKET2Z0+SXDyPJ5POse+S8vpU?=
- =?us-ascii?Q?O/YKv0dPSaygKZharW/G4k40pshtL+y1Pyh7O5KejTIxUhjcIl9m0lyQTiRr?=
- =?us-ascii?Q?P9aYE9sTF0fCzMUn29+hJ2smNpHPXz0jc6v5gHWiUIzRwkNQzir/VhEdq24N?=
- =?us-ascii?Q?kk4Y3OOrnFUpvkFGj7QNMtD/VgVy8W1wxpGiNXC4qCs/+AL+rYBr234pobhG?=
- =?us-ascii?Q?SZwNWG6Hw/NyxTCMkUe/EVmz7ol6gGBr5oXqDMK//sxmTP882hHgGIQqp0Jc?=
- =?us-ascii?Q?kt6yf1qxDi0EiJwJlfz/zK18f08cond7cO55rK1Bot1uOEp/wHNPAXH26333?=
- =?us-ascii?Q?xAO4NkPOM3k17mVdLb0H+b1ZqMOAT2rFo1dhEBVg0lHw9VcL9MCqcA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 09:04:48.3486
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9e7cd75-011d-4ca4-b22c-08ddfa803f75
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB58.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9170
+Content-Type: multipart/mixed; boundary="-1463770367-1581705103-1758618713=:5004"
 
-Maintain two separate RB trees per order - one for clear (zeroed) blocks
-and another for dirty (uncleared) blocks. This separation improves
-code clarity and makes it more obvious which tree is being searched
-during allocation. It also improves scalability and efficiency when
-searching for a specific type of block, avoiding unnecessary checks
-and making the allocator more predictable under fragmentation.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-The changes have been validated using the existing drm_buddy_test
-KUnit test cases, along with selected graphics workloads,
-to ensure correctness and avoid regressions.
+---1463770367-1581705103-1758618713=:5004
+Content-Type: text/plain; charset=US-ASCII
 
-v2: Missed adding the suggested-by tag. Added it in v2.
+On Mon, 22 Sep 2025, Sasha Levin wrote:
+> On Mon, Sep 22, 2025 at 10:49:31AM +0100, Will Deacon wrote:
+> >On Sun, Sep 21, 2025 at 09:05:35PM -0700, Hugh Dickins wrote:
+> >> On Sun, 21 Sep 2025, Greg KH wrote:
+> >> > On Sun, Sep 21, 2025 at 11:41:34AM -0400, Sasha Levin wrote:
+> >> > > From: Hugh Dickins <hughd@google.com>
+> >> > >
+> >> > > [ Upstream commit 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 ]
+> >> > >
+> >> > > mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
+> >> > > large folio is added: so collect_longterm_unpinnable_folios() just
+> >> > > wastes
+> >> > > effort when calling lru_add_drain[_all]() on a large folio.
+> >> > >
+> >> > > But although there is good reason not to batch up PMD-sized folios, we
+> >> > > might well benefit from batching a small number of low-order mTHPs
+> >> > > (though
+> >> > > unclear how that "small number" limitation will be implemented).
+> >> > >
+> >> > > So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
+> >> > > insulate those particular checks from future change.  Name preferred to
+> >> > > "folio_is_batchable" because large folios can well be put on a batch:
+> >> > > it's
+> >> > > just the per-CPU LRU caches, drained much later, which need care.
+> >> > >
+> >> > > Marked for stable, to counter the increase in lru_add_drain_all()s from
+> >> > > "mm/gup: check ref_count instead of lru before migration".
+> >> > >
+> >> > > Link:
+> >> > > https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
+> >> > > Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate
+> >> > > pages allocated from CMA region")
+> >> > > Signed-off-by: Hugh Dickins <hughd@google.com>
+> >> > > Suggested-by: David Hildenbrand <david@redhat.com>
+> >> > > Acked-by: David Hildenbrand <david@redhat.com>
+> >> > > Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+> >> > > Cc: Axel Rasmussen <axelrasmussen@google.com>
+> >> > > Cc: Chris Li <chrisl@kernel.org>
+> >> > > Cc: Christoph Hellwig <hch@infradead.org>
+> >> > > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> >> > > Cc: Johannes Weiner <hannes@cmpxchg.org>
+> >> > > Cc: John Hubbard <jhubbard@nvidia.com>
+> >> > > Cc: Keir Fraser <keirf@google.com>
+> >> > > Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+> >> > > Cc: Li Zhe <lizhe.67@bytedance.com>
+> >> > > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> >> > > Cc: Peter Xu <peterx@redhat.com>
+> >> > > Cc: Rik van Riel <riel@surriel.com>
+> >> > > Cc: Shivank Garg <shivankg@amd.com>
+> >> > > Cc: Vlastimil Babka <vbabka@suse.cz>
+> >> > > Cc: Wei Xu <weixugc@google.com>
+> >> > > Cc: Will Deacon <will@kernel.org>
+> >> > > Cc: yangge <yangge1116@126.com>
+> >> > > Cc: Yuanchu Xie <yuanchu@google.com>
+> >> > > Cc: Yu Zhao <yuzhao@google.com>
+> >> > > Cc: <stable@vger.kernel.org>
+> >> > > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> >> > > [ adapted to drain_allow instead of drained ]
+> >> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >> > > ---
+> >> >
+> >> > Does not apply as it conflicts with the other mm changes you sent right
+> >> > before this one :(
+> >>
+> >> Thanks for grabbing all these, I'm sorry they are troublesome.
+> >>
+> >> Though I'm usually able to work out what to do from the FAILED mails,
+> >> in this case I'd just be guessing without the full contexts.
+> >> So I'll wait until I see what goes into the various branches of
+> >> linux-stable-rc.git before checking and adjusting where necessary.
+> >>
+> >> (As usual, I'll tend towards minimal change, where Sasha tends
+> >> towards maximal backporting of encroaching mods: we may disagree.)
+> >>
+> >> The main commits contributing to the pinning failures that Will Deacon
+> >> reported were commits going into 5.18 and 6.11.  So although I stand
+> >> by my Fixes tag, I'm likely to conclude that 5.15 and 5.10 and 5.4
+> >> are better left stable without any of it.
+> >
+> >That suits me. 6.1, 6.6 and 6.12 are the main ones that I'm concerned
+> >with from the Android side.
+> 
+> I'll hold off on backports then :)
 
-v3(Matthew):
-  - Remove the double underscores from the internal functions.
-  - Rename the internal functions to have less generic names.
-  - Fix the error handling code.
-  - Pass tree argument for the tree macro.
-  - Use the existing dirty/free bit instead of new tree field.
-  - Make free_trees[] instead of clear_tree and dirty_tree for
-    more cleaner approach.
+Sure :)
 
-v4:
-  - A bug was reported by Intel CI and it is fixed by
-    Matthew Auld.
-  - Replace the get_root function with
-    &mm->free_trees[tree][order] (Matthew)
-  - Remove the unnecessary rbtree_is_empty() check (Matthew)
-  - Remove the unnecessary get_tree_for_flags() function.
-  - Rename get_tree_for_block() name with get_block_tree() for more
-    clarity.
+I'm fading: let me explain and send what I have so far.
 
-v5(Jani Nikula):
-  - Don't use static inline in .c files.
-  - enum free_tree and enumerator names are quite generic for a header
-    and usage and the whole enum should be an implementation detail.
+6.16.9-rc1 is fine, no further change needed from me, thanks.
 
-v6:
-  - Rewrite the __force_merge() function using the rb_last() and rb_prev().
+6.12.49-rc1 is okay with what's in it already,
+but needs the missing three patches on top, attached.
 
-Cc: stable@vger.kernel.org
-Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
-Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Suggested-by: Matthew Auld <matthew.auld@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4260
----
- drivers/gpu/drm/drm_buddy.c | 321 ++++++++++++++++++++----------------
- include/drm/drm_buddy.h     |   2 +-
- 2 files changed, 182 insertions(+), 141 deletions(-)
+0001*patch and 0003*patch are actually just clean cherry-picks, I expect
+the 0001*patch FAILED originally because of needing a Stable-dep, which
+later did get into the rc1 tree.  If you prefer, feel free to ignore
+my attached 0001*patch and 0003*patch (with my additional Signoffs),
+cherry-pick for yourself, and just apply my 0002*patch between them.
 
-diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-index 67aa67229cc3..6e12a0b5d5e3 100644
---- a/drivers/gpu/drm/drm_buddy.c
-+++ b/drivers/gpu/drm/drm_buddy.c
-@@ -12,9 +12,16 @@
- 
- #include <drm/drm_buddy.h>
- 
-+enum drm_buddy_free_tree {
-+	DRM_BUDDY_CLEAR_TREE = 0,
-+	DRM_BUDDY_DIRTY_TREE,
-+	DRM_BUDDY_MAX_FREE_TREES,
-+};
-+
- static struct kmem_cache *slab_blocks;
- 
--#define rbtree_get_free_block(node) rb_entry((node), struct drm_buddy_block, rb)
-+#define for_each_free_tree(tree) \
-+	for ((tree) = 0; (tree) < DRM_BUDDY_MAX_FREE_TREES; (tree)++)
- 
- static struct drm_buddy_block *drm_block_alloc(struct drm_buddy *mm,
- 					       struct drm_buddy_block *parent,
-@@ -45,6 +52,30 @@ static void drm_block_free(struct drm_buddy *mm,
- 	kmem_cache_free(slab_blocks, block);
- }
- 
-+static enum drm_buddy_free_tree
-+get_block_tree(struct drm_buddy_block *block)
-+{
-+	return drm_buddy_block_is_clear(block) ?
-+	       DRM_BUDDY_CLEAR_TREE : DRM_BUDDY_DIRTY_TREE;
-+}
-+
-+static struct drm_buddy_block *
-+rbtree_get_free_block(const struct rb_node *node)
-+{
-+	return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
-+}
-+
-+static struct drm_buddy_block *
-+rbtree_last_free_block(struct rb_root *root)
-+{
-+	return rbtree_get_free_block(rb_last(root));
-+}
-+
-+static bool rbtree_is_empty(struct rb_root *root)
-+{
-+	return RB_EMPTY_ROOT(root);
-+}
-+
- static bool drm_buddy_block_offset_less(const struct drm_buddy_block *block,
- 					const struct drm_buddy_block *node)
- {
-@@ -59,37 +90,28 @@ static bool rbtree_block_offset_less(struct rb_node *block,
- }
- 
- static void rbtree_insert(struct drm_buddy *mm,
--			  struct drm_buddy_block *block)
-+			  struct drm_buddy_block *block,
-+			  enum drm_buddy_free_tree tree)
- {
- 	rb_add(&block->rb,
--	       &mm->free_tree[drm_buddy_block_order(block)],
-+	       &mm->free_trees[tree][drm_buddy_block_order(block)],
- 	       rbtree_block_offset_less);
- }
- 
- static void rbtree_remove(struct drm_buddy *mm,
- 			  struct drm_buddy_block *block)
- {
-+	unsigned int order = drm_buddy_block_order(block);
- 	struct rb_root *root;
-+	enum drm_buddy_free_tree tree;
- 
--	root = &mm->free_tree[drm_buddy_block_order(block)];
--	rb_erase(&block->rb, root);
-+	tree = get_block_tree(block);
-+	root = &mm->free_trees[tree][order];
- 
-+	rb_erase(&block->rb, root);
- 	RB_CLEAR_NODE(&block->rb);
- }
- 
--static struct drm_buddy_block *
--rbtree_last_entry(struct drm_buddy *mm, unsigned int order)
--{
--	struct rb_node *node = rb_last(&mm->free_tree[order]);
--
--	return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
--}
--
--static bool rbtree_is_empty(struct drm_buddy *mm, unsigned int order)
--{
--	return RB_EMPTY_ROOT(&mm->free_tree[order]);
--}
--
- static void clear_reset(struct drm_buddy_block *block)
- {
- 	block->header &= ~DRM_BUDDY_HEADER_CLEAR;
-@@ -112,10 +134,13 @@ static void mark_allocated(struct drm_buddy *mm,
- static void mark_free(struct drm_buddy *mm,
- 		      struct drm_buddy_block *block)
- {
-+	enum drm_buddy_free_tree tree;
-+
- 	block->header &= ~DRM_BUDDY_HEADER_STATE;
- 	block->header |= DRM_BUDDY_FREE;
- 
--	rbtree_insert(mm, block);
-+	tree = get_block_tree(block);
-+	rbtree_insert(mm, block, tree);
- }
- 
- static void mark_split(struct drm_buddy *mm,
-@@ -201,6 +226,7 @@ static int __force_merge(struct drm_buddy *mm,
- 			 u64 end,
- 			 unsigned int min_order)
- {
-+	enum drm_buddy_free_tree tree;
- 	unsigned int order;
- 	int i;
- 
-@@ -210,45 +236,48 @@ static int __force_merge(struct drm_buddy *mm,
- 	if (min_order > mm->max_order)
- 		return -EINVAL;
- 
--	for (i = min_order - 1; i >= 0; i--) {
--		struct rb_root *root = &mm->free_tree[i];
--		struct rb_node *iter;
-+	for_each_free_tree(tree) {
-+		for (i = min_order - 1; i >= 0; i--) {
-+			struct rb_node *iter = rb_last(&mm->free_trees[tree][i]);
- 
--		iter = rb_last(root);
--
--		while (iter) {
--			struct drm_buddy_block *block, *buddy;
--			u64 block_start, block_end;
-+			while (iter) {
-+				struct drm_buddy_block *block, *buddy;
-+				u64 block_start, block_end;
- 
--			block = rbtree_get_free_block(iter);
--			iter = rb_prev(iter);
-+				block = rbtree_get_free_block(iter);
-+				iter = rb_prev(iter);
- 
--			if (!block || !block->parent)
--				continue;
-+				if (!block || !block->parent)
-+					continue;
- 
--			block_start = drm_buddy_block_offset(block);
--			block_end = block_start + drm_buddy_block_size(mm, block) - 1;
-+				block_start = drm_buddy_block_offset(block);
-+				block_end = block_start + drm_buddy_block_size(mm, block) - 1;
- 
--			if (!contains(start, end, block_start, block_end))
--				continue;
-+				if (!contains(start, end, block_start, block_end))
-+					continue;
- 
--			buddy = __get_buddy(block);
--			if (!drm_buddy_block_is_free(buddy))
--				continue;
-+				buddy = __get_buddy(block);
-+				if (!drm_buddy_block_is_free(buddy))
-+					continue;
- 
--			WARN_ON(drm_buddy_block_is_clear(block) ==
--				drm_buddy_block_is_clear(buddy));
-+				WARN_ON(drm_buddy_block_is_clear(block) ==
-+					drm_buddy_block_is_clear(buddy));
- 
--			if (iter == &buddy->rb)
--				iter = rb_prev(iter);
-+				/*
-+				 * Advance to the next node when the current node is the buddy,
-+				 * as freeing the block will also remove its buddy from the tree.
-+				 */
-+				if (iter == &buddy->rb)
-+					iter = rb_prev(iter);
- 
--			rbtree_remove(mm, block);
--			if (drm_buddy_block_is_clear(block))
--				mm->clear_avail -= drm_buddy_block_size(mm, block);
-+				rbtree_remove(mm, block);
-+				if (drm_buddy_block_is_clear(block))
-+					mm->clear_avail -= drm_buddy_block_size(mm, block);
- 
--			order = __drm_buddy_free(mm, block, true);
--			if (order >= min_order)
--				return 0;
-+				order = __drm_buddy_free(mm, block, true);
-+				if (order >= min_order)
-+					return 0;
-+			}
- 		}
- 	}
- 
-@@ -269,7 +298,7 @@ static int __force_merge(struct drm_buddy *mm,
-  */
- int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
- {
--	unsigned int i;
-+	unsigned int i, j;
- 	u64 offset;
- 
- 	if (size < chunk_size)
-@@ -291,14 +320,22 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
- 
- 	BUG_ON(mm->max_order > DRM_BUDDY_MAX_ORDER);
- 
--	mm->free_tree = kmalloc_array(mm->max_order + 1,
--				      sizeof(struct rb_root),
--				      GFP_KERNEL);
--	if (!mm->free_tree)
-+	mm->free_trees = kmalloc_array(DRM_BUDDY_MAX_FREE_TREES,
-+				       sizeof(*mm->free_trees),
-+				       GFP_KERNEL);
-+	if (!mm->free_trees)
- 		return -ENOMEM;
- 
--	for (i = 0; i <= mm->max_order; ++i)
--		mm->free_tree[i] = RB_ROOT;
-+	for (i = 0; i < DRM_BUDDY_MAX_FREE_TREES; i++) {
-+		mm->free_trees[i] = kmalloc_array(mm->max_order + 1,
-+						  sizeof(struct rb_root),
-+						  GFP_KERNEL);
-+		if (!mm->free_trees[i])
-+			goto out_free_tree;
-+
-+		for (j = 0; j <= mm->max_order; ++j)
-+			mm->free_trees[i][j] = RB_ROOT;
-+	}
- 
- 	mm->n_roots = hweight64(size);
- 
-@@ -346,7 +383,9 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
- 		drm_block_free(mm, mm->roots[i]);
- 	kfree(mm->roots);
- out_free_tree:
--	kfree(mm->free_tree);
-+	while (i--)
-+		kfree(mm->free_trees[i]);
-+	kfree(mm->free_trees);
- 	return -ENOMEM;
- }
- EXPORT_SYMBOL(drm_buddy_init);
-@@ -382,8 +421,9 @@ void drm_buddy_fini(struct drm_buddy *mm)
- 
- 	WARN_ON(mm->avail != mm->size);
- 
-+	for (i = 0; i < DRM_BUDDY_MAX_FREE_TREES; i++)
-+		kfree(mm->free_trees[i]);
- 	kfree(mm->roots);
--	kfree(mm->free_tree);
- }
- EXPORT_SYMBOL(drm_buddy_fini);
- 
-@@ -407,8 +447,7 @@ static int split_block(struct drm_buddy *mm,
- 		return -ENOMEM;
- 	}
- 
--	mark_free(mm, block->left);
--	mark_free(mm, block->right);
-+	mark_split(mm, block);
- 
- 	if (drm_buddy_block_is_clear(block)) {
- 		mark_cleared(block->left);
-@@ -416,7 +455,8 @@ static int split_block(struct drm_buddy *mm,
- 		clear_reset(block);
- 	}
- 
--	mark_split(mm, block);
-+	mark_free(mm, block->left);
-+	mark_free(mm, block->right);
- 
- 	return 0;
- }
-@@ -449,6 +489,7 @@ EXPORT_SYMBOL(drm_get_buddy);
-  */
- void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
- {
-+	enum drm_buddy_free_tree src_tree, dst_tree;
- 	u64 root_size, size, start;
- 	unsigned int order;
- 	int i;
-@@ -463,19 +504,24 @@ void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
- 		size -= root_size;
- 	}
- 
-+	src_tree = is_clear ? DRM_BUDDY_DIRTY_TREE : DRM_BUDDY_CLEAR_TREE;
-+	dst_tree = is_clear ? DRM_BUDDY_CLEAR_TREE : DRM_BUDDY_DIRTY_TREE;
-+
- 	for (i = 0; i <= mm->max_order; ++i) {
-+		struct rb_root *root = &mm->free_trees[src_tree][i];
- 		struct drm_buddy_block *block, *tmp;
- 
--		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[i], rb) {
--			if (is_clear != drm_buddy_block_is_clear(block)) {
--				if (is_clear) {
--					mark_cleared(block);
--					mm->clear_avail += drm_buddy_block_size(mm, block);
--				} else {
--					clear_reset(block);
--					mm->clear_avail -= drm_buddy_block_size(mm, block);
--				}
-+		rbtree_postorder_for_each_entry_safe(block, tmp, root, rb) {
-+			rbtree_remove(mm, block);
-+			if (is_clear) {
-+				mark_cleared(block);
-+				mm->clear_avail += drm_buddy_block_size(mm, block);
-+			} else {
-+				clear_reset(block);
-+				mm->clear_avail -= drm_buddy_block_size(mm, block);
- 			}
-+
-+			rbtree_insert(mm, block, dst_tree);
- 		}
- 	}
- }
-@@ -665,27 +711,17 @@ __drm_buddy_alloc_range_bias(struct drm_buddy *mm,
- }
- 
- static struct drm_buddy_block *
--get_maxblock(struct drm_buddy *mm, unsigned int order,
--	     unsigned long flags)
-+get_maxblock(struct drm_buddy *mm,
-+	     unsigned int order,
-+	     enum drm_buddy_free_tree tree)
- {
- 	struct drm_buddy_block *max_block = NULL, *block = NULL;
-+	struct rb_root *root;
- 	unsigned int i;
- 
- 	for (i = order; i <= mm->max_order; ++i) {
--		struct rb_node *iter = rb_last(&mm->free_tree[i]);
--		struct drm_buddy_block *tmp_block;
--
--		while (iter) {
--			tmp_block = rbtree_get_free_block(iter);
--
--			if (!block_incompatible(tmp_block, flags)) {
--				block = tmp_block;
--				break;
--			}
--
--			iter = rb_prev(iter);
--		}
--
-+		root = &mm->free_trees[tree][i];
-+		block = rbtree_last_free_block(root);
- 		if (!block)
- 			continue;
- 
-@@ -709,43 +745,39 @@ alloc_from_freetree(struct drm_buddy *mm,
- 		    unsigned long flags)
- {
- 	struct drm_buddy_block *block = NULL;
-+	struct rb_root *root;
-+	enum drm_buddy_free_tree tree;
- 	unsigned int tmp;
- 	int err;
- 
-+	tree = (flags & DRM_BUDDY_CLEAR_ALLOCATION) ?
-+		DRM_BUDDY_CLEAR_TREE : DRM_BUDDY_DIRTY_TREE;
-+
- 	if (flags & DRM_BUDDY_TOPDOWN_ALLOCATION) {
--		block = get_maxblock(mm, order, flags);
-+		block = get_maxblock(mm, order, tree);
- 		if (block)
- 			/* Store the obtained block order */
- 			tmp = drm_buddy_block_order(block);
- 	} else {
- 		for (tmp = order; tmp <= mm->max_order; ++tmp) {
--			struct rb_node *iter = rb_last(&mm->free_tree[tmp]);
--			struct drm_buddy_block *tmp_block;
--
--			while (iter) {
--				tmp_block = rbtree_get_free_block(iter);
--
--				if (!block_incompatible(tmp_block, flags)) {
--					block = tmp_block;
--					break;
--				}
--
--				iter = rb_prev(iter);
--			}
--
-+			/* Get RB tree root for this order and tree */
-+			root = &mm->free_trees[tree][tmp];
-+			block = rbtree_last_free_block(root);
- 			if (block)
- 				break;
- 		}
- 	}
- 
- 	if (!block) {
--		/* Fallback method */
-+		/* Try allocating from the other tree */
-+		tree = (tree == DRM_BUDDY_CLEAR_TREE) ?
-+			DRM_BUDDY_DIRTY_TREE : DRM_BUDDY_CLEAR_TREE;
-+
- 		for (tmp = order; tmp <= mm->max_order; ++tmp) {
--			if (!rbtree_is_empty(mm, tmp)) {
--				block = rbtree_last_entry(mm, tmp);
--				if (block)
--					break;
--			}
-+			root = &mm->free_trees[tree][tmp];
-+			block = rbtree_last_free_block(root);
-+			if (block)
-+				break;
- 		}
- 
- 		if (!block)
-@@ -887,9 +919,9 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
- 				     struct list_head *blocks)
- {
- 	u64 rhs_offset, lhs_offset, lhs_size, filled;
-+	enum drm_buddy_free_tree tree;
- 	struct drm_buddy_block *block;
- 	LIST_HEAD(blocks_lhs);
--	struct rb_node *iter;
- 	unsigned long pages;
- 	unsigned int order;
- 	u64 modify_size;
-@@ -901,40 +933,43 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
- 	if (order == 0)
- 		return -ENOSPC;
- 
--	if (rbtree_is_empty(mm, order))
-+	if (rbtree_is_empty(&mm->free_trees[DRM_BUDDY_CLEAR_TREE][order]) &&
-+	    rbtree_is_empty(&mm->free_trees[DRM_BUDDY_DIRTY_TREE][order]))
- 		return -ENOSPC;
- 
--	iter = rb_last(&mm->free_tree[order]);
--
--	while (iter) {
--		block = rbtree_get_free_block(iter);
--
--		/* Allocate blocks traversing RHS */
--		rhs_offset = drm_buddy_block_offset(block);
--		err =  __drm_buddy_alloc_range(mm, rhs_offset, size,
--					       &filled, blocks);
--		if (!err || err != -ENOSPC)
--			return err;
--
--		lhs_size = max((size - filled), min_block_size);
--		if (!IS_ALIGNED(lhs_size, min_block_size))
--			lhs_size = round_up(lhs_size, min_block_size);
--
--		/* Allocate blocks traversing LHS */
--		lhs_offset = drm_buddy_block_offset(block) - lhs_size;
--		err =  __drm_buddy_alloc_range(mm, lhs_offset, lhs_size,
--					       NULL, &blocks_lhs);
--		if (!err) {
--			list_splice(&blocks_lhs, blocks);
--			return 0;
--		} else if (err != -ENOSPC) {
-+	for_each_free_tree(tree) {
-+		struct rb_node *iter = rb_last(&mm->free_trees[tree][order]);
-+
-+		while (iter) {
-+			block = rbtree_get_free_block(iter);
-+
-+			/* Allocate blocks traversing RHS */
-+			rhs_offset = drm_buddy_block_offset(block);
-+			err =  __drm_buddy_alloc_range(mm, rhs_offset, size,
-+						       &filled, blocks);
-+			if (!err || err != -ENOSPC)
-+				return err;
-+
-+			lhs_size = max((size - filled), min_block_size);
-+			if (!IS_ALIGNED(lhs_size, min_block_size))
-+				lhs_size = round_up(lhs_size, min_block_size);
-+
-+			/* Allocate blocks traversing LHS */
-+			lhs_offset = drm_buddy_block_offset(block) - lhs_size;
-+			err =  __drm_buddy_alloc_range(mm, lhs_offset, lhs_size,
-+						       NULL, &blocks_lhs);
-+			if (!err) {
-+				list_splice(&blocks_lhs, blocks);
-+				return 0;
-+			} else if (err != -ENOSPC) {
-+				drm_buddy_free_list_internal(mm, blocks);
-+				return err;
-+			}
-+			/* Free blocks for the next iteration */
- 			drm_buddy_free_list_internal(mm, blocks);
--			return err;
--		}
--		/* Free blocks for the next iteration */
--		drm_buddy_free_list_internal(mm, blocks);
- 
--		iter = rb_prev(iter);
-+			iter = rb_prev(iter);
-+		}
- 	}
- 
- 	return -ENOSPC;
-@@ -1239,6 +1274,7 @@ EXPORT_SYMBOL(drm_buddy_block_print);
-  */
- void drm_buddy_print(struct drm_buddy *mm, struct drm_printer *p)
- {
-+	enum drm_buddy_free_tree tree;
- 	int order;
- 
- 	drm_printf(p, "chunk_size: %lluKiB, total: %lluMiB, free: %lluMiB, clear_free: %lluMiB\n",
-@@ -1246,11 +1282,16 @@ void drm_buddy_print(struct drm_buddy *mm, struct drm_printer *p)
- 
- 	for (order = mm->max_order; order >= 0; order--) {
- 		struct drm_buddy_block *block, *tmp;
-+		struct rb_root *root;
- 		u64 count = 0, free;
- 
--		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[order], rb) {
--			BUG_ON(!drm_buddy_block_is_free(block));
--			count++;
-+		for_each_free_tree(tree) {
-+			root = &mm->free_trees[tree][order];
-+
-+			rbtree_postorder_for_each_entry_safe(block, tmp, root, rb) {
-+				BUG_ON(!drm_buddy_block_is_free(block));
-+				count++;
-+			}
- 		}
- 
- 		drm_printf(p, "order-%2d ", order);
-diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
-index 9ee105d4309f..d7891d08f67a 100644
---- a/include/drm/drm_buddy.h
-+++ b/include/drm/drm_buddy.h
-@@ -73,7 +73,7 @@ struct drm_buddy_block {
-  */
- struct drm_buddy {
- 	/* Maintain a free list for each order. */
--	struct rb_root *free_tree;
-+	struct rb_root **free_trees;
- 
- 	/*
- 	 * Maintain explicit binary tree(s) to track the allocation of the
--- 
-2.34.1
+6.6.108-rc1 (not yet posted, but there in linux-stable-rc.git):
+sensibly does not yet contain any of the lrudrain series, I'm assembling
+them, but just hit a snag - I've noticed that the 6.6-stable mm/gup.c
+collect_longterm_unpinnable_pages(), which I'm patching, contains a mod
+which was later reverted in Linus's tree, the revert was marked for stable
+but I expect it ended up as FAILED, so I need to spend more time looking
+into that (6.14 1aaf8c122918 reverted by 6.16 517f496e1e61): not tonight.
 
+After I've settled 6.6, I'll move on to 6.1, but no further.
+
+Hugh
+---1463770367-1581705103-1758618713=:5004
+Content-Type: text/x-patch; name=0001-mm-gup-local-lru_add_drain-to-avoid-lru_add_drain_al.patch
+Content-Transfer-Encoding: BASE64
+Content-ID: <a835e636-79db-c258-b18f-74e58c153f0c@google.com>
+Content-Description: 
+Content-Disposition: attachment; filename=0001-mm-gup-local-lru_add_drain-to-avoid-lru_add_drain_al.patch
+
+RnJvbSA3YWZmYzYzMDM1OTYzOTE3ZTI1YTc5OGE4YzIyMDY1Y2QwNmRjZWZi
+IE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQ0KRnJvbTogSHVnaCBEaWNraW5z
+IDxodWdoZEBnb29nbGUuY29tPg0KRGF0ZTogTW9uLCA4IFNlcCAyMDI1IDE1
+OjE2OjUzIC0wNzAwDQpTdWJqZWN0OiBbUEFUQ0ggMS8zXSBtbS9ndXA6IGxv
+Y2FsIGxydV9hZGRfZHJhaW4oKSB0byBhdm9pZA0KIGxydV9hZGRfZHJhaW5f
+YWxsKCkNCg0KWyBVcHN0cmVhbSBjb21taXQgYTA5YThhMWZiYjM3NGUwMDUz
+Yjk3MzA2ZGE5ZGJjMDViZDM4NDY4NSBdDQoNCkluIG1hbnkgY2FzZXMsIGlm
+IGNvbGxlY3RfbG9uZ3Rlcm1fdW5waW5uYWJsZV9mb2xpb3MoKSBkb2VzIG5l
+ZWQgdG8gZHJhaW4NCnRoZSBMUlUgY2FjaGUgdG8gcmVsZWFzZSBhIHJlZmVy
+ZW5jZSwgdGhlIGNhY2hlIGluIHF1ZXN0aW9uIGlzIG9uIHRoaXMNCnNhbWUg
+Q1BVLCBhbmQgbXVjaCBtb3JlIGVmZmljaWVudGx5IGRyYWluZWQgYnkgYSBw
+cmVsaW1pbmFyeSBsb2NhbA0KbHJ1X2FkZF9kcmFpbigpLCB0aGFuIHRoZSBs
+YXRlciBjcm9zcy1DUFUgbHJ1X2FkZF9kcmFpbl9hbGwoKS4NCg0KTWFya2Vk
+IGZvciBzdGFibGUsIHRvIGNvdW50ZXIgdGhlIGluY3JlYXNlIGluIGxydV9h
+ZGRfZHJhaW5fYWxsKClzIGZyb20NCiJtbS9ndXA6IGNoZWNrIHJlZl9jb3Vu
+dCBpbnN0ZWFkIG9mIGxydSBiZWZvcmUgbWlncmF0aW9uIi4gIE5vdGUgZm9y
+IGNsZWFuDQpiYWNrcG9ydHM6IGNhbiB0YWtlIDYuMTYgY29tbWl0IGEwM2Ri
+MjM2YWViZiAoImd1cDogb3B0aW1pemUgbG9uZ3Rlcm0NCnBpbl91c2VyX3Bh
+Z2VzKCkgZm9yIGxhcmdlIGZvbGlvIikgZmlyc3QuDQoNCkxpbms6IGh0dHBz
+Oi8vbGttbC5rZXJuZWwub3JnL3IvNjZmMjc1MWYtMjgzZS04MTZkLTk1MzAt
+NzY1ZGI3ZWRjNDY1QGdvb2dsZS5jb20NClNpZ25lZC1vZmYtYnk6IEh1Z2gg
+RGlja2lucyA8aHVnaGRAZ29vZ2xlLmNvbT4NCkFja2VkLWJ5OiBEYXZpZCBI
+aWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCkNjOiAiQW5lZXNoIEt1
+bWFyIEsuViIgPGFuZWVzaC5rdW1hckBrZXJuZWwub3JnPg0KQ2M6IEF4ZWwg
+UmFzbXVzc2VuIDxheGVscmFzbXVzc2VuQGdvb2dsZS5jb20+DQpDYzogQ2hy
+aXMgTGkgPGNocmlzbEBrZXJuZWwub3JnPg0KQ2M6IENocmlzdG9waCBIZWxs
+d2lnIDxoY2hAaW5mcmFkZWFkLm9yZz4NCkNjOiBKYXNvbiBHdW50aG9ycGUg
+PGpnZ0B6aWVwZS5jYT4NCkNjOiBKb2hhbm5lcyBXZWluZXIgPGhhbm5lc0Bj
+bXB4Y2hnLm9yZz4NCkNjOiBKb2huIEh1YmJhcmQgPGpodWJiYXJkQG52aWRp
+YS5jb20+DQpDYzogS2VpciBGcmFzZXIgPGtlaXJmQGdvb2dsZS5jb20+DQpD
+YzogS29uc3RhbnRpbiBLaGxlYm5pa292IDxrb2N0OWlAZ21haWwuY29tPg0K
+Q2M6IExpIFpoZSA8bGl6aGUuNjdAYnl0ZWRhbmNlLmNvbT4NCkNjOiBNYXR0
+aGV3IFdpbGNveCAoT3JhY2xlKSA8d2lsbHlAaW5mcmFkZWFkLm9yZz4NCkNj
+OiBQZXRlciBYdSA8cGV0ZXJ4QHJlZGhhdC5jb20+DQpDYzogUmlrIHZhbiBS
+aWVsIDxyaWVsQHN1cnJpZWwuY29tPg0KQ2M6IFNoaXZhbmsgR2FyZyA8c2hp
+dmFua2dAYW1kLmNvbT4NCkNjOiBWbGFzdGltaWwgQmFia2EgPHZiYWJrYUBz
+dXNlLmN6Pg0KQ2M6IFdlaSBYdSA8d2VpeHVnY0Bnb29nbGUuY29tPg0KQ2M6
+IFdpbGwgRGVhY29uIDx3aWxsQGtlcm5lbC5vcmc+DQpDYzogeWFuZ2dlIDx5
+YW5nZ2UxMTE2QDEyNi5jb20+DQpDYzogWXVhbmNodSBYaWUgPHl1YW5jaHVA
+Z29vZ2xlLmNvbT4NCkNjOiBZdSBaaGFvIDx5dXpoYW9AZ29vZ2xlLmNvbT4N
+CkNjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NClNpZ25lZC1vZmYtYnk6
+IEFuZHJldyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQpb
+IENsZWFuIGNoZXJyeS1waWNrIG5vdyBpbnRvIHRoaXMgdHJlZSBdDQpTaWdu
+ZWQtb2ZmLWJ5OiBIdWdoIERpY2tpbnMgPGh1Z2hkQGdvb2dsZS5jb20+DQot
+LS0NCiBtbS9ndXAuYyB8IDE1ICsrKysrKysrKysrLS0tLQ0KIDEgZmlsZSBj
+aGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KDQpk
+aWZmIC0tZ2l0IGEvbW0vZ3VwLmMgYi9tbS9ndXAuYw0KaW5kZXggZTliZTdj
+NDk1NDJhLi40ZGQwZWI3MDk4OGIgMTAwNjQ0DQotLS0gYS9tbS9ndXAuYw0K
+KysrIGIvbW0vZ3VwLmMNCkBAIC0yMzU2LDggKzIzNTYsOCBAQCBzdGF0aWMg
+dW5zaWduZWQgbG9uZyBjb2xsZWN0X2xvbmd0ZXJtX3VucGlubmFibGVfZm9s
+aW9zKA0KIAkJc3RydWN0IHBhZ2VzX29yX2ZvbGlvcyAqcG9mcykNCiB7DQog
+CXVuc2lnbmVkIGxvbmcgY29sbGVjdGVkID0gMDsNCi0JYm9vbCBkcmFpbl9h
+bGxvdyA9IHRydWU7DQogCXN0cnVjdCBmb2xpbyAqZm9saW87DQorCWludCBk
+cmFpbmVkID0gMDsNCiAJbG9uZyBpID0gMDsNCiANCiAJZm9yIChmb2xpbyA9
+IHBvZnNfZ2V0X2ZvbGlvKHBvZnMsIGkpOyBmb2xpbzsNCkBAIC0yMzc2LDEw
+ICsyMzc2LDE3IEBAIHN0YXRpYyB1bnNpZ25lZCBsb25nIGNvbGxlY3RfbG9u
+Z3Rlcm1fdW5waW5uYWJsZV9mb2xpb3MoDQogCQkJY29udGludWU7DQogCQl9
+DQogDQotCQlpZiAoZHJhaW5fYWxsb3cgJiYgZm9saW9fcmVmX2NvdW50KGZv
+bGlvKSAhPQ0KLQkJCQkgICBmb2xpb19leHBlY3RlZF9yZWZfY291bnQoZm9s
+aW8pICsgMSkgew0KKwkJaWYgKGRyYWluZWQgPT0gMCAmJg0KKwkJCQlmb2xp
+b19yZWZfY291bnQoZm9saW8pICE9DQorCQkJCWZvbGlvX2V4cGVjdGVkX3Jl
+Zl9jb3VudChmb2xpbykgKyAxKSB7DQorCQkJbHJ1X2FkZF9kcmFpbigpOw0K
+KwkJCWRyYWluZWQgPSAxOw0KKwkJfQ0KKwkJaWYgKGRyYWluZWQgPT0gMSAm
+Jg0KKwkJCQlmb2xpb19yZWZfY291bnQoZm9saW8pICE9DQorCQkJCWZvbGlv
+X2V4cGVjdGVkX3JlZl9jb3VudChmb2xpbykgKyAxKSB7DQogCQkJbHJ1X2Fk
+ZF9kcmFpbl9hbGwoKTsNCi0JCQlkcmFpbl9hbGxvdyA9IGZhbHNlOw0KKwkJ
+CWRyYWluZWQgPSAyOw0KIAkJfQ0KIA0KIAkJaWYgKCFmb2xpb19pc29sYXRl
+X2xydShmb2xpbykpDQotLSANCjIuNTEuMC41MzQuZ2M3OTA5NWMwY2EtZ29v
+Zw0KDQo=
+
+---1463770367-1581705103-1758618713=:5004
+Content-Type: text/x-patch; name=0002-mm-revert-mm-gup-clear-the-LRU-flag-of-a-page-before.patch
+Content-Transfer-Encoding: BASE64
+Content-ID: <96e8754e-ba98-0060-18b7-01c79d0ee945@google.com>
+Content-Description: 
+Content-Disposition: attachment; filename=0002-mm-revert-mm-gup-clear-the-LRU-flag-of-a-page-before.patch
+
+RnJvbSAzOTUzMWM3ZWYzN2Q5Mjc5ZGEyY2JkYzZiOWQ3YmE3MzgyNGE4ZTZi
+IE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQ0KRnJvbTogSHVnaCBEaWNraW5z
+IDxodWdoZEBnb29nbGUuY29tPg0KRGF0ZTogTW9uLCA4IFNlcCAyMDI1IDE1
+OjE5OjE3IC0wNzAwDQpTdWJqZWN0OiBbUEFUQ0ggMi8zXSBtbTogcmV2ZXJ0
+ICJtbS9ndXA6IGNsZWFyIHRoZSBMUlUgZmxhZyBvZiBhIHBhZ2UgYmVmb3Jl
+DQogYWRkaW5nIHRvIExSVSBiYXRjaCINCg0KWyBVcHN0cmVhbSBjb21taXQg
+YWZiOTllOWY1MDA0ODUxNjBmMzRiOGNhZDZkMzc2M2FkYTNlODBlOCBdDQoN
+ClRoaXMgcmV2ZXJ0cyBjb21taXQgMzNkZmU5MjA0ZjI5OiBub3cgdGhhdA0K
+Y29sbGVjdF9sb25ndGVybV91bnBpbm5hYmxlX2ZvbGlvcygpIGlzIGNoZWNr
+aW5nIHJlZl9jb3VudCBpbnN0ZWFkIG9mIGxydSwNCmFuZCBtbG9jay9tdW5s
+b2NrIGRvIG5vdCBwYXJ0aWNpcGF0ZSBpbiB0aGUgcmV2aXNlZCBMUlUgZmxh
+ZyBjbGVhcmluZywNCnRob3NlIGNoYW5nZXMgYXJlIG1pc2xlYWRpbmcsIGFu
+ZCBlbmxhcmdlIHRoZSB3aW5kb3cgZHVyaW5nIHdoaWNoDQptbG9jay9tdW5s
+b2NrIG1heSBtaXNzIGFuIG1sb2NrX2NvdW50IHVwZGF0ZS4NCg0KSXQgaXMg
+cG9zc2libGUgKEknZCBoZXNpdGF0ZSB0byBjbGFpbSBwcm9iYWJsZSkgdGhh
+dCB0aGUgZ3JlYXRlcg0KbGlrZWxpaG9vZCBvZiBtaXNzZWQgbWxvY2tfY291
+bnQgdXBkYXRlcyB3b3VsZCBleHBsYWluIHRoZSAiUmVhbHRpbWUNCnRocmVh
+ZHMgZGVsYXllZCBkdWUgdG8ga2NvbXBhY3RkMCIgb2JzZXJ2ZWQgb24gNi4x
+MiBpbiB0aGUgTGluayBiZWxvdy4gIElmDQp0aGF0IGlzIHRoZSBjYXNlLCB0
+aGlzIHJldmVyc2lvbiB3aWxsIGhlbHA7IGJ1dCBhIGNvbXBsZXRlIHNvbHV0
+aW9uIG5lZWRzDQphbHNvIGEgZnVydGhlciBwYXRjaCwgYmV5b25kIHRoZSBz
+Y29wZSBvZiB0aGlzIHNlcmllcy4NCg0KSW5jbHVkZWQgc29tZSA4MC1jb2x1
+bW4gY2xlYW51cCBhcm91bmQgZm9saW9fYmF0Y2hfYWRkX2FuZF9tb3ZlKCku
+DQoNClRoZSByb2xlIG9mIGZvbGlvX3Rlc3RfY2xlYXJfbHJ1KCkgKGJlZm9y
+ZSB0YWtpbmcgcGVyLW1lbWNnIGxydV9sb2NrKSBpcw0KcXVlc3Rpb25hYmxl
+IHNpbmNlIDYuMTMgcmVtb3ZlZCBtZW1fY2dyb3VwX21vdmVfYWNjb3VudCgp
+IGV0YzsgYnV0IHBlcmhhcHMNCnRoZXJlIGFyZSBzdGlsbCBzb21lIHJhY2Vz
+IHdoaWNoIG5lZWQgaXQgLSBub3QgZXhhbWluZWQgaGVyZS4NCg0KTGluazog
+aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtbW0vRFUwUFIwMU1CMTAz
+ODUzNDVGNzE1M0YzMzQxMDA5ODE4ODgyNTlBQERVMFBSMDFNQjEwMzg1LmV1
+cnByZDAxLnByb2QuZXhjaGFuZ2VsYWJzLmNvbS8NCkxpbms6IGh0dHBzOi8v
+bGttbC5rZXJuZWwub3JnL3IvMDU5MDVkN2ItZWQxNC02OGIxLTc5ZDgtYmRl
+YzMwMzY3ZWJhQGdvb2dsZS5jb20NClNpZ25lZC1vZmYtYnk6IEh1Z2ggRGlj
+a2lucyA8aHVnaGRAZ29vZ2xlLmNvbT4NCkFja2VkLWJ5OiBEYXZpZCBIaWxk
+ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCkNjOiAiQW5lZXNoIEt1bWFy
+IEsuViIgPGFuZWVzaC5rdW1hckBrZXJuZWwub3JnPg0KQ2M6IEF4ZWwgUmFz
+bXVzc2VuIDxheGVscmFzbXVzc2VuQGdvb2dsZS5jb20+DQpDYzogQ2hyaXMg
+TGkgPGNocmlzbEBrZXJuZWwub3JnPg0KQ2M6IENocmlzdG9waCBIZWxsd2ln
+IDxoY2hAaW5mcmFkZWFkLm9yZz4NCkNjOiBKYXNvbiBHdW50aG9ycGUgPGpn
+Z0B6aWVwZS5jYT4NCkNjOiBKb2hhbm5lcyBXZWluZXIgPGhhbm5lc0BjbXB4
+Y2hnLm9yZz4NCkNjOiBKb2huIEh1YmJhcmQgPGpodWJiYXJkQG52aWRpYS5j
+b20+DQpDYzogS2VpciBGcmFzZXIgPGtlaXJmQGdvb2dsZS5jb20+DQpDYzog
+S29uc3RhbnRpbiBLaGxlYm5pa292IDxrb2N0OWlAZ21haWwuY29tPg0KQ2M6
+IExpIFpoZSA8bGl6aGUuNjdAYnl0ZWRhbmNlLmNvbT4NCkNjOiBNYXR0aGV3
+IFdpbGNveCAoT3JhY2xlKSA8d2lsbHlAaW5mcmFkZWFkLm9yZz4NCkNjOiBQ
+ZXRlciBYdSA8cGV0ZXJ4QHJlZGhhdC5jb20+DQpDYzogUmlrIHZhbiBSaWVs
+IDxyaWVsQHN1cnJpZWwuY29tPg0KQ2M6IFNoaXZhbmsgR2FyZyA8c2hpdmFu
+a2dAYW1kLmNvbT4NCkNjOiBWbGFzdGltaWwgQmFia2EgPHZiYWJrYUBzdXNl
+LmN6Pg0KQ2M6IFdlaSBYdSA8d2VpeHVnY0Bnb29nbGUuY29tPg0KQ2M6IFdp
+bGwgRGVhY29uIDx3aWxsQGtlcm5lbC5vcmc+DQpDYzogeWFuZ2dlIDx5YW5n
+Z2UxMTE2QDEyNi5jb20+DQpDYzogWXVhbmNodSBYaWUgPHl1YW5jaHVAZ29v
+Z2xlLmNvbT4NCkNjOiBZdSBaaGFvIDx5dXpoYW9AZ29vZ2xlLmNvbT4NCkNj
+OiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NClNpZ25lZC1vZmYtYnk6IEFu
+ZHJldyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQpbIFJl
+c29sdmVkIGNvbmZsaWN0cyBpbiBhcHBseWluZyB0aGUgcmV2ZXJ0IHRvIHRo
+aXMgdHJlZSBdDQpTaWduZWQtb2ZmLWJ5OiBIdWdoIERpY2tpbnMgPGh1Z2hk
+QGdvb2dsZS5jb20+DQotLS0NCiBtbS9zd2FwLmMgfCA1MSArKysrKysrKysr
+KysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCiAx
+IGZpbGUgY2hhbmdlZCwgMjcgaW5zZXJ0aW9ucygrKSwgMjQgZGVsZXRpb25z
+KC0pDQoNCmRpZmYgLS1naXQgYS9tbS9zd2FwLmMgYi9tbS9zd2FwLmMNCmlu
+ZGV4IDU5ZjMwYTk4MWM2Zi4uZDRjYjQ4OThmNTczIDEwMDY0NA0KLS0tIGEv
+bW0vc3dhcC5jDQorKysgYi9tbS9zd2FwLmMNCkBAIC0xOTUsNiArMTk1LDEw
+IEBAIHN0YXRpYyB2b2lkIGZvbGlvX2JhdGNoX21vdmVfbHJ1KHN0cnVjdCBm
+b2xpb19iYXRjaCAqZmJhdGNoLCBtb3ZlX2ZuX3QgbW92ZV9mbikNCiAJZm9y
+IChpID0gMDsgaSA8IGZvbGlvX2JhdGNoX2NvdW50KGZiYXRjaCk7IGkrKykg
+ew0KIAkJc3RydWN0IGZvbGlvICpmb2xpbyA9IGZiYXRjaC0+Zm9saW9zW2ld
+Ow0KIA0KKwkJLyogYmxvY2sgbWVtY2cgbWlncmF0aW9uIHdoaWxlIHRoZSBm
+b2xpbyBtb3ZlcyBiZXR3ZWVuIGxydSAqLw0KKwkJaWYgKG1vdmVfZm4gIT0g
+bHJ1X2FkZCAmJiAhZm9saW9fdGVzdF9jbGVhcl9scnUoZm9saW8pKQ0KKwkJ
+CWNvbnRpbnVlOw0KKw0KIAkJZm9saW9fbHJ1dmVjX3JlbG9ja19pcnFzYXZl
+KGZvbGlvLCAmbHJ1dmVjLCAmZmxhZ3MpOw0KIAkJbW92ZV9mbihscnV2ZWMs
+IGZvbGlvKTsNCiANCkBAIC0yMDcsMTQgKzIxMSwxMCBAQCBzdGF0aWMgdm9p
+ZCBmb2xpb19iYXRjaF9tb3ZlX2xydShzdHJ1Y3QgZm9saW9fYmF0Y2ggKmZi
+YXRjaCwgbW92ZV9mbl90IG1vdmVfZm4pDQogfQ0KIA0KIHN0YXRpYyB2b2lk
+IF9fZm9saW9fYmF0Y2hfYWRkX2FuZF9tb3ZlKHN0cnVjdCBmb2xpb19iYXRj
+aCBfX3BlcmNwdSAqZmJhdGNoLA0KLQkJc3RydWN0IGZvbGlvICpmb2xpbywg
+bW92ZV9mbl90IG1vdmVfZm4sDQotCQlib29sIG9uX2xydSwgYm9vbCBkaXNh
+YmxlX2lycSkNCisJCXN0cnVjdCBmb2xpbyAqZm9saW8sIG1vdmVfZm5fdCBt
+b3ZlX2ZuLCBib29sIGRpc2FibGVfaXJxKQ0KIHsNCiAJdW5zaWduZWQgbG9u
+ZyBmbGFnczsNCiANCi0JaWYgKG9uX2xydSAmJiAhZm9saW9fdGVzdF9jbGVh
+cl9scnUoZm9saW8pKQ0KLQkJcmV0dXJuOw0KLQ0KIAlmb2xpb19nZXQoZm9s
+aW8pOw0KIA0KIAlpZiAoZGlzYWJsZV9pcnEpDQpAQCAtMjIyLDggKzIyMiw4
+IEBAIHN0YXRpYyB2b2lkIF9fZm9saW9fYmF0Y2hfYWRkX2FuZF9tb3ZlKHN0
+cnVjdCBmb2xpb19iYXRjaCBfX3BlcmNwdSAqZmJhdGNoLA0KIAllbHNlDQog
+CQlsb2NhbF9sb2NrKCZjcHVfZmJhdGNoZXMubG9jayk7DQogDQotCWlmICgh
+Zm9saW9fYmF0Y2hfYWRkKHRoaXNfY3B1X3B0cihmYmF0Y2gpLCBmb2xpbykg
+fHwgZm9saW9fdGVzdF9sYXJnZShmb2xpbykgfHwNCi0JICAgIGxydV9jYWNo
+ZV9kaXNhYmxlZCgpKQ0KKwlpZiAoIWZvbGlvX2JhdGNoX2FkZCh0aGlzX2Nw
+dV9wdHIoZmJhdGNoKSwgZm9saW8pIHx8DQorCQkJZm9saW9fdGVzdF9sYXJn
+ZShmb2xpbykgfHwgbHJ1X2NhY2hlX2Rpc2FibGVkKCkpDQogCQlmb2xpb19i
+YXRjaF9tb3ZlX2xydSh0aGlzX2NwdV9wdHIoZmJhdGNoKSwgbW92ZV9mbik7
+DQogDQogCWlmIChkaXNhYmxlX2lycSkNCkBAIC0yMzIsMTMgKzIzMiwxMyBA
+QCBzdGF0aWMgdm9pZCBfX2ZvbGlvX2JhdGNoX2FkZF9hbmRfbW92ZShzdHJ1
+Y3QgZm9saW9fYmF0Y2ggX19wZXJjcHUgKmZiYXRjaCwNCiAJCWxvY2FsX3Vu
+bG9jaygmY3B1X2ZiYXRjaGVzLmxvY2spOw0KIH0NCiANCi0jZGVmaW5lIGZv
+bGlvX2JhdGNoX2FkZF9hbmRfbW92ZShmb2xpbywgb3AsIG9uX2xydSkJCQkJ
+CQlcDQotCV9fZm9saW9fYmF0Y2hfYWRkX2FuZF9tb3ZlKAkJCQkJCQkJXA0K
+LQkJJmNwdV9mYmF0Y2hlcy5vcCwJCQkJCQkJCVwNCi0JCWZvbGlvLAkJCQkJ
+CQkJCQlcDQotCQlvcCwJCQkJCQkJCQkJXA0KLQkJb25fbHJ1LAkJCQkJCQkJ
+CQlcDQotCQlvZmZzZXRvZihzdHJ1Y3QgY3B1X2ZiYXRjaGVzLCBvcCkgPj0g
+b2Zmc2V0b2Yoc3RydWN0IGNwdV9mYmF0Y2hlcywgbG9ja19pcnEpCVwNCisj
+ZGVmaW5lIGZvbGlvX2JhdGNoX2FkZF9hbmRfbW92ZShmb2xpbywgb3ApCQlc
+DQorCV9fZm9saW9fYmF0Y2hfYWRkX2FuZF9tb3ZlKAkJCVwNCisJCSZjcHVf
+ZmJhdGNoZXMub3AsCQkJXA0KKwkJZm9saW8sCQkJCQlcDQorCQlvcCwJCQkJ
+CVwNCisJCW9mZnNldG9mKHN0cnVjdCBjcHVfZmJhdGNoZXMsIG9wKSA+PQlc
+DQorCQlvZmZzZXRvZihzdHJ1Y3QgY3B1X2ZiYXRjaGVzLCBsb2NrX2lycSkJ
+XA0KIAkpDQogDQogc3RhdGljIHZvaWQgbHJ1X21vdmVfdGFpbChzdHJ1Y3Qg
+bHJ1dmVjICpscnV2ZWMsIHN0cnVjdCBmb2xpbyAqZm9saW8pDQpAQCAtMjYy
+LDEwICsyNjIsMTAgQEAgc3RhdGljIHZvaWQgbHJ1X21vdmVfdGFpbChzdHJ1
+Y3QgbHJ1dmVjICpscnV2ZWMsIHN0cnVjdCBmb2xpbyAqZm9saW8pDQogdm9p
+ZCBmb2xpb19yb3RhdGVfcmVjbGFpbWFibGUoc3RydWN0IGZvbGlvICpmb2xp
+bykNCiB7DQogCWlmIChmb2xpb190ZXN0X2xvY2tlZChmb2xpbykgfHwgZm9s
+aW9fdGVzdF9kaXJ0eShmb2xpbykgfHwNCi0JICAgIGZvbGlvX3Rlc3RfdW5l
+dmljdGFibGUoZm9saW8pKQ0KKwkgICAgZm9saW9fdGVzdF91bmV2aWN0YWJs
+ZShmb2xpbykgfHwgIWZvbGlvX3Rlc3RfbHJ1KGZvbGlvKSkNCiAJCXJldHVy
+bjsNCiANCi0JZm9saW9fYmF0Y2hfYWRkX2FuZF9tb3ZlKGZvbGlvLCBscnVf
+bW92ZV90YWlsLCB0cnVlKTsNCisJZm9saW9fYmF0Y2hfYWRkX2FuZF9tb3Zl
+KGZvbGlvLCBscnVfbW92ZV90YWlsKTsNCiB9DQogDQogdm9pZCBscnVfbm90
+ZV9jb3N0KHN0cnVjdCBscnV2ZWMgKmxydXZlYywgYm9vbCBmaWxlLA0KQEAg
+LTM1NCwxMCArMzU0LDExIEBAIHN0YXRpYyB2b2lkIGZvbGlvX2FjdGl2YXRl
+X2RyYWluKGludCBjcHUpDQogDQogdm9pZCBmb2xpb19hY3RpdmF0ZShzdHJ1
+Y3QgZm9saW8gKmZvbGlvKQ0KIHsNCi0JaWYgKGZvbGlvX3Rlc3RfYWN0aXZl
+KGZvbGlvKSB8fCBmb2xpb190ZXN0X3VuZXZpY3RhYmxlKGZvbGlvKSkNCisJ
+aWYgKGZvbGlvX3Rlc3RfYWN0aXZlKGZvbGlvKSB8fCBmb2xpb190ZXN0X3Vu
+ZXZpY3RhYmxlKGZvbGlvKSB8fA0KKwkgICAgIWZvbGlvX3Rlc3RfbHJ1KGZv
+bGlvKSkNCiAJCXJldHVybjsNCiANCi0JZm9saW9fYmF0Y2hfYWRkX2FuZF9t
+b3ZlKGZvbGlvLCBscnVfYWN0aXZhdGUsIHRydWUpOw0KKwlmb2xpb19iYXRj
+aF9hZGRfYW5kX21vdmUoZm9saW8sIGxydV9hY3RpdmF0ZSk7DQogfQ0KIA0K
+ICNlbHNlDQpAQCAtNTEwLDcgKzUxMSw3IEBAIHZvaWQgZm9saW9fYWRkX2xy
+dShzdHJ1Y3QgZm9saW8gKmZvbGlvKQ0KIAkgICAgbHJ1X2dlbl9pbl9mYXVs
+dCgpICYmICEoY3VycmVudC0+ZmxhZ3MgJiBQRl9NRU1BTExPQykpDQogCQlm
+b2xpb19zZXRfYWN0aXZlKGZvbGlvKTsNCiANCi0JZm9saW9fYmF0Y2hfYWRk
+X2FuZF9tb3ZlKGZvbGlvLCBscnVfYWRkLCBmYWxzZSk7DQorCWZvbGlvX2Jh
+dGNoX2FkZF9hbmRfbW92ZShmb2xpbywgbHJ1X2FkZCk7DQogfQ0KIEVYUE9S
+VF9TWU1CT0woZm9saW9fYWRkX2xydSk7DQogDQpAQCAtNjg1LDEwICs2ODYs
+MTAgQEAgdm9pZCBscnVfYWRkX2RyYWluX2NwdShpbnQgY3B1KQ0KIHZvaWQg
+ZGVhY3RpdmF0ZV9maWxlX2ZvbGlvKHN0cnVjdCBmb2xpbyAqZm9saW8pDQog
+ew0KIAkvKiBEZWFjdGl2YXRpbmcgYW4gdW5ldmljdGFibGUgZm9saW8gd2ls
+bCBub3QgYWNjZWxlcmF0ZSByZWNsYWltICovDQotCWlmIChmb2xpb190ZXN0
+X3VuZXZpY3RhYmxlKGZvbGlvKSkNCisJaWYgKGZvbGlvX3Rlc3RfdW5ldmlj
+dGFibGUoZm9saW8pIHx8ICFmb2xpb190ZXN0X2xydShmb2xpbykpDQogCQly
+ZXR1cm47DQogDQotCWZvbGlvX2JhdGNoX2FkZF9hbmRfbW92ZShmb2xpbywg
+bHJ1X2RlYWN0aXZhdGVfZmlsZSwgdHJ1ZSk7DQorCWZvbGlvX2JhdGNoX2Fk
+ZF9hbmRfbW92ZShmb2xpbywgbHJ1X2RlYWN0aXZhdGVfZmlsZSk7DQogfQ0K
+IA0KIC8qDQpAQCAtNzAxLDEwICs3MDIsMTEgQEAgdm9pZCBkZWFjdGl2YXRl
+X2ZpbGVfZm9saW8oc3RydWN0IGZvbGlvICpmb2xpbykNCiAgKi8NCiB2b2lk
+IGZvbGlvX2RlYWN0aXZhdGUoc3RydWN0IGZvbGlvICpmb2xpbykNCiB7DQot
+CWlmIChmb2xpb190ZXN0X3VuZXZpY3RhYmxlKGZvbGlvKSB8fCAhKGZvbGlv
+X3Rlc3RfYWN0aXZlKGZvbGlvKSB8fCBscnVfZ2VuX2VuYWJsZWQoKSkpDQor
+CWlmIChmb2xpb190ZXN0X3VuZXZpY3RhYmxlKGZvbGlvKSB8fCAhZm9saW9f
+dGVzdF9scnUoZm9saW8pIHx8DQorCSAgICAhKGZvbGlvX3Rlc3RfYWN0aXZl
+KGZvbGlvKSB8fCBscnVfZ2VuX2VuYWJsZWQoKSkpDQogCQlyZXR1cm47DQog
+DQotCWZvbGlvX2JhdGNoX2FkZF9hbmRfbW92ZShmb2xpbywgbHJ1X2RlYWN0
+aXZhdGUsIHRydWUpOw0KKwlmb2xpb19iYXRjaF9hZGRfYW5kX21vdmUoZm9s
+aW8sIGxydV9kZWFjdGl2YXRlKTsNCiB9DQogDQogLyoqDQpAQCAtNzE3LDEw
+ICs3MTksMTEgQEAgdm9pZCBmb2xpb19kZWFjdGl2YXRlKHN0cnVjdCBmb2xp
+byAqZm9saW8pDQogdm9pZCBmb2xpb19tYXJrX2xhenlmcmVlKHN0cnVjdCBm
+b2xpbyAqZm9saW8pDQogew0KIAlpZiAoIWZvbGlvX3Rlc3RfYW5vbihmb2xp
+bykgfHwgIWZvbGlvX3Rlc3Rfc3dhcGJhY2tlZChmb2xpbykgfHwNCisJICAg
+ICFmb2xpb190ZXN0X2xydShmb2xpbykgfHwNCiAJICAgIGZvbGlvX3Rlc3Rf
+c3dhcGNhY2hlKGZvbGlvKSB8fCBmb2xpb190ZXN0X3VuZXZpY3RhYmxlKGZv
+bGlvKSkNCiAJCXJldHVybjsNCiANCi0JZm9saW9fYmF0Y2hfYWRkX2FuZF9t
+b3ZlKGZvbGlvLCBscnVfbGF6eWZyZWUsIHRydWUpOw0KKwlmb2xpb19iYXRj
+aF9hZGRfYW5kX21vdmUoZm9saW8sIGxydV9sYXp5ZnJlZSk7DQogfQ0KIA0K
+IHZvaWQgbHJ1X2FkZF9kcmFpbih2b2lkKQ0KLS0gDQoyLjUxLjAuNTM0Lmdj
+NzkwOTVjMGNhLWdvb2cNCg0K
+
+---1463770367-1581705103-1758618713=:5004
+Content-Type: text/x-patch; name=0003-mm-folio_may_be_lru_cached-unless-folio_test_large.patch
+Content-Transfer-Encoding: BASE64
+Content-ID: <43cf7cbc-aa3e-155b-cd89-40599e7f6534@google.com>
+Content-Description: 
+Content-Disposition: attachment; filename=0003-mm-folio_may_be_lru_cached-unless-folio_test_large.patch
+
+RnJvbSA3NDUwNTQ0YmM4MjBiMGM4ODRhMTBlMjM0OGI4NTE0MTY2ZGFiNWNi
+IE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQ0KRnJvbTogSHVnaCBEaWNraW5z
+IDxodWdoZEBnb29nbGUuY29tPg0KRGF0ZTogTW9uLCA4IFNlcCAyMDI1IDE1
+OjIzOjE1IC0wNzAwDQpTdWJqZWN0OiBbUEFUQ0ggMy8zXSBtbTogZm9saW9f
+bWF5X2JlX2xydV9jYWNoZWQoKSB1bmxlc3MgZm9saW9fdGVzdF9sYXJnZSgp
+DQoNClsgVXBzdHJlYW0gY29tbWl0IDJkYTZkZTMwZTYwZGQ5YmIxNDYwMGVm
+ZjFjYzk5ZGYyZmEyZGRhZTMgXQ0KDQptbS9zd2FwLmMgYW5kIG1tL21sb2Nr
+LmMgYWdyZWUgdG8gZHJhaW4gYW55IHBlci1DUFUgYmF0Y2ggYXMgc29vbiBh
+cyBhDQpsYXJnZSBmb2xpbyBpcyBhZGRlZDogc28gY29sbGVjdF9sb25ndGVy
+bV91bnBpbm5hYmxlX2ZvbGlvcygpIGp1c3Qgd2FzdGVzDQplZmZvcnQgd2hl
+biBjYWxsaW5nIGxydV9hZGRfZHJhaW5bX2FsbF0oKSBvbiBhIGxhcmdlIGZv
+bGlvLg0KDQpCdXQgYWx0aG91Z2ggdGhlcmUgaXMgZ29vZCByZWFzb24gbm90
+IHRvIGJhdGNoIHVwIFBNRC1zaXplZCBmb2xpb3MsIHdlDQptaWdodCB3ZWxs
+IGJlbmVmaXQgZnJvbSBiYXRjaGluZyBhIHNtYWxsIG51bWJlciBvZiBsb3ct
+b3JkZXIgbVRIUHMgKHRob3VnaA0KdW5jbGVhciBob3cgdGhhdCAic21hbGwg
+bnVtYmVyIiBsaW1pdGF0aW9uIHdpbGwgYmUgaW1wbGVtZW50ZWQpLg0KDQpT
+byBhc2sgaWYgZm9saW9fbWF5X2JlX2xydV9jYWNoZWQoKSByYXRoZXIgdGhh
+biAhZm9saW9fdGVzdF9sYXJnZSgpLCB0bw0KaW5zdWxhdGUgdGhvc2UgcGFy
+dGljdWxhciBjaGVja3MgZnJvbSBmdXR1cmUgY2hhbmdlLiAgTmFtZSBwcmVm
+ZXJyZWQgdG8NCiJmb2xpb19pc19iYXRjaGFibGUiIGJlY2F1c2UgbGFyZ2Ug
+Zm9saW9zIGNhbiB3ZWxsIGJlIHB1dCBvbiBhIGJhdGNoOiBpdCdzDQpqdXN0
+IHRoZSBwZXItQ1BVIExSVSBjYWNoZXMsIGRyYWluZWQgbXVjaCBsYXRlciwg
+d2hpY2ggbmVlZCBjYXJlLg0KDQpNYXJrZWQgZm9yIHN0YWJsZSwgdG8gY291
+bnRlciB0aGUgaW5jcmVhc2UgaW4gbHJ1X2FkZF9kcmFpbl9hbGwoKXMgZnJv
+bQ0KIm1tL2d1cDogY2hlY2sgcmVmX2NvdW50IGluc3RlYWQgb2YgbHJ1IGJl
+Zm9yZSBtaWdyYXRpb24iLg0KDQpMaW5rOiBodHRwczovL2xrbWwua2VybmVs
+Lm9yZy9yLzU3ZDJlYWY4LTM2MDctZjMxOC1lMGM1LWJlMDJkY2U2MWFkMEBn
+b29nbGUuY29tDQpGaXhlczogOWE0ZTlmM2IyZDczICgibW06IHVwZGF0ZSBn
+ZXRfdXNlcl9wYWdlc19sb25ndGVybSB0byBtaWdyYXRlIHBhZ2VzIGFsbG9j
+YXRlZCBmcm9tIENNQSByZWdpb24iKQ0KU2lnbmVkLW9mZi1ieTogSHVnaCBE
+aWNraW5zIDxodWdoZEBnb29nbGUuY29tPg0KU3VnZ2VzdGVkLWJ5OiBEYXZp
+ZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCkFja2VkLWJ5OiBE
+YXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCkNjOiAiQW5l
+ZXNoIEt1bWFyIEsuViIgPGFuZWVzaC5rdW1hckBrZXJuZWwub3JnPg0KQ2M6
+IEF4ZWwgUmFzbXVzc2VuIDxheGVscmFzbXVzc2VuQGdvb2dsZS5jb20+DQpD
+YzogQ2hyaXMgTGkgPGNocmlzbEBrZXJuZWwub3JnPg0KQ2M6IENocmlzdG9w
+aCBIZWxsd2lnIDxoY2hAaW5mcmFkZWFkLm9yZz4NCkNjOiBKYXNvbiBHdW50
+aG9ycGUgPGpnZ0B6aWVwZS5jYT4NCkNjOiBKb2hhbm5lcyBXZWluZXIgPGhh
+bm5lc0BjbXB4Y2hnLm9yZz4NCkNjOiBKb2huIEh1YmJhcmQgPGpodWJiYXJk
+QG52aWRpYS5jb20+DQpDYzogS2VpciBGcmFzZXIgPGtlaXJmQGdvb2dsZS5j
+b20+DQpDYzogS29uc3RhbnRpbiBLaGxlYm5pa292IDxrb2N0OWlAZ21haWwu
+Y29tPg0KQ2M6IExpIFpoZSA8bGl6aGUuNjdAYnl0ZWRhbmNlLmNvbT4NCkNj
+OiBNYXR0aGV3IFdpbGNveCAoT3JhY2xlKSA8d2lsbHlAaW5mcmFkZWFkLm9y
+Zz4NCkNjOiBQZXRlciBYdSA8cGV0ZXJ4QHJlZGhhdC5jb20+DQpDYzogUmlr
+IHZhbiBSaWVsIDxyaWVsQHN1cnJpZWwuY29tPg0KQ2M6IFNoaXZhbmsgR2Fy
+ZyA8c2hpdmFua2dAYW1kLmNvbT4NCkNjOiBWbGFzdGltaWwgQmFia2EgPHZi
+YWJrYUBzdXNlLmN6Pg0KQ2M6IFdlaSBYdSA8d2VpeHVnY0Bnb29nbGUuY29t
+Pg0KQ2M6IFdpbGwgRGVhY29uIDx3aWxsQGtlcm5lbC5vcmc+DQpDYzogeWFu
+Z2dlIDx5YW5nZ2UxMTE2QDEyNi5jb20+DQpDYzogWXVhbmNodSBYaWUgPHl1
+YW5jaHVAZ29vZ2xlLmNvbT4NCkNjOiBZdSBaaGFvIDx5dXpoYW9AZ29vZ2xl
+LmNvbT4NCkNjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NClNpZ25lZC1v
+ZmYtYnk6IEFuZHJldyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5v
+cmc+DQpbIENsZWFuIGNoZXJyeS1waWNrIG5vdyBpbnRvIHRoaXMgdHJlZSBd
+DQpTaWduZWQtb2ZmLWJ5OiBIdWdoIERpY2tpbnMgPGh1Z2hkQGdvb2dsZS5j
+b20+DQotLS0NCiBpbmNsdWRlL2xpbnV4L3N3YXAuaCB8IDEwICsrKysrKysr
+KysNCiBtbS9ndXAuYyAgICAgICAgICAgICB8ICA0ICsrLS0NCiBtbS9tbG9j
+ay5jICAgICAgICAgICB8ICA2ICsrKy0tLQ0KIG1tL3N3YXAuYyAgICAgICAg
+ICAgIHwgIDIgKy0NCiA0IGZpbGVzIGNoYW5nZWQsIDE2IGluc2VydGlvbnMo
+KyksIDYgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9pbmNsdWRlL2xp
+bnV4L3N3YXAuaCBiL2luY2x1ZGUvbGludXgvc3dhcC5oDQppbmRleCBmM2Uw
+YWMyMGMyZTguLjYzZjg1YjNmZWUyMyAxMDA2NDQNCi0tLSBhL2luY2x1ZGUv
+bGludXgvc3dhcC5oDQorKysgYi9pbmNsdWRlL2xpbnV4L3N3YXAuaA0KQEAg
+LTM4Miw2ICszODIsMTYgQEAgdm9pZCBmb2xpb19hZGRfbHJ1X3ZtYShzdHJ1
+Y3QgZm9saW8gKiwgc3RydWN0IHZtX2FyZWFfc3RydWN0ICopOw0KIHZvaWQg
+bWFya19wYWdlX2FjY2Vzc2VkKHN0cnVjdCBwYWdlICopOw0KIHZvaWQgZm9s
+aW9fbWFya19hY2Nlc3NlZChzdHJ1Y3QgZm9saW8gKik7DQogDQorc3RhdGlj
+IGlubGluZSBib29sIGZvbGlvX21heV9iZV9scnVfY2FjaGVkKHN0cnVjdCBm
+b2xpbyAqZm9saW8pDQorew0KKwkvKg0KKwkgKiBIb2xkaW5nIFBNRC1zaXpl
+ZCBmb2xpb3MgaW4gcGVyLUNQVSBMUlUgY2FjaGUgdW5iYWxhbmNlcyBhY2Nv
+dW50aW5nLg0KKwkgKiBIb2xkaW5nIHNtYWxsIG51bWJlcnMgb2YgbG93LW9y
+ZGVyIG1USFAgZm9saW9zIGluIHBlci1DUFUgTFJVIGNhY2hlDQorCSAqIHdp
+bGwgYmUgc2Vuc2libGUsIGJ1dCBub2JvZHkgaGFzIGltcGxlbWVudGVkIGFu
+ZCB0ZXN0ZWQgdGhhdCB5ZXQuDQorCSAqLw0KKwlyZXR1cm4gIWZvbGlvX3Rl
+c3RfbGFyZ2UoZm9saW8pOw0KK30NCisNCiBleHRlcm4gYXRvbWljX3QgbHJ1
+X2Rpc2FibGVfY291bnQ7DQogDQogc3RhdGljIGlubGluZSBib29sIGxydV9j
+YWNoZV9kaXNhYmxlZCh2b2lkKQ0KZGlmZiAtLWdpdCBhL21tL2d1cC5jIGIv
+bW0vZ3VwLmMNCmluZGV4IDRkZDBlYjcwOTg4Yi4uZDEwNTgxN2EwYzlhIDEw
+MDY0NA0KLS0tIGEvbW0vZ3VwLmMNCisrKyBiL21tL2d1cC5jDQpAQCAtMjM3
+NiwxMyArMjM3NiwxMyBAQCBzdGF0aWMgdW5zaWduZWQgbG9uZyBjb2xsZWN0
+X2xvbmd0ZXJtX3VucGlubmFibGVfZm9saW9zKA0KIAkJCWNvbnRpbnVlOw0K
+IAkJfQ0KIA0KLQkJaWYgKGRyYWluZWQgPT0gMCAmJg0KKwkJaWYgKGRyYWlu
+ZWQgPT0gMCAmJiBmb2xpb19tYXlfYmVfbHJ1X2NhY2hlZChmb2xpbykgJiYN
+CiAJCQkJZm9saW9fcmVmX2NvdW50KGZvbGlvKSAhPQ0KIAkJCQlmb2xpb19l
+eHBlY3RlZF9yZWZfY291bnQoZm9saW8pICsgMSkgew0KIAkJCWxydV9hZGRf
+ZHJhaW4oKTsNCiAJCQlkcmFpbmVkID0gMTsNCiAJCX0NCi0JCWlmIChkcmFp
+bmVkID09IDEgJiYNCisJCWlmIChkcmFpbmVkID09IDEgJiYgZm9saW9fbWF5
+X2JlX2xydV9jYWNoZWQoZm9saW8pICYmDQogCQkJCWZvbGlvX3JlZl9jb3Vu
+dChmb2xpbykgIT0NCiAJCQkJZm9saW9fZXhwZWN0ZWRfcmVmX2NvdW50KGZv
+bGlvKSArIDEpIHsNCiAJCQlscnVfYWRkX2RyYWluX2FsbCgpOw0KZGlmZiAt
+LWdpdCBhL21tL21sb2NrLmMgYi9tbS9tbG9jay5jDQppbmRleCBjZGUwNzZm
+YTdkNWUuLjhjOGQ1MjJlZmRkNSAxMDA2NDQNCi0tLSBhL21tL21sb2NrLmMN
+CisrKyBiL21tL21sb2NrLmMNCkBAIC0yNTUsNyArMjU1LDcgQEAgdm9pZCBt
+bG9ja19mb2xpbyhzdHJ1Y3QgZm9saW8gKmZvbGlvKQ0KIA0KIAlmb2xpb19n
+ZXQoZm9saW8pOw0KIAlpZiAoIWZvbGlvX2JhdGNoX2FkZChmYmF0Y2gsIG1s
+b2NrX2xydShmb2xpbykpIHx8DQotCSAgICBmb2xpb190ZXN0X2xhcmdlKGZv
+bGlvKSB8fCBscnVfY2FjaGVfZGlzYWJsZWQoKSkNCisJICAgICFmb2xpb19t
+YXlfYmVfbHJ1X2NhY2hlZChmb2xpbykgfHwgbHJ1X2NhY2hlX2Rpc2FibGVk
+KCkpDQogCQltbG9ja19mb2xpb19iYXRjaChmYmF0Y2gpOw0KIAlsb2NhbF91
+bmxvY2soJm1sb2NrX2ZiYXRjaC5sb2NrKTsNCiB9DQpAQCAtMjc4LDcgKzI3
+OCw3IEBAIHZvaWQgbWxvY2tfbmV3X2ZvbGlvKHN0cnVjdCBmb2xpbyAqZm9s
+aW8pDQogDQogCWZvbGlvX2dldChmb2xpbyk7DQogCWlmICghZm9saW9fYmF0
+Y2hfYWRkKGZiYXRjaCwgbWxvY2tfbmV3KGZvbGlvKSkgfHwNCi0JICAgIGZv
+bGlvX3Rlc3RfbGFyZ2UoZm9saW8pIHx8IGxydV9jYWNoZV9kaXNhYmxlZCgp
+KQ0KKwkgICAgIWZvbGlvX21heV9iZV9scnVfY2FjaGVkKGZvbGlvKSB8fCBs
+cnVfY2FjaGVfZGlzYWJsZWQoKSkNCiAJCW1sb2NrX2ZvbGlvX2JhdGNoKGZi
+YXRjaCk7DQogCWxvY2FsX3VubG9jaygmbWxvY2tfZmJhdGNoLmxvY2spOw0K
+IH0NCkBAIC0yOTksNyArMjk5LDcgQEAgdm9pZCBtdW5sb2NrX2ZvbGlvKHN0
+cnVjdCBmb2xpbyAqZm9saW8pDQogCSAqLw0KIAlmb2xpb19nZXQoZm9saW8p
+Ow0KIAlpZiAoIWZvbGlvX2JhdGNoX2FkZChmYmF0Y2gsIGZvbGlvKSB8fA0K
+LQkgICAgZm9saW9fdGVzdF9sYXJnZShmb2xpbykgfHwgbHJ1X2NhY2hlX2Rp
+c2FibGVkKCkpDQorCSAgICAhZm9saW9fbWF5X2JlX2xydV9jYWNoZWQoZm9s
+aW8pIHx8IGxydV9jYWNoZV9kaXNhYmxlZCgpKQ0KIAkJbWxvY2tfZm9saW9f
+YmF0Y2goZmJhdGNoKTsNCiAJbG9jYWxfdW5sb2NrKCZtbG9ja19mYmF0Y2gu
+bG9jayk7DQogfQ0KZGlmZiAtLWdpdCBhL21tL3N3YXAuYyBiL21tL3N3YXAu
+Yw0KaW5kZXggZDRjYjQ4OThmNTczLi5mZjg0NjkxNWRiNDUgMTAwNjQ0DQot
+LS0gYS9tbS9zd2FwLmMNCisrKyBiL21tL3N3YXAuYw0KQEAgLTIyMyw3ICsy
+MjMsNyBAQCBzdGF0aWMgdm9pZCBfX2ZvbGlvX2JhdGNoX2FkZF9hbmRfbW92
+ZShzdHJ1Y3QgZm9saW9fYmF0Y2ggX19wZXJjcHUgKmZiYXRjaCwNCiAJCWxv
+Y2FsX2xvY2soJmNwdV9mYmF0Y2hlcy5sb2NrKTsNCiANCiAJaWYgKCFmb2xp
+b19iYXRjaF9hZGQodGhpc19jcHVfcHRyKGZiYXRjaCksIGZvbGlvKSB8fA0K
+LQkJCWZvbGlvX3Rlc3RfbGFyZ2UoZm9saW8pIHx8IGxydV9jYWNoZV9kaXNh
+YmxlZCgpKQ0KKwkJCSFmb2xpb19tYXlfYmVfbHJ1X2NhY2hlZChmb2xpbykg
+fHwgbHJ1X2NhY2hlX2Rpc2FibGVkKCkpDQogCQlmb2xpb19iYXRjaF9tb3Zl
+X2xydSh0aGlzX2NwdV9wdHIoZmJhdGNoKSwgbW92ZV9mbik7DQogDQogCWlm
+IChkaXNhYmxlX2lycSkNCi0tIA0KMi41MS4wLjUzNC5nYzc5MDk1YzBjYS1n
+b29nDQoNCg==
+
+---1463770367-1581705103-1758618713=:5004--
 
