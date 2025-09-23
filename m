@@ -1,201 +1,257 @@
-Return-Path: <stable+bounces-181498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168B6B95F70
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:12:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8B1B95F55
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA0E3B4104
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 13:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4F75165A92
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 13:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5AB326D77;
-	Tue, 23 Sep 2025 13:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2179D322C9B;
+	Tue, 23 Sep 2025 13:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EEjeqTzc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SJcswSEn"
 X-Original-To: stable@vger.kernel.org
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011035.outbound.protection.outlook.com [40.107.208.35])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC17324B37;
-	Tue, 23 Sep 2025 13:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758633060; cv=fail; b=I0rA5oeV8/9DIkcOPA2tTPASxy3VrNUzCGEMcQMkgjbUgFP30RWsvVNBluAlSCYo0ZZWMU6csIg1e+ef6XcateiHDatgoPhgDlpwFVizL6dNNZpBe/Wxx6SxOdzDCqBDV92Lt64j6VWyjQKtjwn5ZrSl8RBtdtAIx9yfaZlPXqU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758633060; c=relaxed/simple;
-	bh=NJgVqsdmL5o6Jyum7D35QI/WKg4nRpa73Q/zl4DaoxI=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=FfM3/exuYJmRDpa0PFy3vvUAIjgy+vM5R1Bh6zB5QJFt9Vo3R83dUvEGCXCfftQcKkLXW28S55H8zvfrz9LVdj3zOKCmJRLWWZyg5Ko7udXHujCCqXe2Jrdzwmvn2bt4buorEDufAtWryBRdrP8sw8dOTUFn08CZmznkgsMvtiY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EEjeqTzc; arc=fail smtp.client-ip=40.107.208.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eiCyRLpNGclccdLs8ulIwH5xxbAuzCtkyfJS6s1QtcNG1j5NYtKUW2pcUR9ADKUCtRh1i//Kj3YZo7udTNSTuc/ZrPmecAkSPaecOHCDRqMjuh71YITB9WUbFAxTxxNBCpOI2yvVrJC9OY+/5SOF0Mj/6xdMqJWPizxogdWpHWb8Bxj92rk36xP6GJGSZuS9p33y6M+PozEws2BfGrumAWCg4ctoEgrnMQIR2re3Ug/oY70XSAjGwnBohd3Ztfp1ueVAOkFX423Q0LTzTaPrfImT7mSV4wVtU2ypSxl7kBmcy42Ca6NeUfAEaR0SykGhdB0sTCXLB9Eau28JDj/eyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mIXdEtkCilS8X/M4x4Ney2IZcbTj7hVMMIxjRd5YwIs=;
- b=ravPO/DqnlGuj0hTfBuWKf/clUQ44xZhUUn2GTudZh18MlnpGP90lJVraXXQScjshIBVMAijBrNxV2hmOsTQ2xLLj6JgV3MEv0gqh7COOMX/R/V0EKxD5fGY0FQ8n0yJSAu8Z/vHXyOaCX6gp2kq7JOOWGJAmE4W2fBSx76Mc7QXFp/pkNbakgA2cBEDkxseeVDzOdMXIbiG+A5w2iStCrBGPEMCU+IKAUkrkNYKA3LUzvKXE6pFwjZbkbRFzNfTLB9Xx7KfAc+kN3I170XVtTFvdMswGoOIYXFWKx+LWQRfZ5/sJvY1kX/4S7U6e6A8ISoJAuGH7UTfeUx6w1FJCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mIXdEtkCilS8X/M4x4Ney2IZcbTj7hVMMIxjRd5YwIs=;
- b=EEjeqTzc4ojwvKKtO4CU6tE7yhMZEblbWhVJgBUNV3nAZwgyInA/ErBULRV9ZuUtKqrsJdQA3MPxNQCjWGxNGsDNEoPaCBjYodUfOjUyCHnWSUexGU3JqRX1w5GXRmH+urlGLCGDVuatIORAB2Tvrc+OL3JqBYZhj3s7BmAnkE8UD3Aqjc4fxBRyckckz+of68B/3YeNrUekVemC4njep8TrGZuvs+7sCYiFtUzKpHY12hMHKJ0nk91wNeWW3zTYdvqnBME8Dtnx8MHMESXyfiak5cwifZy8ZEX/EjKjPOP3Iak9HvBNUStwBwbAyoRGBMbI6n+7JVSUZniywMGlYw==
-Received: from DM6PR07CA0126.namprd07.prod.outlook.com (2603:10b6:5:330::9) by
- DS0PR12MB6559.namprd12.prod.outlook.com (2603:10b6:8:d1::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9; Tue, 23 Sep 2025 13:10:55 +0000
-Received: from CY4PEPF0000EE3A.namprd03.prod.outlook.com
- (2603:10b6:5:330:cafe::94) by DM6PR07CA0126.outlook.office365.com
- (2603:10b6:5:330::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Tue,
- 23 Sep 2025 13:10:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CY4PEPF0000EE3A.mail.protection.outlook.com (10.167.242.12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 13:10:55 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 23 Sep
- 2025 06:10:38 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 23 Sep 2025 06:10:38 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 23 Sep 2025 06:10:38 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
-	<broonie@kernel.org>, <achill@achill.org>, <linux-tegra@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH 6.16 000/149] 6.16.9-rc1 review
-In-Reply-To: <20250922192412.885919229@linuxfoundation.org>
-References: <20250922192412.885919229@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13029324B03
+	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 13:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758633052; cv=none; b=bouG35h7Zlo9RaPh1fFQLdJ9CLbZYZ3pRkZBwSq9xNmgpsPq3fZKf2c4o860tXZIpT0RTYTzF5UYl8Nds5f7R/wJMEWS8VNGqVyejtn+Sij8ctp5EoIeFxWDpvhDTZv0ZlD3pZolRZnCAQZxzbiiIME3uEap7cNQ8K2VrqVsm7g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758633052; c=relaxed/simple;
+	bh=/L429GQ1uOh7RA6H+pvmUHywDeZB8eFEjE+XGYvQyEg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LxLtnpqZEOQLaEXLBkK98vBfpoFlX26SfNPeol0Fo7I63oJpE/tThLEoX0BL7W/dr5OYCXaIfAQeYT5m3ydukOPpbHinCZO/Tj1VICBbviovaBK9PN4BD5PBsViWClvOfht4KwFzWMBvdGvC1sU7mSlB1Jnxl90wxfDDUUTjQgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SJcswSEn; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758633050;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/L429GQ1uOh7RA6H+pvmUHywDeZB8eFEjE+XGYvQyEg=;
+	b=SJcswSEnamn1kzbVi89FVBME7SiH31/ZKYP5r22hKUbqOl7cFWSXTaYN/5+bIv1kEcFwUx
+	GLdLOR7lX0XsvSG/Fa+TYM9jmJbhTJa5IjdaNwVkQrvoRQYacwKPaKOXZmXGxAMcJGcsEJ
+	OyHYiXA0/r7ySig0YpSIyEgnHtCxdec=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-rhvbv7OpPLiAC82pSmTnzQ-1; Tue, 23 Sep 2025 09:10:48 -0400
+X-MC-Unique: rhvbv7OpPLiAC82pSmTnzQ-1
+X-Mimecast-MFC-AGG-ID: rhvbv7OpPLiAC82pSmTnzQ_1758633047
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3f3c118cbb3so3503104f8f.3
+        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 06:10:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758633047; x=1759237847;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/L429GQ1uOh7RA6H+pvmUHywDeZB8eFEjE+XGYvQyEg=;
+        b=Cb7Qs6um+30RqbtkQ+m3fqQ3HiSYNKNh3keQh8350rHVy6KmDSTWSvFsAdbXl4mgtv
+         WTd5VfjHC9s4EV59ZkHtl2yvO5HKLCylLL08NG6wAj3VC5qIpP5O2rhU3fBcLypi+ilI
+         hS/jrRCC0/tToqHUK3a/gcR7heIeEBZEpctDNJvKc5St3kf7gkzy3dAboquD7HPM6J9V
+         210Wh/4TVH0B796DoLQj4jg+Qp8z/IE9xH7nE9kHxqJUi81BivLezzFVd2TlIXQEKy0g
+         eBJCEWT6qZGafPzJ5H5MQm3+W/mBywYBk1tzlS6GHu0YIkZ+QPs3DijYYrMoWasm+2ic
+         Tucg==
+X-Forwarded-Encrypted: i=1; AJvYcCXl+/3i0kooQk/Gji9LyAEUZrVRKvteySfL/PNUjExPwsPjG0XuFtShNtP0VDj2RBOI+Isaw94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwL7sQE0KJkakZ1SIBUaPfxzvb8xqjyBRcz/Ie/PpDi1CQJMYGA
+	qh6IQBI5gtf8A+kg7gTre3slcjD+UR06PvJa2QCzYlISngLDo8eFA9lp5J8aruZO0bRa8Tu1Hd6
+	jdPMS0wmvG/3TugZWmzsFO3CY68sOGOLpcrqisnJg2gbgZOXupGQU/RrNvg==
+X-Gm-Gg: ASbGnctgaMTMKVyI1cQeiKRV8vjNSX63gyQqdT/VtIA2GIDgb9mcp0CLwzHWETyEIqz
+	z6rhERU/jda1GcCKu8x6wrMk58Wg7ek+YHer9gIBzhD6hYPVEbTFAbCTBp7bGWSklDWUojnmIX5
+	6ELlkiSLVX8s0PmWLq2YBKARqEctHumeN0gXOmb6NZYlyDTBR49NMIGxHEbRNTcjiaKaNXbXMgd
+	xsVeBLa/gbyP8SJ0pzEqhr/gXuHahGhxFr1fjBXD8mBybZpx4zd/yRA8Qcu5K86PNY/PtPkjjwk
+	5s0+MTcNIlBEVswQ/R/iEc6jIUjyd+KdiSqm1mmYRT4agaC6/L3H5Oa6OKTz/gBZISNPmdSzLl6
+	0mix/EBvS3Y0=
+X-Received: by 2002:a05:6000:2388:b0:3f5:d7c0:8e20 with SMTP id ffacd0b85a97d-405cc61b265mr2327014f8f.59.1758633047035;
+        Tue, 23 Sep 2025 06:10:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFt6kkzJnB4R0EOzLnqEobs3aqaJIq7FEq25TjAjTfM0wJ0z2gPz3D2MfgMcwHX+t2X7MPWZQ==
+X-Received: by 2002:a05:6000:2388:b0:3f5:d7c0:8e20 with SMTP id ffacd0b85a97d-405cc61b265mr2326968f8f.59.1758633046501;
+        Tue, 23 Sep 2025 06:10:46 -0700 (PDT)
+Received: from ?IPv6:2001:16b8:3dcc:c800:4ce1:1543:83d3:837? ([2001:16b8:3dcc:c800:4ce1:1543:83d3:837])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-402188ef7b2sm5669308f8f.34.2025.09.23.06.10.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 06:10:46 -0700 (PDT)
+Message-ID: <bda64a5003dacc9dde293b7e09904f1413d9d12f.camel@redhat.com>
+Subject: Re: [PATCH 6.12.y 1/3] drm/sched: Optimise drm_sched_entity_push_job
+From: Philipp Stanner <pstanner@redhat.com>
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Jules
+ Maselbas <jmaselbas@zdiv.net>, stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+ Alex Deucher <alexander.deucher@amd.com>, Luben Tuikov
+ <ltuikov89@gmail.com>, Matthew Brost <matthew.brost@intel.com>
+Date: Tue, 23 Sep 2025 15:10:45 +0200
+In-Reply-To: <76c94ee6-ba28-4517-8b6c-35658ac95d3b@amd.com>
+References: <20250922130948.5549-1-jmaselbas@zdiv.net>
+	 <8661bce085eed921feb3e718b8dc4c46784dff4d.camel@redhat.com>
+	 <57b2275c-d18a-418d-956f-2ed054ec555f@amd.com>
+	 <DCZMJLU7W6M0.23UOORGDH2DIR@zdiv.net>
+	 <b49f45057de59f977d9e50a4aac12bac2e8d12a0.camel@redhat.com>
+	 <76c94ee6-ba28-4517-8b6c-35658ac95d3b@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <1dea06d2-4989-4c6b-97ec-1a98cdb42709@drhqmail202.nvidia.com>
-Date: Tue, 23 Sep 2025 06:10:38 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3A:EE_|DS0PR12MB6559:EE_
-X-MS-Office365-Filtering-Correlation-Id: 380bffd2-dd38-4bb1-3261-08ddfaa2a157
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R1BZajk4Mmtlb1VudzNoVFBxeTJvQjhraHQxM3N5N3NuYWlYc1R0SFpSNTZR?=
- =?utf-8?B?QW5pZkMvUEMrcjJCWXV3a0Frb0doVzJvTGgrampLNGFWNjJIbFAya1REM3BW?=
- =?utf-8?B?Tm9xWExiMm5kTHR2a1RhbDZDandQM2NtdmMyclhYazhMaGhJa1hQWXRRdTlK?=
- =?utf-8?B?UnJKTkoveDBkY3dTMW9ic2VZUnF0UHdFNS9IbU5SSzFxenlMKzhrVE1Vdkh1?=
- =?utf-8?B?bkVDUWdDWkhqMkdra3NINHgxbHBKM2NxZU91OVJXVmdzLzNweTFGUHg1NW8w?=
- =?utf-8?B?cXRSZGo1WDJrYkt3aWxIQm1LZ2JCR29VdjFLZFpkYkhleFZYVmdBai9GT1Fq?=
- =?utf-8?B?R2M0UWdVeUkwY3g1MElvNkM2NHc5NXB4RXpFYnVuVWw5ZlVJUFY5YnFjRHcx?=
- =?utf-8?B?TDNKcVVZekdPNmp2bFY0OUd4bmZ3bFdsYmtmY3pNZWpFNlplZjhBRmNrQ3R0?=
- =?utf-8?B?NGthOVFGR2RyTXdzSUozODFnMGZHQi8vOVI5RUhHbkxNSGZxeDBib21teFlh?=
- =?utf-8?B?MTRTL0IxRmZIR09SQ3lEY1lBbDlOZmFjUFAxanNIS2ZQSTJsUTZPNkVDYlh3?=
- =?utf-8?B?b01kY3B6RUU1SitFQUFGcURQUHdPanN4NVBOdHdFaGUvZ0VqdTVTYStwWGdp?=
- =?utf-8?B?dk9uTjV4dzhMZjE1NkVUZ0s3QVgyL3lkL2huNGMvcnZIS0ZHR3BHQUcxcjZ0?=
- =?utf-8?B?dVZ1WGVGeDlhK0FOQWsvblJWM1hRVXVXS0hiWG9TV1I5dWUwdGY1czVDdjNv?=
- =?utf-8?B?YitiVzhlUWZTaXg2Mjh1NTkyeG1ndkpuL1RqZExMRjVaTzlCeFpXRmwwa3Jl?=
- =?utf-8?B?aHpiZ3FFUWs0K09sM3M1aXEyb3dJdGd0SXJoczE0dlRPdG52bFhUcWxnc2dB?=
- =?utf-8?B?QlVkSDBwZllvWmx3b2I0WkVtMU51blVPVCs2QkVvK2h6YnZ6bFUvTUpxWThr?=
- =?utf-8?B?RElnKzQ4NDFoTlM2NjRYd2dhZmF1WU5UczZzOVNUT1BEVDU2blRUSXFvdTZw?=
- =?utf-8?B?Umc4UlJTWHNvL3ZEdmIvZ2hTcWpVeXNHeGxBNVdXVXNzUlRkbjNmUm1rZUky?=
- =?utf-8?B?bVd5Z0NwdnUxblZoSXB0eEtWckhYYTlLdTZkZ3BBSktnc2FzMW93VmVLQm5p?=
- =?utf-8?B?ZW9lV3VqV3MwVUtiY21nSS9zdGdzMG9lTFRUWmo4VnRsVW96NmNUak1YS3RN?=
- =?utf-8?B?UjRUTWdjbW5oVGFMdDFESE1ZdFh6RG1odzVoV1lnRXpib0FEUzViYTJqN2Ni?=
- =?utf-8?B?cy8vQUJUdjh3eTY5V0crbVI5Z2x4MFc4VWRnVGtpRFNkcmhCN3haeGY0TGVK?=
- =?utf-8?B?N2EwZ0lnM2Vkd3VTZ1pYcVVDa2tka1dDbTdISHIva3RyR2NKcXUxVWFETHNK?=
- =?utf-8?B?YXhWakxLRkJQWXR4VzFXZzEycVMvS3lNUWZFd1oxb3ZIcjFDWW1xWDIzcFBp?=
- =?utf-8?B?MG93VG5ZblBPbG1GMm5EelZpZ0ppRkdtbnVKSlFObW5XTHBGRDB2SHpiSTU5?=
- =?utf-8?B?TW9ucFhsZWJFMU5BMTl6V2RPakpSRzZuczF0RXhvVXczL3Z3OVRidkszdmtW?=
- =?utf-8?B?YnlqN3BjODFubG9mb0ZMOFg5N3hJUHFWd2MrY0dyMHJZRzhkc1V3Sk5RdkJ5?=
- =?utf-8?B?Zng1RFlON0dxUlhPeGtEU2k2c3hzVnIrK2xnb2Y1dVdrZHY3cUszek9HRkY1?=
- =?utf-8?B?NWpYWUJSbWVCRHhBT05LMXVnVXlRRUxDT0g5QnZzUmM1T09PZy9TVmlBbDV4?=
- =?utf-8?B?ZGdUSW5KVFU5Z2RJNnpaZFBBOUNKREc3dndQd3F5TjR6c25BQ05xdklHUFNl?=
- =?utf-8?B?eG84Q2taM2pFTjdjRWI0TmFPOWZ0dVM5ZC8rajZ0bFZ2UHZ0UU5aWDNYVWx1?=
- =?utf-8?B?U2R3ZG1KVmpFYkZiZjRWYmpEMVJHUHFYdmNhcmQ4V1NDb0svNlV1YWdpZzIx?=
- =?utf-8?B?YktIUytCQldiaHAyTzlSM2lVOHEvclRDZ2duZkVrMW5VNUdPdG5DelhRMm1Z?=
- =?utf-8?B?RHowaE9vcnE1YnA5c2N1T3BsM2dQaXp4NUx6a09HbzltRTVQUnlPa01zVjhw?=
- =?utf-8?B?Z01YWjBJV3lkS244ZWg5czRwazQ3bDZlZlFkQT09?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 13:10:55.3990
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 380bffd2-dd38-4bb1-3261-08ddfaa2a157
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE3A.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6559
 
-On Mon, 22 Sep 2025 21:28:20 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.16.9 release.
-> There are 149 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 24 Sep 2025 19:23:52 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, 2025-09-23 at 14:33 +0200, Christian K=C3=B6nig wrote:
+> On 23.09.25 14:08, Philipp Stanner wrote:
+> > On Mon, 2025-09-22 at 22:50 +0200, Jules Maselbas wrote:
+> > > On Mon Sep 22, 2025 at 7:39 PM CEST, Christian K=C3=B6nig wrote:
+> > > > On 22.09.25 17:30, Philipp Stanner wrote:
+> > > > > On Mon, 2025-09-22 at 15:09 +0200, Jules Maselbas wrote:
+> > > > > > From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> > > > > >=20
+> > > > > > commit d42a254633c773921884a19e8a1a0f53a31150c3 upstream.
+> > > > > >=20
+> > > > > > In FIFO mode (which is the default), both drm_sched_entity_push=
+_job() and
+> > > > > > drm_sched_rq_update_fifo(), where the latter calls the former, =
+are
+> > > > > > currently taking and releasing the same entity->rq_lock.
+> > > > > >=20
+> > > > > > We can avoid that design inelegance, and also have a miniscule
+> > > > > > efficiency improvement on the submit from idle path, by introdu=
+cing a new
+> > > > > > drm_sched_rq_update_fifo_locked() helper and pulling up the loc=
+k taking to
+> > > > > > its callers.
+> > > > > >=20
+> > > > > > v2:
+> > > > > > =C2=A0* Remove drm_sched_rq_update_fifo() altogether. (Christia=
+n)
+> > > > > >=20
+> > > > > > v3:
+> > > > > > =C2=A0* Improved commit message. (Philipp)
+> > > > > >=20
+> > > > > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> > > > > > Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
+> > > > > > Cc: Alex Deucher <alexander.deucher@amd.com>
+> > > > > > Cc: Luben Tuikov <ltuikov89@gmail.com>
+> > > > > > Cc: Matthew Brost <matthew.brost@intel.com>
+> > > > > > Cc: Philipp Stanner <pstanner@redhat.com>
+> > > > > > Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+> > > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > > > > > Link: https://patchwork.freedesktop.org/patch/msgid/20241016122=
+013.7857-2-tursulin@igalia.com
+> > > > > > (cherry picked from commit d42a254633c773921884a19e8a1a0f53a311=
+50c3)
+> > > > > > Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+> > > > >=20
+> > > > > Am I interpreting this mail correctly: you want to get this patch=
+ into
+> > > > > stable?
+> > > > >=20
+> > > > > Why? It doesn't fix a bug.
+> > > >=20
+> > > > Patch #3 in this series depends on the other two, but I agree that =
+isn't a good idea.
+> > > Yes patch #3 fixes a freeze in amdgpu
+> > >=20
+> > > > We should just adjust patch #3 to apply on the older kernel as well=
+ instead of backporting patches #1 and #2.
+> > > I initially modified patch #3 to use .rq_lock instead of .lock, but i=
+ didn't felt very confident with this modification.
+> > > Should i sent a new version with a modified patch #3 ?
+> > > If so, how the change should be reflected in the commit message ?
+> > > (I initially ask #kernelnewbies but ended pulling the two other patch=
+es)
+> >=20
+> > You know folks, situations like that are why we want to strongly
+> > discourage accessing another API's struct members directly. There is no
+> > API contract for them.
+> >=20
+> > And a proper API function rarely changes its interface, and if it does,
+> > it's easy to find for the contributor where drivers need to be
+> > adjusted. If we were all following that rule, you wouldn't even have to
+> > bother with patches #1 and #2.
+> >=20
+> > That said, I see two proper solutions for your problem:
+> >=20
+> > =C2=A0=C2=A0 A. amdgpu is the one stopping the entities anyways, isn't =
+it? It
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 knows which entities it has killed. So t=
+hat information could be
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 stored in struct amdgpu_vm.
+>=20
+> No, it's the scheduler which decides when entities are stopped.
 
-All tests passing for Tegra ...
+The scheduler sets the stopped-flag, but that effectively only happens
+when you either flush() or fini() the entity. OR if you run into that
+drm_sched_fini() race.
 
-Test results for stable-v6.16:
-    10 builds:	10 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    120 tests:	120 pass, 0 fail
+>=20
+> Otherwise we would need to re-invent the flush logic for every driver aga=
+in.
 
-Linux version:	6.16.9-rc1-gfef8d1e3eca6
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-                tegra210-p2371-2180, tegra210-p3450-0000,
-                tegra30-cardhu-a04
+Let's ask differently: Does amdgpu check here whether
+drm_sched_entity_fini() or drm_sched_entity_flush() have been called on
+those entities already?
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+>=20
+> > =C2=A0=C2=A0 B. Add an API: drm_sched_entity_is_stopped(). There's also
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 drm_sched_entity_is_idle(), but I guess =
+that won't serve your
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 purpose?
+>=20
+> drm_sched_entity_is_stopped() should do it. drm_sched_entity_is_idle() is=
+ something different and should potentially even not be exported to drivers=
+ in the first place.
 
-Jon
+Fine by me.
+
+>=20
+> > And btw, as we're at it:
+> > @Christian: Danilo and I recently asked about whether entities can
+> > still outlive their scheduler in amdgpu?
+>=20
+> That should have been fixed by now. This happened only on hot-unplug and =
+that was re-designed quite a bit.
+>=20
+> > That seems to be the reason why that race-"fix" in drm_sched_fini() was
+> > added, which is the only other place that can mark an entity as
+> > stopped, except for the proper place: drm_sched_entity_kill().
+>=20
+> That is potentially still good to have.
+
+That's why we left it for now and just added a FIXME, because there's
+not really any benefit in potentially blowing up drivers by removing it
+(well, technically blowing up drivers like that would reveal
+significant lifetime and, thus, design issues. But it wouldn't be
+"nice").
+
+Still, it's a clear sign of (undocumented=E2=80=A6) scheduler lifetimes bei=
+ng
+violated :(
+
+
+P.
+
+>=20
+> Regards,
+> Christian.
+>=20
+> >=20
+> >=20
+> > P.
+> >=20
+> > >=20
+> > > Best,
+> > > Jules
+> > >=20
+> >=20
+>=20
+
 
