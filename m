@@ -1,111 +1,131 @@
-Return-Path: <stable+bounces-181518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA791B9689B
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:18:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C42B96883
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACB2B188B2CB
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:18:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22A743AE109
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D97E1DC9B1;
-	Tue, 23 Sep 2025 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D1E42AA9;
+	Tue, 23 Sep 2025 15:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Af9SaynH"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="dPHGT98p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2240A19C546;
-	Tue, 23 Sep 2025 15:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837F27E105
+	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 15:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758640675; cv=none; b=fNQtuwPvJufeT+IQW/XVuYzUUg0h3FCf/Ks46VcCyXgfJNHG/8yZYOM9tF2472HFzc7qvL95aByU5kG9FCctnzWTqxlTePpFPw1EB0RqX3qT6+OzvAEi3PQ63IqxNd7v8v8d1luOMAEFNF4g+5PT37UGAvcXEM5nW+L0J8wunwA=
+	t=1758640586; cv=none; b=MlVs2zSLAXRJhbq2zsLTTCRTA/G/uIj36fy2UQqEw7z6LmW6auEwjeKB49pFyW2ykVBaZqhosN/x2YVNBWG/wSfjVgqkRq20rsXynVXRwImCiZigiH6F59+YmTg36lCTPuDmYaW6tpID/c5faV5QXxVm1sqGPxlhaix6YPXq8WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758640675; c=relaxed/simple;
-	bh=UFPxW4Y2NJQeuRCiFarspaMwrcVrI/dZULviR01E5sY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XYmv7V/CGfeZmKR+suNmtFWFWb6Y+Z81zwYNg2Xip7e/sa79twiYRrSsylU1x0xlGlwEA94bd4YjFeE2x5Z4RNntLpFS7S0TEAClFGWbgDBqKPYeqZtVbgaPayyPIEuMBRxtgodl6Bx6FBAEz+4e+QCDENr9lrWmL3H9WL3ekIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Af9SaynH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20F5C4CEF5;
-	Tue, 23 Sep 2025 15:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758640673;
-	bh=UFPxW4Y2NJQeuRCiFarspaMwrcVrI/dZULviR01E5sY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Af9SaynH0+wjATv7oBYHi8v/1/MPfIG+4y8SGmhZqB9Hg38JIj4qaNI+82B94rTDs
-	 zs53RRHIZi0709jrDtyWzvobdyUo15d9apHBubumn9FxNOHCcpaHig9b4cIAwD4gKq
-	 d88r1HdedaeNmVsLDFzsTYof8lkmVchwsrX53BeXurgWJzp0iMx3ewGvfCL2yw9QJA
-	 nDAx2b+dkpBkj98ynfKG0G7RF8EpcDlvUEYGKf3m6qIfHizSgJT+MMwAYa2otcfygU
-	 +XhiRzwuf6wtnup/adnjlA2iJ6XLiI9kswAMZQpKV9Wh4YlZUsKnJ4y7qex0Aqssh4
-	 a41Va00ZHWayw==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1v14m3-000000004dQ-30pG;
-	Tue, 23 Sep 2025 17:17:47 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Patrice Chotard <patrice.chotard@foss.st.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Peter Griffin <peter.griffin@linaro.org>
-Subject: [PATCH] media: c8sectpfe: fix probe device leaks
-Date: Tue, 23 Sep 2025 17:16:05 +0200
-Message-ID: <20250923151605.17689-1-johan@kernel.org>
-X-Mailer: git-send-email 2.49.1
+	s=arc-20240116; t=1758640586; c=relaxed/simple;
+	bh=TCD5mryo8Qr2foLQR3AY4j7mLplUOZIiR798hd1ldCo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Asn/uEFzelECGJJiJWe0yOFPUOdxbFRnni2EaL7sq4OwVIIw4slFUNudst85s4Bs/U0aWM0nEASkbKegAIbEMYNIBqJMdo+VQPM7by5O+e+DHJTrFeAR74UkkMh1wPwDu54cvd+KvY896p7kurQqDBuQ9Lb8MRpFSyfd6es0/8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=dPHGT98p; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6005b.ext.cloudfilter.net ([10.0.30.162])
+	by cmsmtp with ESMTPS
+	id 13Y4vqMEYaPqL14kivvqWX; Tue, 23 Sep 2025 15:16:24 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 14khvpOP7LidY14khvHLAN; Tue, 23 Sep 2025 15:16:24 +0000
+X-Authority-Analysis: v=2.4 cv=bq1MBFai c=1 sm=1 tr=0 ts=68d2b9c8
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=H2e1TcdlFpyve7uw5OEA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kcL2CBsiMVraYHlvW5SX5jwa4HvqiokUH2wH5muwOaY=; b=dPHGT98pS3dXcrM0N4/z+dmW1V
+	vVGLBSShmyTeVBlGUD7XdPXOB8dU0NHvvDmLuZ2AGAdIenoNITK3KOvpSj+sV86yW0drgEvoK/35M
+	3flmJWrcsT9R4EQTBRW7bVNSx0RuLG6CbLuCe0hSF88JgG1kv176fZNY0IpgKdmP0pJ4uWHJnRZT/
+	ZEC+I9SMtgyp8ugnLJjav+Tm4YzvHtfmGDRc9PKcOcdY4bF9q/C74DXBVcoTzIYTarWVv46LPudtM
+	8x3jl4rPRSTK2ZzY6HIp6LCIYb3c0XVGArJ+K+UIr8hlE39/Q85xRZSfU7IuVDEs04ZbYgzrPLHKe
+	O46hxfxg==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:54206 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1v14kg-00000000zdP-37QM;
+	Tue, 23 Sep 2025 09:16:22 -0600
+Message-ID: <083af45a-16ca-4f2d-97aa-105cf08c4c08@w6rz.net>
+Date: Tue, 23 Sep 2025 08:16:20 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/61] 6.1.154-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250922192403.524848428@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250922192403.524848428@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1v14kg-00000000zdP-37QM
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:54206
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 59
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOGimXz9PE9uQwU1YwgJC0AV+zU660nWZaUkTuT/8q4iYk8fDbEIJu3ZrRpr/glvjto2Jror94PmZtSJxmYVMQrEPigQC0TECL1obIYCKubGh/Wh5wYX
+ vNiZ4PK+O5xZV4kHVbYdfl4Hd+mK3GjLCQBk1ovhLmrmZJBmHXlYe6mnU9dztUorNkjy2iQaeLRCDg==
 
-Make sure to drop the references taken to the I2C adapters during probe
-on probe failure (e.g. probe deferral) and on driver unbind.
+On 9/22/25 12:28, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.154 release.
+> There are 61 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 24 Sep 2025 19:23:52 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.154-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: c5f5d0f99794 ("[media] c8sectpfe: STiH407/10 Linux DVB demux support")
-Cc: stable@vger.kernel.org	# 4.3
-Cc: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- .../media/platform/st/sti/c8sectpfe/c8sectpfe-core.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-diff --git a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-index 89bd15a4d26a..3f94d9b4ef1e 100644
---- a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-+++ b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-@@ -655,6 +655,13 @@ static irqreturn_t c8sectpfe_error_irq_handler(int irq, void *priv)
- 	return IRQ_HANDLED;
- }
- 
-+static void c8sectpfe_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int c8sectpfe_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -799,6 +806,11 @@ static int c8sectpfe_probe(struct platform_device *pdev)
- 			return -ENODEV;
- 		}
- 
-+		ret = devm_add_action_or_reset(dev, c8sectpfe_put_device,
-+					       &tsin->i2c_adapter->dev);
-+		if (ret)
-+			return ret;
-+
- 		/* Acquire reset GPIO and activate it */
- 		tsin->rst_gpio = devm_fwnode_gpiod_get(dev,
- 						       of_fwnode_handle(child),
--- 
-2.49.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
