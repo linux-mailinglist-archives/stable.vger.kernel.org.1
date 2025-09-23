@@ -1,49 +1,65 @@
-Return-Path: <stable+bounces-181515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4E8B967FE
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:07:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8308B96870
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36CC218850F8
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:08:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C494F2A46EF
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3227255222;
-	Tue, 23 Sep 2025 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894F22594B7;
+	Tue, 23 Sep 2025 15:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JoG6UHcc"
 X-Original-To: stable@vger.kernel.org
-Received: from psionic.psi5.com (psionic.psi5.com [185.187.169.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE74246BB4;
-	Tue, 23 Sep 2025 15:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.187.169.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9BFDDAB;
+	Tue, 23 Sep 2025 15:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758640059; cv=none; b=vBEfjfN3RHK3haxj02HnwP/0F1bK+zniEhlQoMzbxcdjiPIWNgHSEgEjnbFBX5IWig65z4Y8UAOHLAgJnJWld2Hq1vMmKpcuIm+QV25gBzDT6rKfQAQzOSyZHfFDpxQyXX9YECX/5rRFK9rrS1uZe5/ey0mfw2dMO9il4dSaQb8=
+	t=1758640517; cv=none; b=m9xHtRGHpGhKmjAvf6oh1aIuchBPPselCTXzxXDi8HstOEgSjG99wgn3OItwimWl3bN2reh0KaoKPYM5aHtfgjoELdCossxWCzBzVrGsYlkS03tKEHg06Z4cWwLF50L7iu+pe8SD/qZOHEmjnUDPa3HKsU1lKd5anMQmvGDsYfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758640059; c=relaxed/simple;
-	bh=Ev8ok5cn/l8aR83oLAKn5J8yEAs/ij6LJ1LuS7Vhgts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lOtkY1ybqkYKjAtoPflKmqgi5OxGWuB4t3xZXy8bGaHMo4LXXjYzLzPFg5UgXvpZEaeBSJi9YmeRJMO0Ypho34Gop6GcOsTWxOLBhB6mffAG4l7iptaW2LbP1lLevCer1G/JQFMBxGTdOrpWMsM6CmD3THiKSmvVs7yLpG2eoTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass smtp.mailfrom=hogyros.de; arc=none smtp.client-ip=185.187.169.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hogyros.de
-Received: from localhost.localdomain (unknown [IPv6:2400:2410:b120:f200:2e09:4dff:fe00:2e9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by psionic.psi5.com (Postfix) with ESMTPSA id 1FA9C3F116;
-	Tue, 23 Sep 2025 17:07:24 +0200 (CEST)
-From: Simon Richter <Simon.Richter@hogyros.de>
-To: linux-fbdev@vger.kernel.org,
+	s=arc-20240116; t=1758640517; c=relaxed/simple;
+	bh=DpWHQGigTbPm8gcTYl8TZGOSyPPjUZHRqNSp0PuxL5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JIsDEbd/0dOcS7NyjyIsxiBzYpp4IkLLSwbm2YwF6peLA9aJNv+Mi5CbH1enFHIWKnumCWNFZxsj1TMXfaqF39Uc6B1MZ4LVrUaIC6gg89SfwBYDHnOmHGPkEJx3IDj1icI+HsHPXkmKzUeCKrUfjVjeHfOHLe3zlMkMdwmTKto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JoG6UHcc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AC5C4CEF5;
+	Tue, 23 Sep 2025 15:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758640516;
+	bh=DpWHQGigTbPm8gcTYl8TZGOSyPPjUZHRqNSp0PuxL5I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JoG6UHccek/HejhsWYNCG4U9q5yKyuDXrXW4Kf5fYXiWWW5RoPw0Dy7BDvBYKXbc8
+	 Bm/+jxAExEylddeRevAIff9IgNSO6mE8aLFuCXY4EUsTv/B4AsixuyP7k7pKv5t5xZ
+	 cnnOIEq1H1MWRiybjp7Iene2c3lPLKA22HAbz3PgIwGfhQNiAi4Jd7AFIF3p7xIuyv
+	 jevnnKRQ7PBhcBDhPkmrQwfd6YvLTPXzZEBewsGyoIzS8fLZgNaZoWGANT1fh87iFZ
+	 XbuaGV04X+SfqNndHPhZn+iUhvj/MXmbhhLJijjdaP/29s67470YpAxznys1sZ5r5e
+	 trhNn6nok0OTA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1v14jW-000000004a8-2ula;
+	Tue, 23 Sep 2025 17:15:10 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Simon Richter <Simon.Richter@hogyros.de>,
-	stable <stable@vger.kernel.org>
-Subject: [PATCH] fbcon: fix buffer overflow in fbcon_set_font
-Date: Wed, 24 Sep 2025 00:06:28 +0900
-Message-ID: <20250923150642.2441-1-Simon.Richter@hogyros.de>
-X-Mailer: git-send-email 2.47.3
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/imx/tve: fix probe device leak
+Date: Tue, 23 Sep 2025 17:13:46 +0200
+Message-ID: <20250923151346.17512-1-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,58 +68,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe introduced overflow
-checking for the font allocation size calculation, but in doing so moved
-the addition of the size for font housekeeping data out of the kmalloc
-call.
+Make sure to drop the reference taken to the DDC device during probe on
+probe failure (e.g. probe deferral) and on driver unbind.
 
-As a result, the calculated size now includes those extra bytes, which
-marks the same number of bytes beyond the allocation as valid font data.
-
-The crc32() call and the later memcmp() in fbcon_set_font() already perform
-an out-of-bounds read, the latter is flagged on ppc64el:
-
-    memcmp: detected buffer overflow: 4112 byte read of buffer size 4096
-
-when loading Lat15-Fixed16.psf.gz.
-
-Since the addition of the extra size should only go into the kmalloc()
-call, calculate this size in a separate variable.
-
-Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
-Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-Cc: stable <stable@vger.kernel.org> #v5.9+
+Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television Encoder (TVEv2)")
+Cc: stable@vger.kernel.org	# 3.10
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/imx/ipuv3/imx-tve.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 5fade44931b8..a3fbf42c57d9 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2518,7 +2518,7 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
- 	unsigned charcount = font->charcount;
- 	int w = font->width;
- 	int h = font->height;
--	int size;
-+	int size, allocsize;
- 	int i, csum;
- 	u8 *new_data, *data = font->data;
- 	int pitch = PITCH(font->width);
-@@ -2551,10 +2551,10 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+index c5629e155d25..895413d26113 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+@@ -525,6 +525,13 @@ static const struct component_ops imx_tve_ops = {
+ 	.bind	= imx_tve_bind,
+ };
  
- 	/* Check for overflow in allocation size calculation */
--	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &allocsize))
- 		return -EINVAL;
++static void imx_tve_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int imx_tve_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -546,6 +553,11 @@ static int imx_tve_probe(struct platform_device *pdev)
+ 	if (ddc_node) {
+ 		tve->ddc = of_find_i2c_adapter_by_node(ddc_node);
+ 		of_node_put(ddc_node);
++
++		ret = devm_add_action_or_reset(dev, imx_tve_put_device,
++					       &tve->ddc->dev);
++		if (ret)
++			return ret;
+ 	}
  
--	new_data = kmalloc(size, GFP_USER);
-+	new_data = kmalloc(allocsize, GFP_USER);
- 
- 	if (!new_data)
- 		return -ENOMEM;
+ 	tve->mode = of_get_tve_mode(np);
 -- 
-2.47.3
+2.49.1
 
 
