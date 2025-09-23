@@ -1,131 +1,109 @@
-Return-Path: <stable+bounces-181514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E1FB967C8
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:04:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4E8B967FE
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0DE23A4804
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:04:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36CC218850F8
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70890220F2D;
-	Tue, 23 Sep 2025 15:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="SpnHzFKm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3227255222;
+	Tue, 23 Sep 2025 15:07:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from psionic.psi5.com (psionic.psi5.com [185.187.169.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3002E54774
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 15:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE74246BB4;
+	Tue, 23 Sep 2025 15:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.187.169.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758639861; cv=none; b=gIsxOQfEo0XgS8lxenl5G18AkO1dNPGWejyFbKhiLWQtyAjV2fzbdZNMInUc0mA1GFgLDEjtWrQoyuGNSNpU6/Aogo67RH2dVcNfujSE4V6JCpXkg6uoABSuYv1wkL2IoJTqn82SHOaPb25i/UniWUp7DGRigSA5rXICywyxYD0=
+	t=1758640059; cv=none; b=vBEfjfN3RHK3haxj02HnwP/0F1bK+zniEhlQoMzbxcdjiPIWNgHSEgEjnbFBX5IWig65z4Y8UAOHLAgJnJWld2Hq1vMmKpcuIm+QV25gBzDT6rKfQAQzOSyZHfFDpxQyXX9YECX/5rRFK9rrS1uZe5/ey0mfw2dMO9il4dSaQb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758639861; c=relaxed/simple;
-	bh=A2fMlfWmf9LrY5OfJ+z5PbxhG/OI9UKQneYsp/dxaVc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n2cJylngPTkdDlHc4adxoscn5j3MdKolbBcUc1MtTdxIucE48d1exHitMHfAQQOavHIu0aENHBo9nHR8Qn4RCnVchEgXaWb1Hh4CEkPjcaaNZ3OnIW0Sx2YIIGVB4ascLPXMhzfOkI3j64arqyf8L5PYT6uiJVGXXfBq9sLs0C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=SpnHzFKm; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5005b.ext.cloudfilter.net ([10.0.29.189])
-	by cmsmtp with ESMTPS
-	id 12cmv7ppCSkcf14Yzv9dsm; Tue, 23 Sep 2025 15:04:17 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id 14Yxv933xfjrX14YxvIFLb; Tue, 23 Sep 2025 15:04:15 +0000
-X-Authority-Analysis: v=2.4 cv=ItcecK/g c=1 sm=1 tr=0 ts=68d2b6f0
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=H2e1TcdlFpyve7uw5OEA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jcu55gYOTbPSpKFwoC4b+viazruYUOUDXwlgJbMSJ64=; b=SpnHzFKm3m4uR/SvXpscYkcOpw
-	Rq+kq/+SGIoXVJU6lXsPftf6PL9MOVyt1jaKPp447573QynMVWS3swM8Z9R6ScO1iC8WBVo7wghj+
-	hZdjTy4mdVC2CbyA8EYVpiUXw8tmWLMj4J8uz6BtrSJH0EQJjZLyTIcc6KJIp1SWnl49CYojFeocf
-	25EuhMRvQ341L2IEKcXU5zox+xTRgL6wolpDtTOuQu9drNGgOhKk7R18Qz0vIBNQOA3Lpeew/eTed
-	/v7h5RvbZZ3+ceXYFTJKuOQEH/JnmW2pokAGz21SKo2Tx1caJ2HGYIsPGh9fe+l0kOZqWhmMOIMl/
-	v270fphQ==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:55540 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1v14Yw-00000000vH5-16Ds;
-	Tue, 23 Sep 2025 09:04:14 -0600
-Message-ID: <33be3968-797d-4e63-8dfd-c85d61f0bc20@w6rz.net>
-Date: Tue, 23 Sep 2025 08:04:12 -0700
+	s=arc-20240116; t=1758640059; c=relaxed/simple;
+	bh=Ev8ok5cn/l8aR83oLAKn5J8yEAs/ij6LJ1LuS7Vhgts=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lOtkY1ybqkYKjAtoPflKmqgi5OxGWuB4t3xZXy8bGaHMo4LXXjYzLzPFg5UgXvpZEaeBSJi9YmeRJMO0Ypho34Gop6GcOsTWxOLBhB6mffAG4l7iptaW2LbP1lLevCer1G/JQFMBxGTdOrpWMsM6CmD3THiKSmvVs7yLpG2eoTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass smtp.mailfrom=hogyros.de; arc=none smtp.client-ip=185.187.169.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hogyros.de
+Received: from localhost.localdomain (unknown [IPv6:2400:2410:b120:f200:2e09:4dff:fe00:2e9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by psionic.psi5.com (Postfix) with ESMTPSA id 1FA9C3F116;
+	Tue, 23 Sep 2025 17:07:24 +0200 (CEST)
+From: Simon Richter <Simon.Richter@hogyros.de>
+To: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: Simon Richter <Simon.Richter@hogyros.de>,
+	stable <stable@vger.kernel.org>
+Subject: [PATCH] fbcon: fix buffer overflow in fbcon_set_font
+Date: Wed, 24 Sep 2025 00:06:28 +0900
+Message-ID: <20250923150642.2441-1-Simon.Richter@hogyros.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/105] 6.12.49-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250922192408.913556629@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250922192408.913556629@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1v14Yw-00000000vH5-16Ds
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:55540
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfG+rfpKSvclfz9U/vvG62/kjjO16SW8pACJmRrA0WxC2MHHtK2dSTKBytcpqDo1h9kuK7rvLKJIuOaobE9j46B9thl4CiCiVoD+60J4cvoktDkAt5q9D
- 9xbVVQOiO6RoT+NxWzSKDfY65+IOu6Bm4iCtToof4llWjhTthX3VHfk68iTYaaaP2xyZYuBTtc2kKw==
+Content-Transfer-Encoding: 8bit
 
-On 9/22/25 12:28, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.49 release.
-> There are 105 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 24 Sep 2025 19:23:52 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.49-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe introduced overflow
+checking for the font allocation size calculation, but in doing so moved
+the addition of the size for font housekeeping data out of the kmalloc
+call.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+As a result, the calculated size now includes those extra bytes, which
+marks the same number of bytes beyond the allocation as valid font data.
 
-Tested-by: Ron Economos <re@w6rz.net>
+The crc32() call and the later memcmp() in fbcon_set_font() already perform
+an out-of-bounds read, the latter is flagged on ppc64el:
+
+    memcmp: detected buffer overflow: 4112 byte read of buffer size 4096
+
+when loading Lat15-Fixed16.psf.gz.
+
+Since the addition of the extra size should only go into the kmalloc()
+call, calculate this size in a separate variable.
+
+Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
+Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
+Cc: stable <stable@vger.kernel.org> #v5.9+
+---
+ drivers/video/fbdev/core/fbcon.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 5fade44931b8..a3fbf42c57d9 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2518,7 +2518,7 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
+ 	unsigned charcount = font->charcount;
+ 	int w = font->width;
+ 	int h = font->height;
+-	int size;
++	int size, allocsize;
+ 	int i, csum;
+ 	u8 *new_data, *data = font->data;
+ 	int pitch = PITCH(font->width);
+@@ -2551,10 +2551,10 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
+ 		return -EINVAL;
+ 
+ 	/* Check for overflow in allocation size calculation */
+-	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
++	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &allocsize))
+ 		return -EINVAL;
+ 
+-	new_data = kmalloc(size, GFP_USER);
++	new_data = kmalloc(allocsize, GFP_USER);
+ 
+ 	if (!new_data)
+ 		return -ENOMEM;
+-- 
+2.47.3
 
 
