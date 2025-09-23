@@ -1,136 +1,158 @@
-Return-Path: <stable+bounces-181482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EAB5B95DD2
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 14:45:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74171B95E0E
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 14:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9AF47AA19B
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 12:43:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D6F416B5FA
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 12:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00EA323F58;
-	Tue, 23 Sep 2025 12:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jruc0i+w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80643322744;
+	Tue, 23 Sep 2025 12:51:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A14027F011
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 12:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5298E2EE5FC;
+	Tue, 23 Sep 2025 12:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758631493; cv=none; b=IxyaIEqPIcq/rbZXNYygxWejmBSAOcwIoxSfNNjWFcFuxZfggTLZ13+BGHL9/F0ZPK2l2Wq8+EQzHHb7Ea7tOjYwlV8IhQvKQGquETORLuf3FDtaZqKozJyk2nMQlo+lWKMAX4IYjrEsBXnQbdGx+oOD7EG7sSPaYlPTAHdq7CA=
+	t=1758631898; cv=none; b=MJ6ABHzySBLTvG9BFI7HV9If2vx91KuAinW3/So179uO/4PJrUo1cotfLX/QFQ7cTpWxQSDRBQ+QBAoLO1thjAUaJkKZuYwQ62HJ8uhT3pqzTF+LfgZPoxPDq7Yt/FHn6ebVjM3I+KSHmd6yl2oorOwvAejbvNWdmxvlWTlWLfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758631493; c=relaxed/simple;
-	bh=X5SCAiSiPiJEcYEiOxRFI7I4FHTBz2CQgSgz4A8sfdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qsZNi1n79NSXmCFiShTncVum5ulYGJ+GHWz0Ri5zc5aK0QrK0zjB6UZ86UkmDW74eQfKyCwX15+Am7eLKV2qEbVKxrS3mxp1Dt/E/yQ/9ByyFqkBMLj14cem6ETe8f6vTnHFnoj3wDQp81yYfxDcbBozeEzCiJvmAL86AK0Y130=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jruc0i+w; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-77f0efd84abso2762301b3a.3
-        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 05:44:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758631491; x=1759236291; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cgc0zGHjqKsb6Mzy0/R8YmRgjX+eUzNJLvWfwmfdlbw=;
-        b=Jruc0i+wYSxjrQk6RIxskeS0j1RaZjlSXUnI5B9f7yoZ2k/KnOs2OGTIHy3Rht9kAt
-         4g9he9H2+3sfbxI1yTldJgVU2a73bO/f0wUu1/NpxjCpXd6v8ujvRyEK0dFdCS5l77Q5
-         cKUlBVoPEtUeo+8BHKKVsA8lBCjgcHs9IZPkHRWfX/4yEO37UyJjMD0bzljphwaVjJxb
-         AijAVsv74PJgREEzt3LCdq+EmhXVnkb5OhQZ60i3MGzaiaj/VUUq3JXXI5KfvpCGZaSW
-         x7VX5newM/msOWP67OX2rsB+nM1vAyT9EtlGUuos7Iu+a7B+B+yBNXI89C1kKdckUuQU
-         eMLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758631491; x=1759236291;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cgc0zGHjqKsb6Mzy0/R8YmRgjX+eUzNJLvWfwmfdlbw=;
-        b=VTifh0lYHekKG04J7o+0ys1VNJCftCVteAyZU5wcTj5m3DtxglGUZgvHi3z94K0WQA
-         Zrehh8QvbXDOfzim0/ctd8IC4FY7/kGyD92CkQBgTv77iuB7SJjYb3ju9/cD/8o8GNNg
-         O+fZHgmPlzQT3zNa4yoHhQuFzrwQeQGwUy2AnOZIE/YdZGSFJM9HYLhruhFtSLuxQq1K
-         ylbxIAsh3uBqGtYDK7NzESSLR/+XatLEPmF12I2PQsbAqYZStXSBF3wopg3yRZH4EmFP
-         DLb+6WXpwaxnzJM3ASy0F6OEh7w9OhEW8hhzN6kpF6nHkNSidI+lH4FJDPw8+gyidvME
-         ws7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWGQmjQAnELkCm3ZNwgoIhRjYwWg3ID49x4/VfapZxrDb6muD32M3FUYPFwBgYypi66MT54zew=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4uP+YPHL6Acr1K7gGEdtv0ftCyUn5/FGj5+X/pYBP3OKx9PxH
-	8qFWT5QBSSup1pde9NXovilzILebKSH9qmZKNyhs2ofMR4/f4C5AbXHL
-X-Gm-Gg: ASbGncuiTWc+N3EwF4QeBnWDhtjqf3sA0JrWyGxptg6dJAe9g6Aq+WN1ME2Yo/4A69h
-	vg7afMsPhO2ms4GCybxHPywUUx14OlnOtD34D7TrvtWls+wlGiy2/Qxtixs/qVGWrT4G/fOcQK9
-	G8AsjIvyZB6AhpOAjljZw0Ny5v6JYtnMGK9RDaeXoATehq3FdAfVYDNSu9fnXF0kwkGctRsuaE3
-	BSDkBR/a/f9Mexc30t/YS/2Obb/2V5xU5tfR5cDsUOquC9vlekAMYZO1/IoZsDpIeBdXIsqZVXR
-	783f5ji5+5Oa28H4p8KxS048qiqylVsT0vWrWnkvquFNgIHLI3ve7LRTYsBKb1rPJvZhGLGC2nt
-	XoGyx5ISneR91tzB/UybRnco=
-X-Google-Smtp-Source: AGHT+IF+Z+DXFn3bgpMwnAWPeSbLtcvFzn5fzKbQO8Hcx6cZEpx6vf9Jd5Y5Z7nnPoPYPWpaRcohgQ==
-X-Received: by 2002:a05:6a21:3398:b0:24d:38c:26bd with SMTP id adf61e73a8af0-2cffb042180mr4007968637.43.1758631491539;
-        Tue, 23 Sep 2025 05:44:51 -0700 (PDT)
-Received: from lgs.. ([2408:8418:1100:9530:4f2e:20bc:b03d:e78])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b553a0a8270sm8354998a12.17.2025.09.23.05.44.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Sep 2025 05:44:51 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Victoria Milhoan (b42089)" <vicki.milhoan@freescale.com>,
-	Dan Douglass <dan.douglass@nxp.com>,
-	Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] crypto: caam: Add check for kcalloc() in test_len()
-Date: Tue, 23 Sep 2025 20:44:18 +0800
-Message-ID: <20250923124418.1857922-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1758631898; c=relaxed/simple;
+	bh=u5l+plMW55Dj7R8Fa7d/lY4KC8chvKCC1EMxWCDzhCM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h4DUQYA58m/tCLMXKYbhVXeZVh5DOzWjm8XFeKAvDi9EecjiH5zsEzJuggc/2r+fR7N5Fz2eNbdpTh/+ISe1YupElpE7xcBfLNlvJMs0vfpbmAXQBb3jcmaJpjea8PojtUS9b97tokZoYQk3D1eDd44uRWqEKLX5ZiRe30r5YhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A7AC4CEF5;
+	Tue, 23 Sep 2025 12:51:30 +0000 (UTC)
+Date: Tue, 23 Sep 2025 13:51:27 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, usamaarif642@gmail.com,
+	yuzhao@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
+	cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
+	kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
+	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
+	dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
+	surenb@google.com, hughd@google.com, willy@infradead.org,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, qun-wei.lin@mediatek.com,
+	Andrew.Yang@mediatek.com, casper.li@mediatek.com,
+	chinwen.chang@mediatek.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+Message-ID: <aNKXz3B7iIIv7LxK@arm.com>
+References: <20250922021458.68123-1-lance.yang@linux.dev>
+ <aNGGUXLCn_bWlne5@arm.com>
+ <a3412715-6d9d-4809-9588-ba08da450d16@redhat.com>
+ <aNKJ5glToE4hMhWA@arm.com>
+ <8bf8302a-6aba-4f7e-8356-a933bcf9e4a1@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8bf8302a-6aba-4f7e-8356-a933bcf9e4a1@redhat.com>
 
-As kcalloc() may fail, check its return value to avoid a NULL pointer
-dereference when passing the buffer to rng->read(). On allocation
-failure, log the error and return since test_len() returns void.
+On Tue, Sep 23, 2025 at 02:00:01PM +0200, David Hildenbrand wrote:
+> On 23.09.25 13:52, Catalin Marinas wrote:
+> > I just realised that on arm64 with MTE we won't get any merging with the
+> > zero page even if the user page isn't mapped with PROT_MTE. In
+> > cpu_enable_mte() we zero the tags in the zero page and set
+> > PG_mte_tagged. The reason is that we want to use the zero page with
+> > PROT_MTE mappings (until tag setting causes CoW). Hmm, the arm64
+> > memcmp_pages() messed up KSM merging with the zero page even before this
+> > patch.
+> > 
+> > The MTE tag setting evolved a bit over time with some locking using PG_*
+> > flags to avoid a set_pte_at() race trying to initialise the tags on the
+> > same page. We also moved the swap restoring to arch_swap_restore()
+> > rather than the set_pte_at() path. So it is safe now to merge with the
+> > zero page if the other page isn't tagged. A subsequent set_pte_at()
+> > attempting to clear the tags would notice that the zero page is already
+> > tagged.
+> > 
+> > We could go a step further and add tag comparison (I had some code
+> > around) but I think the quick fix is to just not treat the zero page as
+> > tagged.
+> 
+> I assume any tag changes would result in CoW.
 
-Fixes: 2be0d806e25e ("crypto: caam - add a test for the RNG")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-changelog:
-v3:
-- Fix build error: test_len() returns void; return without a value.
-- No functional changes beyond the allocation failure path.
+Yes.
 
-v2:
-- Return on allocation failure to avoid possible NULL dereference.
----
- drivers/crypto/caam/caamrng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> It would be interesting to know if there are use cases with VMs or other
+> workloads where that could be beneficial with KSM.
 
-diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index b3d14a7f4dd1..0eb43c862516 100644
---- a/drivers/crypto/caam/caamrng.c
-+++ b/drivers/crypto/caam/caamrng.c
-@@ -181,7 +181,9 @@ static inline void test_len(struct hwrng *rng, size_t len, bool wait)
- 	struct device *dev = ctx->ctrldev;
- 
- 	buf = kcalloc(CAAM_RNG_MAX_FIFO_STORE_SIZE, sizeof(u8), GFP_KERNEL);
--
-+	if (!buf) {
-+		return;
-+	}
- 	while (len > 0) {
- 		read_len = rng->read(rng, buf, len, wait);
- 
+With VMs, if MTE is allowed in the guest, we currently treat any VM page
+as tagged. In the initial version of the MTE spec, we did not have any
+fine-rained control at the stage 2 page table over whether MTE is in use
+by the guest (just a big knob in a control register). We later got
+FEAT_MTE_PERM which allows stage 2 to trap tag accesses in a VM on a
+page by page basis, though we haven't added KVM support for it yet.
+
+If we add full tag comparison, VMs may be able to share more pages. For
+example, code pages are never tagged in a VM but the hypervisor doesn't
+know this, so it just avoids sharing. I posted tag comparison some years
+ago but dropped it eventually to keep things simple:
+
+https://lore.kernel.org/all/20200421142603.3894-9-catalin.marinas@arm.com/
+
+However, it needs a bit of tidying up since at the time we assumed
+everything was tagged. I can respin the above (on top of the fix below),
+though I don't see many vendors rushing to deploy MTE in a multi-VM
+scenario (Android + pKVM maybe but not sure they enable KSM due to power
+constraints).
+
+> > diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+> > index e5e773844889..72a1dfc54659 100644
+> > --- a/arch/arm64/kernel/mte.c
+> > +++ b/arch/arm64/kernel/mte.c
+> > @@ -73,6 +73,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
+> >   {
+> >   	char *addr1, *addr2;
+> >   	int ret;
+> > +	bool page1_tagged = page_mte_tagged(page1) && !is_zero_page(page1);
+> > +	bool page2_tagged = page_mte_tagged(page2) && !is_zero_page(page2);
+> >   	addr1 = page_address(page1);
+> >   	addr2 = page_address(page2);
+> > @@ -83,11 +85,10 @@ int memcmp_pages(struct page *page1, struct page *page2)
+> >   	/*
+> >   	 * If the page content is identical but at least one of the pages is
+> > -	 * tagged, return non-zero to avoid KSM merging. If only one of the
+> > -	 * pages is tagged, __set_ptes() may zero or change the tags of the
+> > -	 * other page via mte_sync_tags().
+> > +	 * tagged, return non-zero to avoid KSM merging. Ignore the zero page
+> > +	 * since it is always tagged with the tags cleared.
+> >   	 */
+> > -	if (page_mte_tagged(page1) || page_mte_tagged(page2))
+> > +	if (page1_tagged || page2_tagged)
+> >   		return addr1 != addr2;
+> 
+> That looks reasonable to me.
+> 
+> @Lance as you had a test setup, could you give this a try as well with KSM
+> shared zeropage deduplication enabled whether it now works as expected as
+> well?
+
+Thanks!
+
+> Then, this should likely be an independent fix.
+
+Yes, I'll add a proper commit message. We could do a cc stable, though
+it's more of an optimisation.
+
 -- 
-2.43.0
-
+Catalin
 
