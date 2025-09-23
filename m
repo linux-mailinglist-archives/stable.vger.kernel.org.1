@@ -1,92 +1,109 @@
-Return-Path: <stable+bounces-181442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D338EB94DB1
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 09:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF19B94E75
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 10:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EF9E480388
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 07:51:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 295C53B7781
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 08:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4532E3164BE;
-	Tue, 23 Sep 2025 07:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828FF2F547E;
+	Tue, 23 Sep 2025 08:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="txYkf+EB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m3279.qiye.163.com (mail-m3279.qiye.163.com [220.197.32.79])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335D3314B64
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 07:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3275A2DEA79;
+	Tue, 23 Sep 2025 08:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758613883; cv=none; b=lzMdu5dLQC4X3igNFALODdGLkodxiajuvV9o0EzGNNO+oJCLq08H+z3ebaEhnu3HIQGyjGB/0DegzYHmujRPo8Vi4N31jzcqZ8xt6PbUhbmdOg4MIbP4u9a78HKkuagIlJntihCrdFGz15TVLxMWXey8RwbvFPABCayYnNf8ibA=
+	t=1758614598; cv=none; b=keAcMKZZMSvHTS0ZXN7GJIRIm2TaxnNBgIq+CQFoYioM+bwArh6JHVoZawbT6J/hW738y109UcUgCkq07VytnPyCNbFE7a/3Zng4H6LP3qRoeyHQt7nrXOhhJFucFtbrRoh/tI4k5Fju3AWxrDmn8RWgYhTSwMFHOd8Uyc4NJ3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758613883; c=relaxed/simple;
-	bh=kLmtJbh9w1qEihs5/ztDJj/xTv8uW3xbtqxgmNpBfK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rQD49nLHf6H1prfh3ENty+2mjvVxK0ZwFyKaobidp95bAEuW8x5zYEHItKKDy+sl7ba8OKBqNiPvQXlM42OBzGAr9oPZwuS/pQJIgqrkxCEoGX4g9/dgXloG6LYALa73nmjiLqCW3raNbJOEMQ1mVgYmfe5/1XqeatHGlV2xfos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=220.197.32.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 109e4c685;
-	Tue, 23 Sep 2025 15:51:12 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: dhowells@redhat.com,
-	marc.dionne@auristor.com
-Cc: linux-afs@lists.infradead.org,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] afs: Fix potential null pointer dereference in afs_put_server
-Date: Tue, 23 Sep 2025 15:51:04 +0800
-Message-Id: <20250923075104.1141803-1-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
+	s=arc-20240116; t=1758614598; c=relaxed/simple;
+	bh=D5uiey4471seattefoOzNwyH5jPWbq+Ym1dnz+bTheg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rqa6dHiUaeedzOct3Lgg+2F1GtwVGvMH3wxYviz3Qq7kyLFoNmD4hlzVdqmQr3WMjdNuwf+Y5zBsgz2RMJSnKevcdZaYgJtWQsrJpbJdTUgg6yOL9Mkszs9Ge1/7kfN1H/h116aDXELwH7krH9RLKSQ/EwMNZfdI9zckh0U4HU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=txYkf+EB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B300C4CEF5;
+	Tue, 23 Sep 2025 08:03:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758614597;
+	bh=D5uiey4471seattefoOzNwyH5jPWbq+Ym1dnz+bTheg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=txYkf+EBHpb+z/Ek9O1ldAU2o3rcJZel9hPFPiLbL7qMZF0GRoTvytX6clvt233YM
+	 z4IovMoaWdeW2Ks+XDeOeLtlDTdyYzw7HDHb4ugBs2UMYMI0Jk7/koyMgaTkwmLsLk
+	 ydnrl9Ye0dxfXNwC6QDzQLr1gStHZ2zjQuXI0A2kJpoS4SGlO1rNrSijKYABOu3+9C
+	 unBg9wKsIyLgfSV0lO3qqGAr08wBVdEOwNuWFhflXdd6ay0GvAxjm74Qcb7JuF4HR1
+	 rvLx4/duwX07qI5GKHXeuupRRTW09noeH71t/ce0R8EfOSo6bJ+NkuYpYcy/HfEMiD
+	 5Hvt1xuVC+0BQ==
+Date: Tue, 23 Sep 2025 10:03:12 +0200
+From: Mark Brown <broonie@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org,
+	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: Re: [PATCH v?] ASoC: mediatek: mt8365: Add check for devm_kcalloc()
+ in mt8365_afe_suspend()
+Message-ID: <aNJUQE6VncYiRx_w@finisterre.sirena.org.uk>
+References: <20250922140555.1776903-1-lgs201920130244@gmail.com>
+ <638119fb-4587-48a4-9534-2f19a194ca4e@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a99758e1f390229kunm96c99c5dd1431
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaQkwYVhkdQx1KHx9OTBlLT1YVFAkWGhdVGRETFh
-	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lCQ0JKVUpLS1
-	VLWQY+
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+UPYTcPP9yAXiY1I"
+Content-Disposition: inline
+In-Reply-To: <638119fb-4587-48a4-9534-2f19a194ca4e@web.de>
+X-Cookie: Filmed before a live audience.
 
-afs_put_server() accessed server->debug_id before the NULL check, which
-could lead to a null pointer dereference. Move the debug_id assignment,
-ensuring we never dereference a NULL server pointer.
 
-Fixes: 2757a4dc1849 ("afs: Fix access after dec in put functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
- fs/afs/server.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+--+UPYTcPP9yAXiY1I
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/fs/afs/server.c b/fs/afs/server.c
-index a97562f831eb..c4428ebddb1d 100644
---- a/fs/afs/server.c
-+++ b/fs/afs/server.c
-@@ -331,13 +331,14 @@ struct afs_server *afs_use_server(struct afs_server *server, bool activate,
- void afs_put_server(struct afs_net *net, struct afs_server *server,
- 		    enum afs_server_trace reason)
- {
--	unsigned int a, debug_id = server->debug_id;
-+	unsigned int a, debug_id;
- 	bool zero;
- 	int r;
- 
- 	if (!server)
- 		return;
- 
-+	debug_id = server->debug_id;
- 	a = atomic_read(&server->active);
- 	zero = __refcount_dec_and_test(&server->ref, &r);
- 	trace_afs_server(debug_id, r - 1, a, reason);
--- 
-2.20.1
+On Mon, Sep 22, 2025 at 05:35:35PM +0200, Markus Elfring wrote:
+> =E2=80=A6
+> > Add a NULL check and bail out with -ENOMEM, making sure to disable the
+> > main clock via the existing error path to keep clock state balanced.
+>=20
+> How do you think about to increase the application of scope-based resourc=
+e management?
 
+Feel free to ignore Markus, he has a long history of sending
+unhelpful review comments and continues to ignore repeated requests
+to stop.
+
+--+UPYTcPP9yAXiY1I
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjSVDsACgkQJNaLcl1U
+h9CCEAf/QCnhzFI+vp9Z49NAqudJk3wDfrBz+Hv5nquQzGzv/kb6Yc1Fi72Cl+Iq
+xEDVMpmBO5q1RUEK6oaDMPsrf9bHQ3pPPXEnUl4hbmeL+KNaUaYZEIio2c8bGBvd
+lLdOZKp0KSN0yxXku0zJV5tjg6UnkGbaOldwJxFhACgUhxEbpnSsE+dNsvtGuYik
+oCJtKZhTqE3aOz3lqXNYy6eVi/K0THqsqaBVwmkdwrexlxn02VZXnp9CpVl4CLqB
+p9iK+FwyxIZ5UvH/kihITAP3klv9+SRjCiCxJNbaDdvV1YVZ+BP/yUUbbiiq62B8
+hr36WqAph+oDt0grDiMkmKeHD5Dy5w==
+=Pl39
+-----END PGP SIGNATURE-----
+
+--+UPYTcPP9yAXiY1I--
 
