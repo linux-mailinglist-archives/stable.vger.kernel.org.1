@@ -1,137 +1,116 @@
-Return-Path: <stable+bounces-181421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3FEB93D87
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 03:28:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6564CB93E44
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 03:37:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 29D024E139B
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 01:28:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F43E3B503C
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 01:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DC824169A;
-	Tue, 23 Sep 2025 01:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lvjxcrcj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D67253F3A;
+	Tue, 23 Sep 2025 01:37:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACF42C187;
-	Tue, 23 Sep 2025 01:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4758323A98E;
+	Tue, 23 Sep 2025 01:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758590893; cv=none; b=lxPIQrJt6mQfM2in2/UXOugFZ/RjmmIGqBijOFc5F0nWQvGRIuWAOlbaWEwWwoxTKW00QJp7rd87T0CBPUcZNFIIruSg2UvNeQqzQsPdVfw6Ub4SYEUKDghIiEe49bN5Gz6mqsUvhdU9rxGfIlNlCm/3PzWGvu8Ypwnt9/j02UE=
+	t=1758591428; cv=none; b=mqWP2ouuNX6YoFlh2GOHjqQ2XYm/1v1m7EePvVxtVsjP+gD2s7DMl6IiCSoadRRHA6LnjB4pYz1t/UIs1kTrwe9yc1bJqocFxXior6nGINOurSzblfcscltcnvH6l0MHXaALUSgBWaHKL4gfjrwcLmA4d1aNHzGGfZMllpnddcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758590893; c=relaxed/simple;
-	bh=0ADWJisW8kO/3Dt31lZdQTFhoI6w1MXoIubeGL3UfrE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GqeVQp90z541xILw3Elqh8D/OY7mU6RqtGUrFUq2cYWDqR9TsiF95cl+FOCQBE6zEmMzaSkiS0NuGf2ttJHqbW+ZWLJuvoQClMO9spAlMTfTnZuZprmWNBc/TzZ1gO24DFS51e4p7fMdk6EXATtYjVcgHb0q4NtlrNYsU9Aa7k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lvjxcrcj; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=PqEYUudwG18jHMViGLX/jZq1TAjXJhfWsdIZilzljnk=;
-	b=lvjxcrcjr4Vpxk9cLwZBp33jsJzsOaMgA98UdPTdegAAvpWFzXIs+FiJo37HRI
-	iv7b32cfDz5FgzvUjb9VMPF57VBrskT9SxDw0uYgyscshgiL9L0lNez9kUByoZex
-	pC3c3W3y6+CCV/Hyyrf8Xn7kMvumCXPLXAGTLNf3t+oJA=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDnN4th99FosHheDA--.434S2;
-	Tue, 23 Sep 2025 09:26:58 +0800 (CST)
-Date: Tue, 23 Sep 2025 09:26:57 +0800
-From: Qianqiang Liu <qianqiang.liu@163.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: jani.nikula@linux.intel.com, samasth.norway.ananda@oracle.com,
-	simona@ffwll.ch, deller@gmx.de, linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	George Kennedy <george.kennedy@oracle.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Shixiong Ou <oushixiong@kylinos.cn>, Kees Cook <kees@kernel.org>,
-	stable@vger.kernel.org, Zsolt Kajtar <soci@c64.rulez.org>
-Subject: Re: [PATCH] fbcon: Fix OOB access in font allocation
-Message-ID: <aNH3YWKc7ZF7-clL@debian.debian.local>
-References: <20250922134619.257684-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1758591428; c=relaxed/simple;
+	bh=h72PRuXb+5YDJqBFUXpma8t7W0H7b3KGo9y9VyMi1b4=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=QqYZcLg4cieyBA1p2YkOU1vv2gcA715KmqC7T2/dON64YMM+4Xd0rUCBOAHLtSBEr+Glfh50XiuleJQqXFgKRrUzMBa5XY5ehJKMudxYayfq1PKlDlg/eqUgIDv0iz8Vf+Oi07FUrd9l+qlGQfXD6ALgu/oA4T9mAgs8qdx5WX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowADH24WE+dFoYA9aBA--.14812S2;
+	Tue, 23 Sep 2025 09:36:14 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: dpenkler@gmail.com,
+	gregkh@linuxfoundation.org,
+	matchstick@neverthere.org,
+	dominik.karol.piatkowski@protonmail.com,
+	arnd@arndb.de,
+	paul.retourne@orange.fr,
+	dan.carpenter@linaro.org
+Cc: linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] staging: gpib: Fix device reference leak in fmh_gpib driver
+Date: Tue, 23 Sep 2025 09:36:03 +0800
+Message-Id: <20250923013603.30012-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:rQCowADH24WE+dFoYA9aBA--.14812S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF4UWw17KF4rAw1rJr1xAFb_yoW8GFWUpF
+	4rW3WUGryUurs3WF4UX34DZFWYka1Iyryruw18A345XFs5ZrySgF1qgrW5J3s0yrZ7Jr1j
+	yF1fGw1vgFWDZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4
+	vE14v_KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmQ6LU
+	UUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250922134619.257684-1-tzimmermann@suse.de>
-X-CM-TRANSID:_____wDnN4th99FosHheDA--.434S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kry8GF1rtFWDuw4fXr1kZrb_yoW5JFyrpF
-	WUGF13Wrs5tw43Ga1jgrWDZFy8Ww1kJryjgay2g3W5Zr9agwnxW34jkFWYga4fCr1DCry0
-	yFyqqFya9as8uFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UcvtZUUUUU=
-X-CM-SenderInfo: xtld01pldqwhxolxqiywtou0bp/1tbiER7RamjR73-r6wAAsd
 
-On Mon, Sep 22, 2025 at 03:45:54PM +0200, Thomas Zimmermann wrote:
-> Commit 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-> introduced an out-of-bounds access by storing data and allocation sizes
-> in the same variable. Restore the old size calculation and use the new
-> variable 'alloc_size' for the allocation.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-> Reported-by: Jani Nikula <jani.nikula@linux.intel.com>
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
-> Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: George Kennedy <george.kennedy@oracle.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Qianqiang Liu <qianqiang.liu@163.com>
-> Cc: Shixiong Ou <oushixiong@kylinos.cn>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: <stable@vger.kernel.org> # v5.9+
-> Cc: Zsolt Kajtar <soci@c64.rulez.org>
-> ---
->  drivers/video/fbdev/core/fbcon.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> index 5fade44931b8..c1c0cdd7597c 100644
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -2518,7 +2518,7 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
->  	unsigned charcount = font->charcount;
->  	int w = font->width;
->  	int h = font->height;
-> -	int size;
-> +	int size, alloc_size;
->  	int i, csum;
->  	u8 *new_data, *data = font->data;
->  	int pitch = PITCH(font->width);
-> @@ -2551,10 +2551,10 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
->  		return -EINVAL;
->  
->  	/* Check for overflow in allocation size calculation */
-> -	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-> +	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
->  		return -EINVAL;
->  
-> -	new_data = kmalloc(size, GFP_USER);
-> +	new_data = kmalloc(alloc_size, GFP_USER);
->  
->  	if (!new_data)
->  		return -ENOMEM;
-> -- 
-> 2.51.0
+The fmh_gpib driver contains a device reference count leak in
+fmh_gpib_attach_impl() where driver_find_device() increases the
+reference count of the device by get_device() when matching but this
+reference is not properly decreased. Add put_device() in
+fmh_gpib_detach(), which ensures that the reference count of the
+device is correctly managed.
 
-Reviewed-by: Qianqiang Liu <qianqiang.liu@163.com>
+Found by code review.
 
+Cc: stable@vger.kernel.org
+Fixes: 8e4841a0888c ("staging: gpib: Add Frank Mori Hess FPGA PCI GPIB driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v3:
+- deleted the redundant put_device() to avoid double free as suggestions;
+Changes in v2:
+- modified the free operations as suggestions. Thanks for dan carpenter's instructions.
+---
+ drivers/staging/gpib/fmh_gpib/fmh_gpib.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
+index 4138f3d2bae7..efce01b39b9b 100644
+--- a/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
++++ b/drivers/staging/gpib/fmh_gpib/fmh_gpib.c
+@@ -1517,6 +1517,11 @@ void fmh_gpib_detach(struct gpib_board *board)
+ 					   resource_size(e_priv->gpib_iomem_res));
+ 	}
+ 	fmh_gpib_generic_detach(board);
++
++	if (board->dev) {
++		put_device(board->dev);
++		board->dev = NULL;
++	}
+ }
+ 
+ static int fmh_gpib_pci_attach_impl(struct gpib_board *board,
 -- 
-Best,
-Qianqiang Liu
+2.17.1
 
 
