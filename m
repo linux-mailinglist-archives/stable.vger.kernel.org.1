@@ -1,147 +1,142 @@
-Return-Path: <stable+bounces-181538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C208B97234
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 19:56:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0B6B9726C
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 20:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B30E19C7344
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:57:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E374117500F
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 18:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D1D2D063A;
-	Tue, 23 Sep 2025 17:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3352DC354;
+	Tue, 23 Sep 2025 18:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bf/KHlXO"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R6Z7jsdK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E022DF12B
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 17:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13715296BCB
+	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 18:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758650199; cv=none; b=FLDmoK/4MN9h8ErISG383uJJzXG9KzcZHOlH8rVx139DIhN2HqF5MSKnS3bWjnQZpkiFWu4Pm6d0y7Rjhn8NDBcPclZoCHiVzfWulgDaPhA5WvS1tGxxVY4rCcwTaaS1qgUSySZh9l9vqRpk8wF4CEMSGq78t9zMIRdN4pgdS+4=
+	t=1758650517; cv=none; b=HwFujEBjZ8F19xoC1d9t6NBRSWIu4r0Uyc3m5amXuhlcoBtjHKx5R4k2K+lQAB61bIChf+HH+v60FxiNHr62Ay855RPqPVrTT6USWNtgFWc5t8zNzi4UdcSqdIy27Wx2YDZg8T5g5iBMWdQEDlEfhFBtblSOiNAnx/2L6NOU5K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758650199; c=relaxed/simple;
-	bh=+2VyYQWo3bsBibTZIVLx3nWadN0J/BZKQdGjMX/uX1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DFAW5YfsT47YSXgQoajvDwn4etSjzWr6JO53qCfYM7y3Dm2INdBZ8ZiF7pZfPcfHbsGRbAHOq6VC93Iq7ucAxxvCdQd7rntyPUMIifhRNBBOBfhg2kH/W0+LN4ULBYX0SpxtjYF0LmTL567CIOOljPILaOjsitYyI2k7wwYtQBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bf/KHlXO; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-750a40d6583so3038087b3.2
-        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 10:56:37 -0700 (PDT)
+	s=arc-20240116; t=1758650517; c=relaxed/simple;
+	bh=tEXaouI0MQFxLgn7NnEkdk7xivByJDQ2TC4JxchAi/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZW2y7Xnr38fEuf3Ls3h88bzQ+nhN8EcdY7a34AFBQxmjVUADZZN+M+HRE5KzzTry5BKdqwVOIfMNsWi9GAXphvos/PxRecaEw+3nDzHIXsoCK71f+XaDiAJAKImfNhfbXPqU7NsN6Qm+WUd/lojxUM7jCAUw+JuZ02nbuaAHolw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R6Z7jsdK; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-77e6495c999so4428831b3a.3
+        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 11:01:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758650197; x=1759254997; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7RBKxzZ6kU4c7lQtSNThN83j+ugKQYRphi2BaKEQ6gc=;
-        b=Bf/KHlXOgjHZvLypdVJ6KMhZjIsdWPT1SZTuztKu1b9MKovaRA45FM+cE+YgKik3dW
-         pGv3jcxcdsP+BTxn2pdGcCJAkAF7kP94iBGwtO5DVjpdoskAM4XXZyfhR6u3mFHESvet
-         KmcgP70wG9G5atqoxuTdzqaFO4GGtzMQlR2r2idBRDpP5q1V0k8fjrDPTOlrclbTAm3g
-         REjrHMurtmFUh83Vq+namEtqwudN/wBipDBNc1+clSSwqMnXDKpSI8YKkU2UqlDaLO5t
-         /NIEGbVzlFmEXHvLlNi4pHP/mHspqS9tMR10pP+H/I1lXgfwyDjhcwG1PEZmGGzJ9yh4
-         sUyA==
+        d=linaro.org; s=google; t=1758650514; x=1759255314; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CVCnZnhC/iJw/eHP2Tq/7o3gN4lfNQT30rEnkFKHPLE=;
+        b=R6Z7jsdKCZTGikl/oFHgz0Qetv2dckJlOUM3AEdwhL/lENxEOmH8dl1bfftK7o9r6D
+         C9p3bkOwh6AGy56f/nKS4W7AZRfs8GTe+t9vYh3dQjK9RUI8+DnQR0lf8V7uKmHj4lRL
+         pgwO+ZfXMZCI0L0+1bMMrUobKu8bd1Ah481geXrQE5hcMf6oz6Lv0MByuBHx6E8ZFm6r
+         99m8p3v1t3f2kQmMXuE6gN99KWquuWiEcunOtj1Jy0YIZf8AIeMv5sPON4ZyCng3Y+Ym
+         tqhOBO8i0mNJK6N4qESB3q9rPXZCQBgyJA1WKJKwtMr9J+yrwvJ6ppK0M/E9ZqyNI7vy
+         vj+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758650197; x=1759254997;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7RBKxzZ6kU4c7lQtSNThN83j+ugKQYRphi2BaKEQ6gc=;
-        b=hZQe78w1nwWBWjoiBgPt/e07Tz2jCPRAaONUbMcKtM0Hg3riFqV/xM7cLUR8TRso2u
-         SeBQnlry9a04p+VtPUqjCqVZzDiTfZSHPyJoKzDSMotiFYr7NAAHa18fBok0ZBCRL2Z0
-         tuzfjOj2tFsrKmem0u4ug9Zw6IqNCYGSZ4IFzwdA1ZlbGFU7SJnEQ7FUvIJxds1FGzCE
-         YDVRT4ee7ReShjLEq/DEi3B6aArgTigIm96wTqWDMenYok6wBqkq44Z238NPQi8jveVG
-         QnWpWtBg0y9NcLflidZV7ghBnrcndhn6MXS+bcqTD+iUcXirqmYybQlhYf7H/qzNfkyZ
-         R0/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXixMJLHOQl8/3ww+j8MNHnVAJuTJhT8aGvrPwJw2Dusvm6umObc1zDFtNPWiDskQEF3AFSkko=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvU1Fl0qn7qaobZ0b/XXAhIPDAkJGPI1C3Wcp/2MBDE7jPb6d+
-	gJtVp6RNC1eiDdG37nAiN0D1teRwiHtSe0u/6tD+A/BfZNN5Y18R8QZ81JE/UQ34HOUi00Z9XvE
-	vqwc6BfZs0t5kqU/zJe6aV7flN0ChrEs=
-X-Gm-Gg: ASbGncs/M8mCw+QNg4YTMpNu2OdvWJXLJ5yhxEDVN7OT+HxtegRvY0JVCU9+4KbMnvP
-	FNIcsTHyDg5wWMdu9cTf96NUaPHadLXw+UnbUSeRmt2sqLFqtikHkt7Ekj4TkntJY+HMpYi/GBE
-	9hyV7m4J7gcAYGjh51y0PYkKjNL2dwUii6yYYB/dlbKQqJI+Kd3TmAs5BDiGllUfiRJ+53MyY5m
-	7qLf6te0U1uyvTO1pEBqzlUglrxQ3qe3PXPgSNHwyOJlNEhxmA=
-X-Google-Smtp-Source: AGHT+IHFYFnbDFoI8nXPm/DbKE6WwSpo1v/Alo1pPkP09kUWL9d8Oowjt7g3OspcbiGB8leMO3y3rMrtwX3aXsOxGiM=
-X-Received: by 2002:a53:e035:0:b0:628:3892:b666 with SMTP id
- 956f58d0204a3-636047726bbmr1466398d50.5.1758650196488; Tue, 23 Sep 2025
- 10:56:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758650514; x=1759255314;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CVCnZnhC/iJw/eHP2Tq/7o3gN4lfNQT30rEnkFKHPLE=;
+        b=ixSp/EBvCaaoLix0Qug6diDiZCNA6XT7Q0FxKF4prCGqDPFtdNpoSqk7F1IhTTvgRl
+         P4e+8jiw9IQROXAHonVn3pyswvO7DYOOqZ/tnqrlOwsQexfiusYXuL8p5KCW4Be2k0Fc
+         RYnw7aCEMb6qlXzicXGPnTrrtMflpqnXL11x3V9IAZA+vkKS/LFmuGLnFWhyLhRgv+FQ
+         aBb9Pcu2ip2OuxhwzjrMpv2hmx9MBTUvKC1qVDcWmzBVPptoShepfYsaAdEw6v8cGeAf
+         GETQpzlDCmm1J/qrtlq8pKe7rcxMwOM2OX/twgK3ymcUtgnkjKZEmrIfvm3h9bUmG2n6
+         HhVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ0/bwUuHWmOiaiyWFkd1J5Q3bkTi2/V1JoYuYUFrCWUca6agNv5YYZgT+0MRbta2ak0g97JU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjvzyEC9gIsyyMrH4el0OfjQeP+4oyNTYxh3FxCDI4GEfhZP05
+	ZRilOWRwLnsh9JBWQvVqJihrsPS0vKUIwvLKZoh54cYT1yIbLz4sgIEewCuG+Zqip6A=
+X-Gm-Gg: ASbGncuM/zUe+0al+jHjv46QQocTaUSGIphjaybIjQN9S4efCuX+5m6VFyEyCTJCWxl
+	4x2AlbLZnav/GttUiA5SE6Q7zVcJW++NEE21k1CiZMSTFDr/b8JkmqgyKTRAYD3Wne2Y+gaBZDQ
+	SG+DYDkYZKoLiWyGl/nkBaqQRb1axMezSRH9MVU8/luR8MVs/QM/zmM6e4uFmd5BoPnPU83/kVJ
+	2P8aA1aejL9UddS96VCkT9NP9Ux2BvfHI11IbXNllmH6Ladgxf2FEAOLe4CDOOd1eZ1xuSItoS1
+	VYCVYLPKnZ5MfUndVP9BYjkJJqKRGQA1xpVc94meeO3iAbKEd2XXPss194AKUBxxIwGTlM1g6M5
+	c6Q7jq5i/T7Ds7rk14PMt4IF/MFGs0w83CIvtpsKozNZrogI4SiVkm9gn1jNBpHg9vnHsF9HWeW
+	qsdH2WMTMD94KT40EIp2kyLu1U
+X-Google-Smtp-Source: AGHT+IFjLlhraiDIPC6DXDrYq4fvv/nZOvvL3T1wFQpFeNsBdDOHpuuAX/nL8T3cbxqFx2Sgp/+lrw==
+X-Received: by 2002:a05:6a00:9189:b0:77f:620f:45ac with SMTP id d2e1a72fcca58-77f620f746dmr1459597b3a.2.1758650514295;
+        Tue, 23 Sep 2025 11:01:54 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:e369:98ec:1aa1:e6ce])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cfbb7ab8bsm16511273b3a.11.2025.09.23.11.01.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 11:01:53 -0700 (PDT)
+Date: Tue, 23 Sep 2025 12:01:51 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: andersson@kernel.org, linux-remoteproc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] remoteproc: pru: Fix potential NULL pointer
+ dereference in pru_rproc_set_ctable()
+Message-ID: <aNLgj49Gm9-j4wbe@p14s>
+References: <20250923083848.1147347-1-zhen.ni@easystack.cn>
+ <20250923112109.1165126-1-zhen.ni@easystack.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250820102607.1.Ibb5b6ca1e2c059e04ec53140cd98a44f2684c668@changeid>
-In-Reply-To: <20250820102607.1.Ibb5b6ca1e2c059e04ec53140cd98a44f2684c668@changeid>
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Date: Tue, 23 Sep 2025 19:56:12 +0200
-X-Gm-Features: AS18NWARQQsHpK2MdVqC8zgUyvOCYrPAmI9se1FvWZJ1HDiZT1pR2BaT5dqzbC8
-Message-ID: <CAPAsAGx6C4PdODuTVxc2un=wpDC1azcO5GUa5cH7KwC=bHF-7w@mail.gmail.com>
-Subject: Re: [PATCH] PCI/sysfs: Ensure devices are powered for config reads
-To: Brian Norris <briannorris@chromium.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Brian Norris <briannorris@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923112109.1165126-1-zhen.ni@easystack.cn>
 
-On Fri, Aug 22, 2025 at 10:10=E2=80=AFPM Brian Norris <briannorris@chromium=
-.org> wrote:
->
-> From: Brian Norris <briannorris@google.com>
->
-> max_link_speed, max_link_width, current_link_speed, current_link_width,
-> secondary_bus_number, and subordinate_bus_number all access config
-> registers, but they don't check the runtime PM state. If the device is
-> in D3cold, we may see -EINVAL or even bogus values.
-
-I've hit this bug as well, except in my case the device was behind a
-suspended PCI
-bridge, which seems to block config space accesses.
-
->
-> Wrap these access in pci_config_pm_runtime_{get,put}() like most of the
-                       accesses
-
-> rest of the similar sysfs attributes.
->
-> Fixes: 56c1af4606f0 ("PCI: Add sysfs max_link_speed/width, current_link_s=
-peed/width, etc")
+On Tue, Sep 23, 2025 at 07:21:09PM +0800, Zhen Ni wrote:
+> pru_rproc_set_ctable() accessed rproc->priv before the IS_ERR_OR_NULL
+> check, which could lead to a null pointer dereference. Move the pru
+> assignment, ensuring we never dereference a NULL rproc pointer.
+> 
+> Fixes: 102853400321 ("remoteproc: pru: Add pru_rproc_set_ctable() function")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Brian Norris <briannorris@google.com>
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+
+Applied.
+
+Thanks,
+Mathieu
+
 > ---
->
->  drivers/pci/pci-sysfs.c | 32 +++++++++++++++++++++++++++++---
->  1 file changed, 29 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-> index 5eea14c1f7f5..160df897dc5e 100644
-> --- a/drivers/pci/pci-sysfs.c
-> +++ b/drivers/pci/pci-sysfs.c
-> @@ -191,9 +191,16 @@ static ssize_t max_link_speed_show(struct device *de=
-v,
->                                    struct device_attribute *attr, char *b=
-uf)
+> v2:
+> - Changed "null" to "NULL"
+> - Added " pru:" prefix
+> ---
+>  drivers/remoteproc/pru_rproc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+> index 842e4b6cc5f9..5e3eb7b86a0e 100644
+> --- a/drivers/remoteproc/pru_rproc.c
+> +++ b/drivers/remoteproc/pru_rproc.c
+> @@ -340,7 +340,7 @@ EXPORT_SYMBOL_GPL(pru_rproc_put);
+>   */
+>  int pru_rproc_set_ctable(struct rproc *rproc, enum pru_ctable_idx c, u32 addr)
 >  {
->         struct pci_dev *pdev =3D to_pci_dev(dev);
-> +       ssize_t ret;
-> +
-> +       pci_config_pm_runtime_get(pdev);
->
-> -       return sysfs_emit(buf, "%s\n",
-> -                         pci_speed_string(pcie_get_speed_cap(pdev)));
-> +       ret =3D sysfs_emit(buf, "%s\n",
-> +                        pci_speed_string(pcie_get_speed_cap(pdev)));
-
-pci_speed_string() & pcie_get_speed_cap() don't access config space,
-so no need to change this one.
-
-> +
-> +       pci_config_pm_runtime_put(pdev);
-> +
-> +       return ret;
+> -	struct pru_rproc *pru = rproc->priv;
+> +	struct pru_rproc *pru;
+>  	unsigned int reg;
+>  	u32 mask, set;
+>  	u16 idx;
+> @@ -352,6 +352,7 @@ int pru_rproc_set_ctable(struct rproc *rproc, enum pru_ctable_idx c, u32 addr)
+>  	if (!rproc->dev.parent || !is_pru_rproc(rproc->dev.parent))
+>  		return -ENODEV;
+>  
+> +	pru = rproc->priv;
+>  	/* pointer is 16 bit and index is 8-bit so mask out the rest */
+>  	idx_mask = (c >= PRU_C28) ? 0xFFFF : 0xFF;
+>  
+> -- 
+> 2.20.1
+> 
 
