@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-181522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA910B96910
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:26:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60398B96922
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 17:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E519E18A4C17
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:26:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84012480CA5
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 15:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFF1265CBE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B155326A0DD;
 	Tue, 23 Sep 2025 15:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EUTeYdA5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6yt8Dd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6A925949A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6875326563B;
 	Tue, 23 Sep 2025 15:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758641173; cv=none; b=BJRkYqsNCN++aAV5qTEH41t9ihanSU++8rjis2otRQVrukiRU9v62WchDhlNo5mUhYYTr/yq4mfxrRvrhRUO8bcNK4Cj76+IsUABvSk10MlkSwmiAs9FekU8mpTQh55lviVBl6LyoOfK72QkmUbg7V5h2ppz745nFsNLGUwuWk8=
+	t=1758641173; cv=none; b=kZxxpnE+/NbXpg26ewOpuINoMKU7MvCZtX7Z4VLsjtcHAZyXoTym44hu4jNoQlAK8chFBYGcWCptSo8qM66l2iBWinZ2EHXHH+Go/mM20mq3YMqAElcsI9uWvT8BKwYxGX0yiz8bx9BBTPJzeRAZG3OfE1fJkg5mk1Mx7H+Emag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758641173; c=relaxed/simple;
-	bh=600+gl2y/5DXDE8JzKJY5V6QLYLeY4g2SnvrcP9hV44=;
+	bh=CX4657yA0nVtCwJ99HeYU2TEyd1VwUMZkfyJlumA3Fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kIajgdSGRBpqfTLDOK5/F2gDTLV8YH33JgO3pO2DSSk3yfDFK5I3bCAd+RY7D2pcALly8RjdxdK0BVZL6RE44g/qU3L1SpMTW6p74+5oTss2eepgo5/5QjPbCyaDaTKAUIJv8bjRf38B67aqT9hztUB/soRiUa16t1AmHKtouuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EUTeYdA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D40C113D0;
+	 MIME-Version; b=aI2Qr2L2rLdL20wwLkYCHZJS9gOCXNOZC77oNIogLKwhQeadOGcUEhImZofJeqCL7nQJLxgp1axvpmOtMnUDek3h6z8yVjUDfJ+Uy8oGIcH1KDF8LRvnlCj8n8gY6bVw8DiRHo5OmfByL9mzOBlfELotmkpprBGamsFWr/mXmxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6yt8Dd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEFFC19421;
 	Tue, 23 Sep 2025 15:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758641172;
-	bh=600+gl2y/5DXDE8JzKJY5V6QLYLeY4g2SnvrcP9hV44=;
+	bh=CX4657yA0nVtCwJ99HeYU2TEyd1VwUMZkfyJlumA3Fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUTeYdA5pQktnE96dmZRLl7V/ujUZJQApclxLmczzcUy0dOOVY1AQUPIhKrP4a4W6
-	 E0wDpFyjZjf0N4zCEjTTJF8oeH8vvlgfGpoet8ohApUcbg/YKUI/CtcHNaOZhkPxxr
-	 65AYe+vUh/tfzo2kgh2b0YwzqXLrLtDyAQrVTm+xjio27qXRcuy82p0eyrfsBX0Cgq
-	 hAy4L6BlL9j+3vvOszbzOIvnWNqsZ4Cbn+xMa9nglrtaIV/b8XYtDpnhC2kPjwolQs
-	 MNeC5vhqdPPNX2sIbHnAVjzYottYaeeuF24Yu4Jx6m6PlDhg53GljSEBIbzz/Dpzzb
-	 4Q+0d0WHkoJJg==
+	b=V6yt8Dd01hQYW7tFm79LRMPeF/k8WJfQrQ6DVn9XeoMSORQUvMUWKMVYjfp+9NK3P
+	 aIO8luiitVPFhEwFFLo+5I9JRBV7pDAvnqQ+8G4YENa2T3LPaejd+WeQud+A7mphpn
+	 NVRjF/8MxbKvINvHJ94CuPM6d2liKLZp2SXm4L7/1tfmBTU1alO/fRO4l1JjB4CP6Y
+	 PNBq7/dDQVlugxp5DnejPAzsIL3h51y+ZSA9pC7pDcgJ68UOCQkLNRDWa51hiSgC6U
+	 AnGaaSkoRnrRFVo9etYvwoG6s9EGY3m9HVfCEbEBMt4ugU6z9+ji528EC/N9HsB6BM
+	 M2/2IchSh+InA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1v14u6-000000004mq-46Hf;
+	id 1v14u7-000000004ms-0HWq;
 	Tue, 23 Sep 2025 17:26:07 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Chun-Kuang Hu <chunkuang.hu@kernel.org>,
@@ -56,11 +56,10 @@ Cc: David Airlie <airlied@gmail.com>,
 	linux-mediatek@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	CK Hu <ck.hu@mediatek.com>
-Subject: [PATCH 2/5] drm/mediatek: fix probe memory leak
-Date: Tue, 23 Sep 2025 17:23:37 +0200
-Message-ID: <20250923152340.18234-3-johan@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 3/5] drm/mediatek: fix probe device leaks
+Date: Tue, 23 Sep 2025 17:23:38 +0200
+Message-ID: <20250923152340.18234-4-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250923152340.18234-1-johan@kernel.org>
 References: <20250923152340.18234-1-johan@kernel.org>
@@ -72,35 +71,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Mediatek DRM driver allocates private data for components without a
-platform driver but as the lifetime is tied to each component device,
-the memory is never freed.
+Make sure to drop the reference taken to each component device during
+probe on probe failure (e.g. probe deferral) and on driver unbind.
 
-Tie the allocation lifetime to the DRM platform device so that the
-memory is released on probe failure (e.g. probe deferral) and when the
-driver is unbound.
-
-Fixes: c0d36de868a6 ("drm/mediatek: Move clk info from struct mtk_ddp_comp to sub driver private data")
+Fixes: 6ea6f8276725 ("drm/mediatek: Use correct device pointer to get CMDQ client register")
 Cc: stable@vger.kernel.org	# 5.12
-Cc: CK Hu <ck.hu@mediatek.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_ddp_comp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_ddp_comp.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-index 0264017806ad..31d67a131c50 100644
+index 31d67a131c50..9672ea1f91a2 100644
 --- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
 +++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-@@ -671,7 +671,7 @@ int mtk_ddp_comp_init(struct device *dev, struct device_node *node, struct mtk_d
- 	    type == MTK_DSI)
- 		return 0;
+@@ -621,6 +621,13 @@ int mtk_find_possible_crtcs(struct drm_device *drm, struct device *dev)
+ 	return ret;
+ }
  
--	priv = devm_kzalloc(comp->dev, sizeof(*priv), GFP_KERNEL);
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
++static void mtk_ddp_comp_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static void mtk_ddp_comp_clk_put(void *_clk)
+ {
+ 	struct clk *clk = _clk;
+@@ -656,6 +663,10 @@ int mtk_ddp_comp_init(struct device *dev, struct device_node *node, struct mtk_d
+ 	}
+ 	comp->dev = &comp_pdev->dev;
  
++	ret = devm_add_action_or_reset(dev, mtk_ddp_comp_put_device, comp->dev);
++	if (ret)
++		return ret;
++
+ 	if (type == MTK_DISP_AAL ||
+ 	    type == MTK_DISP_BLS ||
+ 	    type == MTK_DISP_CCORR ||
 -- 
 2.49.1
 
