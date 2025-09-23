@@ -1,331 +1,678 @@
-Return-Path: <stable+bounces-181449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82D5B951AC
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 11:01:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952E4B951CA
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 11:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 862D82E5140
-	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 09:01:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590E3188EB5F
+	for <lists+stable@lfdr.de>; Tue, 23 Sep 2025 09:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486D22ECD33;
-	Tue, 23 Sep 2025 09:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BFB31E8AD;
+	Tue, 23 Sep 2025 09:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L2pmNK5D"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="skJ4mC+1"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013063.outbound.protection.outlook.com [40.107.201.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF9E4A21
-	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 09:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758618069; cv=none; b=K/DVoqhHH1zvYGaAMWrauQT7sNNwfUaoRkoTRVHgMzdRd7TyrWlmK+CGKfFpt8cyNPlc6EBp/9MCJiMiQ3NPrXziZHgqL6Cg4B2zlz4iNNX6wgAHBQ7qm2/jwwkBOK7RxqarK70u35zB0yOLpw1Z5hUmpVPG3J3EL5t3ZFn27ZA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758618069; c=relaxed/simple;
-	bh=i71VJdywD0jxGv2985zPreyzwzU6mJs48LTVNn3vCKU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MIksa1m070bAdiAIC7aCs8gI1Bxv2cTQkQiiabfYE411Lz7Sbn/OVj83r70j51yuaI7yCZamdParT18Sm/621+dcPI7X1oLjqqS+ei7huGq3uT4DyoXhix4PdPjpKXvEVQuYdVpSkNDe2duTl4sDhGvGHZqoRRXQnbUdmhTUZkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L2pmNK5D; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758618064;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
-	b=L2pmNK5DIYlJC4PBWRfsPAJNIX6wvff2lqAfH+LBQ1VdiCsWaV2n5Z9nPndTri/ayYFY4L
-	AUd0ZdnWpIxYReZXbcm/45sZpOKVDdcrhkWuUB853UyDLE5wS0VVevhBVAV9Y5Lc1l0rPD
-	fxvCq8DP80g9+YtiIkt2WnpizkuoRXc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-225-13yyLGooP8-rKpUnsUWMJA-1; Tue, 23 Sep 2025 05:01:02 -0400
-X-MC-Unique: 13yyLGooP8-rKpUnsUWMJA-1
-X-Mimecast-MFC-AGG-ID: 13yyLGooP8-rKpUnsUWMJA_1758618061
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e19f9d18cso9432255e9.1
-        for <stable@vger.kernel.org>; Tue, 23 Sep 2025 02:01:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758618061; x=1759222861;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IkO4rImhCx3UOUFiDFTs5OyK4dbhGcDUSPwdGTIbKUY=;
-        b=QvtqcTRMjV9HYNtOW7btKSdwXhdnwlLA9Zxyq5j9zSIW7fbO0KTJd/PUccb6aBrj0s
-         B6Fz0NkJ8O5RRc8w8gr/W2dDqUcHqQS4obO0MovsPMKU8XBqaivRm4aHg6HmDEhHqLKw
-         IVllD7Tocbx8iPTeQPdGmg+yI6byxFog6rczxEUMMfAEadjRPc++kKeUo2FtG5JG1L9j
-         VVjWRPzR3A/whwXVA2PEr1NnYrm+7E5RBBXG47bxC9XtWzC2PH3AFRu8RLAseUJ1tSgY
-         za/Le1dhHMI8zG+pG+2tCZsUGDOjAbrI7MmwAypSfI6JJV7xvPnrLG9o1umhnHbLtfyk
-         x+pA==
-X-Forwarded-Encrypted: i=1; AJvYcCUiqae8DO40dlgWkPm3ugaf2x1rQKahOLvqvjGE9dY2DKvXny1S+/wmnug3TOGdloC9bLmepWk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgL5CzJKyhSnNYz13DMwfIwz8zpJohQtJCsxyMBQp0tmz7AZSH
-	8SJ3a7YBOeesUgzwygmXCrGxBNCnMssW9s6B9biF796UrM7GDlIntsEseUnbD1HhRSlxprDjZic
-	sGPYHH2Ahzd+VWljR5lcyIzTupA2NB70iE08ktFWYnE46C0GDfoXrXsACjA==
-X-Gm-Gg: ASbGncvXmFVqpawE8YLHda9QCtx52Rle1TF9gdEftVWMr+lmMtcp36o7Hh+K19MjPiz
-	X7ctfbNvix/nUn6cZffhOjiFuzcUebf+RYWYWQHyfLSi6dHdGMfgSDiVTH1knC7vMraFC47+nCF
-	HNjD8kVYLq2efcZkztLAV4Qvmb66TgRrlG0Wqpn1jI2rgwoxHhmwfaq2Z5eyOeCD3DRbpLLXUba
-	ZE9PwkMhnv8JQaR8bhVb2iDEMpOHlZsp+C40cMANi1i40kJdW6OxkKiqZ340f9aR0Kt/KWsmdH7
-	NNfjr2V7WqljIW03L0fcQzB/aU9Wnmy/hDTTKdErh0DiLa/KCYLg/mtdJ3QrniuxVKWF3hwG94B
-	2HXCH0iE18+tFN977SoCEkYdOSdnkSMJv3m9toZDLfapTb1R02+VJT41HQqDViiNeuw==
-X-Received: by 2002:a05:6000:2484:b0:3ee:15b4:174c with SMTP id ffacd0b85a97d-405c3e27714mr1264787f8f.3.1758618060412;
-        Tue, 23 Sep 2025 02:01:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3NrQhba9sI3Pw87M3Zg2mlzDIzvm7/y7Fut6QEDxAdFkWqEoochcNJl6lnDgHbTzCBm/wbQ==
-X-Received: by 2002:a05:6000:2484:b0:3ee:15b4:174c with SMTP id ffacd0b85a97d-405c3e27714mr1264738f8f.3.1758618059633;
-        Tue, 23 Sep 2025 02:00:59 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4f:700:c9db:579f:8b2b:717c? (p200300d82f4f0700c9db579f8b2b717c.dip0.t-ipconnect.de. [2003:d8:2f4f:700:c9db:579f:8b2b:717c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0740841dsm23126417f8f.23.2025.09.23.02.00.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Sep 2025 02:00:59 -0700 (PDT)
-Message-ID: <b41ea29e-6b48-4f64-859c-73be095453ae@redhat.com>
-Date: Tue, 23 Sep 2025 11:00:57 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573A531E893
+	for <stable@vger.kernel.org>; Tue, 23 Sep 2025 09:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758618232; cv=fail; b=OHt8xwh2l/am8O9uNEWFpS8Yy0GZWvqlXrndU3fjCsG348zcVjiThl5eP/ZVUz7v/BJ1E6ulw6HDVzdswTeUe2RDKGFKQV8bGJ2k1GKVrE4vhYYl2it8EodvZnSiIplunLFr5WLjsJSfsAiZ7Ca2AQtk3I9b+RG6iiEJ4NwOgcc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758618232; c=relaxed/simple;
+	bh=IHzeQn9IDiOS0oN3g9Z1hyo3hpBQvw6JeuTfA9Od480=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TsUL7DnOZ9GKm4Tg8h8WqosArHzYjmws8oGdsc6SO3DeyJGg6zg7VdrSR0JDqm3OcYivu9i0gX9QpTQnQRsJ060O3D4EHpMs7Zl069zNkBvkmVy+etgjkxSx0W+IY5YjgRiitKauOxPqCtxbFHf50wRDsJzL98GXkGfihpCicPc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=skJ4mC+1; arc=fail smtp.client-ip=40.107.201.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Im5iVZ3rwJD2TM5syLKOXB+ecvvdn9QrLhIMRW47K1ZGffTcPcqbSkdN/VpQyGlq1Q3808IghNC+2nhutiTXREj1LRnzsiDn0V2XDnKuhFqjR0t1lNlVl4FS5TyyD08ryCFDgMtfxX67/ByJa8fQk2uoHGRb4YsQ0nDBWyBlxCAVymQ5hg0fAZAaZsS3eEGtCI0O5iH59PY4yN79uZlDQ8u+Y/PR3pFBXgAGVn9ixuMPbcybBs7LisgnEhSLzSsCYKXyXo2RybLLkQZrLqC1aDlgFc4LFv6BvwpAVDuEuDGY8UWrRNtuYrZnqqaW6GbDoX6eumNj1DaAHxaZXHufbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Slu87v5jRkeOmnT3rsvHp1NH5oy+OXkf9v3wAfBRTKE=;
+ b=Dgf+yV7n64EjSW0k0O/qy3pGJAqnpXqcEXMTHYUNWpu1ZjjOVIc72D+b4l66+Lwo4dUQ/s39qnjRFEZMoFLGB0Ocby2CgisL6DHD7vHpDPNWQ2cutLKsgu939lXV+14YIY3F+iLkvaXvh/8S/ZXtdmbAdRw3y+SDWpX3RnuyV9euM2IYKqoVl8Od5d3zlYvcNewHOFas1q0g/4wI5uDXvqKzE86xkPPx7UK7nYALb/g3pbw5rPj86I52VgMZzronDXY/wPhvMvNfEL6y+yTurugdWYwfDVrK+RYAkbuj6/RU0XlrJBZPUI2/40GZ3mxiTYljKrmS6mP8N12msAeF+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Slu87v5jRkeOmnT3rsvHp1NH5oy+OXkf9v3wAfBRTKE=;
+ b=skJ4mC+1TtY4xyZk81lXDmO9YM6rfV+QJCiYJaOkUB1MJxbPYhqxQqyrhUf+dAD2ziwxtTj7j4nPlPWcMSjpqYs7pKYTYXcBXtLch524o5OFThFOnp2Vn7tFIYjQK6hwcUdiYnALCMO7k3yUPTHqUZkTF0aqnQkG0NJ5CZe2kQo=
+Received: from BN8PR03CA0026.namprd03.prod.outlook.com (2603:10b6:408:94::39)
+ by SA1PR12MB6797.namprd12.prod.outlook.com (2603:10b6:806:259::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Tue, 23 Sep
+ 2025 09:03:45 +0000
+Received: from BL6PEPF0001AB52.namprd02.prod.outlook.com
+ (2603:10b6:408:94:cafe::57) by BN8PR03CA0026.outlook.office365.com
+ (2603:10b6:408:94::39) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Tue,
+ 23 Sep 2025 09:03:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0001AB52.mail.protection.outlook.com (10.167.241.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 09:03:45 +0000
+Received: from arun-nv33.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 23 Sep
+ 2025 02:03:41 -0700
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+To: <christian.koenig@amd.com>, <matthew.auld@intel.com>,
+	<dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
+	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
+CC: <alexander.deucher@amd.com>, <jani.nikula@linux.intel.com>,
+	<peterz@infradead.org>, <samuel.pitoiset@gmail.com>, Arunpravin Paneer Selvam
+	<Arunpravin.PaneerSelvam@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH v7 1/3] drm/buddy: Optimize free block management with RB tree
+Date: Tue, 23 Sep 2025 14:32:40 +0530
+Message-ID: <20250923090242.60649-1-Arunpravin.PaneerSelvam@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [DISCUSSION] Fixing bad pmd due to a race condition between
- change_prot_numa() and THP migration in pre-6.5 kernels.
-To: Harry Yoo <harry.yoo@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Jane Chu <jane.chu@oracle.com>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org
-References: <20250921232709.1608699-1-harry.yoo@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250921232709.1608699-1-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB52:EE_|SA1PR12MB6797:EE_
+X-MS-Office365-Filtering-Correlation-Id: 476cebeb-5ff1-469e-8111-08ddfa8019ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|82310400026|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?to3w/sTBtFuXDNKhHZk8ap1R7VJyAEz61WJR+W3cJlzXz0iagXesNvAWCCQE?=
+ =?us-ascii?Q?6WWy+vr2mRVspNpXuFo8zY0dmpTz9s5YCORiIMeh9GGMEKmiPiIOowuQ7AjZ?=
+ =?us-ascii?Q?DmkYPTUXFGxAdGQsNHTkhPEldGerFXxy8m1nWkV4PdqrsURnog+V4Czbufc5?=
+ =?us-ascii?Q?vMFnAaUT/tRyjoZxHxBK29vRrQbdJIyS7xZAnwAZDC64FCAILmDTDWdj92oH?=
+ =?us-ascii?Q?fhdCVwp63QfBQ8bIu7cLVO+J0AJ1QnkZK++EEOeBVyX4SwYTxZupkf/y+4I3?=
+ =?us-ascii?Q?aRuQAP+22BGQyLj/pvUHGPmwm3ZycZnQwbZhrq+bI/orsFeD4faRxPdelp6R?=
+ =?us-ascii?Q?uv2tV4RGuQFKIY6ofp2TYvSiwvi66cwA+HaL/1Mq6tIZcpRh0JJRFQoslgeB?=
+ =?us-ascii?Q?9/9V7DyKE8Z1Ff1xcTfglGEtjpkpcGUNM8Cf0iJ2JrSAw6CZ0+FvgcZQcGx8?=
+ =?us-ascii?Q?TPu3jAR1gcbUtWozP/nsmiCUD8dA5kgwegPHZMJPNsPqjdOEYRWJtkwP13Bu?=
+ =?us-ascii?Q?5sN6ADMF+8mpK9fzGOWaeEhk6uwZezVgkQiKcvI4f3CpXGEXWKdg2z6Ypf5M?=
+ =?us-ascii?Q?MHIOOGkpjU+dbQPBCErjr/EHRTtrKWvQEEvUllqvQQPlGRg0KmR0Z4nE6o86?=
+ =?us-ascii?Q?mpTgMsu9FIPZUOyzXRM/KBXfU3DorSqkHcGEIa5amOZRlCf26EhWe3SKolnW?=
+ =?us-ascii?Q?DNgBmT9DtCrebwSWEn8ztLzx0EX8MdJhsiqiEPdK3kxcgsacIps5RfG1d0n6?=
+ =?us-ascii?Q?tEXaNspN0pUqVOWDTnPy64yKE7tKeUCq1vxmSXU8YJlm95RS20CSXFwwrXFi?=
+ =?us-ascii?Q?698BHXu1/yodtJcD7li2zIAgc4qdthSt2FiklTGx9Ef1n3qml1ftwdvAEX+Y?=
+ =?us-ascii?Q?bP71sH5hlzV5xcS8p3mYy0pSVptuX7SzGvHOebxX2ZsD7g+s9zNUKhN1KjkF?=
+ =?us-ascii?Q?9KzupZoY+Dx4GaHpuFwsITZnyC2UzFknkEmrZnKLq6wuPBgjpd9L53BQTCJz?=
+ =?us-ascii?Q?Lq2HFyOaYR+Fis7tLa8p4m5t5BarDrITuRjHnHsrQDhaEKXbFO5h18HJf+AW?=
+ =?us-ascii?Q?ERVv/r9/C4JlJYXYKHbHYoTiwM4dND5jRmXBBnlNWUBibgnSeiFC6Yx6uNW2?=
+ =?us-ascii?Q?szvuSflziIO6Nlb5FkNAOg2oVAS7YFXbS/WLUTEPkwT6gIyNSwgB36pj6WQO?=
+ =?us-ascii?Q?7CMNPD+cspCQi5ivZvcKJlkSeMipRiqwjOVh0yxOW2PFoJB8YHsjfVyC2hE3?=
+ =?us-ascii?Q?28oS8J1+/aQVxKcvD6P1iYoPUVxX4UzpFg1LB+uRO75ewg6/sb1gioqVyv18?=
+ =?us-ascii?Q?r4uD5o9izFIhy1ZUwVfl6qus3LDr3p2ux52jOh4biMBBixcNwsjTBeJDYM5M?=
+ =?us-ascii?Q?O8BrcTSXrXeIrdEtM7oZYY5fwTCkSBnGm7k3kFYSOnEZUNMunKnjWg2KREbo?=
+ =?us-ascii?Q?CG/+MyVNICCjVW+gG16BUOFcHCDyZ+oI6MkogzYezaevZD7wg66tj74M29Bi?=
+ =?us-ascii?Q?AaHwlkjk9oiNltFNc+DUk4mTmi+IT2BJqwuJ?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 09:03:45.3867
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 476cebeb-5ff1-469e-8111-08ddfa8019ee
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB52.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6797
 
-On 22.09.25 01:27, Harry Yoo wrote:
-> Hi. This is supposed to be a patch, but I think it's worth discussing
-> how it should be backported to -stable, so I've labeled it as [DISCUSSION].
-> 
-> The bug described below was unintentionally fixed in v6.5 and not
-> backported to -stable. So technically I would need to use "Option 3" [A],
+Replace the freelist (O(n)) used for free block management with a
+red-black tree, providing more efficient O(log n) search, insert,
+and delete operations. This improves scalability and performance
+when managing large numbers of free blocks per order (e.g., hundreds
+or thousands).
 
-What is option 3? Just to clarify: it's fine to do a backport of a 
-commit even though it was not tagged as a fix.
+In the VK-CTS memory stress subtest, the buddy manager merges
+fragmented memory and inserts freed blocks into the freelist. Since
+freelist insertion is O(n), this becomes a bottleneck as fragmentation
+increases. Benchmarking shows list_insert_sorted() consumes ~52.69% CPU
+with the freelist, compared to just 0.03% with the RB tree
+(rbtree_insert.isra.0), despite performing the same sorted insert.
 
-> but since the original patch [B] did not intend to fix a bug (and it's also
-> part of a larger patch series), it looks quite different from the patch below,
-> and I'm not sure what the backport should look like.
-> 
-> I think there are probably two options:
-> 
-> 1. Provide the description of the original patch along with a very long,
->     detailed explanation of why the patch deviates from the upstream version, or
-> 
-> 2. Post the patch below with a clarification that it was fixed upstream
->     by commit 670ddd8cdcbd1.
-> 
-> Any thoughts?
-> 
-> [A] https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-> [B] https://lkml.kernel.org/r/725a42a9-91e9-c868-925-e3a5fd40bb4f@google.com
->      (Upstream commit 670ddd8cdcbd1)
-> 
-> In any case, no matter how we backport this, it needs some review and
-> feedback would be appreciated. The patch applies to v6.1 and v5.15, and
-> v5.10 but not v5.4.
-> 
->  From cf45867ab8e48b42160b7253390db7bdecef1455 Mon Sep 17 00:00:00 2001
-> From: Harry Yoo <harry.yoo@oracle.com>
-> Date: Thu, 11 Sep 2025 20:05:40 +0900
-> Subject: [PATCH] mm, numa: fix bad pmd by atomically checking is_swap_pmd() in
->   change_prot_numa()
-> 
-> It was observed that a bad pmd is seen when automatic NUMA balancing
-> is marking page table entries as prot_numa:
-> 
-> [2437548.196018] mm/pgtable-generic.c:50: bad pmd 00000000af22fc02(dffffffe71fbfe02)
-> 
-> With some kernel modification, the call stack was dumped:
-> 
-> [2437548.235022] Call Trace:
-> [2437548.238234]  <TASK>
-> [2437548.241060]  dump_stack_lvl+0x46/0x61
-> [2437548.245689]  panic+0x106/0x2e5
-> [2437548.249497]  pmd_clear_bad+0x3c/0x3c
-> [2437548.253967]  change_pmd_range.isra.0+0x34d/0x3a7
-> [2437548.259537]  change_p4d_range+0x156/0x20e
-> [2437548.264392]  change_protection_range+0x116/0x1a9
-> [2437548.269976]  change_prot_numa+0x15/0x37
-> [2437548.274774]  task_numa_work+0x1b8/0x302
-> [2437548.279512]  task_work_run+0x62/0x95
-> [2437548.283882]  exit_to_user_mode_loop+0x1a4/0x1a9
-> [2437548.289277]  exit_to_user_mode_prepare+0xf4/0xfc
-> [2437548.294751]  ? sysvec_apic_timer_interrupt+0x34/0x81
-> [2437548.300677]  irqentry_exit_to_user_mode+0x5/0x25
-> [2437548.306153]  asm_sysvec_apic_timer_interrupt+0x16/0x1b
-> 
-> This is due to a race condition between change_prot_numa() and
-> THP migration because the kernel doesn't check is_swap_pmd() and
-> pmd_trans_huge() atomically:
-> 
-> change_prot_numa()                      THP migration
-> ======================================================================
-> - change_pmd_range()
-> -> is_swap_pmd() returns false,
->     meaning it's not a PMD migration
->     entry.
-> 
-> 				    - do_huge_pmd_numa_page()
-> 				    -> migrate_misplaced_page() sets
-> 				       migration entries for the THP.
-> 
-> - change_pmd_range()
-> -> pmd_none_or_clear_bad_unless_trans_huge()
-> -> pmd_none() and pmd_trans_huge() returns false
-> 
-> - pmd_none_or_clear_bad_unless_trans_huge()
-> -> pmd_bad() returns true for the migration entry!
-> 
-> For the race condition described above to occur:
-> 
-> 1) AutoNUMA must be unmapping a range of pages, with at least part of the
-> range already unmapped by AutoNUMA.
-> 
-> 2) While AutoNUMA is in the process of unmapping, a NUMA hinting fault
-> occurs within that range, specifically when we are about to unmap
-> the PMD entry, between the is_swap_pmd() and pmd_trans_huge() checks.
-> 
-> So this is a really rare race condition and it's observed that it takes
-> usually a few days of autonuma-intensive testing to trigger.
-> 
-> A bit of history on a similar race condition in the past:
-> 
-> In fact, a similar race condition caused by not checking pmd_trans_huge()
-> atomically was reported [1] in 2017. However, instead of the patch [1],
-> another patch series [3] fixed the problem [2] by not clearing the pmd
-> entry but invaliding it instead (so that pmd_trans_huge() would still
-> return true).
-> 
-> Despite patch series [3], the bad pmd error continued to be reported
-> in mainline. As a result, [1] was resurrected [4] and it landed mainline
-> in 2020 in a hope that it would resolve the issue. However, now it turns
-> out that [3] was not sufficient.
-> 
-> Fix this race condition by checking is_swap_pmd() and pmd_trans_huge()
-> atomically. With that, the kernel should see either
-> pmd_trans_huge() == true, or is_swap_pmd() == true when another task is
-> migrating the page concurrently.
-> 
-> This bug was introduced when THP migration support was added. More
-> specifically, by commit 84c3fc4e9c56 ("mm: thp: check pmd migration entry
-> in common path")).
-> 
-> It is unintentionally fixed since v6.5 by commit 670ddd8cdcbd1
-> ("mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()") while
-> removing pmd_none_or_clear_bad_unless_trans_huge() function. But it's not
-> backported to -stable because it was fixed unintentionally.
-> 
-> Link: https://lore.kernel.org/linux-mm/20170410094825.2yfo5zehn7pchg6a@techsingularity.net [1]
-> Link: https://lore.kernel.org/linux-mm/8A6309F4-DB76-48FA-BE7F-BF9536A4C4E5@cs.rutgers.edu [2]
-> Link: https://lore.kernel.org/linux-mm/20170302151034.27829-1-kirill.shutemov@linux.intel.com [3]
-> Link: https://lore.kernel.org/linux-mm/20200216191800.22423-1-aquini@redhat.com [4]
-> Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->   mm/mprotect.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 668bfaa6ed2a..c0e796c0f9b0 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -303,7 +303,7 @@ static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
+This also improves performance in heavily fragmented workloads,
+such as games or graphics tests that stress memory.
 
-This is like the worst function, ever :D
+As the buddy allocator evolves with new features such as clear-page
+tracking, the resulting fragmentation and complexity have grown.
+These RB-tree based design changes are introduced to address that
+growth and ensure the allocator continues to perform efficiently
+under fragmented conditions.
 
->   
->   	if (pmd_none(pmdval))
->   		return 1;
-> -	if (pmd_trans_huge(pmdval))
-> +	if (is_swap_pmd(pmdval) || pmd_trans_huge(pmdval))
->   		return 0;
->   	if (unlikely(pmd_bad(pmdval))) {
->   		pmd_clear_bad(pmd);
-> @@ -373,7 +373,7 @@ static inline unsigned long change_pmd_range(struct mmu_gather *tlb,
->   		 * Hence, it's necessary to atomically read the PMD value
->   		 * for all the checks.
->   		 */
-> -		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
-> +		if (!pmd_devmap(*pmd) &&
->   		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
->   			goto next;
->   
+The RB tree implementation with separate clear/dirty trees provides:
+- O(n log n) aggregate complexity for all operations instead of O(n^2)
+- Elimination of soft lockups and system instability
+- Improved code maintainability and clarity
+- Better scalability for large memory systems
+- Predictable performance under fragmentation
 
-This is all because we are trying to be smart and walking page tables 
-without the page table lock held. This is just absolutely nasty.
+v3(Matthew):
+  - Remove RB_EMPTY_NODE check in force_merge function.
+  - Rename rb for loop macros to have less generic names and move to
+    .c file.
+  - Make the rb node rb and link field as union.
 
-What about the following check:
+v4(Jani Nikula):
+  - The kernel-doc comment should be "/**"
+  - Move all the rbtree macros to rbtree.h and add parens to ensure
+    correct precedence.
 
-if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
+v5:
+  - Remove the inline in a .c file (Jani Nikula).
 
-Couldn't we have a similar race there when we are concurrently migrating?
+v6(Peter Zijlstra):
+  - Add rb_add() function replacing the existing rbtree_insert() code.
 
+v7:
+  - A full walk iteration in rbtree is slower than the list (Peter Zijlstra).
+  - The existing rbtree_postorder_for_each_entry_safe macro should be used
+    in scenarios where traversal order is not a critical factor (Christian).
+
+Cc: stable@vger.kernel.org
+Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+---
+ drivers/gpu/drm/drm_buddy.c | 188 ++++++++++++++++++++++--------------
+ include/drm/drm_buddy.h     |  11 ++-
+ 2 files changed, 124 insertions(+), 75 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index a94061f373de..67aa67229cc3 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -14,6 +14,8 @@
+ 
+ static struct kmem_cache *slab_blocks;
+ 
++#define rbtree_get_free_block(node) rb_entry((node), struct drm_buddy_block, rb)
++
+ static struct drm_buddy_block *drm_block_alloc(struct drm_buddy *mm,
+ 					       struct drm_buddy_block *parent,
+ 					       unsigned int order,
+@@ -31,6 +33,8 @@ static struct drm_buddy_block *drm_block_alloc(struct drm_buddy *mm,
+ 	block->header |= order;
+ 	block->parent = parent;
+ 
++	RB_CLEAR_NODE(&block->rb);
++
+ 	BUG_ON(block->header & DRM_BUDDY_HEADER_UNUSED);
+ 	return block;
+ }
+@@ -41,23 +45,49 @@ static void drm_block_free(struct drm_buddy *mm,
+ 	kmem_cache_free(slab_blocks, block);
+ }
+ 
+-static void list_insert_sorted(struct drm_buddy *mm,
+-			       struct drm_buddy_block *block)
++static bool drm_buddy_block_offset_less(const struct drm_buddy_block *block,
++					const struct drm_buddy_block *node)
+ {
+-	struct drm_buddy_block *node;
+-	struct list_head *head;
++	return drm_buddy_block_offset(block) < drm_buddy_block_offset(node);
++}
+ 
+-	head = &mm->free_list[drm_buddy_block_order(block)];
+-	if (list_empty(head)) {
+-		list_add(&block->link, head);
+-		return;
+-	}
++static bool rbtree_block_offset_less(struct rb_node *block,
++				     const struct rb_node *node)
++{
++	return drm_buddy_block_offset_less(rbtree_get_free_block(block),
++					   rbtree_get_free_block(node));
++}
+ 
+-	list_for_each_entry(node, head, link)
+-		if (drm_buddy_block_offset(block) < drm_buddy_block_offset(node))
+-			break;
++static void rbtree_insert(struct drm_buddy *mm,
++			  struct drm_buddy_block *block)
++{
++	rb_add(&block->rb,
++	       &mm->free_tree[drm_buddy_block_order(block)],
++	       rbtree_block_offset_less);
++}
++
++static void rbtree_remove(struct drm_buddy *mm,
++			  struct drm_buddy_block *block)
++{
++	struct rb_root *root;
++
++	root = &mm->free_tree[drm_buddy_block_order(block)];
++	rb_erase(&block->rb, root);
+ 
+-	__list_add(&block->link, node->link.prev, &node->link);
++	RB_CLEAR_NODE(&block->rb);
++}
++
++static struct drm_buddy_block *
++rbtree_last_entry(struct drm_buddy *mm, unsigned int order)
++{
++	struct rb_node *node = rb_last(&mm->free_tree[order]);
++
++	return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
++}
++
++static bool rbtree_is_empty(struct drm_buddy *mm, unsigned int order)
++{
++	return RB_EMPTY_ROOT(&mm->free_tree[order]);
+ }
+ 
+ static void clear_reset(struct drm_buddy_block *block)
+@@ -70,12 +100,13 @@ static void mark_cleared(struct drm_buddy_block *block)
+ 	block->header |= DRM_BUDDY_HEADER_CLEAR;
+ }
+ 
+-static void mark_allocated(struct drm_buddy_block *block)
++static void mark_allocated(struct drm_buddy *mm,
++			   struct drm_buddy_block *block)
+ {
+ 	block->header &= ~DRM_BUDDY_HEADER_STATE;
+ 	block->header |= DRM_BUDDY_ALLOCATED;
+ 
+-	list_del(&block->link);
++	rbtree_remove(mm, block);
+ }
+ 
+ static void mark_free(struct drm_buddy *mm,
+@@ -84,15 +115,16 @@ static void mark_free(struct drm_buddy *mm,
+ 	block->header &= ~DRM_BUDDY_HEADER_STATE;
+ 	block->header |= DRM_BUDDY_FREE;
+ 
+-	list_insert_sorted(mm, block);
++	rbtree_insert(mm, block);
+ }
+ 
+-static void mark_split(struct drm_buddy_block *block)
++static void mark_split(struct drm_buddy *mm,
++		       struct drm_buddy_block *block)
+ {
+ 	block->header &= ~DRM_BUDDY_HEADER_STATE;
+ 	block->header |= DRM_BUDDY_SPLIT;
+ 
+-	list_del(&block->link);
++	rbtree_remove(mm, block);
+ }
+ 
+ static inline bool overlaps(u64 s1, u64 e1, u64 s2, u64 e2)
+@@ -148,7 +180,7 @@ static unsigned int __drm_buddy_free(struct drm_buddy *mm,
+ 				mark_cleared(parent);
+ 		}
+ 
+-		list_del(&buddy->link);
++		rbtree_remove(mm, buddy);
+ 		if (force_merge && drm_buddy_block_is_clear(buddy))
+ 			mm->clear_avail -= drm_buddy_block_size(mm, buddy);
+ 
+@@ -179,13 +211,19 @@ static int __force_merge(struct drm_buddy *mm,
+ 		return -EINVAL;
+ 
+ 	for (i = min_order - 1; i >= 0; i--) {
+-		struct drm_buddy_block *block, *prev;
++		struct rb_root *root = &mm->free_tree[i];
++		struct rb_node *iter;
++
++		iter = rb_last(root);
+ 
+-		list_for_each_entry_safe_reverse(block, prev, &mm->free_list[i], link) {
+-			struct drm_buddy_block *buddy;
++		while (iter) {
++			struct drm_buddy_block *block, *buddy;
+ 			u64 block_start, block_end;
+ 
+-			if (!block->parent)
++			block = rbtree_get_free_block(iter);
++			iter = rb_prev(iter);
++
++			if (!block || !block->parent)
+ 				continue;
+ 
+ 			block_start = drm_buddy_block_offset(block);
+@@ -201,15 +239,10 @@ static int __force_merge(struct drm_buddy *mm,
+ 			WARN_ON(drm_buddy_block_is_clear(block) ==
+ 				drm_buddy_block_is_clear(buddy));
+ 
+-			/*
+-			 * If the prev block is same as buddy, don't access the
+-			 * block in the next iteration as we would free the
+-			 * buddy block as part of the free function.
+-			 */
+-			if (prev == buddy)
+-				prev = list_prev_entry(prev, link);
++			if (iter == &buddy->rb)
++				iter = rb_prev(iter);
+ 
+-			list_del(&block->link);
++			rbtree_remove(mm, block);
+ 			if (drm_buddy_block_is_clear(block))
+ 				mm->clear_avail -= drm_buddy_block_size(mm, block);
+ 
+@@ -258,14 +291,14 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
+ 
+ 	BUG_ON(mm->max_order > DRM_BUDDY_MAX_ORDER);
+ 
+-	mm->free_list = kmalloc_array(mm->max_order + 1,
+-				      sizeof(struct list_head),
++	mm->free_tree = kmalloc_array(mm->max_order + 1,
++				      sizeof(struct rb_root),
+ 				      GFP_KERNEL);
+-	if (!mm->free_list)
++	if (!mm->free_tree)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i <= mm->max_order; ++i)
+-		INIT_LIST_HEAD(&mm->free_list[i]);
++		mm->free_tree[i] = RB_ROOT;
+ 
+ 	mm->n_roots = hweight64(size);
+ 
+@@ -273,7 +306,7 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
+ 				  sizeof(struct drm_buddy_block *),
+ 				  GFP_KERNEL);
+ 	if (!mm->roots)
+-		goto out_free_list;
++		goto out_free_tree;
+ 
+ 	offset = 0;
+ 	i = 0;
+@@ -312,8 +345,8 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
+ 	while (i--)
+ 		drm_block_free(mm, mm->roots[i]);
+ 	kfree(mm->roots);
+-out_free_list:
+-	kfree(mm->free_list);
++out_free_tree:
++	kfree(mm->free_tree);
+ 	return -ENOMEM;
+ }
+ EXPORT_SYMBOL(drm_buddy_init);
+@@ -323,7 +356,7 @@ EXPORT_SYMBOL(drm_buddy_init);
+  *
+  * @mm: DRM buddy manager to free
+  *
+- * Cleanup memory manager resources and the freelist
++ * Cleanup memory manager resources and the freetree
+  */
+ void drm_buddy_fini(struct drm_buddy *mm)
+ {
+@@ -350,7 +383,7 @@ void drm_buddy_fini(struct drm_buddy *mm)
+ 	WARN_ON(mm->avail != mm->size);
+ 
+ 	kfree(mm->roots);
+-	kfree(mm->free_list);
++	kfree(mm->free_tree);
+ }
+ EXPORT_SYMBOL(drm_buddy_fini);
+ 
+@@ -383,7 +416,7 @@ static int split_block(struct drm_buddy *mm,
+ 		clear_reset(block);
+ 	}
+ 
+-	mark_split(block);
++	mark_split(mm, block);
+ 
+ 	return 0;
+ }
+@@ -412,7 +445,7 @@ EXPORT_SYMBOL(drm_get_buddy);
+  * @is_clear: blocks clear state
+  *
+  * Reset the clear state based on @is_clear value for each block
+- * in the freelist.
++ * in the freetree.
+  */
+ void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
+ {
+@@ -431,9 +464,9 @@ void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
+ 	}
+ 
+ 	for (i = 0; i <= mm->max_order; ++i) {
+-		struct drm_buddy_block *block;
++		struct drm_buddy_block *block, *tmp;
+ 
+-		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
++		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[i], rb) {
+ 			if (is_clear != drm_buddy_block_is_clear(block)) {
+ 				if (is_clear) {
+ 					mark_cleared(block);
+@@ -639,14 +672,18 @@ get_maxblock(struct drm_buddy *mm, unsigned int order,
+ 	unsigned int i;
+ 
+ 	for (i = order; i <= mm->max_order; ++i) {
++		struct rb_node *iter = rb_last(&mm->free_tree[i]);
+ 		struct drm_buddy_block *tmp_block;
+ 
+-		list_for_each_entry_reverse(tmp_block, &mm->free_list[i], link) {
+-			if (block_incompatible(tmp_block, flags))
+-				continue;
++		while (iter) {
++			tmp_block = rbtree_get_free_block(iter);
+ 
+-			block = tmp_block;
+-			break;
++			if (!block_incompatible(tmp_block, flags)) {
++				block = tmp_block;
++				break;
++			}
++
++			iter = rb_prev(iter);
+ 		}
+ 
+ 		if (!block)
+@@ -667,7 +704,7 @@ get_maxblock(struct drm_buddy *mm, unsigned int order,
+ }
+ 
+ static struct drm_buddy_block *
+-alloc_from_freelist(struct drm_buddy *mm,
++alloc_from_freetree(struct drm_buddy *mm,
+ 		    unsigned int order,
+ 		    unsigned long flags)
+ {
+@@ -682,14 +719,18 @@ alloc_from_freelist(struct drm_buddy *mm,
+ 			tmp = drm_buddy_block_order(block);
+ 	} else {
+ 		for (tmp = order; tmp <= mm->max_order; ++tmp) {
++			struct rb_node *iter = rb_last(&mm->free_tree[tmp]);
+ 			struct drm_buddy_block *tmp_block;
+ 
+-			list_for_each_entry_reverse(tmp_block, &mm->free_list[tmp], link) {
+-				if (block_incompatible(tmp_block, flags))
+-					continue;
++			while (iter) {
++				tmp_block = rbtree_get_free_block(iter);
+ 
+-				block = tmp_block;
+-				break;
++				if (!block_incompatible(tmp_block, flags)) {
++					block = tmp_block;
++					break;
++				}
++
++				iter = rb_prev(iter);
+ 			}
+ 
+ 			if (block)
+@@ -700,10 +741,8 @@ alloc_from_freelist(struct drm_buddy *mm,
+ 	if (!block) {
+ 		/* Fallback method */
+ 		for (tmp = order; tmp <= mm->max_order; ++tmp) {
+-			if (!list_empty(&mm->free_list[tmp])) {
+-				block = list_last_entry(&mm->free_list[tmp],
+-							struct drm_buddy_block,
+-							link);
++			if (!rbtree_is_empty(mm, tmp)) {
++				block = rbtree_last_entry(mm, tmp);
+ 				if (block)
+ 					break;
+ 			}
+@@ -771,7 +810,7 @@ static int __alloc_range(struct drm_buddy *mm,
+ 
+ 		if (contains(start, end, block_start, block_end)) {
+ 			if (drm_buddy_block_is_free(block)) {
+-				mark_allocated(block);
++				mark_allocated(mm, block);
+ 				total_allocated += drm_buddy_block_size(mm, block);
+ 				mm->avail -= drm_buddy_block_size(mm, block);
+ 				if (drm_buddy_block_is_clear(block))
+@@ -849,8 +888,8 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
+ {
+ 	u64 rhs_offset, lhs_offset, lhs_size, filled;
+ 	struct drm_buddy_block *block;
+-	struct list_head *list;
+ 	LIST_HEAD(blocks_lhs);
++	struct rb_node *iter;
+ 	unsigned long pages;
+ 	unsigned int order;
+ 	u64 modify_size;
+@@ -862,11 +901,14 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
+ 	if (order == 0)
+ 		return -ENOSPC;
+ 
+-	list = &mm->free_list[order];
+-	if (list_empty(list))
++	if (rbtree_is_empty(mm, order))
+ 		return -ENOSPC;
+ 
+-	list_for_each_entry_reverse(block, list, link) {
++	iter = rb_last(&mm->free_tree[order]);
++
++	while (iter) {
++		block = rbtree_get_free_block(iter);
++
+ 		/* Allocate blocks traversing RHS */
+ 		rhs_offset = drm_buddy_block_offset(block);
+ 		err =  __drm_buddy_alloc_range(mm, rhs_offset, size,
+@@ -891,6 +933,8 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
+ 		}
+ 		/* Free blocks for the next iteration */
+ 		drm_buddy_free_list_internal(mm, blocks);
++
++		iter = rb_prev(iter);
+ 	}
+ 
+ 	return -ENOSPC;
+@@ -976,7 +1020,7 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
+ 	list_add(&block->tmp_link, &dfs);
+ 	err =  __alloc_range(mm, &dfs, new_start, new_size, blocks, NULL);
+ 	if (err) {
+-		mark_allocated(block);
++		mark_allocated(mm, block);
+ 		mm->avail -= drm_buddy_block_size(mm, block);
+ 		if (drm_buddy_block_is_clear(block))
+ 			mm->clear_avail -= drm_buddy_block_size(mm, block);
+@@ -999,8 +1043,8 @@ __drm_buddy_alloc_blocks(struct drm_buddy *mm,
+ 		return  __drm_buddy_alloc_range_bias(mm, start, end,
+ 						     order, flags);
+ 	else
+-		/* Allocate from freelist */
+-		return alloc_from_freelist(mm, order, flags);
++		/* Allocate from freetree */
++		return alloc_from_freetree(mm, order, flags);
+ }
+ 
+ /**
+@@ -1017,8 +1061,8 @@ __drm_buddy_alloc_blocks(struct drm_buddy *mm,
+  * alloc_range_bias() called on range limitations, which traverses
+  * the tree and returns the desired block.
+  *
+- * alloc_from_freelist() called when *no* range restrictions
+- * are enforced, which picks the block from the freelist.
++ * alloc_from_freetree() called when *no* range restrictions
++ * are enforced, which picks the block from the freetree.
+  *
+  * Returns:
+  * 0 on success, error code on failure.
+@@ -1120,7 +1164,7 @@ int drm_buddy_alloc_blocks(struct drm_buddy *mm,
+ 			}
+ 		} while (1);
+ 
+-		mark_allocated(block);
++		mark_allocated(mm, block);
+ 		mm->avail -= drm_buddy_block_size(mm, block);
+ 		if (drm_buddy_block_is_clear(block))
+ 			mm->clear_avail -= drm_buddy_block_size(mm, block);
+@@ -1201,10 +1245,10 @@ void drm_buddy_print(struct drm_buddy *mm, struct drm_printer *p)
+ 		   mm->chunk_size >> 10, mm->size >> 20, mm->avail >> 20, mm->clear_avail >> 20);
+ 
+ 	for (order = mm->max_order; order >= 0; order--) {
+-		struct drm_buddy_block *block;
++		struct drm_buddy_block *block, *tmp;
+ 		u64 count = 0, free;
+ 
+-		list_for_each_entry(block, &mm->free_list[order], link) {
++		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[order], rb) {
+ 			BUG_ON(!drm_buddy_block_is_free(block));
+ 			count++;
+ 		}
+diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
+index 513837632b7d..9ee105d4309f 100644
+--- a/include/drm/drm_buddy.h
++++ b/include/drm/drm_buddy.h
+@@ -10,6 +10,7 @@
+ #include <linux/list.h>
+ #include <linux/slab.h>
+ #include <linux/sched.h>
++#include <linux/rbtree.h>
+ 
+ #include <drm/drm_print.h>
+ 
+@@ -53,7 +54,11 @@ struct drm_buddy_block {
+ 	 * a list, if so desired. As soon as the block is freed with
+ 	 * drm_buddy_free* ownership is given back to the mm.
+ 	 */
+-	struct list_head link;
++	union {
++		struct rb_node rb;
++		struct list_head link;
++	};
++
+ 	struct list_head tmp_link;
+ };
+ 
+@@ -68,7 +73,7 @@ struct drm_buddy_block {
+  */
+ struct drm_buddy {
+ 	/* Maintain a free list for each order. */
+-	struct list_head *free_list;
++	struct rb_root *free_tree;
+ 
+ 	/*
+ 	 * Maintain explicit binary tree(s) to track the allocation of the
+@@ -94,7 +99,7 @@ struct drm_buddy {
+ };
+ 
+ static inline u64
+-drm_buddy_block_offset(struct drm_buddy_block *block)
++drm_buddy_block_offset(const struct drm_buddy_block *block)
+ {
+ 	return block->header & DRM_BUDDY_HEADER_OFFSET;
+ }
+
+base-commit: 3a9cf301794c1a49d95eeb13119ff490fb5cfe88
 -- 
-Cheers
-
-David / dhildenb
+2.34.1
 
 
