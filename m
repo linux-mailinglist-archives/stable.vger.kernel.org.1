@@ -1,134 +1,126 @@
-Return-Path: <stable+bounces-181598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AB5B99840
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 13:00:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3293B99B15
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 13:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 213DC19C2DFB
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 11:00:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 638FB4C2DF1
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 11:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7792E3376;
-	Wed, 24 Sep 2025 11:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A102DC773;
+	Wed, 24 Sep 2025 11:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjXsO7uF"
+	dkim=pass (1024-bit key) header.d=g001.emailsrvr.com header.i=@g001.emailsrvr.com header.b="SfQg2KBp";
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="UctSm/QS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp85.iad3b.emailsrvr.com (smtp85.iad3b.emailsrvr.com [146.20.161.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D78226E6E4
-	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 11:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750F71E2834
+	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 11:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758711617; cv=none; b=paykp6nHPvDwh7YG0OGSAJyoD5jBMmqa3EEXpbtXSFGayJ1Juk76pAtEDiZ1TJMQCz143PyyeiXVPhnwlDOYCylNJJuHuUyC082+dkl9eYs2TXjW+b9vMfNNB3VbRCLnc/ehUKINAwhUwyQ9rFGGGTHAS4fJyEE1XopFakF0CBs=
+	t=1758714983; cv=none; b=XaAFd96XcmkFNHw+A79f31cNAsd12P1NkBNQ4JQEbKQms10kzu3IMp/a4rLYq/VoaARDxMDYNyjfsjZkdOEOtMxt5NN8zuhuMh3rCqPfFYQ55rA7vO0mo4/LRViaCFShOZkQ07tRCrRxZLFm/kVBdO6a3eN144rhasiNXksBsZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758711617; c=relaxed/simple;
-	bh=PLxNIxm4nnFqvF9R5flN5cuSrvAujprcSgu1R4cCFHs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=PEqV9mQy6YH2n4Ng59Au2h9jFY4iuMXYWciX3Gds4R/6ez3Uk/Jix2OwnDUoZsYpTa5z6lYgffO6CLHFJQY1eBJ687Z9qGx15N7DRhLeSnx9NC4sVp5vqNg5ZYD7GuDAG00a7G7uCC8+tRkc9K5ZzdrDY3a+JXd6x5GMGVJbOJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjXsO7uF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5122DC4CEE7;
-	Wed, 24 Sep 2025 11:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758711616;
-	bh=PLxNIxm4nnFqvF9R5flN5cuSrvAujprcSgu1R4cCFHs=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=DjXsO7uFaLxhxztyX6w+3JEBJijm3UmPV62s1n4Aw/ArAWp3k4Vr4tvtzLrWQdtT8
-	 owspY6gAQ17pJKLPtXCDO8pEVv00RrSlU3t/SkPmX8R7ZQZOCUbrHbJ965ZpcMLSMt
-	 iWD3HVCxPaA8VgYCltKanqq+azO//2ERHHSGjO6e+YnaJId0z0HV9N4xIfVTNx9vB8
-	 ksC577bCW3xhF1UH1bCrGbMo0RHQiaRGx+QNo5/lpR/n3Q5vukOBOt0BJiww5m77hI
-	 Fy1lVVgRq5IpOUFRBBfHqULEAI0Yln83s956qWiqZzstdE8TqMXiHmgQG7LStyI0KE
-	 aVP86a8cOspiA==
+	s=arc-20240116; t=1758714983; c=relaxed/simple;
+	bh=4sH1ny7lHaWXyvRBY7TW5YOvkqgtkY6ZmoIu2Cpl0jI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l6DFjOlNcaXQPulrrrLe40PnaJAozCvt5lcODmy0pdPRyxkC3qj9NvudBf2Uw2Xul8jxxh8e/JYYUzpUjzahtqt0QZtjdEa4XgMg5h9D8q/I8g5lg7VOrf8R6kPIETG+csKsznLYW4y0sa2o5DAYvLmLQ1Tavkfgu9TM9lJoiNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=g001.emailsrvr.com header.i=@g001.emailsrvr.com header.b=SfQg2KBp; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=UctSm/QS; arc=none smtp.client-ip=146.20.161.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=g001.emailsrvr.com;
+	s=feedback; t=1758712873;
+	bh=4sH1ny7lHaWXyvRBY7TW5YOvkqgtkY6ZmoIu2Cpl0jI=;
+	h=Date:Subject:To:From:From;
+	b=SfQg2KBpe6VJO837nueW11qbFXKiaEDHhqerguDIb15PTmLxWLp13rSV6Z6mNmgPY
+	 F97vQdHn8ypdcRKf1IZI8Cc6ODiRVWarPJHkLq5X9KQ4dZ1jJs/hyUVi97THfNDu7N
+	 rAcFHttBqavU+6/AMPsEZNV1DafRZ+Abk3T2HmCM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1758712873;
+	bh=4sH1ny7lHaWXyvRBY7TW5YOvkqgtkY6ZmoIu2Cpl0jI=;
+	h=Date:Subject:To:From:From;
+	b=UctSm/QSA9IZd7c+ZWFPD/bMk1qRCsgPa5tYR+llr9WqmemacWvZ92R68ZwGTgit5
+	 qZNnu7+VyeZ+qyV9/Nkstox6nxfYKUUFntBDapu6RFDcCk30ZVxodyIU/xu6F9rCBL
+	 9ABhKNohdWOhqOkSk4PoBNBCGTyK4gr3iaYuyPjQ=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp3.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 4BA914033B;
+	Wed, 24 Sep 2025 07:21:12 -0400 (EDT)
+Message-ID: <67b4ae93-f537-4674-bafe-2173232f70e0@mev.co.uk>
+Date: Wed, 24 Sep 2025 12:21:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Sep 2025 13:00:12 +0200
-Message-Id: <DD0Z8GX3Z56G.3VLLBSJUG05WK@kernel.org>
-Subject: Re: [PATCH 6.12.y 1/3] drm/sched: Optimise
- drm_sched_entity_push_job
-Cc: "Philipp Stanner" <pstanner@redhat.com>, "Jules Maselbas"
- <jmaselbas@zdiv.net>, <stable@vger.kernel.org>,
- <gregkh@linuxfoundation.org>, "Tvrtko Ursulin" <tvrtko.ursulin@igalia.com>,
- "Alex Deucher" <alexander.deucher@amd.com>, "Luben Tuikov"
- <ltuikov89@gmail.com>, "Matthew Brost" <matthew.brost@intel.com>
-To: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250922130948.5549-1-jmaselbas@zdiv.net>
- <8661bce085eed921feb3e718b8dc4c46784dff4d.camel@redhat.com>
- <57b2275c-d18a-418d-956f-2ed054ec555f@amd.com>
- <DCZMJLU7W6M0.23UOORGDH2DIR@zdiv.net>
- <b49f45057de59f977d9e50a4aac12bac2e8d12a0.camel@redhat.com>
- <76c94ee6-ba28-4517-8b6c-35658ac95d3b@amd.com>
-In-Reply-To: <76c94ee6-ba28-4517-8b6c-35658ac95d3b@amd.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] comedi: fix divide-by-zero in comedi_buf_munge()
+To: Deepanshu Kartikey <kartikey406@gmail.com>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
+References: <20250924102639.1256191-1-kartikey406@gmail.com>
+Content-Language: en-GB
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+In-Reply-To: <20250924102639.1256191-1-kartikey406@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: d19ac750-f060-476a-aeb1-108d7f4f7e59-1-1
 
-On Tue Sep 23, 2025 at 2:33 PM CEST, Christian K=C3=B6nig wrote:
-> On 23.09.25 14:08, Philipp Stanner wrote:
->> You know folks, situations like that are why we want to strongly
->> discourage accessing another API's struct members directly. There is no
->> API contract for them.
+On 24/09/2025 11:26, Deepanshu Kartikey wrote:
+> The comedi_buf_munge() function performs a modulo operation
+> `async->munge_chan %= async->cmd.chanlist_len` without first
+> checking if chanlist_len is zero. If a user program submits a command with
+> chanlist_len set to zero, this causes a divide-by-zero error when the device
+> processes data in the interrupt handler path.
+> 
+> Add a check for zero chanlist_len at the beginning of the
+> function, similar to the existing checks for !map and
+> CMDF_RAWDATA flag. When chanlist_len is zero, update
+> munge_count and return early, indicating the data was
+> handled without munging.
+> 
+> This prevents potential kernel panics from malformed user commands.
+> 
+> Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+> v2: Merged the chanlist_len check with existing early return
+>      check as suggested by Ian Abbott
+> 
+> ---
+>   drivers/comedi/comedi_buf.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/comedi/comedi_buf.c b/drivers/comedi/comedi_buf.c
+> index 002c0e76baff..c7c262a2d8ca 100644
+> --- a/drivers/comedi/comedi_buf.c
+> +++ b/drivers/comedi/comedi_buf.c
+> @@ -317,7 +317,7 @@ static unsigned int comedi_buf_munge(struct comedi_subdevice *s,
+>   	unsigned int count = 0;
+>   	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
+>   
+> -	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
+> +	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
+>   		async->munge_count += num_bytes;
+>   		return num_bytes;
+>   	}
 
-Indeed, please don't peek API internals. If you need additional functionali=
-ty,
-please send a patch adding a supported API for the component instead.
+Looks good, thanks!
 
-Drivers messing with component internals makes impossible to maintain them =
-in
-the long term.
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
 
->> And a proper API function rarely changes its interface, and if it does,
->> it's easy to find for the contributor where drivers need to be
->> adjusted. If we were all following that rule, you wouldn't even have to
->> bother with patches #1 and #2.
->>=20
->> That said, I see two proper solutions for your problem:
->>=20
->>    A. amdgpu is the one stopping the entities anyways, isn't it? It
->>       knows which entities it has killed. So that information could be
->>       stored in struct amdgpu_vm.
->
-> No, it's the scheduler which decides when entities are stopped.
-
-Can you please show me the code where the scheduler calls any of
-drm_sched_entity_fini(), drm_sched_entity_flush(), drm_sched_entity_destroy=
-()?
-
-Or are you referring the broken hack in drm_sched_fini() (introduced by com=
-mit
-c61cdbdbffc1 ("drm/scheduler: Fix hang when sched_entity released")) where =
-it is
-just ignored that we need to take the entity lock as well, because it
-inconviniently would lead to lock inversion?
-
-	spin_lock(&rq->lock);
-	list_for_each_entry(s_entity, &rq->entities, list)
-	        /*
-	         * Prevents reinsertion and marks job_queue as idle,
-	         * it will be removed from the rq in drm_sched_entity_fini()
-	         * eventually
-	         */
-	        s_entity->stopped =3D true;
-	spin_unlock(&rq->lock);
-
-The patch description that introduced the hack says:
-
-	If scheduler is already stopped by the time sched_entity
-	is released and entity's job_queue not empty I encountred
-	a hang in drm_sched_entity_flush.
-
-But this sounds to me as if amdgpu simply doesn't implement the correct shu=
-tdown
-ordering. Why do nouveau, Xe and other drivers don't have this problem? Why=
- do
-we need to solve it in the scheduler instead?
-
-Maybe there are reasonable answers to that. And assuming there are, it stil=
-l
-isn't a justification for building on top of a broken workaround. :(
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
 
