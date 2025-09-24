@@ -1,384 +1,201 @@
-Return-Path: <stable+bounces-181622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11BFB9B925
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 20:56:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0564AB9B93D
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 20:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C897161A62
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 18:56:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A56B8421E78
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 18:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364193148C7;
-	Wed, 24 Sep 2025 18:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A35131A560;
+	Wed, 24 Sep 2025 18:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="YpKMst4k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PlSdWkwQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94C523957D
-	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 18:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B56B31A544;
+	Wed, 24 Sep 2025 18:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758740191; cv=none; b=OFlUiNK4cJ8ucUJ2Ce33RxO2CkN+p7pPvQjcP+1kNINeH+amKNHIVwdob1FmFEhqyCnNt7g4yAhLBjZ3a8Fd5Q9jVImKW9dZ9W46dJJq6GEX98u4CEdpXPmXeQ74s8zJ/qb/YlVPDKovBlUDQZj/lxNm1jZ7oHpTV5c3JKrh5cE=
+	t=1758740272; cv=none; b=HIYgGhJbo0US19f5Vm5bP8XQJybQVDHdqucPvP6zGCviXt+/BuWxF6rxJ31bVNUlwtSZb4cacHKKQsnQMice3NRRh3TjJMZ1qCHwNJ0TO9eoB18f7mTldZrYhwltVWK5JwZi619bbBcqklnqXpCusJmu1F0pAMVNnKFzCknWiS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758740191; c=relaxed/simple;
-	bh=wOcAqZl1JI68IzNngstGphMuEGO5U8h+VuAv9zHSQ+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cuh3xo/bXQGSDmP+pEXasxZVnx6xr+230Lz/y9RXtizTohWd7U2AVXPJjET+z8VCDHzoSEAQ58D8dDD8veoWI/FS1hnfIC5OJJQrJ2215xpuzEkb62gfmZLZTOaAH6GfM0xj1PuFuQBm/A3mkWhZePiOtkP6y9+A8kYiwmxfqKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=YpKMst4k; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b0787fa12e2so23862166b.2
-        for <stable@vger.kernel.org>; Wed, 24 Sep 2025 11:56:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1758740187; x=1759344987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9lhfP2OZ52ysQ5LfjO7ep695Hkv0EfLGngVu/eUSBaE=;
-        b=YpKMst4kIsDiXMxLiC1xigBYVp63B/RfGI70kSYUioCZnzkETbghZbkD1kjzsWyn4l
-         WjqORsYtiOHI7kMQNHHzlTMr8Fw79lUNrz1RT962AblrQiws4VGLc9v7OxUvuDmyNemM
-         sE/SJPoBduE+i+W2Otkdx1Bj08FL7npFBmwfAJLOL8vwpHy6yrVv/SHFp0gXyOpVOpIf
-         LSVSc4B9oL6ItFBL+piq1KQ5+fASr+N5xB/46rbWSJM5i6lXAgGaoYBxdOKzG+AD0oh2
-         gGsjtsHSg7UdBT3NdVMFauBxw5QApiHEu0Yv/ulN1BkfzAQ4lwQqp6C5ttABpLQP7VN+
-         HNQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758740187; x=1759344987;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9lhfP2OZ52ysQ5LfjO7ep695Hkv0EfLGngVu/eUSBaE=;
-        b=uJd1UZsPurdraqVdxizq3XjO9ua8Cc36bsJXzjWJJ+Z5GtbIlPmHXjOWo+L05rzcl1
-         A5CH0KJAiWqbjA0jaea75JCe0RxqtxgD0R3hrOONDnfMQ/M7rdHjhYYdiie0iaEr3iE2
-         NUklZqH8LRjLIUbp0MCNfOszxTCfy9CoLaxrrsXCbXkrqYddKrc4HapI4wNhxwZ5/Ul2
-         GD1QgicG13iVDczstSVGwyTYmukxttiMg1y8qO2fGErUaXFiErD2i6GZHigNk20b6q3z
-         pVjcWlOt0AtSATW1FkyQMZWNObnrPbL3mpX43aqZtV4gyCOkJXZ6tUwSevF53eAVX0Vv
-         AWEg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9XMfuoTvtBe1Qd608riulC7/cOkF4s6/SykA5SmnMraVfO5E1HdRBPwSKCEWlYRZ/lZQ4Mq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdHl/dgHg7c8MUdpk/+SwfKrZ5LlV0lq0GLi4HkK7bHgFXG5rM
-	R3agMR1Mw3b840IAhMGA3huamc1je/V9j//SAx8lSkem//BIIkBX4U0pz/C/gw0RsSo=
-X-Gm-Gg: ASbGncvG3uJkzr4fftSRyNE5SNieHl+lugYV8Xd9gByUknk0hWbf1OozlSg3JzMXcFm
-	xIPPnGhNryGsB8oojcpTzvJ6/WFOFPTGV+w/1MhA0JKW/oM9F4qfWTYD0uNX/s1yAdq9rXu44VR
-	6Ul6oMhpDp1dlhGi0s50rF/UsS9Uagpz83skhwxuTa0V278k6QAPMn3J1rClFA8+s1jwEdkr07w
-	tC61NMu5VR4HoVeyjG1lW6ovJBDdnT6veMPkSqEUli1e75IzUB3WrMm/XIXXJVfDHJVnkM4AkOV
-	DLgrhSIx+/kTwuHaKIQjX++Dur4Fsd8JFjNFV84RmDQ5UJG/uP/tUhToD4UdX0o9qxtHLh8SDFW
-	BgFAWkR05JJCwFtFLR+FE7PUqI2LQl+vzk1I/m63s1gUhm7iBn9N1NtWzb6ffK47RAGTOQRBBmQ
-	Cf+CJeFYJtVilPdJbpZd78ew==
-X-Google-Smtp-Source: AGHT+IFR342wd3phGnjhQe0vWt6Gm99yDbsvhyzRLEinRfJmOZ355Wfish6N1jEsDgQcgz3cbsb8EA==
-X-Received: by 2002:a17:907:6e90:b0:b04:2a50:3c1b with SMTP id a640c23a62f3a-b34bc9720fcmr91166766b.53.1758740186383;
-        Wed, 24 Sep 2025 11:56:26 -0700 (PDT)
-Received: from raven.intern.cm-ag (p200300dc6f090200023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f09:200:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b286fa30a7bsm1058104666b.29.2025.09.24.11.56.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 11:56:26 -0700 (PDT)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Christian Brauner <brauner@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fs/netfs: fix reference leak
-Date: Wed, 24 Sep 2025 20:55:56 +0200
-Message-ID: <20250924185558.3395930-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1758740272; c=relaxed/simple;
+	bh=35YRdu2J8sWMGROMyochqoZvrd7G7WRu+ry6ZOJVoAM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=nq3SK8qwYq6906H7lHiUgWNDnfhMH/L1yXJO/33yffg1PdyiYkeGAo7ji1hiRDeGV1CwQS7w8T1lqP8Dnl9OoCLTkmZVqi13zkO/lAVh9Q9MLkZlfctCeFyO2ekFoBHtcYJGt8Xfw9llHLOs6thiYjVBPE39riSfpW4QekcXHBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PlSdWkwQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DCBC4CEF4;
+	Wed, 24 Sep 2025 18:57:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758740271;
+	bh=35YRdu2J8sWMGROMyochqoZvrd7G7WRu+ry6ZOJVoAM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=PlSdWkwQgD6ksTvSQxLI+5aU42KKabCIXMs8fRCpY6F+9HecD/F4r4Sa2i7z320fg
+	 v9rcS2xnEofIGLO6sV8RKkad14F/jnRLzPx5edAUnhv+GYp1YHAzjHvl8ZIKl3EY4k
+	 cmTDFt1SYet80418qmtlhO2CzTriTPXFm1eMjJE8nupTcOWmiCYlfolFQLsrO5R6/1
+	 O+fA12ZnGodSOPt+wlwJAWtI2U/dbiai4xQYOHVMh6lTieL/5WwU1BnvgWo5Qwm6Kv
+	 5ArwGKuKLBwcI+MldKwwuKLJvs894vxtO+BjHKbzQcGUUIhRiuG78jfKmfkOac9Lq7
+	 k8xny3C/55wiw==
+Date: Wed, 24 Sep 2025 13:57:50 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: manivannan.sadhasivam@oss.qualcomm.com,
+	Bjorn Helgaas <bhelgaas@google.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Joerg Roedel <jroedel@suse.de>, iommu@lists.linux.dev,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
+	Xingang Wang <wangxingang5@huawei.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] iommu/of: Call pci_request_acs() before enumerating
+ the Root Port device
+Message-ID: <20250924185750.GA2128243@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4fjukl3xkfcxcm5p6jo4davplqlrx4xrpbjhdsduqjlv7oz7l@zilbaf3h6py2>
 
-Commit 20d72b00ca81 ("netfs: Fix the request's work item to not
-require a ref") modified netfs_alloc_request() to initialize the
-reference counter to 2 instead of 1.  The rationale was that the
-requet's "work" would release the second reference after completion
-(via netfs_{read,write}_collection_worker()).  That works most of the
-time if all goes well.
+On Wed, Sep 24, 2025 at 02:20:52PM +0530, Manivannan Sadhasivam wrote:
+> On Tue, Sep 23, 2025 at 03:27:01PM -0500, Bjorn Helgaas wrote:
+> > On Wed, Sep 10, 2025 at 11:09:21PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > > From: Xingang Wang <wangxingang5@huawei.com>
+> > > 
+> > > When booting with devicetree, ACS is enabled for all ACS capable
+> > > PCI devices except the first Root Port enumerated in the system.
+> > > This is due to calling pci_request_acs() after the enumeration
+> > > and initialization of the Root Port device. 
+> > 
+> > I suppose you're referring to a path like below, where we *check*
+> > pci_acs_enable during PCI enumeration, but we don't *set* it until
+> > we add the device and look for a driver for it?
+> > 
+> >   pci_host_common_init
+> >     devm_pci_alloc_host_bridge
+> >       devm_of_pci_bridge_init
+> >         pci_request_acs
+> >           pci_acs_enable = 1                    # ++ new set here
+> >     pci_host_probe
+> >       pci_scan_root_bus_bridge
+> >         pci_scan_device
+> >           pci_init_capabilities
+> >             pci_enable_acs
+> >               if (pci_acs_enable)               # test here
+> >                 ...
+> >       pci_bus_add_devices
+> >         driver_probe_device
+> >           pci_dma_configure
+> >             of_dma_configure
+> >               of_dma_configure_id
+> >                 of_iommu_configure
+> >                   pci_request_acs
+> >                     pci_acs_enable = 1          # -- previously set here
+> > 
+> 
+> Yes!
+> 
+> > > But afterwards, ACS is getting enabled for the rest of the PCI
+> > > devices, since pci_request_acs() sets the 'pci_acs_enable' flag
+> > > and the PCI core uses this flag to enable ACS for the rest of
+> > > the ACS capable devices.
+> > 
+> > I don't quite understand why ACS would be enabled for *any* of the
+> > devices because we generally enumerate all of them, which includes
+> > the pci_init_capabilities() and pci_enable_acs(), before adding
+> > and attaching drivers to them.
+> > 
+> > But it does seem kind of dumb that we set the system-wide "enable
+> > ACS" property in a per-device place like an individual device
+> > probe.
+> 
+> I had the same opinion when I saw the 'pci_acs_enable' flag. But I
+> think the intention was to enable ACS only if the controller is
+> capable of assigning different IOMMU groups per device. Otherwise,
+> ACS is more or less of no use.
+> 
+> > > Ideally, pci_request_acs() should only be called if the
+> > > 'iommu-map' DT property is set for the host bridge device.
+> > > Hence, call pci_request_acs() from devm_of_pci_bridge_init() if
+> > > the 'iommu-map' property is present in the host bridge DT node.
+> > > This aligns with the implementation of the ARM64 ACPI driver
+> > > (drivers/acpi/arm64/iort.c) as well.
+> > > 
+> > > With this change, ACS will be enabled for all the PCI devices
+> > > including the first Root Port device of the DT platforms.
+> > > 
+> > > Cc: stable@vger.kernel.org # 5.6
+> > > Fixes: 6bf6c24720d33 ("iommu/of: Request ACS from the PCI core when configuring IOMMU linkage")
+> > > Signed-off-by: Xingang Wang <wangxingang5@huawei.com>
+> > > Signed-off-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
+> > > [mani: reworded subject, description and comment]
+> > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > > ---
+> > >  drivers/iommu/of_iommu.c | 1 -
+> > >  drivers/pci/of.c         | 8 +++++++-
+> > >  2 files changed, 7 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+> > > index 6b989a62def20ecafd833f00a3a92ce8dca192e0..c31369924944d36a3afd3d4ff08c86fc6daf55de 100644
+> > > --- a/drivers/iommu/of_iommu.c
+> > > +++ b/drivers/iommu/of_iommu.c
+> > > @@ -141,7 +141,6 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+> > >  			.np = master_np,
+> > >  		};
+> > >  
+> > > -		pci_request_acs();
+> > >  		err = pci_for_each_dma_alias(to_pci_dev(dev),
+> > >  					     of_pci_iommu_init, &info);
+> > >  		of_pci_check_device_ats(dev, master_np);
+> > > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> > > index 3579265f119845637e163d9051437c89662762f8..98c2523f898667b1618c37451d1759959d523da1 100644
+> > > --- a/drivers/pci/of.c
+> > > +++ b/drivers/pci/of.c
+> > > @@ -638,9 +638,15 @@ static int pci_parse_request_of_pci_ranges(struct device *dev,
+> > >  
+> > >  int devm_of_pci_bridge_init(struct device *dev, struct pci_host_bridge *bridge)
+> > >  {
+> > > -	if (!dev->of_node)
+> > > +	struct device_node *node = dev->of_node;
+> > > +
+> > > +	if (!node)
+> > >  		return 0;
+> > >  
+> > > +	/* Enable ACS if IOMMU mapping is detected for the host bridge */
+> > > +	if (of_property_read_bool(node, "iommu-map"))
+> > > +		pci_request_acs();
+> > 
+> > I'm not really convinced that the existence of 'iommu-map' in
+> > devicetree is a clear signal that ACS should be enabled, so I'm a
+> > little hesitant about this part.
+> > 
+> > Is it possible to boot using a devicetree with 'iommu-map', but
+> > with the IOMMU disabled or the IOMMU driver not present?  Or other
+> > situations where we don't need ACS?
+> 
+> Certainly possible. But the issue is, we cannot reliably detect the
+> presence of IOMMU until the first pci_dev is created, which will be
+> too late as pci_acs_init() is called during pci_device_add().
+> 
+> This seems to be the case for ACPI platforms also.
 
-However, it leaks this additional reference if the request is released
-before the I/O operation has been submitted: the error code path only
-decrements the reference counter once and the work item will never be
-queued because there will never be a completion.
+I don't doubt that the current code doesn't detect presence or use of
+IOMMU until later.  But that feels like an implementation defect
+because logically the IOMMU is upstream of any PCI device that uses
+it, so architecturally I would expect it to be *possible* to detect it
+before PCI enumeration.
 
-This has caused outages of our whole server cluster today because
-tasks were blocked in netfs_wait_for_outstanding_io(), leading to
-deadlocks in Ceph (another bug that I will address soon in another
-patch).  This was caused by a netfs_pgpriv2_begin_copy_to_cache() call
-which failed in fscache_begin_write_operation().  The leaked
-netfs_io_request was never completed, leaving `netfs_inode.io_count`
-with a positive value forever.
-
-All of this is super-fragile code.  Finding out which code paths will
-lead to an eventual completion and which do not is hard to see:
-
-- Some functions like netfs_create_write_req() allocate a request, but
-  will never submit any I/O.
-
-- netfs_unbuffered_read_iter_locked() calls netfs_unbuffered_read()
-  and then netfs_put_request(); however, netfs_unbuffered_read() can
-  also fail early before submitting the I/O request, therefore another
-  netfs_put_request() call must be added there.
-
-A rule of thumb is that functions that return a `netfs_io_request` do
-not submit I/O, and all of their callers must be checked.
-
-For my taste, the whole netfs code needs an overhaul to make reference
-counting easier to understand and less fragile & obscure.  But to fix
-this bug here and now and produce a patch that is adequate for a
-stable backport, I tried a minimal approach that quickly frees the
-request object upon early failure.
-
-I decided against adding a second netfs_put_request() each time
-because that would cause code duplication which obscures the code
-further.  Instead, I added the function netfs_put_failed_request()
-which frees such a failed request synchronously under the assumption
-that the reference count is exactly 2 (as initially set by
-netfs_alloc_request() and never touched), verified by a
-WARN_ON_ONCE().  It then deinitializes the request object (without
-going through the "cleanup_work" indirection) and frees the allocation
-(with RCU protection to protect against concurrent access by
-netfs_requests_seq_start()).
-
-All code paths that fail early have been changed to call
-netfs_put_failed_request() instead of netfs_put_request().
-Additionally, I have added a netfs_put_request() call to
-netfs_unbuffered_read() as explained above because the
-netfs_put_failed_request() approach does not work there.
-
-Fixes: 20d72b00ca81 ("netfs: Fix the request's work item to not require a ref")
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
-v1->v2: free the request with call_rcu() because a proc reader might
-  be accessing it (suggested by David Howells)
----
- fs/netfs/buffered_read.c | 10 +++++-----
- fs/netfs/direct_read.c   |  7 ++++++-
- fs/netfs/direct_write.c  |  6 +++++-
- fs/netfs/internal.h      |  1 +
- fs/netfs/objects.c       | 28 +++++++++++++++++++++++++---
- fs/netfs/read_pgpriv2.c  |  2 +-
- fs/netfs/read_single.c   |  2 +-
- fs/netfs/write_issue.c   |  3 +--
- 8 files changed, 45 insertions(+), 14 deletions(-)
-
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 18b3dc74c70e..37ab6f28b5ad 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -369,7 +369,7 @@ void netfs_readahead(struct readahead_control *ractl)
- 	return netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 
- cleanup_free:
--	return netfs_put_request(rreq, netfs_rreq_trace_put_failed);
-+	return netfs_put_failed_request(rreq);
- }
- EXPORT_SYMBOL(netfs_readahead);
- 
-@@ -472,7 +472,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 	return ret < 0 ? ret : 0;
- 
- discard:
--	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
-+	netfs_put_failed_request(rreq);
- alloc_error:
- 	folio_unlock(folio);
- 	return ret;
-@@ -532,7 +532,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	return ret < 0 ? ret : 0;
- 
- discard:
--	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
-+	netfs_put_failed_request(rreq);
- alloc_error:
- 	folio_unlock(folio);
- 	return ret;
-@@ -699,7 +699,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	return 0;
- 
- error_put:
--	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
-+	netfs_put_failed_request(rreq);
- error:
- 	if (folio) {
- 		folio_unlock(folio);
-@@ -754,7 +754,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 	return ret < 0 ? ret : 0;
- 
- error_put:
--	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
-+	netfs_put_failed_request(rreq);
- error:
- 	_leave(" = %d", ret);
- 	return ret;
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index a05e13472baf..a498ee8d6674 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -131,6 +131,7 @@ static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
- 
- 	if (rreq->len == 0) {
- 		pr_err("Zero-sized read [R=%x]\n", rreq->debug_id);
-+		netfs_put_request(rreq, netfs_rreq_trace_put_discard);
- 		return -EIO;
- 	}
- 
-@@ -205,7 +206,7 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
- 	if (user_backed_iter(iter)) {
- 		ret = netfs_extract_user_iter(iter, rreq->len, &rreq->buffer.iter, 0);
- 		if (ret < 0)
--			goto out;
-+			goto error_put;
- 		rreq->direct_bv = (struct bio_vec *)rreq->buffer.iter.bvec;
- 		rreq->direct_bv_count = ret;
- 		rreq->direct_bv_unpin = iov_iter_extract_will_pin(iter);
-@@ -238,6 +239,10 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
- 	if (ret > 0)
- 		orig_count -= ret;
- 	return ret;
-+
-+error_put:
-+	netfs_put_failed_request(rreq);
-+	return ret;
- }
- EXPORT_SYMBOL(netfs_unbuffered_read_iter_locked);
- 
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index a16660ab7f83..a9d1c3b2c084 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -57,7 +57,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- 			n = netfs_extract_user_iter(iter, len, &wreq->buffer.iter, 0);
- 			if (n < 0) {
- 				ret = n;
--				goto out;
-+				goto error_put;
- 			}
- 			wreq->direct_bv = (struct bio_vec *)wreq->buffer.iter.bvec;
- 			wreq->direct_bv_count = n;
-@@ -101,6 +101,10 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- out:
- 	netfs_put_request(wreq, netfs_rreq_trace_put_return);
- 	return ret;
-+
-+error_put:
-+	netfs_put_failed_request(wreq);
-+	return ret;
- }
- EXPORT_SYMBOL(netfs_unbuffered_write_iter_locked);
- 
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index d4f16fefd965..4319611f5354 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -87,6 +87,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
- void netfs_get_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
- void netfs_clear_subrequests(struct netfs_io_request *rreq);
- void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
-+void netfs_put_failed_request(struct netfs_io_request *rreq);
- struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq);
- 
- static inline void netfs_see_request(struct netfs_io_request *rreq,
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index e8c99738b5bb..39d5e13f7248 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -116,10 +116,8 @@ static void netfs_free_request_rcu(struct rcu_head *rcu)
- 	netfs_stat_d(&netfs_n_rh_rreq);
- }
- 
--static void netfs_free_request(struct work_struct *work)
-+static void netfs_deinit_request(struct netfs_io_request *rreq)
- {
--	struct netfs_io_request *rreq =
--		container_of(work, struct netfs_io_request, cleanup_work);
- 	struct netfs_inode *ictx = netfs_inode(rreq->inode);
- 	unsigned int i;
- 
-@@ -149,6 +147,14 @@ static void netfs_free_request(struct work_struct *work)
- 
- 	if (atomic_dec_and_test(&ictx->io_count))
- 		wake_up_var(&ictx->io_count);
-+}
-+
-+static void netfs_free_request(struct work_struct *work)
-+{
-+	struct netfs_io_request *rreq =
-+		container_of(work, struct netfs_io_request, cleanup_work);
-+
-+	netfs_deinit_request(rreq);
- 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
- }
- 
-@@ -167,6 +173,22 @@ void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace
- 	}
- }
- 
-+/*
-+ * Free a request (synchronously) that was just allocated but has
-+ * failed before it could be submitted.
-+ */
-+void netfs_put_failed_request(struct netfs_io_request *rreq)
-+{
-+	/* new requests have two references (see
-+	 * netfs_alloc_request(), and this function is only allowed on
-+	 * new request objects
-+	 */
-+	WARN_ON_ONCE(refcount_read(&rreq->ref) != 2);
-+
-+	trace_netfs_rreq_ref(rreq->debug_id, 0, netfs_rreq_trace_put_failed);
-+	netfs_free_request(&rreq->cleanup_work);
-+}
-+
- /*
-  * Allocate and partially initialise an I/O request structure.
-  */
-diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
-index 8097bc069c1d..a1489aa29f78 100644
---- a/fs/netfs/read_pgpriv2.c
-+++ b/fs/netfs/read_pgpriv2.c
-@@ -118,7 +118,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_copy_to_cache(
- 	return creq;
- 
- cancel_put:
--	netfs_put_request(creq, netfs_rreq_trace_put_return);
-+	netfs_put_failed_request(creq);
- cancel:
- 	rreq->copy_to_cache = ERR_PTR(-ENOBUFS);
- 	clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags);
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index fa622a6cd56d..5c0dc4efc792 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -189,7 +189,7 @@ ssize_t netfs_read_single(struct inode *inode, struct file *file, struct iov_ite
- 	return ret;
- 
- cleanup_free:
--	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
-+	netfs_put_failed_request(rreq);
- 	return ret;
- }
- EXPORT_SYMBOL(netfs_read_single);
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 0584cba1a043..dd8743bc8d7f 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -133,8 +133,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
- 
- 	return wreq;
- nomem:
--	wreq->error = -ENOMEM;
--	netfs_put_request(wreq, netfs_rreq_trace_put_failed);
-+	netfs_put_failed_request(wreq);
- 	return ERR_PTR(-ENOMEM);
- }
- 
--- 
-2.47.3
-
+More to the point, it's not at all obvious how to infer that
+'iommu-map' in the devicetree means the IOMMU will be used.
 
