@@ -1,84 +1,90 @@
-Return-Path: <stable+bounces-181621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40258B9B014
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 19:17:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11BFB9B925
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 20:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 251844E2030
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 17:17:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C897161A62
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 18:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF16B319877;
-	Wed, 24 Sep 2025 17:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364193148C7;
+	Wed, 24 Sep 2025 18:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XyQTvwlZ"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="YpKMst4k"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BF33164DC;
-	Wed, 24 Sep 2025 17:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94C523957D
+	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 18:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758734204; cv=none; b=kzY3Ex1dw9ggMS3qIBjXBxab7ddrvAYLS81jsdXmOpl0rUrashDHFF2xxt6SLqZHvPciaQkr9iL8fzUX7WKrIlJXipVeS20Xt6JUVVqXlMKVBsfpevQ6+vj1Xi4DXBFpT8Hqa9tA7+fH8M5sRHQZmamOim0UBvweiMUKON5GP2s=
+	t=1758740191; cv=none; b=OFlUiNK4cJ8ucUJ2Ce33RxO2CkN+p7pPvQjcP+1kNINeH+amKNHIVwdob1FmFEhqyCnNt7g4yAhLBjZ3a8Fd5Q9jVImKW9dZ9W46dJJq6GEX98u4CEdpXPmXeQ74s8zJ/qb/YlVPDKovBlUDQZj/lxNm1jZ7oHpTV5c3JKrh5cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758734204; c=relaxed/simple;
-	bh=iUFfcJwCG6FBfxs5hXpJ5ztskkQYyvOnk7gsFW82Vys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6qua+zCjeG2MMiU/jHN3PujRNT8M7hS5Tn2qEQda0iP3Ms05hnCODJJt7jHbeTw1X5kzYlBMIJK/s1+xmjsfe5xRb/2uQv/VZ6KuPELTvmUgqWzx4mK0QDmEPLB1nl//5haFinvWE9whF2VYFi7Un9utKUyetMXz8SQW0yRwe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XyQTvwlZ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58OGgJcU028853;
-	Wed, 24 Sep 2025 17:16:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=AZlxxd1WcazOIdq8Z
-	AxncA3t4iY+7RfS/CJBSa31jKo=; b=XyQTvwlZ7q7F3eVG2N2iEpwlHpFV/Oolr
-	od3vqvsTsnQQ1Qlx8yl3tc6ZKUa5P3eFPbocgCR1fRcFcZaSHt7xp9eKoopxHEYD
-	An0+BZO2Z9RS2ucPpHSteup29mI36G51rZa2+X28m4PynmBpKQ++7brAiz+0A2dG
-	FhmuffOcjaOGznAyD/uql9PjWP+wsGWtI9hZdHwX1f40KYm96/+b9g0B2tsoWMvV
-	0uDnIVqAJCV/PnL/HzzLGwzeSitma67pkbVWKXWUhkj/l1v+EW3SbV+UcGYMvC9r
-	lsUPuM1lrS0UCd46HDCxlpKjfqh8ruxyGMiLQnBTclmNwPNCaSr+A==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499hpqggbx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Sep 2025 17:16:38 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58OE45UZ013329;
-	Wed, 24 Sep 2025 17:16:37 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49cj348u51-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Sep 2025 17:16:37 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58OHGZjn32440602
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Sep 2025 17:16:36 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3F575803F;
-	Wed, 24 Sep 2025 17:16:35 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D0FFF58056;
-	Wed, 24 Sep 2025 17:16:34 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.252.148])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 24 Sep 2025 17:16:34 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Cc: alex.williamson@redhat.com, helgaas@kernel.org, clg@redhat.com,
-        alifm@linux.ibm.com, schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
-        stable@vger.kernel.org
-Subject: [PATCH v4 03/10] PCI: Allow per function PCI slots
-Date: Wed, 24 Sep 2025 10:16:21 -0700
-Message-ID: <20250924171628.826-4-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250924171628.826-1-alifm@linux.ibm.com>
-References: <20250924171628.826-1-alifm@linux.ibm.com>
+	s=arc-20240116; t=1758740191; c=relaxed/simple;
+	bh=wOcAqZl1JI68IzNngstGphMuEGO5U8h+VuAv9zHSQ+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cuh3xo/bXQGSDmP+pEXasxZVnx6xr+230Lz/y9RXtizTohWd7U2AVXPJjET+z8VCDHzoSEAQ58D8dDD8veoWI/FS1hnfIC5OJJQrJ2215xpuzEkb62gfmZLZTOaAH6GfM0xj1PuFuQBm/A3mkWhZePiOtkP6y9+A8kYiwmxfqKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=YpKMst4k; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b0787fa12e2so23862166b.2
+        for <stable@vger.kernel.org>; Wed, 24 Sep 2025 11:56:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1758740187; x=1759344987; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9lhfP2OZ52ysQ5LfjO7ep695Hkv0EfLGngVu/eUSBaE=;
+        b=YpKMst4kIsDiXMxLiC1xigBYVp63B/RfGI70kSYUioCZnzkETbghZbkD1kjzsWyn4l
+         WjqORsYtiOHI7kMQNHHzlTMr8Fw79lUNrz1RT962AblrQiws4VGLc9v7OxUvuDmyNemM
+         sE/SJPoBduE+i+W2Otkdx1Bj08FL7npFBmwfAJLOL8vwpHy6yrVv/SHFp0gXyOpVOpIf
+         LSVSc4B9oL6ItFBL+piq1KQ5+fASr+N5xB/46rbWSJM5i6lXAgGaoYBxdOKzG+AD0oh2
+         gGsjtsHSg7UdBT3NdVMFauBxw5QApiHEu0Yv/ulN1BkfzAQ4lwQqp6C5ttABpLQP7VN+
+         HNQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758740187; x=1759344987;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9lhfP2OZ52ysQ5LfjO7ep695Hkv0EfLGngVu/eUSBaE=;
+        b=uJd1UZsPurdraqVdxizq3XjO9ua8Cc36bsJXzjWJJ+Z5GtbIlPmHXjOWo+L05rzcl1
+         A5CH0KJAiWqbjA0jaea75JCe0RxqtxgD0R3hrOONDnfMQ/M7rdHjhYYdiie0iaEr3iE2
+         NUklZqH8LRjLIUbp0MCNfOszxTCfy9CoLaxrrsXCbXkrqYddKrc4HapI4wNhxwZ5/Ul2
+         GD1QgicG13iVDczstSVGwyTYmukxttiMg1y8qO2fGErUaXFiErD2i6GZHigNk20b6q3z
+         pVjcWlOt0AtSATW1FkyQMZWNObnrPbL3mpX43aqZtV4gyCOkJXZ6tUwSevF53eAVX0Vv
+         AWEg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9XMfuoTvtBe1Qd608riulC7/cOkF4s6/SykA5SmnMraVfO5E1HdRBPwSKCEWlYRZ/lZQ4Mq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdHl/dgHg7c8MUdpk/+SwfKrZ5LlV0lq0GLi4HkK7bHgFXG5rM
+	R3agMR1Mw3b840IAhMGA3huamc1je/V9j//SAx8lSkem//BIIkBX4U0pz/C/gw0RsSo=
+X-Gm-Gg: ASbGncvG3uJkzr4fftSRyNE5SNieHl+lugYV8Xd9gByUknk0hWbf1OozlSg3JzMXcFm
+	xIPPnGhNryGsB8oojcpTzvJ6/WFOFPTGV+w/1MhA0JKW/oM9F4qfWTYD0uNX/s1yAdq9rXu44VR
+	6Ul6oMhpDp1dlhGi0s50rF/UsS9Uagpz83skhwxuTa0V278k6QAPMn3J1rClFA8+s1jwEdkr07w
+	tC61NMu5VR4HoVeyjG1lW6ovJBDdnT6veMPkSqEUli1e75IzUB3WrMm/XIXXJVfDHJVnkM4AkOV
+	DLgrhSIx+/kTwuHaKIQjX++Dur4Fsd8JFjNFV84RmDQ5UJG/uP/tUhToD4UdX0o9qxtHLh8SDFW
+	BgFAWkR05JJCwFtFLR+FE7PUqI2LQl+vzk1I/m63s1gUhm7iBn9N1NtWzb6ffK47RAGTOQRBBmQ
+	Cf+CJeFYJtVilPdJbpZd78ew==
+X-Google-Smtp-Source: AGHT+IFR342wd3phGnjhQe0vWt6Gm99yDbsvhyzRLEinRfJmOZ355Wfish6N1jEsDgQcgz3cbsb8EA==
+X-Received: by 2002:a17:907:6e90:b0:b04:2a50:3c1b with SMTP id a640c23a62f3a-b34bc9720fcmr91166766b.53.1758740186383;
+        Wed, 24 Sep 2025 11:56:26 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f090200023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f09:200:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b286fa30a7bsm1058104666b.29.2025.09.24.11.56.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 11:56:26 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] fs/netfs: fix reference leak
+Date: Wed, 24 Sep 2025 20:55:56 +0200
+Message-ID: <20250924185558.3395930-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,163 +92,293 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FrEF/3rq c=1 sm=1 tr=0 ts=68d42776 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=K-1LnuYzVcpd1HOvht4A:9
-X-Proofpoint-ORIG-GUID: HM120vcbSZvdrKj5Wv4otrRYOMcwZwrV
-X-Proofpoint-GUID: HM120vcbSZvdrKj5Wv4otrRYOMcwZwrV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE5MDIyNCBTYWx0ZWRfXy2zHvKEOOjLx
- ctOAjEpa/zeaeOo5llDRtZdYjhZo8cG80sQ+unKuH5PJdFkeoEX4WhfxSgVYwgI5km72HF6rxpd
- 7I/6aB7jABreLVdkuhPeRrspgxR9Y93XNv20K3GTV2CLUIGETjEvPKk9ziefT8M9XMyfi7gFISR
- YFpiGsvrK0QfG5LWAvLgZCLby4b6+ZEglJB9VI06wZORAZe7c2unfdY4xaKPxhOFx2aGZehLWBU
- Hmzq8VE9LPn3RvtxDRu+AHUCzOf2kPpq5jMP46YGbp5a7rqGrXAvOxjf31lEfhICQs/Q0XHIt/y
- 1QpDJj1AFk0iUAfzIAe32dr2bw8K5VgEwMofOxPndz4mCIdEe1j95HVISYT6+sbqK/HSjeOjYA3
- Ei9HJN2x
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-24_04,2025-09-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- clxscore=1015 impostorscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509190224
 
-On s390 systems, which use a machine level hypervisor, PCI devices are
-always accessed through a form of PCI pass-through which fundamentally
-operates on a per PCI function granularity. This is also reflected in the
-s390 PCI hotplug driver which creates hotplug slots for individual PCI
-functions. Its reset_slot() function, which is a wrapper for
-zpci_hot_reset_device(), thus also resets individual functions.
+Commit 20d72b00ca81 ("netfs: Fix the request's work item to not
+require a ref") modified netfs_alloc_request() to initialize the
+reference counter to 2 instead of 1.  The rationale was that the
+requet's "work" would release the second reference after completion
+(via netfs_{read,write}_collection_worker()).  That works most of the
+time if all goes well.
 
-Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
-to multifunction devices. This approach worked fine on s390 systems that
-only exposed virtual functions as individual PCI domains to the operating
-system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
-s390 supports exposing the topology of multifunction PCI devices by
-grouping them in a shared PCI domain. When attempting to reset a function
-through the hotplug driver, the shared slot assignment causes the wrong
-function to be reset instead of the intended one. It also leaks memory as
-we do create a pci_slot object for the function, but don't correctly free
-it in pci_slot_release().
+However, it leaks this additional reference if the request is released
+before the I/O operation has been submitted: the error code path only
+decrements the reference counter once and the work item will never be
+queued because there will never be a completion.
 
-Add a flag for struct pci_slot to allow per function PCI slots for
-functions managed through a hypervisor, which exposes individual PCI
-functions while retaining the topology.
+This has caused outages of our whole server cluster today because
+tasks were blocked in netfs_wait_for_outstanding_io(), leading to
+deadlocks in Ceph (another bug that I will address soon in another
+patch).  This was caused by a netfs_pgpriv2_begin_copy_to_cache() call
+which failed in fscache_begin_write_operation().  The leaked
+netfs_io_request was never completed, leaving `netfs_inode.io_count`
+with a positive value forever.
 
-Fixes: 44510d6fa0c0 ("s390/pci: Handling multifunctions")
-Cc: <stable@vger.kernel.org>
-Suggested-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+All of this is super-fragile code.  Finding out which code paths will
+lead to an eventual completion and which do not is hard to see:
+
+- Some functions like netfs_create_write_req() allocate a request, but
+  will never submit any I/O.
+
+- netfs_unbuffered_read_iter_locked() calls netfs_unbuffered_read()
+  and then netfs_put_request(); however, netfs_unbuffered_read() can
+  also fail early before submitting the I/O request, therefore another
+  netfs_put_request() call must be added there.
+
+A rule of thumb is that functions that return a `netfs_io_request` do
+not submit I/O, and all of their callers must be checked.
+
+For my taste, the whole netfs code needs an overhaul to make reference
+counting easier to understand and less fragile & obscure.  But to fix
+this bug here and now and produce a patch that is adequate for a
+stable backport, I tried a minimal approach that quickly frees the
+request object upon early failure.
+
+I decided against adding a second netfs_put_request() each time
+because that would cause code duplication which obscures the code
+further.  Instead, I added the function netfs_put_failed_request()
+which frees such a failed request synchronously under the assumption
+that the reference count is exactly 2 (as initially set by
+netfs_alloc_request() and never touched), verified by a
+WARN_ON_ONCE().  It then deinitializes the request object (without
+going through the "cleanup_work" indirection) and frees the allocation
+(with RCU protection to protect against concurrent access by
+netfs_requests_seq_start()).
+
+All code paths that fail early have been changed to call
+netfs_put_failed_request() instead of netfs_put_request().
+Additionally, I have added a netfs_put_request() call to
+netfs_unbuffered_read() as explained above because the
+netfs_put_failed_request() approach does not work there.
+
+Fixes: 20d72b00ca81 ("netfs: Fix the request's work item to not require a ref")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- drivers/pci/hotplug/s390_pci_hpc.c | 10 ++++++++--
- drivers/pci/pci.c                  |  5 +++--
- drivers/pci/slot.c                 | 14 +++++++++++---
- include/linux/pci.h                |  1 +
- 4 files changed, 23 insertions(+), 7 deletions(-)
+v1->v2: free the request with call_rcu() because a proc reader might
+  be accessing it (suggested by David Howells)
+---
+ fs/netfs/buffered_read.c | 10 +++++-----
+ fs/netfs/direct_read.c   |  7 ++++++-
+ fs/netfs/direct_write.c  |  6 +++++-
+ fs/netfs/internal.h      |  1 +
+ fs/netfs/objects.c       | 28 +++++++++++++++++++++++++---
+ fs/netfs/read_pgpriv2.c  |  2 +-
+ fs/netfs/read_single.c   |  2 +-
+ fs/netfs/write_issue.c   |  3 +--
+ 8 files changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pci/hotplug/s390_pci_hpc.c b/drivers/pci/hotplug/s390_pci_hpc.c
-index d9996516f49e..8b547de464bf 100644
---- a/drivers/pci/hotplug/s390_pci_hpc.c
-+++ b/drivers/pci/hotplug/s390_pci_hpc.c
-@@ -126,14 +126,20 @@ static const struct hotplug_slot_ops s390_hotplug_slot_ops = {
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 18b3dc74c70e..37ab6f28b5ad 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -369,7 +369,7 @@ void netfs_readahead(struct readahead_control *ractl)
+ 	return netfs_put_request(rreq, netfs_rreq_trace_put_return);
  
- int zpci_init_slot(struct zpci_dev *zdev)
- {
-+	int ret;
- 	char name[SLOT_NAME_SIZE];
- 	struct zpci_bus *zbus = zdev->zbus;
+ cleanup_free:
+-	return netfs_put_request(rreq, netfs_rreq_trace_put_failed);
++	return netfs_put_failed_request(rreq);
+ }
+ EXPORT_SYMBOL(netfs_readahead);
  
- 	zdev->hotplug_slot.ops = &s390_hotplug_slot_ops;
+@@ -472,7 +472,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
+ 	return ret < 0 ? ret : 0;
  
- 	snprintf(name, SLOT_NAME_SIZE, "%08x", zdev->fid);
--	return pci_hp_register(&zdev->hotplug_slot, zbus->bus,
--			       zdev->devfn, name);
-+	ret = pci_hp_register(&zdev->hotplug_slot, zbus->bus,
-+				zdev->devfn, name);
-+	if (ret)
-+		return ret;
+ discard:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
++	netfs_put_failed_request(rreq);
+ alloc_error:
+ 	folio_unlock(folio);
+ 	return ret;
+@@ -532,7 +532,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
+ 	return ret < 0 ? ret : 0;
+ 
+ discard:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
++	netfs_put_failed_request(rreq);
+ alloc_error:
+ 	folio_unlock(folio);
+ 	return ret;
+@@ -699,7 +699,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	return 0;
+ 
+ error_put:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
++	netfs_put_failed_request(rreq);
+ error:
+ 	if (folio) {
+ 		folio_unlock(folio);
+@@ -754,7 +754,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
+ 	return ret < 0 ? ret : 0;
+ 
+ error_put:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
++	netfs_put_failed_request(rreq);
+ error:
+ 	_leave(" = %d", ret);
+ 	return ret;
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index a05e13472baf..a498ee8d6674 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -131,6 +131,7 @@ static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ 
+ 	if (rreq->len == 0) {
+ 		pr_err("Zero-sized read [R=%x]\n", rreq->debug_id);
++		netfs_put_request(rreq, netfs_rreq_trace_put_discard);
+ 		return -EIO;
+ 	}
+ 
+@@ -205,7 +206,7 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
+ 	if (user_backed_iter(iter)) {
+ 		ret = netfs_extract_user_iter(iter, rreq->len, &rreq->buffer.iter, 0);
+ 		if (ret < 0)
+-			goto out;
++			goto error_put;
+ 		rreq->direct_bv = (struct bio_vec *)rreq->buffer.iter.bvec;
+ 		rreq->direct_bv_count = ret;
+ 		rreq->direct_bv_unpin = iov_iter_extract_will_pin(iter);
+@@ -238,6 +239,10 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
+ 	if (ret > 0)
+ 		orig_count -= ret;
+ 	return ret;
 +
-+	zdev->hotplug_slot.pci_slot->per_func_slot = 1;
-+	return 0;
++error_put:
++	netfs_put_failed_request(rreq);
++	return ret;
+ }
+ EXPORT_SYMBOL(netfs_unbuffered_read_iter_locked);
+ 
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index a16660ab7f83..a9d1c3b2c084 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -57,7 +57,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+ 			n = netfs_extract_user_iter(iter, len, &wreq->buffer.iter, 0);
+ 			if (n < 0) {
+ 				ret = n;
+-				goto out;
++				goto error_put;
+ 			}
+ 			wreq->direct_bv = (struct bio_vec *)wreq->buffer.iter.bvec;
+ 			wreq->direct_bv_count = n;
+@@ -101,6 +101,10 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+ out:
+ 	netfs_put_request(wreq, netfs_rreq_trace_put_return);
+ 	return ret;
++
++error_put:
++	netfs_put_failed_request(wreq);
++	return ret;
+ }
+ EXPORT_SYMBOL(netfs_unbuffered_write_iter_locked);
+ 
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index d4f16fefd965..4319611f5354 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -87,6 +87,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
+ void netfs_get_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
+ void netfs_clear_subrequests(struct netfs_io_request *rreq);
+ void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
++void netfs_put_failed_request(struct netfs_io_request *rreq);
+ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq);
+ 
+ static inline void netfs_see_request(struct netfs_io_request *rreq,
+diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
+index e8c99738b5bb..39d5e13f7248 100644
+--- a/fs/netfs/objects.c
++++ b/fs/netfs/objects.c
+@@ -116,10 +116,8 @@ static void netfs_free_request_rcu(struct rcu_head *rcu)
+ 	netfs_stat_d(&netfs_n_rh_rreq);
  }
  
- void zpci_exit_slot(struct zpci_dev *zdev)
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 327fefc6a1eb..530a793a332c 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5057,8 +5057,9 @@ static int pci_reset_hotplug_slot(struct hotplug_slot *hotplug, bool probe)
- 
- static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
+-static void netfs_free_request(struct work_struct *work)
++static void netfs_deinit_request(struct netfs_io_request *rreq)
  {
--	if (dev->multifunction || dev->subordinate || !dev->slot ||
--	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
-+	if (dev->subordinate || !dev->slot ||
-+	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
-+	    (dev->multifunction && !dev->slot->per_func_slot))
- 		return -ENOTTY;
+-	struct netfs_io_request *rreq =
+-		container_of(work, struct netfs_io_request, cleanup_work);
+ 	struct netfs_inode *ictx = netfs_inode(rreq->inode);
+ 	unsigned int i;
  
- 	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
-diff --git a/drivers/pci/slot.c b/drivers/pci/slot.c
-index 50fb3eb595fe..51ee59e14393 100644
---- a/drivers/pci/slot.c
-+++ b/drivers/pci/slot.c
-@@ -63,6 +63,14 @@ static ssize_t cur_speed_read_file(struct pci_slot *slot, char *buf)
- 	return bus_speed_read(slot->bus->cur_bus_speed, buf);
- }
+@@ -149,6 +147,14 @@ static void netfs_free_request(struct work_struct *work)
  
-+static bool pci_dev_matches_slot(struct pci_dev *dev, struct pci_slot *slot)
-+{
-+	if (slot->per_func_slot)
-+		return dev->devfn == slot->number;
-+
-+	return PCI_SLOT(dev->devfn) == slot->number;
+ 	if (atomic_dec_and_test(&ictx->io_count))
+ 		wake_up_var(&ictx->io_count);
 +}
 +
- static void pci_slot_release(struct kobject *kobj)
- {
- 	struct pci_dev *dev;
-@@ -73,7 +81,7 @@ static void pci_slot_release(struct kobject *kobj)
- 
- 	down_read(&pci_bus_sem);
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list)
--		if (PCI_SLOT(dev->devfn) == slot->number)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = NULL;
- 	up_read(&pci_bus_sem);
- 
-@@ -166,7 +174,7 @@ void pci_dev_assign_slot(struct pci_dev *dev)
- 
- 	mutex_lock(&pci_slot_mutex);
- 	list_for_each_entry(slot, &dev->bus->slots, list)
--		if (PCI_SLOT(dev->devfn) == slot->number)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = slot;
- 	mutex_unlock(&pci_slot_mutex);
++static void netfs_free_request(struct work_struct *work)
++{
++	struct netfs_io_request *rreq =
++		container_of(work, struct netfs_io_request, cleanup_work);
++
++	netfs_deinit_request(rreq);
+ 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
  }
-@@ -285,7 +293,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
  
- 	down_read(&pci_bus_sem);
- 	list_for_each_entry(dev, &parent->devices, bus_list)
--		if (PCI_SLOT(dev->devfn) == slot_nr)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = slot;
- 	up_read(&pci_bus_sem);
+@@ -167,6 +173,22 @@ void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace
+ 	}
+ }
  
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 59876de13860..9265f32d9786 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -78,6 +78,7 @@ struct pci_slot {
- 	struct list_head	list;		/* Node in list of slots */
- 	struct hotplug_slot	*hotplug;	/* Hotplug info (move here) */
- 	unsigned char		number;		/* PCI_SLOT(pci_dev->devfn) */
-+	unsigned int		per_func_slot:1; /* Allow per function slot */
- 	struct kobject		kobj;
- };
++/*
++ * Free a request (synchronously) that was just allocated but has
++ * failed before it could be submitted.
++ */
++void netfs_put_failed_request(struct netfs_io_request *rreq)
++{
++	/* new requests have two references (see
++	 * netfs_alloc_request(), and this function is only allowed on
++	 * new request objects
++	 */
++	WARN_ON_ONCE(refcount_read(&rreq->ref) != 2);
++
++	trace_netfs_rreq_ref(rreq->debug_id, 0, netfs_rreq_trace_put_failed);
++	netfs_free_request(&rreq->cleanup_work);
++}
++
+ /*
+  * Allocate and partially initialise an I/O request structure.
+  */
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index 8097bc069c1d..a1489aa29f78 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -118,7 +118,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_copy_to_cache(
+ 	return creq;
+ 
+ cancel_put:
+-	netfs_put_request(creq, netfs_rreq_trace_put_return);
++	netfs_put_failed_request(creq);
+ cancel:
+ 	rreq->copy_to_cache = ERR_PTR(-ENOBUFS);
+ 	clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags);
+diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
+index fa622a6cd56d..5c0dc4efc792 100644
+--- a/fs/netfs/read_single.c
++++ b/fs/netfs/read_single.c
+@@ -189,7 +189,7 @@ ssize_t netfs_read_single(struct inode *inode, struct file *file, struct iov_ite
+ 	return ret;
+ 
+ cleanup_free:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
++	netfs_put_failed_request(rreq);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(netfs_read_single);
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 0584cba1a043..dd8743bc8d7f 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -133,8 +133,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
+ 
+ 	return wreq;
+ nomem:
+-	wreq->error = -ENOMEM;
+-	netfs_put_request(wreq, netfs_rreq_trace_put_failed);
++	netfs_put_failed_request(wreq);
+ 	return ERR_PTR(-ENOMEM);
+ }
  
 -- 
-2.43.0
+2.47.3
 
 
