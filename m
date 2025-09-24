@@ -1,120 +1,197 @@
-Return-Path: <stable+bounces-181611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4006B9AA64
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 17:30:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85034B9AB6E
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 17:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F27531BC0D98
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 15:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5A302A1364
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 15:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8C330FF1E;
-	Wed, 24 Sep 2025 15:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0D33148D5;
+	Wed, 24 Sep 2025 15:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZLITzbtE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yzljfjh+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD1F307AFA
-	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 15:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EA13148CE;
+	Wed, 24 Sep 2025 15:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758727649; cv=none; b=lwKdoF+3nkTXAAuWloFhsoqJvgjH2+wYeNulJUVc9oEBGAJdjSSCTVrsjfk2SpJBLIBUKwV2uzZV4U7S8IxnF8OghIRDcI3SjoBSPVlH561ZEJfDa/srOCVnM9JIal3lCmxwyTRbtAAP3B9W9kEGoK9dQf4Eoab4ktCecxrAgbk=
+	t=1758728075; cv=none; b=UOe1Z9K4HtbSTbb3H5O1YDGZJbqCAHEA0MqGy0+3Y9eomVSmdC7sOfKnwXsPyqEINEIZOLhl2z3n/upppWYT7FTLgpS5tdfubQfbCffBApitktpNGsq2xgcRPNeazT8UmgmEYBq9MAeab5TABiLwuFXbkjOPPQVE/3k3S2vltUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758727649; c=relaxed/simple;
-	bh=a7tVQStslwAHx6kkGqhgIP6cKTCoEwcRZomLtv4AIzU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=o65Rk1cOiYIqkU9Sa0yk46YHwlr8bgUkgyl71xSvecK8pvfNnQnYiY0CnfxWA9Pk5oIvtnRqMEbuqXWDYhKqflzfIHgr8v9DmrMZ9rLrAOf94eRwqif7cTdnKFFndhB6+JVgnS8tunJUpXiu9/n2KG/lOYOJNjOKV6fKU4WcL1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZLITzbtE; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3ecdc9dbc5fso7959f8f.1
-        for <stable@vger.kernel.org>; Wed, 24 Sep 2025 08:27:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758727646; x=1759332446; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Dq6c0ZGM/PcmsQNtaG9zqEgKMUiGLsTw4kpN5BfNGA=;
-        b=ZLITzbtE0Gp/hC/Ni7iW7Hf8tOLefyVYuZWfVot3G3BpRYC0D+KtHKR3lkKe9Byblo
-         Z1HLCi40o1tHJo/JAHRD0D/usbhR/9+18KEBL6i0/s/4zK+TClrbpbPg8rG/p+g8+Ajn
-         lEeepL5Ay3ZiKCpNqcCxlXH/fusml/CpXS/mFYxOhVrx/IUZD6P6zPuBc5VamOiWODA+
-         zs7zZ0FSc2RgryMEQ7ocXQJJmAK0soFv1blt3Pze/YWoCmZEi2NIwQZ0vHHPtRXT7qI+
-         aT46fXynOtOvkDq76oFhARtA3g8IzQx12PSEM+lMw8+fI8iXBu6ijBO+6YD5njl2LVn8
-         /kFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758727646; x=1759332446;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Dq6c0ZGM/PcmsQNtaG9zqEgKMUiGLsTw4kpN5BfNGA=;
-        b=xEYgCXXJ5kfhSMZmt/NPMdHnVYCcdFESttgiBOfUlmLMMZY/WXFnWNz5H9FpaN/xXu
-         L/rX18ma6pnDqPZ5xrCmkePw9TT63wMrIzYoBo57RmzOcS4suhJ89MBCLMUovtu3/VFc
-         TSqqkh598DnT5WwszIcidT87o4MiIrmJKpp8S15J2L8+GJ3oYMOpCT1gOyEpZFM3PTJ2
-         6gEjc271k+PgAGugKRqETHOhkVFbr+q9LdEidCrOMIjOFIoOiFrv9isJuxM5n1OW7+Lq
-         80yYzSjFHMpQchdCnxHKxV2DgoyEEK9gLtLAwtiEY2KyGk6CEv6MqDsogEzlCFpdrItx
-         1PEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXz7vCzVGVsqHMYU8WmkX8wlUk4GQKdU7O1OWzh8JhIbBjHCt/ikM9oj1MH0LR2HH0IsA0QwB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR1S7/qPmMPVwl0UGuPQeoNKAJtnkgThRZDek2nnX0kQNW74sU
-	GgvPfarhEA/zKEvr9O9BUMokjLQwoNoJU0HocdZ/tlPLY7wirk8oCvmVLP0xb+qg0VEif6Qbig=
-	=
-X-Google-Smtp-Source: AGHT+IFEdA9MBtNZtoCuFX5LdOx2I1XqFRDSTgfNjpmBTAhcuyQh7YpEfjehwPy3DZrnvKS1vcvIWvse
-X-Received: from wmbjh7.prod.google.com ([2002:a05:600c:a087:b0:46e:297b:900c])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:3105:b0:3fb:9950:b9fe
- with SMTP id ffacd0b85a97d-40e48a56cb5mr294011f8f.47.1758727646359; Wed, 24
- Sep 2025 08:27:26 -0700 (PDT)
-Date: Wed, 24 Sep 2025 17:26:53 +0200
-In-Reply-To: <20250924152651.3328941-9-ardb+git@google.com>
+	s=arc-20240116; t=1758728075; c=relaxed/simple;
+	bh=wxPjznd3Mk72Y0HMGgxizVz3V7feCsOOYY3Ap7k4Ml4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lCfpvZKXLkHIVHOFAj+v5LXqklktYBLJRLEIyLoAeHyPdhFyVTX944tVfh3AHHJpUuaYyoyhzcOjprxeTWp/0o39JLn6ctrVHoSe0U/UJMWRv3By/ULRe2T+lYSjbCYM2RZKXuFnvIJGQ27nDeR0nuKamHKD7ZgqkaQovdkNPyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yzljfjh+; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758728073; x=1790264073;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wxPjznd3Mk72Y0HMGgxizVz3V7feCsOOYY3Ap7k4Ml4=;
+  b=Yzljfjh+gQmZg/Rvc+I5yydhs2pfcEqCSscGDXcjuYOq6k1uxY7Wui6c
+   29vk0X+w8mevcVcGnA2iMi0/xB204xNR3Tn7DnUwssB2mww+i/7sDjVt3
+   xYIi8KhWnBPWU3MXIs9+5BX2RGDRciwcY1AXiuA5XwBdDPDBefVMExD0U
+   XWbpQni3I1iUmK8ebKnO9u3ZqxY4owrdly2chfxhz4QBbOEtw/UoaEuT1
+   VTD9397YHaRMEaQg/qmqYiuA7+Mx8K3S81OTIVO2aQlTDPH1WsOsKRetu
+   W709yoLlYX+rpyK7pRkWWnLjZ0ij+6VJxkf2VghvEgKdHXce9djA/vTEz
+   A==;
+X-CSE-ConnectionGUID: WlaiVsFISFa+0EyJA7hO7w==
+X-CSE-MsgGUID: SqeyfEU1Q3y2+7FVLhA8AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="63657304"
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
+   d="scan'208";a="63657304"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 08:34:32 -0700
+X-CSE-ConnectionGUID: a078IQKxT/aol6KoHAiYvQ==
+X-CSE-MsgGUID: 9pHK2N6nRhmENOQyBRy5WA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
+   d="scan'208";a="177503430"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.218]) ([10.125.108.218])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 08:34:31 -0700
+Message-ID: <0116557c-3b60-441e-8976-ebce1a658a01@intel.com>
+Date: Wed, 24 Sep 2025 08:34:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250924152651.3328941-9-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=804; i=ardb@kernel.org;
- h=from:subject; bh=430ZoAUsLaGRjbsT1dmBVnqyeLcQQst70F5MXr1Sm+A=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeMK7z6nI8LhS+KvvXC853dwu7jtO5brkVs70ndXeG6Yv
- rXK/Ix1RykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIa26G/yWXNv/sbD8Uoucg
- ty7/un116hFW7Wlba/s7MmdmlUyx52Zk+Of3+/+aar6yKRzC6q1PleeeyW3mjxAXDDNldw7Z1bW UFwA=
-X-Mailer: git-send-email 2.51.0.534.gc79095c0ca-goog
-Message-ID: <20250924152651.3328941-10-ardb+git@google.com>
-Subject: [PATCH v4 1/7] efi: Add missing static initializer for efi_mm::cpus_allowed_lock
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] nvdimm: ndtest: Return -ENOMEM if devm_kcalloc() fails
+ in ndtest_probe()
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+ Alison Schofield <alison.schofield@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Santosh Sivaraj <santosh@fossix.org>, nvdimm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250923125953.1859373-1-lgs201920130244@gmail.com>
+ <767ef629-519c-431d-9a89-224ceabf22be@intel.com>
+ <aNLsXewwa0LXcRUk@aschofie-mobl2.lan>
+ <CANUHTR9X2=VPHPY8r++SqHZu-+i7GGP7sqbGUnAx+M89iiYS4A@mail.gmail.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <CANUHTR9X2=VPHPY8r++SqHZu-+i7GGP7sqbGUnAx+M89iiYS4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
 
-Initialize the cpus_allowed_lock struct member of efi_mm.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/efi.c | 3 +++
- 1 file changed, 3 insertions(+)
+On 9/24/25 12:42 AM, Guangshuo Li wrote:
+> Hi Alison, Dave, and all,
+> 
+> Thanks for the feedback. I’ve adopted your suggestions. Below is what I plan to take in v3.
+> 
+> -       p->dcr_dma = devm_kcalloc(&p->pdev.dev <http://pdev.dev>, NUM_DCR,
+> -                                 sizeof(dma_addr_t), GFP_KERNEL);
+> -       p->label_dma = devm_kcalloc(&p->pdev.dev <http://pdev.dev>, NUM_DCR,
+> -                                   sizeof(dma_addr_t), GFP_KERNEL);
+> -       p->dimm_dma = devm_kcalloc(&p->pdev.dev <http://pdev.dev>, NUM_DCR,
+> -                                  sizeof(dma_addr_t), GFP_KERNEL);
+> 
+> +       p->dcr_dma = devm_kcalloc(&p->pdev.dev <http://pdev.dev>, NUM_DCR,
+> +                                 sizeof(dma_addr_t), GFP_KERNEL);
+> +       if (!p->dcr_dma) {
+> +               rc = -ENOMEM;
+> +               goto err;
+> +       }
+> +
+> +       p->label_dma = devm_kcalloc(&p->pdev.dev <http://pdev.dev>, NUM_DCR,
+> +                                   sizeof(dma_addr_t), GFP_KERNEL);
+> +       if (!p->label_dma) {
+> +               rc = -ENOMEM;
+> +               goto err;
+> +       }
+> +
+> +       p->dimm_dma = devm_kcalloc(&p->pdev.dev <http://pdev.dev>, NUM_DCR,
+> +                                  sizeof(dma_addr_t), GFP_KERNEL);
+> +       if (!p->dimm_dma) {
+> +               rc = -ENOMEM;
+> +               goto err;
+> +       }
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 1ce428e2ac8a..fc407d891348 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -74,6 +74,9 @@ struct mm_struct efi_mm = {
- 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
- 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
- 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
-+#ifdef CONFIG_SCHED_MM_CID
-+	.cpus_allowed_lock	= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.cpus_allowed_lock),
-+#endif
- };
- 
- struct workqueue_struct *efi_rts_wq;
--- 
-2.51.0.534.gc79095c0ca-goog
+You'll need to create new goto labels because you'll have to free previously allocated memory in the error path. Diff below is uncompiled and untested.
+
+diff --git a/tools/testing/nvdimm/test/ndtest.c b/tools/testing/nvdimm/test/ndtest.c
+index 68a064ce598c..49d326819ea9 100644
+--- a/tools/testing/nvdimm/test/ndtest.c
++++ b/tools/testing/nvdimm/test/ndtest.c
+@@ -841,6 +841,7 @@ static void ndtest_remove(struct platform_device *pdev)
+
+ static int ndtest_probe(struct platform_device *pdev)
+ {
++       struct device *dev = &pdev->dev;
+        struct ndtest_priv *p;
+        int rc;
+
+@@ -848,12 +849,23 @@ static int ndtest_probe(struct platform_device *pdev)
+        if (ndtest_bus_register(p))
+                return -ENOMEM;
+
+-       p->dcr_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
+-                                sizeof(dma_addr_t), GFP_KERNEL);
+-       p->label_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
+-                                  sizeof(dma_addr_t), GFP_KERNEL);
+-       p->dimm_dma = devm_kcalloc(&p->pdev.dev, NUM_DCR,
+-                                 sizeof(dma_addr_t), GFP_KERNEL);
++       p->dcr_dma = devm_kcalloc(dev, NUM_DCR, sizeof(dma_addr_t), GFP_KERNEL);
++       if (!p->dcr_dma)
++               return -ENOMEM;
++
++       p->label_dma = devm_kcalloc(dev, NUM_DCR, sizeof(dma_addr_t),
++                                   GFP_KERNEL);
++       if (!p->label_dma) {
++               rc = -ENOMEM;
++               goto err_label_dma;
++       }
++
++       p->dimm_dma = devm_kcalloc(dev, NUM_DCR, sizeof(dma_addr_t),
++                                  GFP_KERNEL);
++       if (!p->dimm_dma) {
++               rc = -ENOMEM;
++               goto err_dimm_dma;
++       }
+
+        rc = ndtest_nvdimm_init(p);
+        if (rc)
+@@ -863,7 +875,7 @@ static int ndtest_probe(struct platform_device *pdev)
+        if (rc)
+                goto err;
+
+-       rc = devm_add_action_or_reset(&pdev->dev, put_dimms, p);
++       rc = devm_add_action_or_reset(dev, put_dimms, p);
+        if (rc)
+                goto err;
+@@ -872,6 +884,11 @@ static int ndtest_probe(struct platform_device *pdev)
+        return 0;
+
+ err:
++       devm_kfree(dev, p->dimm_dma);
++err_dimm_dma:
++       devm_kfree(dev, p->label_dma);
++err_label_dma:
++       devm_kfree(dev, p->dcr_dma);
+        pr_err("%s:%d Failed nvdimm init\n", __func__, __LINE__);
+        return rc;
+ }
+
+> 
+> If this looks good, I’ll send v3 accordingly. Also, if you’re comfortable with the changes, may I add your Reviewed-by tags?
+
+Please don't add review tags until they are given.
+
+> 
+> Best regards,
+> Guangshuo
 
 
