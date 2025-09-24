@@ -1,197 +1,130 @@
-Return-Path: <stable+bounces-181591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C33DB98FA6
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 10:51:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1F7B990C5
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 11:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52DC32E2CA8
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 08:51:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A28E34C0727
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 09:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4425829C323;
-	Wed, 24 Sep 2025 08:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8827F287258;
+	Wed, 24 Sep 2025 09:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzOmaFDo"
+	dkim=pass (1024-bit key) header.d=g001.emailsrvr.com header.i=@g001.emailsrvr.com header.b="V/5OGHsA";
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="Bp34dbgM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp72.iad3b.emailsrvr.com (smtp72.iad3b.emailsrvr.com [146.20.161.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77092C325F;
-	Wed, 24 Sep 2025 08:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A9B28136C
+	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 09:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758703862; cv=none; b=Z2lDu1ppCvavN19ysIIecYPTkk3Hj9cEQ8mCCf6eW+NlnnOYdtskKukGa94d44kzkLVYk463UhSjI/r3HI+dpACH8s+vgsYLmsdWKdFSsoTXmU9p2eIIrkoLLHC9Szye2CIh/469geuHHSOHYJo1C/Enw8tZHeKuheSVtgyo4yA=
+	t=1758705109; cv=none; b=HuZkHptLkso002VlozvAML7NwJU34wpkijj8+Cgz22wjFqLcGvsIbXUYR9Xu5PiuLSUqYEoRbMfh66zlXHZEMeep8wCOe+wNmmy/xx8V2p8vFOi5OzxS3HeMrfzF33NBZUc6LZGuw+LX0Rs+TXE5MOD3DPZPjmMPY0KjxUkAqKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758703862; c=relaxed/simple;
-	bh=PhUkbUI8KogzWtzU+Q9FLveQJuOuUgfGJLwlQrk0GY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rWlpcxQ1iVVNxZjLAa6XdqtWXzdxj6EaoPPMiR41N6Unxr3otEx1RypSTec2XdgBrJWsxFoxaJxjYp6FV02+16E4UBJWmENrczu17Ung7gC8t7m2I2qxwpyLfaUPDhA+XkNoGuAK+Ucgtn467KcalMEdxZsiOK1PRQMjUSEG3dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzOmaFDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B36FC4CEE7;
-	Wed, 24 Sep 2025 08:50:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758703861;
-	bh=PhUkbUI8KogzWtzU+Q9FLveQJuOuUgfGJLwlQrk0GY0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UzOmaFDo+t3rdWk5mkSVOnaSKEq4kk3zzNLtDnufs3/UwDbMSUVwpStOBR9tjdsw/
-	 5r5jNuar+AzHnqvMqe/m6cS9V6QnvChSakUGkLC7lB7ulgNA2ifUFYdKy5UsOP1r2N
-	 FrAFYlteFOFMERs1cbWhYuI56KOSyx7EhAy25V0SMh2n9vTMU99xAb672wxXlzHvac
-	 NZSS9lccrxvAdSNX0AuCxKr1fODGczTsjW43e0xqBKrsWsL9BcrK/+1JoHbKERxf1d
-	 iEWF27wTF7ZqwO1VVVNf7Jzi+b4IQqkPF0HuxlnR36skEtyRjMbMvQ/dLifJT5u5La
-	 zkbToNWuYM3TQ==
-Date: Wed, 24 Sep 2025 14:20:52 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Joerg Roedel <jroedel@suse.de>, 
-	iommu@lists.linux.dev, Anders Roxell <anders.roxell@linaro.org>, 
-	Naresh Kamboju <naresh.kamboju@linaro.org>, Pavankumar Kondeti <quic_pkondeti@quicinc.com>, 
-	Xingang Wang <wangxingang5@huawei.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] iommu/of: Call pci_request_acs() before enumerating
- the Root Port device
-Message-ID: <e4fjukl3xkfcxcm5p6jo4davplqlrx4xrpbjhdsduqjlv7oz7l@zilbaf3h6py2>
-References: <20250910-pci-acs-v1-2-fe9adb65ad7d@oss.qualcomm.com>
- <20250923202701.GA2055736@bhelgaas>
+	s=arc-20240116; t=1758705109; c=relaxed/simple;
+	bh=tsezQOcDbSsKHWE+Y8NNE2KYFSXpuNPy/H6+E//0ZJI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KbgLDUDCdsGbzQ+szrfYhltW0lh4IH1ELP7rSliTFAW3qqrjduVEDoS7fDR2l2993PcN6rCUMb2LZNlsGJhnRTMN5A1GgM2HpXDxmnmVt5jXM1gjrqr2hu4lLt9Cqyps/hCJ1sowUruOWvyFfi7i7VhLGHYltiIfKTVPiDkGD+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=g001.emailsrvr.com header.i=@g001.emailsrvr.com header.b=V/5OGHsA; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=Bp34dbgM; arc=none smtp.client-ip=146.20.161.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=g001.emailsrvr.com;
+	s=feedback; t=1758704636;
+	bh=tsezQOcDbSsKHWE+Y8NNE2KYFSXpuNPy/H6+E//0ZJI=;
+	h=Date:Subject:To:From:From;
+	b=V/5OGHsAGfxe2+NG8OrT2SOCAi/wpqhtyMkZhpvLf6AmOgUVKXTucE1kd3I2KqSEy
+	 7VFor+tNIciVlggzYHctd2B/riAWa6lzZApZCi7YcVeO/zOAfhH70F+EAfUVxYGgtj
+	 iYWh2+26gG3Jnxhglt0j+8sf3wH6vVufv4Q9KlnY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1758704636;
+	bh=tsezQOcDbSsKHWE+Y8NNE2KYFSXpuNPy/H6+E//0ZJI=;
+	h=Date:Subject:To:From:From;
+	b=Bp34dbgMe7WoapyLFJfe8rzI/HsFKNryoa+pMqUX8QV1NLA8sAG1BXW8DK9fIhsEP
+	 E6QJQh+1QbcnTVTTdxViiIcR5VjMLOnxn1V0VREaO9hMsKr3cKanbbf8oh+P40xB7R
+	 3JRkicQRiG7jkSY0BeqW5uykPn/NlB2wrWcTjNro=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp2.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 6051C201D1;
+	Wed, 24 Sep 2025 05:03:55 -0400 (EDT)
+Message-ID: <3f7b60e8-9df8-414a-afd2-2caca7d43209@mev.co.uk>
+Date: Wed, 24 Sep 2025 10:03:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250923202701.GA2055736@bhelgaas>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] comedi: fix divide-by-zero in comedi_buf_munge()
+To: Deepanshu Kartikey <kartikey406@gmail.com>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
+References: <20250924015606.1098345-1-kartikey406@gmail.com>
+Content-Language: en-GB
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+In-Reply-To: <20250924015606.1098345-1-kartikey406@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: 96808095-5086-44c3-9ba0-64ac69f8dc05-1-1
 
-On Tue, Sep 23, 2025 at 03:27:01PM -0500, Bjorn Helgaas wrote:
-> On Wed, Sep 10, 2025 at 11:09:21PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Xingang Wang <wangxingang5@huawei.com>
-> > 
-> > When booting with devicetree, ACS is enabled for all ACS capable PCI
-> > devices except the first Root Port enumerated in the system. This is due to
-> > calling pci_request_acs() after the enumeration and initialization of the
-> > Root Port device. 
-> 
-> I suppose you're referring to a path like below, where we *check*
-> pci_acs_enable during PCI enumeration, but we don't *set* it until we
-> add the device and look for a driver for it?
-> 
->   pci_host_common_init
->     devm_pci_alloc_host_bridge
->       devm_of_pci_bridge_init
->         pci_request_acs
->           pci_acs_enable = 1                    # ++ new set here
->     pci_host_probe
->       pci_scan_root_bus_bridge
->         pci_scan_device
->           pci_init_capabilities
->             pci_enable_acs
->               if (pci_acs_enable)               # test here
->                 ...
->       pci_bus_add_devices
->         driver_probe_device
->           pci_dma_configure
->             of_dma_configure
->               of_dma_configure_id
->                 of_iommu_configure
->                   pci_request_acs
->                     pci_acs_enable = 1          # -- previously set here
-> 
+On 24/09/2025 02:56, Deepanshu Kartikey wrote:
+> The comedi_buf_munge() function performs a modulo operation
+> `async->munge_chan %= async->cmd.chanlist_len` without first
+> checking if chanlist_len is zero. If a user program submits
+> a command with chanlist_len set to zero, this causes a
+> divide-by-zero error when the device processes data in the
+> interrupt handler path.
 
-Yes!
+I don't think it should happen for supported hardware devices that are 
+working properly, but it helps to defend against the unexpected.
 
-> > But afterwards, ACS is getting enabled for the rest of the PCI
-> > devices, since pci_request_acs() sets the 'pci_acs_enable' flag and
-> > the PCI core uses this flag to enable ACS for the rest of the ACS
-> > capable devices.
+> Add a check for zero chanlist_len at the beginning of the
+> function, similar to the existing checks for !map and
+> CMDF_RAWDATA flag. When chanlist_len is zero, update
+> munge_count and return early, indicating the data was
+> handled without munging.
 > 
-> I don't quite understand why ACS would be enabled for *any* of the
-> devices because we generally enumerate all of them, which includes the
-> pci_init_capabilities() and pci_enable_acs(), before adding and
-> attaching drivers to them.
+> This prevents potential kernel panics from malformed user commands.
 > 
-> But it does seem kind of dumb that we set the system-wide "enable ACS"
-> property in a per-device place like an individual device probe.
+> Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+>   drivers/comedi/comedi_buf.c | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
+> diff --git a/drivers/comedi/comedi_buf.c b/drivers/comedi/comedi_buf.c
+> index 002c0e76baff..786f888299ce 100644
+> --- a/drivers/comedi/comedi_buf.c
+> +++ b/drivers/comedi/comedi_buf.c
+> @@ -321,6 +321,11 @@ static unsigned int comedi_buf_munge(struct comedi_subdevice *s,
+>   		async->munge_count += num_bytes;
+>   		return num_bytes;
+>   	}
+> +
+> +	if (async->cmd.chanlist_len == 0) {
+> +		async->munge_count += num_bytes;
+> +		return num_bytes;
+> +	}
 
-I had the same opinion when I saw the 'pci_acs_enable' flag. But I think the
-intention was to enable ACS only if the controller is capable of assigning
-different IOMMU groups per device. Otherwise, ACS is more or less of no use.
+This `if` statement could be merged with the preceding `if` statement 
+that has the same body, which would save a few lines.
 
-> > Ideally, pci_request_acs() should only be called if the 'iommu-map' DT
-> > property is set for the host bridge device. Hence, call pci_request_acs()
-> > from devm_of_pci_bridge_init() if the 'iommu-map' property is present in
-> > the host bridge DT node. This aligns with the implementation of the ARM64
-> > ACPI driver (drivers/acpi/arm64/iort.c) as well.
-> > 
-> > With this change, ACS will be enabled for all the PCI devices including the
-> > first Root Port device of the DT platforms.
-> > 
-> > Cc: stable@vger.kernel.org # 5.6
-> > Fixes: 6bf6c24720d33 ("iommu/of: Request ACS from the PCI core when configuring IOMMU linkage")
-> > Signed-off-by: Xingang Wang <wangxingang5@huawei.com>
-> > Signed-off-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
-> > [mani: reworded subject, description and comment]
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  drivers/iommu/of_iommu.c | 1 -
-> >  drivers/pci/of.c         | 8 +++++++-
-> >  2 files changed, 7 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-> > index 6b989a62def20ecafd833f00a3a92ce8dca192e0..c31369924944d36a3afd3d4ff08c86fc6daf55de 100644
-> > --- a/drivers/iommu/of_iommu.c
-> > +++ b/drivers/iommu/of_iommu.c
-> > @@ -141,7 +141,6 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
-> >  			.np = master_np,
-> >  		};
-> >  
-> > -		pci_request_acs();
-> >  		err = pci_for_each_dma_alias(to_pci_dev(dev),
-> >  					     of_pci_iommu_init, &info);
-> >  		of_pci_check_device_ats(dev, master_np);
-> > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> > index 3579265f119845637e163d9051437c89662762f8..98c2523f898667b1618c37451d1759959d523da1 100644
-> > --- a/drivers/pci/of.c
-> > +++ b/drivers/pci/of.c
-> > @@ -638,9 +638,15 @@ static int pci_parse_request_of_pci_ranges(struct device *dev,
-> >  
-> >  int devm_of_pci_bridge_init(struct device *dev, struct pci_host_bridge *bridge)
-> >  {
-> > -	if (!dev->of_node)
-> > +	struct device_node *node = dev->of_node;
-> > +
-> > +	if (!node)
-> >  		return 0;
-> >  
-> > +	/* Enable ACS if IOMMU mapping is detected for the host bridge */
-> > +	if (of_property_read_bool(node, "iommu-map"))
-> > +		pci_request_acs();
-> 
-> I'm not really convinced that the existence of 'iommu-map' in
-> devicetree is a clear signal that ACS should be enabled, so I'm a
-> little hesitant about this part.
-> 
-> Is it possible to boot using a devicetree with 'iommu-map', but with
-> the IOMMU disabled or the IOMMU driver not present?  Or other
-> situations where we don't need ACS?
-> 
+>   
+>   	/* don't munge partial samples */
+>   	num_bytes -= num_bytes % num_sample_bytes;
 
-Certainly possible. But the issue is, we cannot reliably detect the presence of
-IOMMU until the first pci_dev is created, which will be too late as
-pci_acs_init() is called during pci_device_add().
-
-This seems to be the case for ACPI platforms also.
-
-Maybe IOMMU folks Robin/Joerg/Will could comment more.
-
-- Mani
 
 -- 
-மணிவண்ணன் சதாசிவம்
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
 
