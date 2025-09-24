@@ -1,127 +1,134 @@
-Return-Path: <stable+bounces-181609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8007B9A3C2
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 16:26:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 097A6B9A4CB
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 16:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BE81888BF6
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 14:26:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 863C57A7A0F
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 14:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4343064A0;
-	Wed, 24 Sep 2025 14:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038BB3090EE;
+	Wed, 24 Sep 2025 14:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ABnLaHLH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ptr86+sn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7HITxtp"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A7F35957;
-	Wed, 24 Sep 2025 14:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE636307AFB;
+	Wed, 24 Sep 2025 14:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758723960; cv=none; b=qdR6hUQCS8uD8Ucp0769v7AJDD9yu3ymhbxy00PZ1H3lC29xRH2oUw62jaieN9bmHGTRY9cuGxPPl2NjSJWz14YWAN4QGu8nyIDugZJn7s0bCKg897IUoPYLWUrBPmDpEvtSgz0NV2w15eHxQ0Ul6fIJtPWR4g2hEx5dsO59i4U=
+	t=1758724819; cv=none; b=FFOElc8h4/831LIfyHwpDrEgxNYE7YFbejsWrnPs97mOp5zZwCsF4u+Zu2E5bvPAsKnOmXvEgVLLQOcBiVAFmXyc3uaGO1Ycw921fVw1czu3Zc5oltexPDktFKnwSYfv9rlHOAFnEe5DD8724LMKZYB70lOxCEvFkTG7n1yyVVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758723960; c=relaxed/simple;
-	bh=QFWBONOv+JjrIBPL48JQ4QvYiAYnI30gWv6I+2hMBYM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=fDwuKQhGHVT42JYA/ukJn9vgF09eyAlt4VyJKWTY2v6Yd1U0kEOfARQbdVZCCkbgnEYzmbkhd6z0MuebBsZaCm7gzeNCM+KR9TZv1golR7mgOiV8fIiNTnHtVMMWtpYnGgOXL5rAMBsMI2nK2cNlqFsOZTh4zQUEgzTy9E26psc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ABnLaHLH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ptr86+sn; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 8EA9D7A018F;
-	Wed, 24 Sep 2025 10:25:57 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Wed, 24 Sep 2025 10:25:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1758723957;
-	 x=1758810357; bh=CYj2gFEOZtbt1Ar9rV1vSIxgaPpdpGpGnomr5hhS6bE=; b=
-	ABnLaHLHY6enFOkbtaLiqCcrwdzIiq3TTIzDh4p5OMwJ33sMXBWUAFC8X6jO1Lpg
-	k5Da0CFapUeuvOvKEAQl974Wr8C8upmB4lP7MLCATZgyLrUeiXdlR/HvxnyCJHLq
-	MWp2LL/pwc5YgcWEAKBIwBSVC39tC86d5GgSwa4Myo4zSkcTlqJEkeoEkzy70qNd
-	WQuEXUcZZTsF2vm+A0RczsuLg98K1hYEYvGI+HjGjmbmFYQ2RQSvgHUrmwMI6iUh
-	jjQsyIebKQG8GTWA3bZvOjtFnhY3fHaO8X5I9X0IsxhQVnWxMrexresK+RVnJM3h
-	dS+JfE9jFFbHbwa5c+OFNw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758723957; x=
-	1758810357; bh=CYj2gFEOZtbt1Ar9rV1vSIxgaPpdpGpGnomr5hhS6bE=; b=P
-	tr86+snoRceiJQuaUAGTFRHMDsQmzS4ySzEIXGPkyEMj1IeNJp1CRiTz7Q0zC8o7
-	u5UIS7bzujtobAhxsZLXLZ0bx/aJY8hHJNM12GVb4cSwyWI4u1cUkHTUC7TebtMg
-	YLSpwTVEM2+FrzS8ERCbCsTmgbh0oYj8I1ufyV7aIfZaK9EgDgVrvx1ohcrQ4GSh
-	ozT1ebCKju1uD/3UWj4MBeqcTTToMvGeO8n004/WGi9yvVBLfDrz+1+J8kta8fub
-	vUP2Hs5EunbqO7uoSEkP0pb9xHqfna5bUTWXdNkeur6Mt7M/djot9Rt7N8IdF5Hf
-	xt2V030iv575AZrX7t4uQ==
-X-ME-Sender: <xms:df_TaCUR04N1XCgJpzLKDnMiTdUSJpMNyXc1Uvac-DqHaX2JeAwLmA>
-    <xme:df_TaJZe8IFNoWxUxun544VspA_oXSghx_Yw4CNnJ25CwwXvaa-BXIwdjCUUvkyPQ
-    F0_weuxabAozQ8Zd5fq6JOCt0mio3iE5By8HrCwb25HA2o8quJSx1w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeifeekgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdp
-    rhgtphhtthhopehvrghrrggughgruhhtrghmsehgohhoghhlvgdrtghomhdprhgtphhtth
-    hopehquhhitggpshgrihhprhgrkhgrsehquhhitghinhgtrdgtohhmpdhrtghpthhtohep
-    lhhinhhugidqrghrtghhsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
-    hinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:df_TaJrtsKgi6wwcmSrLw3m9v-Y3tFGFkraLNzQx8E4AlooA8QGfIA>
-    <xmx:df_TaPXHNlaDOQdLZ2Hdiq1BtV6WSbJcFwtRagz6eSvUxB9sg0J7Ug>
-    <xmx:df_TaACcmAFZetQ1reCSQnUfeqDoGWZOPRszCYaR-2JKQ8aPVnx7vw>
-    <xmx:df_TaL3bD34ZItnRIpGZE8ZtYihtEkjA1dVf0JhKHjDgJZHjOiuuZQ>
-    <xmx:df_TaKQCmepOXgBZIIFYd8J_j73SpHJwfaE5kWUgSMHZCtJa4YGyGShs>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1087F700069; Wed, 24 Sep 2025 10:25:57 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1758724819; c=relaxed/simple;
+	bh=4T26JdYYsM1e+t3tkUnI/PC5m7zquhrZvJn75mxBUl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CRhntqeFm1IdG4WCaYswJfaaCOgudpZ6DjRFtQuptkEvR841TKqgIpebwgrRyLmQoZguTcZGgoAzmb/i/x7v6QGS8lxAh/yQ+cdv+YYArxuk6yTJeVDvqjyEQWCrAB4lme3IEQGq6bfqCREy+bP36LVajpFuqWVuwfx48Iyy2k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7HITxtp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4305FC4CEF4;
+	Wed, 24 Sep 2025 14:40:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758724818;
+	bh=4T26JdYYsM1e+t3tkUnI/PC5m7zquhrZvJn75mxBUl0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=l7HITxtpfw5v7AfGaQb2F4B2jNmtn0RMw5nDMlYyZh5CyjHb2YeLlgXAeHLhL6A1/
+	 pCa06CyLgHxfv1Q5OCSyjeI7cyBVwYunS6Y7OQ5eCv1vfqoo0/+TwDreRuNvxlNtc6
+	 JRMn+7PhugLkWlyK8dSlC93FrLVLwlCyInGq2IWS3V9lQ37ulUyuvJuE6X7IDS+1cO
+	 8W0zWgbA6cpW7Non7OA+oc68DJtF0U0S4j7dKuBWIcF/XEE/DfBNwd0A1CaTwmPpAN
+	 K2/7StV3wfKP8Tamry23SHIdYVjkWvelRkNbgZD6w4P1V9dLAD8ednLAprAV/UbP5b
+	 yFYtrMfPTveMA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1v1QfD-000000002vR-2p10;
+	Wed, 24 Sep 2025 16:40:12 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Moudy Ho <moudy.ho@mediatek.com>
+Subject: [PATCH] media: platform: mtk-mdp3: fix device leaks at probe
+Date: Wed, 24 Sep 2025 16:39:19 +0200
+Message-ID: <20250924143919.11183-1-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AgLkk2v4HBWZ
-Date: Wed, 24 Sep 2025 16:25:36 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Varad Gautam" <varadgautam@google.com>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- "Sai Prakash Ranjan" <quic_saipraka@quicinc.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Message-Id: <d2514e7b-be87-4c77-9096-7285f2b715a0@app.fastmail.com>
-In-Reply-To: 
- <CAOLDJO+8JApK5_qjtn+DhCnQoF+Lp-x1KP_QQvJUqecp744T1w@mail.gmail.com>
-References: <20250330164229.2174672-1-varadgautam@google.com>
- <CAOLDJO+=+hcz498KRc+95dF5y3hZdtm+3y35o2rBC9qAOF-vDg@mail.gmail.com>
- <CAOLDJOKiEmde5Max0BnTBVpNmfpm-wwYLJ4Etv8D2KZKPHyFzw@mail.gmail.com>
- <CAOLDJOJ=QcQ065UTAdGayO2kbpGMOwCtdEGVm8TvQO8Wf8CSMw@mail.gmail.com>
- <CAOLDJOJ98EccMJ4O3FyX4mSFtHnbQ4iwwXsHT2EbLL+KrXfvtw@mail.gmail.com>
- <f74d9899-6aba-4c8e-87b1-cd6ecc7772e6@app.fastmail.com>
- <CAOLDJO+8JApK5_qjtn+DhCnQoF+Lp-x1KP_QQvJUqecp744T1w@mail.gmail.com>
-Subject: Re: [PATCH] asm-generic/io.h: Skip trace helpers if rwmmio events are disabled
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 23, 2025, at 13:07, Varad Gautam wrote:
->
-> Can I follow this along somewhere? (I don't see it on arnd/asm-generic.git atm.)
->
-> The unnecessary log_*_mmio() calls are showing up on enough Pixel devices
-> as a CPU cycles wastage, and I'm sure other Androids see it too.
+Make sure to drop the references taken when looking up the subsys
+devices during probe on probe failure (e.g. probe deferral) and on
+driver unbind.
 
-Pushed out now. I still had it in my local branch, but did not
-have any other asm-generic changes, so I ended up missing it again...
+Similarly, drop the SCP device reference after retrieving its platform
+data during probe to avoid leaking it.
 
-     Arnd
+Note that holding a reference to a device does not prevent its driver
+data from going away.
+
+Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
+Cc: stable@vger.kernel.org	# 6.1
+Cc: Moudy Ho <moudy.ho@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ .../media/platform/mediatek/mdp3/mtk-mdp3-core.c   | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
+index 8de2c8e4d333..fc117a6a822c 100644
+--- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
++++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
+@@ -157,10 +157,18 @@ void mdp_video_device_release(struct video_device *vdev)
+ 	kfree(mdp);
+ }
+ 
++static void mdp_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int mdp_mm_subsys_deploy(struct mdp_dev *mdp, enum mdp_infra_id id)
+ {
+ 	struct platform_device *mm_pdev = NULL;
+ 	struct device **dev;
++	int ret;
+ 	int i;
+ 
+ 	if (!mdp)
+@@ -194,6 +202,11 @@ static int mdp_mm_subsys_deploy(struct mdp_dev *mdp, enum mdp_infra_id id)
+ 		if (WARN_ON(!mm_pdev))
+ 			return -ENODEV;
+ 
++		ret = devm_add_action_or_reset(&mdp->pdev->dev, mdp_put_device,
++					       &mm_pdev->dev);
++		if (ret)
++			return ret;
++
+ 		*dev = &mm_pdev->dev;
+ 	}
+ 
+@@ -279,6 +292,7 @@ static int mdp_probe(struct platform_device *pdev)
+ 			goto err_destroy_clock_wq;
+ 		}
+ 		mdp->scp = platform_get_drvdata(mm_pdev);
++		put_device(&mm_pdev->dev);
+ 	}
+ 
+ 	mdp->rproc_handle = scp_get_rproc(mdp->scp);
+-- 
+2.49.1
+
 
