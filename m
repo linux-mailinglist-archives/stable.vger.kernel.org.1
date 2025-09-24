@@ -1,185 +1,240 @@
-Return-Path: <stable+bounces-181636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFE6B9BD70
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 22:20:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C26DB9BDA4
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 22:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9050219C51ED
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 20:20:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 481BD32845D
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 20:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C87323F75;
-	Wed, 24 Sep 2025 20:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F99832897A;
+	Wed, 24 Sep 2025 20:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="C7pZuttA"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="oZwIe67O"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6A0328567;
-	Wed, 24 Sep 2025 20:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB382701BB;
+	Wed, 24 Sep 2025 20:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.28.197.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758745211; cv=none; b=hhrgbdfwhGsU1qbvMG29fdkumeIxYdgcS6/AmLKVYgcv2z2Al0OmBxLf6xubwS09UgQnbXRDJTQVoUFfwegBNC36eMsxbd1BDhWw8B1dYPbIYvfgz9y7tV3N6cC/sipWMiUog/YBwUEcvYpbSjVgdaVakGTd+Iupg/DJE7SJoBI=
+	t=1758745456; cv=none; b=FgWqJX3FTq/kdmGaGzNNzMpV8BrkvtG3sL4Ip3OpddkblM+34C2XcLFY6kelViHO2z3GrAqNirursEhZyZ3/O9dk21uHARt5Pmd9CUpQsP+5mnM2HbSOwfeRwkpTegM4li0RMe2zbkqfC5I+ue/0ZlyFzh6MWPFttHB6M8fmjic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758745211; c=relaxed/simple;
-	bh=JCzLikBvnXiDd9fJvwWizgKaYloqQJXWF83znMxFsg0=;
-	h=Date:To:From:Subject:Message-Id; b=LvzDjc/F6A5QPJQi5Gjsk06mk+tUxjOPbiuIvaYxOWolXUlHEyG9fDC7PCxsdlHFQzOItJzJSui1dXXOsRH7JMXbM7WJNd6FSWDDaAWWvnqQX4ANaz2311vDAE15yVXrzE3GlavAfGezkImG17HsA5N54tRkCFj6GGygJ+gyPg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=C7pZuttA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF41C4CEF4;
-	Wed, 24 Sep 2025 20:20:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758745211;
-	bh=JCzLikBvnXiDd9fJvwWizgKaYloqQJXWF83znMxFsg0=;
-	h=Date:To:From:Subject:From;
-	b=C7pZuttAdNgkURjx8L1zeBYjsd/gGiKvRQFHvpGGAa3tIlR5pRdBfvxyNcBLKB8jJ
-	 t7Oiq692KACyGsJPVrlzsUwrxD0OCliksLk88dhlyew4pwLEdwsJAYfqHn2JArmZVV
-	 Zi3v7Qq9pvakCtHJLfRAFpYL4311bcvnouLBZWjM=
-Date: Wed, 24 Sep 2025 13:20:10 -0700
-To: mm-commits@vger.kernel.org,zhangpeng.00@bytedance.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kasong@tencent.com,david@redhat.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,charan.kalla@oss.qualcomm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch added to mm-new branch
-Message-Id: <20250924202011.4AF41C4CEF4@smtp.kernel.org>
+	s=arc-20240116; t=1758745456; c=relaxed/simple;
+	bh=bJ2FSaaKMPkQa5IN2Pe/chyVzGb8Ref4DvUThRMU4z0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DcsJo+K0MlYzqIIfC6ZSmg8GT9CnmeregiTc0mTfSQD1dYCXFR2poRwKDdAyn1cDtoKUzc/ndMvIelSAW9ddsLc9uXUn3D282D6qczUMPtLA85d0RG8MA+IIbYa9KuvMqRvm/oqJglKjjGAFZjETva1/9q7NNPaNzlsYDHlRoU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=oZwIe67O; arc=none smtp.client-ip=52.28.197.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1758745454; x=1790281454;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KzVc5pQt1xJae1laTHwFTkgfsVttwXUFIKNqt4L9XFg=;
+  b=oZwIe67OE5bMEyCf6zFBgNYQ9NkmNjhwafRX0/3Pmth1VrhSiftq//sk
+   oDPzaTNQ1fKX9ui+k8xlvtGpx8UHcLc7OUNdiYnA+ltAd+Zx+Inof0Mgq
+   r9T3fVBLGl4KzH4FcyBioCDqy6cuuz143FqVMZn6XkoNozPhPrLWWBmvP
+   Ho5mXz7ZIX/KgPDVvcMTsakbAGlf7LiLi/5lCit/8dJ6vjy1eYVkKn/7R
+   8wqWaz73Z9bfSvJDPlEigEy01VYFx0GIcOzEONlRAAmvkUCOoY0JpFAk1
+   tOxDLW63BKyuo6Jlvbg1vA9CJ1n/ZOP2gZ8fEifPIibiwPLi+3yfrsW/e
+   A==;
+X-CSE-ConnectionGUID: +bpb7ezGQtmV8E8VA8qXRA==
+X-CSE-MsgGUID: SFde7s01RFKi6zh/6W6ZSQ==
+X-IronPort-AV: E=Sophos;i="6.18,291,1751241600"; 
+   d="scan'208";a="2525915"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 20:24:01 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:12397]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.5.254:2525] with esmtp (Farcaster)
+ id d8c58b1d-ca7d-4c1f-a53d-72dcf5ba6a6f; Wed, 24 Sep 2025 20:24:01 +0000 (UTC)
+X-Farcaster-Flow-ID: d8c58b1d-ca7d-4c1f-a53d-72dcf5ba6a6f
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 24 Sep 2025 20:24:00 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 24 Sep 2025
+ 20:23:26 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <linux@armlinux.org.uk>, <richard@nod.at>,
+	<anton.ivanov@cambridgegreys.com>, <johannes@sipsolutions.net>,
+	<dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>,
+	<hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>,
+	<mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>,
+	<harry.wentland@amd.com>, <sunpeng.li@amd.com>, <Rodrigo.Siqueira@amd.com>,
+	<alexander.deucher@amd.com>, <christian.koenig@amd.com>,
+	<Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+	<evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>,
+	<mihail.atanassov@arm.com>, <brian.starkey@arm.com>,
+	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<tzimmermann@suse.de>, <robdclark@gmail.com>, <quic_abhinavk@quicinc.com>,
+	<dmitry.baryshkov@linaro.org>, <sean@poorly.run>, <jdelvare@suse.com>,
+	<linux@roeck-us.net>, <linus.walleij@linaro.org>,
+	<dmitry.torokhov@gmail.com>, <maz@kernel.org>, <wens@csie.org>,
+	<jernej.skrabec@gmail.com>, <samuel@sholland.org>, <agk@redhat.com>,
+	<snitzer@kernel.org>, <dm-devel@redhat.com>, <rajur@chelsio.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <peppe.cavallaro@st.com>,
+	<alexandre.torgue@foss.st.com>, <joabreu@synopsys.com>,
+	<mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@linaro.org>,
+	<malattia@linux.it>, <hdegoede@redhat.com>, <markgross@kernel.org>,
+	<artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>,
+	<martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>,
+	<gregkh@linuxfoundation.org>, <fei1.li@intel.com>, <clm@fb.com>,
+	<josef@toxicpanda.com>, <dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>,
+	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
+	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mhiramat@kernel.org>,
+	<pmladek@suse.com>, <senozhatsky@chromium.org>,
+	<andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>,
+	<minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>,
+	<yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>, <pablo@netfilter.org>,
+	<kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>,
+	<ying.xue@windriver.com>, <andrii@kernel.org>, <mykolal@fb.com>,
+	<ast@kernel.org>, <daniel@iogearbox.net>, <martin.lau@linux.dev>,
+	<song@kernel.org>, <yhs@fb.com>, <john.fastabend@gmail.com>,
+	<kpsingh@kernel.org>, <sdf@google.com>, <haoluo@google.com>,
+	<jolsa@kernel.org>, <shuah@kernel.org>, <keescook@chromium.org>,
+	<wad@chromium.org>, <willy@infradead.org>, <farbere@amazon.com>,
+	<sashal@kernel.org>, <ruanjinjie@huawei.com>, <quic_akhilpo@quicinc.com>,
+	<David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>,
+	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
+	<linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>,
+	<linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>,
+	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
+	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
+	<bpf@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 00/19 v6.1.y] Backport minmax.h updates from v6.17-rc7
+Date: Wed, 24 Sep 2025 20:23:01 +0000
+Message-ID: <20250924202320.32333-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
+This series backports 19 patches to update minmax.h in the 6.1.y branch,
+aligning it with v6.17-rc7.
 
-The patch titled
-     Subject: mm: swap: check for stable address space before operating on the VMA
-has been added to the -mm mm-new branch.  Its filename is
-     mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
+The ultimate goal is to synchronize all longterm branches so that they
+include the full set of minmax.h changes.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
+Previous work to update 6.12.48:
+https://lore.kernel.org/stable/20250922103123.14538-1-farbere@amazon.com/T/#t
+and 6.6.107:
+https://lore.kernel.org/stable/20250922103241.16213-1-farbere@amazon.com/T/#t
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The key motivation is to bring in commit d03eba99f5bf ("minmax: allow
+min()/max()/clamp() if the arguments have the same signedness"), which
+is missing in older kernels.
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
+In mainline, this change enables min()/max()/clamp() to accept mixed
+argument types, provided both have the same signedness. Without it,
+backported patches that use these forms may trigger compiler warnings,
+which escalate to build failures when -Werror is enabled.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Andy Shevchenko (1):
+  minmax: deduplicate __unconst_integer_typeof()
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+David Laight (8):
+  minmax: fix indentation of __cmp_once() and __clamp_once()
+  minmax.h: add whitespace around operators and after commas
+  minmax.h: update some comments
+  minmax.h: reduce the #define expansion of min(), max() and clamp()
+  minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
+  minmax.h: move all the clamp() definitions after the min/max() ones
+  minmax.h: simplify the variants of clamp()
+  minmax.h: remove some #defines that are only expanded once
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Herve Codina (1):
+  minmax: Introduce {min,max}_array()
 
-------------------------------------------------------
-From: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Subject: mm: swap: check for stable address space before operating on the VMA
-Date: Wed, 24 Sep 2025 23:41:38 +0530
+Linus Torvalds (8):
+  minmax: avoid overly complicated constant expressions in VM code
+  minmax: simplify and clarify min_t()/max_t() implementation
+  minmax: make generic MIN() and MAX() macros available everywhere
+  minmax: add a few more MIN_T/MAX_T users
+  minmax: simplify min()/max()/clamp() implementation
+  minmax: don't use max() in situations that want a C constant
+    expression
+  minmax: improve macro expansion and type checking
+  minmax: fix up min3() and max3() too
 
-It is possible to hit a zero entry while traversing the vmas in unuse_mm()
-called from swapoff path and accessing it causes the OOPS:
+Matthew Wilcox (Oracle) (1):
+  minmax: add in_range() macro
 
-Unable to handle kernel NULL pointer dereference at virtual address
-0000000000000446--> Loading the memory from offset 0x40 on the
-XA_ZERO_ENTRY as address.
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
+ arch/arm/mm/pageattr.c                        |   6 +-
+ arch/um/drivers/mconsole_user.c               |   2 +
+ arch/x86/mm/pgtable.c                         |   2 +-
+ drivers/edac/sb_edac.c                        |   4 +-
+ drivers/edac/skx_common.h                     |   1 -
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |   2 +
+ .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    |  14 +-
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c        |   2 +-
+ .../drm/arm/display/include/malidp_utils.h    |   2 +-
+ .../display/komeda/komeda_pipeline_state.c    |  24 +-
+ drivers/gpu/drm/drm_color_mgmt.c              |   2 +-
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c         |   6 -
+ drivers/gpu/drm/radeon/evergreen_cs.c         |   2 +
+ drivers/hwmon/adt7475.c                       |  24 +-
+ drivers/input/touchscreen/cyttsp4_core.c      |   2 +-
+ drivers/irqchip/irq-sun6i-r.c                 |   2 +-
+ drivers/md/dm-integrity.c                     |   2 +-
+ drivers/media/dvb-frontends/stv0367_priv.h    |   3 +
+ .../net/ethernet/chelsio/cxgb3/cxgb3_main.c   |  18 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |   2 +-
+ drivers/net/fjes/fjes_main.c                  |   4 +-
+ drivers/nfc/pn544/i2c.c                       |   2 -
+ drivers/platform/x86/sony-laptop.c            |   1 -
+ drivers/scsi/isci/init.c                      |   6 +-
+ .../pci/hive_isp_css_include/math_support.h   |   5 -
+ drivers/virt/acrn/ioreq.c                     |   4 +-
+ fs/btrfs/misc.h                               |   2 -
+ fs/btrfs/tree-checker.c                       |   2 +-
+ fs/ext2/balloc.c                              |   2 -
+ fs/ext4/ext4.h                                |   2 -
+ fs/ufs/util.h                                 |   6 -
+ include/linux/compiler.h                      |   9 +
+ include/linux/minmax.h                        | 264 +++++++++++++-----
+ include/linux/pageblock-flags.h               |   2 +-
+ kernel/trace/preemptirq_delay_test.c          |   2 -
+ lib/btree.c                                   |   1 -
+ lib/decompress_unlzma.c                       |   2 +
+ lib/logic_pio.c                               |   3 -
+ lib/vsprintf.c                                |   2 +-
+ mm/zsmalloc.c                                 |   1 -
+ net/ipv4/proc.c                               |   2 +-
+ net/ipv6/proc.c                               |   2 +-
+ net/netfilter/nf_nat_core.c                   |   6 +-
+ net/tipc/core.h                               |   2 +-
+ net/tipc/link.c                               |  10 +-
+ .../selftests/bpf/progs/get_branch_snapshot.c |   4 +-
+ tools/testing/selftests/seccomp/seccomp_bpf.c |   2 +
+ tools/testing/selftests/vm/mremap_test.c      |   2 +
+ 48 files changed, 290 insertions(+), 184 deletions(-)
 
-The issue is manifested from the below race between the fork() on a
-process and swapoff:
-fork(dup_mmap())			swapoff(unuse_mm)
----------------                         -----------------
-1) Identical mtree is built using
-   __mt_dup().
-
-2) copy_pte_range()-->
-	copy_nonpresent_pte():
-       The dst mm is added into the
-    mmlist to be visible to the
-    swapoff operation.
-
-3) Fatal signal is sent to the parent
-process(which is the current during the
-fork) thus skip the duplication of the
-vmas and mark the vma range with
-XA_ZERO_ENTRY as a marker for this process
-that helps during exit_mmap().
-
-				     4) swapoff is tried on the
-					'mm' added to the 'mmlist' as
-					part of the 2.
-
-				     5) unuse_mm(), that iterates
-					through the vma's of this 'mm'
-					will hit the non-NULL zero entry
-					and operating on this zero entry
-					as a vma is resulting into the
-					oops.
-
-The proper fix would be around not exposing this partially-valid tree to
-others when droping the mmap lock, which is being solved with [1].  A
-simpler solution would be checking for MMF_UNSTABLE, as it is set if
-mm_struct is not fully initialized in dup_mmap().
-
-Thanks to Liam/Lorenzo/David for all the suggestions in fixing this
-issue.
-
-
-Link: https://lkml.kernel.org/r/20250924181138.1762750-1-charan.kalla@oss.qualcomm.com
-Link: https://lore.kernel.org/all/20250815191031.3769540-1-Liam.Howlett@oracle.com/ [1]
-Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
-Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/swapfile.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/mm/swapfile.c~mm-swap-check-for-stable-address-space-before-operating-on-the-vma
-+++ a/mm/swapfile.c
-@@ -2389,6 +2389,8 @@ static int unuse_mm(struct mm_struct *mm
- 	VMA_ITERATOR(vmi, mm, 0);
- 
- 	mmap_read_lock(mm);
-+	if (check_stable_address_space(mm))
-+		goto unlock;
- 	for_each_vma(vmi, vma) {
- 		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type);
-@@ -2398,6 +2400,7 @@ static int unuse_mm(struct mm_struct *mm
- 
- 		cond_resched();
- 	}
-+unlock:
- 	mmap_read_unlock(mm);
- 	return ret;
- }
-_
-
-Patches currently in -mm which might be from charan.kalla@oss.qualcomm.com are
-
-mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
+-- 
+2.47.3
 
 
