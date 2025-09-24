@@ -1,120 +1,130 @@
-Return-Path: <stable+bounces-181602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B8FB99F09
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 14:56:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC77B9A0D3
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 15:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B288B3BD162
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 12:56:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D96613B81EC
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 13:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7233F3002CF;
-	Wed, 24 Sep 2025 12:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4182304972;
+	Wed, 24 Sep 2025 13:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Kkn6onVP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A7dkHYzo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C286B2FC893
-	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 12:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F892DAFBA;
+	Wed, 24 Sep 2025 13:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758718560; cv=none; b=myRsjaTLYEmGOM9429/HGnt9w95mjFsIh5JZNiCdY8VInxwxXx2LRbeE65Ku2O6G/SwvoGT5f5nldrcFMde3J0cfgpjjS/JDS7ygjG/WIfTD9eeiZmLAXJzGX995MFwjnh3+8UnL8lBoMuSutDWT4rdYMeo7ARvSsDoT0Ou/f5s=
+	t=1758720987; cv=none; b=FtJh4gCosxmzv9PQ0WELNMmKM/njafXHbqHtKJF82cLdD/re5hDBQWhSuCmEWBq7IDXHT/jraHXdQWo7Q05Tq6CIEFePbBJISDFO3a4SdkuzKN78giwFwu91JxtF8V963vSoxWutmDyASybK3osCRksqIxK/zrCgCzBlXim9ZxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758718560; c=relaxed/simple;
-	bh=8qhfbs5/dOfdODZ9W2ISGsgvtvUAf69XpGYPjAvdJ34=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gfufm3Rbsq/kcf+snd4yFKBn9bmTPrRYmowaS3lxMf7hENxRvebTeB/4dFTiwudZxfMkwhOXfCNU71JwX8gkCV3KWgNB0XySON6bu/bVECPgMecP39aMnFLr1RA5R32Pw97EojnmZdRvTU8nUwOxgKypvM/QYJM7gqekiB9tKEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Kkn6onVP; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-74572fb94b3so4773767a34.2
-        for <stable@vger.kernel.org>; Wed, 24 Sep 2025 05:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1758718558; x=1759323358; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8qhfbs5/dOfdODZ9W2ISGsgvtvUAf69XpGYPjAvdJ34=;
-        b=Kkn6onVPAMSNNklmFFZI3aNKbFGXU6nBTzblm3E/Pqfzu0p10WCUO6yPajm/5VwuAM
-         0R/CuTowYLBmljyJC/Kn5QN5Wdco/tdBRn5ekpqnGP38SrN+Ac0292QFuzXolu4Ur2ly
-         nMR4TkZHt1hXvq1/mclPrqQIzGGal2GIP/5UvgAk/Mdh0Y0kr2haii3hP91cObbCQxQO
-         TXW0yvCQfwfgC0aETgt+VkrOzjRw8DVOxHJKZ7J67EtCgL7I4b5l0Qgvqt8gtTaq90iZ
-         SZ+0Z7skuhxl+n3wGdTfN6yE1HSJh0h4Qq/SfGrjta4rO8mi9X8xjGNQPxika3XSUOJm
-         Ns3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758718558; x=1759323358;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8qhfbs5/dOfdODZ9W2ISGsgvtvUAf69XpGYPjAvdJ34=;
-        b=tk4hjDON5A4R+Wum4vWzJn7JC7kOC5qJ5RZKaepWXgxq59IJVdHge/ZvMEJ0hBmc2K
-         fs4JVQjFxcSDdnnOOK2ptjWyprS01eRveJwsfZJQutzxehfISj/OvCNkr4zmG1kC9of/
-         P3fg3AsaYNTkjDPY2MWnNMZhkq1YClQazhd2XCptOLlQHK4dxZM70Otq5VOUOfYdLnqt
-         WbJzbeBl90naTmUBViEdCOLUaorc1VgbfkUM/m+uizjHXs2zK87/YwzCy0VFgcFYPSLJ
-         S8Oi39gEDCZWLurZYiTf7UtfcpCMU6b9QQkGCxL4EfKBHQZSwodoMTsbJ8E60aT33Wgx
-         frvA==
-X-Forwarded-Encrypted: i=1; AJvYcCXn/LIoCwmXUswGacRZScgdpMxqvS7LT7dRWQXkwAtHFLjTGeYzLcZarr2exumhYocMnvsFUAM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeLeCvkOI44LDtSFnSvMDU1ReZwYf2TbD0aRLGnkH4jP8oi3hj
-	ByYGt1cVlyQFk/gi4CP5uewNsEMsnozW4ip3HezFc98rhlWLi4XUjafl/xYX2lXaFCc=
-X-Gm-Gg: ASbGnctYV1FA8t8HF8yFesX1Q7ndzRBb4zDZAz049tJQ74uNx8n7CVP0thymF7eMwV7
-	4Lzp+jmzu4ss0nsJ3xYiCtgf1+x3jhCCi/KkV7zVq3RJLJyQljD1uasFcDyhO2ejAcvJuv1M95L
-	Dtawyc20F2BuvIz3151DufkH5BCeBlUWzMEGLfEIwLlxLxqg5vVm7x5VIahYA9po0d7chZn7R8r
-	+rejomvQe3221NX0DRxgdHjAKgxgjBQVVex5Bh6ZC6NZVSqwhmEtfhvDsqfLrF9v0CkLCwEMlah
-	wJ9uLD7dOaUg4oYoiYSyAqc2UmTzvxOh5015IAUSyM0+yn+WFOXFk19NyVVFJK3ujFOYOepo
-X-Google-Smtp-Source: AGHT+IHQ1WFwERflWPT6pleBXcoHSBQbFQS1yTbSrGY2yC7WZRjb2FbqLBgkt00nf34cnENXHwUiCg==
-X-Received: by 2002:a05:6830:65c3:10b0:746:dc05:8604 with SMTP id 46e09a7af769-79153cba081mr2694566a34.20.1758718557920;
-        Wed, 24 Sep 2025 05:55:57 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7692af2f9desm7576308a34.31.2025.09.24.05.55.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 05:55:57 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1v1P2J-0000000B800-3i6s;
-	Wed, 24 Sep 2025 09:55:55 -0300
-Date: Wed, 24 Sep 2025 09:55:55 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Joerg Roedel <jroedel@suse.de>, iommu@lists.linux.dev,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
-	Xingang Wang <wangxingang5@huawei.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] PCI: Fix ACS enablement for Root Ports in DT
- platforms
-Message-ID: <20250924125555.GJ2547959@ziepe.ca>
-References: <20250910-pci-acs-v1-0-fe9adb65ad7d@oss.qualcomm.com>
- <20250918141102.GO1326709@ziepe.ca>
- <tzlbsnsoymhjlri5rm7dw5btb2m2tpzemtyqhjpa2eu3josf5c@uivuvkpx3wep>
- <20250923162139.GC2547959@ziepe.ca>
- <oig5w7dnrdpgvzuqu4johs526qe57x7dkurd2abllqyvpavvti@s3pwtoduusfr>
+	s=arc-20240116; t=1758720987; c=relaxed/simple;
+	bh=PP4GlelkN7bqBaOJj/FDhufoJKYKO3ceHzlIc1IQG+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZwhHmVZpS5QASQQ8PMqOgMNJnB6JqgvYX+ZN8pmNAom4zSeL6l1jqv957ir/bRZgP1f3UruGIgUcsZlgCgCYFoBdRztr4SC0G/NhPtobNbaYPIaJHerO2I4wg3bDXf+SAjlA6BptYt+YcW64mU7FP/FAxU9193UCmLCBhbu+B00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7dkHYzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E10C4CEE7;
+	Wed, 24 Sep 2025 13:36:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758720987;
+	bh=PP4GlelkN7bqBaOJj/FDhufoJKYKO3ceHzlIc1IQG+0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A7dkHYzoc6XWoJzulEj9Zqm2lIm/xcCXfkksBISOkIqPH62biFJApKmw+oxiq+wcs
+	 kK7GpQHOeyRZAcAn2Ld7fJf54/FZrxxXGfXEJ+8+1PnxbH4MLsvT7/HPEPDLOg3cbW
+	 n5ow+8L6xU8bQN7p3iVzYmYJAm+Nq8ixT+Z0lQc4L51uvwM+N6D8yb35xNhQGzfTCF
+	 1jTUdfogbKV7HwYz8J3/o7RWIm0GYo8DJpEVPmcPdW0RFt6lb92moSyH9KeUZpp5GP
+	 YJGfLSqKwwFJf5Wsoe02SrZoSLrl2FuC2n8/sp4bABc0wrp4Blhj3WJIcWEdfMqx4v
+	 Gd0ZBrHYT8vxg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1v1PfR-000000007Vm-1LPm;
+	Wed, 24 Sep 2025 15:36:21 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+	Houlong Wei <houlong.wei@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hans Verkuil <hans.verkuil@cisco.com>,
+	linux-media@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] media: mediatek: vcodec: fix device leak on codec init
+Date: Wed, 24 Sep 2025 15:35:50 +0200
+Message-ID: <20250924133552.28841-2-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250924133552.28841-1-johan@kernel.org>
+References: <20250924133552.28841-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <oig5w7dnrdpgvzuqu4johs526qe57x7dkurd2abllqyvpavvti@s3pwtoduusfr>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 24, 2025 at 01:51:23PM +0530, Manivannan Sadhasivam wrote:
+Make sure to drop the reference taken when looking up the VPU firmware
+device during codec init on probe failure (e.g. probe deferral) and on
+driver unbind.
 
-> This device is not spec conformant in many areas tbh. But my
-> suggestion would be to follow the vendor suggested erratum until any
-> reported issues.
+Fixes: 590577a4e525 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Decoder Driver")
+Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
+Cc: stable@vger.kernel.org	# 4.8
+Cc: Tiffany Lin <tiffany.lin@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ .../mediatek/vcodec/common/mtk_vcodec_fw_vpu.c      | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-I mean the ethernet chip retaining it's SBR after a FLR or link up/down
-is probably not a spec requirement..
+diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+index d7027d600208..9237738d7632 100644
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+@@ -83,12 +83,20 @@ static const struct mtk_vcodec_fw_ops mtk_vcodec_vpu_msg = {
+ 	.release = mtk_vcodec_vpu_release,
+ };
+ 
++static void mtk_vcodec_vpu_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_init(void *priv, enum mtk_vcodec_fw_use fw_use)
+ {
+ 	struct platform_device *fw_pdev;
+ 	struct platform_device *plat_dev;
+ 	struct mtk_vcodec_fw *fw;
+ 	enum rst_id rst_id;
++	int ret;
+ 
+ 	if (fw_use == ENCODER) {
+ 		struct mtk_vcodec_enc_dev *enc_dev = priv;
+@@ -111,6 +119,11 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_init(void *priv, enum mtk_vcodec_fw_use
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	ret = devm_add_action_or_reset(&plat_dev->dev, mtk_vcodec_vpu_put_device,
++				       &fw_pdev->dev);
++	if (ret)
++		return ERR_PTR(ret);
++
+ 	if (fw_use == DECODER)
+ 		vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_dec_handler, priv, rst_id);
+ 	else
+-- 
+2.49.1
 
-Jason
 
