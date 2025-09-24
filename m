@@ -1,100 +1,137 @@
-Return-Path: <stable+bounces-181570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F3EB98574
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 08:05:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C95C3B985BF
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 08:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8CE2E72E9
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 06:05:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDD5A19C3C70
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 06:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DB0242D69;
-	Wed, 24 Sep 2025 06:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B184F23D7FD;
+	Wed, 24 Sep 2025 06:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B28hUVWG"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="sbCtCT2g"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFB223D7EE
-	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 06:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F158A20E704;
+	Wed, 24 Sep 2025 06:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758693816; cv=none; b=IDwpOf9pviWUVnQ3ZyPIGCIRbcABnqZIum9PHL4BRTsI2JO06IvNZjR4FdXVWRBwTrc8Iv3vjz5NhgIrSocm5mfmqBVLDvPzKE9haFeBVsmqDq+wQmlnxQ4FEp2iX+HT5zv83JTLwhEsN/+yxdYDmJJOKx98EGAK6F5UOZTmbYA=
+	t=1758694440; cv=none; b=ro9TEkas4LjzPGACfqVU9ma5dH8N6GRTucsvJDck48EfHQEOoBFEd2e83uvJFx32Zhnz5l9/J2d840nPlpp+OMnLr36A3CQWMvHl6b/tWiAVUMVQmrPE400SqIp89knVCWviNC3a7qgG9ky9MXnjuK/+0GUG9XI/8ggyFef5hVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758693816; c=relaxed/simple;
-	bh=qLw/XpUDNjydbKVJDmSYD8KeiUiwlVa54MhovWDpivY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=BLsMSOkFosGEn5mgXqvjq12MSNX4xQ4BqVMgeMt8LdO/deS8qWI19zA5yP2/dQ1F+3grXp9rFYM19rEAiFfkbzkkW2KQS6kux7FwKP0vuHnOq3u6I1Pv8gbwCqMtG280xzqaI8tXpj2YIdhEsKPZueGX6vSmmaOfAe9g5hKD168=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B28hUVWG; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758693814; x=1790229814;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=qLw/XpUDNjydbKVJDmSYD8KeiUiwlVa54MhovWDpivY=;
-  b=B28hUVWG3vI9sSZWPq0Up0ce9RBAIz6LplA7kHOv8DbZt7sq5AqaKWYY
-   jTibYVjri2TT57Ft1ZxCUcJjzJMKW8+jHutpvLuHFXV/wUJsJnbmidCVn
-   HOpCBA0jrNPV5vG74T+XYBLtp5Zivx/2XG8Iu0MrwYzg27tNR7iDSAOKL
-   E6DUEM/mVHwjVsxwABy01lx2GLqHhuSKoWCs1NzZETPbh8dP96mGQhDle
-   d5hwzYmpfzkB9oK4XOjZZTWqkTeuB2eUGy+F4HotEhni3nLPUfAQk/xW6
-   RQskF16U+VIta7a/zGBZPqPnOsHSOe0lZKCZE3dCk6zUKrZfsToNNfg7t
+	s=arc-20240116; t=1758694440; c=relaxed/simple;
+	bh=oL5K5vqLXDjohbzGu1q9kXasuqJsPhJHn3iFihsVwYQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=g1T8TF5ZDblCZ30H/VkkNUb+dvlb/9wv2kvabrbYfYrq0OWjOjzijfKLUbgy5IUwQ3hInXrW5WxT2F06kUvhSLh+zQ/X9CCamgC6u9AcrqTho1UWqF4anxQ5c4VEU7hgJ1pWvwWHwcildbtfYZ7Io4CxLrPP8Vs+huoolHdXiHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=sbCtCT2g; arc=none smtp.client-ip=44.246.77.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1758694438; x=1790230438;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=oL5K5vqLXDjohbzGu1q9kXasuqJsPhJHn3iFihsVwYQ=;
+  b=sbCtCT2gEnlSFMePiqoTTTDfyDvqDYsmCdL+p/ftpuAsIO3bfAKCYd0i
+   cjZes+ikNG1GxmsI6Jcp3ZOHf4YWleIVpcA5zdy4sEsXqJTBz3XOBn8W1
+   t9zVcMgXieCGSPS5Qu3MDqN0Yu+GB+wZ1uQySBMo48YuFfde3MLh4H7US
+   Sf3T8MTgsEkIq1gAoCBLpo/3LrfVcrtb2rBxgW7HuTRBb+sQXWusASg2C
+   1nsPE6haFQUQWxC5frrvABZNykDdTq8kqHlu3tmQ2MZJtHXoA+Qwf/wLn
+   8ueDaqoTzfacnkGeZwBpAEXdXHsn45Veuao8rzprHZb3b6yF6O3bf3B4u
    g==;
-X-CSE-ConnectionGUID: pGf5s4eWRau/xzbzVukMiw==
-X-CSE-MsgGUID: olJKQKJiRgifArvEMTPdQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="64823431"
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="64823431"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 23:03:34 -0700
-X-CSE-ConnectionGUID: dTgNB2VQR6Kl0+4jak34rQ==
-X-CSE-MsgGUID: 5jFWPLkYSpCRWVfEPBCMwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="177729591"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 23 Sep 2025 23:03:33 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v1IbC-0003q5-34;
-	Wed, 24 Sep 2025 06:03:30 +0000
-Date: Wed, 24 Sep 2025 14:02:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xinhui Yang <cyan@cyano.uk>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4 2/2] scsi: dc395x: improve code formatting for the
- macros
-Message-ID: <aNOJhwUQDD4AP266@ffd18205fa77>
+X-CSE-ConnectionGUID: zJCroIsQSdmcKOPQ2SVXNA==
+X-CSE-MsgGUID: ER1XdZmMSJ+0IpSaHds0Rw==
+X-IronPort-AV: E=Sophos;i="6.18,290,1751241600"; 
+   d="scan'208";a="3645442"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 06:13:58 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:6491]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.168:2525] with esmtp (Farcaster)
+ id 032be64e-1622-49e8-a2e4-203efa474f45; Wed, 24 Sep 2025 06:13:58 +0000 (UTC)
+X-Farcaster-Flow-ID: 032be64e-1622-49e8-a2e4-203efa474f45
+Received: from EX19D032UWA004.ant.amazon.com (10.13.139.56) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 24 Sep 2025 06:13:55 +0000
+Received: from EX19D032UWA003.ant.amazon.com (10.13.139.37) by
+ EX19D032UWA004.ant.amazon.com (10.13.139.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 24 Sep 2025 06:13:55 +0000
+Received: from EX19D032UWA003.ant.amazon.com ([fe80::8e94:8f60:9531:c497]) by
+ EX19D032UWA003.ant.amazon.com ([fe80::8e94:8f60:9531:c497%5]) with mapi id
+ 15.02.2562.020; Wed, 24 Sep 2025 06:13:55 +0000
+From: "Bandi, Ravi Kumar" <ravib@amazon.com>
+To: "mani@kernel.org" <mani@kernel.org>, "thippeswamy.havalige@amd.com"
+	<thippeswamy.havalige@amd.com>
+CC: "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "bhelgaas@google.com"
+	<bhelgaas@google.com>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "kwilczynski@kernel.org"
+	<kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"michal.simek@amd.com" <michal.simek@amd.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Thread-Topic: [PATCH v2] PCI: xilinx-xdma: Enable INTx interrupts
+Thread-Index: AQHcKoFWBnk90o/gZUOv7QYU+iHxwrSh38GA
+Date: Wed, 24 Sep 2025 06:13:55 +0000
+Message-ID: <AB21188C-0467-4378-AD3B-34093EC88AA9@amazon.com>
+References: <C47CF283-C0C4-4ACF-BE07-3E87153D6EC6@amazon.com>
+ <20250920225232.18757-1-ravib@amazon.com>
+In-Reply-To: <20250920225232.18757-1-ravib@amazon.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7F0679158EB19D4092812EA5536C56AD@amazon.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250924055628.1929177-3-cyan@cyano.uk>
 
-Hi,
-
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v4 2/2] scsi: dc395x: improve code formatting for the macros
-Link: https://lore.kernel.org/stable/20250924055628.1929177-3-cyan%40cyano.uk
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+SGVsbG8gTWFuaSwgVGhpcHBlc3dhbXksDQoNCkEgZ2VudGxlIHJlbWluZGVyIHRvIHJldmlldyBw
+YXRjaCB2Mi4gUGxlYXNlIGxldCBtZSBrbm93IGlmIHlvdSBuZWVkIGFueSBhZGRpdGlvbmFsIGlu
+Zm9ybWF0aW9uLiBUaGFua3MuDQoNClNpbmNlcmVseSwNClJhdmkNCg0KPiBPbiBTZXAgMjAsIDIw
+MjUsIGF0IDM6NTLigK9QTSwgQmFuZGksIFJhdmkgS3VtYXIgPHJhdmliQGFtYXpvbi5jb20+IHdy
+b3RlOg0KPiANCj4gVGhlIHBjaWUteGlsaW54LWRtYS1wbCBkcml2ZXIgZG9lcyBub3QgZW5hYmxl
+IElOVHggaW50ZXJydXB0cw0KPiBhZnRlciBpbml0aWFsaXppbmcgdGhlIHBvcnQsIHByZXZlbnRp
+bmcgSU5UeCBpbnRlcnJ1cHRzIGZyb20NCj4gUENJZSBlbmRwb2ludHMgZnJvbSBmbG93aW5nIHRo
+cm91Z2ggdGhlIFhpbGlueCBYRE1BIHJvb3QgcG9ydA0KPiBicmlkZ2UuIFRoaXMgaXNzdWUgYWZm
+ZWN0cyBrZXJuZWwgNi42LjAgYW5kIGxhdGVyIHZlcnNpb25zLg0KPiANCj4gVGhpcyBwYXRjaCBh
+bGxvd3MgSU5UeCBpbnRlcnJ1cHRzIGdlbmVyYXRlZCBieSBQQ0llIGVuZHBvaW50cw0KPiB0byBm
+bG93IHRocm91Z2ggdGhlIHJvb3QgcG9ydC4gVGVzdGVkIHRoZSBmaXggb24gYSBib2FyZCB3aXRo
+DQo+IHR3byBlbmRwb2ludHMgZ2VuZXJhdGluZyBJTlR4IGludGVycnVwdHMuIEludGVycnVwdHMg
+YXJlDQo+IHByb3Blcmx5IGRldGVjdGVkIGFuZCBzZXJ2aWNlZC4gVGhlIC9wcm9jL2ludGVycnVw
+dHMgb3V0cHV0DQo+IHNob3dzOg0KPiANCj4gWy4uLl0NCj4gMzI6ICAgICAgICAzMjAgICAgICAg
+ICAgMCAgcGxfZG1hOlJDLUV2ZW50ICAxNiBMZXZlbCAgICAgNDAwMDAwMDAwLmF4aS1wY2llLCBh
+emRydg0KPiA1MjogICAgICAgIDQ3MCAgICAgICAgICAwICBwbF9kbWE6UkMtRXZlbnQgIDE2IExl
+dmVsICAgICA1MDAwMDAwMDAuYXhpLXBjaWUsIGF6ZHJ2DQo+IFsuLi5dDQo+IA0KPiBDaGFuZ2Vz
+IHNpbmNlIHYxOjoNCj4gLSBGaXhlZCBjb21taXQgbWVzc2FnZSBwZXIgcmV2aWV3ZXIncyBjb21t
+ZW50cw0KPiANCj4gRml4ZXM6IDhkNzg2MTQ5ZDc4YyAoIlBDSTogeGlsaW54LXhkbWE6IEFkZCBY
+aWxpbnggWERNQSBSb290IFBvcnQgZHJpdmVyIikNCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5v
+cmcNCj4gU2lnbmVkLW9mZi1ieTogUmF2aSBLdW1hciBCYW5kaSA8cmF2aWJAYW1hem9uLmNvbT4N
+Cj4gLS0tDQo+IGRyaXZlcnMvcGNpL2NvbnRyb2xsZXIvcGNpZS14aWxpbngtZG1hLXBsLmMgfCA2
+ICsrKysrKw0KPiAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9wY2kvY29udHJvbGxlci9wY2llLXhpbGlueC1kbWEtcGwuYyBiL2RyaXZl
+cnMvcGNpL2NvbnRyb2xsZXIvcGNpZS14aWxpbngtZG1hLXBsLmMNCj4gaW5kZXggYjAzN2M4ZjMx
+NWU0Li5jYzUzOTI5MmQxMGEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvcGNpL2NvbnRyb2xsZXIv
+cGNpZS14aWxpbngtZG1hLXBsLmMNCj4gKysrIGIvZHJpdmVycy9wY2kvY29udHJvbGxlci9wY2ll
+LXhpbGlueC1kbWEtcGwuYw0KPiBAQCAtNjU5LDYgKzY1OSwxMiBAQCBzdGF0aWMgaW50IHhpbGlu
+eF9wbF9kbWFfcGNpZV9zZXR1cF9pcnEoc3RydWN0IHBsX2RtYV9wY2llICpwb3J0KQ0KPiAJCXJl
+dHVybiBlcnI7DQo+IAl9DQo+IA0KPiArCS8qIEVuYWJsZSBpbnRlcnJ1cHRzICovDQo+ICsJcGNp
+ZV93cml0ZShwb3J0LCBYSUxJTlhfUENJRV9ETUFfSU1SX0FMTF9NQVNLLA0KPiArCQkgICBYSUxJ
+TlhfUENJRV9ETUFfUkVHX0lNUik7DQo+ICsJcGNpZV93cml0ZShwb3J0LCBYSUxJTlhfUENJRV9E
+TUFfSURSTl9NQVNLLA0KPiArCQkgICBYSUxJTlhfUENJRV9ETUFfUkVHX0lEUk5fTUFTSyk7DQo+
+ICsNCj4gCXJldHVybiAwOw0KPiB9DQo+IA0KPiAtLSANCj4gMi40Ny4zDQo+IA0KDQo=
 
