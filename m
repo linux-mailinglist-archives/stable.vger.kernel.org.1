@@ -1,137 +1,134 @@
-Return-Path: <stable+bounces-181597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874C9B996D2
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 12:26:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB5B99840
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 13:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 418863A481C
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 10:26:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 213DC19C2DFB
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 11:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA0F2DEA6E;
-	Wed, 24 Sep 2025 10:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7792E3376;
+	Wed, 24 Sep 2025 11:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qp4sltb7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjXsO7uF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867D22DE710
-	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 10:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D78226E6E4
+	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 11:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758709610; cv=none; b=DJG2z4XQDS9mU/UzuOSj/aRpBXr4rXPLOs+EQZqqQtu8klEevk6ucUINvl7VFN+T7mfh0Ne/u/AHih7Q/Utlunm60xYTrMRjbx9Npv2jkxI7NPWj80G48FC7k1XPaCtBjboU4RLT08+AEEyiOMMfd3/tKpzpE5T/eroK8BXlDrE=
+	t=1758711617; cv=none; b=paykp6nHPvDwh7YG0OGSAJyoD5jBMmqa3EEXpbtXSFGayJ1Juk76pAtEDiZ1TJMQCz143PyyeiXVPhnwlDOYCylNJJuHuUyC082+dkl9eYs2TXjW+b9vMfNNB3VbRCLnc/ehUKINAwhUwyQ9rFGGGTHAS4fJyEE1XopFakF0CBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758709610; c=relaxed/simple;
-	bh=rg52av5kFCUYkXZtU4DrP9/Y4/39PcGOd395Z3Mzk7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GtlnTFJAU4uV2goW9E1vTGXZXICH0CAFbN32vjMj2RmZeI45RQsxl6rZ3MP897RV1gmUjcNzn4UgLavP8uot9Ce9Ojne0nTwB11mB6kcYoLOaSFllcDM6q3APgl2ZL0zU6D67BMvXS0uUUJA7lGd7HfaV1P0sweucBG0Lq8n6Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qp4sltb7; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-279e2554c8fso33548035ad.2
-        for <stable@vger.kernel.org>; Wed, 24 Sep 2025 03:26:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758709608; x=1759314408; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SViHo61tUbVEKZUPOiXibeEeLK3NjnTHx+4S6cKWr+E=;
-        b=Qp4sltb7VBeChe4sp8+ixOorM/5zarvONK0h4xuOUUhWfttxldKQJMUMha+wF7764B
-         zDUVuca2eJNS6HE1Iin0dXmLvDnSnkNzD0fMUAEJqBRjG25Cj2zdqNAbXrBi28psRYUI
-         6U9ZbwUKXAk7JuEXRYqVBqgjk/pEJFDyPUyLFJo8W/BJarE149LnurAo15LLL+eviTIg
-         KG3HlLIyR6w2Sav3O05bT0DA3WVZfuBumdOtXJ5EMOHt5HK8JZDEz+LU2nBf8v6CHClU
-         CknNb7PKQdvYqb4GoTwbI6b2pxQIxiFXO7vxFid4I/Px4hp9jnl68gkEHgRLRwCXriG+
-         vmjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758709608; x=1759314408;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SViHo61tUbVEKZUPOiXibeEeLK3NjnTHx+4S6cKWr+E=;
-        b=NJkMs5DYiQ+GmvVB+4NaNAnQDYPwB1SqLxlqT0L9FuLGXK8ULA71LSDL26ON48r/9O
-         kNdv8uu6oDzWA+5oxGPhzZifWfhkm0pkjz+GZmCyr+35b/O82F3RT4OPXf0tzanMIbA3
-         V97CHnCaowfcCnFOsIR48xljnff10XSrmhm8OuJDHrZ3NubyNXoZqh55bLZuCg4f4l4p
-         oHbAmiLuJyJ7QbeiqMGWluIKu1ALotm+gbsp12BLbYM81uf0Uka+XoVlqLqaVOHA/YoO
-         3/PFq5NjTBT1m/y6932OXOLJF6oT6IC8PCngyltAbgTjF3HYUPt5CyTE5ubbfwE3L57B
-         oN8g==
-X-Forwarded-Encrypted: i=1; AJvYcCUX6UsmqlOAZgRaFWdFRy5pcUBJsSomLsL0UlWHd41rKnzL4zUWzU4Nehpl/yHV8KI7MUucq0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKN/jLKj+DRi4wpg76wkUcNg/NTYApr3GG7fUHEnnaFs2KeY9s
-	pcOyQjbBSKXxea5bgelGt2SvORUuVAGEzhSqe8V/6oax5C27PMlS68ip
-X-Gm-Gg: ASbGncvAGmDVKt4+G3PF+OrNn+FLKbv1yqCmOiNyLKV4i8x8e6chFwoHLcZLdEDVzIz
-	iHoOlDOlG8KDYYK6rp8iH9xd7G3ECDRcC7YEI9ar/qyogsQDv2ySgA8ip7kwDDiU+1+DpKhR8la
-	TYKjGO6kzQiyBorU4hD8zh6wSyFzaiZF34oAd8gB3+01nDVNzYIQylRd/33EJU6YbhEpKrDZ6oi
-	McZ/141ZfGiJMuuXB2EwGVfndIC+S8OEvNVqZ7tbXZ/2jZPJWnK/njq/hVb4iwc+fGyFEl+MKAN
-	bvJk7Bgazps2N7x7EsKRg2FUirAP3vsFLS3kQTm/RXgzVEAJmTZ9afnfqAXNFn65oLO3FoZy60M
-	M/48U75KOYrWXrJz5CvGZ5NLocr/JRVf5idobDb5mOoD4KqPxzri86YaO8CU0FqLt24bt4Y4ecm
-	KSKn8=
-X-Google-Smtp-Source: AGHT+IE2o5mDhsvuCmWLmP3D4Dz519WVJ+NTPBdX/XXRWo7SqZH8onvtPetftQxVDmOqLZZq0NMxmw==
-X-Received: by 2002:a17:902:d50a:b0:276:76e1:2e84 with SMTP id d9443c01a7336-27cc2aa7dbamr63353465ad.3.1758709607690;
-        Wed, 24 Sep 2025 03:26:47 -0700 (PDT)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:3094:ffb5:d3cb:7685:ecfe])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3341bdb5f8bsm1888800a91.16.2025.09.24.03.26.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 03:26:47 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
-Subject: [PATCH v2] comedi: fix divide-by-zero in comedi_buf_munge() 
-Date: Wed, 24 Sep 2025 15:56:39 +0530
-Message-ID: <20250924102639.1256191-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1758711617; c=relaxed/simple;
+	bh=PLxNIxm4nnFqvF9R5flN5cuSrvAujprcSgu1R4cCFHs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=PEqV9mQy6YH2n4Ng59Au2h9jFY4iuMXYWciX3Gds4R/6ez3Uk/Jix2OwnDUoZsYpTa5z6lYgffO6CLHFJQY1eBJ687Z9qGx15N7DRhLeSnx9NC4sVp5vqNg5ZYD7GuDAG00a7G7uCC8+tRkc9K5ZzdrDY3a+JXd6x5GMGVJbOJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjXsO7uF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5122DC4CEE7;
+	Wed, 24 Sep 2025 11:00:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758711616;
+	bh=PLxNIxm4nnFqvF9R5flN5cuSrvAujprcSgu1R4cCFHs=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=DjXsO7uFaLxhxztyX6w+3JEBJijm3UmPV62s1n4Aw/ArAWp3k4Vr4tvtzLrWQdtT8
+	 owspY6gAQ17pJKLPtXCDO8pEVv00RrSlU3t/SkPmX8R7ZQZOCUbrHbJ965ZpcMLSMt
+	 iWD3HVCxPaA8VgYCltKanqq+azO//2ERHHSGjO6e+YnaJId0z0HV9N4xIfVTNx9vB8
+	 ksC577bCW3xhF1UH1bCrGbMo0RHQiaRGx+QNo5/lpR/n3Q5vukOBOt0BJiww5m77hI
+	 Fy1lVVgRq5IpOUFRBBfHqULEAI0Yln83s956qWiqZzstdE8TqMXiHmgQG7LStyI0KE
+	 aVP86a8cOspiA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 24 Sep 2025 13:00:12 +0200
+Message-Id: <DD0Z8GX3Z56G.3VLLBSJUG05WK@kernel.org>
+Subject: Re: [PATCH 6.12.y 1/3] drm/sched: Optimise
+ drm_sched_entity_push_job
+Cc: "Philipp Stanner" <pstanner@redhat.com>, "Jules Maselbas"
+ <jmaselbas@zdiv.net>, <stable@vger.kernel.org>,
+ <gregkh@linuxfoundation.org>, "Tvrtko Ursulin" <tvrtko.ursulin@igalia.com>,
+ "Alex Deucher" <alexander.deucher@amd.com>, "Luben Tuikov"
+ <ltuikov89@gmail.com>, "Matthew Brost" <matthew.brost@intel.com>
+To: =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250922130948.5549-1-jmaselbas@zdiv.net>
+ <8661bce085eed921feb3e718b8dc4c46784dff4d.camel@redhat.com>
+ <57b2275c-d18a-418d-956f-2ed054ec555f@amd.com>
+ <DCZMJLU7W6M0.23UOORGDH2DIR@zdiv.net>
+ <b49f45057de59f977d9e50a4aac12bac2e8d12a0.camel@redhat.com>
+ <76c94ee6-ba28-4517-8b6c-35658ac95d3b@amd.com>
+In-Reply-To: <76c94ee6-ba28-4517-8b6c-35658ac95d3b@amd.com>
 
-The comedi_buf_munge() function performs a modulo operation 
-`async->munge_chan %= async->cmd.chanlist_len` without first
-checking if chanlist_len is zero. If a user program submits a command with
-chanlist_len set to zero, this causes a divide-by-zero error when the device
-processes data in the interrupt handler path.
+On Tue Sep 23, 2025 at 2:33 PM CEST, Christian K=C3=B6nig wrote:
+> On 23.09.25 14:08, Philipp Stanner wrote:
+>> You know folks, situations like that are why we want to strongly
+>> discourage accessing another API's struct members directly. There is no
+>> API contract for them.
 
-Add a check for zero chanlist_len at the beginning of the
-function, similar to the existing checks for !map and
-CMDF_RAWDATA flag. When chanlist_len is zero, update
-munge_count and return early, indicating the data was
-handled without munging.
+Indeed, please don't peek API internals. If you need additional functionali=
+ty,
+please send a patch adding a supported API for the component instead.
 
-This prevents potential kernel panics from malformed user commands.
+Drivers messing with component internals makes impossible to maintain them =
+in
+the long term.
 
-Reported-by: syzbot+f6c3c066162d2c43a66c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6c3c066162d2c43a66c
-Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
----
-v2: Merged the chanlist_len check with existing early return
-    check as suggested by Ian Abbott
+>> And a proper API function rarely changes its interface, and if it does,
+>> it's easy to find for the contributor where drivers need to be
+>> adjusted. If we were all following that rule, you wouldn't even have to
+>> bother with patches #1 and #2.
+>>=20
+>> That said, I see two proper solutions for your problem:
+>>=20
+>>    A. amdgpu is the one stopping the entities anyways, isn't it? It
+>>       knows which entities it has killed. So that information could be
+>>       stored in struct amdgpu_vm.
+>
+> No, it's the scheduler which decides when entities are stopped.
 
----
- drivers/comedi/comedi_buf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Can you please show me the code where the scheduler calls any of
+drm_sched_entity_fini(), drm_sched_entity_flush(), drm_sched_entity_destroy=
+()?
 
-diff --git a/drivers/comedi/comedi_buf.c b/drivers/comedi/comedi_buf.c
-index 002c0e76baff..c7c262a2d8ca 100644
---- a/drivers/comedi/comedi_buf.c
-+++ b/drivers/comedi/comedi_buf.c
-@@ -317,7 +317,7 @@ static unsigned int comedi_buf_munge(struct comedi_subdevice *s,
- 	unsigned int count = 0;
- 	const unsigned int num_sample_bytes = comedi_bytes_per_sample(s);
- 
--	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA)) {
-+	if (!s->munge || (async->cmd.flags & CMDF_RAWDATA) || async->cmd.chanlist_len == 0) {
- 		async->munge_count += num_bytes;
- 		return num_bytes;
- 	}
--- 
-2.43.0
+Or are you referring the broken hack in drm_sched_fini() (introduced by com=
+mit
+c61cdbdbffc1 ("drm/scheduler: Fix hang when sched_entity released")) where =
+it is
+just ignored that we need to take the entity lock as well, because it
+inconviniently would lead to lock inversion?
 
+	spin_lock(&rq->lock);
+	list_for_each_entry(s_entity, &rq->entities, list)
+	        /*
+	         * Prevents reinsertion and marks job_queue as idle,
+	         * it will be removed from the rq in drm_sched_entity_fini()
+	         * eventually
+	         */
+	        s_entity->stopped =3D true;
+	spin_unlock(&rq->lock);
+
+The patch description that introduced the hack says:
+
+	If scheduler is already stopped by the time sched_entity
+	is released and entity's job_queue not empty I encountred
+	a hang in drm_sched_entity_flush.
+
+But this sounds to me as if amdgpu simply doesn't implement the correct shu=
+tdown
+ordering. Why do nouveau, Xe and other drivers don't have this problem? Why=
+ do
+we need to solve it in the scheduler instead?
+
+Maybe there are reasonable answers to that. And assuming there are, it stil=
+l
+isn't a justification for building on top of a broken workaround. :(
 
