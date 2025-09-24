@@ -1,103 +1,185 @@
-Return-Path: <stable+bounces-181635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A856BB9BD6A
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 22:19:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFE6B9BD70
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 22:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFA2D7AE459
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 20:17:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9050219C51ED
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 20:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18865328563;
-	Wed, 24 Sep 2025 20:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C87323F75;
+	Wed, 24 Sep 2025 20:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6VldB6q"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="C7pZuttA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C470B255F24;
-	Wed, 24 Sep 2025 20:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6A0328567;
+	Wed, 24 Sep 2025 20:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758745155; cv=none; b=hZYompBr/X0qegvAm6DplfrOa3k+fTsPUTqXtWW4OJr+ElTLXofcTowi5Hx2DdOevBTmo4BrK7NWaMQRgMtZjgYlbv83x5hlXDcUFi/khgJr8zto0RyKgp4fNYpQjXosDdydo1bkbeOP+HHerZUKgTDZ4MIzGaQd8fTAphkdB4E=
+	t=1758745211; cv=none; b=hhrgbdfwhGsU1qbvMG29fdkumeIxYdgcS6/AmLKVYgcv2z2Al0OmBxLf6xubwS09UgQnbXRDJTQVoUFfwegBNC36eMsxbd1BDhWw8B1dYPbIYvfgz9y7tV3N6cC/sipWMiUog/YBwUEcvYpbSjVgdaVakGTd+Iupg/DJE7SJoBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758745155; c=relaxed/simple;
-	bh=jZiHAeS9wfJ8LDvIn+UDSFRTPDaQwzheaa0cN8KeOAg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t/lG1/zkr2daY0Zpr71U1h8YxMP1dqTaOnjJIAwVkZIP/jG9P4z6yXRtIPVg2BTQT/8gtrgRdfUC4S35d20owiQiBk6uxMyAhPRi/xrtTljQskSvjnt4ZuT3+2NtmR/QzCxiUAHZJoj9SgkikpIoPInYp3sEakdXnEu0KligoE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6VldB6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99E2C4CEE7;
-	Wed, 24 Sep 2025 20:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758745153;
-	bh=jZiHAeS9wfJ8LDvIn+UDSFRTPDaQwzheaa0cN8KeOAg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=k6VldB6qG8PkecMuamZhlxpe84Ll79/+Cbs3ubtzWVCS8U+8FQHDUZRFNveAGjbQ0
-	 m4YsLwBOE7lsVqyqxx6wXo9BApIUuxjaV4V2yskuJBPEfOTvDDo1bacHdwKNXl/q6/
-	 3SCTaGl1YLH3CSTw1Uu4fPw4NlN3RxJfsdf3b2l8SYBGgKkfK4Bs8au3G17LNuceHQ
-	 tQZFDm/KdBxLjkQX/auMsVKfIs32fOa8bA9ILUDvfy8Le8QDdF669tDC/0He/Dvad+
-	 pyHj/MiCoIGMKjx96wDUmSgv0e0bkeqGrm3h6Blrhvt+O/u111ew+lGxlAahMViEUU
-	 OVWygTUo8KhWw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] crypto: af_alg - Fix incorrect boolean values in af_alg_ctx
-Date: Wed, 24 Sep 2025 13:18:22 -0700
-Message-ID: <20250924201822.9138-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1758745211; c=relaxed/simple;
+	bh=JCzLikBvnXiDd9fJvwWizgKaYloqQJXWF83znMxFsg0=;
+	h=Date:To:From:Subject:Message-Id; b=LvzDjc/F6A5QPJQi5Gjsk06mk+tUxjOPbiuIvaYxOWolXUlHEyG9fDC7PCxsdlHFQzOItJzJSui1dXXOsRH7JMXbM7WJNd6FSWDDaAWWvnqQX4ANaz2311vDAE15yVXrzE3GlavAfGezkImG17HsA5N54tRkCFj6GGygJ+gyPg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=C7pZuttA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF41C4CEF4;
+	Wed, 24 Sep 2025 20:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758745211;
+	bh=JCzLikBvnXiDd9fJvwWizgKaYloqQJXWF83znMxFsg0=;
+	h=Date:To:From:Subject:From;
+	b=C7pZuttAdNgkURjx8L1zeBYjsd/gGiKvRQFHvpGGAa3tIlR5pRdBfvxyNcBLKB8jJ
+	 t7Oiq692KACyGsJPVrlzsUwrxD0OCliksLk88dhlyew4pwLEdwsJAYfqHn2JArmZVV
+	 Zi3v7Qq9pvakCtHJLfRAFpYL4311bcvnouLBZWjM=
+Date: Wed, 24 Sep 2025 13:20:10 -0700
+To: mm-commits@vger.kernel.org,zhangpeng.00@bytedance.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kasong@tencent.com,david@redhat.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,charan.kalla@oss.qualcomm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch added to mm-new branch
+Message-Id: <20250924202011.4AF41C4CEF4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Commit 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in
-af_alg_sendmsg") changed some fields from bool to 1-bit bitfields of
-type u32.  However, some assignments to these fields, specifically
-'more' and 'merge', assign values greater than 1.  These relied on C's
-implicit conversion to bool, such that zero becomes false and nonzero
-becomes true.  With a 1-bit bitfields of type u32 instead, mod 2 of the
-value is taken instead, resulting in 0 being assigned in some cases when
-1 was intended.  Fix this by restoring the bool type.
 
-Fixes: 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+The patch titled
+     Subject: mm: swap: check for stable address space before operating on the VMA
+has been added to the -mm mm-new branch.  Its filename is
+     mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
+
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+Subject: mm: swap: check for stable address space before operating on the VMA
+Date: Wed, 24 Sep 2025 23:41:38 +0530
+
+It is possible to hit a zero entry while traversing the vmas in unuse_mm()
+called from swapoff path and accessing it causes the OOPS:
+
+Unable to handle kernel NULL pointer dereference at virtual address
+0000000000000446--> Loading the memory from offset 0x40 on the
+XA_ZERO_ENTRY as address.
+Mem abort info:
+  ESR = 0x0000000096000005
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x05: level 1 translation fault
+
+The issue is manifested from the below race between the fork() on a
+process and swapoff:
+fork(dup_mmap())			swapoff(unuse_mm)
+---------------                         -----------------
+1) Identical mtree is built using
+   __mt_dup().
+
+2) copy_pte_range()-->
+	copy_nonpresent_pte():
+       The dst mm is added into the
+    mmlist to be visible to the
+    swapoff operation.
+
+3) Fatal signal is sent to the parent
+process(which is the current during the
+fork) thus skip the duplication of the
+vmas and mark the vma range with
+XA_ZERO_ENTRY as a marker for this process
+that helps during exit_mmap().
+
+				     4) swapoff is tried on the
+					'mm' added to the 'mmlist' as
+					part of the 2.
+
+				     5) unuse_mm(), that iterates
+					through the vma's of this 'mm'
+					will hit the non-NULL zero entry
+					and operating on this zero entry
+					as a vma is resulting into the
+					oops.
+
+The proper fix would be around not exposing this partially-valid tree to
+others when droping the mmap lock, which is being solved with [1].  A
+simpler solution would be checking for MMF_UNSTABLE, as it is set if
+mm_struct is not fully initialized in dup_mmap().
+
+Thanks to Liam/Lorenzo/David for all the suggestions in fixing this
+issue.
+
+
+Link: https://lkml.kernel.org/r/20250924181138.1762750-1-charan.kalla@oss.qualcomm.com
+Link: https://lore.kernel.org/all/20250815191031.3769540-1-Liam.Howlett@oracle.com/ [1]
+Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
+Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-v2: keep the bitfields and just change the type, as suggested by Linus
+ mm/swapfile.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
- include/crypto/if_alg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--- a/mm/swapfile.c~mm-swap-check-for-stable-address-space-before-operating-on-the-vma
++++ a/mm/swapfile.c
+@@ -2389,6 +2389,8 @@ static int unuse_mm(struct mm_struct *mm
+ 	VMA_ITERATOR(vmi, mm, 0);
+ 
+ 	mmap_read_lock(mm);
++	if (check_stable_address_space(mm))
++		goto unlock;
+ 	for_each_vma(vmi, vma) {
+ 		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+ 			ret = unuse_vma(vma, type);
+@@ -2398,6 +2400,7 @@ static int unuse_mm(struct mm_struct *mm
+ 
+ 		cond_resched();
+ 	}
++unlock:
+ 	mmap_read_unlock(mm);
+ 	return ret;
+ }
+_
 
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index 0c70f3a555750..107b797c33ecf 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -150,11 +150,11 @@ struct af_alg_ctx {
- 	struct crypto_wait wait;
- 
- 	size_t used;
- 	atomic_t rcvused;
- 
--	u32		more:1,
-+	bool		more:1,
- 			merge:1,
- 			enc:1,
- 			write:1,
- 			init:1;
- 
+Patches currently in -mm which might be from charan.kalla@oss.qualcomm.com are
 
-base-commit: cec1e6e5d1ab33403b809f79cd20d6aff124ccfe
--- 
-2.51.0
+mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
 
 
