@@ -1,139 +1,120 @@
-Return-Path: <stable+bounces-181660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3DBB9C532
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 00:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B04B9C541
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 00:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0367F1BC08D0
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 22:06:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8C719C64A8
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 22:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664532877DA;
-	Wed, 24 Sep 2025 22:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC232877DA;
+	Wed, 24 Sep 2025 22:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9+U0Tcg"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="12hytEiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18332189;
-	Wed, 24 Sep 2025 22:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6840F1EF091;
+	Wed, 24 Sep 2025 22:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758751567; cv=none; b=hqkiZVU6UoSrga+Cc98QBIE80DKc3kORHlmgaFiClLET0FPVXCL/3L64fDhNRiw/ptmS46MmZHuiPdJpFrn5szJJ+wSPgkTsPzVStzLcxtdIzTXnjo1S/YpxoWmLWbRpdEsjBN9cgCB+K22Zfx8m2ueC0zll0P8ygyLWTs38Kn0=
+	t=1758751849; cv=none; b=gzgRvDw9GLMQ5veExrgtu3nHtkiHBdA74YcyZnSf9GG0yP5jCZG0P8vlLoNlSzfsMDh1s+Qrx1gx7FnKcd31IN8kH3FHzywqwl3n/GTiBwaYETwbJqxFFiLekoSx/FPsDJtrCVzCCG0uaP2813tuhzX+JzMyDUyJNs+/xu3+FTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758751567; c=relaxed/simple;
-	bh=WtHYzeoqqVSA7DSNSyTBNjNmYwn+bmve6GHaOnB6vKk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=E5kUdMvCYjYBNT6KPnE/ft89webrHQl0+KWFCNfnsK5UVsBpeP7bVQvjnOfZCyhjKYYg85iVWrepzQbWWt4xlEfnUEfAZSfLs0+nxrmAv90veP9D6AcCVTqbLbgwh2Tj8ye2Y7DDLaYFFOY7cv7CfIRSl6r03d5uflJeM4MM/Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9+U0Tcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B3DC4CEE7;
-	Wed, 24 Sep 2025 22:06:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758751566;
-	bh=WtHYzeoqqVSA7DSNSyTBNjNmYwn+bmve6GHaOnB6vKk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=L9+U0TcgZa4VR23ZVWjm1oxhQhn6R8G99Q0sQ6YDxOAIo8iJpWv6XhgvgMSjlsq/x
-	 Pt3qRCWx2Y/lDrwVUnOyGQO0x6IeNm6H/Rvog5uKtclpyXTrhe++udIBc6H0uJ+OAa
-	 RPzWB476Wk0uCZ32cHKSgyDVyH0bgkTnQLsur4X/obLzAtD1seFcJO1KxfjwauBie6
-	 YB9AfUe6NpxBYniC2nRRY0iOFfdbw7e0VVm4yN/PHcZ9Dz1O1jZMbQpV6SiGWP2ZEg
-	 nmG0dDexSJfoUC9993DzFmDjSAtmFrOy3GC5ToBXz2c9EjWCMC+AfK7lXyvZscD5pO
-	 i1q3F19f0sKdQ==
-Date: Wed, 24 Sep 2025 17:06:05 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, jingoohan1@gmail.com,
-	l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/4] PCI: dwc: Remove the L1SS check before putting
- the link into L2
-Message-ID: <20250924220605.GA2136377@bhelgaas>
+	s=arc-20240116; t=1758751849; c=relaxed/simple;
+	bh=ZHSUdoXLU/5eHX9wIMEyXf8BV1ScP0M+3QD7Zb3hdks=;
+	h=Date:To:From:Subject:Message-Id; b=Akgtbxg9hWpYFs5Ud6yTsNR9Pi4XJDbFQyHOd8Im29Rwdye7GUZUzD0czQnhqg05kPXhaL7K+gxlWv6zVg6YeI9Yk/yE78JF9j76Og82ZMv/7DrfgCBnqxJyyqakQkDwdczeeyUQ2n0nWUtsA9J3GiqWOwxT67+gU3IEp9ZmkO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=12hytEiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6D9C4CEE7;
+	Wed, 24 Sep 2025 22:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758751849;
+	bh=ZHSUdoXLU/5eHX9wIMEyXf8BV1ScP0M+3QD7Zb3hdks=;
+	h=Date:To:From:Subject:From;
+	b=12hytEiHraiZ4TRLt1p3jhmqkN/luE4xHVGjidSzhCjqE61bJyD2ltJEMhyMVTxTP
+	 XGMLwUqlv6MH9GXBb+wVXhzIzMjyhL9b+RJj6MgnVAdal2B01dh9xcKjPlZduXWyME
+	 kOru/caoARaiPHTyiUBDy8g5Yklhjk1MAAF8KIWc=
+Date: Wed, 24 Sep 2025 15:10:48 -0700
+To: mm-commits@vger.kernel.org,vz@mleia.com,stable@vger.kernel.org,p.zabel@pengutronix.de,johan@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch added to mm-nonmm-unstable branch
+Message-Id: <20250924221049.1F6D9C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aNRbn+bZ8MP77sdh@lizhi-Precision-Tower-5810>
 
-On Wed, Sep 24, 2025 at 04:59:11PM -0400, Frank Li wrote:
-> On Wed, Sep 24, 2025 at 02:44:57PM -0500, Bjorn Helgaas wrote:
-> > On Wed, Sep 24, 2025 at 03:23:21PM +0800, Richard Zhu wrote:
-> > > The ASPM configuration shouldn't leak out here. Remove the L1SS check
-> > > during L2 entry.
-> >
-> > I'm all in favor of removing this code if possible, but we need to
-> > explain why this is safe.  The L1SS check was added for some reason,
-> > and we need to explain why that reason doesn't apply.
-> 
-> That's original discussion
-> https://lore.kernel.org/linux-pci/20230720160738.GC48270@thinkpad/
-> 
-> "To be precise, NVMe driver will shutdown the device if there is no
-> ASPM support and keep it in low power mode otherwise (there are
-> other cases as well but we do not need to worry).
-> 
-> But here you are not checking for ASPM state in the suspend path,
-> and just forcing the link to be in L2/L3 (thereby D3Cold) even
-> though NVMe driver may expect it to be in low power state like
-> ASPM/APST.
-> 
-> So you should only put the link to L2/L3 if there is no ASPM
-> support. Otherwise, you'll ending up with bug reports when users
-> connect NVMe to it.
-> 
-> - Mani"
 
-Whatever the reasoning is, it needs to be in the commit log.  The
-above might be leading to the reasoning, but it would need a lot more
-dots to be connected to be persuasive.
+The patch titled
+     Subject: lib/genalloc: fix device leak in of_gen_pool_get()
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch
 
-If NVMe is making assumptions about the ASPM configuration, there
-needs to be some generic way to keep track of that.  E.g., if NVMe
-doesn't work correctly with some ASPM states, maybe it shouldn't
-advertise support for those states.  Hacking up every host controller
-driver doesn't seem like a viable approach.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch
 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-> > > Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 8 --------
-> > >  1 file changed, 8 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > index 952f8594b501..9d46d1f0334b 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -1005,17 +1005,9 @@ static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
-> > >
-> > >  int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > >  {
-> > > -	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> > >  	u32 val;
-> > >  	int ret;
-> > >
-> > > -	/*
-> > > -	 * If L1SS is supported, then do not put the link into L2 as some
-> > > -	 * devices such as NVMe expect low resume latency.
-> > > -	 */
-> > > -	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
-> > > -		return 0;
-> > > -
-> > >  	if (pci->pp.ops->pme_turn_off) {
-> > >  		pci->pp.ops->pme_turn_off(&pci->pp);
-> > >  	} else {
-> > > --
-> > > 2.37.1
-> > >
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Johan Hovold <johan@kernel.org>
+Subject: lib/genalloc: fix device leak in of_gen_pool_get()
+Date: Wed, 24 Sep 2025 10:02:07 +0200
+
+Make sure to drop the reference taken when looking up the genpool platform
+device in of_gen_pool_get() before returning the pool.
+
+Note that holding a reference to a device does typically not prevent its
+devres managed resources from being released so there is no point in
+keeping the reference.
+
+Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
+Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: <stable@vger.kernel.org>	[3.10+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/genalloc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+--- a/lib/genalloc.c~lib-genalloc-fix-device-leak-in-of_gen_pool_get
++++ a/lib/genalloc.c
+@@ -899,8 +899,11 @@ struct gen_pool *of_gen_pool_get(struct
+ 		if (!name)
+ 			name = of_node_full_name(np_pool);
+ 	}
+-	if (pdev)
++	if (pdev) {
+ 		pool = gen_pool_get(&pdev->dev, name);
++		put_device(&pdev->dev);
++	}
++
+ 	of_node_put(np_pool);
+ 
+ 	return pool;
+_
+
+Patches currently in -mm which might be from johan@kernel.org are
+
+lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch
+
 
