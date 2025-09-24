@@ -1,165 +1,103 @@
-Return-Path: <stable+bounces-181624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296E1B9B96B
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 21:05:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7A7B9BA08
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 21:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D89D7A2A12
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 19:04:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3BD3B4DD0
+	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 19:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE542512EE;
-	Wed, 24 Sep 2025 19:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E7825F784;
+	Wed, 24 Sep 2025 19:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2LDnpd4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R4MQTFQk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306B019C546;
-	Wed, 24 Sep 2025 19:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FE9263899
+	for <stable@vger.kernel.org>; Wed, 24 Sep 2025 19:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758740739; cv=none; b=IYQcDWXyy74usA0Fe21amO45OyHysrImJe7tP37Z6tUDmj4rQgJMASBIqLD/gBaO9WVnWd5qhrJWVe6SjPcwZceBsmSixJL27osK/bF+ZEKRZxirfHOwS7sfXvM5eEEC5+KKKvPEGs0NgjLSeBkmShX1Vw1Rpz++ylK+dRUk/LM=
+	t=1758741148; cv=none; b=OyOzE91HAS/62o5Bh7tMFmvn8B9H8BP0dMEOAK1lD86t3RvP9h78OPvSaSVSNO2AVXBRr2MZKe1ReR0M4xtxTssKsdQOfpephBWd/upBt2saM67kEysjiIkRIgTnVOfiO9BCHfqNBhx+YzADGhkxtokGs2+jUQDcck6PA7dTNwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758740739; c=relaxed/simple;
-	bh=M1mxGbbckg8qR97+HGVkyqNUuMJBbv43CfnA5Cf+OxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KISXYNrfcxSZSCavsaP2vqsCq84K7bHcleDhfIYr6xshkPnDq8Hy9Wd8xZv4ywf86v+cPEQeuQrwpzp68UyBLxgZGOxzYYkE1uqrhZuYDpAnW4CjJhpIIvfNukcP4fjc1A7+xTi4bVI+fiZVnD8Srqh2+abQFeVaebvbmbnTHkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2LDnpd4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6BDC4CEE7;
-	Wed, 24 Sep 2025 19:05:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758740738;
-	bh=M1mxGbbckg8qR97+HGVkyqNUuMJBbv43CfnA5Cf+OxU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=B2LDnpd4mhQMVJZpa6WYJ8l/CTjOZ+68iZKaQDLzvap2W2F9Tjo5yN9IP3jKiop2T
-	 8fk4IUXfY+cYgQVE2ElzbO5zfF0sppcnVre4yhhdsdK5FuWvv7AUluMxIyPgzp5qjJ
-	 /pQVQddfqMbcQG37ju7wuwEqA4uYCPgJ4jzTIsAwo1qQEQzs8TpKCcmZZ/nstXP5bZ
-	 UfVDXdYSfr2Zr9qWGMnId/3aYv5VFXXX0A3rMFkG7DmOaFn6YJ4bSZUHWxXahmeyLS
-	 D52ZOlx92lVEQL4cIxldA4GYjnDES0elvBjRFs5e4C7tlOdXJ/ZWPjuQOrTZ33i14g
-	 Splf1ebAC19Vg==
-Date: Wed, 24 Sep 2025 14:05:37 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Ethan Zhao <etzhao1900@gmail.com>, linux-kernel@vger.kernel.org,
-	Brian Norris <briannorris@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] PCI/sysfs: Ensure devices are powered for config reads
-Message-ID: <20250924190537.GA2129023@bhelgaas>
+	s=arc-20240116; t=1758741148; c=relaxed/simple;
+	bh=bfdr1izZepy2d7hS8qSaPF7cdm5I0VSenaOU1miTlig=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=UJlugU4pi+8fxXnePz4RbQYwUIYArKtJlbwkglQoM//dsLHQcQypiw6iaBkIHu334C7CF7B0psTjiFSz5uuJH6sNYGM/7zpHNQHoSosGYTseiNftsrNg5duJVB+JE2lq+3b7oNQ3qqHFAAlp3fu8Opw6b20+lUt37rtLhFNauQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R4MQTFQk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758741145;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mxh2bN/wrBh4C6P/52usGNA7maYhZCqL+ZR8wk6yXAM=;
+	b=R4MQTFQknK/BIdIy5sRfudn2mfU4QAbsO4LIxfh6Wo8wUC0gDrOZYMgKnhj90p758P/Zna
+	05gtmeT7ComUHAgMrqkuAPPmSi3LOF0xZ0I8frcMtdZJxbo0bBts0M77wMk/4TIKOUJC07
+	ScxXSkIJXABsg62mc87oxts73m1TYag=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-TrbHQcITPIqXwuhjR3G3iA-1; Wed,
+ 24 Sep 2025 15:12:20 -0400
+X-MC-Unique: TrbHQcITPIqXwuhjR3G3iA-1
+X-Mimecast-MFC-AGG-ID: TrbHQcITPIqXwuhjR3G3iA_1758741139
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E485D19560B8;
+	Wed, 24 Sep 2025 19:12:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.155])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D77EE1800578;
+	Wed, 24 Sep 2025 19:12:16 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20250924185558.3395930-1-max.kellermann@ionos.com>
+References: <20250924185558.3395930-1-max.kellermann@ionos.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    stable@vger.kernel.org
+Subject: Re: [PATCH v2] fs/netfs: fix reference leak
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250924095711.v2.1.Ibb5b6ca1e2c059e04ec53140cd98a44f2684c668@changeid>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <845749.1758741135.1@warthog.procyon.org.uk>
+Date: Wed, 24 Sep 2025 20:12:15 +0100
+Message-ID: <845750.1758741135@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Sep 24, 2025 at 09:57:11AM -0700, Brian Norris wrote:
-> From: Brian Norris <briannorris@google.com>
-> 
-> max_link_width, current_link_speed, current_link_width,
-> secondary_bus_number, and subordinate_bus_number all access config
-> registers, but they don't check the runtime PM state. If the device is
-> in D3cold or a parent bridge is suspended, we may see -EINVAL, bogus
-> values, or worse, depending on implementation details.
-> 
-> Wrap these access in pci_config_pm_runtime_{get,put}() like most of the
-> rest of the similar sysfs attributes.
-> 
-> Notably, max_link_speed does not access config registers; it returns a
-> cached value [1]. So it needs no changes.
-> 
-> [1] Caching was added to pcie_get_speed_cap() in v6.13 via commit
->     d2bd39c0456b ("PCI: Store all PCIe Supported Link Speeds").
-> 
-> Fixes: 56c1af4606f0 ("PCI: Add sysfs max_link_speed/width, current_link_speed/width, etc")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Brian Norris <briannorris@google.com>
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
+Max Kellermann <max.kellermann@ionos.com> wrote:
 
-Applied to pci/pm for v 6.18, thanks!
+> +void netfs_put_failed_request(struct netfs_io_request *rreq)
+> +{
+> +	/* new requests have two references (see
+> +	 * netfs_alloc_request(), and this function is only allowed on
+> +	 * new request objects
+> +	 */
+> +	WARN_ON_ONCE(refcount_read(&rreq->ref) != 2);
+> +
+> +	trace_netfs_rreq_ref(rreq->debug_id, 0, netfs_rreq_trace_put_failed);
+> +	netfs_free_request(&rreq->cleanup_work);
+> +}
 
-> ---
-> 
-> Changes in v2:
->  * Don't touch max_link_speed; it's cached, so we don't actually touch
->    the hardware
->  * Improve commit message
-> 
->  drivers/pci/pci-sysfs.c | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-> index f28fdf6dfa02..af74cf02bb90 100644
-> --- a/drivers/pci/pci-sysfs.c
-> +++ b/drivers/pci/pci-sysfs.c
-> @@ -209,8 +209,14 @@ static ssize_t max_link_width_show(struct device *dev,
->  				   struct device_attribute *attr, char *buf)
->  {
->  	struct pci_dev *pdev = to_pci_dev(dev);
-> +	ssize_t ret;
->  
-> -	return sysfs_emit(buf, "%u\n", pcie_get_width_cap(pdev));
-> +	/* We read PCI_EXP_LNKCAP, so we need the device to be accessible. */
-> +	pci_config_pm_runtime_get(pdev);
-> +	ret = sysfs_emit(buf, "%u\n", pcie_get_width_cap(pdev));
-> +	pci_config_pm_runtime_put(pdev);
-> +
-> +	return ret;
->  }
->  static DEVICE_ATTR_RO(max_link_width);
->  
-> @@ -222,7 +228,10 @@ static ssize_t current_link_speed_show(struct device *dev,
->  	int err;
->  	enum pci_bus_speed speed;
->  
-> +	pci_config_pm_runtime_get(pci_dev);
->  	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->  	if (err)
->  		return -EINVAL;
->  
-> @@ -239,7 +248,10 @@ static ssize_t current_link_width_show(struct device *dev,
->  	u16 linkstat;
->  	int err;
->  
-> +	pci_config_pm_runtime_get(pci_dev);
->  	err = pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &linkstat);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->  	if (err)
->  		return -EINVAL;
->  
-> @@ -255,7 +267,10 @@ static ssize_t secondary_bus_number_show(struct device *dev,
->  	u8 sec_bus;
->  	int err;
->  
-> +	pci_config_pm_runtime_get(pci_dev);
->  	err = pci_read_config_byte(pci_dev, PCI_SECONDARY_BUS, &sec_bus);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->  	if (err)
->  		return -EINVAL;
->  
-> @@ -271,7 +286,10 @@ static ssize_t subordinate_bus_number_show(struct device *dev,
->  	u8 sub_bus;
->  	int err;
->  
-> +	pci_config_pm_runtime_get(pci_dev);
->  	err = pci_read_config_byte(pci_dev, PCI_SUBORDINATE_BUS, &sub_bus);
-> +	pci_config_pm_runtime_put(pci_dev);
-> +
->  	if (err)
->  		return -EINVAL;
->  
-> -- 
-> 2.51.0.536.g15c5d4f767-goog
-> 
+Can you change the 0 in trace_netfs_rreq_ref() to refcount_read(&rreq->ref)?
+(Or I can do that)
+
+David
+
 
