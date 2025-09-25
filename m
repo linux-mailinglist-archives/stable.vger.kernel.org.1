@@ -1,216 +1,151 @@
-Return-Path: <stable+bounces-181746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA30BA16F3
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 22:52:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A01BA18BE
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 23:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64A687BADEE
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 20:50:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85E2B2A1454
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 21:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104BD32126B;
-	Thu, 25 Sep 2025 20:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C93321F35;
+	Thu, 25 Sep 2025 21:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FSh7/4b4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IfCdi0xJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y/sdl6mO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28651F0E3E;
-	Thu, 25 Sep 2025 20:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0322E62A6;
+	Thu, 25 Sep 2025 21:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758833526; cv=none; b=PzCLZeks+sdqZbiTD+y4PHPln+nB+f9zaDt4Csb+fuGwfW0Z0Ws/FZCQZH+83qwgs9EykYvEASFDGu03UKyBtLBQLK3XQNImuUiztlNkK3ibWcVe0n5tvNwoxI82C7xSDfPtm5sVtv1gjmoBCmokEuqF5nM+k9JjeaimP2anlB0=
+	t=1758835973; cv=none; b=Q1M3Hd29q1yKTWU90GBVArGCKYC3BPBbN1cJs/RRcdAPx5NZy7v4iVx13iNF+YT4Oxm5RsIREBqIeUhGMzQkGTp9L9T/iT8lsEl0t6Ul7OhGcAr/xSb/HxvxJlJu2A5pYtazXnHKbXXDlbYwr6YoJXHXouD8SxE0xuHAzRTdj+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758833526; c=relaxed/simple;
-	bh=p2L5+UJT0YdCTTP/pmB9NywK79AGoX6XhBkerDxdT+Q=;
-	h=Date:To:From:Subject:Message-Id; b=sVigK7U0/rLaRKtP/yW9ISDnYJswUbNeDPcwZD2DQpHxjAlsMYQUIDxzOMeFpVanaKZ9NZofMNN/WebZGpVTiNQdm23dCrLDJZdwUeJcFL8EQRbYaFmA0TmQc+WFfNQbnCbKMSauvYhN2c4DIVmH1vU2fVf2m51TsJGVZJgAD7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FSh7/4b4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3036BC4CEF0;
-	Thu, 25 Sep 2025 20:52:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758833526;
-	bh=p2L5+UJT0YdCTTP/pmB9NywK79AGoX6XhBkerDxdT+Q=;
-	h=Date:To:From:Subject:From;
-	b=FSh7/4b4eSLbophn/swiMtaVtxjJ3OdQ0t5c0M3bQ0lxKCbz7Q2BHtwkObwHB08gk
-	 ESpJJnY7WbHtHexQkjKesHXI1kgLonWtZIq6RguazXxgcDZYjXRdhEzmXvaJ7YVU+B
-	 N6ANtnXlwMOEOScPo0yCzF1g1P0ezHtKdp6xFu5M=
-Date: Thu, 25 Sep 2025 13:52:05 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,sj@kernel.org,rppt@kernel.org,nogikh@google.com,Markus.Elfring@web.de,elver@google.com,dvyukov@google.com,david@redhat.com,glider@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-memblock-correct-totalram_pages-accounting-with-kmsan.patch removed from -mm tree
-Message-Id: <20250925205206.3036BC4CEF0@smtp.kernel.org>
+	s=arc-20240116; t=1758835973; c=relaxed/simple;
+	bh=xBSf93f6TMzU/O2T9L9MSgxWr1yOmbvjltfbvUWmJW4=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Xt7meLrdUazGlqSrDwBCvtlnvETXdp7Wy+CziGc3783gFuQ8Lba5nJxUYAzj/GS7GeI0y792iKPElNu7vTkh4Ge6BJr0i1fW+vPpLN6auwx2LcDD7xC+MJbDNv1KouFJPOYReWixuBfqQJX4TiWPmQv8syO8hLmQTXQhCnNfoSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IfCdi0xJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y/sdl6mO; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 25 Sep 2025 21:32:49 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1758835970;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=DcvbQrEl/eB4wtbm9nHwP8xVQbSO/Neuc4/TKb8skTU=;
+	b=IfCdi0xJcD9juz8Wb0aW6YwUhSk4z3I5ZOhiBWoRTX9NiaidMWlN6xnU0F21/TkH6gLI2H
+	Hk553b5NulZdLoPeVzebjROd6TgSwDxs09i0v1cUuguqI8BqLVRYIQ7RyCrg6KF+ir6gef
+	UINLsim7dq8U2O92gnlQd93I0ido0LCxDYS7xB9kXYKijxK1hBnzGd+zjgTsTfkLkIEHZ8
+	qIlIj8zQ4NSMq55D+oaYncbtbauplgqJ7FTFxSSRV4sr3u6Go5FwnlvAYuoqLhEdgLv3gg
+	BY/bMYwzj3jDYIVEN7IZ/CdXG4sqFzpsW8Ii0m+aCBM14FQ9JUqsPJu/JMg7Mg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1758835970;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=DcvbQrEl/eB4wtbm9nHwP8xVQbSO/Neuc4/TKb8skTU=;
+	b=y/sdl6mORvDL//ejvuY2ZD2uzoceXQDkcJSjaPsMtZB9cKbxqtFb5YGJh+kjXUvPnAzwlP
+	AAJwtTpoRz/yFqCQ==
+From: "tip-bot2 for Zhen Ni" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/clocksource] clocksource/drivers/clps711x: Fix resource
+ leaks in error paths
+Cc: Zhen Ni <zhen.ni@easystack.cn>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <175883596914.709179.1345970973507632298.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+The following commit has been merged into the timers/clocksource branch of ti=
+p:
 
-The quilt patch titled
-     Subject: mm/memblock: correct totalram_pages accounting with KMSAN
-has been removed from the -mm tree.  Its filename was
-     mm-memblock-correct-totalram_pages-accounting-with-kmsan.patch
+Commit-ID:     cd32e596f02fc981674573402c1138f616df1728
+Gitweb:        https://git.kernel.org/tip/cd32e596f02fc981674573402c1138f616d=
+f1728
+Author:        Zhen Ni <zhen.ni@easystack.cn>
+AuthorDate:    Thu, 14 Aug 2025 20:33:24 +08:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Tue, 23 Sep 2025 12:42:27 +02:00
 
-This patch was dropped because an updated version will be issued
+clocksource/drivers/clps711x: Fix resource leaks in error paths
 
-------------------------------------------------------
-From: Alexander Potapenko <glider@google.com>
-Subject: mm/memblock: correct totalram_pages accounting with KMSAN
-Date: Wed, 24 Sep 2025 12:03:01 +0200
+The current implementation of clps711x_timer_init() has multiple error
+paths that directly return without releasing the base I/O memory mapped
+via of_iomap(). Fix of_iomap leaks in error paths.
 
-When KMSAN is enabled, `kmsan_memblock_free_pages()` can hold back pages
-for metadata instead of returning them to the early allocator.  The
-callers, however, would unconditionally increment `totalram_pages`,
-assuming the pages were always freed.  This resulted in an incorrect
-calculation of the total available RAM, causing the kernel to believe it
-had more memory than it actually did.
-
-This patch refactors `memblock_free_pages()` to return the number of pages
-it successfully frees.  If KMSAN stashes the pages, the function now
-returns 0; otherwise, it returns the number of pages in the block.
-
-The callers in `memblock.c` have been updated to use this return value,
-ensuring that `totalram_pages` is incremented only by the number of pages
-actually returned to the allocator.  This corrects the total RAM
-accounting when KMSAN is active.
-
-Link: https://lkml.kernel.org/r/20250924100301.1558645-1-glider@google.com
-Fixes: 3c2065098260 ("init: kmsan: call KMSAN initialization routines")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Aleksandr Nogikh <nogikh@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Markus Elfring <Markus.Elfring@web.de>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 04410efbb6bc ("clocksource/drivers/clps711x: Convert init function to =
+return error")
+Fixes: 2a6a8e2d9004 ("clocksource/drivers/clps711x: Remove board support")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250814123324.1516495-1-zhen.ni@easystack.cn
 ---
+ drivers/clocksource/clps711x-timer.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
- mm/internal.h |    4 ++--
- mm/memblock.c |   21 +++++++++++----------
- mm/mm_init.c  |    9 +++++----
- 3 files changed, 18 insertions(+), 16 deletions(-)
-
---- a/mm/internal.h~mm-memblock-correct-totalram_pages-accounting-with-kmsan
-+++ a/mm/internal.h
-@@ -742,8 +742,8 @@ static inline void clear_zone_contiguous
- extern int __isolate_free_page(struct page *page, unsigned int order);
- extern void __putback_isolated_page(struct page *page, unsigned int order,
- 				    int mt);
--extern void memblock_free_pages(struct page *page, unsigned long pfn,
--					unsigned int order);
-+unsigned long memblock_free_pages(struct page *page, unsigned long pfn,
-+				  unsigned int order);
- extern void __free_pages_core(struct page *page, unsigned int order,
- 		enum meminit_context context);
- 
---- a/mm/memblock.c~mm-memblock-correct-totalram_pages-accounting-with-kmsan
-+++ a/mm/memblock.c
-@@ -1826,6 +1826,7 @@ void *__init __memblock_alloc_or_panic(p
- void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
- {
- 	phys_addr_t cursor, end;
-+	unsigned long freed_pages = 0;
- 
- 	end = base + size - 1;
- 	memblock_dbg("%s: [%pa-%pa] %pS\n",
-@@ -1834,10 +1835,9 @@ void __init memblock_free_late(phys_addr
- 	cursor = PFN_UP(base);
- 	end = PFN_DOWN(base + size);
- 
--	for (; cursor < end; cursor++) {
--		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
--		totalram_pages_inc();
--	}
-+	for (; cursor < end; cursor++)
-+		freed_pages += memblock_free_pages(pfn_to_page(cursor), cursor, 0);
-+	totalram_pages_add(freed_pages);
- }
- 
- /*
-@@ -2259,9 +2259,11 @@ static void __init free_unused_memmap(vo
- #endif
- }
- 
--static void __init __free_pages_memory(unsigned long start, unsigned long end)
-+static unsigned long __init __free_pages_memory(unsigned long start,
-+						unsigned long end)
- {
- 	int order;
-+	unsigned long freed = 0;
- 
- 	while (start < end) {
- 		/*
-@@ -2279,14 +2281,15 @@ static void __init __free_pages_memory(u
- 		while (start + (1UL << order) > end)
- 			order--;
- 
--		memblock_free_pages(pfn_to_page(start), start, order);
-+		freed += memblock_free_pages(pfn_to_page(start), start, order);
- 
- 		start += (1UL << order);
+diff --git a/drivers/clocksource/clps711x-timer.c b/drivers/clocksource/clps7=
+11x-timer.c
+index e95fdc4..bbceb02 100644
+--- a/drivers/clocksource/clps711x-timer.c
++++ b/drivers/clocksource/clps711x-timer.c
+@@ -78,24 +78,33 @@ static int __init clps711x_timer_init(struct device_node =
+*np)
+ 	unsigned int irq =3D irq_of_parse_and_map(np, 0);
+ 	struct clk *clock =3D of_clk_get(np, 0);
+ 	void __iomem *base =3D of_iomap(np, 0);
++	int ret =3D 0;
+=20
+ 	if (!base)
+ 		return -ENOMEM;
+-	if (!irq)
+-		return -EINVAL;
+-	if (IS_ERR(clock))
+-		return PTR_ERR(clock);
++	if (!irq) {
++		ret =3D -EINVAL;
++		goto unmap_io;
++	}
++	if (IS_ERR(clock)) {
++		ret =3D PTR_ERR(clock);
++		goto unmap_io;
++	}
+=20
+ 	switch (of_alias_get_id(np, "timer")) {
+ 	case CLPS711X_CLKSRC_CLOCKSOURCE:
+ 		clps711x_clksrc_init(clock, base);
+ 		break;
+ 	case CLPS711X_CLKSRC_CLOCKEVENT:
+-		return _clps711x_clkevt_init(clock, base, irq);
++		ret =3D  _clps711x_clkevt_init(clock, base, irq);
++		break;
+ 	default:
+-		return -EINVAL;
++		ret =3D -EINVAL;
++		break;
  	}
-+	return freed;
+=20
+-	return 0;
++unmap_io:
++	iounmap(base);
++	return ret;
  }
- 
- static unsigned long __init __free_memory_core(phys_addr_t start,
--				 phys_addr_t end)
-+					       phys_addr_t end)
- {
- 	unsigned long start_pfn = PFN_UP(start);
- 	unsigned long end_pfn = PFN_DOWN(end);
-@@ -2297,9 +2300,7 @@ static unsigned long __init __free_memor
- 	if (start_pfn >= end_pfn)
- 		return 0;
- 
--	__free_pages_memory(start_pfn, end_pfn);
--
--	return end_pfn - start_pfn;
-+	return __free_pages_memory(start_pfn, end_pfn);
- }
- 
- static void __init memmap_init_reserved_pages(void)
---- a/mm/mm_init.c~mm-memblock-correct-totalram_pages-accounting-with-kmsan
-+++ a/mm/mm_init.c
-@@ -2547,24 +2547,25 @@ void *__init alloc_large_system_hash(con
- 	return table;
- }
- 
--void __init memblock_free_pages(struct page *page, unsigned long pfn,
--							unsigned int order)
-+unsigned long __init memblock_free_pages(struct page *page, unsigned long pfn,
-+					 unsigned int order)
- {
- 	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
- 		int nid = early_pfn_to_nid(pfn);
- 
- 		if (!early_page_initialised(pfn, nid))
--			return;
-+			return 0;
- 	}
- 
- 	if (!kmsan_memblock_free_pages(page, order)) {
- 		/* KMSAN will take care of these pages. */
--		return;
-+		return 0;
- 	}
- 
- 	/* pages were reserved and not allocated */
- 	clear_page_tag_ref(page);
- 	__free_pages_core(page, order, MEMINIT_EARLY);
-+	return 1UL << order;
- }
- 
- DEFINE_STATIC_KEY_MAYBE(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, init_on_alloc);
-_
-
-Patches currently in -mm which might be from glider@google.com are
-
-
+ TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
 
