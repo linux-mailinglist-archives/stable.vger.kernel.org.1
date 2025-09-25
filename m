@@ -1,97 +1,97 @@
-Return-Path: <stable+bounces-181663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A219CB9CED2
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 02:52:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245C6B9CFA2
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 03:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 625DE3B0E20
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 00:52:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D1F11B26C8B
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 01:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A852D7DF3;
-	Thu, 25 Sep 2025 00:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA2E2DD5EB;
+	Thu, 25 Sep 2025 01:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B03GPHqE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1I3viug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AED266B56;
-	Thu, 25 Sep 2025 00:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3A021C9F4;
+	Thu, 25 Sep 2025 01:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758761528; cv=none; b=YhGQxRvcXx2zolJ60WgmAMDlo7rlgimH0h9Jw6rW2sgBpMme9S5XGXQiU084mUj/e0eFJlMdGYZjYTERgMAxYPfhVS1sJdRGL4e/DE5BTejxVWU9thnfDaKgJ2he3gt7mtXRtgwrDm6vcv8IekG/e3YvPxwHYFSEhQ9hOQToQ9s=
+	t=1758762550; cv=none; b=lqPDJlSwzERMsUsHIO3yRpV+nwJVN3qVLRL1z5mq1OXLoK9NrjT8Hq57JlPR7LtePKli2Za5RId79NPFTlbiOFgMnYiGtCG7Izb41Bxj+S753PokrB48DifRChK35j2oFa1fNXjfnk2LZWaTnAd4EZUObQxGIh6Ee25/g2Vhegs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758761528; c=relaxed/simple;
-	bh=4T9Uc1baOOm7aD/Y7ecu4SBOz/l6Ta2u4f5pFwwaU/E=;
+	s=arc-20240116; t=1758762550; c=relaxed/simple;
+	bh=dHxDOJhnkECbkUUwQmUp3zM1Xow79G90WP64t2bY+rw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ot5guYIPoL736Smjp0IK6uMOtjPHeHqjq3/IUux39q9K5XCkXQ2KYEkbztquJoVxkYRUxwxHosONoziC1tujaW2+BdVrQz6eOfKWV4j0MU6HU6YQgJRQNd0c4VwwrzQ3lrEdifhHu4XVkBjEseGnAQE6OhYgreLrqag7x4sQpNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B03GPHqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE021C4CEE7;
-	Thu, 25 Sep 2025 00:52:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=MqzvuYBCgeRhoyiMAreG1d3DMH1WCD0TWq9kkpvvpHEgtJmqC74ibWuPuTljgPTwaOPYRIMDMFl1qDFyQqB4vbIHLBtxorfFvGcnJkgCLuuMwLk9uV8mHkc+xZInQ9GMY8os2YdSLO9cG/bh6qU/ZZJPEihF32WdHvVEHV6zVwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1I3viug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8815FC4CEE7;
+	Thu, 25 Sep 2025 01:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758761527;
-	bh=4T9Uc1baOOm7aD/Y7ecu4SBOz/l6Ta2u4f5pFwwaU/E=;
+	s=k20201202; t=1758762549;
+	bh=dHxDOJhnkECbkUUwQmUp3zM1Xow79G90WP64t2bY+rw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B03GPHqEXFNSoAFj12gdqmEUDxjJgJlrNnFZRAMrjsiwN0DzlFF1/VsRgW70z6EmT
-	 B/xxKoU+TsbzKDQjgmwWVeMY6TUXrKxDoLUIeIOvAKT9ZmoxJGuGVaQJYmiVmlH9fM
-	 jo/b2zwOwm2e8CvYjMNhGwrEmy9kz8V4q59CTKnoXVMA5E4m2IrwWMEI4+sGVqDqYK
-	 ori3GPqOR9vpt6d1BKHYhihhQZmtEq08kZDFc87NkDcl2ix7XtUJRUAI11W7W8MmQ1
-	 uk6iI6zl9G4WKXV27Mu/zj7cZVqmP7wVEsuL9luxWtZlcm+Zwm5pZEaSBfCdvtEx4L
-	 KJASNC13sSt2Q==
-Date: Wed, 24 Sep 2025 14:52:06 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Chenglong Tang <chenglongtang@google.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	roman.gushchin@linux.dev, linux-mm@kvack.org, lakitu-dev@google.com
-Subject: Re: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
- proliferation during I/O flush and cgroup cleanup
-Message-ID: <aNSSNgUeMSTtlimW@slm.duckdns.org>
-References: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
+	b=C1I3viugqZPRdIw7VSAQjbeRMw4u7cwU5+mbB6hczhbRxc8XIqbBUgXy4l3Nmj8xo
+	 N18KKmI0Kt4jKAlBOVdKl+s6J8irWyPEa6WtUEWqP0zPmGzcEV2LA3rISp1Lmklb4w
+	 oqR47e5f2Re0brYjzEYWcq0bJNDD+KMLCtDCBJ0jlnVAKybND8Hfj5kCPq7jKtOcOd
+	 HuhWwcRqh//Q9j1ZXAcjjfY5fjBcXihx4QCZsZQIdHJQyBEpRy4K3sOPPwmvx0slcS
+	 C+2bpxqM34yXVeaUlb5+ppsc216QwDmERGgKV3cC9JH0y0sIAnRdatz2iFJ+EffNO6
+	 2lWyx9rR2TWEA==
+Date: Wed, 24 Sep 2025 21:09:08 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>, srini@kernel.org,
+	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.16-6.6] ASoC: qcom: sc8280xp: Enable DAI format
+ configuration for MI2S interfaces
+Message-ID: <aNSWNE2F4gmLgUQ1@laps>
+References: <20250922175751.3747114-1-sashal@kernel.org>
+ <20250922175751.3747114-5-sashal@kernel.org>
+ <aNJJe20u8bEOE3VP@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
+In-Reply-To: <aNJJe20u8bEOE3VP@hovoldconsulting.com>
 
-On Wed, Sep 24, 2025 at 05:24:15PM -0700, Chenglong Tang wrote:
-> The kernel v6.1 is good. The hang is reliably triggered(over 80% chance) on
-> kernels v6.6 and 6.12 and intermittently on mainline(6.17-rc7) with the
-> following steps:
-> -
-> 
-> *Environment:* A machine with a fast SSD and a high core count (e.g.,
-> Google Cloud's N2-standard-128).
-> -
-> 
-> *Workload:* Concurrently generate a large number of files (e.g., 2 million)
-> using multiple services managed by systemd-run. This creates significant
-> I/O and cgroup churn.
-> -
-> 
-> *Trigger:* After the file generation completes, terminate the systemd-run
-> services.
-> -
-> 
-> *Result:* Shortly after the services are killed, the system's CPU load
-> spikes, leading to a massive number of kworker/+inode_switch_wbs threads
-> and a system-wide hang/livelock where the machine becomes unresponsive (20s
-> - 300s).
+On Tue, Sep 23, 2025 at 09:17:15AM +0200, Johan Hovold wrote:
+>On Mon, Sep 22, 2025 at 01:57:36PM -0400, Sasha Levin wrote:
+>> From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+>>
+>> [ Upstream commit 596e8ba2faf0d2beb9bb68801622fa6461918c1d ]
+>>
+>> Add support for configuring the DAI format on MI2S interfaces,
+>> this enhancement allows setting the appropriate bit clock and
+>> frame clock polarity, ensuring correct audio data transmission
+>> over MI2S.
+>>
+>> Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+>> Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
+>> Rule: add
+>> Link: https://lore.kernel.org/stable/20250908053631.70978-4-mohammad.rafi.shaik%40oss.qualcomm.com
+>> Message-ID: <20250908053631.70978-4-mohammad.rafi.shaik@oss.qualcomm.com>
+>> Signed-off-by: Mark Brown <broonie@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>
+>> LLM Generated explanations, may be completely bogus:
+>
+>Yeah, it's bogus. Please drop.
 
-Sounds like:
-
- http://lkml.kernel.org/r/20250912103522.2935-1-jack@suse.cz
-
-Can you see whether those patches resolve the problem?
-
-Thanks.
+Ack
 
 -- 
-tejun
+Thanks,
+Sasha
 
