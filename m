@@ -1,120 +1,184 @@
-Return-Path: <stable+bounces-181661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B04B9C541
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 00:10:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51DFDB9CE55
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 02:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8C719C64A8
-	for <lists+stable@lfdr.de>; Wed, 24 Sep 2025 22:11:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 404C44E178B
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 00:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC232877DA;
-	Wed, 24 Sep 2025 22:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE27B27E054;
+	Thu, 25 Sep 2025 00:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="12hytEiH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KVYm0K63"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6840F1EF091;
-	Wed, 24 Sep 2025 22:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DF3849C
+	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 00:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758751849; cv=none; b=gzgRvDw9GLMQ5veExrgtu3nHtkiHBdA74YcyZnSf9GG0yP5jCZG0P8vlLoNlSzfsMDh1s+Qrx1gx7FnKcd31IN8kH3FHzywqwl3n/GTiBwaYETwbJqxFFiLekoSx/FPsDJtrCVzCCG0uaP2813tuhzX+JzMyDUyJNs+/xu3+FTc=
+	t=1758760186; cv=none; b=du2PKNF3EUhxTiauPat99yD44Xx6ZFy2oeRRi7syPzK1KNdEo6ocD3Y9iNljsobxvMG+hdwSeao4RSWbfP4WTEQ4BgxpvkwtkgiC3gfCDJZFUnF6m3bHDQtyCJxez/hQnhtKCxO+pAIV9zL6D6t+ntfbtwiys9Z5QMTM4szkmXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758751849; c=relaxed/simple;
-	bh=ZHSUdoXLU/5eHX9wIMEyXf8BV1ScP0M+3QD7Zb3hdks=;
-	h=Date:To:From:Subject:Message-Id; b=Akgtbxg9hWpYFs5Ud6yTsNR9Pi4XJDbFQyHOd8Im29Rwdye7GUZUzD0czQnhqg05kPXhaL7K+gxlWv6zVg6YeI9Yk/yE78JF9j76Og82ZMv/7DrfgCBnqxJyyqakQkDwdczeeyUQ2n0nWUtsA9J3GiqWOwxT67+gU3IEp9ZmkO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=12hytEiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6D9C4CEE7;
-	Wed, 24 Sep 2025 22:10:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758751849;
-	bh=ZHSUdoXLU/5eHX9wIMEyXf8BV1ScP0M+3QD7Zb3hdks=;
-	h=Date:To:From:Subject:From;
-	b=12hytEiHraiZ4TRLt1p3jhmqkN/luE4xHVGjidSzhCjqE61bJyD2ltJEMhyMVTxTP
-	 XGMLwUqlv6MH9GXBb+wVXhzIzMjyhL9b+RJj6MgnVAdal2B01dh9xcKjPlZduXWyME
-	 kOru/caoARaiPHTyiUBDy8g5Yklhjk1MAAF8KIWc=
-Date: Wed, 24 Sep 2025 15:10:48 -0700
-To: mm-commits@vger.kernel.org,vz@mleia.com,stable@vger.kernel.org,p.zabel@pengutronix.de,johan@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch added to mm-nonmm-unstable branch
-Message-Id: <20250924221049.1F6D9C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1758760186; c=relaxed/simple;
+	bh=rGrJhkEhVL8fDzcbwtX0Nlx0/Ial1/o06KA95F1aKyE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=j9uuZc5vt5Wcde3wwy9QHUIPW90ynafBnyB1vlh+kFhFDdzI55vvtJDfEVgQ4DUrRBg2gXRoUqp4mHBPLXIytaLE9P4u1HxV9ztuY7CARQNYVybppG/dQX5amSJcdr4PMzEy2K/yrDdu0swexKpT8moSdOeLTMx5eZvGCu89gh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KVYm0K63; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-57d97bac755so12377e87.0
+        for <stable@vger.kernel.org>; Wed, 24 Sep 2025 17:29:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758760183; x=1759364983; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rGrJhkEhVL8fDzcbwtX0Nlx0/Ial1/o06KA95F1aKyE=;
+        b=KVYm0K63p0Y8NY1jkR20LfJx7/NJEz1PKubhytlDzeJANIb5ff9IFnY2Q+bPTBXICU
+         ho2fPXdCWBCjllzzdUwAzwVkk5biKrjyLXum3Wqectr4pj5hH+XHUWvQ2lwN17ugyFNY
+         lONtSqeI4YsM1vnxaFlgp9x/XN3gY1Au3sdOXWlrQi2JqQPtWWh+Bnb5diA4Tvzcoj6Y
+         zRkZYP+1BkC8DDIUdOHEAyZXdOolaTpaopCb7Df+esiqNhowSSIUbvRBHY6UMHNPUqLG
+         AFmZfc0ouKotiu4sUps7JPJUDB9HsVYqv8FuEbYAvM6PpxAuIv+PwiCu34YKN1kE+lt0
+         CwCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758760183; x=1759364983;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rGrJhkEhVL8fDzcbwtX0Nlx0/Ial1/o06KA95F1aKyE=;
+        b=SPE43iau13d0gAFldcjIYK89YLepW8yB6QLR9ffdPgnHczFzwGmmW976FlvPZcvE05
+         szTa7NIhWIDKZNk2A7YopETIws/RyDkoGw3zP74/mxdnYO92/tvw1h6joZtNz+MBRCod
+         mjBBk5uRER7QI4tV8j75YzC3eALCkCVpmgpK7DyjSfC8TV+MeKh+Dzhd3MgUUYOYPizT
+         ugUAw7QQXNQXz9eOh9K07A0fBj9wwNdUTRQKBN/6x7I0E9ibj78qKtwyNU+4d+i6317w
+         n9ryZ3KaYH5+NNoO49PG+3cfN+5bVUbr9z8bZ25zrIQE4NfYFaQFs58f417qfAb/AYvf
+         a+gQ==
+X-Gm-Message-State: AOJu0YwDX7k+IZ9Z9LX74iIs2VviffS/bJ/0ugGOWdIWDpVxf2Ast7N2
+	rfwDkN9HEMOZ1nmwbDikbLANO2TN55XUkglEeTijdHSmZjYaPnSvdYanebK7PvQu8Bj1Lw+Qo5G
+	mSZ8Cg8F88qqY5evgljS0udc9gsiF9EPWEN7LkJHOVY22Fa5Retkal8WT69CWSg==
+X-Gm-Gg: ASbGnctsC2IdiD/9doYmCNz4c/r70CVw9Q/PWUOqeign8GmRQUTeoYIC7lFgAm5kf33
+	JWwZYmStJYStbBsk6LqizQQfvgT8bQ5bCKlQatC72q3pIhKBeyPd5AY6uAHENMdkZPHhToxkE1k
+	mr3uSpcdlR+IXPcX1cJEEjfg0X6Vss+8mmkOZBaRPSvRP48mKf6OLCZlQM4IibyAbyX1C63WOQA
+	7HJoHaCbaHuw2d8e7u63pS/
+X-Google-Smtp-Source: AGHT+IF29hX9gih8LwttPUfoJ3ziAEqxYld5pZxsEuTKcsm+ojcC4pZPrneDxgNLw1hROYWi7BymTX+vJ5G4M6w8ZGA=
+X-Received: by 2002:a05:6512:6092:b0:576:4ceb:a167 with SMTP id
+ 2adb3069b0e04-582b1552a7emr239612e87.5.1758760182481; Wed, 24 Sep 2025
+ 17:29:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: Chenglong Tang <chenglongtang@google.com>
+Date: Wed, 24 Sep 2025 17:29:31 -0700
+X-Gm-Features: AS18NWBhdBOTvWF0Ty1kP-ZkTeb619FZATRTEkhft-g2-Fo8clpTokAq1JhLagM
+Message-ID: <CAOdxtTYQye1Rtp-sG48Re+_ihD637NDXTG_V_uLkerg=m1Nbtw@mail.gmail.com>
+Subject: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
+ proliferation during I/O flush and cgroup cleanup
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, tj@kernel.org, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, lakitu-dev@google.com
+Content-Type: text/plain; charset="UTF-8"
 
+Hello,
 
-The patch titled
-     Subject: lib/genalloc: fix device leak in of_gen_pool_get()
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch
+This is Chenglong from Google Container Optimized OS. I'm reporting a
+severe CPU hang regression that occurs after a high volume of file
+creation and subsequent cgroup cleanup.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch
+Through bisection, the issue appears to be caused by a chain reaction
+between three commits related to writeback, unbound workqueues, and
+CPU-hogging detection. The issue is greatly alleviated on the latest
+mainline kernel but is not fully resolved, still occurring
+intermittently (~1 in 10 runs).
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+How to reproduce
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The kernel v6.1 is good. The hang is reliably triggered(over 80%
+chance) on kernels v6.6 and 6.12 and intermittently on
+mainline(6.17-rc7) with the following steps:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Environment: A machine with a fast SSD and a high core count (e.g.,
+Google Cloud's N2-standard-128).
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Workload: Concurrently generate a large number of files (e.g., 2
+million) using multiple services managed by systemd-run. This creates
+significant I/O and cgroup churn.
 
-------------------------------------------------------
-From: Johan Hovold <johan@kernel.org>
-Subject: lib/genalloc: fix device leak in of_gen_pool_get()
-Date: Wed, 24 Sep 2025 10:02:07 +0200
+Trigger: After the file generation completes, terminate the
+systemd-run services.
 
-Make sure to drop the reference taken when looking up the genpool platform
-device in of_gen_pool_get() before returning the pool.
+Result: Shortly after the services are killed, the system's CPU load
+spikes, leading to a massive number of kworker/+inode_switch_wbs
+threads and a system-wide hang/livelock where the machine becomes
+unresponsive (20s - 300s).
 
-Note that holding a reference to a device does typically not prevent its
-devres managed resources from being released so there is no point in
-keeping the reference.
+Analysis and Problematic Commits
 
-Link: https://lkml.kernel.org/r/20250924080207.18006-1-johan@kernel.org
-Fixes: 9375db07adea ("genalloc: add devres support, allow to find a managed pool by device")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Vladimir Zapolskiy <vz@mleia.com>
-Cc: <stable@vger.kernel.org>	[3.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+1. The initial commit: The process begins with a worker that can get
+stuck busy-waiting on a spinlock.
 
- lib/genalloc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Commit: ("writeback, cgroup: release dying cgwbs by switching attached inodes")
 
---- a/lib/genalloc.c~lib-genalloc-fix-device-leak-in-of_gen_pool_get
-+++ a/lib/genalloc.c
-@@ -899,8 +899,11 @@ struct gen_pool *of_gen_pool_get(struct
- 		if (!name)
- 			name = of_node_full_name(np_pool);
- 	}
--	if (pdev)
-+	if (pdev) {
- 		pool = gen_pool_get(&pdev->dev, name);
-+		put_device(&pdev->dev);
-+	}
-+
- 	of_node_put(np_pool);
- 
- 	return pool;
-_
+Effect: This introduced the inode_switch_wbs_work_fn worker to clean
+up cgroup writeback structures. Under our test load, this worker
+appears to hit a highly contended wb->list_lock spinlock, causing it
+to burn 100% CPU without sleeping.
 
-Patches currently in -mm which might be from johan@kernel.org are
+2. The Kworker Explosion: A subsequent change misinterprets the
+spinning worker from Stage 1, leading to a runaway feedback loop of
+worker creation.
 
-lib-genalloc-fix-device-leak-in-of_gen_pool_get.patch
+Commit: 616db8779b1e ("workqueue: Automatically mark CPU-hogging work
+items CPU_INTENSIVE")
 
+Effect: This logic sees the spinning worker, marks it as
+CPU_INTENSIVE, and excludes it from concurrency management. To handle
+the work backlog, it spawns a new kworker, which then also gets stuck
+on the same lock, repeating the cycle. This directly causes the
+kworker count to explode from <50 to 100-2000+.
+
+3. The System-Wide Lockdown: The final piece allows this localized
+worker explosion to saturate the entire system.
+
+Commit: 8639ecebc9b1 ("workqueue: Implement non-strict affinity scope
+for unbound workqueues")
+
+Effect: This change introduced non-strict affinity as the default. It
+allows the hundreds of kworkers created in Stage 2 to be spread by the
+scheduler across all available CPU cores, turning the problem into a
+system-wide hang.
+
+Current Status and Mitigation
+
+Mainline Status: On the latest mainline kernel, the hang is far less
+frequent and the kworker counts are reduced back to normal (<50),
+suggesting other changes have partially mitigated the issue. However,
+the hang still occurs, and when it does, the kworker count still
+explodes (e.g., 300+), indicating the underlying feedback loop
+remains.
+
+Workaround: A reliable mitigation is to revert to the old workqueue
+behavior by setting affinity_strict to 1. This contains the kworker
+proliferation to a single CPU pod, preventing the system-wide hang.
+
+Questions
+
+Given that the issue is not fully resolved, could you please provide
+some guidance?
+
+1. Is this a known issue, and are there patches in development that
+might fully address the underlying spinlock contention or the kworker
+feedback loop?
+
+2. Is there a better long-term mitigation we can apply other than
+forcing strict affinity?
+
+Thank you for your time and help.
+
+Best regards,
+
+Chenglong
 
