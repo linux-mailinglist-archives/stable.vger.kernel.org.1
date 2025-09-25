@@ -1,151 +1,122 @@
-Return-Path: <stable+bounces-181747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A01BA18BE
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 23:33:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A75BA1AEF
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 23:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85E2B2A1454
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 21:33:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3A511C824C9
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 21:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C93321F35;
-	Thu, 25 Sep 2025 21:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F20E2E8E11;
+	Thu, 25 Sep 2025 21:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IfCdi0xJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y/sdl6mO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XMsv8+jE"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0322E62A6;
-	Thu, 25 Sep 2025 21:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D62275106;
+	Thu, 25 Sep 2025 21:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758835973; cv=none; b=Q1M3Hd29q1yKTWU90GBVArGCKYC3BPBbN1cJs/RRcdAPx5NZy7v4iVx13iNF+YT4Oxm5RsIREBqIeUhGMzQkGTp9L9T/iT8lsEl0t6Ul7OhGcAr/xSb/HxvxJlJu2A5pYtazXnHKbXXDlbYwr6YoJXHXouD8SxE0xuHAzRTdj+A=
+	t=1758837018; cv=none; b=Sut+ZoUUFPM3riNy/yxMQf+yQJ0b13xihCA86QG7NVBWBIFhDiGQV9OvmMIEou3gme8MWkvHJ4axQxHF+XQbHdaFtvpVS4BPgV/37CfwIx73aGv6GTe7Il3pNIfJvppg3hfx7+pIX9X17ndTf8ob36fDZI+kllWxwkrB9ETcZCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758835973; c=relaxed/simple;
-	bh=xBSf93f6TMzU/O2T9L9MSgxWr1yOmbvjltfbvUWmJW4=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Xt7meLrdUazGlqSrDwBCvtlnvETXdp7Wy+CziGc3783gFuQ8Lba5nJxUYAzj/GS7GeI0y792iKPElNu7vTkh4Ge6BJr0i1fW+vPpLN6auwx2LcDD7xC+MJbDNv1KouFJPOYReWixuBfqQJX4TiWPmQv8syO8hLmQTXQhCnNfoSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IfCdi0xJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y/sdl6mO; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Sep 2025 21:32:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758835970;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=DcvbQrEl/eB4wtbm9nHwP8xVQbSO/Neuc4/TKb8skTU=;
-	b=IfCdi0xJcD9juz8Wb0aW6YwUhSk4z3I5ZOhiBWoRTX9NiaidMWlN6xnU0F21/TkH6gLI2H
-	Hk553b5NulZdLoPeVzebjROd6TgSwDxs09i0v1cUuguqI8BqLVRYIQ7RyCrg6KF+ir6gef
-	UINLsim7dq8U2O92gnlQd93I0ido0LCxDYS7xB9kXYKijxK1hBnzGd+zjgTsTfkLkIEHZ8
-	qIlIj8zQ4NSMq55D+oaYncbtbauplgqJ7FTFxSSRV4sr3u6Go5FwnlvAYuoqLhEdgLv3gg
-	BY/bMYwzj3jDYIVEN7IZ/CdXG4sqFzpsW8Ii0m+aCBM14FQ9JUqsPJu/JMg7Mg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758835970;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=DcvbQrEl/eB4wtbm9nHwP8xVQbSO/Neuc4/TKb8skTU=;
-	b=y/sdl6mORvDL//ejvuY2ZD2uzoceXQDkcJSjaPsMtZB9cKbxqtFb5YGJh+kjXUvPnAzwlP
-	AAJwtTpoRz/yFqCQ==
-From: "tip-bot2 for Zhen Ni" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/clocksource] clocksource/drivers/clps711x: Fix resource
- leaks in error paths
-Cc: Zhen Ni <zhen.ni@easystack.cn>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1758837018; c=relaxed/simple;
+	bh=oX+ffFtrNxS4S7E+QeUkUElYRbcpE88o28dPbhem8is=;
+	h=Date:To:From:Subject:Message-Id; b=Ty2l5PFIVgDabmKn9aOOaMmgjtTxzDulgV6kdDMQEeI4iAjAKVEzty38ic6TW71/MwMnNrOqUR26PyLTLXq3NSLYGbrU/p2oFVwRuHVeeZv6fwX2rIt6oK9RnR2kLEQDNKt002VvZY2lo1WIDObrOS5tWz4ANW2gWQB35gAJ0X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XMsv8+jE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0A5C4CEF0;
+	Thu, 25 Sep 2025 21:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758837016;
+	bh=oX+ffFtrNxS4S7E+QeUkUElYRbcpE88o28dPbhem8is=;
+	h=Date:To:From:Subject:From;
+	b=XMsv8+jEExn7TLAEuilIYSzECZOlrqIEByK/EYTheGlcbPbwfZNWF7qdOnPtz/Vqa
+	 awmUVwUHTYfQyTKJ1lQqLSykW6EwnF+kE9D0wcJoZRYCMu55jWeqYLjbkjh8CApwlR
+	 mAxY8oTfdPdS6/PcBOc4ptRlcn5lViYm3ylTniq0=
+Date: Thu, 25 Sep 2025 14:50:15 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,kartikey406@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [failures] hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch removed from -mm tree
+Message-Id: <20250925215016.7B0A5C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <175883596914.709179.1345970973507632298.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the timers/clocksource branch of ti=
-p:
 
-Commit-ID:     cd32e596f02fc981674573402c1138f616df1728
-Gitweb:        https://git.kernel.org/tip/cd32e596f02fc981674573402c1138f616d=
-f1728
-Author:        Zhen Ni <zhen.ni@easystack.cn>
-AuthorDate:    Thu, 14 Aug 2025 20:33:24 +08:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Tue, 23 Sep 2025 12:42:27 +02:00
+The quilt patch titled
+     Subject: hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
+has been removed from the -mm tree.  Its filename was
+     hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch
 
-clocksource/drivers/clps711x: Fix resource leaks in error paths
+This patch was dropped because it had testing failures
 
-The current implementation of clps711x_timer_init() has multiple error
-paths that directly return without releasing the base I/O memory mapped
-via of_iomap(). Fix of_iomap leaks in error paths.
+------------------------------------------------------
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
+Date: Thu, 25 Sep 2025 20:19:32 +0530
 
-Fixes: 04410efbb6bc ("clocksource/drivers/clps711x: Convert init function to =
-return error")
-Fixes: 2a6a8e2d9004 ("clocksource/drivers/clps711x: Remove board support")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250814123324.1516495-1-zhen.ni@easystack.cn
+hugetlb_vmdelete_list() uses trylock to acquire VMA locks during truncate
+operations.  As per the original design in commit 40549ba8f8e0 ("hugetlb:
+use new vma_lock for pmd sharing synchronization"), if the trylock fails
+or the VMA has no lock, it should skip that VMA.  Any remaining mapped
+pages are handled by remove_inode_hugepages() which is called after
+hugetlb_vmdelete_list() and uses proper lock ordering to guarantee
+unmapping success.
+
+Currently, when hugetlb_vma_trylock_write() returns success (1) for VMAs
+without shareable locks, the code proceeds to call unmap_hugepage_range().
+This causes assertion failures in huge_pmd_unshare() →
+hugetlb_vma_assert_locked() because no lock is actually held:
+
+  WARNING: CPU: 1 PID: 6594 Comm: syz.0.28 Not tainted
+  Call Trace:
+   hugetlb_vma_assert_locked+0x1dd/0x250
+   huge_pmd_unshare+0x2c8/0x540
+   __unmap_hugepage_range+0x6e3/0x1aa0
+   unmap_hugepage_range+0x32e/0x410
+   hugetlb_vmdelete_list+0x189/0x1f0
+
+Fix by explicitly skipping VMAs without shareable locks after trylock
+succeeds, consistent with the original design where such VMAs are deferred
+to remove_inode_hugepages() for proper handling.
+
+Link: https://lkml.kernel.org/r/20250925144934.150299-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
+Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
+Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/clocksource/clps711x-timer.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clocksource/clps711x-timer.c b/drivers/clocksource/clps7=
-11x-timer.c
-index e95fdc4..bbceb02 100644
---- a/drivers/clocksource/clps711x-timer.c
-+++ b/drivers/clocksource/clps711x-timer.c
-@@ -78,24 +78,33 @@ static int __init clps711x_timer_init(struct device_node =
-*np)
- 	unsigned int irq =3D irq_of_parse_and_map(np, 0);
- 	struct clk *clock =3D of_clk_get(np, 0);
- 	void __iomem *base =3D of_iomap(np, 0);
-+	int ret =3D 0;
-=20
- 	if (!base)
- 		return -ENOMEM;
--	if (!irq)
--		return -EINVAL;
--	if (IS_ERR(clock))
--		return PTR_ERR(clock);
-+	if (!irq) {
-+		ret =3D -EINVAL;
-+		goto unmap_io;
-+	}
-+	if (IS_ERR(clock)) {
-+		ret =3D PTR_ERR(clock);
-+		goto unmap_io;
-+	}
-=20
- 	switch (of_alias_get_id(np, "timer")) {
- 	case CLPS711X_CLKSRC_CLOCKSOURCE:
- 		clps711x_clksrc_init(clock, base);
- 		break;
- 	case CLPS711X_CLKSRC_CLOCKEVENT:
--		return _clps711x_clkevt_init(clock, base, irq);
-+		ret =3D  _clps711x_clkevt_init(clock, base, irq);
-+		break;
- 	default:
--		return -EINVAL;
-+		ret =3D -EINVAL;
-+		break;
- 	}
-=20
--	return 0;
-+unmap_io:
-+	iounmap(base);
-+	return ret;
- }
- TIMER_OF_DECLARE(clps711x, "cirrus,ep7209-timer", clps711x_timer_init);
+ fs/hugetlbfs/inode.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/fs/hugetlbfs/inode.c~hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list
++++ a/fs/hugetlbfs/inode.c
+@@ -487,7 +487,8 @@ hugetlb_vmdelete_list(struct rb_root_cac
+ 
+ 		if (!hugetlb_vma_trylock_write(vma))
+ 			continue;
+-
++		if (!__vma_shareable_lock(vma))
++			continue;
+ 		v_start = vma_offset_start(vma, start);
+ 		v_end = vma_offset_end(vma, end);
+ 
+_
+
+Patches currently in -mm which might be from kartikey406@gmail.com are
+
+
 
