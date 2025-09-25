@@ -1,221 +1,286 @@
-Return-Path: <stable+bounces-181684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EC8B9E1E9
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 10:49:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E045B9E31B
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 11:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7D5D14E1B60
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 08:49:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3963D3BE187
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 09:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0D9277C8F;
-	Thu, 25 Sep 2025 08:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B5B277CB8;
+	Thu, 25 Sep 2025 09:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WwYO45BD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FelzbsVu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C38027702A
-	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 08:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE7A2747B;
+	Thu, 25 Sep 2025 09:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758790170; cv=none; b=HUuPA/wxkxmBiy7CCVoFtPKtvx3PMbd0W4wrfcUEQUQiPZuvOsgSUfWX942TYIMK9RM7aKR0Xp6MVqxe/7oyjvp+9Se+PcMe7AmlzsH546qBsTn7/IPkCHNDP4NQDkh0QvVlXqmDcLLTE4wXGYy0gF3r55FCGfbnkkHth3ZKvSE=
+	t=1758791312; cv=none; b=uUzmWCmbAWbLu724cCsgeb0ZkiHAtD4YiF3C/m88Ma9/Qp21Au9zJp4sTGTtu5B3WBv3boQKx3eoPe+KTquo5+nH/63MP2G/HnJw2VYqOxd5YYv4Y2cYt0WLsFCYY5+V8sRTDnzGlBGmQKJCKcCIAYUkasmeL5SXfZ7i6Sq64Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758790170; c=relaxed/simple;
-	bh=Md1di4RKD1duOXTcQnEYn9EfNBa2FlcCNoSGjm+luGA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mWpi6rO3RXXzctYun/u/SlungiMqeb9QpaNQPWvEXH9f8qA/TF4GzD6xTsGhVXwkuj9XpXdJwHKVSGQVimE5C+2MVOiLwKCRFjQaY/YVUiTtW8qJhBIrmEuemzlT+zV8G3V003dXFnJlkCsqFIKLAFXxcpc3S1CbHpjinBBjTM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WwYO45BD; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758790167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=96Myumouvefz+w6/wGcSm/myLCLF8eCGCwHV82PZpT0=;
-	b=WwYO45BDkjszki+PDFMOG+XE7QMHMR8D0q5mw136oyWnvBw/aJQoX9ocvHqUTRTe+DaZTP
-	WM01xtX8K4CPPruhx7/znkAL5GGbTUEXWaTPOREefxY04gpkJvJI2Zzrf1zdh0FASJHMSE
-	JiZsVdwJ0zy8mowNH2E3DhMjxCMgBgY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-lDWwnWIWOsKxmUpZnUMQ-g-1; Thu, 25 Sep 2025 04:49:24 -0400
-X-MC-Unique: lDWwnWIWOsKxmUpZnUMQ-g-1
-X-Mimecast-MFC-AGG-ID: lDWwnWIWOsKxmUpZnUMQ-g_1758790163
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ed9557f976so583325f8f.3
-        for <stable@vger.kernel.org>; Thu, 25 Sep 2025 01:49:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758790163; x=1759394963;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=96Myumouvefz+w6/wGcSm/myLCLF8eCGCwHV82PZpT0=;
-        b=PFGXmyLxq0Y2yyw7l/u88/tBlqYm6RAvbu7zt2zmltYq1mHuXbfrZohXSjTpTzu+Lr
-         HI5KyRXC1ydSSdROiTnEvoKbmT3XamvYTCYsp26Rkko5AdyrUHCEhatS7qsLOr9febX/
-         N1gFgI0czF5fOVQ1Pnzf/eWIrE00sWQb9c7EKqEz0PBGorllM76Ve3ntrSZDWA4T9eF0
-         fNQjTpobmf/+jW8mNU1FYtgG4aO/CvehOGxpyHLD9wE6uLcb+T7/1C1Ndfh8mpApehbK
-         YSpo3YTMFp4XVzsRKU4qNBVCkkHY7imkRRbM+LzRG86LYR+dD75RXNJssGxiJRzogEBp
-         yG1Q==
-X-Gm-Message-State: AOJu0Ywe4ICizn8igxKjOEm/C9inS4m4FjzIwzA06ipdNxtN9WY6o+a8
-	EtO9A0CrtTKsq8d5NDKbsuKuNuTc6soSHZfONZ54VdOVznApA+32Ftt3oz5tO3c9lEw3vN+5MpG
-	pgb4SwQvb7S2HHIO7sParnmfVjZGBRO93Dg7ThanTQhwxuY11UAFgBb+DGIQjQtRrHIUnSKjqsl
-	g1DPf5iuVq2DbCGftKH43qXsHMZIzb0CFWwSSG0qa2
-X-Gm-Gg: ASbGncvKcqD3NpsQfjU6wCTDscppzl9nH7ocB2XgQIM75fKvXL/FGxm4E/SOINTva3i
-	6/TqLXpWjJ40lsCkEg8v/961ZS5TwSTlX9jwzXkn/5qnNRSB0wZbCxzmY5dVHAhZB+b12BDe2AO
-	S3KirYEBrCaxOT1RNt8O2TWVk/6M4Za0rh/PGhle/EB8i9dOA1LAwoOzTtiO8gQtdx0/f+4xZcf
-	XV10erYOhHUNfgURNMwLUpf1KitJwJ3cWtMFnA+eQZIq7dzZv7OUdDjLz0Xi3hbCN2M0cd0eRBK
-	8NDROj/4pgd31akiURuQJ8RZ2CdODdeF5uWSA16PrJJ4T/zK3BrGWy2b+Rk8WzaQGr7Y8Tu6cPa
-	2Ns1mQifky3uMHRzeFDpKpJHRlw==
-X-Received: by 2002:a05:6000:2089:b0:3eb:5245:7c1f with SMTP id ffacd0b85a97d-40e429c9c58mr2551057f8f.2.1758790163332;
-        Thu, 25 Sep 2025 01:49:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJXawuNWztXmHYJ9iUK4IjlVZc14jQcaTzlL8IJ56OZf0xhqA/uTbjXN2rk1CkLSG9voVrYQ==
-X-Received: by 2002:a05:6000:2089:b0:3eb:5245:7c1f with SMTP id ffacd0b85a97d-40e429c9c58mr2551020f8f.2.1758790162754;
-        Thu, 25 Sep 2025 01:49:22 -0700 (PDT)
-Received: from localhost (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-410f2007372sm1181613f8f.16.2025.09.25.01.49.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 01:49:22 -0700 (PDT)
-From: David Hildenbrand <david@redhat.com>
-To: stable@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>
-Subject: [PATCH 5.4.y] mm/migrate_device: don't add folio to be freed to LRU in migrate_device_finalize()
-Date: Thu, 25 Sep 2025 10:49:21 +0200
-Message-ID: <20250925084921.3874940-1-david@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025022407-amplifier-catnip-6e14@gregkh>
-References: <2025022407-amplifier-catnip-6e14@gregkh>
+	s=arc-20240116; t=1758791312; c=relaxed/simple;
+	bh=ZgQSFSVCbyCH99ccwjJcdermQtFfcjbB/ldguPOCflg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O/a0yaalHdRGc4wu3JBC5hDBfu0QLDJJg+xXSAfnY816YC/0MgzA7phhd9Jz/rt3+ysn8zLs9O1FR8/MdJOp0UtD1NRmbddyVMG8/33OeR/b7UDZGe5A6wtHcQJ7KexX6YSYO+RSRPRpRMevnCQ/aaEiOAdvDaF7gyZxMftmvqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FelzbsVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CA8C4CEF0;
+	Thu, 25 Sep 2025 09:08:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758791311;
+	bh=ZgQSFSVCbyCH99ccwjJcdermQtFfcjbB/ldguPOCflg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FelzbsVuCzKOOLqNvbiR+mDiaHV0/CP035lZMmu9Nqtpw1DSakRrqQtDDRPwMPWvH
+	 /TwFzf/N+AsIcKLJijCdBtm4dfQjfLXJh3mqPX6iJvmgKq7WkUvkgCRa6XEQz/MF4M
+	 o+iJ+ZIUNyUfhVQU+Lx1t8c02bWenDaKH+JSXxbFnGOMueWEXMyr29uyNWgRVx7JEP
+	 57bbmPJz4JTxvhq3ovnDdw2qYSGO/mDv+SALN3awFOBiXONkeTCq4qJdSG6vYGmT61
+	 JO3paq8wMUTC2XS16sisdxbFQfJ/qQE0i0+Ivs0BGlxW9oc8+7M2FC90SxYv+jV1dy
+	 vJ1e7sUK+fmVQ==
+Date: Thu, 25 Sep 2025 10:08:27 +0100
+From: Lee Jones <lee@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jann Horn <jannh@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 070/132] af_unix: Dont leave consecutive consumed OOB
+ skbs.
+Message-ID: <20250925090827.GA514097@google.com>
+References: <20250703143939.370927276@linuxfoundation.org>
+ <20250703143942.167088603@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250703143942.167088603@linuxfoundation.org>
 
-If migration succeeded, we called
-folio_migrate_flags()->mem_cgroup_migrate() to migrate the memcg from the
-old to the new folio.  This will set memcg_data of the old folio to 0.
+On Thu, 03 Jul 2025, Greg Kroah-Hartman wrote:
 
-Similarly, if migration failed, memcg_data of the dst folio is left unset.
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Kuniyuki Iwashima <kuniyu@google.com>
+> 
+> [ Upstream commit 32ca245464e1479bfea8592b9db227fdc1641705 ]
+> 
+> Jann Horn reported a use-after-free in unix_stream_read_generic().
+> 
+> The following sequences reproduce the issue:
+> 
+>   $ python3
+>   from socket import *
+>   s1, s2 = socketpair(AF_UNIX, SOCK_STREAM)
+>   s1.send(b'x', MSG_OOB)
+>   s2.recv(1, MSG_OOB)     # leave a consumed OOB skb
+>   s1.send(b'y', MSG_OOB)
+>   s2.recv(1, MSG_OOB)     # leave a consumed OOB skb
+>   s1.send(b'z', MSG_OOB)
+>   s2.recv(1)              # recv 'z' illegally
+>   s2.recv(1, MSG_OOB)     # access 'z' skb (use-after-free)
+> 
+> Even though a user reads OOB data, the skb holding the data stays on
+> the recv queue to mark the OOB boundary and break the next recv().
+> 
+> After the last send() in the scenario above, the sk2's recv queue has
+> 2 leading consumed OOB skbs and 1 real OOB skb.
+> 
+> Then, the following happens during the next recv() without MSG_OOB
+> 
+>   1. unix_stream_read_generic() peeks the first consumed OOB skb
+>   2. manage_oob() returns the next consumed OOB skb
+>   3. unix_stream_read_generic() fetches the next not-yet-consumed OOB skb
+>   4. unix_stream_read_generic() reads and frees the OOB skb
+> 
+> , and the last recv(MSG_OOB) triggers KASAN splat.
+> 
+> The 3. above occurs because of the SO_PEEK_OFF code, which does not
+> expect unix_skb_len(skb) to be 0, but this is true for such consumed
+> OOB skbs.
+> 
+>   while (skip >= unix_skb_len(skb)) {
+>     skip -= unix_skb_len(skb);
+>     skb = skb_peek_next(skb, &sk->sk_receive_queue);
+>     ...
+>   }
+> 
+> In addition to this use-after-free, there is another issue that
+> ioctl(SIOCATMARK) does not function properly with consecutive consumed
+> OOB skbs.
+> 
+> So, nothing good comes out of such a situation.
+> 
+> Instead of complicating manage_oob(), ioctl() handling, and the next
+> ECONNRESET fix by introducing a loop for consecutive consumed OOB skbs,
+> let's not leave such consecutive OOB unnecessarily.
+> 
+> Now, while receiving an OOB skb in unix_stream_recv_urg(), if its
+> previous skb is a consumed OOB skb, it is freed.
+> 
+> [0]:
+> BUG: KASAN: slab-use-after-free in unix_stream_read_actor (net/unix/af_unix.c:3027)
+> Read of size 4 at addr ffff888106ef2904 by task python3/315
+> 
+> CPU: 2 UID: 0 PID: 315 Comm: python3 Not tainted 6.16.0-rc1-00407-gec315832f6f9 #8 PREEMPT(voluntary)
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl (lib/dump_stack.c:122)
+>  print_report (mm/kasan/report.c:409 mm/kasan/report.c:521)
+>  kasan_report (mm/kasan/report.c:636)
+>  unix_stream_read_actor (net/unix/af_unix.c:3027)
+>  unix_stream_read_generic (net/unix/af_unix.c:2708 net/unix/af_unix.c:2847)
+>  unix_stream_recvmsg (net/unix/af_unix.c:3048)
+>  sock_recvmsg (net/socket.c:1063 (discriminator 20) net/socket.c:1085 (discriminator 20))
+>  __sys_recvfrom (net/socket.c:2278)
+>  __x64_sys_recvfrom (net/socket.c:2291 (discriminator 1) net/socket.c:2287 (discriminator 1) net/socket.c:2287 (discriminator 1))
+>  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+>  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> RIP: 0033:0x7f8911fcea06
+> Code: 5d e8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 75 19 83 e2 39 83 fa 08 75 11 e8 26 ff ff ff 66 0f 1f 44 00 00 48 8b 45 10 0f 05 <48> 8b 5d f8 c9 c3 0f 1f 40 00 f3 0f 1e fa 55 48 89 e5 48 83 ec 08
+> RSP: 002b:00007fffdb0dccb0 EFLAGS: 00000202 ORIG_RAX: 000000000000002d
+> RAX: ffffffffffffffda RBX: 00007fffdb0dcdc8 RCX: 00007f8911fcea06
+> RDX: 0000000000000001 RSI: 00007f8911a5e060 RDI: 0000000000000006
+> RBP: 00007fffdb0dccd0 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000001 R11: 0000000000000202 R12: 00007f89119a7d20
+> R13: ffffffffc4653600 R14: 0000000000000000 R15: 0000000000000000
+>  </TASK>
+> 
+> Allocated by task 315:
+>  kasan_save_stack (mm/kasan/common.c:48)
+>  kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+>  __kasan_slab_alloc (mm/kasan/common.c:348)
+>  kmem_cache_alloc_node_noprof (./include/linux/kasan.h:250 mm/slub.c:4148 mm/slub.c:4197 mm/slub.c:4249)
+>  __alloc_skb (net/core/skbuff.c:660 (discriminator 4))
+>  alloc_skb_with_frags (./include/linux/skbuff.h:1336 net/core/skbuff.c:6668)
+>  sock_alloc_send_pskb (net/core/sock.c:2993)
+>  unix_stream_sendmsg (./include/net/sock.h:1847 net/unix/af_unix.c:2256 net/unix/af_unix.c:2418)
+>  __sys_sendto (net/socket.c:712 (discriminator 20) net/socket.c:727 (discriminator 20) net/socket.c:2226 (discriminator 20))
+>  __x64_sys_sendto (net/socket.c:2233 (discriminator 1) net/socket.c:2229 (discriminator 1) net/socket.c:2229 (discriminator 1))
+>  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+>  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> 
+> Freed by task 315:
+>  kasan_save_stack (mm/kasan/common.c:48)
+>  kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+>  kasan_save_free_info (mm/kasan/generic.c:579 (discriminator 1))
+>  __kasan_slab_free (mm/kasan/common.c:271)
+>  kmem_cache_free (mm/slub.c:4643 (discriminator 3) mm/slub.c:4745 (discriminator 3))
+>  unix_stream_read_generic (net/unix/af_unix.c:3010)
+>  unix_stream_recvmsg (net/unix/af_unix.c:3048)
+>  sock_recvmsg (net/socket.c:1063 (discriminator 20) net/socket.c:1085 (discriminator 20))
+>  __sys_recvfrom (net/socket.c:2278)
+>  __x64_sys_recvfrom (net/socket.c:2291 (discriminator 1) net/socket.c:2287 (discriminator 1) net/socket.c:2287 (discriminator 1))
+>  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+>  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> 
+> The buggy address belongs to the object at ffff888106ef28c0
+>  which belongs to the cache skbuff_head_cache of size 224
+> The buggy address is located 68 bytes inside of
+>  freed 224-byte region [ffff888106ef28c0, ffff888106ef29a0)
+> 
+> The buggy address belongs to the physical page:
+> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888106ef3cc0 pfn:0x106ef2
+> head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+> flags: 0x200000000000040(head|node=0|zone=2)
+> page_type: f5(slab)
+> raw: 0200000000000040 ffff8881001d28c0 ffffea000422fe00 0000000000000004
+> raw: ffff888106ef3cc0 0000000080190010 00000000f5000000 0000000000000000
+> head: 0200000000000040 ffff8881001d28c0 ffffea000422fe00 0000000000000004
+> head: ffff888106ef3cc0 0000000080190010 00000000f5000000 0000000000000000
+> head: 0200000000000001 ffffea00041bbc81 00000000ffffffff 00000000ffffffff
+> head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+> page dumped because: kasan: bad access detected
+> 
+> Memory state around the buggy address:
+>  ffff888106ef2800: 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc
+>  ffff888106ef2880: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+> >ffff888106ef2900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>                    ^
+>  ffff888106ef2980: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+>  ffff888106ef2a00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> 
+> Fixes: 314001f0bf92 ("af_unix: Add OOB support")
 
-If we call folio_putback_lru() on such folios (memcg_data == 0), we will
-add the folio to be freed to the LRU, making memcg code unhappy.  Running
-the hmm selftests:
+Do we know why this stopped at v6.1?
 
-  # ./hmm-tests
-  ...
-  #  RUN           hmm.hmm_device_private.migrate ...
-  [  102.078007][T14893] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7ff27d200 pfn:0x13cc00
-  [  102.079974][T14893] anon flags: 0x17ff00000020018(uptodate|dirty|swapbacked|node=0|zone=2|lastcpupid=0x7ff)
-  [  102.082037][T14893] raw: 017ff00000020018 dead000000000100 dead000000000122 ffff8881353896c9
-  [  102.083687][T14893] raw: 00000007ff27d200 0000000000000000 00000001ffffffff 0000000000000000
-  [  102.085331][T14893] page dumped because: VM_WARN_ON_ONCE_FOLIO(!memcg && !mem_cgroup_disabled())
-  [  102.087230][T14893] ------------[ cut here ]------------
-  [  102.088279][T14893] WARNING: CPU: 0 PID: 14893 at ./include/linux/memcontrol.h:726 folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.090478][T14893] Modules linked in:
-  [  102.091244][T14893] CPU: 0 UID: 0 PID: 14893 Comm: hmm-tests Not tainted 6.13.0-09623-g6c216bc522fd #151
-  [  102.093089][T14893] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-  [  102.094848][T14893] RIP: 0010:folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.096104][T14893] Code: ...
-  [  102.099908][T14893] RSP: 0018:ffffc900236c37b0 EFLAGS: 00010293
-  [  102.101152][T14893] RAX: 0000000000000000 RBX: ffffea0004f30000 RCX: ffffffff8183f426
-  [  102.102684][T14893] RDX: ffff8881063cb880 RSI: ffffffff81b8117f RDI: ffff8881063cb880
-  [  102.104227][T14893] RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-  [  102.105757][T14893] R10: 0000000000000001 R11: 0000000000000002 R12: ffffc900236c37d8
-  [  102.107296][T14893] R13: ffff888277a2bcb0 R14: 000000000000001f R15: 0000000000000000
-  [  102.108830][T14893] FS:  00007ff27dbdd740(0000) GS:ffff888277a00000(0000) knlGS:0000000000000000
-  [  102.110643][T14893] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [  102.111924][T14893] CR2: 00007ff27d400000 CR3: 000000010866e000 CR4: 0000000000750ef0
-  [  102.113478][T14893] PKRU: 55555554
-  [  102.114172][T14893] Call Trace:
-  [  102.114805][T14893]  <TASK>
-  [  102.115397][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.116547][T14893]  ? __warn.cold+0x110/0x210
-  [  102.117461][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.118667][T14893]  ? report_bug+0x1b9/0x320
-  [  102.119571][T14893]  ? handle_bug+0x54/0x90
-  [  102.120494][T14893]  ? exc_invalid_op+0x17/0x50
-  [  102.121433][T14893]  ? asm_exc_invalid_op+0x1a/0x20
-  [  102.122435][T14893]  ? __wake_up_klogd.part.0+0x76/0xd0
-  [  102.123506][T14893]  ? dump_page+0x4f/0x60
-  [  102.124352][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
-  [  102.125500][T14893]  folio_batch_move_lru+0xd4/0x200
-  [  102.126577][T14893]  ? __pfx_lru_add+0x10/0x10
-  [  102.127505][T14893]  __folio_batch_add_and_move+0x391/0x720
-  [  102.128633][T14893]  ? __pfx_lru_add+0x10/0x10
-  [  102.129550][T14893]  folio_putback_lru+0x16/0x80
-  [  102.130564][T14893]  migrate_device_finalize+0x9b/0x530
-  [  102.131640][T14893]  dmirror_migrate_to_device.constprop.0+0x7c5/0xad0
-  [  102.133047][T14893]  dmirror_fops_unlocked_ioctl+0x89b/0xc80
+The Fixes: commit was added in v5.15 and this appears to apply fine.
 
-Likely, nothing else goes wrong: putting the last folio reference will
-remove the folio from the LRU again.  So besides memcg complaining, adding
-the folio to be freed to the LRU is just an unnecessary step.
+If it helps, the upstream commit was:
 
-The new flow resembles what we have in migrate_folio_move(): add the dst
-to the lru, remove migration ptes, unlock and unref dst.
+  32ca245464e1 af_unix: Don't leave consecutive consumed OOB skbs.
 
-Link: https://lkml.kernel.org/r/20250210161317.717936-1-david@redhat.com
-Fixes: 8763cb45ab96 ("mm/migrate: new memory migration helper for use with device memory")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 41cddf83d8b00f29fd105e7a0777366edc69a5cf)
-Signed-off-by: David Hildenbrand <david@redhat.com>
---
+Thanks.
 
-Code was moved in the meantime and converted to folios. But the code
-flow is essentially unchanged.
+> Reported-by: Jann Horn <jannh@google.com>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Jann Horn <jannh@google.com>
+> Link: https://patch.msgid.link/20250619041457.1132791-2-kuni1840@gmail.com
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  net/unix/af_unix.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> index 9ef6011a055b1..01de31a0f22fe 100644
+> --- a/net/unix/af_unix.c
+> +++ b/net/unix/af_unix.c
+> @@ -2612,11 +2612,11 @@ struct unix_stream_read_state {
+>  #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+>  static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+>  {
+> +	struct sk_buff *oob_skb, *read_skb = NULL;
+>  	struct socket *sock = state->socket;
+>  	struct sock *sk = sock->sk;
+>  	struct unix_sock *u = unix_sk(sk);
+>  	int chunk = 1;
+> -	struct sk_buff *oob_skb;
+>  
+>  	mutex_lock(&u->iolock);
+>  	unix_state_lock(sk);
+> @@ -2631,9 +2631,16 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+>  
+>  	oob_skb = u->oob_skb;
+>  
+> -	if (!(state->flags & MSG_PEEK))
+> +	if (!(state->flags & MSG_PEEK)) {
+>  		WRITE_ONCE(u->oob_skb, NULL);
+>  
+> +		if (oob_skb->prev != (struct sk_buff *)&sk->sk_receive_queue &&
+> +		    !unix_skb_len(oob_skb->prev)) {
+> +			read_skb = oob_skb->prev;
+> +			__skb_unlink(read_skb, &sk->sk_receive_queue);
+> +		}
+> +	}
+> +
+>  	spin_unlock(&sk->sk_receive_queue.lock);
+>  	unix_state_unlock(sk);
+>  
+> @@ -2644,6 +2651,8 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+>  
+>  	mutex_unlock(&u->iolock);
+>  
+> +	consume_skb(read_skb);
+> +
+>  	if (chunk < 0)
+>  		return -EFAULT;
+>  
+> -- 
+> 2.39.5
+> 
+> 
+> 
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/migrate.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 9cfd53eaeb4e9..aef7978cc56b2 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2967,21 +2967,17 @@ void migrate_vma_finalize(struct migrate_vma *migrate)
- 			newpage = page;
- 		}
- 
-+		if (!is_zone_device_page(newpage))
-+			lru_cache_add(newpage);
- 		remove_migration_ptes(page, newpage, false);
- 		unlock_page(page);
- 		migrate->cpages--;
- 
--		if (is_zone_device_page(page))
--			put_page(page);
--		else
--			putback_lru_page(page);
-+		put_page(page);
- 
- 		if (newpage != page) {
- 			unlock_page(newpage);
--			if (is_zone_device_page(newpage))
--				put_page(newpage);
--			else
--				putback_lru_page(newpage);
-+			put_page(newpage);
- 		}
- 	}
- }
 -- 
-2.51.0
-
+Lee Jones [李琼斯]
 
