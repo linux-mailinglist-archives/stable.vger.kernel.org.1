@@ -1,340 +1,257 @@
-Return-Path: <stable+bounces-181702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496ADB9EE1E
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 13:16:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635A5B9EF82
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 13:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 008F438077D
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 11:16:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7392E7AFA31
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 11:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB022F7443;
-	Thu, 25 Sep 2025 11:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E59D2FB972;
+	Thu, 25 Sep 2025 11:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="txvyULf5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDS6dkOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC5A2F6175
-	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 11:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC961B21BD;
+	Thu, 25 Sep 2025 11:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758798976; cv=none; b=pXRnmXxNjXcqRlSGRapF2d5iQEV3ESB+J5Dtoh01n6V5ZcRQdJRqoXT70IZBVK7P9OGZOEk/bW3gPTLJCxYC5hn16ZFr5xcCRM+aCLgr8w7XH4CUC6WFSO5F/FnMrwNZCgp1QlcpA35DNWZ7PzBSWbrL6veDiG3mCg+jOlMf1IQ=
+	t=1758800660; cv=none; b=QkbnQEAmLUnQUBuYCNje7So4M6mW5ZJtNAXvkW7Kum/ycaW0MUwAUHCRdV2wrtk2gOEeoxhbqXW6ucTex46HnCCG8Yr3Y97Icaqif2CScCl5IZWjkSAaTudTIwd/p6W5Aa3cvBt0vjBgkYGWghxUMIgrjPxr2f6cWv15UtKbI9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758798976; c=relaxed/simple;
-	bh=fDQLdRzSJmuHNQkxmP5PqXzoQGXsDjWx1inTyaL1AQI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p1FUDHyYWVb2wupMGHYMZqE5tK1pX9/eGGH6jzLL504t8debOeuXdawbpWiqT/bTqzhEo5h7UpwB3CzwAl6p1hK6p4F9lxvtaiFwtdLbOlG6HzsrCMkZiFr5Sr03Ak7BBfa8MlfQRiFPGW6NR/562W2XRSiyitYLKF9WXC+edU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=txvyULf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8137C116B1
-	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 11:16:15 +0000 (UTC)
+	s=arc-20240116; t=1758800660; c=relaxed/simple;
+	bh=aiSmv5lJBWfdx8igifpyHlFY6FmJBKCs67+qrSa4/nE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uGveVK0kzXnK3ovCTVFRIJo/gSPuFgu7A68r6qeMkJxXUMvUm3wGT23lFoT6vJiBbOdCtMbMJ/CU2kcgleukf8Tx3i4+VqoI4YpS66b4OBUXiKvpoHcbkey6msWNSp5EoHJUfMQbM7soMLbYAyAOrKOQVkUEMIERTVyWcj/VKIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDS6dkOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E1AC4CEF5;
+	Thu, 25 Sep 2025 11:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758798975;
-	bh=fDQLdRzSJmuHNQkxmP5PqXzoQGXsDjWx1inTyaL1AQI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=txvyULf5nbxiObU4BzXZZAzzroRdBTJJspK3mZSPcSM4/1EJ0hmTzcB6Nf6Tid1Mv
-	 aW7zpa82TEcPTi1gSi0z9fDKbySPmICnFio+kjpzQXgWr/jStNpa912Q1hmFb3o3H5
-	 33SH/g+gUMbqz6qezJAQ2CPb/Gr6ZdDcpFaJRTIBMCtt/57OO4zjDDVkIH0ms40jcu
-	 mSifuFXDCGKHkhrw4UIwPd2VP5w7aTBg95t9KxsqxYX1O7vTs1uJIq8wbc1k8A/o2i
-	 W+ZPksKSiBbqXBzbuAipKN9IBCMfNp3KrHUdwbYbQl8Ix50CeXBrEfNdmXZD9jv9+c
-	 cSpMnRudZp9BA==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-321289dee84so377312fac.1
-        for <stable@vger.kernel.org>; Thu, 25 Sep 2025 04:16:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXIRQV0uS7NM1fgLhPrcVlWMXukIBblzsMFf3MsQNGZPkqXYDe62GnD06XKwki5QpYP5rHrscE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySazjil0+pJWemNgKtpCPgbB8OVP/2DbJCr5GCW+dhHBXl9f+z
-	zc9GbnCEffRjLUUG1k4TEvGTqo2ZICjOLh4gvHnGE+tMJBRK8yrnJWOZN2hOg+8UkY1WDnkv7Cl
-	HmuSUOZBRFLLtlJSAVVGIjU9lJfnTuH8=
-X-Google-Smtp-Source: AGHT+IHafUzhGBmN+xVEK4HkAcLgFcq2k7v2GHK3JiGAIsyUGVGNWDwDdgzwvEPjrjjcrQB8XEQvevxh7iz0rg1Q+2c=
-X-Received: by 2002:a05:6870:6126:b0:34b:27bd:666a with SMTP id
- 586e51a60fabf-35eeaa48d42mr1141756fac.51.1758798975128; Thu, 25 Sep 2025
- 04:16:15 -0700 (PDT)
+	s=k20201202; t=1758800660;
+	bh=aiSmv5lJBWfdx8igifpyHlFY6FmJBKCs67+qrSa4/nE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mDS6dkOuYikZfn+5quIXDcfww+pT5T3dwSpNGPEy8ZViGmIZeMBDvNcoPzjlWAD90
+	 zD+1rvXiKz1FAeykxIfPnT3lV2DLF3Vdfeu9OUnsGrC6ygvu2l3fhL+Kr168qtN76f
+	 oM5/JEvhm6AzZ7OcbweJxoS184Io2OZaraVS+BqFOIBwHmkeQ8RMN2msyViFqXvePd
+	 IM/kwapuufNCtVWEmrq0crDm+u7x0S6Wq1WnWib0mGngV3HbMRafu8VcNEWqDtCsTa
+	 XtXK/SFkUk5jv2OO5+q5+pdl0/Ykm6ZNwBdRdmEuKu/6W3oaptHxIGeBLehDbsLcqh
+	 zh1xbQ5H5XE3w==
+Date: Thu, 25 Sep 2025 07:44:18 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Jann Horn <jannh@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH 6.1 070/132] af_unix: Dont leave consecutive consumed OOB
+ skbs.
+Message-ID: <aNUrEjlvNM6vd0uz@laps>
+References: <20250703143939.370927276@linuxfoundation.org>
+ <20250703143942.167088603@linuxfoundation.org>
+ <20250925090827.GA514097@google.com>
+ <2025092526-grandpa-rebound-6473@gregkh>
+ <20250925104732.GB8757@google.com>
+ <20250925104914.GC8757@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250922125929.453444-1-shawnguo2@yeah.net> <12764935.O9o76ZdvQC@rafael.j.wysocki>
- <aNT3k9OK82USu4n8@dragon>
-In-Reply-To: <aNT3k9OK82USu4n8@dragon>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 25 Sep 2025 13:16:02 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jd+Th7cdbf7arto+spSbdvd37gk0YZEL5mh=0HK2id=Q@mail.gmail.com>
-X-Gm-Features: AS18NWDINpHUc47MEDXGMwzqgVPSTcDn3txgtXlXbHe1JLNEoukN9evapk2uawI
-Message-ID: <CAJZ5v0jd+Th7cdbf7arto+spSbdvd37gk0YZEL5mh=0HK2id=Q@mail.gmail.com>
-Subject: Re: [PATCH v2] cpufreq: Handle CPUFREQ_ETERNAL with a default
- transition latency
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Qais Yousef <qyousef@layalina.io>, Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250925104914.GC8757@google.com>
 
-On Thu, Sep 25, 2025 at 10:15=E2=80=AFAM Shawn Guo <shawnguo2@yeah.net> wro=
-te:
+On Thu, Sep 25, 2025 at 11:49:14AM +0100, Lee Jones wrote:
+>On Thu, 25 Sep 2025, Lee Jones wrote:
 >
-> On Mon, Sep 22, 2025 at 08:31:56PM +0200, Rafael J. Wysocki wrote:
-> > What about the appended (untested) change instead?
+>> On Thu, 25 Sep 2025, Greg Kroah-Hartman wrote:
+>>
+>> > On Thu, Sep 25, 2025 at 10:08:27AM +0100, Lee Jones wrote:
+>> > > On Thu, 03 Jul 2025, Greg Kroah-Hartman wrote:
+>> > >
+>> > > > 6.1-stable review patch.  If anyone has any objections, please let me know.
+>> > > >
+>> > > > ------------------
+>> > > >
+>> > > > From: Kuniyuki Iwashima <kuniyu@google.com>
+>> > > >
+>> > > > [ Upstream commit 32ca245464e1479bfea8592b9db227fdc1641705 ]
+>> > > >
+>> > > > Jann Horn reported a use-after-free in unix_stream_read_generic().
+>> > > >
+>> > > > The following sequences reproduce the issue:
+>> > > >
+>> > > >   $ python3
+>> > > >   from socket import *
+>> > > >   s1, s2 = socketpair(AF_UNIX, SOCK_STREAM)
+>> > > >   s1.send(b'x', MSG_OOB)
+>> > > >   s2.recv(1, MSG_OOB)     # leave a consumed OOB skb
+>> > > >   s1.send(b'y', MSG_OOB)
+>> > > >   s2.recv(1, MSG_OOB)     # leave a consumed OOB skb
+>> > > >   s1.send(b'z', MSG_OOB)
+>> > > >   s2.recv(1)              # recv 'z' illegally
+>> > > >   s2.recv(1, MSG_OOB)     # access 'z' skb (use-after-free)
+>> > > >
+>> > > > Even though a user reads OOB data, the skb holding the data stays on
+>> > > > the recv queue to mark the OOB boundary and break the next recv().
+>> > > >
+>> > > > After the last send() in the scenario above, the sk2's recv queue has
+>> > > > 2 leading consumed OOB skbs and 1 real OOB skb.
+>> > > >
+>> > > > Then, the following happens during the next recv() without MSG_OOB
+>> > > >
+>> > > >   1. unix_stream_read_generic() peeks the first consumed OOB skb
+>> > > >   2. manage_oob() returns the next consumed OOB skb
+>> > > >   3. unix_stream_read_generic() fetches the next not-yet-consumed OOB skb
+>> > > >   4. unix_stream_read_generic() reads and frees the OOB skb
+>> > > >
+>> > > > , and the last recv(MSG_OOB) triggers KASAN splat.
+>> > > >
+>> > > > The 3. above occurs because of the SO_PEEK_OFF code, which does not
+>> > > > expect unix_skb_len(skb) to be 0, but this is true for such consumed
+>> > > > OOB skbs.
+>> > > >
+>> > > >   while (skip >= unix_skb_len(skb)) {
+>> > > >     skip -= unix_skb_len(skb);
+>> > > >     skb = skb_peek_next(skb, &sk->sk_receive_queue);
+>> > > >     ...
+>> > > >   }
+>> > > >
+>> > > > In addition to this use-after-free, there is another issue that
+>> > > > ioctl(SIOCATMARK) does not function properly with consecutive consumed
+>> > > > OOB skbs.
+>> > > >
+>> > > > So, nothing good comes out of such a situation.
+>> > > >
+>> > > > Instead of complicating manage_oob(), ioctl() handling, and the next
+>> > > > ECONNRESET fix by introducing a loop for consecutive consumed OOB skbs,
+>> > > > let's not leave such consecutive OOB unnecessarily.
+>> > > >
+>> > > > Now, while receiving an OOB skb in unix_stream_recv_urg(), if its
+>> > > > previous skb is a consumed OOB skb, it is freed.
+>> > > >
+>> > > > [0]:
+>> > > > BUG: KASAN: slab-use-after-free in unix_stream_read_actor (net/unix/af_unix.c:3027)
+>> > > > Read of size 4 at addr ffff888106ef2904 by task python3/315
+>> > > >
+>> > > > CPU: 2 UID: 0 PID: 315 Comm: python3 Not tainted 6.16.0-rc1-00407-gec315832f6f9 #8 PREEMPT(voluntary)
+>> > > > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
+>> > > > Call Trace:
+>> > > >  <TASK>
+>> > > >  dump_stack_lvl (lib/dump_stack.c:122)
+>> > > >  print_report (mm/kasan/report.c:409 mm/kasan/report.c:521)
+>> > > >  kasan_report (mm/kasan/report.c:636)
+>> > > >  unix_stream_read_actor (net/unix/af_unix.c:3027)
+>> > > >  unix_stream_read_generic (net/unix/af_unix.c:2708 net/unix/af_unix.c:2847)
+>> > > >  unix_stream_recvmsg (net/unix/af_unix.c:3048)
+>> > > >  sock_recvmsg (net/socket.c:1063 (discriminator 20) net/socket.c:1085 (discriminator 20))
+>> > > >  __sys_recvfrom (net/socket.c:2278)
+>> > > >  __x64_sys_recvfrom (net/socket.c:2291 (discriminator 1) net/socket.c:2287 (discriminator 1) net/socket.c:2287 (discriminator 1))
+>> > > >  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+>> > > >  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+>> > > > RIP: 0033:0x7f8911fcea06
+>> > > > Code: 5d e8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 75 19 83 e2 39 83 fa 08 75 11 e8 26 ff ff ff 66 0f 1f 44 00 00 48 8b 45 10 0f 05 <48> 8b 5d f8 c9 c3 0f 1f 40 00 f3 0f 1e fa 55 48 89 e5 48 83 ec 08
+>> > > > RSP: 002b:00007fffdb0dccb0 EFLAGS: 00000202 ORIG_RAX: 000000000000002d
+>> > > > RAX: ffffffffffffffda RBX: 00007fffdb0dcdc8 RCX: 00007f8911fcea06
+>> > > > RDX: 0000000000000001 RSI: 00007f8911a5e060 RDI: 0000000000000006
+>> > > > RBP: 00007fffdb0dccd0 R08: 0000000000000000 R09: 0000000000000000
+>> > > > R10: 0000000000000001 R11: 0000000000000202 R12: 00007f89119a7d20
+>> > > > R13: ffffffffc4653600 R14: 0000000000000000 R15: 0000000000000000
+>> > > >  </TASK>
+>> > > >
+>> > > > Allocated by task 315:
+>> > > >  kasan_save_stack (mm/kasan/common.c:48)
+>> > > >  kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+>> > > >  __kasan_slab_alloc (mm/kasan/common.c:348)
+>> > > >  kmem_cache_alloc_node_noprof (./include/linux/kasan.h:250 mm/slub.c:4148 mm/slub.c:4197 mm/slub.c:4249)
+>> > > >  __alloc_skb (net/core/skbuff.c:660 (discriminator 4))
+>> > > >  alloc_skb_with_frags (./include/linux/skbuff.h:1336 net/core/skbuff.c:6668)
+>> > > >  sock_alloc_send_pskb (net/core/sock.c:2993)
+>> > > >  unix_stream_sendmsg (./include/net/sock.h:1847 net/unix/af_unix.c:2256 net/unix/af_unix.c:2418)
+>> > > >  __sys_sendto (net/socket.c:712 (discriminator 20) net/socket.c:727 (discriminator 20) net/socket.c:2226 (discriminator 20))
+>> > > >  __x64_sys_sendto (net/socket.c:2233 (discriminator 1) net/socket.c:2229 (discriminator 1) net/socket.c:2229 (discriminator 1))
+>> > > >  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+>> > > >  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+>> > > >
+>> > > > Freed by task 315:
+>> > > >  kasan_save_stack (mm/kasan/common.c:48)
+>> > > >  kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+>> > > >  kasan_save_free_info (mm/kasan/generic.c:579 (discriminator 1))
+>> > > >  __kasan_slab_free (mm/kasan/common.c:271)
+>> > > >  kmem_cache_free (mm/slub.c:4643 (discriminator 3) mm/slub.c:4745 (discriminator 3))
+>> > > >  unix_stream_read_generic (net/unix/af_unix.c:3010)
+>> > > >  unix_stream_recvmsg (net/unix/af_unix.c:3048)
+>> > > >  sock_recvmsg (net/socket.c:1063 (discriminator 20) net/socket.c:1085 (discriminator 20))
+>> > > >  __sys_recvfrom (net/socket.c:2278)
+>> > > >  __x64_sys_recvfrom (net/socket.c:2291 (discriminator 1) net/socket.c:2287 (discriminator 1) net/socket.c:2287 (discriminator 1))
+>> > > >  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+>> > > >  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+>> > > >
+>> > > > The buggy address belongs to the object at ffff888106ef28c0
+>> > > >  which belongs to the cache skbuff_head_cache of size 224
+>> > > > The buggy address is located 68 bytes inside of
+>> > > >  freed 224-byte region [ffff888106ef28c0, ffff888106ef29a0)
+>> > > >
+>> > > > The buggy address belongs to the physical page:
+>> > > > page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888106ef3cc0 pfn:0x106ef2
+>> > > > head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+>> > > > flags: 0x200000000000040(head|node=0|zone=2)
+>> > > > page_type: f5(slab)
+>> > > > raw: 0200000000000040 ffff8881001d28c0 ffffea000422fe00 0000000000000004
+>> > > > raw: ffff888106ef3cc0 0000000080190010 00000000f5000000 0000000000000000
+>> > > > head: 0200000000000040 ffff8881001d28c0 ffffea000422fe00 0000000000000004
+>> > > > head: ffff888106ef3cc0 0000000080190010 00000000f5000000 0000000000000000
+>> > > > head: 0200000000000001 ffffea00041bbc81 00000000ffffffff 00000000ffffffff
+>> > > > head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+>> > > > page dumped because: kasan: bad access detected
+>> > > >
+>> > > > Memory state around the buggy address:
+>> > > >  ffff888106ef2800: 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc
+>> > > >  ffff888106ef2880: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+>> > > > >ffff888106ef2900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>> > > >                    ^
+>> > > >  ffff888106ef2980: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+>> > > >  ffff888106ef2a00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>> > > >
+>> > > > Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+>> > >
+>> > > Do we know why this stopped at v6.1?
+>> > >
+>> > > The Fixes: commit was added in v5.15 and this appears to apply fine.
+>> > >
+>> > > If it helps, the upstream commit was:
+>> > >
+>> > >   32ca245464e1 af_unix: Don't leave consecutive consumed OOB skbs.
+>> >
+>> > Commits that are not explicitly tagged with "cc: stable@" are not always
+>> > backported everywhere.  They are done on a "hey, let's run a script and
+>> > see what falls out" type of method as the maintainer and developer
+>> > involved didn't explicitly ask for it to be applied.
+>>
+>> Right.  I'm just surprised that it was backported to some branches, but
+>> not others, despite seemingly applying just fine and the Fixes: tag
+>> indicating that it should be applied to v5.15 as well.
+>>
+>> > If you think it should be added to other branches, please always let us
+>> > know and ideally, send a working backport :)
+>>
+>> I just did let you know. :)
+>>
+>> No backport required.  It should just apply.
 >
-> I'm trying to address a regression with a fix to be ported for stable
-> kernel.  Not really sure it's a good idea to mix up with cleanup
-> changes.
-
-These are not cleanup changes, just a different way to address the given is=
-sue.
-
-Instead of pretending that it still works as documented even though
-that's not the case strictly speaking, let's just get rid of it and
-let the code be simpler at the same time.
-
-
-> >
-> > With a follow-up one to replace CPUFREQ_ETERNAL with something internal
-> > to CPPC.
-> >
-> > ---
-> >  Documentation/admin-guide/pm/cpufreq.rst                  |    4 ----
-> >  Documentation/cpu-freq/cpu-drivers.rst                    |    3 +--
-> >  Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst |    3 +--
-> >  Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst |    3 +--
-> >  drivers/cpufreq/cppc_cpufreq.c                            |   14 +++++=
-+++++++--
-> >  drivers/cpufreq/cpufreq-dt.c                              |    2 +-
-> >  drivers/cpufreq/imx6q-cpufreq.c                           |    2 +-
-> >  drivers/cpufreq/mediatek-cpufreq-hw.c                     |    2 +-
-> >  drivers/cpufreq/scmi-cpufreq.c                            |    2 +-
-> >  drivers/cpufreq/scpi-cpufreq.c                            |    2 +-
-> >  drivers/cpufreq/spear-cpufreq.c                           |    2 +-
-> >  include/linux/cpufreq.h                                   |    7 ++++-=
---
-> >  12 files changed, 25 insertions(+), 21 deletions(-)
-> >
-> > --- a/Documentation/admin-guide/pm/cpufreq.rst
-> > +++ b/Documentation/admin-guide/pm/cpufreq.rst
-> > @@ -274,10 +274,6 @@ are the following:
-> >       The time it takes to switch the CPUs belonging to this policy fro=
-m one
-> >       P-state to another, in nanoseconds.
-> >
-> > -     If unknown or if known to be so high that the scaling driver does=
- not
-> > -     work with the `ondemand`_ governor, -1 (:c:macro:`CPUFREQ_ETERNAL=
-`)
-> > -     will be returned by reads from this attribute.
-> > -
-> >  ``related_cpus``
-> >       List of all (online and offline) CPUs belonging to this policy.
-> >
-> > --- a/Documentation/cpu-freq/cpu-drivers.rst
-> > +++ b/Documentation/cpu-freq/cpu-drivers.rst
-> > @@ -109,8 +109,7 @@ Then, the driver must fill in the follow
-> >  +-----------------------------------+---------------------------------=
------+
-> >  |policy->cpuinfo.transition_latency | the time it takes on this CPU to=
-          |
-> >  |                                | switch between two frequencies in  =
-  |
-> > -|                                | nanoseconds (if appropriate, else  =
-  |
-> > -|                                | specify CPUFREQ_ETERNAL)           =
-  |
-> > +|                                | nanoseconds                        =
-  |
-> >  +-----------------------------------+---------------------------------=
------+
-> >  |policy->cur                     | The current operating frequency of =
-  |
-> >  |                                | this CPU (if appropriate)          =
-  |
-> > --- a/Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst
-> > +++ b/Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst
-> > @@ -112,8 +112,7 @@ CPUfreq=E6=A0=B8=E5=BF=83=E5=B1=82=E6=B3=A8=E5=86=
-=8C=E4=B8=80=E4=B8=AAcpufreq_driv
-> >  |                                   |                                 =
-     |
-> >  +-----------------------------------+---------------------------------=
------+
-> >  |policy->cpuinfo.transition_latency | CPU=E5=9C=A8=E4=B8=A4=E4=B8=AA=
-=E9=A2=91=E7=8E=87=E4=B9=8B=E9=97=B4=E5=88=87=E6=8D=A2=E6=89=80=E9=9C=80=E7=
-=9A=84=E6=97=B6=E9=97=B4=EF=BC=8C=E4=BB=A5  |
-> > -|                                   | =E7=BA=B3=E7=A7=92=E4=B8=BA=E5=
-=8D=95=E4=BD=8D=EF=BC=88=E5=A6=82=E4=B8=8D=E9=80=82=E7=94=A8=EF=BC=8C=E8=AE=
-=BE=E5=AE=9A=E4=B8=BA         |
-> > -|                                   | CPUFREQ_ETERNAL=EF=BC=89        =
-            |
-> > +|                                   | =E7=BA=B3=E7=A7=92=E4=B8=BA=E5=
-=8D=95=E4=BD=8D                    |
-> >  |                                   |                                 =
-     |
-> >  +-----------------------------------+---------------------------------=
------+
-> >  |policy->cur                        | =E8=AF=A5CPU=E5=BD=93=E5=89=8D=
-=E7=9A=84=E5=B7=A5=E4=BD=9C=E9=A2=91=E7=8E=87(=E5=A6=82=E9=80=82=E7=94=A8) =
-         |
-> > --- a/Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst
-> > +++ b/Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst
-> > @@ -112,8 +112,7 @@ CPUfreq=E6=A0=B8=E5=BF=83=E5=B1=A4=E8=A8=BB=E5=86=
-=8A=E4=B8=80=E5=80=8Bcpufreq_driv
-> >  |                                   |                                 =
-     |
-> >  +-----------------------------------+---------------------------------=
------+
-> >  |policy->cpuinfo.transition_latency | CPU=E5=9C=A8=E5=85=A9=E5=80=8B=
-=E9=A0=BB=E7=8E=87=E4=B9=8B=E9=96=93=E5=88=87=E6=8F=9B=E6=89=80=E9=9C=80=E7=
-=9A=84=E6=99=82=E9=96=93=EF=BC=8C=E4=BB=A5  |
-> > -|                                   | =E7=B4=8D=E7=A7=92=E7=88=B2=E5=
-=96=AE=E4=BD=8D=EF=BC=88=E5=A6=82=E4=B8=8D=E9=81=A9=E7=94=A8=EF=BC=8C=E8=A8=
-=AD=E5=AE=9A=E7=88=B2         |
-> > -|                                   | CPUFREQ_ETERNAL=EF=BC=89        =
-            |
-> > +|                                   | =E7=B4=8D=E7=A7=92=E7=88=B2=E5=
-=96=AE=E4=BD=8D                    |
-> >  |                                   |                                 =
-     |
-> >  +-----------------------------------+---------------------------------=
------+
-> >  |policy->cur                        | =E8=A9=B2CPU=E7=95=B6=E5=89=8D=
-=E7=9A=84=E5=B7=A5=E4=BD=9C=E9=A0=BB=E7=8E=87(=E5=A6=82=E9=81=A9=E7=94=A8) =
-         |
-> > --- a/drivers/cpufreq/cppc_cpufreq.c
-> > +++ b/drivers/cpufreq/cppc_cpufreq.c
-> > @@ -308,6 +308,16 @@ static int cppc_verify_policy(struct cpu
-> >       return 0;
-> >  }
-> >
-> > +static unsigned int get_transition_latency(unsigned int cpu)
-> > +{
-> > +     unsigned int transition_latency_ns =3D cppc_get_transition_latenc=
-y(cpu);
-> > +
-> > +     if (transition_latency_ns =3D=3D CPUFREQ_ETERNAL)
-> > +             return CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS / NSEC_PER_U=
-SEC;
-> > +
-> > +     return transition_latency_ns / NSEC_PER_USEC;
-> > +}
-> > +
-> >  /*
-> >   * The PCC subspace describes the rate at which platform can accept co=
-mmands
-> >   * on the shared PCC channel (including READs which do not count towar=
-ds freq
-> > @@ -330,12 +340,12 @@ static unsigned int cppc_cpufreq_get_tra
-> >                       return 10000;
-> >               }
-> >       }
-> > -     return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-> > +     return get_transition_latency(cpu);
-> >  }
-> >  #else
-> >  static unsigned int cppc_cpufreq_get_transition_delay_us(unsigned int =
-cpu)
-> >  {
-> > -     return cppc_get_transition_latency(cpu) / NSEC_PER_USEC;
-> > +     return get_transition_latency(cpu);
-> >  }
-> >  #endif
-> >
-> > --- a/drivers/cpufreq/cpufreq-dt.c
-> > +++ b/drivers/cpufreq/cpufreq-dt.c
-> > @@ -104,7 +104,7 @@ static int cpufreq_init(struct cpufreq_p
-> >
-> >       transition_latency =3D dev_pm_opp_get_max_transition_latency(cpu_=
-dev);
-> >       if (!transition_latency)
-> > -             transition_latency =3D CPUFREQ_ETERNAL;
-> > +             transition_latency =3D CPUFREQ_DEFAULT_TRANSITION_LATENCY=
-_NS;
-> >
-> >       cpumask_copy(policy->cpus, priv->cpus);
-> >       policy->driver_data =3D priv;
-> > --- a/drivers/cpufreq/imx6q-cpufreq.c
-> > +++ b/drivers/cpufreq/imx6q-cpufreq.c
-> > @@ -442,7 +442,7 @@ soc_opp_out:
-> >       }
-> >
-> >       if (of_property_read_u32(np, "clock-latency", &transition_latency=
-))
-> > -             transition_latency =3D CPUFREQ_ETERNAL;
-> > +             transition_latency =3D CPUFREQ_DEFAULT_TRANSITION_LATENCY=
-_NS;
-> >
-> >       /*
-> >        * Calculate the ramp time for max voltage change in the
-> > --- a/drivers/cpufreq/mediatek-cpufreq-hw.c
-> > +++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
-> > @@ -309,7 +309,7 @@ static int mtk_cpufreq_hw_cpu_init(struc
-> >
-> >       latency =3D readl_relaxed(data->reg_bases[REG_FREQ_LATENCY]) * 10=
-00;
-> >       if (!latency)
-> > -             latency =3D CPUFREQ_ETERNAL;
-> > +             latency =3D CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
-> >
-> >       policy->cpuinfo.transition_latency =3D latency;
-> >       policy->fast_switch_possible =3D true;
-> > --- a/drivers/cpufreq/scmi-cpufreq.c
-> > +++ b/drivers/cpufreq/scmi-cpufreq.c
-> > @@ -294,7 +294,7 @@ static int scmi_cpufreq_init(struct cpuf
-> >
-> >       latency =3D perf_ops->transition_latency_get(ph, domain);
-> >       if (!latency)
-> > -             latency =3D CPUFREQ_ETERNAL;
-> > +             latency =3D CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
-> >
-> >       policy->cpuinfo.transition_latency =3D latency;
-> >
-> > --- a/drivers/cpufreq/scpi-cpufreq.c
-> > +++ b/drivers/cpufreq/scpi-cpufreq.c
-> > @@ -157,7 +157,7 @@ static int scpi_cpufreq_init(struct cpuf
-> >
-> >       latency =3D scpi_ops->get_transition_latency(cpu_dev);
-> >       if (!latency)
-> > -             latency =3D CPUFREQ_ETERNAL;
-> > +             latency =3D CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS;
-> >
-> >       policy->cpuinfo.transition_latency =3D latency;
-> >
-> > --- a/drivers/cpufreq/spear-cpufreq.c
-> > +++ b/drivers/cpufreq/spear-cpufreq.c
-> > @@ -182,7 +182,7 @@ static int spear_cpufreq_probe(struct pl
-> >
-> >       if (of_property_read_u32(np, "clock-latency",
-> >                               &spear_cpufreq.transition_latency))
-> > -             spear_cpufreq.transition_latency =3D CPUFREQ_ETERNAL;
-> > +             spear_cpufreq.transition_latency =3D CPUFREQ_DEFAULT_TRAN=
-SITION_LATENCY_NS;
-> >
-> >       cnt =3D of_property_count_u32_elems(np, "cpufreq_tbl");
-> >       if (cnt <=3D 0) {
-> > --- a/include/linux/cpufreq.h
-> > +++ b/include/linux/cpufreq.h
-> > @@ -26,12 +26,13 @@
-> >   *********************************************************************=
-/
-> >  /*
-> >   * Frequency values here are CPU kHz
-> > - *
-> > - * Maximum transition latency is in nanoseconds - if it's unknown,
-> > - * CPUFREQ_ETERNAL shall be used.
-> >   */
-> >
-> > +/* Represents unknown transition latency */
-> >  #define CPUFREQ_ETERNAL                      (-1)
-> > +
-> > +#define CPUFREQ_DEFAULT_TANSITION_LATENCY_NS NSEC_PER_MSEC
-> > +
-> >  #define CPUFREQ_NAME_LEN             16
-> >  /* Print length for names. Extra 1 space for accommodating '\n' in pri=
-nts */
-> >  #define CPUFREQ_NAME_PLEN            (CPUFREQ_NAME_LEN + 1)
-> >
-> >
-> >
-> >
+>I applied it again and submitted it for build testing.
 >
+>Once complete, I'll let you know the result.
+
+At least on my end there's a big scary build error when I try this on 5.15 :)
+
+-- 
+Thanks,
+Sasha
 
