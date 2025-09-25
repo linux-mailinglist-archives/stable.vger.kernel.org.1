@@ -1,60 +1,74 @@
-Return-Path: <stable+bounces-181707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD1FB9F228
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:14:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C86DB9F3C8
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 13E8C4E2607
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:14:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B1C317448A
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055A33043DB;
-	Thu, 25 Sep 2025 12:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6053009FF;
+	Thu, 25 Sep 2025 12:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="knIl4HKq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D342v1P5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C764F2FF669;
-	Thu, 25 Sep 2025 12:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FEE2FE572;
+	Thu, 25 Sep 2025 12:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802449; cv=none; b=bYeWsWEKmiDv5Gm6MCPX1UUf/pennl32JcW1YVeuaN9VOe9a2QQOPwos5+oDSGTZoYtjW3DrAcmOjfWm1dkU2cPF76GzwD568Y1Iynt5aXPbbb2zAApP1ncSjXEdlNp6Z9alz4oy25pOM3p97wOie3g0fXY2iBFnvHMQNp+I26c=
+	t=1758803350; cv=none; b=qVwtAMVSATWxS6PyiwB1Wrj8zIE5cGTEDuVIhaK9A5NBcxCPurNnlnVJxQJjMuHymSTXcAibVa6qHxfxxOQxS88Qtcy0JCxw+9openzQqDFGTeHq/9nsXW5mSh6o7S5nTA2DBx6dSqsmMBz/kCPxIoPxgwO3MohFEC9dJJMrVkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758802449; c=relaxed/simple;
-	bh=h6H6ZhBZe1gKHmrNubWc5sUylhRVOXzZrHkkLa0lGmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oTl1frbLHWkf1JdWoJKfqdrVdy6CHIDCjqf4mEQNO6d04VmKT+a2XKlRhOTln8D/P6AvrfbPlVCYmBZ1tn4Ze3G+aGaXVb/9n6THIwRy4Z/ffvBNGLkZy0BbthGBEyfKhw477SunRZXAnE/QL7gmKKY7hatHg9K281x5px0DqAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=knIl4HKq; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost.localdomain (unknown [178.69.159.70])
-	by mail.ispras.ru (Postfix) with ESMTPSA id B7AC840A327F;
-	Thu, 25 Sep 2025 12:13:57 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B7AC840A327F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1758802438;
-	bh=2EVHtjacVStoLork7wasnNmEVZ79Lr/9XpsbjrB7eNs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=knIl4HKqaY0s6G0NSAM2HxjkVhzFpA/5HTSdLKOvFZsClpI2sxMITnXQHsTQbWzcx
-	 ztXQB99p2WXyKSHHSa6P8m0QpPiknIGoXo0r2NbH6jjiTO5rqNMH41mxikeN0XTGds
-	 X2O21CPWLMR07Tj4cfXfbxh0cg8Oj7bsHNcli4PA=
-From: Matvey Kovalev <matvey.kovalev@ispras.ru>
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Matvey Kovalev <matvey.kovalev@ispras.ru>,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
+	s=arc-20240116; t=1758803350; c=relaxed/simple;
+	bh=Bg4I8IWbebGYccvxfcM2gwSUppOl4t3rWxBdtp5EX2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O9ooK8d6tgJbSinaXC4bm6bg3tpU7Yj5IbwhroDOY0Ue4xujlDNziyKCQAKVneGO2JchO1AoQYFZQwo4mTqzSkM6VY2WhspQBUjDLVRIt6fTLaX72KEZMWOS3dy7g9YZc0YBok3Q4kPySKm32x2DUyfWhCCekhKbGZW5ji6p/ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D342v1P5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36F5C4CEF5;
+	Thu, 25 Sep 2025 12:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758803349;
+	bh=Bg4I8IWbebGYccvxfcM2gwSUppOl4t3rWxBdtp5EX2Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D342v1P5WEDp7o+QbJv112IaBx4ucrl/SzkxPhJN8FgrMeJxwsj9R5koHOleYHa3G
+	 67qJZvZB0qZPStMXFvMGzek8xmu6MOD/FE57TF9XRGe92y8Dcr3GThvrBhxpN4klsC
+	 7Eo+Swa+DsVz1EGvWpBGCDsFgQUfoObDZvSILzm6JDJT7bZlEcrmUdIbArIVOCmFgH
+	 DWBkOt1S1NuorQT/6LkIVU4O5tSUtWI5Udux6k81A4KVMQ5jQtSo7ujJXnUHrAPygp
+	 vKrFyHdv2i6P+pIBhRgW3MRX77nzFW2ArPgTBvHBvLYG+bw26g/fIOP/vHIOyv0unU
+	 sDPe2liF+Jn5A==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1v1l5q-000000002rS-1Atb;
+	Thu, 25 Sep 2025 14:29:02 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Krishna Reddy <vdumpa@nvidia.com>,
+	iommu@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] fix error code overwriting in smb2_get_info_filesystem()
-Date: Thu, 25 Sep 2025 15:12:34 +0300
-Message-ID: <20250925121255.1407-1-matvey.kovalev@ispras.ru>
-X-Mailer: git-send-email 2.43.0.windows.1
+Subject: [PATCH 01/14] iommu/apple-dart: fix device leak on of_xlate()
+Date: Thu, 25 Sep 2025 14:27:43 +0200
+Message-ID: <20250925122756.10910-2-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250925122756.10910-1-johan@kernel.org>
+References: <20250925122756.10910-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,35 +77,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If client doesn't negotiate with SMB3.1.1 POSIX Extensions, 
-then proper error code won't be returned due to overwriting.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-Return error immediately.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: e2f34481b24db ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
+Fixes: 46d1fb072e76 ("iommu/dart: Add DART iommu driver")
+Cc: stable@vger.kernel.org	# 5.15
+Cc: Sven Peter <sven@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/apple-dart.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index a565fc36cee6d..a1db006ab6e92 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5628,7 +5628,8 @@ static int smb2_get_info_filesystem(struct ksmbd_work *work,
+diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
+index 190f28d76615..1aa7c10262a8 100644
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -790,6 +790,8 @@ static int apple_dart_of_xlate(struct device *dev,
+ 	struct apple_dart *cfg_dart;
+ 	int i, sid;
  
- 		if (!work->tcon->posix_extensions) {
- 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
--			rc = -EOPNOTSUPP;
-+			path_put(&path);
-+			return -EOPNOTSUPP;
- 		} else {
- 			info = (struct filesystem_posix_info *)(rsp->Buffer);
- 			info->OptimalTransferSize = cpu_to_le32(stfs.f_bsize);
++	put_device(&iommu_pdev->dev);
++
+ 	if (args->args_count != 1)
+ 		return -EINVAL;
+ 	sid = args->args[0];
 -- 
-2.43.0.windows.1
+2.49.1
 
 
