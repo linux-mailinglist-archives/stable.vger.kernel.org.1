@@ -1,97 +1,111 @@
-Return-Path: <stable+bounces-181667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AF8B9D124
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 03:58:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD75B9D534
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 05:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FF7D3267FB
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 01:58:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75CD319C5C02
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 03:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83142DECBC;
-	Thu, 25 Sep 2025 01:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="cIQXy5CG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA662E610F;
+	Thu, 25 Sep 2025 03:40:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80D22DECA8;
-	Thu, 25 Sep 2025 01:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C392C9D
+	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 03:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758765493; cv=none; b=RBeDyKmoOxcJfpcVjvxAjI4sqHM2cW6pAy9Pjc4up+tGyY1++J/pBRrP+t95Vjrn3c0kFH6HZIncVZ9IkYDwdqoS5urECemscFntanuoTxVfif81xu8bl2XYe8VfcMdP9WDAjGmSlYWzunq2Tj11fmYE20hMmnQnLctGli9qGrw=
+	t=1758771619; cv=none; b=aNcDqIhlwrHkoLRx29L0kaTct7Wljh1VnnR8FgIQubN4o6hf4HgthJblYU172L5og+WZrzjgBti6xKzZqz4qgw1cW4tN8g19EtEHSi0lxCjQEfByU5Z/w+ueb6b7MoNzKR7sP05e58/fkEzapEoj7I2XczJTougT5t7t/z4xcWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758765493; c=relaxed/simple;
-	bh=H8Rj4asJaipHXxxgtHOO9BUcZ5cJp1cMrLc6q1vmdPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HyyfwjsYOvQ6UZmZFe3I4YtoNg8cVS2eF8sD/wM7+Uoa6Q9T8iEC+LOuuupLkvcQmrK/BIVbTaHpfGan66rf4CiTW3huLG4HoycX6kLv1tagZdq3S0IcYv/p2a6IeV97XzINPqCrYRceT6qrMMoI1ytjNpIC/XRXWEaeYn13GLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=cIQXy5CG; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:MIME-Version:References:Message-ID:Subject:Cc:To:
-	From:Date:cc:to:subject:message-id:date:from:reply-to;
-	bh=XwIYTskSgPTahGYa+QHM5I7Pu31iE3cN8pC4sStasH4=; b=cIQXy5CGvFS+TWYxmTdJugfGaF
-	m2FrlucNwRmT8EDWN6r58fSt57VPdowrfiV6l10rGznI4sUPpETiO84jMkk19f5ELQBGLnoZ9WsyX
-	HNMJc5PfCbUAQKp7W71N9ZF1C7xWG47zKdLKIaEVVA8FRCNDgoNau3FeXcpGoadcixD6bTi+y30Lw
-	ot4o0y7RrvvvHlSM42LMxYeYsdzvHtG+nXjn5RflvMlIoXolRii+pg84R87ZCt14YgvM3tte7dmS1
-	yS3m+3xrgdfCh3a8ct3VBD87djT7wfdN3UiMGCnBwxIQn7FwvmDkfcWccVqVBkX1xx+KjmwUjlwbR
-	LHDXIFOA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1v1bFD-0087U5-1i;
-	Thu, 25 Sep 2025 09:58:04 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 25 Sep 2025 09:58:03 +0800
-Date: Thu, 25 Sep 2025 09:58:03 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	s=arc-20240116; t=1758771619; c=relaxed/simple;
+	bh=bmPJ0+VRgVJPS8VBru/tBQQdNc3lAi10Hkwzd7aKHPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hOvOGDulY5L3faX4BobVHuY2ianqmEbt4MtZ4UBElzVAvmEWGn7K6uWo7J+pjxTumRhcCc23eOHWUbv7AvY4A+qEeGhYSgEKaEjCk8BjCWwVVb2obNJJ7LxS1MbXF9OAmD6QuOJjipYRCzMpGf8I7uKTeboL96VjRy+RHTVIEAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trix.is-a.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trix.is-a.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b551b040930so340676a12.2
+        for <stable@vger.kernel.org>; Wed, 24 Sep 2025 20:40:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758771617; x=1759376417;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6u9OrtCloJY7NJyMif7w6nU0t5/g1w1ibY80MoE4gP8=;
+        b=bL4foHGGwvepDXgHqbO/lif7qOpJWH6Hp6ehCVH9TM1ZB9LN4h79QnRr+4rtElsmS0
+         pYHuXr7ae7b0BFIkUIZ+RRNnqnWA/A9fYQRBJsa7O3CbprapChmpjh7YJWyTWCCmxWZE
+         Ma4vc8o6ng+hCcPY3/dAsXJlHDEILdl++4hzReEJqVNpuVDjeGdF+y6YMIf5q2Cj5VpH
+         YeS6VSkmHfvotzqvIKiUC8FbRskORysw3Pv5pjLuktdbkqeZ6zJOgzXPYLYIGSRCiux1
+         mvxD5rNvm4WFSiiIW+K3HUiyw19khhENr8Bn9J0Pank7YtX9GzAiwGWss1QEWo37Kbxw
+         OYkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIrvSdmdeBCMDCcAZWQVR9g1eY8fxbafr6xPqlALgDvOKTBifD9BSHX6Uqfh/Bc6VVGllYceo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8FIbbKOYBmOnbRyIzbyCEbIELZenW5oaKWSV7VgHULFUEZeGQ
+	t64X/wGD3h1sJCIjZW6MHP7RR48kqHAXfcUwD3fViCyYMak2Ph+V7nJv
+X-Gm-Gg: ASbGncvvylGFeMhCxWqkPOHY5Zncuczrim8VvTzpvg2W9ar+0xgDbNAFzEMeyLXf7hI
+	tevchjK8UpXr/MHaC87SS7yJzpqU8x5jHbmRB/e6+27WRDkDCDcrL/SS9HEPBqGq8UGiUhZ6xhO
+	EIec3uJUhM4Eeuioeq9ocHhooUDnol8cHtv6q8ZAQVpqCJAP1Y1ZjGF4u3WuKVtXXLW6I54BkpV
+	zxD3SPy4DYwjCfl5SB0nG4rheDRi7U16C0D5ZAOJKCFrAUPyo8ktmjvj4mrXbqnlUYvZjkg/jaU
+	mC5FaDlp6nEMnoYc0UynfJyN6BGIN0a5bAaLN3Ty2Hsqv6tOr4X0W1hM76uT2vYeB3R3aObzsiR
+	Ls4eioSU5V0D7bnUkbHY+M00=
+X-Google-Smtp-Source: AGHT+IF88A7rwkV3P9jdms2ijhexCc0OkBmd1/k9fgklR9TyBXPssMEOtsJr0XggJFtz8XN7KZeAmQ==
+X-Received: by 2002:a17:903:234f:b0:276:76e1:2e87 with SMTP id d9443c01a7336-27ed4a4979amr18671325ad.44.1758771617403;
+        Wed, 24 Sep 2025 20:40:17 -0700 (PDT)
+Received: from archlinux ([2405:201:6804:217e:39f7:e9ae:d6fb:a075])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed69a9668sm8133595ad.112.2025.09.24.20.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 20:40:17 -0700 (PDT)
+From: tr1x_em <admin@trix.is-a.dev>
+To: platform-driver-x86@vger.kernel.org
+Cc: Dell.Client.Kernel@dell.com,
+	kuurtb@gmail.com,
+	hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	tr1x_em <admin@trix.is-a.dev>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] crypto: af_alg - Fix incorrect boolean values in
- af_alg_ctx
-Message-ID: <aNShq_wAowyu4q2n@gondor.apana.org.au>
-References: <20250924201822.9138-1-ebiggers@kernel.org>
+Subject: [PATCH v3] platform/x86: alienware-wmi-wmax: Add AWCC support to Dell G15 5530
+Date: Thu, 25 Sep 2025 09:10:03 +0530
+Message-ID: <20250925034010.31414-1-admin@trix.is-a.dev>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250924201822.9138-1-ebiggers@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 24, 2025 at 01:18:22PM -0700, Eric Biggers wrote:
-> Commit 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in
-> af_alg_sendmsg") changed some fields from bool to 1-bit bitfields of
-> type u32.  However, some assignments to these fields, specifically
-> 'more' and 'merge', assign values greater than 1.  These relied on C's
-> implicit conversion to bool, such that zero becomes false and nonzero
-> becomes true.  With a 1-bit bitfields of type u32 instead, mod 2 of the
-> value is taken instead, resulting in 0 being assigned in some cases when
-> 1 was intended.  Fix this by restoring the bool type.
-> 
-> Fixes: 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ---
-> 
-> v2: keep the bitfields and just change the type, as suggested by Linus
-> 
->  include/crypto/if_alg.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Makes alienware-wmi load on G15 5530 by default
 
-Thanks for catching this and fixing it.  I wish there was a warning
-for this.  Gcc will warn if a constant like 2 is assigned to the
-bitfield, but there are no warnings if you assign an int to it.
+Cc: stable@vger.kernel.org
+Signed-off-by: Saumya <admin@trix.is-a.dev>
+---
+ drivers/platform/x86/dell/alienware-wmi-wmax.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+diff --git a/drivers/platform/x86/dell/alienware-wmi-wmax.c b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+index 31f9643a6..3b25a8283 100644
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -209,6 +209,14 @@ static const struct dmi_system_id awcc_dmi_table[] __initconst = {
+ 		},
+ 		.driver_data = &g_series_quirks,
+ 	},
++	{
++		.ident = "Dell Inc. G15 5530",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G15 5530"),
++		},
++		.driver_data = &g_series_quirks,
++	},
+ 	{
+ 		.ident = "Dell Inc. G16 7630",
+ 		.matches = {
+--
+2.51.0
+
 
