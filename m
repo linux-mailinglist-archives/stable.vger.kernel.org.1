@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-181709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0256CB9F3CB
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:29:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2130B9F3C5
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E0E1757A3
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:29:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B389A3ACD93
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11E530102A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7563009E8;
 	Thu, 25 Sep 2025 12:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVSNavgk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tnq1/YJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4508B2FE574;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4518A2FE58E;
 	Thu, 25 Sep 2025 12:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758803350; cv=none; b=JYFzixrZNSIZmkhMZ/IcwAKC3sXPggqv5HixYhwC9Ajq/za8pMofx1I/50QR0x8WsrR5mB4/05Sp03jcQ3KOIQH6f6SYfM2XmajmSd2+EGD6ZHcBsTLxbcVcrezY57/WLN2XtxNPrkTUI2V5kShmBgpyaAgHEMapt6kZ3M15qzk=
+	t=1758803350; cv=none; b=DTMx8/FP0156vl5GXzUL3LuE7tZY48/YvpyWCfu7HjEfdtXOb0gJYwkJvEQaCSeZ2+J7RhYvMVWJAXb9Va9oRsZ6p12bh7PA9TWHGMkwV5pzKkBhxewCgqI99Wmyhr6v6uK+vhbhwwoLEbvPptOBzo5txMP3wy+oeGTMCHYDqFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758803350; c=relaxed/simple;
-	bh=fjAZkdmrtvGiYTWNqVeTxIY0d9WM6G8evCMPW+CVzGw=;
+	bh=EFeF8IqHiFjm4cF4lhsLwmIKXHBiuMuBzA6dxp8TiXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRWntzoP1FEZ0qOVIVPy0M6e8HFo2MvpJXbneecdVPw7bbBoypEDcLeTwjtZ3YSCuzNuHkzaAifbwdAX39mGJpvbMBPYhLhUxhkg3hTLaeTN7bIzIxM84szun6qrsjHvRewZtzIyjGXBiqjf3rK3F+Ghz0wZswEvyK1I862YA8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVSNavgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8960C4CEF7;
+	 MIME-Version; b=EZc/u87bn4LEknKAjOWbjwJzuSrfEk0vYyM3x18W7GfR3LSiR/VXqoiMwrC4whBoC6m/r4rPBXL1np2BNIANs8gSjMZgTiuTw7+2zkZ3hGTDiU32o3xJHdP9CbyqCGagTUH9NO/TV/kWYsSQ3SzGUWhuDDGzknvxETj9NDX+CxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tnq1/YJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61BDC4AF09;
 	Thu, 25 Sep 2025 12:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758803350;
-	bh=fjAZkdmrtvGiYTWNqVeTxIY0d9WM6G8evCMPW+CVzGw=;
+	bh=EFeF8IqHiFjm4cF4lhsLwmIKXHBiuMuBzA6dxp8TiXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVSNavgkL7MHXwW+FVVq0YX2ksgJXZumplYeTyPCFhpc0O/ZOXbMiDpi59jATYvMH
-	 YFdwnjZrpF9wQZMlzmv7AudfVYvi5fbwd8id098jsrIKT/B0bEFIMlsT0x4L+5sUcm
-	 XpQ8DKk3hJ5OJbRDoRkwkUvXdERaPlQxX7kOEOVjiZigIdp627y1aQmBTM88Z0sWV7
-	 m/hGHvhwHUESPeGaRiek6ZdTAKcbbzS5RLWIqInnUcpX5zg70GKaIlCb4iXsbadW1L
-	 P57LdAl346tAes0SjbpaCTOdNy62uvb0vCv3eIjOgQmV6l+MhfYU1oH0bfusRE46gb
-	 LKwBYRzTDJTnQ==
+	b=tnq1/YJemsW9+a1oh4uzPAzDBcZmPdhBfpOuCx/XFqEP4KvixOqvob6MXMWiZlfQp
+	 GujdfVkD1PYQTyBDL5zImkAprmajVppTDbNz8HCYPIrDHEPQLsIyzn0H7sMjwQ55IH
+	 /yxlU0EWg10SlxjK046qUXZ+FWJLWFxZFPJTUwKq0p7qFpQOgWkZ89KR0Aa7Mk3XO/
+	 /saQP2Q6QZzi0zCK7l050iCiomxon5vQ3jf6y5LsVN93kZ65nZGSHimlwMBbIm/l+F
+	 Uz81pA5NiOqmgiONhTZMrBOefaMGrhSlfQNjMVE9+92eNFRBzmVkXDLqXwRGFrBrxj
+	 ms4mIJm9F4IIA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1v1l5q-000000002rU-1VHL;
+	id 1v1l5q-000000002rW-1plp;
 	Thu, 25 Sep 2025 14:29:02 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Joerg Roedel <joro@8bytes.org>,
@@ -62,11 +62,10 @@ Cc: Robin Murphy <robin.murphy@arm.com>,
 	iommu@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Yu Kuai <yukuai3@huawei.com>
-Subject: [PATCH 02/14] iommu/qcom: fix device leak on of_xlate()
-Date: Thu, 25 Sep 2025 14:27:44 +0200
-Message-ID: <20250925122756.10910-3-johan@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 03/14] iommu/exynos: fix device leak on of_xlate()
+Date: Thu, 25 Sep 2025 14:27:45 +0200
+Message-ID: <20250925122756.10910-4-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250925122756.10910-1-johan@kernel.org>
 References: <20250925122756.10910-1-johan@kernel.org>
@@ -81,53 +80,39 @@ Content-Transfer-Encoding: 8bit
 Make sure to drop the reference taken to the iommu platform device when
 looking up its driver data during of_xlate().
 
-Note that commit e2eae09939a8 ("iommu/qcom: add missing put_device()
-call in qcom_iommu_of_xlate()") fixed the leak in a couple of error
-paths, but the reference is still leaking on success and late failures.
-
-Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
-Cc: stable@vger.kernel.org	# 4.14: e2eae09939a8
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
+Fixes: aa759fd376fb ("iommu/exynos: Add callback for initializing devices from device tree")
+Cc: stable@vger.kernel.org	# 4.2
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/qcom_iommu.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/iommu/exynos-iommu.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-index c5be95e56031..9c1166a3af6c 100644
---- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-+++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-@@ -565,14 +565,14 @@ static int qcom_iommu_of_xlate(struct device *dev,
+diff --git a/drivers/iommu/exynos-iommu.c b/drivers/iommu/exynos-iommu.c
+index b6edd178fe25..ce9e935cb84c 100644
+--- a/drivers/iommu/exynos-iommu.c
++++ b/drivers/iommu/exynos-iommu.c
+@@ -1446,17 +1446,14 @@ static int exynos_iommu_of_xlate(struct device *dev,
+ 		return -ENODEV;
  
- 	qcom_iommu = platform_get_drvdata(iommu_pdev);
- 
-+	put_device(&iommu_pdev->dev);
-+
- 	/* make sure the asid specified in dt is valid, so we don't have
- 	 * to sanity check this elsewhere:
- 	 */
- 	if (WARN_ON(asid > qcom_iommu->max_asid) ||
--	    WARN_ON(qcom_iommu->ctxs[asid] == NULL)) {
--		put_device(&iommu_pdev->dev);
-+	    WARN_ON(qcom_iommu->ctxs[asid] == NULL))
- 		return -EINVAL;
+ 	data = platform_get_drvdata(sysmmu);
+-	if (!data) {
+-		put_device(&sysmmu->dev);
++	put_device(&sysmmu->dev);
++	if (!data)
+ 		return -ENODEV;
 -	}
  
- 	if (!dev_iommu_priv_get(dev)) {
- 		dev_iommu_priv_set(dev, qcom_iommu);
-@@ -581,10 +581,8 @@ static int qcom_iommu_of_xlate(struct device *dev,
- 		 * multiple different iommu devices.  Multiple context
- 		 * banks are ok, but multiple devices are not:
- 		 */
--		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev))) {
--			put_device(&iommu_pdev->dev);
-+		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev)))
- 			return -EINVAL;
+ 	if (!owner) {
+ 		owner = kzalloc(sizeof(*owner), GFP_KERNEL);
+-		if (!owner) {
+-			put_device(&sysmmu->dev);
++		if (!owner)
+ 			return -ENOMEM;
 -		}
- 	}
  
- 	return iommu_fwspec_add_ids(dev, &asid, 1);
+ 		INIT_LIST_HEAD(&owner->controllers);
+ 		mutex_init(&owner->rpm_lock);
 -- 
 2.49.1
 
