@@ -1,169 +1,145 @@
-Return-Path: <stable+bounces-181744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36EBBA1301
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 21:30:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72F7BA15E2
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 22:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E09591BC59FF
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 19:30:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 713273B771D
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 20:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB912E6CB6;
-	Thu, 25 Sep 2025 19:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750D12512DE;
+	Thu, 25 Sep 2025 20:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dv7UQ9+x"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="17RYXXM3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5C5257858
-	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 19:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE9235940;
+	Thu, 25 Sep 2025 20:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758828618; cv=none; b=e9jrhCv57pr+0jVIJnsedppLluHDQHzfxhP/UaWRjKuyJkIQ9YutE9w7jN1jXlB5Fdwpv3hFZmmpMEb3bnbNqK9xs6DnFeDISxRQAGDDGFm6PMAEPV65aKJ0R2db6YHLm5aWcdFzi+2WB/gJtkbT5+heKjvJjLD3ffUQ8+UNiXQ=
+	t=1758832505; cv=none; b=lj70FoLTf+NXFt7ocVJVtFNoGJTxsokp5yr6Nm2P4z7dbBzlfjjXy5pjRck0XcXXWryKnq8M6W/EErm65o9z/zayw/YR2DLMbe1RhnAHAcyZI6SLDdrPO1FRl1y9AMRd2EdtCaJoSDy2v0aLMA9P9xhMGuqwH1riZgcOYnbbc3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758828618; c=relaxed/simple;
-	bh=gy+R3VGobtBUpYgceZYiKCPbWMGXanmmt1+K1Hdh5BI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H9PYKvHmJv3HS3CLy/CEbZfh2gZInDNwMhRl1Z6jR2X7oW0Edva8fuaXu2DWEW1bkQaX7mjxaWyz3BdVTnA4ptLB0OvKxkW7EtzPQcJD2/sdyuJpj42gZv8vt29xEd9eq27FCaOsUKKqe9KDBjTok+/4/bvFxs8l8p0zXpkLYz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dv7UQ9+x; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-78115430134so42080b3a.1
-        for <stable@vger.kernel.org>; Thu, 25 Sep 2025 12:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758828615; x=1759433415; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jgNapCwESdbGMpCrQrLezJYMMJNvAweSJEvqsFtNxmM=;
-        b=dv7UQ9+xmZf3Xk8WFayfX5RDWzlvmy6p7+ZHgVj3owxneo3+F3z6KI1SBiXJQGy5yZ
-         xB2FA6m0R5si8fOjqJJmzH0T+tQz0FdOMQHQmub+5hI9aKg9Ut6yLi9hj5tblGlrHiqC
-         ZffVGOrxzxamCpr69Vxp7HxBfCCeTv08f4LKPAeuK6FXRT13IlDSUdcIB8ycHYGT8S8E
-         /g4eWYq1dJzHIXS1TyDw4RnVKhdE3qPn01o2Wg/mbxgTOVIwLrQVdLKWFy3MMI1EGdxa
-         t6+BSNOtYuo+bsS79sbL0StildEWHPGTmHl8gRyFYL8u0RYrWTvcwWiv8dgHx/uGLB2v
-         cCYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758828615; x=1759433415;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jgNapCwESdbGMpCrQrLezJYMMJNvAweSJEvqsFtNxmM=;
-        b=efEm6g+xVv8bsFXQnfII1WZhSSLDXQtwy68u/vWNWcdGvYFBDhoEst/xiZLrwBdiQO
-         KKRcssM4F7+rESkYYjtOb294TT1JIvDHphXf+EaEp+ED57bVoDMJKXt1/UMaKTxBh8AU
-         KGLWPrTxlwb9QITCj3uWBQq/9DlZIX4UY4ermOvx1g9wPQEk3jUFg2gjc9hJYHyt7i1n
-         EaPgNxgZqBzPM/35CT5av9dIhSrfjWq0gjQVinx7bLu0foUBBxxwUWvzSA4rmAlDp9wv
-         HtLu/31XvyoOLiJVZ1Ejb3ZO1nZBydihyvs6n8MQpUalCFvKVDaEsh4UI5OK0Zjn67qc
-         U4DA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUW0vg6d8m0i4dXhDnoV9/8t/lU2sjCzQVU2VYah/VEBSy6rk0y2/0KIk1IHMKabm+i3pH9sg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6Mnjiq5qMKpxiHOSkeM5fHLkjeQ3HK/llMjtntdr5yfSYk8u1
-	Sq/p3rWoYLjLdHDA+zBq4D7NLakFecorsAMT/yUvN2np5wBROHlmzrpBJnA9AyJdzUA7V0nCGd+
-	DgcGIjwPvSw1BCj/yKZmlKUuNEXHrsEA=
-X-Gm-Gg: ASbGncvR8B2kKOn9wOk45+rJe4N3ZLAPjSj5vNNSOjhKEezUKUucCtQ1Lv3yYwrYkZ3
-	o+WjY/+WgxFBpvdRufYObc3wB1i+Uhw5S654m7bmTDlpdeLPiY0R6yBjGq/W1f7bqrQFHMM4hmB
-	PYxrJP1WXhbr1iRf4J4YEwa3u5LJOwsxv7zSJZTjyvAsa+pb/AxcwNi3TxuqoTbhgKnucw01gJs
-	ebrOxOlFCnEd/eRq4isOiT+iYM=
-X-Google-Smtp-Source: AGHT+IEOB8JUBgCgxrz82f7DOcWpk1nC+2WRXM7VFt1j7bzQ5Sn5G1rlOU1WlSd3nK7yZxs2Cr+AvzG7NLss8Qj8Mno=
-X-Received: by 2002:a17:90b:554d:b0:32d:f352:f764 with SMTP id
- 98e67ed59e1d1-3342a235abamr4279736a91.2.1758828614548; Thu, 25 Sep 2025
- 12:30:14 -0700 (PDT)
+	s=arc-20240116; t=1758832505; c=relaxed/simple;
+	bh=UXqrSeyJfQ5VVk+A27k67uRWkFpFX7EluQAj7zgGa4c=;
+	h=Date:To:From:Subject:Message-Id; b=FvN1xg7/4+/xIsBPayRHODquIWByfNLjj7aUpV7FqpcVLHtfYSwYqMDCeA2NQOFtZR6jOBoEJpGUtngqp90AOvePlIyPM6nVzxqZzoAhn8I980m+r2Cnn14hRXKsUtwMUytqqBiUKa81yNbH8vuNFfotXZDXcjWS3Zqbvhj6HHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=17RYXXM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE02C4CEF7;
+	Thu, 25 Sep 2025 20:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758832504;
+	bh=UXqrSeyJfQ5VVk+A27k67uRWkFpFX7EluQAj7zgGa4c=;
+	h=Date:To:From:Subject:From;
+	b=17RYXXM3Pew41qykdf0bS8QoHdfN7Bjm8zKnHN2wp4D0evEjc7VTUqZouUrc/3Kid
+	 pTQskJVdJCOVDCIXQt9VicxDHqbGdZ/yK4J1M3AgS0b6dYG6MAlJWwZ7AYNpYipHMT
+	 vEm2egIMeNKiHCq58B9gZUy9jwOTefYhlx6DIEjE=
+Date: Thu, 25 Sep 2025 13:35:03 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,kartikey406@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch added to mm-new branch
+Message-Id: <20250925203504.7BE02C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250922081713.77303-1-acsjakub@amazon.de>
-In-Reply-To: <20250922081713.77303-1-acsjakub@amazon.de>
-From: Andrei Vagin <avagin@gmail.com>
-Date: Thu, 25 Sep 2025 12:29:59 -0700
-X-Gm-Features: AS18NWAghUc-aM26PayRwLjxAlxiiFTKxSudGsiJZK0JszhZdY3fAuWO57_CdTY
-Message-ID: <CANaxB-woLUz0w0wg2fOoJQxq5iF=qU0p=S8rQMPFD9Fr50sV3A@mail.gmail.com>
-Subject: Re: [PATCH v2] fs/proc: check p->vec_buf for NULL
-To: Jakub Acs <acsjakub@amazon.de>
-Cc: linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jinjiang Tu <tujinjiang@huawei.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Penglei Jiang <superman.xpt@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Muhammad Usama Anjum <usama.anjum@collabora.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 22, 2025 at 1:17=E2=80=AFAM Jakub Acs <acsjakub@amazon.de> wrot=
-e:
->
-> When PAGEMAP_SCAN ioctl invoked with vec_len =3D 0 reaches
-> pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
->
-> [   44.936808] Oops: general protection fault, probably for non-canonical=
- address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-> [   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x00000=
-00000000007]
-> [   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.=
-0-rc6 #22 PREEMPT(none)
-> [   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
-S rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> [   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
->
-> <snip registers, unreliable trace>
->
-> [   44.946828] Call Trace:
-> [   44.947030]  <TASK>
-> [   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
-> [   44.952593]  walk_pmd_range.isra.0+0x302/0x910
-> [   44.954069]  walk_pud_range.isra.0+0x419/0x790
-> [   44.954427]  walk_p4d_range+0x41e/0x620
-> [   44.954743]  walk_pgd_range+0x31e/0x630
-> [   44.955057]  __walk_page_range+0x160/0x670
-> [   44.956883]  walk_page_range_mm+0x408/0x980
-> [   44.958677]  walk_page_range+0x66/0x90
-> [   44.958984]  do_pagemap_scan+0x28d/0x9c0
-> [   44.961833]  do_pagemap_cmd+0x59/0x80
-> [   44.962484]  __x64_sys_ioctl+0x18d/0x210
-> [   44.962804]  do_syscall_64+0x5b/0x290
-> [   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
->
-> vec_len =3D 0 in pagemap_scan_init_bounce_buffer() means no buffers are
-> allocated and p->vec_buf remains set to NULL.
->
-> This breaks an assumption made later in pagemap_scan_backout_range(),
-> that page_region is always allocated for p->vec_buf_index.
->
-> Fix it by explicitly checking p->vec_buf for NULL before dereferencing.
->
-> Other sites that might run into same deref-issue are already (directly
-> or transitively) protected by checking p->vec_buf.
->
-> Note:
-> From PAGEMAP_SCAN man page, it seems vec_len =3D 0 is valid when no outpu=
-t
-> is requested and it's only the side effects caller is interested in,
-> hence it passes check in pagemap_scan_get_args().
->
-> This issue was found by syzkaller.
->
-> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and option=
-ally clear info about PTEs")
-> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Jinjiang Tu <tujinjiang@huawei.com>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Penglei Jiang <superman.xpt@gmail.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Andrei Vagin <avagin@gmail.com>
 
-Acked-by:  Andrei Vagin <avagin@gmail.com>
+The patch titled
+     Subject: hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
+has been added to the -mm mm-new branch.  Its filename is
+     hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch
 
-Thanks,
-Andrei
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch
+
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
+Date: Thu, 25 Sep 2025 20:19:32 +0530
+
+hugetlb_vmdelete_list() uses trylock to acquire VMA locks during truncate
+operations.  As per the original design in commit 40549ba8f8e0 ("hugetlb:
+use new vma_lock for pmd sharing synchronization"), if the trylock fails
+or the VMA has no lock, it should skip that VMA.  Any remaining mapped
+pages are handled by remove_inode_hugepages() which is called after
+hugetlb_vmdelete_list() and uses proper lock ordering to guarantee
+unmapping success.
+
+Currently, when hugetlb_vma_trylock_write() returns success (1) for VMAs
+without shareable locks, the code proceeds to call unmap_hugepage_range().
+This causes assertion failures in huge_pmd_unshare() →
+hugetlb_vma_assert_locked() because no lock is actually held:
+
+  WARNING: CPU: 1 PID: 6594 Comm: syz.0.28 Not tainted
+  Call Trace:
+   hugetlb_vma_assert_locked+0x1dd/0x250
+   huge_pmd_unshare+0x2c8/0x540
+   __unmap_hugepage_range+0x6e3/0x1aa0
+   unmap_hugepage_range+0x32e/0x410
+   hugetlb_vmdelete_list+0x189/0x1f0
+
+Fix by explicitly skipping VMAs without shareable locks after trylock
+succeeds, consistent with the original design where such VMAs are deferred
+to remove_inode_hugepages() for proper handling.
+
+Link: https://lkml.kernel.org/r/20250925144934.150299-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
+Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
+Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/hugetlbfs/inode.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/fs/hugetlbfs/inode.c~hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list
++++ a/fs/hugetlbfs/inode.c
+@@ -487,7 +487,8 @@ hugetlb_vmdelete_list(struct rb_root_cac
+ 
+ 		if (!hugetlb_vma_trylock_write(vma))
+ 			continue;
+-
++		if (!__vma_shareable_lock(vma))
++			continue;
+ 		v_start = vma_offset_start(vma, start);
+ 		v_end = vma_offset_end(vma, end);
+ 
+_
+
+Patches currently in -mm which might be from kartikey406@gmail.com are
+
+hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch
+
 
