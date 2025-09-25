@@ -1,260 +1,169 @@
-Return-Path: <stable+bounces-181743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02853BA0B77
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 18:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36EBBA1301
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 21:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E04F1BC530A
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 16:59:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E09591BC59FF
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 19:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1336307AFA;
-	Thu, 25 Sep 2025 16:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB912E6CB6;
+	Thu, 25 Sep 2025 19:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XlVRUsLz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dv7UQ9+x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8065D306B15
-	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 16:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5C5257858
+	for <stable@vger.kernel.org>; Thu, 25 Sep 2025 19:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758819527; cv=none; b=ZzeT3vTW3lTfex02B2oDDVP5l16YmOtq0qFDLAgKPVIHrhaxMo7AWBvYww7L/ZPvEvXIBg/n6QrY46yO63z8lnmY7lFac62HI20CdPjap0M3SY/Sfpe8sw/MKL6IF16roVHqxo+vpI2rXd9MyHnZwAmK4Z8mJ6DASCYxPLZEdW0=
+	t=1758828618; cv=none; b=e9jrhCv57pr+0jVIJnsedppLluHDQHzfxhP/UaWRjKuyJkIQ9YutE9w7jN1jXlB5Fdwpv3hFZmmpMEb3bnbNqK9xs6DnFeDISxRQAGDDGFm6PMAEPV65aKJ0R2db6YHLm5aWcdFzi+2WB/gJtkbT5+heKjvJjLD3ffUQ8+UNiXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758819527; c=relaxed/simple;
-	bh=OYPt7rOi6P5t7UUoGeJ0cu65gDoDgf43KCnZmOl/mnA=;
+	s=arc-20240116; t=1758828618; c=relaxed/simple;
+	bh=gy+R3VGobtBUpYgceZYiKCPbWMGXanmmt1+K1Hdh5BI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SLzzeQlQGSfNLgfKsCZe3hkBPtF0trD46Th6ZBoF+4pXiIraxuFyuoL7RTEzEhmPwWWZebcDIt7wn8TCbfLfgXXYKhmOtOiiH6R+gkK5ipFrhOOUn0EpzJTNTXRQqW/7mGO4G8uH7RJyoio8lxG3F8mM4VtrMEZT5qKdVTfplb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XlVRUsLz; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-57dda094f6cso277e87.0
-        for <stable@vger.kernel.org>; Thu, 25 Sep 2025 09:58:45 -0700 (PDT)
+	 To:Cc:Content-Type; b=H9PYKvHmJv3HS3CLy/CEbZfh2gZInDNwMhRl1Z6jR2X7oW0Edva8fuaXu2DWEW1bkQaX7mjxaWyz3BdVTnA4ptLB0OvKxkW7EtzPQcJD2/sdyuJpj42gZv8vt29xEd9eq27FCaOsUKKqe9KDBjTok+/4/bvFxs8l8p0zXpkLYz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dv7UQ9+x; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-78115430134so42080b3a.1
+        for <stable@vger.kernel.org>; Thu, 25 Sep 2025 12:30:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758819523; x=1759424323; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758828615; x=1759433415; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yq6K8HIdEhD+E9swYwDQPb1XoskrFD+rIaFeN3MEj6U=;
-        b=XlVRUsLzpZk9r3c6Ekf7hLCBR2zVJA7eYa9622p4cCmf5+VQwETOTZwiTkWRXgpqqd
-         L5IRpBT/NOiadaPjpoZLdo1VoSCNYiVvXSF0YH2tY58QqjX/STRPzaBRMkJHpsvyIRWX
-         NPbMJ7p88yaJmvKygpEOoX274bm1oDUHK+6xI1IqlQxksNYdhQ8kNnRb6um1wH9m4qXW
-         5AHcCOYJHTXJERPkWmmSVhT2HSWP+d8llE42APj+H7QWEUahazWCTrRR22ihFwHZHCEa
-         ivo7ejuB0G7sJfodIZRvSPFbAO8yeRYFQ+2zDoXIEcTjm/fLUhhzcxh9KJMgOue40T1K
-         R2ow==
+        bh=jgNapCwESdbGMpCrQrLezJYMMJNvAweSJEvqsFtNxmM=;
+        b=dv7UQ9+xmZf3Xk8WFayfX5RDWzlvmy6p7+ZHgVj3owxneo3+F3z6KI1SBiXJQGy5yZ
+         xB2FA6m0R5si8fOjqJJmzH0T+tQz0FdOMQHQmub+5hI9aKg9Ut6yLi9hj5tblGlrHiqC
+         ZffVGOrxzxamCpr69Vxp7HxBfCCeTv08f4LKPAeuK6FXRT13IlDSUdcIB8ycHYGT8S8E
+         /g4eWYq1dJzHIXS1TyDw4RnVKhdE3qPn01o2Wg/mbxgTOVIwLrQVdLKWFy3MMI1EGdxa
+         t6+BSNOtYuo+bsS79sbL0StildEWHPGTmHl8gRyFYL8u0RYrWTvcwWiv8dgHx/uGLB2v
+         cCYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758819523; x=1759424323;
+        d=1e100.net; s=20230601; t=1758828615; x=1759433415;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Yq6K8HIdEhD+E9swYwDQPb1XoskrFD+rIaFeN3MEj6U=;
-        b=fiNFH6c44I8I8f9HFVo2dJcZ2RxHLDVlGZj66pAIl4FN1BwJFvVUV02HsZOUMCDB0c
-         WPR06HmnON7MFLoNKv3vVg8tlbVhbMq+wWz8KKKx9A1c5Ox1YnSbpMmsu2qFRZEp+TtK
-         6wpg0ZNC1yBugM01GH6N7mRJQ1aQN3MtRm4nPsWiPc68VjqY6PpO+SHoY3wK1urL1sU8
-         QMbNXUk6Uhdsn2scVVXDGGoTWe/N9s/Wxnl4tqgSOH6QbayMZ8HUJvFsB0hkMyuCNAG/
-         0zl0UZpRIZApk5takhh81irTBnpaQbqOSuGjrwZrTjkKLVfEOjROKW0yOBaKYq6Jdmog
-         wwqA==
-X-Gm-Message-State: AOJu0YzNYBurfjgwMN52FipH5me07JQvQE9p4ikta/rFuLZX94LBr1oi
-	NVS/s509i+0U/nBgX36ORE77mwGocwc5uArHHFTG8bcXKTWpojPjFC4bxN/m52iQXhxnMQvRwQd
-	pQhHiadXvqWV4pOehTfTaaDARjWm3RrtBdDXRC1oS
-X-Gm-Gg: ASbGnct2/UIFEap5rU/zJxrK9aAG7hvrMNGPypXT/luc/ympjXj40haX6jYcaSoMBlj
-	7S3JJcyTRTI8zfhmxUeMD8RqXQVTI0UfFtZvaBHj0/89zXo3NCZbvRHRfGJbeRsw8sF9QGio8J6
-	JwCjMfkk9eGlGnJ77BN9UEeAaLx4HxYcQTDh7wa+LM95NeU/FErYZ7QuTfYIJfa+lcDXPwMb78q
-	KAX1MP9ClotF/vd6UTTroAI
-X-Google-Smtp-Source: AGHT+IGJxwQPsa1HBrOtLrDgPHg2NyLPfDxj76oZhDbyhTXsObrV+BiQuT52NKznoNST7PhF7zcIbJIyyNp5aMzCq1I=
-X-Received: by 2002:ac2:5b81:0:b0:57b:f611:f918 with SMTP id
- 2adb3069b0e04-582b2a9560fmr321110e87.3.1758819523044; Thu, 25 Sep 2025
- 09:58:43 -0700 (PDT)
+        bh=jgNapCwESdbGMpCrQrLezJYMMJNvAweSJEvqsFtNxmM=;
+        b=efEm6g+xVv8bsFXQnfII1WZhSSLDXQtwy68u/vWNWcdGvYFBDhoEst/xiZLrwBdiQO
+         KKRcssM4F7+rESkYYjtOb294TT1JIvDHphXf+EaEp+ED57bVoDMJKXt1/UMaKTxBh8AU
+         KGLWPrTxlwb9QITCj3uWBQq/9DlZIX4UY4ermOvx1g9wPQEk3jUFg2gjc9hJYHyt7i1n
+         EaPgNxgZqBzPM/35CT5av9dIhSrfjWq0gjQVinx7bLu0foUBBxxwUWvzSA4rmAlDp9wv
+         HtLu/31XvyoOLiJVZ1Ejb3ZO1nZBydihyvs6n8MQpUalCFvKVDaEsh4UI5OK0Zjn67qc
+         U4DA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUW0vg6d8m0i4dXhDnoV9/8t/lU2sjCzQVU2VYah/VEBSy6rk0y2/0KIk1IHMKabm+i3pH9sg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6Mnjiq5qMKpxiHOSkeM5fHLkjeQ3HK/llMjtntdr5yfSYk8u1
+	Sq/p3rWoYLjLdHDA+zBq4D7NLakFecorsAMT/yUvN2np5wBROHlmzrpBJnA9AyJdzUA7V0nCGd+
+	DgcGIjwPvSw1BCj/yKZmlKUuNEXHrsEA=
+X-Gm-Gg: ASbGncvR8B2kKOn9wOk45+rJe4N3ZLAPjSj5vNNSOjhKEezUKUucCtQ1Lv3yYwrYkZ3
+	o+WjY/+WgxFBpvdRufYObc3wB1i+Uhw5S654m7bmTDlpdeLPiY0R6yBjGq/W1f7bqrQFHMM4hmB
+	PYxrJP1WXhbr1iRf4J4YEwa3u5LJOwsxv7zSJZTjyvAsa+pb/AxcwNi3TxuqoTbhgKnucw01gJs
+	ebrOxOlFCnEd/eRq4isOiT+iYM=
+X-Google-Smtp-Source: AGHT+IEOB8JUBgCgxrz82f7DOcWpk1nC+2WRXM7VFt1j7bzQ5Sn5G1rlOU1WlSd3nK7yZxs2Cr+AvzG7NLss8Qj8Mno=
+X-Received: by 2002:a17:90b:554d:b0:32d:f352:f764 with SMTP id
+ 98e67ed59e1d1-3342a235abamr4279736a91.2.1758828614548; Thu, 25 Sep 2025
+ 12:30:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOdxtTZJqgDNMtqsq51hQ0azanFPLXHMAJ-mRhRS6yjzYhMf_A@mail.gmail.com>
- <aNSSNgUeMSTtlimW@slm.duckdns.org>
-In-Reply-To: <aNSSNgUeMSTtlimW@slm.duckdns.org>
-From: Chenglong Tang <chenglongtang@google.com>
-Date: Thu, 25 Sep 2025 09:58:31 -0700
-X-Gm-Features: AS18NWBXIryw_12tNJ7Zcnq0SWl772-SIFkfVkMUoyR0eC464fAlVAG0qvqtTdI
-Message-ID: <CAOdxtTan9jvwzbww0Jm6e4nOiCcwH8cvPHHXpNtRU6ZHUBg=4g@mail.gmail.com>
-Subject: Re: [REGRESSION] workqueue/writeback: Severe CPU hang due to kworker
- proliferation during I/O flush and cgroup cleanup
-To: Tejun Heo <tj@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, lakitu-dev@google.com
+References: <20250922081713.77303-1-acsjakub@amazon.de>
+In-Reply-To: <20250922081713.77303-1-acsjakub@amazon.de>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Thu, 25 Sep 2025 12:29:59 -0700
+X-Gm-Features: AS18NWAghUc-aM26PayRwLjxAlxiiFTKxSudGsiJZK0JszhZdY3fAuWO57_CdTY
+Message-ID: <CANaxB-woLUz0w0wg2fOoJQxq5iF=qU0p=S8rQMPFD9Fr50sV3A@mail.gmail.com>
+Subject: Re: [PATCH v2] fs/proc: check p->vec_buf for NULL
+To: Jakub Acs <acsjakub@amazon.de>
+Cc: linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jinjiang Tu <tujinjiang@huawei.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Penglei Jiang <superman.xpt@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, Muhammad Usama Anjum <usama.anjum@collabora.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Confirmed the patches worked for the mainline(6.17-rc7). But it's
-still flaky(1/13) if I simply apply the patches to v6.12.46.
-
-I think there should be some gap commits that I should apply as well.
-
-Here is the diff between the two kernel versions after patches are applied:
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index fad8ddfa622bb..62d85c5086ba1 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -65,7 +65,7 @@ struct wb_writeback_work {
-* timestamps written to disk after 12 hours, but in the worst case a
-* few inodes might not their timestamps updated for 24 hours.
-*/
--static unsigned int dirtytime_expire_interval =3D 12 * 60 * 60;
-+unsigned int dirtytime_expire_interval =3D 12 * 60 * 60;
-static inline struct inode *wb_inode(struct list_head *head)
-{
-@@ -290,6 +290,7 @@ void __inode_attach_wb(struct inode *inode, struct
-folio *folio)
-if (unlikely(cmpxchg(&inode->i_wb, NULL, wb)))
-wb_put(wb);
-}
-+EXPORT_SYMBOL_GPL(__inode_attach_wb);
-/**
-* inode_cgwb_move_to_attached - put the inode onto wb->b_attached list
-@@ -770,9 +771,8 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
-* writeback completion, wbc_detach_inode() should be called. This is used
-* to track the cgroup writeback context.
-*/
--static void wbc_attach_and_unlock_inode(struct writeback_control *wbc,
-- struct inode *inode)
-- __releases(&inode->i_lock)
-+void wbc_attach_and_unlock_inode(struct writeback_control *wbc,
-+ struct inode *inode)
-{
-if (!inode_cgwb_enabled(inode)) {
-spin_unlock(&inode->i_lock);
-@@ -802,24 +802,7 @@ static void wbc_attach_and_unlock_inode(struct
-writeback_control *wbc,
-if (unlikely(wb_dying(wbc->wb) && !css_is_dying(wbc->wb->memcg_css)))
-inode_switch_wbs(inode, wbc->wb_id);
-}
--
--/**
-- * wbc_attach_fdatawrite_inode - associate wbc and inode for fdatawrite
-- * @wbc: writeback_control of interest
-- * @inode: target inode
-- *
-- * This function is to be used by __filemap_fdatawrite_range(), which is a=
-n
-- * alternative entry point into writeback code, and first ensures @inode i=
-s
-- * associated with a bdi_writeback and attaches it to @wbc.
-- */
--void wbc_attach_fdatawrite_inode(struct writeback_control *wbc,
-- struct inode *inode)
--{
-- spin_lock(&inode->i_lock);
-- inode_attach_wb(inode, NULL);
-- wbc_attach_and_unlock_inode(wbc, inode);
--}
--EXPORT_SYMBOL_GPL(wbc_attach_fdatawrite_inode);
-+EXPORT_SYMBOL_GPL(wbc_attach_and_unlock_inode);
-/**
-* wbc_detach_inode - disassociate wbc from inode and perform foreign detect=
-ion
-@@ -1282,13 +1265,6 @@ static void bdi_split_work_to_wbs(struct
-backing_dev_info *bdi,
-}
-}
--static inline void wbc_attach_and_unlock_inode(struct writeback_control *w=
-bc,
-- struct inode *inode)
-- __releases(&inode->i_lock)
--{
-- spin_unlock(&inode->i_lock);
--}
--
-#endif /* CONFIG_CGROUP_WRITEBACK */
-/*
-@@ -2475,7 +2451,14 @@ static void wakeup_dirtytime_writeback(struct
-work_struct *w)
-schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-}
--static int dirtytime_interval_handler(const struct ctl_table *table, int w=
-rite,
-+static int __init start_dirtytime_writeback(void)
-+{
-+ schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+ return 0;
-+}
-+__initcall(start_dirtytime_writeback);
-+
-+int dirtytime_interval_handler(const struct ctl_table *table, int write,
-void *buffer, size_t *lenp, loff_t *ppos)
-{
-int ret;
-@@ -2486,25 +2469,6 @@ static int dirtytime_interval_handler(const
-struct ctl_table *table, int write,
-return ret;
-}
--static const struct ctl_table vm_fs_writeback_table[] =3D {
-- {
-- .procname =3D "dirtytime_expire_seconds",
-- .data =3D &dirtytime_expire_interval,
-- .maxlen =3D sizeof(dirtytime_expire_interval),
-- .mode =3D 0644,
-- .proc_handler =3D dirtytime_interval_handler,
-- .extra1 =3D SYSCTL_ZERO,
-- },
--};
--
--static int __init start_dirtytime_writeback(void)
--{
-- schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-- register_sysctl_init("vm", vm_fs_writeback_table);
-- return 0;
--}
--__initcall(start_dirtytime_writeback);
--
-/**
-* __mark_inode_dirty - internal function to mark an inode dirty
-*
-
-On Wed, Sep 24, 2025 at 5:52=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
+On Mon, Sep 22, 2025 at 1:17=E2=80=AFAM Jakub Acs <acsjakub@amazon.de> wrot=
+e:
 >
-> On Wed, Sep 24, 2025 at 05:24:15PM -0700, Chenglong Tang wrote:
-> > The kernel v6.1 is good. The hang is reliably triggered(over 80% chance=
-) on
-> > kernels v6.6 and 6.12 and intermittently on mainline(6.17-rc7) with the
-> > following steps:
-> > -
-> >
-> > *Environment:* A machine with a fast SSD and a high core count (e.g.,
-> > Google Cloud's N2-standard-128).
-> > -
-> >
-> > *Workload:* Concurrently generate a large number of files (e.g., 2 mill=
-ion)
-> > using multiple services managed by systemd-run. This creates significan=
+> When PAGEMAP_SCAN ioctl invoked with vec_len =3D 0 reaches
+> pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
+>
+> [   44.936808] Oops: general protection fault, probably for non-canonical=
+ address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+> [   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x00000=
+00000000007]
+> [   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.=
+0-rc6 #22 PREEMPT(none)
+> [   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
+S rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
+>
+> <snip registers, unreliable trace>
+>
+> [   44.946828] Call Trace:
+> [   44.947030]  <TASK>
+> [   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
+> [   44.952593]  walk_pmd_range.isra.0+0x302/0x910
+> [   44.954069]  walk_pud_range.isra.0+0x419/0x790
+> [   44.954427]  walk_p4d_range+0x41e/0x620
+> [   44.954743]  walk_pgd_range+0x31e/0x630
+> [   44.955057]  __walk_page_range+0x160/0x670
+> [   44.956883]  walk_page_range_mm+0x408/0x980
+> [   44.958677]  walk_page_range+0x66/0x90
+> [   44.958984]  do_pagemap_scan+0x28d/0x9c0
+> [   44.961833]  do_pagemap_cmd+0x59/0x80
+> [   44.962484]  __x64_sys_ioctl+0x18d/0x210
+> [   44.962804]  do_syscall_64+0x5b/0x290
+> [   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>
+> vec_len =3D 0 in pagemap_scan_init_bounce_buffer() means no buffers are
+> allocated and p->vec_buf remains set to NULL.
+>
+> This breaks an assumption made later in pagemap_scan_backout_range(),
+> that page_region is always allocated for p->vec_buf_index.
+>
+> Fix it by explicitly checking p->vec_buf for NULL before dereferencing.
+>
+> Other sites that might run into same deref-issue are already (directly
+> or transitively) protected by checking p->vec_buf.
+>
+> Note:
+> From PAGEMAP_SCAN man page, it seems vec_len =3D 0 is valid when no outpu=
 t
-> > I/O and cgroup churn.
-> > -
-> >
-> > *Trigger:* After the file generation completes, terminate the systemd-r=
-un
-> > services.
-> > -
-> >
-> > *Result:* Shortly after the services are killed, the system's CPU load
-> > spikes, leading to a massive number of kworker/+inode_switch_wbs thread=
-s
-> > and a system-wide hang/livelock where the machine becomes unresponsive =
-(20s
-> > - 300s).
+> is requested and it's only the side effects caller is interested in,
+> hence it passes check in pagemap_scan_get_args().
 >
-> Sounds like:
+> This issue was found by syzkaller.
 >
->  http://lkml.kernel.org/r/20250912103522.2935-1-jack@suse.cz
->
-> Can you see whether those patches resolve the problem?
->
-> Thanks.
->
-> --
-> tejun
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and option=
+ally clear info about PTEs")
+> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Jinjiang Tu <tujinjiang@huawei.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Penglei Jiang <superman.xpt@gmail.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Andrei Vagin <avagin@gmail.com>
+
+Acked-by:  Andrei Vagin <avagin@gmail.com>
+
+Thanks,
+Andrei
 
