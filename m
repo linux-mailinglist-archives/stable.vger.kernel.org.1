@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-181712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0602EB9F3D1
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:29:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5CEB9F3DD
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2177D7A6D81
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:27:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAF2717A5AC
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18A2302756;
-	Thu, 25 Sep 2025 12:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EBB303CBB;
+	Thu, 25 Sep 2025 12:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnU66YD2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csWs0Buy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875832FFFB7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8761D2FFFBC;
 	Thu, 25 Sep 2025 12:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758803350; cv=none; b=siS02oqkte1+C7ifXjxbAO1BR93ZtWH1dI+eOi222rE9p31skwZrQyST3o6e8pv76FaWqS5LPLRVGKTibvPywll3u0hnubeX6qLSLEsOdFd01h315c5qS9MoyBXvKkJr2c4yoQVofgVFwbgXMnf2f+fq0JtyprAHlZb44hAXZjA=
+	t=1758803350; cv=none; b=YH/BPUMTXZyAxjxwt28jMKB/+bke/jIPKV2YxRSMNgfF3oi8zCoGYsOjKEq2eQLHSCg9IugeyyogRTINZRyu5JoT3IjRIfgRa2ylkncKwQ0e4a9cVJBLp6XUEUHv8rUr79SJnqdCSNPnkssaYpbR5dTg4WE/WDN0UuFJRIPhCLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758803350; c=relaxed/simple;
-	bh=mdosckf0l+HgxKirE+dl118jDU4w52EV+AHS+DL8NSQ=;
+	bh=I2uuCriRflVqgvU8CtAnGXErcoFYIBf/4993czMBu4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXtTXuBubnUyvc3Po76AHVs2MSF5XPNQpW+dT7W2lieEKKSC+XhBZKVainNUw1NXODq8He34ajmm7jxNtbSNOIT3GVxgCX1AiLXQ0LT+lP9UzHIzrqlwb9dQTKFt5BEr5qMU8bgpphNhZG3UCDoyGaAaXZjhzPDfI2gart6PRRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnU66YD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1710CC2BC86;
+	 MIME-Version; b=iEmrsrVpnX+Wj64GHZy0RV84hIypKFUfgpD2Fd4KIphF4v8r5nGFKdy0Kt5MVHRpiY0jeAF4RtWgKJSTg0g4DQYSfoMx+PzelcEmL0WCv5wgJFB8U2puqTtzE3fsi5xI3q7lNl+uiE/k3OZR6sTl6IqSqegtl8vJMUS2DfWJYVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csWs0Buy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F81C19423;
 	Thu, 25 Sep 2025 12:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758803350;
-	bh=mdosckf0l+HgxKirE+dl118jDU4w52EV+AHS+DL8NSQ=;
+	bh=I2uuCriRflVqgvU8CtAnGXErcoFYIBf/4993czMBu4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DnU66YD29txcemyS+NUCwra1MvI2Sot3XYzan+5y/yi9m9pk75j8eDjYcc4rwdqQf
-	 z8VAvz1P1V708y+itzCEAx0kxV3dhmf0WQl2FF1/OmHhPhvh7VZLYopkmNQn9sAOBL
-	 x7xrVJWtnQyzqVK3q1DKxLxw1O1YbutHMnx5ldo3wIat4nemhqWx7lGA+bWXWLlBRX
-	 fx6541S0PT2MvYCHczVAVcCqbwkZAYXxDqaEG9Vdm506AfwUKhIq5lARFwcKWng7zA
-	 5flb7itK1ffMHOOl7C8PmJzTmD+6/RltwLHCMASjbsGd+mm7OiaF3W0lCcaEnJDgO7
-	 gDYMOJhkNQ3dw==
+	b=csWs0BuyxNNhkbWIrSqp2//obeC2K8qMFRJN2Lw/QXKsl5DEF0ueDq3Xv1BfpR/GV
+	 hIv36MU7b9j+Cv7FnEQQZ7Jf4GmUqy2Jxamw0lE5OGpaFpfwlZAGFTG25ekancdaqo
+	 DyhjkZ/IGuEg+yoWj4kbfYsebADvpROuCFZxYwfZkmkldioLQIToGtEOqo1uAq7+h1
+	 I7b1o4JnQGKARIpxaUZKIwAbgLtum1e2PBMZXdy5wGKvH/HKsSBClWjVbkV4JsyJ4b
+	 gjs+Ix34C0eYkJozzyZbK0lxV01xZHpWU6+YTw5trmxEbgzaIa0IcZD8QJAOZwCjIm
+	 NzYlZ8xut3viw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1v1l5q-000000002rY-2AEB;
+	id 1v1l5q-000000002rb-2a5G;
 	Thu, 25 Sep 2025 14:29:02 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Joerg Roedel <joro@8bytes.org>,
@@ -62,11 +62,10 @@ Cc: Robin Murphy <robin.murphy@arm.com>,
 	iommu@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Magnus Damm <damm+renesas@opensource.se>
-Subject: [PATCH 04/14] iommu/ipmmu-vmsa: fix device leak on of_xlate()
-Date: Thu, 25 Sep 2025 14:27:46 +0200
-Message-ID: <20250925122756.10910-5-johan@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 05/14] iommu/mediatek: fix device leak on of_xlate()
+Date: Thu, 25 Sep 2025 14:27:47 +0200
+Message-ID: <20250925122756.10910-6-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250925122756.10910-1-johan@kernel.org>
 References: <20250925122756.10910-1-johan@kernel.org>
@@ -81,27 +80,27 @@ Content-Transfer-Encoding: 8bit
 Make sure to drop the reference taken to the iommu platform device when
 looking up its driver data during of_xlate().
 
-Fixes: 7b2d59611fef ("iommu/ipmmu-vmsa: Replace local utlb code with fwspec ids")
-Cc: stable@vger.kernel.org	# 4.14
-Cc: Magnus Damm <damm+renesas@opensource.se>
+Fixes: 0df4fabe208d ("iommu/mediatek: Add mt8173 IOMMU driver")
+Cc: stable@vger.kernel.org	# 4.6
+Cc: Yong Wu <yong.wu@mediatek.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/iommu/ipmmu-vmsa.c | 2 ++
+ drivers/iommu/mtk_iommu.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/ipmmu-vmsa.c b/drivers/iommu/ipmmu-vmsa.c
-index ffa892f65714..02a2a55ffa0a 100644
---- a/drivers/iommu/ipmmu-vmsa.c
-+++ b/drivers/iommu/ipmmu-vmsa.c
-@@ -720,6 +720,8 @@ static int ipmmu_init_platform_device(struct device *dev,
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index 0e0285348d2b..8d8e85186188 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -974,6 +974,8 @@ static int mtk_iommu_of_xlate(struct device *dev,
+ 			return -EINVAL;
  
- 	dev_iommu_priv_set(dev, platform_get_drvdata(ipmmu_pdev));
- 
-+	put_device(&ipmmu_pdev->dev);
+ 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
 +
- 	return 0;
- }
++		put_device(&m4updev->dev);
+ 	}
  
+ 	return iommu_fwspec_add_ids(dev, args->args, 1);
 -- 
 2.49.1
 
