@@ -1,93 +1,97 @@
-Return-Path: <stable+bounces-181724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65C9B9FA3A
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 15:44:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35364B9FD50
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 16:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D8E12E2D0D
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 13:44:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA573B409D
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DEA274670;
-	Thu, 25 Sep 2025 13:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882A729D27D;
+	Thu, 25 Sep 2025 13:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="iDwQTQjf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Er++w98i"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BB22727FD;
-	Thu, 25 Sep 2025 13:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFE328641E;
+	Thu, 25 Sep 2025 13:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758807852; cv=none; b=g8jISNTJM9ounx9QtRjdkf1sZySXJvxCCPISg2A/tclNxVVJt7D89WPgrYB8YHZTZAkJhuX++z2/vGvHQmsyOt0zBOGZUahhhOPVp0CHzAfIvt4MH+kAVBdF81BKkfw89z6S5XvIYUbX0/m+XZagLKFzwDUBdouNCN1WfMhYYwQ=
+	t=1758808714; cv=none; b=QDjZqPTvqjN2b8FtfK9oAqqN2zq46nS98+V5DIVOvudUHgJDbDLHQgXATkOQh1OpqekTGejcFwsKNf2gu1uIiSEjtG37Hvw1t0OaocAcwEnjyeuYFOOgMZOkpECwNjJrFbgF66C5cwRO9U/Gw63gjJHpXukrrF4w4djnmoQLLzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758807852; c=relaxed/simple;
-	bh=z0nrjmYw4OalvIuVx9M/Xqt3AoRAIrJYUKWWh5/SgpU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NKICBlGmMMMQ6vwNAk0kZfek9kCJR6bQ9HKr999RjH3G+BwCKeRlR8cRATcm7LMBXKMnSysdmRJRWA36lHzN9R/nIlqPjLe/eKeA8W3SQsZoeGy0ZJcllQQzjamcPf9azlB87es5H0h5H4Vk5Tg53HMJlj4Z6OgjtNJSGK8CJ5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=iDwQTQjf; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1758807842;
-	bh=z0nrjmYw4OalvIuVx9M/Xqt3AoRAIrJYUKWWh5/SgpU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iDwQTQjf+5aoYii8V7TIlFrezpbgSWVarP0i3pxD7eLDrfSa7YofMaSS2KBC12M6e
-	 XucJJgfriXb0oON4oX0H4VjHWsqgpr7i3ZGaBZlfPVjvcIJ4/BvCjMj5m4q1bJ2bpN
-	 eqzaOHFhyvVBmrCS8BtaUMyjB7rcKIQauoqRAQmodaDfYkw+FhuEr8V9cPnrhnzPNX
-	 Qdio0coW3QiE1eUIYNGQgaGwiUzG8T7axx0hkl2Yy/dw0hSaqfpxpwIeo2kEYVQkt9
-	 +wASpjhxocwK+CEIL0FDe4EE7h8QkOwegCUEy/a3DbsLH60WSnJCsKvnXM0DeH5ynl
-	 K29dDioXgk/XA==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 89CB317E108C;
-	Thu, 25 Sep 2025 15:44:02 +0200 (CEST)
-Message-ID: <a1224727-0d33-4e62-a538-8013115848be@collabora.com>
-Date: Thu, 25 Sep 2025 15:44:01 +0200
+	s=arc-20240116; t=1758808714; c=relaxed/simple;
+	bh=xnoV6wlPNkvlSxbWnXdWvM4zVH7V3UY93H+fTN/zUnc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DFRfLGvsWfJ9VUqJwOdF6NqID1ISD8ISN5bC9Ue02Dj9wijudS+pX0MHV+H7x0n5dsLSU+40tpgvayxG4nCQzcG8a3l5gbWUSRWJxkENtprCt8ZzbNG2o4I9FzI+OLrDqjt+TIwiW3IhpQya8zS+//gQ1qcNT0MPpzMkXJFypXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Er++w98i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52038C2BCB6;
+	Thu, 25 Sep 2025 13:58:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758808713;
+	bh=xnoV6wlPNkvlSxbWnXdWvM4zVH7V3UY93H+fTN/zUnc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Er++w98iIL0/aiXKl0iTmpJ8CHU1c/0rnH7l0yUMJq0zp2YTiHJkVu3pIG46NRM2/
+	 VYOb8P+60CSllsIM/MlgTDxGYdwIQymgZqfIOeT44I9lSQPrMNVC76KfHm07eD5dVK
+	 CQUB5knmE9z7MnC+NGQ4prq3hbdUv1ewKnbXIbzhBANRlCdyzcyyNFDtiyfwShDhdO
+	 EBphcp1sH0qNAOKuWBV+y/ZzZI3nc+E26LjMcvaql6cZoCwRXszsK12qDXEN4X/380
+	 1PoLvWV5h+WwsqM4R42NA9Si0kRizlHd/GqtY08t1wj7SjMYKeNbV3QwibDxNrGh9R
+	 j/9/p+OLCOjtQ==
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: linux-pci@vger.kernel.org, 
+ Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: Duy Nguyen <duy.nguyen.rh@renesas.com>, 
+ Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>, stable@vger.kernel.org, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Magnus Damm <magnus.damm@gmail.com>, Marc Zyngier <maz@kernel.org>, 
+ Rob Herring <robh@kernel.org>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ linux-renesas-soc@vger.kernel.org
+In-Reply-To: <20250909162707.13927-1-marek.vasut+renesas@mailbox.org>
+References: <20250909162707.13927-1-marek.vasut+renesas@mailbox.org>
+Subject: Re: [PATCH 1/2] PCI: rcar-host: Drop PMSR spinlock
+Message-Id: <175880870894.21505.16125464866256198408.b4-ty@kernel.org>
+Date: Thu, 25 Sep 2025 19:28:28 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: platform: mtk-mdp3: fix device leaks at probe
-To: Johan Hovold <johan@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
- Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Moudy Ho <moudy.ho@mediatek.com>
-References: <20250924143919.11183-1-johan@kernel.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <20250924143919.11183-1-johan@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-Il 24/09/25 16:39, Johan Hovold ha scritto:
-> Make sure to drop the references taken when looking up the subsys
-> devices during probe on probe failure (e.g. probe deferral) and on
-> driver unbind.
-> 
-> Similarly, drop the SCP device reference after retrieving its platform
-> data during probe to avoid leaking it.
-> 
-> Note that holding a reference to a device does not prevent its driver
-> data from going away.
-> 
-> Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
-> Cc: stable@vger.kernel.org	# 6.1
-> Cc: Moudy Ho <moudy.ho@mediatek.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+On Tue, 09 Sep 2025 18:26:24 +0200, Marek Vasut wrote:
+> The pmsr_lock spinlock used to be necessary to synchronize access to the
+> PMSR register, because that access could have been triggered from either
+> config space access in rcar_pcie_config_access() or an exception handler
+> rcar_pcie_aarch32_abort_handler().
+> 
+> The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
+> commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
+> which triggered an exception"), which performs more accurate, controlled
+> invocation of the exception, and a fixup.
+> 
+> [...]
 
+Applied, thanks!
+
+[1/2] PCI: rcar-host: Drop PMSR spinlock
+      commit: 0a8f173d9dad13930d5888505dc4c4fd6a1d4262
+[2/2] PCI: rcar-host: Convert struct rcar_msi mask_lock into raw spinlock
+      commit: 945878aa8b574f66ead4ab1844185376c0d0add4
+
+Best regards,
+-- 
+Manivannan Sadhasivam <mani@kernel.org>
 
 
