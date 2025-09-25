@@ -1,130 +1,245 @@
-Return-Path: <stable+bounces-181699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F72DB9EAF7
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:34:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D72DB9ECD1
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 12:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2DE81722EA
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 10:34:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFF927B2FB8
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 10:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B2A2F530A;
-	Thu, 25 Sep 2025 10:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11572E8B61;
+	Thu, 25 Sep 2025 10:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zsntq5uZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JoGX6GJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6A92F3C38;
-	Thu, 25 Sep 2025 10:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995A5264628;
+	Thu, 25 Sep 2025 10:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758796401; cv=none; b=NaQHr8w0yfE1GrL0ln/3eqAYwukH0FBQPuB48voeeobc78HWMdkYAu/1ILstP83zgRPv91RL+RwncGfj2N4kpBY7l6WqdVD+osF0QgtV32O7pTEL76syFS3QrNLXdQNFhZB4dLK3893m4XX7Dv4AKHGaIuTKCGukBJqL0S/5I40=
+	t=1758797257; cv=none; b=IVD+ElVC5DehtdSSNVqHQr//LpkFWPgLSFWIqOdFeGo02u+QuF3YarKuU5FuzYbhXRjDGjKWdIKzboavDtQyK3chQ59HZPRYzgxVzhhKSGS5iE5evKj/vzjK0xkNJa25ZrsvrmcMg/yNX+0Nznf/bOzkVi/meLxoaWJpQtqK0w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758796401; c=relaxed/simple;
-	bh=zWnGj1eCp8t5gumf2c9rwYgkDxIwOKnROlXH4jqgV2k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hfV2iVCJUP0UA7Mp9AKMOqxVuONFnoBwHT3+yORWCZE3nf3/1QU/NQdXeZUNEoxqhXf3IB7E6vqi7MqffjCyrVleYJwrF6Fsf9QyuYgE15XGMKBFFE7m45fCoFRVwJexXDIr/dEcJ5ki3hsf+euKqDDXGZ4LDj95LfYjUKG6i9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zsntq5uZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3588C113D0;
-	Thu, 25 Sep 2025 10:33:18 +0000 (UTC)
+	s=arc-20240116; t=1758797257; c=relaxed/simple;
+	bh=BHhhMpkfXWt2xzoPl8SYrFxIPX4fTVpEJr98W1BEdlk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YQ1KkHM/DsH7jb8PDEAB9/eDjcG4gqh0FiQZ7qWzpwA6eGXJXUJtetzy8iDisYAwA/MCLRDRzAnV8n5/3Gt8l7nRLN9cFkCLrezcrpp3KashdVzY4xb5vH/3USF/4DDmNp+bKWmwmvhSKoLaxgJ0p64oWx9VIrzA1xixlvNwWJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JoGX6GJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA21C4CEF0;
+	Thu, 25 Sep 2025 10:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758796401;
-	bh=zWnGj1eCp8t5gumf2c9rwYgkDxIwOKnROlXH4jqgV2k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Zsntq5uZktPFbYwAaHpVOQ1hByVw5vGHLPmtOVw1GBpLsI7nWL5EoCEyGngtnOoyC
-	 GQgTlPlyFjabHrLELYrLJlgLJCxB1f8MjasiUpXcYD9bquvk76Gca+VXUMBwo2XGaF
-	 4ayIsQl7Ec+9XtJj2YwbZP4ViIpmm+j+vbyU2/BaC+OBbvL8XeFzciujegNWXdMWcl
-	 FppfwBJABIkqrL0gJxwm5BzlbeY5Gxx7d4xT19zE5H968JhZWBpB7CUsPrjNooojcg
-	 MRDeTCEXSZwNrNoHJa8EtcP0oKFI9HxFxCIEljzautfrkPZ18ZddaaP/HOMvAWZzaI
-	 lfGJZmXTlR1Qw==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Thu, 25 Sep 2025 12:32:37 +0200
-Subject: [PATCH net-next 02/15] selftests: mptcp: join: validate C-flag +
- def limit
+	s=k20201202; t=1758797257;
+	bh=BHhhMpkfXWt2xzoPl8SYrFxIPX4fTVpEJr98W1BEdlk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JoGX6GJOAz3L/WXNHkTFDOkGbMzQueR6jflmV+EVCLx7zQU3Oq4ivGw5YPtbBZwrk
+	 eP58PGE+030oNVXocxgHlnnP97verFOjqGMgAr+2BX5ql9bRxbBJSrTnDsLn7FFsWL
+	 piRN0khICAthn0wXRyn+tXNWDIXlj3kRQG+hZlglLXGcxPq8CyBMFA6C1KegVlOe8M
+	 L9aP6D63O9rSDEVpcN4MB83f/7xp7GDLOIq3Fh7dZFx2pZCxNpunr9rueWE5mFVVml
+	 cM8JZdVmq0PN1YTNuvjUHU8g3xsBxscC4AuaxouK/GH2maVA/rscQFHnJ+mQOtimFL
+	 oThuF8pjxaTmQ==
+Date: Thu, 25 Sep 2025 11:47:32 +0100
+From: Lee Jones <lee@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jann Horn <jannh@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 070/132] af_unix: Dont leave consecutive consumed OOB
+ skbs.
+Message-ID: <20250925104732.GB8757@google.com>
+References: <20250703143939.370927276@linuxfoundation.org>
+ <20250703143942.167088603@linuxfoundation.org>
+ <20250925090827.GA514097@google.com>
+ <2025092526-grandpa-rebound-6473@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250925-net-next-mptcp-c-flag-laminar-v1-2-ad126cc47c6b@kernel.org>
-References: <20250925-net-next-mptcp-c-flag-laminar-v1-0-ad126cc47c6b@kernel.org>
-In-Reply-To: <20250925-net-next-mptcp-c-flag-laminar-v1-0-ad126cc47c6b@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1979; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=zWnGj1eCp8t5gumf2c9rwYgkDxIwOKnROlXH4jqgV2k=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKuSoXU3Kw2NZ8YP3euedm6+fHz1HxMfp6d/W/Kqx1Lz
- Z/90lzG3VHKwiDGxSArpsgi3RaZP/N5FW+Jl58FzBxWJpAhDFycAjCRXhWG/0na+nWbmQ54m+p3
- Gz6TCuVXsSvocvvX/zhv9eE1k7pYixn+qS8KuXFoEht33ZKtp82frmxg7/r3lrM+rIxtswfj9rs
- lrAA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025092526-grandpa-rebound-6473@gregkh>
 
-The previous commit adds an exception for the C-flag case. The
-'mptcp_join.sh' selftest is extended to validate this case.
+On Thu, 25 Sep 2025, Greg Kroah-Hartman wrote:
 
-In this subtest, there is a typical CDN deployment with a client where
-MPTCP endpoints have been 'automatically' configured:
+> On Thu, Sep 25, 2025 at 10:08:27AM +0100, Lee Jones wrote:
+> > On Thu, 03 Jul 2025, Greg Kroah-Hartman wrote:
+> > 
+> > > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > > 
+> > > ------------------
+> > > 
+> > > From: Kuniyuki Iwashima <kuniyu@google.com>
+> > > 
+> > > [ Upstream commit 32ca245464e1479bfea8592b9db227fdc1641705 ]
+> > > 
+> > > Jann Horn reported a use-after-free in unix_stream_read_generic().
+> > > 
+> > > The following sequences reproduce the issue:
+> > > 
+> > >   $ python3
+> > >   from socket import *
+> > >   s1, s2 = socketpair(AF_UNIX, SOCK_STREAM)
+> > >   s1.send(b'x', MSG_OOB)
+> > >   s2.recv(1, MSG_OOB)     # leave a consumed OOB skb
+> > >   s1.send(b'y', MSG_OOB)
+> > >   s2.recv(1, MSG_OOB)     # leave a consumed OOB skb
+> > >   s1.send(b'z', MSG_OOB)
+> > >   s2.recv(1)              # recv 'z' illegally
+> > >   s2.recv(1, MSG_OOB)     # access 'z' skb (use-after-free)
+> > > 
+> > > Even though a user reads OOB data, the skb holding the data stays on
+> > > the recv queue to mark the OOB boundary and break the next recv().
+> > > 
+> > > After the last send() in the scenario above, the sk2's recv queue has
+> > > 2 leading consumed OOB skbs and 1 real OOB skb.
+> > > 
+> > > Then, the following happens during the next recv() without MSG_OOB
+> > > 
+> > >   1. unix_stream_read_generic() peeks the first consumed OOB skb
+> > >   2. manage_oob() returns the next consumed OOB skb
+> > >   3. unix_stream_read_generic() fetches the next not-yet-consumed OOB skb
+> > >   4. unix_stream_read_generic() reads and frees the OOB skb
+> > > 
+> > > , and the last recv(MSG_OOB) triggers KASAN splat.
+> > > 
+> > > The 3. above occurs because of the SO_PEEK_OFF code, which does not
+> > > expect unix_skb_len(skb) to be 0, but this is true for such consumed
+> > > OOB skbs.
+> > > 
+> > >   while (skip >= unix_skb_len(skb)) {
+> > >     skip -= unix_skb_len(skb);
+> > >     skb = skb_peek_next(skb, &sk->sk_receive_queue);
+> > >     ...
+> > >   }
+> > > 
+> > > In addition to this use-after-free, there is another issue that
+> > > ioctl(SIOCATMARK) does not function properly with consecutive consumed
+> > > OOB skbs.
+> > > 
+> > > So, nothing good comes out of such a situation.
+> > > 
+> > > Instead of complicating manage_oob(), ioctl() handling, and the next
+> > > ECONNRESET fix by introducing a loop for consecutive consumed OOB skbs,
+> > > let's not leave such consecutive OOB unnecessarily.
+> > > 
+> > > Now, while receiving an OOB skb in unix_stream_recv_urg(), if its
+> > > previous skb is a consumed OOB skb, it is freed.
+> > > 
+> > > [0]:
+> > > BUG: KASAN: slab-use-after-free in unix_stream_read_actor (net/unix/af_unix.c:3027)
+> > > Read of size 4 at addr ffff888106ef2904 by task python3/315
+> > > 
+> > > CPU: 2 UID: 0 PID: 315 Comm: python3 Not tainted 6.16.0-rc1-00407-gec315832f6f9 #8 PREEMPT(voluntary)
+> > > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
+> > > Call Trace:
+> > >  <TASK>
+> > >  dump_stack_lvl (lib/dump_stack.c:122)
+> > >  print_report (mm/kasan/report.c:409 mm/kasan/report.c:521)
+> > >  kasan_report (mm/kasan/report.c:636)
+> > >  unix_stream_read_actor (net/unix/af_unix.c:3027)
+> > >  unix_stream_read_generic (net/unix/af_unix.c:2708 net/unix/af_unix.c:2847)
+> > >  unix_stream_recvmsg (net/unix/af_unix.c:3048)
+> > >  sock_recvmsg (net/socket.c:1063 (discriminator 20) net/socket.c:1085 (discriminator 20))
+> > >  __sys_recvfrom (net/socket.c:2278)
+> > >  __x64_sys_recvfrom (net/socket.c:2291 (discriminator 1) net/socket.c:2287 (discriminator 1) net/socket.c:2287 (discriminator 1))
+> > >  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+> > >  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> > > RIP: 0033:0x7f8911fcea06
+> > > Code: 5d e8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 75 19 83 e2 39 83 fa 08 75 11 e8 26 ff ff ff 66 0f 1f 44 00 00 48 8b 45 10 0f 05 <48> 8b 5d f8 c9 c3 0f 1f 40 00 f3 0f 1e fa 55 48 89 e5 48 83 ec 08
+> > > RSP: 002b:00007fffdb0dccb0 EFLAGS: 00000202 ORIG_RAX: 000000000000002d
+> > > RAX: ffffffffffffffda RBX: 00007fffdb0dcdc8 RCX: 00007f8911fcea06
+> > > RDX: 0000000000000001 RSI: 00007f8911a5e060 RDI: 0000000000000006
+> > > RBP: 00007fffdb0dccd0 R08: 0000000000000000 R09: 0000000000000000
+> > > R10: 0000000000000001 R11: 0000000000000202 R12: 00007f89119a7d20
+> > > R13: ffffffffc4653600 R14: 0000000000000000 R15: 0000000000000000
+> > >  </TASK>
+> > > 
+> > > Allocated by task 315:
+> > >  kasan_save_stack (mm/kasan/common.c:48)
+> > >  kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+> > >  __kasan_slab_alloc (mm/kasan/common.c:348)
+> > >  kmem_cache_alloc_node_noprof (./include/linux/kasan.h:250 mm/slub.c:4148 mm/slub.c:4197 mm/slub.c:4249)
+> > >  __alloc_skb (net/core/skbuff.c:660 (discriminator 4))
+> > >  alloc_skb_with_frags (./include/linux/skbuff.h:1336 net/core/skbuff.c:6668)
+> > >  sock_alloc_send_pskb (net/core/sock.c:2993)
+> > >  unix_stream_sendmsg (./include/net/sock.h:1847 net/unix/af_unix.c:2256 net/unix/af_unix.c:2418)
+> > >  __sys_sendto (net/socket.c:712 (discriminator 20) net/socket.c:727 (discriminator 20) net/socket.c:2226 (discriminator 20))
+> > >  __x64_sys_sendto (net/socket.c:2233 (discriminator 1) net/socket.c:2229 (discriminator 1) net/socket.c:2229 (discriminator 1))
+> > >  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+> > >  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> > > 
+> > > Freed by task 315:
+> > >  kasan_save_stack (mm/kasan/common.c:48)
+> > >  kasan_save_track (mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1))
+> > >  kasan_save_free_info (mm/kasan/generic.c:579 (discriminator 1))
+> > >  __kasan_slab_free (mm/kasan/common.c:271)
+> > >  kmem_cache_free (mm/slub.c:4643 (discriminator 3) mm/slub.c:4745 (discriminator 3))
+> > >  unix_stream_read_generic (net/unix/af_unix.c:3010)
+> > >  unix_stream_recvmsg (net/unix/af_unix.c:3048)
+> > >  sock_recvmsg (net/socket.c:1063 (discriminator 20) net/socket.c:1085 (discriminator 20))
+> > >  __sys_recvfrom (net/socket.c:2278)
+> > >  __x64_sys_recvfrom (net/socket.c:2291 (discriminator 1) net/socket.c:2287 (discriminator 1) net/socket.c:2287 (discriminator 1))
+> > >  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+> > >  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> > > 
+> > > The buggy address belongs to the object at ffff888106ef28c0
+> > >  which belongs to the cache skbuff_head_cache of size 224
+> > > The buggy address is located 68 bytes inside of
+> > >  freed 224-byte region [ffff888106ef28c0, ffff888106ef29a0)
+> > > 
+> > > The buggy address belongs to the physical page:
+> > > page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888106ef3cc0 pfn:0x106ef2
+> > > head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+> > > flags: 0x200000000000040(head|node=0|zone=2)
+> > > page_type: f5(slab)
+> > > raw: 0200000000000040 ffff8881001d28c0 ffffea000422fe00 0000000000000004
+> > > raw: ffff888106ef3cc0 0000000080190010 00000000f5000000 0000000000000000
+> > > head: 0200000000000040 ffff8881001d28c0 ffffea000422fe00 0000000000000004
+> > > head: ffff888106ef3cc0 0000000080190010 00000000f5000000 0000000000000000
+> > > head: 0200000000000001 ffffea00041bbc81 00000000ffffffff 00000000ffffffff
+> > > head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+> > > page dumped because: kasan: bad access detected
+> > > 
+> > > Memory state around the buggy address:
+> > >  ffff888106ef2800: 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc
+> > >  ffff888106ef2880: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+> > > >ffff888106ef2900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> > >                    ^
+> > >  ffff888106ef2980: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+> > >  ffff888106ef2a00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> > > 
+> > > Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+> > 
+> > Do we know why this stopped at v6.1?
+> > 
+> > The Fixes: commit was added in v5.15 and this appears to apply fine.
+> > 
+> > If it helps, the upstream commit was:
+> > 
+> >   32ca245464e1 af_unix: Don't leave consecutive consumed OOB skbs.
+> 
+> Commits that are not explicitly tagged with "cc: stable@" are not always
+> backported everywhere.  They are done on a "hey, let's run a script and
+> see what falls out" type of method as the maintainer and developer
+> involved didn't explicitly ask for it to be applied.
 
-- the server set net.mptcp.allow_join_initial_addr_port=0
+Right.  I'm just surprised that it was backported to some branches, but
+not others, despite seemingly applying just fine and the Fixes: tag
+indicating that it should be applied to v5.15 as well.
 
-- the client has multiple 'subflow' endpoints, and the default limits:
-  not accepting ADD_ADDRs.
+> If you think it should be added to other branches, please always let us
+> know and ideally, send a working backport :)
 
-Without the parent patch, the client is not able to establish new
-subflows using its 'subflow' endpoints. The parent commit fixes that.
+I just did let you know. :)
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 6055ee5762e13108e5e2924a0e77d58da584d008..a94b3960ad5e009dbead66b6ff2aa01f70aa3e1f 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3306,6 +3306,17 @@ deny_join_id0_tests()
- 		run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
- 	fi
-+
-+	# default limits, server deny join id 0 + signal
-+	if reset_with_allow_join_id0 "default limits, server deny join id 0" 0 1; then
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 0 2
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 2 2 2
-+	fi
- }
- 
- fullmesh_tests()
+No backport required.  It should just apply.
 
 -- 
-2.51.0
-
+Lee Jones [李琼斯]
 
