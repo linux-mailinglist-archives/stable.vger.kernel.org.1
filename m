@@ -1,91 +1,95 @@
-Return-Path: <stable+bounces-181733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A278DBA0141
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 16:52:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA3EBA0193
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 17:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C4707B591F
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 14:51:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38CE94C3E66
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 15:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775E22E0936;
-	Thu, 25 Sep 2025 14:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1C52E1746;
+	Thu, 25 Sep 2025 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJ/3af5m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9eZagnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D39B2DCF77;
-	Thu, 25 Sep 2025 14:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B9C1DE4EF;
+	Thu, 25 Sep 2025 15:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758811967; cv=none; b=CEpiUAbpzZTVZLRhhjOi7zHt4hllbpG+FAIwaTxVM5J/UL6mIvcbdpaKsSdITxjBWbrJOWT2zIcTdxMW4DNYrwvPoBdWBm02DmMdTbWAukjC/9Seo04wr/j44QsPtGBgy1PkLF5CoUoStEXwxJd9f80tlLFnXEpEi2YFXW7bzu4=
+	t=1758812496; cv=none; b=kuaEyM4ItGjHB8Wj5n2yBPYjOpH34NBApWKxXAwvPMDhukDrz3RJz6bw2KYKVrSQ0VVwD4kVhxoy3kGYzs74r3j8iwuottmYZd8VEesix/3PEVciY7WR9RuDlSewOttl5o73b94/13qUWB2pO49SLIAPx4fcRXCPbYH9+9IFE9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758811967; c=relaxed/simple;
-	bh=LXq8HtGAU594S11XGd1rj37wwOjvDBuvwD1gQ+gWPVE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=brBE/t0JTijPhcLJV3VrY+xbMphgkHsrdqVB4c79hWXS9hKrb3C/qZyg4y+I2QQ0M5F7ehLA3wghWP9nu09feHtVr58IoqpXKqd5W8LWnwVl/U/cVWu/VaAX/AydSbsJExBZ5qcgN/SFfc1cncy6C2j9urA4El2yawlRampf+Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJ/3af5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A2DC4CEF0;
-	Thu, 25 Sep 2025 14:52:43 +0000 (UTC)
+	s=arc-20240116; t=1758812496; c=relaxed/simple;
+	bh=HBMKAro78ZNFv7LCJEgpDLhewdaAREFXTDxX6fc0Jhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iIr0yjD3wLTnoM8kbRKCTNMLzgmJWdth9EbOVm9MYA9UvSaMrTWxTQPRfNcUcmHZE3j67EIWcqXJ8rPoMGmjdkrYnXhyGAKGKLSdkVP7Ufqbz3dFmImSu1UXif4j3NJ9NZ6mPAISYpfLRZvkUlkvgQZb52hoJNITZm1SqdQHl9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9eZagnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5E9C4CEF0;
+	Thu, 25 Sep 2025 15:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758811966;
-	bh=LXq8HtGAU594S11XGd1rj37wwOjvDBuvwD1gQ+gWPVE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DJ/3af5mp+DquibEWgvTF347o0EuFnNQEYO1CnZZn6lO7pETMHSegESQF6bzOR5I/
-	 9wtrZQahcRSlu4n7GyzVjDw2dVHhqjgCLgkzHecWqg+rf6+vjNwSFjrju8KAGcHhN3
-	 flx9nUlwdcP5ICCx7v2qou1iq1LHAkZjmpKkG3+7QEv4Z/MKyfijmd4y051l6LBe0W
-	 9+oiK6dURTb8G5dLyeW7FuCnCZ3014kCcYaWuNsTrFzuhGwNEC67Xhw1H9mQxyBLD0
-	 P+AL5bAPhKog3tBNzs17GqmNgEpp2vSX0yrmL+t3ssDS+5a8c9hPapDKABJeMabyl4
-	 TQux7OQ/0+/cg==
-Date: Thu, 25 Sep 2025 16:52:41 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	s=k20201202; t=1758812495;
+	bh=HBMKAro78ZNFv7LCJEgpDLhewdaAREFXTDxX6fc0Jhs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p9eZagnlb2exRZ2TXxx1d+IN8AQ9UQQV0/BCt/ggJaBfaroEU1/1ZuvHZMSg4eaYd
+	 LKlBmZuLlu2Ws+UmQFmxbPZNzbtMpQ3URJtJBSo58Ofi3m222QQvISk10f+w4UAi7N
+	 foNhjRRTZRgEoorRWw29WG85c2bumHhhQ2J9QBG1SPceJ74C4fXTNCw1VmuvDXTBp8
+	 X/n1mmnYRLUw43do55pprykU9rV7Ll+3aC+SjuN5XslGg7r+fyJ4+KOTkpx6OtGeXW
+	 UwbpISMl1uHvTSHDNn4TPw2SXNOAO/MLiOeQbW943gdtqCqss+JCAoYVCWbBNXObEN
+	 dPBrwS2W8c74A==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1v1nTM-000000006Jh-3Oke;
+	Thu, 25 Sep 2025 17:01:28 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Russell King <linux@armlinux.org.uk>,
 	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	stable@vger.kernel.org, Thierry Reding <treding@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI: tegra194: Fix broken
- tegra_pcie_ep_raise_msi_irq()
-Message-ID: <aNVXOfP0fkdk0Svf@ryzen>
-References: <20250922140822.519796-5-cassel@kernel.org>
- <20250922140822.519796-6-cassel@kernel.org>
- <va2vktobo5dwfh6mkl6emilsnkeleh6ubkbiylv4zoxr2cezpa@s7h3yuytcpv4>
- <u7xhhqz6pzfe2keqmlq5acbad5rydzsfw43puj6lugpvz47rtm@ua7zoenz5ivx>
+	Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] amba: tegra-ahb: fix device leak on smmu enable
+Date: Thu, 25 Sep 2025 17:00:07 +0200
+Message-ID: <20250925150007.24173-1-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <u7xhhqz6pzfe2keqmlq5acbad5rydzsfw43puj6lugpvz47rtm@ua7zoenz5ivx>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 24, 2025 at 09:58:20PM +0530, Manivannan Sadhasivam wrote:
-> > > @@ -2012,6 +2012,7 @@ static int tegra_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
-> > >  
-> > >  static const struct pci_epc_features tegra_pcie_epc_features = {
-> > >  	.linkup_notifier = true,
-> > > +	.msi_capable = true,
-> > 
-> > This change is unrelated to the above tegra_pcie_ep_raise_msi_irq() fix. So this
-> > change should be in a separate patch.
-> > 
-> 
-> I did the split and applied the series, thanks!
+Make sure to drop the reference taken to the ahb platform device when
+looking up its driver data while enabling the smmu.
 
-Thank you Mani!
+Note that holding a reference to a device does not prevent its driver
+data from going away.
 
+Fixes: 89c788bab1f0 ("ARM: tegra: Add SMMU enabler in AHB")
+Cc: stable@vger.kernel.org	# 3.5
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/amba/tegra-ahb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Kind regards,
-Niklas
+diff --git a/drivers/amba/tegra-ahb.c b/drivers/amba/tegra-ahb.c
+index c0e8b765522d..f23c3ed01810 100644
+--- a/drivers/amba/tegra-ahb.c
++++ b/drivers/amba/tegra-ahb.c
+@@ -144,6 +144,7 @@ int tegra_ahb_enable_smmu(struct device_node *dn)
+ 	if (!dev)
+ 		return -EPROBE_DEFER;
+ 	ahb = dev_get_drvdata(dev);
++	put_device(dev);
+ 	val = gizmo_readl(ahb, AHB_ARBITRATION_XBAR_CTRL);
+ 	val |= AHB_ARBITRATION_XBAR_CTRL_SMMU_INIT_DONE;
+ 	gizmo_writel(ahb, val, AHB_ARBITRATION_XBAR_CTRL);
+-- 
+2.49.1
+
 
