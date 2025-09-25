@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-181748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A75BA1AEF
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 23:50:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F66BA1EF2
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 01:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3A511C824C9
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 21:50:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B14524A3EB7
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 23:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F20E2E8E11;
-	Thu, 25 Sep 2025 21:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8182ECE97;
+	Thu, 25 Sep 2025 23:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XMsv8+jE"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ViqPT/DP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D62275106;
-	Thu, 25 Sep 2025 21:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CAF2D837E;
+	Thu, 25 Sep 2025 23:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758837018; cv=none; b=Sut+ZoUUFPM3riNy/yxMQf+yQJ0b13xihCA86QG7NVBWBIFhDiGQV9OvmMIEou3gme8MWkvHJ4axQxHF+XQbHdaFtvpVS4BPgV/37CfwIx73aGv6GTe7Il3pNIfJvppg3hfx7+pIX9X17ndTf8ob36fDZI+kllWxwkrB9ETcZCc=
+	t=1758841867; cv=none; b=KQ/hi0qp8emd7/cgTdT6VaZwTS3HjsfJ5ZGDxtNRqXaC/d7k8AmvFYRyZaQw8mpKdPs+124C/ltEyh9ZgMzQ+md4QlxMGXT1wkAoYCZFdDhTpf4drjUR8xtrO+ekCf0TQzAbePjsox5I1dUNcSfuG+yfDyAeW/psdF3z4owCL7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758837018; c=relaxed/simple;
-	bh=oX+ffFtrNxS4S7E+QeUkUElYRbcpE88o28dPbhem8is=;
-	h=Date:To:From:Subject:Message-Id; b=Ty2l5PFIVgDabmKn9aOOaMmgjtTxzDulgV6kdDMQEeI4iAjAKVEzty38ic6TW71/MwMnNrOqUR26PyLTLXq3NSLYGbrU/p2oFVwRuHVeeZv6fwX2rIt6oK9RnR2kLEQDNKt002VvZY2lo1WIDObrOS5tWz4ANW2gWQB35gAJ0X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XMsv8+jE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0A5C4CEF0;
-	Thu, 25 Sep 2025 21:50:16 +0000 (UTC)
+	s=arc-20240116; t=1758841867; c=relaxed/simple;
+	bh=CsRQgdwQcSutvIEo/6u1Xvl8HtTMkqWnb059MMjWrsA=;
+	h=Date:To:From:Subject:Message-Id; b=SWWgZOEbQtUme+GZyGOqmn28bFhky3a6aEQw/FxiF49PJ9c/6UYpEWJqjIdhSp8NQWeQJ040mjEk4cGG/ZpuHKCFRijOsOT9DYRlyUv29RVljRyHv+uj2dcyBjItA9a8LX0WWVN6LnvBtVVixz2vM2GS7QfT6itKcAmrwpugc9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ViqPT/DP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD3FC4CEF0;
+	Thu, 25 Sep 2025 23:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758837016;
-	bh=oX+ffFtrNxS4S7E+QeUkUElYRbcpE88o28dPbhem8is=;
+	s=korg; t=1758841866;
+	bh=CsRQgdwQcSutvIEo/6u1Xvl8HtTMkqWnb059MMjWrsA=;
 	h=Date:To:From:Subject:From;
-	b=XMsv8+jEExn7TLAEuilIYSzECZOlrqIEByK/EYTheGlcbPbwfZNWF7qdOnPtz/Vqa
-	 awmUVwUHTYfQyTKJ1lQqLSykW6EwnF+kE9D0wcJoZRYCMu55jWeqYLjbkjh8CApwlR
-	 mAxY8oTfdPdS6/PcBOc4ptRlcn5lViYm3ylTniq0=
-Date: Thu, 25 Sep 2025 14:50:15 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,kartikey406@gmail.com,akpm@linux-foundation.org
+	b=ViqPT/DPiu27EeyfAecvwOp7647mgAWhusv/Zs4bYSlQN2xW/e1Y7Aev59xtZxE4f
+	 nZ9QVF5aFahlEKObyjpq1xuu4HMVCU0d21ndYBZvo5p7nN/Kk3N9lWYQXoaMawVSwo
+	 XJiT/D4ITcv/adPpoh8me/biD9ul2vlaspyz26wE=
+Date: Thu, 25 Sep 2025 16:11:06 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [failures] hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch removed from -mm tree
-Message-Id: <20250925215016.7B0A5C4CEF0@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch removed from -mm tree
+Message-Id: <20250925231106.9AD3FC4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,73 +50,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
+     Subject: mm/hugetlb: fix folio is still mapped when deleted
 has been removed from the -mm tree.  Its filename was
-     hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list.patch
+     mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
 
-This patch was dropped because it had testing failures
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list
-Date: Thu, 25 Sep 2025 20:19:32 +0530
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm/hugetlb: fix folio is still mapped when deleted
+Date: Fri, 12 Sep 2025 15:41:39 +0800
 
-hugetlb_vmdelete_list() uses trylock to acquire VMA locks during truncate
-operations.  As per the original design in commit 40549ba8f8e0 ("hugetlb:
-use new vma_lock for pmd sharing synchronization"), if the trylock fails
-or the VMA has no lock, it should skip that VMA.  Any remaining mapped
-pages are handled by remove_inode_hugepages() which is called after
-hugetlb_vmdelete_list() and uses proper lock ordering to guarantee
-unmapping success.
+Migration may be raced with fallocating hole.  remove_inode_single_folio
+will unmap the folio if the folio is still mapped.  However, it's called
+without folio lock.  If the folio is migrated and the mapped pte has been
+converted to migration entry, folio_mapped() returns false, and won't
+unmap it.  Due to extra refcount held by remove_inode_single_folio,
+migration fails, restores migration entry to normal pte, and the folio is
+mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
 
-Currently, when hugetlb_vma_trylock_write() returns success (1) for VMAs
-without shareable locks, the code proceeds to call unmap_hugepage_range().
-This causes assertion failures in huge_pmd_unshare() →
-hugetlb_vma_assert_locked() because no lock is actually held:
+The log is as follows:
+ BUG: Bad page cache in process hugetlb  pfn:156c00
+ page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
+ head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
+ aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
+ flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
+ page_type: f4(hugetlb)
+ page dumped because: still mapped when deleted
+ CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
+ Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4f/0x70
+  filemap_unaccount_folio+0xc4/0x1c0
+  __filemap_remove_folio+0x38/0x1c0
+  filemap_remove_folio+0x41/0xd0
+  remove_inode_hugepages+0x142/0x250
+  hugetlbfs_fallocate+0x471/0x5a0
+  vfs_fallocate+0x149/0x380
 
-  WARNING: CPU: 1 PID: 6594 Comm: syz.0.28 Not tainted
-  Call Trace:
-   hugetlb_vma_assert_locked+0x1dd/0x250
-   huge_pmd_unshare+0x2c8/0x540
-   __unmap_hugepage_range+0x6e3/0x1aa0
-   unmap_hugepage_range+0x32e/0x410
-   hugetlb_vmdelete_list+0x189/0x1f0
+Hold folio lock before checking if the folio is mapped to avold race with
+migration.
 
-Fix by explicitly skipping VMAs without shareable locks after trylock
-succeeds, consistent with the original design where such VMAs are deferred
-to remove_inode_hugepages() for proper handling.
-
-Link: https://lkml.kernel.org/r/20250925144934.150299-1-kartikey406@gmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
-Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
-Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
+Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: Muchun Song <muchun.song@linux.dev>
 Cc: Oscar Salvador <osalvador@suse.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/hugetlbfs/inode.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/hugetlbfs/inode.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/hugetlbfs/inode.c~hugetlbfs-skip-vmas-without-shareable-locks-in-hugetlb_vmdelete_list
+--- a/fs/hugetlbfs/inode.c~mm-hugetlb-fix-folio-is-still-mapped-when-deleted
 +++ a/fs/hugetlbfs/inode.c
-@@ -487,7 +487,8 @@ hugetlb_vmdelete_list(struct rb_root_cac
+@@ -517,14 +517,16 @@ static bool remove_inode_single_folio(st
  
- 		if (!hugetlb_vma_trylock_write(vma))
- 			continue;
--
-+		if (!__vma_shareable_lock(vma))
-+			continue;
- 		v_start = vma_offset_start(vma, start);
- 		v_end = vma_offset_end(vma, end);
+ 	/*
+ 	 * If folio is mapped, it was faulted in after being
+-	 * unmapped in caller.  Unmap (again) while holding
+-	 * the fault mutex.  The mutex will prevent faults
+-	 * until we finish removing the folio.
++	 * unmapped in caller or hugetlb_vmdelete_list() skips
++	 * unmapping it due to fail to grab lock.  Unmap (again)
++	 * while holding the fault mutex.  The mutex will prevent
++	 * faults until we finish removing the folio.  Hold folio
++	 * lock to guarantee no concurrent migration.
+ 	 */
++	folio_lock(folio);
+ 	if (unlikely(folio_mapped(folio)))
+ 		hugetlb_unmap_file_folio(h, mapping, folio, index);
  
+-	folio_lock(folio);
+ 	/*
+ 	 * We must remove the folio from page cache before removing
+ 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
 _
 
-Patches currently in -mm which might be from kartikey406@gmail.com are
+Patches currently in -mm which might be from tujinjiang@huawei.com are
 
 
 
