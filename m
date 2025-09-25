@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-181749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F66BA1EF2
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 01:11:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC617BA1EF5
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 01:11:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B14524A3EB7
-	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 23:11:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182941C83B82
+	for <lists+stable@lfdr.de>; Thu, 25 Sep 2025 23:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8182ECE97;
-	Thu, 25 Sep 2025 23:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76ACF2ED159;
+	Thu, 25 Sep 2025 23:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ViqPT/DP"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VZ8ak5sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CAF2D837E;
-	Thu, 25 Sep 2025 23:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302DD2D837E;
+	Thu, 25 Sep 2025 23:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758841867; cv=none; b=KQ/hi0qp8emd7/cgTdT6VaZwTS3HjsfJ5ZGDxtNRqXaC/d7k8AmvFYRyZaQw8mpKdPs+124C/ltEyh9ZgMzQ+md4QlxMGXT1wkAoYCZFdDhTpf4drjUR8xtrO+ekCf0TQzAbePjsox5I1dUNcSfuG+yfDyAeW/psdF3z4owCL7Q=
+	t=1758841869; cv=none; b=uQPnQHQj7yMOPANFacLC7JVz5qg1d/RViz4HDy0+72qRFxDYHIQDGRxEPto+M+rBTzoJfK14JWyGoCAYh7KkDJb0mfhNbGw2DjqlZSXnFnq5718poickfrORWU6IYXUp00OJIv0CnohSF5uvj3YCroVd2kJeEQlq+mYMIyPBs2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758841867; c=relaxed/simple;
-	bh=CsRQgdwQcSutvIEo/6u1Xvl8HtTMkqWnb059MMjWrsA=;
-	h=Date:To:From:Subject:Message-Id; b=SWWgZOEbQtUme+GZyGOqmn28bFhky3a6aEQw/FxiF49PJ9c/6UYpEWJqjIdhSp8NQWeQJ040mjEk4cGG/ZpuHKCFRijOsOT9DYRlyUv29RVljRyHv+uj2dcyBjItA9a8LX0WWVN6LnvBtVVixz2vM2GS7QfT6itKcAmrwpugc9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ViqPT/DP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD3FC4CEF0;
-	Thu, 25 Sep 2025 23:11:06 +0000 (UTC)
+	s=arc-20240116; t=1758841869; c=relaxed/simple;
+	bh=8SstXx6jnlD5MC453SXmk7nBnUdIhqWepozKWhJFMZ8=;
+	h=Date:To:From:Subject:Message-Id; b=sR8fNMYD2ld4by9Ax0iwI1K8auJel8fOqz3GmmwLquw/Azuw0kPKFjnCYMrdPCcR10WFFLjqlENt2iYq8QEGPvcD4/CMOXRZ+chib7rLtoh6k7/+/FpY/L0EjDOgik3j/BNQxCbsczqokm69y5dZHCaiVHJ36mpc+S9D8NyzE10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VZ8ak5sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD69C4CEF7;
+	Thu, 25 Sep 2025 23:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758841866;
-	bh=CsRQgdwQcSutvIEo/6u1Xvl8HtTMkqWnb059MMjWrsA=;
+	s=korg; t=1758841868;
+	bh=8SstXx6jnlD5MC453SXmk7nBnUdIhqWepozKWhJFMZ8=;
 	h=Date:To:From:Subject:From;
-	b=ViqPT/DPiu27EeyfAecvwOp7647mgAWhusv/Zs4bYSlQN2xW/e1Y7Aev59xtZxE4f
-	 nZ9QVF5aFahlEKObyjpq1xuu4HMVCU0d21ndYBZvo5p7nN/Kk3N9lWYQXoaMawVSwo
-	 XJiT/D4ITcv/adPpoh8me/biD9ul2vlaspyz26wE=
-Date: Thu, 25 Sep 2025 16:11:06 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
+	b=VZ8ak5sjDD/w28wuuYvGuneEHkIh5iqCuOztYIFJu+TND60jvb2omXsKS8zyjyN3Q
+	 +g8a8ZnXCIHJ0McRIQWi9SxGldmNlc47V9cTi0WmwtnSSwHP1tTyviBwtS10YdKcsm
+	 mwI/TIO5sLWHilZNzj+oy/5Db5/rLsv+/+i7X3Os=
+Date: Thu, 25 Sep 2025 16:11:08 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,glider@google.com,elver@google.com,dvyukov@google.com,ebiggers@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch removed from -mm tree
-Message-Id: <20250925231106.9AD3FC4CEF0@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kmsan-fix-out-of-bounds-access-to-shadow-memory.patch removed from -mm tree
+Message-Id: <20250925231108.BAD69C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,90 +50,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/hugetlb: fix folio is still mapped when deleted
+     Subject: kmsan: fix out-of-bounds access to shadow memory
 has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
+     kmsan-fix-out-of-bounds-access-to-shadow-memory.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Jinjiang Tu <tujinjiang@huawei.com>
-Subject: mm/hugetlb: fix folio is still mapped when deleted
-Date: Fri, 12 Sep 2025 15:41:39 +0800
+From: Eric Biggers <ebiggers@kernel.org>
+Subject: kmsan: fix out-of-bounds access to shadow memory
+Date: Thu, 11 Sep 2025 12:58:58 -0700
 
-Migration may be raced with fallocating hole.  remove_inode_single_folio
-will unmap the folio if the folio is still mapped.  However, it's called
-without folio lock.  If the folio is migrated and the mapped pte has been
-converted to migration entry, folio_mapped() returns false, and won't
-unmap it.  Due to extra refcount held by remove_inode_single_folio,
-migration fails, restores migration entry to normal pte, and the folio is
-mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
+Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
+kmsan_internal_set_shadow_origin():
 
-The log is as follows:
- BUG: Bad page cache in process hugetlb  pfn:156c00
- page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
- head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
- aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
- flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
- page_type: f4(hugetlb)
- page dumped because: still mapped when deleted
- CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
- Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x70
-  filemap_unaccount_folio+0xc4/0x1c0
-  __filemap_remove_folio+0x38/0x1c0
-  filemap_remove_folio+0x41/0xd0
-  remove_inode_hugepages+0x142/0x250
-  hugetlbfs_fallocate+0x471/0x5a0
-  vfs_fallocate+0x149/0x380
+    BUG: unable to handle page fault for address: ffffbc3840291000
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
+    Oops: 0000 [#1] SMP NOPTI
+    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
+    Tainted: [N]=TEST
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
+    [...]
+    Call Trace:
+    <TASK>
+    __msan_memset+0xee/0x1a0
+    sha224_final+0x9e/0x350
+    test_hash_buffer_overruns+0x46f/0x5f0
+    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
+    ? __pfx_test_hash_buffer_overruns+0x10/0x10
+    kunit_try_run_case+0x198/0xa00
 
-Hold folio lock before checking if the folio is mapped to avold race with
-migration.
+This occurs when memset() is called on a buffer that is not 4-byte aligned
+and extends to the end of a guard page, i.e.  the next page is unmapped.
 
-Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
-Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
+The bug is that the loop at the end of kmsan_internal_set_shadow_origin()
+accesses the wrong shadow memory bytes when the address is not 4-byte
+aligned.  Since each 4 bytes are associated with an origin, it rounds the
+address and size so that it can access all the origins that contain the
+buffer.  However, when it checks the corresponding shadow bytes for a
+particular origin, it incorrectly uses the original unrounded shadow
+address.  This results in reads from shadow memory beyond the end of the
+buffer's shadow memory, which crashes when that memory is not mapped.
+
+To fix this, correctly align the shadow address before accessing the 4
+shadow bytes corresponding to each origin.
+
+Link: https://lkml.kernel.org/r/20250911195858.394235-1-ebiggers@kernel.org
+Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/hugetlbfs/inode.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ mm/kmsan/core.c       |   10 +++++++---
+ mm/kmsan/kmsan_test.c |   16 ++++++++++++++++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
---- a/fs/hugetlbfs/inode.c~mm-hugetlb-fix-folio-is-still-mapped-when-deleted
-+++ a/fs/hugetlbfs/inode.c
-@@ -517,14 +517,16 @@ static bool remove_inode_single_folio(st
+--- a/mm/kmsan/core.c~kmsan-fix-out-of-bounds-access-to-shadow-memory
++++ a/mm/kmsan/core.c
+@@ -195,7 +195,8 @@ void kmsan_internal_set_shadow_origin(vo
+ 				      u32 origin, bool checked)
+ {
+ 	u64 address = (u64)addr;
+-	u32 *shadow_start, *origin_start;
++	void *shadow_start;
++	u32 *aligned_shadow, *origin_start;
+ 	size_t pad = 0;
  
- 	/*
- 	 * If folio is mapped, it was faulted in after being
--	 * unmapped in caller.  Unmap (again) while holding
--	 * the fault mutex.  The mutex will prevent faults
--	 * until we finish removing the folio.
-+	 * unmapped in caller or hugetlb_vmdelete_list() skips
-+	 * unmapping it due to fail to grab lock.  Unmap (again)
-+	 * while holding the fault mutex.  The mutex will prevent
-+	 * faults until we finish removing the folio.  Hold folio
-+	 * lock to guarantee no concurrent migration.
+ 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
+@@ -214,9 +215,12 @@ void kmsan_internal_set_shadow_origin(vo
+ 	}
+ 	__memset(shadow_start, b, size);
+ 
+-	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++		aligned_shadow = shadow_start;
++	} else {
+ 		pad = address % KMSAN_ORIGIN_SIZE;
+ 		address -= pad;
++		aligned_shadow = shadow_start - pad;
+ 		size += pad;
+ 	}
+ 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
+@@ -230,7 +234,7 @@ void kmsan_internal_set_shadow_origin(vo
+ 	 * corresponding shadow slot is zero.
  	 */
-+	folio_lock(folio);
- 	if (unlikely(folio_mapped(folio)))
- 		hugetlb_unmap_file_folio(h, mapping, folio, index);
+ 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
+-		if (origin || !shadow_start[i])
++		if (origin || !aligned_shadow[i])
+ 			origin_start[i] = origin;
+ 	}
+ }
+--- a/mm/kmsan/kmsan_test.c~kmsan-fix-out-of-bounds-access-to-shadow-memory
++++ a/mm/kmsan/kmsan_test.c
+@@ -556,6 +556,21 @@ DEFINE_TEST_MEMSETXX(16)
+ DEFINE_TEST_MEMSETXX(32)
+ DEFINE_TEST_MEMSETXX(64)
  
--	folio_lock(folio);
- 	/*
- 	 * We must remove the folio from page cache before removing
- 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
++/* Test case: ensure that KMSAN does not access shadow memory out of bounds. */
++static void test_memset_on_guarded_buffer(struct kunit *test)
++{
++	void *buf = vmalloc(PAGE_SIZE);
++
++	kunit_info(test,
++		   "memset() on ends of guarded buffer should not crash\n");
++
++	for (size_t size = 0; size <= 128; size++) {
++		memset(buf, 0xff, size);
++		memset(buf + PAGE_SIZE - size, 0xff, size);
++	}
++	vfree(buf);
++}
++
+ static noinline void fibonacci(int *array, int size, int start)
+ {
+ 	if (start < 2 || (start == size))
+@@ -677,6 +692,7 @@ static struct kunit_case kmsan_test_case
+ 	KUNIT_CASE(test_memset16),
+ 	KUNIT_CASE(test_memset32),
+ 	KUNIT_CASE(test_memset64),
++	KUNIT_CASE(test_memset_on_guarded_buffer),
+ 	KUNIT_CASE(test_long_origin_chain),
+ 	KUNIT_CASE(test_stackdepot_roundtrip),
+ 	KUNIT_CASE(test_unpoison_memory),
 _
 
-Patches currently in -mm which might be from tujinjiang@huawei.com are
+Patches currently in -mm which might be from ebiggers@kernel.org are
 
 
 
