@@ -1,43 +1,96 @@
-Return-Path: <stable+bounces-181762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1F9BA327B
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 11:34:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 149ACBA342B
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 11:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A7577A1BF4
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 09:32:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C6A384778
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 09:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C57628D8F1;
-	Fri, 26 Sep 2025 09:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545DF29E114;
+	Fri, 26 Sep 2025 09:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="sZirVNKC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54F519FA8D;
-	Fri, 26 Sep 2025 09:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B82872608
+	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 09:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758879236; cv=none; b=KSEHNQoIhPegKTiY3AWLcE5ZETS5dSep8WpVZq8enmQ48S6X9MHpROFEHLmiYc5x9ts8IGWv6mjoxuseeJFchzP4WbDrhj5/89BlbkDRRLmtroQldHHNexYtrPeSBz7up0r8liz+Q3Xgte18FVmmgXVxwbja8++KKpvzw6n63EY=
+	t=1758880655; cv=none; b=c3jLAp2AGOfNQQnZ4lhrWwrcuVoNAMpFk9z+seiX+csXFysvuU/EOQs0WnRRoTMl5JdOr1B72lEN+hTfUin50tK6Uq/ncck6+D7pBs5W573/CC/kP7OYYOVjpW/olEhv4jMZCpzYFD0t2grKojGVvGh/edXZfzr7rNdwt3ZqchQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758879236; c=relaxed/simple;
-	bh=L6Pca3P0pknz3JY6jYwTU3eI8BhWMQZtzDoR7Jozi6U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=iVlDe1LeLw9ah6zzzOyJd/gtErmubleToJLweHrvfR7pz9aMQ9JyBIGAdjkut5K+Ed3tSsio0y2EwI1ynyND2O5Oe8mxJC5x5TvdnP/82YUl++u71SLAeef4+o+fDbeHtTlSjJp6xHhtjhwnWYhnCvypybpAYEyuHi6YEAiXJX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from sven-desktop.home.narfation.org (p200300C597166bE00000000000000C00.dip0.t-ipconnect.de [IPv6:2003:c5:9716:6be0::c00])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 55A2DFA12C;
-	Fri, 26 Sep 2025 11:33:45 +0200 (CEST)
-From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
-Date: Fri, 26 Sep 2025 11:32:54 +0200
-Subject: [PATCH v2] wifi: mt76: Fix DTS power-limits on little endian
- systems
+	s=arc-20240116; t=1758880655; c=relaxed/simple;
+	bh=pSTGxTVn/zpOADQlpLLlrFQ3O7dddV8wjcyu0d9N78k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HAPjBnolweEjK77pQVzHYIwzFeWyvDQroumHT6O4FRyk9fLA51Xt0y2RuoxBJVH41CzMAghMX4dGJIYb0vU5VUkNE3K9JKFjKNY0944JuH2wY0YSwRuYHg0G+qv3VbI9qfggt5btT8LZ7O/E8/GjqEdCdAJenn4Y8eEaVkwFlSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=sZirVNKC; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46cf7bbfda8so10808045e9.2
+        for <stable@vger.kernel.org>; Fri, 26 Sep 2025 02:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1758880652; x=1759485452; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6Kxy+zDkcHliCNrZ/JPAcR9GylbEx4LYmoR1pgjRV4E=;
+        b=sZirVNKCvvIkXRb7JR1uzWw81ekdTMnS1wafQr+1S8ltTN5JC7jNwREgC1FYxnVDVK
+         rEA/E4mGdz78j1uNmbyO5cX/eoLOonSeZrhHR6mYSWb+PXw2dk7oF7LoYZrNV4NlhlqQ
+         dhwj00imPKAfxLJUcY4YGXnc8x9GwyxZc4CR598D5xLkLxkh6A9fnheSATvZRbDmEyt+
+         4txLMwj9fBxjEaDA9+lvM8EIFDv14pxVZW5u05u8wphqJUtbTdV6rgL3BLpVbwiYru1j
+         mb7ucW0iDKUeVlta8G0KYvepkjJ7emqtpYGTOiro0zlNFQIw7/khu8GaXsnTH3iiNnZM
+         TFhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758880652; x=1759485452;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6Kxy+zDkcHliCNrZ/JPAcR9GylbEx4LYmoR1pgjRV4E=;
+        b=nBVjy/mZDJLlYGr+bgR7ABiK37qygg/B5+xgfFwjtl5uTqEabljHxdLwUJfeR/lfes
+         M6AcHDhjRUzWMtI8mpAOgwEMajMlKf4L47kVX5EhlX5tLGRtqszNX7v1Qlu9BIohZXkI
+         ZH2v9OrehyDgJU8L46cRcLJ1EW2dFPit2GNjwKn3fBKXUNUDvsx4i5EWNJ75ya/Xgq9+
+         spYT4vyDTeZBNf2jxtoytrVbhVcU9qK5R86eAdmqBlnRmW+kdCMK4WWZNue6x/3nqrjG
+         fbDXcmXKgQefMeZV35fLjqxmr3NAuLR8Dt9hT/+i+sDwKBIXw1Scy+zQks9NdfwARMhD
+         niQA==
+X-Forwarded-Encrypted: i=1; AJvYcCVDuOlXuarnYFYDV6uNUuXCv/lPOJSDX3ue6cYe1tnL2KQetrqqWQ+gymixv3yr6wadQSgbDCY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQG2tK95TKTDt0aAQnQCPsiHFTkcCP0bfn1Ytb9ipELcFX8Do/
+	/UHOM/68GkYKWwOnYCKPO8HABOEi8cmbBFgsnoEynldTvzBag08ctUAthxE5a2nQvrI=
+X-Gm-Gg: ASbGncvj+oJrnwc7yvKG2wKTS/xQ5kXJJT/hvgxiySDisrjWtemGYNqntoq9GkV6Yfs
+	TdCS1dh/7dlrJJXa76INGllGFxquQ80luicQzgKhG3QR3rB9IsKu1lGHsBOIVUcfMwx2wNI7SSP
+	ZY8/5cBhR09o37usDoHiV7xYkjT46V8UfgQBQ6HH/S8w+0dHSGquvujERmha0aDh/GBk1OcEn6F
+	+kzEOHQ0fKLNy6jTNFsmD2V2uCpdEo/6YSSqys4nK8l8b5GB60uXGLKMC+IzaDWLfN88H25KTBw
+	hRILuCsR2W/S/O01/iNm5Uoky1JcEXrAGTzfE6sFgug/mtpuc2p16mPRvjjnnik8fh/Bcdya4p5
+	J7M2pwO7fbMdb61Cjhbjk7z4=
+X-Google-Smtp-Source: AGHT+IE/q7gcEasaydfPlSh1kSSOSBJAZe/1ZBQmjjrYMZ94FaitrgjVEefEJEXUDsJu0At0EET9aA==
+X-Received: by 2002:a05:600c:1c92:b0:46e:3dad:31ea with SMTP id 5b1f17b1804b1-46e3dad3310mr19221425e9.17.1758880651763;
+        Fri, 26 Sep 2025 02:57:31 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:ab15:a65:aecd:6def])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e34074983sm66168915e9.10.2025.09.26.02.57.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Sep 2025 02:57:31 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: linux-gpio@vger.kernel.org,
+	Conor Dooley <conor@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable@vger.kernel.org,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Cyril.Jean@microchip.com,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] gpio: mpfs: fix setting gpio direction to output
+Date: Fri, 26 Sep 2025 11:57:30 +0200
+Message-ID: <175888059620.38209.6546087887696517521.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250925-boogieman-carrot-82989ff75d10@spud>
+References: <20250925-boogieman-carrot-82989ff75d10@spud>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,168 +98,33 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250926-fix-power-limits-v2-1-c2bc7881eb6d@simonwunderlich.de>
-X-B4-Tracking: v=1; b=H4sIAMVd1mgC/32NQQ6CMBBFr0Jm7RimBmhdcQ/DAukok0BLWgQN4
- e5WDuDy/fz//gaRg3CEa7ZB4EWieJdAnTLo+tY9GcUmBpWrIjdU4UPeOPmVAw4yyhyx6Div7sZ
- cSk2QZlPg1DmUtyZxL3H24XM8LPRL/8gWQsKSStaFaY3WVEcZvVtfznIYpOvPlqHZ9/0LdN4Qb
- rkAAAA=
-X-Change-ID: 20250917-fix-power-limits-5ce07b993681
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- stable@vger.kernel.org, 
- "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5112; i=se@simonwunderlich.de;
- h=from:subject:message-id; bh=L6Pca3P0pknz3JY6jYwTU3eI8BhWMQZtzDoR7Jozi6U=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDBnXYs8v0WH4HM6U2KKWalXE1JSRoN+al+KhKBr1zzSVP
- 6+s/npHKQuDGBeDrJgiy54r+ec3s7+V/zzt41GYOaxMIEMYuDgFYCLb/BgZ5r1htPhyfXn4zQ3T
- UlmvB97L2bfgwLRnnsc2FmhIhMyW42D4K3jrmdfck+x90llr4/tmbCuavCdtFuvphbNf/PjwdFG
- YDSMA
-X-Developer-Key: i=se@simonwunderlich.de; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
+Content-Transfer-Encoding: 8bit
 
-The power-limits for ru and mcs and stored in the devicetree as bytewise
-array (often with sizes which are not a multiple of 4). These arrays have a
-prefix which defines for how many modes a line is applied. This prefix is
-also only a byte - but the code still tried to fix the endianness of this
-byte with a be32 operation. As result, loading was mostly failing or was
-sending completely unexpected values to the firmware.
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Since the other rates are also stored in the devicetree as bytewise arrays,
-just drop the u32 access + be32_to_cpu conversion and directly access them
-as bytes arrays.
 
-Cc: stable@vger.kernel.org
-Fixes: 22b980badc0f ("mt76: add functions for parsing rate power limits from DT")
-Fixes: a9627d992b5e ("mt76: extend DT rate power limits to support 11ax devices")
-Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
----
-Changes in v2:
-- Fix second Fixes line, thanks Zhi-Jun You
-- Link to v1: https://lore.kernel.org/r/20250917-fix-power-limits-v1-1-616e859a9881@simonwunderlich.de
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 37 +++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+On Thu, 25 Sep 2025 16:39:18 +0100, Conor Dooley wrote:
+> mpfs_gpio_direction_output() actually sets the line to input mode.
+> Use the correct register settings for output mode so that this function
+> actually works as intended.
+> 
+> This was a copy-paste mistake made when converting to regmap during the
+> driver submission process. It went unnoticed because my test for output
+> mode is toggling LEDs on an Icicle kit which functions with the
+> incorrect code. The internal reporter has yet to test the patch, but on
+> their system the incorrect setting may be the reason for failures to
+> drive the GPIO lines on the BeagleV-fire board.
+> 
+> [...]
 
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index a987c5e4eff6c6b0a014b4b069dc1259ffa82d31..6ce8e4af18fe53c10a0cb7290bf65962ce9cdde4 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -253,6 +253,19 @@ mt76_get_of_array(struct device_node *np, char *name, size_t *len, int min)
- 	return prop->value;
- }
- 
-+static const s8 *
-+mt76_get_of_array_s8(struct device_node *np, char *name, size_t *len, int min)
-+{
-+	struct property *prop = of_find_property(np, name, NULL);
-+
-+	if (!prop || !prop->value || prop->length < min)
-+		return NULL;
-+
-+	*len = prop->length;
-+
-+	return prop->value;
-+}
-+
- struct device_node *
- mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
- {
-@@ -294,7 +307,7 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
- }
- 
- static void
--mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
-+mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- 		       s8 target_power, s8 nss_delta, s8 *max_power)
- {
- 	int i;
-@@ -303,15 +316,14 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
- 		return;
- 
- 	for (i = 0; i < pwr_len; i++) {
--		pwr[i] = min_t(s8, target_power,
--			       be32_to_cpu(data[i]) + nss_delta);
-+		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
- 		*max_power = max(*max_power, pwr[i]);
- 	}
- }
- 
- static void
- mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
--			     const __be32 *data, size_t len, s8 target_power,
-+			     const s8 *data, size_t len, s8 target_power,
- 			     s8 nss_delta, s8 *max_power)
- {
- 	int i, cur;
-@@ -319,8 +331,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 	if (!data)
- 		return;
- 
--	len /= 4;
--	cur = be32_to_cpu(data[0]);
-+	cur = data[0];
- 	for (i = 0; i < pwr_num; i++) {
- 		if (len < pwr_len + 1)
- 			break;
-@@ -335,7 +346,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 		if (!len)
- 			break;
- 
--		cur = be32_to_cpu(data[0]);
-+		cur = data[0];
- 	}
- }
- 
-@@ -346,7 +357,7 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- {
- 	struct mt76_dev *dev = phy->dev;
- 	struct device_node *np;
--	const __be32 *val;
-+	const s8 *val;
- 	char name[16];
- 	u32 mcs_rates = dev->drv->mcs_rates;
- 	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
-@@ -392,21 +403,21 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 
- 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
- 
--	val = mt76_get_of_array(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
-+	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
- 	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
- 			       target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-ofdm",
--				&len, ARRAY_SIZE(dest->ofdm));
-+	val = mt76_get_of_array_s8(np, "rates-ofdm",
-+				   &len, ARRAY_SIZE(dest->ofdm));
- 	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
- 			       target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-mcs", &len, mcs_rates + 1);
-+	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
- 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
- 				     ARRAY_SIZE(dest->mcs), val, len,
- 				     target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-ru", &len, ru_rates + 1);
-+	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
- 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
- 				     ARRAY_SIZE(dest->ru), val, len,
- 				     target_power, txs_delta, &max_power);
+I'm about to send my last PR with fixes for v6.17 and this hasn't been
+in next even for a day so let me queue this for v6.18 and it will get
+backported once it's upstream next week.
 
----
-base-commit: b36d55610215a976267197ddc914902c494705d7
-change-id: 20250917-fix-power-limits-5ce07b993681
+[1/1] gpio: mpfs: fix setting gpio direction to output
+      https://git.kernel.org/brgl/linux/c/bc061143637532c08d9fc657eec93fdc2588068e
 
 Best regards,
 -- 
-Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
-
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
