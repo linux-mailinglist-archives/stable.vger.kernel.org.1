@@ -1,706 +1,192 @@
-Return-Path: <stable+bounces-181781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E53BA4BD4
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 19:09:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B90BA4C30
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 19:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F04A4740596
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 17:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF9C3A817D
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 17:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2FC30C101;
-	Fri, 26 Sep 2025 17:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CB326A087;
+	Fri, 26 Sep 2025 17:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j0+TT5or"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="LxrrZ70p"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5A13074B7
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 17:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1E23B7A8;
+	Fri, 26 Sep 2025 17:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758906538; cv=none; b=F2EwYYYBkckWbiXPHN4lUx+f5psUE6sO3c4xBdrlSOw39Oh0SGkniGiy5ZP6ob0BUMM1Z7yUw/+qHFkBb5qbjGpcTGv5TRJwrytorOzJLatDiZPUv15qrkd62hrvUXqyLM+eDXJePoWYE01NYHU6IMHb7irfh464v+UHQgPFc0Q=
+	t=1758906961; cv=none; b=QLj5DorwobNW5G3AKbI7CDo46K5LTtz2EizQj0JhnJEZkTrzFu5F7uyhRNbSer7BjfOzMMFBCVPX4hwOCzXhO46N8TIB9Rj5xvuy4h2jx6H7BNSx2+ra0J1rj1KRschKkmwiX0B7VMzrGkxiAYkRBGxH673o1EvJI9Gi/J8LlXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758906538; c=relaxed/simple;
-	bh=1ufvjGQLbxbg6rNNNy/03qHnlPm8o8IrClziDpfYv7Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iNOSGoS+Gp6fqdEMRRK6D2XktPBIkJh2ic9NhYfVOwxxIdEwYVaO/xBvKzLYJmcMFsSrH8ib18hcj7mEfbeXZW4pIFaMU2VoALZ0YCxrUZKrFqy1fnOre1dcTxvbJldeZeoioL3i3lOgguPE1pUg138XaNWjS/qKqk3wfdJbMYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j0+TT5or; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758906536; x=1790442536;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1ufvjGQLbxbg6rNNNy/03qHnlPm8o8IrClziDpfYv7Y=;
-  b=j0+TT5or1jLeJqlUM/aL7yO+6+zfiQpB2xLVcScLHbXFV/nFmyKrog2P
-   AgAFbPVCFnwHphRJCZsvl4zoK2QBrSnBpHFk1bYOGbYMcTBwlD0mB41Vv
-   lRTVYM5W7AkwHvng4lkGmYLUvgmlxbPWDsA7XiB+lft/o5CRN37bWYJSK
-   yF8AhXlFV08Ck7U/jNjyIggBIGqVVrBb/IKeEBR5YUTNVMmzm6L9BuETy
-   UXqjbj/PW9iQugqh876geQRGqszmLOpsfgB9aYRrALhyYwUPzbNsbEw4p
-   02MTx+pm72iOQOkBOlYsvF0rSwLuL5kvsoe/KqRkaORKFy/ZPX3ZT6s/k
-   A==;
-X-CSE-ConnectionGUID: /1ndHJgnSXmWyB5GCMQdAg==
-X-CSE-MsgGUID: XX4s5q93Qpeg9W26s9m1Ow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11565"; a="61133825"
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="61133825"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 10:08:56 -0700
-X-CSE-ConnectionGUID: rkMphPX8SA6TnCkjLFT2rw==
-X-CSE-MsgGUID: 6MWayDfWQH2K1nGTM7cWeQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="201359385"
-Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.245.9]) ([10.245.245.9])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 10:08:53 -0700
-Message-ID: <c1936b9c-3c0c-4a33-84e8-574d67790265@intel.com>
-Date: Fri, 26 Sep 2025 18:08:51 +0100
+	s=arc-20240116; t=1758906961; c=relaxed/simple;
+	bh=9s1JWYLtY9Au2cU7gKvf1tWMFDr3WPsmVd7i7+W3bdA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YrQhTcwQtuOjOCwDGkEmLmHpcXhHiC9UednqGUwpSC3GTG6yZ5neR1jDqLzbeqSPOMG8kZI2v0fWW/4wOWrjqmbhjg99KXYT5RR+LFzGoxSW9TdjE2VXqKHsi6cphFZndLH+iclA0uX5bVAyQRRyByB2w+a2C4MY/CrKisstlkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=LxrrZ70p; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1758906952;
+	bh=9s1JWYLtY9Au2cU7gKvf1tWMFDr3WPsmVd7i7+W3bdA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=LxrrZ70p5KBrbuEn9rhlI5K7pEJeScDXhXKQIG3UYcU+P5QE8OLrSmJhO37NEJPb9
+	 MeKVb7TL05aMrnFLYBhOGbRcxHnQiYJQB92eaTJABKnUhYOylbGydCVNJS8L0uogvR
+	 FUEUwA8lszOSiTAQekw74WUaDmZyWVgxverS4hHY=
+Received: from [127.0.0.1] (2607-8700-5500-e873-0000-0000-0000-1001.16clouds.com [IPv6:2607:8700:5500:e873::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 24C5A66B3B;
+	Fri, 26 Sep 2025 13:15:48 -0400 (EDT)
+Message-ID: <c1f9e36dbdff64298ed2c6418247fb37dcd1f986.camel@xry111.site>
+Subject: Re: [PATCH V2] LoongArch: Align ACPI structures if
+ ARCH_STRICT_ALIGN enabled
+From: Xi Ruoyao <xry111@xry111.site>
+To: Guenter Roeck <linux@roeck-us.net>, Huacai Chen <chenhuacai@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Huacai Chen
+ <chenhuacai@loongson.cn>, 	loongarch@lists.linux.dev, Xuefeng Li
+ <lixuefeng@loongson.cn>, Guo Ren	 <guoren@kernel.org>, Xuerui Wang
+ <kernel@xen0n.name>, Jiaxun Yang	 <jiaxun.yang@flygoat.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,  Binbin Zhou
+ <zhoubinbin@loongson.cn>
+Date: Sat, 27 Sep 2025 01:15:47 +0800
+In-Reply-To: <899f2dec-e8b9-44f4-ab8d-001e160a2aed@roeck-us.net>
+References: <20250910091033.725716-1-chenhuacai@loongson.cn>
+	 <20250920234836.GA3857420@ax162>
+	 <CAAhV-H5S8VKKBkNyrWfeuCVv8jS6tNED6YNeAD=i-+wkaoRSDQ@mail.gmail.com>
+	 <899f2dec-e8b9-44f4-ab8d-001e160a2aed@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/3] drm/buddy: Separate clear and dirty free block
- trees
-To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- christian.koenig@amd.com, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org
-Cc: alexander.deucher@amd.com, jani.nikula@linux.intel.com,
- peterz@infradead.org, samuel.pitoiset@gmail.com, stable@vger.kernel.org
-References: <20250923090242.60649-1-Arunpravin.PaneerSelvam@amd.com>
- <20250923090242.60649-2-Arunpravin.PaneerSelvam@amd.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20250923090242.60649-2-Arunpravin.PaneerSelvam@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 23/09/2025 10:02, Arunpravin Paneer Selvam wrote:
-> Maintain two separate RB trees per order - one for clear (zeroed) blocks
-> and another for dirty (uncleared) blocks. This separation improves
-> code clarity and makes it more obvious which tree is being searched
-> during allocation. It also improves scalability and efficiency when
-> searching for a specific type of block, avoiding unnecessary checks
-> and making the allocator more predictable under fragmentation.
-> 
-> The changes have been validated using the existing drm_buddy_test
-> KUnit test cases, along with selected graphics workloads,
-> to ensure correctness and avoid regressions.
-> 
-> v2: Missed adding the suggested-by tag. Added it in v2.
-> 
-> v3(Matthew):
->    - Remove the double underscores from the internal functions.
->    - Rename the internal functions to have less generic names.
->    - Fix the error handling code.
->    - Pass tree argument for the tree macro.
->    - Use the existing dirty/free bit instead of new tree field.
->    - Make free_trees[] instead of clear_tree and dirty_tree for
->      more cleaner approach.
-> 
-> v4:
->    - A bug was reported by Intel CI and it is fixed by
->      Matthew Auld.
->    - Replace the get_root function with
->      &mm->free_trees[tree][order] (Matthew)
->    - Remove the unnecessary rbtree_is_empty() check (Matthew)
->    - Remove the unnecessary get_tree_for_flags() function.
->    - Rename get_tree_for_block() name with get_block_tree() for more
->      clarity.
-> 
-> v5(Jani Nikula):
->    - Don't use static inline in .c files.
->    - enum free_tree and enumerator names are quite generic for a header
->      and usage and the whole enum should be an implementation detail.
-> 
-> v6:
->    - Rewrite the __force_merge() function using the rb_last() and rb_prev().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
-> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-> Suggested-by: Matthew Auld <matthew.auld@intel.com>
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4260
-> ---
->   drivers/gpu/drm/drm_buddy.c | 321 ++++++++++++++++++++----------------
->   include/drm/drm_buddy.h     |   2 +-
->   2 files changed, 182 insertions(+), 141 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-> index 67aa67229cc3..6e12a0b5d5e3 100644
-> --- a/drivers/gpu/drm/drm_buddy.c
-> +++ b/drivers/gpu/drm/drm_buddy.c
-> @@ -12,9 +12,16 @@
->   
->   #include <drm/drm_buddy.h>
->   
-> +enum drm_buddy_free_tree {
-> +	DRM_BUDDY_CLEAR_TREE = 0,
-> +	DRM_BUDDY_DIRTY_TREE,
-> +	DRM_BUDDY_MAX_FREE_TREES,
-> +};
-> +
->   static struct kmem_cache *slab_blocks;
->   
-> -#define rbtree_get_free_block(node) rb_entry((node), struct drm_buddy_block, rb)
-> +#define for_each_free_tree(tree) \
-> +	for ((tree) = 0; (tree) < DRM_BUDDY_MAX_FREE_TREES; (tree)++)
+On Fri, 2025-09-26 at 07:31 -0700, Guenter Roeck wrote:
+> On Sun, Sep 21, 2025 at 09:07:38AM +0800, Huacai Chen wrote:
+> > Hi, Nathan,
+> >=20
+> > On Sun, Sep 21, 2025 at 7:48=E2=80=AFAM Nathan Chancellor <nathan@kerne=
+l.org> wrote:
+> > >=20
+> > > Hi Huacai,
+> > >=20
+> > > On Wed, Sep 10, 2025 at 05:10:33PM +0800, Huacai Chen wrote:
+> > > > ARCH_STRICT_ALIGN is used for hardware without UAL, now it only con=
+trol
+> > > > the -mstrict-align flag. However, ACPI structures are packed by def=
+ault
+> > > > so will cause unaligned accesses.
+> > > >=20
+> > > > To avoid this, define ACPI_MISALIGNMENT_NOT_SUPPORTED in asm/acenv.=
+h to
+> > > > align ACPI structures if ARCH_STRICT_ALIGN enabled.
+> > > >=20
+> > > > Cc: stable@vger.kernel.org
+> > > > Reported-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> > > > Suggested-by: Xi Ruoyao <xry111@xry111.site>
+> > > > Suggested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > ---
+> > > > V2: Modify asm/acenv.h instead of Makefile.
+> > > >=20
+> > > > =C2=A0arch/loongarch/include/asm/acenv.h | 7 +++----
+> > > > =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
+> > > >=20
+> > > > diff --git a/arch/loongarch/include/asm/acenv.h b/arch/loongarch/in=
+clude/asm/acenv.h
+> > > > index 52f298f7293b..483c955f2ae5 100644
+> > > > --- a/arch/loongarch/include/asm/acenv.h
+> > > > +++ b/arch/loongarch/include/asm/acenv.h
+> > > > @@ -10,9 +10,8 @@
+> > > > =C2=A0#ifndef _ASM_LOONGARCH_ACENV_H
+> > > > =C2=A0#define _ASM_LOONGARCH_ACENV_H
+> > > >=20
+> > > > -/*
+> > > > - * This header is required by ACPI core, but we have nothing to fi=
+ll in
+> > > > - * right now. Will be updated later when needed.
+> > > > - */
+> > > > +#ifdef CONFIG_ARCH_STRICT_ALIGN
+> > > > +#define ACPI_MISALIGNMENT_NOT_SUPPORTED
+> > > > +#endif /* CONFIG_ARCH_STRICT_ALIGN */
+> > > >=20
+> > > > =C2=A0#endif /* _ASM_LOONGARCH_ACENV_H */
+> > >=20
+> > > I am seeing several ACPI errors in my QEMU testing after this change =
+in
+> > > Linus's tree as commit a9d13433fe17 ("LoongArch: Align ACPI structure=
+s
+> > > if ARCH_STRICT_ALIGN enabled").
+> > >=20
+> > > =C2=A0 $ make -skj"$(nproc)" ARCH=3Dloongarch CROSS_COMPILE=3Dloongar=
+ch64-linux- clean defconfig vmlinuz.efi
+> > > =C2=A0 kernel/sched/fair.o: warning: objtool: sched_update_scaling() =
+falls through to next function init_entity_runnable_average()
+> > > =C2=A0 mm/mempolicy.o: warning: objtool: alloc_pages_bulk_mempolicy_n=
+oprof+0x380: stack state mismatch: reg1[30]=3D-1+0 reg2[30]=3D-2-80
+> > > =C2=A0 lib/crypto/mpi/mpih-div.o: warning: objtool: mpihelp_divrem+0x=
+2d0: stack state mismatch: reg1[22]=3D-1+0 reg2[22]=3D-2-16
+> > > =C2=A0 In file included from include/acpi/acpi.h:24,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 from drivers/acpi/acpica/tbprint.c:=
+10:
+> > > =C2=A0 drivers/acpi/acpica/tbprint.c: In function 'acpi_tb_print_tabl=
+e_header':
+> > > =C2=A0 include/acpi/actypes.h:530:43: warning: 'strncmp' argument 1 d=
+eclared attribute 'nonstring' is smaller than the specified bound 8 [-Wstri=
+ngop-overread]
+> > > =C2=A0=C2=A0=C2=A0 530 | #define ACPI_VALIDATE_RSDP_SIG(a)=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_=
+RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~~~~~~~~~
+> > > =C2=A0 drivers/acpi/acpica/tbprint.c:105:20: note: in expansion of ma=
+cro 'ACPI_VALIDATE_RSDP_SIG'
+> > > =C2=A0=C2=A0=C2=A0 105 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 } else if (ACPI_VALIDATE_RSDP_SIG(ACPI_CAST_PTR(struct acpi_table_rsdp,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ^~~~~~~~~~~~~~~~~~~~~~
+> > > =C2=A0 In file included from include/acpi/acpi.h:26:
+> > > =C2=A0 include/acpi/actbl.h:69:14: note: argument 'signature' declare=
+d here
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 69 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 char signature[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 /* ASCII table signature */
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^~~~~~~~~
+> > > From this link this seems a comiler issue (at least not an
+> > arch-specific kernel issue):
+> > https://github.com/AOSC-Tracking/linux/commit/1e9ee413357ef58dd902f6ec5=
+5013d2a2f2043eb
+> >=20
+>=20
+> I see that the patch made it into the upstream kernel, now breaking both
+> mainline and 6.16.y test builds of loongarch64:allmodconfig with gcc.
+>=20
+> Since this is apparently intentional, I'll stop build testing
+> loongarch64:allmodconfig. So far it looks like my qemu tests
+> are not affected, so I'll continue testing those for the time being.
 
-Some places seem to open code this? Maybe just drop this or use it 
-everywhere?
+See=C2=A0https://gcc.gnu.org/PR122073 and
+https://github.com/acpica/acpica/pull/1050.
 
->   
->   static struct drm_buddy_block *drm_block_alloc(struct drm_buddy *mm,
->   					       struct drm_buddy_block *parent,
-> @@ -45,6 +52,30 @@ static void drm_block_free(struct drm_buddy *mm,
->   	kmem_cache_free(slab_blocks, block);
->   }
->   
-> +static enum drm_buddy_free_tree
-> +get_block_tree(struct drm_buddy_block *block)
-> +{
-> +	return drm_buddy_block_is_clear(block) ?
-> +	       DRM_BUDDY_CLEAR_TREE : DRM_BUDDY_DIRTY_TREE;
-> +}
-> +
-> +static struct drm_buddy_block *
-> +rbtree_get_free_block(const struct rb_node *node)
-> +{
-> +	return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
-> +}
-> +
-> +static struct drm_buddy_block *
-> +rbtree_last_free_block(struct rb_root *root)
-> +{
-> +	return rbtree_get_free_block(rb_last(root));
-> +}
-> +
-> +static bool rbtree_is_empty(struct rb_root *root)
-> +{
-> +	return RB_EMPTY_ROOT(root);
-> +}
-> +
->   static bool drm_buddy_block_offset_less(const struct drm_buddy_block *block,
->   					const struct drm_buddy_block *node)
->   {
-> @@ -59,37 +90,28 @@ static bool rbtree_block_offset_less(struct rb_node *block,
->   }
->   
->   static void rbtree_insert(struct drm_buddy *mm,
-> -			  struct drm_buddy_block *block)
-> +			  struct drm_buddy_block *block,
-> +			  enum drm_buddy_free_tree tree)
->   {
->   	rb_add(&block->rb,
-> -	       &mm->free_tree[drm_buddy_block_order(block)],
-> +	       &mm->free_trees[tree][drm_buddy_block_order(block)],
->   	       rbtree_block_offset_less);
->   }
->   
->   static void rbtree_remove(struct drm_buddy *mm,
->   			  struct drm_buddy_block *block)
->   {
-> +	unsigned int order = drm_buddy_block_order(block);
->   	struct rb_root *root;
-> +	enum drm_buddy_free_tree tree;
->   
-> -	root = &mm->free_tree[drm_buddy_block_order(block)];
-> -	rb_erase(&block->rb, root);
-> +	tree = get_block_tree(block);
-> +	root = &mm->free_trees[tree][order];
->   
-> +	rb_erase(&block->rb, root);
->   	RB_CLEAR_NODE(&block->rb);
->   }
->   
-> -static struct drm_buddy_block *
-> -rbtree_last_entry(struct drm_buddy *mm, unsigned int order)
-> -{
-> -	struct rb_node *node = rb_last(&mm->free_tree[order]);
-> -
-> -	return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
-> -}
-> -
-> -static bool rbtree_is_empty(struct drm_buddy *mm, unsigned int order)
-> -{
-> -	return RB_EMPTY_ROOT(&mm->free_tree[order]);
-> -}
-> -
->   static void clear_reset(struct drm_buddy_block *block)
->   {
->   	block->header &= ~DRM_BUDDY_HEADER_CLEAR;
-> @@ -112,10 +134,13 @@ static void mark_allocated(struct drm_buddy *mm,
->   static void mark_free(struct drm_buddy *mm,
->   		      struct drm_buddy_block *block)
->   {
-> +	enum drm_buddy_free_tree tree;
-> +
->   	block->header &= ~DRM_BUDDY_HEADER_STATE;
->   	block->header |= DRM_BUDDY_FREE;
->   
-> -	rbtree_insert(mm, block);
-> +	tree = get_block_tree(block);
-> +	rbtree_insert(mm, block, tree);
->   }
->   
->   static void mark_split(struct drm_buddy *mm,
-> @@ -201,6 +226,7 @@ static int __force_merge(struct drm_buddy *mm,
->   			 u64 end,
->   			 unsigned int min_order)
->   {
-> +	enum drm_buddy_free_tree tree;
->   	unsigned int order;
->   	int i;
->   
-> @@ -210,45 +236,48 @@ static int __force_merge(struct drm_buddy *mm,
->   	if (min_order > mm->max_order)
->   		return -EINVAL;
->   
-> -	for (i = min_order - 1; i >= 0; i--) {
-> -		struct rb_root *root = &mm->free_tree[i];
-> -		struct rb_node *iter;
-> +	for_each_free_tree(tree) {
-> +		for (i = min_order - 1; i >= 0; i--) {
-> +			struct rb_node *iter = rb_last(&mm->free_trees[tree][i]);
->   
-> -		iter = rb_last(root);
-> -
-> -		while (iter) {
-> -			struct drm_buddy_block *block, *buddy;
-> -			u64 block_start, block_end;
-> +			while (iter) {
-> +				struct drm_buddy_block *block, *buddy;
-> +				u64 block_start, block_end;
->   
-> -			block = rbtree_get_free_block(iter);
-> -			iter = rb_prev(iter);
-> +				block = rbtree_get_free_block(iter);
-> +				iter = rb_prev(iter);
->   
-> -			if (!block || !block->parent)
-> -				continue;
-> +				if (!block || !block->parent)
-> +					continue;
->   
-> -			block_start = drm_buddy_block_offset(block);
-> -			block_end = block_start + drm_buddy_block_size(mm, block) - 1;
-> +				block_start = drm_buddy_block_offset(block);
-> +				block_end = block_start + drm_buddy_block_size(mm, block) - 1;
->   
-> -			if (!contains(start, end, block_start, block_end))
-> -				continue;
-> +				if (!contains(start, end, block_start, block_end))
-> +					continue;
->   
-> -			buddy = __get_buddy(block);
-> -			if (!drm_buddy_block_is_free(buddy))
-> -				continue;
-> +				buddy = __get_buddy(block);
-> +				if (!drm_buddy_block_is_free(buddy))
-> +					continue;
->   
-> -			WARN_ON(drm_buddy_block_is_clear(block) ==
-> -				drm_buddy_block_is_clear(buddy));
-> +				WARN_ON(drm_buddy_block_is_clear(block) ==
-> +					drm_buddy_block_is_clear(buddy));
->   
-> -			if (iter == &buddy->rb)
-> -				iter = rb_prev(iter);
-> +				/*
-> +				 * Advance to the next node when the current node is the buddy,
-> +				 * as freeing the block will also remove its buddy from the tree.
-> +				 */
-> +				if (iter == &buddy->rb)
-> +					iter = rb_prev(iter);
->   
-> -			rbtree_remove(mm, block);
-> -			if (drm_buddy_block_is_clear(block))
-> -				mm->clear_avail -= drm_buddy_block_size(mm, block);
-> +				rbtree_remove(mm, block);
-> +				if (drm_buddy_block_is_clear(block))
-> +					mm->clear_avail -= drm_buddy_block_size(mm, block);
->   
-> -			order = __drm_buddy_free(mm, block, true);
-> -			if (order >= min_order)
-> -				return 0;
-> +				order = __drm_buddy_free(mm, block, true);
-> +				if (order >= min_order)
-> +					return 0;
-> +			}
 
-Do we need all these changes in __force_merge? Can't we just always pick 
-the dirty tree and keep everything else the same? If something is 
-non-merged there must be a dirty block preventing that, and when force 
-merging everything unmerged will be re-labled as dirty anyway, so the 
-second loop through the clean tree should always yield nothing?
-
->   		}
->   	}
->   
-> @@ -269,7 +298,7 @@ static int __force_merge(struct drm_buddy *mm,
->    */
->   int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
->   {
-> -	unsigned int i;
-> +	unsigned int i, j;
->   	u64 offset;
->   
->   	if (size < chunk_size)
-> @@ -291,14 +320,22 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
->   
->   	BUG_ON(mm->max_order > DRM_BUDDY_MAX_ORDER);
->   
-> -	mm->free_tree = kmalloc_array(mm->max_order + 1,
-> -				      sizeof(struct rb_root),
-> -				      GFP_KERNEL);
-> -	if (!mm->free_tree)
-> +	mm->free_trees = kmalloc_array(DRM_BUDDY_MAX_FREE_TREES,
-> +				       sizeof(*mm->free_trees),
-> +				       GFP_KERNEL);
-> +	if (!mm->free_trees)
->   		return -ENOMEM;
->   
-> -	for (i = 0; i <= mm->max_order; ++i)
-> -		mm->free_tree[i] = RB_ROOT;
-> +	for (i = 0; i < DRM_BUDDY_MAX_FREE_TREES; i++) {
-> +		mm->free_trees[i] = kmalloc_array(mm->max_order + 1,
-> +						  sizeof(struct rb_root),
-> +						  GFP_KERNEL);
-> +		if (!mm->free_trees[i])
-> +			goto out_free_tree;
-> +
-> +		for (j = 0; j <= mm->max_order; ++j)
-> +			mm->free_trees[i][j] = RB_ROOT;
-> +	}
->   
->   	mm->n_roots = hweight64(size);
->   
-> @@ -346,7 +383,9 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
->   		drm_block_free(mm, mm->roots[i]);
->   	kfree(mm->roots);
->   out_free_tree:
-> -	kfree(mm->free_tree);
-> +	while (i--)
-> +		kfree(mm->free_trees[i]);
-
-out_free_roots is also decrementing 'i' here it seems, so looks like 
-this might blow up?
-
-> +	kfree(mm->free_trees);
->   	return -ENOMEM;
->   }
->   EXPORT_SYMBOL(drm_buddy_init);
-> @@ -382,8 +421,9 @@ void drm_buddy_fini(struct drm_buddy *mm)
->   
->   	WARN_ON(mm->avail != mm->size);
->   
-> +	for (i = 0; i < DRM_BUDDY_MAX_FREE_TREES; i++)
-> +		kfree(mm->free_trees[i]);
->   	kfree(mm->roots);
-> -	kfree(mm->free_tree);
->   }
->   EXPORT_SYMBOL(drm_buddy_fini);
->   
-> @@ -407,8 +447,7 @@ static int split_block(struct drm_buddy *mm,
->   		return -ENOMEM;
->   	}
->   
-> -	mark_free(mm, block->left);
-> -	mark_free(mm, block->right);
-> +	mark_split(mm, block);
->   
->   	if (drm_buddy_block_is_clear(block)) {
->   		mark_cleared(block->left);
-> @@ -416,7 +455,8 @@ static int split_block(struct drm_buddy *mm,
->   		clear_reset(block);
->   	}
->   
-> -	mark_split(mm, block);
-> +	mark_free(mm, block->left);
-> +	mark_free(mm, block->right);
->   
->   	return 0;
->   }
-> @@ -449,6 +489,7 @@ EXPORT_SYMBOL(drm_get_buddy);
->    */
->   void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
->   {
-> +	enum drm_buddy_free_tree src_tree, dst_tree;
->   	u64 root_size, size, start;
->   	unsigned int order;
->   	int i;
-> @@ -463,19 +504,24 @@ void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
->   		size -= root_size;
->   	}
->   
-> +	src_tree = is_clear ? DRM_BUDDY_DIRTY_TREE : DRM_BUDDY_CLEAR_TREE;
-> +	dst_tree = is_clear ? DRM_BUDDY_CLEAR_TREE : DRM_BUDDY_DIRTY_TREE;
-> +
->   	for (i = 0; i <= mm->max_order; ++i) {
-> +		struct rb_root *root = &mm->free_trees[src_tree][i];
->   		struct drm_buddy_block *block, *tmp;
->   
-> -		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[i], rb) {
-> -			if (is_clear != drm_buddy_block_is_clear(block)) {
-> -				if (is_clear) {
-> -					mark_cleared(block);
-> -					mm->clear_avail += drm_buddy_block_size(mm, block);
-> -				} else {
-> -					clear_reset(block);
-> -					mm->clear_avail -= drm_buddy_block_size(mm, block);
-> -				}
-> +		rbtree_postorder_for_each_entry_safe(block, tmp, root, rb) {
-> +			rbtree_remove(mm, block);
-> +			if (is_clear) {
-> +				mark_cleared(block);
-> +				mm->clear_avail += drm_buddy_block_size(mm, block);
-> +			} else {
-> +				clear_reset(block);
-> +				mm->clear_avail -= drm_buddy_block_size(mm, block);
->   			}
-> +
-> +			rbtree_insert(mm, block, dst_tree);
->   		}
->   	}
->   }
-> @@ -665,27 +711,17 @@ __drm_buddy_alloc_range_bias(struct drm_buddy *mm,
->   }
->   
->   static struct drm_buddy_block *
-> -get_maxblock(struct drm_buddy *mm, unsigned int order,
-> -	     unsigned long flags)
-> +get_maxblock(struct drm_buddy *mm,
-> +	     unsigned int order,
-> +	     enum drm_buddy_free_tree tree)
->   {
->   	struct drm_buddy_block *max_block = NULL, *block = NULL;
-> +	struct rb_root *root;
->   	unsigned int i;
->   
->   	for (i = order; i <= mm->max_order; ++i) {
-> -		struct rb_node *iter = rb_last(&mm->free_tree[i]);
-> -		struct drm_buddy_block *tmp_block;
-> -
-> -		while (iter) {
-> -			tmp_block = rbtree_get_free_block(iter);
-> -
-> -			if (!block_incompatible(tmp_block, flags)) {
-> -				block = tmp_block;
-> -				break;
-> -			}
-> -
-> -			iter = rb_prev(iter);
-> -		}
-> -
-> +		root = &mm->free_trees[tree][i];
-> +		block = rbtree_last_free_block(root);
->   		if (!block)
->   			continue;
->   
-> @@ -709,43 +745,39 @@ alloc_from_freetree(struct drm_buddy *mm,
->   		    unsigned long flags)
->   {
->   	struct drm_buddy_block *block = NULL;
-> +	struct rb_root *root;
-> +	enum drm_buddy_free_tree tree;
->   	unsigned int tmp;
->   	int err;
->   
-> +	tree = (flags & DRM_BUDDY_CLEAR_ALLOCATION) ?
-> +		DRM_BUDDY_CLEAR_TREE : DRM_BUDDY_DIRTY_TREE;
-> +
->   	if (flags & DRM_BUDDY_TOPDOWN_ALLOCATION) {
-> -		block = get_maxblock(mm, order, flags);
-> +		block = get_maxblock(mm, order, tree);
->   		if (block)
->   			/* Store the obtained block order */
->   			tmp = drm_buddy_block_order(block);
->   	} else {
->   		for (tmp = order; tmp <= mm->max_order; ++tmp) {
-> -			struct rb_node *iter = rb_last(&mm->free_tree[tmp]);
-> -			struct drm_buddy_block *tmp_block;
-> -
-> -			while (iter) {
-> -				tmp_block = rbtree_get_free_block(iter);
-> -
-> -				if (!block_incompatible(tmp_block, flags)) {
-> -					block = tmp_block;
-> -					break;
-> -				}
-> -
-> -				iter = rb_prev(iter);
-> -			}
-> -
-> +			/* Get RB tree root for this order and tree */
-> +			root = &mm->free_trees[tree][tmp];
-> +			block = rbtree_last_free_block(root);
->   			if (block)
->   				break;
->   		}
->   	}
->   
->   	if (!block) {
-> -		/* Fallback method */
-> +		/* Try allocating from the other tree */
-> +		tree = (tree == DRM_BUDDY_CLEAR_TREE) ?
-> +			DRM_BUDDY_DIRTY_TREE : DRM_BUDDY_CLEAR_TREE;
-> +
->   		for (tmp = order; tmp <= mm->max_order; ++tmp) {
-> -			if (!rbtree_is_empty(mm, tmp)) {
-
-Did you mean to drop the is_empty() check here? If it's overkill I think 
-better just not add it in the previous patch?
-
-> -				block = rbtree_last_entry(mm, tmp);
-> -				if (block)
-> -					break;
-> -			}
-> +			root = &mm->free_trees[tree][tmp];
-> +			block = rbtree_last_free_block(root);
-> +			if (block)
-> +				break;
->   		}
->   
->   		if (!block)
-> @@ -887,9 +919,9 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
->   				     struct list_head *blocks)
->   {
->   	u64 rhs_offset, lhs_offset, lhs_size, filled;
-> +	enum drm_buddy_free_tree tree;
->   	struct drm_buddy_block *block;
->   	LIST_HEAD(blocks_lhs);
-> -	struct rb_node *iter;
->   	unsigned long pages;
->   	unsigned int order;
->   	u64 modify_size;
-> @@ -901,40 +933,43 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
->   	if (order == 0)
->   		return -ENOSPC;
->   
-> -	if (rbtree_is_empty(mm, order))
-> +	if (rbtree_is_empty(&mm->free_trees[DRM_BUDDY_CLEAR_TREE][order]) &&
-> +	    rbtree_is_empty(&mm->free_trees[DRM_BUDDY_DIRTY_TREE][order]))
-
-Could potentially merge this with the for_each_tree loop below?
-
-Otherwise,
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
->   		return -ENOSPC;
->   
-> -	iter = rb_last(&mm->free_tree[order]);
-> -
-> -	while (iter) {
-> -		block = rbtree_get_free_block(iter);
-> -
-> -		/* Allocate blocks traversing RHS */
-> -		rhs_offset = drm_buddy_block_offset(block);
-> -		err =  __drm_buddy_alloc_range(mm, rhs_offset, size,
-> -					       &filled, blocks);
-> -		if (!err || err != -ENOSPC)
-> -			return err;
-> -
-> -		lhs_size = max((size - filled), min_block_size);
-> -		if (!IS_ALIGNED(lhs_size, min_block_size))
-> -			lhs_size = round_up(lhs_size, min_block_size);
-> -
-> -		/* Allocate blocks traversing LHS */
-> -		lhs_offset = drm_buddy_block_offset(block) - lhs_size;
-> -		err =  __drm_buddy_alloc_range(mm, lhs_offset, lhs_size,
-> -					       NULL, &blocks_lhs);
-> -		if (!err) {
-> -			list_splice(&blocks_lhs, blocks);
-> -			return 0;
-> -		} else if (err != -ENOSPC) {
-> +	for_each_free_tree(tree) {
-> +		struct rb_node *iter = rb_last(&mm->free_trees[tree][order]);
-> +
-> +		while (iter) {
-> +			block = rbtree_get_free_block(iter);
-> +
-> +			/* Allocate blocks traversing RHS */
-> +			rhs_offset = drm_buddy_block_offset(block);
-> +			err =  __drm_buddy_alloc_range(mm, rhs_offset, size,
-> +						       &filled, blocks);
-> +			if (!err || err != -ENOSPC)
-> +				return err;
-> +
-> +			lhs_size = max((size - filled), min_block_size);
-> +			if (!IS_ALIGNED(lhs_size, min_block_size))
-> +				lhs_size = round_up(lhs_size, min_block_size);
-> +
-> +			/* Allocate blocks traversing LHS */
-> +			lhs_offset = drm_buddy_block_offset(block) - lhs_size;
-> +			err =  __drm_buddy_alloc_range(mm, lhs_offset, lhs_size,
-> +						       NULL, &blocks_lhs);
-> +			if (!err) {
-> +				list_splice(&blocks_lhs, blocks);
-> +				return 0;
-> +			} else if (err != -ENOSPC) {
-> +				drm_buddy_free_list_internal(mm, blocks);
-> +				return err;
-> +			}
-> +			/* Free blocks for the next iteration */
->   			drm_buddy_free_list_internal(mm, blocks);
-> -			return err;
-> -		}
-> -		/* Free blocks for the next iteration */
-> -		drm_buddy_free_list_internal(mm, blocks);
->   
-> -		iter = rb_prev(iter);
-> +			iter = rb_prev(iter);
-> +		}
->   	}
->   
->   	return -ENOSPC;
-> @@ -1239,6 +1274,7 @@ EXPORT_SYMBOL(drm_buddy_block_print);
->    */
->   void drm_buddy_print(struct drm_buddy *mm, struct drm_printer *p)
->   {
-> +	enum drm_buddy_free_tree tree;
->   	int order;
->   
->   	drm_printf(p, "chunk_size: %lluKiB, total: %lluMiB, free: %lluMiB, clear_free: %lluMiB\n",
-> @@ -1246,11 +1282,16 @@ void drm_buddy_print(struct drm_buddy *mm, struct drm_printer *p)
->   
->   	for (order = mm->max_order; order >= 0; order--) {
->   		struct drm_buddy_block *block, *tmp;
-> +		struct rb_root *root;
->   		u64 count = 0, free;
->   
-> -		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[order], rb) {
-> -			BUG_ON(!drm_buddy_block_is_free(block));
-> -			count++;
-> +		for_each_free_tree(tree) {
-> +			root = &mm->free_trees[tree][order];
-> +
-> +			rbtree_postorder_for_each_entry_safe(block, tmp, root, rb) {
-> +				BUG_ON(!drm_buddy_block_is_free(block));
-> +				count++;
-> +			}
->   		}
->   
->   		drm_printf(p, "order-%2d ", order);
-> diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
-> index 9ee105d4309f..d7891d08f67a 100644
-> --- a/include/drm/drm_buddy.h
-> +++ b/include/drm/drm_buddy.h
-> @@ -73,7 +73,7 @@ struct drm_buddy_block {
->    */
->   struct drm_buddy {
->   	/* Maintain a free list for each order. */
-> -	struct rb_root *free_tree;
-> +	struct rb_root **free_trees;
->   
->   	/*
->   	 * Maintain explicit binary tree(s) to track the allocation of the
-
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
