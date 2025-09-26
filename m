@@ -1,97 +1,100 @@
-Return-Path: <stable+bounces-181760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F29BA2E42
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 10:15:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8079ABA31C4
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 11:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 538287A8CA8
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 08:13:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 707EF4E23A2
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 09:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB408283C89;
-	Fri, 26 Sep 2025 08:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4521A273805;
+	Fri, 26 Sep 2025 09:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pe3WAmH0"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ouf21ACB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723D72877EE;
-	Fri, 26 Sep 2025 08:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63BD266B41;
+	Fri, 26 Sep 2025 09:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758874504; cv=none; b=L3z94pGHwDo4Y7iRL4mpCA2fz9JZfgf40Gqzg7xWDTZiVBxBH9BTfx+gKjkvrN7UBTR63NVghu9Qni32vHWt2Yc6M3e5ROvNjsyNqfQAyrFQYxdV/w2eJGg/J/xtDHsLlJ5+7EXzf6w0r54hHKyVbUAWRgOse/CfTRN7itaLM88=
+	t=1758878360; cv=none; b=ql3LOfXTtUP5v9swLZxN2uuvuf8mZh5Zji/0q4xtkEWl6JCTiOh2Pw4VnZITPuwyijOYsDYeEFwwtAGEjcdVrNEKddQ/btAupXgzYFHWunoFFNZIjt5cTcrqylgIoSXVA2EMUCjOF1h5EQp4zCk4WGgLuBlXbjzJP56vamZjTqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758874504; c=relaxed/simple;
-	bh=r8bB9D9hbaoidmN9A4Dy4fetHxoLmO6jJeY+jY/hGaw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TWhkOw9xkVf5A/mvmmVyhPn21Rz1WEl1NRNe+ZhqyybulNdEqW7DqJBQQ0DT5RtrFhRpEDFLch6kvUwNbNsIQhAzFKTUw4KJXPnVk0Ry5cMui4JQpwvVc2lXjQDcsaL7NnzSwpU7gfTPassdlHVwYmSZuIw5Txp+vAsYkkGJHrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pe3WAmH0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D131FC4CEF5;
-	Fri, 26 Sep 2025 08:15:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758874504;
-	bh=r8bB9D9hbaoidmN9A4Dy4fetHxoLmO6jJeY+jY/hGaw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pe3WAmH0cQjCfBXCvM5x9K3aMvtrA6l3saJ/U0y172VAdBp0Uv8VMQSIOebQiSR9L
-	 nTS72YWivRmltPpRzmnaL2VNdQt3G+xAD4NSvBvtUCOTyRKTiBoNVSPYLCM3TTC+fv
-	 bfL6XYBalaSSVHPltbmgUNxz0iKMyS4Ln6FoYD4JVYaiErVsAlBJDpzTYMVmSeZJpZ
-	 2ZDe5w15x6MV0OQVL5Pm6l3Bhv0DjNiiV1oaL9b0PmKXy07hlYfjkuFJcoM4mFF58/
-	 f8w71QkpjNv8Xn7d4oCFybN/cAHzURKE04C7DNrpjmSSImCSMGDFBuBRCWSmVbA0Pr
-	 BPB+w4YKrso8A==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
+	s=arc-20240116; t=1758878360; c=relaxed/simple;
+	bh=h81Pi6+hVHayKs+lBWRxjmOnbBU266frO3ObIJbkkxI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AmDLZTd37SnVZf9Ar8k8JJAZn4ThGQARnZzJoqC32c/btVG4i4gVoMaPR8fmeE88mXm/Mc7ONgNTZu6HlvQaxHb3cylF2H5/I1D7GvdP/Pgx/B0Rr8C63TqpJhXlXcIcE2TDdSj7yATbHxN0zQP5MAccFv/vXWMoA39Tw3O8dCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ouf21ACB; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=o1
+	ctLlTcffIW/5PghVStza+SrGegLQjDqtOF1cbRv+8=; b=ouf21ACBACrrYmynBX
+	4SBQAGL2HZmh2uSTKeCvp5UwYxPGoEuGUfqTz+5JBMJEDTKhXVnOX3s10Jmy6kCg
+	S26w7FUFdgy9KTa/fRLd0KNVvSoTSGXMOjsCMcFZ3iKvows0j8AhH8TT/MH3b1K1
+	QtSvEu53ZUAY+dJfIn03wNI58=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgCXDBRIWtZon8J4AA--.11019S4;
+	Fri, 26 Sep 2025 17:18:02 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	andrzej.hajda@intel.com,
+	treding@nvidia.com,
+	kyungmin.park@samsung.com
+Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 REPOST] netfs: fix reference leak
-Date: Fri, 26 Sep 2025 10:14:56 +0200
-Message-ID: <20250926-buche-fragment-4839b9d8930c@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <936424.1758805700@warthog.procyon.org.uk>
-References: <936424.1758805700@warthog.procyon.org.uk>
+Subject: [PATCH] drm: mipi-dsi: Fix an API misuse in mipi_dsi_device_register_full()
+Date: Fri, 26 Sep 2025 17:17:58 +0800
+Message-Id: <20250926091758.10069-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1184; i=brauner@kernel.org; h=from:subject:message-id; bh=r8bB9D9hbaoidmN9A4Dy4fetHxoLmO6jJeY+jY/hGaw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRc825avXffzNMfNbN46hw1zp+xlEz99zh6tfLatNDav gtZAutLO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYi48bI8MyS6c2KdzdOz/y3 sHU91+dXq59qmlZ4HXiZF/UicR1H20OG/3XCz+suMilqfJeWSzxy9fec8qqivx6yJ7W3Jxa3xk/ 4zw0A
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgCXDBRIWtZon8J4AA--.11019S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrurWDKFyrJrWfJw13GrW3Wrg_yoWfWrg_uF
+	10v3s7Xr4kC3srJF13Aa1fZryayFn0vr4rWr1UtF9Yy3yaqrWDX34DuryFqrWUWF43AF98
+	Z3WjqF1fAa13KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRRApnDUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiMx-UbmjWV-5H7QAAsr
 
-On Thu, 25 Sep 2025 14:08:20 +0100, David Howells wrote:
-> Commit 20d72b00ca81 ("netfs: Fix the request's work item to not
-> require a ref") modified netfs_alloc_request() to initialize the
-> reference counter to 2 instead of 1.  The rationale was that the
-> requet's "work" would release the second reference after completion
-> (via netfs_{read,write}_collection_worker()).  That works most of the
-> time if all goes well.
-> 
-> [...]
+mipi_dsi_device_alloc() calls device_initialize() to initialize value
+"&dsi->dev". Thus "dsi" should be freed using put_device() in error
+handling path.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Fixes: 068a00233969 ("drm: Add MIPI DSI bus support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ drivers/gpu/drm/drm_mipi_dsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
+index 3a9b3278a6e3..21d9aa29ac34 100644
+--- a/drivers/gpu/drm/drm_mipi_dsi.c
++++ b/drivers/gpu/drm/drm_mipi_dsi.c
+@@ -233,7 +233,7 @@ mipi_dsi_device_register_full(struct mipi_dsi_host *host,
+ 	ret = mipi_dsi_device_add(dsi);
+ 	if (ret) {
+ 		dev_err(host->dev, "failed to add DSI device %d\n", ret);
+-		kfree(dsi);
++		put_device(&dsi->dev);
+ 		return ERR_PTR(ret);
+ 	}
+ 
+-- 
+2.25.1
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: fix reference leak
-      https://git.kernel.org/vfs/vfs/c/4d428dca252c
 
