@@ -1,718 +1,244 @@
-Return-Path: <stable+bounces-181756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D34BA2789
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 07:41:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DBABA27EF
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 08:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52E72166E6A
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 05:41:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A43F1BC79C5
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 06:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEDA278754;
-	Fri, 26 Sep 2025 05:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A390627A442;
+	Fri, 26 Sep 2025 06:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="f8Myd0Rv"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HVvWPWQw"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012016.outbound.protection.outlook.com [40.93.195.16])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011054.outbound.protection.outlook.com [52.101.65.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51BF27380A
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 05:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7460A264614;
+	Fri, 26 Sep 2025 06:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758865302; cv=fail; b=OV2RUyFQPZM1FsE6BUNiKoNymmbSo1F8tmkvnkpqBAI0Aw36sn7zOb4pN+z68rzPtODxNpX3LZfqfL/O3CDZAC4mGUPA6UrdtK1niu/nzggvYq7NX9n6vdW3wzPPfos63PQArj9ZZBmEqrf3ukfeaw1HbGffB280NlbeyFFOF1o=
+	t=1758867007; cv=fail; b=WaeIhhUb8bchckkmATJzmVphM2KbLKAIllcbOFWZ+5M1eupxWp+QBeQ6c6wyeeHfCGO50rPICqq4Bg9SyZElSYjYkRJ9WnTpkS77eKNzU2HStXOKK1mdwrUnnEhMdV7ovU+3HLDjjFfvGZgcMQDGLTJksNqJ2liuEtT++ZojZto=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758865302; c=relaxed/simple;
-	bh=cwD8F0+4OU3HsLSI9m1AopyDjtm5F2v7R332eQCkMAg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZBglEN+CuD0PlSwFO9gZxHZ2KcoX5hmUgLrxRO2EJM7VgU3CsS5ZB+2mSOqMVQjP4lAJmKOi5250BABJVEgmhjBeYq0d2y7JCmDzBcUliBGp3ypd7BVCOyl9p/XPIsZKGnm0olBIZTf6rBpmRxtVMwqRL1wyvxqickxrXS2xKuM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=f8Myd0Rv; arc=fail smtp.client-ip=40.93.195.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1758867007; c=relaxed/simple;
+	bh=/La+avdPJRLedryVgPC7S4cD7ipFdb+86gN0Pe58XRE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rFNqwFzOh7xtk49n8Dj9bocuJmnMA7Xz/ORMhCC6m4BB8I3ZJ3JvijxaBz6rBzCJetIu6rAr8rqas0Qx8c/b3laYARLcAzR+qB3lVq+DyUGAByOurFtEjtsqAx0Q/9iHNMk2Y8p9Mcsg+/GjziV97LIW6ilST/471ToTGlj/vCU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HVvWPWQw; arc=fail smtp.client-ip=52.101.65.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fx0ynPKLH4lHiU7Rc5Z46D2op1dKGcnk9KlFkrH+5Pco1g34Fq+lE1t4GVSMGiwP/WJDy72H/xrZp3qsfNiiqyL05Ri9I2EWUL3khtZwGTCXoj2G/cglr4DbyoHbRZDvKC3gMgu0W9R0Itm1NuadGy5GCOUR33DUguqGmI9/ifFHlBJGXGAwPCkxMSLu/eHcDiCxECZVrWeUh00Y0J1lLevD6I4D8DjOot9N6GcaSwc/LsSzEbU9ajaKD8CfAM40KYHYsBTtrsnjFrw0mknKq0Itq2CS6W5gRIrSYC9LTkq1hshr9xkGb1g1qtm4iiLQ0g/+JnP15/c1+owKJjN5Qw==
+ b=ZTuxParlisKtrsVRtqx25JQlhlQfs24vBrx7GEKNnKbsitFRsqCMFRH2wU5b9qFBzDMbj4O/k7rgijqyU+fzYFXboVYGcvAqchU5qdNWaAOTuSzqCUAZ7JDbGgbXh+NRG+iyIRwwdZwIrEhIJvJf33JRDb8HmPyPSYEsuml+iaWWgX3PbLq4hZGkyBvEETIVE9+3m7qjzza4XAvwDuVCXmbcOaD9yTGt4PjOCy7Zp3d39nhJpWdLgdEbltbfbCB5wt1maYugx/RMVi1oCWCm29gAE1j/6K4ZkOlCmPFu48vUDLcWKXqc9LzziVd4rohsAXmhcE3dcPSk0F+nDEOtjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z38cae2i7FrMmxgKqPK1D+7X5vtcLAlfnvY21tH1+LA=;
- b=KIMDDNn5oEeYEpR8pcFFbgndkfb9oFvPicygkqocnTnVpSfGNIxREPzTReqU1Ikr6FLghbW6gWPr8hfLDYD32SWlIy8j8xz5rL/wdTcgbK0mmqhWwC7cL+osEJQjpkE34O+ZCNpF5QDmZYDXNXCA3KPF0iECoSCH6XN2CmQMtrCHLiUfD0Ibz++4P8WileauCWh/Ca3dQdI86qHFsS3sJIF95cml1+Sh4Zh6keVLSqvcYBaEpo2de/W1IIcsokZFYnyVo1U2/uIeRzZu0kcHIEzi9r/lBfIy5BZqWe62Tn3qarAPFtJ52rGXc6imCldleQOA/pTE6Z1+6IA3a8BmVQ==
+ bh=/La+avdPJRLedryVgPC7S4cD7ipFdb+86gN0Pe58XRE=;
+ b=h18Qv80sHJYYjoEQRoqlXrjYhn8thO+01D9X9S/BwK6OlCkS5AV+TJBPEPQUZ0ohTVVa+lh80tBHzKTXot+wFnLM3QUz+KjXxd7rd86+OJ01bj5YptPV7wieBZBXdHyl7MdQHoY75NmHCpfmsPS09wAXxiGWwp6mLVdR4dZiOXflJxplAbaN878EXv2fwvRcVuw9u1ZFGKkT4NFkQHhptG4xVmV3ayBOgiZexxwmNuw7ccZywn4Oi3UIcsfjZZN7UkAno6L+sSBQD7U+r+R1chXeHfqQdvv8OTK4wRUMBmTd0tF3OTtbnOjarIW/k7SHo+5wDqvKD1qe/2SKPJ329Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z38cae2i7FrMmxgKqPK1D+7X5vtcLAlfnvY21tH1+LA=;
- b=f8Myd0Rv1S8LPWWuNxa+Q3WqTdtt1elAdEEO3IPSyDbCBMArP96JoDwZPSAnhESXcmQz4kJ61bAsvIfDjECEgAsBPr/h7vi6j08QTRWN4CuBsM3Yph5M0RS0Ov1SkX4tbHK+8QAQZqNFDai4xtCpOgN9IW/IA4j60CPXUpAXQjM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12)
- by CH3PR12MB7763.namprd12.prod.outlook.com (2603:10b6:610:145::10) with
+ bh=/La+avdPJRLedryVgPC7S4cD7ipFdb+86gN0Pe58XRE=;
+ b=HVvWPWQwShdOsulJ5qeBZfp4YkgTDlTgpjP0H6RpaANSoQOanrVVN5MblqKwt5WC5mDSCRv97YJLsrTsvqx0NSC5h4Q4sviCxCP2V6UOnE4Dm+bIz4qUMZHzFKc2VnYnpHL3VkIXjaUOaY5334q51kitHUkN7vgwjwsgZKfxDghEk6mbVkGhfhvaqCSqKi7DWuxfmdDU5g3zr627twKccACifGxLgjgfQh9UsNQO6j+mbHp3pR1bWA52JovPJUiTtyeBnLHX/XMh9g1XFryyXWiuS4KBwvAczKpOFM32kdAxXw/LXzaGotngfkpn4pwpdq0eOP1vUqpdQwdLb71Smw==
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19)
+ by VI1PR04MB7086.eurprd04.prod.outlook.com (2603:10a6:800:121::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.10; Fri, 26 Sep
- 2025 05:41:36 +0000
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350]) by PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350%5]) with mapi id 15.20.9160.010; Fri, 26 Sep 2025
- 05:41:34 +0000
-Message-ID: <ec00b611-f104-40be-8b4d-61efe72798b9@amd.com>
-Date: Fri, 26 Sep 2025 11:11:25 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] drm/buddy: Optimize free block management with RB
- tree
-To: christian.koenig@amd.com, matthew.auld@intel.com,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
-Cc: alexander.deucher@amd.com, jani.nikula@linux.intel.com,
- peterz@infradead.org, samuel.pitoiset@gmail.com, stable@vger.kernel.org
-References: <20250923090242.60649-1-Arunpravin.PaneerSelvam@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.11; Fri, 26 Sep
+ 2025 06:09:59 +0000
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86]) by AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86%3]) with mapi id 15.20.9160.011; Fri, 26 Sep 2025
+ 06:09:59 +0000
+From: Hongxing Zhu <hongxing.zhu@nxp.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: Frank Li <frank.li@nxp.com>, "jingoohan1@gmail.com"
+	<jingoohan1@gmail.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org"
+	<kwilczynski@kernel.org>, "mani@kernel.org" <mani@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com"
+	<bhelgaas@google.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v6 3/4] PCI: dwc: Skip PME_Turn_Off message if there is no
+ endpoint connected
+Thread-Topic: [PATCH v6 3/4] PCI: dwc: Skip PME_Turn_Off message if there is
+ no endpoint connected
+Thread-Index: AQHcLSQ2s+NXydOpPE2jgrY6l1YK5rSiwU+AgAI1uzA=
+Date: Fri, 26 Sep 2025 06:09:59 +0000
+Message-ID:
+ <AS8PR04MB8833B3F0E22A8E77B24FB7938C1EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+References: <20250924072324.3046687-4-hongxing.zhu@nxp.com>
+ <20250924195955.GA2132329@bhelgaas>
+In-Reply-To: <20250924195955.GA2132329@bhelgaas>
+Accept-Language: en-US
 Content-Language: en-US
-From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
-In-Reply-To: <20250923090242.60649-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BM1P287CA0015.INDP287.PROD.OUTLOOK.COM
- (2603:1096:b00:40::33) To PH8PR12MB7301.namprd12.prod.outlook.com
- (2603:10b6:510:222::12)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8833:EE_|VI1PR04MB7086:EE_
+x-ms-office365-filtering-correlation-id: df03b1e8-01c8-41db-91e4-08ddfcc352c0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?gb2312?B?YkFGck1objBUbXdtZ01hZW04czVNbHFaVXE2SU1OaXhkTEUvSXhlZE9tNVM3?=
+ =?gb2312?B?eW45ZXp3QWkyb2tnVzJMYTZzSXFaS25tZTcvcFJQWXB0T29HYmdsME9UeU1Q?=
+ =?gb2312?B?VmhmT2x0UFMyZGh1dkd6SURwUGh4YkswclAzcmFOWC9XdG1DWDlmWHBiTXIv?=
+ =?gb2312?B?M1FRcWk3QVl1SUNFY0VieFI2Ri82MlBMSnFROGZUcDRoV1F3QXhoZEt4Q2Zx?=
+ =?gb2312?B?c1Vmbm5ocFJJRnlEY0tHY0I0Y25iZDZCNkVnTTBFb3l1aFpNNm9qMGNCMHY4?=
+ =?gb2312?B?REx2RDhCQUZ6ZnZtN0c3emF0bEVtYUpBaU5vYmNGQm1kRkc4TGgvL3l1TEhL?=
+ =?gb2312?B?bmJGdEFEZlBoUlUrbnZpWWFmd01KVEkxZ3Axc25YZUs2YUp1SFZiMDg0R2dD?=
+ =?gb2312?B?NmVDVFZtOGkyTnhxWDhERHZvR1R4UlBjZFVYUGRxc3NydkR6TDlQKzY5SjBr?=
+ =?gb2312?B?ZWlRcTZZbFdpc1JrdEdUVlIxYzdvZWdkOC9uQlVUWGtmMXgydTk4eXEySms4?=
+ =?gb2312?B?N1paMTJTNjA4Y1ZxL1VDYXRiRm5KTFlnQjVhTXh2c2dDNVdSdWRsSVQ3eE5Q?=
+ =?gb2312?B?cUVFYjIrUkJYOUN2THlPWkRZRklkSzROeW95Si80SENqR3RXNlNvOFI4bVZZ?=
+ =?gb2312?B?VkJPRTlBQXd0NmJvTXdCVHNMakxZZ1hqSlhPdyt4TTBsUVk2SysyMmNhUy81?=
+ =?gb2312?B?OURybWczRThscVZxbjhLSi9SSE5FQzRYNzFMRmJndmJwUWJKVmd5TTdtbzFE?=
+ =?gb2312?B?N0tLZTBLNHh4NHcrWDVnYzNRRyt0dGhBZ2hXLy80cG5SbldGVnhsYWlYOU5u?=
+ =?gb2312?B?djQrQmZyYm5Od2ZYcURtdWpvQjMvQy9qZlc3OC8xaHpzK3RmUVM1RGgvMncy?=
+ =?gb2312?B?R1ZpU2xOUXVDUWtXZkxvSkV4RTZoTTJSOGZHWVRWN0ljZmpBUlJhV3BOemJZ?=
+ =?gb2312?B?TjlwdHBZWlNhdEVFdy8wVmNPdklMNS9kZ3NsbHZ0bmtKVGdpc3NKVTluQ3l1?=
+ =?gb2312?B?Z0VjSzE3ZWd0RitKWkZZMVZtSDlOUEp0RXNCQXFYRkV4NzJSa1F1VmJ2Ty9p?=
+ =?gb2312?B?ekluMEkwUFZQemxXbHY5WEloSnpZMTFvbGtLaXl4L2xXdncxVmUzbkZwVE9B?=
+ =?gb2312?B?US9TWE5sK0lVNmxZd1REVVEwMUZFMTVwNTV6U2lEU2NuQ3p3QWh5UmJQSzMy?=
+ =?gb2312?B?by95OE9nc2ZMQXFwZkp1N0w1M0pZVUtUbDhweFBRT0lESThtd0JFamRyeUZv?=
+ =?gb2312?B?c0IzL01OeUFkVzJ0L1BzeDFUUjN6UHFJT29WN29LZ0liZ3ZIUTNOVE5nQ1hL?=
+ =?gb2312?B?OFR0RzdoOEJCZXkvUE9ibVlLZWZkc1NjRGhJS05RTnJsNDlIN21iZS80Mmkv?=
+ =?gb2312?B?aVBBbVBXU2NUUDUyZnZUbUtlRVI5RDhCQWw1OWZydmpXdVowNmVQV01ESnRR?=
+ =?gb2312?B?WTEzR0d2WE9RMHJ1aklSOVdvbGtydUFrZlo4YzVLNUdtM1VueXBXS0lXSTBF?=
+ =?gb2312?B?QW5oa1FmaE00S1hqaU9DakpJZnJmVThvVGJXQUhBYXcrK2Y4ajQvL2YrcjhO?=
+ =?gb2312?B?bEVONkhQb3R6YUs0VXJDQks3QzNWdDlSMml3Q3JJeGxvdk1OZVhqNFYxRWFj?=
+ =?gb2312?B?QytrYmJ6aW9zeGlNUXIwdmtEZnVUQ0FHQXYxNVVzL2ZjTzNQZ2Y2SmdYWEJz?=
+ =?gb2312?B?UFpGeHE4TmxPdjhDcm1PVjNlSzZCZzk0U09lQXpoVWcwNFRsbTFsUUY5RVc0?=
+ =?gb2312?B?UFBEclpjVEZlRnA2UWQwNzVYREJOc2wvZS93QzNFdXNCY3NtcGd3Y2xsZ1hR?=
+ =?gb2312?B?UTJIYWFNcHNKcWpGajFTSGs2NWZzOVc0R2ZkZkd5Y3pmRGlML2RpTFRHZnRq?=
+ =?gb2312?B?NEFNRVhyWERKaURIdXZRK3RpeVE4Q1lkcE1kOVNwbTdCZHd4S0ZkcDl4cGN4?=
+ =?gb2312?B?aytydWU1eWllWjlTajVhWmduSVR5YUREM1RRYWxRTlNtY3Z3bml2VnZES05N?=
+ =?gb2312?B?L3ByT0VPcS9BPT0=?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8833.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?gb2312?B?aHJDd2ZDV1c2L01ybk02aXRDS1A4djhtOWtlWG91djIvV3N0ZVZ6R0h6am9x?=
+ =?gb2312?B?WTFuY0xZQUJndC9NN2pvOXVDT3VHcFRiUmN3dnVyWGZQd1g1VWcvK1ZjZTFY?=
+ =?gb2312?B?NFJIYWRMNTlrTU5HbDMxR0FhWkFld2pqZTIzNjJuMWR5LzNSTG5YeENkejIv?=
+ =?gb2312?B?SCtKbHVkejBabk9TN1ZmTk5iOXdVTXVWM2dIeks3TkhYK0JwVFBVUmp4WVBq?=
+ =?gb2312?B?NTF3akVmdVFrQXovZzIrczRCa3h6Y3hWYUw3V3ZGWjZZV2JvcllmMjBVM0kx?=
+ =?gb2312?B?ZXA2amVVdjA3cE5jY0hCdmEzVm16NkF4M0RXT25kSnpqWVcrN3RTdHZ5UUpL?=
+ =?gb2312?B?WlhVREh0UFlOanAyb3VWNW02Rk43ckFsQXZXcjdTekJ3T3B1UFdaWDh3ZTVU?=
+ =?gb2312?B?QmhUdGVkUUlQRUJCckE5WFFYZXRZY3hOVURReFJqazdvQUU5czcvcFMvWDB3?=
+ =?gb2312?B?eGNQNVBOZnM3SGNqcVFzNjErd1pGcVZUMzZjK09KMm1nR0xHY0xPWUdGdVFI?=
+ =?gb2312?B?T2VrOWhDYjViT3ZTaUM5YkRGQVdhRDZtR3JBVTVZV0ZTL2gxKyt6Yk5UTVND?=
+ =?gb2312?B?LzlYanZzSnZRTVZTbE9mcVBWZk8wcG91bWQ0Y25SR1daMGNkaFZ2d0t5ZG5W?=
+ =?gb2312?B?U0hyVHYzNzZ3VElSeFZ0L3hPVDdTV2o4K01XMHZmdDczUHRKUllENW43MFNr?=
+ =?gb2312?B?YzBPeHpHNlp1N1ZtaVV2aUhNTmtibGt1NlBSMGxWZUE2ZklHb2h3dXE1ZUsz?=
+ =?gb2312?B?dGQ5RlFiZkxYMm5VSi9tWmtHS3VzbGJ2elpWdXZhbE1PRXUzeC9wSkRtWGUv?=
+ =?gb2312?B?cy84RytUcEdyWEFKTXhrTytKUDFsNGIrYUJ0TlVndXMyV3pOYzBmejVnVEhw?=
+ =?gb2312?B?akx3dGNDWnFNUjhHSG1vZlY0SEw3L3p3aTlqdDdFOXZzaEhoZTI2dzB0Nm9X?=
+ =?gb2312?B?MHFXc0I1SHptVkJZcWEvMlVFODNRbVByOHNjSzRLUTBZRDNFYWs2MVJIUFls?=
+ =?gb2312?B?RkQraUlzdXZqVlh4QjVhdmZUL241MmxQcEs0NUFVT1R2QzhYTkJONld2ZEhO?=
+ =?gb2312?B?VTRDKy8yVENDaFpsSkNMYWxrc09QTEwyMFpwdzQxem5ha0NPRkgweUs5ZFd0?=
+ =?gb2312?B?R1o1akFOdXBMaHVoRTViUnFMeTBUcitJVmpEVnRvak1Gb2xLY0JyZEJzQkVP?=
+ =?gb2312?B?V0VaMUQ2TUtiRlh4dWxzSGRIZlpONlVmL3RmM2N4by9FWU0wTExvd1ZsTVBG?=
+ =?gb2312?B?YmJHVVNMK3JRMTRqVXhNVTc5ajlDTFVXbC9GajJiM0lJaWcrWlVCeVlWOXlO?=
+ =?gb2312?B?MW9QYnh6NkkzbnVrOGNQVzFPWkwzbnZmWFZGOHM5YkVNeFlvWTVUeXdBYXBK?=
+ =?gb2312?B?WWhXNWxJRlBiY3gvK0R6TzQrQmN2bFZzMmlvZm9lMTNYazJMK3E0Y0pRc0k5?=
+ =?gb2312?B?VHVzcHV2TFV4ZS9aTndrNlZoVTJzU1RyRUlxdHdDc3M3UThyWVZsQmxINjV5?=
+ =?gb2312?B?YzZSNHZWTUVXeklyc2VoRk5KMjRKVGltRHlpeWM5ck5YckdUYTdaVTNLbjJM?=
+ =?gb2312?B?U3FvWnVuOE1aL2taMEFMRXNaUjE2MkM4WEFndUs1MElmRDJzTW9DQ0gxNEhz?=
+ =?gb2312?B?T3VuOWtZcGIwZE5jWUlxbnRrWmk0S3FQWE1ISDIxaXJuL1BkOEU1Z0ZNeG4z?=
+ =?gb2312?B?bzdZWU01Q2JUN2l3cU9FUGoreDBlZnhaaWNuV0NIV29ZR0FXN09Ud3FuWGx6?=
+ =?gb2312?B?ZUdvZElMYm9GMGhacTFIdzlFdG43dFQvMmpwQTcwZ1Z4VTE5N1QwVHFyRmoy?=
+ =?gb2312?B?aWtnQ3ZtVGJROTVrZTZLajRNbTBwQi9IRkszdlBVYkFwY2szc0RjVncrRjE4?=
+ =?gb2312?B?Q1VIY21tNlZPVlc1K3J4Qk1kZEFlUDdFbWxPVkJVVmxSTjZkMld6TWh2TEtH?=
+ =?gb2312?B?bEhqS0ZHbFRPR2lsclFuZnJnWHY2VXdHKzdhR282YUtoa3dDdVJTdlhIbmRz?=
+ =?gb2312?B?U3RSRnluRHJsLy8vV2p0Y1BKa1kvYzFKdHd1NlJacTI1L21KOEpGNVlqQkpa?=
+ =?gb2312?B?L2ZZL1cyZXdDTVQ0dGc3TEVBUDQ3aVBjK3h5dVVvMmwrUzkyZXhUekJnRnBG?=
+ =?gb2312?Q?J6IA=3D?=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7301:EE_|CH3PR12MB7763:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f34f102-98ad-46d6-1844-08ddfcbf5a46
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NWpvdGhQdjVna21WUGlFQStRb3M2K1VjMWZyZEc2MVluKzNBRUpCNHl1YmZq?=
- =?utf-8?B?a3Q5UldSRk5nSDU2ZDB0cGw1VHc1MXI1anJBZmp4QWUxMTRYVlpjM2k4Rk1I?=
- =?utf-8?B?ZWxvakR1MjlHSXNWa0RnMkx1MjU0Tm5abVJTYWM4UmE2MHN0TElEL01vRnFJ?=
- =?utf-8?B?akFTanBuVEtHZEE4eEZzOTBZYlB2NXJublZYc3ozODI4azY3Tnhrbk84M2hT?=
- =?utf-8?B?c1ZjbG1uVk1NRjBQbTFZaDJ2bTVKL2JwYXFpZGlIWmdwWjRLdkZtbVZZTG9Y?=
- =?utf-8?B?VVVBa1FqSnFoWlNHVGhWYUVRd2pYNjNFbDQ5ekhCcWJYamtDMmFiYlFvbFhj?=
- =?utf-8?B?SEF4WTU5bGQ3TlBKZDZZODg5VVMvUWJwZHNPTDZGeUZwTkxzaWVidGZJd3JY?=
- =?utf-8?B?S1Y0NUo1Q3dLRTRLd0J3OGViTzZQMXVUS1FVOXl3am5QZDNuMDk3R2dIMDNL?=
- =?utf-8?B?YXdhNlV4MlQ1Vm9YSEI1UHZoN252Qmd3bk5OWWhmeUZka3Y2Z1p5UlJBYmVw?=
- =?utf-8?B?VFBMQkdxV0czTmRMOGY1UStsWFYxbmVBNFM3T2ZCaWJ6VHIzTnlDWm5zUENL?=
- =?utf-8?B?OUcwWVBRNkdjQ21aNGR1UjNwR09TY2srK2EzRkNNNjZYTlhPT3ErYTNyejJ4?=
- =?utf-8?B?KzMrRDhIUTRxLzNCcVRMZUtvdWJDWTdqZ0Y1VVowOHlPZTRwTEpIYXZ5RTlw?=
- =?utf-8?B?V0xBVDQwWHhsNGh6VzRubmEvbTBKTVV6UjhBNWFZcnFicUlGQ21aY1VwdTZm?=
- =?utf-8?B?MXdNeTB4Wjh2ZTBuQU5ieXJqQ3J2S3pBMS9GRE14YU10dlFCay9RVW83a1Fo?=
- =?utf-8?B?NjVSR2N1ZlNvK3RFQzZhaHMwTFZEYndrQldwN0RzSzNacHhTL25Sb1IrMEpV?=
- =?utf-8?B?NjNnNzFRUGhmRGlYNW5Nd0NDYUV2NnVCQm5wdk91ejRjdkNNQ254VWI2YkEr?=
- =?utf-8?B?cmhyWitObFhSeVBwN0tWOVg0eXJJNnJYZHhWS1M2ZHN0U25Zb3dmcU5vZllr?=
- =?utf-8?B?RE5TSG0xMkxrTDhKWmMzemx3Y1dPNnpLZUlNVWhCeTM4VzEyTkRGYU5DVEtM?=
- =?utf-8?B?b1hYVVZFbjZiRVh6QVU0YzVMcUVoK3BXTW5tb1pPY3luRmtkbjVtOU8yaStT?=
- =?utf-8?B?Y2p5L3VTR0ZWc0xvelZpaEZNTjlYYnRjNHBJWUZOUFNXQldnUHplRnVBdzFq?=
- =?utf-8?B?U0oxRUNOVmlUV1Z0cE1MU3hEaFdaOW5tbU5RTlh6dTQ5T2N5eTB1Tm8yV3Z0?=
- =?utf-8?B?Sm1vRGhEZkdhZWt3MFMyMjQwK0tuWGs0ODMzaWVhODJ0VUhmSkhtUGdFZW1F?=
- =?utf-8?B?RFE2RkNnVnBlZ1d1QmlxcUIvY2thYUJQTTN1YmdwWXg2emRmN1JrWlhONGcz?=
- =?utf-8?B?RXNTMnJ2bHBrejBCSVExVDFQdndRY05rbVhpSlRhQndDcVM2dFl3YXpzaUtz?=
- =?utf-8?B?eHpleElJemkvQld0WmZmTWFzWFNFZloxYU1CaXJIeStvcWV1LzF6OHNmNlpp?=
- =?utf-8?B?SW9LZFpDQVRDcnJ0RndVT2RTNjRWOVBjM3pXN2gwUHFsazBGQTVUNmRwbGdo?=
- =?utf-8?B?QU1BNnZxV3ZKQXZRc0JHRVhEaTBnWk0rdVhWSWkyNk5PWG5ZT2NuVktBWW5t?=
- =?utf-8?B?S2RIKzdsdnJZRVo4ajdIb0d2Slpuc0xiOUpiRlR4aXdRQzJlRnR1SFc5RU83?=
- =?utf-8?B?TnUrV3FyQWU4V3B1cVIxOEpsdXQ0Tkg5MU01M1J2aHZ5aEM2NlFnVVhSUWF1?=
- =?utf-8?B?amdzaDgxWG5TY3lIZUJ6Y3ljSTQ4dDFTQjdTRitadFRLZHRKVjJ6RlpLN2R0?=
- =?utf-8?B?QnJwSDl3RmJEbDMrb0xjNENoYkIxSDJMTFJMQ05ka1hmMU9CcXpCVVQ4MEhs?=
- =?utf-8?B?cFUxODdNV3VuTVQ4R0VSVHp3R1Q5Wk1hbnZpak5nZUd3UVZoVGxIYkcvL0kw?=
- =?utf-8?Q?yY/RalOfkZg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bTlZZVJTMjZoa1Z2clZXbHcyQUEySjhKcTNISGp4TVhLRk5qNWw3bW10T2p0?=
- =?utf-8?B?QktSRDlTZ0lHVGJSUFpHY0J1eW9GK1c4TTQzV2kxbkplYStWekx0OFhzdThs?=
- =?utf-8?B?eWF4M2crRVdhSE5XQkU0eThFVG1LVlFqYXo4bXhyanJkdFd0OTNOMEhJZWhu?=
- =?utf-8?B?R0ZHc2R4L3c4VXhyNjJSQTVQSDR4WmxydDByRk80ZGNYOHF0TTlrV1JISk5J?=
- =?utf-8?B?akVoc0xpRlg2NGh3czduTHZ0N0xKYy84d3dNK2NwK05KY1J4bE14ZlpZaDJJ?=
- =?utf-8?B?TlFmdmd3Z0xnWkZadTZaVTFQYUswVCtJUTBpZkoyVDI5WHFITm1wcytOWDZn?=
- =?utf-8?B?TzNKRGdVT1VidUdtb0ticFFCL0hiTVhONElJeXcrcG5NLzA5TlliOEFjWmxk?=
- =?utf-8?B?MmMxT2JPeW5peklqdnNFVEFvcC9YQis2dUQrdzhmdzduY1ZBcWFla0F2Z2ZQ?=
- =?utf-8?B?OEJwQmJjTnlHSzZyeHEwSGVFZ05DOHh0N3Q2QSt6RUljYzcrODdtQmxhcC9I?=
- =?utf-8?B?SWk4bkd6UklWSGtMak5yVkxnYm1aM0VNN0lFUmw1RFNsZGh1amZHVXltME9K?=
- =?utf-8?B?SW96QjRmNm5kRng3WUlaeUpYQ0U3S3grVUw1YXZXVHZ0bi9BNFE0RGljKytp?=
- =?utf-8?B?VUNHb1lubVBIeE5wYlNpcnJKT0ZBeldvNFBUeHBqRmFiSUI2OGJmTkNuNDJL?=
- =?utf-8?B?R3JhTXdJS3BOUDE0Y3dub0kxdE9OOE4wVms4elgydE9DYU8zcmcrblRRcU94?=
- =?utf-8?B?WWt6RmsrRCtiUXpuSjZ4M0Z2TE5kdis0OUNWSG9tTU5leDA4U3psS0VvY0ZO?=
- =?utf-8?B?NnBGWjg0RDhET2JqeGVQOEl4dkpMbnhSQU1scm1Za1J2cWhzdSsvSy9mWUd4?=
- =?utf-8?B?MW4zN2pWc2w1cGRwN3lpV2JJUldGMTYzcEF1WmE0OXFSRTFFdFpHQlhiMDFW?=
- =?utf-8?B?WVRoYzJmOFVKUDNYTm14OXVyQ2R6VWUzRTE1dFNvSW1jeS9GbWovQVdZVnd2?=
- =?utf-8?B?VWJhR3FJVCs3ZThmSUYzMzBsNmpDUUdBeGJJQUdVZS9LckIzazNXUnN3eHc5?=
- =?utf-8?B?MXVYYVRaUVE2M2NUTXR0TVZlN3BEbzArcWwreXBMOFIyczRSVVRWS2xBQzNy?=
- =?utf-8?B?QzZGSDJJWUxqdWdFWWV0UXZ0Q0lIcUY5OGg3bmIxWGpxSWhmYVdqVExZNWdS?=
- =?utf-8?B?VTljSzN2M2N3UkttWk0zeWJoL1U2aG5Nb3hCcHBqa3FxZG13dFMwRGpaMWJJ?=
- =?utf-8?B?MmpuTGs3bCtsMG5Ibm9IcU1zdWVsazFicFc2S1FWYWZKOGE5SWJ6eTRHTGJG?=
- =?utf-8?B?SGhpaWhkblhtSndlMzNselozSmxXUDR3Q0JrNlo4eWJlaFFxbGhEdEhGaEly?=
- =?utf-8?B?NlJVbWUvNE14cWJXd2hpd0tVMGE2NWZYTldTbmQvWE5rNVEwQlJWOE14MDdM?=
- =?utf-8?B?K3FJMDE4aDNDQVlTSWJEZUkyVXRRTWlxVm0wRmFXUE91SmNOYzlTTlBYVEti?=
- =?utf-8?B?T3BOODZzUGljamRkU2QvdFZ6T0o2N29ic1RGejB1MDhHb0poLzEwU3ZwWjNL?=
- =?utf-8?B?QXp6YktUOEFTT0k1VjgvbHR2bHNjMkF4azBpZ21WZ0Z2RjZaOXhLVHlhMG5Z?=
- =?utf-8?B?S0xxOXdualp5Z3NJTi9rb2ZrQlF6Ymo4QXF3SDhxMHlYYzBNa2ZnRDRjYlBU?=
- =?utf-8?B?cnZQQ2ZVQjMwOXU0NDFBd2dQa3UxL0lwSUNYdlFRZ0J1MThidk1WdU41TVNs?=
- =?utf-8?B?VWtac3pMT21iMzBwUUFCRVRyb2NoVTZ6ajVrRnZvWjVRVGg3WGorSmk5bVNE?=
- =?utf-8?B?SW9wSGdMM2J1OUk5dkVQTXZFZDFmQmRmbEcwVDRkQkFOZktvTE1xZ2lTL1hV?=
- =?utf-8?B?ZDdQMFdJc0JlUW9YcFpUTXBYU01VcUoyc2tKVUR0L0VoVnJlZ2pwbi9rUVow?=
- =?utf-8?B?Zkl0dERMSS9ZeXFEVzlSNW1iM0hxeGR4VjU4WjZERXV4c0hhZWRhckZRUXh5?=
- =?utf-8?B?UUxaSXhZOThZeXhKOUVVNzg3b2duaW1oc1BMZnNBbUZHYTdNRG1JQmJWNlgw?=
- =?utf-8?B?MGZhanNmUDBkeFhaVU1mL2ZBenlFaDhQL2hGSFk5amNQMjNjcW5sbXMrNm5q?=
- =?utf-8?Q?Zn4pmhPS6YaLN/GiYjlmwEkcE?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f34f102-98ad-46d6-1844-08ddfcbf5a46
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7301.namprd12.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 05:41:34.3672
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8833.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: df03b1e8-01c8-41db-91e4-08ddfcc352c0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2025 06:09:59.3103
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wb6cNXWA5tUHljnJqptJ0miUhJQEvLTnso1h83QWxkSpMsP3m77GuJR641eZiPr8nBYuWAaGytEZNgut6Iyz+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7763
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: bAeyzd8N5VYWxma3rqVqO4dKNHKBFtWakZTo4id5g0uT1vS+2oAn4FhbeSZ5a87xNV1rgUr1l7IqAkoQJBOv9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7086
 
-Hi Matthew,
-
-Ping ?
-
-Regards,
-Arun.
-
-On 9/23/2025 2:32 PM, Arunpravin Paneer Selvam wrote:
-> Replace the freelist (O(n)) used for free block management with a
-> red-black tree, providing more efficient O(log n) search, insert,
-> and delete operations. This improves scalability and performance
-> when managing large numbers of free blocks per order (e.g., hundreds
-> or thousands).
->
-> In the VK-CTS memory stress subtest, the buddy manager merges
-> fragmented memory and inserts freed blocks into the freelist. Since
-> freelist insertion is O(n), this becomes a bottleneck as fragmentation
-> increases. Benchmarking shows list_insert_sorted() consumes ~52.69% CPU
-> with the freelist, compared to just 0.03% with the RB tree
-> (rbtree_insert.isra.0), despite performing the same sorted insert.
->
-> This also improves performance in heavily fragmented workloads,
-> such as games or graphics tests that stress memory.
->
-> As the buddy allocator evolves with new features such as clear-page
-> tracking, the resulting fragmentation and complexity have grown.
-> These RB-tree based design changes are introduced to address that
-> growth and ensure the allocator continues to perform efficiently
-> under fragmented conditions.
->
-> The RB tree implementation with separate clear/dirty trees provides:
-> - O(n log n) aggregate complexity for all operations instead of O(n^2)
-> - Elimination of soft lockups and system instability
-> - Improved code maintainability and clarity
-> - Better scalability for large memory systems
-> - Predictable performance under fragmentation
->
-> v3(Matthew):
->    - Remove RB_EMPTY_NODE check in force_merge function.
->    - Rename rb for loop macros to have less generic names and move to
->      .c file.
->    - Make the rb node rb and link field as union.
->
-> v4(Jani Nikula):
->    - The kernel-doc comment should be "/**"
->    - Move all the rbtree macros to rbtree.h and add parens to ensure
->      correct precedence.
->
-> v5:
->    - Remove the inline in a .c file (Jani Nikula).
->
-> v6(Peter Zijlstra):
->    - Add rb_add() function replacing the existing rbtree_insert() code.
->
-> v7:
->    - A full walk iteration in rbtree is slower than the list (Peter Zijlstra).
->    - The existing rbtree_postorder_for_each_entry_safe macro should be used
->      in scenarios where traversal order is not a critical factor (Christian).
->
-> Cc: stable@vger.kernel.org
-> Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
-> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-> ---
->   drivers/gpu/drm/drm_buddy.c | 188 ++++++++++++++++++++++--------------
->   include/drm/drm_buddy.h     |  11 ++-
->   2 files changed, 124 insertions(+), 75 deletions(-)
->
-> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-> index a94061f373de..67aa67229cc3 100644
-> --- a/drivers/gpu/drm/drm_buddy.c
-> +++ b/drivers/gpu/drm/drm_buddy.c
-> @@ -14,6 +14,8 @@
->   
->   static struct kmem_cache *slab_blocks;
->   
-> +#define rbtree_get_free_block(node) rb_entry((node), struct drm_buddy_block, rb)
-> +
->   static struct drm_buddy_block *drm_block_alloc(struct drm_buddy *mm,
->   					       struct drm_buddy_block *parent,
->   					       unsigned int order,
-> @@ -31,6 +33,8 @@ static struct drm_buddy_block *drm_block_alloc(struct drm_buddy *mm,
->   	block->header |= order;
->   	block->parent = parent;
->   
-> +	RB_CLEAR_NODE(&block->rb);
-> +
->   	BUG_ON(block->header & DRM_BUDDY_HEADER_UNUSED);
->   	return block;
->   }
-> @@ -41,23 +45,49 @@ static void drm_block_free(struct drm_buddy *mm,
->   	kmem_cache_free(slab_blocks, block);
->   }
->   
-> -static void list_insert_sorted(struct drm_buddy *mm,
-> -			       struct drm_buddy_block *block)
-> +static bool drm_buddy_block_offset_less(const struct drm_buddy_block *block,
-> +					const struct drm_buddy_block *node)
->   {
-> -	struct drm_buddy_block *node;
-> -	struct list_head *head;
-> +	return drm_buddy_block_offset(block) < drm_buddy_block_offset(node);
-> +}
->   
-> -	head = &mm->free_list[drm_buddy_block_order(block)];
-> -	if (list_empty(head)) {
-> -		list_add(&block->link, head);
-> -		return;
-> -	}
-> +static bool rbtree_block_offset_less(struct rb_node *block,
-> +				     const struct rb_node *node)
-> +{
-> +	return drm_buddy_block_offset_less(rbtree_get_free_block(block),
-> +					   rbtree_get_free_block(node));
-> +}
->   
-> -	list_for_each_entry(node, head, link)
-> -		if (drm_buddy_block_offset(block) < drm_buddy_block_offset(node))
-> -			break;
-> +static void rbtree_insert(struct drm_buddy *mm,
-> +			  struct drm_buddy_block *block)
-> +{
-> +	rb_add(&block->rb,
-> +	       &mm->free_tree[drm_buddy_block_order(block)],
-> +	       rbtree_block_offset_less);
-> +}
-> +
-> +static void rbtree_remove(struct drm_buddy *mm,
-> +			  struct drm_buddy_block *block)
-> +{
-> +	struct rb_root *root;
-> +
-> +	root = &mm->free_tree[drm_buddy_block_order(block)];
-> +	rb_erase(&block->rb, root);
->   
-> -	__list_add(&block->link, node->link.prev, &node->link);
-> +	RB_CLEAR_NODE(&block->rb);
-> +}
-> +
-> +static struct drm_buddy_block *
-> +rbtree_last_entry(struct drm_buddy *mm, unsigned int order)
-> +{
-> +	struct rb_node *node = rb_last(&mm->free_tree[order]);
-> +
-> +	return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
-> +}
-> +
-> +static bool rbtree_is_empty(struct drm_buddy *mm, unsigned int order)
-> +{
-> +	return RB_EMPTY_ROOT(&mm->free_tree[order]);
->   }
->   
->   static void clear_reset(struct drm_buddy_block *block)
-> @@ -70,12 +100,13 @@ static void mark_cleared(struct drm_buddy_block *block)
->   	block->header |= DRM_BUDDY_HEADER_CLEAR;
->   }
->   
-> -static void mark_allocated(struct drm_buddy_block *block)
-> +static void mark_allocated(struct drm_buddy *mm,
-> +			   struct drm_buddy_block *block)
->   {
->   	block->header &= ~DRM_BUDDY_HEADER_STATE;
->   	block->header |= DRM_BUDDY_ALLOCATED;
->   
-> -	list_del(&block->link);
-> +	rbtree_remove(mm, block);
->   }
->   
->   static void mark_free(struct drm_buddy *mm,
-> @@ -84,15 +115,16 @@ static void mark_free(struct drm_buddy *mm,
->   	block->header &= ~DRM_BUDDY_HEADER_STATE;
->   	block->header |= DRM_BUDDY_FREE;
->   
-> -	list_insert_sorted(mm, block);
-> +	rbtree_insert(mm, block);
->   }
->   
-> -static void mark_split(struct drm_buddy_block *block)
-> +static void mark_split(struct drm_buddy *mm,
-> +		       struct drm_buddy_block *block)
->   {
->   	block->header &= ~DRM_BUDDY_HEADER_STATE;
->   	block->header |= DRM_BUDDY_SPLIT;
->   
-> -	list_del(&block->link);
-> +	rbtree_remove(mm, block);
->   }
->   
->   static inline bool overlaps(u64 s1, u64 e1, u64 s2, u64 e2)
-> @@ -148,7 +180,7 @@ static unsigned int __drm_buddy_free(struct drm_buddy *mm,
->   				mark_cleared(parent);
->   		}
->   
-> -		list_del(&buddy->link);
-> +		rbtree_remove(mm, buddy);
->   		if (force_merge && drm_buddy_block_is_clear(buddy))
->   			mm->clear_avail -= drm_buddy_block_size(mm, buddy);
->   
-> @@ -179,13 +211,19 @@ static int __force_merge(struct drm_buddy *mm,
->   		return -EINVAL;
->   
->   	for (i = min_order - 1; i >= 0; i--) {
-> -		struct drm_buddy_block *block, *prev;
-> +		struct rb_root *root = &mm->free_tree[i];
-> +		struct rb_node *iter;
-> +
-> +		iter = rb_last(root);
->   
-> -		list_for_each_entry_safe_reverse(block, prev, &mm->free_list[i], link) {
-> -			struct drm_buddy_block *buddy;
-> +		while (iter) {
-> +			struct drm_buddy_block *block, *buddy;
->   			u64 block_start, block_end;
->   
-> -			if (!block->parent)
-> +			block = rbtree_get_free_block(iter);
-> +			iter = rb_prev(iter);
-> +
-> +			if (!block || !block->parent)
->   				continue;
->   
->   			block_start = drm_buddy_block_offset(block);
-> @@ -201,15 +239,10 @@ static int __force_merge(struct drm_buddy *mm,
->   			WARN_ON(drm_buddy_block_is_clear(block) ==
->   				drm_buddy_block_is_clear(buddy));
->   
-> -			/*
-> -			 * If the prev block is same as buddy, don't access the
-> -			 * block in the next iteration as we would free the
-> -			 * buddy block as part of the free function.
-> -			 */
-> -			if (prev == buddy)
-> -				prev = list_prev_entry(prev, link);
-> +			if (iter == &buddy->rb)
-> +				iter = rb_prev(iter);
->   
-> -			list_del(&block->link);
-> +			rbtree_remove(mm, block);
->   			if (drm_buddy_block_is_clear(block))
->   				mm->clear_avail -= drm_buddy_block_size(mm, block);
->   
-> @@ -258,14 +291,14 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
->   
->   	BUG_ON(mm->max_order > DRM_BUDDY_MAX_ORDER);
->   
-> -	mm->free_list = kmalloc_array(mm->max_order + 1,
-> -				      sizeof(struct list_head),
-> +	mm->free_tree = kmalloc_array(mm->max_order + 1,
-> +				      sizeof(struct rb_root),
->   				      GFP_KERNEL);
-> -	if (!mm->free_list)
-> +	if (!mm->free_tree)
->   		return -ENOMEM;
->   
->   	for (i = 0; i <= mm->max_order; ++i)
-> -		INIT_LIST_HEAD(&mm->free_list[i]);
-> +		mm->free_tree[i] = RB_ROOT;
->   
->   	mm->n_roots = hweight64(size);
->   
-> @@ -273,7 +306,7 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
->   				  sizeof(struct drm_buddy_block *),
->   				  GFP_KERNEL);
->   	if (!mm->roots)
-> -		goto out_free_list;
-> +		goto out_free_tree;
->   
->   	offset = 0;
->   	i = 0;
-> @@ -312,8 +345,8 @@ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size)
->   	while (i--)
->   		drm_block_free(mm, mm->roots[i]);
->   	kfree(mm->roots);
-> -out_free_list:
-> -	kfree(mm->free_list);
-> +out_free_tree:
-> +	kfree(mm->free_tree);
->   	return -ENOMEM;
->   }
->   EXPORT_SYMBOL(drm_buddy_init);
-> @@ -323,7 +356,7 @@ EXPORT_SYMBOL(drm_buddy_init);
->    *
->    * @mm: DRM buddy manager to free
->    *
-> - * Cleanup memory manager resources and the freelist
-> + * Cleanup memory manager resources and the freetree
->    */
->   void drm_buddy_fini(struct drm_buddy *mm)
->   {
-> @@ -350,7 +383,7 @@ void drm_buddy_fini(struct drm_buddy *mm)
->   	WARN_ON(mm->avail != mm->size);
->   
->   	kfree(mm->roots);
-> -	kfree(mm->free_list);
-> +	kfree(mm->free_tree);
->   }
->   EXPORT_SYMBOL(drm_buddy_fini);
->   
-> @@ -383,7 +416,7 @@ static int split_block(struct drm_buddy *mm,
->   		clear_reset(block);
->   	}
->   
-> -	mark_split(block);
-> +	mark_split(mm, block);
->   
->   	return 0;
->   }
-> @@ -412,7 +445,7 @@ EXPORT_SYMBOL(drm_get_buddy);
->    * @is_clear: blocks clear state
->    *
->    * Reset the clear state based on @is_clear value for each block
-> - * in the freelist.
-> + * in the freetree.
->    */
->   void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
->   {
-> @@ -431,9 +464,9 @@ void drm_buddy_reset_clear(struct drm_buddy *mm, bool is_clear)
->   	}
->   
->   	for (i = 0; i <= mm->max_order; ++i) {
-> -		struct drm_buddy_block *block;
-> +		struct drm_buddy_block *block, *tmp;
->   
-> -		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
-> +		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[i], rb) {
->   			if (is_clear != drm_buddy_block_is_clear(block)) {
->   				if (is_clear) {
->   					mark_cleared(block);
-> @@ -639,14 +672,18 @@ get_maxblock(struct drm_buddy *mm, unsigned int order,
->   	unsigned int i;
->   
->   	for (i = order; i <= mm->max_order; ++i) {
-> +		struct rb_node *iter = rb_last(&mm->free_tree[i]);
->   		struct drm_buddy_block *tmp_block;
->   
-> -		list_for_each_entry_reverse(tmp_block, &mm->free_list[i], link) {
-> -			if (block_incompatible(tmp_block, flags))
-> -				continue;
-> +		while (iter) {
-> +			tmp_block = rbtree_get_free_block(iter);
->   
-> -			block = tmp_block;
-> -			break;
-> +			if (!block_incompatible(tmp_block, flags)) {
-> +				block = tmp_block;
-> +				break;
-> +			}
-> +
-> +			iter = rb_prev(iter);
->   		}
->   
->   		if (!block)
-> @@ -667,7 +704,7 @@ get_maxblock(struct drm_buddy *mm, unsigned int order,
->   }
->   
->   static struct drm_buddy_block *
-> -alloc_from_freelist(struct drm_buddy *mm,
-> +alloc_from_freetree(struct drm_buddy *mm,
->   		    unsigned int order,
->   		    unsigned long flags)
->   {
-> @@ -682,14 +719,18 @@ alloc_from_freelist(struct drm_buddy *mm,
->   			tmp = drm_buddy_block_order(block);
->   	} else {
->   		for (tmp = order; tmp <= mm->max_order; ++tmp) {
-> +			struct rb_node *iter = rb_last(&mm->free_tree[tmp]);
->   			struct drm_buddy_block *tmp_block;
->   
-> -			list_for_each_entry_reverse(tmp_block, &mm->free_list[tmp], link) {
-> -				if (block_incompatible(tmp_block, flags))
-> -					continue;
-> +			while (iter) {
-> +				tmp_block = rbtree_get_free_block(iter);
->   
-> -				block = tmp_block;
-> -				break;
-> +				if (!block_incompatible(tmp_block, flags)) {
-> +					block = tmp_block;
-> +					break;
-> +				}
-> +
-> +				iter = rb_prev(iter);
->   			}
->   
->   			if (block)
-> @@ -700,10 +741,8 @@ alloc_from_freelist(struct drm_buddy *mm,
->   	if (!block) {
->   		/* Fallback method */
->   		for (tmp = order; tmp <= mm->max_order; ++tmp) {
-> -			if (!list_empty(&mm->free_list[tmp])) {
-> -				block = list_last_entry(&mm->free_list[tmp],
-> -							struct drm_buddy_block,
-> -							link);
-> +			if (!rbtree_is_empty(mm, tmp)) {
-> +				block = rbtree_last_entry(mm, tmp);
->   				if (block)
->   					break;
->   			}
-> @@ -771,7 +810,7 @@ static int __alloc_range(struct drm_buddy *mm,
->   
->   		if (contains(start, end, block_start, block_end)) {
->   			if (drm_buddy_block_is_free(block)) {
-> -				mark_allocated(block);
-> +				mark_allocated(mm, block);
->   				total_allocated += drm_buddy_block_size(mm, block);
->   				mm->avail -= drm_buddy_block_size(mm, block);
->   				if (drm_buddy_block_is_clear(block))
-> @@ -849,8 +888,8 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
->   {
->   	u64 rhs_offset, lhs_offset, lhs_size, filled;
->   	struct drm_buddy_block *block;
-> -	struct list_head *list;
->   	LIST_HEAD(blocks_lhs);
-> +	struct rb_node *iter;
->   	unsigned long pages;
->   	unsigned int order;
->   	u64 modify_size;
-> @@ -862,11 +901,14 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
->   	if (order == 0)
->   		return -ENOSPC;
->   
-> -	list = &mm->free_list[order];
-> -	if (list_empty(list))
-> +	if (rbtree_is_empty(mm, order))
->   		return -ENOSPC;
->   
-> -	list_for_each_entry_reverse(block, list, link) {
-> +	iter = rb_last(&mm->free_tree[order]);
-> +
-> +	while (iter) {
-> +		block = rbtree_get_free_block(iter);
-> +
->   		/* Allocate blocks traversing RHS */
->   		rhs_offset = drm_buddy_block_offset(block);
->   		err =  __drm_buddy_alloc_range(mm, rhs_offset, size,
-> @@ -891,6 +933,8 @@ static int __alloc_contig_try_harder(struct drm_buddy *mm,
->   		}
->   		/* Free blocks for the next iteration */
->   		drm_buddy_free_list_internal(mm, blocks);
-> +
-> +		iter = rb_prev(iter);
->   	}
->   
->   	return -ENOSPC;
-> @@ -976,7 +1020,7 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
->   	list_add(&block->tmp_link, &dfs);
->   	err =  __alloc_range(mm, &dfs, new_start, new_size, blocks, NULL);
->   	if (err) {
-> -		mark_allocated(block);
-> +		mark_allocated(mm, block);
->   		mm->avail -= drm_buddy_block_size(mm, block);
->   		if (drm_buddy_block_is_clear(block))
->   			mm->clear_avail -= drm_buddy_block_size(mm, block);
-> @@ -999,8 +1043,8 @@ __drm_buddy_alloc_blocks(struct drm_buddy *mm,
->   		return  __drm_buddy_alloc_range_bias(mm, start, end,
->   						     order, flags);
->   	else
-> -		/* Allocate from freelist */
-> -		return alloc_from_freelist(mm, order, flags);
-> +		/* Allocate from freetree */
-> +		return alloc_from_freetree(mm, order, flags);
->   }
->   
->   /**
-> @@ -1017,8 +1061,8 @@ __drm_buddy_alloc_blocks(struct drm_buddy *mm,
->    * alloc_range_bias() called on range limitations, which traverses
->    * the tree and returns the desired block.
->    *
-> - * alloc_from_freelist() called when *no* range restrictions
-> - * are enforced, which picks the block from the freelist.
-> + * alloc_from_freetree() called when *no* range restrictions
-> + * are enforced, which picks the block from the freetree.
->    *
->    * Returns:
->    * 0 on success, error code on failure.
-> @@ -1120,7 +1164,7 @@ int drm_buddy_alloc_blocks(struct drm_buddy *mm,
->   			}
->   		} while (1);
->   
-> -		mark_allocated(block);
-> +		mark_allocated(mm, block);
->   		mm->avail -= drm_buddy_block_size(mm, block);
->   		if (drm_buddy_block_is_clear(block))
->   			mm->clear_avail -= drm_buddy_block_size(mm, block);
-> @@ -1201,10 +1245,10 @@ void drm_buddy_print(struct drm_buddy *mm, struct drm_printer *p)
->   		   mm->chunk_size >> 10, mm->size >> 20, mm->avail >> 20, mm->clear_avail >> 20);
->   
->   	for (order = mm->max_order; order >= 0; order--) {
-> -		struct drm_buddy_block *block;
-> +		struct drm_buddy_block *block, *tmp;
->   		u64 count = 0, free;
->   
-> -		list_for_each_entry(block, &mm->free_list[order], link) {
-> +		rbtree_postorder_for_each_entry_safe(block, tmp, &mm->free_tree[order], rb) {
->   			BUG_ON(!drm_buddy_block_is_free(block));
->   			count++;
->   		}
-> diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
-> index 513837632b7d..9ee105d4309f 100644
-> --- a/include/drm/drm_buddy.h
-> +++ b/include/drm/drm_buddy.h
-> @@ -10,6 +10,7 @@
->   #include <linux/list.h>
->   #include <linux/slab.h>
->   #include <linux/sched.h>
-> +#include <linux/rbtree.h>
->   
->   #include <drm/drm_print.h>
->   
-> @@ -53,7 +54,11 @@ struct drm_buddy_block {
->   	 * a list, if so desired. As soon as the block is freed with
->   	 * drm_buddy_free* ownership is given back to the mm.
->   	 */
-> -	struct list_head link;
-> +	union {
-> +		struct rb_node rb;
-> +		struct list_head link;
-> +	};
-> +
->   	struct list_head tmp_link;
->   };
->   
-> @@ -68,7 +73,7 @@ struct drm_buddy_block {
->    */
->   struct drm_buddy {
->   	/* Maintain a free list for each order. */
-> -	struct list_head *free_list;
-> +	struct rb_root *free_tree;
->   
->   	/*
->   	 * Maintain explicit binary tree(s) to track the allocation of the
-> @@ -94,7 +99,7 @@ struct drm_buddy {
->   };
->   
->   static inline u64
-> -drm_buddy_block_offset(struct drm_buddy_block *block)
-> +drm_buddy_block_offset(const struct drm_buddy_block *block)
->   {
->   	return block->header & DRM_BUDDY_HEADER_OFFSET;
->   }
->
-> base-commit: 3a9cf301794c1a49d95eeb13119ff490fb5cfe88
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBCam9ybiBIZWxnYWFzIDxoZWxn
+YWFzQGtlcm5lbC5vcmc+DQo+IFNlbnQ6IDIwMjXE6jnUwjI1yNUgNDowMA0KPiBUbzogSG9uZ3hp
+bmcgWmh1IDxob25neGluZy56aHVAbnhwLmNvbT4NCj4gQ2M6IEZyYW5rIExpIDxmcmFuay5saUBu
+eHAuY29tPjsgamluZ29vaGFuMUBnbWFpbC5jb207DQo+IGwuc3RhY2hAcGVuZ3V0cm9uaXguZGU7
+IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsga3dpbGN6eW5za2lAa2VybmVsLm9yZzsNCj4gbWFuaUBr
+ZXJuZWwub3JnOyByb2JoQGtlcm5lbC5vcmc7IGJoZWxnYWFzQGdvb2dsZS5jb207DQo+IHNoYXdu
+Z3VvQGtlcm5lbC5vcmc7IHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU7IGtlcm5lbEBwZW5ndXRyb25p
+eC5kZTsNCj4gZmVzdGV2YW1AZ21haWwuY29tOyBsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnOw0K
+PiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGlteEBsaXN0cy5saW51eC5k
+ZXY7DQo+IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IHN0YWJsZUB2Z2VyLmtlcm5lbC5v
+cmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NiAzLzRdIFBDSTogZHdjOiBTa2lwIFBNRV9UdXJu
+X09mZiBtZXNzYWdlIGlmIHRoZXJlIGlzIG5vDQo+IGVuZHBvaW50IGNvbm5lY3RlZA0KPiANCj4g
+T24gV2VkLCBTZXAgMjQsIDIwMjUgYXQgMDM6MjM6MjNQTSArMDgwMCwgUmljaGFyZCBaaHUgd3Jv
+dGU6DQo+ID4gQSBjaGlwIGZyZWV6ZSBpcyBvYnNlcnZlZCBvbiBpLk1YN0Qgd2hlbiBQQ0llIFJD
+IGtpY2tzIG9mZiB0aGUgUE1fUE1FDQo+ID4gbWVzc2FnZSBhbmQgbm8gYW55IGRldmljZXMgYXJl
+IGNvbm5lY3RlZCBvbiB0aGUgcG9ydC4NCj4gDQo+IHMvbm8gYW55L25vLw0KPiANCj4gPiBUbyB3
+b3JrYXJvdWQgc3VjaCBraW5kIG9mIGlzc3VlLCBza2lwIFBNRV9UdXJuX09mZiBtZXNzYWdlIGlm
+IHRoZXJlIGlzDQo+ID4gbm8gZW5kcG9pbnQgY29ubmVjdGVkLg0KPiANCj4gcy93b3JrYXJvdWQv
+d29yayBhcm91bmQvDQo+IA0KPiA+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4gRml4
+ZXM6IDQ3NzRmYWY4NTRmNSAoIlBDSTogZHdjOiBJbXBsZW1lbnQgZ2VuZXJpYyBzdXNwZW5kL3Jl
+c3VtZQ0KPiA+IGZ1bmN0aW9uYWxpdHkiKQ0KPiA+IEZpeGVzOiBhNTI4ZDFhNzI1OTcgKCJQQ0k6
+IGlteDY6IFVzZSBEV0MgY29tbW9uIHN1c3BlbmQgcmVzdW1lDQo+ID4gbWV0aG9kIikNCj4gPiBT
+aWduZWQtb2ZmLWJ5OiBSaWNoYXJkIFpodSA8aG9uZ3hpbmcuemh1QG54cC5jb20+DQo+ID4gUmV2
+aWV3ZWQtYnk6IEZyYW5rIExpIDxGcmFuay5MaUBueHAuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2
+ZXJzL3BjaS9jb250cm9sbGVyL2R3Yy9wY2llLWRlc2lnbndhcmUtaG9zdC5jIHwgMTUNCj4gPiAr
+KysrKysrKystLS0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgNiBk
+ZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3BjaS9jb250cm9sbGVy
+L2R3Yy9wY2llLWRlc2lnbndhcmUtaG9zdC5jDQo+ID4gYi9kcml2ZXJzL3BjaS9jb250cm9sbGVy
+L2R3Yy9wY2llLWRlc2lnbndhcmUtaG9zdC5jDQo+ID4gaW5kZXggNTdhMWJhMDhjNDI3Li5iMzAz
+YTc0YjBmZDcgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9wY2kvY29udHJvbGxlci9kd2MvcGNp
+ZS1kZXNpZ253YXJlLWhvc3QuYw0KPiA+ICsrKyBiL2RyaXZlcnMvcGNpL2NvbnRyb2xsZXIvZHdj
+L3BjaWUtZGVzaWdud2FyZS1ob3N0LmMNCj4gPiBAQCAtMTAwOCwxMiArMTAwOCwxNSBAQCBpbnQg
+ZHdfcGNpZV9zdXNwZW5kX25vaXJxKHN0cnVjdCBkd19wY2llICpwY2kpDQo+ID4gIAl1MzIgdmFs
+Ow0KPiA+ICAJaW50IHJldDsNCj4gPg0KPiA+IC0JaWYgKHBjaS0+cHAub3BzLT5wbWVfdHVybl9v
+ZmYpIHsNCj4gPiAtCQlwY2ktPnBwLm9wcy0+cG1lX3R1cm5fb2ZmKCZwY2ktPnBwKTsNCj4gPiAt
+CX0gZWxzZSB7DQo+ID4gLQkJcmV0ID0gZHdfcGNpZV9wbWVfdHVybl9vZmYocGNpKTsNCj4gPiAt
+CQlpZiAocmV0KQ0KPiA+IC0JCQlyZXR1cm4gcmV0Ow0KPiA+ICsJLyogU2tpcCBQTUVfVHVybl9P
+ZmYgbWVzc2FnZSBpZiB0aGVyZSBpcyBubyBlbmRwb2ludCBjb25uZWN0ZWQgKi8NCj4gPiArCWlm
+IChkd19wY2llX2dldF9sdHNzbShwY2kpID4gRFdfUENJRV9MVFNTTV9ERVRFQ1RfV0FJVCkgew0K
+PiANCj4gVGhpcyBsb29rcyByYWN5IGFuZCBpdCBzb3VuZHMgbGlrZSB0aGlzIGlzIGEgd29ya2Fy
+b3VuZCBmb3IgYW4gaS5NWDdEIGRlZmVjdC4NCj4gU2hvdWxkIGl0IGJlIHNvbWUga2luZCBvZiBx
+dWlyayBqdXN0IGZvciBpLk1YN0Q/DQpVcCB0byBub3csIGl0IGlzIHVzZWQgdG8gZml4IHRoZSBp
+c3N1ZSBlbmNvdW50ZXJlZCBieSBpLk1YN0QgUENJZS4NCklmIHRoZSBMVFNTTSBzdGF0IGlzIGNo
+YW5nZWQsIGZvciBleGFtcGxlIG9uZSBkZXZpY2UgaXMgbmV3IGluc2VydGVkIGlmIEhvdC1QbHVn
+DQogaXMgc3VwcG9ydGVkLiBUaGUgcHJvY2VkdXJlIG9mIFBNRV9UdXJuX09mZiBraWNrIG9mZiB3
+b3VsZCB0ZXJtaW5hdGVkIGJ5IHRoZQ0KIGhvdC1wbHVnIGV2ZW50IEkgdGhpbmsuDQoNCkJlc3Qg
+UmVnYXJkcw0KUmljaGFyZCBaaHUNCj4gDQo+ID4gKwkJaWYgKHBjaS0+cHAub3BzLT5wbWVfdHVy
+bl9vZmYpIHsNCj4gPiArCQkJcGNpLT5wcC5vcHMtPnBtZV90dXJuX29mZigmcGNpLT5wcCk7DQo+
+ID4gKwkJfSBlbHNlIHsNCj4gPiArCQkJcmV0ID0gZHdfcGNpZV9wbWVfdHVybl9vZmYocGNpKTsN
+Cj4gPiArCQkJaWYgKHJldCkNCj4gPiArCQkJCXJldHVybiByZXQ7DQo+ID4gKwkJfQ0KPiA+ICAJ
+fQ0KPiA+DQo+ID4gIAlpZiAoZHdjX3F1aXJrKHBjaSwgUVVJUktfTk9MMlBPTExfSU5fUE0pKSB7
+DQo+ID4gLS0NCj4gPiAyLjM3LjENCj4gPg0KPiA+DQo=
 
