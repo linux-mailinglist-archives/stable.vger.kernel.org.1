@@ -1,123 +1,95 @@
-Return-Path: <stable+bounces-181796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F9CBA5295
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 23:08:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DC9BA5400
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 23:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA25A1B24C20
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 21:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C6E5609F9
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 21:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F7B284B3C;
-	Fri, 26 Sep 2025 21:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB5229B764;
+	Fri, 26 Sep 2025 21:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CS/wpUd2"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="okvM/xzL"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC8E1F4E34
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 21:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891D12DE704
+	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 21:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758920930; cv=none; b=CkjtE4lLdO+/xQO0ICU7FuYsaSaQ0vw2DoP9111VJ+YryCyBNxfiNfx/V2ZTa/ti10V6oRbvW7LSfiGzU/qHsHAjOhhn8JGNTzprC5Cdk7AGKXDTpxGIHPm3IqybsQzR/hvbutnN/M2EU2cBfnpE1mfNs0KyhkNZvcyKyfE48N0=
+	t=1758923286; cv=none; b=FVaeUFDsKetppRzTXdAZyuNtGc4FU51JT8qnXtAO3uSF8yfMaIc+cnq6jUPi0z423y+fjQD27JUuTaadr9HJlvgL8lFizDdSSxJ/Da9+oUeg0UUQQgmWJ8xdD6QPOkvbtZGbt91IyGj1pG5jeMW8g3FBDQ/9jQwVXPhpdhBCtF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758920930; c=relaxed/simple;
-	bh=Jc4EjceSLmpDjEcyfGiNWZ65Xn1oM5ndssYe+GwUZgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i7wqBBCJA/JIdYTEQWrX2zYz1eDBAak2vhaCeykFN5Kf4skNvbZPKkJxKGdLGpER7yqntTcFiU6P5978AorBsxKOfKvZd1Q0iSbNch5eQgGifVQwgM6tPtZd1DNVRbZtSy8v8H9q0ftw25txZn8cqAiS3LgcufJHb4S58eaQnd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CS/wpUd2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758920927;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y3GVZ1JYDpd64aStls1BI0HpVUBRoCJZmr3t6BifA9A=;
-	b=CS/wpUd2ZvFAOyM0+Gmv7RyUCIRg6NfigGil9xuk0asoYzCkgJ+AcZkCJfB9Ce/01FWtq5
-	OTN0dOho5VZkH6qM/92j7vxYz+um7SEvG25QizZnqrv8VQ+M3XjhqfVmyfPOoCym+9+5U2
-	K/1uHTBrK81lZWxE+3MzlIHdHEN1slg=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-580-fqXoHqTWNZeVuiJcWsg8Ug-1; Fri, 26 Sep 2025 17:08:45 -0400
-X-MC-Unique: fqXoHqTWNZeVuiJcWsg8Ug-1
-X-Mimecast-MFC-AGG-ID: fqXoHqTWNZeVuiJcWsg8Ug_1758920925
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-85641d6f913so584485585a.2
-        for <stable@vger.kernel.org>; Fri, 26 Sep 2025 14:08:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758920925; x=1759525725;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y3GVZ1JYDpd64aStls1BI0HpVUBRoCJZmr3t6BifA9A=;
-        b=kgigY7ENM2D6BxdCTWtWZDTF+XpfwvPuhik/mm7dzyGDebPqyK9MHEhAennk5ZA/ek
-         IPJSLx7XWT8tS3/C83ElxMc9tGYTaUYM7rgVJNtQYW8ZcSeu7VEgNpNqq4QPROfNrpvG
-         kH260UKjLfXuiXB86cWxj9AyX+dbCB0oj792oYuQVcQ0eTSoL/tyQ6xCwlsltGUJ4w2e
-         qJloLFNzJi5RsCAdTgaGXcM6rt2glIUBV3LTIivbr5Wz6mBUabZf2CsLOnCCh6X+fXuP
-         R48GYp1eSU+hHmJlspDfyhea93g++cy3342Y03vscOTfLiTk6EGvHgyramb8JEuNxjgr
-         Bz0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV1sx+4o3fLKEN1MexJwYZfrfJXJgbAI+eGXkVILGoCWkpdiCCEVkfZ0VjoB+/lRgAFQxTueJ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywnd6VmVkVblqblgo1wnV2bwRQn/Zm/rPegH5ITOc1QD6sGA5Vb
-	rcs1aQs/eTeWRAXMU5eyr7uoQDfWBopAos6EXZqkymNmHUxaGKglrmu1/XF17D6MH8rXaKWBOZL
-	tul8cIIjRmOHd8Xbv0cIk/nUdv9KjyKmHG24TZSQRKP3rozGlJG8SwNdsTA==
-X-Gm-Gg: ASbGncsPk/wP8yQ+EqcI+m/GjOoTCdaUx+rUqbn7FI0e4UcrZOLSHlLZU0NpIBjSozB
-	L3BOZi7hyuA6/UlxlKUphC8EHMZJg9uD7PaxMrnBDxqVGkglLmaKizV1lJ++WJvEZ05P9ORXuds
-	1R2BGij3LGnB9qjA5dMJYoBKjYT92JuJR4oEtNZWBwWJXRtzu0kbMrZzvDVKqsJMBo+QotXstqS
-	CfeK3koWD/wGwD0jOYlYUJxp7/WHyaAJXakpnV8nU2EUtmjw8LhWKlFFd4kN3aPv4rT5rFdaA2d
-	Tu8BtGiFk6cMC6NhV/o9ACqPXcqkFQHMDqN+iN5Ks3GuOmb79V+6TcXiLk+VyuzSQXHAyKqyoy9
-	cVZjT4+jnb+Pdsk5XuUHzoNfi3E1B9D0=
-X-Received: by 2002:a05:620a:4722:b0:85a:2def:2fe0 with SMTP id af79cd13be357-85ae033d4d8mr1349869285a.22.1758920924972;
-        Fri, 26 Sep 2025 14:08:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJQzW4JZ3je9wirGSfh6XIDEj/iDBCJuS1EQrYgcojfBD4UAa9IhVt5/kN4bppw04xeCyjUw==
-X-Received: by 2002:a05:620a:4722:b0:85a:2def:2fe0 with SMTP id af79cd13be357-85ae033d4d8mr1349864685a.22.1758920924446;
-        Fri, 26 Sep 2025 14:08:44 -0700 (PDT)
-Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-85c34da236asm340619385a.68.2025.09.26.14.08.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Sep 2025 14:08:43 -0700 (PDT)
-Date: Fri, 26 Sep 2025 17:08:41 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Miaoqian Lin <linmq006@gmail.com>
-Subject: Re: [PATCH 1/2] soc: qcom: ocmem: fix device leak on lookup
-Message-ID: <aNcA2SCZMckYmZXb@redhat.com>
-References: <20250926143511.6715-1-johan@kernel.org>
- <20250926143511.6715-2-johan@kernel.org>
+	s=arc-20240116; t=1758923286; c=relaxed/simple;
+	bh=MkWU/6f+fSnUl/CL1Qlh8jEvh7y4pv+/R48UasHyjpo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GZOCBfmBHOBWc/xech3/N3z5CgW8qFcHKgvHM8TzUQ03qU7xH0ZWEYnJGMZQieQXDJEapcjiM9+bDtm1swl/wGdldmGYtsmXcDB8bIJOfL1uMmDlMAAFMa6Y+pbwkuVff5zJmaSj+7Ld095YiSMlYCZk3I2taZW3TRQUD+V/sLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=okvM/xzL; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from trampoline.thunk.org (pool-173-48-115-162.bstnma.fios.verizon.net [173.48.115.162])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 58QLluwG014774
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Sep 2025 17:47:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1758923277; bh=6L9BUYeyyOIIfKv4k8/ENXrK8PLqjkbHu0SkOFX77yg=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=okvM/xzLXmFFsMUvMGjj98Y7fnsN/Mnx6uWFujjfV4SwghOkgknkktnfypy3ZqJIY
+	 UQDUNMYCKw3+OoT7AKtwAC5rJxaj9D4G5o1H86+3AwSFKx0nQ4ERGUj8K7Y7UT5j2Y
+	 t7+A//2df+PnwA88JczYm+uBvNx2bXnQuGFTwGz6xXuZBCkkRf72Fc+8r0b9/MZ8Qp
+	 W7F+aEwCfAnYOxkHOg3pQnQCr7BL8PUspJsNtbYJyLErM/b2Q6SIIL9xjjXiJQMYul
+	 QT9gtcorUcN8b3VuciQofD89cduVQycIgoR7m1wDGGfyjnOblpL0H1+k8Z1kEia0S9
+	 WzOyimw3PXUbw==
+Received: by trampoline.thunk.org (Postfix, from userid 15806)
+	id F31892E00E6; Fri, 26 Sep 2025 17:47:53 -0400 (EDT)
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: "Theodore Ts'o" <tytso@mit.edu>
+Cc: linux-ext4@vger.kernel.org, linux-api@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] ext4: Add support for mounted updates to the superblock via an ioctl
+Date: Fri, 26 Sep 2025 17:47:47 -0400
+Message-ID: <175892300645.128029.14007371112529693095.b4-ty@mit.edu>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250916-tune2fs-v2-0-d594dc7486f0@mit.edu>
+References: <20250916-tune2fs-v2-0-d594dc7486f0@mit.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250926143511.6715-2-johan@kernel.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 26, 2025 at 04:35:10PM +0200, Johan Hovold wrote:
-> Make sure to drop the reference taken to the ocmem platform device when
-> looking up its driver data.
-> 
-> Note that holding a reference to a device does not prevent its driver
-> data from going away so there is no point in keeping the reference.
-> 
-> Also note that commit 0ff027027e05 ("soc: qcom: ocmem: Fix missing
-> put_device() call in of_get_ocmem") fixed the leak in a lookup error
-> path, but the reference is still leaking on success.
-> 
-> Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-> Cc: stable@vger.kernel.org	# 5.5: 0ff027027e05
-> Cc: Brian Masney <bmasney@redhat.com>
-> Cc: Miaoqian Lin <linmq006@gmail.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Reviewed-by: Brian Masney <bmasney@redhat.com>
+On Tue, 16 Sep 2025 23:22:46 -0400, Theodore Ts'o wrote:
+> This patch series enables a future version of tune2fs to be able to
+> modify certain parts of the ext4 superblock without to write to the
+> block device.
+> 
+> The first patch fixes a potential buffer overrun caused by a
+> maliciously moified superblock.  The second patch adds support for
+> 32-bit uid and gid's which can have access to the reserved blocks pool.
+> The last patch adds the ioctl's which will be used by tune2fs.
+> 
+> [...]
 
+Applied, thanks!
+
+[1/3] ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()
+      commit: 8ecb790ea8c3fc69e77bace57f14cf0d7c177bd8
+[2/3] ext4: add support for 32-bit default reserved uid and gid values
+      commit: 12c84dd4d308551568d85203fd6ed2685e861fda
+[3/3] ext4: implemet new ioctls to set and get superblock parameters
+      commit: 04a91570ac67760301e5458d65eaf1342ecca314
+
+Best regards,
+-- 
+Theodore Ts'o <tytso@mit.edu>
 
