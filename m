@@ -1,176 +1,182 @@
-Return-Path: <stable+bounces-181766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930B3BA39CC
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 14:28:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCFCBA3C5D
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 15:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD9011C02B4F
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 12:29:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 570C93B3596
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 13:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A08D2EB86B;
-	Fri, 26 Sep 2025 12:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42002F744F;
+	Fri, 26 Sep 2025 13:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="qdv6JSjy"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="E+MAVfef"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE31E10E3;
-	Fri, 26 Sep 2025 12:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3B22F5A25
+	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 13:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758889727; cv=none; b=mdcStlNB5QERlHd+o6Pgtr1C7alqt0764djsa/yBWSCwdHLOdWeNS2L3JmtIGuV2r5q/mG/IP8AETxZvLZXIHl3orlWEYqZI2Ja35sARUbkSR4oef5+YNLsLi5SC95UYb/Uucrnp8dHRWJIbWiG4ucE7LjeIyULN/Ec+QaSAIFQ=
+	t=1758892293; cv=none; b=DDegdiXjBdyh9OzTxwElGGvVPBFl6HeWeyQHcmg+SUMJsDiTzGbf7niYI+rhsujoHhp2bL4UJuTPF5OvjzkrZfMv0mOcNvImfYX7ZlouaKB/A9JsVazdG5nfGNpqUhbbj8qvHdzeNJml53qoHD4IKIOsQJ5Gn2heVcu5bm/hrJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758889727; c=relaxed/simple;
-	bh=130lTYzVkWOf+yr91kO3uJNKLG7fQ735eKBcCo7c5Bo=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=IVMu/ExAjWREbEi6ZA7djbh4LAGxUCajHmdt3qxFDOnxL3y363btVhsptEAO2H4X6HytWKbjS5bz7iWFJZRbQHiFqcrFF4SgFqc4HIm0ASSjMMwaW0MIEHex5doGemGizkNVUPSSBRTA1wCvV7QWrgGKWPbzZS/7fzOWCVKXLpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=qdv6JSjy; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1758889694; x=1759494494; i=markus.elfring@web.de;
-	bh=RkSM5jHQgytNDJhP80powPSD+JzLffRHHm7/yulvEh8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=qdv6JSjynfBzC3H2lqB5pVLoLNQxrEvskVikLBYm9SCEhN/Wfyu7OIcH9j/D1AG4
-	 ujrViFnd9/J4bxE9zgJHWxt/BZx6enaMjEnIgeo/ezmPSms/BE8MmCyGKLlhhULWw
-	 DxeHrk8RsOKJP3oVx3130uK5nV5Jz5ap+MiOvhdyFeoGyEPShBeDLSV5EYOAOq+Tk
-	 lwXQ8cfREAOzHoQPPRHInGjhUixjYk6KtpbmBb5HYupnRHQ+9pYpSDcRgUdg2qCJJ
-	 vbNoWtqtFcC4nzRQep18yqQGguWb8LI0tBxi0mxvWqv0W0tj5LRSvDk/Rhj3tXI7a
-	 ESwQIaQGKoOWaRFhLQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.192]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MOm0r-1uh2IL3OTH-00UFND; Fri, 26
- Sep 2025 14:28:14 +0200
-Message-ID: <7ef2a9a1-c1c6-42be-bfa8-65ce6a0a33d6@web.de>
-Date: Fri, 26 Sep 2025 14:28:04 +0200
+	s=arc-20240116; t=1758892293; c=relaxed/simple;
+	bh=kTIx/gbW5FMHGZwkamAX2U1Vd88ShDnf2ZfAQ8RTCAM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=d5dSPKHlccoN/Bx5T37lmqCHGkHVE+thlBVASOQlyzMr+MUkD00ogaOprPsnEswC0+6BiYIbqBg6aS5lJ1PFZe6tXjmOVPK9GGj0eK5ogHpgw5GBYW+1JQD9S/g/P7AIbO8rmYo0UVAZLrn3+TA20jkS64jAzGqHMO/YKJ+mewc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=E+MAVfef; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5688ac2f39dso2509473e87.3
+        for <stable@vger.kernel.org>; Fri, 26 Sep 2025 06:11:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1758892290; x=1759497090; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZDmNVhJHkWPdowxg4squkpPV1N/rsJjSEr9LXYJ99w0=;
+        b=E+MAVfefudY7/qxHnbxhDO+KX3qvhh1WTGF6ko5dEZjljYzb2UEGn4YGO1SKeYgwmS
+         voXZONIQftp+duXOgrhEID9XNOiiKM9mDq4Ymso1T4oj6MajO6i29sBs0XRH72aeW+SK
+         AHYcs1q6J+wj7vntFU86T+ZHyr7BjvGRVmi0M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758892290; x=1759497090;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZDmNVhJHkWPdowxg4squkpPV1N/rsJjSEr9LXYJ99w0=;
+        b=Q49HBzMUqbd9mbnCRaph1BgaWIJcpsDPMChZddj31qqBpTkgcFMkKfj3ReeIHvRGHQ
+         asL4GxedOo6ECeltPh5kiGe/dx0veTZalcQUgffMW3ebj2448IIIq5ABBLkuIRYs+TPD
+         9Qe8vuxdIbnWQKgxPqYPFhpr860PfkWal5W8/9FqZuQpmE50c0zGGoVL2rExn9TqnU/u
+         ZlqhzC8pt7GIdT0ALmqq2dDWXcEz1DAjdqfmQVDpgOlzmauhp+iHj5DkF7ILSNp+uYJN
+         NosaIT0aPar+Q2w3JttTx/gtlmbmLvDlo+uKxrktJoziY6LaV3hU0s6f2+VZH31tL0QY
+         ktCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWo/I3Z5LOJB06LFdgK7ubzofQ0G7ldgpYfbsnYLQkKsn3gtwB0ZJWD/n9Alwa4jPOYRw+MxIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbKYNXNMkOX1x6S0/X9zoZtfs7GFrYjSVJA1q9Xmb3a2hOZ54E
+	RodStkTwVVqq0BWhpRb4PzFo0jbIZ4Bi5vrdCFjZHn2HZOsAYW5J3/DXJNcddrNFQw==
+X-Gm-Gg: ASbGncvaNlwNxu6RBinXjn4euVw19rMDWJtOMNdv7JrH/YcUxjBsyyzdPLz7wJZlbUL
+	nmQ4CnSJ4VhO8F9o4Im6tzXjVqm9eMMpl5jfZVStb9gAuD5+ClJItOZpN0IHfekXm5CHU8zKwSt
+	RM/NauPWiKbiPi+bOrSsXJix/KCU/LfRK9/IjnfXks6aI9VuCvyfcajHsFLhqzxY2JoEKrqDgNE
+	ts1uqMQtUWu7PTfTvgxThiT9+KbQx6YQjAlPBqM8l1kSrBld1gFSpL02kGM1I84OYkr9ZcuAXxI
+	fNkTFyZT8K6XZ2DZ0XY/4uLiVeUUgJcepK96QeY6S9vpYdiSVDD0/5sGBe9B3NkXJ7qJV6v8O8z
+	2fEc+sxLPBABSZisjrgmzDvcRdpu9YaLu3qVlLm59cVMW4+N9rOzUg8Y2xlNcI0OXEd95OJKU7i
+	ncMA==
+X-Google-Smtp-Source: AGHT+IFre7rGlPJYVo4GSUWdzdcqW6jFgSmqfsnv6P/WyQ1IpYAO/8aDPCOXsn/mCcLjhUPmvTsyZQ==
+X-Received: by 2002:a05:6512:159b:b0:579:f4b3:bc3c with SMTP id 2adb3069b0e04-582d37cacaamr2234865e87.55.1758892289663;
+        Fri, 26 Sep 2025 06:11:29 -0700 (PDT)
+Received: from ribalda.c.googlers.com (64.153.228.35.bc.googleusercontent.com. [35.228.153.64])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58527c6b014sm123872e87.43.2025.09.26.06.11.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Sep 2025 06:11:29 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v3 00/12] media: uvcvideo: Add support for orientation and
+ rotation.
+Date: Fri, 26 Sep 2025 13:11:24 +0000
+Message-Id: <20250926-uvc-orientation-v3-0-6dc2fa5b4220@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Matvey Kovalev <matvey.kovalev@ispras.ru>, linux-cifs@vger.kernel.org,
- lvc-project@linuxtesting.org, Namjae Jeon <linkinjeon@kernel.org>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Steve French <smfrench@gmail.com>, Tom Talpey <tom@talpey.com>
-References: <20250925121255.1407-1-matvey.kovalev@ispras.ru>
-Subject: Re: [PATCH] fix error code overwriting in smb2_get_info_filesystem()
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250925121255.1407-1-matvey.kovalev@ispras.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3NoP5qS2DoSSiEAGjBpIXa23AkPk5aHntax8EL2g8oLgs2dmBrZ
- TriNaORa8JFqvAUbAefnMZvW40ERUG+kHcZr/TLKnDFH3vBloMuCcB3q2kvrpeRsIRZH3sq
- +w+tBvAeQaU3FrAdvjn4ATmCeJn5ZOWkGvdrdMigUt/R7kxvtPuLOcEpEqRDfWLYvJPiRtz
- Qh4kmA6FZvjQKVLfFVJqw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:MPwE4kiH9JY=;+BwRmyOO+k3334db9VDqdiE8pyd
- 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
- Wj+MLRjFXgcfFBVZAlpx8rS5RmT/Xkoq1Ek=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPyQ1mgC/3XNTQ6CMBAF4KuQrq2ZFgvBlfcwLsb+wCygpi2Nh
+ nB3CxsTjcv3Mu+bhUUbyEZ2rhYWbKZIfiqhPlRMDzj1lpMpmUmQCk5Q8zlr7stkSpjKLVeudaI
+ zqNDcWVk9gnX03MXrreSBYvLhtT/IYmv/W1lw4AJBa9UpbKS56CH4kebx6EPPNi7LD9GA+iVkI
+ VQrwHUGakD8ItZ1fQP1BMLt9AAAAA==
+X-Change-ID: 20250403-uvc-orientation-5f7f19da5adb
+To: Hans de Goede <hansg@kernel.org>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Robert Moore <robert.moore@intel.com>, Hans Verkuil <hverkuil@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+ acpica-devel@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-=E2=80=A6
-> ++ b/fs/smb/server/smb2pdu.c
-> @@ -5628,7 +5628,8 @@ static int smb2_get_info_filesystem(struct ksmbd_w=
-ork *work,
-> =20
->  		if (!work->tcon->posix_extensions) {
->  			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
-> -			rc =3D -EOPNOTSUPP;
-> +			path_put(&path);
-> +			return -EOPNOTSUPP;
->  		} else {
->  			info =3D (struct filesystem_posix_info *)(rsp->Buffer);
->  			info->OptimalTransferSize =3D cpu_to_le32(stfs.f_bsize);
-=E2=80=A6
+The ACPI has ways to annotate the location of a USB device. Wire that
+annotation to a v4l2 control.
 
-How do you think about to avoid duplicate source code another bit?
-https://elixir.bootlin.com/linux/v6.17-rc7/source/fs/smb/server/smb2pdu.c#=
-L5437-L5653
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?h=3Dv6.17-rc7#n532
+To support all possible devices, add a way to annotate USB devices on DT
+as well. The original binding discussion happened here:
+https://lore.kernel.org/linux-devicetree/20241212-usb-orientation-v1-1-0b69adf05f37@chromium.org/
 
-Would you like to choose a more appropriate subsystem specification?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.17-rc7#n646
+The following patches are needed regardless if we finally add support
+for orientation and rotation or not:
 
-Regards,
-Markus
+- media: uvcvideo: Always set default_value
+- media: uvcvideo: Set a function for UVC_EXT_GPIO_UNIT
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Changes in v3:
+- refactor dt bindings
+- add media: uvcvideo: Use current_value for read-only controls
+- get_(max|cur|def) = swentity_get_cur
+- virtual_entity add codestyle
+- Codestyle
+- Fix xu get_info and get_len
+- Drop ACPI_DEVICE_SWNODE_DEV_ROTATION
+- Add missing select V4L2_FWNODE
+- Link to v2: https://lore.kernel.org/r/20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org
+
+Changes in v2:
+- Add support for rotation
+- Rename fwnode to swentity
+- Remove the patch to move the gpio file
+- Remove patches already in media-committers
+- Change priority of data origins
+- Patch mipi-disco
+- Link to v1: https://lore.kernel.org/r/20250403-uvc-orientation-v1-0-1a0cc595a62d@chromium.org
+
+---
+Ricardo Ribalda (12):
+      media: uvcvideo: Always set default_value
+      media: uvcvideo: Set a function for UVC_EXT_GPIO_UNIT
+      media: v4l: fwnode: Support ACPI's _PLD for v4l2_fwnode_device_parse
+      ACPI: mipi-disco-img: Do not duplicate rotation info into swnodes
+      media: ipu-bridge: Use v4l2_fwnode_device_parse helper
+      media: ipu-bridge: Use v4l2_fwnode for unknown rotations
+      dt-bindings: media: Add usb-camera-module
+      media: uvcvideo: Add support for V4L2_CID_CAMERA_ORIENTATION
+      media: uvcvideo: Fill ctrl->info.selector earlier
+      media: uvcvideo: Add uvc_ctrl_query_entity helper
+      media: uvcvideo: Use current_value for read-only controls
+      media: uvcvideo: Add support for V4L2_CID_CAMERA_ROTATION
+
+ .../bindings/media/usb-camera-module.yaml          |  46 +++++
+ MAINTAINERS                                        |   1 +
+ drivers/acpi/mipi-disco-img.c                      |  15 --
+ drivers/media/pci/intel/Kconfig                    |   1 +
+ drivers/media/pci/intel/ipu-bridge.c               |  58 +++---
+ drivers/media/usb/uvc/Kconfig                      |   1 +
+ drivers/media/usb/uvc/Makefile                     |   3 +-
+ drivers/media/usb/uvc/uvc_ctrl.c                   | 201 +++++++++++++++------
+ drivers/media/usb/uvc/uvc_driver.c                 |  22 ++-
+ drivers/media/usb/uvc/uvc_entity.c                 |   3 +-
+ drivers/media/usb/uvc/uvc_swentity.c               | 107 +++++++++++
+ drivers/media/usb/uvc/uvcvideo.h                   |  22 +++
+ drivers/media/v4l2-core/v4l2-fwnode.c              |  84 ++++++++-
+ include/acpi/acpi_bus.h                            |   1 -
+ include/linux/usb/uvc.h                            |   3 +
+ 15 files changed, 441 insertions(+), 127 deletions(-)
+---
+base-commit: afb100a5ea7a13d7e6937dcd3b36b19dc6cc9328
+change-id: 20250403-uvc-orientation-5f7f19da5adb
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
 
