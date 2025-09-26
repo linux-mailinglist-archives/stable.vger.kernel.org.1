@@ -1,145 +1,138 @@
-Return-Path: <stable+bounces-181798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AB0BA55D5
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 00:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2726ABA5602
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 01:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 338424E2DD0
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 22:45:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D45FD6279A4
+	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 23:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEA929C327;
-	Fri, 26 Sep 2025 22:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9CF27F4F5;
+	Fri, 26 Sep 2025 23:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="g9kdadyk"
+	dkim=pass (2048-bit key) header.d=iyanmv.com header.i=@iyanmv.com header.b="vPb2fNok"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from h5.fbrelay.privateemail.com (h5.fbrelay.privateemail.com [162.0.218.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773711F4613
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 22:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEFE22D4D3
+	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 23:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.0.218.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758926747; cv=none; b=YSz6wpS7IMuoGZ/cHMTRY9Q+EM3AIolZgrDhGuWL4k2HHT0TmfhpKYy6SwvasP9yVo2BYG8pEobf50WH/JTYLz+OS+qc0EOnvbY+xfEq8Vech1dR7XA3MENn2crIZDiImrEY/IuQp3MACibsbE6mfpXuvg0QwB9jQug8BPWO46I=
+	t=1758927815; cv=none; b=DDLoQ5S85hynGzwy16daY/gfnYl+qZy5h1zT/IQoXj2H/ojBODs13Na3a/49parxeWKkNAJCvPBzENXZUEKPB8W8vsUXPBKfYlZ8TOf+p4IPNwuH484icqVyZnOkzPorldnt3oMCH4U59XlR+i8JwkaISNGcxsvDssp++33JuaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758926747; c=relaxed/simple;
-	bh=p5XvchawsOENanpzit5coWI2GxGks3nacGZ9hQTUsvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oqu6mNN/r8jv8yQBrwhZZY+3d9ifZq8d7ZzclQB8zXvtx6OGBPUhzbSjQL4Les3ZHqhY7KJlBlz3bOnEhOlK8zr+LXtyZstVJx82Tux+DA+Er5N0nBTlAvh97u7TlJpQvegK+2bndBzHxvYF/b3HwgX/Ydc1LOyz44GTNynnta4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=g9kdadyk; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58QEX4gw006922
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 22:45:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=sW/+vR8VmYRg0AyYThaCLKBv
-	e8fCpAHlijREnAutP8U=; b=g9kdadyk3brJcAfoaIMpWd0XsAWx20JKzU8mdbfw
-	1TVSnIQHptLVeLOJAZIdfhx4L4HuS3Na/OohxN8h5fDxbbXzUROWRkbhTZ224qiQ
-	pfzKoaJTnw9KDV4qhWMEPB0CFrNRcmW8vr9zWbHf6H3IQE3HhG91aanoZW/MeGjP
-	1nVWZx7NT7FvyCDQIXIa+k2SP/q/joUryI8GxKxAbnlxeCPZ1/NdioCDynYHHUoQ
-	cZJjO/YbcxMrpZ5oJV2BKzUtHwu93THFj4GsnBKvoqrx32CdteNKnLZbiuySihMt
-	Tpz9Ad5Da2k59I6kiXE+WbkV3yS6zarY9Fe9gjLoqCU1GA==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49db0qvau9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 22:45:44 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4d9ec6e592bso53144541cf.2
-        for <stable@vger.kernel.org>; Fri, 26 Sep 2025 15:45:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758926743; x=1759531543;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sW/+vR8VmYRg0AyYThaCLKBve8fCpAHlijREnAutP8U=;
-        b=c8DXiy+jOMjx/PW3b5LmOlG2ZhzOk4j+je3Did70uJwCJET2qD+JZDy0fhSWUJzcbF
-         F+eSQpmE/HqFTq+nh1aNlSyzKWis6qHuqmdXzK5c5QbQJvVBxIE7lgdAQgWFofj4YdY4
-         ATbR6l94J7/ZnDF/Ek3LV0eKDUlpf8Zh+PO4J1UsKf3efwqZo7cLzImvUEKFohADppkc
-         EATaUa+EZxiqsqZs4Bgi2oS/pVKyAXLSKHiJOlmAnzAPb0q6NH8KQFPvBNFARPMo9uiC
-         WfX26n948FJipE/kjMkVeAwOsVgHoBcjgQ4pPjOv7UdUXHGThom1sNimFIvSx8mE3GT8
-         W0Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOppTc/h5+iB0Lb8QOydaoa2m5nXJnU+fVgZMRNslX9itFttVCKlAgXJTNsS1P/JmS7VNd2DI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzp3CSbaPviw+0irCKabFegcv8pQkSAAjG62OwKp2oPl8ysLTPg
-	u912+OojQVL5RfQG7yfQIHfHBR3dLt07/UE5olrCZiImoqL0Keo28yUIAA/4XfN6zCNDwzR7KtF
-	6Xqvup54erIibhfyzj3ZdI08LtkyFQ8RVUH6X18pzdYNey5Xa3/IbBlHYzV8=
-X-Gm-Gg: ASbGncuCCw4uaIErRoK4MXmsQmJMdLdi3cODVPAagohTHj8wN/hfJC0uxklVU9WUENh
-	rTyEz1++aL8B7bBamB48JYUWvdEmJbDiV9BatNYvxUVZPrw9iPvrXwUPRsSJ5/O1GxZ2XJ0NRxe
-	N0mmnZL0dED6kV/65PR1ZGGChjRGx2VY+tEtkuiNNGrd8FvOxUMoAxHVvCHifWOp2bbRC8v+1gv
-	rUKXwkspWd4ej4NqFL2v6ikS2LcpZEXrcwQoPCnTufjJ1WAjzwRDHixSmZKqY6I1EMwNw6pB1qa
-	mgugZGndEbkx1EDzHGGLk0MxTi0yJy6Vy5sTgVyAmfw5UtyO95qw1/bouzMtMw3Bpo1vkcTb5zL
-	YI++xlZ+FFdgzgnP1p+Czv3HStMPJdFEB/jo+qHURjHrLVcrB1Una
-X-Received: by 2002:ac8:7dcd:0:b0:4b6:39a2:1de1 with SMTP id d75a77b69052e-4da4b42c2d5mr130499121cf.52.1758926743200;
-        Fri, 26 Sep 2025 15:45:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRfXtG/PeJOoa7YFdPRlCu9ZjyORleotSKki25Y6iLSpr2s7WbBrqGeVtAyk0UN9k7S1S1Zg==
-X-Received: by 2002:ac8:7dcd:0:b0:4b6:39a2:1de1 with SMTP id d75a77b69052e-4da4b42c2d5mr130498621cf.52.1758926742648;
-        Fri, 26 Sep 2025 15:45:42 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5847fd56eaasm945718e87.137.2025.09.26.15.45.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Sep 2025 15:45:40 -0700 (PDT)
-Date: Sat, 27 Sep 2025 01:45:38 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
-        airlied@gmail.com, simona@ffwll.ch, andrzej.hajda@intel.com,
-        treding@nvidia.com, kyungmin.park@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] drm: mipi-dsi: Fix an API misuse in
- mipi_dsi_device_register_full()
-Message-ID: <m6fvifsbb2yjbx6txqc7luii5mwukrpiw2n6bcnrmgidm5cxjv@ksmcnqg6sv23>
-References: <20250926091758.10069-1-haoxiang_li2024@163.com>
+	s=arc-20240116; t=1758927815; c=relaxed/simple;
+	bh=9fbFrDq9Q608yE5Sbyzp6hLo4hkVOoXPQ/HT2QVjj58=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=uuSWgnId847k6MkvhJ2OgamlHDHrFInSt03gjbfan77RxIFMdqqyqjWbRlWF486vlJ+TqqDN0madb4ezNLnYlpL2BBBiMlIBpH8dZ8zVOmEiNz+HYQymK2vVlOuIBLWt1g6b6P/SlE5u4iYE5/dLinUAbdCPotdc0jBhbYNZpRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iyanmv.com; spf=pass smtp.mailfrom=iyanmv.com; dkim=pass (2048-bit key) header.d=iyanmv.com header.i=@iyanmv.com header.b=vPb2fNok; arc=none smtp.client-ip=162.0.218.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iyanmv.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iyanmv.com
+Received: from MTA-07-4.privateemail.com (mta-07.privateemail.com [198.54.127.57])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by h5.fbrelay.privateemail.com (Postfix) with ESMTPSA id 4cYQwz5M9Lz2xMw
+	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 22:58:27 +0000 (UTC)
+Received: from mta-07.privateemail.com (localhost [127.0.0.1])
+	by mta-07.privateemail.com (Postfix) with ESMTP id 4cYQwr32JCz3hhVC;
+	Fri, 26 Sep 2025 18:58:20 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=iyanmv.com; s=default;
+	t=1758927500; bh=9fbFrDq9Q608yE5Sbyzp6hLo4hkVOoXPQ/HT2QVjj58=;
+	h=Date:To:Cc:From:Subject:From;
+	b=vPb2fNokeh6suvaZgdgelv4ttuk1ggGvRblYhdtX8fpLtmg4GOVpf0eci62aRPk+A
+	 rGpqFgDm0UETEk4sNrm74e9FBnloA5qbDXysBbsbBuf2wKyZ/y1xWHWWa3Gibz/86E
+	 jlZoCwe4GSq7OlQAruKh6X/y6nknKLpuG7knmrfaY3mXXMdUNI6MDMM4nmU+qss8tC
+	 vMnYwYHWyiWaG6rtjTmS+8AOs/yLTDAmPOhOfpbSF4rg/Kr2d+N8Zw1EdlCnsIMP06
+	 9AB18fWnaSzRM506z2tCrfI/GiiYADKFv5+65n1HE7Mp28qD4pi67QZR40IGqJ+p2s
+	 IlUkrd5KWlWHg==
+Received: from [192.168.69.204] (adsl-89-217-41-119.adslplus.ch [89.217.41.119])
+	by mta-07.privateemail.com (Postfix) with ESMTPA;
+	Fri, 26 Sep 2025 18:58:16 -0400 (EDT)
+Message-ID: <616f634e-63d2-45cb-a4f9-b34973cc5dfd@iyanmv.com>
+Date: Sat, 27 Sep 2025 00:58:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250926091758.10069-1-haoxiang_li2024@163.com>
-X-Proofpoint-GUID: h_Kq7rbOLDIh9IfjXThx3pYU-8Bucb-k
-X-Proofpoint-ORIG-GUID: h_Kq7rbOLDIh9IfjXThx3pYU-8Bucb-k
-X-Authority-Analysis: v=2.4 cv=api/yCZV c=1 sm=1 tr=0 ts=68d71798 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=Byx-y9mGAAAA:8 a=EUspDBNiAAAA:8
- a=tUFaMFilNNX-uVKmuBsA:9 a=CjuIK1q_8ugA:10 a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3MSBTYWx0ZWRfX2YFUD1kVhxei
- E0RwXCvB4Lpr0Wvpq/Du72wL6NKNKOgYwcd9UYMBHELiderEHI0nzER0HBe8nzsQjERR0i5rXCs
- sh0a6aWWRnpwoygrnuo5f51s6FMj0ENRRuh6OQNg33uCMcOxeluhnBPHwrfJj6g34cdKrl4otVQ
- oiqn3LeGHM+bAbt6cnszNwOjBfYPkwfAM1DGaKmqL8rI2v4+y0wU5jPkhibu8crHKIal4fZ+wBg
- NdfhLQc3ITxfAR+Q7d32CCwXP7XbhMd4UCP542OWjYkiWGHAWmVScESvktRvhacm1UnA3bWje61
- e/rDph9L+wSefNpHTuomfF3mviRxIwFgvFhR/upEQGtm/cvVvBExXPIGf2f1guNvZbFoikf/GF/
- dULe2F06Ql+E+A1adSRn/NS9erpPLg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-26_08,2025-09-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 adultscore=0 spamscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250171
+User-Agent: Mozilla Thunderbird
+To: stable@vger.kernel.org
+Content-Language: en-US, es-ES
+Cc: regressions@lists.linux.dev, daniele.ceraolospurio@intel.com,
+ sashal@kernel.org
+From: =?UTF-8?Q?Iy=C3=A1n_M=C3=A9ndez_Veiga?= <me@iyanmv.com>
+Subject: [REGRESSION] drm/xe/guc: Lenovo Thinkpad X1 Carbon Gen 12 can't boot
+ with 6.16.9 and Xe driver
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------dnSgrBGw2pAPx7gtbe9QyB3f"
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Rspamd-Queue-Id: 4cYQwz5M9Lz2xMw
 
-On Fri, Sep 26, 2025 at 05:17:58PM +0800, Haoxiang Li wrote:
-> mipi_dsi_device_alloc() calls device_initialize() to initialize value
-> "&dsi->dev". Thus "dsi" should be freed using put_device() in error
-> handling path.
-> 
-> Fixes: 068a00233969 ("drm: Add MIPI DSI bus support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
->  drivers/gpu/drm/drm_mipi_dsi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------dnSgrBGw2pAPx7gtbe9QyB3f
+Content-Type: multipart/mixed; boundary="------------Bv8zz6f9B88KdLNUc0pUQvE0";
+ protected-headers="v1"
+From: =?UTF-8?Q?Iy=C3=A1n_M=C3=A9ndez_Veiga?= <me@iyanmv.com>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, daniele.ceraolospurio@intel.com,
+ sashal@kernel.org
+Message-ID: <616f634e-63d2-45cb-a4f9-b34973cc5dfd@iyanmv.com>
+Subject: [REGRESSION] drm/xe/guc: Lenovo Thinkpad X1 Carbon Gen 12 can't boot
+ with 6.16.9 and Xe driver
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+--------------Bv8zz6f9B88KdLNUc0pUQvE0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+SGVsbG8sDQoNCkFmdGVyIHVwZ3JhZGluZyB0byA2LjE2LjkgdGhpcyBtb3JuaW5nLCBteSBs
+YXB0b3AgY2FuJ3QgYm9vdC4gSSBjYW5ub3QgDQpnZXQgYW55IGxvZ3MgYmVjYXVzZSB0aGUg
+a2VybmVsIHNlZW1zIHRvIGZyZWV6ZSB2ZXJ5IGVhcmx5LCBldmVuIGJlZm9yZSANCkknbSBh
+c2tlZCBmb3IgdGhlIGZ1bGwgZGlzayBlbmNyeXB0aW9uIHBhc3NwaHJhc2UuDQoNClRoaXMg
+aXMgYSByZWdyZXNzaW9uIGZyb20gNi4xNi44IHRvIDYuMTYuOS4NCg0KSSBkaWQgYSBnaXQg
+YmlzZWN0IGluIHRoZSBzdGFibGUvbGludXggYW5kIHRoaXMgaXMgdGhlIGNvbW1pdCBjYXVz
+aW5nIA0KdGhlIGlzc3VlIGZvciBtZToNCg0KOTcyMDdhNGZlZDUzNDhmZjVjNWU3MWE3MzAw
+ZGI5YjYzODY0MDg3OSBpcyB0aGUgZmlyc3QgYmFkIGNvbW1pdA0KY29tbWl0IDk3MjA3YTRm
+ZWQ1MzQ4ZmY1YzVlNzFhNzMwMGRiOWI2Mzg2NDA4NzkgKEhFQUQpDQpBdXRob3I6IERhbmll
+bGUgQ2VyYW9sbyBTcHVyaW8gPGRhbmllbGUuY2VyYW9sb3NwdXJpb0BpbnRlbC5jb20+DQpE
+YXRlOiAgIFdlZCBKdW4gMjUgMTM6NTQ6MDYgMjAyNSAtMDcwMA0KDQogICAgIGRybS94ZS9n
+dWM6IEVuYWJsZSBleHRlbmRlZCBDQVQgZXJyb3IgcmVwb3J0aW5nDQoNCiAgICAgWyBVcHN0
+cmVhbSBjb21taXQgYTdmZmNlYTg2MzFhZjkxNDc5Y2FiMTBhYTdmYmZkMDcyMmYwMWQ5YSBd
+DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI1MDYyNTIwNTQwNS4xNjUzMjEy
+LTMtZGFuaWVsZS5jZXJhb2xvc3B1cmlvQGludGVsLmNvbS8NCg0KSG93IHRvIHJlcHJvZHVj
+ZToNCg0KMS4gVXBncmFkZSB0byA2LjE2LjkNCjIuIEVuYWJsZSB0aGUgWGUgZHJpdmVyIGJ5
+IHBhc3NpbmcgaTkxNS5mb3JjZV9wcm9iZT0hN2Q1NSANCnhlLmZvcmNlX3Byb2JlPTdkNTUN
+CjMuIFJlYm9vdA0KDQpCZXN0IHJlZ2FyZHMsDQpJecOhbg0KDQotLSANCkl5w6FuIE3DqW5k
+ZXogVmVpZ2ENCkdQRyBLZXk6IDIwNEMgNDYxRiBCQThDIDgxRDEgMDMyNyAgRTY0NyA0MjJF
+IDM2OTQgMzExRSA1QUMxDQoNCg==
 
--- 
-With best wishes
-Dmitry
+--------------Bv8zz6f9B88KdLNUc0pUQvE0--
+
+--------------dnSgrBGw2pAPx7gtbe9QyB3f
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEIExGH7qMgdEDJ+ZHQi42lDEeWsEFAmjXGoIACgkQQi42lDEe
+WsGeMg//V1/IlZOJicsTn3ReQWxr14M4xZRFdnaNPQYbEtmxv5Omrubu3PWpepfo
+m/JtM3W6vup+Q8cTGWSW+OdgiRu2r162oSDu5wG29u8smzL8xr1r9MrGDI7YQ2HV
+WwXBBNNSfY9fFNLKuYBIJsq5cV1Wl4YQGKwIx/mDV1QedSHetW7O3BIIQqgXNmEZ
+AB3ZlWaJrejruY39YoJfJ2BFlYI7DmaySxZEzMYDNxiEg41AkJd6Jklm9HD28Vga
+5uLeqfQO0aQv4rM0f8PKed/ykMIbNeEO1YyT9g5niP0IXKX+fArvB7GtWUhh8OwY
+zy3paJE0UGGbgEFopnyDr1i9DjTcK5ceAYq/B0Vgpo7ahhknmmpOrsZb1RCtn1/h
+rjVi3D4RE5YyjGcJ8WpSZIUm3X77Hn0q/m4AY9Z/Ly+iAeUTQERFrG3X3VNkScSX
+RJ7KOkXo1IrHBLfaMEyKOX0yWFwvGgBkC4c0u1w42MAXe6TFkAGxDRKL6j1VENCc
+wqaJGaR1FdZnc9HzUhE2rHTOr+h8WBtwK6zV13nYxe9IRvXVC0kU6SQsVy0mTWj1
+e1wKSuKp2cp3pKrWzPKXR3ugZH006ssmiRh845wRMSKUk/XH6wNC7CcAj9xf06jp
+T8mZcdxwWUAhBFnxRg1v162+7HLQG9qWRMsX0v3tOTBs9zSDYs0=
+=kxv8
+-----END PGP SIGNATURE-----
+
+--------------dnSgrBGw2pAPx7gtbe9QyB3f--
 
