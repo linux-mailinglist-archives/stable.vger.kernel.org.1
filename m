@@ -1,106 +1,112 @@
-Return-Path: <stable+bounces-181806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027CFBA5A2E
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 09:21:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7568BA5A40
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 09:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A33A9620F54
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 07:21:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F200189FC61
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 07:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA932BFC73;
-	Sat, 27 Sep 2025 07:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b="ZAP6voQV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AC52C3244;
+	Sat, 27 Sep 2025 07:30:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-108-mta57.mxroute.com (mail-108-mta57.mxroute.com [136.175.108.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122461DED52
-	for <stable@vger.kernel.org>; Sat, 27 Sep 2025 07:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1F326D4EF;
+	Sat, 27 Sep 2025 07:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758957682; cv=none; b=tGnHfC6XgBVj39gi20sVukqiPlsZ5RIwErUXeK8cRmnpAmyvtbENxwtrDemoUyUqIcBVXVnbSRhwUgPniH+rPim+ByT9QexnVrgTSItKVEdGyYP85ftK9B77ZDuzAvsmKLgi8obg4Op4hG71RgP1RBd8LyO03HmGR4tF3UjfK4A=
+	t=1758958250; cv=none; b=BAzaZUDmf8Mv4YmmG+TQyHCaEVY/ndk8c1zbbI5iMnhKEHZ/jjCysjgoQlrIcfa3NGKWEcIBLDfaedGLkjRpkIRMCVCyQASoJ4y8Rh08cpWEgC+oSaip1KmWKRm3Naux1RiW6nGe5l/yLNcv3bUGf2F7sbtdxxQtTYszoz7wQ3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758957682; c=relaxed/simple;
-	bh=09A9hbR16OyBQLolGd1O5YJPEFbjbEDcN+A9olYvQ1w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mhwDiTsWtp/XBjVf+9coApx9JxZApvN+jXoxatEsLT9Nrl1kalOOSX1rtFil+IegOyzfW2ZJ/Hq9hvhPx3zabFrdPD4ooPbrO5Nw/EqC3ybY5Mr+f9Lg6FFglXeo4BF8oCT31RCipZUe65MnKWWqqo5UW+81c/kPhn5Kz0Q+upc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com; spf=pass smtp.mailfrom=mboxify.com; dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b=ZAP6voQV; arc=none smtp.client-ip=136.175.108.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mboxify.com
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta57.mxroute.com (ZoneMTA) with ESMTPSA id 1998a07584f000c244.007
- for <stable@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sat, 27 Sep 2025 07:16:01 +0000
-X-Zone-Loop: c392e4a12fa0a7956abe6c3c440274ba485282649f3b
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Date:
-	Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=RdtLXx1P8B/01/srC1DNykDSLnh15MCseAF+aY7h/LI=; b=ZAP6voQVo8lpLS80rWY6J1KYkl
-	h01SfdJrPNxVRHLP/uVNDvQE4F9Xoj0TIjpgQX4C+tRuSxFipoHYNM8yLArBfln6eEYMid7b72cZD
-	2n3lIwrqwuqkh4rHLAV4O9ePj5CWIVffLXMQOjPErb65qNypZKie+a1en8zgFHX0PgDcIb88Ipj3X
-	uGSJC19ORFhg3tAMoq2HpN4Zg/F5jLZbwCMiNbd58qagDFe8kghXhJT265LVNefF2+FOmnInQmtml
-	qJPMdW8E6gxStIs+iyZKghAL+zumv1SJyR0Q0dkdlRAy7pmDXhhW5fzIzxNsOUFN7Fcyip1xs1ok/
-	pGJnXAMg==;
-From: Bo Sun <bo@mboxify.com>
-To: sgoutham@marvell.com,
-	gakula@marvell.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
+	s=arc-20240116; t=1758958250; c=relaxed/simple;
+	bh=pwQk5zAt/ju7QPDJfmEeV5nnlUGY2G1Vk6+0+y39tYM=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=Enl9LfK+ImzxEF1FyshPYMJm3ZYJsXVlpAL5C8n+ljzGIw19n8hIVYzHJErc2CV260VUq9bhSr6DziX3HHRzIzzDHQXctm49UAb6s4ZziFAV+EeRDIFzshmEVt9POyzX6wv6NkyKIo555y4R+i8Ixs8UJZRYSdlDXvQsCei8xHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-05 (Coremail) with SMTP id zQCowADXeBKHktdov8RKBw--.32523S2;
+	Sat, 27 Sep 2025 15:30:23 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: will@kernel.org,
+	mark.rutland@arm.com,
+	ilkka@os.amperecomputing.com,
+	james.clark@linaro.org,
+	robin.murphy@arm.com,
+	u.kleine-koenig@baylibre.com,
+	make24@iscas.ac.cn,
+	bwicaksono@nvidia.com,
+	suzuki.poulose@arm.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Bo Sun <bo@mboxify.com>,
+	akpm@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] octeontx2-pf: fix bitmap leak
-Date: Sat, 27 Sep 2025 15:15:05 +0800
-Message-Id: <20250927071505.915905-3-bo@mboxify.com>
-In-Reply-To: <20250927071505.915905-1-bo@mboxify.com>
-References: <20250927071505.915905-1-bo@mboxify.com>
+Subject: [PATCH] perf: arm_cspmu: fix error handling in arm_cspmu_impl_unregister()
+Date: Sat, 27 Sep 2025 15:30:13 +0800
+Message-Id: <20250927073013.29898-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:zQCowADXeBKHktdov8RKBw--.32523S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZF1DtrWrtF1DCry5Xr43KFg_yoW8GryUpF
+	47CFW5ZFyvgr4UK39rA3yUZFWUCa1YkwnYkry8G34F9Fn3Zry3t348Kr9ag3W8JFZ8Jayj
+	q34aqrn5G3W5t3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: bo@mboxify.com
 
-The bitmap allocated with bitmap_zalloc() in otx2_probe() was not
-released in otx2_remove(). Unbinding and rebinding the driver therefore
-triggers a kmemleak warning:
+driver_find_device() calls get_device() to increment the reference
+count once a matching device is found. device_release_driver()
+releases the driver, but it does not decrease the reference count that
+was incremented by driver_find_device(). At the end of the loop, there
+is no put_device() to balance the reference count. To avoid reference
+count leakage, add put_device() to decrease the reference count.
 
-    unreferenced object (size 8):
-      backtrace:
-        bitmap_zalloc
-        otx2_probe
+Found by code review.
 
-Call bitmap_free() in the remove path to fix the leak.
-
-Fixes: efabce290151 ("octeontx2-pf: AF_XDP zero copy receive support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bo Sun <bo@mboxify.com>
+Fixes: bfc653aa89cb ("perf: arm_cspmu: Separate Arm and vendor module")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/perf/arm_cspmu/arm_cspmu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 5027fae0aa77..e808995703cf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -3542,6 +3542,7 @@ static void otx2_remove(struct pci_dev *pdev)
- 	otx2_disable_mbox_intr(pf);
- 	otx2_pfaf_mbox_destroy(pf);
- 	pci_free_irq_vectors(pf->pdev);
-+	bitmap_free(pf->af_xdp_zc_qidx);
- 	pci_set_drvdata(pdev, NULL);
- 	free_netdev(netdev);
- }
+diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
+index efa9b229e701..e0d4293f06f9 100644
+--- a/drivers/perf/arm_cspmu/arm_cspmu.c
++++ b/drivers/perf/arm_cspmu/arm_cspmu.c
+@@ -1365,8 +1365,10 @@ void arm_cspmu_impl_unregister(const struct arm_cspmu_impl_match *impl_match)
+ 
+ 	/* Unbind the driver from all matching backend devices. */
+ 	while ((dev = driver_find_device(&arm_cspmu_driver.driver, NULL,
+-			match, arm_cspmu_match_device)))
++			match, arm_cspmu_match_device))) {
+ 		device_release_driver(dev);
++		put_device(dev);
++	}
+ 
+ 	mutex_lock(&arm_cspmu_lock);
+ 
+-- 
+2.17.1
+
 
