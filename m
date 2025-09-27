@@ -1,112 +1,199 @@
-Return-Path: <stable+bounces-181807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7568BA5A40
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 09:30:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A75D6BA5A8C
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 10:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F200189FC61
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 07:31:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70DA07A80D5
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 08:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AC52C3244;
-	Sat, 27 Sep 2025 07:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222B22D47EB;
+	Sat, 27 Sep 2025 08:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="El7ns55z";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bOacy+82";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="El7ns55z";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bOacy+82"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1F326D4EF;
-	Sat, 27 Sep 2025 07:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E10B1991B6
+	for <stable@vger.kernel.org>; Sat, 27 Sep 2025 08:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758958250; cv=none; b=BAzaZUDmf8Mv4YmmG+TQyHCaEVY/ndk8c1zbbI5iMnhKEHZ/jjCysjgoQlrIcfa3NGKWEcIBLDfaedGLkjRpkIRMCVCyQASoJ4y8Rh08cpWEgC+oSaip1KmWKRm3Naux1RiW6nGe5l/yLNcv3bUGf2F7sbtdxxQtTYszoz7wQ3U=
+	t=1758960102; cv=none; b=N1ZlOaOyXaS4H94NwEuA71zuUGvAbQptzdFpEvDx8HMRQjpQFBAd7Sur9HKKaXGCcx+WoneudZc2jhksxU0+XnYgniHQXgKrd1fMFM+KgvWKDAtcQ6tzq6glqV7zzk4syiwGche18RMDxQLHFj+j9IcF8JsSM03BnZ9usaLDFLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758958250; c=relaxed/simple;
-	bh=pwQk5zAt/ju7QPDJfmEeV5nnlUGY2G1Vk6+0+y39tYM=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=Enl9LfK+ImzxEF1FyshPYMJm3ZYJsXVlpAL5C8n+ljzGIw19n8hIVYzHJErc2CV260VUq9bhSr6DziX3HHRzIzzDHQXctm49UAb6s4ZziFAV+EeRDIFzshmEVt9POyzX6wv6NkyKIo555y4R+i8Ixs8UJZRYSdlDXvQsCei8xHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowADXeBKHktdov8RKBw--.32523S2;
-	Sat, 27 Sep 2025 15:30:23 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: will@kernel.org,
-	mark.rutland@arm.com,
-	ilkka@os.amperecomputing.com,
-	james.clark@linaro.org,
-	robin.murphy@arm.com,
-	u.kleine-koenig@baylibre.com,
-	make24@iscas.ac.cn,
-	bwicaksono@nvidia.com,
-	suzuki.poulose@arm.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-perf-users@vger.kernel.org,
+	s=arc-20240116; t=1758960102; c=relaxed/simple;
+	bh=k+kz3Nc+eDlceMTimw5EzQubZir6VkJWZHkOlNeBgH0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jo5RC9GLlBKH7D603nS7+XN2XxMVXQECqbPe9PT3nynzhJnmMOnNoPW39INPqWgieuy/8DkkGuXI50TOBgwDhU9summsaMFSJrvheudpxCw3/q/VkUSbNcEc5I9ZNQx4CDyvujdxEOhXhWF4Qqn+D3krBO7oULqJKvjoYbVdbRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=El7ns55z; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bOacy+82; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=El7ns55z; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bOacy+82; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 44A5E68038;
+	Sat, 27 Sep 2025 08:01:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758960098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xc47Zb/Ba3WS3bvGHkFpKH7YsU0ppNHclLeiVIV0PXk=;
+	b=El7ns55zbkgNLolo7MBIQtAL1dSEYv+WHbhtFt4Dw3zn6EZ0G+xavjELJrYXHnhYwmF5BZ
+	jriXuN0ZMULzlYuNrYKz9CzMRmC4FZljjYXZuY0CiT2e5Xu4czqSGNTaJh52wE1VMNVVLu
+	ud48xwssA5GZgFKuspWl4muhFzhQIqA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758960098;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xc47Zb/Ba3WS3bvGHkFpKH7YsU0ppNHclLeiVIV0PXk=;
+	b=bOacy+82XyLKWXlqiJxFxtWcR/s/mY7ao7UBB3dNlTTnSUQQW2e+Xlq6wpjMCbWaQabxuD
+	M0+v6N8ga4HChfBg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=El7ns55z;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bOacy+82
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758960098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xc47Zb/Ba3WS3bvGHkFpKH7YsU0ppNHclLeiVIV0PXk=;
+	b=El7ns55zbkgNLolo7MBIQtAL1dSEYv+WHbhtFt4Dw3zn6EZ0G+xavjELJrYXHnhYwmF5BZ
+	jriXuN0ZMULzlYuNrYKz9CzMRmC4FZljjYXZuY0CiT2e5Xu4czqSGNTaJh52wE1VMNVVLu
+	ud48xwssA5GZgFKuspWl4muhFzhQIqA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758960098;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xc47Zb/Ba3WS3bvGHkFpKH7YsU0ppNHclLeiVIV0PXk=;
+	b=bOacy+82XyLKWXlqiJxFxtWcR/s/mY7ao7UBB3dNlTTnSUQQW2e+Xlq6wpjMCbWaQabxuD
+	M0+v6N8ga4HChfBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 01F4113782;
+	Sat, 27 Sep 2025 08:01:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Sq6AOuGZ12hRMwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sat, 27 Sep 2025 08:01:37 +0000
+Date: Sat, 27 Sep 2025 10:01:37 +0200
+Message-ID: <87bjmwb9y6.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: clemens@ladisch.de,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH] perf: arm_cspmu: fix error handling in arm_cspmu_impl_unregister()
-Date: Sat, 27 Sep 2025 15:30:13 +0800
-Message-Id: <20250927073013.29898-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowADXeBKHktdov8RKBw--.32523S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZF1DtrWrtF1DCry5Xr43KFg_yoW8GryUpF
-	47CFW5ZFyvgr4UK39rA3yUZFWUCa1YkwnYkry8G34F9Fn3Zry3t348Kr9ag3W8JFZ8Jayj
-	q34aqrn5G3W5t3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Subject: Re: [PATCH] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
+In-Reply-To: <20250927044106.849247-1-aha310510@gmail.com>
+References: <20250927044106.849247-1-aha310510@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 44A5E68038
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.51
 
-driver_find_device() calls get_device() to increment the reference
-count once a matching device is found. device_release_driver()
-releases the driver, but it does not decrease the reference count that
-was incremented by driver_find_device(). At the end of the loop, there
-is no put_device() to balance the reference count. To avoid reference
-count leakage, add put_device() to decrease the reference count.
+On Sat, 27 Sep 2025 06:41:06 +0200,
+Jeongjun Park wrote:
+> 
+> The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
+> removal") patched a UAF issue caused by the error timer.
+> 
+> However, because the error timer kill added in this patch occurs after the
+> endpoint delete, a race condition to UAF still occurs, albeit rarely.
+> 
+> Therefore, to prevent this, the error timer must be killed before freeing
+> the heap memory.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 
-Found by code review.
+I suppose it's a fix for the recent syzbot reports?
+  https://lore.kernel.org/68d17f44.050a0220.13cd81.05b7.GAE@google.com
+  https://lore.kernel.org/68d38327.a70a0220.1b52b.02be.GAE@google.com
 
-Cc: stable@vger.kernel.org
-Fixes: bfc653aa89cb ("perf: arm_cspmu: Separate Arm and vendor module")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/perf/arm_cspmu/arm_cspmu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I had the very same fix in mind, as posted in
+  https://lore.kernel.org/87plbhn16a.wl-tiwai@suse.de
+so I'll happily apply if that's the case (and it was verified to
+work).  I'm just back from vacation and trying to catch up things.
 
-diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
-index efa9b229e701..e0d4293f06f9 100644
---- a/drivers/perf/arm_cspmu/arm_cspmu.c
-+++ b/drivers/perf/arm_cspmu/arm_cspmu.c
-@@ -1365,8 +1365,10 @@ void arm_cspmu_impl_unregister(const struct arm_cspmu_impl_match *impl_match)
- 
- 	/* Unbind the driver from all matching backend devices. */
- 	while ((dev = driver_find_device(&arm_cspmu_driver.driver, NULL,
--			match, arm_cspmu_match_device)))
-+			match, arm_cspmu_match_device))) {
- 		device_release_driver(dev);
-+		put_device(dev);
-+	}
- 
- 	mutex_lock(&arm_cspmu_lock);
- 
--- 
-2.17.1
 
+thanks,
+
+Takashi
+
+> ---
+>  sound/usb/midi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+> index acb3bf92857c..8d15f1caa92b 100644
+> --- a/sound/usb/midi.c
+> +++ b/sound/usb/midi.c
+> @@ -1522,6 +1522,8 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
+>  {
+>  	int i;
+>  
+> +	timer_shutdown_sync(&umidi->error_timer);
+> +
+>  	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
+>  		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
+>  		if (ep->out)
+> @@ -1530,7 +1532,6 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
+>  			snd_usbmidi_in_endpoint_delete(ep->in);
+>  	}
+>  	mutex_destroy(&umidi->mutex);
+> -	timer_shutdown_sync(&umidi->error_timer);
+>  	kfree(umidi);
+>  }
+>  
+> --
 
