@@ -1,162 +1,194 @@
-Return-Path: <stable+bounces-181810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75BBBA5AD7
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 10:48:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121F3BA5C98
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 11:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 472964A62C6
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 08:48:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34F821B22755
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 09:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148DC2D29BF;
-	Sat, 27 Sep 2025 08:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7E42D6E4B;
+	Sat, 27 Sep 2025 09:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EFbPhmcE"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="NS2EjH+/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JOtPgCQ2";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RSFSAqvG";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SP7KW+Jv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7CB1607AC
-	for <stable@vger.kernel.org>; Sat, 27 Sep 2025 08:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11397221FA0
+	for <stable@vger.kernel.org>; Sat, 27 Sep 2025 09:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758962887; cv=none; b=FWQPJEp4BRXe7LppT0a5srcwfaCzsAn0s1FhXYnZQk8qG0xSH8LrR2EeUJuDQSs8/QWkKC02HqWx29BjdAr3mzwgUsRZkoHzfOz9Snfe3GzmOpkTpvp9F8pNAm51w+V8yFhSn7973L8Y+UrVF2FqXAGCPB7L1xzqK5r+rF5PRSM=
+	t=1758965947; cv=none; b=S//Sxxi73PM6MpR+1QtoDGSB9pq4+QZiOgJ9vYp/gRfvHO+GR+37DAn30lUqrzcb2dYtk4YAxDjhuGkID+9/SDb6o6uh0sRsHJiapLTCfn4KRLyuByFpxWD2ZPwsImKzX2N2ScnocCuupLJfPNUFn7tI+fSCL15iD4aOYarnzWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758962887; c=relaxed/simple;
-	bh=W3jFT2xCuMdLstdxWfEbBiE9g9ULW4SMf/2PYW8sF0s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uK91qMXD3e2grb3q0B+brnXIPxeCPYM4e5adE1H7JzMn4J9HD8iWLiQaZc1ostlqdyEHV5GQfx8Qvo92xQUqyZRz2VnQHnhmOaaa+SU+m0VHsB9CU4J1Oua7wH7OXOO5k5x8UJgV39vjCZY4ZOOjHME69atI2o4sEOXYYBpZaDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EFbPhmcE; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-330b0bb4507so2619488a91.3
-        for <stable@vger.kernel.org>; Sat, 27 Sep 2025 01:48:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758962885; x=1759567685; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/GTUQPP8+/5EC2O1mZ2t0mC7oS0NY7urV0HxwSW70UI=;
-        b=EFbPhmcErXPM8UQyW275k9D26+VWXbmSxKKVEaVdO+dHiJNibzbB4VrBZuctCTnwk4
-         3wGoVXcYXndrozrGZ3NnqsKRUKV5plnNn1uR1vxJFTfde++dWX23+QPp0d3u12I9WHXI
-         4FxkGdFkJK5u1d2tHJ7doEveJ0V2b9yVgbl86zrLwR06tqc2JSynRjk3RCFGVJTx/ZOA
-         em+ItWhG0QHec+jAmUpPLTuAMNGzTSHfKtjjZWzCYJOnPG86k1I8TKBkeYUYMdQ+G3RU
-         hj5x1nEbttLOFgcSxWWvJXKIqXeUpCjCOf74pPNrLJ9VdXZEpcuByEf0w0fxy+gjGxGC
-         In2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758962885; x=1759567685;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/GTUQPP8+/5EC2O1mZ2t0mC7oS0NY7urV0HxwSW70UI=;
-        b=CCu32UTsSGtRD8mu0Vxg1KZWdGV69igDwMBeapXjNWuXb0n1BuMkQXY4i4TxXVws+h
-         Qm2trX0L/8mcxsRyP5HUlnEO55fcJ21iCflB6PS3KxCOv6FMfqof0QjBgNgfk2X4Ng88
-         J6Th9wt7f6t0gShcuSqWgArBl4UFZowJnxyME3YLIXbTfgAZkFO0wAKF3GT87rLmz/l6
-         uk+gcftQFfsfh+EVPSqgNLt4Y+qJW48tgvCHks1J9eIpzddoaUc8kvAstH2dOM1FBqFW
-         21aKqA/23tqSsTmOtxuPfkNpLUVzl63NPFuhG78ElV6LaWp4WIxVGg5JTxdlFICFwLqy
-         0HEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXltet/bfB1vLEd10u8GlVBFGaySLHyTr9yNe6BHCmMWrRnC3oZV1lFSUJtpo8/JlTBH2cvd6U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypmkdJYyW+U/X6qFjrDMWCPfw/wNc/LpK7AQRDfik3wtJO2mGQ
-	3StQlKeS5qQ+XZj/zntOjFHmINO2NUur0lt1avuNEJDCGMRKVbklRju7SYfqgDdxts8QBzmJ0BW
-	Sjc87DgIUda4VNvR0hHbT5X2a6oVWi6o=
-X-Gm-Gg: ASbGncupWWbpJCdTJiIYtUwbz2alcJJk8v8oePE1c2awb0zdDftzrIvoU0qf0Xs2fWg
-	ITK9HS3UklYERR2otPOnnReVzpthNsOxSv339Cvf32RbjqAZDmzVI10xSOLsw4xj0EmDS0fRRtP
-	T8JnEt4uFv3e0i2XpcPCrB4Fkisl/k3mjK0L7WcFaPzJrhVAisV8cctZZUN+ShqdWxiZiPf7btl
-	t3GibByOc4O7ydlRbO0
-X-Google-Smtp-Source: AGHT+IE8/Ky1EmR+0LJIy4YhT01cjWKhOibqsHQ53cBmr/JkwwCwaBr7tP12GcnmDWyv0cmrxLHDEEw+q8nuhwMAZu0=
-X-Received: by 2002:a17:90b:4d04:b0:32e:a60d:93e2 with SMTP id
- 98e67ed59e1d1-3342a260e49mr10570366a91.11.1758962885154; Sat, 27 Sep 2025
- 01:48:05 -0700 (PDT)
+	s=arc-20240116; t=1758965947; c=relaxed/simple;
+	bh=ePwxy0VtePa8dkCZfHHQ0ZXHpxKb70EtWVouu2g/AH0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SGe+Z247UsR+LWTBpw2V87OZgX8FE/fXUXoJusRZk5tstz/ebqAHqUZUNDgiIIC3xfnlnYg+boXwhfoGu8NEJPYHNJAGlI795FOocYZyYjVOWh1qCZjAjx9waeK+3T2wUfZV/sxv8vX8n5FVV905g3483fypL9rEw7Fn4V/8u94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=NS2EjH+/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JOtPgCQ2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RSFSAqvG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SP7KW+Jv; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B9B113E6ED;
+	Sat, 27 Sep 2025 09:39:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758965943; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=84FaBtmFvZd+sdNdHLG3vlLvA5/4a6ErkNpX/PoLn1Q=;
+	b=NS2EjH+/WhpmjpumKPiZlbpj7zNGm3vR4OPDP5YUb4R1KVDmYFfY3YgMBTrjuW5x0GDI7X
+	GdrtLvOynoPUqDRMi3JEfrtorB4P0oLIqPnxTuo0f1OYqUKNTxNBiKgHSh2rpTTQ80D+Q2
+	kKGLP1G/7Y4tnIudKX2OwVNyoM6bPU8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758965943;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=84FaBtmFvZd+sdNdHLG3vlLvA5/4a6ErkNpX/PoLn1Q=;
+	b=JOtPgCQ2rqQy4k62PA1TcVTjAjHMxTjz4kNZFEGEKQ/NvLHbXj0vTqxe7IU4Aob8Ez3NFS
+	siEXj6WqQnfyjuDg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RSFSAqvG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SP7KW+Jv
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758965942; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=84FaBtmFvZd+sdNdHLG3vlLvA5/4a6ErkNpX/PoLn1Q=;
+	b=RSFSAqvGQSHnaXB2Bg5GeMvsPTRSPh/SxIG2FevMc+vuWecK87YD5ahv1/uTVKiK664Ckl
+	3JyfeAhwgc8xZyBsJaETiwdf2FIFhmjMLdC1jQuYZwtgk5upnMRz3BDm++9D4bn4RgxD3J
+	Io78f6tz/y91lJozAw8xYdQnLivVsVU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758965942;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=84FaBtmFvZd+sdNdHLG3vlLvA5/4a6ErkNpX/PoLn1Q=;
+	b=SP7KW+Jv6PI11c9s3QYX0BQXa5uxYzRUaBCZNvktx2UcJ2TO1A1jXSr3YkViVMgoT7WyWe
+	ty38X4Z7nw2L6XCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 768CE1373E;
+	Sat, 27 Sep 2025 09:39:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uR8TG7aw12h9TQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sat, 27 Sep 2025 09:39:02 +0000
+Date: Sat, 27 Sep 2025 11:39:02 +0200
+Message-ID: <87zfag9qvd.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	clemens@ladisch.de,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
+In-Reply-To: <CAO9qdTHSu6QmUVMo0pZj_=foz9CDtwKEYwjBx5vjj8gHzzVFNQ@mail.gmail.com>
+References: <20250927044106.849247-1-aha310510@gmail.com>
+	<87bjmwb9y6.wl-tiwai@suse.de>
+	<CAO9qdTHSu6QmUVMo0pZj_=foz9CDtwKEYwjBx5vjj8gHzzVFNQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250927044106.849247-1-aha310510@gmail.com> <87bjmwb9y6.wl-tiwai@suse.de>
-In-Reply-To: <87bjmwb9y6.wl-tiwai@suse.de>
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Sat, 27 Sep 2025 17:48:02 +0900
-X-Gm-Features: AS18NWAH5mQvcVsDREbrMd7yAaCa4-5UOBVCoSMH3cnV9nAbMNh2Maxiike7hRQ
-Message-ID: <CAO9qdTHSu6QmUVMo0pZj_=foz9CDtwKEYwjBx5vjj8gHzzVFNQ@mail.gmail.com>
-Subject: Re: [PATCH] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
-To: Takashi Iwai <tiwai@suse.de>
-Cc: clemens@ladisch.de, perex@perex.cz, tiwai@suse.com, 
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: B9B113E6ED
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email]
+X-Spam-Score: -3.51
 
-Hi,
+On Sat, 27 Sep 2025 10:48:02 +0200,
+Jeongjun Park wrote:
+> 
+> Hi,
+> 
+> Takashi Iwai <tiwai@suse.de> wrote:
+> >
+> > On Sat, 27 Sep 2025 06:41:06 +0200,
+> > Jeongjun Park wrote:
+> > >
+> > > The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
+> > > removal") patched a UAF issue caused by the error timer.
+> > >
+> > > However, because the error timer kill added in this patch occurs after the
+> > > endpoint delete, a race condition to UAF still occurs, albeit rarely.
+> > >
+> > > Therefore, to prevent this, the error timer must be killed before freeing
+> > > the heap memory.
+> > >
+> > > Cc: <stable@vger.kernel.org>
+> > > Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
+> > > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> >
+> > I suppose it's a fix for the recent syzbot reports?
+> >   https://lore.kernel.org/68d17f44.050a0220.13cd81.05b7.GAE@google.com
+> >   https://lore.kernel.org/68d38327.a70a0220.1b52b.02be.GAE@google.com
+> >
+> 
+> Oh, I didn't know it was already reported on syzbot.
+> 
+> > I had the very same fix in mind, as posted in
+> >   https://lore.kernel.org/87plbhn16a.wl-tiwai@suse.de
+> > so I'll happily apply if that's the case (and it was verified to
+> > work).  I'm just back from vacation and trying to catch up things.
+> >
+> 
+> Although it's difficult to disclose right now, I have already completed
+> writing a PoC that triggers a UAF due to the error timer in a slightly
+> different way than the backtrace reported to syzbot, and I have confirmed
+> that no bugs occur when testing this patch through this PoC.
 
-Takashi Iwai <tiwai@suse.de> wrote:
->
-> On Sat, 27 Sep 2025 06:41:06 +0200,
-> Jeongjun Park wrote:
-> >
-> > The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
-> > removal") patched a UAF issue caused by the error timer.
-> >
-> > However, because the error timer kill added in this patch occurs after the
-> > endpoint delete, a race condition to UAF still occurs, albeit rarely.
-> >
-> > Therefore, to prevent this, the error timer must be killed before freeing
-> > the heap memory.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
-> > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
->
-> I suppose it's a fix for the recent syzbot reports?
->   https://lore.kernel.org/68d17f44.050a0220.13cd81.05b7.GAE@google.com
->   https://lore.kernel.org/68d38327.a70a0220.1b52b.02be.GAE@google.com
->
+OK, so this sounds like a coincidence, but it's very likely the same
+issue, so I'm going to put mark those syzbot reports.
 
-Oh, I didn't know it was already reported on syzbot.
 
-> I had the very same fix in mind, as posted in
->   https://lore.kernel.org/87plbhn16a.wl-tiwai@suse.de
-> so I'll happily apply if that's the case (and it was verified to
-> work).  I'm just back from vacation and trying to catch up things.
->
+thanks,
 
-Although it's difficult to disclose right now, I have already completed
-writing a PoC that triggers a UAF due to the error timer in a slightly
-different way than the backtrace reported to syzbot, and I have confirmed
-that no bugs occur when testing this patch through this PoC.
-
->
-> thanks,
->
-> Takashi
->
-> > ---
-> >  sound/usb/midi.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-> > index acb3bf92857c..8d15f1caa92b 100644
-> > --- a/sound/usb/midi.c
-> > +++ b/sound/usb/midi.c
-> > @@ -1522,6 +1522,8 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
-> >  {
-> >       int i;
-> >
-> > +     timer_shutdown_sync(&umidi->error_timer);
-> > +
-> >       for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
-> >               struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
-> >               if (ep->out)
-> > @@ -1530,7 +1532,6 @@ static void snd_usbmidi_free(struct snd_usb_midi *umidi)
-> >                       snd_usbmidi_in_endpoint_delete(ep->in);
-> >       }
-> >       mutex_destroy(&umidi->mutex);
-> > -     timer_shutdown_sync(&umidi->error_timer);
-> >       kfree(umidi);
-> >  }
-> >
-> > --
-
-Regards,
-Jeongjun Park
+Takashi
 
