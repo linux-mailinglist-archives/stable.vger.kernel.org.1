@@ -1,108 +1,109 @@
-Return-Path: <stable+bounces-181814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3F2BA5D19
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 11:52:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DD3BA5E14
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 12:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81B807AFA36
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 09:51:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBFD1189C411
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 10:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6065E2D73A6;
-	Sat, 27 Sep 2025 09:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="tuCt6/fv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B64A2DCF62;
+	Sat, 27 Sep 2025 10:58:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BA91B5EB5;
-	Sat, 27 Sep 2025 09:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5E12DCF46;
+	Sat, 27 Sep 2025 10:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758966754; cv=none; b=iHwiJw6lFYfD/2qWLUa5Wyr4/NZ8/pfc1TaA6tIa5AX3X6iJwPIQGGHhW/cX7HNWvcLS8QROt5fMnemVhRApgWJmQdAoHgMy9MhoSlPgQhewNUO0twqy3wdbtcn2lXggp7Fxto+EICBBFZzAi9XeTQ4xhOnSEXbN/v2KHjrHkkU=
+	t=1758970687; cv=none; b=V/g0xZJ6LcktOzhpIEwFEI2oobjdrTnVIKrm8PbhWCOzVu9nd/GHgIaAPmk6pvUMcp10iMnViBX8Bda4trewucB4PzldgfFX3P4zSMUUb76nc8Xs+N+l1ACfZQmm3veitkG0OYDeX2B7sRfHeoMODeZGxwSkHvT5M9qCKU1CR6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758966754; c=relaxed/simple;
-	bh=PHF2eJz1F9yMaae8Aad4ZlFknB8cM2jjGUnF22rh5q8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=okvGji/mdlAtdGMA+JK9Y949X5AvNJyAIOtUbKJAyZSgnIpqHaIRS8GUCd86If2Ay2kXAunaWkRPUlcfztzsFIjmVovfQwP/TD9RJ5Zag2l9pB25+uHy09BGnh9MHmDDRJCxOaRqmj5ifbc9PyXfGeLRZ/5Jr37JuwfbaNqdlBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=tuCt6/fv; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id B02DE21778;
-	Sat, 27 Sep 2025 09:52:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1758966743;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zAbY3pK7u7KRSB9tROvDcmOUQ3bDPE77eAlWf4O0phA=;
-	b=tuCt6/fvqWpgJa9B+lOdgGJoY2Q3bY5/zGBpxj+kRzYKiFyLaxZ9UQ7iwYHJ823tJwkUPI
-	17Z6VoVdXcCFBvE7qTCOiPbIc6QausmOyYqsOKUdbw89+DE48Jt/TpurgVbermlbAxJi0R
-	cIYceWNRZwNvRixpt8/vK+xxY6nD+g4=
-From: Sven Eckelmann <sven@narfation.org>
-Date: Sat, 27 Sep 2025 11:52:16 +0200
-Subject: [PATCH i2c-host-fixes i2c-host v7 1/2] i2c: rtl9300: Drop
- unsupported I2C_FUNC_SMBUS_BLOCK_DATA
+	s=arc-20240116; t=1758970687; c=relaxed/simple;
+	bh=vOeDSRLaO7LLl0fRREVJ+ouvCma7Y6wBZaZyNSSCm4A=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=h2p0m8oQVKPzmFlVsH2YxkT5cWnaIsLhJEu91vevL+O5JaaxpywuysPNReUqgDjetPRQ7wWOmEhrw4nlAvFBsxyl0B9jTA4ZOhf0D5dvBJnJ5Hl/qy3pYK0I+t0zDJ4PIfctq49hDMKUyU9hBokbrbRTU4jMsUUBtWiEH/WSRXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-01 (Coremail) with SMTP id qwCowACX8KIdw9doaohdBw--.26444S2;
+	Sat, 27 Sep 2025 18:57:51 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: syniurge@gmail.com,
+	shyam-sundar.s-k@amd.com,
+	andi.shyti@kernel.org,
+	wsa@kernel.org
+Cc: linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] i2c: fix reference leak in MP2 PCI device
+Date: Sat, 27 Sep 2025 18:57:29 +0800
+Message-Id: <20250927105729.19164-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:qwCowACX8KIdw9doaohdBw--.26444S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw17JF1rXr47XrWDGw4UJwb_yoW8GFWDpF
+	WUtFWxAr98GF1vg3WDX3WUZFy3Cw4vvws5WrW7Aw4F9F1rZasYkryktF909w15ArWjyF4a
+	qFW3tayruF1jqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4DMxAIw28IcxkI7VAKI48JMx
+	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
+	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbmsjUUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250927-i2c-rtl9300-multi-byte-v7-1-c0fd0e78b818@narfation.org>
-References: <20250927-i2c-rtl9300-multi-byte-v7-0-c0fd0e78b818@narfation.org>
-In-Reply-To: <20250927-i2c-rtl9300-multi-byte-v7-0-c0fd0e78b818@narfation.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
- Andi Shyti <andi.shyti@kernel.org>
-Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonas Jelonek <jelonek.jonas@gmail.com>, 
- Harshal Gohel <hg@simonwunderlich.de>, 
- Simon Wunderlich <sw@simonwunderlich.de>, 
- Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1290; i=sven@narfation.org;
- h=from:subject:message-id; bh=PHF2eJz1F9yMaae8Aad4ZlFknB8cM2jjGUnF22rh5q8=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDBnXN1+Umjc5olYjN0uV3zbTQiBXOVGg/cGMlOSouiVdz
- +Uv+l7qKGVhEONikBVTZNlzJf/8Zva38p+nfTwKM4eVCWQIAxenAEyk5D7DX/l+RbdkDk3nv6oL
- +T+1ZLgy3Mr9JV0oYc0TUyT/9cDUREaGpRNZFMun3mZetGh6dK4OZx6PotSxlQseH2I99PlcmfN
- fPgA=
-X-Developer-Key: i=sven@narfation.org; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-While applying the patch for commit ede965fd555a ("i2c: rtl9300: remove
-broken SMBus Quick operation support"), a conflict was incorrectly solved
-by adding the I2C_FUNC_SMBUS_I2C_BLOCK feature flag. But the code to handle
-I2C_SMBUS_I2C_BLOCK_DATA requests will be added by a separate commit.
+In i2c_amd_probe(), amd_mp2_find_device() utilizes
+driver_find_next_device() which internally calls driver_find_device()
+to locate the matching device. driver_find_device() increments the
+reference count of the found device by calling get_device(), but
+amd_mp2_find_device() fails to call put_device() to decrement the
+reference count before returning. This results in a reference count
+leak of the PCI device each time i2c_amd_probe() is executed, which
+may prevent the device from being properly released and cause a memory
+leak.
 
-Fixes: ede965fd555a ("i2c: rtl9300: remove broken SMBus Quick operation support")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/i2c/busses/i2c-rtl9300.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-amd-mp2-pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-rtl9300.c b/drivers/i2c/busses/i2c-rtl9300.c
-index 9e1f71fed0feac41e1534709de2406c7a63fa9cd..af991b28e4f83591a3212f7e5cf8137e36a7693a 100644
---- a/drivers/i2c/busses/i2c-rtl9300.c
-+++ b/drivers/i2c/busses/i2c-rtl9300.c
-@@ -307,8 +307,7 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
- static u32 rtl9300_i2c_func(struct i2c_adapter *a)
- {
- 	return I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_BYTE_DATA |
--	       I2C_FUNC_SMBUS_WORD_DATA | I2C_FUNC_SMBUS_BLOCK_DATA |
--	       I2C_FUNC_SMBUS_I2C_BLOCK;
-+	       I2C_FUNC_SMBUS_WORD_DATA | I2C_FUNC_SMBUS_BLOCK_DATA;
- }
+diff --git a/drivers/i2c/busses/i2c-amd-mp2-pci.c b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+index ef7370d3dbea..1f01d3f121ba 100644
+--- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
++++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+@@ -464,7 +464,9 @@ struct amd_mp2_dev *amd_mp2_find_device(void)
+ 		return NULL;
  
- static const struct i2c_algorithm rtl9300_i2c_algo = {
-
+ 	pci_dev = to_pci_dev(dev);
+-	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
++	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
++	put_device(dev);
++	return mp2_dev;
+ }
+ EXPORT_SYMBOL_GPL(amd_mp2_find_device);
+ 
 -- 
-2.47.3
+2.17.1
 
 
