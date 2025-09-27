@@ -1,138 +1,171 @@
-Return-Path: <stable+bounces-181799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2726ABA5602
-	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 01:03:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C06BA57B3
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 03:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D45FD6279A4
-	for <lists+stable@lfdr.de>; Fri, 26 Sep 2025 23:03:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA254325B1F
+	for <lists+stable@lfdr.de>; Sat, 27 Sep 2025 01:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9CF27F4F5;
-	Fri, 26 Sep 2025 23:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FBF1E1E1B;
+	Sat, 27 Sep 2025 01:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iyanmv.com header.i=@iyanmv.com header.b="vPb2fNok"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Svye4Gpq"
 X-Original-To: stable@vger.kernel.org
-Received: from h5.fbrelay.privateemail.com (h5.fbrelay.privateemail.com [162.0.218.228])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEFE22D4D3
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 23:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.0.218.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDC519F115;
+	Sat, 27 Sep 2025 01:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758927815; cv=none; b=DDLoQ5S85hynGzwy16daY/gfnYl+qZy5h1zT/IQoXj2H/ojBODs13Na3a/49parxeWKkNAJCvPBzENXZUEKPB8W8vsUXPBKfYlZ8TOf+p4IPNwuH484icqVyZnOkzPorldnt3oMCH4U59XlR+i8JwkaISNGcxsvDssp++33JuaU=
+	t=1758935855; cv=none; b=f7LafHlv8KTr52WxdM2FgJ6d1X7G02DDFXjiBcMvhw2pCApl7DooSWF98Wk8QgTXSfIpam+vITz3UumO58irTawvWP1YbOrl7ri6JQQv29EQQJZdQnvBVdk7g4HvjYHIBDbBJhVGa3i0pfa8B2iOL4pqQq68fFm2C1dnfgq1eEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758927815; c=relaxed/simple;
-	bh=9fbFrDq9Q608yE5Sbyzp6hLo4hkVOoXPQ/HT2QVjj58=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=uuSWgnId847k6MkvhJ2OgamlHDHrFInSt03gjbfan77RxIFMdqqyqjWbRlWF486vlJ+TqqDN0madb4ezNLnYlpL2BBBiMlIBpH8dZ8zVOmEiNz+HYQymK2vVlOuIBLWt1g6b6P/SlE5u4iYE5/dLinUAbdCPotdc0jBhbYNZpRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iyanmv.com; spf=pass smtp.mailfrom=iyanmv.com; dkim=pass (2048-bit key) header.d=iyanmv.com header.i=@iyanmv.com header.b=vPb2fNok; arc=none smtp.client-ip=162.0.218.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iyanmv.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iyanmv.com
-Received: from MTA-07-4.privateemail.com (mta-07.privateemail.com [198.54.127.57])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by h5.fbrelay.privateemail.com (Postfix) with ESMTPSA id 4cYQwz5M9Lz2xMw
-	for <stable@vger.kernel.org>; Fri, 26 Sep 2025 22:58:27 +0000 (UTC)
-Received: from mta-07.privateemail.com (localhost [127.0.0.1])
-	by mta-07.privateemail.com (Postfix) with ESMTP id 4cYQwr32JCz3hhVC;
-	Fri, 26 Sep 2025 18:58:20 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=iyanmv.com; s=default;
-	t=1758927500; bh=9fbFrDq9Q608yE5Sbyzp6hLo4hkVOoXPQ/HT2QVjj58=;
-	h=Date:To:Cc:From:Subject:From;
-	b=vPb2fNokeh6suvaZgdgelv4ttuk1ggGvRblYhdtX8fpLtmg4GOVpf0eci62aRPk+A
-	 rGpqFgDm0UETEk4sNrm74e9FBnloA5qbDXysBbsbBuf2wKyZ/y1xWHWWa3Gibz/86E
-	 jlZoCwe4GSq7OlQAruKh6X/y6nknKLpuG7knmrfaY3mXXMdUNI6MDMM4nmU+qss8tC
-	 vMnYwYHWyiWaG6rtjTmS+8AOs/yLTDAmPOhOfpbSF4rg/Kr2d+N8Zw1EdlCnsIMP06
-	 9AB18fWnaSzRM506z2tCrfI/GiiYADKFv5+65n1HE7Mp28qD4pi67QZR40IGqJ+p2s
-	 IlUkrd5KWlWHg==
-Received: from [192.168.69.204] (adsl-89-217-41-119.adslplus.ch [89.217.41.119])
-	by mta-07.privateemail.com (Postfix) with ESMTPA;
-	Fri, 26 Sep 2025 18:58:16 -0400 (EDT)
-Message-ID: <616f634e-63d2-45cb-a4f9-b34973cc5dfd@iyanmv.com>
-Date: Sat, 27 Sep 2025 00:58:10 +0200
+	s=arc-20240116; t=1758935855; c=relaxed/simple;
+	bh=pizmtrfKoypHyRxkeP8m/nrxYXysI7n7A6x0lqgFs/A=;
+	h=Date:To:From:Subject:Message-Id; b=Xu5OvqJMkRplz3o5lpQ0/lX1KQx358AY+3HKNVyfh1kcbxWAl/9evi+DajL9ejp95o64cZXpuOfq6jjf7cCcUJp5fwb8jjaFKNgr8MUGAF5CaQr/EUBSioDP5qoBbF1Bs4vxwoZI5uTXNiAAgBl4HtdVcXz+ZZlGdugncZwn9lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Svye4Gpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C16C4CEF4;
+	Sat, 27 Sep 2025 01:17:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758935855;
+	bh=pizmtrfKoypHyRxkeP8m/nrxYXysI7n7A6x0lqgFs/A=;
+	h=Date:To:From:Subject:From;
+	b=Svye4GpqK37A4M6v0FQ/BIcwN4vdDwswIoWXCIC6flCfwZto1iAkZ3w2SiUbNFKhV
+	 lsong9s3G+sFXrV7ituBhAfewBLimp+M7X+AzaLOrUhQTeaxmHEsuq2Bq06VFBXoI4
+	 /Ld1rBZ8ud30ZHYNIaT/YR/NAg/YAiL1IU7ua8oc=
+Date: Fri, 26 Sep 2025 18:17:34 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,amir73il@gmail.com,phillip@squashfs.org.uk,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + squashfs-reject-negative-file-sizes-in-squashfs_read_inode.patch added to mm-nonmm-unstable branch
+Message-Id: <20250927011735.18C16C4CEF4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: stable@vger.kernel.org
-Content-Language: en-US, es-ES
-Cc: regressions@lists.linux.dev, daniele.ceraolospurio@intel.com,
- sashal@kernel.org
-From: =?UTF-8?Q?Iy=C3=A1n_M=C3=A9ndez_Veiga?= <me@iyanmv.com>
-Subject: [REGRESSION] drm/xe/guc: Lenovo Thinkpad X1 Carbon Gen 12 can't boot
- with 6.16.9 and Xe driver
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------dnSgrBGw2pAPx7gtbe9QyB3f"
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Rspamd-Queue-Id: 4cYQwz5M9Lz2xMw
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------dnSgrBGw2pAPx7gtbe9QyB3f
-Content-Type: multipart/mixed; boundary="------------Bv8zz6f9B88KdLNUc0pUQvE0";
- protected-headers="v1"
-From: =?UTF-8?Q?Iy=C3=A1n_M=C3=A9ndez_Veiga?= <me@iyanmv.com>
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, daniele.ceraolospurio@intel.com,
- sashal@kernel.org
-Message-ID: <616f634e-63d2-45cb-a4f9-b34973cc5dfd@iyanmv.com>
-Subject: [REGRESSION] drm/xe/guc: Lenovo Thinkpad X1 Carbon Gen 12 can't boot
- with 6.16.9 and Xe driver
 
---------------Bv8zz6f9B88KdLNUc0pUQvE0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+The patch titled
+     Subject: Squashfs: reject negative file sizes in squashfs_read_inode()
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     squashfs-reject-negative-file-sizes-in-squashfs_read_inode.patch
 
-SGVsbG8sDQoNCkFmdGVyIHVwZ3JhZGluZyB0byA2LjE2LjkgdGhpcyBtb3JuaW5nLCBteSBs
-YXB0b3AgY2FuJ3QgYm9vdC4gSSBjYW5ub3QgDQpnZXQgYW55IGxvZ3MgYmVjYXVzZSB0aGUg
-a2VybmVsIHNlZW1zIHRvIGZyZWV6ZSB2ZXJ5IGVhcmx5LCBldmVuIGJlZm9yZSANCkknbSBh
-c2tlZCBmb3IgdGhlIGZ1bGwgZGlzayBlbmNyeXB0aW9uIHBhc3NwaHJhc2UuDQoNClRoaXMg
-aXMgYSByZWdyZXNzaW9uIGZyb20gNi4xNi44IHRvIDYuMTYuOS4NCg0KSSBkaWQgYSBnaXQg
-YmlzZWN0IGluIHRoZSBzdGFibGUvbGludXggYW5kIHRoaXMgaXMgdGhlIGNvbW1pdCBjYXVz
-aW5nIA0KdGhlIGlzc3VlIGZvciBtZToNCg0KOTcyMDdhNGZlZDUzNDhmZjVjNWU3MWE3MzAw
-ZGI5YjYzODY0MDg3OSBpcyB0aGUgZmlyc3QgYmFkIGNvbW1pdA0KY29tbWl0IDk3MjA3YTRm
-ZWQ1MzQ4ZmY1YzVlNzFhNzMwMGRiOWI2Mzg2NDA4NzkgKEhFQUQpDQpBdXRob3I6IERhbmll
-bGUgQ2VyYW9sbyBTcHVyaW8gPGRhbmllbGUuY2VyYW9sb3NwdXJpb0BpbnRlbC5jb20+DQpE
-YXRlOiAgIFdlZCBKdW4gMjUgMTM6NTQ6MDYgMjAyNSAtMDcwMA0KDQogICAgIGRybS94ZS9n
-dWM6IEVuYWJsZSBleHRlbmRlZCBDQVQgZXJyb3IgcmVwb3J0aW5nDQoNCiAgICAgWyBVcHN0
-cmVhbSBjb21taXQgYTdmZmNlYTg2MzFhZjkxNDc5Y2FiMTBhYTdmYmZkMDcyMmYwMWQ5YSBd
-DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI1MDYyNTIwNTQwNS4xNjUzMjEy
-LTMtZGFuaWVsZS5jZXJhb2xvc3B1cmlvQGludGVsLmNvbS8NCg0KSG93IHRvIHJlcHJvZHVj
-ZToNCg0KMS4gVXBncmFkZSB0byA2LjE2LjkNCjIuIEVuYWJsZSB0aGUgWGUgZHJpdmVyIGJ5
-IHBhc3NpbmcgaTkxNS5mb3JjZV9wcm9iZT0hN2Q1NSANCnhlLmZvcmNlX3Byb2JlPTdkNTUN
-CjMuIFJlYm9vdA0KDQpCZXN0IHJlZ2FyZHMsDQpJecOhbg0KDQotLSANCkl5w6FuIE3DqW5k
-ZXogVmVpZ2ENCkdQRyBLZXk6IDIwNEMgNDYxRiBCQThDIDgxRDEgMDMyNyAgRTY0NyA0MjJF
-IDM2OTQgMzExRSA1QUMxDQoNCg==
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/squashfs-reject-negative-file-sizes-in-squashfs_read_inode.patch
 
---------------Bv8zz6f9B88KdLNUc0pUQvE0--
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
---------------dnSgrBGw2pAPx7gtbe9QyB3f
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
------BEGIN PGP SIGNATURE-----
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-iQIzBAEBCgAdFiEEIExGH7qMgdEDJ+ZHQi42lDEeWsEFAmjXGoIACgkQQi42lDEe
-WsGeMg//V1/IlZOJicsTn3ReQWxr14M4xZRFdnaNPQYbEtmxv5Omrubu3PWpepfo
-m/JtM3W6vup+Q8cTGWSW+OdgiRu2r162oSDu5wG29u8smzL8xr1r9MrGDI7YQ2HV
-WwXBBNNSfY9fFNLKuYBIJsq5cV1Wl4YQGKwIx/mDV1QedSHetW7O3BIIQqgXNmEZ
-AB3ZlWaJrejruY39YoJfJ2BFlYI7DmaySxZEzMYDNxiEg41AkJd6Jklm9HD28Vga
-5uLeqfQO0aQv4rM0f8PKed/ykMIbNeEO1YyT9g5niP0IXKX+fArvB7GtWUhh8OwY
-zy3paJE0UGGbgEFopnyDr1i9DjTcK5ceAYq/B0Vgpo7ahhknmmpOrsZb1RCtn1/h
-rjVi3D4RE5YyjGcJ8WpSZIUm3X77Hn0q/m4AY9Z/Ly+iAeUTQERFrG3X3VNkScSX
-RJ7KOkXo1IrHBLfaMEyKOX0yWFwvGgBkC4c0u1w42MAXe6TFkAGxDRKL6j1VENCc
-wqaJGaR1FdZnc9HzUhE2rHTOr+h8WBtwK6zV13nYxe9IRvXVC0kU6SQsVy0mTWj1
-e1wKSuKp2cp3pKrWzPKXR3ugZH006ssmiRh845wRMSKUk/XH6wNC7CcAj9xf06jp
-T8mZcdxwWUAhBFnxRg1v162+7HLQG9qWRMsX0v3tOTBs9zSDYs0=
-=kxv8
------END PGP SIGNATURE-----
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
---------------dnSgrBGw2pAPx7gtbe9QyB3f--
+------------------------------------------------------
+From: Phillip Lougher <phillip@squashfs.org.uk>
+Subject: Squashfs: reject negative file sizes in squashfs_read_inode()
+Date: Fri, 26 Sep 2025 22:59:35 +0100
+
+Syskaller reports a "WARNING in ovl_copy_up_file" in overlayfs.
+
+This warning is ultimately caused because the underlying Squashfs file
+system returns a file with a negative file size.
+
+This commit checks for a negative file size and returns EINVAL.
+
+Link: https://lkml.kernel.org/r/20250926215935.107233-1-phillip@squashfs.org.uk
+Fixes: 6545b246a2c8 ("Squashfs: inode operations")
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68d580e5.a00a0220.303701.0019.GAE@google.com/
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/squashfs/inode.c |   22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
+
+--- a/fs/squashfs/inode.c~squashfs-reject-negative-file-sizes-in-squashfs_read_inode
++++ a/fs/squashfs/inode.c
+@@ -145,6 +145,10 @@ int squashfs_read_inode(struct inode *in
+ 			goto failed_read;
+ 
+ 		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
++		if (inode->i_size < 0) {
++			err = -EINVAL;
++			goto failed_read;
++		}
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
+ 			/*
+@@ -197,6 +201,10 @@ int squashfs_read_inode(struct inode *in
+ 			goto failed_read;
+ 
+ 		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
++		if (inode->i_size < 0) {
++			err = -EINVAL;
++			goto failed_read;
++		}
+ 		frag = le32_to_cpu(sqsh_ino->fragment);
+ 		if (frag != SQUASHFS_INVALID_FRAG) {
+ 			/*
+@@ -249,8 +257,12 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
+ 
+-		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_size = le16_to_cpu(sqsh_ino->file_size);
++		if (inode->i_size < 0) {
++			err = -EINVAL;
++			goto failed_read;
++		}
++		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+ 		inode->i_op = &squashfs_dir_inode_ops;
+ 		inode->i_fop = &squashfs_dir_ops;
+ 		inode->i_mode |= S_IFDIR;
+@@ -273,9 +285,13 @@ int squashfs_read_inode(struct inode *in
+ 		if (err < 0)
+ 			goto failed_read;
+ 
++		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
++		if (inode->i_size < 0) {
++			err = -EINVAL;
++			goto failed_read;
++		}
+ 		xattr_id = le32_to_cpu(sqsh_ino->xattr);
+ 		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
+-		inode->i_size = le32_to_cpu(sqsh_ino->file_size);
+ 		inode->i_op = &squashfs_dir_inode_ops;
+ 		inode->i_fop = &squashfs_dir_ops;
+ 		inode->i_mode |= S_IFDIR;
+@@ -302,7 +318,7 @@ int squashfs_read_inode(struct inode *in
+ 			goto failed_read;
+ 
+ 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
+-		if (inode->i_size > PAGE_SIZE) {
++		if (inode->i_size < 0 || inode->i_size > PAGE_SIZE) {
+ 			ERROR("Corrupted symlink\n");
+ 			return -EINVAL;
+ 		}
+_
+
+Patches currently in -mm which might be from phillip@squashfs.org.uk are
+
+squashfs-fix-uninit-value-in-squashfs_get_parent.patch
+squashfs-add-additional-inode-sanity-checking.patch
+squashfs-add-seek_data-seek_hole-support.patch
+squashfs-reject-negative-file-sizes-in-squashfs_read_inode.patch
+
 
