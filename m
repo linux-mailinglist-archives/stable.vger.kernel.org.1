@@ -1,69 +1,67 @@
-Return-Path: <stable+bounces-181835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03551BA6999
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 09:04:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF8ABA69DF
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 09:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C94C1897ABE
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 07:05:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45DA9188CAB1
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 07:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8738722370A;
-	Sun, 28 Sep 2025 07:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F98221FCF;
+	Sun, 28 Sep 2025 07:19:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87346200C2;
-	Sun, 28 Sep 2025 07:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEF954918;
+	Sun, 28 Sep 2025 07:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759043086; cv=none; b=utbDAPAkHIpsMY8BwroWXkU/Ibqj3bvlBkylNO5XPMZR8u2ZECdpE1AYFAOOl3/kxdoDc/m1nb4q+IJRWiP9O7DPI1QORfelEHdhg2k5mwe95zuUx8njXqlbL+agKIJTPidQ1IHEId/KQEjs4vTlyjYJ/sEl/855SHa5PABGg9o=
+	t=1759043998; cv=none; b=f4b1+HZ8GS3TMcyrdri8JLUaMBZMNiVrbNFLxEMJCJBKVJTnO7T/+LXCeYZUKNyMKeuw7+0anPadZT8NZcnSABiDWgu/u01d9BoMJhG52MmtcwvDVVnUV2bD0klOt1KdoonYNm4hnDRKOCRYxwmxTCWD9eYnicqCxNQ/i+CkESo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759043086; c=relaxed/simple;
-	bh=wh3jIY7ic2TbFwR0SQf2ct+jaUIfyaJP+Ktg1Y+IC0E=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=XpII7ylySTN5OgXtBEnkC5Oiw8wpci43Yn0fh2Q6r2IRuLCRguQPNGOd6fQdfhZOCuJxIB89mW9IUZadu19fb11Qvfklqq41IyglA7yEyDtEPrqHclSKSmGoBa2RVuFS/O2B6dlUDYz3HpP0oOpRI+cwAjEc0BsxXpHIf/b2IHQ=
+	s=arc-20240116; t=1759043998; c=relaxed/simple;
+	bh=rqiqW7XBpWmCWH9dwnSGTMOMnDvmv9oOluW8/IAQ5Ak=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=hvWR1sy7dqfvFVvloTRmDX0wRXzJIuN61L8Zq9nwO/HA1AuVcRpPmwTvmDx9vtf5QCiOWJPiRCSIcH/Uhgd3+a6foJVMiNOXLY5d9xVHmus+MSC0ZrTuqB+wMPKMZCVgFwP9frB5NJ+LDTqKN1ijfjo+E3zYWsVBlxXUcukxEGA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-01 (Coremail) with SMTP id qwCowADXK5713dhohiDrBw--.18611S2;
-	Sun, 28 Sep 2025 15:04:25 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowACnAKOH4dhoM2PtBw--.19109S2;
+	Sun, 28 Sep 2025 15:19:48 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	semen.protsenko@linaro.org,
-	peter.griffin@linaro.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
+To: syniurge@gmail.com,
+	shyam-sundar.s-k@amd.com,
+	andi.shyti@kernel.org,
+	wsa@kernel.org
+Cc: linux-i2c@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
 	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] soc: samsung: exynos-pmu: fix reference leak in exynos_get_pmu_regmap_by_phandle()
-Date: Sun, 28 Sep 2025 15:04:19 +0800
-Message-Id: <20250928070419.39881-1-make24@iscas.ac.cn>
+Subject: [PATCH v2] i2c: fix reference leak in MP2 PCI device
+Date: Sun, 28 Sep 2025 15:19:33 +0800
+Message-Id: <20250928071933.1627-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:qwCowADXK5713dhohiDrBw--.18611S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WF1xAr18WF4DCr4kZFy5Jwb_yoW8KF1Upr
-	WrJaySkrWkGrWvkrWvqr4jvFW3u34I939Y9a4xC34q93ZYqFySyryUGFy8Zas8Ary8JF15
-	tF12yFy8GFyUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:qwCowACnAKOH4dhoM2PtBw--.19109S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw17JF1rXr47XrWDGw4UJwb_yoW8Ww43pF
+	W5JFWxAr95GF4vgw1DX3W8ZFy3Jw4vvw4rWrW7AwnY9F1rZas0kr97tF909w15ArWUAF4x
+	tFW7tayruF1jqaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_GF4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoZ2-UUUU
-	U
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI48JMx
+	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
+	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbsmitUUUUU==
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,60 +69,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-In exynos_get_pmu_regmap_by_phandle(), driver_find_device_by_of_node()
-utilizes driver_find_device_by_fwnode() which internally calls
-driver_find_device() to locate the matching device.
-driver_find_device() increments the reference count of the found
-device by calling get_device(), but exynos_get_pmu_regmap_by_phandle()
-fails to call put_device() to decrement the reference count before
-returning. This results in a reference count leak of the device each
-time exynos_get_pmu_regmap_by_phandle() is executed, which may prevent
-the device from being properly released and cause a memory leak.
-
-Since Exynos-PMU is a core system device that is not unloaded at
-runtime, and regmap is created during device probing, releasing the
-temporary device reference does not affect the validity of regmap.
-From the perspective of code standards and maintainability, reference
-count leakage is a genuine code defect that should be fixed. Even if
-the leakage does not immediately cause issues in certain scenarios,
-known leakage points should not be left unaddressed.
+In i2c_amd_probe(), amd_mp2_find_device() utilizes
+driver_find_next_device() which internally calls driver_find_device()
+to locate the matching device. driver_find_device() increments the
+reference count of the found device by calling get_device(), but
+amd_mp2_find_device() fails to call put_device() to decrement the
+reference count before returning. This results in a reference count
+leak of the PCI device each time i2c_amd_probe() is executed, which
+may prevent the device from being properly released and cause a memory
+leak.
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 0b7c6075022c ("soc: samsung: exynos-pmu: Add regmap support for SoCs that protect PMU regs")
+Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
 Changes in v2:
-- modified the typo of the variable in the patch. Sorry for the typo;
-- added more detailed description.
+- modified the missing initialization in the patch. Sorry for the omission.
 ---
- drivers/soc/samsung/exynos-pmu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-amd-mp2-pci.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/samsung/exynos-pmu.c b/drivers/soc/samsung/exynos-pmu.c
-index a77288f49d24..b80cc30c1100 100644
---- a/drivers/soc/samsung/exynos-pmu.c
-+++ b/drivers/soc/samsung/exynos-pmu.c
-@@ -302,6 +302,7 @@ struct regmap *exynos_get_pmu_regmap_by_phandle(struct device_node *np,
+diff --git a/drivers/i2c/busses/i2c-amd-mp2-pci.c b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+index ef7370d3dbea..60edbabc2986 100644
+--- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
++++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+@@ -458,13 +458,16 @@ struct amd_mp2_dev *amd_mp2_find_device(void)
  {
- 	struct device_node *pmu_np;
  	struct device *dev;
-+	struct regmap *regmap;
+ 	struct pci_dev *pci_dev;
++	struct amd_mp2_dev *mp2_dev;
  
- 	if (propname)
- 		pmu_np = of_parse_phandle(np, propname, 0);
-@@ -325,7 +326,10 @@ struct regmap *exynos_get_pmu_regmap_by_phandle(struct device_node *np,
+ 	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
  	if (!dev)
- 		return ERR_PTR(-EPROBE_DEFER);
+ 		return NULL;
  
--	return syscon_node_to_regmap(pmu_np);
-+	regmap = syscon_node_to_regmap(pmu_np);
+ 	pci_dev = to_pci_dev(dev);
+-	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
++	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
 +	put_device(dev);
-+
-+	return regmap;
++	return mp2_dev;
  }
- EXPORT_SYMBOL_GPL(exynos_get_pmu_regmap_by_phandle);
+ EXPORT_SYMBOL_GPL(amd_mp2_find_device);
  
 -- 
 2.17.1
