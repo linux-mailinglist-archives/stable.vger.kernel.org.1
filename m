@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-181848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDA0BA7663
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 20:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEB1BA7669
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 20:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82EC3B8580
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 18:52:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD1D3B8542
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 18:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705D5259C98;
-	Sun, 28 Sep 2025 18:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1DC25A338;
+	Sun, 28 Sep 2025 18:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HbzX4sMY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vIc+kwes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE3F34BA4D;
-	Sun, 28 Sep 2025 18:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A53E2594B7;
+	Sun, 28 Sep 2025 18:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759085541; cv=none; b=nakh3ax8CLmlwdVm3L8ESy6MGoBt6VGaXtDueo0EwNPb+1t2+Zc+4N83S3pjuAVYVvpUn32ZazciZZW+5HZM9Qi9wnneMni0Etv+bQdj+P5xH/qaJg8jNfXMpG3AqaWLAI3NN4rbO5P5NqAOnHMfk//ImLGjd8AsPuPsJlK5j0c=
+	t=1759085557; cv=none; b=D5pijC2iGgk0W3jwU3+ZdKVMpu/QjxGgU/TlPi7YMsS19GbL1TJCY2HdsfNJnSimE2W7H1s5t9mNieXQdLZ23yigrLVRvGOkOKXz35HAPCFatqfnpcBtWX0XRe3KiAVfvTIJUBqzWJsSEH+KuXGcZ/yCtg0VgBcfYKKp6wf6Tok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759085541; c=relaxed/simple;
-	bh=7q5Mta8KAnp/6hXeXvDiEvhnXSIMkySBA9jBBlpHpIY=;
-	h=Date:To:From:Subject:Message-Id; b=BBoo5cwcOiOF1HQByIGs4W/35mari/SfJrxRGrzo3fm/O3paL5fjZ4KTya+er+UtrUj+4ZuBU+bdq55MOjwd8xwydRv+utRg72jGabyCkxwvnidRT48lTNBTqHz0XY179EcWDjxyaQ5int82SrzBOZXLbmQcTffdNNseidii6vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HbzX4sMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF44C4CEF0;
-	Sun, 28 Sep 2025 18:52:20 +0000 (UTC)
+	s=arc-20240116; t=1759085557; c=relaxed/simple;
+	bh=fSr5Uy1i/0w2EBoAsVB4ctteU7EBxTeivJxTvYvNguU=;
+	h=Date:To:From:Subject:Message-Id; b=SIfkrka4DXEIM4nNtQfW9Wk/d2Fr19syev1t1kWXFUECCDRmMLasVeB/R++70ff/roryshr8XVQuiFeILqyrgataKmFj/pwYZnvoLrt3Zw4BHyjMTMLwC3rUKTBcfimbTsdfVWttGSZeX2SGnE0kgURma5qhvHSsElvnRnJP6/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vIc+kwes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C69C4CEF0;
+	Sun, 28 Sep 2025 18:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759085540;
-	bh=7q5Mta8KAnp/6hXeXvDiEvhnXSIMkySBA9jBBlpHpIY=;
+	s=korg; t=1759085557;
+	bh=fSr5Uy1i/0w2EBoAsVB4ctteU7EBxTeivJxTvYvNguU=;
 	h=Date:To:From:Subject:From;
-	b=HbzX4sMYqyRiSOJe75paeMXp9USae2T/qzWHt7jNzvXrFkRs5HK203iTx9KhLufIx
-	 X7anEq8LMAbveh/x85iYotr7qjHo+PuR9Fo7MFD1XSRjFXOPeMvbM+ar7Ev+M35ZVR
-	 pVgK3+khve9Oi4Us2qiFG+Vo5wxICsz3aTHpK/Zs=
-Date: Sun, 28 Sep 2025 11:52:20 -0700
-To: mm-commits@vger.kernel.org,xu.xin16@zte.com.cn,stable@vger.kernel.org,ritesh.list@gmail.com,richard.weiyang@gmail.com,david@redhat.com,chengming.zhou@linux.dev,aboorvad@linux.ibm.com,donettom@linux.ibm.com,akpm@linux-foundation.org
+	b=vIc+kwes4OoLfUkNlclSWx+HLdEeLr34Z1C4VpOtrgR/ubmqv7Oh6olzHh2GQRU3/
+	 QodvtZmkH/vig0wGr70y5jHM6bH6tEcTGT43xOn/X6FKC9hGw3t/UKiOMd/cZixmNh
+	 XHjUMzEGKizB0Gy417dN/O6gZ/uXQw0ySnYLWaU4=
+Date: Sun, 28 Sep 2025 11:52:36 -0700
+To: mm-commits@vger.kernel.org,zhangpeng.00@bytedance.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kasong@tencent.com,david@redhat.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,charan.kalla@oss.qualcomm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-ksm-fix-incorrect-ksm-counter-handling-in-mm_struct-during-fork.patch removed from -mm tree
-Message-Id: <20250928185220.DBF44C4CEF0@smtp.kernel.org>
+Subject: [merged mm-stable] mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch removed from -mm tree
+Message-Id: <20250928185236.E5C69C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,112 +50,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
+     Subject: mm: swap: check for stable address space before operating on the VMA
 has been removed from the -mm tree.  Its filename was
-     mm-ksm-fix-incorrect-ksm-counter-handling-in-mm_struct-during-fork.patch
+     mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Donet Tom <donettom@linux.ibm.com>
-Subject: mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
-Date: Wed, 24 Sep 2025 00:16:59 +0530
+From: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+Subject: mm: swap: check for stable address space before operating on the VMA
+Date: Wed, 24 Sep 2025 23:41:38 +0530
 
-Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
-fork", v3.
+It is possible to hit a zero entry while traversing the vmas in unuse_mm()
+called from swapoff path and accessing it causes the OOPS:
 
-The first patch in this series fixes the incorrect accounting of KSM
-counters such as ksm_merging_pages, ksm_rmap_items, and the global
-ksm_zero_pages during fork.
+Unable to handle kernel NULL pointer dereference at virtual address
+0000000000000446--> Loading the memory from offset 0x40 on the
+XA_ZERO_ENTRY as address.
+Mem abort info:
+  ESR = 0x0000000096000005
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x05: level 1 translation fault
 
-The following patch add a selftest to verify the ksm_merging_pages counter
-was updated correctly during fork.
+The issue is manifested from the below race between the fork() on a
+process and swapoff:
+fork(dup_mmap())			swapoff(unuse_mm)
+---------------                         -----------------
+1) Identical mtree is built using
+   __mt_dup().
 
-Test Results
-============
-Without the first patch
------------------------
- # [RUN] test_fork_ksm_merging_page_count
- not ok 10 ksm_merging_page in child: 32
+2) copy_pte_range()-->
+	copy_nonpresent_pte():
+       The dst mm is added into the
+    mmlist to be visible to the
+    swapoff operation.
 
-With the first patch
---------------------
- # [RUN] test_fork_ksm_merging_page_count
- ok 10 ksm_merging_pages is not inherited after fork
+3) Fatal signal is sent to the parent
+process(which is the current during the
+fork) thus skip the duplication of the
+vmas and mark the vma range with
+XA_ZERO_ENTRY as a marker for this process
+that helps during exit_mmap().
 
+				     4) swapoff is tried on the
+					'mm' added to the 'mmlist' as
+					part of the 2.
 
-This patch (of 2):
+				     5) unuse_mm(), that iterates
+					through the vma's of this 'mm'
+					will hit the non-NULL zero entry
+					and operating on this zero entry
+					as a vma is resulting into the
+					oops.
 
-Currently, the KSM-related counters in `mm_struct`, such as
-`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
-by the child process during fork.  This results in inconsistent
-accounting.
+The proper fix would be around not exposing this partially-valid tree to
+others when droping the mmap lock, which is being solved with [1].  A
+simpler solution would be checking for MMF_UNSTABLE, as it is set if
+mm_struct is not fully initialized in dup_mmap().
 
-When a process uses KSM, identical pages are merged and an rmap item is
-created for each merged page.  The `ksm_merging_pages` and
-`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
-these counters are copied to the child while the corresponding rmap items
-are not.  As a result, when the child later triggers an unmerge, there are
-no rmap items present in the child, so the counters remain stale, leading
-to incorrect accounting.
+Thanks to Liam/Lorenzo/David for all the suggestions in fixing this
+issue.
 
-A similar issue exists with `ksm_zero_pages`, which maintains both a
-global counter and a per-process counter.  During fork, the per-process
-counter is inherited by the child, but the global counter is not
-incremented.  Since the child also references zero pages, the global
-counter should be updated as well.  Otherwise, during zero-page unmerge,
-both the global and per-process counters are decremented, causing the
-global counter to become inconsistent.
-
-To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
-fork, and the global ksm_zero_pages counter is updated with the
-per-process ksm_zero_pages value inherited by the child.  This ensures
-that KSM statistics remain accurate and reflect the activity of each
-process correctly.
-
-Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
-Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
-Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
-Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
-Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>	[6.6+]
+Link: https://lkml.kernel.org/r/20250924181138.1762750-1-charan.kalla@oss.qualcomm.com
+Link: https://lore.kernel.org/all/20250815191031.3769540-1-Liam.Howlett@oracle.com/ [1]
+Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
+Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/ksm.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ mm/swapfile.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/ksm.h~mm-ksm-fix-incorrect-ksm-counter-handling-in-mm_struct-during-fork
-+++ a/include/linux/ksm.h
-@@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(str
- static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
- {
- 	/* Adding mm to ksm is best effort on fork. */
--	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
-+	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
-+		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
-+
-+		mm->ksm_merging_pages = 0;
-+		mm->ksm_rmap_items = 0;
-+		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
- 		__ksm_enter(mm);
-+	}
- }
+--- a/mm/swapfile.c~mm-swap-check-for-stable-address-space-before-operating-on-the-vma
++++ a/mm/swapfile.c
+@@ -2389,6 +2389,8 @@ static int unuse_mm(struct mm_struct *mm
+ 	VMA_ITERATOR(vmi, mm, 0);
  
- static inline int ksm_execve(struct mm_struct *mm)
+ 	mmap_read_lock(mm);
++	if (check_stable_address_space(mm))
++		goto unlock;
+ 	for_each_vma(vmi, vma) {
+ 		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+ 			ret = unuse_vma(vma, type);
+@@ -2398,6 +2400,7 @@ static int unuse_mm(struct mm_struct *mm
+ 
+ 		cond_resched();
+ 	}
++unlock:
+ 	mmap_read_unlock(mm);
+ 	return ret;
+ }
 _
 
-Patches currently in -mm which might be from donettom@linux.ibm.com are
+Patches currently in -mm which might be from charan.kalla@oss.qualcomm.com are
 
 
 
