@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-181847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5508EBA764E
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 20:37:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDA0BA7663
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 20:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12E841766DB
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 18:37:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82EC3B8580
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 18:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3989258ED7;
-	Sun, 28 Sep 2025 18:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705D5259C98;
+	Sun, 28 Sep 2025 18:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FVGdiEJD"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HbzX4sMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9112220101D;
-	Sun, 28 Sep 2025 18:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE3F34BA4D;
+	Sun, 28 Sep 2025 18:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759084644; cv=none; b=LEATQY9LQNkCm8I8DVWdonci0nI9C9azc/v/+zh46UxN/XVLyQ9O3SpY4Fk0eWQrMwPG1WFDH0WkE6iUzFUwmxXBUcS3OGbOtolsdRSPH8MCIfUIPk5JkXcKGw2aDrNJJ1V1BuN5uWeuCQ3aeidi6fzsveuEqMKhGTYCWQalZAU=
+	t=1759085541; cv=none; b=nakh3ax8CLmlwdVm3L8ESy6MGoBt6VGaXtDueo0EwNPb+1t2+Zc+4N83S3pjuAVYVvpUn32ZazciZZW+5HZM9Qi9wnneMni0Etv+bQdj+P5xH/qaJg8jNfXMpG3AqaWLAI3NN4rbO5P5NqAOnHMfk//ImLGjd8AsPuPsJlK5j0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759084644; c=relaxed/simple;
-	bh=4HxYyThtko3m8wh7b/UYqFyetla9w8LVvqCpLSSWRZw=;
-	h=Date:To:From:Subject:Message-Id; b=DXmLhTMJezpohY/XM4LEiNgdd2Tp0rsdMFnE3FogF8kzfu2ZzeGq0N+Iw0EVBcmu5nN0o7FoBwX9UChwgbnY1MKtsZ32ifHSCZONdFjt+s0NgumiIUWAQ54Pytvo2zdwsG85VSR/0GmJ/uLRJPJsoxvUARxF17wwczsUPhP0PAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FVGdiEJD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9CAC4CEF0;
-	Sun, 28 Sep 2025 18:37:24 +0000 (UTC)
+	s=arc-20240116; t=1759085541; c=relaxed/simple;
+	bh=7q5Mta8KAnp/6hXeXvDiEvhnXSIMkySBA9jBBlpHpIY=;
+	h=Date:To:From:Subject:Message-Id; b=BBoo5cwcOiOF1HQByIGs4W/35mari/SfJrxRGrzo3fm/O3paL5fjZ4KTya+er+UtrUj+4ZuBU+bdq55MOjwd8xwydRv+utRg72jGabyCkxwvnidRT48lTNBTqHz0XY179EcWDjxyaQ5int82SrzBOZXLbmQcTffdNNseidii6vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HbzX4sMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF44C4CEF0;
+	Sun, 28 Sep 2025 18:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759084644;
-	bh=4HxYyThtko3m8wh7b/UYqFyetla9w8LVvqCpLSSWRZw=;
+	s=korg; t=1759085540;
+	bh=7q5Mta8KAnp/6hXeXvDiEvhnXSIMkySBA9jBBlpHpIY=;
 	h=Date:To:From:Subject:From;
-	b=FVGdiEJDDknNJ7uYHTSd1XXMmUZXqGKRsA4CUwpcOplKZk4Sh0na80ji/DYNtDFN/
-	 zwB4yzfXsKCUYsiX7UEKW1mFu6iG4LW5B+2uIB+8rfPpEM4K/DTVIoV1GecwY1kBzJ
-	 vrU+2Pm4Ok7np7X+o2xVjy25mRP+lSQ61XHCWEmo=
-Date: Sun, 28 Sep 2025 11:37:23 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,amir73il@gmail.com,phillip@squashfs.org.uk,akpm@linux-foundation.org
+	b=HbzX4sMYqyRiSOJe75paeMXp9USae2T/qzWHt7jNzvXrFkRs5HK203iTx9KhLufIx
+	 X7anEq8LMAbveh/x85iYotr7qjHo+PuR9Fo7MFD1XSRjFXOPeMvbM+ar7Ev+M35ZVR
+	 pVgK3+khve9Oi4Us2qiFG+Vo5wxICsz3aTHpK/Zs=
+Date: Sun, 28 Sep 2025 11:52:20 -0700
+To: mm-commits@vger.kernel.org,xu.xin16@zte.com.cn,stable@vger.kernel.org,ritesh.list@gmail.com,richard.weiyang@gmail.com,david@redhat.com,chengming.zhou@linux.dev,aboorvad@linux.ibm.com,donettom@linux.ibm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] squashfs-reject-negative-file-sizes-in-squashfs_read_inode.patch removed from -mm tree
-Message-Id: <20250928183724.5D9CAC4CEF0@smtp.kernel.org>
+Subject: [merged mm-stable] mm-ksm-fix-incorrect-ksm-counter-handling-in-mm_struct-during-fork.patch removed from -mm tree
+Message-Id: <20250928185220.DBF44C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,56 +50,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: Squashfs: reject negative file sizes in squashfs_read_inode()
+     Subject: mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
 has been removed from the -mm tree.  Its filename was
-     squashfs-reject-negative-file-sizes-in-squashfs_read_inode.patch
+     mm-ksm-fix-incorrect-ksm-counter-handling-in-mm_struct-during-fork.patch
 
-This patch was dropped because it was merged into the mm-nonmm-stable branch
+This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Phillip Lougher <phillip@squashfs.org.uk>
-Subject: Squashfs: reject negative file sizes in squashfs_read_inode()
-Date: Fri, 26 Sep 2025 22:59:35 +0100
+From: Donet Tom <donettom@linux.ibm.com>
+Subject: mm/ksm: fix incorrect KSM counter handling in mm_struct during fork
+Date: Wed, 24 Sep 2025 00:16:59 +0530
 
-Syskaller reports a "WARNING in ovl_copy_up_file" in overlayfs.
+Patch series "mm/ksm: Fix incorrect accounting of KSM counters during
+fork", v3.
 
-This warning is ultimately caused because the underlying Squashfs file
-system returns a file with a negative file size.
+The first patch in this series fixes the incorrect accounting of KSM
+counters such as ksm_merging_pages, ksm_rmap_items, and the global
+ksm_zero_pages during fork.
 
-This commit checks for a negative file size and returns EINVAL.
+The following patch add a selftest to verify the ksm_merging_pages counter
+was updated correctly during fork.
 
-[phillip@squashfs.org.uk: only need to check 64 bit quantity]
-  Link: https://lkml.kernel.org/r/20250926222305.110103-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20250926215935.107233-1-phillip@squashfs.org.uk
-Fixes: 6545b246a2c8 ("Squashfs: inode operations")
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: syzbot+f754e01116421e9754b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68d580e5.a00a0220.303701.0019.GAE@google.com/
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: <stable@vger.kernel.org>
+Test Results
+============
+Without the first patch
+-----------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ not ok 10 ksm_merging_page in child: 32
+
+With the first patch
+--------------------
+ # [RUN] test_fork_ksm_merging_page_count
+ ok 10 ksm_merging_pages is not inherited after fork
+
+
+This patch (of 2):
+
+Currently, the KSM-related counters in `mm_struct`, such as
+`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are inherited
+by the child process during fork.  This results in inconsistent
+accounting.
+
+When a process uses KSM, identical pages are merged and an rmap item is
+created for each merged page.  The `ksm_merging_pages` and
+`ksm_rmap_items` counters are updated accordingly.  However, after a fork,
+these counters are copied to the child while the corresponding rmap items
+are not.  As a result, when the child later triggers an unmerge, there are
+no rmap items present in the child, so the counters remain stale, leading
+to incorrect accounting.
+
+A similar issue exists with `ksm_zero_pages`, which maintains both a
+global counter and a per-process counter.  During fork, the per-process
+counter is inherited by the child, but the global counter is not
+incremented.  Since the child also references zero pages, the global
+counter should be updated as well.  Otherwise, during zero-page unmerge,
+both the global and per-process counters are decremented, causing the
+global counter to become inconsistent.
+
+To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0 during
+fork, and the global ksm_zero_pages counter is updated with the
+per-process ksm_zero_pages value inherited by the child.  This ensures
+that KSM statistics remain accurate and reflect the activity of each
+process correctly.
+
+Link: https://lkml.kernel.org/r/cover.1758648700.git.donettom@linux.ibm.com
+Link: https://lkml.kernel.org/r/7b9870eb67ccc0d79593940d9dbd4a0b39b5d396.1758648700.git.donettom@linux.ibm.com
+Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: <stable@vger.kernel.org>	[6.6+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/squashfs/inode.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/ksm.h |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/squashfs/inode.c~squashfs-reject-negative-file-sizes-in-squashfs_read_inode
-+++ a/fs/squashfs/inode.c
-@@ -197,6 +197,10 @@ int squashfs_read_inode(struct inode *in
- 			goto failed_read;
+--- a/include/linux/ksm.h~mm-ksm-fix-incorrect-ksm-counter-handling-in-mm_struct-during-fork
++++ a/include/linux/ksm.h
+@@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(str
+ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ {
+ 	/* Adding mm to ksm is best effort on fork. */
+-	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
++	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
++		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
++
++		mm->ksm_merging_pages = 0;
++		mm->ksm_rmap_items = 0;
++		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
+ 		__ksm_enter(mm);
++	}
+ }
  
- 		inode->i_size = le64_to_cpu(sqsh_ino->file_size);
-+		if (inode->i_size < 0) {
-+			err = -EINVAL;
-+			goto failed_read;
-+		}
- 		frag = le32_to_cpu(sqsh_ino->fragment);
- 		if (frag != SQUASHFS_INVALID_FRAG) {
- 			/*
+ static inline int ksm_execve(struct mm_struct *mm)
 _
 
-Patches currently in -mm which might be from phillip@squashfs.org.uk are
+Patches currently in -mm which might be from donettom@linux.ibm.com are
 
 
 
