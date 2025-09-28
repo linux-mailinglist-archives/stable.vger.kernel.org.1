@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-181828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA6DBA67C5
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 06:35:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D13EBA67D1
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 06:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA5D9188D245
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 04:35:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A54AC3C071A
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 04:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FEB2882D0;
-	Sun, 28 Sep 2025 04:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF66288538;
+	Sun, 28 Sep 2025 04:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3a+OCW7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uwvKqMGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A9B285CBF
-	for <stable@vger.kernel.org>; Sun, 28 Sep 2025 04:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6D0269CE1
+	for <stable@vger.kernel.org>; Sun, 28 Sep 2025 04:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759034099; cv=none; b=B3e2uYmL4ebw5SR9si1JqfYk2gC1qeg/g3xM8030SLnp++NMNNLq/lew1fCsWw7wb7VghwuRXyMYQGuK4h+6O/GaFRvcFkQfe+PXuedxC8fbaIbt4WDRfTA890lf60xWQkugt8p3NqOlclIogH9X2fGjfGvTlJM9cgPSO9s55Cs=
+	t=1759034294; cv=none; b=cRVqVV0bpNMYAKeAh07WipCz6OkJDKTDUHVYbxjz6Jco41sd83VlUnkbC5vDhkpagRFDxhPEL+eOsGF4WYZENrPUfbsZZUXS1kWBWTjUslhd1CRpi7tw7OpaWlSqB/F7GikLku2C1DYW5g3Bl0xN/d8HKf4EH4eFzLoVavuXF5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759034099; c=relaxed/simple;
-	bh=x/iAMEfhFQ96nT4EsXIin8xHsP3iS1/961id7m6vOAI=;
+	s=arc-20240116; t=1759034294; c=relaxed/simple;
+	bh=yPUCQARO/E1b/PpKhkuynrSeBmbzRpj/2AlmBYWvBEc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ekMDA0+BD1WyxFc47r5YHR8UPiKcw8a7aJCtDcHm+7I5M1q3AYX9APjPktRiF3xKzi7B/9fb8flypIUl3pwFNQO6ixaZQGaCUg1qbfNRye4rQfrNAu6+duDY91pYXCMEbCpUYNjBGS9TfOnXKy+GyuoWMx48/S0q/htU0mezeLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3a+OCW7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E866C16AAE
-	for <stable@vger.kernel.org>; Sun, 28 Sep 2025 04:34:59 +0000 (UTC)
+	 To:Cc:Content-Type; b=Ih7X7oSHZNWy2HJ+q5B1f3iWucgBJZr1lgfVco22nENirLZew1tQRpIA15ZdW5Q5HfIxaxBMFUR4O3lqdKrxTBKvcRaaU8Ug6SUx/Hi/rf4c1JEP5/mnsW8hy+3G+ZFPZYBxjrzOzLeQUatPLwQRiBoxuxXYBcvGZJgZiKlPXWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uwvKqMGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CC1C116B1
+	for <stable@vger.kernel.org>; Sun, 28 Sep 2025 04:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759034099;
-	bh=x/iAMEfhFQ96nT4EsXIin8xHsP3iS1/961id7m6vOAI=;
+	s=k20201202; t=1759034294;
+	bh=yPUCQARO/E1b/PpKhkuynrSeBmbzRpj/2AlmBYWvBEc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=C3a+OCW7agSsSUJrWxa9qUULhZ0/T7cRubYvfrzrcy4VpxNK5YNUm8HtyIu/79O6W
-	 F+HCAaeXuYK3Nd39x4U3v2LhI9bm0KVJRCsgz25OnqXkrdqv34ZXXIADvab9oYWdGt
-	 njnmTXIoZHJJ506cs91VhvFqYp+G2CMtcmpkWgqAMM4v5lGNgmbB99YghPSXD3ArTe
-	 XXD9ePVYafs2DfRwRTeZsoIP/6DhENBCS3M+J7DOL+aADV1reyWHM2Xf+8g37HsJ7v
-	 jr/PH4wgK0BPYy1O+p0L3Zsi4CQZwBtE1uxv0S7kqJYb5RPQChcs9taXOgU5PcTGl8
-	 npl/XZH8qc4Pw==
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b54c86f3fdfso3520322a12.1
-        for <stable@vger.kernel.org>; Sat, 27 Sep 2025 21:34:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUp1YzVtTxbtMuvRMhaO6luWpQa5ly9o7/S+HJZ6nN2UHEXbKbdIKFGrO+kuKAOUF6Fy7T9aeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/he1M7dtfjZE1tt4OX487yAqpsURd/yvb4hZcTJHMXtup0azi
-	qVyDc4vobtfdU9tahMfbstWzjgpRCa5k70GeAXPkpN+zbUkcDIHaWtBJvRCUtiwMFiQdi8Pztl+
-	oK+azhg0Lu27VrEN9MFtIzU/j9y+edXs=
-X-Google-Smtp-Source: AGHT+IEvpC+fZhKriALPhAAHYn0OG8EEAGcMYQkIgjBYmtXlINnzWABnAmfFm/NDNUhpqe9it9R7ngTXVVvTZEYqySk=
-X-Received: by 2002:a17:903:298b:b0:24b:270e:56d4 with SMTP id
- d9443c01a7336-27ed6ad0684mr143987145ad.4.1759034098565; Sat, 27 Sep 2025
- 21:34:58 -0700 (PDT)
+	b=uwvKqMGTr7gvSwWcF7i0B3Gyiq5dOWXVEHss0z7q9tzNvJaiQxw4QAWxZhtYtQpr/
+	 k3yBIbcuyc/zNYe83bgBx/qFKixs7X9raANbbB5WjgdKFSfYdlkOl9MnJIoWRjOfRA
+	 FTluEPI3nC4nYQGhO6XW0O6S2pqAqcH4b0HdCXqS2LwmanyGYdQLcke7FpmQtxBsDE
+	 r1qsBXPYBmCeY1TMREmAmoTc1nD8FbY7d5dzfrr7ZgM0TncP/A8+XzVhxuekf02VLl
+	 FSqRi0y82hfn2SZ41dqt38VVwjVZlAYOS0sPjBiE3KuLsrJMLlGj6WDJh3RhW2AXTg
+	 LNgaPLPVOd+LQ==
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-28832ad6f64so619095ad.1
+        for <stable@vger.kernel.org>; Sat, 27 Sep 2025 21:38:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXN9iq18lQA1anb3mvLRLpRmp2koux9n1kk+i5lnW4BEvG4LY2TIjn+m9ngwu5mHPVNmdWIHew=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXdKYNqsv4wRSTwb+mYUdsEP2cNRXwQ6n25d0yOFnj6lYArqvz
+	pKATc2OLArUZpkacM3FzoDg+wTqwNg40sg4tHUBWNiia+E3orCOqid9nVTrF7hvUuehI4wEFOew
+	Qdr3xTnm+IyKDxxOrRbS2MCpq3zC77ZI=
+X-Google-Smtp-Source: AGHT+IFovBFKctggukgqFj3XIJcZWk9fg1TefA/Wwh6SK14YTc4CRxw9XITK+mpUG2jv5RfWSvlF4YsBkFYpkeUNa/0=
+X-Received: by 2002:a17:902:f64f:b0:273:7d52:e510 with SMTP id
+ d9443c01a7336-27ed4ab37admr146753645ad.58.1759034293913; Sat, 27 Sep 2025
+ 21:38:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ MIME-Version: 1.0
 References: <20250928035108.10432-1-make24@iscas.ac.cn>
 In-Reply-To: <20250928035108.10432-1-make24@iscas.ac.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
-Date: Sun, 28 Sep 2025 13:34:45 +0900
-X-Gmail-Original-Message-ID: <CAJKOXPehQ+nsPk_JsNGCwZdfYCrdJ7c6x-mLgn-VaissiSQycw@mail.gmail.com>
-X-Gm-Features: AS18NWBkJsznHwnBuF6ULH6dpVms9-ecEezN84hhkizvBeyEC7vnkdoTdHYfrOk
-Message-ID: <CAJKOXPehQ+nsPk_JsNGCwZdfYCrdJ7c6x-mLgn-VaissiSQycw@mail.gmail.com>
+Date: Sun, 28 Sep 2025 13:38:02 +0900
+X-Gmail-Original-Message-ID: <CAJKOXPcNnzTw7_bE4J8G91n=+fz==xAg4D6GXzRqJKhZhpAw4g@mail.gmail.com>
+X-Gm-Features: AS18NWD0KSDsFXZFUEVjn0bzNBGXma2W0otpCGVfLYk-XWgTFtTO54OEwfjhbIA
+Message-ID: <CAJKOXPcNnzTw7_bE4J8G91n=+fz==xAg4D6GXzRqJKhZhpAw4g@mail.gmail.com>
 Subject: Re: [PATCH] soc: samsung: exynos-pmu: fix reference leak in exynos_get_pmu_regmap_by_phandle()
 To: Ma Ke <make24@iscas.ac.cn>
 Cc: alim.akhtar@samsung.com, semen.protsenko@linaro.org, 
@@ -71,9 +71,6 @@ Cc: alim.akhtar@samsung.com, semen.protsenko@linaro.org,
 	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	akpm@linux-foundation.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-
-Best regards,
-Krzysztof
 
 On Sun, 28 Sept 2025 at 12:51, Ma Ke <make24@iscas.ac.cn> wrote:
 >
@@ -115,12 +112,15 @@ On Sun, 28 Sept 2025 at 12:51, Ma Ke <make24@iscas.ac.cn> wrote:
 > -       return syscon_node_to_regmap(pmu_np);
 > +       regmap = syscon_node_to_regmap(pmu_np);
 > +       put_device(regmap);
+
+Are you sure this code actually compiles?
+
+
 > +
 > +       return regmap;
->  }
->  EXPORT_SYMBOL_GPL(exynos_get_pmu_regmap_by_phandle);
->
-> --
-> 2.17.1
->
+
+So is regmap valid now, if you drop the reference? I think no. I also
+think you should check the purpose of this function. I don't see a
+leak here, not at callers place. Anyway build failures are my main
+concern.
 
