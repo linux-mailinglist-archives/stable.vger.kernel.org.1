@@ -1,163 +1,144 @@
-Return-Path: <stable+bounces-181833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8338CBA6900
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 08:31:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3CD9BA690C
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 08:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C1807AE65F
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 06:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25EFC189BE7D
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 06:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFF227EFFE;
-	Sun, 28 Sep 2025 06:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MLE98Rh7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dU/mDHKD";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MLE98Rh7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dU/mDHKD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5641A2248AF;
+	Sun, 28 Sep 2025 06:35:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C1C1DE2C2
-	for <stable@vger.kernel.org>; Sun, 28 Sep 2025 06:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B105A1A4E70;
+	Sun, 28 Sep 2025 06:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759041085; cv=none; b=AT+NqDIz4g/W+AJEm1gtp60ze+AM8QPa+ZTWa4NtXBo9hy5g1EuSaj4aJq8qiaH+vaDqOrjDHB0NRGy43K98HjnO0A4xXLBSwdcXJXUfXeLtWb/TK/KEgs+ij/BbQi0Ge3MltLnankJuo4tpZ26MtY/dioDytIbuJekaqpDmYf0=
+	t=1759041334; cv=none; b=uhogGDzFrNTN9u8JdG/aPM/FCt8x5JVVD1VI1WKgF15twVOrWIj1iYDIQmP/aFUnLLz3riUTisTEe08/nVg/J8ag/1SdDbepvt+4EEW9Pr1OBDXXdgAK77W4s1IzDWB4F6WsqFuHAXizX9aZHW13vxUvDl6asgAmWpZ8BR/8awc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759041085; c=relaxed/simple;
-	bh=80MlwsJNMskvEtHDASa7mcrqS4cVzZ2KnHqkalR9g6M=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BqGfTgRMJKkRPTaue5eQXG1GZG8TG671hokUvFT4UGQI316/3hppaL7frrts+zGrakcGcJq4UyKEf7c3iQKc1k7Im3Bym4KVBtO2b+VpNGuscd0pJe0kLdanKXmFkei12Vo3NYZCz+KVZp5nScpDSGbwjui31qXJQESWjQjdvqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MLE98Rh7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dU/mDHKD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MLE98Rh7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dU/mDHKD; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	s=arc-20240116; t=1759041334; c=relaxed/simple;
+	bh=DSNKMpV8F3KeakZPHjRs+ttvKjFPIl4OFROBeTzGsGo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WV5ewBUiX/DcmLSGJOE/L81Mt9zo7ruX5g2wdLmpJZIrbcS9o3RqE7RTE/Q/3E85RZ4r5IqU/2CkvIOOCCA9gPXyIRExe3S4IIRl0tpzSynft9Es6LpAjHPh0ABzXyPOc130A66rMr9SVTtMjszwOm8vvXVYcia2rfd4yPaU2cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.2.205] (p57bd9782.dip0.t-ipconnect.de [87.189.151.130])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1EF7C4ED00;
-	Sun, 28 Sep 2025 06:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1759041081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1nt7XRgS7wny7GLFezjGOgP212mj4Cp8kNuN5m7MFAo=;
-	b=MLE98Rh7ejyD58pkGIB2EQ1mziIhSNzlLPef+aYGZj+OP/YgL86/rQBLquzkNleseq6ZhH
-	QXxRfQI2V6ZakpnT4VVVO1BC7MFyHtiAflodXy07PdDISIFZx+02L0mlnT4vy7zegOqWtj
-	kNk6dI3ClxafGymRBui4GWluLnOYIPc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1759041081;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1nt7XRgS7wny7GLFezjGOgP212mj4Cp8kNuN5m7MFAo=;
-	b=dU/mDHKD0dpwwDW9TVOa75Bdhx7NJlCf5Vnmd+ryIXZ1PRmUJQLbGckxOVjFC9dOooA3qv
-	XCTR/5/+axeXw4Dw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1759041081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1nt7XRgS7wny7GLFezjGOgP212mj4Cp8kNuN5m7MFAo=;
-	b=MLE98Rh7ejyD58pkGIB2EQ1mziIhSNzlLPef+aYGZj+OP/YgL86/rQBLquzkNleseq6ZhH
-	QXxRfQI2V6ZakpnT4VVVO1BC7MFyHtiAflodXy07PdDISIFZx+02L0mlnT4vy7zegOqWtj
-	kNk6dI3ClxafGymRBui4GWluLnOYIPc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1759041081;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1nt7XRgS7wny7GLFezjGOgP212mj4Cp8kNuN5m7MFAo=;
-	b=dU/mDHKD0dpwwDW9TVOa75Bdhx7NJlCf5Vnmd+ryIXZ1PRmUJQLbGckxOVjFC9dOooA3qv
-	XCTR/5/+axeXw4Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CCDC913A3F;
-	Sun, 28 Sep 2025 06:31:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ukTEMDjW2GiUGAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Sun, 28 Sep 2025 06:31:20 +0000
-Date: Sun, 28 Sep 2025 08:31:20 +0200
-Message-ID: <875xd39jgn.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: clemens@ladisch.de,
-	perex@perex.cz,
-	tiwai@suse.com,
-	hdanton@sina.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2] ALSA: usb-audio: fix race condition to UAF in snd_usbmidi_free
-In-Reply-To: <20250927173924.889234-1-aha310510@gmail.com>
-References: <20250927173924.889234-1-aha310510@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 5DCEA6028F35A;
+	Sun, 28 Sep 2025 08:35:18 +0200 (CEST)
+Message-ID: <93c06dea-1e93-4981-bd69-b84f8573fa66@molgen.mpg.de>
+Date: Sun, 28 Sep 2025 08:35:17 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[f02665daa2abeef4a947];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,sina.com];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[ladisch.de,perex.cz,suse.com,sina.com,vger.kernel.org,syzkaller.appspotmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -1.80
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Bluetooth: btusb: Add one more ID 0x13d3:0x3612 for
+ Realtek 8852CE
+To: Levi Zim <rsworktech@outlook.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250927-ble-13d3-3612-v1-1-c62bbb0bc77c@outlook.com>
+ <7926abe4-f824-4ff3-808e-e31b7869a7d6@molgen.mpg.de>
+ <SY4P282MB2313F04E53A4381F5EE422E2C618A@SY4P282MB2313.AUSP282.PROD.OUTLOOK.COM>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <SY4P282MB2313F04E53A4381F5EE422E2C618A@SY4P282MB2313.AUSP282.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, 27 Sep 2025 19:39:24 +0200,
-Jeongjun Park wrote:
-> 
-> The previous commit 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at
-> removal") patched a UAF issue caused by the error timer.
-> 
-> However, because the error timer kill added in this patch occurs after the
-> endpoint delete, a race condition to UAF still occurs, albeit rarely.
-> 
-> Additionally, since kill-cleanup for urb is also missing, freed memory can
-> be accessed in interrupt context related to urb, which can cause UAF.
-> 
-> Therefore, to prevent this, error timer and urb must be killed before
-> freeing the heap memory.
-> 
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+f02665daa2abeef4a947@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f02665daa2abeef4a947
-> Fixes: 0718a78f6a9f ("ALSA: usb-audio: Kill timer properly at removal")
-> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-
-Thanks, applied now.
+Dear Levi,
 
 
-Takashi
+Thank you for your reply.
+
+Am 28.09.25 um 06:41 schrieb Levi Zim:
+
+> On 9/27/25 10:25 PM, Paul Menzel wrote:
+
+>> For the summary/title “one more” is not necessary.
+>>
+> I just blindly followed the format of the last commit that touches that 
+> file. > Should I send a V2 with “one more” removed?
+
+No need to resend from my side.
+
+>> Am 27.09.25 um 04:29 schrieb Levi Zim via B4 Relay:
+>>> From: Levi Zim <rsworktech@outlook.com>
+>>>
+>>> Devices with ID 13d3:3612 are found in ASUS TUF Gaming A16 (2025)
+>>> and ASUS TX Gaming FA608FM.
+>>>
+>>> The corresponding device info from /sys/kernel/debug/usb/devices is
+>>>
+>>> T:  Bus=03 Lev=02 Prnt=03 Port=02 Cnt=02 Dev#=  6 Spd=12 MxCh= 0
+>>> D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+>>> P:  Vendor=13d3 ProdID=3612 Rev= 0.00
+>>> S:  Manufacturer=Realtek
+>>> S:  Product=Bluetooth Radio
+>>> C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+>>> I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+>>> E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+>>> E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+>>> I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+>>> E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+>>> I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+>>> E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+>>> I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+>>> E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+>>> I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+>>> E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+>>> I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+>>> E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+>>> I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+>>> E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+>>> I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+>>> E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+>>> E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+>>>
+>>> Signed-off-by: Levi Zim <rsworktech@outlook.com>
+>>> ---
+>>>   drivers/bluetooth/btusb.c | 2 ++
+>>>   1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+>>> index 
+>>> 8085fabadde8ff01171783b59226589757bbbbbc..d1e62b3158166a33153a6dfaade03fd3fb7d8231 100644
+>>> --- a/drivers/bluetooth/btusb.c
+>>> +++ b/drivers/bluetooth/btusb.c
+>>> @@ -552,6 +552,8 @@ static const struct usb_device_id quirks_table[] = {
+>>>                                BTUSB_WIDEBAND_SPEECH },
+>>>       { USB_DEVICE(0x13d3, 0x3592), .driver_info = BTUSB_REALTEK |
+>>>                                BTUSB_WIDEBAND_SPEECH },
+>>> +    { USB_DEVICE(0x13d3, 0x3612), .driver_info = BTUSB_REALTEK |
+>>> +                             BTUSB_WIDEBAND_SPEECH },
+>>>       { USB_DEVICE(0x0489, 0xe122), .driver_info = BTUSB_REALTEK |
+>>>                                BTUSB_WIDEBAND_SPEECH },
+>> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+
+
+Kind regards,
+
+Paul
 
