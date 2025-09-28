@@ -1,140 +1,150 @@
-Return-Path: <stable+bounces-181830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D4DBA67F0
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 06:49:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D97BA685D
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 07:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09CD43B676A
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 04:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F428189263C
+	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 05:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDD0221FDE;
-	Sun, 28 Sep 2025 04:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7CC27602C;
+	Sun, 28 Sep 2025 05:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eyCOHFjT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8AF221F34
-	for <stable@vger.kernel.org>; Sun, 28 Sep 2025 04:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8701C5F10;
+	Sun, 28 Sep 2025 05:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759034964; cv=none; b=EO45I8EW9D6p0bgf0tDU+B/cuCpSsa+GaMdBlhMGs/PSQzVduI4f1SpqaddoCycVIF5RH15VTNstaNZ5A8U2rMEOGoet/++lFIEqjaGVA8sBxGLgPkAwXV4Kh7tLqKArE3jauOrlvIORFpIWy5k77Jb3Rj1odGqMmNHO6RA+o5Q=
+	t=1759037665; cv=none; b=IMHZrjuaGkN6Lo+qRgqjjZV6OtbdRoGlJq+eyGhgqiozEUt5dFVK7sfBmCzchbwsKEo6/uXBwYwgTbcnv2qCTaBQw8JhR5ejuW/kXaS0IYHZ2escLKFJy+WJHwg4rd6FVc2uVgiqQNQ6RO1WomkcM2hbg17LbEEsMq4LDr1cNLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759034964; c=relaxed/simple;
-	bh=3JXHdTFd0Do4NsJQmtnD90PGDnc76HJueRPgFM3FauY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rbUxKhxGRlaiIynvDLH0V5fdixUleThGcg/saOeFnW95qup3uWE2DzSXNaLaPWzEjCXctKRROSEL1QfuUSKcwNIXt/WyYPQwKaBcN+LiNXFbuJVfvZ/+cuMMo0L2XV68S9167sNzcd7lo2cVhnPZW8f5Q1P6IFMyX3RjJkmqJjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3f42b54d1b9so3478613f8f.0
-        for <stable@vger.kernel.org>; Sat, 27 Sep 2025 21:49:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759034961; x=1759639761;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DyUaaqdWAgLg9ININm7xedY+UnymRaRfwlVA8p6wolQ=;
-        b=lPqeuiDb9VdmJw1Pwwfxkgwx0POZH9+KJ7YbqjfG9e5EYFILC5bofvj63HtVqcIjTl
-         fp1Y0rM9MhrdGz/r6jsOb+MhnNqXt4dBJcsLhJX0lC3mcWh/llq58yMVZKnOZTRn6X05
-         ThvsmLLXIScOjZcZS3u1upM8E+TlCU2ib6a0TXpOD9H5iU0SQ16J4TcYRbek7SbFTyMe
-         RolxA9ePkm2ZymotEIevFEujqGpeTvhchAuT7IEfkkrKczHMwJsfo84i3p6RlBDtrRhZ
-         WON7Tr/BjxqvpHVfahXQwss/Kl+LfF6TUAndUz1kJc9p/dh8PbBYsBu/jFbBFw54C8Kl
-         QO3A==
-X-Forwarded-Encrypted: i=1; AJvYcCW96lvZxjFepZzygMKD3RaC1tIcOnL7BvgdKr50zXYw6lBvOZYMTQeVQcZVwNuTDC3nViFIdBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxchvTfgwdrZPrtA/V4wT9paa1fFj116RMdT7h3ClwVb+suv5Ss
-	LCdNxP/TgOlyv8BWC7B+Xeqv7on2yKHEmsIrduNrgDD7eUfNj4/OQkFa
-X-Gm-Gg: ASbGncuoaSNz0rXKdhfOgnVOF9r0lIDFDeb0hwvN9sKqyLH0aouL2LCL/0af+Za7nBF
-	G0VEVoskRZx2e76QaMWO0/aVlwdHSvJ7KaScoSG6AjaVWK5ffpgmAsOTUVDgmOdi2Oe/JPuCept
-	FF7uk/JSzj/Ehjf9yvvP8LROpPaJpLiUbmlqg0DJjADTdpg6b47V8GWskSX1pCXxvLqcoFTW8sw
-	yOWPkbU4LgWUozk+gM4XmGjjKjH9qtuiBLFEBuErS6BhQ1pCAZQTcqwGDKsbB/visxd4huxhPZV
-	USpkr5V7lpMMQBITeHQSXdaESrIB6BiAwXi+Aug3Ix0amZBss4SnI46aiEUDrM+ucCe0Lk08E27
-	fBxwnQ1/xJ3atFql/l/7HxuBDvKXAX4QdmA==
-X-Google-Smtp-Source: AGHT+IFtXLQOdcvQ7Xjrg3v0c2+UOl4vx5bR+h7AWQ6ssWZLLcWyTpq2xRAkUoQVnuyBrbH3ylk2aQ==
-X-Received: by 2002:a05:6000:2dc9:b0:3ec:ce37:3a6a with SMTP id ffacd0b85a97d-40e4458ce65mr11243196f8f.22.1759034960758;
-        Sat, 27 Sep 2025 21:49:20 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::302c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb8811946sm13119628f8f.18.2025.09.27.21.49.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 27 Sep 2025 21:49:20 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com
-Cc: ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	npache@redhat.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	usamaarif642@gmail.com,
-	yuzhao@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ioworker0@gmail.com,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping zero-filled mTHP subpage to shared zeropage
-Date: Sun, 28 Sep 2025 12:48:55 +0800
-Message-ID: <20250928044855.76359-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1759037665; c=relaxed/simple;
+	bh=xakyuO/1hDdekWWshDWBVaa367ilvRNGjQcMO4Ul1w4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fFrDIhYR7OTSkJO4GIvumcC8YWDek6CtVfEgmXbQkqKi7qtrr41TGkB6FocIPazhdO/HUSMDQIdgzG7AcBab4VD7GgLDtkpc8WN492lts0hRPMM3sGal3VaWtFZGsPntPQfFU8RyWhseQMWWBAlp0NETY5sXuZgoAUA4bdpRdgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eyCOHFjT; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759037664; x=1790573664;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xakyuO/1hDdekWWshDWBVaa367ilvRNGjQcMO4Ul1w4=;
+  b=eyCOHFjTgQZszUxf+5Zp/BWXDekvvNwkd1/iqtfz9yvuqbpbbkcyfFbr
+   qHPs6Ib0IaLNf83sDDtr1O94pkQf2JfLEHEXuX3IAnJwlSfuou5QUkGzE
+   ArSUmajt3ypYScxW77gXUZCy1pQK2+b9H8lH/SLdCjof0JAQiTfgzFLg3
+   O6bAVk01qSZxzjhCjmNmICB5OO0mV0G6pKwxyht8C4TN3FTWAf+2rwKho
+   nQ+iYh0Xlw28C8je2zChD3+ioHRh+/M/Ki+BqlVBr9gSgV8ANdUzfo+68
+   xXrpq1Gyz7t41eif1TOR632fNgnrOGVDg9NpzsdDaWLkftswxOXa5dShs
+   A==;
+X-CSE-ConnectionGUID: UNr7sfgQRlOCWE2Tk7TGBw==
+X-CSE-MsgGUID: 5ouhAP31TUKvG5mXZAVvPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="71561433"
+X-IronPort-AV: E=Sophos;i="6.18,298,1751266800"; 
+   d="scan'208";a="71561433"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2025 22:34:23 -0700
+X-CSE-ConnectionGUID: PVChTyzrSFauydPISQQPkA==
+X-CSE-MsgGUID: v9k4s4GlTayhLAk+KsPTXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,298,1751266800"; 
+   d="scan'208";a="215083808"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 27 Sep 2025 22:34:21 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v2k37-0007a7-1O;
+	Sun, 28 Sep 2025 05:34:17 +0000
+Date: Sun, 28 Sep 2025 13:34:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ma Ke <make24@iscas.ac.cn>, syniurge@gmail.com,
+	shyam-sundar.s-k@amd.com, andi.shyti@kernel.org, wsa@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] i2c: fix reference leak in MP2 PCI device
+Message-ID: <202509281317.3OLDoUnB-lkp@intel.com>
+References: <20250927105729.19164-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250927105729.19164-1-make24@iscas.ac.cn>
 
-From: Lance Yang <lance.yang@linux.dev>
+Hi Ma,
 
-When splitting an mTHP and replacing a zero-filled subpage with the shared
-zeropage, try_to_map_unused_to_zeropage() currently drops the soft-dirty
-bit.
+kernel test robot noticed the following build errors:
 
-For userspace tools like CRIU, which rely on the soft-dirty mechanism for
-incremental snapshots, losing this bit means modified pages are missed,
-leading to inconsistent memory state after restore.
+[auto build test ERROR on andi-shyti/i2c/i2c-host]
+[also build test ERROR on linus/master v6.17-rc7 next-20250926]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Preserve the soft-dirty bit from the old PTE when creating the zeropage
-mapping to ensure modified pages are correctly tracked.
+url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Ke/i2c-fix-reference-leak-in-MP2-PCI-device/20250927-190047
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git i2c/i2c-host
+patch link:    https://lore.kernel.org/r/20250927105729.19164-1-make24%40iscas.ac.cn
+patch subject: [PATCH] i2c: fix reference leak in MP2 PCI device
+config: i386-randconfig-011-20250928 (https://download.01.org/0day-ci/archive/20250928/202509281317.3OLDoUnB-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250928/202509281317.3OLDoUnB-lkp@intel.com/reproduce)
 
-Cc: <stable@vger.kernel.org>
-Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- mm/migrate.c | 4 ++++
- 1 file changed, 4 insertions(+)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509281317.3OLDoUnB-lkp@intel.com/
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index ce83c2c3c287..bf364ba07a3f 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -322,6 +322,10 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 
- 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
- 					pvmw->vma->vm_page_prot));
-+
-+	if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
-+		newpte = pte_mksoft_dirty(newpte);
-+
- 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
- 
- 	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+All errors (new ones prefixed by >>):
+
+>> drivers/i2c/busses/i2c-amd-mp2-pci.c:467:2: error: use of undeclared identifier 'mp2_dev'
+     467 |         mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
+         |         ^
+   drivers/i2c/busses/i2c-amd-mp2-pci.c:469:9: error: use of undeclared identifier 'mp2_dev'; did you mean 'pci_dev'?
+     469 |         return mp2_dev;
+         |                ^~~~~~~
+         |                pci_dev
+   drivers/i2c/busses/i2c-amd-mp2-pci.c:460:18: note: 'pci_dev' declared here
+     460 |         struct pci_dev *pci_dev;
+         |                         ^
+>> drivers/i2c/busses/i2c-amd-mp2-pci.c:469:9: error: incompatible pointer types returning 'struct pci_dev *' from a function with result type 'struct amd_mp2_dev *' [-Werror,-Wincompatible-pointer-types]
+     469 |         return mp2_dev;
+         |                ^~~~~~~
+   3 errors generated.
+
+
+vim +/mp2_dev +467 drivers/i2c/busses/i2c-amd-mp2-pci.c
+
+   456	
+   457	struct amd_mp2_dev *amd_mp2_find_device(void)
+   458	{
+   459		struct device *dev;
+   460		struct pci_dev *pci_dev;
+   461	
+   462		dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
+   463		if (!dev)
+   464			return NULL;
+   465	
+   466		pci_dev = to_pci_dev(dev);
+ > 467		mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
+   468		put_device(dev);
+ > 469		return mp2_dev;
+   470	}
+   471	EXPORT_SYMBOL_GPL(amd_mp2_find_device);
+   472	
+
 -- 
-2.49.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
