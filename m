@@ -1,260 +1,179 @@
-Return-Path: <stable+bounces-181882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D44BA901B
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:27:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE3CBA9057
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4083B59F8
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 11:27:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A22561896E47
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 11:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA462FFFBD;
-	Mon, 29 Sep 2025 11:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C103009E0;
+	Mon, 29 Sep 2025 11:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgx74hro"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VspuXG7W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D340824BD
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 11:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D09C3002DB
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 11:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759145236; cv=none; b=DL/6ivQV4x0DIfAz16uj+pkg9KybdDQlzCB2vPrMzYysXAJOnA0y1oVF2fCWtOpXQhagJ299u8WdzJZ2wsuKBLnAsYNsS4fzoMe61f4WdJnvXmlOhOUFDAQbJV70InqW9ghmFphWd2zFieOipL6BFjdJZwpbd40wu/VtfirYbZw=
+	t=1759145411; cv=none; b=ovXmjR0PUwmb/a7FNbKKQm6PXAlbLvv0QpZ5UMRFntjkTQYJDh8aDVJDrLzgjXJqWp+KJafn2uPSLaI/hjZtVo+6nI223hIz04i9kEZ5nXg1yOeJoR12dc51ot2hrB7WGqtp6312XWBRUAEjXxws/OHBa6HB8h/Rl2F2dm1o2Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759145236; c=relaxed/simple;
-	bh=8pavOdlSdoWSzXM5GlVNYXAVXLvPArPYUqPuG6kagJc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d0YAoTnH4fImF5KXCqVAjHxK2/YNmEdtomZ2Ka9vOjGD5CiwSGxYeLSQJi62VOictK9JHnD/4t/wMcTPiqd6NqKw1pAjcvC0yS59VKukkl9Rk4JlyvqmGdMp1AANZ1L6ZD3aCJS1akD4k4lVwEPE8yryFM2T0EeyoggeTuSYfOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgx74hro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3874C4CEF7;
-	Mon, 29 Sep 2025 11:27:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759145236;
-	bh=8pavOdlSdoWSzXM5GlVNYXAVXLvPArPYUqPuG6kagJc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=vgx74hroNlcKrW3VMWXo1mcmdRVQv9sBvmz4r7TLyO2U+W+/w7pmm3uiGanwY+yUF
-	 o98N68R7BXakw9PV2mus+J7LlLmhW1CyfHHb8ThgUMBuNTTWnZMRAJIvuic4JwFrfN
-	 Z2Ih+dES3wQoI9dfx+w8ZRPOeTAcY4vWC5YeqxFE=
-Subject: FAILED: patch "[PATCH] i40e: improve VF MAC filters accounting" failed to apply to 5.4-stable tree
-To: lukasz.czapnik@intel.com,aleksandr.loktionov@intel.com,anthony.l.nguyen@intel.com,horms@kernel.org,przemyslaw.kitszel@intel.com,rafal.romanowski@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Sep 2025 13:27:03 +0200
-Message-ID: <2025092903-gambling-usable-65ed@gregkh>
+	s=arc-20240116; t=1759145411; c=relaxed/simple;
+	bh=yxtmtgVSXJ3/407wjpHpicmQ7ibkOEIpz8wrKxutlf4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=R6wg5uS3gP9hR44dIfxZfmSUtPZYfUr7YnYgYY+E6LSn/Ov2WAoWmnwmHMMczVaQRgenWJppPDWZEE85NvEAsz9DBEfDg9a3mWDsuM7buv5jIGOMapxBvpMrRKUmqFu6kT7lGdgo1NHSd33DA63LnspQmi2N/0pHefwRbD+PENY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VspuXG7W; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <1f66374a-a901-49e7-95c8-96b1e5a5f22d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759145405;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p6doKxVQhLyaOgKfPSYUAjAC40Y3b75Sc0EmJyThepY=;
+	b=VspuXG7WCTzVKmR7dczYvue+Qlr+fKoTDyt/XzVx1ofqqz4QGx7R83d8r70CwfFWVOBMHl
+	bS+sGab7yy4hmZ7+JyOTildW6sPMTp0VdAT+tbawIuqKNj4VExoCO4o33cPTjNpnNWQvIk
+	rSXGmENBlSnQgKQnP4qfubfDjYKnau4=
+Date: Mon, 29 Sep 2025 19:29:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 1/1] mm/rmap: fix soft-dirty bit loss when remapping
+ zero-filled mTHP subpage to shared zeropage
+To: David Hildenbrand <david@redhat.com>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
+ yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ioworker0@gmail.com, stable@vger.kernel.org, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <20250928044855.76359-1-lance.yang@linux.dev>
+ <b19b4880-169f-4946-8c50-e82f699bb93b@redhat.com>
+ <900d0314-8e9a-4779-a058-9bb3cc8840b8@linux.dev>
+Content-Language: en-US
+In-Reply-To: <900d0314-8e9a-4779-a058-9bb3cc8840b8@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-
-
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x b99dd77076bd3fddac6f7f1cbfa081c38fde17f5
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092903-gambling-usable-65ed@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
+X-Migadu-Flow: FLOW_OUT
 
 
 
-thanks,
+On 2025/9/29 18:29, Lance Yang wrote:
+> 
+> 
+> On 2025/9/29 15:25, David Hildenbrand wrote:
+>> On 28.09.25 06:48, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
+>>>
+>>> When splitting an mTHP and replacing a zero-filled subpage with the 
+>>> shared
+>>> zeropage, try_to_map_unused_to_zeropage() currently drops the soft-dirty
+>>> bit.
+>>>
+>>> For userspace tools like CRIU, which rely on the soft-dirty mechanism 
+>>> for
+>>> incremental snapshots, losing this bit means modified pages are missed,
+>>> leading to inconsistent memory state after restore.
+>>>
+>>> Preserve the soft-dirty bit from the old PTE when creating the zeropage
+>>> mapping to ensure modified pages are correctly tracked.
+>>>
+>>> Cc: <stable@vger.kernel.org>
+>>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage 
+>>> when splitting isolated thp")
+>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>> ---
+>>>   mm/migrate.c | 4 ++++
+>>>   1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>> index ce83c2c3c287..bf364ba07a3f 100644
+>>> --- a/mm/migrate.c
+>>> +++ b/mm/migrate.c
+>>> @@ -322,6 +322,10 @@ static bool try_to_map_unused_to_zeropage(struct 
+>>> page_vma_mapped_walk *pvmw,
+>>>       newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>>>                       pvmw->vma->vm_page_prot));
+>>> +
+>>> +    if (pte_swp_soft_dirty(ptep_get(pvmw->pte)))
+>>> +        newpte = pte_mksoft_dirty(newpte);
+>>> +
+>>>       set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+>>>       dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+>>
+>> It's interesting that there isn't a single occurrence of the stof- 
+>> dirty flag in khugepaged code. I guess it all works because we do the
+>>
+>>      _pmd = maybe_pmd_mkwrite(pmd_mkdirty(_pmd), vma);
+>>
+>> and the pmd_mkdirty() will imply marking it soft-dirty.
+>>
+>> Now to the problem at hand: I don't think this is particularly 
+>> problematic in the common case: if the page is zero, it likely was 
+>> never written to (that's what the unerused shrinker is targeted at), 
+>> so the soft-dirty setting on the PMD is actually just an over- 
+>> indication for this page.
+> 
+> Cool. Thanks for the insight! Good to know that ;)
+> 
+>>
+>> For example, when we just install the shared zeropage directly in 
+>> do_anonymous_page(), we obviously also don't set it dirty/soft-dirty.
+>>
+>> Now, one could argue that if the content was changed from non-zero to 
+>> zero, it ould actually be soft-dirty.
+> 
+> Exactly. A false negative could be a problem for the userspace tools, IMO.
+> 
+>>
+>> Long-story short: I don't think this matters much in practice, but 
+>> it's an easy fix.
+>>
+>> As said by dev, please avoid double ptep_get() if possible.
+> 
+> Sure, will do. I'll refactor it in the next version.
+> 
+>>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+> 
+> Thanks!
+> 
+>>
+>>
+>> @Lance, can you double-check that the uffd-wp bit is handled 
+>> correctly? I strongly assume we lose that as well here.
 
-greg k-h
+Yes, the uffd-wp bit was indeed being dropped, but ...
 
------------------- original commit in Linus's tree ------------------
+The shared zeropage is read-only, which triggers a fault. IIUC,
+The kernel then falls back to checking the VM_UFFD_WP flag on
+the VMA and correctly generates a uffd-wp event, masking the
+fact that the uffd-wp bit on the PTE was lost.
 
-From b99dd77076bd3fddac6f7f1cbfa081c38fde17f5 Mon Sep 17 00:00:00 2001
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Date: Wed, 13 Aug 2025 12:45:18 +0200
-Subject: [PATCH] i40e: improve VF MAC filters accounting
+IMHO, explicitly preserving the uffd-wp bit on the PTE is still
+necessary, since we're not sure if losing that bit is safe in
+all cases :)
 
-When adding new VM MAC, driver checks only *active* filters in
-vsi->mac_filter_hash. Each MAC, even in non-active state is using resources.
-
-To determine number of MACs VM uses, count VSI filters in *any* state.
-
-Add i40e_count_all_filters() to simply count all filters, and rename
-i40e_count_filters() to i40e_count_active_filters() to avoid ambiguity.
-
-Fixes: cfb1d572c986 ("i40e: Add ensurance of MacVlan resources for every trusted VF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 49aa4497efce..801a57a925da 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1278,7 +1278,8 @@ struct i40e_mac_filter *i40e_add_mac_filter(struct i40e_vsi *vsi,
- 					    const u8 *macaddr);
- int i40e_del_mac_filter(struct i40e_vsi *vsi, const u8 *macaddr);
- bool i40e_is_vsi_in_vlan(struct i40e_vsi *vsi);
--int i40e_count_filters(struct i40e_vsi *vsi);
-+int i40e_count_all_filters(struct i40e_vsi *vsi);
-+int i40e_count_active_filters(struct i40e_vsi *vsi);
- struct i40e_mac_filter *i40e_find_mac(struct i40e_vsi *vsi, const u8 *macaddr);
- void i40e_vlan_stripping_enable(struct i40e_vsi *vsi);
- static inline bool i40e_is_sw_dcb(struct i40e_pf *pf)
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index b14019d44b58..529d5501baac 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1243,12 +1243,30 @@ void i40e_update_stats(struct i40e_vsi *vsi)
- }
- 
- /**
-- * i40e_count_filters - counts VSI mac filters
-+ * i40e_count_all_filters - counts VSI MAC filters
-  * @vsi: the VSI to be searched
-  *
-- * Returns count of mac filters
-- **/
--int i40e_count_filters(struct i40e_vsi *vsi)
-+ * Return: count of MAC filters in any state.
-+ */
-+int i40e_count_all_filters(struct i40e_vsi *vsi)
-+{
-+	struct i40e_mac_filter *f;
-+	struct hlist_node *h;
-+	int bkt, cnt = 0;
-+
-+	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
-+		cnt++;
-+
-+	return cnt;
-+}
-+
-+/**
-+ * i40e_count_active_filters - counts VSI MAC filters
-+ * @vsi: the VSI to be searched
-+ *
-+ * Return: count of active MAC filters.
-+ */
-+int i40e_count_active_filters(struct i40e_vsi *vsi)
- {
- 	struct i40e_mac_filter *f;
- 	struct hlist_node *h;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index f9b2197f0942..081a4526a2f0 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2862,24 +2862,6 @@ static int i40e_vc_get_stats_msg(struct i40e_vf *vf, u8 *msg)
- 				      (u8 *)&stats, sizeof(stats));
- }
- 
--/**
-- * i40e_can_vf_change_mac
-- * @vf: pointer to the VF info
-- *
-- * Return true if the VF is allowed to change its MAC filters, false otherwise
-- */
--static bool i40e_can_vf_change_mac(struct i40e_vf *vf)
--{
--	/* If the VF MAC address has been set administratively (via the
--	 * ndo_set_vf_mac command), then deny permission to the VF to
--	 * add/delete unicast MAC addresses, unless the VF is trusted
--	 */
--	if (vf->pf_set_mac && !vf->trusted)
--		return false;
--
--	return true;
--}
--
- #define I40E_MAX_MACVLAN_PER_HW 3072
- #define I40E_MAX_MACVLAN_PER_PF(num_ports) (I40E_MAX_MACVLAN_PER_HW /	\
- 	(num_ports))
-@@ -2918,8 +2900,10 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
- 	struct i40e_pf *pf = vf->pf;
- 	struct i40e_vsi *vsi = pf->vsi[vf->lan_vsi_idx];
- 	struct i40e_hw *hw = &pf->hw;
--	int mac2add_cnt = 0;
--	int i;
-+	int i, mac_add_max, mac_add_cnt = 0;
-+	bool vf_trusted;
-+
-+	vf_trusted = test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
- 
- 	for (i = 0; i < al->num_elements; i++) {
- 		struct i40e_mac_filter *f;
-@@ -2939,9 +2923,8 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
- 		 * The VF may request to set the MAC address filter already
- 		 * assigned to it so do not return an error in that case.
- 		 */
--		if (!i40e_can_vf_change_mac(vf) &&
--		    !is_multicast_ether_addr(addr) &&
--		    !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
-+		if (!vf_trusted && !is_multicast_ether_addr(addr) &&
-+		    vf->pf_set_mac && !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
- 			dev_err(&pf->pdev->dev,
- 				"VF attempting to override administratively set MAC address, bring down and up the VF interface to resume normal operation\n");
- 			return -EPERM;
-@@ -2950,29 +2933,33 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
- 		/*count filters that really will be added*/
- 		f = i40e_find_mac(vsi, addr);
- 		if (!f)
--			++mac2add_cnt;
-+			++mac_add_cnt;
- 	}
- 
- 	/* If this VF is not privileged, then we can't add more than a limited
--	 * number of addresses. Check to make sure that the additions do not
--	 * push us over the limit.
--	 */
--	if (!test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
--		if ((i40e_count_filters(vsi) + mac2add_cnt) >
--		    I40E_VC_MAX_MAC_ADDR_PER_VF) {
--			dev_err(&pf->pdev->dev,
--				"Cannot add more MAC addresses, VF is not trusted, switch the VF to trusted to add more functionality\n");
--			return -EPERM;
--		}
--	/* If this VF is trusted, it can use more resources than untrusted.
-+	 * number of addresses.
-+	 *
-+	 * If this VF is trusted, it can use more resources than untrusted.
- 	 * However to ensure that every trusted VF has appropriate number of
- 	 * resources, divide whole pool of resources per port and then across
- 	 * all VFs.
- 	 */
--	} else {
--		if ((i40e_count_filters(vsi) + mac2add_cnt) >
--		    I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs,
--						       hw->num_ports)) {
-+	if (!vf_trusted)
-+		mac_add_max = I40E_VC_MAX_MAC_ADDR_PER_VF;
-+	else
-+		mac_add_max = I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs, hw->num_ports);
-+
-+	/* VF can replace all its filters in one step, in this case mac_add_max
-+	 * will be added as active and another mac_add_max will be in
-+	 * a to-be-removed state. Account for that.
-+	 */
-+	if ((i40e_count_active_filters(vsi) + mac_add_cnt) > mac_add_max ||
-+	    (i40e_count_all_filters(vsi) + mac_add_cnt) > 2 * mac_add_max) {
-+		if (!vf_trusted) {
-+			dev_err(&pf->pdev->dev,
-+				"Cannot add more MAC addresses, VF is not trusted, switch the VF to trusted to add more functionality\n");
-+			return -EPERM;
-+		} else {
- 			dev_err(&pf->pdev->dev,
- 				"Cannot add more MAC addresses, trusted VF exhausted it's resources\n");
- 			return -EPERM;
+> 
+> Certainly, I'll check the uffd-wp bit as well and get back to you soon.
+> 
+> Cheers,
+> Lance
 
 
