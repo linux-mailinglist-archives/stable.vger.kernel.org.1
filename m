@@ -1,162 +1,119 @@
-Return-Path: <stable+bounces-181849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEB1BA7669
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 20:52:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6133BA7A30
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 02:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD1D3B8542
-	for <lists+stable@lfdr.de>; Sun, 28 Sep 2025 18:52:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D2887A8DD3
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 00:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1DC25A338;
-	Sun, 28 Sep 2025 18:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vIc+kwes"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D6713A265;
+	Mon, 29 Sep 2025 00:45:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cosmicgizmosystems.com (cosmicgizmosystems.com [63.249.102.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A53E2594B7;
-	Sun, 28 Sep 2025 18:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B643A1DB;
+	Mon, 29 Sep 2025 00:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.249.102.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759085557; cv=none; b=D5pijC2iGgk0W3jwU3+ZdKVMpu/QjxGgU/TlPi7YMsS19GbL1TJCY2HdsfNJnSimE2W7H1s5t9mNieXQdLZ23yigrLVRvGOkOKXz35HAPCFatqfnpcBtWX0XRe3KiAVfvTIJUBqzWJsSEH+KuXGcZ/yCtg0VgBcfYKKp6wf6Tok=
+	t=1759106741; cv=none; b=MCN1LwdBRlF4NymOupe0Saa8A/kiIY5xhlEMkPc2lPmZSAZe4CRAfnaplgrteEZtBxL+mqhezIJwtesznN3HRmHo1gD8LhhO+OXQ3/WRC5dKB5iGO6KXtSWqJdaMmq4qyucoOKmmq7e1ROBDLNmAltJRIwjL8B1GCuSOL7asfDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759085557; c=relaxed/simple;
-	bh=fSr5Uy1i/0w2EBoAsVB4ctteU7EBxTeivJxTvYvNguU=;
-	h=Date:To:From:Subject:Message-Id; b=SIfkrka4DXEIM4nNtQfW9Wk/d2Fr19syev1t1kWXFUECCDRmMLasVeB/R++70ff/roryshr8XVQuiFeILqyrgataKmFj/pwYZnvoLrt3Zw4BHyjMTMLwC3rUKTBcfimbTsdfVWttGSZeX2SGnE0kgURma5qhvHSsElvnRnJP6/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vIc+kwes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C69C4CEF0;
-	Sun, 28 Sep 2025 18:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759085557;
-	bh=fSr5Uy1i/0w2EBoAsVB4ctteU7EBxTeivJxTvYvNguU=;
-	h=Date:To:From:Subject:From;
-	b=vIc+kwes4OoLfUkNlclSWx+HLdEeLr34Z1C4VpOtrgR/ubmqv7Oh6olzHh2GQRU3/
-	 QodvtZmkH/vig0wGr70y5jHM6bH6tEcTGT43xOn/X6FKC9hGw3t/UKiOMd/cZixmNh
-	 XHjUMzEGKizB0Gy417dN/O6gZ/uXQw0ySnYLWaU4=
-Date: Sun, 28 Sep 2025 11:52:36 -0700
-To: mm-commits@vger.kernel.org,zhangpeng.00@bytedance.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kasong@tencent.com,david@redhat.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,charan.kalla@oss.qualcomm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch removed from -mm tree
-Message-Id: <20250928185236.E5C69C4CEF0@smtp.kernel.org>
+	s=arc-20240116; t=1759106741; c=relaxed/simple;
+	bh=r0c7P7hrpmBxhUw6eaYfyfgvDlJGtgWC04dcqv6jzdQ=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=faXMqLjZ8D8SQ7lEne9uk0rc63ju/JdDFs2FwrAMnQCa+3RMA+Kgo4wNFuf2G92JLprUsQ9ibECuQf+OM77hPXzdmbfIKo8fPvd6afXzrMIVzcJgtrVoscOVkz5HjcAfvw8OnWOdhYSSswh2QGg93LcU9jjvkc87SUhh1+rP0SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com; spf=pass smtp.mailfrom=cosmicgizmosystems.com; arc=none smtp.client-ip=63.249.102.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cosmicgizmosystems.com
+Received: from [10.0.0.100] (c-71-193-224-155.hsd1.wa.comcast.net [71.193.224.155])
+	by host11.cruzio.com (Postfix) with ESMTPSA id 389CA1D4195A;
+	Sun, 28 Sep 2025 17:39:07 -0700 (PDT)
+Message-ID: <5101f30a-4f49-4480-9453-1984f6c5a086@cosmicgizmosystems.com>
+Date: Sun, 28 Sep 2025 17:39:05 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Linux Hid <linuxhid@cosmicgizmosystems.com>
+Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
+ SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
+ Composite Device
+To: Staffan Melin <staffan.melin@oscillator.se>,
+ zhangheng <zhangheng@kylinos.cn>
+Cc: Salvatore Bonaccorso <carnil@debian.org>, Jiri Kosina <jkosina@suse.com>,
+ Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org, 1114557@bugs.debian.org
+References: <aL2gYJaXoB6p_oyM@eldamar.lan>
+ <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
+ <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
+ <aMUxHZF-7p7--1qS@eldamar.lan> <aMUxg6FLqDetwiGu@eldamar.lan>
+ <f08669ec112d6ab2f62e35c0c96d1f06@oscillator.se>
+ <94520aac-2a68-40d2-b188-80f9e361d6de@kylinos.cn>
+ <735c20da-c052-4528-ad91-185a835ca40c@cosmicgizmosystems.com>
+ <54b4b55c-ef29-40ae-a576-0c0b35ea9625@kylinos.cn>
+ <3c299b65351c489fea95ec8b93518b6b@oscillator.se>
+ <01ce8d55-6054-4efa-bed5-ce4c6c6bc0e6@kylinos.cn>
+ <11f1363dcdec98f4275e4df3145e4f24@oscillator.se>
+Content-Language: en-US
+In-Reply-To: <11f1363dcdec98f4275e4df3145e4f24@oscillator.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+All,
 
-The quilt patch titled
-     Subject: mm: swap: check for stable address space before operating on the VMA
-has been removed from the -mm tree.  Its filename was
-     mm-swap-check-for-stable-address-space-before-operating-on-the-vma.patch
+It's good a working solution has been found. I'll comment separately on 
+the patch submission.
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I did some digging to find out why there were multiple devices in the 
+wild with the same VID:PID.
 
-------------------------------------------------------
-From: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Subject: mm: swap: check for stable address space before operating on the VMA
-Date: Wed, 24 Sep 2025 23:41:38 +0530
+It seems that Jieli does have a valid USB VID.
 
-It is possible to hit a zero entry while traversing the vmas in unuse_mm()
-called from swapoff path and accessing it causes the OOPS:
+Zhuhai Jieli Technology Co., LTD owns VID 13908 (0x3654)
 
-Unable to handle kernel NULL pointer dereference at virtual address
-0000000000000446--> Loading the memory from offset 0x40 on the
-XA_ZERO_ENTRY as address.
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
+However, in one of their public SDKs they populate the default device 
+descriptor with:
 
-The issue is manifested from the below race between the fork() on a
-process and swapoff:
-fork(dup_mmap())			swapoff(unuse_mm)
----------------                         -----------------
-1) Identical mtree is built using
-   __mt_dup().
+    'J', 'L',     // idVendor: 0x4a4c - JL    (actually 0x4c4a)
+    0x55, 0x41,     // idProduct: chip id     ('U', 'A' 0x4155)
 
-2) copy_pte_range()-->
-	copy_nonpresent_pte():
-       The dst mm is added into the
-    mmlist to be visible to the
-    swapoff operation.
+So anyone developing a device using that chip's SDK who doesn't change 
+the default VID:PID will create a device with 4c4a:4155 VID:PID.
 
-3) Fatal signal is sent to the parent
-process(which is the current during the
-fork) thus skip the duplication of the
-vmas and mark the vma range with
-XA_ZERO_ENTRY as a marker for this process
-that helps during exit_mmap().
+In other SDKs I see a different PID but the same 0x4c4a VID
 
-				     4) swapoff is tried on the
-					'mm' added to the 'mmlist' as
-					part of the 2.
+    '5', '4',     // idProduct: chip id       (0x3435)
 
-				     5) unuse_mm(), that iterates
-					through the vma's of this 'mm'
-					will hit the non-NULL zero entry
-					and operating on this zero entry
-					as a vma is resulting into the
-					oops.
+So there are probably multiple devices in the wild with 4c4a:3435 
+VID:PIDs as well.
 
-The proper fix would be around not exposing this partially-valid tree to
-others when droping the mmap lock, which is being solved with [1].  A
-simpler solution would be checking for MMF_UNSTABLE, as it is set if
-mm_struct is not fully initialized in dup_mmap().
+Here's a link to the 4c4a:4155 SDK if you'd like to take a look.
 
-Thanks to Liam/Lorenzo/David for all the suggestions in fixing this
-issue.
+https://github.com/Jieli-Tech/AW30N/blob/main/sdk/apps/app/bsp/common/usb/device/descriptor.c#L31
 
-Link: https://lkml.kernel.org/r/20250924181138.1762750-1-charan.kalla@oss.qualcomm.com
-Link: https://lore.kernel.org/all/20250815191031.3769540-1-Liam.Howlett@oracle.com/ [1]
-Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
-Signed-off-by: Charan Teja Kalla <charan.kalla@oss.qualcomm.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+Regards,
+Terry
 
- mm/swapfile.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/mm/swapfile.c~mm-swap-check-for-stable-address-space-before-operating-on-the-vma
-+++ a/mm/swapfile.c
-@@ -2389,6 +2389,8 @@ static int unuse_mm(struct mm_struct *mm
- 	VMA_ITERATOR(vmi, mm, 0);
- 
- 	mmap_read_lock(mm);
-+	if (check_stable_address_space(mm))
-+		goto unlock;
- 	for_each_vma(vmi, vma) {
- 		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type);
-@@ -2398,6 +2400,7 @@ static int unuse_mm(struct mm_struct *mm
- 
- 		cond_resched();
- 	}
-+unlock:
- 	mmap_read_unlock(mm);
- 	return ret;
- }
-_
-
-Patches currently in -mm which might be from charan.kalla@oss.qualcomm.com are
-
-
+On 9/22/2025 11:33 AM, Staffan Melin wrote:
+> Thank you,
+> 
+> I can confirm that this patch fixes the touchscreen issue on my GPD DUO.
+> 
+> Tested-by: staffan.melin@oscillator.se
+> 
+> Thank you for your work!
+> 
+> Staffan
+> 
+> On 2025-09-22 11:21, zhangheng wrote:
+>> Please help test this patch, I will push it to the kernel community. 
+>> Currently, the microphone device is functioning normally
 
