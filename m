@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-181900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A9FBA945D
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:04:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D27BA9463
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F1C53C7C2D
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:04:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 971591920CCE
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12F430505E;
-	Mon, 29 Sep 2025 13:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58692FF660;
+	Mon, 29 Sep 2025 13:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK2G2f+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Emd1VW+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA0F26D4DE
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 13:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6245A26D4DE
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 13:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759151037; cv=none; b=LWDguivxX8PvyR+jmTG27yNHXtO4j0sJdTTnKmtLWYPdDWGrQBrxHuDiLsq33oyHHbHpgJe1JhWgvEgNhZ+FjtUCsf2z5LuRuzAzJdqd+JIk9ZjBZ6D6aJQklk9I9HAKHr62lfK+OtfRinFGysX3+EdhLbrlFOMYarjnalAbM/A=
+	t=1759151059; cv=none; b=MsuApO5bMcH8TNHaoaZiE8QrDrR8kQ8TyX/jh1s/lnoVPb6Vl3XbKNEggipVcMoNC8fsS8AcsFKoZ37A1zH3gQmTtovd+ghlU5qWNMsPjpf8TrD/9KElSCa9wrCdaR2c1gpZ9lycmZusALk8PYe26XzFAeD6MN+Y3yBrUeDsx48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759151037; c=relaxed/simple;
-	bh=XkTo+45Nt7kYLWFtVsrIgCYX9KGtvgC9akD3jOIrOfQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FK4Xut8xpsNSpuGHIkrK3hcIshG3NqyX9Jes2+JrJ9xnCYJgGx1lxhvLqrLaX4lP0jOHonfpVkDzYENLbaI6fZMAxOLRJuxJWtDR2ubQT3cVwGk9yUGZ8YhvliorQC3GepEXEdnWCYU6vWLcD+3Q/8Clsb7y+iB1ASu+i5MBALk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK2G2f+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C704C4CEF4;
-	Mon, 29 Sep 2025 13:03:56 +0000 (UTC)
+	s=arc-20240116; t=1759151059; c=relaxed/simple;
+	bh=aU/YX6SadAvAUYrbXr6Mf5VO+fS/gzgkrLvZJYNSwVY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ihdJRJuulMoLdw6KWUwcyKPonxubIQweFAvA5Zzpt5J2z1iZ6Hk/UURU7MrPBrR5PnfC6qRr9EkEVbvGzjylBEpOSo7mIsTXeVg5mbGLR6lLusoulot59PIaXM2ACVNXcC/wIvz4YlwevlqhS62KhHvdUpY0SdE1U/Yd82enZfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Emd1VW+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD09C4CEF4;
+	Mon, 29 Sep 2025 13:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759151037;
-	bh=XkTo+45Nt7kYLWFtVsrIgCYX9KGtvgC9akD3jOIrOfQ=;
+	s=korg; t=1759151059;
+	bh=aU/YX6SadAvAUYrbXr6Mf5VO+fS/gzgkrLvZJYNSwVY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hK2G2f+Tub9x0pb2KJuZVB5ESLXx7X6FZPoP1VaSHhM6F13zb+8pFucyVEa3tT9N/
-	 aZ1i4rOTGcAuiofFFyGPUxkVJGsrc/NoOfZZYMSq0yWs0S+L1r5CFrWU5JmeqgpS9s
-	 0iuJC7+zDM1nLsaDz4j++yF9wb1JEpUHyrkFzTQE=
-Subject: FAILED: patch "[PATCH] kmsan: fix out-of-bounds access to shadow memory" failed to apply to 6.1-stable tree
-To: ebiggers@kernel.org,akpm@linux-foundation.org,dvyukov@google.com,elver@google.com,glider@google.com,stable@vger.kernel.org
+	b=Emd1VW+IJVFv/g7pszQcFaFNJ5Qj2ZdGfA/u83z+kSfHtoTTDjsdTbZG8lxku/5n5
+	 IwzFbGRV8rGwk0h3bV52Q0moaJXdFrU6+aUSGIXxfIDB388rGIuA0wzZ8oPHmsdVD9
+	 T8cUJzAKC6Yn1HyC2il4M+BRzPWtgvlOfKSEEZUg=
+Subject: FAILED: patch "[PATCH] spi: cadence-qspi: defer runtime support on socfpga if reset" failed to apply to 6.12-stable tree
+To: khairul.anuar.romli@altera.com,adrianhoyin.ng@altera.com,broonie@kernel.org,matthew.gerlach@altera.com,nirav.rabara@altera.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Sep 2025 15:03:54 +0200
-Message-ID: <2025092954-dance-oat-7fae@gregkh>
+Date: Mon, 29 Sep 2025 15:04:13 +0200
+Message-ID: <2025092913-unissued-panoramic-e22c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 85e1ff61060a765d91ee62dc5606d4d547d9d105
+git cherry-pick -x 30dbc1c8d50f13c1581b49abe46fe89f393eacbf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092954-dance-oat-7fae@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092913-unissued-panoramic-e22c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,128 +77,152 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 85e1ff61060a765d91ee62dc5606d4d547d9d105 Mon Sep 17 00:00:00 2001
-From: Eric Biggers <ebiggers@kernel.org>
-Date: Thu, 11 Sep 2025 12:58:58 -0700
-Subject: [PATCH] kmsan: fix out-of-bounds access to shadow memory
+From 30dbc1c8d50f13c1581b49abe46fe89f393eacbf Mon Sep 17 00:00:00 2001
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Date: Wed, 10 Sep 2025 16:06:32 +0800
+Subject: [PATCH] spi: cadence-qspi: defer runtime support on socfpga if reset
+ bit is enabled
 
-Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-kmsan_internal_set_shadow_origin():
+Enabling runtime PM allows the kernel to gate clocks and power to idle
+devices. On SoCFPGA, a warm reset does not fully reinitialize these
+domains.This leaves devices suspended and powered down, preventing U-Boot
+or the kernel from reusing them after a warm reset, which breaks the boot
+process.
 
-    BUG: unable to handle page fault for address: ffffbc3840291000
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
-    Oops: 0000 [#1] SMP NOPTI
-    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
-    Tainted: [N]=TEST
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
-    [...]
-    Call Trace:
-    <TASK>
-    __msan_memset+0xee/0x1a0
-    sha224_final+0x9e/0x350
-    test_hash_buffer_overruns+0x46f/0x5f0
-    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
-    ? __pfx_test_hash_buffer_overruns+0x10/0x10
-    kunit_try_run_case+0x198/0xa00
+Fixes: 4892b374c9b7 ("mtd: spi-nor: cadence-quadspi: Add runtime PM support")
+CC: stable@vger.kernel.org # 6.12+
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Signed-off-by: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
+Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Link: https://patch.msgid.link/910aad68ba5d948919a7b90fa85a2fadb687229b.1757491372.git.khairul.anuar.romli@altera.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-This occurs when memset() is called on a buffer that is not 4-byte aligned
-and extends to the end of a guard page, i.e.  the next page is unmapped.
-
-The bug is that the loop at the end of kmsan_internal_set_shadow_origin()
-accesses the wrong shadow memory bytes when the address is not 4-byte
-aligned.  Since each 4 bytes are associated with an origin, it rounds the
-address and size so that it can access all the origins that contain the
-buffer.  However, when it checks the corresponding shadow bytes for a
-particular origin, it incorrectly uses the original unrounded shadow
-address.  This results in reads from shadow memory beyond the end of the
-buffer's shadow memory, which crashes when that memory is not mapped.
-
-To fix this, correctly align the shadow address before accessing the 4
-shadow bytes corresponding to each origin.
-
-Link: https://lkml.kernel.org/r/20250911195858.394235-1-ebiggers@kernel.org
-Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Tested-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
-index 1ea711786c52..8bca7fece47f 100644
---- a/mm/kmsan/core.c
-+++ b/mm/kmsan/core.c
-@@ -195,7 +195,8 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 				      u32 origin, bool checked)
- {
- 	u64 address = (u64)addr;
--	u32 *shadow_start, *origin_start;
-+	void *shadow_start;
-+	u32 *aligned_shadow, *origin_start;
- 	size_t pad = 0;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 9bf823348cd3..d288e9d9c187 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -46,6 +46,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_CS_CNT_MAX);
+ #define CQSPI_DMA_SET_MASK		BIT(7)
+ #define CQSPI_SUPPORT_DEVICE_RESET	BIT(8)
+ #define CQSPI_DISABLE_STIG_MODE		BIT(9)
++#define CQSPI_DISABLE_RUNTIME_PM	BIT(10)
  
- 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
-@@ -214,9 +215,12 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 	}
- 	__memset(shadow_start, b, size);
+ /* Capabilities */
+ #define CQSPI_SUPPORTS_OCTAL		BIT(0)
+@@ -1468,14 +1469,17 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	int ret;
+ 	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct device *dev = &cqspi->pdev->dev;
++	const struct cqspi_driver_platdata *ddata = of_device_get_match_data(dev);
  
--	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+		aligned_shadow = shadow_start;
-+	} else {
- 		pad = address % KMSAN_ORIGIN_SIZE;
- 		address -= pad;
-+		aligned_shadow = shadow_start - pad;
- 		size += pad;
- 	}
- 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
-@@ -230,7 +234,7 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 	 * corresponding shadow slot is zero.
- 	 */
- 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
--		if (origin || !shadow_start[i])
-+		if (origin || !aligned_shadow[i])
- 			origin_start[i] = origin;
- 	}
- }
-diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
-index c6c5b2bbede0..902ec48b1e3e 100644
---- a/mm/kmsan/kmsan_test.c
-+++ b/mm/kmsan/kmsan_test.c
-@@ -556,6 +556,21 @@ DEFINE_TEST_MEMSETXX(16)
- DEFINE_TEST_MEMSETXX(32)
- DEFINE_TEST_MEMSETXX(64)
+ 	if (refcount_read(&cqspi->inflight_ops) == 0)
+ 		return -ENODEV;
  
-+/* Test case: ensure that KMSAN does not access shadow memory out of bounds. */
-+static void test_memset_on_guarded_buffer(struct kunit *test)
-+{
-+	void *buf = vmalloc(PAGE_SIZE);
-+
-+	kunit_info(test,
-+		   "memset() on ends of guarded buffer should not crash\n");
-+
-+	for (size_t size = 0; size <= 128; size++) {
-+		memset(buf, 0xff, size);
-+		memset(buf + PAGE_SIZE - size, 0xff, size);
+-	ret = pm_runtime_resume_and_get(dev);
+-	if (ret) {
+-		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
+-		return ret;
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		ret = pm_runtime_resume_and_get(dev);
++		if (ret) {
++			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
++			return ret;
++		}
+ 	}
+ 
+ 	if (!refcount_read(&cqspi->refcount))
+@@ -1491,7 +1495,8 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 
+ 	ret = cqspi_mem_process(mem, op);
+ 
+-	pm_runtime_put_autosuspend(dev);
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
++		pm_runtime_put_autosuspend(dev);
+ 
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+@@ -1985,11 +1990,12 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			goto probe_setup_failed;
+ 	}
+ 
+-	pm_runtime_enable(dev);
+-
+-	pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
+-	pm_runtime_use_autosuspend(dev);
+-	pm_runtime_get_noresume(dev);
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		pm_runtime_enable(dev);
++		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
++		pm_runtime_use_autosuspend(dev);
++		pm_runtime_get_noresume(dev);
 +	}
-+	vfree(buf);
-+}
-+
- static noinline void fibonacci(int *array, int size, int start)
+ 
+ 	ret = spi_register_controller(host);
+ 	if (ret) {
+@@ -1997,12 +2003,17 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		goto probe_setup_failed;
+ 	}
+ 
+-	pm_runtime_put_autosuspend(dev);
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		pm_runtime_put_autosuspend(dev);
++		pm_runtime_mark_last_busy(dev);
++		pm_runtime_put_autosuspend(dev);
++	}
+ 
+ 	return 0;
+ probe_setup_failed:
+ 	cqspi_controller_enable(cqspi, 0);
+-	pm_runtime_disable(dev);
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
++		pm_runtime_disable(dev);
+ probe_reset_failed:
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
+@@ -2013,7 +2024,11 @@ static int cqspi_probe(struct platform_device *pdev)
+ 
+ static void cqspi_remove(struct platform_device *pdev)
  {
- 	if (start < 2 || (start == size))
-@@ -677,6 +692,7 @@ static struct kunit_case kmsan_test_cases[] = {
- 	KUNIT_CASE(test_memset16),
- 	KUNIT_CASE(test_memset32),
- 	KUNIT_CASE(test_memset64),
-+	KUNIT_CASE(test_memset_on_guarded_buffer),
- 	KUNIT_CASE(test_long_origin_chain),
- 	KUNIT_CASE(test_stackdepot_roundtrip),
- 	KUNIT_CASE(test_unpoison_memory),
++	const struct cqspi_driver_platdata *ddata;
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
++	struct device *dev = &pdev->dev;
++
++	ddata = of_device_get_match_data(dev);
+ 
+ 	refcount_set(&cqspi->refcount, 0);
+ 
+@@ -2026,14 +2041,17 @@ static void cqspi_remove(struct platform_device *pdev)
+ 	if (cqspi->rx_chan)
+ 		dma_release_channel(cqspi->rx_chan);
+ 
+-	if (pm_runtime_get_sync(&pdev->dev) >= 0)
+-		clk_disable(cqspi->clk);
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
++		if (pm_runtime_get_sync(&pdev->dev) >= 0)
++			clk_disable(cqspi->clk);
+ 
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
+ 
+-	pm_runtime_put_sync(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		pm_runtime_put_sync(&pdev->dev);
++		pm_runtime_disable(&pdev->dev);
++	}
+ }
+ 
+ static int cqspi_runtime_suspend(struct device *dev)
+@@ -2112,7 +2130,8 @@ static const struct cqspi_driver_platdata socfpga_qspi = {
+ 	.quirks = CQSPI_DISABLE_DAC_MODE
+ 			| CQSPI_NO_SUPPORT_WR_COMPLETION
+ 			| CQSPI_SLOW_SRAM
+-			| CQSPI_DISABLE_STIG_MODE,
++			| CQSPI_DISABLE_STIG_MODE
++			| CQSPI_DISABLE_RUNTIME_PM,
+ };
+ 
+ static const struct cqspi_driver_platdata versal_ospi = {
 
 
