@@ -1,130 +1,168 @@
-Return-Path: <stable+bounces-181916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8AF7BA96CF
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:50:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A085BA9714
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63DFB3C8124
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:50:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E815A1C4BF3
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262CC3090CF;
-	Mon, 29 Sep 2025 13:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2923C308F2F;
+	Mon, 29 Sep 2025 13:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IR/w1Nh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hY2be1ap"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8312A2AD24;
-	Mon, 29 Sep 2025 13:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782C01A9FBD;
+	Mon, 29 Sep 2025 13:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759153800; cv=none; b=FfEpG40vNgmDbGbR1AiTpKYQoDXO7nmx14qTzejjhTUbCePZiD9vjkNaZPjRNE6N5pwzJTbJcCOfbuPmt6nTQn7tiurbV2cLoGikGtZkv1uzf1B6WD9z2IbrVBIfZccTOLluTYeeFuufuvejZFOVuiBGRezLgb0GOxUA9RQQwAk=
+	t=1759154174; cv=none; b=IrhZ6NSW9+eKfhnJJ6gmiSKA2cIJDiQUCV72mHgkxaRkOrzdXkvcunUYL7HoT/d/U4MfLdXO3pRbG2ERGhGkIJ7SX7CxH00Qd3xnmmZQerj240E7ZAJzXD1ZUk5nOVH6Glk2b5S/TD8haCqWJzMP5JFGH1KgPU/A5JKPD3bqhRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759153800; c=relaxed/simple;
-	bh=ZP+96JhjkkrBnIK+mwXVIYMy7g62X4hPExrb6o1Qe/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g6XKS7nPhbh950zA2K8+x3h3QFYuDWeVRV8F0IfpcurRSqF5Tw4M5WnX7Lgi84DBRf2e/znONUwjhAskkJZMmMaa6KDUgsRo1bplIRvNRbSTQ5rPJzNxg4a9175jjZ8Cvl/z2kDGZqrexwZKpY4zmRT5iI7SVLNhUY+6YrLOWEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IR/w1Nh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F31BC4CEF7;
-	Mon, 29 Sep 2025 13:49:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759153800;
-	bh=ZP+96JhjkkrBnIK+mwXVIYMy7g62X4hPExrb6o1Qe/s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2IR/w1NhD6rO3VZzjaHsa/G5y5Y6EFTRaRCQoBFOIMmzFRk3gM0W0Mf+I/1sje/zM
-	 6eTkAuMiRzcWzHrNhmk6po9GpoWWRMGPau/mhN/FLC8qEKMftJ9tX/aLdXfc1Agx/E
-	 GgRNIXRtdpmNbgceNNbtDpd4ehAmTPd7HqANSrhw=
-Date: Mon, 29 Sep 2025 15:49:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Eliav Farber <farbere@amazon.com>
-Cc: linux@armlinux.org.uk, richard@nod.at, anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-	tony.luck@intel.com, qiuxu.zhuo@intel.com, mchehab@kernel.org,
-	james.morse@arm.com, rric@kernel.org, harry.wentland@amd.com,
-	sunpeng.li@amd.com, Rodrigo.Siqueira@amd.com,
-	alexander.deucher@amd.com, christian.koenig@amd.com,
-	Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-	evan.quan@amd.com, james.qian.wang@arm.com, liviu.dudau@arm.com,
-	mihail.atanassov@arm.com, brian.starkey@arm.com,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, robdclark@gmail.com, quic_abhinavk@quicinc.com,
-	dmitry.baryshkov@linaro.org, sean@poorly.run, jdelvare@suse.com,
-	linux@roeck-us.net, linus.walleij@linaro.org,
-	dmitry.torokhov@gmail.com, maz@kernel.org, wens@csie.org,
-	jernej.skrabec@gmail.com, samuel@sholland.org, agk@redhat.com,
-	snitzer@kernel.org, dm-devel@redhat.com, rajur@chelsio.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, peppe.cavallaro@st.com,
-	alexandre.torgue@foss.st.com, joabreu@synopsys.com,
-	mcoquelin.stm32@gmail.com, krzysztof.kozlowski@linaro.org,
-	malattia@linux.it, hdegoede@redhat.com, markgross@kernel.org,
-	artur.paszkiewicz@intel.com, jejb@linux.ibm.com,
-	martin.petersen@oracle.com, sakari.ailus@linux.intel.com,
-	fei1.li@intel.com, clm@fb.com, josef@toxicpanda.com,
-	dsterba@suse.com, jack@suse.com, tytso@mit.edu,
-	adilger.kernel@dilger.ca, dushistov@mail.ru,
-	luc.vanoostenryck@gmail.com, rostedt@goodmis.org,
-	mhiramat@kernel.org, pmladek@suse.com, senozhatsky@chromium.org,
-	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
-	minchan@kernel.org, ngupta@vflare.org, akpm@linux-foundation.org,
-	yoshfuji@linux-ipv6.org, dsahern@kernel.org, pablo@netfilter.org,
-	kadlec@netfilter.org, fw@strlen.de, jmaloy@redhat.com,
-	ying.xue@windriver.com, andrii@kernel.org, mykolal@fb.com,
-	ast@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
-	song@kernel.org, yhs@fb.com, john.fastabend@gmail.com,
-	kpsingh@kernel.org, sdf@google.com, haoluo@google.com,
-	jolsa@kernel.org, shuah@kernel.org, keescook@chromium.org,
-	wad@chromium.org, willy@infradead.org, sashal@kernel.org,
-	ruanjinjie@huawei.com, quic_akhilpo@quicinc.com,
-	David.Laight@aculab.com, herve.codina@bootlin.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-	linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
-	linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net,
-	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	stable@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH 07/19 v6.1.y] minmax: make generic MIN() and MAX() macros
- available everywhere
-Message-ID: <2025092923-stove-rule-a00f@gregkh>
-References: <20250924202320.32333-1-farbere@amazon.com>
- <20250924202320.32333-8-farbere@amazon.com>
+	s=arc-20240116; t=1759154174; c=relaxed/simple;
+	bh=InW/YTaTkD8Una1CgxcS+Sd39MuweMYKZK1qU0gW9hU=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=MttSkkUg2xgJKkIZ8JPZTncHMDHVYQbS9zNCH/ZNno8aNx+PTqDYgFHwAWujcvDY7DgTTT2aVdnweS+Q7WIZHiQQGTulob8qjlURNJYUmL1eCQQU+IZzxHskbOZkDxDgOd8whPqPnLq9ihlQ6nAXjwOQ2aBc3V848Y0torErUCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hY2be1ap; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759154172; x=1790690172;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=InW/YTaTkD8Una1CgxcS+Sd39MuweMYKZK1qU0gW9hU=;
+  b=hY2be1apm2in9h4tc46OFoBsMRt/s6pjPp3enLQHuimKPJbZaLZ1Jb31
+   4J0cY0fcyslHVbz95EKnyYrAgXy+z13tjx1FOGO+wp35QZYN6nUqUBDVD
+   aYSscPcHbMvZZ5JUxPc+BcWh49saIqGSSmskTBmiPMy1SL4o8UvZitDSF
+   7f2jVYjxC1AJxT3PqiM/oTZ2HkbCtaXdKjc1Ai36w1pxKhm7N5GtFQ6G4
+   oWW9qToIukRHkW7Ax7wQZ/CNVttjIrEXky8NQIjOvqHK6xju+E4klFec8
+   pjvjyMqiryUPm3DzHj+9rqHxHjc0md6K9JQiGsheeL0WECxYjWifqwP1X
+   g==;
+X-CSE-ConnectionGUID: E8iFxJQZR7qua2YwOalQXQ==
+X-CSE-MsgGUID: 7YVE4DvESeGQfoe5aUSh9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61560597"
+X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; 
+   d="scan'208";a="61560597"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 06:56:12 -0700
+X-CSE-ConnectionGUID: p5/xDExsSWqsaFWuk/LpIA==
+X-CSE-MsgGUID: 8VheNZ6BRFOYiVFSCPX/2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; 
+   d="scan'208";a="178989233"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.229])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 06:56:06 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 29 Sep 2025 16:56:03 +0300 (EEST)
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+cc: intel-xe@lists.freedesktop.org, linux-pci@vger.kernel.org, 
+    dri-devel@lists.freedesktop.org, Icenowy Zheng <uwu@icenowy.me>, 
+    Vivian Wang <wangruikang@iscas.ac.cn>, 
+    =?ISO-8859-15?Q?Thomas_Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>, 
+    Rodrigo Vivi <rodrigo.vivi@intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+    Simon Richter <Simon.Richter@hogyros.de>, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] drm/xe: Move rebar to be done earlier
+In-Reply-To: <5osrqzgrh47n6rpjulvsixwbhbh5vwxrrn6p6hpodnwisjfung@lmivgjb66oed>
+Message-ID: <dfdd45b2-5a8c-cfea-ecd3-495e947022d1@linux.intel.com>
+References: <20250918-xe-pci-rebar-2-v1-0-6c094702a074@intel.com> <20250918-xe-pci-rebar-2-v1-2-6c094702a074@intel.com> <5osrqzgrh47n6rpjulvsixwbhbh5vwxrrn6p6hpodnwisjfung@lmivgjb66oed>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250924202320.32333-8-farbere@amazon.com>
+Content-Type: multipart/mixed; BOUNDARY="8323328-1975384521-1759154048=:943"
+Content-ID: <f64c7704-7852-3757-2f7c-098909d873f5@linux.intel.com>
 
-On Wed, Sep 24, 2025 at 08:23:08PM +0000, Eliav Farber wrote:
-> From: Linus Torvalds <torvalds@linux-foundation.org>
-> 
-> [ Upstream commit 1a251f52cfdc417c84411a056bc142cbd77baef4 ]
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-<snip>
+--8323328-1975384521-1759154048=:943
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <abbc543f-2c76-119f-fada-3f12d93deccf@linux.intel.com>
 
-As this didn't go into 6.6.y yet, I'll stop here on this series for now.
-Please fix up for newer kernels first and then resend these.
+On Mon, 29 Sep 2025, Lucas De Marchi wrote:
 
-thanks,
+> Hi,
+>=20
+> On Thu, Sep 18, 2025 at 01:58:57PM -0700, Lucas De Marchi wrote:
+> > There may be cases in which the BAR0 also needs to move to accommodate
+> > the bigger BAR2. However if it's not released, the BAR2 resize fails.
+> > During the vram probe it can't be released as it's already in use by
+> > xe_mmio for early register access.
+> >=20
+> > Add a new function in xe_vram and let xe_pci call it directly before
+> > even early device probe. This allows the BAR2 to resize in cases BAR0
+> > also needs to move:
+> >=20
+> > =09[] xe 0000:03:00.0: vgaarb: deactivate vga console
+> > =09[] xe 0000:03:00.0: [drm] Attempting to resize bar from 8192MiB ->
+> > 16384MiB
+> > =09[] xe 0000:03:00.0: BAR 0 [mem 0x83000000-0x83ffffff 64bit]: releasi=
+ng
+> > =09[] xe 0000:03:00.0: BAR 2 [mem 0x4000000000-0x41ffffffff 64bit pref]=
+:
+> > releasing
+> > =09[] pcieport 0000:02:01.0: bridge window [mem 0x4000000000-0x41ffffff=
+ff
+> > 64bit pref]: releasing
+> > =09[] pcieport 0000:01:00.0: bridge window [mem 0x4000000000-0x41ffffff=
+ff
+> > 64bit pref]: releasing
+> > =09[] pcieport 0000:01:00.0: bridge window [mem 0x4000000000-0x43ffffff=
+ff
+> > 64bit pref]: assigned
+> > =09[] pcieport 0000:02:01.0: bridge window [mem 0x4000000000-0x43ffffff=
+ff
+> > 64bit pref]: assigned
+> > =09[] xe 0000:03:00.0: BAR 2 [mem 0x4000000000-0x43ffffffff 64bit pref]=
+:
+> > assigned
+> > =09[] xe 0000:03:00.0: BAR 0 [mem 0x83000000-0x83ffffff 64bit]: assigne=
+d
+> > =09[] pcieport 0000:00:01.0: PCI bridge to [bus 01-04]
+> > =09[] pcieport 0000:00:01.0:   bridge window [mem 0x83000000-0x840fffff=
+]
+> > =09[] pcieport 0000:00:01.0:   bridge window [mem
+> > 0x4000000000-0x44007fffff 64bit pref]
+> > =09[] pcieport 0000:01:00.0: PCI bridge to [bus 02-04]
+> > =09[] pcieport 0000:01:00.0:   bridge window [mem 0x83000000-0x840fffff=
+]
+> > =09[] pcieport 0000:01:00.0:   bridge window [mem
+> > 0x4000000000-0x43ffffffff 64bit pref]
+> > =09[] pcieport 0000:02:01.0: PCI bridge to [bus 03]
+> > =09[] pcieport 0000:02:01.0:   bridge window [mem 0x83000000-0x83ffffff=
+]
+> > =09[] pcieport 0000:02:01.0:   bridge window [mem
+> > 0x4000000000-0x43ffffffff 64bit pref]
+> > =09[] xe 0000:03:00.0: [drm] BAR2 resized to 16384M
+> > =09[] xe 0000:03:00.0: [drm:xe_pci_probe [xe]] BATTLEMAGE  e221:0000
+> > dgfx:1 gfx:Xe2_HPG (20.02) ...
+> >=20
+> > As shown above, it happens even before we try to read any register for
+> > platform identification.
+> >=20
+> > All the rebar logic is more pci-specific than xe-specific and can be
+> > done very early in the probe sequence. In future it would be good to
+> > move it out of xe_vram.c, but this refactor is left for later.
+>=20
+> Ilpo, can you take a look on this patch? It fixed the issue that I had
+> with BMG. It needs the first patch for the full fix, but the fixes are
+> more or less orthogonal.
 
-greg k-h
+FWIW, it looks okay to me from PCI perspective,
+
+Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+
+--=20
+ i.
+--8323328-1975384521-1759154048=:943--
 
