@@ -1,95 +1,169 @@
-Return-Path: <stable+bounces-181926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1363CBA9977
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 16:32:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DF1BA99EF
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 16:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5BC016C3B4
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 14:32:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 899841921D32
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 14:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366092FBDE7;
-	Mon, 29 Sep 2025 14:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7975C30C0F8;
+	Mon, 29 Sep 2025 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLdPaPBz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmSNZ5Sx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EE02AD16
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 14:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342AE30AD1E
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 14:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759156367; cv=none; b=A8sfB5rW4R7zjv5GG2Cfmk7KkkFp2detq7MpStBDmI5Lz75TTfnb/WEbpGc+j/pijRt8xm3eVL/FkJjDXLvjthpOwAR2kqBZ7KVAXMIC+HQBcnhTIpaF05mBq+4W3qlnGJ+DZKn8HP/sjj2nPyCm6QJhGSYpnUz1y2+/H+vVggI=
+	t=1759156733; cv=none; b=htobIRziYQhisCYkUq8nfzCJ9hQsR//uaJaULH6J5iU493Ud4VjOT7zcM6bayIaYKeDxEi52ARx+QMmWslDZbjdpMQCCYBKprGJ0Lk91adi4PUfmdqz39oNup56nQlLXIP9XT423FHaq9xa6p4fVpzwbn+xR75M5NvIgyj+krgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759156367; c=relaxed/simple;
-	bh=dV1EdRRCIZafS6f81qCqFuEjgr1l3rz4SNrn96Ti2iQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aqkCMlGqYRKkihnQO030eQsP+PefpffthjJZ+fd3L+VsQz0BRu+HM+3KSlFU6sbm9+HTifJCGfUqthVXblhIxF39RbxjxXYB2JFeBax4mke4e0UWCIcY1lsGgDDrSuQ2u4JbE6HxL6OrDpC8jmW0Qn3t1NWtuBfdKXo7YC2j/Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLdPaPBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1A2C4CEF4;
-	Mon, 29 Sep 2025 14:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759156366;
-	bh=dV1EdRRCIZafS6f81qCqFuEjgr1l3rz4SNrn96Ti2iQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FLdPaPBzWVuJQ/OdmhmJIo/jUEQNWNOxUo4bk22ZkbQ5zZoDxjrdOmhiWiaU9KGvH
-	 wl6PvgztCJIjlEhNSpgFE+QT/c8bKKIu4u9E7imkqOEaF7MVNhKTEuE7yPndPx3OmJ
-	 r5SaaZhmGet2nT/Y0xtR1s+wv+Q1D8P7O41+FgbA=
-Date: Mon, 29 Sep 2025 16:32:43 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andrea Righi <arighi@nvidia.com>
-Cc: changwoo@igalia.com, tj@kernel.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] sched_ext: idle: Handle
- migration-disabled tasks in BPF code" failed to apply to 6.16-stable tree
-Message-ID: <2025092936-bronco-curtsy-981c@gregkh>
-References: <2025092952-wooing-result-72e9@gregkh>
- <aNqVoQaJzYWReVvn@gpd4>
+	s=arc-20240116; t=1759156733; c=relaxed/simple;
+	bh=5f9AwXT/Q0hDY4eb6QiTw5AQ6+ZYHsLEVfJ6pYJqjJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p1/VXJriJqX5UJOA0Tjtflfzl5MfFzIw7EWqGVCxh95PQoS/t+S2bOlQgLQMlxfdaU8P15lw/TossTXIQFtHfjxkiKSsKXpMYsLgKpXbgScbKRDPKVN+BU13JpCO5HVt+VXQXyetgCHGf2T31OmQU7XffdCojAveB/QveD919/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmSNZ5Sx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189FBC4CEF4;
+	Mon, 29 Sep 2025 14:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759156732;
+	bh=5f9AwXT/Q0hDY4eb6QiTw5AQ6+ZYHsLEVfJ6pYJqjJ4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CmSNZ5SxhRCEPxQmHV2QA6Bd2eCWApQF8F5GeT28yr5lyrQRa/oQ4+YW3dl//0EqO
+	 py7VYRBWzmN8By8GM/yTyCHLOJ4Z0y7532l0OYUvkZkS1q4TNeMH9qAjlEv03kGzxP
+	 ribMl2sTOMhidbdR9LzL7EvS8axbO+ujGqnFx+yR7opYsjW5q/cNf9y8SrZfGaty99
+	 05dVk/P52Yel0qOAlsrya7dEYK9qhI9PIU7T1+RnWc5v2FhvWBmjRj2a/sKccnn33E
+	 1r565qS10vsHeUyI3XnVV2QP0OZ283eAZg11aQ34tEVQobQuJQ2B84gQeyJ+oPN/ZS
+	 z/2xopbqbz8VQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Justin Bronder <jsbronder@cold-front.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] i40e: increase max descriptors for XL710
+Date: Mon, 29 Sep 2025 10:38:49 -0400
+Message-ID: <20250929143850.92375-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025092935-hatred-salutary-8769@gregkh>
+References: <2025092935-hatred-salutary-8769@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aNqVoQaJzYWReVvn@gpd4>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 29, 2025 at 04:20:17PM +0200, Andrea Righi wrote:
-> Hi Greg,
-> 
-> On Mon, Sep 29, 2025 at 01:40:52PM +0200, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.16-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 55ed11b181c43d81ce03b50209e4e7c4a14ba099
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092952-wooing-result-72e9@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
-> > 
-> > Possible dependencies:
-> 
-> This patch depends on upstream commit 353656eb84fe ("sched_ext: Make
-> scx_idle_cpu() and related helpers static").
-> 
-> To resolve the conflict I think the best would be to apply commit
-> 353656eb84fef ("sched_ext: idle: Make local functions static in
-> ext_idle.c") to 6.16-stable as well.
-> 
-> This commit only makes some functions static (no functional changes), so it
-> should be safe for stable and it'd keep the code more aligned with
-> upstream.
+From: Justin Bronder <jsbronder@cold-front.org>
 
-Thanks, that worked.
+[ Upstream commit aa6908ca3bd1e713fd6cd8d7193a008f060bf7d9 ]
 
-greg k-h
+In Tables 8-12 and 8-22 in the X710/XXV710/XL710 datasheet, the QLEN
+description states that the maximum size of the descriptor queue is 8k
+minus 32, or 8160.
+
+Signed-off-by: Justin Bronder <jsbronder@cold-front.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20231113231047.548659-2-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 55d225670def ("i40e: add validation for ring_len param")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/intel/i40e/i40e.h        |  1 +
+ .../net/ethernet/intel/i40e/i40e_ethtool.c    | 25 ++++++++++++++-----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 223d5831a5bbe..e031906f23a4f 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -50,6 +50,7 @@
+ #define I40E_MAX_VEB			16
+ 
+ #define I40E_MAX_NUM_DESCRIPTORS	4096
++#define I40E_MAX_NUM_DESCRIPTORS_XL710	8160
+ #define I40E_MAX_CSR_SPACE		(4 * 1024 * 1024 - 64 * 1024)
+ #define I40E_DEFAULT_NUM_DESCRIPTORS	512
+ #define I40E_REQ_DESCRIPTOR_MULTIPLE	32
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index 504edc8ec531c..74a18b8df11f6 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -1918,6 +1918,18 @@ static void i40e_get_drvinfo(struct net_device *netdev,
+ 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
+ }
+ 
++static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
++{
++	struct i40e_hw *hw = &pf->hw;
++
++	switch (hw->mac.type) {
++	case I40E_MAC_XL710:
++		return I40E_MAX_NUM_DESCRIPTORS_XL710;
++	default:
++		return I40E_MAX_NUM_DESCRIPTORS;
++	}
++}
++
+ static void i40e_get_ringparam(struct net_device *netdev,
+ 			       struct ethtool_ringparam *ring)
+ {
+@@ -1925,8 +1937,8 @@ static void i40e_get_ringparam(struct net_device *netdev,
+ 	struct i40e_pf *pf = np->vsi->back;
+ 	struct i40e_vsi *vsi = pf->vsi[pf->lan_vsi];
+ 
+-	ring->rx_max_pending = I40E_MAX_NUM_DESCRIPTORS;
+-	ring->tx_max_pending = I40E_MAX_NUM_DESCRIPTORS;
++	ring->rx_max_pending = i40e_get_max_num_descriptors(pf);
++	ring->tx_max_pending = i40e_get_max_num_descriptors(pf);
+ 	ring->rx_mini_max_pending = 0;
+ 	ring->rx_jumbo_max_pending = 0;
+ 	ring->rx_pending = vsi->rx_rings[0]->count;
+@@ -1949,12 +1961,12 @@ static bool i40e_active_tx_ring_index(struct i40e_vsi *vsi, u16 index)
+ static int i40e_set_ringparam(struct net_device *netdev,
+ 			      struct ethtool_ringparam *ring)
+ {
++	u32 new_rx_count, new_tx_count, max_num_descriptors;
+ 	struct i40e_ring *tx_rings = NULL, *rx_rings = NULL;
+ 	struct i40e_netdev_priv *np = netdev_priv(netdev);
+ 	struct i40e_hw *hw = &np->vsi->back->hw;
+ 	struct i40e_vsi *vsi = np->vsi;
+ 	struct i40e_pf *pf = vsi->back;
+-	u32 new_rx_count, new_tx_count;
+ 	u16 tx_alloc_queue_pairs;
+ 	int timeout = 50;
+ 	int i, err = 0;
+@@ -1962,14 +1974,15 @@ static int i40e_set_ringparam(struct net_device *netdev,
+ 	if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
+ 		return -EINVAL;
+ 
+-	if (ring->tx_pending > I40E_MAX_NUM_DESCRIPTORS ||
++	max_num_descriptors = i40e_get_max_num_descriptors(pf);
++	if (ring->tx_pending > max_num_descriptors ||
+ 	    ring->tx_pending < I40E_MIN_NUM_DESCRIPTORS ||
+-	    ring->rx_pending > I40E_MAX_NUM_DESCRIPTORS ||
++	    ring->rx_pending > max_num_descriptors ||
+ 	    ring->rx_pending < I40E_MIN_NUM_DESCRIPTORS) {
+ 		netdev_info(netdev,
+ 			    "Descriptors requested (Tx: %d / Rx: %d) out of range [%d-%d]\n",
+ 			    ring->tx_pending, ring->rx_pending,
+-			    I40E_MIN_NUM_DESCRIPTORS, I40E_MAX_NUM_DESCRIPTORS);
++			    I40E_MIN_NUM_DESCRIPTORS, max_num_descriptors);
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.51.0
+
 
