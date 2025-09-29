@@ -1,108 +1,96 @@
-Return-Path: <stable+bounces-181949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAF4BA9E0A
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 17:54:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834DEBA9E7F
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 17:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A76E173C96
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:54:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DD3192271B
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1C73074B6;
-	Mon, 29 Sep 2025 15:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CE130C118;
+	Mon, 29 Sep 2025 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ai5JSo7z"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eSrVNUfU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D9530B520
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 15:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB4330C106
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 15:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759161257; cv=none; b=KTQ3Qhcok2fmVS4B2n2w+7gv1bBfabt0knVhI5h0Ht/fyuHbZk9AnQAe9NrzDNdLwlrnDI82Li6I/WMWEIpnAcJvpiWMfEClmTMJ4tveu8iISR9Jyw7FVZoTARsZr5Cf3DhwB04p10DzwDc0KI23m15d+rHvbl1wlo4YrBN6VCU=
+	t=1759161538; cv=none; b=MBvHOOnnWUPP6WlJXb2FNYfD44cdZ2hMEuWQUYG4suBc6Ql2L4WqBHoKrx6RhmRFGN7lpSBFy6E1PObJ42LGCVU9sdR03orVEu8tzUocKXBMfvfVXbfCmB3qUibu1r+17+Mb1r+xGS10Y7bPt1qwtz9EBczo4zOHxCVoY2t/lRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759161257; c=relaxed/simple;
-	bh=1sgpF2bI8rK8MTu4hZLFvvYX/glp3S5AUL3GAJHaBm0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjECduxKFEbFAqtBlaaiT0NNVq/lsI5ETgUYSlSwzzSudrGcGKVUqqruadHPTVuJrZFE97vAujWPmPfu0Mx9lhRwUCccSi0lxOEcqXJGYSAEVSdmUy7a9kaRgHpLU58bUX+k4qctVvzjtEcGyJA4iKFFRuMB6QxdhXm7eLy2HJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ai5JSo7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E3FC4CEF4;
-	Mon, 29 Sep 2025 15:54:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759161256;
-	bh=1sgpF2bI8rK8MTu4hZLFvvYX/glp3S5AUL3GAJHaBm0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ai5JSo7zUk3to/LzSUvUGHBklP7YShOsCjmo/QW+YodDNDC2ysAQtarB5xoO4TN0u
-	 GyKFSCRZsJjNnH/LXWNGx/QlL0nTzxNyz8DMeCnwiddeF6ToRh7JjLGg+j8ZJJh1Lu
-	 I3ajADpO5kp2UXM1NgPlwH4sh7xnAyWZjeu61ibBFNlFA0GuOgj/qRwD9B7jR/8hRL
-	 xrBd5qd4ROh5mIFCgrVwhs00YQjGvV/Wbe8bmc29n0V/Z+AQslOJViYVenpzlskGvc
-	 XnrjsE5YouCabI6wO229S+rJrUZmLJtSxF8I0JXgTWCYg1JQYoKhdF2a57/zfxHJnN
-	 5ROSEnnlQ4WpA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Nirmoy Das <nirmoyd@nvidia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	dri-devel@lists.freedesktop.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm/ast: Use msleep instead of mdelay for edid read
-Date: Mon, 29 Sep 2025 11:54:09 -0400
-Message-ID: <20250929155412.141429-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025092921-consensus-mystified-6396@gregkh>
-References: <2025092921-consensus-mystified-6396@gregkh>
+	s=arc-20240116; t=1759161538; c=relaxed/simple;
+	bh=9ZoQEWBSlDHoAaP3uTh3gtYfZh/RbiEHvtLwh/dwqqU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BUNS872pQsB3F+vWQwZoRJIbXfnPO3XU1BnLiQTWTAhlbZ4u6OrQ7ZrsIB+tp+MWUTUnUkTp13etEQMXDZtWEX0dSOrDQ/cewnqFJm+Vq0OQof9fP8ob37lX8l8X+JSu7TACwJI9CVrX7yOagw6oIfBaO7r6LFPLO8sH4tc7zrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eSrVNUfU; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id F05544E40DC1;
+	Mon, 29 Sep 2025 15:58:54 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C6699606AE;
+	Mon, 29 Sep 2025 15:58:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A7569102F198F;
+	Mon, 29 Sep 2025 17:57:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1759161473; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=9ZoQEWBSlDHoAaP3uTh3gtYfZh/RbiEHvtLwh/dwqqU=;
+	b=eSrVNUfU2kbyx/WmNGHNJQO076LcrN5+0X0skr+i19j0jj+vqZPoeDnSW+FdXqNzTzzFrk
+	qiBavXTsCEE4/K8d0oDtfEpCCnHBzPFobDl+uAmcHbGLY4ASofsANpodQyyKQVpp+9K4DK
+	qVpVwXkN/Ye6JE/E1hgbU+/u7a9Y8XBO/iKLZP1J0BfxzNDDZqmvX+7hZ6GQsvmyMleqLb
+	aM5FcyZfIfKtDxv2iUae0itfystZH+hnH8LRc8K62GYKHv5HVjB/RwoMgLU7uPvZSvs5lp
+	zk5A3dQIsm3wNfExbCPSugUqdC77qZppBXvYBr4gmB0oCKf/ScKkSi3wMGdVjA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Maarten Zanders <maarten@zanders.be>
+Cc: Han Xu <han.xu@nxp.com>,  Richard Weinberger <richard@nod.at>,  Vignesh
+ Raghavendra <vigneshr@ti.com>,  stable@vger.kernel.org,
+  imx@lists.linux.dev,  linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mtd: nand: raw: gpmi: fix clocks when CONFIG_PM=N
+In-Reply-To: <20250922153938.743640-2-maarten@zanders.be> (Maarten Zanders's
+	message of "Mon, 22 Sep 2025 17:39:38 +0200")
+References: <20250922153938.743640-2-maarten@zanders.be>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Mon, 29 Sep 2025 17:57:50 +0200
+Message-ID: <87ecrpi741.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Nirmoy Das <nirmoyd@nvidia.com>
+Hello,
 
-[ Upstream commit c7c31f8dc54aa3c9b2c994b5f1ff7e740a654e97 ]
+On 22/09/2025 at 17:39:38 +02, Maarten Zanders <maarten@zanders.be> wrote:
 
-The busy-waiting in `mdelay()` can cause CPU stalls and kernel timeouts
-during boot.
+> Commit f04ced6d545e ("mtd: nand: raw: gpmi: improve power management
+> handling") moved all clock handling into PM callbacks. With CONFIG_PM
+> disabled, those callbacks are missing, leaving the driver unusable.
+>
+> Add clock init/teardown for !CONFIG_PM builds to restore basic operation.
+> Keeping the driver working without requiring CONFIG_PM is preferred over
+> adding a Kconfig dependency.
+>
+> Fixes: f04ced6d545e ("mtd: nand: raw: gpmi: improve power management hand=
+ling")
+> Signed-off-by: Maarten Zanders <maarten@zanders.be>
+> Cc: stable@vger.kernel.org
 
-Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Tested-by: Carol L Soto csoto@nvidia.com<mailto:csoto@nvidia.com>
-Fixes: 594e9c04b586 ("drm/ast: Create the driver for ASPEED proprietory Display-Port")
-Cc: KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.19+
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250917194346.2905522-1-nirmoyd@nvidia.com
-[ Applied change to ast_astdp_read_edid() instead of ast_astdp_read_edid_block() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/ast/ast_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This patch does not apply on nand/next. Can you please rebase on
+v6.18-rc1 when it will be out? I'll take it in a fixes PR.
 
-diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-index a4a23b9623ad3..7d2fb34c72b75 100644
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -51,7 +51,7 @@ int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata)
- 			 *	  of right-click of mouse.
- 			 * 2. The Delays are often longer a lot when system resume from S3/S4.
- 			 */
--			mdelay(j+1);
-+			msleep(j + 1);
- 
- 			if (!(ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xD1,
- 							ASTDP_MCU_FW_EXECUTING) &&
--- 
-2.51.0
-
+Thanks,
+Miqu=C3=A8l
 
