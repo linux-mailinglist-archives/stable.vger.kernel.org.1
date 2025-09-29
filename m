@@ -1,142 +1,146 @@
-Return-Path: <stable+bounces-181944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B013FBA9BEB
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 17:02:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB16BA9C2A
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 17:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A5EA3C53B5
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:02:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34423178897
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83961E9B22;
-	Mon, 29 Sep 2025 15:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAD0308F36;
+	Mon, 29 Sep 2025 15:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WuXjuoVw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OXvpWG2x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77582E555
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 15:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A722306B08;
+	Mon, 29 Sep 2025 15:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759158124; cv=none; b=ltlJUOmlsXnxLo6+6t6HHTwsebl38e7WFzdk0U23L5EdoGSxykUCCZ10upglFtpmuccuR0h+W7lrvVdNZii6Rke8smngdyQ8j7P4TQzZCugXxpjiLpZhPS0SeimJspdAOdToOJjyJzc1U56Ik1xEEiRQYsBJyCkEyerDEDKiP6E=
+	t=1759158607; cv=none; b=Y8665Jp+s+/kmeac5d6vAR7X8nwAEswGXx8NiMCacfC2zhWxC9sWhfym/GQ1pc1jhLTfjhUQajnptITl+i6JIDivOuLV8j0+0+vuSSHfKhfRleEjeWgQcWL7SjwUgQKnqxYf3e+Ew3zy9aaw5ppEFSATju+9Hx12pAMaPev7wBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759158124; c=relaxed/simple;
-	bh=6rqKCWbeGBM168VWKr1hv2R0ihN+wWjGpGiIEfeI6Bk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SP8wnKBYePKIih7E468adJvVEJ4T9v2bf6M3yzvVA3Vwdn+Utpd+PYW42mzDbNa7fHl6lRbe+17CJ8MmcrtcCXC88WfYwN87iwX5aJkaR3kfR8lyOPKCLlGm6+pqdSi5fWacmHGY/24XZVR0nHgqC74DYiWlL2FcgnwXnKcF4O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WuXjuoVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E485C4CEF4;
-	Mon, 29 Sep 2025 15:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759158124;
-	bh=6rqKCWbeGBM168VWKr1hv2R0ihN+wWjGpGiIEfeI6Bk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuXjuoVwIjznUcdOEtU1Yq4lUm5OuV5SNBFFLLHRPwQInnifL9+d4hK+sspRnnq66
-	 wLKHnJZOWdLP1DcLZXfPy6OLtfqqD5NbE5t/2AiIBOdlqHTKkdgAUhPXX6rkVttNL8
-	 w+Be+jupf5qJhIiF9rbHbzT84B3hvP7KN305SvN32nJgveZ0gkmuHsrzzFBymU3C61
-	 KWIaSVXeOL9Q57Z/xeLlSgRFPjsnt4ui82IN+bL98VYmR71oRjTbakWb0Sfw0lOZHR
-	 S8SUb0bfwpL1pQBvf7km6PnFrPZPc7hh52yydxKKWm59p9tj1dEhErVy0M1m/b4K/e
-	 UF8hMGV0T9uqA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] i40e: fix validation of VF state in get resources
-Date: Mon, 29 Sep 2025 11:02:01 -0400
-Message-ID: <20250929150201.114123-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025092913-monotype-pouch-f2e0@gregkh>
-References: <2025092913-monotype-pouch-f2e0@gregkh>
+	s=arc-20240116; t=1759158607; c=relaxed/simple;
+	bh=n5QdAwV9GL/hI15XCi4gHWJImJrNkPzAtoinWYP2mKw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uerAhwm8Jo02T+NrAZEq1ICxUbgLviEr5mqAJ6siqvPrZ3MlsUEpIriQJ2jYDXhVFGBt1Poej2ZP9bIS/6dcyMU2+VbTtAxAKW9Enp8v2/D0GDVnrTeOq3BX5FAuYbl2Gwamlk+q5nxiAADTg/uIpm1F6bpf8LRxgqXMjuOM3CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OXvpWG2x; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759158606; x=1790694606;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=n5QdAwV9GL/hI15XCi4gHWJImJrNkPzAtoinWYP2mKw=;
+  b=OXvpWG2xuXQ5Fzt6BQeCGZQxMm6I6kK/h4pSnXyJtFR981csfNAVIDDr
+   n+2uuQJMwC/9I9N6pQ5N22nnlTugQ6eh+XVXGnUErYKRFxEnYH075abAe
+   1EFoTH6Qp921LS5n4vJ9KUPAAygEOTX9VB1867rwhvlzLPvvAoZdqrmQG
+   UxPCOFFFB5ySvFlpEAwQzSSgKKyCtFRcDzWb7jmP3ZFOfmBY68SidR24R
+   i3qPCOkTI0bBAlVplRCj/8YSRduYkVmEDbjKqR/LFtlfgCIfwhwehEoFh
+   IfY/LJgnDomphVG/Tv6XrwuPo2u9ByvHMz1o7miU9WGKCEmnW7MuOVgfC
+   Q==;
+X-CSE-ConnectionGUID: OvI0mQ4ETsedd0SBcQtf6Q==
+X-CSE-MsgGUID: KNdx7UbqReSBqBDmFiYvGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="65217339"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="65217339"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 08:10:05 -0700
+X-CSE-ConnectionGUID: /YEP9TeGQ/StrMSbFoGWVA==
+X-CSE-MsgGUID: KANyAnmdQYurhc68KUp4Eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; 
+   d="scan'208";a="182544766"
+Received: from linux.intel.com ([10.54.29.200])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 08:10:04 -0700
+Received: from [10.124.221.178] (unknown [10.124.221.178])
+	by linux.intel.com (Postfix) with ESMTP id 8817020B5713;
+	Mon, 29 Sep 2025 08:10:03 -0700 (PDT)
+Message-ID: <7b5c1235-df92-4f18-936c-3d7c0d3a6cb3@linux.intel.com>
+Date: Mon, 29 Sep 2025 08:10:03 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
+ ratelimiting in pci_print_aer()
+To: Breno Leitao <leitao@debian.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Jon Pan-Doh <pandoh@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+References: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 877b7e6ffc23766448236e8732254534c518ba42 ]
+On 9/29/25 2:15 AM, Breno Leitao wrote:
+> Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
+> when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
+> calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
+> does not rate limit, given this is fatal.
+>
+> This prevents a kernel crash triggered by dereferencing a NULL pointer
+> in aer_ratelimit(), ensuring safer handling of PCI devices that lack
+> AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
+> which already performs this NULL check.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> - This problem is still happening in upstream, and unfortunately no action
+>    was done in the previous discussion.
+> - Link to previous post:
+>    https://lore.kernel.org/r/20250804-aer_crash_2-v1-1-fd06562c18a4@debian.org
+> ---
 
-VF state I40E_VF_STATE_ACTIVE is not the only state in which
-VF is actually active so it should not be used to determine
-if a VF is allowed to obtain resources.
+Although we haven't identified the path that triggers this issue, adding this check is harmless.
 
-Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
-i40e_vc_get_vf_resources_msg() and cleared during reset.
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 7 ++++++-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h | 3 ++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index d8ba409122032..a6ae0ade76798 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1375,6 +1375,7 @@ static void i40e_trigger_vf_reset(struct i40e_vf *vf, bool flr)
- 	 * functions that may still be running at this point.
- 	 */
- 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
-+	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
- 
- 	/* In the case of a VFLR, the HW has already reset the VF and we
- 	 * just need to clean up, so don't hit the VFRTRIG register.
-@@ -2048,7 +2049,10 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
- 	size_t len = 0;
- 	int ret;
- 
--	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
-+	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
-+
-+	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
-+	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
- 		aq_ret = I40E_ERR_PARAM;
- 		goto err;
- 	}
-@@ -2144,6 +2148,7 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
- 				vf->default_lan_addr.addr);
- 	}
- 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
-+	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
- 
- err:
- 	/* send the response back to the VF */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index 75d916714ad8a..de04b5b545b9f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -41,7 +41,8 @@ enum i40e_vf_states {
- 	I40E_VF_STATE_MC_PROMISC,
- 	I40E_VF_STATE_UC_PROMISC,
- 	I40E_VF_STATE_PRE_ENABLE,
--	I40E_VF_STATE_RESETTING
-+	I40E_VF_STATE_RESETTING,
-+	I40E_VF_STATE_RESOURCES_LOADED,
- };
- 
- /* VF capabilities */
+
+>   drivers/pci/pcie/aer.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index e286c197d7167..55abc5e17b8b1 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
+>   
+>   static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+>   {
+> +	if (!dev->aer_info)
+> +		return 1;
+> +
+>   	switch (severity) {
+>   	case AER_NONFATAL:
+>   		return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
+>
+> ---
+> base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+> change-id: 20250801-aer_crash_2-b21cc2ef0d00
+>
+> Best regards,
+> --
+> Breno Leitao <leitao@debian.org>
+>
 -- 
-2.51.0
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
 
