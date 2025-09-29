@@ -1,124 +1,267 @@
-Return-Path: <stable+bounces-181946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D934BA9C45
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 17:14:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE52BA9D89
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 17:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089493C6BDF
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5007B1C3E59
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4B1309DCF;
-	Mon, 29 Sep 2025 15:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFC130BBAE;
+	Mon, 29 Sep 2025 15:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ui7o87NV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BBpIsucq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE8D306B08
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 15:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A31C30BBA8
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 15:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759158874; cv=none; b=TA46Zt/tuwPZzkRDz9EmDT0kASUUTcRo8PexmJpgqdeRUUwPqFwkSqzKTV82sd+fN0O7MIc828PyzeI8EOf9saR++DOQLQKj/SXYgBj7QLADqE5dz1N5qYB0DKkfWGMqzXaOymIWgBfkWh3Kafqs18dsHcuuiS2Vz1lUMcWxpyc=
+	t=1759160864; cv=none; b=QEil+6xP/1IvkCIFtLcSF4HBZkku3ijoAUXiYAaa9jhWSiXkazZZGe//RK1aBkPwqlnt+o18g0O1eyNVTzbVOQ84+6mPlCBoVxr5ZVKuaKOZjbSKkf7+Yq7Jzd79GxjO8fskNfjPc1ccnEm/GUF4NgNdx1/kCL3WMMDkCMuDOe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759158874; c=relaxed/simple;
-	bh=iBlCQ9KvyCeCkRu9ZLjuA246/L+TzryyOmffdoYiQyc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q/IMauhs3gwiUbeub+ncrgxG05xuIbLGHtep0Ta1re9t6i296pi/JNNUjCDSAsY3/9nsg4qMIYjC2hN3kQOHgRp+XtkBAK+AlhF/KI4vxg3DU5tCcgtM5NUQLRr/VobsLpBBtZEg571kmHKvv95jgEdXTLRez21qOZwkxv+FK3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ui7o87NV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3C2C116B1
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 15:14:34 +0000 (UTC)
+	s=arc-20240116; t=1759160864; c=relaxed/simple;
+	bh=o9ouzGGMqHeKeFsAeiLDfQx18lLCYle6gm6EPR4SZgA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W2Y/H5rb+vFt47jOIO/JrxxUih4XKmh8pyZIcHvgX6PxcEtzAPp/JuWYNNwDNvP6Vvwg7QupwK1T12ShsWuuViPn9keB94GGcDO+WfBOewQoCVODogg5hbmGlAu66F6mZxw7moRy8KK65BhmosGlDLluwLwU4dDRtiHafK7be/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BBpIsucq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEE8C4CEF7;
+	Mon, 29 Sep 2025 15:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759158874;
-	bh=iBlCQ9KvyCeCkRu9ZLjuA246/L+TzryyOmffdoYiQyc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ui7o87NVNFm12QGuE7Bd8xChnmEQOj/TZto2q04N4b6VpLSvQjJSoXigSO7nQUsIC
-	 30wHg2wZdrzNGlqMb87th5LRnn8BRUMn4E1av/XIIm6S3hUMjyvfPHOyACWgHgYPmq
-	 8EHhHUI42AMQHLyTL1G21S5TflHr0L7FzMCq9ACazaZfhz/oUMXpCKjQriUwkPTqwy
-	 YMneEzsPadiVpprHrFoPR4B2KFSkZaOV7472XvSmvnc7dUVzpUTrKr6eKbLKWbQa38
-	 W9P4yW8yZeXNeVMuH2FKvIwCtRBYETrv19J55K2RY+D6rG/uL8bUQQB4uaDFc3l7zN
-	 EIEWnP03SPETw==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-62fc0b7bf62so7106513a12.2
-        for <stable@vger.kernel.org>; Mon, 29 Sep 2025 08:14:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXcjz2J33DvOJgoeW+beDdi8jjqtF1VdCypjC98p+qeCdyzhioxfVCLb4mXLU9kjzPxxtSieSU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2K6g+neuHcQi5Aznskf1BVzjYbaEmHbQ8ImUHb6Ib7soGyn1f
-	YEtGtkUebf9twnaC03lnMQghGcc2iMdpS27rRpFFDjOIHYJS0b9w46Lnq09X/uhxpMhYkXjWZYQ
-	8Br74DhAGjslact16GWPJaDeiXwlS5w==
-X-Google-Smtp-Source: AGHT+IGe34FYZ1xtizAF3ivFL6run1i1iMMxSE0ue9AhqSYZ1xftvh4ImQ04CR1Xrylrlu0u1yZcLoK+lVTV3QkMcKQ=
-X-Received: by 2002:a05:6402:2110:b0:634:bdde:d180 with SMTP id
- 4fb4d7f45d1cf-634bdded443mr11982998a12.10.1759158872767; Mon, 29 Sep 2025
- 08:14:32 -0700 (PDT)
+	s=k20201202; t=1759160863;
+	bh=o9ouzGGMqHeKeFsAeiLDfQx18lLCYle6gm6EPR4SZgA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BBpIsucqNcmcE+EopzGrwKJtk7MFmsYzlfULwx/B7/C4O8zjfPVBeNfBkDocXRLvs
+	 u1Xv6MFxbrdR1rwoNYmmlg7PjbMpO3IykHnn+vBZ46KiRmd/SY5c6Qe+ctvwuXwGwk
+	 F7fPaYjK7z2fmlwcTjUsac+23D9+OQX4he1kS25xz9gtQiv59lvtiumtsTeNb1TL+c
+	 Ogly5szweFog53JXvIKBzRCw95s06tyZWQMAPBFiv68q2gI1QQDVedbhI4BbFcsdB7
+	 0LV/wJoS5uEOUFp3s9YAIrTsPl30J/V5CsLwxRRXfqfTmlMCJbDWMImRW1zzoU40kW
+	 3Xzbd1Z6LsjCA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Nirmoy Das <nirmoyd@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	syzbot+80620e2d0d0a33b09f93@syzkaller.appspotmail.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16.y] iommufd: Fix race during abort for file descriptors
+Date: Mon, 29 Sep 2025 11:47:41 -0400
+Message-ID: <20250929154741.136377-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025092931-uneven-never-0b1f@gregkh>
+References: <2025092931-uneven-never-0b1f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250929034713.22867-1-make24@iscas.ac.cn>
-In-Reply-To: <20250929034713.22867-1-make24@iscas.ac.cn>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 29 Sep 2025 10:14:21 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJBcKf-EMAYvnXJDB4izoyk9s-8SUn4CAUm3qatd6Yrzg@mail.gmail.com>
-X-Gm-Features: AS18NWBGeBBMrQO99aSRsWimi6qqH0KBvbFEBF3rU43MfzL2hTz_QEwQwDH9zTQ
-Message-ID: <CAL_JsqJBcKf-EMAYvnXJDB4izoyk9s-8SUn4CAUm3qatd6Yrzg@mail.gmail.com>
-Subject: Re: [PATCH RESEND] of: unittest: Fix device reference count leak in of_unittest_pci_node_verify
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: saravanak@google.com, lizhi.hou@amd.com, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 28, 2025 at 10:47=E2=80=AFPM Ma Ke <make24@iscas.ac.cn> wrote:
->
-> In of_unittest_pci_node_verify(), when the add parameter is false,
-> device_find_any_child() obtains a reference to a child device. This
-> function implicitly calls get_device() to increment the device's
-> reference count before returning the pointer. However, the caller
-> fails to properly release this reference by calling put_device(),
-> leading to a device reference count leak.
->
-> As the comment of device_find_any_child states: "NOTE: you will need
-> to drop the reference with put_device() after use".
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-Please implement my review comments on the last version you sent.
+[ Upstream commit 4e034bf045b12852a24d5d33f2451850818ba0c1 ]
 
->
-> Cc: stable@vger.kernel.org
-> Fixes: 26409dd04589 ("of: unittest: Add pci_dt_testdrv pci driver")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/of/unittest.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-> index e3503ec20f6c..d225e73781fe 100644
-> --- a/drivers/of/unittest.c
-> +++ b/drivers/of/unittest.c
-> @@ -4271,7 +4271,7 @@ static struct platform_driver unittest_pci_driver =
-=3D {
->  static int of_unittest_pci_node_verify(struct pci_dev *pdev, bool add)
->  {
->         struct device_node *pnp, *np =3D NULL;
-> -       struct device *child_dev;
-> +       struct device *child_dev =3D NULL;
->         char *path =3D NULL;
->         const __be32 *reg;
->         int rc =3D 0;
-> @@ -4306,6 +4306,8 @@ static int of_unittest_pci_node_verify(struct pci_d=
-ev *pdev, bool add)
->         kfree(path);
->         if (np)
->                 of_node_put(np);
-> +       if (child_dev)
-> +               put_device(child_dev);
->
->         return rc;
->  }
-> --
-> 2.17.1
->
+fput() doesn't actually call file_operations release() synchronously, it
+puts the file on a work queue and it will be released eventually.
+
+This is normally fine, except for iommufd the file and the iommufd_object
+are tied to gether. The file has the object as it's private_data and holds
+a users refcount, while the object is expected to remain alive as long as
+the file is.
+
+When the allocation of a new object aborts before installing the file it
+will fput() the file and then go on to immediately kfree() the obj. This
+causes a UAF once the workqueue completes the fput() and tries to
+decrement the users refcount.
+
+Fix this by putting the core code in charge of the file lifetime, and call
+__fput_sync() during abort to ensure that release() is called before
+kfree. __fput_sync() is a bit too tricky to open code in all the object
+implementations. Instead the objects tell the core code where the file
+pointer is and the core will take care of the life cycle.
+
+If the object is successfully allocated then the file will hold a users
+refcount and the iommufd_object cannot be destroyed.
+
+It is worth noting that close(); ioctl(IOMMU_DESTROY); doesn't have an
+issue because close() is already using a synchronous version of fput().
+
+The UAF looks like this:
+
+    BUG: KASAN: slab-use-after-free in iommufd_eventq_fops_release+0x45/0xc0 drivers/iommu/iommufd/eventq.c:376
+    Write of size 4 at addr ffff888059c97804 by task syz.0.46/6164
+
+    CPU: 0 UID: 0 PID: 6164 Comm: syz.0.46 Not tainted syzkaller #0 PREEMPT(full)
+    Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+    Call Trace:
+     <TASK>
+     __dump_stack lib/dump_stack.c:94 [inline]
+     dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+     print_address_description mm/kasan/report.c:378 [inline]
+     print_report+0xcd/0x630 mm/kasan/report.c:482
+     kasan_report+0xe0/0x110 mm/kasan/report.c:595
+     check_region_inline mm/kasan/generic.c:183 [inline]
+     kasan_check_range+0x100/0x1b0 mm/kasan/generic.c:189
+     instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+     atomic_fetch_sub_release include/linux/atomic/atomic-instrumented.h:400 [inline]
+     __refcount_dec include/linux/refcount.h:455 [inline]
+     refcount_dec include/linux/refcount.h:476 [inline]
+     iommufd_eventq_fops_release+0x45/0xc0 drivers/iommu/iommufd/eventq.c:376
+     __fput+0x402/0xb70 fs/file_table.c:468
+     task_work_run+0x14d/0x240 kernel/task_work.c:227
+     resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+     exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
+     exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+     syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+     syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+     do_syscall_64+0x41c/0x4c0 arch/x86/entry/syscall_64.c:100
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Link: https://patch.msgid.link/r/1-v1-02cd136829df+31-iommufd_syz_fput_jgg@nvidia.com
+Cc: stable@vger.kernel.org
+Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Nirmoy Das <nirmoyd@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Reported-by: syzbot+80620e2d0d0a33b09f93@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/68c8583d.050a0220.2ff435.03a2.GAE@google.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iommu/iommufd/eventq.c |  9 ++-------
+ drivers/iommu/iommufd/main.c   | 35 +++++++++++++++++++++++++++++++---
+ 2 files changed, 34 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iommu/iommufd/eventq.c b/drivers/iommu/iommufd/eventq.c
+index e373b9eec7f5f..2afef30ce41f1 100644
+--- a/drivers/iommu/iommufd/eventq.c
++++ b/drivers/iommu/iommufd/eventq.c
+@@ -393,12 +393,12 @@ static int iommufd_eventq_init(struct iommufd_eventq *eventq, char *name,
+ 			       const struct file_operations *fops)
+ {
+ 	struct file *filep;
+-	int fdno;
+ 
+ 	spin_lock_init(&eventq->lock);
+ 	INIT_LIST_HEAD(&eventq->deliver);
+ 	init_waitqueue_head(&eventq->wait_queue);
+ 
++	/* The filep is fput() by the core code during failure */
+ 	filep = anon_inode_getfile(name, fops, eventq, O_RDWR);
+ 	if (IS_ERR(filep))
+ 		return PTR_ERR(filep);
+@@ -408,10 +408,7 @@ static int iommufd_eventq_init(struct iommufd_eventq *eventq, char *name,
+ 	eventq->filep = filep;
+ 	refcount_inc(&eventq->obj.users);
+ 
+-	fdno = get_unused_fd_flags(O_CLOEXEC);
+-	if (fdno < 0)
+-		fput(filep);
+-	return fdno;
++	return get_unused_fd_flags(O_CLOEXEC);
+ }
+ 
+ static const struct file_operations iommufd_fault_fops =
+@@ -455,7 +452,6 @@ int iommufd_fault_alloc(struct iommufd_ucmd *ucmd)
+ 	return 0;
+ out_put_fdno:
+ 	put_unused_fd(fdno);
+-	fput(fault->common.filep);
+ out_abort:
+ 	iommufd_object_abort_and_destroy(ucmd->ictx, &fault->common.obj);
+ 
+@@ -542,7 +538,6 @@ int iommufd_veventq_alloc(struct iommufd_ucmd *ucmd)
+ 
+ out_put_fdno:
+ 	put_unused_fd(fdno);
+-	fput(veventq->common.filep);
+ out_abort:
+ 	iommufd_object_abort_and_destroy(ucmd->ictx, &veventq->common.obj);
+ out_unlock_veventqs:
+diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
+index 3df468f64e7d9..62a3469bbd37e 100644
+--- a/drivers/iommu/iommufd/main.c
++++ b/drivers/iommu/iommufd/main.c
+@@ -23,6 +23,7 @@
+ #include "iommufd_test.h"
+ 
+ struct iommufd_object_ops {
++	size_t file_offset;
+ 	void (*destroy)(struct iommufd_object *obj);
+ 	void (*abort)(struct iommufd_object *obj);
+ };
+@@ -71,10 +72,30 @@ void iommufd_object_abort(struct iommufd_ctx *ictx, struct iommufd_object *obj)
+ void iommufd_object_abort_and_destroy(struct iommufd_ctx *ictx,
+ 				      struct iommufd_object *obj)
+ {
+-	if (iommufd_object_ops[obj->type].abort)
+-		iommufd_object_ops[obj->type].abort(obj);
++	const struct iommufd_object_ops *ops = &iommufd_object_ops[obj->type];
++
++	if (ops->file_offset) {
++		struct file **filep = ((void *)obj) + ops->file_offset;
++
++		/*
++		 * A file should hold a users refcount while the file is open
++		 * and put it back in its release. The file should hold a
++		 * pointer to obj in their private data. Normal fput() is
++		 * deferred to a workqueue and can get out of order with the
++		 * following kfree(obj). Using the sync version ensures the
++		 * release happens immediately. During abort we require the file
++		 * refcount is one at this point - meaning the object alloc
++		 * function cannot do anything to allow another thread to take a
++		 * refcount prior to a guaranteed success.
++		 */
++		if (*filep)
++			__fput_sync(*filep);
++	}
++
++	if (ops->abort)
++		ops->abort(obj);
+ 	else
+-		iommufd_object_ops[obj->type].destroy(obj);
++		ops->destroy(obj);
+ 	iommufd_object_abort(ictx, obj);
+ }
+ 
+@@ -493,6 +514,12 @@ void iommufd_ctx_put(struct iommufd_ctx *ictx)
+ }
+ EXPORT_SYMBOL_NS_GPL(iommufd_ctx_put, "IOMMUFD");
+ 
++#define IOMMUFD_FILE_OFFSET(_struct, _filep, _obj)                           \
++	.file_offset = (offsetof(_struct, _filep) +                          \
++			BUILD_BUG_ON_ZERO(!__same_type(                      \
++				struct file *, ((_struct *)NULL)->_filep)) + \
++			BUILD_BUG_ON_ZERO(offsetof(_struct, _obj)))
++
+ static const struct iommufd_object_ops iommufd_object_ops[] = {
+ 	[IOMMUFD_OBJ_ACCESS] = {
+ 		.destroy = iommufd_access_destroy_object,
+@@ -502,6 +529,7 @@ static const struct iommufd_object_ops iommufd_object_ops[] = {
+ 	},
+ 	[IOMMUFD_OBJ_FAULT] = {
+ 		.destroy = iommufd_fault_destroy,
++		IOMMUFD_FILE_OFFSET(struct iommufd_fault, common.filep, common.obj),
+ 	},
+ 	[IOMMUFD_OBJ_HWPT_PAGING] = {
+ 		.destroy = iommufd_hwpt_paging_destroy,
+@@ -520,6 +548,7 @@ static const struct iommufd_object_ops iommufd_object_ops[] = {
+ 	[IOMMUFD_OBJ_VEVENTQ] = {
+ 		.destroy = iommufd_veventq_destroy,
+ 		.abort = iommufd_veventq_abort,
++		IOMMUFD_FILE_OFFSET(struct iommufd_veventq, common.filep, common.obj),
+ 	},
+ 	[IOMMUFD_OBJ_VIOMMU] = {
+ 		.destroy = iommufd_viommu_destroy,
+-- 
+2.51.0
+
 
