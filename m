@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-181907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67072BA9472
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:04:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331F1BA947B
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 15:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCA7A7A37C0
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:02:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1251891AF1
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE8D302CD6;
-	Mon, 29 Sep 2025 13:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93173054FC;
+	Mon, 29 Sep 2025 13:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYGcsnLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F04vyAgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADAB2FF677
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 13:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996DD1D5CC7
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 13:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759151074; cv=none; b=Y8X1SLHmsznw4b8AwN2loSpDLEIiIqt5w5ce4T3ZlHUBpp0ayVcYHtpXFtuYRrWMTAV3twHzcNMh3XmX7NXGrxldmZMgEGNzv31+8UVncqNefeZ8lfG8Dyc7aNZ1odH5J7P6qy0yDzas4QdNaS7kgkVHQSiiRmSwo3t4eqBlSqk=
+	t=1759151133; cv=none; b=uDRFAtXJgtiKBw3Sl6yk+GyLYmjjmQQhoSmIZ11l284zwknTw4+0R/478XCqDWUIiV3YrQyAC7UkONPh+xnCBiRCqNr6BHmvv+WXRDlTcmUtLLvbvgudMm80C6ZtvfAA3XfoZ4Q55teDHrKGPnA/gqEv/Nb4kYqIV2Ss6RRRclk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759151074; c=relaxed/simple;
-	bh=0DZgIRYZTxfWXyku1vXzZ0IoQHZcoE+qVzvO+cOwb9I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ae6TDjsDgu84f8YFc12OgWq5faAq4/eyHNIv1S1k3mStwRuqi9WlMSZWMWU9Tpipr/y7dlCFFcsJFZobbIalqE/LHz+80fOTddQvzy3RbEe9w0pc0JX8kvSDk7LvUCAgdtMvJXgPhTRv+tCVk9tIPIxG1vUHL/iSUZkfIqQbpUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYGcsnLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B1CC4CEF7;
-	Mon, 29 Sep 2025 13:04:33 +0000 (UTC)
+	s=arc-20240116; t=1759151133; c=relaxed/simple;
+	bh=eeks5QmvA51GM/D1vMITXydjA6ExdLAkJp82moFxg4A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=I/xrJ6F3vAoG5ACEsKtoLGaMwdcvfkgt8Wir4OhOSIZb/rETiO8jKpe7a0yc3y1t+bbpa1zXT/6nsS8ZZHObs1tPe3tJcAt79JNy+mi0RfVl0C4zur8sz3Z9sh1bgBuXiUI/gLDzBcNEUkEdnwwTw3nfnZL00Zt6XmFMkICVwCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F04vyAgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3805C4CEF4;
+	Mon, 29 Sep 2025 13:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759151073;
-	bh=0DZgIRYZTxfWXyku1vXzZ0IoQHZcoE+qVzvO+cOwb9I=;
+	s=korg; t=1759151133;
+	bh=eeks5QmvA51GM/D1vMITXydjA6ExdLAkJp82moFxg4A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fYGcsnLxH8KRj+RxWncBk6cvulIUM4AB/ywA+NRbaGh6gprsuR0QUuIPuGCCvabdN
-	 RVKTPu4EfxObaD12z3PpVPAKMx+sjBn0xkcpAsAmXuWFobTxdI5SlQKo32v9mIbKzS
-	 jm5ibL8hBcCu0yEb9KKhVNUtp1yO0+9wQuSLUlA4=
-Subject: FAILED: patch "[PATCH] spi: cadence-qspi: defer runtime support on socfpga if reset" failed to apply to 5.4-stable tree
-To: khairul.anuar.romli@altera.com,adrianhoyin.ng@altera.com,broonie@kernel.org,matthew.gerlach@altera.com,nirav.rabara@altera.com
+	b=F04vyAgDLzFXVB2JWCcKEdwkuBUzC68GaoYdWX87fLJIZmxLdC0G0LDMsU8exepVA
+	 2/qHLeLBK+ME54rznY1ieSEchSpaV2SNU//FJM98bQ7/1zuQqiEgQdqrMBxuXv8VFO
+	 iXsYl6wY1M7eUbUoiVlvUDDIdoaelmi46SoGj9js=
+Subject: FAILED: patch "[PATCH] mm/hugetlb: fix folio is still mapped when deleted" failed to apply to 5.15-stable tree
+To: tujinjiang@huawei.com,akpm@linux-foundation.org,david@redhat.com,muchun.song@linux.dev,osalvador@suse.de,stable@vger.kernel.org,wangkefeng.wang@huawei.com,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Sep 2025 15:04:16 +0200
-Message-ID: <2025092916-clambake-composite-dc8a@gregkh>
+Date: Mon, 29 Sep 2025 15:05:30 +0200
+Message-ID: <2025092930-header-irritable-c8ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 30dbc1c8d50f13c1581b49abe46fe89f393eacbf
+git cherry-pick -x 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092916-clambake-composite-dc8a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092930-header-irritable-c8ed@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,152 +77,77 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 30dbc1c8d50f13c1581b49abe46fe89f393eacbf Mon Sep 17 00:00:00 2001
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Date: Wed, 10 Sep 2025 16:06:32 +0800
-Subject: [PATCH] spi: cadence-qspi: defer runtime support on socfpga if reset
- bit is enabled
+From 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7 Mon Sep 17 00:00:00 2001
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Date: Fri, 12 Sep 2025 15:41:39 +0800
+Subject: [PATCH] mm/hugetlb: fix folio is still mapped when deleted
 
-Enabling runtime PM allows the kernel to gate clocks and power to idle
-devices. On SoCFPGA, a warm reset does not fully reinitialize these
-domains.This leaves devices suspended and powered down, preventing U-Boot
-or the kernel from reusing them after a warm reset, which breaks the boot
-process.
+Migration may be raced with fallocating hole.  remove_inode_single_folio
+will unmap the folio if the folio is still mapped.  However, it's called
+without folio lock.  If the folio is migrated and the mapped pte has been
+converted to migration entry, folio_mapped() returns false, and won't
+unmap it.  Due to extra refcount held by remove_inode_single_folio,
+migration fails, restores migration entry to normal pte, and the folio is
+mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
 
-Fixes: 4892b374c9b7 ("mtd: spi-nor: cadence-quadspi: Add runtime PM support")
-CC: stable@vger.kernel.org # 6.12+
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Signed-off-by: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
-Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Link: https://patch.msgid.link/910aad68ba5d948919a7b90fa85a2fadb687229b.1757491372.git.khairul.anuar.romli@altera.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The log is as follows:
+ BUG: Bad page cache in process hugetlb  pfn:156c00
+ page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
+ head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
+ aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
+ flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
+ page_type: f4(hugetlb)
+ page dumped because: still mapped when deleted
+ CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
+ Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4f/0x70
+  filemap_unaccount_folio+0xc4/0x1c0
+  __filemap_remove_folio+0x38/0x1c0
+  filemap_remove_folio+0x41/0xd0
+  remove_inode_hugepages+0x142/0x250
+  hugetlbfs_fallocate+0x471/0x5a0
+  vfs_fallocate+0x149/0x380
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 9bf823348cd3..d288e9d9c187 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -46,6 +46,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_CS_CNT_MAX);
- #define CQSPI_DMA_SET_MASK		BIT(7)
- #define CQSPI_SUPPORT_DEVICE_RESET	BIT(8)
- #define CQSPI_DISABLE_STIG_MODE		BIT(9)
-+#define CQSPI_DISABLE_RUNTIME_PM	BIT(10)
+Hold folio lock before checking if the folio is mapped to avold race with
+migration.
+
+Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
+Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 09d4baef29cf..be4be99304bc 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -517,14 +517,16 @@ static bool remove_inode_single_folio(struct hstate *h, struct inode *inode,
  
- /* Capabilities */
- #define CQSPI_SUPPORTS_OCTAL		BIT(0)
-@@ -1468,14 +1469,17 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	int ret;
- 	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
- 	struct device *dev = &cqspi->pdev->dev;
-+	const struct cqspi_driver_platdata *ddata = of_device_get_match_data(dev);
+ 	/*
+ 	 * If folio is mapped, it was faulted in after being
+-	 * unmapped in caller.  Unmap (again) while holding
+-	 * the fault mutex.  The mutex will prevent faults
+-	 * until we finish removing the folio.
++	 * unmapped in caller or hugetlb_vmdelete_list() skips
++	 * unmapping it due to fail to grab lock.  Unmap (again)
++	 * while holding the fault mutex.  The mutex will prevent
++	 * faults until we finish removing the folio.  Hold folio
++	 * lock to guarantee no concurrent migration.
+ 	 */
++	folio_lock(folio);
+ 	if (unlikely(folio_mapped(folio)))
+ 		hugetlb_unmap_file_folio(h, mapping, folio, index);
  
- 	if (refcount_read(&cqspi->inflight_ops) == 0)
- 		return -ENODEV;
- 
--	ret = pm_runtime_resume_and_get(dev);
--	if (ret) {
--		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
--		return ret;
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		ret = pm_runtime_resume_and_get(dev);
-+		if (ret) {
-+			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
-+			return ret;
-+		}
- 	}
- 
- 	if (!refcount_read(&cqspi->refcount))
-@@ -1491,7 +1495,8 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 
- 	ret = cqspi_mem_process(mem, op);
- 
--	pm_runtime_put_autosuspend(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
-+		pm_runtime_put_autosuspend(dev);
- 
- 	if (ret)
- 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
-@@ -1985,11 +1990,12 @@ static int cqspi_probe(struct platform_device *pdev)
- 			goto probe_setup_failed;
- 	}
- 
--	pm_runtime_enable(dev);
--
--	pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
--	pm_runtime_use_autosuspend(dev);
--	pm_runtime_get_noresume(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_enable(dev);
-+		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
-+		pm_runtime_use_autosuspend(dev);
-+		pm_runtime_get_noresume(dev);
-+	}
- 
- 	ret = spi_register_controller(host);
- 	if (ret) {
-@@ -1997,12 +2003,17 @@ static int cqspi_probe(struct platform_device *pdev)
- 		goto probe_setup_failed;
- 	}
- 
--	pm_runtime_put_autosuspend(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_put_autosuspend(dev);
-+		pm_runtime_mark_last_busy(dev);
-+		pm_runtime_put_autosuspend(dev);
-+	}
- 
- 	return 0;
- probe_setup_failed:
- 	cqspi_controller_enable(cqspi, 0);
--	pm_runtime_disable(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
-+		pm_runtime_disable(dev);
- probe_reset_failed:
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
-@@ -2013,7 +2024,11 @@ static int cqspi_probe(struct platform_device *pdev)
- 
- static void cqspi_remove(struct platform_device *pdev)
- {
-+	const struct cqspi_driver_platdata *ddata;
- 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
-+	struct device *dev = &pdev->dev;
-+
-+	ddata = of_device_get_match_data(dev);
- 
- 	refcount_set(&cqspi->refcount, 0);
- 
-@@ -2026,14 +2041,17 @@ static void cqspi_remove(struct platform_device *pdev)
- 	if (cqspi->rx_chan)
- 		dma_release_channel(cqspi->rx_chan);
- 
--	if (pm_runtime_get_sync(&pdev->dev) >= 0)
--		clk_disable(cqspi->clk);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
-+		if (pm_runtime_get_sync(&pdev->dev) >= 0)
-+			clk_disable(cqspi->clk);
- 
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
- 
--	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_put_sync(&pdev->dev);
-+		pm_runtime_disable(&pdev->dev);
-+	}
- }
- 
- static int cqspi_runtime_suspend(struct device *dev)
-@@ -2112,7 +2130,8 @@ static const struct cqspi_driver_platdata socfpga_qspi = {
- 	.quirks = CQSPI_DISABLE_DAC_MODE
- 			| CQSPI_NO_SUPPORT_WR_COMPLETION
- 			| CQSPI_SLOW_SRAM
--			| CQSPI_DISABLE_STIG_MODE,
-+			| CQSPI_DISABLE_STIG_MODE
-+			| CQSPI_DISABLE_RUNTIME_PM,
- };
- 
- static const struct cqspi_driver_platdata versal_ospi = {
+-	folio_lock(folio);
+ 	/*
+ 	 * We must remove the folio from page cache before removing
+ 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
 
 
