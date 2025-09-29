@@ -1,95 +1,132 @@
-Return-Path: <stable+bounces-181956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D06BAA034
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 18:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4764EBAA23F
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 19:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7ADA1C29CE
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 16:26:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71206162860
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 17:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0283530C11F;
-	Mon, 29 Sep 2025 16:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQnM7lqH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3240430C10B;
+	Mon, 29 Sep 2025 17:20:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9A11F5847;
-	Mon, 29 Sep 2025 16:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAD7304BB8;
+	Mon, 29 Sep 2025 17:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759163167; cv=none; b=c6rjIWRLt1y6LaRJ6xKWeJP6tUJ4SuyGY+9B5czr6G55BZurmRgAQnMdS9fDqt9VxMMhAvwjQJ8HtMjc/nqoNSzRYR+u65sY60Sl79Spc5EAceAzKtARaqOzUcXp+t7uf3RLiDNQ12x8Q9wI1XTQugEcolok/3LZ1CfP62NxjSk=
+	t=1759166438; cv=none; b=CCJlEqtORc02SYJ+WK8n8x0ylXSZZ36abUMq/GO+maelrgbEWtJ4NOCEIcFCAqTK/HHldyPPFdHL+1EWGgtq4gGGh9XoPzFylpx1vnJNxyQflu1qRzeSYrPh/uteKGFhaAa2MxIzvxNvccX0+rkuj9ijPDwq1xO61RVC1NfgXpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759163167; c=relaxed/simple;
-	bh=n0if5/wobIXPyvF3KwqHu1JX8P031jZWEl37VJeix0s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=JVrNnRMAlpiVum/AKwQfejFbwB741fYX3fJm9as+6NGawmKV58xd/RxvY9x4rf+iwETdmokUPR4oqYDCeFcKjpK3gFb4uhMyp0y7h17Z/EYK7zdk1D4uvRZNv7LCZuHtOByG99dl2EAkKXZ7aowkmAAb2Ar37craQOXMKCjnhdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQnM7lqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4CAC4CEF4;
-	Mon, 29 Sep 2025 16:25:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759163167;
-	bh=n0if5/wobIXPyvF3KwqHu1JX8P031jZWEl37VJeix0s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=VQnM7lqH4fBMb/gAQxWR64StlfAtEjOmDPHwjQC5YGdqPLC89jPK3sTi3j7AIqb/3
-	 gVrprAr/vMl68WzqYgir1S6jcWc+1pFwccrQek2avmUhyOYrqfUh/EAlL+BXpu18xY
-	 pdHF4hIL8zAXLFk7olbgnFcbfwNJWibFN1NGRtPrGAfb6B9AC2YJGtHuQfRbkykS1m
-	 flexMNx98LgiGaoKjqat/OneqlffYAd3rTXkO3JBx5v+tvhOEEqv9En3ovlYHACGiA
-	 aqWGeLXMCIzrOzgNW12G2jtYbP6Uo6F4nuQkWicHM+EOntV1HEYGyTRnBrnQwtN1Xj
-	 x68VuqzZP9MsQ==
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
- bhelgaas@google.com, cassel@kernel.org, kishon@kernel.org, 
- sergio.paracuellos@gmail.com, 18255117159@163.com, jirislaby@kernel.org, 
- m-karicheri2@ti.com, santosh.shilimkar@ti.com, 
- Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- srk@ti.com
-In-Reply-To: <20250912100802.3136121-1-s-vadapalli@ti.com>
-References: <20250912100802.3136121-1-s-vadapalli@ti.com>
-Subject: Re: [PATCH 0/2] PCI: Keystone: __init and IRQ Fixes
-Message-Id: <175916315956.16065.1110296363886173087.b4-ty@kernel.org>
-Date: Mon, 29 Sep 2025 21:55:59 +0530
+	s=arc-20240116; t=1759166438; c=relaxed/simple;
+	bh=LucnvV2vMc9inXFj/pxYEy58mJflY9oqWuavF2W1VoE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U0/oCFlxdJDe8W6Ch6XyfaGll2IS3slMdFtAHrlpG57dpg272BPpqTEzCoOjgnEqCuF8HyzojTB5eSTXLJI7JIQ/KLBWbgE8qRntDRAmqpLs1MJGFhr610xXvZ7QzY1M1TrlbQwnSuVPYmKJ9nEo+Rfc989b3f7IR/EVjV0SWds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cb6t02VLnz9sS8;
+	Mon, 29 Sep 2025 19:01:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id PjXqacDyzuvU; Mon, 29 Sep 2025 19:01:44 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cb6t01lRmz9sRs;
+	Mon, 29 Sep 2025 19:01:44 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 28E228B786;
+	Mon, 29 Sep 2025 19:01:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id LLWkJrEfX4ME; Mon, 29 Sep 2025 19:01:44 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 96C498B783;
+	Mon, 29 Sep 2025 19:01:43 +0200 (CEST)
+Message-ID: <ea7cd581-d6cd-4b0d-986c-d0b43b613858@csgroup.eu>
+Date: Mon, 29 Sep 2025 19:01:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
+ ratelimiting in pci_print_aer()
+To: Breno Leitao <leitao@debian.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Jon Pan-Doh <pandoh@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+References: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-On Fri, 12 Sep 2025 15:37:57 +0530, Siddharth Vadapalli wrote:
-> This series is based on commit
-> 320475fbd590 Merge tag 'mtd/fixes-for-6.17-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux
-> of Mainline Linux.
+
+Le 29/09/2025 à 11:15, Breno Leitao a écrit :
+> Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
+> when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
+> calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
+> does not rate limit, given this is fatal.
 > 
-> The first patch in the series has been posted as a Fix in contrast to
-> its predecessor at:
-> https://lore.kernel.org/r/20250903124505.365913-10-s-vadapalli@ti.com/
-> based on the feedback provided by Jiri Slaby <jirislaby@kernel.org> at:
-> https://lore.kernel.org/r/3d3a4b52-e343-42f3-9d69-94c259812143@kernel.org/
-> Since the Fix is independent of enabling loadable module support for the
-> pci-keystone.c driver, it is being posted as a new patch.
+> This prevents a kernel crash triggered by dereferencing a NULL pointer
+> in aer_ratelimit(), ensuring safer handling of PCI devices that lack
+> AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
+> which already performs this NULL check.
 > 
-> [...]
+> Cc: stable@vger.kernel.org
+> Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> - This problem is still happening in upstream, and unfortunately no action
+>    was done in the previous discussion.
+> - Link to previous post:
+>    https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250804-aer_crash_2-v1-1-fd06562c18a4%40debian.org&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cf48f0ae03ec542e13e5408ddff38d9d9%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638947341818450358%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZzJDmrmyDpWh4JZQQzKFZVf%2BeYucLdNOr5L6tgytNPE%3D&reserved=0
+> ---
+>   drivers/pci/pcie/aer.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index e286c197d7167..55abc5e17b8b1 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
+>   
+>   static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+>   {
+> +	if (!dev->aer_info)
+> +		return 1;
+> +
 
-Applied, thanks!
+This is a static function, it cannot be called from outside aer.c . Why 
+do you need such a check ?
 
-[1/2] PCI: keystone: Use devm_request_irq() to free "ks-pcie-error-irq" on exit
-      commit: e51d05f523e43ce5d2bad957943a2b14f68078cd
-[2/2] PCI: keystone: Remove the __init macro for the ks_pcie_host_init() callback
-      commit: 860daf4ba3c034995bafa4c3756942262a9cd32d
+I a check was to be made it should be in pci_aer_init() and in fact if 
+kmalloc fails then all the probe should be made to fail.
 
-Best regards,
--- 
-Manivannan Sadhasivam <mani@kernel.org>
+>   	switch (severity) {
+>   	case AER_NONFATAL:
+>   		return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
+> 
+> ---
+> base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+> change-id: 20250801-aer_crash_2-b21cc2ef0d00
+> 
+> Best regards,
+> --
+> Breno Leitao <leitao@debian.org>
+> 
+> 
 
 
