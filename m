@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-181879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8710BA9012
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:26:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB29BA9018
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 13:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 621A11C198D
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 11:26:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB2111C19F8
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 11:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5892E8DF0;
-	Mon, 29 Sep 2025 11:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147FF2FFFA2;
+	Mon, 29 Sep 2025 11:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2RYUTfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaL4jOXf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1D4824BD
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 11:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC801922FD
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 11:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759145188; cv=none; b=QPArlVacd8keNssh1hct047NToM9lZc8jGpylOcCJOCdFiLD6wt3CH8RVDC5DMBBgQcqenBcGFaRnyDn9Y5y/iHBYdH4k+hlu069qZ6ZXgEbR/tCwEqL2cJKbpLhjgj7Jjz/OB4NwFnezdrQzcYVHVVpPupPyVk/MIHHTpXKgoo=
+	t=1759145224; cv=none; b=eu14QjJGU9qjN5I8zUTJxMNZPRxObimuxaM17l05BEVR3Xkgd9JwGC3+2IVrHRAY7GMmglGLoLIwCvsUCbFca0JhZymIR8BQJD68v8hP6UgT6CwAx49kN4KzIIq/2biRnkkq6nOV5tMf0RvV9wytKm2v1oH0k0kcjcSm5xO1Lj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759145188; c=relaxed/simple;
-	bh=/EDlaOqxBbNuUZBDS48xaWMA10bqss0PYaytM+39xIs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QE2RBmirZoi6s5AA7k/wJ5mEkDpKCtUu7Mv23xuqnn5sqxXGZbMhTJae7nvSMFVfTnTV0m9aEi4l9nXGyY5rmOGEKNAdWBEDpFhkTmSsAJM7ehrtbbCBq5RXK0n5G1PROeAGz3flvL2GGks7Nw7kInLvYG4In98znDlYcrN4pDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2RYUTfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5926C4CEF4;
-	Mon, 29 Sep 2025 11:26:27 +0000 (UTC)
+	s=arc-20240116; t=1759145224; c=relaxed/simple;
+	bh=BKB5d9iYLfs7ivaS44jsnNVPITZqU3ia+2/o48H3HEU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IICYKU+eGN+pX+i7uR1j2WyLJoCeMUeMrwaSFzawzo+Y1v+NwcA5ATjrNcarxqqTLI8VTZx4cLilM+cBrGAYEvZWruRu2gNILz/1ruTrJu3cZKcoc6WZOlQfQH7JumQdYGkzp7XZJQhPfONIHouWEi6PiXcbjKqDgP9bCGKJdUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaL4jOXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F5CC4CEF4;
+	Mon, 29 Sep 2025 11:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759145188;
-	bh=/EDlaOqxBbNuUZBDS48xaWMA10bqss0PYaytM+39xIs=;
+	s=korg; t=1759145224;
+	bh=BKB5d9iYLfs7ivaS44jsnNVPITZqU3ia+2/o48H3HEU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=x2RYUTfj+B90xAma3mzmA5Ho+ySpx6wfxR1c17brMlc0PvB0btwsb9oiqhfo1fNsi
-	 YXmBL4QJEq2IBOV7uO0S2w+XHpsm2aI3r/Zze/1UvM0Op6kaGUiGWfStbttvG4gjtf
-	 MPk2Vm/irvIV4ccjjzXSPF7ppNY5Xcgk1Iu7oEGk=
-Subject: FAILED: patch "[PATCH] i40e: fix validation of VF state in get resources" failed to apply to 5.4-stable tree
+	b=eaL4jOXfbPQPbODuUK/+aQUE1c/k+LL2paEFbAJTgN3aQIFVZ4nXT1KSoRieyMM0x
+	 Tb6X75rFVfJXxpuFIzK5btwMQJeYdOAJDKNaxYRfawhZfNxtIQRLP3YAz3uTX8GSzr
+	 S08ttahUY5kRc+a083jBXMLvavTao2KsFOmy97Yg=
+Subject: FAILED: patch "[PATCH] i40e: improve VF MAC filters accounting" failed to apply to 5.15-stable tree
 To: lukasz.czapnik@intel.com,aleksandr.loktionov@intel.com,anthony.l.nguyen@intel.com,horms@kernel.org,przemyslaw.kitszel@intel.com,rafal.romanowski@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Sep 2025 13:26:13 +0200
-Message-ID: <2025092913-monotype-pouch-f2e0@gregkh>
+Date: Mon, 29 Sep 2025 13:27:01 +0200
+Message-ID: <2025092901-doorpost-cure-351c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 877b7e6ffc23766448236e8732254534c518ba42
+git cherry-pick -x b99dd77076bd3fddac6f7f1cbfa081c38fde17f5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092913-monotype-pouch-f2e0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025092901-doorpost-cure-351c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,19 +77,20 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 877b7e6ffc23766448236e8732254534c518ba42 Mon Sep 17 00:00:00 2001
+From b99dd77076bd3fddac6f7f1cbfa081c38fde17f5 Mon Sep 17 00:00:00 2001
 From: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Date: Wed, 13 Aug 2025 12:45:15 +0200
-Subject: [PATCH] i40e: fix validation of VF state in get resources
+Date: Wed, 13 Aug 2025 12:45:18 +0200
+Subject: [PATCH] i40e: improve VF MAC filters accounting
 
-VF state I40E_VF_STATE_ACTIVE is not the only state in which
-VF is actually active so it should not be used to determine
-if a VF is allowed to obtain resources.
+When adding new VM MAC, driver checks only *active* filters in
+vsi->mac_filter_hash. Each MAC, even in non-active state is using resources.
 
-Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
-i40e_vc_get_vf_resources_msg() and cleared during reset.
+To determine number of MACs VM uses, count VSI filters in *any* state.
 
-Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
+Add i40e_count_all_filters() to simply count all filters, and rename
+i40e_count_filters() to i40e_count_active_filters() to avoid ambiguity.
+
+Fixes: cfb1d572c986 ("i40e: Add ensurance of MacVlan resources for every trusted VF")
 Cc: stable@vger.kernel.org
 Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
@@ -98,51 +99,162 @@ Reviewed-by: Simon Horman <horms@kernel.org>
 Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 49aa4497efce..801a57a925da 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -1278,7 +1278,8 @@ struct i40e_mac_filter *i40e_add_mac_filter(struct i40e_vsi *vsi,
+ 					    const u8 *macaddr);
+ int i40e_del_mac_filter(struct i40e_vsi *vsi, const u8 *macaddr);
+ bool i40e_is_vsi_in_vlan(struct i40e_vsi *vsi);
+-int i40e_count_filters(struct i40e_vsi *vsi);
++int i40e_count_all_filters(struct i40e_vsi *vsi);
++int i40e_count_active_filters(struct i40e_vsi *vsi);
+ struct i40e_mac_filter *i40e_find_mac(struct i40e_vsi *vsi, const u8 *macaddr);
+ void i40e_vlan_stripping_enable(struct i40e_vsi *vsi);
+ static inline bool i40e_is_sw_dcb(struct i40e_pf *pf)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index b14019d44b58..529d5501baac 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1243,12 +1243,30 @@ void i40e_update_stats(struct i40e_vsi *vsi)
+ }
+ 
+ /**
+- * i40e_count_filters - counts VSI mac filters
++ * i40e_count_all_filters - counts VSI MAC filters
+  * @vsi: the VSI to be searched
+  *
+- * Returns count of mac filters
+- **/
+-int i40e_count_filters(struct i40e_vsi *vsi)
++ * Return: count of MAC filters in any state.
++ */
++int i40e_count_all_filters(struct i40e_vsi *vsi)
++{
++	struct i40e_mac_filter *f;
++	struct hlist_node *h;
++	int bkt, cnt = 0;
++
++	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
++		cnt++;
++
++	return cnt;
++}
++
++/**
++ * i40e_count_active_filters - counts VSI MAC filters
++ * @vsi: the VSI to be searched
++ *
++ * Return: count of active MAC filters.
++ */
++int i40e_count_active_filters(struct i40e_vsi *vsi)
+ {
+ 	struct i40e_mac_filter *f;
+ 	struct hlist_node *h;
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index c85715f75435..5ef3dc43a8a0 100644
+index f9b2197f0942..081a4526a2f0 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1464,6 +1464,7 @@ static void i40e_trigger_vf_reset(struct i40e_vf *vf, bool flr)
- 	 * functions that may still be running at this point.
- 	 */
- 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
-+	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
+@@ -2862,24 +2862,6 @@ static int i40e_vc_get_stats_msg(struct i40e_vf *vf, u8 *msg)
+ 				      (u8 *)&stats, sizeof(stats));
+ }
  
- 	/* In the case of a VFLR, the HW has already reset the VF and we
- 	 * just need to clean up, so don't hit the VFRTRIG register.
-@@ -2130,7 +2131,10 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
- 	size_t len = 0;
- 	int ret;
- 
--	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
-+	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
+-/**
+- * i40e_can_vf_change_mac
+- * @vf: pointer to the VF info
+- *
+- * Return true if the VF is allowed to change its MAC filters, false otherwise
+- */
+-static bool i40e_can_vf_change_mac(struct i40e_vf *vf)
+-{
+-	/* If the VF MAC address has been set administratively (via the
+-	 * ndo_set_vf_mac command), then deny permission to the VF to
+-	 * add/delete unicast MAC addresses, unless the VF is trusted
+-	 */
+-	if (vf->pf_set_mac && !vf->trusted)
+-		return false;
+-
+-	return true;
+-}
+-
+ #define I40E_MAX_MACVLAN_PER_HW 3072
+ #define I40E_MAX_MACVLAN_PER_PF(num_ports) (I40E_MAX_MACVLAN_PER_HW /	\
+ 	(num_ports))
+@@ -2918,8 +2900,10 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
+ 	struct i40e_pf *pf = vf->pf;
+ 	struct i40e_vsi *vsi = pf->vsi[vf->lan_vsi_idx];
+ 	struct i40e_hw *hw = &pf->hw;
+-	int mac2add_cnt = 0;
+-	int i;
++	int i, mac_add_max, mac_add_cnt = 0;
++	bool vf_trusted;
 +
-+	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
-+	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
- 		aq_ret = -EINVAL;
- 		goto err;
- 	}
-@@ -2233,6 +2237,7 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
- 				vf->default_lan_addr.addr);
- 	}
- 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
-+	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
++	vf_trusted = test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
  
- err:
- 	/* send the response back to the VF */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index 5cf74f16f433..f558b45725c8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -41,7 +41,8 @@ enum i40e_vf_states {
- 	I40E_VF_STATE_MC_PROMISC,
- 	I40E_VF_STATE_UC_PROMISC,
- 	I40E_VF_STATE_PRE_ENABLE,
--	I40E_VF_STATE_RESETTING
-+	I40E_VF_STATE_RESETTING,
-+	I40E_VF_STATE_RESOURCES_LOADED,
- };
+ 	for (i = 0; i < al->num_elements; i++) {
+ 		struct i40e_mac_filter *f;
+@@ -2939,9 +2923,8 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
+ 		 * The VF may request to set the MAC address filter already
+ 		 * assigned to it so do not return an error in that case.
+ 		 */
+-		if (!i40e_can_vf_change_mac(vf) &&
+-		    !is_multicast_ether_addr(addr) &&
+-		    !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
++		if (!vf_trusted && !is_multicast_ether_addr(addr) &&
++		    vf->pf_set_mac && !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
+ 			dev_err(&pf->pdev->dev,
+ 				"VF attempting to override administratively set MAC address, bring down and up the VF interface to resume normal operation\n");
+ 			return -EPERM;
+@@ -2950,29 +2933,33 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
+ 		/*count filters that really will be added*/
+ 		f = i40e_find_mac(vsi, addr);
+ 		if (!f)
+-			++mac2add_cnt;
++			++mac_add_cnt;
+ 	}
  
- /* VF capabilities */
+ 	/* If this VF is not privileged, then we can't add more than a limited
+-	 * number of addresses. Check to make sure that the additions do not
+-	 * push us over the limit.
+-	 */
+-	if (!test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
+-		if ((i40e_count_filters(vsi) + mac2add_cnt) >
+-		    I40E_VC_MAX_MAC_ADDR_PER_VF) {
+-			dev_err(&pf->pdev->dev,
+-				"Cannot add more MAC addresses, VF is not trusted, switch the VF to trusted to add more functionality\n");
+-			return -EPERM;
+-		}
+-	/* If this VF is trusted, it can use more resources than untrusted.
++	 * number of addresses.
++	 *
++	 * If this VF is trusted, it can use more resources than untrusted.
+ 	 * However to ensure that every trusted VF has appropriate number of
+ 	 * resources, divide whole pool of resources per port and then across
+ 	 * all VFs.
+ 	 */
+-	} else {
+-		if ((i40e_count_filters(vsi) + mac2add_cnt) >
+-		    I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs,
+-						       hw->num_ports)) {
++	if (!vf_trusted)
++		mac_add_max = I40E_VC_MAX_MAC_ADDR_PER_VF;
++	else
++		mac_add_max = I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs, hw->num_ports);
++
++	/* VF can replace all its filters in one step, in this case mac_add_max
++	 * will be added as active and another mac_add_max will be in
++	 * a to-be-removed state. Account for that.
++	 */
++	if ((i40e_count_active_filters(vsi) + mac_add_cnt) > mac_add_max ||
++	    (i40e_count_all_filters(vsi) + mac_add_cnt) > 2 * mac_add_max) {
++		if (!vf_trusted) {
++			dev_err(&pf->pdev->dev,
++				"Cannot add more MAC addresses, VF is not trusted, switch the VF to trusted to add more functionality\n");
++			return -EPERM;
++		} else {
+ 			dev_err(&pf->pdev->dev,
+ 				"Cannot add more MAC addresses, trusted VF exhausted it's resources\n");
+ 			return -EPERM;
 
 
