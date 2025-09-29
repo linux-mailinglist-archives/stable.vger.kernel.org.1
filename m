@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-181995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE3FBAA7D6
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 21:44:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1471BAA99D
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 22:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03C4C7A2628
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 19:42:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 805FB3C7349
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 20:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F058123BD13;
-	Mon, 29 Sep 2025 19:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB7A238D32;
+	Mon, 29 Sep 2025 20:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uux/o8Ke"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qW/AcHBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBE41F1932
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 19:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09491E6DC5
+	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 20:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759175066; cv=none; b=W+rVAK6ZVpPaGGKtosuo7D5533+DQn4eVviSI2iSAjCHivhrxzZXY1JK9BE62cbjoBMTywNADURrmJnujGvyMSeQHuuc9iHafR9Q9nxnYfKEH1xEAkQCfw6SZ0VELEDqFpRvg8L7/jJx8QVMM1Y7si5CiXx43i2tdJEcGRbEuz8=
+	t=1759178067; cv=none; b=OgU1NhxvW6R9i8MK4vpCLqu9Shg5NE+1ubxEgEJ1TO8iYS1cV+AkJvbU69sHfnvP/CT6amEhy4vNTf5+NnS7ZtAARCBe04ZDRs5g9MDGj8Ob6BdJHbc5Wx9t3Fv2/fjulrI0fnDSZrYtUNGx3Apt2QJ4XauqAagLHgUoGiLOmxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759175066; c=relaxed/simple;
-	bh=HGSZjt83jpoxmc5fgQytKL6qI0qDlhDN5SsCtKioAPM=;
+	s=arc-20240116; t=1759178067; c=relaxed/simple;
+	bh=vB4XVELhidelkSiyeKdLHpEIG1/WUTBvcn7xG8J/WGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwgsF0UAWH8kdriObitR6JHord31T+6IdbVdALePWcQgD8E5fKPw43INX0PxABHE6oRSLLCEHuyajhAqDoPzfBvAi+CIGYye7U3snm0Zqu5/BVR7XCk7SZI0DZeX5IqsQHr+SYJo0EnjCD419VPJn0jAbdQdTaqoVa1J6TRI2I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uux/o8Ke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45823C4CEF4;
-	Mon, 29 Sep 2025 19:44:25 +0000 (UTC)
+	 MIME-Version; b=IQNE4kN7LeodP6TznbzoawusTy6wb+iTCaqbNDxbnlnMx9QBEdeF1Ce6LK1IBlzHbzXDQnViAoTI/uRUVbOMG6GyOG+4RwvPuCNfEZBhowiABDQL9QZdid1Ms7nGbVQ042CAVDgS1tw53tztF8JVgdr4ADvV98wn1v2RPXulqHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qW/AcHBr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F15C4CEF4;
+	Mon, 29 Sep 2025 20:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759175066;
-	bh=HGSZjt83jpoxmc5fgQytKL6qI0qDlhDN5SsCtKioAPM=;
+	s=k20201202; t=1759178066;
+	bh=vB4XVELhidelkSiyeKdLHpEIG1/WUTBvcn7xG8J/WGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uux/o8KeJBN/PokXOgyQMIPCIzwI+M9V+KKxSkUzSjVrfQ+BOEPqq0431BVaPSfxD
-	 GufrZOPSEFJM9HVs2epv9GKP1xVfKLxmolkk7am2pBK3MemPeZ8niZ4OSHPaPlO8Io
-	 5nj2xtTXtDiAg6JlAUWFQPGyy03fLOciwbbYowFAouGERmdcKdVBVfZplxJey6RKBS
-	 ZFfc7xryX03komyjsKaXyagerfLHvlQli5hoOA6cBVdqXEx4uTcSvjfjJHzeQZcQLp
-	 Ujb8m6KLds4/1g4G2AB8cSYAtPy/IrQOBhy6pRT9hTSBz7bBwK4IpBu6mkSiGdJDEZ
-	 p32cRUMhXSLbw==
+	b=qW/AcHBrmKbOesn9qR+Cw94k60pVMTxxlSJ+VBgxOAgMoYkW0R0xPvw41R4lp+UT9
+	 RJLFmP/JsbkuKLn9orfHbdsxXEhG7/v2zbBuWENu2p0DhoMjldLrPKtBreBOs4JeU/
+	 Ioxp7wGdbQWJSjUfhlMv7bbfgmKJqQ4sGOj5MaFO+EvDg9sqTP1rtHz4rZ6rln6qO7
+	 X26avP33LLJY2P51zMoPcz4ACsOEGEhEl4iSwagRpxa19aAOElOP7hAc3rYQXvGn9L
+	 3vPJVPNXYxtuWGvul2G+h4xQhhZQPlhR0r8PXzmymToqDSTpCFv/FXtgadurlYXdjg
+	 /TME77IJHctcA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jinjiang Tu <tujinjiang@huawei.com>,
@@ -51,12 +51,12 @@ Cc: Jinjiang Tu <tujinjiang@huawei.com>,
 	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mm/hugetlb: fix folio is still mapped when deleted
-Date: Mon, 29 Sep 2025 15:44:23 -0400
-Message-ID: <20250929194423.334354-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] mm/hugetlb: fix folio is still mapped when deleted
+Date: Mon, 29 Sep 2025 16:34:23 -0400
+Message-ID: <20250929203423.520483-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025092930-header-irritable-c8ed@gregkh>
-References: <2025092930-header-irritable-c8ed@gregkh>
+In-Reply-To: <2025092931-vastness-jawed-6945@gregkh>
+References: <2025092931-vastness-jawed-6945@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -117,10 +117,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index c8a5d94561ff2..3105376741865 100644
+index 6e97a54ffda12..306da7cb3d8b0 100644
 --- a/fs/hugetlbfs/inode.c
 +++ b/fs/hugetlbfs/inode.c
-@@ -519,13 +519,13 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+@@ -515,13 +515,13 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
  
  			/*
  			 * If page is mapped, it was faulted in after being
@@ -140,7 +140,7 @@ index c8a5d94561ff2..3105376741865 100644
  			if (unlikely(page_mapped(page))) {
  				BUG_ON(truncate_op);
  
-@@ -537,8 +537,6 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+@@ -533,8 +533,6 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
  					(index + 1) * pages_per_huge_page(h));
  				i_mmap_unlock_write(mapping);
  			}
