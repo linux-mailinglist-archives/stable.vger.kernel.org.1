@@ -1,149 +1,88 @@
-Return-Path: <stable+bounces-181865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71CFBA8920
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 11:16:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF76CBA8D4E
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 12:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DED3AB6C3
-	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 09:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63226189B0F0
+	for <lists+stable@lfdr.de>; Mon, 29 Sep 2025 10:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3769B286D4E;
-	Mon, 29 Sep 2025 09:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755EC2FAC0A;
+	Mon, 29 Sep 2025 10:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8iurAn0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D955286885
-	for <stable@vger.kernel.org>; Mon, 29 Sep 2025 09:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A1E2D5941;
+	Mon, 29 Sep 2025 10:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759137356; cv=none; b=fyop5iFleLC5H5LXi9TLDR8SLfweY8D0h41KFV6HVBFx/J+HpM+uTE8JzyXCu8AoM1/mH09yffIpv+MFa5hEjqi7hranBpIN7p6QoAXKlZalV54uscD7u+GXbLEYrPv+yQ9bbklwGxo2+DBRw6Qkig0JHQZEXbI1M8yi4RnEJFk=
+	t=1759140714; cv=none; b=V+vl1GA/jJ+7YpYGPtjM6gQ9gOI+Om8ik4unq9ZPHFRMbqkz8D92sMer+vXby2EIKPvyVYvBj30HrSbvL+DnE26XPmfqDu3B6Dunop2KQSNhB3Rn1QXK1LexkGu5affeLM5pkvsPYDd3e5y4L5ApZnvhp4UAc631jqON9JcgmPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759137356; c=relaxed/simple;
-	bh=R9u55K8LEYMCF9T8YoRD0SE7dnNGouw1ZbsiBle69qs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Yyk9kaZ0oyROvo9sdkx9plQrAPcDtYieGf6olIJPoJX4ZBF7Bn+vyA1ezhZfs//aGUwhEQqLFmjEWQ8DD2L5yDGfHhTOoqDhLz01Z/uk1V3Go+SAq/33s9UofvO74C77nDVHrXkz3+PyyBr+J9EEmFWxP5goUZWLP4Dm8LJUVkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b3d80891c6cso171790466b.1
-        for <stable@vger.kernel.org>; Mon, 29 Sep 2025 02:15:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759137352; x=1759742152;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S/ySJWiSpFmZf4ki4sz6ItaQY50Q4llbhd6F9+5mYqA=;
-        b=apmuh/MzIXrSfZNJ5FgwRsWskhXLSmI1EiSNS02Mkru4P16AjaF/xfPJKxQjfOyXFW
-         6bqj6QjVlch1YPkkrdsmZo4ruTx8/3gLWph2ZQ39zbN2+XWbQeR5PEtf8ujTnSsNPVUo
-         lPEd5FbIbbGTMVf6TD9iAN6vq52N/wlxLZTS8BvHzErqA+17Rmnkr+U6mjcNnqCJV+rK
-         JlZu1453oEhs8y3h5LZULjVwcuhATBTC1Iuofx6/qWVaQToL6ij741943H7q7E/HKUA2
-         bTclNf8qGuAeqgtNIy6pK4HgFk5eNo5GtPZHWoOKwvGb7YtMIwo+mNZszm5g3BVayoXe
-         3Etw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1csDOT4m/IlUmYUGcRRkgJucsakl1mAOGQu9ew+xYNpspMwl40XDA5mptkHFimyyHf4YjY5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2WRevCagoWnOB1gYNYI/U1yO32l5oZcnIYn6aULpBh0Ps6SVr
-	9njSl1I4kHjajuNkz5Rq+26K4jsyshh7T+HNNsuYv5zaLyZXaYivUcS/7kKjDA==
-X-Gm-Gg: ASbGncs2TupWNN8StP3ZMgLnCbZfe7bNdhOIhFKXvlkfR97nPzoyHO2vib69oQJuIaK
-	gqZO+oLeHF3kHjIVmfkBbkOeL060jz7jkoXHCkGUu93upmo9eOkduu4hFOv47EPDIfHSFlfQZeL
-	dvDpdKvDyvHJP4j9u6Tsfb9QYP1QKCPxfHaoRyOOo7+D387oyPg1Am82kr13tJjPqSGGOVGnBna
-	oZ9C8kYn8NB8yxXg0rij77wl/ECCut9O6xl0n5Wrxzm7ZB0Ti++ZhPYp9oa0BpguqZOpGlpYwwf
-	Q2UOG6ONonIbZQnMWgT/iBcKRK5zZS9nCbXTnlP4HiABph/Y147B7t2L7VKzpu/JzCFnv/7k6oe
-	AMCpxXjHq1NR6EhyemCBdVEeo
-X-Google-Smtp-Source: AGHT+IEC99o6I5U43x9BBzmjUVvHusJBZH+ekQ9yM0YzCDDYFnPxzInOLc7bxYYRuE1LOgqfOeyByg==
-X-Received: by 2002:a17:907:72c2:b0:b2a:10a3:7112 with SMTP id a640c23a62f3a-b354c244b09mr1746488166b.24.1759137352124;
-        Mon, 29 Sep 2025 02:15:52 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:72::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b401d3d4124sm73171066b.75.2025.09.29.02.15.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 02:15:51 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 29 Sep 2025 02:15:47 -0700
-Subject: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
- ratelimiting in pci_print_aer()
+	s=arc-20240116; t=1759140714; c=relaxed/simple;
+	bh=bappC4oStoNKCMlW7YZlHyC8czJ0rG294apAS852hhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QGg1q12AOlZE3iTcElbLkT8TlaX0X7jS2HiaKL+OelkQOdhomFaurZx+oQlhfC8KMaavDSBrYcC9VEHBLWuvelN6V9lINbsdd2ggMYChy74KlJj6dy0g2xRmkLbmJusg6aQzhWz4DQxloY5EgkDUbcxAJZV5KAwUMAzBZ7uofGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8iurAn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AC5C4CEF4;
+	Mon, 29 Sep 2025 10:11:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759140713;
+	bh=bappC4oStoNKCMlW7YZlHyC8czJ0rG294apAS852hhA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F8iurAn0431nSDnuXjWvSM2gSlIKGq/7ZQjb+DkKJnHDO0KjMf3Q4jv/nZnWpmAKR
+	 9++n+ZCLM6CqXrE82EEraKLI2ZI6eC99qOgAEHkC7LhNGTTJTEeIPdQ4zxV7TUXMV9
+	 2ZbiMz0QGCeAY+YIqkzoAsuVsczz6dedgpyxCqMl+mlundIC4VAVQg0cgo40wVkcV6
+	 edtVG/K7g4gCJfl5/npKLGsnL2GWJtG7vyJ4zFylPeesHmeZzZk/Gc8Bl8PxrpEkcc
+	 Wv1u7a4mb3CTOYzt9AfcarWeZ8yAbwrtlUxf9ygswgtjdwM6cs2/aH0LXTPinw2skd
+	 wS/sXBlvNQ1WA==
+Date: Mon, 29 Sep 2025 11:11:50 +0100
+From: Simon Horman <horms@kernel.org>
+To: Bo Sun <bo@mboxify.com>
+Cc: sgoutham@marvell.com, gakula@marvell.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] octeontx2-vf: fix bitmap leak
+Message-ID: <aNpbZkQZxa3HkrJj@horms.kernel.org>
+References: <20250927071505.915905-1-bo@mboxify.com>
+ <20250927071505.915905-2-bo@mboxify.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
-X-B4-Tracking: v=1; b=H4sIAEJO2mgC/1XNsQqDMBCA4VcJN5tyF1TEqUNdO7RjEYnJqbdou
- RRpEd+9IF06//D9GyRW4QS12UB5lSTLDLWhzECY/DyylQi1AYeuwArJetYuqE9T52zvKATHA0Z
- EyAw8lQd5H9oDbs29uV6gzQxMkl6Lfo7JSkf9efmft5IlO0Qsi9IFqnx+jtyLn0+LjtDu+/4FS
- 7EPWq8AAAA=
-X-Change-ID: 20250801-aer_crash_2-b21cc2ef0d00
-To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
- Jon Pan-Doh <pandoh@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1622; i=leitao@debian.org;
- h=from:subject:message-id; bh=R9u55K8LEYMCF9T8YoRD0SE7dnNGouw1ZbsiBle69qs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBo2k5GJj10pwZeQhabxuZAbcMVQsml8bUkcz4E+
- uow6oJeyWuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaNpORgAKCRA1o5Of/Hh3
- bernD/wLDmkL54OkzUb+m61lGMHj30To7QCHn/pKBW3LjFUzHdsfPC/WPjAtG16FZUFGQD373ko
- vqogdRC36R/Cd3umTq7Rw+Vg0rKhmqaqdfGsKmWUQyNgDI3XwmKmNnBFHfWfMjAOi8bSjsN9PNj
- Y3cML4P2gFuQGkdhAcI/Hhyc43UvRAqZB/T2R+4uz/jQdi+6Icg0qPVzMOw6/AIhg6QPStFayZl
- 9c8/LNHcphpjuH8MMz7H1PPEb5dkpotusBK20Wzakvo0rhtUhN/GDprXoILypTRlTlstl97JVSd
- 3sdj8/maZdbMNLtcT1LFNqRg40L41Sfb2X8a90aIJe2JHnRKfiy4ja/ISGeOgc9fG0D9YCA3o8z
- rZTKK7jLhgd9hrkTp77nI6/gDoiKU/g5XXHYCtA5AEiD9mFFXW+2d/3UCm9+M9VJdKbdIpxU+8y
- HFVCz2x4TKz9vr2tNea2Md9/m1GUhriYdrOKT/qj7FUpt8/dKZwsIi99BYyul1P42u4UXerh6Hn
- j5UfcNFRODwlmCq+62PsRjUZ13UWAQK5CGgS5OGj/lslHqNmocE822/74Y66pITfKBAzun4FaUz
- XOOcyLobFtZQJVjhSnHcuAureBrxPBESEGKI31kGTArSOMVm4yhrp8ilJIWkI0O9OVKyUzf1dAf
- jPjB5zbIZkILgqA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250927071505.915905-2-bo@mboxify.com>
 
-Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
-when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
-calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
-does not rate limit, given this is fatal.
+On Sat, Sep 27, 2025 at 03:15:04PM +0800, Bo Sun wrote:
+> The bitmap allocated with bitmap_zalloc() in otx2vf_probe() was not
+> released in otx2vf_remove(). Unbinding and rebinding the driver therefore
+> triggers a kmemleak warning:
+> 
+>     unreferenced object (size 8):
+>       backtrace:
+>         bitmap_zalloc
+>         otx2vf_probe
+> 
+> Call bitmap_free() in the remove path to fix the leak.
+> 
+> Fixes: efabce290151 ("octeontx2-pf: AF_XDP zero copy receive support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bo Sun <bo@mboxify.com>
 
-This prevents a kernel crash triggered by dereferencing a NULL pointer
-in aer_ratelimit(), ensuring safer handling of PCI devices that lack
-AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
-which already performs this NULL check.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Cc: stable@vger.kernel.org
-Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-- This problem is still happening in upstream, and unfortunately no action
-  was done in the previous discussion.
-- Link to previous post:
-  https://lore.kernel.org/r/20250804-aer_crash_2-v1-1-fd06562c18a4@debian.org
----
- drivers/pci/pcie/aer.c | 3 +++
- 1 file changed, 3 insertions(+)
+For reference, as a fix for code present in net, this series
+should be targeted at net, like this:
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e286c197d7167..55abc5e17b8b1 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 
- static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
- {
-+	if (!dev->aer_info)
-+		return 1;
-+
- 	switch (severity) {
- 	case AER_NONFATAL:
- 		return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
+Subject: [PATCH net 1/2] ...
 
----
-base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
-change-id: 20250801-aer_crash_2-b21cc2ef0d00
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+See: https://docs.kernel.org/process/maintainer-netdev.html
 
