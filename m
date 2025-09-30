@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D06FBADC81
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B32DBADDBA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CD7C3B1768
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B61438050D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC302FD1DD;
-	Tue, 30 Sep 2025 15:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAA7307AE5;
+	Tue, 30 Sep 2025 15:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNz5AnRN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuWugo4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEF6173;
-	Tue, 30 Sep 2025 15:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1854C2FB0BE;
+	Tue, 30 Sep 2025 15:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245628; cv=none; b=NRufUF+PNvNBvor/vqCCOuBDFaYn6SFvxUp+vpfbbetUy+f9CC9JN8bCC0esLdZhFjaZnexbKr54GJD47JbWO1ScvduAdViAZRhIfJouene/leJdGIqOf0zaqTdIrjh+LBwegLTrV0sfTgu4Sr3/n/7AHBFdGgc3AI8AxHEI8Z0=
+	t=1759246113; cv=none; b=fcbSGnNh9q0c8EzlszxE9Z538I+apCWYlL+s69TTOldxK+kGZHd6BlEc6Wn8gzzmFXruJKgf1PGlxllqE34ADScShirKfX+Gv+NSI/h0JHCLV7muv0w1Hb1La/lkjorvRGD5mxmqMyapb/A5yz0mHqr0+xFJrgqWDhG+mt78FPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245628; c=relaxed/simple;
-	bh=8/3DhC5onrZs2Umkjp8b9fSWM/L4JsvuXQeNMFDvABI=;
+	s=arc-20240116; t=1759246113; c=relaxed/simple;
+	bh=q3/KW2adbcUOzsFaoUWlQqa06Vd4giKQib/aLYHHLh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TMdpDUZQra06yR9SbF0h+rXKuHdCtYtZA9bJWD/Nhp/5yzl5Bn93LTOjrL5QtDzMfqoCe/U7UG3jLXZMtU45mZ9Acfie+tCIc1lk/QskGbKpYHr05L0xxLtT2Xx042c76uCD3sUL2JE6jlZwvvv0ZywuxdGgoehE5WX54BUO67E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNz5AnRN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082E6C4CEF0;
-	Tue, 30 Sep 2025 15:20:27 +0000 (UTC)
+	 MIME-Version; b=HsZuTJHtnsyEj+TMmhJoYdXdeMIXJaVuFA7wEi8VmvG3MgPidoK0lbESVu77JTXJ2MC8CVVE6OonOmSSZ41K5KhK6VhgMPQnIw4QeatrbzxGq7egTVsNKywk0qCaFNvzeJk0JvWsIrasKddDyHnorU/BGSX9MXXgQconX6kUS1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuWugo4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139D5C116B1;
+	Tue, 30 Sep 2025 15:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245628;
-	bh=8/3DhC5onrZs2Umkjp8b9fSWM/L4JsvuXQeNMFDvABI=;
+	s=korg; t=1759246112;
+	bh=q3/KW2adbcUOzsFaoUWlQqa06Vd4giKQib/aLYHHLh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNz5AnRNP5KyUjEJtoR2V7ToP1bFRhtyBdd3gURj0tou0qGN2LHhYHeinjKVgqcmM
-	 Y4Kjl5uO++QZeAQPJq7Fh11+Gsurdu46UaRNFox5ymiR74k6+MBIP+bxweySvtrUOh
-	 un8vLg88vr3Q6aKrOL+60D9I51sTPz/GcYnWi9sk=
+	b=nuWugo4X9b0E9IXzV8lFqTwn8BxOYB1+2DjVsUERYzgOP4wyDcx7YMFu9DlVtZGPo
+	 b7bHk0JsDLfsOJcWUu5qLVsbKbW1XBXHwl7fGXUHRc9+ajaXVg7Rh3lMrdPL393v/H
+	 G3iilIEcv4M6U9lFI16Yj1hugk55wxkZjFQ0nwgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Nirmoy Das <nirmoyd@nvidia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	dri-devel@lists.freedesktop.org, Sasha Levin <sashal@kernel.org>,
-	"Carol L Soto csoto@nvidia.com" <"mailto:csoto"@nvidia.com>
-Subject: [PATCH 6.1 65/73] drm/ast: Use msleep instead of mdelay for edid read
+	patches@lists.linux.dev,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 55/89] net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()
 Date: Tue, 30 Sep 2025 16:48:09 +0200
-Message-ID: <20250930143823.368711315@linuxfoundation.org>
+Message-ID: <20250930143824.201924766@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoyd@nvidia.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit c7c31f8dc54aa3c9b2c994b5f1ff7e740a654e97 ]
+[ Upstream commit c0054b25e2f1045f47b4954cf13a539e5e6047df ]
 
-The busy-waiting in `mdelay()` can cause CPU stalls and kernel timeouts
-during boot.
+A port added to a "single port bridge" operates as standalone, and this
+is mutually exclusive to being part of a Linux bridge. In fact,
+gswip_port_bridge_join() calls gswip_add_single_port_br() with
+add=false, i.e. removes the port from the "single port bridge" to enable
+autonomous forwarding.
 
-Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Tested-by: Carol L Soto csoto@nvidia.com<mailto:csoto@nvidia.com>
-Fixes: 594e9c04b586 ("drm/ast: Create the driver for ASPEED proprietory Display-Port")
-Cc: KuoHsiang Chou <kuohsiang_chou@aspeedtech.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.19+
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250917194346.2905522-1-nirmoyd@nvidia.com
-[ Applied change to ast_astdp_read_edid() instead of ast_astdp_read_edid_block() ]
+The blamed commit seems to have incorrectly thought that ds->ops->port_enable()
+is called one time per port, during the setup phase of the switch.
+
+However, it is actually called during the ndo_open() implementation of
+DSA user ports, which is to say that this sequence of events:
+
+1. ip link set swp0 down
+2. ip link add br0 type bridge
+3. ip link set swp0 master br0
+4. ip link set swp0 up
+
+would cause swp0 to join back the "single port bridge" which step 3 had
+just removed it from.
+
+The correct DSA hook for one-time actions per port at switch init time
+is ds->ops->port_setup(). This is what seems to match the coder's
+intention; also see the comment at the beginning of the file:
+
+ * At the initialization the driver allocates one bridge table entry for
+   ~~~~~~~~~~~~~~~~~~~~~
+ * each switch port which is used when the port is used without an
+ * explicit bridge.
+
+Fixes: 8206e0ce96b3 ("net: dsa: lantiq: Add VLAN unaware bridge offloading")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250918072142.894692-2-vladimir.oltean@nxp.com
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_dp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/lantiq_gswip.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -51,7 +51,7 @@ int ast_astdp_read_edid(struct drm_devic
- 			 *	  of right-click of mouse.
- 			 * 2. The Delays are often longer a lot when system resume from S3/S4.
- 			 */
--			mdelay(j+1);
-+			msleep(j + 1);
+diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
+index fcd4505f49252..497964a5174bf 100644
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -685,18 +685,27 @@ static int gswip_add_single_port_br(struct gswip_priv *priv, int port, bool add)
+ 	return 0;
+ }
  
- 			if (!(ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xD1,
- 							ASTDP_MCU_FW_EXECUTING) &&
+-static int gswip_port_enable(struct dsa_switch *ds, int port,
+-			     struct phy_device *phydev)
++static int gswip_port_setup(struct dsa_switch *ds, int port)
+ {
+ 	struct gswip_priv *priv = ds->priv;
+ 	int err;
+ 
+ 	if (!dsa_is_cpu_port(ds, port)) {
+-		u32 mdio_phy = 0;
+-
+ 		err = gswip_add_single_port_br(priv, port, true);
+ 		if (err)
+ 			return err;
++	}
++
++	return 0;
++}
++
++static int gswip_port_enable(struct dsa_switch *ds, int port,
++			     struct phy_device *phydev)
++{
++	struct gswip_priv *priv = ds->priv;
++
++	if (!dsa_is_cpu_port(ds, port)) {
++		u32 mdio_phy = 0;
+ 
+ 		if (phydev)
+ 			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
+@@ -1829,6 +1838,7 @@ static const struct phylink_mac_ops gswip_phylink_mac_ops = {
+ static const struct dsa_switch_ops gswip_xrx200_switch_ops = {
+ 	.get_tag_protocol	= gswip_get_tag_protocol,
+ 	.setup			= gswip_setup,
++	.port_setup		= gswip_port_setup,
+ 	.port_enable		= gswip_port_enable,
+ 	.port_disable		= gswip_port_disable,
+ 	.port_bridge_join	= gswip_port_bridge_join,
+-- 
+2.51.0
+
 
 
 
