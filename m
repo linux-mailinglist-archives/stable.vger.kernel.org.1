@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7394BBAD680
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F055BADA78
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B509E1942DF7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8828B7A762E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E776305048;
-	Tue, 30 Sep 2025 14:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645A729827E;
+	Tue, 30 Sep 2025 15:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ef4ppuqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ll1+F9AW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C840302163;
-	Tue, 30 Sep 2025 14:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ACC1F1302;
+	Tue, 30 Sep 2025 15:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244319; cv=none; b=DVZ5Et/gy5dGcUUrNUHzvYllRO7C2I+6telQ3EdU2GuKU/2iXnjnVEtZAa1+Rc6DXTCWdGNg7umUH/T+9/6PR1i7X+eEw68zH+Gem3LJRD0S8MKGXafALDifCTzGsPmKfy8c2fzAqa7aQ5YDXP1KImRCcZhadYLRwmIJIsHroSw=
+	t=1759245407; cv=none; b=mMwxcGZHHa/1mQIYfHguZhFRD+ttAgbSgdJvExsYXtpqGm83aL2a8S8Qfo6Y2ineY7RrcitpbqwMsCW6zEMB/sGhGo/EM95czeJ/jPDWe4YJdN7l0LU8qkJakMWsYGASDmZa1UDVXCxT1sUd4r+Ctfvy5gtS8bj5HfKCNcNCF4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244319; c=relaxed/simple;
-	bh=EhCNkDWmzIh5c75FiXueiS2d+j3sRXK6ccGYstEy41Q=;
+	s=arc-20240116; t=1759245407; c=relaxed/simple;
+	bh=bZM9y2c975G3WjsTpZi5nBejqpDGGv3DoAA7b734G8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sh0EOSfq7xDsJcFAiiWhDeqVlvfnrUxHxdiYkwMWTlsZt0s2fTRrqxiLgZD1HuwKkp5BYxdUmGYqGOCplOamzRJvWkfjruSnkjFqsfQUw2h/J9io1LDseXP2GozwmdULRt8hcOmO4JSkbuQq+4TMmT74TTjN+9fGTYypnPlJYTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ef4ppuqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF908C113D0;
-	Tue, 30 Sep 2025 14:58:38 +0000 (UTC)
+	 MIME-Version; b=CfkoU6FjBMgpemzgD5rRHCJsf171W1k4JH9cVgZuuQlVcC6FN+m3RRU6ZP6cfL0EDc+tahr/B2cwxhNKr3Ot6XBhKb0i4ZVaanPaSX7mnT2QSXyAugDatSNk52O9BGY04y4hESs7/UliWBCU5w8WbO0y/vjhGBbmgGp+OBaPXVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ll1+F9AW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C32C4CEF0;
+	Tue, 30 Sep 2025 15:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244319;
-	bh=EhCNkDWmzIh5c75FiXueiS2d+j3sRXK6ccGYstEy41Q=;
+	s=korg; t=1759245407;
+	bh=bZM9y2c975G3WjsTpZi5nBejqpDGGv3DoAA7b734G8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ef4ppuqmZNxG5cX06mkdxCJIh7iricZ+LaeVhcfGUbTaPXCE0weDugPQxzQ5d1tel
-	 +Q/8ZtzUs21FwgEciNyXJ3eZ0S5nDTGyavaLkUkr3P0lVeimGaYMjuD8qNJpTGpnfs
-	 2AZ+xt7wr8+Un4VEA8Q9hsdFa0xxHP99LAFIf2fg=
+	b=Ll1+F9AWFO/4vgk21XW3SCg7uEm4dh+1T7gWjnp4HMvc48eYt6/QNOTAYNHdXv9yy
+	 GToK5Xy2qrvEpvAulLwYSVEy4bhk5aekEi7jcXiRYHvQgp07Ul9Bop85qN5YlvBMil
+	 SLD6taOJyqJCnXbYDJICgWMHCGqSMREXLuiDFCpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/122] arm64: dts: imx8mp: Correct thermal sensor index
+Subject: [PATCH 6.1 01/73] ALSA: usb-audio: Fix block comments in mixer_quirks
 Date: Tue, 30 Sep 2025 16:47:05 +0200
-Message-ID: <20250930143826.841348791@linuxfoundation.org>
+Message-ID: <20250930143820.601749242@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit a50342f976d25aace73ff551845ce89406f48f35 ]
+[ Upstream commit 231225d8a20f8668b4fd6601d54a2fac0e0ab7a5 ]
 
-The TMU has two temperature measurement sites located on the chip. The
-probe 0 is located inside of the ANAMIX, while the probe 1 is located near
-the ARM core. This has been confirmed by checking with HW design team and
-checking RTL code.
+Address a couple of comment formatting issues indicated by
+checkpatch.pl:
 
-So correct the {cpu,soc}-thermal sensor index.
+  WARNING: Block comments use a trailing */ on a separate line
 
-Fixes: 30cdd62dce6b ("arm64: dts: imx8mp: Add thermal zones support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-4-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer_quirks.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 0186b3992b95f..8b02ead72a88c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -142,7 +142,7 @@
- 		cpu-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 0>;
-+			thermal-sensors = <&tmu 1>;
- 			trips {
- 				cpu_alert0: trip0 {
- 					temperature = <85000>;
-@@ -172,7 +172,7 @@
- 		soc-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 1>;
-+			thermal-sensors = <&tmu 0>;
- 			trips {
- 				soc_alert0: trip0 {
- 					temperature = <85000>;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 68c82e344d3ba..4ce470e291b25 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -76,7 +76,8 @@ static int snd_create_std_mono_ctl_offset(struct usb_mixer_interface *mixer,
+ 	cval->idx_off = idx_off;
+ 
+ 	/* get_min_max() is called only for integer volumes later,
+-	 * so provide a short-cut for booleans */
++	 * so provide a short-cut for booleans
++	 */
+ 	cval->min = 0;
+ 	cval->max = 1;
+ 	cval->res = 0;
+@@ -3546,7 +3547,8 @@ static void snd_dragonfly_quirk_db_scale(struct usb_mixer_interface *mixer,
+ 					 struct snd_kcontrol *kctl)
+ {
+ 	/* Approximation using 10 ranges based on output measurement on hw v1.2.
+-	 * This seems close to the cubic mapping e.g. alsamixer uses. */
++	 * This seems close to the cubic mapping e.g. alsamixer uses.
++	 */
+ 	static const DECLARE_TLV_DB_RANGE(scale,
+ 		 0,  1, TLV_DB_MINMAX_ITEM(-5300, -4970),
+ 		 2,  5, TLV_DB_MINMAX_ITEM(-4710, -4160),
 -- 
 2.51.0
 
