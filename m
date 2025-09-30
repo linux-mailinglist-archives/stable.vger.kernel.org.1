@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903ADBADD83
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DE0BADA74
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30DA41945ADB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED6D1927176
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BBD3054C5;
-	Tue, 30 Sep 2025 15:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B15C27B328;
+	Tue, 30 Sep 2025 15:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RU8JNqTf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNx0eiN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837742032D;
-	Tue, 30 Sep 2025 15:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC38B1F4C8E;
+	Tue, 30 Sep 2025 15:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246079; cv=none; b=f+W7052nIKVizDtsGG+8ggqrs+DPyEjmvWTElBIf1qU+BVFTHlJ2NTsh5N/9qghcJPNVgYE23cHHN1S7AIQAbPycpdr8+ErfKed/jhGRRuJKpqw0Uej3fchqCT8fD8FTyaqPEgcR9JcymOHXzcH662Pxs9gCLg3gpWbpKj8DkIo=
+	t=1759245378; cv=none; b=NDQbYu31M1w6051N1UnScGowfpwk8Z5xLF16mdiGaqhh1+B5tp8sX+oArT93tC/LnCf7agKo2bQNqZiDKXwueGhn5un+aQuuofjhlVbRlUvNakZO+la3fQ0UIXO7/3LgfXr/oGbhcT2In+ry01KLiXBNki/7KR6FqENlpWsratI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246079; c=relaxed/simple;
-	bh=CFvWTAlaodFbE0o2Hq9TmUBVoeowRhnyKEmGwY8Vkq8=;
+	s=arc-20240116; t=1759245378; c=relaxed/simple;
+	bh=9bbeo31F/v9Vc6I6J6QOiFxN6UvnESYiQJsfPm32j+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KI0mlRbaEJTmMuwVj+HRllGW9y9ZxADqYeNQmoq26g5uwRTdscis92HuujBFe/qBloMFazFf4q7gjk1SvUFimQRWD5nWr/3DZGyXoXHbUHXKJhn5kzNdtx9Uk+MCeLRMGYrviizTbrwcDS7h55USePlVN1s48c95xXXRsrrVAaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RU8JNqTf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B115EC4CEF0;
-	Tue, 30 Sep 2025 15:27:58 +0000 (UTC)
+	 MIME-Version; b=rh8SN31oBoFfPNq8uCtdQ2XPbPuXR0+DFJ/s16N75YDaFFlWrA3Oe9CSNMPLa/9TostGELJhhwnMbVqsZTD/Q7w3KwGRpwntrPWkIykM+oIANBN+0Q2Ex6k9RtJIlMmz06QRiQVFRXaCSUtCFQOLoN1eXfHeW0o4M35bDk+AoqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNx0eiN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296C6C4CEF0;
+	Tue, 30 Sep 2025 15:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246079;
-	bh=CFvWTAlaodFbE0o2Hq9TmUBVoeowRhnyKEmGwY8Vkq8=;
+	s=korg; t=1759245378;
+	bh=9bbeo31F/v9Vc6I6J6QOiFxN6UvnESYiQJsfPm32j+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RU8JNqTfAeji2W+qcr+e6L0XhxV864NELBuZGZ5sKYN1i3GmPGY6pRosmvD4d6wRE
-	 z39OxEGw8cHJq6Jas5dMlh2ZJRjZYvbyI7PENrU+adEwYLiinJisGUEWPCe20H75Fl
-	 9wS6qD9Z53UL1rkEMl/iasa4FHr49CmRLrH4meLc=
+	b=sNx0eiN39J6AmQ54gKXK9oGFcQXwpxe5jODcx+G3+XusjmLGIVhEAFW9xJqu4KXmC
+	 dVsggvPrCuzFnUDqjXbEdzN8g2zgfhRHkxheCM1fQfOJ3nD+Zixrtv8aC6ZhZTUDw4
+	 1vdB12XJjkB5dJE5XsyZbwDhP4uMevxc8eawRGps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Justin Bronder <jsbronder@cold-front.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 46/89] net/smc: fix warning in smc_rx_splice() when calling get_page()
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 150/151] i40e: increase max descriptors for XL710
 Date: Tue, 30 Sep 2025 16:48:00 +0200
-Message-ID: <20250930143823.829462057@linuxfoundation.org>
+Message-ID: <20250930143833.580627102@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sidraya Jayagond <sidraya@linux.ibm.com>
+From: Justin Bronder <jsbronder@cold-front.org>
 
-[ Upstream commit a35c04de2565db191726b5741e6b66a35002c652 ]
+[ Upstream commit aa6908ca3bd1e713fd6cd8d7193a008f060bf7d9 ]
 
-smc_lo_register_dmb() allocates DMB buffers with kzalloc(), which are
-later passed to get_page() in smc_rx_splice(). Since kmalloc memory is
-not page-backed, this triggers WARN_ON_ONCE() in get_page() and prevents
-holding a refcount on the buffer. This can lead to use-after-free if
-the memory is released before splice_to_pipe() completes.
+In Tables 8-12 and 8-22 in the X710/XXV710/XL710 datasheet, the QLEN
+description states that the maximum size of the descriptor queue is 8k
+minus 32, or 8160.
 
-Use folio_alloc() instead, ensuring DMBs are page-backed and safe for
-get_page().
-
-WARNING: CPU: 18 PID: 12152 at ./include/linux/mm.h:1330 smc_rx_splice+0xaf8/0xe20 [smc]
-CPU: 18 UID: 0 PID: 12152 Comm: smcapp Kdump: loaded Not tainted 6.17.0-rc3-11705-g9cf4672ecfee #10 NONE
-Hardware name: IBM 3931 A01 704 (z/VM 7.4.0)
-Krnl PSW : 0704e00180000000 000793161032696c (smc_rx_splice+0xafc/0xe20 [smc])
-           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
-Krnl GPRS: 0000000000000000 001cee80007d3001 00077400000000f8 0000000000000005
-           0000000000000001 001cee80007d3006 0007740000001000 001c000000000000
-           000000009b0c99e0 0000000000001000 001c0000000000f8 001c000000000000
-           000003ffcc6f7c88 0007740003e98000 0007931600000005 000792969b2ff7b8
-Krnl Code: 0007931610326960: af000000		mc	0,0
-           0007931610326964: a7f4ff43		brc	15,00079316103267ea
-          #0007931610326968: af000000		mc	0,0
-          >000793161032696c: a7f4ff3f		brc	15,00079316103267ea
-           0007931610326970: e320f1000004	lg	%r2,256(%r15)
-           0007931610326976: c0e53fd1b5f5	brasl	%r14,000793168fd5d560
-           000793161032697c: a7f4fbb5		brc	15,00079316103260e6
-           0007931610326980: b904002b		lgr	%r2,%r11
-Call Trace:
- smc_rx_splice+0xafc/0xe20 [smc]
- smc_rx_splice+0x756/0xe20 [smc])
- smc_rx_recvmsg+0xa74/0xe00 [smc]
- smc_splice_read+0x1ce/0x3b0 [smc]
- sock_splice_read+0xa2/0xf0
- do_splice_read+0x198/0x240
- splice_file_to_pipe+0x7e/0x110
- do_splice+0x59e/0xde0
- __do_splice+0x11a/0x2d0
- __s390x_sys_splice+0x140/0x1f0
- __do_syscall+0x122/0x280
- system_call+0x6e/0x90
-Last Breaking-Event-Address:
-smc_rx_splice+0x960/0xe20 [smc]
----[ end trace 0000000000000000 ]---
-
-Fixes: f7a22071dbf3 ("net/smc: implement DMB-related operations of loopback-ism")
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Signed-off-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-Link: https://patch.msgid.link/20250917184220.801066-1-sidraya@linux.ibm.com
+Signed-off-by: Justin Bronder <jsbronder@cold-front.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20231113231047.548659-2-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 55d225670def ("i40e: add validation for ring_len param")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/smc_loopback.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h         |    1 +
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c |   25 +++++++++++++++++++------
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/net/smc/smc_loopback.c b/net/smc/smc_loopback.c
-index 3c5f64ca41153..85f0b7853b173 100644
---- a/net/smc/smc_loopback.c
-+++ b/net/smc/smc_loopback.c
-@@ -56,6 +56,7 @@ static int smc_lo_register_dmb(struct smcd_dev *smcd, struct smcd_dmb *dmb,
- {
- 	struct smc_lo_dmb_node *dmb_node, *tmp_node;
- 	struct smc_lo_dev *ldev = smcd->priv;
-+	struct folio *folio;
- 	int sba_idx, rc;
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -50,6 +50,7 @@
+ #define I40E_MAX_VEB			16
  
- 	/* check space for new dmb */
-@@ -74,13 +75,16 @@ static int smc_lo_register_dmb(struct smcd_dev *smcd, struct smcd_dmb *dmb,
+ #define I40E_MAX_NUM_DESCRIPTORS	4096
++#define I40E_MAX_NUM_DESCRIPTORS_XL710	8160
+ #define I40E_MAX_CSR_SPACE		(4 * 1024 * 1024 - 64 * 1024)
+ #define I40E_DEFAULT_NUM_DESCRIPTORS	512
+ #define I40E_REQ_DESCRIPTOR_MULTIPLE	32
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -1918,6 +1918,18 @@ static void i40e_get_drvinfo(struct net_
+ 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
+ }
  
- 	dmb_node->sba_idx = sba_idx;
- 	dmb_node->len = dmb->dmb_len;
--	dmb_node->cpu_addr = kzalloc(dmb_node->len, GFP_KERNEL |
--				     __GFP_NOWARN | __GFP_NORETRY |
--				     __GFP_NOMEMALLOC);
--	if (!dmb_node->cpu_addr) {
++static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
++{
++	struct i40e_hw *hw = &pf->hw;
 +
-+	/* not critical; fail under memory pressure and fallback to TCP */
-+	folio = folio_alloc(GFP_KERNEL | __GFP_NOWARN | __GFP_NOMEMALLOC |
-+			    __GFP_NORETRY | __GFP_ZERO,
-+			    get_order(dmb_node->len));
-+	if (!folio) {
- 		rc = -ENOMEM;
- 		goto err_node;
++	switch (hw->mac.type) {
++	case I40E_MAC_XL710:
++		return I40E_MAX_NUM_DESCRIPTORS_XL710;
++	default:
++		return I40E_MAX_NUM_DESCRIPTORS;
++	}
++}
++
+ static void i40e_get_ringparam(struct net_device *netdev,
+ 			       struct ethtool_ringparam *ring)
+ {
+@@ -1925,8 +1937,8 @@ static void i40e_get_ringparam(struct ne
+ 	struct i40e_pf *pf = np->vsi->back;
+ 	struct i40e_vsi *vsi = pf->vsi[pf->lan_vsi];
+ 
+-	ring->rx_max_pending = I40E_MAX_NUM_DESCRIPTORS;
+-	ring->tx_max_pending = I40E_MAX_NUM_DESCRIPTORS;
++	ring->rx_max_pending = i40e_get_max_num_descriptors(pf);
++	ring->tx_max_pending = i40e_get_max_num_descriptors(pf);
+ 	ring->rx_mini_max_pending = 0;
+ 	ring->rx_jumbo_max_pending = 0;
+ 	ring->rx_pending = vsi->rx_rings[0]->count;
+@@ -1949,12 +1961,12 @@ static bool i40e_active_tx_ring_index(st
+ static int i40e_set_ringparam(struct net_device *netdev,
+ 			      struct ethtool_ringparam *ring)
+ {
++	u32 new_rx_count, new_tx_count, max_num_descriptors;
+ 	struct i40e_ring *tx_rings = NULL, *rx_rings = NULL;
+ 	struct i40e_netdev_priv *np = netdev_priv(netdev);
+ 	struct i40e_hw *hw = &np->vsi->back->hw;
+ 	struct i40e_vsi *vsi = np->vsi;
+ 	struct i40e_pf *pf = vsi->back;
+-	u32 new_rx_count, new_tx_count;
+ 	u16 tx_alloc_queue_pairs;
+ 	int timeout = 50;
+ 	int i, err = 0;
+@@ -1962,14 +1974,15 @@ static int i40e_set_ringparam(struct net
+ 	if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
+ 		return -EINVAL;
+ 
+-	if (ring->tx_pending > I40E_MAX_NUM_DESCRIPTORS ||
++	max_num_descriptors = i40e_get_max_num_descriptors(pf);
++	if (ring->tx_pending > max_num_descriptors ||
+ 	    ring->tx_pending < I40E_MIN_NUM_DESCRIPTORS ||
+-	    ring->rx_pending > I40E_MAX_NUM_DESCRIPTORS ||
++	    ring->rx_pending > max_num_descriptors ||
+ 	    ring->rx_pending < I40E_MIN_NUM_DESCRIPTORS) {
+ 		netdev_info(netdev,
+ 			    "Descriptors requested (Tx: %d / Rx: %d) out of range [%d-%d]\n",
+ 			    ring->tx_pending, ring->rx_pending,
+-			    I40E_MIN_NUM_DESCRIPTORS, I40E_MAX_NUM_DESCRIPTORS);
++			    I40E_MIN_NUM_DESCRIPTORS, max_num_descriptors);
+ 		return -EINVAL;
  	}
-+	dmb_node->cpu_addr = folio_address(folio);
- 	dmb_node->dma_addr = SMC_DMA_ADDR_INVALID;
- 	refcount_set(&dmb_node->refcnt, 1);
  
-@@ -122,7 +126,7 @@ static void __smc_lo_unregister_dmb(struct smc_lo_dev *ldev,
- 	write_unlock_bh(&ldev->dmb_ht_lock);
- 
- 	clear_bit(dmb_node->sba_idx, ldev->sba_idx_mask);
--	kvfree(dmb_node->cpu_addr);
-+	folio_put(virt_to_folio(dmb_node->cpu_addr));
- 	kfree(dmb_node);
- 
- 	if (atomic_dec_and_test(&ldev->dmb_cnt))
--- 
-2.51.0
-
 
 
 
