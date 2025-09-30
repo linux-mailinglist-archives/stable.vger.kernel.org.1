@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59143BAD6A1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742FDBADAC5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9681188CF61
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 905394A7144
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42808305070;
-	Tue, 30 Sep 2025 14:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE2F3043B8;
+	Tue, 30 Sep 2025 15:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzjMzVTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zA+cOwAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C2E304989;
-	Tue, 30 Sep 2025 14:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEB22FD1DD;
+	Tue, 30 Sep 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244356; cv=none; b=q77d4IWbOmDS9+06vfS12RX34FO2Ntivv6nFMMQtlnxq/zK1Sv43oDNJvfQdqqsupxeAVzgvYOfm8TQ9G5oGXaXvjGAN9KNT9i2c6BwB+JGGdRnmbfX1l48BuvQAC6JVXcO0S/+Z/xpyDq+KHaMlqYb7OzhXdH/qcfPrJixd+eM=
+	t=1759245232; cv=none; b=FXhjkK9KHMUGYOBai2lsz6h0NJt5OhV8JNdoPialz6kx4MRM5oLm+z6lH0LmuxCkrfEmDvqIjDVtUt3xaV7xETiX18Y0EsquEdRY0UMYF6P7DujHWecMcn6G4eMyzHy3Ol9YSkpk7mqA1pdLiOmwbQD/vNl6WuceQ2T8P13xrSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244356; c=relaxed/simple;
-	bh=cdJgmf+YTU/dno3+gxBofMsouAZPffTmU3IKTg5sgrc=;
+	s=arc-20240116; t=1759245232; c=relaxed/simple;
+	bh=uG8CNH6Jw2cL13/XqRGbIfTX70EtUR0Tpt5Bvln4E4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocSV0XiEESXV8bwJcS+I2tC8DWI1MPmRBo2Nqv1wgqv19eIYojvB0g+9UtkQBNp+FA8Q2dr4FJ1Dy8nHf3yiTxeK61Ufz6/CWPgPyOVuKDuAX3DDxc3NVv0I4ASn5grbCgXYizGkZEXwzh8qdchWog7pykZ0jZ8q/tfjFgzCg0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzjMzVTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6092EC4CEF0;
-	Tue, 30 Sep 2025 14:59:15 +0000 (UTC)
+	 MIME-Version; b=Wz4HiVdWTLtpfaqb5l54gEdQnWYkWy7spM3+YHXcFhDTa/QjIQ0ctPsKrGaFoSfqnpuTtBsODF0jSWs1aDcWzJsN+/LLNor51JB2shrJgSrbHklH20YKbKRUnkLLs5+91nFjz9V40nPDFuk07Q5KWTyaSOSJ8A5ZOimHZbVHUWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zA+cOwAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DC5C4CEF0;
+	Tue, 30 Sep 2025 15:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244355;
-	bh=cdJgmf+YTU/dno3+gxBofMsouAZPffTmU3IKTg5sgrc=;
+	s=korg; t=1759245232;
+	bh=uG8CNH6Jw2cL13/XqRGbIfTX70EtUR0Tpt5Bvln4E4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzjMzVTEwRfJGY1ht+jR7RpAQfvtKBACNSGZUXoRbJaadpumTXq+eFHxYWZjI8Dmi
-	 kZY3EbhU7vmuIb7KRG16wc4GRaNJGNhhzyxi2feiqZ5iPIAr5Qti4UUyOCDLhE2V3q
-	 /qmSWzs9HdrPNHcmo0VJsuDKj0ySE9rgcf4WzCo0=
+	b=zA+cOwADSFWCwZQcbQiaZ570OJ5p6NWB8YhNdrzWEDaeEF/4A5lsF/KXFKbWE2Oqz
+	 XxJEKm1MVyWMYkRVAFsin8ma8ovzkjEFIkfn2jKSvWs/G9/+gRI5ZiBrrtuNIMrxjN
+	 sFRgIOskzP8F01JZ9NTFaVxjuRFbKSCpfjxjQFhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/122] nexthop: Emit a notification when a nexthop is added
-Date: Tue, 30 Sep 2025 16:47:15 +0200
-Message-ID: <20250930143827.238279309@linuxfoundation.org>
+Subject: [PATCH 5.15 106/151] ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
+Date: Tue, 30 Sep 2025 16:47:16 +0200
+Message-ID: <20250930143831.828915519@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 732d167bf5f53a8c1e8c53cf7dbffe2a13f63752 ]
+[ Upstream commit f2d6d660e8fd5f4467e80743f82119201e67fa9c ]
 
-Emit a notification in the nexthop notification chain when a new nexthop
-is added (not replaced). The nexthop can either be a new group or a
-single nexthop.
+Handle report from checkpatch.pl:
 
-The notification is sent after the nexthop is inserted into the
-red-black tree, as listeners might need to callback into the nexthop
-code with the nexthop ID in order to mark the nexthop as offloaded.
+  CHECK: Comparison to NULL could be written "t->name"
 
-A 'REPLACE' notification is emitted instead of 'ADD' as the distinction
-between the two is not important for in-kernel listeners. In case the
-listener is not familiar with the encoded nexthop ID, it can simply
-treat it as a new one. This is also consistent with the route offload
-API.
-
-Changes since RFC:
-* Reword commit message
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 390b3a300d78 ("nexthop: Forbid FDB status change while nexthop is in a group")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-7-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/nexthop.h | 3 ++-
- net/ipv4/nexthop.c    | 6 +++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ sound/usb/mixer_quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/nexthop.h b/include/net/nexthop.h
-index fd87d727aa217..aa19809bfd733 100644
---- a/include/net/nexthop.h
-+++ b/include/net/nexthop.h
-@@ -105,7 +105,8 @@ struct nexthop {
- };
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 4ab57ef56330d..3156bb50f9ff6 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -126,7 +126,7 @@ static int snd_create_std_mono_table(struct usb_mixer_interface *mixer,
+ {
+ 	int err;
  
- enum nexthop_event_type {
--	NEXTHOP_EVENT_DEL
-+	NEXTHOP_EVENT_DEL,
-+	NEXTHOP_EVENT_REPLACE,
- };
- 
- int register_nexthop_notifier(struct net *net, struct notifier_block *nb);
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 0653aa518648c..3063aa1914b1f 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -1191,7 +1191,11 @@ static int insert_nexthop(struct net *net, struct nexthop *new_nh,
- 
- 	rb_link_node_rcu(&new_nh->rb_node, parent, pp);
- 	rb_insert_color(&new_nh->rb_node, root);
--	rc = 0;
-+
-+	rc = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new_nh, extack);
-+	if (rc)
-+		rb_erase(&new_nh->rb_node, &net->nexthop.rb_root);
-+
- out:
- 	if (!rc) {
- 		nh_base_seq_inc(net);
+-	while (t->name != NULL) {
++	while (t->name) {
+ 		err = snd_create_std_mono_ctl(mixer, t->unitid, t->control,
+ 				t->cmask, t->val_type, t->name, t->tlv_callback);
+ 		if (err < 0)
 -- 
 2.51.0
 
