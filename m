@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74B8BAD5E4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CECBBAD4C7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E63C324CD5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:56:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 175771883210
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5013043C4;
-	Tue, 30 Sep 2025 14:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C3F2F60D8;
+	Tue, 30 Sep 2025 14:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiFf91sg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNxY9a+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07B51AB6F1;
-	Tue, 30 Sep 2025 14:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B83A4D8CE;
+	Tue, 30 Sep 2025 14:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244209; cv=none; b=NNjFLArnnZLSdD57FFHY5CU4iJXAwKjsfeu5NvtpKw4CFPie8TFuuH4j8xU6EvyDyq1K5sdlngdthDC+P7YwCS+eBuSADAgDB1V+sgwRPUhU3YksVg1eAVQNUVHm17+odiqSvFg6n87M1xAmc4fFN217f0VgH8TamvKv/qvqA6k=
+	t=1759243937; cv=none; b=CWLYjC70+q5DPZWl1ITcz591SGkMVsw7NvbEEDvP7KDmIULj27whwpZ1c08aaoepr0y+AfBFlEHmPPOycvkaWZSVIRLNHvpO9wCzt+HIRAX9n8B39NEr1WhZrsPGiNNW6BM83rxs3Q05+Qiuz6YZtj+9dD6eNxIne/txWkVT7yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244209; c=relaxed/simple;
-	bh=OBWAc3Jnn05/Dur3l8GQb8k5rq/se3J/R99nTpTaFIU=;
+	s=arc-20240116; t=1759243937; c=relaxed/simple;
+	bh=wafWAn49hK+DHJmClqd5Tuy3Val+h4UBJmCWBmjc5Do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8/YOFU8JUtrdCbFgP0VypzQCHdyj3qj4db2OkhJ4JqhToLTpxsgWARF+PYvvKc52zcY3v9TOZCNq1Msv4w1NR4Uuo0q5vkxEsHvt45vrPuT7l4YDAQw/QPcFgFjKfCRYDK7d+NbfXpgBxFE3FBx1KjGD6r+ku56ip/IrkrMbhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiFf91sg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4434BC113D0;
-	Tue, 30 Sep 2025 14:56:49 +0000 (UTC)
+	 MIME-Version; b=ofsI7ee5BFmznxEW4kruRlE0kc+J9PDEv+ImMxisrdSxFSix5mdwpcHeBNPrTyU6f80J03qQ31/1sO2L8Y8oC8SqeHkf5liDu5AnrDkhwd6c1fd2yJQp8I2RVyf10nb2q8jGRjhsK2DbpsCvm5/lD5UZdmGgrdbAnecjaQNrn5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNxY9a+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE7BC4CEF0;
+	Tue, 30 Sep 2025 14:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244209;
-	bh=OBWAc3Jnn05/Dur3l8GQb8k5rq/se3J/R99nTpTaFIU=;
+	s=korg; t=1759243937;
+	bh=wafWAn49hK+DHJmClqd5Tuy3Val+h4UBJmCWBmjc5Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiFf91sgWP1yfKXyGtEcbnjLlyK7XAtqghnd8L4KLLJ6+EHJUlkPu0TRFxKi1DAIy
-	 hMJKYlv9z96ThrPfXFulOGlWfCNlsUiDxU+hvs9Qwp87OZxdHm2d+qjZbuGYW6FR/+
-	 U1BspeR6rt436YN4otDzvs0OS1/qAyVclbNFk8FU=
+	b=SNxY9a+FwKVb8tk/Dc9scu5m+dfQeY3oesropQztQUPUG+klypVgQoh7XjHyp7dDk
+	 e30gRnA+W68DvOfWJuFjDjJ5KE3RdIDXkl5JfP96CJQzYrQ/01DZQtoUmhX1TGoNUL
+	 RG8UtKuCLkf9hPkFONwdR/U0ZxdTwb4RhSgrXi+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 061/122] mmc: mvsdio: Fix dma_unmap_sg() nents value
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 30/81] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
 Date: Tue, 30 Sep 2025 16:46:32 +0200
-Message-ID: <20250930143825.494480948@linuxfoundation.org>
+Message-ID: <20250930143820.928129957@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-commit 8ab2f1c35669bff7d7ed1bb16bf5cc989b3e2e17 upstream.
+[ Upstream commit d613f53c83ec47089c4e25859d5e8e0359f6f8da ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+When I did memory failure tests, below panic occurs:
 
-Fixes: 236caa7cc351 ("mmc: SDIO driver for Marvell SoCs")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered.  This can be reproduced by below steps:
+
+1.Offline memory block:
+
+ echo offline > /sys/devices/system/memory/memory12/state
+
+2.Get offlined memory pfn:
+
+ page-types -b n -rlN
+
+3.Write pfn to unpoison-pfn
+
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+
+This scenario can be identified by pfn_to_online_page() returning NULL.
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
+Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mvsdio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memory-failure.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/mmc/host/mvsdio.c
-+++ b/drivers/mmc/host/mvsdio.c
-@@ -292,7 +292,7 @@ static u32 mvsd_finish_data(struct mvsd_
- 		host->pio_ptr = NULL;
- 		host->pio_size = 0;
- 	} else {
--		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_frags,
-+		dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
- 			     mmc_get_dma_dir(data));
- 	}
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1543,10 +1543,9 @@ int unpoison_memory(unsigned long pfn)
+ 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					DEFAULT_RATELIMIT_BURST);
  
+-	if (!pfn_valid(pfn))
+-		return -ENXIO;
+-
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	page = compound_head(p);
+ 
+ 	if (!PageHWPoison(p)) {
 
 
 
