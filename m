@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4356BAD8FC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55CBABADAF8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 891BF3B0980
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F2DC4A804D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3806E2FCBFC;
-	Tue, 30 Sep 2025 15:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D55430594A;
+	Tue, 30 Sep 2025 15:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVeK0Oyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNbxP4aS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C65266B65;
-	Tue, 30 Sep 2025 15:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF23F304964;
+	Tue, 30 Sep 2025 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244813; cv=none; b=iCjT4UGx1uz0CHyZw3JcB5zZ5c72tofuljy80zSxAdgCqgkMMKRfOn5C77cTmuyPJPm5HkbIpcAcWO6TkSenb9Huyuw/nlAFoll2fGLtmdT02HNa6s9L0P0b68OwQMmy42803IZkqbHjo57ypWD8HXNDFOS6RrdUYCV94a+5RfQ=
+	t=1759245258; cv=none; b=VTUXhKOohC08S/V9voBiz00QvZuu4abaDA7eeaweHlXAtXAxd+HwzCMIuhRlnawv3wu64W2sVJlbGFBH+Ct63HD1RoHfdKfhwtQ0w7CDb1bHNmGPqOWTHdZD7DMAcZhVInXqRrYgHEvC/GHyF0XPF27w0YFLaIhYlQYAF6i3Bmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244813; c=relaxed/simple;
-	bh=dpJ1iJACEavZerUzgvbG6Dr5CPDxrmf+aqggLjIIVq0=;
+	s=arc-20240116; t=1759245258; c=relaxed/simple;
+	bh=IP63tLB69ByKwVPkXB9jxjE/RKe2h1VXdvpvJn9ArBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQJ6SkN5wCVbUTdnWJ534Sn0wTJK2qmIpQe2ITwrv6gNlNA/OvhMItf1Jj1iYhfUWph5AnYGQQPaW7Ew1TPAxsmh+0lf+4kNUwSqWVwzTwVLzNTfC0MdHpyD88xWmjw0Jg0g+Cdv/pvoAfmr0M4GXA4Uweege5jKY1dhfWs/BJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVeK0Oyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286E8C4CEF0;
-	Tue, 30 Sep 2025 15:06:51 +0000 (UTC)
+	 MIME-Version; b=jqB+Pu5QwRA2qP9IyU40oltuEcVMNBnoWDqFkm3o61kqE8TYH6yfawqDKRsnrVe9aTcrXstiSAT9MCOA01BUEBkO752n1McLyg6ZpvcIJd0AvOg6HMskE4fdbg6eBYCZdbvRbG1okhfq5IMx0In1nQEglGRxLDZpstH5Siw9LQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNbxP4aS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2594CC4CEF0;
+	Tue, 30 Sep 2025 15:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244812;
-	bh=dpJ1iJACEavZerUzgvbG6Dr5CPDxrmf+aqggLjIIVq0=;
+	s=korg; t=1759245258;
+	bh=IP63tLB69ByKwVPkXB9jxjE/RKe2h1VXdvpvJn9ArBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVeK0Oybj3Lw1inc8TmNDBkLiRXZb4PZj+DQm9MegyfBd2INZesqSnUu+zDBeJHtl
-	 c5bSBNKkpPHUl9Fdx8RAEDRGCx7i2zTRbvn8gzTh+/YNYBrY3lrx5kiTZs2I5wYk2b
-	 xCQHkGDJ5HjwqzNFighVmvAPehj8uFe/8ZXTDa6c=
+	b=bNbxP4aSV6SHcnDsw7j5r4HptC1p5TkzIRUiQvd69uyWOsSP7BMHyjtW+L6Yi3CE9
+	 5AKI33r4PliFXlQSClZhyDY6vjf7xTjpDRauz0tRClXT8w1SU920Onhvvifd/Z4BSa
+	 fvKq6LHqeT3Egj2AXG57LO+/ccV1PqWEa61Jpopk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 120/143] drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume
+	Christian Loehle <christian.loehle@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 114/151] cpufreq: Initialize cpufreq-based invariance before subsys
 Date: Tue, 30 Sep 2025 16:47:24 +0200
-Message-ID: <20250930143836.014468142@linuxfoundation.org>
+Message-ID: <20250930143832.149861669@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Christian Loehle <christian.loehle@arm.com>
 
-commit 44b0fed0a5947f54fd14255cd0766df952267bc5 upstream.
+[ Upstream commit 8ffe28b4e8d8b18cb2f2933410322c24f039d5d6 ]
 
-On clients that utilize AMD_PRIVATE_COLOR properties for HDR support,
-brightness sliders can include a hardware controlled portion and a
-gamma-based portion. This is the case on the Steam Deck OLED when using
-gamescope with Steam as a client.
+commit 2a6c72738706 ("cpufreq: Initialize cpufreq-based
+frequency-invariance later") postponed the frequency invariance
+initialization to avoid disabling it in the error case.
+This isn't locking safe, instead move the initialization up before
+the subsys interface is registered (which will rebuild the
+sched_domains) and add the corresponding disable on the error path.
 
-When a user sets a brightness level while HDR is active, the gamma-based
-portion and/or hardware portion are adjusted to achieve the desired
-brightness. However, when a modeset takes place while the gamma-based
-portion is in-use, restoring the hardware brightness level overrides the
-user's overall brightness level and results in a mismatch between what
-the slider reports and the display's current brightness.
+Observed lockdep without this patch:
+[    0.989686] ======================================================
+[    0.989688] WARNING: possible circular locking dependency detected
+[    0.989690] 6.17.0-rc4-cix-build+ #31 Tainted: G S
+[    0.989691] ------------------------------------------------------
+[    0.989692] swapper/0/1 is trying to acquire lock:
+[    0.989693] ffff800082ada7f8 (sched_energy_mutex){+.+.}-{4:4}, at: rebuild_sched_domains_energy+0x30/0x58
+[    0.989705]
+               but task is already holding lock:
+[    0.989706] ffff000088c89bc8 (&policy->rwsem){+.+.}-{4:4}, at: cpufreq_online+0x7f8/0xbe0
+[    0.989713]
+               which lock already depends on the new lock.
 
-To avoid overriding gamma-based brightness, only restore HW backlight
-level after boot or resume. This ensures that the backlight level is
-set correctly after the DC layer resets it while avoiding interference
-with subsequent modesets.
-
-Fixes: 7875afafba84 ("drm/amd/display: Fix brightness level not retained over reboot")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4551
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a490c8d77d500b5981e739be3d59c60cfe382536)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a6c72738706 ("cpufreq: Initialize cpufreq-based frequency-invariance later")
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   12 ++++++++----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |    7 +++++++
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/cpufreq/cpufreq.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2035,6 +2035,8 @@ static int amdgpu_dm_init(struct amdgpu_
- 
- 	dc_hardware_init(adev->dm.dc);
- 
-+	adev->dm.restore_backlight = true;
-+
- 	adev->dm.hpd_rx_offload_wq = hpd_rx_irq_create_workqueue(adev);
- 	if (!adev->dm.hpd_rx_offload_wq) {
- 		drm_err(adev_to_drm(adev), "amdgpu: failed to create hpd rx offload workqueue.\n");
-@@ -3396,6 +3398,7 @@ static int dm_resume(struct amdgpu_ip_bl
- 		dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D0);
- 
- 		dc_resume(dm->dc);
-+		adev->dm.restore_backlight = true;
- 
- 		amdgpu_dm_irq_resume_early(adev);
- 
-@@ -9801,7 +9804,6 @@ static void amdgpu_dm_commit_streams(str
- 	bool mode_set_reset_required = false;
- 	u32 i;
- 	struct dc_commit_streams_params params = {dc_state->streams, dc_state->stream_count};
--	bool set_backlight_level = false;
- 
- 	/* Disable writeback */
- 	for_each_old_connector_in_state(state, connector, old_con_state, i) {
-@@ -9921,7 +9923,6 @@ static void amdgpu_dm_commit_streams(str
- 			acrtc->hw_mode = new_crtc_state->mode;
- 			crtc->hwmode = new_crtc_state->mode;
- 			mode_set_reset_required = true;
--			set_backlight_level = true;
- 		} else if (modereset_required(new_crtc_state)) {
- 			drm_dbg_atomic(dev,
- 				       "Atomic commit: RESET. crtc id %d:[%p]\n",
-@@ -9978,13 +9979,16 @@ static void amdgpu_dm_commit_streams(str
- 	 * to fix a flicker issue.
- 	 * It will cause the dm->actual_brightness is not the current panel brightness
- 	 * level. (the dm->brightness is the correct panel level)
--	 * So we set the backlight level with dm->brightness value after set mode
-+	 * So we set the backlight level with dm->brightness value after initial
-+	 * set mode. Use restore_backlight flag to avoid setting backlight level
-+	 * for every subsequent mode set.
- 	 */
--	if (set_backlight_level) {
-+	if (dm->restore_backlight) {
- 		for (i = 0; i < dm->num_of_edps; i++) {
- 			if (dm->backlight_dev[i])
- 				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
- 		}
-+		dm->restore_backlight = false;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index addd20bf6be08..060a85e5a7d3f 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2853,6 +2853,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 			goto err_null_driver;
  	}
- }
  
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -611,6 +611,13 @@ struct amdgpu_display_manager {
- 	u32 actual_brightness[AMDGPU_DM_MAX_NUM_EDP];
- 
- 	/**
-+	 * @restore_backlight:
-+	 *
-+	 * Flag to indicate whether to restore backlight after modeset.
++	/*
++	 * Mark support for the scheduler's frequency invariance engine for
++	 * drivers that implement target(), target_index() or fast_switch().
 +	 */
-+	bool restore_backlight;
++	if (!cpufreq_driver->setpolicy) {
++		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
++		pr_debug("cpufreq: supports frequency invariance\n");
++	}
 +
-+	/**
- 	 * @aux_hpd_discon_quirk:
- 	 *
- 	 * quirk for hpd discon while aux is on-going.
+ 	ret = subsys_interface_register(&cpufreq_interface);
+ 	if (ret)
+ 		goto err_boost_unreg;
+@@ -2874,21 +2883,14 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	hp_online = ret;
+ 	ret = 0;
+ 
+-	/*
+-	 * Mark support for the scheduler's frequency invariance engine for
+-	 * drivers that implement target(), target_index() or fast_switch().
+-	 */
+-	if (!cpufreq_driver->setpolicy) {
+-		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
+-		pr_debug("supports frequency invariance");
+-	}
+-
+ 	pr_debug("driver %s up and running\n", driver_data->name);
+ 	goto out;
+ 
+ err_if_unreg:
+ 	subsys_interface_unregister(&cpufreq_interface);
+ err_boost_unreg:
++	if (!cpufreq_driver->setpolicy)
++		static_branch_disable_cpuslocked(&cpufreq_freq_invariance);
+ 	remove_boost_sysfs_file();
+ err_null_driver:
+ 	write_lock_irqsave(&cpufreq_driver_lock, flags);
+-- 
+2.51.0
+
 
 
 
