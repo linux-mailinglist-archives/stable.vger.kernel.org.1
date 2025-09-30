@@ -1,77 +1,56 @@
-Return-Path: <stable+bounces-182594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD21CBADB2B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D30BBAD884
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3A03268E1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A14194181D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9CD302CD6;
-	Tue, 30 Sep 2025 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686CD2FFDE6;
+	Tue, 30 Sep 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imkmT+dr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/uhxhzY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD341F1302;
-	Tue, 30 Sep 2025 15:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596F266B65;
+	Tue, 30 Sep 2025 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245453; cv=none; b=rjpU+Brba1CUTDJ6t6plT+p7b2vdnl9lH/rmKpup82ahyPot0qCYidId9MZ1QHaIYCVGrCNl5go+IsCtQTzmKhxI3XkJ+S03fFmZUr7XpGr2D4Cmd2oPzkw0OFkXFaL5kpYCnPYRhhzujizYw1c5cfp4+FpW7TcDUuEvW2+jft0=
+	t=1759244876; cv=none; b=TSNDetukvtgYCHu/DMzsGy0UfSz50vdiCy/RDxcH+N5QGe1l2v3Z/3UhY01r1BCBxm0TEKXVZTJMq2/NrqhsyDhiMAxq9gxdLmRDEOOUkEm3cz5me+QQlQ8zIzI86ZpiqH8y7KuRZk7YtUOvgY5+4uwsGI7ao9Mdz/jy0rnF2No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245453; c=relaxed/simple;
-	bh=G530X0mYvlorVGf5Gr7JY8hFlaVnyzpz0L1E+vU9NQQ=;
+	s=arc-20240116; t=1759244876; c=relaxed/simple;
+	bh=8ztnTFc2p9c0gpstLeYkPtnp7EqMdekFCFZ/s0UOzHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6JqlasdbRzududtMLgXcvA4gyJRbB0LiyHCqBoQOAvuPGv21opkP16+ESbVoWfeSkv6LsxqA5BCwe/WfVwlx6hecv4RaJwIdsNputpDRIoANo5wloDHho/xJNZ3YAP3bDQ328EOXCbE22dxVPX+CiYMURXpTLnsMjI7dpIZzOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imkmT+dr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D276C4CEF0;
-	Tue, 30 Sep 2025 15:17:32 +0000 (UTC)
+	 MIME-Version; b=gB5vTSPfJiX4XO640dRxa09/K+nnbngWnkKn4Nh0jA6Cw/P6Ln7w/RbI8UDbP4iG+sFvcYMKwjNUt0wf1qR+teyM6VB5BM14dVsCvEKy/e+uZcEt58E1ACwCjQzjEXjSEzOHWCTt62TgXTm9YbTdblqKhpweagW0UPs+MK5lHVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/uhxhzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDDCC4CEF0;
+	Tue, 30 Sep 2025 15:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245452;
-	bh=G530X0mYvlorVGf5Gr7JY8hFlaVnyzpz0L1E+vU9NQQ=;
+	s=korg; t=1759244876;
+	bh=8ztnTFc2p9c0gpstLeYkPtnp7EqMdekFCFZ/s0UOzHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imkmT+drFAV4R0JXFtpWgkN45iwFahhHoVvhg3cdcP2j9+vYjJtiExm0VAglYQDUq
-	 NcaJFbT4epYAtwKPBdh8raHkRGUGvgnPmL454EawneZWgeHUtLAyV1OR+W3vIlpwOb
-	 YtGEigalRjSfMhalEYA+/VzOSh/YScNhDxj2Tlqw=
+	b=1/uhxhzY1iUe3Hctmvk2fp8GmAAp9gpqPd09H8eW3keGXaCcVWjt1tIw8eXxIgKVy
+	 UPC8t1wymRO1xMSwpPrNpEQngTC8WOlgx1NbUw+7AurHITZlsDuD3Y7m0ZEn+lr4aj
+	 1Lnj5KTIyzak3DMnkV+7JKHCWCApTWSSYHb4A4fE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/73] mm: folio_may_be_lru_cached() unless folio_test_large()
-Date: Tue, 30 Sep 2025 16:47:26 +0200
-Message-ID: <20250930143821.489861292@linuxfoundation.org>
+	Jon Kohler <jon@nutanix.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.16 123/143] Revert "vhost/net: Defer TX queue re-enable until after sendmsg"
+Date: Tue, 30 Sep 2025 16:47:27 +0200
+Message-ID: <20250930143836.135168563@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,139 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 ]
+commit 4174152771bf0d014d58f7d7e148bb0c8830fe53 upstream.
 
-mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
-large folio is added: so collect_longterm_unpinnable_folios() just wastes
-effort when calling lru_add_drain[_all]() on a large folio.
+This reverts commit 8c2e6b26ffe243be1e78f5a4bfb1a857d6e6f6d6. It tries
+to defer the notification enabling by moving the logic out of the loop
+after the vhost_tx_batch() when nothing new is spotted. This will
+bring side effects as the new logic would be reused for several other
+error conditions.
 
-But although there is good reason not to batch up PMD-sized folios, we
-might well benefit from batching a small number of low-order mTHPs (though
-unclear how that "small number" limitation will be implemented).
+One example is the IOTLB: when there's an IOTLB miss, get_tx_bufs()
+might return -EAGAIN and exit the loop and see there's still available
+buffers, so it will queue the tx work again until userspace feed the
+IOTLB entry correctly. This will slowdown the tx processing and
+trigger the TX watchdog in the guest as reported in
+https://lkml.org/lkml/2025/9/10/1596.
 
-So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
-insulate those particular checks from future change.  Name preferred to
-"folio_is_batchable" because large folios can well be put on a batch: it's
-just the per-CPU LRU caches, drained much later, which need care.
+To fix, revert the change. A follow up patch will bring the performance
+back in a safe way.
 
-Marked for stable, to counter the increase in lru_add_drain_all()s from
-"mm/gup: check ref_count instead of lru before migration".
-
-Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
-Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Resolved conflicts in mm/swap.c; left "page" parts of mm/mlock.c as is ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jon Kohler <jon@nutanix.com>
+Cc: stable@vger.kernel.org
+Fixes: 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until after sendmsg")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20250917063045.2042-2-jasowang@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/swap.h | 10 ++++++++++
- mm/gup.c             |  4 ++--
- mm/mlock.c           |  2 +-
- mm/swap.c            |  4 ++--
- 4 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/vhost/net.c |   30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index add47f43e568e..3eecf97dfbb8d 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -392,6 +392,16 @@ void lru_cache_add(struct page *);
- void mark_page_accessed(struct page *);
- void folio_mark_accessed(struct folio *);
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -760,10 +760,10 @@ static void handle_tx_copy(struct vhost_
+ 	int err;
+ 	int sent_pkts = 0;
+ 	bool sock_can_batch = (sock->sk->sk_sndbuf == INT_MAX);
+-	bool busyloop_intr;
  
-+static inline bool folio_may_be_lru_cached(struct folio *folio)
-+{
-+	/*
-+	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
-+	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
-+	 * will be sensible, but nobody has implemented and tested that yet.
-+	 */
-+	return !folio_test_large(folio);
-+}
+ 	do {
+-		busyloop_intr = false;
++		bool busyloop_intr = false;
 +
- extern atomic_t lru_disable_count;
+ 		if (nvq->done_idx == VHOST_NET_BATCH)
+ 			vhost_tx_batch(net, nvq, sock, &msg);
  
- static inline bool lru_cache_disabled(void)
-diff --git a/mm/gup.c b/mm/gup.c
-index e1f125af9c844..b02993c9a8cdf 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1990,13 +1990,13 @@ static unsigned long collect_longterm_unpinnable_pages(
- 			continue;
+@@ -774,10 +774,13 @@ static void handle_tx_copy(struct vhost_
+ 			break;
+ 		/* Nothing new?  Wait for eventfd to tell us they refilled. */
+ 		if (head == vq->num) {
+-			/* Kicks are disabled at this point, break loop and
+-			 * process any remaining batched packets. Queue will
+-			 * be re-enabled afterwards.
+-			 */
++			if (unlikely(busyloop_intr)) {
++				vhost_poll_queue(&vq->poll);
++			} else if (unlikely(vhost_enable_notify(&net->dev,
++								vq))) {
++				vhost_disable_notify(&net->dev, vq);
++				continue;
++			}
+ 			break;
  		}
  
--		if (drained == 0 &&
-+		if (drained == 0 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain();
- 			drained = 1;
- 		}
--		if (drained == 1 &&
-+		if (drained == 1 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
-diff --git a/mm/mlock.c b/mm/mlock.c
-index 7032f6dd0ce19..3bf9e1d263da4 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -256,7 +256,7 @@ void mlock_folio(struct folio *folio)
+@@ -827,22 +830,7 @@ done:
+ 		++nvq->done_idx;
+ 	} while (likely(!vhost_exceeds_weight(vq, ++sent_pkts, total_len)));
  
- 	folio_get(folio);
- 	if (!pagevec_add(pvec, mlock_lru(&folio->page)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_pagevec(pvec);
- 	local_unlock(&mlock_pvec.lock);
+-	/* Kicks are still disabled, dispatch any remaining batched msgs. */
+ 	vhost_tx_batch(net, nvq, sock, &msg);
+-
+-	if (unlikely(busyloop_intr))
+-		/* If interrupted while doing busy polling, requeue the
+-		 * handler to be fair handle_rx as well as other tasks
+-		 * waiting on cpu.
+-		 */
+-		vhost_poll_queue(&vq->poll);
+-	else
+-		/* All of our work has been completed; however, before
+-		 * leaving the TX handler, do one last check for work,
+-		 * and requeue handler if necessary. If there is no work,
+-		 * queue will be reenabled.
+-		 */
+-		vhost_net_busy_poll_try_queue(net, vq);
  }
-diff --git a/mm/swap.c b/mm/swap.c
-index 85aa04fc48a67..e0fdf25350002 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -249,8 +249,8 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- static void folio_batch_add_and_move(struct folio_batch *fbatch,
- 		struct folio *folio, move_fn_t move_fn)
- {
--	if (folio_batch_add(fbatch, folio) && !folio_test_large(folio) &&
--	    !lru_cache_disabled())
-+	if (folio_batch_add(fbatch, folio) &&
-+	    folio_may_be_lru_cached(folio) && !lru_cache_disabled())
- 		return;
- 	folio_batch_move_lru(fbatch, move_fn);
- }
--- 
-2.51.0
-
+ 
+ static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
 
 
 
