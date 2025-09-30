@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-182837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345DABADE4E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4804BADE1F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4D1194615C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:31:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED45B3BEBA8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65934537E9;
-	Tue, 30 Sep 2025 15:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFD9276046;
+	Tue, 30 Sep 2025 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmoXeiMa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTgjqakL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211D6155C82;
-	Tue, 30 Sep 2025 15:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6993C465;
+	Tue, 30 Sep 2025 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246239; cv=none; b=lhsBOAJXAmx5Wkxo3eH47cGPRg0dsTc9P+Gajsa0vYUYF9NSWTTjPosMtj/qwyfsVRcg1zFr86U7q09KUKx8jRkLVHArMxwhXzDCNsbbymqJegWq1Iv77LEM7FYEooSXFq8MUjf7LzpXeK8MYE4f6uB+PkRwTUUuubdk+Z5eu38=
+	t=1759246165; cv=none; b=pYGOBC9i0NeOlNx1mz5e97UMxi+i2dREEFAiBx9LiFjjwF9NR7iWVEuDxjLuQ4W1Aog1vqUOJvQEX8+0pO1LrHYmhsVrpkKbzlX5HkKWdqSP9QC7yyUQUOefsbQY7H3dyp2EMEIlmYTSW/Ffr0n1yr7myrcwPW9QCVrS0hG5R/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246239; c=relaxed/simple;
-	bh=LXxdTSitdDHpMCIZR60xPi9fSeS+Lx2AddacifcdDqQ=;
+	s=arc-20240116; t=1759246165; c=relaxed/simple;
+	bh=20I2FaF1mhMmYRgl9fjEkUJKjgtalInRnP43biReI9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ow2uaBQFIQ4LsGQV1or1mZ+RPfIPQK0KiO4f5DCvhflirbE1JneTxkpszaNhRfHHtp735FZc+DYqCOlvsqSjreGTKPcG45vyPetMvlOelu+ltX1glpRhayH+KdHgQl8uoPboQvkY/rC6c20/1Bhc1dg522Ib4ScWApW7jjk98nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmoXeiMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92793C4CEF0;
-	Tue, 30 Sep 2025 15:30:38 +0000 (UTC)
+	 MIME-Version; b=LDIYx+agZn6bx61HB7OlBwpIXuTUZPq68XQ7x4FUPmUz1z9wUA9xJTQlJprCVsGQAIjyefaq/bWUER9cTqfyTXapKKw8NwJP8tH/oKOvK8ChUJtyuvmZW431LBVy4+zGyi5Kj86fkpqOMG6r6CYvJhXkjV1bWQ/YeEmTS4LeXkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTgjqakL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDBFC4CEF0;
+	Tue, 30 Sep 2025 15:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246239;
-	bh=LXxdTSitdDHpMCIZR60xPi9fSeS+Lx2AddacifcdDqQ=;
+	s=korg; t=1759246165;
+	bh=20I2FaF1mhMmYRgl9fjEkUJKjgtalInRnP43biReI9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmoXeiMaLvQ2KkQsx/xJw0DQls/k5WOcwdeaRR2dbTM/MqT++Vcg+hV5+RZBJ4OLH
-	 aIQaBF+H/uuJSgRziFPjyZy3gjujTYYBqJJb4ROwKYKMCLlIbtJuTD8pYpVttjuLdW
-	 IfD3+tEHqJs54DtJkxACXmK3unmRsgk5cITP9Hqk=
+	b=dTgjqakLrf4MBtXBFxrto5X3TQl4KY8pftf4qZc6oHFoten/pMT9lKVFtlTC97zfP
+	 s8vT00lSs+mIQcSjoKV4La+MKVRe4Ot6E9uJn/0aKXVU7Cx0lc5r92Yd+GbL6WEL2p
+	 TEP2m9TN3VOD1jyh/dZ/jlLh6u+KxrtnBjy+gEoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lee <dany97@live.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 64/89] platform/x86: lg-laptop: Fix WMAB call in fan_mode_store()
-Date: Tue, 30 Sep 2025 16:48:18 +0200
-Message-ID: <20250930143824.561580215@linuxfoundation.org>
+Subject: [PATCH 6.12 65/89] smb: client: fix wrong index reference in smb2_compound_op()
+Date: Tue, 30 Sep 2025 16:48:19 +0200
+Message-ID: <20250930143824.601884685@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
 References: <20250930143821.852512002@linuxfoundation.org>
@@ -60,143 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lee <dany97@live.ca>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-[ Upstream commit 3ed17349f18774c24505b0c21dfbd3cc4f126518 ]
+[ Upstream commit fbe2dc6a9c7318f7263f5e4d50f6272b931c5756 ]
 
-When WMAB is called to set the fan mode, the new mode is read from either
-bits 0-1 or bits 4-5 (depending on the value of some other EC register).
-Thus when WMAB is called with bits 4-5 zeroed and called again with
-bits 0-1 zeroed, the second call undoes the effect of the first call.
-This causes writes to /sys/devices/platform/lg-laptop/fan_mode to have
-no effect (and causes reads to always report a status of zero).
+In smb2_compound_op(), the loop that processes each command's response
+uses wrong indices when accessing response bufferes.
 
-Fix this by calling WMAB once, with the mode set in bits 0,1 and 4,5.
-When the fan mode is returned from WMAB it always has this form, so
-there is no need to preserve the other bits.  As a bonus, the driver
-now supports the "Performance" fan mode seen in the LG-provided Windows
-control app, which provides less aggressive CPU throttling but louder
-fan noise and shorter battery life.
+This incorrect indexing leads to improper handling of command results.
+Also, if incorrectly computed index is greather than or equal to
+MAX_COMPOUND, it can cause out-of-bounds accesses.
 
-Also, correct the documentation to reflect that 0 corresponds to the
-default mode (what the Windows app calls "Optimal") and 1 corresponds
-to the silent mode.
-
-Fixes: dbf0c5a6b1f8 ("platform/x86: Add LG Gram laptop special features driver")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=204913#c4
-Signed-off-by: Daniel Lee <dany97@live.ca>
-Link: https://patch.msgid.link/MN2PR06MB55989CB10E91C8DA00EE868DDC1CA@MN2PR06MB5598.namprd06.prod.outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 3681c74d342d ("smb: client: handle lack of EA support in smb2_query_path_info()") # 6.14
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../admin-guide/laptops/lg-laptop.rst         |  4 +--
- drivers/platform/x86/lg-laptop.c              | 34 ++++++++-----------
- 2 files changed, 16 insertions(+), 22 deletions(-)
+ fs/smb/client/smb2inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/laptops/lg-laptop.rst b/Documentation/admin-guide/laptops/lg-laptop.rst
-index 67fd6932cef4f..c4dd534f91edd 100644
---- a/Documentation/admin-guide/laptops/lg-laptop.rst
-+++ b/Documentation/admin-guide/laptops/lg-laptop.rst
-@@ -48,8 +48,8 @@ This value is reset to 100 when the kernel boots.
- Fan mode
- --------
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index b51ccfb884394..104a563dc317f 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -641,7 +641,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
  
--Writing 1/0 to /sys/devices/platform/lg-laptop/fan_mode disables/enables
--the fan silent mode.
-+Writing 0/1/2 to /sys/devices/platform/lg-laptop/fan_mode sets fan mode to
-+Optimal/Silent/Performance respectively.
+ 	tmp_rc = rc;
+ 	for (i = 0; i < num_cmds; i++) {
+-		char *buf = rsp_iov[i + i].iov_base;
++		char *buf = rsp_iov[i + 1].iov_base;
  
- 
- USB charge
-diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
-index 4b57102c7f627..6af6cf477c5b5 100644
---- a/drivers/platform/x86/lg-laptop.c
-+++ b/drivers/platform/x86/lg-laptop.c
-@@ -8,6 +8,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/device.h>
- #include <linux/dev_printk.h>
-@@ -75,6 +76,9 @@ MODULE_PARM_DESC(fw_debug, "Enable printing of firmware debug messages");
- #define WMBB_USB_CHARGE 0x10B
- #define WMBB_BATT_LIMIT 0x10C
- 
-+#define FAN_MODE_LOWER GENMASK(1, 0)
-+#define FAN_MODE_UPPER GENMASK(5, 4)
-+
- #define PLATFORM_NAME   "lg-laptop"
- 
- MODULE_ALIAS("wmi:" WMI_EVENT_GUID0);
-@@ -274,29 +278,19 @@ static ssize_t fan_mode_store(struct device *dev,
- 			      struct device_attribute *attr,
- 			      const char *buffer, size_t count)
- {
--	bool value;
-+	unsigned long value;
- 	union acpi_object *r;
--	u32 m;
- 	int ret;
- 
--	ret = kstrtobool(buffer, &value);
-+	ret = kstrtoul(buffer, 10, &value);
- 	if (ret)
- 		return ret;
-+	if (value >= 3)
-+		return -EINVAL;
- 
--	r = lg_wmab(dev, WM_FAN_MODE, WM_GET, 0);
--	if (!r)
--		return -EIO;
--
--	if (r->type != ACPI_TYPE_INTEGER) {
--		kfree(r);
--		return -EIO;
--	}
--
--	m = r->integer.value;
--	kfree(r);
--	r = lg_wmab(dev, WM_FAN_MODE, WM_SET, (m & 0xffffff0f) | (value << 4));
--	kfree(r);
--	r = lg_wmab(dev, WM_FAN_MODE, WM_SET, (m & 0xfffffff0) | value);
-+	r = lg_wmab(dev, WM_FAN_MODE, WM_SET,
-+		FIELD_PREP(FAN_MODE_LOWER, value) |
-+		FIELD_PREP(FAN_MODE_UPPER, value));
- 	kfree(r);
- 
- 	return count;
-@@ -305,7 +299,7 @@ static ssize_t fan_mode_store(struct device *dev,
- static ssize_t fan_mode_show(struct device *dev,
- 			     struct device_attribute *attr, char *buffer)
- {
--	unsigned int status;
-+	unsigned int mode;
- 	union acpi_object *r;
- 
- 	r = lg_wmab(dev, WM_FAN_MODE, WM_GET, 0);
-@@ -317,10 +311,10 @@ static ssize_t fan_mode_show(struct device *dev,
- 		return -EIO;
- 	}
- 
--	status = r->integer.value & 0x01;
-+	mode = FIELD_GET(FAN_MODE_LOWER, r->integer.value);
- 	kfree(r);
- 
--	return sysfs_emit(buffer, "%d\n", status);
-+	return sysfs_emit(buffer, "%d\n", mode);
- }
- 
- static ssize_t usb_charge_store(struct device *dev,
+ 		if (buf && resp_buftype[i + 1] != CIFS_NO_BUFFER)
+ 			rc = server->ops->map_error(buf, false);
 -- 
 2.51.0
 
