@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-182646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC6BBADBA4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A08DBADC8A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4011C4801
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E917119452A1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE77303C93;
-	Tue, 30 Sep 2025 15:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C432FC87A;
+	Tue, 30 Sep 2025 15:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIWgL80r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jstqFTUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A51205E3B;
-	Tue, 30 Sep 2025 15:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0C716A956;
+	Tue, 30 Sep 2025 15:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245625; cv=none; b=u5UBZXHBiwdL+3TQ2Tsm2TTBFcGfO/+R+9khnOncXYkRCHZBghu2rtIypSfHrXdltnQXzgg+UcHm/jM4/ctQiyGTshf7ZFkQCCXXkXSJ/ZGt9DDk5/E2eRd9gLcTZE8600txOUG4gUb13sz4GFuKgZqPVGJ0SytmGk46LsLkc8I=
+	t=1759245853; cv=none; b=OOwsGN/NbnBljGMMfFy2a0dcURHgOuDtxoOUfNk5k95LCDS+PeC/mD9mNeBc/g2YnsyhH5n1OFc1lvNWLYq0T9GtqNuEmZxPmthBJ/i6KMYcUD1ZnCMjRNJDN0uA9ltkI77qSwhV/K470OxLbUoIWIXarmFPkKdCtOW+fGnqhR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245625; c=relaxed/simple;
-	bh=OXsDbxOHGPnr8cpxS7MRCZ5/PkICXGf0r+roPMaUbzM=;
+	s=arc-20240116; t=1759245853; c=relaxed/simple;
+	bh=fzF81w2NBWRKQfaro8xtwpdLF6fmhXtNrWoC/bfSBTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7imc+gn63xFDmkjAmAoE2amobGFeN+scl/PuZZtz2COdFGbpsc5nlTjaNWpEyORMkbgdA4fglbnhZNrmvxtVp6f0OgbFTbO7Y40BGkhKbOIfWFEN6RYV+JEnvnbh6g2WlziPnn2gk3pw4uZtiSMyaaZ3dKKNMdJhxlRgRo6hEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIWgL80r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9194C4CEF0;
-	Tue, 30 Sep 2025 15:20:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XDKDWELVCKOuP5YyktxxLU2+mbZKV0lJhPJO2SLy2fuYwzY+plL75c2ikSmmrwtGL7+8TWy8bD/mJRu2Zw9Zl/l82fK3PQXr4vRAq1LHHz2VHq67BlBEdYXsU9SeeMTh6x6rtMBIwdwHDeFD8sNjD4HATP0Ur5RhvpHqM+72TZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jstqFTUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDC1C4CEF0;
+	Tue, 30 Sep 2025 15:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245625;
-	bh=OXsDbxOHGPnr8cpxS7MRCZ5/PkICXGf0r+roPMaUbzM=;
+	s=korg; t=1759245849;
+	bh=fzF81w2NBWRKQfaro8xtwpdLF6fmhXtNrWoC/bfSBTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIWgL80r4F9NN2Aokg+MCmXA6ILcs8yUzj7XEXCGHGEolFYR5a3nIHAP/uDdea84d
-	 78s7ONGqyp//TVwENKO7cW5IgA8MviVSVQoY9XZoSQgs3or7bbqBYfoAX4fYxl/RKd
-	 JCYmBqbpTtEM5dY1wFfLNIIJm1fKZQYr9VlfCbss=
+	b=jstqFTUdGb3zDY3HMRMvKIknr5xJLIuEAmCFMMbs03iv6e/NBl0BgPMTu0xw2clIz
+	 D7G1fyI5fwSvKjlR7aJW36s3sn6SpAVYLKGWIZ+pCRTMRF/TzGKkDBxdh33SpaxeqO
+	 gtFO+9GezNKGIdOGZOCZ5X9eFcdxlZYqPxNIdefg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Laight <David.Laight@aculab.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.1 64/73] minmax: avoid overly complicated constant expressions in VM code
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	George Kennedy <george.kennedy@oracle.com>,
+	syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com,
+	Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Qianqiang Liu <qianqiang.liu@163.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.6 69/91] fbcon: fix integer overflow in fbcon_do_set_font
 Date: Tue, 30 Sep 2025 16:48:08 +0200
-Message-ID: <20250930143823.326190160@linuxfoundation.org>
+Message-ID: <20250930143824.050293077@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +68,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 3a7e02c040b130b5545e4b115aada7bacd80a2b6 ]
+commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe upstream.
 
-The minmax infrastructure is overkill for simple constants, and can
-cause huge expansions because those simple constants are then used by
-other things.
+Fix integer overflow vulnerabilities in fbcon_do_set_font() where font
+size calculations could overflow when handling user-controlled font
+parameters.
 
-For example, 'pageblock_order' is a core VM constant, but because it was
-implemented using 'min_t()' and all the type-checking that involves, it
-actually expanded to something like 2.5kB of preprocessor noise.
+The vulnerabilities occur when:
+1. CALC_FONTSZ(h, pitch, charcount) performs h * pith * charcount
+   multiplication with user-controlled values that can overflow.
+2. FONT_EXTRA_WORDS * sizeof(int) + size addition can also overflow
+3. This results in smaller allocations than expected, leading to buffer
+   overflows during font data copying.
 
-And when that simple constant was then used inside other expansions:
+Add explicit overflow checking using check_mul_overflow() and
+check_add_overflow() kernel helpers to safety validate all size
+calculations before allocation.
 
-  #define pageblock_nr_pages      (1UL << pageblock_order)
-  #define pageblock_start_pfn(pfn)  ALIGN_DOWN((pfn), pageblock_nr_pages)
-
-and we then use that inside a 'max()' macro:
-
-	case ISOLATE_SUCCESS:
-		update_cached = false;
-		last_migrated_pfn = max(cc->zone->zone_start_pfn,
-			pageblock_start_pfn(cc->migrate_pfn - 1));
-
-the end result was that one statement expanding to 253kB in size.
-
-There are probably other cases of this, but this one case certainly
-stood out.
-
-I've added 'MIN_T()' and 'MAX_T()' macros for this kind of "core simple
-constant with specific type" use.  These macros skip the type checking,
-and as such need to be very sparingly used only for obvious cases that
-have active issues like this.
-
-Reported-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Link: https://lore.kernel.org/all/36aa2cad-1db1-4abf-8dd2-fb20484aabc3@lucifer.local/
-Cc: David Laight <David.Laight@aculab.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 39b3cffb8cf3 ("fbcon: prevent user font height or width change from causing potential out-of-bounds access")
+Cc: George Kennedy <george.kennedy@oracle.com>
+Cc: stable <stable@vger.kernel.org>
+Cc: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Qianqiang Liu <qianqiang.liu@163.com>
+Cc: Shixiong Ou <oushixiong@kylinos.cn>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.9+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250912170023.3931881-1-samasth.norway.ananda@oracle.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h          |    7 +++++++
- include/linux/pageblock-flags.h |    2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -270,4 +270,11 @@ static inline bool in_range32(u32 val, u
- #define swap(a, b) \
- 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2510,9 +2510,16 @@ static int fbcon_set_font(struct vc_data
+ 	if (fbcon_invalid_charcount(info, charcount))
+ 		return -EINVAL;
  
-+/*
-+ * Use these carefully: no type checking, and uses the arguments
-+ * multiple times. Use for obvious constants only.
-+ */
-+#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
-+#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
+-	size = CALC_FONTSZ(h, pitch, charcount);
++	/* Check for integer overflow in font size calculation */
++	if (check_mul_overflow(h, pitch, &size) ||
++	    check_mul_overflow(size, charcount, &size))
++		return -EINVAL;
 +
- #endif	/* _LINUX_MINMAX_H */
---- a/include/linux/pageblock-flags.h
-+++ b/include/linux/pageblock-flags.h
-@@ -41,7 +41,7 @@ extern unsigned int pageblock_order;
-  * Huge pages are a constant size, but don't exceed the maximum allocation
-  * granularity.
-  */
--#define pageblock_order		min_t(unsigned int, HUGETLB_PAGE_ORDER, MAX_ORDER - 1)
-+#define pageblock_order		MIN_T(unsigned int, HUGETLB_PAGE_ORDER, MAX_ORDER - 1)
++	/* Check for overflow in allocation size calculation */
++	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
++		return -EINVAL;
  
- #endif /* CONFIG_HUGETLB_PAGE_SIZE_VARIABLE */
+-	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
++	new_data = kmalloc(size, GFP_USER);
  
+ 	if (!new_data)
+ 		return -ENOMEM;
 
 
 
