@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDD4BADB14
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917D0BAD866
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D62A7320078
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8981648AA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B84329827E;
-	Tue, 30 Sep 2025 15:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94220302CD6;
+	Tue, 30 Sep 2025 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjeNTwjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFZP7Qgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A9A1F1302;
-	Tue, 30 Sep 2025 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCE02E9EBC;
+	Tue, 30 Sep 2025 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245435; cv=none; b=fIQ9gIUg5dgqpqhQLiflV+9Wwah/GC73AgheXePWwuZRcrWZutrwkrv1GqN3bRlOcy5O3wZsOYCrQCf4RgLISYk3uawyYszX+JFABM35n5MRra1T6Ua9VFgqZV0q6mGbYmowwjgXOKFmReIvccseKoxPU7RKE33iF+wQaJKcbnQ=
+	t=1759244806; cv=none; b=RS1DBxiMSu9rgc11LrQJjsEKRvw14N00jkbELfviJYy2/joXdg+yZgnoKhyEqFMW0d/DIHvaAqLPO/QGU4fUskuZmI5Onc4YmKd6/d43p/7gMbdEnuwCsryDHvpg5N3l4aBscua4uHOWXwirvsZTuVjdqLxedVYug+hXnnFLHj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245435; c=relaxed/simple;
-	bh=Qlo20GS8Wv816rwYLtY4URzGcjDFbW5Ja0fJTA6UjCw=;
+	s=arc-20240116; t=1759244806; c=relaxed/simple;
+	bh=3UUwXsiwzQRw+GSbrj93YSdcG+wNN85Qticsa/eOlo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atXfdzferHD3vzPbl6dBKNrO8TE/ZkVCZAHihl+EHFZ8jq8FZvN0T3GNLGXaCZL1Z91tXDyv9Pb14BQntjZSSfJYdpR6WSoDNqoWGdNGgnqHygSoqvyps11ZFYHHNLZpEGUK4e1r1yO/QfBxwvnhJbUov2HnV3MWiBHu2wZKNpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjeNTwjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394AEC4CEF0;
-	Tue, 30 Sep 2025 15:17:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ndY7aFPN6F0ghVyg5RjiY+WMykGJYZ5QvqjhiJGprZoH9+7d4pzNOMEsR1LXZawv+N6cFk//ABZOxh+C2RrEawjk8xaOknqsRJkgsSeIq6ZDY6qYoBk1uCUJFaNkGAKGmCHam67nYVbquKazuEnEh52rjajk1LeWmuKPqql+KaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFZP7Qgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF020C4CEF0;
+	Tue, 30 Sep 2025 15:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245432;
-	bh=Qlo20GS8Wv816rwYLtY4URzGcjDFbW5Ja0fJTA6UjCw=;
+	s=korg; t=1759244806;
+	bh=3UUwXsiwzQRw+GSbrj93YSdcG+wNN85Qticsa/eOlo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjeNTwjjCWA5/QM9zkwF7ievyAObLvwPTo/ASDdw9sgvlNXfcHGCIfBHjI8FaazK2
-	 H23XIko/T6GgxxBJo7zBwqnX2C7HYgAZjGU1vHLwPGLK8XRv7qZZgaifbzCw1I4Nbi
-	 JidXUhUVZPV6PLfRAaGvTBAAfByEKw3pHSRWlb6k=
+	b=wFZP7Qgpi5q1UThofRXqQVjX7+amXDJz5SF66cNWwN28v83ygqPnHs2Ju2fqmCHRK
+	 q8qZ9ZUMLOvEw3ADSD5eKDiyDWGYhsLLD/7FnOeM2LpoCY3g7OowquO8WEuy9Z9oAf
+	 QtxJKXYDEhibE6craGm+WHjT1lH2JouMJX8yz5ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/73] IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
-Date: Tue, 30 Sep 2025 16:47:21 +0200
-Message-ID: <20250930143821.276004258@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.16 118/143] drm/xe: Dont copy pinned kernel bos twice on suspend
+Date: Tue, 30 Sep 2025 16:47:22 +0200
+Message-ID: <20250930143835.932042624@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit 85fe9f565d2d5af95ac2bbaa5082b8ce62b039f5 ]
+commit 77c8ede611c6a70a95f7b15648551d0121b40d6c upstream.
 
-Fix a bug where the driver's event subscription logic for SRQ-related
-events incorrectly sets obj_type for RMP objects.
+We were copying the bo content the bos on the list
+"xe->pinned.late.kernel_bo_present" twice on suspend.
 
-When subscribing to SRQ events, get_legacy_obj_type() did not handle
-the MLX5_CMD_OP_CREATE_RMP case, which caused obj_type to be 0
-(default).
-This led to a mismatch between the obj_type used during subscription
-(0) and the value used during notification (1, taken from the event's
-type field). As a result, event mapping for SRQ objects could fail and
-event notification would not be delivered correctly.
+Presumingly the intent is to copy the pinned external bos on
+the first pass.
 
-This fix adds handling for MLX5_CMD_OP_CREATE_RMP in get_legacy_obj_type,
-returning MLX5_EVENT_QUEUE_TYPE_RQ so obj_type is consistent between
-subscription and notification.
+This is harmless since we (currently) should have no pinned
+external bos needing copy since
+a) exernal system bos don't have compressed content,
+b) We do not (yet) allow pinning of VRAM bos.
 
-Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
-Link: https://patch.msgid.link/r/8f1048e3fdd1fde6b90607ce0ed251afaf8a148c.1755088962.git.leon@kernel.org
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Reviewed-by: Edward Srouji <edwards@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Still, fix this up so that we copy pinned external bos on
+the first pass. We're about to allow bos pinned in VRAM.
+
+Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: <stable@vger.kernel.org> # v6.16+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20250918092207.54472-2-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 9e69bafece43dcefec864f00b3ec7e088aa7fcbc)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/devx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_bo_evict.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
-index cc126e62643a0..80c26551564fb 100644
---- a/drivers/infiniband/hw/mlx5/devx.c
-+++ b/drivers/infiniband/hw/mlx5/devx.c
-@@ -191,6 +191,7 @@ static u16 get_legacy_obj_type(u16 opcode)
- {
- 	switch (opcode) {
- 	case MLX5_CMD_OP_CREATE_RQ:
-+	case MLX5_CMD_OP_CREATE_RMP:
- 		return MLX5_EVENT_QUEUE_TYPE_RQ;
- 	case MLX5_CMD_OP_CREATE_QP:
- 		return MLX5_EVENT_QUEUE_TYPE_QP;
+diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
+index 7484ce55a303..d5dbc51e8612 100644
+--- a/drivers/gpu/drm/xe/xe_bo_evict.c
++++ b/drivers/gpu/drm/xe/xe_bo_evict.c
+@@ -158,8 +158,8 @@ int xe_bo_evict_all(struct xe_device *xe)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
+-				    &xe->pinned.late.evicted, xe_bo_evict_pinned);
++	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.external,
++				    &xe->pinned.late.external, xe_bo_evict_pinned);
+ 
+ 	if (!ret)
+ 		ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
 -- 
 2.51.0
 
