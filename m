@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EAABADC2D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2535DBADCFC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CD493BEA27
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033B53BCFDB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF7E29ACF7;
-	Tue, 30 Sep 2025 15:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB063205E3B;
+	Tue, 30 Sep 2025 15:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSA8tQoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJc8uFQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7EE27B328;
-	Tue, 30 Sep 2025 15:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679AD846F;
+	Tue, 30 Sep 2025 15:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245512; cv=none; b=D5T7Jh/mGYj+VPtHFeZJLB5y5dEtvAb2GgryRCFAz0R1z/OXAUfQvH4+Agaegf2hwHEd1x8YCORqTAgdw0YuXvOq9r4xRgmq/1eUdoclTq5BgfF0OWyaVKwMCeu+Yt8OzNytVS4EKN65Y/yrlwTXyEacKoNm/6Sdl5AALDJghUw=
+	t=1759245773; cv=none; b=H4OMQs07x4y/POwoIkm2qK7WQCeolY2aEiJO+1SvsY7aG1CEfS56uJqqX/qmFVRQpxBwyjVa8+6YKIaLmb+N7igFnaldshtuy0+rYwUl8gRmTPF0qu2RRp5w0rIYnJT+rRfV2W3RQAg0Y6fMzWKMYGumGrFm+wkom5I9VGpvADY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245512; c=relaxed/simple;
-	bh=vxXn96wwGc1v+LlzLpceuOGhHOy/XVBeInR0Z1kkvTY=;
+	s=arc-20240116; t=1759245773; c=relaxed/simple;
+	bh=Q6N2DV1ACmq05NrGOhNG1t8KGfcs7Kqh/fjul3A0/vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UX//VGRLEfX/UaVw2/WCNa0SPKe+YROgq1WmsVdDiaurJAo/6bWpjAXlsiuWR3MJfiYn3xk2o3f7AcOBTW9wR+zVpf27hE1Vo3iqV83yFDv9UH8MJo04iStjaa8WBCh46Nq5Rb8xszoH2ErUwxoLzBwrzHwNtbBjlwRY8OalSYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSA8tQoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5D1C4CEF0;
-	Tue, 30 Sep 2025 15:18:30 +0000 (UTC)
+	 MIME-Version; b=SU87+Wsefma1vygAaFGkIiugqwTU9iANDrhOOvfvDBtLOd6LeSL8Ou+h8prz2PIW6TjhmLc00h4rjNo48Mf7wYfXWIWCi/ADEc7iHVxlSOzbHUSGMI6H2dxZTmSYvNrnmBY14AxJoXJwdt9jCtO6VDGh1VXkgcDn3XaJvTjyfGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJc8uFQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0221C4CEF0;
+	Tue, 30 Sep 2025 15:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245511;
-	bh=vxXn96wwGc1v+LlzLpceuOGhHOy/XVBeInR0Z1kkvTY=;
+	s=korg; t=1759245773;
+	bh=Q6N2DV1ACmq05NrGOhNG1t8KGfcs7Kqh/fjul3A0/vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSA8tQoKTao4FKWDglc0f8Ac/mOJiRHueKq178YEXGhTIF4Fwe8N6l1zAGnRQW7wP
-	 voITMYGeAk7ibj/tDaXGbyFihHJZnY6erJW/vgNRyR77qSqWyaP8fsV67jyfRqe8Ag
-	 vMmOn3qW4oqQsD4Eu9rGfdf9Jg/MSUbDQr/3KeVA=
+	b=cJc8uFQ7Mkll1ddVNGMHD8b6S8C+qZIvgEiGEARsI0F5K8S0U2mUbbR33g5Pw5TG/
+	 yOhnAkYpmvdWCZ7K3VOvPx1+G2hydNBoUDi9WPVgaEHoDYh32Rldjzka8kGV8N2guO
+	 oMFHvHliJx+iDqu30KTdPF1TvYt+ZmWVW9jQ3MRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Vladimir Oltean <olteanv@gmail.com>,
+	Jason Baron <jbaron@akamai.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 40/73] net: dsa: lantiq_gswip: do also enable or disable cpu port
+Subject: [PATCH 6.6 45/91] net: allow alloc_skb_with_frags() to use MAX_SKB_FRAGS
 Date: Tue, 30 Sep 2025 16:47:44 +0200
-Message-ID: <20250930143822.259007980@linuxfoundation.org>
+Message-ID: <20250930143823.046297855@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Jason Baron <jbaron@akamai.com>
 
-[ Upstream commit 86b9ea6412af41914ef6549f85a849c3b987f4f3 ]
+[ Upstream commit ca9f9cdc4de97d0221100b11224738416696163c ]
 
-Before commit 74be4babe72f ("net: dsa: do not enable or disable non user
-ports"), gswip_port_enable/disable() were also executed for the cpu port
-in gswip_setup() which disabled the cpu port during initialization.
+Currently, alloc_skb_with_frags() will only fill (MAX_SKB_FRAGS - 1)
+slots. I think it should use all MAX_SKB_FRAGS slots, as callers of
+alloc_skb_with_frags() will size their allocation of frags based
+on MAX_SKB_FRAGS.
 
-Let's restore this by removing the dsa_is_user_port checks. Also, let's
-clean up the gswip_port_enable() function so that we only have to check
-for the cpu port once. The operation reordering done here is safe.
+This issue was discovered via a test patch that sets 'order' to 0
+in alloc_skb_with_frags(), which effectively tests/simulates high
+fragmentation. In this case sendmsg() on unix sockets will fail every
+time for large allocations. If the PAGE_SIZE is 4K, then data_len will
+request 68K or 17 pages, but alloc_skb_with_frags() can only allocate
+64K in this case or 16 pages.
 
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20240611135434.3180973-7-ms@dev.tdt.de
+Fixes: 09c2c90705bb ("net: allow alloc_skb_with_frags() to allocate bigger packets")
+Signed-off-by: Jason Baron <jbaron@akamai.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250922191957.2855612-1-jbaron@akamai.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c0054b25e2f1 ("net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/lantiq_gswip.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ net/core/skbuff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
-index 05ecaa007ab18..ee80446802af4 100644
---- a/drivers/net/dsa/lantiq_gswip.c
-+++ b/drivers/net/dsa/lantiq_gswip.c
-@@ -688,13 +688,18 @@ static int gswip_port_enable(struct dsa_switch *ds, int port,
- 	struct gswip_priv *priv = ds->priv;
- 	int err;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 21a83e26f004b..867832f8bbaea 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6330,7 +6330,7 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
+ 		return NULL;
  
--	if (!dsa_is_user_port(ds, port))
--		return 0;
--
- 	if (!dsa_is_cpu_port(ds, port)) {
-+		u32 mdio_phy = 0;
-+
- 		err = gswip_add_single_port_br(priv, port, true);
- 		if (err)
- 			return err;
-+
-+		if (phydev)
-+			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
-+
-+		gswip_mdio_mask(priv, GSWIP_MDIO_PHY_ADDR_MASK, mdio_phy,
-+				GSWIP_MDIO_PHYp(port));
- 	}
- 
- 	/* RMON Counter Enable for port */
-@@ -707,16 +712,6 @@ static int gswip_port_enable(struct dsa_switch *ds, int port,
- 	gswip_switch_mask(priv, 0, GSWIP_SDMA_PCTRL_EN,
- 			  GSWIP_SDMA_PCTRLp(port));
- 
--	if (!dsa_is_cpu_port(ds, port)) {
--		u32 mdio_phy = 0;
--
--		if (phydev)
--			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
--
--		gswip_mdio_mask(priv, GSWIP_MDIO_PHY_ADDR_MASK, mdio_phy,
--				GSWIP_MDIO_PHYp(port));
--	}
--
- 	return 0;
- }
- 
-@@ -724,9 +719,6 @@ static void gswip_port_disable(struct dsa_switch *ds, int port)
- {
- 	struct gswip_priv *priv = ds->priv;
- 
--	if (!dsa_is_user_port(ds, port))
--		return;
--
- 	gswip_switch_mask(priv, GSWIP_FDMA_PCTRL_EN, 0,
- 			  GSWIP_FDMA_PCTRLp(port));
- 	gswip_switch_mask(priv, GSWIP_SDMA_PCTRL_EN, 0,
+ 	while (data_len) {
+-		if (nr_frags == MAX_SKB_FRAGS - 1)
++		if (nr_frags == MAX_SKB_FRAGS)
+ 			goto failure;
+ 		while (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order))
+ 			order--;
 -- 
 2.51.0
 
