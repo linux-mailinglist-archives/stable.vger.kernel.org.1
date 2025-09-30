@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BADBADCAC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61D6BAD4D9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B9A3B3083
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F7A1883CB5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C027303C93;
-	Tue, 30 Sep 2025 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FD84D8CE;
+	Tue, 30 Sep 2025 14:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPPsCc4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plkYlbpj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0F0173;
-	Tue, 30 Sep 2025 15:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C5A2264AB;
+	Tue, 30 Sep 2025 14:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245664; cv=none; b=DPrYCzHh8ztX/ZsFDRGywH5q/Jc2BsYsFrponqxOIU2oiGUnHbfmDwA1/6Xi7oQGfLTvFDcAAqfwb7mlIJtZ1o7nFttASAdz2DC259XlSjvB1/A+3FNEuiu6eAoEFHDR9LPeAv8jkZHyVIubehUsys5IhtmPqELtzTAmUwvWOfk=
+	t=1759243964; cv=none; b=hbi8o4EoAUfXnj5UQeNCTtGCEipThYOVZ12a8qc2zjCwiZfZtoYZEjUG+6PI6XDy0vtmTMfxqBLR59PfykHOJOC1IHaTlX1nV2LQH7Tjam5KsW7lltFEiStH3k8dNRl+rkp3Ue/aT0J5QZLeLxhPT00hS/19U0Y72uuF4MoaZDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245664; c=relaxed/simple;
-	bh=9zzpYcNvTr5jOw1+Ek15Ny7YzM1Sa46KEAMSIPydwqY=;
+	s=arc-20240116; t=1759243964; c=relaxed/simple;
+	bh=EWTqoFpxtN6EOgrkvulWkMQoV0CbXSw5sEkIUafdZvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4dKDJHzRfhXHWWxpzOyrCr1hE3EyRmz5aI5vWM6iYoZRJHoWtH/Z8YneXEslHXXNjE0xk9LinfF+HlGAHlXgY1SvYvtRj7QU2WkfMuLxXuTecDeW/DMCu7KyTZ4A3QwZIEywIaOxhAGij60tx24Fp/IlCc2wvrfLUovnZ/+uGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPPsCc4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F119C4AF0B;
-	Tue, 30 Sep 2025 15:21:02 +0000 (UTC)
+	 MIME-Version; b=DuCSEJBLTPut8nPQpdNpyCBZzYCNTvGet+iXT6gOSzt/krdEKWwI0OQecp0yvHCnblT076oRcWxPkcUXqh9RBLivjEpmWXdwGFCLuPFtc9VgV4VoeIHNKP8ioXxYo5fXC8RrpKkUePxDPYnK7zygF7szRwgHMwm6mHLVKzG0bPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plkYlbpj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE90DC4CEF0;
+	Tue, 30 Sep 2025 14:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245663;
-	bh=9zzpYcNvTr5jOw1+Ek15Ny7YzM1Sa46KEAMSIPydwqY=;
+	s=korg; t=1759243964;
+	bh=EWTqoFpxtN6EOgrkvulWkMQoV0CbXSw5sEkIUafdZvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPPsCc4oeFLRuu6PHiRCrelcKkZXAkRzoIWf9IV8DcJp9LU0Itt4uW1YB42bmO4+x
-	 V81GlEE2c3NNm2BaNU7ajPZZFJ2JCzBJjSOissLnSYYlpZ4HCIODvV18khHPjrKZ/z
-	 KhO9fRqFVmEhUpo7KTwBZkkEwl3+yuT5ZUGe70vw=
+	b=plkYlbpjOIzGRmOHB2WWDlLKmKl8+2uMwCH2oha8A7hy3qA2AAkvqAlpE+tcIjYEQ
+	 NV9v9jzqOpqXSrJGGZrKpbkK3KBa8y68+SMRzfdM8DqVlU31c0J572ZKBHNzFsabGY
+	 6y5A+KxiHLtvvIUKPgW4hXtgtCdDhlRHO/1C2hVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 13/91] ALSA: usb-audio: Convert comma to semicolon
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Kamakshi Nellore <nellorex.kamakshi@intel.com>
+Subject: [PATCH 5.4 70/81] i40e: fix idx validation in i40e_validate_queue_map
 Date: Tue, 30 Sep 2025 16:47:12 +0200
-Message-ID: <20250930143821.679246737@linuxfoundation.org>
+Message-ID: <20250930143822.626244346@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 9ca30a1b007d5fefb5752428f852a2d8d7219c1c ]
+commit aa68d3c3ac8d1dcec40d52ae27e39f6d32207009 upstream.
 
-Replace comma between expressions with semicolons.
+Ensure idx is within range of active/initialized TCs when iterating over
+vf->ch[idx] in i40e_validate_queue_map().
 
-Using a ',' in place of a ';' can have unintended side effects.
-Although that is not the case here, it is seems best to use ';'
-unless ',' is intended.
-
-Found by inspection.
-No functional change intended.
-Compile tested only.
-
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250612060228.1518028-1-nichen@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 95fa1c31ae550..f1b663a05f295 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -758,9 +758,9 @@ static int snd_dualsense_jack_create(struct usb_mixer_interface *mixer,
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2376,8 +2376,10 @@ static int i40e_validate_queue_map(struc
+ 	u16 vsi_queue_id, queue_id;
  
- 	mei->ih.event = snd_dualsense_ih_event;
- 	mei->ih.match = snd_dualsense_ih_match;
--	mei->ih.connect = snd_dualsense_ih_connect,
--	mei->ih.disconnect = snd_dualsense_ih_disconnect,
--	mei->ih.start = snd_dualsense_ih_start,
-+	mei->ih.connect = snd_dualsense_ih_connect;
-+	mei->ih.disconnect = snd_dualsense_ih_disconnect;
-+	mei->ih.start = snd_dualsense_ih_start;
- 	mei->ih.name = name;
- 	mei->ih.id_table = mei->id_table;
- 
--- 
-2.51.0
-
+ 	for_each_set_bit(vsi_queue_id, &queuemap, I40E_MAX_VSI_QP) {
+-		if (vf->adq_enabled) {
+-			vsi_id = vf->ch[vsi_queue_id / I40E_MAX_VF_VSI].vsi_id;
++		u16 idx = vsi_queue_id / I40E_MAX_VF_VSI;
++
++		if (vf->adq_enabled && idx < vf->num_tc) {
++			vsi_id = vf->ch[idx].vsi_id;
+ 			queue_id = (vsi_queue_id % I40E_DEFAULT_QUEUES_PER_VF);
+ 		} else {
+ 			queue_id = vsi_queue_id;
 
 
 
