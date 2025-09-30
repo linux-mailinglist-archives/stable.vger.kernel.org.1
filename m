@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF470BADDB3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC6BBADBA4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3D31945B6C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4011C4801
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F3830649C;
-	Tue, 30 Sep 2025 15:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE77303C93;
+	Tue, 30 Sep 2025 15:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzR8qO3f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIWgL80r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656C61DF73C;
-	Tue, 30 Sep 2025 15:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A51205E3B;
+	Tue, 30 Sep 2025 15:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246109; cv=none; b=tmiPB2/87UVZVp1Gw6UjBTubA7O0rjG1a5UU2RLX30Jp8XhmzDqxnsTX/jt87gRE7akEq6w5UaA4fILDBJbrh9hadche0x52z1wcEZCRl+xp0zqR/R+MLPDJ0Re7ZRhQAfpt2QPo73utMCsrdn8NI++JpawpwX5JNvk9slC8eN0=
+	t=1759245625; cv=none; b=u5UBZXHBiwdL+3TQ2Tsm2TTBFcGfO/+R+9khnOncXYkRCHZBghu2rtIypSfHrXdltnQXzgg+UcHm/jM4/ctQiyGTshf7ZFkQCCXXkXSJ/ZGt9DDk5/E2eRd9gLcTZE8600txOUG4gUb13sz4GFuKgZqPVGJ0SytmGk46LsLkc8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246109; c=relaxed/simple;
-	bh=35gbVbNEPU8pCqznRoJ3xJDW9+XMbkPuBRkGV2ky2Q4=;
+	s=arc-20240116; t=1759245625; c=relaxed/simple;
+	bh=OXsDbxOHGPnr8cpxS7MRCZ5/PkICXGf0r+roPMaUbzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn7EFlUt9Ooc2JHO8JXYqpDi3CY3vUlU2oLu8heV/Cjjew+9PyRgDWE0a0/R561sPDhpkGsesINmZjejkNxDjzJzhDneYvz/I3RQ7S1lw5IczIOZfUGsucNM9PHZku6sSZLSDadCVLDx6paiH5zDpLfWQTmdUB/lWVyyA9ED/f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzR8qO3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09D1C113D0;
-	Tue, 30 Sep 2025 15:28:28 +0000 (UTC)
+	 MIME-Version; b=Z7imc+gn63xFDmkjAmAoE2amobGFeN+scl/PuZZtz2COdFGbpsc5nlTjaNWpEyORMkbgdA4fglbnhZNrmvxtVp6f0OgbFTbO7Y40BGkhKbOIfWFEN6RYV+JEnvnbh6g2WlziPnn2gk3pw4uZtiSMyaaZ3dKKNMdJhxlRgRo6hEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIWgL80r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9194C4CEF0;
+	Tue, 30 Sep 2025 15:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246109;
-	bh=35gbVbNEPU8pCqznRoJ3xJDW9+XMbkPuBRkGV2ky2Q4=;
+	s=korg; t=1759245625;
+	bh=OXsDbxOHGPnr8cpxS7MRCZ5/PkICXGf0r+roPMaUbzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzR8qO3fagBJvw4hYbi4IMxy5rGEo4Lb3CHc5ytFBkUJNtGiUg7W36qcSOGWQJokU
-	 GxMht34f9WprHaemIyxSCW9azT3codwQzFl7nMaLbhB+KYiH3DRawqL2+SuDXc8Sfq
-	 9PQ5wx5shTYjv54na8GeMAU7AIyiktOYaQONEllk=
+	b=vIWgL80r4F9NN2Aokg+MCmXA6ILcs8yUzj7XEXCGHGEolFYR5a3nIHAP/uDdea84d
+	 78s7ONGqyp//TVwENKO7cW5IgA8MviVSVQoY9XZoSQgs3or7bbqBYfoAX4fYxl/RKd
+	 JCYmBqbpTtEM5dY1wFfLNIIJm1fKZQYr9VlfCbss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 54/89] selftests: fib_nexthops: Fix creation of non-FDB nexthops
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Laight <David.Laight@aculab.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.1 64/73] minmax: avoid overly complicated constant expressions in VM code
 Date: Tue, 30 Sep 2025 16:48:08 +0200
-Message-ID: <20250930143824.160769071@linuxfoundation.org>
+Message-ID: <20250930143823.326190160@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit c29913109c70383cdf90b6fc792353e1009f24f5 ]
+[ Upstream commit 3a7e02c040b130b5545e4b115aada7bacd80a2b6 ]
 
-The test creates non-FDB nexthops without a nexthop device which leads
-to the expected failure, but for the wrong reason:
+The minmax infrastructure is overkill for simple constants, and can
+cause huge expansions because those simple constants are then used by
+other things.
 
- # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+For example, 'pageblock_order' is a core VM constant, but because it was
+implemented using 'min_t()' and all the type-checking that involves, it
+actually expanded to something like 2.5kB of preprocessor noise.
 
- IPv6 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-nRsN3E nexthop add id 63 via 2001:db8:91::4
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 64 via 2001:db8:91::5
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 63/64 fdb
- Error: Invalid nexthop id.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
- [...]
+And when that simple constant was then used inside other expansions:
 
- IPv4 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-nRsN3E nexthop add id 14 via 172.16.1.2
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 15 via 172.16.1.3
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 14/15 fdb
- Error: Invalid nexthop id.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+  #define pageblock_nr_pages      (1UL << pageblock_order)
+  #define pageblock_start_pfn(pfn)  ALIGN_DOWN((pfn), pageblock_nr_pages)
 
- COMMAND: ip -netns me-nRsN3E nexthop add id 16 via 172.16.1.2 fdb
- COMMAND: ip -netns me-nRsN3E nexthop add id 17 via 172.16.1.3 fdb
- COMMAND: ip -netns me-nRsN3E nexthop add id 104 group 14/15
- Error: Invalid nexthop id.
- TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
- [...]
- COMMAND: ip -netns me-0dlhyd ro add 172.16.0.0/22 nhid 15
- Error: Nexthop id does not exist.
- TEST: Route add with fdb nexthop                                    [ OK ]
+and we then use that inside a 'max()' macro:
 
-In addition, as can be seen in the above output, a couple of IPv4 test
-cases used the non-FDB nexthops (14 and 15) when they intended to use
-the FDB nexthops (16 and 17). These test cases only passed because
-failure was expected, but they failed for the wrong reason.
+	case ISOLATE_SUCCESS:
+		update_cached = false;
+		last_migrated_pfn = max(cc->zone->zone_start_pfn,
+			pageblock_start_pfn(cc->migrate_pfn - 1));
 
-Fix the test to create the non-FDB nexthops with a nexthop device and
-adjust the IPv4 test cases to use the FDB nexthops instead of the
-non-FDB nexthops.
+the end result was that one statement expanding to 253kB in size.
 
-Output after the fix:
+There are probably other cases of this, but this one case certainly
+stood out.
 
- # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+I've added 'MIN_T()' and 'MAX_T()' macros for this kind of "core simple
+constant with specific type" use.  These macros skip the type checking,
+and as such need to be very sparingly used only for obvious cases that
+have active issues like this.
 
- IPv6 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-lNzfHP nexthop add id 63 via 2001:db8:91::4 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 64 via 2001:db8:91::5 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 63/64 fdb
- Error: FDB nexthop group can only have fdb nexthops.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
- [...]
-
- IPv4 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-lNzfHP nexthop add id 14 via 172.16.1.2 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 15 via 172.16.1.3 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 14/15 fdb
- Error: FDB nexthop group can only have fdb nexthops.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
-
- COMMAND: ip -netns me-lNzfHP nexthop add id 16 via 172.16.1.2 fdb
- COMMAND: ip -netns me-lNzfHP nexthop add id 17 via 172.16.1.3 fdb
- COMMAND: ip -netns me-lNzfHP nexthop add id 104 group 16/17
- Error: Non FDB nexthop group cannot have fdb nexthops.
- TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
- [...]
- COMMAND: ip -netns me-lNzfHP ro add 172.16.0.0/22 nhid 16
- Error: Route cannot point to a fdb nexthop.
- TEST: Route add with fdb nexthop                                    [ OK ]
- [...]
- Tests passed:  30
- Tests failed:   0
- Tests skipped:  0
-
-Fixes: 0534c5489c11 ("selftests: net: add fdb nexthop tests")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250921150824.149157-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Link: https://lore.kernel.org/all/36aa2cad-1db1-4abf-8dd2-fb20484aabc3@lucifer.local/
+Cc: David Laight <David.Laight@aculab.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/fib_nexthops.sh | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/minmax.h          |    7 +++++++
+ include/linux/pageblock-flags.h |    2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
-index 77c83d9508d3b..6845da9902818 100755
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -465,8 +465,8 @@ ipv6_fdb_grp_fcnal()
- 	log_test $? 0 "Get Fdb nexthop group by id"
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -270,4 +270,11 @@ static inline bool in_range32(u32 val, u
+ #define swap(a, b) \
+ 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
  
- 	# fdb nexthop group can only contain fdb nexthops
--	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4"
--	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5"
-+	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4 dev veth1"
-+	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5 dev veth1"
- 	run_cmd "$IP nexthop add id 103 group 63/64 fdb"
- 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
++/*
++ * Use these carefully: no type checking, and uses the arguments
++ * multiple times. Use for obvious constants only.
++ */
++#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
++#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
++
+ #endif	/* _LINUX_MINMAX_H */
+--- a/include/linux/pageblock-flags.h
++++ b/include/linux/pageblock-flags.h
+@@ -41,7 +41,7 @@ extern unsigned int pageblock_order;
+  * Huge pages are a constant size, but don't exceed the maximum allocation
+  * granularity.
+  */
+-#define pageblock_order		min_t(unsigned int, HUGETLB_PAGE_ORDER, MAX_ORDER - 1)
++#define pageblock_order		MIN_T(unsigned int, HUGETLB_PAGE_ORDER, MAX_ORDER - 1)
  
-@@ -545,15 +545,15 @@ ipv4_fdb_grp_fcnal()
- 	log_test $? 0 "Get Fdb nexthop group by id"
+ #endif /* CONFIG_HUGETLB_PAGE_SIZE_VARIABLE */
  
- 	# fdb nexthop group can only contain fdb nexthops
--	run_cmd "$IP nexthop add id 14 via 172.16.1.2"
--	run_cmd "$IP nexthop add id 15 via 172.16.1.3"
-+	run_cmd "$IP nexthop add id 14 via 172.16.1.2 dev veth1"
-+	run_cmd "$IP nexthop add id 15 via 172.16.1.3 dev veth1"
- 	run_cmd "$IP nexthop add id 103 group 14/15 fdb"
- 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
- 
- 	# Non fdb nexthop group can not contain fdb nexthops
- 	run_cmd "$IP nexthop add id 16 via 172.16.1.2 fdb"
- 	run_cmd "$IP nexthop add id 17 via 172.16.1.3 fdb"
--	run_cmd "$IP nexthop add id 104 group 14/15"
-+	run_cmd "$IP nexthop add id 104 group 16/17"
- 	log_test $? 2 "Non-Fdb Nexthop group with fdb nexthops"
- 
- 	# fdb nexthop cannot have blackhole
-@@ -580,7 +580,7 @@ ipv4_fdb_grp_fcnal()
- 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
- 	log_test $? 255 "Fdb mac add with nexthop"
- 
--	run_cmd "$IP ro add 172.16.0.0/22 nhid 15"
-+	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
- 	log_test $? 2 "Route add with fdb nexthop"
- 
- 	run_cmd "$IP ro add 172.16.0.0/22 nhid 103"
--- 
-2.51.0
-
 
 
 
