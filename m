@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC40BAD97A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D91DBAD73E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96EBC168C42
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221F11888BBC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09122FD1DD;
-	Tue, 30 Sep 2025 15:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C76D307AD5;
+	Tue, 30 Sep 2025 15:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxGB/9FN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ahdecxrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4771F1302;
-	Tue, 30 Sep 2025 15:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39878306B08;
+	Tue, 30 Sep 2025 15:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245059; cv=none; b=J3WlEsmR1m6VS6Sv4oplR/M7CdHDUJHnRHIgDi5T+zx7jlgolVmmiqVDQqzWR4W8DFHrghuVeb1OH+LXAVlCGTkvlb8sN6PjKpKpIe8ha8aQzpTNdg2P+90/zmle4cUQZ7TrxJxNUqsRo4byXuWYlLNsrbsVdDVCR7Wo3oQC82o=
+	t=1759244505; cv=none; b=EHu6u/U4uePDmUBzQjWW6TICaJqpZA1d3okjJfRq79IjQ1ndm88to0KjJfgQ3kI5+Htb7cMI0YgtTVJ6TEPXO2IE9gvSSF3IIeQO/wRBN5w0cXLSpgtv27zQ3Fi2GwoT6AOPovb2xhz0dvLBmpec3y4Zcgs5JRinoWCouloojTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245059; c=relaxed/simple;
-	bh=Hold27qQKMlPcCs2uM1p4Qf0BHSByDjg0V7Jfd0DshU=;
+	s=arc-20240116; t=1759244505; c=relaxed/simple;
+	bh=7HrMW2tW7czg5MqY+NNGAGCxiezZ4ZVLlGnX/7VJMYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYzp5whPI4nL2LWQ24OtwbxFKy3vnd2bRsBMpJO+9yrCaiftXwL5gHD8TQYeDo7I3WJQze+FnUWLOcofWXquHt41Z7wQaPEy0edL9QJXgmZ4abSzr0D4tpxK5E8BgWs/ymtVwIYffQgAIFZmcoFC2To+PiUVd2pcDHaJqnvfri4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxGB/9FN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C7BC4CEF0;
-	Tue, 30 Sep 2025 15:10:58 +0000 (UTC)
+	 MIME-Version; b=i3KEUr1PfmD99u9D4gr9yQCi5Uj68v7ghx4UZu6Zo31XkQewbJM10dD/S4K5jXyt/PGnYoBa7kyGwq+RiHk2raouuQt/XJcpL8bm+G2jEN7vuUXRsEgxzSueKcZYR7oq/4ZWHBSLgev7iYHRI4A2CEes6wxlQBdcLaVDXQtz2iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ahdecxrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80592C4CEF0;
+	Tue, 30 Sep 2025 15:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245059;
-	bh=Hold27qQKMlPcCs2uM1p4Qf0BHSByDjg0V7Jfd0DshU=;
+	s=korg; t=1759244504;
+	bh=7HrMW2tW7czg5MqY+NNGAGCxiezZ4ZVLlGnX/7VJMYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxGB/9FNIVGCuWd9stfVmqYP04qhjpXKFQBIzAHxptMPWhZakgWHkwD+gpFq+a28m
-	 wmCFINJcsN4XMLo87sEpJO29OwV37YUIcBMEhzfcKcmQXA01Y8W4Eeai5Dh21Duvsz
-	 v2GWE0kxTZ2syGPOjJFNYfnh1HFZcxfEz4bZx5Ak=
+	b=AhdecxrdZ6Xass/iG3ArpmMOwfKFTjRsWea/pxjk4fDX16AGl3gcg/dTk21c82+ma
+	 DvDQ7W3WyZ9l2KzBboJPlnQFOIAEhqYO848SJJbt21bZvQOjOWBK22ksWumNO1qhYZ
+	 stSaD+SRn0xcKTf+gRPtwDmZDA3zP+r7fufVAjkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 022/151] mptcp: sockopt: make sync_socket_options propagate SOCK_KEEPOPEN
+	Balamurugan C <balamurugan.c@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 028/143] ASoC: Intel: sof_rt5682: Add HDMI-In capture with rt5682 support for PTL.
 Date: Tue, 30 Sep 2025 16:45:52 +0200
-Message-ID: <20250930143828.496527683@linuxfoundation.org>
+Message-ID: <20250930143832.365762838@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Balamurugan C <balamurugan.c@intel.com>
 
-commit 648de37416b301f046f62f1b65715c7fa8ebaa67 upstream.
+[ Upstream commit 03aa2ed9e187e42f25b3871b691d535fc19156c4 ]
 
-Users reported a scenario where MPTCP connections that were configured
-with SO_KEEPALIVE prior to connect would fail to enable their keepalives
-if MTPCP fell back to TCP mode.
+Added match table entry on ptl machines to support HDMI-In capture
+with rt5682 I2S audio codec. also added the respective quirk
+configuration in rt5682 machine driver.
 
-After investigating, this affects keepalives for any connection where
-sync_socket_options is called on a socket that is in the closed or
-listening state.  Joins are handled properly. For connects,
-sync_socket_options is called when the socket is still in the closed
-state.  The tcp_set_keepalive() function does not act on sockets that
-are closed or listening, hence keepalive is not immediately enabled.
-Since the SO_KEEPOPEN flag is absent, it is not enabled later in the
-connect sequence via tcp_finish_connect.  Setting the keepalive via
-sockopt after connect does work, but would not address any subsequently
-created flows.
-
-Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on the
-subflow when calling sync_socket_options.
-
-The fix was valdidated both by using tcpdump to observe keepalive
-packets not being sent before the fix, and being sent after the fix.  It
-was also possible to observe via ss that the keepalive timer was not
-enabled on these sockets before the fix, but was enabled afterwards.
-
-Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/aL8dYfPZrwedCIh9@templeofstupid.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Balamurugan C <balamurugan.c@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250716082300.1810352-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/sockopt.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ sound/soc/intel/boards/sof_rt5682.c               | 7 +++++++
+ sound/soc/intel/common/soc-acpi-intel-ptl-match.c | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -838,13 +838,12 @@ static void sync_socket_options(struct m
- {
- 	static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
- 	struct sock *sk = (struct sock *)msk;
-+	bool keep_open;
+diff --git a/sound/soc/intel/boards/sof_rt5682.c b/sound/soc/intel/boards/sof_rt5682.c
+index f5925bd0a3fc6..4994aaccc583a 100644
+--- a/sound/soc/intel/boards/sof_rt5682.c
++++ b/sound/soc/intel/boards/sof_rt5682.c
+@@ -892,6 +892,13 @@ static const struct platform_device_id board_ids[] = {
+ 					SOF_SSP_PORT_BT_OFFLOAD(2) |
+ 					SOF_BT_OFFLOAD_PRESENT),
+ 	},
++	{
++		.name = "ptl_rt5682_c1_h02",
++		.driver_data = (kernel_ulong_t)(SOF_RT5682_MCLK_EN |
++					SOF_SSP_PORT_CODEC(1) |
++					/* SSP 0 and SSP 2 are used for HDMI IN */
++					SOF_SSP_MASK_HDMI_CAPTURE(0x5)),
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(platform, board_ids);
+diff --git a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
+index 67f1091483dce..d90d8672ab77d 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-ptl-match.c
+@@ -32,6 +32,13 @@ static const struct snd_soc_acpi_codecs ptl_lt6911_hdmi = {
+ };
  
--	if (ssk->sk_prot->keepalive) {
--		if (sock_flag(sk, SOCK_KEEPOPEN))
--			ssk->sk_prot->keepalive(ssk, 1);
--		else
--			ssk->sk_prot->keepalive(ssk, 0);
--	}
-+	keep_open = sock_flag(sk, SOCK_KEEPOPEN);
-+	if (ssk->sk_prot->keepalive)
-+		ssk->sk_prot->keepalive(ssk, keep_open);
-+	sock_valbool_flag(ssk, SOCK_KEEPOPEN, keep_open);
- 
- 	ssk->sk_priority = sk->sk_priority;
- 	ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
+ struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_machines[] = {
++	{
++		.comp_ids = &ptl_rt5682_rt5682s_hp,
++		.drv_name = "ptl_rt5682_c1_h02",
++		.machine_quirk = snd_soc_acpi_codec_list,
++		.quirk_data = &ptl_lt6911_hdmi,
++		.sof_tplg_filename = "sof-ptl-rt5682-ssp1-hdmi-ssp02.tplg",
++	},
+ 	{
+ 		.comp_ids = &ptl_rt5682_rt5682s_hp,
+ 		.drv_name = "ptl_rt5682_def",
+-- 
+2.51.0
+
 
 
 
