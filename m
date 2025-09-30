@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B729BAD91D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BB9BADC27
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6602A3B1C7D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B4B018881E1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65722236EB;
-	Tue, 30 Sep 2025 15:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F113296BD0;
+	Tue, 30 Sep 2025 15:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbZLWtZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wn0uru/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9045C266B65;
-	Tue, 30 Sep 2025 15:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03A7846F;
+	Tue, 30 Sep 2025 15:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244866; cv=none; b=k1bOQvBGe45f73yO+k7bZE8DkmniYGE4cGluBXYDEa87WeWbLrCUigAZfegbwjs2PcBNjgiDQILaGONRn32LC3RYAM09z6Pr26CtKWOm89kxqSr++TweatTHkGQGokE3id849L111faW/AjxXjiFTbAiLuiWSCh6ZRFB/Ka4L/g=
+	t=1759245767; cv=none; b=o0tM3u36Z3tFaKcbqHs0E4XjEDGQKfDAeD8vVqlZfi/+EmBd73X6WutFPvDWmr0NGJ2o7sozjYiN7SrItJIitjx7zeYVdicQvePU6TrjbWewRCAWvsHWOVMOXfyX5ANsvfePl75h+I8ALii/CFS7rBTg8kS0D0r/7vmLjKTPjmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244866; c=relaxed/simple;
-	bh=ASG9BmfpRktW1n5njYmyef0O2t8FQQ4go2DNlhEkY0I=;
+	s=arc-20240116; t=1759245767; c=relaxed/simple;
+	bh=hcMTHqJvgv54wFaBVKnGDm+i1DdExOIMLTO4V1Wd6uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FK1fhl0nWt7k2bfuys0ro6c0z1C3ENrdn6Uz6BSmVrt8XOcD/48yVF/1vayzVrPxYIgDiQYy760EgHOV8iCod+3nFJZcPB5mTW3Q2J3sbKpT0knKyxWEVVH9iya8rw5nzwnr71R2oDrDhXyP1igMu9gJxbpO2kkByk2dNX+8E3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbZLWtZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A109DC4CEF0;
-	Tue, 30 Sep 2025 15:07:45 +0000 (UTC)
+	 MIME-Version; b=AwSUHJcTAnCNSPbBmp+zUVLKsFXZnr/HssJ2iRpXuu+yLHB/NBAEvkYR9mxxKr/jGxSNnUsKHXzCTbRYLfIlq6m4D+dONJgoBuVYjOOlAA7x9BBQ+9v0huvhQZ+p7kPuguT/yw3qbwDg0suou54UiD+Kb72ltA3hJrPA/IMf4ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wn0uru/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C54DC4CEF0;
+	Tue, 30 Sep 2025 15:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244866;
-	bh=ASG9BmfpRktW1n5njYmyef0O2t8FQQ4go2DNlhEkY0I=;
+	s=korg; t=1759245766;
+	bh=hcMTHqJvgv54wFaBVKnGDm+i1DdExOIMLTO4V1Wd6uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbZLWtZRzS890jSeOXmt+88yynJpyfn9TSWGAI+CkUXnrgHwzWFe7Rv7K9UgaQgYb
-	 gW2eJ2pJgL/zLJ+UavFzcgvRjTRsqRqTLG1QJxP750yGJzGxZt5Yh50zEEFm6/kfOx
-	 zWl3qOhiX/EdN02jlgXqk5oxo2/NcMgAx2vcf8FE=
+	b=Wn0uru/UntfonZ+rUYNGvM4Ls7dT4+tfskbaDxjoQgoeJXiVW1wYFUJhrxI28mzn9
+	 LN3KLcTPaaUKXFh0PC0p/5rg3QPDsMxZhMaQjjAmTOys+mmn1MTVBB+17OqKwk8FSe
+	 7l0zsyxI/Y0WCUJYoL5RnNmhpbuGCQNUgcqhWgmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.16 138/143] wifi: iwlwifi: pcie: fix byte count table for some devices
+	Sean Christopherson <seanjc@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 43/91] vhost: Take a reference on the task in struct vhost_task.
 Date: Tue, 30 Sep 2025 16:47:42 +0200
-Message-ID: <20250930143836.735830887@linuxfoundation.org>
+Message-ID: <20250930143822.961025954@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit a38108a23ab558b834d71d542d32c05ab0fb64d4 upstream.
+[ Upstream commit afe16653e05db07d658b55245c7a2e0603f136c0 ]
 
-In my previous fix for this condition, I erroneously listed 9000
-instead of 7000 family, when 7000/8000 were already using iwlmvm.
-Thus the condition ended up wrong, causing the issue I had fixed
-for older devices to suddenly appear on 7000/8000 family devices.
-Correct the condition accordingly.
+vhost_task_create() creates a task and keeps a reference to its
+task_struct. That task may exit early via a signal and its task_struct
+will be released.
+A pending vhost_task_wake() will then attempt to wake the task and
+access a task_struct which is no longer there.
 
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/r/20250909165811.10729-1-00107082@163.com/
-Fixes: 586e3cb33ba6 ("wifi: iwlwifi: fix byte count table for old devices")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250915102743.777aaafbcc6c.I84404edfdfbf400501f6fb06def5b86c501da198@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acquire a reference on the task_struct while creating the thread and
+release the reference while the struct vhost_task itself is removed.
+If the task exits early due to a signal, then the vhost_task_wake() will
+still access a valid task_struct. The wake is safe and will be skipped
+in this case.
+
+Fixes: f9010dbdce911 ("fork, vhost: Use CLONE_THREAD to fix freezer/ps regression")
+Reported-by: Sean Christopherson <seanjc@google.com>
+Closes: https://lore.kernel.org/all/aKkLEtoDXKxAAWju@google.com/
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Message-Id: <20250918181144.Ygo8BZ-R@linutronix.de>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/vhost_task.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -2093,7 +2093,7 @@ static void iwl_txq_gen1_update_byte_cnt
- 		break;
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 8800f5acc0071..5a2116356428f 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -100,6 +100,7 @@ void vhost_task_stop(struct vhost_task *vtsk)
+ 	 * freeing it below.
+ 	 */
+ 	wait_for_completion(&vtsk->exited);
++	put_task_struct(vtsk->task);
+ 	kfree(vtsk);
+ }
+ EXPORT_SYMBOL_GPL(vhost_task_stop);
+@@ -148,7 +149,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
+ 		return NULL;
  	}
  
--	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_9000 &&
-+	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_7000 &&
- 	    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
- 		len = DIV_ROUND_UP(len, 4);
- 
+-	vtsk->task = tsk;
++	vtsk->task = get_task_struct(tsk);
+ 	return vtsk;
+ }
+ EXPORT_SYMBOL_GPL(vhost_task_create);
+-- 
+2.51.0
+
 
 
 
