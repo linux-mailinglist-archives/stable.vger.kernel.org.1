@@ -1,77 +1,57 @@
-Return-Path: <stable+bounces-182800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26939BADDD7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE02BADB79
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDBF7A441D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36D5E1944B17
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8FF30505F;
-	Tue, 30 Sep 2025 15:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B196237163;
+	Tue, 30 Sep 2025 15:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCx07N09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRdXSm6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFC825FA0F;
-	Tue, 30 Sep 2025 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB8A205E3B;
+	Tue, 30 Sep 2025 15:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246129; cv=none; b=aS8g6ktgDhM62n0fsf2tOXiWrmB8z/YVlq5Os6S0py2laxN7+Uut/xjSvduXfcQlUrSzrMyPx2E6XGaQTcBrIMiNzRHw/SXnS0ZH69IKQH30cdd2RqDBCsA3q/RuVMhZK0M6FxtJ/v4KdxVJ7qrCc8cQSWys+RcBuNLqBOz6K1Q=
+	t=1759245611; cv=none; b=a+QAw4/8mtm5CwW7mKQ0MLjpdeWoze0xMRSwOZKGX1uMKoI2Kxlh/UXiMqVmIau8ME/uOMmGmiSY+bLdhLLhmHv3+SWNQPp/P1o4ozwlHlMF02uud2ZzKomL6OKNCJNNBel0YDv/NdmaiE0MOAtQyXdA/fIqvgmdDOuNSQTAJ4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246129; c=relaxed/simple;
-	bh=yDOmtIbX8BrrxxAdlbSW/ww5BNyWrtlTW52jYdmzp8s=;
+	s=arc-20240116; t=1759245611; c=relaxed/simple;
+	bh=NMiGB6OuZEkdkt75EIrZgXH+jIdkGjt/FMmOs15ncj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBCR53OrpYAbIgjTkCyezj6ng5vlI5GOl4f1VurvwdO1jIjpJltT8He5sUjsYUUf0dVuEte4K5J2LqJRoxLmXRT0V/JOo+vyAGGmUd1BuDFhrMpBI342bH0boY0kjeJZ/xHGeLbzLh8OzmScEdkB7AQ1n5CZBx0K2Qha+qc2idA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCx07N09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4CDC4CEF0;
-	Tue, 30 Sep 2025 15:28:48 +0000 (UTC)
+	 MIME-Version; b=aUpWI2uszqf0OkoKkn7nDjqxQuQDYFH+ExnWteDQD26O+0kADIRBnt9fFnqFXe7rPlR6lOMh14MBPvscF20IOEIkseu5MJ5Rv5X52HnR050unWItkrjbQcjbm1E+DxVKAGKCCWHNqBpnk17ujvdOsoOhq01Oq1VseWK+ZnUUUdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRdXSm6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFB6C4CEF0;
+	Tue, 30 Sep 2025 15:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246128;
-	bh=yDOmtIbX8BrrxxAdlbSW/ww5BNyWrtlTW52jYdmzp8s=;
+	s=korg; t=1759245611;
+	bh=NMiGB6OuZEkdkt75EIrZgXH+jIdkGjt/FMmOs15ncj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCx07N09ehslsgGAKmLStPJWS3B9eY9NGqxe1rwlDm4GpG4N+WqfDFYRwfo6GIRYW
-	 hF21aWiHSuqPy6vY1Uqs7jTClAJbk5b/H9nlProPThEM2UQOx3/xmiX3+eEE9hj0/J
-	 IAMhlwHDiMD5jiRBd1RmzR0CEmbYjFVkiRP2XFEc=
+	b=cRdXSm6TbtFahilPH/7BMtFVNkmiUhWZ5kxelE1ejK5XKV8DPYnCiQgN61UuAz+zA
+	 l0Nm69LXgkYUz2Vc2A9GgqrD+oVfO6qxao4/nITJLBE0oZna+AgPjaQEaanB/dRjXl
+	 UhpIqj4NpyuhBDQZhYL25Vtsox1SwKNjy1BE3s5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 60/89] mm: folio_may_be_lru_cached() unless folio_test_large()
-Date: Tue, 30 Sep 2025 16:48:14 +0200
-Message-ID: <20250930143824.404583389@linuxfoundation.org>
+	David Laight <David.Laight@aculab.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.1 71/73] minmax: make generic MIN() and MAX() macros available everywhere
+Date: Tue, 30 Sep 2025 16:48:15 +0200
+Message-ID: <20250930143823.633512503@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,155 +63,420 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 ]
+[ Upstream commit 1a251f52cfdc417c84411a056bc142cbd77baef4 ]
 
-mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
-large folio is added: so collect_longterm_unpinnable_folios() just wastes
-effort when calling lru_add_drain[_all]() on a large folio.
+This just standardizes the use of MIN() and MAX() macros, with the very
+traditional semantics.  The goal is to use these for C constant
+expressions and for top-level / static initializers, and so be able to
+simplify the min()/max() macros.
 
-But although there is good reason not to batch up PMD-sized folios, we
-might well benefit from batching a small number of low-order mTHPs (though
-unclear how that "small number" limitation will be implemented).
+These macro names were used by various kernel code - they are very
+traditional, after all - and all such users have been fixed up, with a
+few different approaches:
 
-So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
-insulate those particular checks from future change.  Name preferred to
-"folio_is_batchable" because large folios can well be put on a batch: it's
-just the per-CPU LRU caches, drained much later, which need care.
+ - trivial duplicated macro definitions have been removed
 
-Marked for stable, to counter the increase in lru_add_drain_all()s from
-"mm/gup: check ref_count instead of lru before migration".
+   Note that 'trivial' here means that it's obviously kernel code that
+   already included all the major kernel headers, and thus gets the new
+   generic MIN/MAX macros automatically.
 
-Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
-Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Clean cherry-pick now into this tree ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - non-trivial duplicated macro definitions are guarded with #ifndef
+
+   This is the "yes, they define their own versions, but no, the include
+   situation is not entirely obvious, and maybe they don't get the
+   generic version automatically" case.
+
+ - strange use case #1
+
+   A couple of drivers decided that the way they want to describe their
+   versioning is with
+
+	#define MAJ 1
+	#define MIN 2
+	#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN)
+
+   which adds zero value and I just did my Alexander the Great
+   impersonation, and rewrote that pointless Gordian knot as
+
+	#define DRV_VERSION "1.2"
+
+   instead.
+
+ - strange use case #2
+
+   A couple of drivers thought that it's a good idea to have a random
+   'MIN' or 'MAX' define for a value or index into a table, rather than
+   the traditional macro that takes arguments.
+
+   These values were re-written as C enum's instead. The new
+   function-line macros only expand when followed by an open
+   parenthesis, and thus don't clash with enum use.
+
+Happily, there weren't really all that many of these cases, and a lot of
+users already had the pattern of using '#ifndef' guarding (or in one
+case just using '#undef MIN') before defining their own private version
+that does the same thing. I left such cases alone.
+
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/swap.h | 10 ++++++++++
- mm/gup.c             |  4 ++--
- mm/mlock.c           |  6 +++---
- mm/swap.c            |  2 +-
- 4 files changed, 16 insertions(+), 6 deletions(-)
+v2:
+  - Add missing #ifndef guards around MIN/MAX macro definitions
+    to avoid redefinition errors in:
+      * drivers/gpu/drm/amd/amdgpu/amdgpu.h
+      * drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+      * drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+      * drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index f3e0ac20c2e8c..63f85b3fee238 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -382,6 +382,16 @@ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
- void mark_page_accessed(struct page *);
- void folio_mark_accessed(struct folio *);
+ arch/um/drivers/mconsole_user.c                                       |    2 
+ drivers/edac/skx_common.h                                             |    1 
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h                                   |    2 
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c                   |    2 
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h                    |   14 ++++-
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c               |    2 
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c                  |    3 +
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c                  |    3 +
+ drivers/gpu/drm/radeon/evergreen_cs.c                                 |    2 
+ drivers/hwmon/adt7475.c                                               |   24 +++++-----
+ drivers/media/dvb-frontends/stv0367_priv.h                            |    3 +
+ drivers/net/fjes/fjes_main.c                                          |    4 -
+ drivers/nfc/pn544/i2c.c                                               |    2 
+ drivers/platform/x86/sony-laptop.c                                    |    1 
+ drivers/scsi/isci/init.c                                              |    6 --
+ drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h |    5 --
+ include/linux/minmax.h                                                |    2 
+ kernel/trace/preemptirq_delay_test.c                                  |    2 
+ lib/btree.c                                                           |    1 
+ lib/decompress_unlzma.c                                               |    2 
+ mm/zsmalloc.c                                                         |    1 
+ tools/testing/selftests/seccomp/seccomp_bpf.c                         |    2 
+ tools/testing/selftests/vm/mremap_test.c                              |    2 
+ 23 files changed, 51 insertions(+), 37 deletions(-)
+
+--- a/arch/um/drivers/mconsole_user.c
++++ b/arch/um/drivers/mconsole_user.c
+@@ -71,7 +71,9 @@ static struct mconsole_command *mconsole
+ 	return NULL;
+ }
  
-+static inline bool folio_may_be_lru_cached(struct folio *folio)
-+{
-+	/*
-+	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
-+	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
-+	 * will be sensible, but nobody has implemented and tested that yet.
-+	 */
-+	return !folio_test_large(folio);
-+}
++#ifndef MIN
+ #define MIN(a,b) ((a)<(b) ? (a):(b))
++#endif
+ 
+ #define STRINGX(x) #x
+ #define STRING(x) STRINGX(x)
+--- a/drivers/edac/skx_common.h
++++ b/drivers/edac/skx_common.h
+@@ -45,7 +45,6 @@
+ #define I10NM_NUM_CHANNELS	MAX(I10NM_NUM_DDR_CHANNELS, I10NM_NUM_HBM_CHANNELS)
+ #define I10NM_NUM_DIMMS		MAX(I10NM_NUM_DDR_DIMMS, I10NM_NUM_HBM_DIMMS)
+ 
+-#define MAX(a, b)	((a) > (b) ? (a) : (b))
+ #define NUM_IMC		MAX(SKX_NUM_IMC, I10NM_NUM_IMC)
+ #define NUM_CHANNELS	MAX(SKX_NUM_CHANNELS, I10NM_NUM_CHANNELS)
+ #define NUM_DIMMS	MAX(SKX_NUM_DIMMS, I10NM_NUM_DIMMS)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1258,7 +1258,9 @@ int emu_soc_asic_init(struct amdgpu_devi
+ 
+ #define amdgpu_inc_vram_lost(adev) atomic_inc(&((adev)->vram_lost_counter));
+ 
++#ifndef MIN
+ #define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
++#endif
+ 
+ /* Common functions */
+ bool amdgpu_device_has_job_running(struct amdgpu_device *adev);
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+@@ -25,7 +25,9 @@
+ 
+ #include "hdcp.h"
+ 
++#ifndef MIN
+ #define MIN(a, b) ((a) < (b) ? (a) : (b))
++#endif
+ #define HDCP_I2C_ADDR 0x3a	/* 0x74 >> 1*/
+ #define KSV_READ_SIZE 0xf	/* 0x6803b - 0x6802c */
+ #define HDCP_MAX_AUX_TRANSACTION_SIZE 16
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
+@@ -22,12 +22,18 @@
+  */
+ #include <asm/div64.h>
+ 
+-#define SHIFT_AMOUNT 16 /* We multiply all original integers with 2^SHIFT_AMOUNT to get the fInt representation */
++enum ppevvmath_constants {
++	/* We multiply all original integers with 2^SHIFT_AMOUNT to get the fInt representation */
++	SHIFT_AMOUNT	= 16,
+ 
+-#define PRECISION 5 /* Change this value to change the number of decimal places in the final output - 5 is a good default */
++	/* Change this value to change the number of decimal places in the final output - 5 is a good default */
++	PRECISION	=  5,
+ 
+-#define SHIFTED_2 (2 << SHIFT_AMOUNT)
+-#define MAX (1 << (SHIFT_AMOUNT - 1)) - 1 /* 32767 - Might change in the future */
++	SHIFTED_2	= (2 << SHIFT_AMOUNT),
 +
- extern atomic_t lru_disable_count;
++	/* 32767 - Might change in the future */
++	MAX		= (1 << (SHIFT_AMOUNT - 1)) - 1,
++};
  
- static inline bool lru_cache_disabled(void)
-diff --git a/mm/gup.c b/mm/gup.c
-index 4dd0eb70988b2..d105817a0c9aa 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2376,13 +2376,13 @@ static unsigned long collect_longterm_unpinnable_folios(
- 			continue;
- 		}
- 
--		if (drained == 0 &&
-+		if (drained == 0 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain();
- 			drained = 1;
- 		}
--		if (drained == 1 &&
-+		if (drained == 1 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
-diff --git a/mm/mlock.c b/mm/mlock.c
-index cde076fa7d5e5..8c8d522efdd59 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
- 
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
+ /* -------------------------------------------------------------------------------
+  * NEW TYPE - fINT
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -2081,7 +2081,9 @@ static int sienna_cichlid_display_disabl
+ 	return ret;
  }
-@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio)
  
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
++#ifndef MAX
+ #define MAX(a, b)	((a) > (b) ? (a) : (b))
++#endif
+ 
+ static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
+ 						 uint8_t pcie_gen_cap,
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -1255,7 +1255,10 @@ static int smu_v13_0_0_get_thermal_tempe
+ 	return 0;
  }
-@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
- 	 */
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, folio) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
+ 
++#ifndef MAX
+ #define MAX(a, b)	((a) > (b) ? (a) : (b))
++#endif
++
+ static ssize_t smu_v13_0_0_get_gpu_metrics(struct smu_context *smu,
+ 					   void **table)
+ {
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -1263,7 +1263,10 @@ static int smu_v13_0_7_get_thermal_tempe
+ 	return 0;
  }
-diff --git a/mm/swap.c b/mm/swap.c
-index d4cb4898f573e..ff846915db454 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -223,7 +223,7 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
- 		local_lock(&cpu_fbatches.lock);
  
- 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
--			folio_test_large(folio) || lru_cache_disabled())
-+			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
++#ifndef MAX
+ #define MAX(a, b)	((a) > (b) ? (a) : (b))
++#endif
++
+ static ssize_t smu_v13_0_7_get_gpu_metrics(struct smu_context *smu,
+ 					   void **table)
+ {
+--- a/drivers/gpu/drm/radeon/evergreen_cs.c
++++ b/drivers/gpu/drm/radeon/evergreen_cs.c
+@@ -33,8 +33,10 @@
+ #include "evergreen_reg_safe.h"
+ #include "cayman_reg_safe.h"
  
- 	if (disable_irq)
--- 
-2.51.0
-
++#ifndef MIN
+ #define MAX(a,b)                   (((a)>(b))?(a):(b))
+ #define MIN(a,b)                   (((a)<(b))?(a):(b))
++#endif
+ 
+ #define REG_SAFE_BM_SIZE ARRAY_SIZE(evergreen_reg_safe_bm)
+ 
+--- a/drivers/hwmon/adt7475.c
++++ b/drivers/hwmon/adt7475.c
+@@ -23,23 +23,23 @@
+ #include <linux/util_macros.h>
+ 
+ /* Indexes for the sysfs hooks */
+-
+-#define INPUT		0
+-#define MIN		1
+-#define MAX		2
+-#define CONTROL		3
+-#define OFFSET		3
+-#define AUTOMIN		4
+-#define THERM		5
+-#define HYSTERSIS	6
+-
++enum adt_sysfs_id {
++	INPUT		= 0,
++	MIN		= 1,
++	MAX		= 2,
++	CONTROL		= 3,
++	OFFSET		= 3,	// Dup
++	AUTOMIN		= 4,
++	THERM		= 5,
++	HYSTERSIS	= 6,
+ /*
+  * These are unique identifiers for the sysfs functions - unlike the
+  * numbers above, these are not also indexes into an array
+  */
++	ALARM		= 9,
++	FAULT		= 10,
++};
+ 
+-#define ALARM		9
+-#define FAULT		10
+ 
+ /* 7475 Common Registers */
+ 
+--- a/drivers/media/dvb-frontends/stv0367_priv.h
++++ b/drivers/media/dvb-frontends/stv0367_priv.h
+@@ -25,8 +25,11 @@
+ #endif
+ 
+ /* MACRO definitions */
++#ifndef MIN
+ #define MAX(X, Y) ((X) >= (Y) ? (X) : (Y))
+ #define MIN(X, Y) ((X) <= (Y) ? (X) : (Y))
++#endif
++
+ #define INRANGE(X, Y, Z) \
+ 	((((X) <= (Y)) && ((Y) <= (Z))) || \
+ 	(((Z) <= (Y)) && ((Y) <= (X))) ? 1 : 0)
+--- a/drivers/net/fjes/fjes_main.c
++++ b/drivers/net/fjes/fjes_main.c
+@@ -14,9 +14,7 @@
+ #include "fjes.h"
+ #include "fjes_trace.h"
+ 
+-#define MAJ 1
+-#define MIN 2
+-#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN)
++#define DRV_VERSION "1.2"
+ #define DRV_NAME	"fjes"
+ char fjes_driver_name[] = DRV_NAME;
+ char fjes_driver_version[] = DRV_VERSION;
+--- a/drivers/nfc/pn544/i2c.c
++++ b/drivers/nfc/pn544/i2c.c
+@@ -126,8 +126,6 @@ struct pn544_i2c_fw_secure_blob {
+ #define PN544_FW_CMD_RESULT_COMMAND_REJECTED 0xE0
+ #define PN544_FW_CMD_RESULT_CHUNK_ERROR 0xE6
+ 
+-#define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
+-
+ #define PN544_FW_WRITE_BUFFER_MAX_LEN 0x9f7
+ #define PN544_FW_I2C_MAX_PAYLOAD PN544_HCI_I2C_LLC_MAX_SIZE
+ #define PN544_FW_I2C_WRITE_FRAME_HEADER_LEN 8
+--- a/drivers/platform/x86/sony-laptop.c
++++ b/drivers/platform/x86/sony-laptop.c
+@@ -757,7 +757,6 @@ static union acpi_object *__call_snc_met
+ 	return result;
+ }
+ 
+-#define MIN(a, b)	(a > b ? b : a)
+ static int sony_nc_buffer_call(acpi_handle handle, char *name, u64 *value,
+ 		void *buffer, size_t buflen)
+ {
+--- a/drivers/scsi/isci/init.c
++++ b/drivers/scsi/isci/init.c
+@@ -65,11 +65,7 @@
+ #include "task.h"
+ #include "probe_roms.h"
+ 
+-#define MAJ 1
+-#define MIN 2
+-#define BUILD 0
+-#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN) "." \
+-	__stringify(BUILD)
++#define DRV_VERSION "1.2.0"
+ 
+ MODULE_VERSION(DRV_VERSION);
+ 
+--- a/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
++++ b/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
+@@ -31,11 +31,6 @@
+ /* A => B */
+ #define IMPLIES(a, b)        (!(a) || (b))
+ 
+-/* for preprocessor and array sizing use MIN and MAX
+-   otherwise use min and max */
+-#define MAX(a, b)            (((a) > (b)) ? (a) : (b))
+-#define MIN(a, b)            (((a) < (b)) ? (a) : (b))
+-
+ #define ROUND_DIV(a, b)      (((b) != 0) ? ((a) + ((b) >> 1)) / (b) : 0)
+ #define CEIL_DIV(a, b)       (((b) != 0) ? ((a) + (b) - 1) / (b) : 0)
+ #define CEIL_MUL(a, b)       (CEIL_DIV(a, b) * (b))
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -274,6 +274,8 @@ static inline bool in_range32(u32 val, u
+  * Use these carefully: no type checking, and uses the arguments
+  * multiple times. Use for obvious constants only.
+  */
++#define MIN(a,b) __cmp(min,a,b)
++#define MAX(a,b) __cmp(max,a,b)
+ #define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
+ #define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
+ 
+--- a/kernel/trace/preemptirq_delay_test.c
++++ b/kernel/trace/preemptirq_delay_test.c
+@@ -34,8 +34,6 @@ MODULE_PARM_DESC(cpu_affinity, "Cpu num
+ 
+ static struct completion done;
+ 
+-#define MIN(x, y) ((x) < (y) ? (x) : (y))
+-
+ static void busy_wait(ulong time)
+ {
+ 	u64 start, end;
+--- a/lib/btree.c
++++ b/lib/btree.c
+@@ -43,7 +43,6 @@
+ #include <linux/slab.h>
+ #include <linux/module.h>
+ 
+-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+ #define NODESIZE MAX(L1_CACHE_BYTES, 128)
+ 
+ struct btree_geo {
+--- a/lib/decompress_unlzma.c
++++ b/lib/decompress_unlzma.c
+@@ -37,7 +37,9 @@
+ 
+ #include <linux/decompress/mm.h>
+ 
++#ifndef MIN
+ #define	MIN(a, b) (((a) < (b)) ? (a) : (b))
++#endif
+ 
+ static long long INIT read_int(unsigned char *ptr, int size)
+ {
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -123,7 +123,6 @@
+ #define ISOLATED_BITS	3
+ #define MAGIC_VAL_BITS	8
+ 
+-#define MAX(a, b) ((a) >= (b) ? (a) : (b))
+ /* ZS_MIN_ALLOC_SIZE must be multiple of ZS_ALIGN */
+ #define ZS_MIN_ALLOC_SIZE \
+ 	MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> OBJ_INDEX_BITS))
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -60,7 +60,9 @@
+ #define SKIP(s, ...)	XFAIL(s, ##__VA_ARGS__)
+ #endif
+ 
++#ifndef MIN
+ #define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
++#endif
+ 
+ #ifndef PR_SET_PTRACER
+ # define PR_SET_PTRACER 0x59616d61
+--- a/tools/testing/selftests/vm/mremap_test.c
++++ b/tools/testing/selftests/vm/mremap_test.c
+@@ -22,7 +22,9 @@
+ #define VALIDATION_DEFAULT_THRESHOLD 4	/* 4MB */
+ #define VALIDATION_NO_THRESHOLD 0	/* Verify the entire region */
+ 
++#ifndef MIN
+ #define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
++#endif
+ 
+ struct config {
+ 	unsigned long long src_alignment;
 
 
 
