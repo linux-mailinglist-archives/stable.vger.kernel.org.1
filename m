@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-182372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D8ABAD7E2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A6DBAD548
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD8CD7A69E9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88A83BC171
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C5D3043C4;
-	Tue, 30 Sep 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0846A304BC7;
+	Tue, 30 Sep 2025 14:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bA4JOzz/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vy1irs7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9527B846F;
-	Tue, 30 Sep 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5BC1EF38E;
+	Tue, 30 Sep 2025 14:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244730; cv=none; b=OdgYmiyzVUS3YvdYaejA1TW3atzLDZBxxtssLyJZZF6SKUGm3A1Q5e4iyHxoNqfKICF6tQGfiUzkg59WBj5oHBoXyx4kQH9ssRERmSbsHnhZoImx8h9YesawXqUBe2+WzVKlXh99HGCM0lR0bRqNSpy7/o8CoPlHOIIybAF8iPo=
+	t=1759244031; cv=none; b=OBt3yyDIPFWTYKINjFDCJfG3j8xzzyoNinOoiNCUeW9g1pu7lNPebE4thzAsF1i3heUYp/SEm212lA2WPG3NUGvKQzpL+YD1z02IK82ghVbwy+ImiQY7GPyhxtCwUYRmulpqhTPgwe5sMnSBCf++nQmO57smeBCiCzVaELItvbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244730; c=relaxed/simple;
-	bh=SzvdGeCvmh1Cr6WbYEPdgsyaPYA7fRqFL4VxWT2Reng=;
+	s=arc-20240116; t=1759244031; c=relaxed/simple;
+	bh=ExkoymeBni/GX7Ieb56a9Ph3reagNF7yGn0DU1pglCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oKNU1Qx7br5z1XUtxhjWsC2KnV1M0q5AzI7+6GmaHXPAgSAuQnMVeyyWQQqGRDI0u2/odqvZna4thr4juqG2tbtFGWGynvUngQM9GI9P3dFCGsNSXtxpeQhaN/hzZLLrmNnfYW+ewDEefB5wE503j61rllml/fTzkSfxxI6elG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bA4JOzz/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3181C4CEF0;
-	Tue, 30 Sep 2025 15:05:29 +0000 (UTC)
+	 MIME-Version; b=h8jg3cvSDCnu0lfoN7R3k9wIjKCLzTNa6bCEc4vL9wit+cxlK0W8AACoN5Sc4qbtlyET6QVY4mue2/a+WnpypLMLzpYnAGu5AxXGh80KoHUtPwvxgEdkFxDBzJTswHkVr4lpBcjYEeKzS+k3eBb2h+w+5HDz8jaYK/nEobmqEz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vy1irs7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADF8C4CEF0;
+	Tue, 30 Sep 2025 14:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244730;
-	bh=SzvdGeCvmh1Cr6WbYEPdgsyaPYA7fRqFL4VxWT2Reng=;
+	s=korg; t=1759244031;
+	bh=ExkoymeBni/GX7Ieb56a9Ph3reagNF7yGn0DU1pglCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bA4JOzz//2qUahanBfk2NpsrkQLD8OsaNkdu1E/l3FsTVgBks7OnkECiXVd624URV
-	 LpjX1bWfnoFhDn0I035Bz529eHnzxuhVQ58GTSk1nNdPNVkkbux2wF6CmPLN8hWNTY
-	 u7yb8X9KvOar8QReNe5KKvR9Aw/f6zLn/E7iHqtA=
+	b=vy1irs7r4lI4/VcfnVz/rTr33WH3/2F/fv1HEoLy1N4RDcA6YBA6FogBJhyE2+r7x
+	 8WCwGPqwBoAYI0stZTGyLBdRaWbRWmGPrkeCcU4C1OeurqYoUrFYz7+/9BW6T2lkHQ
+	 +Jsj27A8+2fF2EgrAjDx7igeRVxlQgCDHsTUAKWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Iy=C3=A1n=20M=C3=A9ndez=20Veiga?= <me@iyanmv.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 097/143] Revert "drm/xe/guc: Set RCS/CCS yield policy"
+Subject: [PATCH 5.4 59/81] ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5
 Date: Tue, 30 Sep 2025 16:47:01 +0200
-Message-ID: <20250930143835.093175158@linuxfoundation.org>
+Message-ID: <20250930143822.149076492@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,224 +60,325 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit dd1a415dcfd5984bf83abd804c3cd9e0ff9dde30.
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-Reported-by: Iyán Méndez Veiga <me@iyanmv.com>
-Link: https://lore.kernel.org/stable/aNlW7ekiC0dNPxU3@laps/T/#t
+[ Upstream commit 79d561c4ec0497669f19a9550cfb74812f60938b ]
+
+The Sony DualSense wireless controller (PS5) features an internal mono
+speaker, but it also provides a 3.5mm jack socket for headphone output
+and headset microphone input.
+
+Since this is a UAC1 device, it doesn't advertise any jack detection
+capability.  However, the controller is able to report HP & MIC insert
+events via HID, i.e. through a dedicated input device managed by the
+hid-playstation driver.
+
+Add a quirk to create the jack controls for headphone and headset mic,
+respectively, and setup an input handler for each of them in order to
+intercept the related hotplug events.
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-9-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/abi/guc_actions_abi.h |  1 -
- drivers/gpu/drm/xe/abi/guc_klvs_abi.h    | 25 ---------
- drivers/gpu/drm/xe/xe_gt.c               |  3 +-
- drivers/gpu/drm/xe/xe_guc.c              |  6 ++-
- drivers/gpu/drm/xe/xe_guc_submit.c       | 66 ------------------------
- drivers/gpu/drm/xe/xe_guc_submit.h       |  2 -
- 6 files changed, 5 insertions(+), 98 deletions(-)
+ sound/usb/mixer_quirks.c | 263 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 263 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/abi/guc_actions_abi.h b/drivers/gpu/drm/xe/abi/guc_actions_abi.h
-index 4d9896e14649c..b55d4cfb483a1 100644
---- a/drivers/gpu/drm/xe/abi/guc_actions_abi.h
-+++ b/drivers/gpu/drm/xe/abi/guc_actions_abi.h
-@@ -117,7 +117,6 @@ enum xe_guc_action {
- 	XE_GUC_ACTION_ENTER_S_STATE = 0x501,
- 	XE_GUC_ACTION_EXIT_S_STATE = 0x502,
- 	XE_GUC_ACTION_GLOBAL_SCHED_POLICY_CHANGE = 0x506,
--	XE_GUC_ACTION_UPDATE_SCHEDULING_POLICIES_KLV = 0x509,
- 	XE_GUC_ACTION_SCHED_CONTEXT = 0x1000,
- 	XE_GUC_ACTION_SCHED_CONTEXT_MODE_SET = 0x1001,
- 	XE_GUC_ACTION_SCHED_CONTEXT_MODE_DONE = 0x1002,
-diff --git a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-index 89034bc97ec5a..5b2502bec2dcc 100644
---- a/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-+++ b/drivers/gpu/drm/xe/abi/guc_klvs_abi.h
-@@ -17,7 +17,6 @@
-  *  | 0 | 31:16 | **KEY** - KLV key identifier                                 |
-  *  |   |       |   - `GuC Self Config KLVs`_                                  |
-  *  |   |       |   - `GuC Opt In Feature KLVs`_                               |
-- *  |   |       |   - `GuC Scheduling Policies KLVs`_                          |
-  *  |   |       |   - `GuC VGT Policy KLVs`_                                   |
-  *  |   |       |   - `GuC VF Configuration KLVs`_                             |
-  *  |   |       |                                                              |
-@@ -140,30 +139,6 @@ enum  {
- #define GUC_KLV_OPT_IN_FEATURE_EXT_CAT_ERR_TYPE_KEY 0x4001
- #define GUC_KLV_OPT_IN_FEATURE_EXT_CAT_ERR_TYPE_LEN 0u
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 03d49d4c5141d..cea1c970359c1 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -16,6 +16,7 @@
  
--/**
-- * DOC: GuC Scheduling Policies KLVs
-- *
-- * `GuC KLV`_ keys available for use with UPDATE_SCHEDULING_POLICIES_KLV.
-- *
-- * _`GUC_KLV_SCHEDULING_POLICIES_RENDER_COMPUTE_YIELD` : 0x1001
-- *      Some platforms do not allow concurrent execution of RCS and CCS
-- *      workloads from different address spaces. By default, the GuC prioritizes
-- *      RCS submissions over CCS ones, which can lead to CCS workloads being
-- *      significantly (or completely) starved of execution time. This KLV allows
-- *      the driver to specify a quantum (in ms) and a ratio (percentage value
-- *      between 0 and 100), and the GuC will prioritize the CCS for that
-- *      percentage of each quantum. For example, specifying 100ms and 30% will
-- *      make the GuC prioritize the CCS for 30ms of every 100ms.
-- *      Note that this does not necessarly mean that RCS and CCS engines will
-- *      only be active for their percentage of the quantum, as the restriction
-- *      only kicks in if both classes are fully busy with non-compatible address
-- *      spaces; i.e., if one engine is idle or running the same address space,
-- *      a pending job on the other engine will still be submitted to the HW no
-- *      matter what the ratio is
-- */
--#define GUC_KLV_SCHEDULING_POLICIES_RENDER_COMPUTE_YIELD_KEY	0x1001
--#define GUC_KLV_SCHEDULING_POLICIES_RENDER_COMPUTE_YIELD_LEN	2u
--
- /**
-  * DOC: GuC VGT Policy KLVs
-  *
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index eaf7569a7c1d1..e3517ce2e18c1 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -41,7 +41,6 @@
- #include "xe_gt_topology.h"
- #include "xe_guc_exec_queue_types.h"
- #include "xe_guc_pc.h"
--#include "xe_guc_submit.h"
- #include "xe_hw_fence.h"
- #include "xe_hw_engine_class_sysfs.h"
- #include "xe_irq.h"
-@@ -98,7 +97,7 @@ void xe_gt_sanitize(struct xe_gt *gt)
- 	 * FIXME: if xe_uc_sanitize is called here, on TGL driver will not
- 	 * reload
- 	 */
--	xe_guc_submit_disable(&gt->uc.guc);
-+	gt->uc.guc.submission_state.enabled = false;
+ #include <linux/hid.h>
+ #include <linux/init.h>
++#include <linux/input.h>
+ #include <linux/math64.h>
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+@@ -526,6 +527,263 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
+ 					  &snd_emu0204_control, NULL);
  }
  
- static void xe_gt_enable_host_l2_vram(struct xe_gt *gt)
-diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
-index b9d21fdaad48b..2efc0298e1a4c 100644
---- a/drivers/gpu/drm/xe/xe_guc.c
-+++ b/drivers/gpu/drm/xe/xe_guc.c
-@@ -825,7 +825,9 @@ int xe_guc_post_load_init(struct xe_guc *guc)
- 			return ret;
- 	}
- 
--	return xe_guc_submit_enable(guc);
-+	guc->submission_state.enabled = true;
++/*
++ * Sony DualSense controller (PS5) jack detection
++ *
++ * Since this is an UAC 1 device, it doesn't support jack detection.
++ * However, the controller hid-playstation driver reports HP & MIC
++ * insert events through a dedicated input device.
++ */
++
++#define SND_DUALSENSE_JACK_OUT_TERM_ID 3
++#define SND_DUALSENSE_JACK_IN_TERM_ID 4
++
++struct dualsense_mixer_elem_info {
++	struct usb_mixer_elem_info info;
++	struct input_handler ih;
++	struct input_device_id id_table[2];
++	bool connected;
++};
++
++static void snd_dualsense_ih_event(struct input_handle *handle,
++				   unsigned int type, unsigned int code,
++				   int value)
++{
++	struct dualsense_mixer_elem_info *mei;
++	struct usb_mixer_elem_list *me;
++
++	if (type != EV_SW)
++		return;
++
++	mei = container_of(handle->handler, struct dualsense_mixer_elem_info, ih);
++	me = &mei->info.head;
++
++	if ((me->id == SND_DUALSENSE_JACK_OUT_TERM_ID && code == SW_HEADPHONE_INSERT) ||
++	    (me->id == SND_DUALSENSE_JACK_IN_TERM_ID && code == SW_MICROPHONE_INSERT)) {
++		mei->connected = !!value;
++		snd_ctl_notify(me->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
++			       &me->kctl->id);
++	}
++}
++
++static bool snd_dualsense_ih_match(struct input_handler *handler,
++				   struct input_dev *dev)
++{
++	struct dualsense_mixer_elem_info *mei;
++	struct usb_device *snd_dev;
++	char *input_dev_path, *usb_dev_path;
++	size_t usb_dev_path_len;
++	bool match = false;
++
++	mei = container_of(handler, struct dualsense_mixer_elem_info, ih);
++	snd_dev = mei->info.head.mixer->chip->dev;
++
++	input_dev_path = kobject_get_path(&dev->dev.kobj, GFP_KERNEL);
++	if (!input_dev_path) {
++		dev_warn(&snd_dev->dev, "Failed to get input dev path\n");
++		return false;
++	}
++
++	usb_dev_path = kobject_get_path(&snd_dev->dev.kobj, GFP_KERNEL);
++	if (!usb_dev_path) {
++		dev_warn(&snd_dev->dev, "Failed to get USB dev path\n");
++		goto free_paths;
++	}
++
++	/*
++	 * Ensure the VID:PID matched input device supposedly owned by the
++	 * hid-playstation driver belongs to the actual hardware handled by
++	 * the current USB audio device, which implies input_dev_path being
++	 * a subpath of usb_dev_path.
++	 *
++	 * This verification is necessary when there is more than one identical
++	 * controller attached to the host system.
++	 */
++	usb_dev_path_len = strlen(usb_dev_path);
++	if (usb_dev_path_len >= strlen(input_dev_path))
++		goto free_paths;
++
++	usb_dev_path[usb_dev_path_len] = '/';
++	match = !memcmp(input_dev_path, usb_dev_path, usb_dev_path_len + 1);
++
++free_paths:
++	kfree(input_dev_path);
++	kfree(usb_dev_path);
++
++	return match;
++}
++
++static int snd_dualsense_ih_connect(struct input_handler *handler,
++				    struct input_dev *dev,
++				    const struct input_device_id *id)
++{
++	struct input_handle *handle;
++	int err;
++
++	handle = kzalloc(sizeof(*handle), GFP_KERNEL);
++	if (!handle)
++		return -ENOMEM;
++
++	handle->dev = dev;
++	handle->handler = handler;
++	handle->name = handler->name;
++
++	err = input_register_handle(handle);
++	if (err)
++		goto err_free;
++
++	err = input_open_device(handle);
++	if (err)
++		goto err_unregister;
 +
 +	return 0;
- }
++
++err_unregister:
++	input_unregister_handle(handle);
++err_free:
++	kfree(handle);
++	return err;
++}
++
++static void snd_dualsense_ih_disconnect(struct input_handle *handle)
++{
++	input_close_device(handle);
++	input_unregister_handle(handle);
++	kfree(handle);
++}
++
++static void snd_dualsense_ih_start(struct input_handle *handle)
++{
++	struct dualsense_mixer_elem_info *mei;
++	struct usb_mixer_elem_list *me;
++	int status = -1;
++
++	mei = container_of(handle->handler, struct dualsense_mixer_elem_info, ih);
++	me = &mei->info.head;
++
++	if (me->id == SND_DUALSENSE_JACK_OUT_TERM_ID &&
++	    test_bit(SW_HEADPHONE_INSERT, handle->dev->swbit))
++		status = test_bit(SW_HEADPHONE_INSERT, handle->dev->sw);
++	else if (me->id == SND_DUALSENSE_JACK_IN_TERM_ID &&
++		 test_bit(SW_MICROPHONE_INSERT, handle->dev->swbit))
++		status = test_bit(SW_MICROPHONE_INSERT, handle->dev->sw);
++
++	if (status >= 0) {
++		mei->connected = !!status;
++		snd_ctl_notify(me->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
++			       &me->kctl->id);
++	}
++}
++
++static int snd_dualsense_jack_get(struct snd_kcontrol *kctl,
++				  struct snd_ctl_elem_value *ucontrol)
++{
++	struct dualsense_mixer_elem_info *mei = snd_kcontrol_chip(kctl);
++
++	ucontrol->value.integer.value[0] = mei->connected;
++
++	return 0;
++}
++
++static const struct snd_kcontrol_new snd_dualsense_jack_control = {
++	.iface = SNDRV_CTL_ELEM_IFACE_CARD,
++	.access = SNDRV_CTL_ELEM_ACCESS_READ,
++	.info = snd_ctl_boolean_mono_info,
++	.get = snd_dualsense_jack_get,
++};
++
++static int snd_dualsense_resume_jack(struct usb_mixer_elem_list *list)
++{
++	snd_ctl_notify(list->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
++		       &list->kctl->id);
++	return 0;
++}
++
++static void snd_dualsense_mixer_elem_free(struct snd_kcontrol *kctl)
++{
++	struct dualsense_mixer_elem_info *mei = snd_kcontrol_chip(kctl);
++
++	if (mei->ih.event)
++		input_unregister_handler(&mei->ih);
++
++	snd_usb_mixer_elem_free(kctl);
++}
++
++static int snd_dualsense_jack_create(struct usb_mixer_interface *mixer,
++				     const char *name, bool is_output)
++{
++	struct dualsense_mixer_elem_info *mei;
++	struct input_device_id *idev_id;
++	struct snd_kcontrol *kctl;
++	int err;
++
++	mei = kzalloc(sizeof(*mei), GFP_KERNEL);
++	if (!mei)
++		return -ENOMEM;
++
++	snd_usb_mixer_elem_init_std(&mei->info.head, mixer,
++				    is_output ? SND_DUALSENSE_JACK_OUT_TERM_ID :
++						SND_DUALSENSE_JACK_IN_TERM_ID);
++
++	mei->info.head.resume = snd_dualsense_resume_jack;
++	mei->info.val_type = USB_MIXER_BOOLEAN;
++	mei->info.channels = 1;
++	mei->info.min = 0;
++	mei->info.max = 1;
++
++	kctl = snd_ctl_new1(&snd_dualsense_jack_control, mei);
++	if (!kctl) {
++		kfree(mei);
++		return -ENOMEM;
++	}
++
++	strscpy(kctl->id.name, name, sizeof(kctl->id.name));
++	kctl->private_free = snd_dualsense_mixer_elem_free;
++
++	err = snd_usb_mixer_add_control(&mei->info.head, kctl);
++	if (err)
++		return err;
++
++	idev_id = &mei->id_table[0];
++	idev_id->flags = INPUT_DEVICE_ID_MATCH_VENDOR | INPUT_DEVICE_ID_MATCH_PRODUCT |
++			 INPUT_DEVICE_ID_MATCH_EVBIT | INPUT_DEVICE_ID_MATCH_SWBIT;
++	idev_id->vendor = USB_ID_VENDOR(mixer->chip->usb_id);
++	idev_id->product = USB_ID_PRODUCT(mixer->chip->usb_id);
++	idev_id->evbit[BIT_WORD(EV_SW)] = BIT_MASK(EV_SW);
++	if (is_output)
++		idev_id->swbit[BIT_WORD(SW_HEADPHONE_INSERT)] = BIT_MASK(SW_HEADPHONE_INSERT);
++	else
++		idev_id->swbit[BIT_WORD(SW_MICROPHONE_INSERT)] = BIT_MASK(SW_MICROPHONE_INSERT);
++
++	mei->ih.event = snd_dualsense_ih_event;
++	mei->ih.match = snd_dualsense_ih_match;
++	mei->ih.connect = snd_dualsense_ih_connect,
++	mei->ih.disconnect = snd_dualsense_ih_disconnect,
++	mei->ih.start = snd_dualsense_ih_start,
++	mei->ih.name = name;
++	mei->ih.id_table = mei->id_table;
++
++	err = input_register_handler(&mei->ih);
++	if (err) {
++		dev_warn(&mixer->chip->dev->dev,
++			 "Could not register input handler: %d\n", err);
++		mei->ih.event = NULL;
++	}
++
++	return 0;
++}
++
++static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
++{
++	int err;
++
++	err = snd_dualsense_jack_create(mixer, "Headphone Jack", true);
++	if (err < 0)
++		return err;
++
++	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
++}
++
+ /* ASUS Xonar U1 / U3 controls */
  
- int xe_guc_reset(struct xe_guc *guc)
-@@ -1519,7 +1521,7 @@ void xe_guc_sanitize(struct xe_guc *guc)
- {
- 	xe_uc_fw_sanitize(&guc->fw);
- 	xe_guc_ct_disable(&guc->ct);
--	xe_guc_submit_disable(guc);
-+	guc->submission_state.enabled = false;
- }
+ static int snd_xonar_u1_switch_get(struct snd_kcontrol *kcontrol,
+@@ -2381,6 +2639,11 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 		err = snd_emu0204_controls_create(mixer);
+ 		break;
  
- int xe_guc_reset_prepare(struct xe_guc *guc)
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 18ddbb7b98a15..e670dcb0f0932 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -32,7 +32,6 @@
- #include "xe_guc_ct.h"
- #include "xe_guc_exec_queue_types.h"
- #include "xe_guc_id_mgr.h"
--#include "xe_guc_klv_helpers.h"
- #include "xe_guc_submit_types.h"
- #include "xe_hw_engine.h"
- #include "xe_hw_fence.h"
-@@ -317,71 +316,6 @@ int xe_guc_submit_init(struct xe_guc *guc, unsigned int num_ids)
- 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
- }
- 
--/*
-- * Given that we want to guarantee enough RCS throughput to avoid missing
-- * frames, we set the yield policy to 20% of each 80ms interval.
-- */
--#define RC_YIELD_DURATION	80	/* in ms */
--#define RC_YIELD_RATIO		20	/* in percent */
--static u32 *emit_render_compute_yield_klv(u32 *emit)
--{
--	*emit++ = PREP_GUC_KLV_TAG(SCHEDULING_POLICIES_RENDER_COMPUTE_YIELD);
--	*emit++ = RC_YIELD_DURATION;
--	*emit++ = RC_YIELD_RATIO;
--
--	return emit;
--}
--
--#define SCHEDULING_POLICY_MAX_DWORDS 16
--static int guc_init_global_schedule_policy(struct xe_guc *guc)
--{
--	u32 data[SCHEDULING_POLICY_MAX_DWORDS];
--	u32 *emit = data;
--	u32 count = 0;
--	int ret;
--
--	if (GUC_SUBMIT_VER(guc) < MAKE_GUC_VER(1, 1, 0))
--		return 0;
--
--	*emit++ = XE_GUC_ACTION_UPDATE_SCHEDULING_POLICIES_KLV;
--
--	if (CCS_MASK(guc_to_gt(guc)))
--		emit = emit_render_compute_yield_klv(emit);
--
--	count = emit - data;
--	if (count > 1) {
--		xe_assert(guc_to_xe(guc), count <= SCHEDULING_POLICY_MAX_DWORDS);
--
--		ret = xe_guc_ct_send_block(&guc->ct, data, count);
--		if (ret < 0) {
--			xe_gt_err(guc_to_gt(guc),
--				  "failed to enable GuC sheduling policies: %pe\n",
--				  ERR_PTR(ret));
--			return ret;
--		}
--	}
--
--	return 0;
--}
--
--int xe_guc_submit_enable(struct xe_guc *guc)
--{
--	int ret;
--
--	ret = guc_init_global_schedule_policy(guc);
--	if (ret)
--		return ret;
--
--	guc->submission_state.enabled = true;
--
--	return 0;
--}
--
--void xe_guc_submit_disable(struct xe_guc *guc)
--{
--	guc->submission_state.enabled = false;
--}
--
- static void __release_guc_id(struct xe_guc *guc, struct xe_exec_queue *q, u32 xa_count)
- {
- 	int i;
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.h b/drivers/gpu/drm/xe/xe_guc_submit.h
-index 0d126b807c104..9b71a986c6ca6 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.h
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.h
-@@ -13,8 +13,6 @@ struct xe_exec_queue;
- struct xe_guc;
- 
- int xe_guc_submit_init(struct xe_guc *guc, unsigned int num_ids);
--int xe_guc_submit_enable(struct xe_guc *guc);
--void xe_guc_submit_disable(struct xe_guc *guc);
- 
- int xe_guc_submit_reset_prepare(struct xe_guc *guc);
- void xe_guc_submit_reset_wait(struct xe_guc *guc);
++	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
++	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
++		err = snd_dualsense_controls_create(mixer);
++		break;
++
+ 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
+ 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
+ 		err = snd_c400_create_mixer(mixer);
 -- 
 2.51.0
 
