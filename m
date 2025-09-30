@@ -1,77 +1,56 @@
-Return-Path: <stable+bounces-182593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5231BADAA4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1FCBAD93E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429FC1892E2F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2963C2570
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39FE3064B9;
-	Tue, 30 Sep 2025 15:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C192FCBFC;
+	Tue, 30 Sep 2025 15:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsOW+uVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4IbJTZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BE1217F55;
-	Tue, 30 Sep 2025 15:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817F42236EB;
+	Tue, 30 Sep 2025 15:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245449; cv=none; b=qc74X76d+zYMxsELxieaemYspY/H76Qnm6g64AAKAiQN/irarqbBKCf7lUmfgm1BN2yH7NoU/1yEySNf/CEUOxeL1waTS20mb5FHcl+q8WaVUynXBa8nb6t6gM0hRvOj9NjTPcZFnzMiBEGvFeWrIxn+m7c/+Rp50Pl+eYFTEwg=
+	t=1759244912; cv=none; b=EDBIddTj/Vqjz21wkhxRp1SGVd0HYAT/GC8AyQTKRFFdmkz9ovp/3X1eHSvRLglvd3Q1t7SeDZriX3MM4fjTHgph0prQirMSF7mwGW54ugniuSBwLF0JZKE2VgUEumHwFlI3xloZRQW/BFI9OnBgFX4czqfQtLb+yzwsrckbdi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245449; c=relaxed/simple;
-	bh=Btc4rSCe/HJ/vzlHF8etXZYnpDnTtqYeukhuff9YtGs=;
+	s=arc-20240116; t=1759244912; c=relaxed/simple;
+	bh=U1S67C5Kd8pJXkzkH/YAv5SUYhoIZMq6g6VP29wZOMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEgKN/waeZNY/0wyfWPRkJ7IRNegQ3tvWXMrVah0bL1Ch/k9RNjAVyHGsGRx1hZnp95sRm7L4r4viidHKUdt+JEnOpLjkSp6LI9uNKAH4EPyRfp2Dc3IxHEVEI1oMaewXgG/5BXEyBWSpaIHHaoXNQc60TQj8T+d5IfAcRB9RjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsOW+uVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC982C4CEF0;
-	Tue, 30 Sep 2025 15:17:28 +0000 (UTC)
+	 MIME-Version; b=mmnY2d3n/4cN1Kj0mQa0uqTW1UDDI1aRzVd7xvW+BwlM3orqD+deBkgql3ZRIocfAPWGMOebG4RzWzCfQUeAWv3IWNzCzxHCo69oYDBfhqk1oO6CiuDzkhJrhQaqFLMPYeByIN+jePtdLltYdu8nEq0YUCFsIiFFpCT8Y/lHXP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4IbJTZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A35C4CEF0;
+	Tue, 30 Sep 2025 15:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245449;
-	bh=Btc4rSCe/HJ/vzlHF8etXZYnpDnTtqYeukhuff9YtGs=;
+	s=korg; t=1759244912;
+	bh=U1S67C5Kd8pJXkzkH/YAv5SUYhoIZMq6g6VP29wZOMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsOW+uVI43xLLnCfx7yuFUfOaimif2tpBD3Ira/jX5gO1puc3YT/6HXqNpErsYGly
-	 nz/HMUP102dPbGbWfNAGq+MV4D0HSi/rPiOqX2tXPQ4sZU8igUIgPK/Ww1ZqfBJWjB
-	 Lsbq2nB+aSYgJ6XDtdA/chO2UEuXsnj1HneebM+w=
+	b=W4IbJTZqDmcYxlSpHHFmYty35/gJg7xTGWxKTy09IZMH+j4rCdSjvy3TziLQFc1Fs
+	 XuMGbVp+D/a8tdv2gvw9rsebzHSQuw3+ii126G9+lp8OoP/8n4PmY5FY11qwNReSSJ
+	 +EDtY40Mttym6C/o9YA0JakmZxsnu/QXPAPze0eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/73] mm/gup: local lru_add_drain() to avoid lru_add_drain_all()
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.16 121/143] pinctrl: airoha: fix wrong PHY LED mux value for LED1 GPIO46
 Date: Tue, 30 Sep 2025 16:47:25 +0200
-Message-ID: <20250930143821.446321742@linuxfoundation.org>
+Message-ID: <20250930143836.055468878@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,90 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit a09a8a1fbb374e0053b97306da9dbc05bd384685 ]
+commit 6f9674aa69ad0178ca8fc6995942ba9848c324f4 upstream.
 
-In many cases, if collect_longterm_unpinnable_folios() does need to drain
-the LRU cache to release a reference, the cache in question is on this
-same CPU, and much more efficiently drained by a preliminary local
-lru_add_drain(), than the later cross-CPU lru_add_drain_all().
+In all the MUX value for LED1 GPIO46 there is a Copy-Paste error where
+the MUX value is set to LED0_MODE_MASK instead of LED1_MODE_MASK.
 
-Marked for stable, to counter the increase in lru_add_drain_all()s from
-"mm/gup: check ref_count instead of lru before migration".  Note for clean
-backports: can take 6.16 commit a03db236aebf ("gup: optimize longterm
-pin_user_pages() for large folio") first.
+This wasn't notice as there were no board that made use of the
+secondary PHY LED but looking at the internal Documentation the actual
+value should be LED1_MODE_MASK similar to the other GPIO entry.
 
-Link: https://lkml.kernel.org/r/66f2751f-283e-816d-9530-765db7edc465@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Resolved minor conflicts ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the wrong value to apply the correct MUX configuration.
+
+Cc: stable@vger.kernel.org
+Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/gup.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-airoha.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 44e5fe2535d0e..e1f125af9c844 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1968,7 +1968,7 @@ static unsigned long collect_longterm_unpinnable_pages(
- {
- 	unsigned long i, collected = 0;
- 	struct folio *prev_folio = NULL;
--	bool drain_allow = true;
-+	int drained = 0;
- 
- 	for (i = 0; i < nr_pages; i++) {
- 		struct folio *folio = page_folio(pages[i]);
-@@ -1990,10 +1990,17 @@ static unsigned long collect_longterm_unpinnable_pages(
- 			continue;
- 		}
- 
--		if (drain_allow && folio_ref_count(folio) !=
--				   folio_expected_ref_count(folio) + 1) {
-+		if (drained == 0 &&
-+				folio_ref_count(folio) !=
-+				folio_expected_ref_count(folio) + 1) {
-+			lru_add_drain();
-+			drained = 1;
-+		}
-+		if (drained == 1 &&
-+				folio_ref_count(folio) !=
-+				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
--			drain_allow = false;
-+			drained = 2;
- 		}
- 
- 		if (folio_isolate_lru(folio))
+diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+index 1b2f132d76f0..ee5b9bab4552 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
++++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+@@ -1752,8 +1752,8 @@ static const struct airoha_pinctrl_func_group phy1_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+@@ -1816,8 +1816,8 @@ static const struct airoha_pinctrl_func_group phy2_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+@@ -1880,8 +1880,8 @@ static const struct airoha_pinctrl_func_group phy3_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+@@ -1944,8 +1944,8 @@ static const struct airoha_pinctrl_func_group phy4_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
 -- 
 2.51.0
 
