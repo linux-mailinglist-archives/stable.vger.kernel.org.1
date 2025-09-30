@@ -1,96 +1,56 @@
-Return-Path: <stable+bounces-182437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932CFBAD968
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F99BAD54E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 167564A5AD0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4546F194160D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F4B30597A;
-	Tue, 30 Sep 2025 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06116303C9B;
+	Tue, 30 Sep 2025 14:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+tcbay1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOr88xAT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DF31EE02F;
-	Tue, 30 Sep 2025 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51C81F1302;
+	Tue, 30 Sep 2025 14:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244945; cv=none; b=JS2yauWCkL1Z31UnXL9vwnzhposx2zD7yGh7QDr5p6Wro/H3HbPuyp8LKtnE0Z88MunxqdebhcF3R+1NDz+/gEVfOhO7zq8ebviEkAuzCVl4gQIJdrGE1a6nWcJmZQ009ZJ3o4/4Lm5ePypGIJJOWhc+tkO/9z1G6ennOnQ7uRQ=
+	t=1759244059; cv=none; b=hOBxELP4V0uJfSJ2R5Kq7Jxr1SinR6wp6QModdBIAZvVbm4ihlYbV0JhdZ3BhqxaV9HrTMDus5vFQnTOBw2Zhc51gBdUM6wjVo+R3ZLNA3H9E4nNgELRnfgxt1udOa41cRFiqwysfA2i3shehbzEg0ECpZ5J0rPNQDb4q2dNWOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244945; c=relaxed/simple;
-	bh=gZztoAaixYTWj7KC4xPWpRt+CZwWa6YLX+UanUzKBMs=;
+	s=arc-20240116; t=1759244059; c=relaxed/simple;
+	bh=6kV5tmolaPHEeeiIgMKGh02AdF+/T2F2jM7GNq7sa7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnKEeCFCZCeT4LihuzXgD64hPqnanGaGMllm7awrHY2uwDwVefF5ww1VQBfSBEotBNGxmQSmnQ3nbnfWpWGgSjfx14KgmGU0A5m/yHlg/CUZVmXk64FFcuOsb0hXgDxQ1qE3kzRN3WZvhwsecXtystUqUxsN+6lyW2WjdrcfEWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+tcbay1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D208C4CEF0;
-	Tue, 30 Sep 2025 15:09:04 +0000 (UTC)
+	 MIME-Version; b=p6m+NgHbmF1q8IuOoIia7yN5klvSm+oE4pSlPW32WRGr8DHr45bVrmJept7jz0r6ehO0Dbe9SmHbGMJqkSQeE5+4LUatclnWzCiufaMLYuoGCntizgWBKGsOxTNfLP9z/ncSZRHEOOZfSXcyZf9mWUUOmqsGboR9EN140EXu9Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOr88xAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5A3C4CEF0;
+	Tue, 30 Sep 2025 14:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244945;
-	bh=gZztoAaixYTWj7KC4xPWpRt+CZwWa6YLX+UanUzKBMs=;
+	s=korg; t=1759244059;
+	bh=6kV5tmolaPHEeeiIgMKGh02AdF+/T2F2jM7GNq7sa7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+tcbay1IJem8uWs3p3YPkqOtJy1zftF+j9OusD8N0fwJ/Tnq24gT2Yqj/rY2siDs
-	 403rDPgXBnY3z/hcIXTMFUSMW7NGUMB7zhk3Mq68GxE9Pmnf67jfKiUGUvTLrnMucC
-	 PHx/AAYQP+NRzS3bIaHYsj2AYkm6H808d/VvI/5Q=
+	b=iOr88xATbP4T/QupPFdFWVy1D8Ybsc484WDWjMZL2vuWQ125I7p7/QWhS9HXfSKo8
+	 1gvzLCwWhEtitcbiugS7cnqE2pYS7gKzmMOdKE03sla7mux+oHY7p73sHcmYJX7gWv
+	 CleufqcAU7AtXWsDAuvhruV7z+l7M/vmuGZP1tag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	bibo mao <maobibo@loongson.cn>,
-	Borislav Betkov <bp@alien8.de>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Thomas Huth <thuth@redhat.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 004/151] mm: introduce and use {pgd,p4d}_populate_kernel()
-Date: Tue, 30 Sep 2025 16:45:34 +0200
-Message-ID: <20250930143827.763006253@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 004/122] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Tue, 30 Sep 2025 16:45:35 +0200
+Message-ID: <20250930143823.145134042@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -102,263 +62,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit f2d2f9598ebb0158a3fe17cda0106d7752e654a2 upstream.
+[ Upstream commit 0bb2f7a1ad1f11d861f58e5ee5051c8974ff9569 ]
 
-Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
-populating PGD and P4D entries for the kernel address space.  These
-helpers ensure proper synchronization of page tables when updating the
-kernel portion of top-level page tables.
+When I ran the repro [0] and waited a few seconds, I observed two
+LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
 
-Until now, the kernel has relied on each architecture to handle
-synchronization of top-level page tables in an ad-hoc manner.  For
-example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for direct
-mapping and vmemmap mapping changes").
+Reproduction Steps:
 
-However, this approach has proven fragile for following reasons:
+  1) Mount CIFS
+  2) Add an iptables rule to drop incoming FIN packets for CIFS
+  3) Unmount CIFS
+  4) Unload the CIFS module
+  5) Remove the iptables rule
 
-  1) It is easy to forget to perform the necessary page table
-     synchronization when introducing new changes.
-     For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
-     savings for compound devmaps") overlooked the need to synchronize
-     page tables for the vmemmap area.
+At step 3), the CIFS module calls sock_release() for the underlying
+TCP socket, and it returns quickly.  However, the socket remains in
+FIN_WAIT_1 because incoming FIN packets are dropped.
 
-  2) It is also easy to overlook that the vmemmap and direct mapping areas
-     must not be accessed before explicit page table synchronization.
-     For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
-     sub-pmd ranges")) caused crashes by accessing the vmemmap area
-     before calling sync_global_pgds().
+At this point, the module's refcnt is 0 while the socket is still
+alive, so the following rmmod command succeeds.
 
-To address this, as suggested by Dave Hansen, introduce _kernel() variants
-of the page table population helpers, which invoke architecture-specific
-hooks to properly synchronize page tables.  These are introduced in a new
-header file, include/linux/pgalloc.h, so they can be called from common
-code.
+  # ss -tan
+  State      Recv-Q Send-Q Local Address:Port  Peer Address:Port
+  FIN-WAIT-1 0      477        10.0.2.15:51062   10.0.0.137:445
 
-They reuse existing infrastructure for vmalloc and ioremap.
-Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
-and the actual synchronization is performed by
-arch_sync_kernel_mappings().
+  # lsmod | grep cifs
+  cifs                 1159168  0
 
-This change currently targets only x86_64, so only PGD and P4D level
-helpers are introduced.  Currently, these helpers are no-ops since no
-architecture sets PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
+This highlights a discrepancy between the lifetime of the CIFS module
+and the underlying TCP socket.  Even after CIFS calls sock_release()
+and it returns, the TCP socket does not die immediately in order to
+close the connection gracefully.
 
-In theory, PUD and PMD level helpers can be added later if needed by other
-architectures.  For now, 32-bit architectures (x86-32 and arm) only handle
-PGTBL_PMD_MODIFIED, so p*d_populate_kernel() will never affect them unless
-we introduce a PMD level helper.
+While this is generally fine, it causes an issue with LOCKDEP because
+CIFS assigns a different lock class to the TCP socket's sk->sk_lock
+using sock_lock_init_class_and_name().
 
-[harry.yoo@oracle.com: fix KASAN build error due to p*d_populate_kernel()]
-  Link: https://lkml.kernel.org/r/20250822020727.202749-1-harry.yoo@oracle.com
-Link: https://lkml.kernel.org/r/20250818020206.4517-3-harry.yoo@oracle.com
-Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: bibo mao <maobibo@loongson.cn>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context. mm/percpu.c is untouched because there is no generic
-  pcpu_populate_pte() implementation in 5.15.y ]
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Once an incoming packet is processed for the socket or a timer fires,
+sk->sk_lock is acquired.
+
+Then, LOCKDEP checks the lock context in check_wait_context(), where
+hlock_class() is called to retrieve the lock class.  However, since
+the module has already been unloaded, hlock_class() logs a warning
+and returns NULL, triggering the null-ptr-deref.
+
+If LOCKDEP is enabled, we must ensure that a module calling
+sock_lock_init_class_and_name() (CIFS, NFS, etc) cannot be unloaded
+while such a socket is still alive to prevent this issue.
+
+Let's hold the module reference in sock_lock_init_class_and_name()
+and release it when the socket is freed in sk_prot_free().
+
+Note that sock_lock_init() clears sk->sk_owner for svc_create_socket()
+that calls sock_lock_init_class_and_name() for a listening socket,
+which clones a socket by sk_clone_lock() without GFP_ZERO.
+
+[0]:
+CIFS_SERVER="10.0.0.137"
+CIFS_PATH="//${CIFS_SERVER}/Users/Administrator/Desktop/CIFS_TEST"
+DEV="enp0s3"
+CRED="/root/WindowsCredential.txt"
+
+MNT=$(mktemp -d /tmp/XXXXXX)
+mount -t cifs ${CIFS_PATH} ${MNT} -o vers=3.0,credentials=${CRED},cache=none,echo_interval=1
+
+iptables -A INPUT -s ${CIFS_SERVER} -j DROP
+
+for i in $(seq 10);
+do
+    umount ${MNT}
+    rmmod cifs
+    sleep 1
+done
+
+rm -r ${MNT}
+
+iptables -D INPUT -s ${CIFS_SERVER} -j DROP
+
+[1]:
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 10 PID: 0 at kernel/locking/lockdep.c:234 hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Not tainted 6.14.0 #36
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+...
+Call Trace:
+ <IRQ>
+ __lock_acquire (kernel/locking/lockdep.c:4853 kernel/locking/lockdep.c:5178)
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+...
+
+BUG: kernel NULL pointer dereference, address: 00000000000000c4
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0
+Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Tainted: G        W          6.14.0 #36
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire (kernel/locking/lockdep.c:4852 kernel/locking/lockdep.c:5178)
+Code: 15 41 09 c7 41 8b 44 24 20 25 ff 1f 00 00 41 09 c7 8b 84 24 a0 00 00 00 45 89 7c 24 20 41 89 44 24 24 e8 e1 bc ff ff 4c 89 e7 <44> 0f b6 b8 c4 00 00 00 e8 d1 bc ff ff 0f b6 80 c5 00 00 00 88 44
+RSP: 0018:ffa0000000468a10 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ff1100010091cc38 RCX: 0000000000000027
+RDX: ff1100081f09ca48 RSI: 0000000000000001 RDI: ff1100010091cc88
+RBP: ff1100010091c200 R08: ff1100083fe6e228 R09: 00000000ffffbfff
+R10: ff1100081eca0000 R11: ff1100083fe10dc0 R12: ff1100010091cc88
+R13: 0000000000000001 R14: 0000000000000000 R15: 00000000000424b1
+FS:  0000000000000000(0000) GS:ff1100081f080000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000000c4 CR3: 0000000002c4a003 CR4: 0000000000771ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+ ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205 (discriminator 1))
+ ip_local_deliver_finish (./include/linux/rcupdate.h:878 net/ipv4/ip_input.c:234)
+ ip_sublist_rcv_finish (net/ipv4/ip_input.c:576)
+ ip_list_rcv_finish (net/ipv4/ip_input.c:628)
+ ip_list_rcv (net/ipv4/ip_input.c:670)
+ __netif_receive_skb_list_core (net/core/dev.c:5939 net/core/dev.c:5986)
+ netif_receive_skb_list_internal (net/core/dev.c:6040 net/core/dev.c:6129)
+ napi_complete_done (./include/linux/list.h:37 ./include/net/gro.h:519 ./include/net/gro.h:514 net/core/dev.c:6496)
+ e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3815)
+ __napi_poll.constprop.0 (net/core/dev.c:7191)
+ net_rx_action (net/core/dev.c:7262 net/core/dev.c:7382)
+ handle_softirqs (kernel/softirq.c:561)
+ __irq_exit_rcu (kernel/softirq.c:596 kernel/softirq.c:435 kernel/softirq.c:662)
+ irq_exit_rcu (kernel/softirq.c:680)
+ common_interrupt (arch/x86/kernel/irq.c:280 (discriminator 14))
+  </IRQ>
+ <TASK>
+ asm_common_interrupt (./arch/x86/include/asm/idtentry.h:693)
+RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:744)
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d c3 2b 15 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffa00000000ffee8 EFLAGS: 00000202
+RAX: 000000000000640b RBX: ff1100010091c200 RCX: 0000000000061aa4
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff812f30c5
+RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000002 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ ? do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+ do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ cpu_startup_entry (kernel/sched/idle.c:422 (discriminator 1))
+ start_secondary (arch/x86/kernel/smpboot.c:315)
+ common_startup_64 (arch/x86/kernel/head_64.S:421)
+ </TASK>
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CR2: 00000000000000c4
+
+Fixes: ed07536ed673 ("[PATCH] lockdep: annotate nfs/nfsd in-kernel sockets")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250407163313.22682-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ no ns_tracker and sk_user_frags fields ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pgalloc.h |   29 +++++++++++++++++++++++++++++
- include/linux/pgtable.h |   13 +++++++------
- mm/kasan/init.c         |   12 ++++++------
- mm/sparse-vmemmap.c     |    6 +++---
- 4 files changed, 45 insertions(+), 15 deletions(-)
- create mode 100644 include/linux/pgalloc.h
+ include/net/sock.h |   40 ++++++++++++++++++++++++++++++++++++++--
+ net/core/sock.c    |    5 +++++
+ 2 files changed, 43 insertions(+), 2 deletions(-)
 
---- /dev/null
-+++ b/include/linux/pgalloc.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_PGALLOC_H
-+#define _LINUX_PGALLOC_H
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -341,6 +341,8 @@ struct bpf_local_storage;
+   *	@sk_txtime_deadline_mode: set deadline mode for SO_TXTIME
+   *	@sk_txtime_report_errors: set report errors mode for SO_TXTIME
+   *	@sk_txtime_unused: unused txtime flags
++  *	@sk_owner: reference to the real owner of the socket that calls
++  *		   sock_lock_init_class_and_name().
+   */
+ struct sock {
+ 	/*
+@@ -521,6 +523,10 @@ struct sock {
+ 	struct bpf_local_storage __rcu	*sk_bpf_storage;
+ #endif
+ 	struct rcu_head		sk_rcu;
 +
-+#include <linux/pgtable.h>
-+#include <asm/pgalloc.h>
-+
-+/*
-+ * {pgd,p4d}_populate_kernel() are defined as macros to allow
-+ * compile-time optimization based on the configured page table levels.
-+ * Without this, linking may fail because callers (e.g., KASAN) may rely
-+ * on calls to these functions being optimized away when passing symbols
-+ * that exist only for certain page table levels.
-+ */
-+#define pgd_populate_kernel(addr, pgd, p4d)				\
-+	do {								\
-+		pgd_populate(&init_mm, pgd, p4d);			\
-+		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)	\
-+			arch_sync_kernel_mappings(addr, addr);		\
-+	} while (0)
-+
-+#define p4d_populate_kernel(addr, p4d, pud)				\
-+	do {								\
-+		p4d_populate(&init_mm, p4d, pud);			\
-+		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)	\
-+			arch_sync_kernel_mappings(addr, addr);		\
-+	} while (0)
-+
-+#endif /* _LINUX_PGALLOC_H */
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1382,8 +1382,8 @@ static inline int pmd_protnone(pmd_t pmd
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++	struct module		*sk_owner;
++#endif
+ };
  
- /*
-  * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-- * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-- * needs to be called.
-+ * and let generic vmalloc, ioremap and page table update code know when
-+ * arch_sync_kernel_mappings() needs to be called.
-  */
- #ifndef ARCH_PAGE_TABLE_SYNC_MASK
- #define ARCH_PAGE_TABLE_SYNC_MASK 0
-@@ -1522,10 +1522,11 @@ static inline bool arch_has_pfn_modify_c
- /*
-  * Page Table Modification bits for pgtbl_mod_mask.
-  *
-- * These are used by the p?d_alloc_track*() set of functions an in the generic
-- * vmalloc/ioremap code to track at which page-table levels entries have been
-- * modified. Based on that the code can better decide when vmalloc and ioremap
-- * mapping changes need to be synchronized to other page-tables in the system.
-+ * These are used by the p?d_alloc_track*() and p*d_populate_kernel()
-+ * functions in the generic vmalloc, ioremap and page table update code
-+ * to track at which page-table levels entries have been modified.
-+ * Based on that the code can better decide when page table changes need
-+ * to be synchronized to other page-tables in the system.
-  */
- #define		__PGTBL_PGD_MODIFIED	0
- #define		__PGTBL_P4D_MODIFIED	1
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -13,9 +13,9 @@
- #include <linux/mm.h>
- #include <linux/pfn.h>
- #include <linux/slab.h>
-+#include <linux/pgalloc.h>
- 
- #include <asm/page.h>
--#include <asm/pgalloc.h>
- 
- #include "kasan.h"
- 
-@@ -188,7 +188,7 @@ static int __ref zero_p4d_populate(pgd_t
- 			pud_t *pud;
- 			pmd_t *pmd;
- 
--			p4d_populate(&init_mm, p4d,
-+			p4d_populate_kernel(addr, p4d,
- 					lm_alias(kasan_early_shadow_pud));
- 			pud = pud_offset(p4d, addr);
- 			pud_populate(&init_mm, pud,
-@@ -207,7 +207,7 @@ static int __ref zero_p4d_populate(pgd_t
- 				if (!p)
- 					return -ENOMEM;
- 			} else {
--				p4d_populate(&init_mm, p4d,
-+				p4d_populate_kernel(addr, p4d,
- 					early_alloc(PAGE_SIZE, NUMA_NO_NODE));
- 			}
- 		}
-@@ -247,10 +247,10 @@ int __ref kasan_populate_early_shadow(co
- 			 * puds,pmds, so pgd_populate(), pud_populate()
- 			 * is noops.
- 			 */
--			pgd_populate(&init_mm, pgd,
-+			pgd_populate_kernel(addr, pgd,
- 					lm_alias(kasan_early_shadow_p4d));
- 			p4d = p4d_offset(pgd, addr);
--			p4d_populate(&init_mm, p4d,
-+			p4d_populate_kernel(addr, p4d,
- 					lm_alias(kasan_early_shadow_pud));
- 			pud = pud_offset(p4d, addr);
- 			pud_populate(&init_mm, pud,
-@@ -269,7 +269,7 @@ int __ref kasan_populate_early_shadow(co
- 				if (!p)
- 					return -ENOMEM;
- 			} else {
--				pgd_populate(&init_mm, pgd,
-+				pgd_populate_kernel(addr, pgd,
- 					early_alloc(PAGE_SIZE, NUMA_NO_NODE));
- 			}
- 		}
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -29,9 +29,9 @@
- #include <linux/sched.h>
- #include <linux/pgtable.h>
- #include <linux/bootmem_info.h>
-+#include <linux/pgalloc.h>
- 
- #include <asm/dma.h>
--#include <asm/pgalloc.h>
- #include <asm/tlbflush.h>
- 
- /**
-@@ -553,7 +553,7 @@ p4d_t * __meminit vmemmap_p4d_populate(p
- 		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
- 		if (!p)
- 			return NULL;
--		p4d_populate(&init_mm, p4d, p);
-+		p4d_populate_kernel(addr, p4d, p);
+ enum sk_pacing {
+@@ -1607,6 +1613,35 @@ static inline void sock_release_ownershi
  	}
- 	return p4d;
  }
-@@ -565,7 +565,7 @@ pgd_t * __meminit vmemmap_pgd_populate(u
- 		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
- 		if (!p)
- 			return NULL;
--		pgd_populate(&init_mm, pgd, p);
-+		pgd_populate_kernel(addr, pgd, p);
- 	}
- 	return pgd;
- }
+ 
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++	__module_get(owner);
++	sk->sk_owner = owner;
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++	sk->sk_owner = NULL;
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++	module_put(sk->sk_owner);
++}
++#else
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++}
++#endif
+ /*
+  * Macro so as to not evaluate some arguments when
+  * lockdep is not enabled.
+@@ -1616,13 +1651,14 @@ static inline void sock_release_ownershi
+  */
+ #define sock_lock_init_class_and_name(sk, sname, skey, name, key)	\
+ do {									\
++	sk_owner_set(sk, THIS_MODULE);					\
+ 	sk->sk_lock.owned = 0;						\
+ 	init_waitqueue_head(&sk->sk_lock.wq);				\
+ 	spin_lock_init(&(sk)->sk_lock.slock);				\
+ 	debug_check_no_locks_freed((void *)&(sk)->sk_lock,		\
+-			sizeof((sk)->sk_lock));				\
++				   sizeof((sk)->sk_lock));		\
+ 	lockdep_set_class_and_name(&(sk)->sk_lock.slock,		\
+-				(skey), (sname));				\
++				   (skey), (sname));			\
+ 	lockdep_init_map(&(sk)->sk_lock.dep_map, (name), (key), 0);	\
+ } while (0)
+ 
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1652,6 +1652,8 @@ int sock_getsockopt(struct socket *sock,
+  */
+ static inline void sock_lock_init(struct sock *sk)
+ {
++	sk_owner_clear(sk);
++
+ 	if (sk->sk_kern_sock)
+ 		sock_lock_init_class_and_name(
+ 			sk,
+@@ -1738,6 +1740,9 @@ static void sk_prot_free(struct proto *p
+ 	cgroup_sk_free(&sk->sk_cgrp_data);
+ 	mem_cgroup_sk_free(sk);
+ 	security_sk_free(sk);
++
++	sk_owner_put(sk);
++
+ 	if (slab != NULL)
+ 		kmem_cache_free(slab, sk);
+ 	else
 
 
 
