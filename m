@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-182640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E20BADC6D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE615BADC1E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0B53C3A7E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 198877AC163
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37D8173;
-	Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E03237163;
+	Tue, 30 Sep 2025 15:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="penPheFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmYqwXdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B22F39C0;
-	Tue, 30 Sep 2025 15:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DD1846F;
+	Tue, 30 Sep 2025 15:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245605; cv=none; b=eNnEf4tgBJxPYijMCC40WEgHXm69mYOt1kSmcKkqowWfgJvT31D4e77oWVYqhDeIt6xThJqagNDVILb9FZWbq1f45joFgtircZKL+gpM63SxQ7dr3Rmj6cdnVEIOpBK/cRXOvE0Ek8C2ZbMzd2m4K62Wv1YI5b5NwASvkYPz5QM=
+	t=1759245763; cv=none; b=MIis+23SxvRJMJpJKtSBoznyEUNH7Cy3UtxYVfCVTZATw0yjAiTFhGdWPTbS/YrU09c3E194kziV/YrfITCQU6rlXzgO6BO8dkOkm7bVm8AMpOobEF2aFm7lEj3bkgHG/cpl/n2huJiTYCYc2tb6rYY5MXahxvJ695q187Vm9Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245605; c=relaxed/simple;
-	bh=MDsDu5QOW4IjeK8MZ6rKK7fruiHlwkVRgCCjHIy7ca4=;
+	s=arc-20240116; t=1759245763; c=relaxed/simple;
+	bh=/YGrGvT2o2nJSBu/1niqwaSiIo4+6gH738slDWEp0RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+yZCQHnIwgn2ZCrD8TEdAb40fu+XzDkY2lFWGvBeArR/F1sPvtPO9hS8/sApsKnKwyba9cEpLK+yhrz1WYy9nsoHs5srQjY1UYlMEK41pygd6a4I4/DNBDWpr0Fl2LG4Avrg77+/85w8/h7mygyFL3sSisRO73MFPLaDbh27zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=penPheFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5401C4CEF0;
-	Tue, 30 Sep 2025 15:20:01 +0000 (UTC)
+	 MIME-Version; b=K2Hsw8S1rx9DFAm2U8RCvfkv9ZwbPDGBnb9I3Xs2pTwNL26Cd0+YD9czmLNXpTqX3jobBiWyME2NS9N71WduVVxp7gNbbN4Lv3bp1S7XS5TfrwJ96J6wpn0UhEX1FP/Jyfuzsw5jR/tDyUQTM65lj2uNtvHkN8CB2X9+prL+Xks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmYqwXdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00C3C4CEF0;
+	Tue, 30 Sep 2025 15:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245602;
-	bh=MDsDu5QOW4IjeK8MZ6rKK7fruiHlwkVRgCCjHIy7ca4=;
+	s=korg; t=1759245763;
+	bh=/YGrGvT2o2nJSBu/1niqwaSiIo4+6gH738slDWEp0RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=penPheFwHHAIhdmeLTagGCNUH+h4OfUeZEeR8mzRFLbi8pm0tea+FLe8bAiMBEr8t
-	 4SA3Uvfotl9POw5DS90EqDhrY6OwuHZ5RRYguwwfroSytwBEsBY+Ul+2yYqpixBpJu
-	 uo5A5YIUhPqOiHwLmOZFWUVjYyvp7QQRgTVgqy0M=
+	b=GmYqwXdJRgkt/LZI1YJfnK94X3zIfdagu3EW3G9vNto7oTP0PgQ1ddhnxzoIxSwJ5
+	 gQOobRUIendb4ZnafrK+F3uqT/TwM96h/Xvj+PvlGWkbMXpukYq2ztz+V34SpmatvT
+	 IOTMekLYqbq3AHOW99cvS5b6kyW+qRnPnWRdZqcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/73] Bluetooth: hci_event: Fix UAF in hci_acl_create_conn_sync
-Date: Tue, 30 Sep 2025 16:47:40 +0200
-Message-ID: <20250930143822.092467434@linuxfoundation.org>
+Subject: [PATCH 6.6 42/91] Bluetooth: hci_event: Fix UAF in hci_acl_create_conn_sync
+Date: Tue, 30 Sep 2025 16:47:41 +0200
+Message-ID: <20250930143822.918733067@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -181,10 +181,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 44 insertions(+), 3 deletions(-)
 
 diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 97cde23f56ecd..4a1faf11785f4 100644
+index 4f067599e6e9e..62135b7782f5b 100644
 --- a/include/net/bluetooth/hci_core.h
 +++ b/include/net/bluetooth/hci_core.h
-@@ -1140,6 +1140,27 @@ static inline struct hci_conn *hci_conn_hash_lookup_ba(struct hci_dev *hdev,
+@@ -1169,6 +1169,27 @@ static inline struct hci_conn *hci_conn_hash_lookup_ba(struct hci_dev *hdev,
  	return NULL;
  }
  
@@ -213,10 +213,10 @@ index 97cde23f56ecd..4a1faf11785f4 100644
  						       bdaddr_t *ba,
  						       __u8 ba_type)
 diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 3d81afcccff8b..a0ce0a1e3258e 100644
+index 5eed23b8d6c33..7bda00dcb0b2f 100644
 --- a/net/bluetooth/hci_event.c
 +++ b/net/bluetooth/hci_event.c
-@@ -3125,8 +3125,18 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
+@@ -3048,8 +3048,18 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
  
  	hci_dev_lock(hdev);
  
@@ -236,7 +236,7 @@ index 3d81afcccff8b..a0ce0a1e3258e 100644
  		/* In case of error status and there is no connection pending
  		 * just unlock as there is nothing to cleanup.
  		 */
-@@ -5706,8 +5716,18 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
+@@ -5615,8 +5625,18 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
  	 */
  	hci_dev_clear_flag(hdev, HCI_LE_ADV);
  
