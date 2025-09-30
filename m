@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-182444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16885BAD986
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9595BAD599
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3015D3A15DE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819BC3248A3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A23306D23;
-	Tue, 30 Sep 2025 15:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84303305045;
+	Tue, 30 Sep 2025 14:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mq8P40Pe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbqfH4Xv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8152236EB;
-	Tue, 30 Sep 2025 15:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3BF303C9B;
+	Tue, 30 Sep 2025 14:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244968; cv=none; b=btcG8N5NR5Mn+VWoNW6XF/JBhDOSKzg4nmunl03/qfNzQZidoQv0t4lMQb0AWyYCzV17NeZqJKflnoLHj15lDRrG++8uh6ja2/klJMF4LOKQbgQHZwgpAjI0WOO3Chp6VaGTwkFUk7cWvtn/Op035MGraYv3tnqqq4U5ka0aggw=
+	t=1759244121; cv=none; b=bPFRt7W+lMyIZwKSRXFzFPoEEQjY1TzX6CIXrA7EPdmEUVBzBaTPDqnZfoc1mrT9BQMgPyODzKsuFzna/0virRdo2DmL+3ioepvzaCzUb/o2gkNL3SymC9jrY2SmU8RLRz5qk6ixw8HgbMi7IFxll2WQE2ANOAJ9QFe/8yudPKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244968; c=relaxed/simple;
-	bh=9cESZ3gP1naczoReln+oz5TYJUjfWKLuAOs8uy7QABQ=;
+	s=arc-20240116; t=1759244121; c=relaxed/simple;
+	bh=c0xffjRR196/vrfYSr47BvPaHPURKGSxG5+f6Si0dMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Im1e2YDa1mnfMgshlnclHazXb0qGvZ3vLToN3fhDAS2etPmjrfdxEbKPWRlKYK2eTMB4i/9FuYcKUf2u8s9SVu3hcxK9DXQhQVzAWt19C0UqA9AG/11J1/JmBxtF7fGBY8q0ILMFwkwx/VdKjiFJGJpreD7txhePM9IbMP9LARA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mq8P40Pe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D93AC113D0;
-	Tue, 30 Sep 2025 15:09:27 +0000 (UTC)
+	 MIME-Version; b=hogQwxzXhUlIMPmMkrXOxgMl1wcwqplsUZbt5wS379C3kD1CSG5lmkD8UDAkQsE9S08zW49lTE5RmEyXimmF10P00DjgzzIDM31Gn8BFEcFZk9QWvk92aSqIDeWpYf2byryHSxCpxIv9x9qd5xeHMKopkW6GS4/vrbCxHCKUMwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbqfH4Xv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AB7C4CEF0;
+	Tue, 30 Sep 2025 14:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244967;
-	bh=9cESZ3gP1naczoReln+oz5TYJUjfWKLuAOs8uy7QABQ=;
+	s=korg; t=1759244121;
+	bh=c0xffjRR196/vrfYSr47BvPaHPURKGSxG5+f6Si0dMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mq8P40PedKxb3ObXGvtZ2wv6vixipGlq+KQ56JmiVQBpmKVLGQcmnws9xUWFAVow5
-	 i3FaUW90ZUxjWKKWVNiSOvMcK2iXOqidzCoP0I+Aq84qdaQ3eaBbQaYmqYcnGce8Ps
-	 xfheJbR3SR3QDi4xFTMFcd/6nliJBAKO+kvj4J5I=
+	b=YbqfH4Xv0x89XgTyNZlm1Th9zf7jgNqc72v8PPmSIzKYJ1U8t/pIuISZTvKE0ZsRQ
+	 Sr+D+5PNk87RXG0vPEnFDLgKdCf3phgQc5qyjLQ/qHAAN2o86BHHaYnRCR02Mr2rUL
+	 qsN8iI3880b2jDDRD6T5uazEAXOlGq7Aw9RIVC/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kim Phillips <kim.phillips@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Subject: [PATCH 5.15 017/151] KVM: x86: Move open-coded CPUID leaf 0x80000021 EAX bit propagation code
+	Nathan Chancellor <nathan@kernel.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 016/122] compiler-clang.h: define __SANITIZE_*__ macros only when undefined
 Date: Tue, 30 Sep 2025 16:45:47 +0200
-Message-ID: <20250930143828.294600776@linuxfoundation.org>
+Message-ID: <20250930143823.656035493@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +68,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kim Phillips <kim.phillips@amd.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-Commit c35ac8c4bf600ee23bacb20f863aa7830efb23fb upstream
+commit 3fac212fe489aa0dbe8d80a42a7809840ca7b0f9 upstream.
 
-Move code from __do_cpuid_func() to kvm_set_cpu_caps() in preparation for adding
-the features in their native leaf.
+Clang 22 recently added support for defining __SANITIZE__ macros similar
+to GCC [1], which causes warnings (or errors with CONFIG_WERROR=y or W=e)
+with the existing defines that the kernel creates to emulate this behavior
+with existing clang versions.
 
-Also drop the bit description comments as it will be more self-describing once
-the individual features are added.
+  In file included from <built-in>:3:
+  In file included from include/linux/compiler_types.h:171:
+  include/linux/compiler-clang.h:37:9: error: '__SANITIZE_THREAD__' macro redefined [-Werror,-Wmacro-redefined]
+     37 | #define __SANITIZE_THREAD__
+        |         ^
+  <built-in>:352:9: note: previous definition is here
+    352 | #define __SANITIZE_THREAD__ 1
+        |         ^
 
-Whilst there, switch to using the more efficient cpu_feature_enabled() instead
-of static_cpu_has().
+Refactor compiler-clang.h to only define the sanitizer macros when they
+are undefined and adjust the rest of the code to use these macros for
+checking if the sanitizers are enabled, clearing up the warnings and
+allowing the kernel to easily drop these defines when the minimum
+supported version of LLVM for building the kernel becomes 22.0.0 or newer.
 
-Note, LFENCE_RDTSC and "NULL selector clears base" are currently synthetic,
-Linux-defined feature flags as Linux tracking of the features predates AMD's
-definition.  Keep the manual propagation of the flags from their synthetic
-counterparts until the kernel fully converts to AMD's definition, otherwise KVM
-would stop synthesizing the flags as intended.
-
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20230124163319.2277355-3-kim.phillips@amd.com
-
-Move setting of VERW_CLEAR bit to the new
-kvm_cpu_cap_mask(CPUID_8000_0021_EAX, ...) site.
-
-Cc: <stable@vger.kernel.org> # 5.15.y
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Link: https://lkml.kernel.org/r/20250902-clang-update-sanitize-defines-v1-1-cf3702ca3d92@kernel.org
+Link: https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |   25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ include/linux/compiler-clang.h |   29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -544,6 +544,17 @@ void kvm_set_cpu_caps(void)
- 		0 /* SME */ | F(SEV) | 0 /* VM_PAGE_FLUSH */ | F(SEV_ES) |
- 		F(SME_COHERENT));
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -24,23 +24,42 @@
+ #define KASAN_ABI_VERSION 5
  
-+	kvm_cpu_cap_mask(CPUID_8000_0021_EAX,
-+		BIT(0) /* NO_NESTED_DATA_BP */ |
-+		BIT(2) /* LFENCE Always serializing */ | 0 /* SmmPgCfgLock */ |
-+		BIT(5) /* The memory form of VERW mitigates TSA */ |
-+		BIT(6) /* NULL_SEL_CLR_BASE */ | 0 /* PrefetchCtlMsr */
-+	);
-+	if (cpu_feature_enabled(X86_FEATURE_LFENCE_RDTSC))
-+		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(2) /* LFENCE Always serializing */;
-+	if (!static_cpu_has_bug(X86_BUG_NULL_SEG))
-+		kvm_cpu_caps[CPUID_8000_0021_EAX] |= BIT(6) /* NULL_SEL_CLR_BASE */;
+ /*
++ * Clang 22 added preprocessor macros to match GCC, in hopes of eventually
++ * dropping __has_feature support for sanitizers:
++ * https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c
++ * Create these macros for older versions of clang so that it is easy to clean
++ * up once the minimum supported version of LLVM for building the kernel always
++ * creates these macros.
++ *
+  * Note: Checking __has_feature(*_sanitizer) is only true if the feature is
+  * enabled. Therefore it is not required to additionally check defined(CONFIG_*)
+  * to avoid adding redundant attributes in other configurations.
+  */
++#if __has_feature(address_sanitizer) && !defined(__SANITIZE_ADDRESS__)
++#define __SANITIZE_ADDRESS__
++#endif
++#if __has_feature(hwaddress_sanitizer) && !defined(__SANITIZE_HWADDRESS__)
++#define __SANITIZE_HWADDRESS__
++#endif
++#if __has_feature(thread_sanitizer) && !defined(__SANITIZE_THREAD__)
++#define __SANITIZE_THREAD__
++#endif
+ 
+-#if __has_feature(address_sanitizer) || __has_feature(hwaddress_sanitizer)
+-/* Emulate GCC's __SANITIZE_ADDRESS__ flag */
++/*
++ * Treat __SANITIZE_HWADDRESS__ the same as __SANITIZE_ADDRESS__ in the kernel.
++ */
++#ifdef __SANITIZE_HWADDRESS__
+ #define __SANITIZE_ADDRESS__
++#endif
 +
- 	kvm_cpu_cap_mask(CPUID_C000_0001_EDX,
- 		F(XSTORE) | F(XSTORE_EN) | F(XCRYPT) | F(XCRYPT_EN) |
- 		F(ACE2) | F(ACE2_EN) | F(PHE) | F(PHE_EN) |
-@@ -553,8 +564,6 @@ void kvm_set_cpu_caps(void)
- 	if (cpu_feature_enabled(X86_FEATURE_SRSO_NO))
- 		kvm_cpu_cap_set(X86_FEATURE_SRSO_NO);
++#ifdef __SANITIZE_ADDRESS__
+ #define __no_sanitize_address \
+ 		__attribute__((no_sanitize("address", "hwaddress")))
+ #else
+ #define __no_sanitize_address
+ #endif
  
--	kvm_cpu_cap_mask(CPUID_8000_0021_EAX, F(VERW_CLEAR));
--
- 	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
- 		F(TSA_SQ_NO) | F(TSA_L1_NO)
- 	);
-@@ -1006,17 +1015,7 @@ static inline int __do_cpuid_func(struct
- 		break;
- 	case 0x80000021:
- 		entry->ebx = entry->ecx = entry->edx = 0;
--		/*
--		 * Pass down these bits:
--		 *    EAX      0      NNDBP, Processor ignores nested data breakpoints
--		 *    EAX      2      LAS, LFENCE always serializing
--		 *    EAX      6      NSCB, Null selector clear base
--		 *
--		 * Other defined bits are for MSRs that KVM does not expose:
--		 *   EAX      3      SPCL, SMM page configuration lock
--		 *   EAX      13     PCMSR, Prefetch control MSR
--		 */
--		entry->eax &= BIT(0) | BIT(2) | BIT(6);
-+		cpuid_entry_override(entry, CPUID_8000_0021_EAX);
- 		break;
- 	/*Add support for Centaur's CPUID instruction*/
- 	case 0xC0000000:
+-#if __has_feature(thread_sanitizer)
+-/* emulate gcc's __SANITIZE_THREAD__ flag */
+-#define __SANITIZE_THREAD__
++#ifdef __SANITIZE_THREAD__
+ #define __no_sanitize_thread \
+ 		__attribute__((no_sanitize("thread")))
+ #else
 
 
 
