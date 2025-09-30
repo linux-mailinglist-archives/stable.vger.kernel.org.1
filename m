@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-182755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E02BADDA1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57390BAD899
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C68153B9B00
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A17847A7529
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10812FD1DD;
-	Tue, 30 Sep 2025 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482402236EB;
+	Tue, 30 Sep 2025 15:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQhCtH7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpJnqntn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9BB245010;
-	Tue, 30 Sep 2025 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043C0266B65;
+	Tue, 30 Sep 2025 15:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245983; cv=none; b=AL1c3DkF4QVNCWpkNIRK00ymiK08O73Gf7zRpDDAES2E/MfkGybFg3CRM1OsSeDHjQOyvvI4y9OrJYOfCNqgIoxOobejLJ5mZT3zYFZceZmcOaxTYjUclTWBFmrd+YT/AX9vJpbGJGQUuAwfnNWxNF4g4LF8tuxk3UWBAoRz2hw=
+	t=1759244899; cv=none; b=fdXthUMJF0i2sG5QJUKtaSaGfEC21mEFFCIELwV+GpubY40JcwA/LasRYGZcxbYgd9zrymtI3YGwduWZfwXEIFKN9mdpntvZp4J3Nkyh4WTKp/T7YqQJwX6bnKjsEnh8n4/47T/2Sdlvg+f/SimV7IbnGWBC8VRJeqiOCIU7SpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245983; c=relaxed/simple;
-	bh=hqkyJq7/vzqsdMU2kGY7PXMRCIO6Wv0fqJU1/7xCvJc=;
+	s=arc-20240116; t=1759244899; c=relaxed/simple;
+	bh=V8Z2Z+8xO7St+6Fcce/kt2ZStGuFoNVK8WGEgKJNuII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXxjWRqvwDuY3J0LGE+UqH1NEskArofIueFmLr/M5zQUlP3hjavrskybBVWJ7MFLJKDSw0bBBpn3J4nhZCbnpfdwftC/74VfozXlKq5fYxwlafMCI0Hnql/JosbbeEztFdSqgx5WW6ar3tkeIlSCdbdb+tkECsbu9JGkn+Sh2EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQhCtH7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F70BC4CEF0;
-	Tue, 30 Sep 2025 15:26:22 +0000 (UTC)
+	 MIME-Version; b=Eh5MfOSc+iaoHeWTb5ADYBF42OrI38WEINMyT9FJV5KHbzFsetlidRAMB45wVjq5Mk2CytagFmntpmfchDoMbw37VEaqsD1Bb4QjA7YWhSxb1MbOdosJD/KwmTji9AuWnpomA1RCqSQnTubk8qpxse+N/CDEWg/OYOjSGEA7vws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpJnqntn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD4BC4CEF0;
+	Tue, 30 Sep 2025 15:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245983;
-	bh=hqkyJq7/vzqsdMU2kGY7PXMRCIO6Wv0fqJU1/7xCvJc=;
+	s=korg; t=1759244898;
+	bh=V8Z2Z+8xO7St+6Fcce/kt2ZStGuFoNVK8WGEgKJNuII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQhCtH7vvCgH/Hk9aL4tu7yCLDSsYFyHEpYzCa+S1U9PG+vp5Vtlj/8cP0m3CSY4H
-	 k/aIwpCa/gV/Az3eXcFRzUgvgH3XG6CKXfHAqswSFF4AWqFM3IhaP/q3++Eu7xbpgZ
-	 wx5E+IyRuZ0aJj21Catg9RbH3fpavozPx/oDy74g=
+	b=OpJnqntn1bi+WAqPRg9NI3zvcF+2cUQQm07ny3IoQGoBjw+o2QQgUCUtpsQaV13S4
+	 LAr7DYxFPjLnktGdlUzzT/a+JD8d7w8XZ4vszcZ2jJl0EHN4i1ZlWzwqNwEpj6kYGe
+	 j4261tn1NPY8h9NTGSEOlxxBj9PeRuHZPg5KLraY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 17/89] usb: core: Add 0x prefix to quirks debug output
+	Hans de Goede <hansg@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.16 127/143] gpiolib: Extend software-node support to support secondary software-nodes
 Date: Tue, 30 Sep 2025 16:47:31 +0200
-Message-ID: <20250930143822.583887295@linuxfoundation.org>
+Message-ID: <20250930143836.293795849@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
+commit c6ccc4dde17676dfe617b9a37bd9ba19a8fc87ee upstream.
 
-Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
-value. Improves readability and consistency with other hex outputs.
+When a software-node gets added to a device which already has another
+fwnode as primary node it will become the secondary fwnode for that
+device.
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
+Currently if a software-node with GPIO properties ends up as the secondary
+fwnode then gpiod_find_by_fwnode() will fail to find the GPIOs.
+
+Add a new gpiod_fwnode_lookup() helper which falls back to calling
+gpiod_find_by_fwnode() with the secondary fwnode if the GPIO was not
+found in the primary fwnode.
+
+Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20250920200955.20403-1-hansg@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index bfd97cad8aa4d..c0fd8ab3fe8fc 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -734,7 +734,7 @@ void usb_detect_quirks(struct usb_device *udev)
- 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -4605,6 +4605,23 @@ static struct gpio_desc *gpiod_find_by_f
+ 	return desc;
+ }
  
- 	if (udev->quirks)
--		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
-+		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
- 			udev->quirks);
++static struct gpio_desc *gpiod_fwnode_lookup(struct fwnode_handle *fwnode,
++					     struct device *consumer,
++					     const char *con_id,
++					     unsigned int idx,
++					     enum gpiod_flags *flags,
++					     unsigned long *lookupflags)
++{
++	struct gpio_desc *desc;
++
++	desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx, flags, lookupflags);
++	if (gpiod_not_found(desc) && !IS_ERR_OR_NULL(fwnode))
++		desc = gpiod_find_by_fwnode(fwnode->secondary, consumer, con_id,
++					    idx, flags, lookupflags);
++
++	return desc;
++}
++
+ struct gpio_desc *gpiod_find_and_request(struct device *consumer,
+ 					 struct fwnode_handle *fwnode,
+ 					 const char *con_id,
+@@ -4623,8 +4640,8 @@ struct gpio_desc *gpiod_find_and_request
+ 	int ret = 0;
  
- #ifdef CONFIG_USB_DEFAULT_PERSIST
--- 
-2.51.0
-
+ 	scoped_guard(srcu, &gpio_devices_srcu) {
+-		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
+-					    &flags, &lookupflags);
++		desc = gpiod_fwnode_lookup(fwnode, consumer, con_id, idx,
++					   &flags, &lookupflags);
+ 		if (gpiod_not_found(desc) && platform_lookup_allowed) {
+ 			/*
+ 			 * Either we are not using DT or ACPI, or their lookup
 
 
 
