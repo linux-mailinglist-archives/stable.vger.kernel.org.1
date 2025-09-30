@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-182313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5F1BAD76A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C538CBAD5C7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01815324D08
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F1477A41F8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D31A1F152D;
-	Tue, 30 Sep 2025 15:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8610B3064A4;
+	Tue, 30 Sep 2025 14:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMmQtX1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRp74jbw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B89D30506E;
-	Tue, 30 Sep 2025 15:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBDF303C9B;
+	Tue, 30 Sep 2025 14:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244538; cv=none; b=DKRSOenAhbQuPUCUgA3R4newHXnuP6PhUCBiB1F6KqGLjZ+WCgNUwwCyw/sp+Y49R+6OMtSZyuV00D/oumUXnOuZHdTb9H8byy28ZBeh3rrJ1QD7ml/dubD1/cxQLlCjYITa7CpXxpfy3Ilv8Z0nwGx3pxc90XSSr/cwWZpoAoI=
+	t=1759244193; cv=none; b=Hv5+0tUE/0EglXg35QcWu3XTNCG67Gq0zLdIh5GCJeJEFm5gKZCzsZgTkFgeEJVipa4iNGQhO3rIwqzDPdvgbywvE6gR4hilCf/tHWArqAaKVIYtdX35Ql5LEiDzXJ/upk+q68yhOLMXKZuAA6zPM9HYjYutmwr6Efuc5JLGrsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244538; c=relaxed/simple;
-	bh=J6Cta1M5TzEWSFX/YUJ6jxylJTvN8DyD/JwTGhZqDxI=;
+	s=arc-20240116; t=1759244193; c=relaxed/simple;
+	bh=s1lYkbb+4CyWmvQY8AvrB88kdw5TrnIzjIYKm0N4Tlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLbgtY7yZx8hZOMjwxrHufcBkGBzNj4NNfa32eCZwJfGuyAMwaLtz4zttFSFf1wEnzgjOeqCWO4iGUFU/BBodeYA6waYnh7USRiaZhICTIr3syZ58ZLAGVQjreGHnxnjhSVsnrKwBXibTm107MwV+54+cy5MsEoUJaPAgcgNja8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMmQtX1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3061C4CEF0;
-	Tue, 30 Sep 2025 15:02:17 +0000 (UTC)
+	 MIME-Version; b=KdckguwWFjeyCI+ZQ1oxBmdLHpS89xbprdeTbx04l1EIPFKKnO442c6FaHpZ7lHMj8QKEIvSOeG/Ad6IN6QZqJKbv+edW0S3Ngpv3jZyn09F21DgFPbhp9B76ugnS3IWtf0sGK9XKzJV2Q/p2gUoeosW7gSMBscQQTj25t8uBxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRp74jbw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7E0C113D0;
+	Tue, 30 Sep 2025 14:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244538;
-	bh=J6Cta1M5TzEWSFX/YUJ6jxylJTvN8DyD/JwTGhZqDxI=;
+	s=korg; t=1759244193;
+	bh=s1lYkbb+4CyWmvQY8AvrB88kdw5TrnIzjIYKm0N4Tlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMmQtX1QYcMnJuXLbirM1RrzVpPOwaXuXN+mYrtHWBps/CWJ9PshnlfFvTZKyc4wZ
-	 srKn2MMAEjCpnAuMNhSl0s4gUTlClv2iJNIVyGHRnvISwNkz5Sei9IJhGa+/G7e9xJ
-	 jhBka3EHcav/C4TDPSp6l6A+jIo/Uo5clvf9JCME=
+	b=FRp74jbwkfpajSXk9hwd0qLDn7agwdg+CmbLtbLbR1cOWZnHK2CPViw4yBgEAOTiz
+	 CAcijJHDtQPlb5RHpNL1GpM9RPX4cnPeGtL4rVV94mctn6FUktQ03oVvX3hL2nUtIe
+	 8o46zzE51jTDuVsz61NzzLoIpfCJYu6pc6ggLvt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 020/143] net: sfp: add quirk for Potron SFP+ XGSPON ONU Stick
-Date: Tue, 30 Sep 2025 16:45:44 +0200
-Message-ID: <20250930143832.049462991@linuxfoundation.org>
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	linux-hardening@vger.kernel.org,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 014/122] overflow: Allow mixed type arguments
+Date: Tue, 30 Sep 2025 16:45:45 +0200
+Message-ID: <20250930143823.574238011@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +67,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit dfec1c14aecee6813f9bafc7b560cc3a31d24079 ]
+commit d219d2a9a92e39aa92799efe8f2aa21259b6dd82 upstream.
 
-Add quirk for Potron SFP+ XGSPON ONU Stick (YV SFP+ONT-XGSPON).
+When the check_[op]_overflow() helpers were introduced, all arguments
+were required to be the same type to make the fallback macros simpler.
+However, now that the fallback macros have been removed[1], it is fine
+to allow mixed types, which makes using the helpers much more useful,
+as they can be used to test for type-based overflows (e.g. adding two
+large ints but storing into a u8), as would be handy in the drm core[2].
 
-This device uses pins 2 and 7 for UART communication, so disable
-TX_FAULT and LOS. Additionally as it is an embedded system in an
-SFP+ form factor provide it enough time to fully boot before we
-attempt to use it.
+Remove the restriction, and add additional self-tests that exercise
+some of the mixed-type overflow cases, and double-check for accidental
+macro side-effects.
 
-https://www.potrontec.com/index/index/list/cat_id/2.html#11-83
-https://pon.wiki/xgs-pon/ont/potron-technology/x-onu-sfpp/
+[1] https://git.kernel.org/linus/4eb6bd55cfb22ffc20652732340c4962f3ac9a91
+[2] https://lore.kernel.org/lkml/20220824084514.2261614-2-gwan-gyeong.mun@intel.com
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Link: https://patch.msgid.link/20250617180324.229487-1-macroalpha82@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: linux-hardening@vger.kernel.org
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Tested-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+[ dropped the test portion of the commit as that doesn't apply to
+  5.15.y - gregkh]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ include/linux/overflow.h |   72 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 41 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 347c1e0e94d95..5347c95d1e772 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -361,6 +361,11 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
- 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
+--- a/include/linux/overflow.h
++++ b/include/linux/overflow.h
+@@ -51,40 +51,50 @@ static inline bool __must_check __must_c
+ 	return unlikely(overflow);
  }
  
-+static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
-+{
-+	sfp->state_hw_mask &= ~mask;
-+}
-+
- static void sfp_fixup_nokia(struct sfp *sfp)
- {
- 	sfp_fixup_long_startup(sfp);
-@@ -409,7 +414,19 @@ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
- 	 * these are possibly used for other purposes on this
- 	 * module, e.g. a serial port.
- 	 */
--	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
-+	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
-+}
-+
-+static void sfp_fixup_potron(struct sfp *sfp)
-+{
-+	/*
-+	 * The TX_FAULT and LOS pins on this device are used for serial
-+	 * communication, so ignore them. Additionally, provide extra
-+	 * time for this device to fully start up.
-+	 */
-+
-+	sfp_fixup_long_startup(sfp);
-+	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
- }
+-/*
+- * For simplicity and code hygiene, the fallback code below insists on
+- * a, b and *d having the same type (similar to the min() and max()
+- * macros), whereas gcc's type-generic overflow checkers accept
+- * different types. Hence we don't just make check_add_overflow an
+- * alias for __builtin_add_overflow, but add type checks similar to
+- * below.
++/** check_add_overflow() - Calculate addition with overflow checking
++ *
++ * @a: first addend
++ * @b: second addend
++ * @d: pointer to store sum
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted addition, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * sum has overflowed or been truncated.
+  */
+-#define check_add_overflow(a, b, d) __must_check_overflow(({	\
+-	typeof(a) __a = (a);			\
+-	typeof(b) __b = (b);			\
+-	typeof(d) __d = (d);			\
+-	(void) (&__a == &__b);			\
+-	(void) (&__a == __d);			\
+-	__builtin_add_overflow(__a, __b, __d);	\
+-}))
++#define check_add_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_add_overflow(a, b, d))
  
- static void sfp_fixup_rollball_cc(struct sfp *sfp)
-@@ -512,6 +529,8 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
- 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
+-#define check_sub_overflow(a, b, d) __must_check_overflow(({	\
+-	typeof(a) __a = (a);			\
+-	typeof(b) __b = (b);			\
+-	typeof(d) __d = (d);			\
+-	(void) (&__a == &__b);			\
+-	(void) (&__a == __d);			\
+-	__builtin_sub_overflow(__a, __b, __d);	\
+-}))
++/** check_sub_overflow() - Calculate subtraction with overflow checking
++ *
++ * @a: minuend; value to subtract from
++ * @b: subtrahend; value to subtract from @a
++ * @d: pointer to store difference
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted subtraction, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * difference has underflowed or been truncated.
++ */
++#define check_sub_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_sub_overflow(a, b, d))
  
-+	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
-+
- 	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
- 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
+-#define check_mul_overflow(a, b, d) __must_check_overflow(({	\
+-	typeof(a) __a = (a);			\
+-	typeof(b) __b = (b);			\
+-	typeof(d) __d = (d);			\
+-	(void) (&__a == &__b);			\
+-	(void) (&__a == __d);			\
+-	__builtin_mul_overflow(__a, __b, __d);	\
+-}))
++/** check_mul_overflow() - Calculate multiplication with overflow checking
++ *
++ * @a: first factor
++ * @b: second factor
++ * @d: pointer to store product
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted multiplication, but is not
++ * considered "safe for use" on a non-zero return value, which indicates
++ * that the product has overflowed or been truncated.
++ */
++#define check_mul_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_mul_overflow(a, b, d))
  
--- 
-2.51.0
-
+ /** check_shl_overflow() - Calculate a left-shifted value and check overflow
+  *
 
 
 
