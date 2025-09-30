@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7AFBADD2D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499E5BADA77
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B6B97A81E0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E23091889371
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473CB2264AB;
-	Tue, 30 Sep 2025 15:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3354D27B328;
+	Tue, 30 Sep 2025 15:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuS7afFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojepBQpA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030F0306B05;
-	Tue, 30 Sep 2025 15:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2ECB302CD6;
+	Tue, 30 Sep 2025 15:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246003; cv=none; b=B5wf+M5cJgb8CJlT6/lZ8I/Ga6vwmI/BczrWZre3ClmpwITjc7XLd50MJB6h9wG3VrDgqsmxwi4eGEjGEfJNw4ZNs/6Hb0N62IcjzzdqRGW1TvXycZ+D9T/UswTJlBkXSXAfjCQ45Z0JwWJtie76ZUPlByIu/Phi6pUzaeBn7wQ=
+	t=1759245394; cv=none; b=LeShP36oZnF5Rb/wwf3r940a4m01jzOrOgbnC1mBsz2G6Dw21KEwj9xTjvw0Gk7/2IA46uD3lsMivEqBmXykgiQtiiCgS7ByvuZPUzTa/GsYB264w80uCbwhLU159ek8JKQtDyauAxgJk0H3CDCyRQSnizG6PKq5xIzFBzJIaNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246003; c=relaxed/simple;
-	bh=WvZv5JTJLW0XGCKd49GPBC/PdVT+FNQEaZq2T+cs818=;
+	s=arc-20240116; t=1759245394; c=relaxed/simple;
+	bh=nHRKL/7P+oTLDDDJvzrxg78Bx1o6zmallkX7LndOd4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAdY/1B1QrTxClCCpl/7hP6mWjsFYkLcnU/zYR8lCe7toBseuf+INrjEnku4hLIbUvkKvGtlTQOlnJJDQ2eQIaZhl4Di/Vtcfg3W4EcqGBM1GF1TKTmw5h6wfoT6n+qh/yF5HhnpzxZabZPug3Q59pd8SHjPsstQMyNp+05OytA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuS7afFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B8C4CEF0;
-	Tue, 30 Sep 2025 15:26:42 +0000 (UTC)
+	 MIME-Version; b=eovUwEeCSlSkwcKToLV7lJMz/Au/J0ytlD3A0G9b9bo6OiP1TsN2WXCoRCC/zxXChdMYRtrp4iK1rMVf75oC+ybbZoiZVDbWL1G6DeWdoLXSJn3lG/tQV0pcW/7BLOZJ5HLZHaqaoFaamtVqNPb1+w2y25FMU0z1VU0d+7I8qVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojepBQpA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8FBC4CEF0;
+	Tue, 30 Sep 2025 15:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246002;
-	bh=WvZv5JTJLW0XGCKd49GPBC/PdVT+FNQEaZq2T+cs818=;
+	s=korg; t=1759245391;
+	bh=nHRKL/7P+oTLDDDJvzrxg78Bx1o6zmallkX7LndOd4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuS7afFWjXRoXGIk074KMOQYBbtdMB3sP5rfXnDX5sal1hOIlMtPCrwvO3Hw3vd0M
-	 ak8rpA2+7m3IC0apKkNIo8WL90H+ayCpVmAjmRghMbf6B++tvHS9Wujj8oP7lolirw
-	 BUllLmQyKfC8lgFqKxRXxkXU9yVNG1pgasFJwEJE=
+	b=ojepBQpAm+wt9ChEc56SIx0PsmD04k+GCAPYOUNSejFGUSKXAOfd/aCCO634FSSOD
+	 34R+fAa71mSF3zMN6owTwZnplZJJlGST/DyGz1C/ASs5KPAh7VGon/985YWnxgRpw6
+	 hcOjeZzV2+2aCkdcMwpCgmav4Lg9RiHw0yIYpPEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"noble.yang" <noble.yang@comtrue-inc.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 22/89] ALSA: usb-audio: Add DSD support for Comtrue USB Audio device
+Subject: [PATCH 5.15 126/151] can: mcba_usb: populate ndo_change_mtu() to prevent buffer overflow
 Date: Tue, 30 Sep 2025 16:47:36 +0200
-Message-ID: <20250930143822.813095822@linuxfoundation.org>
+Message-ID: <20250930143832.624221985@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: noble.yang <noble.yang@comtrue-inc.com>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-[ Upstream commit e9df1755485dd90a89656e8a21ec4d71c909fa30 ]
+[ Upstream commit 17c8d794527f01def0d1c8b7dc2d7b8d34fed0e6 ]
 
-The vendor Comtrue Inc. (0x2fc6) produces USB audio chipsets like
-the CT7601 which are capable of Native DSD playback.
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-This patch adds QUIRK_FLAG_DSD_RAW for Comtrue (VID 0x2fc6), which enables
-native DSD playback (DSD_U32_LE) on their USB Audio device. This has been
-verified under Ubuntu 25.04 with JRiver.
+Unfortunately, because the mcba_usb driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
 
-Signed-off-by: noble.yang <noble.yang@comtrue-inc.com>
-Link: https://patch.msgid.link/20250731110614.4070-1-noble228@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  $ ip link set can0 mtu 9999
+
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
+
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+
+to inject a malicious CAN XL frames. For example:
+
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
+
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
+
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
+
+  2. the length is a valid CAN XL length.
+
+And so, mcba_usb_start_xmit() receives a CAN XL frame which it is not
+able to correctly handle and will thus misinterpret it as a CAN frame.
+
+This can result in a buffer overflow. The driver will consume cf->len
+as-is with no further checks on these lines:
+
+	usb_msg.dlc = cf->len;
+
+	memcpy(usb_msg.data, cf->data, usb_msg.dlc);
+
+Here, cf->len corresponds to the flags field of the CAN XL frame. In
+our previous example, we set canxl_frame->flags to 0xff. Because the
+maximum expected length is 8, a buffer overflow of 247 bytes occurs!
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU. By
+fixing the root cause, this prevents the buffer overflow.
+
+Fixes: 51f3baad7de9 ("can: mcba_usb: Add support for Microchip CAN BUS Analyzer")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-4-0d1cada9393b@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/usb/mcba_usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 0da4ee9757c01..de57cf35d8258 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2405,6 +2405,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x2d87, /* Cayin device */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x2fc6, /* Comture-inc devices */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3336, /* HEM devices */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3353, /* Khadas devices */
+diff --git a/drivers/net/can/usb/mcba_usb.c b/drivers/net/can/usb/mcba_usb.c
+index e9ccdcce01cc3..50e1a67661c3e 100644
+--- a/drivers/net/can/usb/mcba_usb.c
++++ b/drivers/net/can/usb/mcba_usb.c
+@@ -769,6 +769,7 @@ static const struct net_device_ops mcba_netdev_ops = {
+ 	.ndo_open = mcba_usb_open,
+ 	.ndo_stop = mcba_usb_close,
+ 	.ndo_start_xmit = mcba_usb_start_xmit,
++	.ndo_change_mtu = can_change_mtu,
+ };
+ 
+ /* Microchip CANBUS has hardcoded bittiming values by default.
 -- 
 2.51.0
 
