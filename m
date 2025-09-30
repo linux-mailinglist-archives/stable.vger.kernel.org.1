@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-182171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570F0BAD563
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D065BAD8AB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEEF71941ADC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54D627A7BD5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC657305E28;
-	Tue, 30 Sep 2025 14:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2BA2FCBFC;
+	Tue, 30 Sep 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="napoRXTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmwVQVTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962F12FFDE6;
-	Tue, 30 Sep 2025 14:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183EF2236EB;
+	Tue, 30 Sep 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244073; cv=none; b=AWCfy5cwIMaMApdlygWklsP9qK7hYBExgCa9TItY5KyOL+0gn6eCqLoR9htbXecI+lBtJjctpRZr+IjgzPvMTI1BlRmMVWFVBq2e997FGRGR4XWS82MoLcvJVPNflOQw9kMT8LZ8gp/uBXxAHw1G2teQO+6VsBrEMYpqZQ+vna8=
+	t=1759244919; cv=none; b=rB7hw4DkTW+Ia0Ot0Bjmc62hTQw9zjz3+sVy9xMFIbDu/3DfURzL0q/wX4mbWjFfFxutKIfoQD+kv7rGcOpEzNmuTqrgxrBxhlpxvhmIiWeIQk/3CShfktOlqoRaUhRHDMaC9Vei06GxAVdn1NOF1kXitUpkj16zI80cTE539EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244073; c=relaxed/simple;
-	bh=dNHJ8n/oHnSBnpfaDoe3CT+2wdzJbcPLcw7jEug21do=;
+	s=arc-20240116; t=1759244919; c=relaxed/simple;
+	bh=GmDLFnqZ1a+A3ZklGIVL/k3CyNTr+RbsxUZoUOgG2vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DM8Fz8WMZpjJJFiROp4QzPyKAf/ZmIkRq+tMTuDWoiJsQ528/Yk+oORrdVTg5W8tgzUOa4LRq3egj7SFALYjQjpWGVRMs/9Na0GHWET6X+YQnwrQALx2DzCWIyM+scn1zzTOzTqn4CmKTO7z8B77HTOHVEZg2fHGpchgL4lzNZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=napoRXTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8B5C113D0;
-	Tue, 30 Sep 2025 14:54:32 +0000 (UTC)
+	 MIME-Version; b=A8dqtjdwl1lCBtt3KVQ6DaaJ+qWIA+QFEoieOff6b4U4JlXAZdmq1mV+bJI/lA5MLYqKqB+X+XeHhw4cmYxD+zoOTs9eArhCOOgBQ0gGFt6UAeuxNxrsveVoVLkfilLQtiSGYUomBipoT5bzcFIBZ0vCSa4J+kReRAa+o/XW2H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmwVQVTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A689C4CEF0;
+	Tue, 30 Sep 2025 15:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244073;
-	bh=dNHJ8n/oHnSBnpfaDoe3CT+2wdzJbcPLcw7jEug21do=;
+	s=korg; t=1759244919;
+	bh=GmDLFnqZ1a+A3ZklGIVL/k3CyNTr+RbsxUZoUOgG2vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=napoRXTxbRrXBRPtCEEHL8KpPU0y4fXiC0bOdJeJnE8176fk9CVJ3mOlkdWC92LiL
-	 gU5QUT2vy9pJLw+/hFi9USIuthXdyxZhXpkSHnxV3El4BAu9jT9gCnWMsYwjZEt/GJ
-	 ryx22uJm7yxrhjeF+6zfk+7T41Z55Z9+Nycwg1Cs=
+	b=UmwVQVTXa7qX6E/HddSJpvz+wUVh0CHix5uJgv9V5Xpjn6fVjSWTPgSOFLn85nM+2
+	 hNbubrS9Bk30Dkwg/4Oga6NL9tgqv7uQ46hHILz98cMys89mmhPwcbWyuqDgI6AqV3
+	 QRPyrtGmrIDMyvYaSnMPGiDx+1LaJuO5u+KscDPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/122] NFSv4: Clear the NFS_CAP_XATTR flag if not supported by the server
-Date: Tue, 30 Sep 2025 16:45:39 +0200
-Message-ID: <20250930143823.315126498@linuxfoundation.org>
+Subject: [PATCH 5.15 010/151] flexfiles/pNFS: fix NULL checks on result of ff_layout_choose_ds_for_read
+Date: Tue, 30 Sep 2025 16:45:40 +0200
+Message-ID: <20250930143828.008348162@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
 
-[ Upstream commit 4fb2b677fc1f70ee642c0beecc3cabf226ef5707 ]
+[ Upstream commit 5a46d2339a5ae268ede53a221f20433d8ea4f2f9 ]
 
-nfs_server_set_fsinfo() shouldn't assume that NFS_CAP_XATTR is unset
-on entry to the function.
+Recent commit f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS
+errors") has changed the error return type of ff_layout_choose_ds_for_read() from
+NULL to an error pointer. However, not all code paths have been updated
+to match the change. Thus, some non-NULL checks will accept error pointers
+as a valid return value.
 
-Fixes: b78ef845c35d ("NFSv4.2: query the server for extended attribute support")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS errors")
+Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index ac2fbbba1521a..6134101184fae 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -850,6 +850,8 @@ static void nfs_server_set_fsinfo(struct nfs_server *server,
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 14c7de8fd7812..798e2e32b3fb6 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -750,8 +750,11 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
+ 			continue;
  
- 	if (fsinfo->xattr_support)
- 		server->caps |= NFS_CAP_XATTR;
+ 		if (check_device &&
+-		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node))
++		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node)) {
++			// reinitialize the error state in case if this is the last iteration
++			ds = ERR_PTR(-EINVAL);
+ 			continue;
++		}
+ 
+ 		*best_idx = idx;
+ 		break;
+@@ -781,7 +784,7 @@ ff_layout_choose_best_ds_for_read(struct pnfs_layout_segment *lseg,
+ 	struct nfs4_pnfs_ds *ds;
+ 
+ 	ds = ff_layout_choose_valid_ds_for_read(lseg, start_idx, best_idx);
+-	if (ds)
++	if (!IS_ERR(ds))
+ 		return ds;
+ 	return ff_layout_choose_any_ds_for_read(lseg, start_idx, best_idx);
+ }
+@@ -795,7 +798,7 @@ ff_layout_get_ds_for_read(struct nfs_pageio_descriptor *pgio,
+ 
+ 	ds = ff_layout_choose_best_ds_for_read(lseg, pgio->pg_mirror_idx,
+ 					       best_idx);
+-	if (ds || !pgio->pg_mirror_idx)
++	if (!IS_ERR(ds) || !pgio->pg_mirror_idx)
+ 		return ds;
+ 	return ff_layout_choose_best_ds_for_read(lseg, 0, best_idx);
+ }
+@@ -856,7 +859,7 @@ ff_layout_pg_init_read(struct nfs_pageio_descriptor *pgio,
+ 	req->wb_nio = 0;
+ 
+ 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
+-	if (!ds) {
++	if (IS_ERR(ds)) {
+ 		if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
+ 			goto out_mds;
+ 		pnfs_generic_pg_cleanup(pgio);
+@@ -1066,11 +1069,13 @@ static void ff_layout_resend_pnfs_read(struct nfs_pgio_header *hdr)
+ {
+ 	u32 idx = hdr->pgio_mirror_idx + 1;
+ 	u32 new_idx = 0;
++	struct nfs4_pnfs_ds *ds;
+ 
+-	if (ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx))
+-		ff_layout_send_layouterror(hdr->lseg);
+-	else
++	ds = ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx);
++	if (IS_ERR(ds))
+ 		pnfs_error_mark_layout_for_return(hdr->inode, hdr->lseg);
 +	else
-+		server->caps &= ~NFS_CAP_XATTR;
- #endif
++		ff_layout_send_layouterror(hdr->lseg);
+ 	pnfs_read_resend_pnfs(hdr, new_idx);
  }
  
 -- 
