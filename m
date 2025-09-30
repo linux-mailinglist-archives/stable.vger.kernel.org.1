@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-182436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2FDBAD965
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E74DBAD540
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5514A5746
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 481427A1580
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B02307AF8;
-	Tue, 30 Sep 2025 15:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FF6303A01;
+	Tue, 30 Sep 2025 14:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckoxWOS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlRaUE53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A7030595C;
-	Tue, 30 Sep 2025 15:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EABC1F1302;
+	Tue, 30 Sep 2025 14:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244941; cv=none; b=HO0zR0SW+TZJWcfDGw6uinTkYRNmC5cAzMAJX2BeWMpzaYtEMKJP4H3esIh8CTtt4nCkTWIr0UEBVlAuqDLCOgGPl6wy++E1+W///zQJamf7IlFqrI/tOQoxyaSrNrXa1XTJxv5qqmefjWSewJBnOJUY4J4LV1Vus2Bs3reTiXs=
+	t=1759244052; cv=none; b=ntqIx/UcPNwNr3IQIYTECDyod7bSKrDmndKJPAVawd79MBOfR5/GdlKtT90pq40woalqN3hlxlhsKyah2mGXxYgCG+h2UnqC2+Kg+OmZ4PWmmUUDg/gjvbx5emqgsh6FBZhdZudl3iTFTgBmPFy+kXrg8xzBwufCGeSR/KdH+IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244941; c=relaxed/simple;
-	bh=rggnYdwocH3XaxN4ASJ3ZI84uMCnaN1E1KaX4PrPUoA=;
+	s=arc-20240116; t=1759244052; c=relaxed/simple;
+	bh=D9YEQeiwG7ZWfHd55QE3hzSbQktPvpDEF5bUs7PD8m0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pB3XKdAC1Ss2bCugLllxm4QZWwLMRge71//9cBRX37jfqC3wCwWyXzwvA8wb7hom/SFzctuY4x8iaXNHKeYeRG8qpdFXEMQbJ3FyKLhgstf/ePDRjuFqPiPEZgPAMXKqkFyrvkZFJt4sO4atbrESt/ADjVvqO1HkqUFdmqflJUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckoxWOS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431D7C116B1;
-	Tue, 30 Sep 2025 15:09:01 +0000 (UTC)
+	 MIME-Version; b=WGW+SpI4+FDTLiOqnYfgYZeior0QwBcW1udM2Tpk4u2vaWyKjSj5HMaAb9ZpI04Hu2PZXYjtaPeLZ2UhH+z/+uxbApipslB3x+8TxnIi8gDbF2EHPLHb572XVf9/ESExW43Fp7B6wKO1lKEEUEg3rvdpitaHRrjjxHIy4EOfLFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlRaUE53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7047AC4CEF0;
+	Tue, 30 Sep 2025 14:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244941;
-	bh=rggnYdwocH3XaxN4ASJ3ZI84uMCnaN1E1KaX4PrPUoA=;
+	s=korg; t=1759244051;
+	bh=D9YEQeiwG7ZWfHd55QE3hzSbQktPvpDEF5bUs7PD8m0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckoxWOS1zEH9XZX1nvfrcQtOzt1OLwT0jiHaV5rkFZ3zFvzZJRuEvPJ/ghf+wwCqQ
-	 XW0QVkMWqYT6CKhrEmFqSClF6RnQVGLwBE6AAWxHprI5K1DbavzSV8/UyCj16fe9sE
-	 zt4W/QPbpMxEAkJd7GLYADJebRJbg093WJMWbAG4=
+	b=WlRaUE53o8JzoQMOh17CyzL51F4bWqsDC1HYsKWHZhy9AjR9QugkMonaX3zob1mnH
+	 LBTDZzW5lqd8ucmyluvR/MkvHueRBcOJ/kIq7Bfc40mONNeKUE43gfWSG5p49ozWDi
+	 fTw6oWGQpeUn8Dc+NVGicrY+encQL4gEOuXwkhhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 003/151] kunit: kasan_test: disable fortify string checker on kasan_strings() test
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Courbot <acourbot@google.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 002/122] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
 Date: Tue, 30 Sep 2025 16:45:33 +0200
-Message-ID: <20250930143827.724145165@linuxfoundation.org>
+Message-ID: <20250930143823.053259812@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 7a19afee6fb39df63ddea7ce78976d8c521178c6 upstream.
+[ Upstream commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 ]
 
-Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
-FORTIFY_SOURCE") the kernel is panicing in kasan_string().
+This is one of three clang warnings about incompatible enum types
+in a conditional expression:
 
-This is due to the `src` and `ptr` not being hidden from the optimizer
-which would disable the runtime fortify string checker.
+drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
+  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
+      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
 
-Call trace:
-  __fortify_panic+0x10/0x20 (P)
-  kasan_strings+0x980/0x9b0
-  kunit_try_run_case+0x68/0x190
-  kunit_generic_run_threadfn_adapter+0x34/0x68
-  kthread+0x1c4/0x228
-  ret_from_fork+0x10/0x20
- Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
- ---[ end trace 0000000000000000 ]---
- note: kunit_try_catch[128] exited with irqs disabled
- note: kunit_try_catch[128] exited with preempt_count 1
-     # kasan_strings: try faulted: last
-** replaying previous printk message **
-     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
-     # kasan_strings: internal error occurred preventing test case from running: -4
+The code is correct, so just rework it to avoid the warning.
 
-Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
-Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Alexandre Courbot <acourbot@google.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ Adapted file path ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/test_kasan.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/lib/test_kasan.c
-+++ b/lib/test_kasan.c
-@@ -917,6 +917,7 @@ static void kasan_strings(struct kunit *
+--- a/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
++++ b/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
+@@ -509,7 +509,11 @@ static int h264_enc_init(struct mtk_vcod
  
- 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
-+	OPTIMIZER_HIDE_VAR(ptr);
+ 	inst->ctx = ctx;
+ 	inst->vpu_inst.ctx = ctx;
+-	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
++	if (is_ext)
++		inst->vpu_inst.id = SCP_IPI_VENC_H264;
++	else
++		inst->vpu_inst.id = IPI_VENC_H264;
++
+ 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx, VENC_SYS);
  
- 	kfree(ptr);
- 
+ 	mtk_vcodec_debug_enter(inst);
 
 
 
