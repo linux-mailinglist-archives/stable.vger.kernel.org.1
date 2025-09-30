@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFF4BAD8BA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0959BBAD788
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCCE219421B6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB4E032558A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3E52FD1DD;
-	Tue, 30 Sep 2025 15:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DAF2FCBFC;
+	Tue, 30 Sep 2025 15:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1D6OHiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQ+Rl+la"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1582236EB;
-	Tue, 30 Sep 2025 15:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A511EE02F;
+	Tue, 30 Sep 2025 15:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244935; cv=none; b=TSQ6Rn9+LJM/SSAMqStW6iLHyzzLA9Lwr8UQTdOnyiftNoDsgA2aP3B/WX4l7/0l3qucQFQVGLJNzjiptX7G95FQ8IJAUYNYFOQmv5UXvbyMtToRa+eeLM0ZkLXyzLe4opKt2xVBTar2Od8Jk5Dlymg4Y1LhbwMGEhWfKTli99o=
+	t=1759244573; cv=none; b=nkaPYO64nCXpHT8PRrTYnZ0mWcdXWbF6wZVT1172+W582iJhFrQHcYXrlZYo6+3WYvsmgXafYNW/o5UkzEuOdqVDXzEDv98mpGV/AyxMAhoyOZVhFqaT/M48qWRpM6/q29iqbnHqqF2u55v/bS3yCLRzrzEp7yzWrET34xwIMos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244935; c=relaxed/simple;
-	bh=YxjJaN91RSpHYbtycnBbaCvxaqzuRUCfDopgCeWv6Ng=;
+	s=arc-20240116; t=1759244573; c=relaxed/simple;
+	bh=paS5Rvj02XN/MXAHTrH7eKZFoDcotofx0pG1hQhmTxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQR9gZg6EJzGFiaSaTyhITXPgusxLqHgWOL8bF6p1tM3vzHWcT7ZnxF9PuyvieRvQRwWHlwFiF44rFLoKFZufH7s7ZVFB/GzQ9zA56qIMF1HO5Z2AW577pKia6iMAaVRRXzs7LnGvs7PYxp1Kied12rumx+h+29qSzZrCuI5M3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1D6OHiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD53C4CEF0;
-	Tue, 30 Sep 2025 15:08:54 +0000 (UTC)
+	 MIME-Version; b=cPcJEJM7+vvlx/zkxXI+4MkRty7u6FcZuqdESElnChTFadwugKP5qu8SNckHXUr4/dQ6eKTu4deNlWI7rrYL90FQDgW6ik5RDRmy0Cb+lD63NdHUkAE3iBSW6gOaOzZQTeQBrTrFDXr1SjEnC/HGkCyRFgwx0tsEehRNVTrply4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQ+Rl+la; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E754C4CEF0;
+	Tue, 30 Sep 2025 15:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244935;
-	bh=YxjJaN91RSpHYbtycnBbaCvxaqzuRUCfDopgCeWv6Ng=;
+	s=korg; t=1759244573;
+	bh=paS5Rvj02XN/MXAHTrH7eKZFoDcotofx0pG1hQhmTxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1D6OHiJZEfthXABAnikfYvGgWJ6dNziegIVndnNOspHSwfn9vC2C6EVViRbXPvyZ
-	 3LZwOaN2Etb2WpW4gfTJ8pnBlBrkLdLPYvPTAcEzym+mzdEqsx0oyZ5cEZAdtanBf7
-	 c4Gq4RArAklKc8QPQ5W+407MPEpwGdlFTE1VfaSk=
+	b=PQ+Rl+laurt7SogcheksFQz3FfVO33aP19H4j/5BUxKBT9JT30HrektFIuC7bxPG/
+	 65J9E7itnxvbff8YfoZkvQIil1dyFM73BVisc/qntwb+qocmtz0X/Bac2fab5FcpPz
+	 bKqaEWDDFrrQCoXCEYhONoKN9zxcBMCgEye2Xm7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Curley <jcurley@purestorage.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 015/151] NFSv4/flexfiles: Fix layout merge mirror check.
+Subject: [PATCH 6.16 021/143] drm/panfrost: Drop duplicated Mediatek supplies arrays
 Date: Tue, 30 Sep 2025 16:45:45 +0200
-Message-ID: <20250930143828.212107318@linuxfoundation.org>
+Message-ID: <20250930143832.087483745@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Curley <jcurley@purestorage.com>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit dd2fa82473453661d12723c46c9f43d9876a7efd ]
+[ Upstream commit 6905b0d9813176087fc0f28bc5e4ee2b86e6ce13 ]
 
-Typo in ff_lseg_match_mirrors makes the diff ineffective. This results
-in merge happening all the time. Merge happening all the time is
-problematic because it marks lsegs invalid. Marking lsegs invalid
-causes all outstanding IO to get restarted with EAGAIN and connections
-to get closed.
+In the panfrost driver, the platform data of several Mediatek SoC
+declares and uses custom supplies array definitions
+(mediatek_mt8192_supplies, mediatek_mt8183_b_supplies), that are the
+same as default_supplies (used by default platform data).
 
-Closing connections constantly triggers race conditions in the RDMA
-implementation...
+So drop these duplicated definitions and use default_supplies instead.
+Also, rename mediatek_mt8183_supplies to a more generic name too
+(legacy_supplies).
 
-Fixes: 660d1eb22301c ("pNFS/flexfile: Don't merge layout segments if the mirrors don't match")
-Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250509-mt8370-enable-gpu-v6-2-2833888cb1d3@collabora.com
+Stable-dep-of: 81645377c231 ("drm/panfrost: Add support for Mali on the MT8370 SoC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panfrost/panfrost_drv.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 798e2e32b3fb6..24d97d7ba12d5 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -270,7 +270,7 @@ ff_lseg_match_mirrors(struct pnfs_layout_segment *l1,
- 		struct pnfs_layout_segment *l2)
- {
- 	const struct nfs4_ff_layout_segment *fl1 = FF_LAYOUT_LSEG(l1);
--	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l1);
-+	const struct nfs4_ff_layout_segment *fl2 = FF_LAYOUT_LSEG(l2);
- 	u32 i;
+diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
+index f1ec3b02f15a0..7b899a9b2120c 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_drv.c
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+@@ -797,19 +797,18 @@ static const struct panfrost_compatible amlogic_data = {
+  * On new devicetrees please use the _b variant with a single and
+  * coupled regulators instead.
+  */
+-static const char * const mediatek_mt8183_supplies[] = { "mali", "sram", NULL };
++static const char * const legacy_supplies[] = { "mali", "sram", NULL };
+ static const char * const mediatek_mt8183_pm_domains[] = { "core0", "core1", "core2" };
+ static const struct panfrost_compatible mediatek_mt8183_data = {
+-	.num_supplies = ARRAY_SIZE(mediatek_mt8183_supplies) - 1,
+-	.supply_names = mediatek_mt8183_supplies,
++	.num_supplies = ARRAY_SIZE(legacy_supplies) - 1,
++	.supply_names = legacy_supplies,
+ 	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
+ 	.pm_domain_names = mediatek_mt8183_pm_domains,
+ };
  
- 	if (fl1->mirror_array_cnt != fl2->mirror_array_cnt)
+-static const char * const mediatek_mt8183_b_supplies[] = { "mali", NULL };
+ static const struct panfrost_compatible mediatek_mt8183_b_data = {
+-	.num_supplies = ARRAY_SIZE(mediatek_mt8183_b_supplies) - 1,
+-	.supply_names = mediatek_mt8183_b_supplies,
++	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
++	.supply_names = default_supplies,
+ 	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
+ 	.pm_domain_names = mediatek_mt8183_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
+@@ -817,8 +816,8 @@ static const struct panfrost_compatible mediatek_mt8183_b_data = {
+ 
+ static const char * const mediatek_mt8186_pm_domains[] = { "core0", "core1" };
+ static const struct panfrost_compatible mediatek_mt8186_data = {
+-	.num_supplies = ARRAY_SIZE(mediatek_mt8183_b_supplies) - 1,
+-	.supply_names = mediatek_mt8183_b_supplies,
++	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
++	.supply_names = default_supplies,
+ 	.num_pm_domains = ARRAY_SIZE(mediatek_mt8186_pm_domains),
+ 	.pm_domain_names = mediatek_mt8186_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
+@@ -826,20 +825,19 @@ static const struct panfrost_compatible mediatek_mt8186_data = {
+ 
+ /* MT8188 uses the same power domains and power supplies as MT8183 */
+ static const struct panfrost_compatible mediatek_mt8188_data = {
+-	.num_supplies = ARRAY_SIZE(mediatek_mt8183_b_supplies) - 1,
+-	.supply_names = mediatek_mt8183_b_supplies,
++	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
++	.supply_names = default_supplies,
+ 	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
+ 	.pm_domain_names = mediatek_mt8183_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
+ 	.gpu_quirks = BIT(GPU_QUIRK_FORCE_AARCH64_PGTABLE),
+ };
+ 
+-static const char * const mediatek_mt8192_supplies[] = { "mali", NULL };
+ static const char * const mediatek_mt8192_pm_domains[] = { "core0", "core1", "core2",
+ 							   "core3", "core4" };
+ static const struct panfrost_compatible mediatek_mt8192_data = {
+-	.num_supplies = ARRAY_SIZE(mediatek_mt8192_supplies) - 1,
+-	.supply_names = mediatek_mt8192_supplies,
++	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
++	.supply_names = default_supplies,
+ 	.num_pm_domains = ARRAY_SIZE(mediatek_mt8192_pm_domains),
+ 	.pm_domain_names = mediatek_mt8192_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
 -- 
 2.51.0
 
