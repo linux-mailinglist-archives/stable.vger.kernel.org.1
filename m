@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2EEBADB43
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAF8BAD698
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C28D71C2F7D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1557C18873C6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E476302CD6;
-	Tue, 30 Sep 2025 15:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AD42FFDE6;
+	Tue, 30 Sep 2025 14:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkdFtsVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0ed0Joo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE68217F55;
-	Tue, 30 Sep 2025 15:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1001B304989;
+	Tue, 30 Sep 2025 14:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245488; cv=none; b=VLPUVMXkXbhZcaJCjH0X0oR1M/ZJ+OfVFp4yBb/Xh4dRf9btjUtTXdKPv+vhYzlZcM/iBo9HlqQ2lnS7QHzY0nggXJlmJq9zuEjI1NH4rHqORVG3FDb6HKxEH5SOwG3FPVA9V4HN5OVXoZNqKK453EQ1pbGpsIBCBPPhFvFXiR4=
+	t=1759244348; cv=none; b=ECRD1zM4YdcOqFIYX9eiOxvVgvnxMO287lDgb41CKCllRdYgKNYZyVaIlCtxbJMs04OxuhBLiHp6haMVB7QOXvUueEwQRp2EGV6Q6D2MBcA0LaJ2A8uum8E6V0mMqvstWaEkEChnr+XB4yQyUTLu1pTnTUs8uF0zuICTwIg2s38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245488; c=relaxed/simple;
-	bh=eq3U8jUKBhecchcGnxlMSE798oHLegVpq7zLICaEeJk=;
+	s=arc-20240116; t=1759244348; c=relaxed/simple;
+	bh=W41uSdpbee4bdxcYOoMRRhVlM80OsbaRBRVFN3lrrHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubZvqvm+GO4I6AqaiU4YEgLxI5ZYDYRjcXSt3tJCLhKP0T+ug+ur7gGK+s1Uq0vuPsFa3nPNbdYM4OpXYX3AnpS6zlt9lThxjWO4OMn3HH9z+I36aHUdLCsMNb6oigxRH84SgpwqExtCwMu8V2t5VioXsf2O5H22lMCN67icgR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkdFtsVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86072C4CEF0;
-	Tue, 30 Sep 2025 15:18:07 +0000 (UTC)
+	 MIME-Version; b=fv0rh4vdxfjyNnxAv/wk2GwdSt+p48B7tUZffCiNy+/HAUdji6qbLQIiRWYViVQ9WqKrHWFljwbaFEt7dA2tnJjVqggCnavgTUwDpXNv8AnSZ8aSSHT58NJYFU2hNuG1h4tUcCgL44BN5CPImGlicnJn35Xy25jWh3NBfuFTvtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0ed0Joo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE66C4CEF0;
+	Tue, 30 Sep 2025 14:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245488;
-	bh=eq3U8jUKBhecchcGnxlMSE798oHLegVpq7zLICaEeJk=;
+	s=korg; t=1759244345;
+	bh=W41uSdpbee4bdxcYOoMRRhVlM80OsbaRBRVFN3lrrHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkdFtsVzA6m33tdlCHq3+UbTNDM8PJVzWUSSzpDWHcdpDo+I298zPqq+9lZuVNQ4p
-	 lTSbI/vSvPVeje/YRis663HD/DfmSnrv0oTFtM9GIm2oSXbLAue3EDHaE54okhvBhL
-	 Pb+pCPjgQB6y5shrWD0LbpZZBrafsGoL04ADrIy8=
+	b=r0ed0Joo4gmJ3WSnEP8byLHfvrjczeCAxr6M0IKz4RMVxR7xsuV42Y4c5GKRoej8n
+	 WKB1HrtFwsw4mREP/g1EqKtgggYZSELED1wAU8HOp5/m/ZwQIOCiOODo7aZZ1TwaI6
+	 zgSYBNPBIEohNud7EMiuYU2OTZGLfkE6UdFxyIMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/73] HID: multitouch: support getting the tip state from HID_DG_TOUCH fields in Apple Touch Bar
-Date: Tue, 30 Sep 2025 16:47:12 +0200
-Message-ID: <20250930143820.906178993@linuxfoundation.org>
+Subject: [PATCH 5.10 102/122] nexthop: Pass extack to nexthop notifier
+Date: Tue, 30 Sep 2025 16:47:13 +0200
+Message-ID: <20250930143827.159983245@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit e0976a61a543b5e03bc0d08030a0ea036ee3751d ]
+[ Upstream commit 3578d53dcef152a460a2d560c95dcc4399ff04cd ]
 
-In Apple Touch Bar, the tip state is contained in fields with the
-HID_DG_TOUCH usage. This feature is gated by a quirk in order to
-prevent breaking other devices, see commit c2ef8f21ea8f
-("HID: multitouch: add support for trackpads").
+The next patch will add extack to the notification info. This allows
+listeners to veto notifications and communicate the reason to user space.
 
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Co-developed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 390b3a300d78 ("nexthop: Forbid FDB status change while nexthop is in a group")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/ipv4/nexthop.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 35426e702b301..d0b2e866dadaf 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -814,6 +814,17 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index a508fd94b8be0..0653aa518648c 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -38,7 +38,8 @@ static const struct nla_policy rtm_nh_policy[NHA_MAX + 1] = {
  
- 			MT_STORE_FIELD(confidence_state);
- 			return 1;
-+		case HID_DG_TOUCH:
-+			/*
-+			 * Legacy devices use TIPSWITCH and not TOUCH.
-+			 * One special case here is of the Apple Touch Bars.
-+			 * In these devices, the tip state is contained in
-+			 * fields with the HID_DG_TOUCH usage.
-+			 * Let's just ignore this field for other devices.
-+			 */
-+			if (!(cls->quirks & MT_QUIRK_APPLE_TOUCHBAR))
-+				return -1;
-+			fallthrough;
- 		case HID_DG_TIPSWITCH:
- 			if (field->application != HID_GD_SYSTEM_MULTIAXIS)
- 				input_set_capability(hi->input,
-@@ -884,10 +895,6 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
- 		case HID_DG_CONTACTMAX:
- 			/* contact max are global to the report */
- 			return -1;
--		case HID_DG_TOUCH:
--			/* Legacy devices use TIPSWITCH and not TOUCH.
--			 * Let's just ignore this field. */
--			return -1;
- 		}
- 		/* let hid-input decide for the others */
- 		return 0;
+ static int call_nexthop_notifiers(struct net *net,
+ 				  enum nexthop_event_type event_type,
+-				  struct nexthop *nh)
++				  struct nexthop *nh,
++				  struct netlink_ext_ack *extack)
+ {
+ 	int err;
+ 
+@@ -908,7 +909,7 @@ static void __remove_nexthop(struct net *net, struct nexthop *nh,
+ static void remove_nexthop(struct net *net, struct nexthop *nh,
+ 			   struct nl_info *nlinfo)
+ {
+-	call_nexthop_notifiers(net, NEXTHOP_EVENT_DEL, nh);
++	call_nexthop_notifiers(net, NEXTHOP_EVENT_DEL, nh, NULL);
+ 
+ 	/* remove from the tree */
+ 	rb_erase(&nh->rb_node, &net->nexthop.rb_root);
 -- 
 2.51.0
 
