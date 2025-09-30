@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-182119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304F3BAD4AC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38315BADA6D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28DBD19412ED
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A5BD3ADAFC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9362FB622;
-	Tue, 30 Sep 2025 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE882FD1DD;
+	Tue, 30 Sep 2025 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkfVg1iu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXAnPTj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3F31E3DF2;
-	Tue, 30 Sep 2025 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE99C2F9D88;
+	Tue, 30 Sep 2025 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243897; cv=none; b=kTcWSU5BgUh8sg+F73EpkRy343/nPDvwZxpLWGEdAdU/SLmONK57Q6gx+G8Uh25t8nhqcA/Cj/EKwh5ZTizFqP9G0qv1Zg2t3TCu0lkxbcF8kEgbwlLbh7cBUnpkLVHvUEzC9R2NfCNq3sbO6YzA6Zs7gSpn4IZBH+8jnKWusoI=
+	t=1759245159; cv=none; b=GRdgYJHQh9EQ9A9nfYx1xLjae05Wr9nL3WFi2V2/PnstGC9XsOiNXNd0zUCWJQL/mQCknTxfbWgvFkTPijs3rdz+R9KNgRk91HGA+JjbX5wjgDV1qVFVbPHZx6+G8uRdSKhic0mUUJLmOYI/90ICUMo+h2hOdEtvOAPz+Ezw6jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243897; c=relaxed/simple;
-	bh=Mfr/YELgI7+9PjQ8bCdkBtsM5HwUfnsWnQn1Kf6O2ug=;
+	s=arc-20240116; t=1759245159; c=relaxed/simple;
+	bh=TuoxS7gvonhSGv9OaUhGqRgPVhJliINhjD5VnwGbOVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dg14qfRMv5n9+T4ogZHUwXEjoinMgoUGWXo2jABZNyzqeprfPH13hre97cKR8YxrVisP0xb5I1UDkNXeznbbQ50ydb/y+Bgemq8ldhGLo5BQeZBKhUgAQzeCmkbH5jGvKBAAjra+/zMaVlJW1FSOBMvy9JN+++x23A6+JZMYln8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkfVg1iu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DADC4CEF0;
-	Tue, 30 Sep 2025 14:51:36 +0000 (UTC)
+	 MIME-Version; b=GJknpWkJtPlbZgXK8bIEmjf8aXAYEjjF8jhj4kEoKBNwwrlHbRbO8JPFqutIRbU1zHfu4u3KPeLHrEJ2tWeWQhPuqpT3wxaUqUc5d+/pKn/nufMkKQ/X3cGSQ/3R+UbyFIclNRRKmrJVibcN00WiFXPRsDn4V+mBuIKU/vCWitA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXAnPTj9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73602C4CEF0;
+	Tue, 30 Sep 2025 15:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243897;
-	bh=Mfr/YELgI7+9PjQ8bCdkBtsM5HwUfnsWnQn1Kf6O2ug=;
+	s=korg; t=1759245158;
+	bh=TuoxS7gvonhSGv9OaUhGqRgPVhJliINhjD5VnwGbOVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkfVg1iuobpJ5EQh0hAhn84Tuz14bznX+IEJPFWes4tjStorZN+casxe+URRAhrVR
-	 ZtVMBIs1WfddcoYFAbNpmVF5aeS+9jZGud8785fQOX4QK220zeytihPQ3oMrGQia6/
-	 8TVjnHpxRwj17tTNVXGEuQnel2t6S+xi6/iOFPEM=
+	b=rXAnPTj9PjPe5VYa75obNtQnBEw/Xlg9A0LKOHCq+dt5bBVVtnHVaKG9hJDJL3dxQ
+	 lPpDYr+bvKmJ+irH3lCnGMhzbwQTkx0uuyfVAuQ/RssIPiUEIukGaLjhUev8qnFQeR
+	 D1tEn08wZid9OLUeiWsu6ZN2E8z450EfN9dPkDLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Koschel <jakobkoschel@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 49/81] usb: gadget: dummy_hcd: remove usage of list iterator past the loop body
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 081/151] btrfs: tree-checker: fix the incorrect inode ref size check
 Date: Tue, 30 Sep 2025 16:46:51 +0200
-Message-ID: <20250930143821.731374334@linuxfoundation.org>
+Message-ID: <20250930143830.817215196@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Koschel <jakobkoschel@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 7975f080d3557725160a878b1a64339043ba3d91 ]
+commit 96fa515e70f3e4b98685ef8cac9d737fc62f10e1 upstream.
 
-To move the list iterator variable into the list_for_each_entry_*()
-macro in the future it should be avoided to use the list iterator
-variable after the loop body.
+[BUG]
+Inside check_inode_ref(), we need to make sure every structure,
+including the btrfs_inode_extref header, is covered by the item.  But
+our code is incorrectly using "sizeof(iref)", where @iref is just a
+pointer.
 
-To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable [1].
+This means "sizeof(iref)" will always be "sizeof(void *)", which is much
+smaller than "sizeof(struct btrfs_inode_extref)".
 
-Link: https://lore.kernel.org/all/YhdfEIwI4EdtHdym@kroah.com/
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-Link: https://lore.kernel.org/r/20220308171818.384491-26-jakobkoschel@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8d63c83d8eb9 ("USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will allow some bad inode extrefs to sneak in, defeating tree-checker.
+
+[FIX]
+Fix the typo by calling "sizeof(*iref)", which is the same as
+"sizeof(struct btrfs_inode_extref)", and will be the correct behavior we
+want.
+
+Fixes: 71bf92a9b877 ("btrfs: tree-checker: Add check for INODE_REF")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ fs/btrfs/tree-checker.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -748,7 +748,7 @@ static int dummy_dequeue(struct usb_ep *
- 	struct dummy		*dum;
- 	int			retval = -EINVAL;
- 	unsigned long		flags;
--	struct dummy_request	*req = NULL;
-+	struct dummy_request	*req = NULL, *iter;
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1595,10 +1595,10 @@ static int check_inode_ref(struct extent
+ 	while (ptr < end) {
+ 		u16 namelen;
  
- 	if (!_ep || !_req)
- 		return retval;
-@@ -760,13 +760,14 @@ static int dummy_dequeue(struct usb_ep *
- 
- 	local_irq_save(flags);
- 	spin_lock(&dum->lock);
--	list_for_each_entry(req, &ep->queue, queue) {
--		if (&req->req == _req) {
--			list_del_init(&req->queue);
--			_req->status = -ECONNRESET;
--			retval = 0;
--			break;
--		}
-+	list_for_each_entry(iter, &ep->queue, queue) {
-+		if (&iter->req != _req)
-+			continue;
-+		list_del_init(&iter->queue);
-+		_req->status = -ECONNRESET;
-+		req = iter;
-+		retval = 0;
-+		break;
- 	}
- 	spin_unlock(&dum->lock);
+-		if (unlikely(ptr + sizeof(iref) > end)) {
++		if (unlikely(ptr + sizeof(*iref) > end)) {
+ 			inode_ref_err(leaf, slot,
+ 			"inode ref overflow, ptr %lu end %lu inode_ref_size %zu",
+-				ptr, end, sizeof(iref));
++				ptr, end, sizeof(*iref));
+ 			return -EUCLEAN;
+ 		}
  
 
 
