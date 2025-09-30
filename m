@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82026BAD4C1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67621BAD82A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41D01321906
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30334A5C43
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CFA4D8CE;
-	Tue, 30 Sep 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B68304964;
+	Tue, 30 Sep 2025 15:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5RVYQ8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="praBKhpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D7265CCD;
-	Tue, 30 Sep 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241561FF1C8;
+	Tue, 30 Sep 2025 15:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243934; cv=none; b=jvqJd2dHv7gUa6fAS1MrXZgUafkwCLf6s0ORT7fcERSop7AkKjNiBYxPeOi4F9YBBmnaJo4ddm71ahjdcDwE/SStpzMMdVhSZKYqJLuW+45nwoXMSI9A8NDWaxkqbTFpMhwacC5cEOSjGLBS4gd59LKDmP1x0M1Q20LBJduQQEQ=
+	t=1759244630; cv=none; b=M9s/RK4xd4cJA/K4yW2OSHfRfWS9KhtGyrz0f2fckJTlExn5+gSdMlkx7HXOZevYd7HL10SjnD+3gEaQ/d2Qbg9GNNQMzfKMN+ZixXUWMotcvGWklfmHyP43YiQ/tlljVtadrg+GkCiYlY9ODGDDTrydLyk1+q0wjFoGmBJrieE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243934; c=relaxed/simple;
-	bh=+VsETWWpp0FCF81YojyfwdwhrP3wI/mlDu9Omwn5C5Y=;
+	s=arc-20240116; t=1759244630; c=relaxed/simple;
+	bh=Oj1cr1jMAQBN1DtaC65qgN7ZohgzIqyrkEWhcpAxyiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J20T8SE3W10e/MPjPEepqozNZoIFe12CRjscoaGHtsG0WMdJ+HnOactE7Ve//VdjHcTK69hJiR9Jp1lRtURsNVUFsLB8rOuVEpvnB8R4laj+LHtEhZEDIyIIG5U+/5CIBuPEx3i9Hwxoo7YeBFVCZjlORO4I/feYtauQUNFh73c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5RVYQ8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D29C4CEF0;
-	Tue, 30 Sep 2025 14:52:13 +0000 (UTC)
+	 MIME-Version; b=ciptVacyX+q+pwIK0/1brsPEZBnuzneWn0jD8imfuJuEqEL3/wuLsw/GGUxzeZiHJCeTZ0ayrPCWzhMjP/e932oRsvYoaYXFLg5cKquqDNvWry0xzfDEDJ9L/WWMVFwUxdzeZ1eh4FyRdhQy5cyu5/Wkwq1KJiPq3hpVkjG7Kl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=praBKhpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A456AC16AAE;
+	Tue, 30 Sep 2025 15:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243934;
-	bh=+VsETWWpp0FCF81YojyfwdwhrP3wI/mlDu9Omwn5C5Y=;
+	s=korg; t=1759244630;
+	bh=Oj1cr1jMAQBN1DtaC65qgN7ZohgzIqyrkEWhcpAxyiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5RVYQ8cjlpK/QKrZGqVGisUWiuR//+WCImkYtPQjJdFD+Pt2rWNFZjB0D+kYRkaP
-	 7wdtErEk7AAACGRwq2vX7ebQRAfwMvIe+YI+hOi+V66LqWrVvyQsB0/CEc5abowMir
-	 VzBnUZjuKME4c5btBk5WfZfjujtHJRd2fhr+HVQs=
+	b=praBKhpFKhRWRRcHYg7ygjN2NyQ2qzlsfakNAPS1d6Lly1U0r0sRdpTR2xBmauC7b
+	 6/s3SedxCQwW8o7HyDBgfCXYvsAQc0c7jyw2aMC4kFB6v8uhPDaHaxGADSs/l3EVMN
+	 O18H4TPWlQpKowunO0SYZrWUJTMs8JPyjniWIifU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Yongqin Liu <yongqin.liu@linaro.org>
-Subject: [PATCH 5.4 29/81] soc: qcom: mdt_loader: Deal with zero e_shentsize
+	Petr Malat <oss@malat.biz>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 067/143] ethernet: rvu-af: Remove slash from the driver name
 Date: Tue, 30 Sep 2025 16:46:31 +0200
-Message-ID: <20250930143820.883820292@linuxfoundation.org>
+Message-ID: <20250930143833.908048580@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Petr Malat <oss@malat.biz>
 
-commit 25daf9af0ac1bf12490b723b5efaf8dcc85980bc upstream.
+[ Upstream commit b65678cacc030efd53c38c089fb9b741a2ee34c8 ]
 
-Firmware that doesn't provide section headers leave both e_shentsize and
-e_shnum 0, which obvious isn't compatible with the newly introduced
-stricter checks.
+Having a slash in the driver name leads to EIO being returned while
+reading /sys/module/rvu_af/drivers content.
 
-Make the section-related checks conditional on either of these values
-being non-zero.
+Remove DRV_STRING as it's not used anywhere.
 
-Fixes: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
-Reported-by: Val Packett <val@packett.cool>
-Closes: https://lore.kernel.org/all/ece307c3-7d65-440f-babd-88cf9705b908@packett.cool/
-Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-Closes: https://lore.kernel.org/all/aec9cd03-6fc2-4dc8-b937-8b7cf7bf4128@linaro.org/
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Fixes: 9f35ab0e53cc ("soc: qcom: mdt_loader: Fix error return values in mdt_header_valid()")
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250730-mdt-loader-shentsize-zero-v1-1-04f43186229c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Cc: Yongqin Liu <yongqin.liu@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
+Signed-off-by: Petr Malat <oss@malat.biz>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250918152106.1798299-1-oss@malat.biz
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/mdt_loader.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -39,12 +39,14 @@ static bool mdt_header_valid(const struc
- 	if (phend > fw->size)
- 		return false;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 442305463cc0a..21161711c579f 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -21,8 +21,7 @@
+ #include "rvu.h"
+ #include "lmac_common.h"
  
--	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
--		return false;
-+	if (ehdr->e_shentsize || ehdr->e_shnum) {
-+		if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
-+			return false;
+-#define DRV_NAME	"Marvell-CGX/RPM"
+-#define DRV_STRING      "Marvell CGX/RPM Driver"
++#define DRV_NAME	"Marvell-CGX-RPM"
  
--	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
--	if (shend > fw->size)
--		return false;
-+		shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
-+		if (shend > fw->size)
-+			return false;
-+	}
+ #define CGX_RX_STAT_GLOBAL_INDEX	9
  
- 	return true;
- }
+-- 
+2.51.0
+
 
 
 
