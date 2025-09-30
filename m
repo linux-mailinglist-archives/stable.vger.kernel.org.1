@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D03BAD989
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538CFBAD611
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1FF216EE86
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BB671885124
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478030594A;
-	Tue, 30 Sep 2025 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF273043D0;
+	Tue, 30 Sep 2025 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ypan8qFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiB7G1fr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B251F1302;
-	Tue, 30 Sep 2025 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB841AB6F1;
+	Tue, 30 Sep 2025 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245077; cv=none; b=FUrXtNXmkFZXcPJTIERlYxIVvfvND1XLsVcLzxeelh84WvE4nYkGIE9VSpAGDQR9p9JDGDSh4VwqVehX0U845NSR3NZMDTtEeDId8w++SFDmbEFIVZTngDxjwCNv67VrquOmnCubnodjVddNGTHUHSLh4PISAoD+WWg9AbKzhqg=
+	t=1759244208; cv=none; b=npmXGz2l0dmp0A8YFzHOTknvtcyQxZzo3O09+vLY0aK8skZxq//3fHTYrJnmHqrnTfmWoI0it4U8qcfrvU/il6vDDHUxY3PZihkFCED8p0tJm5ypbTevKrBYpc14BDMnI1xfqyrtnZ+A38G2kERG3NBaMefbyr601O3unFm4LB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245077; c=relaxed/simple;
-	bh=LPodH74C+F8Ptoic6q14VTfitzk7lq6cj9U8bNTTeGk=;
+	s=arc-20240116; t=1759244208; c=relaxed/simple;
+	bh=y9JfZ05l5ZrrOTpnWM2bc0spmM7Il9fGgiWfUKnIbRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CeJyFAVF13KQ1NtMt+9LMfMUqNNUeakgdwEgiuQkqP+u+bUcU2P+MR+SX7Vg7yDCGhgzXrChSJxN9INfoyfS3ofslUNiPcSwVW6CtXA1JEeoiglylKeE0wKlyqanOX3B1jGVV51p5JwUic9Y6c0rg5fOtn6cF9tMuq6pqGPhoE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ypan8qFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD66CC4CEF0;
-	Tue, 30 Sep 2025 15:11:16 +0000 (UTC)
+	 MIME-Version; b=tET5euxbS4yh5XBil0lGOVn0R1dagUQyeZeDVo/zJOiffAT4smxSwCQgycnlu65SVwk8kOpcycztBbB9Pa3erQvTCkTdEaih3zB/HNSpHuQWL16Zijx8MQn2UksRoSN+erAFwtd5N64iUMWsauF9mBdWGSf3QJhmf2RHABIYhjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiB7G1fr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25439C4CEF0;
+	Tue, 30 Sep 2025 14:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245077;
-	bh=LPodH74C+F8Ptoic6q14VTfitzk7lq6cj9U8bNTTeGk=;
+	s=korg; t=1759244206;
+	bh=y9JfZ05l5ZrrOTpnWM2bc0spmM7Il9fGgiWfUKnIbRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ypan8qFtOLPHxcdR/DuicU2y/mFQgkhs0Ei/Q+VZqC7sfoGLo7nC/6eaqduwH7S1M
-	 3RMhxGiWXKjbN4UPZ6mdXHCVCcE2rHF1W9+gvzFPj+JT+J4gk786M5dXl7WWAqcmWT
-	 yDe2z+oD7BOK2ZzyuwIEhsE2+Z344YBt5XmKvQho=
+	b=EiB7G1fra3cshbH8AafXLBBuYbnIKWEH0A4Jm5MlrCgSK/wProNwFA3SfbC3pZMZf
+	 z0WvZWzcvzzSs8js1xWmOZ7ZHrI1RFj92XOoDRjK/QhGtXhQwMIgcbXS139XSKzVdT
+	 2k+LwWEhgSk+7tQUFpkjAEVYODnAvOmL9DQxEgoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/151] drm/amdgpu: fix a memory leak in fence cleanup when unloading
+	Jerry Lv <Jerry.Lv@axis.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.10 060/122] power: supply: bq27xxx: restrict no-battery detection to bq27000
 Date: Tue, 30 Sep 2025 16:46:31 +0200
-Message-ID: <20250930143830.031349401@linuxfoundation.org>
+Message-ID: <20250930143825.453690230@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-[ Upstream commit 7838fb5f119191403560eca2e23613380c0e425e ]
+commit 1e451977e1703b6db072719b37cd1b8e250b9cc9 upstream.
 
-Commit b61badd20b44 ("drm/amdgpu: fix usage slab after free")
-reordered when amdgpu_fence_driver_sw_fini() was called after
-that patch, amdgpu_fence_driver_sw_fini() effectively became
-a no-op as the sched entities we never freed because the
-ring pointers were already set to NULL.  Remove the NULL
-setting.
+There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may in some
+cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not be
+interpreted as "no battery" like for a disconnected battery with some built
+in bq27000 chip.
 
-Reported-by: Lin.Cao <lincao12@amd.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Fixes: b61badd20b44 ("drm/amdgpu: fix usage slab after free")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a525fa37aac36c4591cc8b07ae8957862415fbd5)
+So restrict the no-battery detection originally introduced by
+
+    commit 3dd843e1c26a ("bq27000: report missing device better.")
+
+to the bq27000.
+
+There is no need to backport further because this was hidden before
+
+	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+
+Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -302,8 +302,6 @@ void amdgpu_ring_fini(struct amdgpu_ring
- 	dma_fence_put(ring->vmid_wait);
- 	ring->vmid_wait = NULL;
- 	ring->me = 0;
--
--	ring->adev->rings[ring->idx] = NULL;
- }
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1828,8 +1828,8 @@ static void bq27xxx_battery_update_unloc
+ 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
  
- /**
+ 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+-	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -ENODEV; /* read error */
++	if (di->chip == BQ27000 && (cache.flags & 0xff) == 0xff)
++		cache.flags = -ENODEV; /* bq27000 hdq read error */
+ 	if (cache.flags >= 0) {
+ 		cache.temperature = bq27xxx_battery_read_temperature(di);
+ 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
 
 
 
