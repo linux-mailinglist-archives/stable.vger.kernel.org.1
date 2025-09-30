@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D30BBAD884
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCA6BADC6C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A14194181D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A83237ACFE8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686CD2FFDE6;
-	Tue, 30 Sep 2025 15:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE9927056D;
+	Tue, 30 Sep 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/uhxhzY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0fkbLkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596F266B65;
-	Tue, 30 Sep 2025 15:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D2920E334;
+	Tue, 30 Sep 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244876; cv=none; b=TSNDetukvtgYCHu/DMzsGy0UfSz50vdiCy/RDxcH+N5QGe1l2v3Z/3UhY01r1BCBxm0TEKXVZTJMq2/NrqhsyDhiMAxq9gxdLmRDEOOUkEm3cz5me+QQlQ8zIzI86ZpiqH8y7KuRZk7YtUOvgY5+4uwsGI7ao9Mdz/jy0rnF2No=
+	t=1759245819; cv=none; b=a7dg/zQjE3yVL4vo8hs7p6u08DQwsTvgZEBOVURFI0tkp4lfR7fSGa1l7gz1Cc8T9CuSdZoVEBFE5hu9+8y3IUkn9YVejFKQPzVgKAQDLsP6S0vt4z5LXTr1fmjH3EEzIk3qqpeqXuZjyiDFVEXXWzc7a5nvMwbkY6Tx2MzFGzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244876; c=relaxed/simple;
-	bh=8ztnTFc2p9c0gpstLeYkPtnp7EqMdekFCFZ/s0UOzHA=;
+	s=arc-20240116; t=1759245819; c=relaxed/simple;
+	bh=ruSeDk8QAKnhmBorPitDalZCWmHWc6Nk/j7gx7BV87k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gB5vTSPfJiX4XO640dRxa09/K+nnbngWnkKn4Nh0jA6Cw/P6Ln7w/RbI8UDbP4iG+sFvcYMKwjNUt0wf1qR+teyM6VB5BM14dVsCvEKy/e+uZcEt58E1ACwCjQzjEXjSEzOHWCTt62TgXTm9YbTdblqKhpweagW0UPs+MK5lHVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/uhxhzY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDDCC4CEF0;
-	Tue, 30 Sep 2025 15:07:55 +0000 (UTC)
+	 MIME-Version; b=iP8axPT2q6lqAskJarMvd+jZtVvyVKuvBdCOEVohUNauWQ3V/aT64L6rauYclGLjJTe2eQNNwAxzYh5e/ocxW+BVCl+mYeWuJYzV8vf6UAfF3poJz87wZ0mhzKkbHQVrG1HoeOaqT097FP4K99hVL9Ck8sYRHbdHxkAbpEeFCbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0fkbLkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAC0C4CEF0;
+	Tue, 30 Sep 2025 15:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244876;
-	bh=8ztnTFc2p9c0gpstLeYkPtnp7EqMdekFCFZ/s0UOzHA=;
+	s=korg; t=1759245819;
+	bh=ruSeDk8QAKnhmBorPitDalZCWmHWc6Nk/j7gx7BV87k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/uhxhzY1iUe3Hctmvk2fp8GmAAp9gpqPd09H8eW3keGXaCcVWjt1tIw8eXxIgKVy
-	 UPC8t1wymRO1xMSwpPrNpEQngTC8WOlgx1NbUw+7AurHITZlsDuD3Y7m0ZEn+lr4aj
-	 1Lnj5KTIyzak3DMnkV+7JKHCWCApTWSSYHb4A4fE=
+	b=J0fkbLkX++Y2eMjBh+0iA8nIkuRc7Y+O5DReXb192i2a/QC/nKUhEQ2vvidJqp3fn
+	 3VU4QFl8EV5CWrtD63L4bVd6Xy4erHjb3oBHI2R/WRqelyUoYQ+3pPZE4Q/884ToRo
+	 6GT+kc7yyOJbnBibiBy+uX7KYxAxZcFUApXVnuWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Kohler <jon@nutanix.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.16 123/143] Revert "vhost/net: Defer TX queue re-enable until after sendmsg"
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 28/91] ARM: dts: kirkwood: Fix sound DAI cells for OpenRD clients
 Date: Tue, 30 Sep 2025 16:47:27 +0200
-Message-ID: <20250930143836.135168563@linuxfoundation.org>
+Message-ID: <20250930143822.315134172@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-commit 4174152771bf0d014d58f7d7e148bb0c8830fe53 upstream.
+[ Upstream commit 29341c6c18b8ad2a9a4a68a61be7e1272d842f21 ]
 
-This reverts commit 8c2e6b26ffe243be1e78f5a4bfb1a857d6e6f6d6. It tries
-to defer the notification enabling by moving the logic out of the loop
-after the vhost_tx_batch() when nothing new is spotted. This will
-bring side effects as the new logic would be reused for several other
-error conditions.
+A previous commit changed the '#sound-dai-cells' property for the
+kirkwood audio controller from 1 to 0 in the kirkwood.dtsi file,
+but did not update the corresponding 'sound-dai' property in the
+kirkwood-openrd-client.dts file.
 
-One example is the IOTLB: when there's an IOTLB miss, get_tx_bufs()
-might return -EAGAIN and exit the loop and see there's still available
-buffers, so it will queue the tx work again until userspace feed the
-IOTLB entry correctly. This will slowdown the tx processing and
-trigger the TX watchdog in the guest as reported in
-https://lkml.org/lkml/2025/9/10/1596.
+This created a mismatch, causing a dtbs_check validation error where
+the dts provides one cell (<&audio0 0>) while the .dtsi expects zero.
 
-To fix, revert the change. A follow up patch will bring the performance
-back in a safe way.
+Remove the extraneous cell from the 'sound-dai' property to fix the
+schema validation warning and align with the updated binding.
 
-Reported-by: Jon Kohler <jon@nutanix.com>
-Cc: stable@vger.kernel.org
-Fixes: 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until after sendmsg")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20250917063045.2042-2-jasowang@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e662e70fa419 ("arm: dts: kirkwood: fix error in #sound-dai-cells size")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c |   30 +++++++++---------------------
- 1 file changed, 9 insertions(+), 21 deletions(-)
+ arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -760,10 +760,10 @@ static void handle_tx_copy(struct vhost_
- 	int err;
- 	int sent_pkts = 0;
- 	bool sock_can_batch = (sock->sk->sk_sndbuf == INT_MAX);
--	bool busyloop_intr;
+diff --git a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
+index d4e0b8150a84c..cf26e2ceaaa07 100644
+--- a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
++++ b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
+@@ -38,7 +38,7 @@
+ 		simple-audio-card,mclk-fs = <256>;
  
- 	do {
--		busyloop_intr = false;
-+		bool busyloop_intr = false;
-+
- 		if (nvq->done_idx == VHOST_NET_BATCH)
- 			vhost_tx_batch(net, nvq, sock, &msg);
+ 		simple-audio-card,cpu {
+-			sound-dai = <&audio0 0>;
++			sound-dai = <&audio0>;
+ 		};
  
-@@ -774,10 +774,13 @@ static void handle_tx_copy(struct vhost_
- 			break;
- 		/* Nothing new?  Wait for eventfd to tell us they refilled. */
- 		if (head == vq->num) {
--			/* Kicks are disabled at this point, break loop and
--			 * process any remaining batched packets. Queue will
--			 * be re-enabled afterwards.
--			 */
-+			if (unlikely(busyloop_intr)) {
-+				vhost_poll_queue(&vq->poll);
-+			} else if (unlikely(vhost_enable_notify(&net->dev,
-+								vq))) {
-+				vhost_disable_notify(&net->dev, vq);
-+				continue;
-+			}
- 			break;
- 		}
- 
-@@ -827,22 +830,7 @@ done:
- 		++nvq->done_idx;
- 	} while (likely(!vhost_exceeds_weight(vq, ++sent_pkts, total_len)));
- 
--	/* Kicks are still disabled, dispatch any remaining batched msgs. */
- 	vhost_tx_batch(net, nvq, sock, &msg);
--
--	if (unlikely(busyloop_intr))
--		/* If interrupted while doing busy polling, requeue the
--		 * handler to be fair handle_rx as well as other tasks
--		 * waiting on cpu.
--		 */
--		vhost_poll_queue(&vq->poll);
--	else
--		/* All of our work has been completed; however, before
--		 * leaving the TX handler, do one last check for work,
--		 * and requeue handler if necessary. If there is no work,
--		 * queue will be reenabled.
--		 */
--		vhost_net_busy_poll_try_queue(net, vq);
- }
- 
- static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
+ 		simple-audio-card,codec {
+-- 
+2.51.0
+
 
 
 
