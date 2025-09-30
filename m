@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC5FBAD434
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C096DBAD7F7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446D6320F12
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74DBF4A2DAE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C501B279DA2;
-	Tue, 30 Sep 2025 14:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BDD302CD6;
+	Tue, 30 Sep 2025 15:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/x5SkTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwpcfLhE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBA22D24AD;
-	Tue, 30 Sep 2025 14:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5491FF1C8;
+	Tue, 30 Sep 2025 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243771; cv=none; b=bGLMt4hAaReRDEpT6qGGllkYT3gP1g/IE3PxC0ttHif2nkinXwq/O/AaKztab7vIovZUH7UW11tutt6Xt1BPZgmU0tu4NJNBuVmdIexZtpWxmJyKqLBh+kQZAsL3WbG5yq344m96Os4DU6U0vSEEEmkVwl24Dpxezbllg8qzGvs=
+	t=1759244586; cv=none; b=OaisQwQogus9Df65q5SU9nRbl7ul6MmW35NGPduGB06ajbPrcq9nem18vCSbRDoqQ6q1UWZ1YvLPhY8bMrQ5Nw+goAJ4KMVqwzAwdeTfrxGi7ERHUuKZLfojxxfb20f2IuZlyoCX7iEzwSCaAarb9UQ6T2B0NFzVqYbUmm4niMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243771; c=relaxed/simple;
-	bh=eMbwBaakxhTTsQTk/h1TVb4rB2unph9ffenU2Fd1JyQ=;
+	s=arc-20240116; t=1759244586; c=relaxed/simple;
+	bh=md24eNf8GWe9EnGpWR+RvUmMBFm5zEFRkaCxC2nzlmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2zpMz1Ndzi5JwvcJCwJqnXdFv71UsKqWdIEFEEHk1b1GUajBKpUzhxreXrFNaLMCF64JHSzgTHS7y9o2ju0DzoOERBRIjxlr5Dlajw5YbOwQDel7vJrb/Ei2Pp2jy94Fvrjm6uNcbDx23FN8JlL1yfh3CUrlIpxXRejVavkiWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/x5SkTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57BBC4CEF0;
-	Tue, 30 Sep 2025 14:49:30 +0000 (UTC)
+	 MIME-Version; b=NBrOb9y/W5gfksmiCQwFpEhwbBrUrR9VNqQp/qhqISno6/nSPraM5mZDrBOrlqIslafrl/UCBZfrs9FI6dOqLavPioppiOTKcwHNZx7+6Y+gXiwX4R4Y8AKi8mCD5V8cxbNKhs42MftW+ShVEa/CLKOkYZvEclezpOdyEUSkdGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwpcfLhE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47384C4CEF0;
+	Tue, 30 Sep 2025 15:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243771;
-	bh=eMbwBaakxhTTsQTk/h1TVb4rB2unph9ffenU2Fd1JyQ=;
+	s=korg; t=1759244586;
+	bh=md24eNf8GWe9EnGpWR+RvUmMBFm5zEFRkaCxC2nzlmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/x5SkTINpBPztJg50irQFnEcNd4n7BjmUvdFz23klcE/3UE19jujNTzch2xXW9dM
-	 9BN8EQRi6dCghKR1EaFQa1Qt4MPv0Np6hMsekHxurlzTjcncnrDcjGxC1HOhC4ZERe
-	 I///oUq66U+jI8TG7tygbJcfgwyucKhyu6G60XRo=
+	b=JwpcfLhEyxUC5YEUtg1ejZBTB15P/lT8BH0105WmpXXI/IjFrpl2L4vIOe1Z9H8Uy
+	 dAH9TbMQR4lC5SUDV74UMfUTEhYji5Zp0yJQdDI2PhmuDRij6qFHr6IvCJN2duhjkH
+	 Ou65/kR+4Hmmf/lRoeUfnCFsThTBaJD1kI10r38g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexander Dahl <ada@thorsis.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/81] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
+Subject: [PATCH 6.16 051/143] NFSv4.2: Protect copy offload and clone against eof page pollution
 Date: Tue, 30 Sep 2025 16:46:15 +0200
-Message-ID: <20250930143820.223742407@linuxfoundation.org>
+Message-ID: <20250930143833.265857194@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
+[ Upstream commit b2036bb65114c01caf4a1afe553026e081703c8c ]
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+The NFSv4.2 copy offload and clone functions can also end up extending
+the size of the destination file, so they too need to call
+nfs_truncate_last_folio().
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
-
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
-
-Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Dahl <ada@thorsis.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/nfs/nfs42proc.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1312,13 +1312,23 @@ static int atmel_smc_nand_prepare_smccon
- 		return ret;
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index 4b0e35a0d89dd..6a0b5871ba3b0 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -363,22 +363,27 @@ static int process_copy_commit(struct file *dst, loff_t pos_dst,
  
- 	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
-+
-+	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
+ /**
+  * nfs42_copy_dest_done - perform inode cache updates after clone/copy offload
+- * @inode: pointer to destination inode
++ * @file: pointer to destination file
+  * @pos: destination offset
+  * @len: copy length
++ * @oldsize: length of the file prior to clone/copy
+  *
+  * Punch a hole in the inode page cache, so that the NFS client will
+  * know to retrieve new data.
+  * Update the file size if necessary, and then mark the inode as having
+  * invalid cached values for change attribute, ctime, mtime and space used.
+  */
+-static void nfs42_copy_dest_done(struct inode *inode, loff_t pos, loff_t len)
++static void nfs42_copy_dest_done(struct file *file, loff_t pos, loff_t len,
++				 loff_t oldsize)
+ {
++	struct inode *inode = file_inode(file);
++	struct address_space *mapping = file->f_mapping;
+ 	loff_t newsize = pos + len;
+ 	loff_t end = newsize - 1;
+ 
+-	WARN_ON_ONCE(invalidate_inode_pages2_range(inode->i_mapping,
+-				pos >> PAGE_SHIFT, end >> PAGE_SHIFT));
++	nfs_truncate_last_folio(mapping, oldsize, pos);
++	WARN_ON_ONCE(invalidate_inode_pages2_range(mapping, pos >> PAGE_SHIFT,
++						   end >> PAGE_SHIFT));
+ 
+ 	spin_lock(&inode->i_lock);
+ 	if (newsize > i_size_read(inode))
+@@ -411,6 +416,7 @@ static ssize_t _nfs42_proc_copy(struct file *src,
+ 	struct nfs_server *src_server = NFS_SERVER(src_inode);
+ 	loff_t pos_src = args->src_pos;
+ 	loff_t pos_dst = args->dst_pos;
++	loff_t oldsize_dst = i_size_read(dst_inode);
+ 	size_t count = args->count;
+ 	ssize_t status;
+ 
+@@ -485,7 +491,7 @@ static ssize_t _nfs42_proc_copy(struct file *src,
+ 			goto out;
+ 	}
+ 
+-	nfs42_copy_dest_done(dst_inode, pos_dst, res->write_res.count);
++	nfs42_copy_dest_done(dst, pos_dst, res->write_res.count, oldsize_dst);
+ 	nfs_invalidate_atime(src_inode);
+ 	status = res->write_res.count;
+ out:
+@@ -1252,6 +1258,7 @@ static int _nfs42_proc_clone(struct rpc_message *msg, struct file *src_f,
+ 	struct nfs42_clone_res res = {
+ 		.server	= server,
+ 	};
++	loff_t oldsize_dst = i_size_read(dst_inode);
+ 	int status;
+ 
+ 	msg->rpc_argp = &args;
+@@ -1286,7 +1293,7 @@ static int _nfs42_proc_clone(struct rpc_message *msg, struct file *src_f,
+ 		/* a zero-length count means clone to EOF in src */
+ 		if (count == 0 && res.dst_fattr->valid & NFS_ATTR_FATTR_SIZE)
+ 			count = nfs_size_to_loff_t(res.dst_fattr->size) - dst_offset;
+-		nfs42_copy_dest_done(dst_inode, dst_offset, count);
++		nfs42_copy_dest_done(dst_f, dst_offset, count, oldsize_dst);
+ 		status = nfs_post_op_update_inode(dst_inode, res.dst_fattr);
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
