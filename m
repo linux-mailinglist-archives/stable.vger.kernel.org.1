@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497DEBADD1B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46021BADDF5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71D814A53B3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6998F3A7EAE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239AF2FC87A;
-	Tue, 30 Sep 2025 15:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE5C1F3FED;
+	Tue, 30 Sep 2025 15:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04JyLmBf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aywQZZZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B07846F;
-	Tue, 30 Sep 2025 15:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186253C465;
+	Tue, 30 Sep 2025 15:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245839; cv=none; b=RnyfXklXk0ZjkpJKrrSchL8AeGGCdNHu9PV/dZX79HJzCLKJxasG0Q/VU+si8yhC25FSsrVcS6wIZ9hFboLK3oEZ6QFuFdALswBWNceoWU6ATTfoc/IWR4nr097wgKNmaSoXUABGuNF0oRbMoGpUJkw2fj4b8cE21pKOXwDXzVc=
+	t=1759246104; cv=none; b=PELYTA+OePjIdBLLjafTaloUcOw+55OiW3oZoSSDjy9+yU1kHRiLSV+GwrbmV/LPY/9DNjv1nIOCGhV93uu3a4oMJEdFgCHXk5KcTxZcxSY5cK7fbNN/sMIDG9nJMs3lMKAcI8A7iciuGzzizfRLDEzFCqi6g13OZVH0JQTmvxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245839; c=relaxed/simple;
-	bh=b4c1eoEdqpBGQe2JTubd+26/3s5PpejI8NktXPk6yDI=;
+	s=arc-20240116; t=1759246104; c=relaxed/simple;
+	bh=OTUI0SSo2mBVnAtE3B697C+7dP1p5hkHRxRnTsUGWCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PjR9eHmTu7RBM1UsGoCIhKFxDp+con4vBCLpTr9GP9UzR7gRln8GsFFspAvVFQSXPjK4V3xHeYnhyaaSICnIW80FmFVdqQbg3if67cdZVM8qbdY1PDeZ5/TTk6UrOfw2I3hEOnKGNGms7s/qK8cSI3V3OhA5e/BuW/cqiQtrQmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04JyLmBf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A8DC4CEF0;
-	Tue, 30 Sep 2025 15:23:59 +0000 (UTC)
+	 MIME-Version; b=jd0+iYyOLphH6cpGdYU77XyexcXgL0dV0vDiUbSYpM0fYQr+ONQrbx24T6qkQQtnK0Xslk0wE8MNK5AdaqMYHqvVtcSk+T798HQAQMjxFgQoJgq9CaEUkSdLpxGiZQhJmG9OhbfbuRIzLphhq/Abmn1HyVLXVYctR5BP5KNOUs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aywQZZZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2558EC4CEF0;
+	Tue, 30 Sep 2025 15:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245839;
-	bh=b4c1eoEdqpBGQe2JTubd+26/3s5PpejI8NktXPk6yDI=;
+	s=korg; t=1759246102;
+	bh=OTUI0SSo2mBVnAtE3B697C+7dP1p5hkHRxRnTsUGWCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04JyLmBf98SP3mQmM0TuagCv2ljCZlgAz07Fn/LGP8l+4c/yk2NgQ2lWQRRuzQaEu
-	 HHbrCmsyb+8JnbIW/4Gl/7DfrqOxN4m5zitZ66jXtylwxZPBldvfichbEmsnpfysdh
-	 hpxnrPCRRqzd/ftbhqdj8cA8PBeht5K2txTHVfk0=
+	b=aywQZZZyGjHsrzjiZrB9/oi4lhpN4z5g8eHreJ6Xnm9468rl+BVTMyzb8uN1Cd7zD
+	 Id6o0NmENjqU9+TPZnkQ+YsU4AmNjmrePtuut0eOIQSsyk50v/M4UuH+7Py32PC7Xu
+	 1yYz2ks9R16LVupaLQc6HZwssXtabjOvDT8SuhHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 66/91] afs: Fix potential null pointer dereference in afs_put_server
-Date: Tue, 30 Sep 2025 16:48:05 +0200
-Message-ID: <20250930143823.928445923@linuxfoundation.org>
+	Jason Baron <jbaron@akamai.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 52/89] net: allow alloc_skb_with_frags() to use MAX_SKB_FRAGS
+Date: Tue, 30 Sep 2025 16:48:06 +0200
+Message-ID: <20250930143824.074053640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Jason Baron <jbaron@akamai.com>
 
-commit 9158c6bb245113d4966df9b2ba602197a379412e upstream.
+[ Upstream commit ca9f9cdc4de97d0221100b11224738416696163c ]
 
-afs_put_server() accessed server->debug_id before the NULL check, which
-could lead to a null pointer dereference. Move the debug_id assignment,
-ensuring we never dereference a NULL server pointer.
+Currently, alloc_skb_with_frags() will only fill (MAX_SKB_FRAGS - 1)
+slots. I think it should use all MAX_SKB_FRAGS slots, as callers of
+alloc_skb_with_frags() will size their allocation of frags based
+on MAX_SKB_FRAGS.
 
-Fixes: 2757a4dc1849 ("afs: Fix access after dec in put functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Acked-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue was discovered via a test patch that sets 'order' to 0
+in alloc_skb_with_frags(), which effectively tests/simulates high
+fragmentation. In this case sendmsg() on unix sockets will fail every
+time for large allocations. If the PAGE_SIZE is 4K, then data_len will
+request 68K or 17 pages, but alloc_skb_with_frags() can only allocate
+64K in this case or 16 pages.
+
+Fixes: 09c2c90705bb ("net: allow alloc_skb_with_frags() to allocate bigger packets")
+Signed-off-by: Jason Baron <jbaron@akamai.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250922191957.2855612-1-jbaron@akamai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/server.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/skbuff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/afs/server.c
-+++ b/fs/afs/server.c
-@@ -401,13 +401,14 @@ struct afs_server *afs_use_server(struct
- void afs_put_server(struct afs_net *net, struct afs_server *server,
- 		    enum afs_server_trace reason)
- {
--	unsigned int a, debug_id = server->debug_id;
-+	unsigned int a, debug_id;
- 	bool zero;
- 	int r;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index cf54593149cce..6a92c03ee6f42 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6603,7 +6603,7 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
+ 		return NULL;
  
- 	if (!server)
- 		return;
- 
-+	debug_id = server->debug_id;
- 	a = atomic_read(&server->active);
- 	zero = __refcount_dec_and_test(&server->ref, &r);
- 	trace_afs_server(debug_id, r - 1, a, reason);
+ 	while (data_len) {
+-		if (nr_frags == MAX_SKB_FRAGS - 1)
++		if (nr_frags == MAX_SKB_FRAGS)
+ 			goto failure;
+ 		while (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order))
+ 			order--;
+-- 
+2.51.0
+
 
 
 
