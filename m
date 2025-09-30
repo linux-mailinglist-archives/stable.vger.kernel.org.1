@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA4DBADA4C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E83BADDB9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3A91943F1F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53CEC3BF403
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9B6308F31;
-	Tue, 30 Sep 2025 15:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A9C2264AB;
+	Tue, 30 Sep 2025 15:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hfz0ti2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQZ04vum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096373074BB;
-	Tue, 30 Sep 2025 15:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40BE1F1302;
+	Tue, 30 Sep 2025 15:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245315; cv=none; b=IBgcCIG3TrPiMeoQ+gCoeB+cyq2uAKgpPOvIUFuXH80mWAh1GwgRCvUm6ynTMVaKTrt3Bb0WdjhuMHBf/33a1vK+PYngnkrdnl9CLGLgeoVP4KtWWCEaUwbl7hA+gefwiev7+yGQNFyvDaK92j0oV7cJ3KBdXN3lZIc+FLg6gtE=
+	t=1759246022; cv=none; b=cSoiFWZtEYX6WFaXR00a19teMDFWI4HrTVu6iIcmZ+IJdaKoL4tV7EdgrufOZK9J79UbD2Ky9R4+vaXgxOkTsPYasj4L+Ga1ONTZDRgL1745nt2G7xH2650STW2E4UR60ff77CbLtJ7EuxMiLjiZ4HsKAWGOSYzIZgfI+1jt2gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245315; c=relaxed/simple;
-	bh=fSjBmLBDsP5tYyQ51/0sH/ORYDy1aZ6LBJikCuO08GY=;
+	s=arc-20240116; t=1759246022; c=relaxed/simple;
+	bh=kSwFThuvQFuyjPGVS5qAYiDVjkLpAnUIhO9UocFszdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXL+HFOB5lUHkaJYIywZzPCzqiiBd3/d8gi8ZD+r7et+7MK1fvH2lzdYad7DX+tEq9PHup7/a8hkWjoVn7pLX+z47IRlmI+wM2PXlG1jErCb+t+2MbfyfI91cDGzNt/uH73oX1axCDIiqV5CuJeMs9y8zf0qHSjJwR9dHsVVVqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hfz0ti2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F02EC4CEF0;
-	Tue, 30 Sep 2025 15:15:11 +0000 (UTC)
+	 MIME-Version; b=qHZZCQTGVD/Iyv78sPIlx3hwNKFpC5PG6Fqb+eJeMjggwZD8JAFrDH0CAPPL10cvblqVKI1Ap1maQSJG5jK4EfnaANcCXhGvsjaxegFLvDxkeLhUSDLReKrreIOHT7Bh6+6Uz+T9MbVv6vanlbUlyLv9mi6Upw4BGVb83lUYOgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQZ04vum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAC7C4CEF0;
+	Tue, 30 Sep 2025 15:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245312;
-	bh=fSjBmLBDsP5tYyQ51/0sH/ORYDy1aZ6LBJikCuO08GY=;
+	s=korg; t=1759246022;
+	bh=kSwFThuvQFuyjPGVS5qAYiDVjkLpAnUIhO9UocFszdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hfz0ti2cqwQii21C/8LE875wwBeLZRIeu/bGNsQBt24E1XvY2gOWTHKs2T/zoEeLJ
-	 7XMzGvjQ4QHh7hMiF87CF8VN+j1i1jvCWMXBgqZWAAv0TlEHGjTYRDMvW2fXp+R/ec
-	 VdSr67PrCSeAnIwcuXMRTWsjiKJXb8ML46ODu7nA=
+	b=jQZ04vumBugHT5tdvhKrZgRdDTDe55Zwk0KBYVDE9aIQScieMyO8y+2OSzdQndF0h
+	 knleDpctvJ5wZ/3SozZpMgz9QhMCMkWwgxZIGmsi07lUPuwqK3RhKIJT/0umOrFMdg
+	 V+J8esdnki7EyWmRNVnR3SEXSNvANg44Xs9nt83c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/151] net: dsa: lantiq_gswip: do also enable or disable cpu port
+Subject: [PATCH 6.12 28/89] firmware: imx: Add stub functions for SCMI MISC API
 Date: Tue, 30 Sep 2025 16:47:42 +0200
-Message-ID: <20250930143832.858093804@linuxfoundation.org>
+Message-ID: <20250930143823.073073720@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 86b9ea6412af41914ef6549f85a849c3b987f4f3 ]
+[ Upstream commit b2461e20fa9ac18b1305bba5bc7e22ebf644ea01 ]
 
-Before commit 74be4babe72f ("net: dsa: do not enable or disable non user
-ports"), gswip_port_enable/disable() were also executed for the cpu port
-in gswip_setup() which disabled the cpu port during initialization.
+To ensure successful builds when CONFIG_IMX_SCMI_MISC_DRV is not enabled,
+this patch adds static inline stub implementations for the following
+functions:
 
-Let's restore this by removing the dsa_is_user_port checks. Also, let's
-clean up the gswip_port_enable() function so that we only have to check
-for the cpu port once. The operation reordering done here is safe.
+  - scmi_imx_misc_ctrl_get()
+  - scmi_imx_misc_ctrl_set()
 
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20240611135434.3180973-7-ms@dev.tdt.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c0054b25e2f1 ("net: dsa: lantiq_gswip: move gswip_add_single_port_br() call to port_setup()")
+These stubs return -EOPNOTSUPP to indicate that the functionality is not
+supported in the current configuration. This avoids potential build or
+link errors in code that conditionally calls these functions based on
+feature availability.
+
+This patch also drops the changes in commit 540c830212ed ("firmware: imx:
+remove duplicate scmi_imx_misc_ctrl_get()").
+
+The original change aimed to simplify the handling of optional features by
+removing conditional stubs. However, the use of conditional stubs is
+necessary when CONFIG_IMX_SCMI_MISC_DRV is n, while consumer driver is
+set to y.
+
+This is not a matter of preserving legacy patterns, but rather to ensure
+that there is no link error whether for module or built-in.
+
+Fixes: 0b4f8a68b292 ("firmware: imx: Add i.MX95 MISC driver")
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/lantiq_gswip.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ include/linux/firmware/imx/sm.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
-index 2240a3d351225..f1ed7fff23e27 100644
---- a/drivers/net/dsa/lantiq_gswip.c
-+++ b/drivers/net/dsa/lantiq_gswip.c
-@@ -661,13 +661,18 @@ static int gswip_port_enable(struct dsa_switch *ds, int port,
- 	struct gswip_priv *priv = ds->priv;
- 	int err;
+diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
+index 9b85a3f028d1b..61f7a02b05009 100644
+--- a/include/linux/firmware/imx/sm.h
++++ b/include/linux/firmware/imx/sm.h
+@@ -17,7 +17,19 @@
+ #define SCMI_IMX_CTRL_SAI4_MCLK		4	/* WAKE SAI4 MCLK */
+ #define SCMI_IMX_CTRL_SAI5_MCLK		5	/* WAKE SAI5 MCLK */
  
--	if (!dsa_is_user_port(ds, port))
--		return 0;
--
- 	if (!dsa_is_cpu_port(ds, port)) {
-+		u32 mdio_phy = 0;
++#if IS_ENABLED(CONFIG_IMX_SCMI_MISC_DRV)
+ int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
+ int scmi_imx_misc_ctrl_set(u32 id, u32 val);
++#else
++static inline int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
++{
++	return -EOPNOTSUPP;
++}
 +
- 		err = gswip_add_single_port_br(priv, port, true);
- 		if (err)
- 			return err;
-+
-+		if (phydev)
-+			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
-+
-+		gswip_mdio_mask(priv, GSWIP_MDIO_PHY_ADDR_MASK, mdio_phy,
-+				GSWIP_MDIO_PHYp(port));
- 	}
++static inline int scmi_imx_misc_ctrl_set(u32 id, u32 val)
++{
++	return -EOPNOTSUPP;
++}
++#endif
  
- 	/* RMON Counter Enable for port */
-@@ -680,16 +685,6 @@ static int gswip_port_enable(struct dsa_switch *ds, int port,
- 	gswip_switch_mask(priv, 0, GSWIP_SDMA_PCTRL_EN,
- 			  GSWIP_SDMA_PCTRLp(port));
- 
--	if (!dsa_is_cpu_port(ds, port)) {
--		u32 mdio_phy = 0;
--
--		if (phydev)
--			mdio_phy = phydev->mdio.addr & GSWIP_MDIO_PHY_ADDR_MASK;
--
--		gswip_mdio_mask(priv, GSWIP_MDIO_PHY_ADDR_MASK, mdio_phy,
--				GSWIP_MDIO_PHYp(port));
--	}
--
- 	return 0;
- }
- 
-@@ -697,9 +692,6 @@ static void gswip_port_disable(struct dsa_switch *ds, int port)
- {
- 	struct gswip_priv *priv = ds->priv;
- 
--	if (!dsa_is_user_port(ds, port))
--		return;
--
- 	gswip_switch_mask(priv, GSWIP_FDMA_PCTRL_EN, 0,
- 			  GSWIP_FDMA_PCTRLp(port));
- 	gswip_switch_mask(priv, GSWIP_SDMA_PCTRL_EN, 0,
+ #endif
 -- 
 2.51.0
 
