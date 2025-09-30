@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87367BAD566
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC704BAD8AE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D12754A151C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 921D416450F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513F9304989;
-	Tue, 30 Sep 2025 14:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98270302CD6;
+	Tue, 30 Sep 2025 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1UpZsGX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iV6jai+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAA52FFDE6;
-	Tue, 30 Sep 2025 14:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545EF2236EB;
+	Tue, 30 Sep 2025 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244077; cv=none; b=g63xW1k8xd0JkYE1vh3esUf+LtHZDpgnVro5ElxGRcAORPd2wR3uPgNT41Rjoqnjcjz6XtPsVLiTodbZxGt20VxQDn4/CMksdrdxdG5QG+LZlqLprZ4zRiKJlL+kC9OmHgTxatCHMit/+0bCmxF8oINE5b6ERe+J4uDQ7XRqdIw=
+	t=1759244922; cv=none; b=EoXxEgorqD8UkEFO+ryWrXRA2ZAKQDvui4l/VH+HVXjQWwX+2R2KbE/dYuxvuzWSq/0OhiBJ9XBmbTJLAlY9OC9bSKvz9bZNDhaNFvvawMO+NV4N29sGpqxqBBnnCDuepU30ImZBO3nyo/H9UeHJl/jBc5SGIItSv/O8ksM+s1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244077; c=relaxed/simple;
-	bh=wtfgLfFwxmYWULNkcxuyjMWfaUQF0D9SVIfvUE3LnCI=;
+	s=arc-20240116; t=1759244922; c=relaxed/simple;
+	bh=qacLa7A2iCugfKKJ0GF9GRBNhlBhn7PJN34fY3+UDqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZgmzIEanznQhftcuhn8v26+pe60dv00MwMFfC56Hz8/ddBu2800gwehPXNlDo3u9HhEDKGGFIf/SHoBt7tkt833ptpihGHDGZ53M8hQburyoL5s9FpY+Itox3Pm/L+y+imS39QK1UshyFLhvJJtH221wRvJVygDuTk/6QO8R/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1UpZsGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4D0C4CEF0;
-	Tue, 30 Sep 2025 14:54:36 +0000 (UTC)
+	 MIME-Version; b=WjJK9yOOvs6HeupfLrW+7SF4WTgot+dH31kPwVcDYFfIpozGfQC7kEzIbOtU4EDKCLGOcqvJX+korr2xfFwKOAjzlxg5qTVXPhkm08bAU4oXfZMmQpF4c7KmdgocwlbauMkYy5yMhFUwt+2aPedV4etViaF6+XI7XVC3v5OhI6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iV6jai+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5686C4CEF0;
+	Tue, 30 Sep 2025 15:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244076;
-	bh=wtfgLfFwxmYWULNkcxuyjMWfaUQF0D9SVIfvUE3LnCI=;
+	s=korg; t=1759244922;
+	bh=qacLa7A2iCugfKKJ0GF9GRBNhlBhn7PJN34fY3+UDqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1UpZsGXdXZp7KVQ4Pcf5IrcY5B4xfGmtEcYhDkMUcbKVWx7zNp+jSmLGrLP31dSt
-	 n3M0WZ0FGhtzIE7PV7wgGY1sHwvavSiGf5gKzD0ossQgsC48a01PkbP0KQyupLQtJf
-	 fALV56YPHOcbrT2rAB9Nx/TKKBgDQTF2PUe8JV0I=
+	b=iV6jai+9CdV1fvrUpgl8hzuqiFwBvMVPHwApQOw2D7/Ri/Qx9/EzUa/BPzqSA41oP
+	 /2cHmSV6846eQleP8UcSGrtZNL/9BcF3XxqRGLkItN8OgdPjEAKoRgfGRW7mJ0/CyJ
+	 prH9kNAsoKPSfYwq2yXdy5Kl6n9bulrBOYmJ7DHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Scott Haiden <scott.b.haiden@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/122] tracing: Fix tracing_marker may trigger page fault during preempt_disable
-Date: Tue, 30 Sep 2025 16:45:40 +0200
-Message-ID: <20250930143823.357670604@linuxfoundation.org>
+Subject: [PATCH 5.15 011/151] NFSv4: Dont clear capabilities that wont be reset
+Date: Tue, 30 Sep 2025 16:45:41 +0200
+Message-ID: <20250930143828.052864745@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3d62ab32df065e4a7797204a918f6489ddb8a237 ]
+[ Upstream commit 31f1a960ad1a14def94fa0b8c25d62b4c032813f ]
 
-Both tracing_mark_write and tracing_mark_raw_write call
-__copy_from_user_inatomic during preempt_disable. But in some case,
-__copy_from_user_inatomic may trigger page fault, and will call schedule()
-subtly. And if a task is migrated to other cpu, the following warning will
-be trigger:
-        if (RB_WARN_ON(cpu_buffer,
-                       !local_read(&cpu_buffer->committing)))
+Don't clear the capabilities that are not going to get reset by the call
+to _nfs4_server_capabilities().
 
-An example can illustrate this issue:
-
-process flow						CPU
----------------------------------------------------------------------
-
-tracing_mark_raw_write():				cpu:0
-   ...
-   ring_buffer_lock_reserve():				cpu:0
-      ...
-      cpu = raw_smp_processor_id()			cpu:0
-      cpu_buffer = buffer->buffers[cpu]			cpu:0
-      ...
-   ...
-   __copy_from_user_inatomic():				cpu:0
-      ...
-      # page fault
-      do_mem_abort():					cpu:0
-         ...
-         # Call schedule
-         schedule()					cpu:0
-	 ...
-   # the task schedule to cpu1
-   __buffer_unlock_commit():				cpu:1
-      ...
-      ring_buffer_unlock_commit():			cpu:1
-	 ...
-	 cpu = raw_smp_processor_id()			cpu:1
-	 cpu_buffer = buffer->buffers[cpu]		cpu:1
-
-As shown above, the process will acquire cpuid twice and the return values
-are not the same.
-
-To fix this problem using copy_from_user_nofault instead of
-__copy_from_user_inatomic, as the former performs 'access_ok' before
-copying.
-
-Link: https://lore.kernel.org/20250819105152.2766363-1-luogengkun@huaweicloud.com
-Fixes: 656c7f0d2d2b ("tracing: Replace kmap with copy_from_user() in trace_marker writing")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Scott Haiden <scott.b.haiden@gmail.com>
+Fixes: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4proc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index d08320c47a150..8f4d6c974372b 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6891,7 +6891,7 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
- 	entry = ring_buffer_event_data(event);
- 	entry->ip = _THIS_IP_;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 5976a31b09b02..65dae25d6856a 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3969,7 +3969,6 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
+ 	};
+ 	int err;
  
--	len = __copy_from_user_inatomic(&entry->buf, ubuf, cnt);
-+	len = copy_from_user_nofault(&entry->buf, ubuf, cnt);
- 	if (len) {
- 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
- 		cnt = FAULTED_SIZE;
-@@ -6971,7 +6971,7 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
- 
- 	entry = ring_buffer_event_data(event);
- 
--	len = __copy_from_user_inatomic(&entry->id, ubuf, cnt);
-+	len = copy_from_user_nofault(&entry->id, ubuf, cnt);
- 	if (len) {
- 		entry->id = -1;
- 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
+-	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
 -- 
 2.51.0
 
