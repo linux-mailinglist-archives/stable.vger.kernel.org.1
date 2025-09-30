@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-182407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709E9BAD881
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7AFBADD2D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6396016C35B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B6B97A81E0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2412FFDE6;
-	Tue, 30 Sep 2025 15:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473CB2264AB;
+	Tue, 30 Sep 2025 15:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUsuiBTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuS7afFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9F1266B65;
-	Tue, 30 Sep 2025 15:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030F0306B05;
+	Tue, 30 Sep 2025 15:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244846; cv=none; b=GAy/ZwzHRmPGUZhDj2UZdV9gk9yOpRpuIBu9Hhqp70O4Vvr7mqPZCSE1rrxJ2Vgn/JRvh8dLrUC15+kocpT8NcmYWG4rVfom7yExfXJ6WHQrQDZv1CeTp666YzNW2FywzWDy+9p2D0Z8l0Z56U7GZW7Wi9o2pkrpfj7HmeSiMpY=
+	t=1759246003; cv=none; b=B5wf+M5cJgb8CJlT6/lZ8I/Ga6vwmI/BczrWZre3ClmpwITjc7XLd50MJB6h9wG3VrDgqsmxwi4eGEjGEfJNw4ZNs/6Hb0N62IcjzzdqRGW1TvXycZ+D9T/UswTJlBkXSXAfjCQ45Z0JwWJtie76ZUPlByIu/Phi6pUzaeBn7wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244846; c=relaxed/simple;
-	bh=a4tlshXUwxUSkc5zkxRtjEqpU0cFgn966Nc6NwvuvhA=;
+	s=arc-20240116; t=1759246003; c=relaxed/simple;
+	bh=WvZv5JTJLW0XGCKd49GPBC/PdVT+FNQEaZq2T+cs818=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBrYlEroY0lz1aWDoZlgKBy1FUOyrcfNeo0wAQ5V2PTLAfqxIsuHraXB6Wc3krrzEY62HeuiTPCd25EeNsulQ7WEPehUzNQ/8ebglqO45XsVWrxyYvi4/w952bG7tEbRWw9/5F8hUf2e7WrpHdPp97nMExHegx/jFWq4WNR0RLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUsuiBTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60178C4CEF0;
-	Tue, 30 Sep 2025 15:07:25 +0000 (UTC)
+	 MIME-Version; b=iAdY/1B1QrTxClCCpl/7hP6mWjsFYkLcnU/zYR8lCe7toBseuf+INrjEnku4hLIbUvkKvGtlTQOlnJJDQ2eQIaZhl4Di/Vtcfg3W4EcqGBM1GF1TKTmw5h6wfoT6n+qh/yF5HhnpzxZabZPug3Q59pd8SHjPsstQMyNp+05OytA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuS7afFW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B8C4CEF0;
+	Tue, 30 Sep 2025 15:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244845;
-	bh=a4tlshXUwxUSkc5zkxRtjEqpU0cFgn966Nc6NwvuvhA=;
+	s=korg; t=1759246002;
+	bh=WvZv5JTJLW0XGCKd49GPBC/PdVT+FNQEaZq2T+cs818=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUsuiBTSSmZrg1zCOXWN2Ri3OB8IHDl/f+YCw028QDeUf47+Ll71jQFliFlrNF3vc
-	 XqpliGHsKECTKUG8DtmWQhAJirqOdPkm8tzKRaTba6mI5lrQ80r4gi2oOrIjj2+VDg
-	 EVXmkZO47SxbBA7x9DbNCEQ9a2EaSnAlVPSfyhK4=
+	b=TuS7afFWjXRoXGIk074KMOQYBbtdMB3sP5rfXnDX5sal1hOIlMtPCrwvO3Hw3vd0M
+	 ak8rpA2+7m3IC0apKkNIo8WL90H+ayCpVmAjmRghMbf6B++tvHS9Wujj8oP7lolirw
+	 BUllLmQyKfC8lgFqKxRXxkXU9yVNG1pgasFJwEJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Popov <alex.popov@linux.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.16 132/143] x86/Kconfig: Reenable PTDUMP on i386
+	"noble.yang" <noble.yang@comtrue-inc.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 22/89] ALSA: usb-audio: Add DSD support for Comtrue USB Audio device
 Date: Tue, 30 Sep 2025 16:47:36 +0200
-Message-ID: <20250930143836.491626092@linuxfoundation.org>
+Message-ID: <20250930143822.813095822@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Popov <alex.popov@linux.com>
+From: noble.yang <noble.yang@comtrue-inc.com>
 
-commit 4f115596133fa168bac06bb34c6efd8f4d84c22e upstream.
+[ Upstream commit e9df1755485dd90a89656e8a21ec4d71c909fa30 ]
 
-The commit
+The vendor Comtrue Inc. (0x2fc6) produces USB audio chipsets like
+the CT7601 which are capable of Native DSD playback.
 
-  f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
+This patch adds QUIRK_FLAG_DSD_RAW for Comtrue (VID 0x2fc6), which enables
+native DSD playback (DSD_U32_LE) on their USB Audio device. This has been
+verified under Ubuntu 25.04 with JRiver.
 
-has broken PTDUMP and the Kconfig options that use it on ARCH=i386, including
-CONFIG_DEBUG_WX.
-
-CONFIG_GENERIC_PTDUMP was renamed into CONFIG_ARCH_HAS_PTDUMP, but it was
-mistakenly moved from "config X86" to "config X86_64". That made PTDUMP
-unavailable for i386.
-
-Move CONFIG_ARCH_HAS_PTDUMP back to "config X86" to fix it.
-
-  [ bp: Massage commit message. ]
-
-Fixes: f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
-Signed-off-by: Alexander Popov <alex.popov@linux.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: noble.yang <noble.yang@comtrue-inc.com>
+Link: https://patch.msgid.link/20250731110614.4070-1-noble228@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -26,7 +26,6 @@ config X86_64
- 	depends on 64BIT
- 	# Options that are inherently 64-bit kernel only:
- 	select ARCH_HAS_GIGANTIC_PAGE
--	select ARCH_HAS_PTDUMP
- 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
- 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
- 	select ARCH_SUPPORTS_PER_VMA_LOCK
-@@ -101,6 +100,7 @@ config X86
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PMEM_API		if X86_64
- 	select ARCH_HAS_PREEMPT_LAZY
-+	select ARCH_HAS_PTDUMP
- 	select ARCH_HAS_PTE_DEVMAP		if X86_64
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_HW_PTE_YOUNG
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 0da4ee9757c01..de57cf35d8258 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2405,6 +2405,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x2d87, /* Cayin device */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x2fc6, /* Comture-inc devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3336, /* HEM devices */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3353, /* Khadas devices */
+-- 
+2.51.0
+
 
 
 
