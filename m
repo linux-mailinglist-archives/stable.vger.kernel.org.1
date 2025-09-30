@@ -1,171 +1,201 @@
-Return-Path: <stable+bounces-182033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCA7BABAB2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:33:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74CFBABAD6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F293C27FE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 06:33:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 311941921116
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 06:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FBD236453;
-	Tue, 30 Sep 2025 06:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992EF2989B5;
+	Tue, 30 Sep 2025 06:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="azxmxEHz"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C32128395;
-	Tue, 30 Sep 2025 06:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60465286438;
+	Tue, 30 Sep 2025 06:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759214032; cv=none; b=DeajIM0Q17Z95jj0cfw+udl10Q13lSQCdvCNQGYnH+C086npONETIPEHBZyzNw1lJ5//yJ+H4iGR+b5J/0IA/eipezqxT0OttAjsrfjJb3pZn5F5KDMoO1ZzwSe8PITSW8q9rDlKIADcpjJWBI73dtnxz3YYwnXBrjqzjIqAfRI=
+	t=1759214375; cv=none; b=U30hQEu7zaFiOyDEYwh10JNkrRb3aaurd0eIEFWaNOppXzlhTCmEz1hAhqaCGHSv4PKpXOGH76ErE/erpkFDkfqPCF+MiEx4EpQbY6ptz5xJMQSL71C/lYQkh4aAcMQFdZn35huHF5OOVgbI2lQ7QWOMzrkDmszUvY9Pf3hByZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759214032; c=relaxed/simple;
-	bh=JxmpbEZWtAozvqAduF/ljajHhnVtEkMPMUpyFBV0KHw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TOkZlvztsTKCJp4QRJ0dBd+wMFcJFmh1YOpRJY3a0s9xGpK04hlhgExeghaIImMbaaeyzmozHeaQC6+N1V43AlHUUriR7hKvLq2e7mU4qYE3fQGENESdB9KCfOQO9ibVYDximrh8MKm4UVdf92uPdx63/QjEZKNh/n1ID0VVq1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3074E1424;
-	Mon, 29 Sep 2025 23:33:40 -0700 (PDT)
-Received: from [10.164.18.53] (MacBook-Pro.blr.arm.com [10.164.18.53])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE13A3F66E;
-	Mon, 29 Sep 2025 23:33:39 -0700 (PDT)
-Message-ID: <838505c8-053e-49af-b37b-0475520daf68@arm.com>
-Date: Tue, 30 Sep 2025 12:03:36 +0530
+	s=arc-20240116; t=1759214375; c=relaxed/simple;
+	bh=nw/bLSq5G9rQ3CcqzFuU18zCBGTcRyRQtGlYG1tDRhk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NAkMhbHUkrb4sIqM93ZPe0dNhmQdnnoOAx2nFSKwkx82O0IoXdrb1LltMdqhDfy0yi7EotpeZDBXijygwhp+YJ356te5XCFWC3f9fO0h6PAo1Typ/IggWszNdNV4BxQk202FdzoKXfnk7ysRM+AWsvzu1rx3mGq5DBlUZaZRXEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=azxmxEHz; arc=none smtp.client-ip=52.12.53.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1759214373; x=1790750373;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=86mRlECkiQjLn2SJJnK2m65Vsp8KHxy7PFdzrijTjqg=;
+  b=azxmxEHzHdcueQhpxudgwC3beQrkBgajLm6nqeX+oVVGBMqJUXZI4CET
+   C1NIMUlW2ayt6X9aZNaBczRmLNIjDTqC45MIAh4luiz5H6N+UubicnbC3
+   fA3EgR2iRRjx2DdLdzZCiOE0Py4SrZYtE5EvLBioZ9YI8U6MpKYKqQPIU
+   fQ6uzBNP4+l7LHgi0xJUqD09Rzpo8OfCXZjOCFdD4zTT27uGc1kprSHwr
+   jjYXa9pcg6OhcBOs4cxJvBOSZftUvO239n17WbOnxmrJ9OHshm1nYZ4Uv
+   44ECjvxtSZHTa9/tu4UCp9Am992Uu0mdlpQ6MhiMRit2xCDWCR+VLJ+o4
+   w==;
+X-CSE-ConnectionGUID: yVQyi8UHR2GZdvsjzUxYjQ==
+X-CSE-MsgGUID: 6QfZ61FCQjKdkpuOMnE98g==
+X-IronPort-AV: E=Sophos;i="6.18,303,1751241600"; 
+   d="scan'208";a="3869275"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 06:39:31 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:51513]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.222:2525] with esmtp (Farcaster)
+ id b09c49d1-cacd-4012-a7e4-1eafac7f67cd; Tue, 30 Sep 2025 06:39:31 +0000 (UTC)
+X-Farcaster-Flow-ID: b09c49d1-cacd-4012-a7e4-1eafac7f67cd
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 30 Sep 2025 06:39:31 +0000
+Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
+ (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Tue, 30 Sep 2025
+ 06:39:29 +0000
+From: Jakub Acs <acsjakub@amazon.de>
+To: <linux-mm@kvack.org>
+CC: <acsjakub@amazon.de>, Andrew Morton <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
+	<chengming.zhou@linux.dev>, Peter Xu <peterx@redhat.com>, Axel Rasmussen
+	<axelrasmussen@google.com>, Mike Kravetz <mike.kravetz@oracle.com>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Date: Tue, 30 Sep 2025 06:39:21 +0000
+Message-ID: <20250930063921.62354-1-acsjakub@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- david@redhat.com, lorenzo.stoakes@oracle.com
-Cc: peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, ryan.roberts@arm.com, npache@redhat.com,
- riel@surriel.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- harry.yoo@oracle.com, jannh@google.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- usamaarif642@gmail.com, yuzhao@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ioworker0@gmail.com, stable@vger.kernel.org
-References: <20250930060557.85133-1-lance.yang@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20250930060557.85133-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+syzkaller discovered the following crash: (kernel BUG)
 
-On 30/09/25 11:35 am, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
->
-> When splitting an mTHP and replacing a zero-filled subpage with the shared
-> zeropage, try_to_map_unused_to_zeropage() currently drops several important
-> PTE bits.
->
-> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
-> incremental snapshots, losing the soft-dirty bit means modified pages are
-> missed, leading to inconsistent memory state after restore.
->
-> As pointed out by David, the more critical uffd-wp bit is also dropped.
-> This breaks the userfaultfd write-protection mechanism, causing writes
-> to be silently missed by monitoring applications, which can lead to data
-> corruption.
->
-> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
-> creating the new zeropage mapping to ensure they are correctly tracked.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Suggested-by: Dev Jain <dev.jain@arm.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
-> v2 -> v3:
->   - ptep_get() gets called only once per iteration (per Dev)
->   - https://lore.kernel.org/linux-mm/20250930043351.34927-1-lance.yang@linux.dev/
->
-> v1 -> v2:
->   - Avoid calling ptep_get() multiple times (per Dev)
->   - Double-check the uffd-wp bit (per David)
->   - Collect Acked-by from David - thanks!
->   - https://lore.kernel.org/linux-mm/20250928044855.76359-1-lance.yang@linux.dev/
->
->   mm/migrate.c | 14 ++++++++++----
->   1 file changed, 10 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index ce83c2c3c287..bafd8cb3bebe 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
->   
->   static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->   					  struct folio *folio,
-> +					  pte_t old_pte,
->   					  unsigned long idx)
+[   44.607039] ------------[ cut here ]------------
+[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
 
-Could have just added this in the same line as folio?
+<snip other registers, drop unreliable trace>
 
->   {
->   	struct page *page = folio_page(folio, idx);
-> @@ -306,7 +307,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->   		return false;
->   	VM_BUG_ON_PAGE(!PageAnon(page), page);
->   	VM_BUG_ON_PAGE(!PageLocked(page), page);
-> -	VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
-> +	VM_BUG_ON_PAGE(pte_present(old_pte), page);
->   
->   	if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & VM_LOCKED) ||
->   	    mm_forbids_zeropage(pvmw->vma->vm_mm))
-> @@ -322,6 +323,12 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->   
->   	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
->   					pvmw->vma->vm_page_prot));
-> +
-> +	if (pte_swp_soft_dirty(old_pte))
-> +		newpte = pte_mksoft_dirty(newpte);
-> +	if (pte_swp_uffd_wp(old_pte))
-> +		newpte = pte_mkuffd_wp(newpte);
-> +
->   	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
->   
->   	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
-> @@ -344,7 +351,7 @@ static bool remove_migration_pte(struct folio *folio,
->   
->   	while (page_vma_mapped_walk(&pvmw)) {
->   		rmap_t rmap_flags = RMAP_NONE;
-> -		pte_t old_pte;
-> +		pte_t old_pte = ptep_get(pvmw.pte);
->   		pte_t pte;
->   		swp_entry_t entry;
->   		struct page *new;
-> @@ -365,12 +372,11 @@ static bool remove_migration_pte(struct folio *folio,
->   		}
->   #endif
->   		if (rmap_walk_arg->map_unused_to_zeropage &&
-> -		    try_to_map_unused_to_zeropage(&pvmw, folio, idx))
-> +		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
->   			continue;
->   
->   		folio_get(folio);
->   		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
-> -		old_pte = ptep_get(pvmw.pte);
->   
->   		entry = pte_to_swp_entry(old_pte);
->   		if (!is_migration_entry_young(entry))
+[   44.617726] Call Trace:
+[   44.617926]  <TASK>
+[   44.619284]  userfaultfd_release+0xef/0x1b0
+[   44.620976]  __fput+0x3f9/0xb60
+[   44.621240]  fput_close_sync+0x110/0x210
+[   44.622222]  __x64_sys_close+0x8f/0x120
+[   44.622530]  do_syscall_64+0x5b/0x2f0
+[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   44.623244] RIP: 0033:0x7f365bb3f227
 
-Looks good, the special bit does not overlay on any arch with the soft-dirty bit.
-It shouldn't overlay with uffd-wp as well since split_huge_zero_page_pmd does the
-same bit preservation.
+Kernel panics because it detects UFFD inconsistency during
+userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+The inconsistency is caused in ksm_madvise(): when user calls madvise()
+with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+mode, it accidentally clears all flags stored in the upper 32 bits of
+vma->vm_flags.
+
+Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+and int are 32-bit wide. This setup causes the following mishap during
+the &= ~VM_MERGEABLE assignment.
+
+VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+promoted to unsigned long before the & operation. This promotion fills
+upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+even for a signed conversion, this wouldn't help as the leading bit is
+0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+the upper 32-bits of its value.
+
+Fix it by casting `VM_MERGEABLE` constant to unsigned long to preserve
+the upper 32 bits, in case it's needed.
+
+Note: other VM_* flags are not affected:
+This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+all constants of type int and after ~ operation, they end up with
+leading 1 and are thus converted to unsigned long with leading 1s.
+
+Note 2:
+After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+no longer a kernel BUG, but a WARNING at the same place:
+
+[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+
+but the root-cause (flag-drop) remains the same.
+
+Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+
+I looked around the kernel and found one more flag that might be
+causing similar issues: "IORESOURCE_BUSY" - as its inverted version is
+bit-anded to unsigned long fields. However, it seems those fields don't
+actually use any bits from upper 32-bits as flags (yet?).
+
+I also considered changing the constant definition by adding ULL, but am
+not sure where else that could blow up, plus it would likely call to
+define all the related constants as ULL for consistency. If you'd prefer
+that fix, let me know.
+
+
+ mm/ksm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 160787bb121c..c24137a1eeb7 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2871,7 +2871,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
+ 				return err;
+ 		}
+ 
+-		*vm_flags &= ~VM_MERGEABLE;
++		*vm_flags &= ~((unsigned long) VM_MERGEABLE);
+ 		break;
+ 	}
+ 
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
