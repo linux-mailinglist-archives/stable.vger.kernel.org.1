@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BCABAD6FE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87367BAD566
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36DB01883195
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D12754A151C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B72330749E;
-	Tue, 30 Sep 2025 15:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513F9304989;
+	Tue, 30 Sep 2025 14:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txr2TM+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1UpZsGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C94306B08;
-	Tue, 30 Sep 2025 15:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAA52FFDE6;
+	Tue, 30 Sep 2025 14:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244467; cv=none; b=dg+Yy028Axo8dcZ8Eyk5cK8H3FAHBgtqiCDDj51ppvG/Am0PnIfAIqUZxGFlu+gaJCGhaCOTdvE0NJj5edVqHWmSigMA69Z3nWQ4V7uf3Im22YaLYBwbtdw7wllza2Z2K9xBoAuEyOrMPi6nLMGo3mwahLRQ9hMLZL2/ofSAVMA=
+	t=1759244077; cv=none; b=g63xW1k8xd0JkYE1vh3esUf+LtHZDpgnVro5ElxGRcAORPd2wR3uPgNT41Rjoqnjcjz6XtPsVLiTodbZxGt20VxQDn4/CMksdrdxdG5QG+LZlqLprZ4zRiKJlL+kC9OmHgTxatCHMit/+0bCmxF8oINE5b6ERe+J4uDQ7XRqdIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244467; c=relaxed/simple;
-	bh=cjS4TuywVrPVWO+yzivs5T6P9Bwyxw8HFOOQAYpenHA=;
+	s=arc-20240116; t=1759244077; c=relaxed/simple;
+	bh=wtfgLfFwxmYWULNkcxuyjMWfaUQF0D9SVIfvUE3LnCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO78tpM0dcatr3G2EqHBE2OoDzpV8p010iu1roTOYXkAMkAx4K6qoWey+cRpGxZAQfV6PQvKvLSkU0kjjnbG/1ql4vepy2riEVon3kS+OTLZ3cNI0s2lqLvTMeUTzu23DDpDVNuehBZXCFrkqL0rppL5WoFs9sJB48S8V2vz/8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txr2TM+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E63C4CEF0;
-	Tue, 30 Sep 2025 15:01:06 +0000 (UTC)
+	 MIME-Version; b=NZgmzIEanznQhftcuhn8v26+pe60dv00MwMFfC56Hz8/ddBu2800gwehPXNlDo3u9HhEDKGGFIf/SHoBt7tkt833ptpihGHDGZ53M8hQburyoL5s9FpY+Itox3Pm/L+y+imS39QK1UshyFLhvJJtH221wRvJVygDuTk/6QO8R/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1UpZsGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4D0C4CEF0;
+	Tue, 30 Sep 2025 14:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244467;
-	bh=cjS4TuywVrPVWO+yzivs5T6P9Bwyxw8HFOOQAYpenHA=;
+	s=korg; t=1759244076;
+	bh=wtfgLfFwxmYWULNkcxuyjMWfaUQF0D9SVIfvUE3LnCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Txr2TM+Wz52/CNrAcBizprMXKSXd6IY8G2O4JWxD9BblWV4F358Flu0xpAOPUIRrb
-	 FpuifH8FyaqOu4cyz0LTn44ZOcVIy37YCLc6ntoIhuycqidJuakXjjlaQXuvo2dSgw
-	 pKIQ/1H8fbDvDEco/9iJXaF0RU/zOFC9xqo+FCiE=
+	b=A1UpZsGXdXZp7KVQ4Pcf5IrcY5B4xfGmtEcYhDkMUcbKVWx7zNp+jSmLGrLP31dSt
+	 n3M0WZ0FGhtzIE7PV7wgGY1sHwvavSiGf5gKzD0ossQgsC48a01PkbP0KQyupLQtJf
+	 fALV56YPHOcbrT2rAB9Nx/TKKBgDQTF2PUe8JV0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 016/143] ALSA: hda/realtek: Add support for ASUS NUC using CS35L41 HDA
+Subject: [PATCH 5.10 009/122] tracing: Fix tracing_marker may trigger page fault during preempt_disable
 Date: Tue, 30 Sep 2025 16:45:40 +0200
-Message-ID: <20250930143831.892578455@linuxfoundation.org>
+Message-ID: <20250930143823.357670604@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-[ Upstream commit 84fc8896f0d9d1c075e0e08a416faedbd73907fa ]
+[ Upstream commit 3d62ab32df065e4a7797204a918f6489ddb8a237 ]
 
-Add support for ASUS NUC14LNS.
+Both tracing_mark_write and tracing_mark_raw_write call
+__copy_from_user_inatomic during preempt_disable. But in some case,
+__copy_from_user_inatomic may trigger page fault, and will call schedule()
+subtly. And if a task is migrated to other cpu, the following warning will
+be trigger:
+        if (RB_WARN_ON(cpu_buffer,
+                       !local_read(&cpu_buffer->committing)))
 
-This NUC uses a single CS35L41 Amp in using Internal Boost with SPI.
-To support the Single Amp, a new quirk is required.
+An example can illustrate this issue:
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250612160029.848104-3-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+process flow						CPU
+---------------------------------------------------------------------
+
+tracing_mark_raw_write():				cpu:0
+   ...
+   ring_buffer_lock_reserve():				cpu:0
+      ...
+      cpu = raw_smp_processor_id()			cpu:0
+      cpu_buffer = buffer->buffers[cpu]			cpu:0
+      ...
+   ...
+   __copy_from_user_inatomic():				cpu:0
+      ...
+      # page fault
+      do_mem_abort():					cpu:0
+         ...
+         # Call schedule
+         schedule()					cpu:0
+	 ...
+   # the task schedule to cpu1
+   __buffer_unlock_commit():				cpu:1
+      ...
+      ring_buffer_unlock_commit():			cpu:1
+	 ...
+	 cpu = raw_smp_processor_id()			cpu:1
+	 cpu_buffer = buffer->buffers[cpu]		cpu:1
+
+As shown above, the process will acquire cpuid twice and the return values
+are not the same.
+
+To fix this problem using copy_from_user_nofault instead of
+__copy_from_user_inatomic, as the former performs 'access_ok' before
+copying.
+
+Link: https://lore.kernel.org/20250819105152.2766363-1-luogengkun@huaweicloud.com
+Fixes: 656c7f0d2d2b ("tracing: Replace kmap with copy_from_user() in trace_marker writing")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ kernel/trace/trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 4819bd332f039..fa28e3e85861c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7298,6 +7298,11 @@ static void cs35l41_fixup_spi_two(struct hda_codec *codec, const struct hda_fixu
- 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 2);
- }
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index d08320c47a150..8f4d6c974372b 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6891,7 +6891,7 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
+ 	entry = ring_buffer_event_data(event);
+ 	entry->ip = _THIS_IP_;
  
-+static void cs35l41_fixup_spi_one(struct hda_codec *codec, const struct hda_fixup *fix, int action)
-+{
-+	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 1);
-+}
-+
- static void cs35l41_fixup_spi_four(struct hda_codec *codec, const struct hda_fixup *fix, int action)
- {
- 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 4);
-@@ -7991,6 +7996,7 @@ enum {
- 	ALC287_FIXUP_CS35L41_I2C_2,
- 	ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED,
- 	ALC287_FIXUP_CS35L41_I2C_4,
-+	ALC245_FIXUP_CS35L41_SPI_1,
- 	ALC245_FIXUP_CS35L41_SPI_2,
- 	ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED,
- 	ALC245_FIXUP_CS35L41_SPI_4,
-@@ -10120,6 +10126,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cs35l41_fixup_spi_two,
- 	},
-+	[ALC245_FIXUP_CS35L41_SPI_1] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cs35l41_fixup_spi_one,
-+	},
- 	[ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cs35l41_fixup_spi_two,
-@@ -11099,6 +11109,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x83ce, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x8516, "ASUS X101CH", ALC269_FIXUP_ASUS_X101),
-+	SND_PCI_QUIRK(0x1043, 0x88f4, "ASUS NUC14LNS", ALC245_FIXUP_CS35L41_SPI_1),
- 	SND_PCI_QUIRK(0x104d, 0x9073, "Sony VAIO", ALC275_FIXUP_SONY_VAIO_GPIO2),
- 	SND_PCI_QUIRK(0x104d, 0x907b, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
- 	SND_PCI_QUIRK(0x104d, 0x9084, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
+-	len = __copy_from_user_inatomic(&entry->buf, ubuf, cnt);
++	len = copy_from_user_nofault(&entry->buf, ubuf, cnt);
+ 	if (len) {
+ 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
+ 		cnt = FAULTED_SIZE;
+@@ -6971,7 +6971,7 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
+ 
+ 	entry = ring_buffer_event_data(event);
+ 
+-	len = __copy_from_user_inatomic(&entry->id, ubuf, cnt);
++	len = copy_from_user_nofault(&entry->id, ubuf, cnt);
+ 	if (len) {
+ 		entry->id = -1;
+ 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
 -- 
 2.51.0
 
