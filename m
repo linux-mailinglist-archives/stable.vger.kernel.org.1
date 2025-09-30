@@ -1,63 +1,52 @@
-Return-Path: <stable+bounces-182628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93621BADC57
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A524BADB86
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6C13BFBF0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375D8165EC6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C039629ACF7;
-	Tue, 30 Sep 2025 15:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCC4302CD6;
+	Tue, 30 Sep 2025 15:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/asW4K7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muyramBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B44A173;
-	Tue, 30 Sep 2025 15:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3A427B328;
+	Tue, 30 Sep 2025 15:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245567; cv=none; b=VcQN5caG03PwQHuuuWXNNajW5/g9Ex/osE+iNFqsnsEIYYqW//gPqhkr1c6A2YQPW9ZB5sqxGYA0CY5Ej89lfgHdxja0hJNmkWG9mNDXOmxdGPk8nul7u7nCSRE6VBfF/5Egpx2Ks8m+ybFeCf+m/9ZPOYvhe79mLzsvthV4dts=
+	t=1759245574; cv=none; b=PfzFOGmMEWfmnqkPNgojKm3A68PU6SFrhhwiPMQJREEKSrSJbSLyhTWUQZ15w+jy+WPgbXebs+hZc+X1puAB8DCAzHlFYsQMrla/oLP8eCKNrcLkkV6pwcpl9gYHbkdzbJEErNwOHDpyE1a89rCvB4AOCMdj/LmZ5M7saV4ztuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245567; c=relaxed/simple;
-	bh=eFIPeiFUiuVqpR82O+7D5Y1N1DVYXDn5v+Xx9sQpQ/g=;
+	s=arc-20240116; t=1759245574; c=relaxed/simple;
+	bh=6AjZ7tKkzkXkwsZGLNFl3hbzKSthXp127RssM7ShYNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LEhqTiknZLKozwQ8LOnf38vYzqLg+XZCaBQS120lxGmkyvaMjFrSBVUqfr1MN5qYTpV83nea1s1KoPmqyTW7hMV9LGJfz/V/lO+ivLFGu3IyCwU5uXVdwhfk6BecK8oP3wDXF5jU9984O4VvRUOG6JpiYQVrZ/Fy1qUR2eFLD8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/asW4K7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAAAC4CEF0;
-	Tue, 30 Sep 2025 15:19:26 +0000 (UTC)
+	 MIME-Version; b=N3snLjVBha5S7jG61boJ5XTXXzb6dDK5q9t0FUpT2HTfpYQGmaDDDFnUuA/eLkGXeS8+I0B0dncQoeqvsCpNDMQX573k0nObUKyg6DxT66F5lEOFXiGevfSZ3BsTwJBDLqOpIQYIjJkX/Ar9CjG8pZc8r7DUpgm0jC4yJIxt7rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muyramBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB9CC4CEF0;
+	Tue, 30 Sep 2025 15:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245567;
-	bh=eFIPeiFUiuVqpR82O+7D5Y1N1DVYXDn5v+Xx9sQpQ/g=;
+	s=korg; t=1759245574;
+	bh=6AjZ7tKkzkXkwsZGLNFl3hbzKSthXp127RssM7ShYNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/asW4K7At/HVXPku2I1STP2phHjO97gvPliGazjrCRcQ+udvKRCbEtoQuv2PcECV
-	 5XaL0TgwsrhSIpzyeLeudO1qrsByz/1YFz1HannZr9B/0Fgx8nlmVM1+4uEIhDoK6G
-	 nmA8tslZ5wr46EFM7sua6vvoQJr5R8ixvBgd+uUM=
+	b=muyramBOZxxBN+ahSn1sXj8tmnSfHRzGyd07aXrHB7SdN1fJS/RVWa1OTIVqAVrOQ
+	 blfXkwppBw00KxGbo8raY+zu1mLkJnAkJIoVIUnHl6Fqm19Xsz8hstjM5ezudN8yPr
+	 ID90ESpAla/ruDUEp9UGK0Eu7Z0hpd3cPGgLha7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	George Kennedy <george.kennedy@oracle.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Kees Cook <kees@kernel.org>,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.1 56/73] fbcon: Fix OOB access in font allocation
-Date: Tue, 30 Sep 2025 16:48:00 +0200
-Message-ID: <20250930143822.968849206@linuxfoundation.org>
+	"stable@vger.kernel.org, linux-s390@vger.kernel.org,  Nathan Chancellor" <nathan@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.1 57/73] s390/cpum_cf: Fix uninitialized warning after backport of ce971233242b
+Date: Tue, 30 Sep 2025 16:48:01 +0200
+Message-ID: <20250930143823.012991793@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
 References: <20250930143820.537407601@linuxfoundation.org>
@@ -70,72 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 9b2f5ef00e852f8e8902a4d4f73aeedc60220c12 upstream.
+Upstream commit ce971233242b ("s390/cpum_cf: Deny all sampling events by
+counter PMU"), backported to 6.6 as commit d660c8d8142e ("s390/cpum_cf:
+Deny all sampling events by counter PMU"), implicitly depends on the
+unconditional initialization of err to -ENOENT added by upstream
+commit aa1ac98268cd ("s390/cpumf: Fix double free on error in
+cpumf_pmu_event_init()"). The latter change is missing from 6.6,
+resulting in an instance of -Wuninitialized, which is fairly obvious
+from looking at the actual diff.
 
-Commit 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-introduced an out-of-bounds access by storing data and allocation sizes
-in the same variable. Restore the old size calculation and use the new
-variable 'alloc_size' for the allocation.
+  arch/s390/kernel/perf_cpum_cf.c:858:10: warning: variable 'err' is uninitialized when used here [-Wuninitialized]
+    858 |                 return err;
+        |                        ^~~
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-Reported-by: Jani Nikula <jani.nikula@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6201
-Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: George Kennedy <george.kennedy@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Qianqiang Liu <qianqiang.liu@163.com>
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org> # v5.9+
-Cc: Zsolt Kajtar <soci@c64.rulez.org>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Qianqiang Liu <qianqiang.liu@163.com>
-Link: https://lore.kernel.org/r/20250922134619.257684-1-tzimmermann@suse.de
+Commit aa1ac98268cd ("s390/cpumf: Fix double free on error in
+cpumf_pmu_event_init()") depends on commit c70ca298036c ("perf/core:
+Simplify the perf_event_alloc() error path"), which is a part of a much
+larger series unsuitable for stable.
+
+Extract the unconditional initialization of err to -ENOENT from
+commit aa1ac98268cd ("s390/cpumf: Fix double free on error in
+cpumf_pmu_event_init()") and apply it to 6.6 as a standalone change to
+resolve the warning.
+
+Fixes: d660c8d8142e ("s390/cpum_cf: Deny all sampling events by counter PMU")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/s390/kernel/perf_cpum_cf.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2489,7 +2489,7 @@ static int fbcon_set_font(struct vc_data
- 	unsigned charcount = font->charcount;
- 	int w = font->width;
- 	int h = font->height;
--	int size;
-+	int size, alloc_size;
- 	int i, csum;
- 	u8 *new_data, *data = font->data;
- 	int pitch = PITCH(font->width);
-@@ -2522,10 +2522,10 @@ static int fbcon_set_font(struct vc_data
- 		return -EINVAL;
+--- a/arch/s390/kernel/perf_cpum_cf.c
++++ b/arch/s390/kernel/perf_cpum_cf.c
+@@ -552,15 +552,13 @@ static int cpumf_pmu_event_type(struct p
+ static int cpumf_pmu_event_init(struct perf_event *event)
+ {
+ 	unsigned int type = event->attr.type;
+-	int err;
++	int err = -ENOENT;
  
- 	/* Check for overflow in allocation size calculation */
--	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
- 		return -EINVAL;
+ 	if (type == PERF_TYPE_HARDWARE || type == PERF_TYPE_RAW)
+ 		err = __hw_perf_event_init(event, type);
+ 	else if (event->pmu->type == type)
+ 		/* Registered as unknown PMU */
+ 		err = __hw_perf_event_init(event, cpumf_pmu_event_type(event));
+-	else
+-		return -ENOENT;
  
--	new_data = kmalloc(size, GFP_USER);
-+	new_data = kmalloc(alloc_size, GFP_USER);
- 
- 	if (!new_data)
- 		return -ENOMEM;
+ 	if (unlikely(err) && event->destroy)
+ 		event->destroy(event);
 
 
 
