@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBC2BAD692
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1513BAD809
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D5B51942233
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413E518829FF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11EE2FFDE6;
-	Tue, 30 Sep 2025 14:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022802FB0BA;
+	Tue, 30 Sep 2025 15:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIJLr6vE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHBQfmT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0214D8CE;
-	Tue, 30 Sep 2025 14:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13DF846F;
+	Tue, 30 Sep 2025 15:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244335; cv=none; b=L45oOg/+cww1SY3nyAMQCpA27q+e5rKvqWGb4/c3N0eK6bU2UwgXEMjaFrXuknvA/wWqthwDKLrfnc4m14JCTkev3MOzNP+sbwKimPW4AVo0yncJD++CEw6vHeqcX2sw2AL1sQeaAfPpXpBe1eFPoqJLaaEkYeT34sYI8l3n0ao=
+	t=1759244759; cv=none; b=LutrurROeioPSFLoSyJqCFxijFa3EMc0+FMz6tq/q7VRBZUgX3FXjmzgoMZqNclr7okRPeV2mmBLU4CkAr025iUQoiq43B8P3OCgUL2N5xvqlT8pVvBAMeUEytnBnQRdllXIKOdTToOcejjKqXeZg73PIVMoP9AjzimqFhtVLkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244335; c=relaxed/simple;
-	bh=jXRlOUnTli/uIt3NiHTyjASnciEGeglSlouCT+kceTw=;
+	s=arc-20240116; t=1759244759; c=relaxed/simple;
+	bh=JJ9ao9F8d/6qNOrUFGNlJQLoz+mUMDBWWoY6D6/p46w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGu8DseunMZcTT7VcDtWqH8Sr3SEZITz6vwyEggmERE+Wj1/9D4LBXmWWlJby8JIGGw8ktMvw3OjNbXPQ6bt1Q9r4E2RRfAZYPCvtwTt/A1LPcR6JxXUa9yK5dSj8p9GIq5wKhwEyUVlzl/QmIPaGFt7jA71Fs64lzHvicfQt3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIJLr6vE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C1BC4CEF0;
-	Tue, 30 Sep 2025 14:58:54 +0000 (UTC)
+	 MIME-Version; b=UXw3y33Ue4O+N0rZpavhwgzUUoSZH7thO827ib5tY/1/SPyeoO1SZE3zuDnlI6Cf4KqxxNZDk73asGTyEHMVCUR4TNUekMzWaZfvTL+cQx0+lrZfIPtJuSHfE8temsqYdU4OVni0/7dF/1byfhLI19iy3iIa5ds6zlAiTXJvwQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHBQfmT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337E7C4CEF0;
+	Tue, 30 Sep 2025 15:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244335;
-	bh=jXRlOUnTli/uIt3NiHTyjASnciEGeglSlouCT+kceTw=;
+	s=korg; t=1759244759;
+	bh=JJ9ao9F8d/6qNOrUFGNlJQLoz+mUMDBWWoY6D6/p46w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIJLr6vEIpPxVnHVo9D8wJ93AqF/VyfusJtmvE8EJUZjkLrCY7w8i1FNI7kxt0mbk
-	 E+bWHSxG56FThMe52eRAGqpbAKMQQpEsnM3XrTsq61fLdggugYLyYAaWT3IXvf4Rtb
-	 7iingRKGWYq+CaqpbBw9V+Xxseckbw00HO1Gr8X4=
+	b=MHBQfmT4eR74bSdcaRUchtHQtKkU4T18VfHH5xwFDb2bY+NxAQAbIOz5uHnBtnxoE
+	 0IKnncNQpfXF9flV+eK/9W3h6qb3u2pv2blu2sS+hlD2F5qBREoK6VKVC+0jVWQV8V
+	 n0UwsuwLusECBzZOSAKzDmihL3Rb2BKZz4hPoirQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/122] can: mcba_usb: populate ndo_change_mtu() to prevent buffer overflow
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.16 106/143] i40e: fix validation of VF state in get resources
 Date: Tue, 30 Sep 2025 16:47:10 +0200
-Message-ID: <20250930143827.040763005@linuxfoundation.org>
+Message-ID: <20250930143835.456935011@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 17c8d794527f01def0d1c8b7dc2d7b8d34fed0e6 ]
+commit 877b7e6ffc23766448236e8732254534c518ba42 upstream.
 
-Sending an PF_PACKET allows to bypass the CAN framework logic and to
-directly reach the xmit() function of a CAN driver. The only check
-which is performed by the PF_PACKET framework is to make sure that
-skb->len fits the interface's MTU.
+VF state I40E_VF_STATE_ACTIVE is not the only state in which
+VF is actually active so it should not be used to determine
+if a VF is allowed to obtain resources.
 
-Unfortunately, because the mcba_usb driver does not populate its
-net_device_ops->ndo_change_mtu(), it is possible for an attacker to
-configure an invalid MTU by doing, for example:
+Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
+i40e_vc_get_vf_resources_msg() and cleared during reset.
 
-  $ ip link set can0 mtu 9999
-
-After doing so, the attacker could open a PF_PACKET socket using the
-ETH_P_CANXL protocol:
-
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
-
-to inject a malicious CAN XL frames. For example:
-
-	struct canxl_frame frame = {
-		.flags = 0xff,
-		.len = 2048,
-	};
-
-The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
-check that the skb is valid, unfortunately under above conditions, the
-malicious packet is able to go through can_dev_dropped_skb() checks:
-
-  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
-     function does not check the actual device capabilities).
-
-  2. the length is a valid CAN XL length.
-
-And so, mcba_usb_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN frame.
-
-This can result in a buffer overflow. The driver will consume cf->len
-as-is with no further checks on these lines:
-
-	usb_msg.dlc = cf->len;
-
-	memcpy(usb_msg.data, cf->data, usb_msg.dlc);
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs!
-
-Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU. By
-fixing the root cause, this prevents the buffer overflow.
-
-Fixes: 51f3baad7de9 ("can: mcba_usb: Add support for Microchip CAN BUS Analyzer")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-4-0d1cada9393b@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/mcba_usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    7 ++++++-
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |    3 ++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/usb/mcba_usb.c b/drivers/net/can/usb/mcba_usb.c
-index c07e327929ba5..7179eb0fedb1e 100644
---- a/drivers/net/can/usb/mcba_usb.c
-+++ b/drivers/net/can/usb/mcba_usb.c
-@@ -769,6 +769,7 @@ static const struct net_device_ops mcba_netdev_ops = {
- 	.ndo_open = mcba_usb_open,
- 	.ndo_stop = mcba_usb_close,
- 	.ndo_start_xmit = mcba_usb_start_xmit,
-+	.ndo_change_mtu = can_change_mtu,
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1467,6 +1467,7 @@ static void i40e_trigger_vf_reset(struct
+ 	 * functions that may still be running at this point.
+ 	 */
+ 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
++	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
+ 
+ 	/* In the case of a VFLR, the HW has already reset the VF and we
+ 	 * just need to clean up, so don't hit the VFRTRIG register.
+@@ -2133,7 +2134,10 @@ static int i40e_vc_get_vf_resources_msg(
+ 	size_t len = 0;
+ 	int ret;
+ 
+-	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
++	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
++
++	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
++	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
+ 		aq_ret = -EINVAL;
+ 		goto err;
+ 	}
+@@ -2236,6 +2240,7 @@ static int i40e_vc_get_vf_resources_msg(
+ 				vf->default_lan_addr.addr);
+ 	}
+ 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
++	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
+ 
+ err:
+ 	/* send the response back to the VF */
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -41,7 +41,8 @@ enum i40e_vf_states {
+ 	I40E_VF_STATE_MC_PROMISC,
+ 	I40E_VF_STATE_UC_PROMISC,
+ 	I40E_VF_STATE_PRE_ENABLE,
+-	I40E_VF_STATE_RESETTING
++	I40E_VF_STATE_RESETTING,
++	I40E_VF_STATE_RESOURCES_LOADED,
  };
  
- /* Microchip CANBUS has hardcoded bittiming values by default.
--- 
-2.51.0
-
+ /* VF capabilities */
 
 
 
