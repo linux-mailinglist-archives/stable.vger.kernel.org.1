@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-182267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C3FBAD6BD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEB9BADD23
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B6518849A0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F065189B517
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D35E30506C;
-	Tue, 30 Sep 2025 14:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B764525FA0F;
+	Tue, 30 Sep 2025 15:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqDmq3M+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jbc4YaGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68952FFDE6;
-	Tue, 30 Sep 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73037245010;
+	Tue, 30 Sep 2025 15:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244393; cv=none; b=twZgkQQZQMd+QZse4pVDJ8D2MNxuh/ane3/RlJ6l9bbnvtycPARQ7r3uJb9u5PyErpuUhg4p5ujHu29ZfUFuqmxqFDehWOwnAG7atIFgPfckdeN5ABe6LswmqTZk1sM24Vg99v5hh1lNUwZEMSjV/uNbQE2wqbQS54Base6LgUc=
+	t=1759245967; cv=none; b=LfagV+tzdAABVRMVa3Pq4y+Y2eMLH7cdAuF13CiTO8Cz41t4Jscv7O8SPbrXuPzYAOxX67rFrR4LxuoaYXVj1/Au3vMFZgStgonq42rIWBhxx/Lc3orxn9Sq8Udok6kxbBmSuRGdZd6LUei4vqBw6MKvN87TxGmK3bO4NkAWkPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244393; c=relaxed/simple;
-	bh=+ckqKY/YALluNXjuqf6p+ltBMFJW6h/UWALqK38DUrk=;
+	s=arc-20240116; t=1759245967; c=relaxed/simple;
+	bh=M2IDzM3LgnZhhoMERKs+EgcMGMkcAyp+P+wT1FB329w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UitJUvcat2TLSa8j/22uyzWmQDuqoZr0kQRX7hTYnRr6xj23eSQMbIyig+YHWLLWz7hmMWABBEMcKDlyTEoo2O/QdrU979aW2FeWcC88ih1zTM3fgSPHjIdf1mRwckpXabT5ES/6xXmiKm5/YTFw66aJFdHjrfqnYRZvXjAEHP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqDmq3M+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED78C4CEF0;
-	Tue, 30 Sep 2025 14:59:51 +0000 (UTC)
+	 MIME-Version; b=ENr2KMxGeypS/EX9vTO5cd49Jxe4Zb4zhbx4fzMAS7KD/0/Fme6DrfqiN3Kkw2aAV3pk2115JQCQKGv4o7pFLY70UW7Hp66Lnxcri6n1nnGyn0bGCj+IUi6KGFoLomMVY1gqndTGXayk18yNIR6pzyH1gHx4bRhefFHTkpu9ASU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jbc4YaGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF95AC4CEF0;
+	Tue, 30 Sep 2025 15:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244392;
-	bh=+ckqKY/YALluNXjuqf6p+ltBMFJW6h/UWALqK38DUrk=;
+	s=korg; t=1759245967;
+	bh=M2IDzM3LgnZhhoMERKs+EgcMGMkcAyp+P+wT1FB329w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqDmq3M+dAzSWN/Uepe+Qcbq3G6Ov9JlTgSaQbCGTrTIuLNbHG0HYkm0bfWwunYFk
-	 +u7qneVWRwdElf0LahaYToVqWQY8TLgyckCCdRNSPZXXPAjoEiC8BRzV1bTI6lnCMC
-	 N9SZYJhGdEBX18nvX0QPwFhtpCSP4zPqBvqlIg44=
+	b=Jbc4YaGzn5J+Ju1t1bvTzTak7oRbE2pAiOcT2bBbsafqt/63Z7qHbZuU8xdVHMf/F
+	 /IxYQ+d/wSTDSAOmmokD9GQM08c/EnxGn8QxHgAMDGcMrP914TSSHo1ZOk6NUyPfH0
+	 +hdBb5d0ZdemV5QCPWT6wNPk5pPCHu0wl2JDsJAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.10 114/122] tracing: dynevent: Add a missing lockdown check on dynevent
-Date: Tue, 30 Sep 2025 16:47:25 +0200
-Message-ID: <20250930143827.631864607@linuxfoundation.org>
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 12/89] HID: multitouch: take cls->maxcontacts into account for Apple Touch Bar even without a HID_DG_CONTACTMAX field
+Date: Tue, 30 Sep 2025 16:47:26 +0200
+Message-ID: <20250930143822.378962516@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Kerem Karabay <kekrby@gmail.com>
 
-commit 456c32e3c4316654f95f9d49c12cbecfb77d5660 upstream.
+[ Upstream commit 7dfe48bdc9d38db46283f2e0281bc1626277b8bf ]
 
-Since dynamic_events interface on tracefs is compatible with
-kprobe_events and uprobe_events, it should also check the lockdown
-status and reject if it is set.
+In Apple Touch Bar, the HID_DG_CONTACTMAX is not present, but the maximum
+contact count is still greater than the default. Add quirks for the same.
 
-Link: https://lore.kernel.org/all/175824455687.45175.3734166065458520748.stgit@devnote2/
-
-Fixes: 17911ff38aa5 ("tracing: Add locked_down checks to the open calls of files created for tracefs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_dynevent.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-multitouch.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/kernel/trace/trace_dynevent.c
-+++ b/kernel/trace/trace_dynevent.c
-@@ -176,6 +176,10 @@ static int dyn_event_open(struct inode *
- {
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 39a8c6619876b..ec676f26800ea 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1327,6 +1327,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
+ 	struct input_dev *input = hi->input;
  	int ret;
  
-+	ret = security_locked_down(LOCKDOWN_TRACEFS);
-+	if (ret)
-+		return ret;
++	/*
++	 * HID_DG_CONTACTMAX field is not present on Apple Touch Bars,
++	 * but the maximum contact count is greater than the default.
++	 */
++	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR && cls->maxcontacts)
++		td->maxcontacts = cls->maxcontacts;
 +
- 	ret = tracing_check_open_get_tr(NULL);
- 	if (ret)
- 		return ret;
+ 	if (!td->maxcontacts)
+ 		td->maxcontacts = MT_DEFAULT_MAXCONTACT;
+ 
+-- 
+2.51.0
+
 
 
 
