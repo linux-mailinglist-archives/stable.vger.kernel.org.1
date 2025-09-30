@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-182457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B79BAD947
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32775BAD779
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 169D81C611E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64C5163C04
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6566E2FD1DD;
-	Tue, 30 Sep 2025 15:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFBF1FF1C8;
+	Tue, 30 Sep 2025 15:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CB+p04rp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfmHrlXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6B9217F55;
-	Tue, 30 Sep 2025 15:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC53173;
+	Tue, 30 Sep 2025 15:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245009; cv=none; b=XLIM01Qr1zFPtrYeolYqluAfhqjlLeD6HndG4itcdpIINwr3Gct+p9M375ku08Y7kib7yCZ/7nkdZXRTAEr5q5GcoD0Mju/OkmoJEVWP+qjY9Ozon8CmTbKAoCAVcbaD30lAVVC2QsAUdQoXGWvdw3DD7Wby3/Lm0zieU3mTkH4=
+	t=1759244560; cv=none; b=ieuP0PKb9FAwArMP8jEVrnfHdnEkcMkrwFmzfdFfm4Eh4OHLX/LYd+lGuxiOocAHiyTrWFw6N7If9PIx8YlXEK8idrpsP9jbKWnQiHgzm5+70gZMWDy9tN0jAJQ4RjwzTqF/XFO5cu0Wjge1xnBzTEiihao6qWCwsfeqQ1py6EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245009; c=relaxed/simple;
-	bh=WdCyHNIW7g4szAMRuzhhRm/7TaspD2IXyeFZtCA40ME=;
+	s=arc-20240116; t=1759244560; c=relaxed/simple;
+	bh=lxin8/TFbNd/TVqmUTUG4PucwPt5V1Gi6768aWmMqJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNI6aE9M9YrejuawE1tf/umU1oKiy6hkqmlDMvH+NGXeNB86bT0OXfw1DohTDstK9HjDBuxccCXYCccJJelh4jkpaHD9kBcR0gjyv1GfmxjbQi/6jUSIokzGFwZ0tM9Ux7fWHEHaacxXLyagjzmYzh6cwTb1ft2VPr35T3wxWWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CB+p04rp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C490C4CEF0;
-	Tue, 30 Sep 2025 15:10:07 +0000 (UTC)
+	 MIME-Version; b=bXSIDsuN6Vy7drC1d54mXDqFDWS/j0WQoJGm+0SEa+QAXkHN6ORcnPN6vbSz4CP1iGjn7NtwiD0SWyw7iX5werfKxEwvDe3h93gcoRZq1+35llTROCvRxGAhP06TV6T7NLaQz6oMpG43jNYQ/CUfk1BsbykYI3WIIf4lCv5Xqm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfmHrlXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317CCC4CEF0;
+	Tue, 30 Sep 2025 15:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245008;
-	bh=WdCyHNIW7g4szAMRuzhhRm/7TaspD2IXyeFZtCA40ME=;
+	s=korg; t=1759244557;
+	bh=lxin8/TFbNd/TVqmUTUG4PucwPt5V1Gi6768aWmMqJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CB+p04rpWSTwVRxX1qlk5LqNvCKNho1VNkdPek+ZvPRYCp4+zO0VCceb+aV8JmtER
-	 1BDnfyLyfpH972ERHqS4H8O9vRTk8YrFQCH6wXCvhyiOVthKmjMJoXyX+JEI+35f7t
-	 ggYHs7W++XKj1qt583IiqamjFTjaeJErE8kNFHc4=
+	b=TfmHrlXYuFx9ddUoI3Q7OppyCLjw44GoEbwEiZyOOMGyUMs8t280A4K4HmMRCzQGn
+	 PM2o4UEUcu0VXu/WplqkHz2R/LwwL31Lst6K89REBtcoGTy6vXRWUWa+QYFzqdJGn9
+	 iRIoBDyB7TlYZOg311R+918YzdKGuzK3qEs3zqQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 037/151] USB: serial: option: add Telit Cinterion LE910C4-WWX new compositions
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 043/143] ARM: dts: kirkwood: Fix sound DAI cells for OpenRD clients
 Date: Tue, 30 Sep 2025 16:46:07 +0200
-Message-ID: <20250930143829.090311589@linuxfoundation.org>
+Message-ID: <20250930143832.952530719@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,177 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-commit a5a261bea9bf8444300d1067b4a73bedee5b5227 upstream.
+[ Upstream commit 29341c6c18b8ad2a9a4a68a61be7e1272d842f21 ]
 
-Add the following Telit Cinterion LE910C4-WWX new compositions:
+A previous commit changed the '#sound-dai-cells' property for the
+kirkwood audio controller from 1 to 0 in the kirkwood.dtsi file,
+but did not update the corresponding 'sound-dai' property in the
+kirkwood-openrd-client.dts file.
 
-0x1034: tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1034 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This created a mismatch, causing a dtbs_check validation error where
+the dts provides one cell (<&audio0 0>) while the .dtsi expects zero.
 
-0x1036: tty (AT) + tty (AT)
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 10 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1036 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Remove the extraneous cell from the 'sound-dai' property to fix the
+schema validation warning and align with the updated binding.
 
-0x1037: tty (diag) + tty (Telit custom) + tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 15 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1037 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x1038: tty (Telit custom) + tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1038 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x103b: tty (diag) + tty (Telit custom) + tty (AT) + tty (AT)
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 10 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=103b Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x103c: tty (Telit custom) + tty (AT) + tty (AT)
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 11 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=103c Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e662e70fa419 ("arm: dts: kirkwood: fix error in #sound-dai-cells size")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1322,7 +1322,18 @@ static const struct usb_device_id option
- 	 .driver_info = NCTRL(0) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1033, 0xff),	/* Telit LE910C1-EUX (ECM) */
- 	 .driver_info = NCTRL(0) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1034, 0xff),	/* Telit LE910C4-WWX (rmnet) */
-+	 .driver_info = RSVD(2) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1035, 0xff) }, /* Telit LE910C4-WWX (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1036, 0xff) },  /* Telit LE910C4-WWX */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1037, 0xff),	/* Telit LE910C4-WWX (rmnet) */
-+	 .driver_info = NCTRL(0) | NCTRL(1) | RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1038, 0xff),	/* Telit LE910C4-WWX (rmnet) */
-+	 .driver_info = NCTRL(0) | RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x103b, 0xff),	/* Telit LE910C4-WWX */
-+	 .driver_info = NCTRL(0) | NCTRL(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x103c, 0xff),	/* Telit LE910C4-WWX */
-+	 .driver_info = NCTRL(0) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG0),
- 	  .driver_info = RSVD(0) | RSVD(1) | NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG1),
+diff --git a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
+index d4e0b8150a84c..cf26e2ceaaa07 100644
+--- a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
++++ b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
+@@ -38,7 +38,7 @@
+ 		simple-audio-card,mclk-fs = <256>;
+ 
+ 		simple-audio-card,cpu {
+-			sound-dai = <&audio0 0>;
++			sound-dai = <&audio0>;
+ 		};
+ 
+ 		simple-audio-card,codec {
+-- 
+2.51.0
+
 
 
 
