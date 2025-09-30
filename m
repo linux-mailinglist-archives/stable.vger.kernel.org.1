@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57390BAD899
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DD3BADC69
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A17847A7529
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574A63C3633
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482402236EB;
-	Tue, 30 Sep 2025 15:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8918C27B328;
+	Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpJnqntn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SL3wCX+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043C0266B65;
-	Tue, 30 Sep 2025 15:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4575E173;
+	Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244899; cv=none; b=fdXthUMJF0i2sG5QJUKtaSaGfEC21mEFFCIELwV+GpubY40JcwA/LasRYGZcxbYgd9zrymtI3YGwduWZfwXEIFKN9mdpntvZp4J3Nkyh4WTKp/T7YqQJwX6bnKjsEnh8n4/47T/2Sdlvg+f/SimV7IbnGWBC8VRJeqiOCIU7SpE=
+	t=1759245605; cv=none; b=DXq3tCjjm4bHOsnFtuEbGnShj1RWWISCuEDA84JivIX6JFinfEqy0dgUZKxarb6GhCBP2d6tCzWy252HjEhmpVSdtfRXyZCEftczqi+es+gUasF5csOH/JdZuOe19g8lovf9rUsWSJ436QBb6k1y0MnWALdzkw7O0uKMjmnYD6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244899; c=relaxed/simple;
-	bh=V8Z2Z+8xO7St+6Fcce/kt2ZStGuFoNVK8WGEgKJNuII=;
+	s=arc-20240116; t=1759245605; c=relaxed/simple;
+	bh=nKRiAPRgs2FoFI1P2cBv5v0XDP4OfnCbc75oTdPx5T4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eh5MfOSc+iaoHeWTb5ADYBF42OrI38WEINMyT9FJV5KHbzFsetlidRAMB45wVjq5Mk2CytagFmntpmfchDoMbw37VEaqsD1Bb4QjA7YWhSxb1MbOdosJD/KwmTji9AuWnpomA1RCqSQnTubk8qpxse+N/CDEWg/OYOjSGEA7vws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpJnqntn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD4BC4CEF0;
-	Tue, 30 Sep 2025 15:08:18 +0000 (UTC)
+	 MIME-Version; b=cDYhX136GM9ouFvLmOfoOZ7q2PobgnAc7Nl2ReCOpzFWrlWzLcYsNOnLH4XumCg9K9aGSjiP5srutQe7FX/D6oMNco5lN8kYnMCQVpZYUf1HVpZvPst4xctAzYnQgDeLQZlUXgplUoSmC2tcSelHpIhRWR61v8q+BSbZGzaE1RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SL3wCX+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8675C113D0;
+	Tue, 30 Sep 2025 15:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244898;
-	bh=V8Z2Z+8xO7St+6Fcce/kt2ZStGuFoNVK8WGEgKJNuII=;
+	s=korg; t=1759245605;
+	bh=nKRiAPRgs2FoFI1P2cBv5v0XDP4OfnCbc75oTdPx5T4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpJnqntn1bi+WAqPRg9NI3zvcF+2cUQQm07ny3IoQGoBjw+o2QQgUCUtpsQaV13S4
-	 LAr7DYxFPjLnktGdlUzzT/a+JD8d7w8XZ4vszcZ2jJl0EHN4i1ZlWzwqNwEpj6kYGe
-	 j4261tn1NPY8h9NTGSEOlxxBj9PeRuHZPg5KLraY=
+	b=SL3wCX+NihicAGsxaN/5mjRliHEbIG4+2gPLVNHO1oQjAcMGS+++NJ6iggJsWZewb
+	 QTBB8uaJAk1OHE4NRh6ZnyiWzn4/XaIccHrJ7C0/oddl3wiSEIRKogwkeyV12inLNB
+	 /PG/iJprw7+n/T2LTLSahw7y7ctGfORzFXvlDDj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.16 127/143] gpiolib: Extend software-node support to support secondary software-nodes
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 27/73] bpf: Reject bpf_timer for PREEMPT_RT
 Date: Tue, 30 Sep 2025 16:47:31 +0200
-Message-ID: <20250930143836.293795849@linuxfoundation.org>
+Message-ID: <20250930143821.704438240@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-commit c6ccc4dde17676dfe617b9a37bd9ba19a8fc87ee upstream.
+[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
 
-When a software-node gets added to a device which already has another
-fwnode as primary node it will become the secondary fwnode for that
-device.
+When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
+selftests by './test_progs -t timer':
 
-Currently if a software-node with GPIO properties ends up as the secondary
-fwnode then gpiod_find_by_fwnode() will fail to find the GPIOs.
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
 
-Add a new gpiod_fwnode_lookup() helper which falls back to calling
-gpiod_find_by_fwnode() with the secondary fwnode if the GPIO was not
-found in the primary fwnode.
+In order to avoid such warning, reject bpf_timer in verifier when
+PREEMPT_RT is enabled.
 
-Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20250920200955.20403-1-hansg@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4605,6 +4605,23 @@ static struct gpio_desc *gpiod_find_by_f
- 	return desc;
- }
- 
-+static struct gpio_desc *gpiod_fwnode_lookup(struct fwnode_handle *fwnode,
-+					     struct device *consumer,
-+					     const char *con_id,
-+					     unsigned int idx,
-+					     enum gpiod_flags *flags,
-+					     unsigned long *lookupflags)
-+{
-+	struct gpio_desc *desc;
-+
-+	desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx, flags, lookupflags);
-+	if (gpiod_not_found(desc) && !IS_ERR_OR_NULL(fwnode))
-+		desc = gpiod_find_by_fwnode(fwnode->secondary, consumer, con_id,
-+					    idx, flags, lookupflags);
-+
-+	return desc;
-+}
-+
- struct gpio_desc *gpiod_find_and_request(struct device *consumer,
- 					 struct fwnode_handle *fwnode,
- 					 const char *con_id,
-@@ -4623,8 +4640,8 @@ struct gpio_desc *gpiod_find_and_request
- 	int ret = 0;
- 
- 	scoped_guard(srcu, &gpio_devices_srcu) {
--		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
--					    &flags, &lookupflags);
-+		desc = gpiod_fwnode_lookup(fwnode, consumer, con_id, idx,
-+					   &flags, &lookupflags);
- 		if (gpiod_not_found(desc) && platform_lookup_allowed) {
- 			/*
- 			 * Either we are not using DT or ACPI, or their lookup
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index ead1811534a0d..276a0de9a1bb2 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5733,6 +5733,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
+ 		verbose(env, "verifier bug. Two map pointers in a timer helper\n");
+ 		return -EFAULT;
+ 	}
++	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
++		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
++		return -EOPNOTSUPP;
++	}
+ 	meta->map_uid = reg->map_uid;
+ 	meta->map_ptr = map;
+ 	return 0;
+-- 
+2.51.0
+
 
 
 
