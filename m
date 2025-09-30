@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-182530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00F1BADA34
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60ECBADC1B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C30D1646B8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF485188CAC7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F1D2FD1DD;
-	Tue, 30 Sep 2025 15:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CFF296BD0;
+	Tue, 30 Sep 2025 15:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEw6b+y9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTzQA4P2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4C3223DD6;
-	Tue, 30 Sep 2025 15:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C889205E3B;
+	Tue, 30 Sep 2025 15:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245247; cv=none; b=fNJTT8o1ZGGfXY/UW/AFgLIU7hmD+66mo/ySq5xPPgl2kTkT4FLYKPM/a3f2qv1HYY6/rUP7Qfuc0OeFxgJbx+aMKYxYFle+XL0C11NXd05ldFcwk5kXKq7xOogixKo9jtHDdy19EO2SsLaIIw/wpplEKMfhgXhnPgy4ytR9t3A=
+	t=1759245750; cv=none; b=F915ZcgTBJywUQo66M4TZPZ9tLGZehREH8tDF/FhTVo9OuA0wdbk/zsJ2QFWtcDhY59XG0B/PpbJxgpXiJMDma1yAbg9aNCBfZGUgjNyIUiIRrCOd7Qk4dEYRqzlo67m80qaHPa54lUsW812Ll1222nl8+3XsOydTluyNrAVn4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245247; c=relaxed/simple;
-	bh=bQTpliJ9Or/EuIloP7LzC1107D6pX8LGoMSOxQeSBpk=;
+	s=arc-20240116; t=1759245750; c=relaxed/simple;
+	bh=FPxUO3uo0EqRUkxWpkQbQH28xiT4mWo8A7V+lx/S4SI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwC6zw2UZz0pARtnGnemzkLa3ruuDZ0cXgFw97f8/a7quX5L+Lc8vBbL+iSX8YEnA+NXlG34i5NQlarvhD9upIFOoO1wj9WLIeEOThNyDAKH7rRSheYXUopK8vxGifJgsAz5Hv+ItElgkZqX7yIjeAzwtyi2Sp/LyBHWWKI0/jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEw6b+y9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7BCC4CEF0;
-	Tue, 30 Sep 2025 15:14:04 +0000 (UTC)
+	 MIME-Version; b=lscqXOT6C1QFoXo8sfVNw8AdJ9Z7DmMeLd5kqrf4YlGVP35dmLoZFBjVO42KpbYCor9fjvMQlpKiNeB9eaFSJwoyPtDBhGv3AkfVllGTYysVqpJulq8NuuuNviVS6KuyMCxu6TtkwfEIMJIqF00SpBhjJDtxYEIdY8ASf0C+fP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTzQA4P2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4327C4CEF0;
+	Tue, 30 Sep 2025 15:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245244;
-	bh=bQTpliJ9Or/EuIloP7LzC1107D6pX8LGoMSOxQeSBpk=;
+	s=korg; t=1759245749;
+	bh=FPxUO3uo0EqRUkxWpkQbQH28xiT4mWo8A7V+lx/S4SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEw6b+y9vSIds+SCF2HSBCmotAdRm9+XU+7PBk4hC6hfCDgvQcrRJkahJgNeJw0gE
-	 gIN4dQJE3vUSL0hBTjYV6kTvthG3SJ2Qh0ijPDdypvC9+egFBa3GWIFuaxDb9eoX0H
-	 HcakbMk5uurplG37t606/kQQdtUOx62+7sBhyptk=
+	b=dTzQA4P23q8x2dDmNXR9cd/Gul7jSE9ddBbOi0Z49WUu8f/zf8yTVx4oa0cwxI0qg
+	 G0JJ4A5phsYlVeLLfQ7Yykw2HWC9XAo72Hi9QOLbHCQ1OEJRc4qGGxwNtKb6uVumeP
+	 03y41TgJs8hlw5L72tmOq0+Pxu5tETntDcCUOqzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 110/151] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+Subject: [PATCH 6.6 21/91] IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
 Date: Tue, 30 Sep 2025 16:47:20 +0200
-Message-ID: <20250930143831.989159025@linuxfoundation.org>
+Message-ID: <20250930143822.014889115@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
+[ Upstream commit 85fe9f565d2d5af95ac2bbaa5082b8ce62b039f5 ]
 
-The recent addition of DualSense mixer quirk relies on the input
-device handle, and the build can fail if CONFIG_INPUT isn't set.
-Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
-the build error.
+Fix a bug where the driver's event subscription logic for SRQ-related
+events incorrectly sets obj_type for RMP objects.
 
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+When subscribing to SRQ events, get_legacy_obj_type() did not handle
+the MLX5_CMD_OP_CREATE_RMP case, which caused obj_type to be 0
+(default).
+This led to a mismatch between the obj_type used during subscription
+(0) and the value used during notification (1, taken from the event's
+type field). As a result, event mapping for SRQ objects could fail and
+event notification would not be delivered correctly.
+
+This fix adds handling for MLX5_CMD_OP_CREATE_RMP in get_legacy_obj_type,
+returning MLX5_EVENT_QUEUE_TYPE_RQ so obj_type is consistent between
+subscription and notification.
+
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/8f1048e3fdd1fde6b90607ce0ed251afaf8a148c.1755088962.git.leon@kernel.org
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Edward Srouji <edwards@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/hw/mlx5/devx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 9b59d90ab8ca5..177f64107bb1e 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -528,6 +528,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
- 					  &snd_emu0204_control, NULL);
- }
- 
-+#if IS_REACHABLE(CONFIG_INPUT)
- /*
-  * Sony DualSense controller (PS5) jack detection
-  *
-@@ -784,6 +785,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
- 
- 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
- }
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- /* ASUS Xonar U1 / U3 controls */
- 
-@@ -3630,10 +3632,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_emu0204_controls_create(mixer);
- 		break;
- 
-+#if IS_REACHABLE(CONFIG_INPUT)
- 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
- 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
- 		err = snd_dualsense_controls_create(mixer);
- 		break;
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
- 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 3f1fa45d93682..388c95562a927 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -191,6 +191,7 @@ static u16 get_legacy_obj_type(u16 opcode)
+ {
+ 	switch (opcode) {
+ 	case MLX5_CMD_OP_CREATE_RQ:
++	case MLX5_CMD_OP_CREATE_RMP:
+ 		return MLX5_EVENT_QUEUE_TYPE_RQ;
+ 	case MLX5_CMD_OP_CREATE_QP:
+ 		return MLX5_EVENT_QUEUE_TYPE_QP;
 -- 
 2.51.0
 
