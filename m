@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EC8BAD8A5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7EDBADAC9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7091941D2C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10ABB32837D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D7C306486;
-	Tue, 30 Sep 2025 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43BC2FD1DD;
+	Tue, 30 Sep 2025 15:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLB3o2Rk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MA8ZxNH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF092236EB;
-	Tue, 30 Sep 2025 15:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC85265CCD;
+	Tue, 30 Sep 2025 15:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244905; cv=none; b=klOegp/W8LxnDqUSFyXXEmh20lVg9VGBO9p/WjSdxg/SUYyoyYRLPgH9cvXZng4dqf7I62vwPrsSgc3e5e/juVw4Y0mUQKsFcRx2iq/IWbhlWhdSptqbCmSpsX7Xt8dId0ZM223Rh3gai7OqNBsjFPHVp3vfgDWPa1gT+udFcFY=
+	t=1759245375; cv=none; b=LQdY1wLkXaRXwmoLTXGfQVKZbxN4nCO/YWZkZUU2eFBJbKIhkgsmGVTMwvPbHOtirDrMaVUXI/uh3YnsgCUU9KWPMbbmmTG9lM2Llfpc1ABUgpcklT+5GfEeEfdxGVURKU1tjixGfiEKWo8NFtgu1Y4WCCyiVALgKdlnSnPCulc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244905; c=relaxed/simple;
-	bh=uaKFsbYWFe/oVSKXL982miuGa8roWsZYIphEteojVDU=;
+	s=arc-20240116; t=1759245375; c=relaxed/simple;
+	bh=tPDhm4bBrRJiYDUn7jPSP69RkkmOrPksydUW5TqHPeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqqYV0y+LpGQg5XhFMd1dmxledsVTnrQjSYN1ItDKuOmkynmasUFQQ/cECD0xRGWv/nJ3N4j3P/+WnIO2weQsMLKvgotgiOeNbHZVEBgeSS1zSfssQ7D4fiUYekXl2cBXqSaZAYAIfnoKgcwBwiL0su+Sz4ToRGbwtEgsBkF9gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLB3o2Rk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A303C4CEF0;
-	Tue, 30 Sep 2025 15:08:24 +0000 (UTC)
+	 MIME-Version; b=BiGYs0wdETKdsTpS5mjF4xsdI1y0h8KE9959xMonb4lfMqcxjyqGYK4ttctwbWLpBjXycXgC3agrZbn3W2sxqTtn51KjNT34OVUrL6ryobprzFVmMWyaSoN9/ZVwEmTTiafrba0Htqk625gMzRZIU7V5gRSTOn4UsH87FTxwMFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MA8ZxNH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E73C4CEF0;
+	Tue, 30 Sep 2025 15:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244905;
-	bh=uaKFsbYWFe/oVSKXL982miuGa8roWsZYIphEteojVDU=;
+	s=korg; t=1759245375;
+	bh=tPDhm4bBrRJiYDUn7jPSP69RkkmOrPksydUW5TqHPeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLB3o2RkTzjklmp8tEzgfatMe5SlfrtqDK/yxywzSQpp6GumxQdFChbYDtT5gMdl/
-	 FCl4OyX0CnZWYA06i/F3vPSoRSyftkg/XxCN812at0pvHzekrc4kkr52sklbFryKXx
-	 +tFaYJt9AQWHs9+rnAdZq/UeGesis/M8YUV1j6ZE=
+	b=MA8ZxNH7LVrYQRYzWuMxu1mOBo8wyEwQB1iAbD2V3qLvdFTQgm7v4bKhjAIxkyeNg
+	 Ux56uGa5fknJWgjkHmqQfSfDRrytY2fN8krp5PF0raTfbgklkeyY768lgxtdJ75EDF
+	 EKilaDu1I7sbGryeSwoPuxwGKavD7O6GjqxcZXf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.16 129/143] netfs: fix reference leak
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 123/151] can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow
 Date: Tue, 30 Sep 2025 16:47:33 +0200
-Message-ID: <20250930143836.371690436@linuxfoundation.org>
+Message-ID: <20250930143832.506185857@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,304 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-commit 4d428dca252c858bfac691c31fa95d26cd008706 upstream.
+[ Upstream commit 38c0abad45b190a30d8284a37264d2127a6ec303 ]
 
-Commit 20d72b00ca81 ("netfs: Fix the request's work item to not
-require a ref") modified netfs_alloc_request() to initialize the
-reference counter to 2 instead of 1.  The rationale was that the
-requet's "work" would release the second reference after completion
-(via netfs_{read,write}_collection_worker()).  That works most of the
-time if all goes well.
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-However, it leaks this additional reference if the request is released
-before the I/O operation has been submitted: the error code path only
-decrements the reference counter once and the work item will never be
-queued because there will never be a completion.
+Unfortunately, because the etas_es58x driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
 
-This has caused outages of our whole server cluster today because
-tasks were blocked in netfs_wait_for_outstanding_io(), leading to
-deadlocks in Ceph (another bug that I will address soon in another
-patch).  This was caused by a netfs_pgpriv2_begin_copy_to_cache() call
-which failed in fscache_begin_write_operation().  The leaked
-netfs_io_request was never completed, leaving `netfs_inode.io_count`
-with a positive value forever.
+  $ ip link set can0 mtu 9999
 
-All of this is super-fragile code.  Finding out which code paths will
-lead to an eventual completion and which do not is hard to see:
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
 
-- Some functions like netfs_create_write_req() allocate a request, but
-  will never submit any I/O.
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL));
 
-- netfs_unbuffered_read_iter_locked() calls netfs_unbuffered_read()
-  and then netfs_put_request(); however, netfs_unbuffered_read() can
-  also fail early before submitting the I/O request, therefore another
-  netfs_put_request() call must be added there.
+to inject a malicious CAN XL frames. For example:
 
-A rule of thumb is that functions that return a `netfs_io_request` do
-not submit I/O, and all of their callers must be checked.
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
 
-For my taste, the whole netfs code needs an overhaul to make reference
-counting easier to understand and less fragile & obscure.  But to fix
-this bug here and now and produce a patch that is adequate for a
-stable backport, I tried a minimal approach that quickly frees the
-request object upon early failure.
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
 
-I decided against adding a second netfs_put_request() each time
-because that would cause code duplication which obscures the code
-further.  Instead, I added the function netfs_put_failed_request()
-which frees such a failed request synchronously under the assumption
-that the reference count is exactly 2 (as initially set by
-netfs_alloc_request() and never touched), verified by a
-WARN_ON_ONCE().  It then deinitializes the request object (without
-going through the "cleanup_work" indirection) and frees the allocation
-(with RCU protection to protect against concurrent access by
-netfs_requests_seq_start()).
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
 
-All code paths that fail early have been changed to call
-netfs_put_failed_request() instead of netfs_put_request().
-Additionally, I have added a netfs_put_request() call to
-netfs_unbuffered_read() as explained above because the
-netfs_put_failed_request() approach does not work there.
+  2. the length is a valid CAN XL length.
 
-Fixes: 20d72b00ca81 ("netfs: Fix the request's work item to not require a ref")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+And so, es58x_start_xmit() receives a CAN XL frame which it is not
+able to correctly handle and will thus misinterpret it as a CAN(FD)
+frame.
+
+This can result in a buffer overflow. For example, using the es581.4
+variant, the frame will be dispatched to es581_4_tx_can_msg(), go
+through the last check at the beginning of this function:
+
+	if (can_is_canfd_skb(skb))
+		return -EMSGSIZE;
+
+and reach this line:
+
+	memcpy(tx_can_msg->data, cf->data, cf->len);
+
+Here, cf->len corresponds to the flags field of the CAN XL frame. In
+our previous example, we set canxl_frame->flags to 0xff. Because the
+maximum expected length is 8, a buffer overflow of 247 bytes occurs!
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU or
+CANFD_MTU (depending on the device capabilities). By fixing the root
+cause, this prevents the buffer overflow.
+
+Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-1-0d1cada9393b@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c | 10 +++++-----
- fs/netfs/direct_read.c   |  7 ++++++-
- fs/netfs/direct_write.c  |  6 +++++-
- fs/netfs/internal.h      |  1 +
- fs/netfs/objects.c       | 30 +++++++++++++++++++++++++++---
- fs/netfs/read_pgpriv2.c  |  2 +-
- fs/netfs/read_single.c   |  2 +-
- fs/netfs/write_issue.c   |  3 +--
- 8 files changed, 47 insertions(+), 14 deletions(-)
+ drivers/net/can/usb/etas_es58x/es58x_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 18b3dc74c70e..37ab6f28b5ad 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -369,7 +369,7 @@ void netfs_readahead(struct readahead_control *ractl)
- 	return netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 
- cleanup_free:
--	return netfs_put_request(rreq, netfs_rreq_trace_put_failed);
-+	return netfs_put_failed_request(rreq);
- }
- EXPORT_SYMBOL(netfs_readahead);
- 
-@@ -472,7 +472,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 	return ret < 0 ? ret : 0;
- 
- discard:
--	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
-+	netfs_put_failed_request(rreq);
- alloc_error:
- 	folio_unlock(folio);
- 	return ret;
-@@ -532,7 +532,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	return ret < 0 ? ret : 0;
- 
- discard:
--	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
-+	netfs_put_failed_request(rreq);
- alloc_error:
- 	folio_unlock(folio);
- 	return ret;
-@@ -699,7 +699,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	return 0;
- 
- error_put:
--	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
-+	netfs_put_failed_request(rreq);
- error:
- 	if (folio) {
- 		folio_unlock(folio);
-@@ -754,7 +754,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 	return ret < 0 ? ret : 0;
- 
- error_put:
--	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
-+	netfs_put_failed_request(rreq);
- error:
- 	_leave(" = %d", ret);
- 	return ret;
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index a05e13472baf..a498ee8d6674 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -131,6 +131,7 @@ static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
- 
- 	if (rreq->len == 0) {
- 		pr_err("Zero-sized read [R=%x]\n", rreq->debug_id);
-+		netfs_put_request(rreq, netfs_rreq_trace_put_discard);
- 		return -EIO;
- 	}
- 
-@@ -205,7 +206,7 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
- 	if (user_backed_iter(iter)) {
- 		ret = netfs_extract_user_iter(iter, rreq->len, &rreq->buffer.iter, 0);
- 		if (ret < 0)
--			goto out;
-+			goto error_put;
- 		rreq->direct_bv = (struct bio_vec *)rreq->buffer.iter.bvec;
- 		rreq->direct_bv_count = ret;
- 		rreq->direct_bv_unpin = iov_iter_extract_will_pin(iter);
-@@ -238,6 +239,10 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
- 	if (ret > 0)
- 		orig_count -= ret;
- 	return ret;
-+
-+error_put:
-+	netfs_put_failed_request(rreq);
-+	return ret;
- }
- EXPORT_SYMBOL(netfs_unbuffered_read_iter_locked);
- 
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index a16660ab7f83..a9d1c3b2c084 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -57,7 +57,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- 			n = netfs_extract_user_iter(iter, len, &wreq->buffer.iter, 0);
- 			if (n < 0) {
- 				ret = n;
--				goto out;
-+				goto error_put;
- 			}
- 			wreq->direct_bv = (struct bio_vec *)wreq->buffer.iter.bvec;
- 			wreq->direct_bv_count = n;
-@@ -101,6 +101,10 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- out:
- 	netfs_put_request(wreq, netfs_rreq_trace_put_return);
- 	return ret;
-+
-+error_put:
-+	netfs_put_failed_request(wreq);
-+	return ret;
- }
- EXPORT_SYMBOL(netfs_unbuffered_write_iter_locked);
- 
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index d4f16fefd965..4319611f5354 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -87,6 +87,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
- void netfs_get_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
- void netfs_clear_subrequests(struct netfs_io_request *rreq);
- void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
-+void netfs_put_failed_request(struct netfs_io_request *rreq);
- struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq);
- 
- static inline void netfs_see_request(struct netfs_io_request *rreq,
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index e8c99738b5bb..40a1c7d6f6e0 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -116,10 +116,8 @@ static void netfs_free_request_rcu(struct rcu_head *rcu)
- 	netfs_stat_d(&netfs_n_rh_rreq);
- }
- 
--static void netfs_free_request(struct work_struct *work)
-+static void netfs_deinit_request(struct netfs_io_request *rreq)
- {
--	struct netfs_io_request *rreq =
--		container_of(work, struct netfs_io_request, cleanup_work);
- 	struct netfs_inode *ictx = netfs_inode(rreq->inode);
- 	unsigned int i;
- 
-@@ -149,6 +147,14 @@ static void netfs_free_request(struct work_struct *work)
- 
- 	if (atomic_dec_and_test(&ictx->io_count))
- 		wake_up_var(&ictx->io_count);
-+}
-+
-+static void netfs_free_request(struct work_struct *work)
-+{
-+	struct netfs_io_request *rreq =
-+		container_of(work, struct netfs_io_request, cleanup_work);
-+
-+	netfs_deinit_request(rreq);
- 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
- }
- 
-@@ -167,6 +173,24 @@ void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace
- 	}
- }
- 
-+/*
-+ * Free a request (synchronously) that was just allocated but has
-+ * failed before it could be submitted.
-+ */
-+void netfs_put_failed_request(struct netfs_io_request *rreq)
-+{
-+	int r = refcount_read(&rreq->ref);
-+
-+	/* new requests have two references (see
-+	 * netfs_alloc_request(), and this function is only allowed on
-+	 * new request objects
-+	 */
-+	WARN_ON_ONCE(r != 2);
-+
-+	trace_netfs_rreq_ref(rreq->debug_id, r, netfs_rreq_trace_put_failed);
-+	netfs_free_request(&rreq->cleanup_work);
-+}
-+
- /*
-  * Allocate and partially initialise an I/O request structure.
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
+index b6ee532977734..a8273ad5dd9e0 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -7,7 +7,7 @@
+  *
+  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
+  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
+- * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
++ * Copyright (c) 2020-2025 Vincent Mailhol <mailhol@kernel.org>
   */
-diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
-index 8097bc069c1d..a1489aa29f78 100644
---- a/fs/netfs/read_pgpriv2.c
-+++ b/fs/netfs/read_pgpriv2.c
-@@ -118,7 +118,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_copy_to_cache(
- 	return creq;
  
- cancel_put:
--	netfs_put_request(creq, netfs_rreq_trace_put_return);
-+	netfs_put_failed_request(creq);
- cancel:
- 	rreq->copy_to_cache = ERR_PTR(-ENOBUFS);
- 	clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags);
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index fa622a6cd56d..5c0dc4efc792 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -189,7 +189,7 @@ ssize_t netfs_read_single(struct inode *inode, struct file *file, struct iov_ite
- 	return ret;
+ #include <asm/unaligned.h>
+@@ -1984,6 +1984,7 @@ static const struct net_device_ops es58x_netdev_ops = {
+ 	.ndo_stop = es58x_stop,
+ 	.ndo_start_xmit = es58x_start_xmit,
+ 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
++	.ndo_change_mtu = can_change_mtu,
+ };
  
- cleanup_free:
--	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
-+	netfs_put_failed_request(rreq);
- 	return ret;
- }
- EXPORT_SYMBOL(netfs_read_single);
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 0584cba1a043..dd8743bc8d7f 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -133,8 +133,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
- 
- 	return wreq;
- nomem:
--	wreq->error = -ENOMEM;
--	netfs_put_request(wreq, netfs_rreq_trace_put_failed);
-+	netfs_put_failed_request(wreq);
- 	return ERR_PTR(-ENOMEM);
- }
- 
+ static const struct ethtool_ops es58x_ethtool_ops = {
 -- 
 2.51.0
 
