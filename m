@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E83BADDB9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B729BAD91D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53CEC3BF403
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6602A3B1C7D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A9C2264AB;
-	Tue, 30 Sep 2025 15:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65722236EB;
+	Tue, 30 Sep 2025 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQZ04vum"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbZLWtZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40BE1F1302;
-	Tue, 30 Sep 2025 15:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9045C266B65;
+	Tue, 30 Sep 2025 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246022; cv=none; b=cSoiFWZtEYX6WFaXR00a19teMDFWI4HrTVu6iIcmZ+IJdaKoL4tV7EdgrufOZK9J79UbD2Ky9R4+vaXgxOkTsPYasj4L+Ga1ONTZDRgL1745nt2G7xH2650STW2E4UR60ff77CbLtJ7EuxMiLjiZ4HsKAWGOSYzIZgfI+1jt2gw=
+	t=1759244866; cv=none; b=k1bOQvBGe45f73yO+k7bZE8DkmniYGE4cGluBXYDEa87WeWbLrCUigAZfegbwjs2PcBNjgiDQILaGONRn32LC3RYAM09z6Pr26CtKWOm89kxqSr++TweatTHkGQGokE3id849L111faW/AjxXjiFTbAiLuiWSCh6ZRFB/Ka4L/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246022; c=relaxed/simple;
-	bh=kSwFThuvQFuyjPGVS5qAYiDVjkLpAnUIhO9UocFszdo=;
+	s=arc-20240116; t=1759244866; c=relaxed/simple;
+	bh=ASG9BmfpRktW1n5njYmyef0O2t8FQQ4go2DNlhEkY0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHZZCQTGVD/Iyv78sPIlx3hwNKFpC5PG6Fqb+eJeMjggwZD8JAFrDH0CAPPL10cvblqVKI1Ap1maQSJG5jK4EfnaANcCXhGvsjaxegFLvDxkeLhUSDLReKrreIOHT7Bh6+6Uz+T9MbVv6vanlbUlyLv9mi6Upw4BGVb83lUYOgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQZ04vum; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAC7C4CEF0;
-	Tue, 30 Sep 2025 15:27:01 +0000 (UTC)
+	 MIME-Version; b=FK1fhl0nWt7k2bfuys0ro6c0z1C3ENrdn6Uz6BSmVrt8XOcD/48yVF/1vayzVrPxYIgDiQYy760EgHOV8iCod+3nFJZcPB5mTW3Q2J3sbKpT0knKyxWEVVH9iya8rw5nzwnr71R2oDrDhXyP1igMu9gJxbpO2kkByk2dNX+8E3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbZLWtZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A109DC4CEF0;
+	Tue, 30 Sep 2025 15:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246022;
-	bh=kSwFThuvQFuyjPGVS5qAYiDVjkLpAnUIhO9UocFszdo=;
+	s=korg; t=1759244866;
+	bh=ASG9BmfpRktW1n5njYmyef0O2t8FQQ4go2DNlhEkY0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQZ04vumBugHT5tdvhKrZgRdDTDe55Zwk0KBYVDE9aIQScieMyO8y+2OSzdQndF0h
-	 knleDpctvJ5wZ/3SozZpMgz9QhMCMkWwgxZIGmsi07lUPuwqK3RhKIJT/0umOrFMdg
-	 V+J8esdnki7EyWmRNVnR3SEXSNvANg44Xs9nt83c=
+	b=BbZLWtZRzS890jSeOXmt+88yynJpyfn9TSWGAI+CkUXnrgHwzWFe7Rv7K9UgaQgYb
+	 gW2eJ2pJgL/zLJ+UavFzcgvRjTRsqRqTLG1QJxP750yGJzGxZt5Yh50zEEFm6/kfOx
+	 zWl3qOhiX/EdN02jlgXqk5oxo2/NcMgAx2vcf8FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 28/89] firmware: imx: Add stub functions for SCMI MISC API
+	David Wang <00107082@163.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.16 138/143] wifi: iwlwifi: pcie: fix byte count table for some devices
 Date: Tue, 30 Sep 2025 16:47:42 +0200
-Message-ID: <20250930143823.073073720@linuxfoundation.org>
+Message-ID: <20250930143836.735830887@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit b2461e20fa9ac18b1305bba5bc7e22ebf644ea01 ]
+commit a38108a23ab558b834d71d542d32c05ab0fb64d4 upstream.
 
-To ensure successful builds when CONFIG_IMX_SCMI_MISC_DRV is not enabled,
-this patch adds static inline stub implementations for the following
-functions:
+In my previous fix for this condition, I erroneously listed 9000
+instead of 7000 family, when 7000/8000 were already using iwlmvm.
+Thus the condition ended up wrong, causing the issue I had fixed
+for older devices to suddenly appear on 7000/8000 family devices.
+Correct the condition accordingly.
 
-  - scmi_imx_misc_ctrl_get()
-  - scmi_imx_misc_ctrl_set()
-
-These stubs return -EOPNOTSUPP to indicate that the functionality is not
-supported in the current configuration. This avoids potential build or
-link errors in code that conditionally calls these functions based on
-feature availability.
-
-This patch also drops the changes in commit 540c830212ed ("firmware: imx:
-remove duplicate scmi_imx_misc_ctrl_get()").
-
-The original change aimed to simplify the handling of optional features by
-removing conditional stubs. However, the use of conditional stubs is
-necessary when CONFIG_IMX_SCMI_MISC_DRV is n, while consumer driver is
-set to y.
-
-This is not a matter of preserving legacy patterns, but rather to ensure
-that there is no link error whether for module or built-in.
-
-Fixes: 0b4f8a68b292 ("firmware: imx: Add i.MX95 MISC driver")
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: David Wang <00107082@163.com>
+Closes: https://lore.kernel.org/r/20250909165811.10729-1-00107082@163.com/
+Fixes: 586e3cb33ba6 ("wifi: iwlwifi: fix byte count table for old devices")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250915102743.777aaafbcc6c.I84404edfdfbf400501f6fb06def5b86c501da198@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/firmware/imx/sm.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
-index 9b85a3f028d1b..61f7a02b05009 100644
---- a/include/linux/firmware/imx/sm.h
-+++ b/include/linux/firmware/imx/sm.h
-@@ -17,7 +17,19 @@
- #define SCMI_IMX_CTRL_SAI4_MCLK		4	/* WAKE SAI4 MCLK */
- #define SCMI_IMX_CTRL_SAI5_MCLK		5	/* WAKE SAI5 MCLK */
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -2093,7 +2093,7 @@ static void iwl_txq_gen1_update_byte_cnt
+ 		break;
+ 	}
  
-+#if IS_ENABLED(CONFIG_IMX_SCMI_MISC_DRV)
- int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
- int scmi_imx_misc_ctrl_set(u32 id, u32 val);
-+#else
-+static inline int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int scmi_imx_misc_ctrl_set(u32 id, u32 val)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
+-	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_9000 &&
++	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_7000 &&
+ 	    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
+ 		len = DIV_ROUND_UP(len, 4);
  
- #endif
--- 
-2.51.0
-
 
 
 
