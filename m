@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED45BAD713
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275CEBADB4C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0C414A3C4D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 950024C0EC2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEAD306D54;
-	Tue, 30 Sep 2025 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143D53081C5;
+	Tue, 30 Sep 2025 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPteIkFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nupq/+vy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05E330506C;
-	Tue, 30 Sep 2025 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49C5306D47;
+	Tue, 30 Sep 2025 15:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244405; cv=none; b=h+72bOTMpbXwxYxhQvShlBSdHXffwS6EjEeGkpNgIJ/GGDQvZKp/Zp26C2mL3Bk8nOoFToCEZFCuwkcKF4f/70jA9KTbsNtTxgRzvRM7xTgWOk+L4iI0KFX5wCgjNIxfyPfNiV09eooxP5r0FOubi5UPPMBCORuxClcDYzfrP1k=
+	t=1759245281; cv=none; b=qDIPD+XTqIEA9zwVMh8AnPWXo53PezAFHtEPmn1bIHIirJaED0ukcwrxnKLk4zEjU5Nq9YDxWeGwptsV3nAfLdIV41tv52/GtjUDEEWmvq5Iiserhe+cHMB7rLoyUbBDf1oYkq6Ehehf6bG/0pEKu4+7QYBI0RUA2qymMJn0J8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244405; c=relaxed/simple;
-	bh=0DkEjN08FXjPwlrGIkQTaFGgAfmyz0BLHANnMZ/XIr0=;
+	s=arc-20240116; t=1759245281; c=relaxed/simple;
+	bh=9Cz+zhb4TDg1hLWB4r21PyCB0O4p5F2UpsSefsg2zhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDdLWjNdkFPuUFKhhaEQpiagbJjhdCZHcjNIFq3X0z/bjZMu+M7i5Ctx4rEsU/2wkdpBVRKDpmUiPm6Z4LwzPUQXtsmEbAg3W3o/ceMKCkh8K4obyfvvMuqiLUgC/eY5c6XqjhaCPDA50pP1Obw7cU+17uz6YX89nVY2MT7oi7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPteIkFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA36C4CEF0;
-	Tue, 30 Sep 2025 15:00:05 +0000 (UTC)
+	 MIME-Version; b=iXzHyCP38Jgrd+JGE2HTry476+ph+ztpiMhV8t5/LeKGDRSbtduRMGTdiML17UfLqd+KIwq+KsZ0nTKjXxrCjVr8tVnlSQ4cr8U+q8UesHxf7kEKKh0jklKbJsAH5pPzg2HIttKzkcN8U5GVsJMj7UHH8p5JLzxqmMntyxKQNqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nupq/+vy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12D5C4CEF0;
+	Tue, 30 Sep 2025 15:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244405;
-	bh=0DkEjN08FXjPwlrGIkQTaFGgAfmyz0BLHANnMZ/XIr0=;
+	s=korg; t=1759245281;
+	bh=9Cz+zhb4TDg1hLWB4r21PyCB0O4p5F2UpsSefsg2zhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zPteIkFPK+LG6XKVZM0uRnzEzyMERmV/9J2qKFp7LjZMxgRQWunbpLeQsGdo/fpEq
-	 T+4XImF3n64ZEZGAfy+l0NwlxjnceQehFplhxHauo5++f+p4iBRWiLq2lTMQnzG/Vk
-	 7sS41IPvTQ5qdEYwLGolSg68MrtS+6HhSgAsmAvs=
+	b=nupq/+vyjgEIoex5JDKNpv7thm6ZZOTbELENJMr5f3eeKQT/oXCLm8suT6o7WwgVi
+	 tVVnMuGIEcYb85DO9Ggy9mCzgZki7Nu/Vhz2DWi/5G1uz+wRSMUxLEzCw1sGxynSQd
+	 IvR+4PUw23+htaq1BKwaEaciN5kNaY8kCofgRC+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Hulk Robot <hulkci@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/122] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
+Subject: [PATCH 5.15 089/151] drm: bridge: cdns-mhdp8546: Fix missing mutex unlock on error path
 Date: Tue, 30 Sep 2025 16:46:59 +0200
-Message-ID: <20250930143826.595638426@linuxfoundation.org>
+Message-ID: <20250930143831.143595341@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Qi Xi <xiqi2@huawei.com>
 
-[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
+[ Upstream commit 288dac9fb6084330d968459c750c838fd06e10e6 ]
 
-Adding a memory barrier before wake_up() in
-snd_usb_soundblaster_remote_complete() is supposed to ensure the write
-to mixer->rc_code is visible in wait_event_interruptible() from
-snd_usb_sbrc_hwdep_read().
+Add missing mutex unlock before returning from the error path in
+cdns_mhdp_atomic_enable().
 
-However, this is not really necessary, since wake_up() is just a wrapper
-over __wake_up() which already executes a full memory barrier before
-accessing the state of the task to be waken up.
-
-Drop the redundant call to wmb() and implicitly fix the checkpatch
-complaint:
-
-  WARNING: memory barrier without comment
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
+Fixes: 935a92a1c400 ("drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250904034447.665427-1-xiqi2@huawei.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 9243094cc0637..29ef56323a7a2 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -208,7 +208,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
- 	if (code == rc->mute_code)
- 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
- 	mixer->rc_code = code;
--	wmb();
- 	wake_up(&mixer->rc_waitq);
- }
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index c8386311cc704..0d523812afd5a 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2040,8 +2040,10 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
+ 
+ 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
+-	if (!mhdp_state->current_mode)
+-		return;
++	if (!mhdp_state->current_mode) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	drm_mode_set_name(mhdp_state->current_mode);
  
 -- 
 2.51.0
