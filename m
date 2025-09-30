@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-182169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB350BAD557
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08201BAD6F5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A25619416D0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D77FF19421DE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE9C303A01;
-	Tue, 30 Sep 2025 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7F6303A29;
+	Tue, 30 Sep 2025 15:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ps/Vwhu9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOQ+yPiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717B61FCCF8;
-	Tue, 30 Sep 2025 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DF9303A05;
+	Tue, 30 Sep 2025 15:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244066; cv=none; b=FHmUeF5I0IvXaFgL7DsAW56JlAI/3DJhFnKCV5UiRN6i6lfRAPAvZZPIF4Qm93tf6fwlPEK+v2N+Jb7RQuCtci+Ud4LAQRVL1wlO3uTQfaleLEBr8pI4evKOAYVAyrkd/CvXn2FDFX3M+bp7zDT18RJjTI02UNw6FsS28T5wtm8=
+	t=1759244458; cv=none; b=NOg567oxAZzbdpXHAcl8g6HkWPe1j4lSVpEmQh63ZKPyeTagusZyKG0G8SpMGeecEr9jeT1TzRQzGZngqwwCYC8muTL9/pgO06/4PsTKOeaA6rqi4eCIzvHASV9dHVJwNKzDFDoMJe38GDVUGiEGyDQWTqjSb2I6jUHxkKusA7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244066; c=relaxed/simple;
-	bh=kJDZGNDXQCWl4y8Ne2kqSLU47ZiR1gnqI8Wu5XZBd0Q=;
+	s=arc-20240116; t=1759244458; c=relaxed/simple;
+	bh=Ay2aBw2LJ1kxsbOxqR6+2HmrxkYL6MyjYG+drjopXVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xy8yl5BYTIPutx3sVjeraqOnu8mE6/IfJpbFfNnNPKvP+3kP76EN6TtSU2V7tg5/DnJH32a50SIdbmcfOAdw65lqVxdrjB+/UGGL6K8rzJKX3sg2bF97mGVQdtIjIBnGyS/okb9p8GspIUD6TVh6qK9u/IZyhsAOJeLD6XW9qhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ps/Vwhu9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E171EC4CEF0;
-	Tue, 30 Sep 2025 14:54:25 +0000 (UTC)
+	 MIME-Version; b=YTsIyvlUFwA2sYy4NRFmmr8XKdtxJH31dHbIPRxpAihR5XSIm1mLeqy72IzNfpxEQTiYGayX0NMToC8G8WpYh6lqFJpYwOp4dMLvaKN9oK9iyYP507mwA1VVDGSMrNB7TlBjn45VJnGLf4X+lQcUSTB66xGWb+GRrqnHH7cNABg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOQ+yPiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C062C4CEF0;
+	Tue, 30 Sep 2025 15:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244066;
-	bh=kJDZGNDXQCWl4y8Ne2kqSLU47ZiR1gnqI8Wu5XZBd0Q=;
+	s=korg; t=1759244457;
+	bh=Ay2aBw2LJ1kxsbOxqR6+2HmrxkYL6MyjYG+drjopXVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ps/Vwhu9f0ol+XPfDKajeT6qQxegzCBREad8CwPVAi98oZwnBG6mKkvvhmh2uyTDp
-	 MX/UUByzyIad7z47gwSxyeM0iIYt+qRSJRg7OGJT1WNnrHAIwhXKgaedHmlGLTzdeU
-	 nVbvPb96uknT2TLV2GhaKBIWebf84MZXro4T/ujY=
+	b=bOQ+yPiTcOz9YjiHCiIqz4DvmyAxIL4bXPlZiAjAGW859TCbYz+pihTpPBT/LzLgT
+	 ZFAs8xIFMIzTWQQ2/I1cttG9ujkwXgCr2v9Yq7EvMeHR21DzikHIV6IC2lmr2vyGYC
+	 8GmNP1+6PGJQObRVV4qHB95IiwUmXQvn+WDjNLWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 006/122] flexfiles/pNFS: fix NULL checks on result of ff_layout_choose_ds_for_read
+Subject: [PATCH 6.16 013/143] HID: multitouch: take cls->maxcontacts into account for Apple Touch Bar even without a HID_DG_CONTACTMAX field
 Date: Tue, 30 Sep 2025 16:45:37 +0200
-Message-ID: <20250930143823.229211231@linuxfoundation.org>
+Message-ID: <20250930143831.775839699@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Kerem Karabay <kekrby@gmail.com>
 
-[ Upstream commit 5a46d2339a5ae268ede53a221f20433d8ea4f2f9 ]
+[ Upstream commit 7dfe48bdc9d38db46283f2e0281bc1626277b8bf ]
 
-Recent commit f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS
-errors") has changed the error return type of ff_layout_choose_ds_for_read() from
-NULL to an error pointer. However, not all code paths have been updated
-to match the change. Thus, some non-NULL checks will accept error pointers
-as a valid return value.
+In Apple Touch Bar, the HID_DG_CONTACTMAX is not present, but the maximum
+contact count is still greater than the default. Add quirks for the same.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f06bedfa62d5 ("pNFS/flexfiles: don't attempt pnfs on fatal DS errors")
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/hid/hid-multitouch.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 57150b27c0fd2..43aefff2e6b06 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -750,8 +750,11 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
- 			continue;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 20e0958d0fa9f..c9f9f21a6ec6b 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1335,6 +1335,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
+ 	struct input_dev *input = hi->input;
+ 	int ret;
  
- 		if (check_device &&
--		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node))
-+		    nfs4_test_deviceid_unavailable(&mirror->mirror_ds->id_node)) {
-+			// reinitialize the error state in case if this is the last iteration
-+			ds = ERR_PTR(-EINVAL);
- 			continue;
-+		}
- 
- 		*best_idx = idx;
- 		break;
-@@ -781,7 +784,7 @@ ff_layout_choose_best_ds_for_read(struct pnfs_layout_segment *lseg,
- 	struct nfs4_pnfs_ds *ds;
- 
- 	ds = ff_layout_choose_valid_ds_for_read(lseg, start_idx, best_idx);
--	if (ds)
-+	if (!IS_ERR(ds))
- 		return ds;
- 	return ff_layout_choose_any_ds_for_read(lseg, start_idx, best_idx);
- }
-@@ -795,7 +798,7 @@ ff_layout_get_ds_for_read(struct nfs_pageio_descriptor *pgio,
- 
- 	ds = ff_layout_choose_best_ds_for_read(lseg, pgio->pg_mirror_idx,
- 					       best_idx);
--	if (ds || !pgio->pg_mirror_idx)
-+	if (!IS_ERR(ds) || !pgio->pg_mirror_idx)
- 		return ds;
- 	return ff_layout_choose_best_ds_for_read(lseg, 0, best_idx);
- }
-@@ -856,7 +859,7 @@ ff_layout_pg_init_read(struct nfs_pageio_descriptor *pgio,
- 	req->wb_nio = 0;
- 
- 	ds = ff_layout_get_ds_for_read(pgio, &ds_idx);
--	if (!ds) {
-+	if (IS_ERR(ds)) {
- 		if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
- 			goto out_mds;
- 		pnfs_generic_pg_cleanup(pgio);
-@@ -1066,11 +1069,13 @@ static void ff_layout_resend_pnfs_read(struct nfs_pgio_header *hdr)
- {
- 	u32 idx = hdr->pgio_mirror_idx + 1;
- 	u32 new_idx = 0;
-+	struct nfs4_pnfs_ds *ds;
- 
--	if (ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx))
--		ff_layout_send_layouterror(hdr->lseg);
--	else
-+	ds = ff_layout_choose_any_ds_for_read(hdr->lseg, idx, &new_idx);
-+	if (IS_ERR(ds))
- 		pnfs_error_mark_layout_for_return(hdr->inode, hdr->lseg);
-+	else
-+		ff_layout_send_layouterror(hdr->lseg);
- 	pnfs_read_resend_pnfs(hdr, new_idx);
- }
++	/*
++	 * HID_DG_CONTACTMAX field is not present on Apple Touch Bars,
++	 * but the maximum contact count is greater than the default.
++	 */
++	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR && cls->maxcontacts)
++		td->maxcontacts = cls->maxcontacts;
++
+ 	if (!td->maxcontacts)
+ 		td->maxcontacts = MT_DEFAULT_MAXCONTACT;
  
 -- 
 2.51.0
