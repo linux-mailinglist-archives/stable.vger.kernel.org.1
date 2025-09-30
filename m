@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5413EBADD62
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 929AABAD8EA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E0177AA890
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2029F3ADD95
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A931D2264AB;
-	Tue, 30 Sep 2025 15:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C015D2F9D9E;
+	Tue, 30 Sep 2025 15:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AL7UIkih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnJuuVJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EC62032D;
-	Tue, 30 Sep 2025 15:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0701487F4;
+	Tue, 30 Sep 2025 15:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246046; cv=none; b=JZcT2rCvH6kkxlGY0WLKt5i8A51w8J1McLlObnt8pwVSgwwxOlDqiCGTIRIlUC4bjES/5mIEWkqMwNE+I0YCnyQFSt1iRHcaKOePbGA79XUEW4z6bfK1RJrP+2dlxs0P0VKM845j4iK+7qhMDGQS3q+sjtfmUBpsNZJtetSlPMk=
+	t=1759244803; cv=none; b=QOn3Jh8aOAwh/L8UitHIOTv95/68uhEbqD4rHfhZHK0Ht2I2o8drBMLg1ktNCDjZmNhU/vFlNetAFJnthYLdatkET/hJ/3Pd5dpucjxa2vgQePqba2+mosomVlg8a/wvf9lYlttOk74w4L7ZqlgY2B3sOykGUyu6xHraV7EEJIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246046; c=relaxed/simple;
-	bh=zMOk3HSg7uo/B5ZsUJgYtzLQDUIptdZVQJanx9qw5I0=;
+	s=arc-20240116; t=1759244803; c=relaxed/simple;
+	bh=OuERbUtzBYlOjw+Is4ti/TZD36pfqwtFTmd2qHkyICE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghAVugE97uIMlbW5ypFcx5pQ5QDl9RsPOnc3xwT7s5rbRHZEG46AOx1flY8rSGfzc7AVOJ6fH4XiHVi+0Y/bpps3T2+oVIJjhubEjMPsZM5dAurL3IkzwMMPDmnnkU3GjXkz64TCgMg2x3XlsaSnr8yrPHsAaExOfkf35zf/yMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AL7UIkih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EC3C4CEF0;
-	Tue, 30 Sep 2025 15:27:25 +0000 (UTC)
+	 MIME-Version; b=W5cZQZnvFu9qsAlC04wKGFyQM+5q1t99y/Qa8v97NmnrrKmpP0M9S3aBd3sARS5LaNNn9yzmRcCOLm3iCXK6Xw04oA1uVpJb4zoSWWuEW92FmfouPaTAv4BzS0pvv6jkl5SpYwSkV8sRfUHeOf9nkrLnsspdOq1ez6hlDE4ljbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnJuuVJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63D2C4CEF0;
+	Tue, 30 Sep 2025 15:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246046;
-	bh=zMOk3HSg7uo/B5ZsUJgYtzLQDUIptdZVQJanx9qw5I0=;
+	s=korg; t=1759244803;
+	bh=OuERbUtzBYlOjw+Is4ti/TZD36pfqwtFTmd2qHkyICE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AL7UIkihwL2Hui54x9s3kYrdNnORO1i6KBoWJGNfhjHCcX7wOGzY7RiMBfiTjgYbp
-	 3DbS0GqyYeZDEJFA1IEv+ZuWBbNGV3Ltdyunah+yZ75yITeuOuSPeYzJeViFOxYAI1
-	 /BluGZa9UjdvlSYC6vDAtl7aCid7/o3GKOhowJ8o=
+	b=cnJuuVJ+76gAJuqMl3h0ZGRWUuNDLVQOtUqV9MlBVl1P/skxfCTzSpva4sNXRPdGm
+	 slak+FkV5CarM4gB307JUoIWaa2WKdPD5Sz+EiyhMG9C9WpOQHPNkakOajWbkoHYJi
+	 EUwJCEO0lMcjtPJyEclKnDECr+PjK6vOvldjIEpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 07/89] ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
+	Josua Mayer <josua@solid-run.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.16 117/143] arm64: dts: marvell: cn9132-clearfog: fix multi-lane pci x2 and x4 ports
 Date: Tue, 30 Sep 2025 16:47:21 +0200
-Message-ID: <20250930143822.168097894@linuxfoundation.org>
+Message-ID: <20250930143835.893003496@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit f2d6d660e8fd5f4467e80743f82119201e67fa9c ]
+commit 794a066688038df46c01e177cc6faebded0acba4 upstream.
 
-Handle report from checkpatch.pl:
+The mvebu-comphy driver does not currently know how to pass correct
+lane-count to ATF while configuring the serdes lanes.
 
-  CHECK: Comparison to NULL could be written "t->name"
+This causes the system to hard reset during reconfiguration, if a pci
+card is present and has established a link during bootloader.
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-7-1a821463b632@collabora.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the comphy handles from the respective pci nodes to avoid runtime
+reconfiguration, relying solely on bootloader configuration - while
+avoiding the hard reset.
+
+When bootloader has configured the lanes correctly, the pci ports are
+functional under Linux.
+
+This issue may be addressed in the comphy driver at a future point.
+
+Fixes: e9ff907f4076 ("arm64: dts: add description for solidrun cn9132 cex7 module and clearfog board")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/marvell/cn9132-clearfog.dts |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 1eae6e83d0259..3bd2daba8ecac 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -128,7 +128,7 @@ static int snd_create_std_mono_table(struct usb_mixer_interface *mixer,
- {
- 	int err;
+--- a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
++++ b/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
+@@ -413,7 +413,13 @@
+ /* SRDS #0,#1,#2,#3 - PCIe */
+ &cp0_pcie0 {
+ 	num-lanes = <4>;
+-	phys = <&cp0_comphy0 0>, <&cp0_comphy1 0>, <&cp0_comphy2 0>, <&cp0_comphy3 0>;
++	/*
++	 * The mvebu-comphy driver does not currently know how to pass correct
++	 * lane-count to ATF while configuring the serdes lanes.
++	 * Rely on bootloader configuration only.
++	 *
++	 * phys = <&cp0_comphy0 0>, <&cp0_comphy1 0>, <&cp0_comphy2 0>, <&cp0_comphy3 0>;
++	 */
+ 	status = "okay";
+ };
  
--	while (t->name != NULL) {
-+	while (t->name) {
- 		err = snd_create_std_mono_ctl(mixer, t->unitid, t->control,
- 					      t->cmask, t->val_type, t->name,
- 					      t->tlv_callback);
--- 
-2.51.0
-
+@@ -475,7 +481,13 @@
+ /* SRDS #0,#1 - PCIe */
+ &cp1_pcie0 {
+ 	num-lanes = <2>;
+-	phys = <&cp1_comphy0 0>, <&cp1_comphy1 0>;
++	/*
++	 * The mvebu-comphy driver does not currently know how to pass correct
++	 * lane-count to ATF while configuring the serdes lanes.
++	 * Rely on bootloader configuration only.
++	 *
++	 * phys = <&cp1_comphy0 0>, <&cp1_comphy1 0>;
++	 */
+ 	status = "okay";
+ };
+ 
 
 
 
