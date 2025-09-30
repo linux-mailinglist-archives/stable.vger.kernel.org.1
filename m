@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E95BAD879
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4840BAD4E8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 699D31627CC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AB104A3491
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352FB304BCC;
-	Tue, 30 Sep 2025 15:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5AD3043DA;
+	Tue, 30 Sep 2025 14:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSrXNxwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ynu+XoWe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D1E2F6167;
-	Tue, 30 Sep 2025 15:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8880D3C465;
+	Tue, 30 Sep 2025 14:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244826; cv=none; b=mD3934pMPmVhlRVwVtdWxUakD6alJE3gWA3UPscu6UnVmE1Re54oAsVeapqwh++1PO1PWNhXKkJxsrswBUqqU4+jd158+TJ5Exwpw/X9fuyfTFJgLuolzNzbKRtWDpbHMyx4ifVHmRIbcxl7IJ7wYJckP9uw/lcED5emDZu77KU=
+	t=1759243924; cv=none; b=o+nCkV3k/9bKXWg+l8oRcMcOq9ghIHOJ6syP4WWBebsFY/IpkshbUDJVpAzZml4Y0+FlqMDy6y5c/WVBvnk+nsU6aQoxZEaKb+9OJuPVQ5KodaMYeNssEGE6v/f9O3W0/XvgtQ6Sv/nCByjdeakGlMwpbax0oexuMeU1K6jDr3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244826; c=relaxed/simple;
-	bh=fG2WSxqhzefKadTaM8ytUR0GT4yNtvlCTxDt4Ahz2Kc=;
+	s=arc-20240116; t=1759243924; c=relaxed/simple;
+	bh=l/HgeIS/O1J7a7/baoEZF1HEhpSW9euSvIUC8ii8Uog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R+y9unpNqsnm497b/SNTqP5sS9vt81nKhQ2o1avQddiG3PiJ0YRc0ndaD+LLCZiZBYxhn5TtXxCq2yJEAQ0G3L1FriNhC/tKMqKMsNndy6DU66fVpim50Sxdbkq7KOrybfVaX5MB4JiaKJXj7xZ3N1FLMErjzjJoQgl0OvGSVSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSrXNxwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19035C4CEF0;
-	Tue, 30 Sep 2025 15:07:04 +0000 (UTC)
+	 MIME-Version; b=IyOODLclTDzCU13g6BC4lqvTlPqG/9zhji8PY+AnS9vpC7JH0m49LYGqS+jcrs5y5Vvy5PM5NDhNd1xpupqzOmv4jEmkNoMk4GVc7QQ+rd30W4B00gkqPmpaE0fVB9bR4nqRqTBwUQm6TU/tTeSH3u/Vo+hmALPqgWzovnJ957o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ynu+XoWe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4FBC4CEF0;
+	Tue, 30 Sep 2025 14:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244825;
-	bh=fG2WSxqhzefKadTaM8ytUR0GT4yNtvlCTxDt4Ahz2Kc=;
+	s=korg; t=1759243924;
+	bh=l/HgeIS/O1J7a7/baoEZF1HEhpSW9euSvIUC8ii8Uog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSrXNxwbVY+hPYStAXsX9enn4hK4Usa0XHFpBhXSXMi+1rzC3V0xqextb962AWrVe
-	 ifTKrCXYY9D1fKSkguhn4kV1bnFATmZ2d6VWiTufmWIGMGI9qKPMJ6Zzuihc1sC5x2
-	 NQ3ABiu4Mi7pbmNfWmfydZ/anBIkTDGw5/naI+Hk=
+	b=Ynu+XoWeZmPGayVcnDFSgKxDiEMRZn0UBGVIQDUaaMbxNHREmz1A2LYSF/yteZa3I
+	 a1NjCGmtYl5Ayi5LjrCkdG2D5DgpuueeAvKo3lTZy5bLuIpwOlvkj6kZ63IK+e/ZjJ
+	 c0oS/yZ2cae88exDy+cwHwN8zDjVHZZRVfXgyAZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 094/143] drm/panthor: Defer scheduler entitiy destruction to queue release
+Subject: [PATCH 5.4 56/81] ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
 Date: Tue, 30 Sep 2025 16:46:58 +0200
-Message-ID: <20250930143834.974065287@linuxfoundation.org>
+Message-ID: <20250930143822.024231027@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrián Larumbe <adrian.larumbe@collabora.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 7d9c3442b02ab7dd3c44e20095a178fd57d2eccb ]
+[ Upstream commit 03ddd3bdb94df3edb1f2408b57cfb00b3d92a208 ]
 
-Commit de8548813824 ("drm/panthor: Add the scheduler logical block")
-handled destruction of a group's queues' drm scheduler entities early
-into the group destruction procedure.
+Handle report from checkpatch.pl:
 
-However, that races with the group submit ioctl, because by the time
-entities are destroyed (through the group destroy ioctl), the submission
-procedure might've already obtained a group handle, and therefore the
-ability to push jobs into entities. This is met with a DRM error message
-within the drm scheduler core as a situation that should never occur.
+  CHECK: multiple assignments should be avoided
 
-Fix by deferring drm scheduler entity destruction to queue release time.
-
-Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
-Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250919164436.531930-1-adrian.larumbe@collabora.com
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-6-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ sound/usb/mixer_quirks.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 43ee57728de54..e927d80d6a2af 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -886,8 +886,7 @@ static void group_free_queue(struct panthor_group *group, struct panthor_queue *
- 	if (IS_ERR_OR_NULL(queue))
- 		return;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 96397a4fdf873..22f483fee5f8c 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1592,7 +1592,8 @@ static int snd_microii_spdif_default_put(struct snd_kcontrol *kcontrol,
+ 	unsigned int pval, pval_old;
+ 	int err;
  
--	if (queue->entity.fence_context)
--		drm_sched_entity_destroy(&queue->entity);
-+	drm_sched_entity_destroy(&queue->entity);
- 
- 	if (queue->scheduler.ops)
- 		drm_sched_fini(&queue->scheduler);
-@@ -3558,11 +3557,6 @@ int panthor_group_destroy(struct panthor_file *pfile, u32 group_handle)
- 	if (!group)
- 		return -EINVAL;
- 
--	for (u32 i = 0; i < group->queue_count; i++) {
--		if (group->queues[i])
--			drm_sched_entity_destroy(&group->queues[i]->entity);
--	}
--
- 	mutex_lock(&sched->reset.lock);
- 	mutex_lock(&sched->lock);
- 	group->destroyed = true;
+-	pval = pval_old = kcontrol->private_value;
++	pval = kcontrol->private_value;
++	pval_old = pval;
+ 	pval &= 0xfffff0f0;
+ 	pval |= (ucontrol->value.iec958.status[1] & 0x0f) << 8;
+ 	pval |= (ucontrol->value.iec958.status[0] & 0x0f);
 -- 
 2.51.0
 
