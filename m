@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-182105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E32BAD494
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E92C7BAD647
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BFE9194180F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9012F4A50D5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8979265CCD;
-	Tue, 30 Sep 2025 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35393043C4;
+	Tue, 30 Sep 2025 14:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHqCdqrC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRzDaDt/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8209325D1F7;
-	Tue, 30 Sep 2025 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0178305045;
+	Tue, 30 Sep 2025 14:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243850; cv=none; b=nNMWMYbAIaGy1tIELybFWXTWbXs+NJ33tuxfpjYMauFfuG50IVuOyC6DhEX0jH1amLgtWWpwKb8of3naAQ9TbOOauqr22FDHgV5/9THr4pDeyqTuiJp6u+RAHf2V2ZAXsoySpr2mViWCCx+rVqXDill+hXwCMvoXlLWjstyfQQc=
+	t=1759244229; cv=none; b=OUJuHjzPl8q4u3Kb5769Dsg7eVGxJERJwMndsY22sB1+gxFytiNfeBDcuq6T5CaQXzIoTl/EWVDB8LEWj/NBXRjNp3nV2fL+QBlmFxLAeP5tAgRf1ZSQousRzfPNuo2lAgIC4YJAtLkAInZU4kBixMRlJiVxtgrK3jSVDmyf7FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243850; c=relaxed/simple;
-	bh=0JKZKlTCAX9VYORQzeT202ApgnbVXdMnshYm0uooCIs=;
+	s=arc-20240116; t=1759244229; c=relaxed/simple;
+	bh=ueJcc9tk9r6eXY3/YhQP17n3rY4h8T7v/Lhzx7/OU3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDFEa3kgxjHK2OQwCM+KsTdxDqfiELAO7FLghthULWrr+28QRafql9/c95QD65FlVFxZ1ayjr336DzTuEYSoPJyYw/VGCOXMqtPvkJ7R2XhKWjLSq91gofMFCt+W34PylR2TNYmEAdn/lEeDl2CCOrJK4wFMZPUzMKjmunr7szE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHqCdqrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EA3C4CEF0;
-	Tue, 30 Sep 2025 14:50:49 +0000 (UTC)
+	 MIME-Version; b=n6eEF7Lk8/RMFcYJOD/cdz9X12xEyieL/gccMiQ3BSon7b5KdnVqcGeXym3YQYF/zSa09ea5n/6KZ+zeBWRFpqvj0mozREc2X++Mw9nC3TBqnDw0SvegKtGmL7OkTncAE7QUlaySlq9bYtCNARXx0KFiczPlkp+TYBliGa0ce/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRzDaDt/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2060FC113D0;
+	Tue, 30 Sep 2025 14:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243850;
-	bh=0JKZKlTCAX9VYORQzeT202ApgnbVXdMnshYm0uooCIs=;
+	s=korg; t=1759244229;
+	bh=ueJcc9tk9r6eXY3/YhQP17n3rY4h8T7v/Lhzx7/OU3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHqCdqrCNOYTkWRSgSqXCsbJd/RXUlfjAl0cXIVV3QwDW1XG3a9Un1MA2our94wMo
-	 c+9l34YpiooSpFMOSkMvQaAV0S/Kx1w5FqMveP5TE+Rj7ViswLrU0p3iz6M6QvUpZS
-	 +OJP356yBrRao7LFg7WQq3eZhpJQ6YhzpE/twW2g=
+	b=iRzDaDt/uZjSsJ0+tdz+Nqzu2eSkD/7C97iY9nTp/dUTH6X8lTSJI1bgHY34U5yQF
+	 DnK6m0SSxu9D32v95gRjgZt+b1+Ga2OJWwtHh+VkXG07EQsdvFHzLyLNfvI8VUIQzH
+	 YPizCxX9N7kgc/r5k1yjrSkSWJzmsng4k12AtSsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.4 36/81] i40e: remove redundant memory barrier when cleaning Tx descs
+	Hulk Robot <hulkci@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 067/122] drm: bridge: cdns-mhdp8546: Fix missing mutex unlock on error path
 Date: Tue, 30 Sep 2025 16:46:38 +0200
-Message-ID: <20250930143821.186678683@linuxfoundation.org>
+Message-ID: <20250930143825.747682767@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Qi Xi <xiqi2@huawei.com>
 
-[ Upstream commit e37084a26070c546ae7961ee135bbfb15fbe13fd ]
+[ Upstream commit 288dac9fb6084330d968459c750c838fd06e10e6 ]
 
-i40e has a feature which writes to memory location last descriptor
-successfully sent. Memory barrier in i40e_clean_tx_irq() was used to
-avoid forward-reading descriptor fields in case DD bit was not set.
-Having mentioned feature in place implies that such situation will not
-happen as we know in advance how many descriptors HW has dealt with.
+Add missing mutex unlock before returning from the error path in
+cdns_mhdp_atomic_enable().
 
-Besides, this barrier placement was wrong. Idea is to have this
-protection *after* reading DD bit from HW descriptor, not before.
-Digging through git history showed me that indeed barrier was before DD
-bit check, anyways the commit introducing i40e_get_head() should have
-wiped it out altogether.
-
-Also, there was one commit doing s/read_barrier_depends/smp_rmb when get
-head feature was already in place, but it was only theoretical based on
-ixgbe experiences, which is different in these terms as that driver has
-to read DD bit from HW descriptor.
-
-Fixes: 1943d8ba9507 ("i40e/i40evf: enable hardware feature head write back")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 935a92a1c400 ("drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250904034447.665427-1-xiqi2@huawei.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 6067c88668341..ff213cbe84ca8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -794,9 +794,6 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
- 		if (!eop_desc)
- 			break;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index ae99d04f00456..5876589d42b7d 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -1978,8 +1978,10 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
  
--		/* prevent any other reads prior to eop_desc */
--		smp_rmb();
--
- 		i40e_trace(clean_tx_irq, tx_ring, tx_desc, tx_buf);
- 		/* we have caught up to head, no work left to do */
- 		if (tx_head == tx_desc)
+ 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
+-	if (!mhdp_state->current_mode)
+-		return;
++	if (!mhdp_state->current_mode) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	drm_mode_set_name(mhdp_state->current_mode);
+ 
 -- 
 2.51.0
 
