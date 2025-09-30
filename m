@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E0CBADA73
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAEA2BAD8E4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 990363B12D2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 971453AD4AD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454E42F39C0;
-	Tue, 30 Sep 2025 15:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BC02E9EBC;
+	Tue, 30 Sep 2025 15:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOQL6Aq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujq8KCap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B0B2F5301;
-	Tue, 30 Sep 2025 15:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AF41487F4;
+	Tue, 30 Sep 2025 15:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245170; cv=none; b=KLGM1lsJF15PFOQuZ/71fdy0Z7tb5FrU8/LuEICDatzfvyuqE+5D3bltW5LswZuyRyQZ+eZESZTr9AAZQfws2l6NT2lLYcrHh9Yknfu7tLyoyRwiRDOG+NHUtvqp+o6mH42jCUELNpP29rECihC2eLSZGvb9HLYUVsa3KAuWBDs=
+	t=1759244800; cv=none; b=A7t19Nrp5qtNIyH5v6dLPJDZR5y/DWQ6uSpMQNtTkF0MGp4Bu+VNeDjdivD5Ry74KtkgkPrxZPZRSDmu4K44gp+BCaIukggrLP+UGTo4B1nu2JNkbr1+4SiktFDhqtCIKBlQd6wc0T41WO85qT4V5W4QG9bNzlh6+rrBuim046U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245170; c=relaxed/simple;
-	bh=47OCKyN/xg+cDJ0ftXVS+yiBlcCWiysrgVO089qTyH0=;
+	s=arc-20240116; t=1759244800; c=relaxed/simple;
+	bh=da6Atef4b+A7nbZOBGlGbpdtYp4HTgHMv/1tW7mGtko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ssRJgZRhvEhpbEvUKu8UuL6vbYF8TPNqDpKvj2tAZ1psvURUVusHOQXBGskTFCIHq9YXENiS9zK/1ZSDgp8xxo2esQ/rSVgHDFy7tasaHVGxpSfxozp0Eu/vx2q7wLYmOuWgvs5/Qo2mUzw05iSVyKM4BEGt/qqjOB2oQpNmT4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOQL6Aq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382FDC4CEF0;
-	Tue, 30 Sep 2025 15:12:47 +0000 (UTC)
+	 MIME-Version; b=tdUjz/AccEEGpwmE2uLJ6JQ3RgqrwjJsHm6n/mvYsBCHWt5vuHD69A+skE74rsuINIOWKChrAZAN17qfWEzYkl3me0nSnQdx4N3KGT/7BycK6btlUqfT1hx90SDXJ/Vu1zeqDVHRFQ2+XhydtYslb1e9EvMEFBDQ+Qm+8uaY7dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujq8KCap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62077C4CEF0;
+	Tue, 30 Sep 2025 15:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245167;
-	bh=47OCKyN/xg+cDJ0ftXVS+yiBlcCWiysrgVO089qTyH0=;
+	s=korg; t=1759244799;
+	bh=da6Atef4b+A7nbZOBGlGbpdtYp4HTgHMv/1tW7mGtko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOQL6Aq+eSL9a+X6RzdwsEhLUCOS//hTm8xXr0XwClbHbjEFSiaJwAt3w6OXzg5LV
-	 mEcQXXslaGrke1GGtmNHP4vpAAbNfJ5VoxSODSFxVfRVnLTUmIKXbJQ44cImCjJBWJ
-	 WkNnx7P+8em9g2kknxYEmYm2BZgj+gjWVkrWK1pc=
+	b=ujq8KCapXDB4HfMKz7Mc7hDgVojkbsnnWBUgbQQTs2wl6VFDg92HdCANvdgtHBNKL
+	 wui0nBJNTQopeWWbv1r+9GtVBdZRamSUm6SOc/N+DrRh1NwEyxv72r29WFDAnDUxC5
+	 HBIEc3+RX8HFYCR6csZSBw6Q2tUW3kmFNV4Exclg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 084/151] rds: ib: Increment i_fastreg_wrs before bailing out
+	Riana Tauro <riana.tauro@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 090/143] drm/xe: Fix build with CONFIG_MODULES=n
 Date: Tue, 30 Sep 2025 16:46:54 +0200
-Message-ID: <20250930143830.941554724@linuxfoundation.org>
+Message-ID: <20250930143834.816833542@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit 4351ca3fcb3ffecf12631b4996bf085a2dad0db6 upstream.
+[ Upstream commit b67e7422d229dead0dddaad7e7c05558f24d552f ]
 
-We need to increment i_fastreg_wrs before we bail out from
-rds_ib_post_reg_frmr().
+When building with CONFIG_MODULES=n, the __exit functions are dropped.
+However our init functions may call them for error handling, so they are
+not good candidates for the exit sections.
 
-We have a fixed budget of how many FRWR operations that can be
-outstanding using the dedicated QP used for memory registrations and
-de-registrations. This budget is enforced by the atomic_t
-i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
-"leak" the possibility of posting an FRWR operation, and if that
-accumulates, no FRWR operation can be carried out.
+Fix this error reported by 0day:
 
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
-Cc: stable@vger.kernel.org
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-Link: https://patch.msgid.link/20250911133336.451212-1-haakon.bugge@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	ld.lld: error: relocation refers to a symbol in a discarded section: xe_configfs_exit
+	>>> defined in vmlinux.a(drivers/gpu/drm/xe/xe_configfs.o)
+	>>> referenced by xe_module.c
+	>>>               drivers/gpu/drm/xe/xe_module.o:(init_funcs) in archive vmlinux.a
+
+This is the only exit function using __exit. Drop it to fix the build.
+
+Cc: Riana Tauro <riana.tauro@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506092221.1FmUQmI8-lkp@intel.com/
+Fixes: 16280ded45fb ("drm/xe: Add configfs to enable survivability mode")
+Reviewed-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Link: https://lore.kernel.org/r/20250912-fix-nomodule-build-v1-1-d11b70a92516@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit d9b2623319fa20c2206754284291817488329648)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/ib_frmr.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_configfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rds/ib_frmr.c
-+++ b/net/rds/ib_frmr.c
-@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct r
- 
- 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
- 				&off, PAGE_SIZE);
--	if (unlikely(ret != ibmr->sg_dma_len))
--		return ret < 0 ? ret : -EINVAL;
-+	if (unlikely(ret != ibmr->sg_dma_len)) {
-+		ret = ret < 0 ? ret : -EINVAL;
-+		goto out_inc;
-+	}
- 
--	if (cmpxchg(&frmr->fr_state,
--		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
--		return -EBUSY;
-+	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
-+		ret = -EBUSY;
-+		goto out_inc;
-+	}
- 
- 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
- 
-@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct r
- 		/* Failure here can be because of -ENOMEM as well */
- 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
- 
--		atomic_inc(&ibmr->ic->i_fastreg_wrs);
- 		if (printk_ratelimit())
- 			pr_warn("RDS/IB: %s returned error(%d)\n",
- 				__func__, ret);
--		goto out;
-+		goto out_inc;
- 	}
- 
- 	/* Wait for the registration to complete in order to prevent an invalid
-@@ -179,8 +181,10 @@ static int rds_ib_post_reg_frmr(struct r
- 	 */
- 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
- 
--out:
-+	return ret;
- 
-+out_inc:
-+	atomic_inc(&ibmr->ic->i_fastreg_wrs);
- 	return ret;
+diff --git a/drivers/gpu/drm/xe/xe_configfs.c b/drivers/gpu/drm/xe/xe_configfs.c
+index 9a2b96b111ef5..2b591ed055612 100644
+--- a/drivers/gpu/drm/xe/xe_configfs.c
++++ b/drivers/gpu/drm/xe/xe_configfs.c
+@@ -244,7 +244,7 @@ int __init xe_configfs_init(void)
+ 	return 0;
  }
  
+-void __exit xe_configfs_exit(void)
++void xe_configfs_exit(void)
+ {
+ 	configfs_unregister_subsystem(&xe_configfs);
+ }
+-- 
+2.51.0
+
 
 
 
