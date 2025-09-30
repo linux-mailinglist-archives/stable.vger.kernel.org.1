@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-182776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A1CBADD66
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F8CBAD52D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75A9E327ED6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62A083AFAC8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC82C2032D;
-	Tue, 30 Sep 2025 15:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5319C226CF7;
+	Tue, 30 Sep 2025 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyYvggD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pi31opYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995DE25FA0F;
-	Tue, 30 Sep 2025 15:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112192F60D8;
+	Tue, 30 Sep 2025 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246049; cv=none; b=Py2456CFwlKp+9oHlOj5AVcFV8zzFJhFR5CM9tA2yQtLMmtcFIxWFAZgGiiO6+m7JEnmBa4BFoiiOa0Ls9+OXMXCTYOk4UwITBjvO7vo0SKuvdV0gA//FfevtDa1nnzUAg03g2ruLFnFa1n5vzKTeSXV9LW+BgMKirm3FljERDQ=
+	t=1759244002; cv=none; b=uu/isRmHJGFUlomW27vzPmquapxdQ+Z7eEpYbyXdOAyZhdh20HnG53z8Gg6dDz25zxsee1yBouik158jNSDUMcRkHgocOOLJDF6SBH6+7AySLCpKiWhcN3r5CXGE7Lg1aA+wA3HY89CwgAaXEE5a+K+RUBBrl6yu+6f7ZiGSIKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246049; c=relaxed/simple;
-	bh=Pslz76SqvCWVTKfEQcpIajOv1mwo8TjXJthYk2Zg3Hw=;
+	s=arc-20240116; t=1759244002; c=relaxed/simple;
+	bh=fqLDKpp0Vw7zdu4wfRl6QbwaGPHkD+i39SMJmlPyUAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1OsCtGlPakri1tBNiAuZaZeV89m474N36S1CmiNUIGiKSqYqrpyvZdY+2ZC5xAvQADuaRU40j5EBTRCvhF7CvM38DDSrdiu0HuZiQ0N+y4lb5in2e+LsPE4V8UyecJ5TSVDNSJHrfQyeex+UJsYeEiMak+YcGGX6xZbSE/O+T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyYvggD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B556C116B1;
-	Tue, 30 Sep 2025 15:27:28 +0000 (UTC)
+	 MIME-Version; b=j5bLi00pku8f+NEOeA04QBznt54RiTrLeTpByB/aiOeNJNhgXlqvd8uTYOW7dMtPtiXiOb1h5Ykn3yTG4CkSv9rEvG5IARwCc/F8jaMsi6JuFab6He/muKhsnJWYmgTOqO2kTWnUY6YaZHdBaP3lordU9W1ReA/riOIAzgcbPWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pi31opYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B4EC116B1;
+	Tue, 30 Sep 2025 14:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246049;
-	bh=Pslz76SqvCWVTKfEQcpIajOv1mwo8TjXJthYk2Zg3Hw=;
+	s=korg; t=1759244001;
+	bh=fqLDKpp0Vw7zdu4wfRl6QbwaGPHkD+i39SMJmlPyUAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyYvggD2aL32Kf/8gYQr2td9pXf9ecY9xNHGMelf/N529iTUNzG0sDFSY96/oM9AE
-	 o/0QQbQXXzipLmjMjmVZrhzeWckwYllrDlLaKkzAjPLufdctgSaQuzlFpjTNuQVbRe
-	 OSBJorRXN4o9uj8d20VN6aoocwxrSCC+mpVuI8cM=
+	b=Pi31opYiH+o+g+xNfh9ZZ3XEFhXbdZQ9WBsJfMaQWVR2/gWOuRfO8Xyq1YZzTBIir
+	 O4wSHxMQayUIbz7sgUEHheGbYquKnTcWBU1w8OyQupmPnJZ28BMBpzUVhK2KLkh25q
+	 K9N849yGl+YWiF/Qyg64pIv/wPycXmRu94KWGN2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 08/89] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
+Subject: [PATCH 5.4 80/81] i40e: add mask to apply valid bits for itr_idx
 Date: Tue, 30 Sep 2025 16:47:22 +0200
-Message-ID: <20250930143822.210631251@linuxfoundation.org>
+Message-ID: <20250930143823.070824403@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
+[ Upstream commit eac04428abe9f9cb203ffae4600791ea1d24eb18 ]
 
-Adding a memory barrier before wake_up() in
-snd_usb_soundblaster_remote_complete() is supposed to ensure the write
-to mixer->rc_code is visible in wait_event_interruptible() from
-snd_usb_sbrc_hwdep_read().
+The ITR index (itr_idx) is only 2 bits wide. When constructing the
+register value for QINT_RQCTL, all fields are ORed together. Without
+masking, higher bits from itr_idx may overwrite adjacent fields in the
+register.
 
-However, this is not really necessary, since wake_up() is just a wrapper
-over __wake_up() which already executes a full memory barrier before
-accessing the state of the task to be waken up.
+Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
+set.
 
-Drop the redundant call to wmb() and implicitly fix the checkpatch
-complaint:
-
-  WARNING: memory barrier without comment
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Added missing linux/bitfield.h header for FIELD_PREP macro ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 3bd2daba8ecac..5f660c6933d2d 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -211,7 +211,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
- 	if (code == rc->mute_code)
- 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
- 	mixer->rc_code = code;
--	wmb();
- 	wake_up(&mixer->rc_waitq);
- }
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright(c) 2013 - 2018 Intel Corporation. */
  
--- 
-2.51.0
-
++#include <linux/bitfield.h>
+ #include "i40e.h"
+ 
+ /*********************notification routines***********************/
+@@ -393,7 +394,7 @@ static void i40e_config_irq_link_list(st
+ 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
+ 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
+ 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
+-		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
++		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
+ 		wr32(hw, reg_idx, reg);
+ 	}
+ 
 
 
 
