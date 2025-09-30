@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB56DBAD801
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7929BAD9A1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4728116C5C5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F09CE188849E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA09302CD6;
-	Tue, 30 Sep 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441BF302CD6;
+	Tue, 30 Sep 2025 15:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH5oKEX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1i+0WKGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585AB23506A;
-	Tue, 30 Sep 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38D32236EB;
+	Tue, 30 Sep 2025 15:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244693; cv=none; b=Vt9G5wbVNWm7Wmjw96y3PRj9HbluoZEabvEv6EWlt7fNwHccjxKe5jhc8cDjYz/ZSr3CYdFWhMSyK/Q6Nn/dvZfCRkciSi+ES4x6WRBLc/UZsnMk3f3F4w961vIag7I3slfmgW6YHVjLANwIsevGt5r9Cs17OPYy9s97ofl4H9M=
+	t=1759245147; cv=none; b=uH9CvLfGgkk2xs0pVhiEvAmGOII+aw5QHRbwQEFENZlOh34yHI2jMeD4E04cF3aN91mpTx/ADo48c/feWwTWePdE22Cl6YyOpWKTGXl3rm+q73psG+GO30KolmTPypOE762BDkR86/WD3hH2x/l96HqzV8Mpmkpt3wWSX8idnrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244693; c=relaxed/simple;
-	bh=3VyWWHW3A+qAYErHDPUnq2OoRDufxLxFcDWeCcdsMDE=;
+	s=arc-20240116; t=1759245147; c=relaxed/simple;
+	bh=scU3DkAtCm84oNk9UmaAgoisyiK7pGq1/pjrPBpMxZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AU4lxbqIGw3gywefQJ8wv9dsoz4xy8H43P7KAXd/H8l5tNnZbG2g/f0vGFQvZjjtNZanMdvMk6en+3iy6A3F2aI9+hAhw2S18Ph0l6OLvHwtwA/eMKAZ5mOnl1xAsXiXDnCzpp4SwJcaSriUS0mpalbKscLxJaODEz6fLNsd0oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH5oKEX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC440C113D0;
-	Tue, 30 Sep 2025 15:04:52 +0000 (UTC)
+	 MIME-Version; b=WQ4QJjFvX0a5MC6zN2beiqa8t7f0S7GsW0NGe42hFjwa/bveDlQVN1yDM7PXr0Ge92bys/Lw1p0MbCHDen3jpaCdBcM6QkSabKGZf4ZnHQqCyVlUuEiqMaja/9mfahdDcY+c1EjKFPerFJX6G8bz7aM4cuLpXypCq+v8aRHoVhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1i+0WKGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A65DC4CEF0;
+	Tue, 30 Sep 2025 15:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244693;
-	bh=3VyWWHW3A+qAYErHDPUnq2OoRDufxLxFcDWeCcdsMDE=;
+	s=korg; t=1759245146;
+	bh=scU3DkAtCm84oNk9UmaAgoisyiK7pGq1/pjrPBpMxZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BH5oKEX3Q+tZleJ7B4kPFZ3bCFfjC4jw1Fb8/CIWSIYnLeQOVvqWBCRG1zKpGSzdY
-	 oUUNHO6cbw54vEu5qQmWSbsUEUusjV50uRT3VCmuIOZFZ2rtJPUn7gyX8JzlaeCDxw
-	 /CeVUEv+y1jujYOJZoPSfx/OoJe2Mq9jz4MtoBKU=
+	b=1i+0WKGqYM4BSNrRdUhvDUHY4IN5YUaNM0xwggC/eNi2yhljXgWywiARQvXmE0lFV
+	 xe3KgW9NgbrRTmjhqmNDO4ONfZFivFbDVjGTROZV6mnSaU0TH6l57rWnBb2UqeKxxt
+	 O5yfy4n337KIC0HdSBby88vm5SsC+2qkUPcl3NFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 084/143] net: dsa: lantiq_gswip: suppress -EINVAL errors for bridge FDB entries added to the CPU port
+	Nathan Chancellor <nathan@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 078/151] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
 Date: Tue, 30 Sep 2025 16:46:48 +0200
-Message-ID: <20250930143834.580813176@linuxfoundation.org>
+Message-ID: <20250930143830.700561939@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 987afe147965ef7a8e7d144ffef0d70af14bb1d4 ]
+commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
 
-The blamed commit and others in that patch set started the trend
-of reusing existing DSA driver API for a new purpose: calling
-ds->ops->port_fdb_add() on the CPU port.
+When accessing one of the files under /sys/fs/nilfs2/features when
+CONFIG_CFI_CLANG is enabled, there is a CFI violation:
 
-The lantiq_gswip driver was not prepared to handle that, as can be seen
-from the many errors that Daniel presents in the logs:
+  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
+  ...
+  Call Trace:
+   <TASK>
+   sysfs_kf_seq_show+0x2a6/0x390
+   ? __cfi_kobj_attr_show+0x10/0x10
+   kernfs_seq_show+0x104/0x15b
+   seq_read_iter+0x580/0xe2b
+  ...
 
-[  174.050000] gswip 1e108000.switch: port 2 failed to add fa:aa:72:f4:8b:1e vid 1 to fdb: -22
-[  174.060000] gswip 1e108000.switch lan2: entered promiscuous mode
-[  174.070000] gswip 1e108000.switch: port 2 failed to add 00:01:02:03:04:02 vid 0 to fdb: -22
-[  174.090000] gswip 1e108000.switch: port 2 failed to add 00:01:02:03:04:02 vid 1 to fdb: -22
-[  174.090000] gswip 1e108000.switch: port 2 failed to delete fa:aa:72:f4:8b:1e vid 1 from fdb: -2
+When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
+is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
+nilfs_feature_attr_group is added to that kobject via
+sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
+which will call sysfs_kf_seq_show() when ->seq_show() is called.
+sysfs_kf_seq_show() in turn calls kobj_attr_show() through
+->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
+a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
+in the CFI violation since neither nilfs_feature_revision_show() nor
+nilfs_feature_README_show() match the prototype of ->show() in 'struct
+kobj_attribute'.
 
-The errors are because gswip_port_fdb() wants to get a handle to the
-bridge that originated these FDB events, to associate it with a FID.
-Absolutely honourable purpose, however this only works for user ports.
+Resolve the CFI violation by adjusting the second parameter in
+nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
+kobj_attribute' to match the expected prototype.
 
-To get the bridge that generated an FDB entry for the CPU port, one
-would need to look at the db.bridge.dev argument. But this was
-introduced in commit c26933639b54 ("net: dsa: request drivers to perform
-FDB isolation"), first appeared in v5.18, and when the blamed commit was
-introduced in v5.14, no such API existed.
-
-So the core DSA feature was introduced way too soon for lantiq_gswip.
-Not acting on these host FDB entries and suppressing any errors has no
-other negative effect, and practically returns us to not supporting the
-host filtering feature at all - peacefully, this time.
-
-Fixes: 10fae4ac89ce ("net: dsa: include bridge addresses which are local in the host fdb list")
-Reported-by: Daniel Golle <daniel@makrotopia.org>
-Closes: https://lore.kernel.org/netdev/aJfNMLNoi1VOsPrN@pidgin.makrotopia.org/
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250918072142.894692-3-vladimir.oltean@nxp.com
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
+Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/lantiq_gswip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nilfs2/sysfs.c |    4 ++--
+ fs/nilfs2/sysfs.h |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
-index d416c072dd28c..84dc6e517acf9 100644
---- a/drivers/net/dsa/lantiq_gswip.c
-+++ b/drivers/net/dsa/lantiq_gswip.c
-@@ -1368,8 +1368,9 @@ static int gswip_port_fdb(struct dsa_switch *ds, int port,
- 	int i;
- 	int err;
+--- a/fs/nilfs2/sysfs.c
++++ b/fs/nilfs2/sysfs.c
+@@ -1068,7 +1068,7 @@ void nilfs_sysfs_delete_device_group(str
+  ************************************************************************/
  
-+	/* Operation not supported on the CPU port, don't throw errors */
- 	if (!bridge)
--		return -EINVAL;
-+		return 0;
+ static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
+-					    struct attribute *attr, char *buf)
++					    struct kobj_attribute *attr, char *buf)
+ {
+ 	return sysfs_emit(buf, "%d.%d\n",
+ 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
+@@ -1080,7 +1080,7 @@ static const char features_readme_str[]
+ 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
  
- 	for (i = max_ports; i < ARRAY_SIZE(priv->vlans); i++) {
- 		if (priv->vlans[i].bridge == bridge) {
--- 
-2.51.0
-
+ static ssize_t nilfs_feature_README_show(struct kobject *kobj,
+-					 struct attribute *attr,
++					 struct kobj_attribute *attr,
+ 					 char *buf)
+ {
+ 	return sysfs_emit(buf, features_readme_str);
+--- a/fs/nilfs2/sysfs.h
++++ b/fs/nilfs2/sysfs.h
+@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
+ 	struct completion sg_segments_kobj_unregister;
+ };
+ 
+-#define NILFS_COMMON_ATTR_STRUCT(name) \
++#define NILFS_KOBJ_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
+ 	struct attribute attr; \
+-	ssize_t (*show)(struct kobject *, struct attribute *, \
++	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
+ 			char *); \
+-	ssize_t (*store)(struct kobject *, struct attribute *, \
++	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
+ 			 const char *, size_t); \
+ }
+ 
+-NILFS_COMMON_ATTR_STRUCT(feature);
++NILFS_KOBJ_ATTR_STRUCT(feature);
+ 
+ #define NILFS_DEV_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
 
 
 
