@@ -1,69 +1,59 @@
-Return-Path: <stable+bounces-182001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A682BAACE4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 02:36:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB596BAAD05
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 02:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC4B6189F5C9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 00:37:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8575E16DC8B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 00:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A631547C9;
-	Tue, 30 Sep 2025 00:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F12317A31E;
+	Tue, 30 Sep 2025 00:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="O3Ji+s0t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFgJtw5A"
 X-Original-To: stable@vger.kernel.org
-Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5512B140E5F;
-	Tue, 30 Sep 2025 00:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759192604; cv=pass; b=mXx6OPuSJKyyOMvoRkWvc7gUlHLnBQtUh76+sFpNRORonVlHBP1GKizXzhdSfxRlo5ykb+p41sJvpDQoO7lJAV+5QH7i7SrXFm4DfVwe10IO+x6HE36pFw6Wt0jTP5qT+xtZsDcFQP3oYdsCCMWzuJ5wS5wZYqneDjxiurALaG8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759192604; c=relaxed/simple;
-	bh=0dmw+NX0SV+++5sYlZaNjj5lFZzOb2zEdPom2w5GJ28=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KXfKivLQd/f72G8PeIvKXqBwgNvx/ooZ74DKSQ7FlLHG/FfA4Ucq2/AO4MyNprIeM4MtdJi2/Ft1JNzCBaxeqJvCGLg6twVUFT/p2pVIK8FUC29RJdjnEN5H4MLCiiLWPhLF4QOEblLUthHgsaxvls1QgUByzdkndz2U4lXOewg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=O3Ji+s0t; arc=pass smtp.client-ip=136.143.184.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
-ARC-Seal: i=1; a=rsa-sha256; t=1759192572; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Gzzvatf2+sOjcLRAR35rfF6PyBpIAs2zctN6lNO2evh/mpIP7fD1GVTcbKuJECN9VPY3dG4T+kgi97611gXES0990c2xlbSrmT9lgscxazjJ3We7DQV7JP6U7hVS1x/mboZp4vRetKQzCYWI0C8SqBV37GMDc4ayN/vN9r9Gsl4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1759192572; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=hydiAdnjg/6bowrEjqyPCxKqacoOwPu3GjH+2V9IjnI=; 
-	b=N072Nz1wP8msVfX2z6Vb4QI8eM7xVRQCzU+3xnOuAiKtpjL1+OszzPlYWmQQMRVJoxi1NdgnR2U2n/6gz3dL8YG2cXqFWo0lv0z8r0KXvKo/Ik2hZc/13/5Xh8/gCSOoETVkLBPpUVVkK5m+tDVjFI2hKPOv+eNnjjBxSctdPlo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759192571;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=hydiAdnjg/6bowrEjqyPCxKqacoOwPu3GjH+2V9IjnI=;
-	b=O3Ji+s0tXa3c2jQrZHN7aZtOznofbmue9EnDAJIFiXn9A16jwC4x8w+bzihQDdwq
-	/QlgieInSYZMTKQMDYqtT4GTl5vJPUpPQ2him4WI4mKmWeGSLHY4e8APRLTjMWlIKCL
-	fbA53BHKKcsPHj9oMc6d43EdZVsdDry9A8LBBq4U=
-Received: by mx.zohomail.com with SMTPS id 1759192569234211.8709219622018;
-	Mon, 29 Sep 2025 17:36:09 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: Jens Axboe <axboe@kernel.dk>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	"Markus Elfring" <Markus.Elfring@web.de>,
-	"Yang Erkun" <yangerkun@huawei.com>,
-	"Ming Lei" <ming.lei@redhat.com>,
-	"Yu Kuai" <yukuai1@huaweicloud.com>
-Subject: [PATCH v2] loop: fix backing file reference leak on validation error
-Date: Tue, 30 Sep 2025 08:35:59 +0800
-Message-ID: <20250930003559.708798-1-me@linux.beauty>
-X-Mailer: git-send-email 2.51.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E994A0A;
+	Tue, 30 Sep 2025 00:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759193057; cv=none; b=lzXNNvAK+agDgr2PrYpOH6hnMPK1d0aFpR+ReEABUpc69Lszdy0Hue3mGB7YN0Mi77RF+jPHib/0Z/CzdkIzIgzNvbjOKl93MWRQEEsacqUCcWBgS15yFCC7mJggnzBotRMWHUwxePqdUVeQhX+PFIjko9q9hm4Q+PKN4E+KrVM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759193057; c=relaxed/simple;
+	bh=UG8UCbAm0S/mQH2S995hl54PecX4r3H8TVBvdoOGWy0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G0wi2AtFoX5qM37kTlX3UWOadwGGzJfc895zv90mt9DItZDexmRazDrnKu8eMw5PMdvlqVMP6w5JyM/o5rnXTYKrpSnLzHFIQ4bf2iT0HTrfCW0BBTOVANyWVEECMm4URpyZoSR5sQlzQ21zGh909/XthvBAWPOe8MsY+yvczhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFgJtw5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7868BC4CEF4;
+	Tue, 30 Sep 2025 00:44:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759193056;
+	bh=UG8UCbAm0S/mQH2S995hl54PecX4r3H8TVBvdoOGWy0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WFgJtw5ACgIRAyKx3TKKMwbhW2WgSueANdrKKbBKdBndFiq7YY5atdMu2O22g8QN1
+	 yu+15Uc2wTr8dJIc8VNZlP5mGQf6Q5zfJO2YWMgfzwZdgYrHg9absTE3yyFSk6iExz
+	 j5bRLRcB1/XBqJOaDqwy81kYqxdKW/M0YRCDY2QYVRFAYw02zcyMPigm6BLoyHaVb8
+	 BZ29MuEK9lvrWETT4xLxojgvwUWqgJr9r0V13dn3yWY0BOns/PvvyFbJXk0lLkO23U
+	 wz0aXjFsmt7nrXiMJCwxlnoBUvWj6bgS4REbPqTpJ67KcRA9C2Z8cCLnSBfRno8VdM
+	 zeAbiqY3mfOdA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 5 . x" <stable@vger.kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Xinyu Zheng <zhengxinyu6@huawei.com>
+Subject: [PATCH] mm/damon/vaddr: do not repeat pte_offset_map_lock() until success
+Date: Mon, 29 Sep 2025 17:44:09 -0700
+Message-Id: <20250930004410.55228-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,59 +61,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-loop_change_fd() and loop_configure() call loop_check_backing_file()
-to validate the new backing file. If validation fails, the reference
-acquired by fget() was not dropped, leaking a file reference.
+DAMON's virtual address space operation set implementation (vaddr) calls
+pte_offset_map_lock() inside the page table walk callback function.
+This is for reading and writing page table accessed bits.  If
+pte_offset_map_lock() fails, it retries by returning the page table walk
+callback function with ACTION_AGAIN.
 
-Fix this by calling fput(file) before returning the error.
+pte_offset_map_lock() can continuously fail if the target is a pmd
+migration entry, though.  Hence it could cause an infinite page table
+walk if the migration cannot be done until the page table walk is
+finished.  This indeed caused a soft lockup when CPU hotplugging and
+DAMON were running in parallel.
 
-Cc: stable@vger.kernel.org
-Cc: "Markus Elfring"<Markus.Elfring@web.de>
-CC: "Yang Erkun" <yangerkun@huawei.com>
-Cc: "Ming Lei"<ming.lei@redhat.com>
-Cc: "Yu Kuai"<yukuai1@huaweicloud.com>
-Fixes: f5c84eff634b ("loop: Add sanity check for read/write_iter")
-Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Avoid the infinite loop by simply not retrying the page table walk.
+DAMON is promising only a best-effort accuracy, so missing access to
+such pages is no problem.
+
+Reported-by: Xinyu Zheng <zhengxinyu6@huawei.com>
+Closes: https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
+Fixes: 7780d04046a2 ("mm/pagewalkers: ACTION_AGAIN if pte_offset_map_lock() fails")
+Cc: <stable@vger.kernel.org> # 6.5.x
+Cc: Hugh Dickins <hughd@google.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
-changelog:
-v2: add review by, Fixes and cc stable tags.
+ mm/damon/vaddr.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
- drivers/block/loop.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 8c048f9b129e..7e834467b2d8 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -328,10 +328,8 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	}
+ 
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
+-	}
+ 	if (!pte_present(ptep_get(pte)))
+ 		goto out;
+ 	damon_ptep_mkold(pte, walk->vma, addr);
+@@ -481,10 +479,8 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
+ #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
++	if (!pte)
+ 		return 0;
+-	}
+ 	ptent = ptep_get(pte);
+ 	if (!pte_present(ptent))
+ 		goto out;
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 053a086d547e..94ec7f747f36 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -551,8 +551,10 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
- 		return -EBADF;
- 
- 	error = loop_check_backing_file(file);
--	if (error)
-+	if (error) {
-+		fput(file);
- 		return error;
-+	}
- 
- 	/* suppress uevents while reconfiguring the device */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 1);
-@@ -993,8 +995,10 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 		return -EBADF;
- 
- 	error = loop_check_backing_file(file);
--	if (error)
-+	if (error) {
-+		fput(file);
- 		return error;
-+	}
- 
- 	is_loop = is_loop_device(file);
- 
+base-commit: 3169a901e935bc1f2d2eec0171abcf524b7747e4
 -- 
-2.51.0
-
+2.39.5
 
