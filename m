@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D8DBADA1C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F7ABADB07
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 966D0161D47
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C05E17E63C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065932FFDE6;
-	Tue, 30 Sep 2025 15:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D410A29827E;
+	Tue, 30 Sep 2025 15:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG7Z1gqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GViYTUBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75E4223DD6;
-	Tue, 30 Sep 2025 15:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F494217F55;
+	Tue, 30 Sep 2025 15:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245235; cv=none; b=A9dVe0AoKtLUIsqvJZrubui1yy9VI39BXSjxUrYKJU+ljuqYbpY7QEp7BiVPec7Op3eS8C20aeDGY9bnzePvTdG47qG7+PQsHsiJCIDPqnvOFoT+blh4wcTFRrVkHW+U8k934Zc/HW2xyxKBjfmKZ3LqftZcjiJt1mcBX2qqpJ8=
+	t=1759245419; cv=none; b=EhiaO2G39Ij4AyEyTYkxIJETFy2J/9K/mke2yk+hdY7TQI/oQwnLsaDT8ukiaqqUjvnoTzwYpTlld+fpoiHlptH6hwLgfBAlHV3TCQh2S2x35CNTQC+1jJweIcKF7h1Wx3uB2VijHh+A9BzUcpIeN4IicDF69bJ87RuYDH3KueY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245235; c=relaxed/simple;
-	bh=GbhITvSO25V0cmy067otzXb7KUZY58XVFdrYbEpPHQk=;
+	s=arc-20240116; t=1759245419; c=relaxed/simple;
+	bh=PSdJ6WZujNv9Buh3RZx+DZTkrqxU7OKOVDqV15dT2v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUhZ35l+1gsrmQJ97du3loI7hJKfvw27UTHH2jymqtA86z6SKhRGdlIoWMAWoFF58xZO9QPSBMitDsgQAaRXTPJJsVO/Jua4hP4l9egb8PVFuU5rzpJB1Czn9B71vut4rLv8+N1UyfYgyzTUuP0eLHyaOrd8SVnr0TCG0Hq8ldA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG7Z1gqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40910C4CEF0;
-	Tue, 30 Sep 2025 15:13:55 +0000 (UTC)
+	 MIME-Version; b=hX4rqStyHtXwGxEJQrdRk/+Jlw5RiOE7S23qnKmuXYs8KGGSuS4Cx/k22oeX9T6LeMxMlnv1pEaNtZvKIn0cePZz4NAqppTx4EGVcq7gf/BUTj/GuWAuzST3bKDIRxSgCWOXoprB0gjJsGARcnlhNEyTaa6ul1pag4kNcEhM9lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GViYTUBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170C0C4CEF0;
+	Tue, 30 Sep 2025 15:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245235;
-	bh=GbhITvSO25V0cmy067otzXb7KUZY58XVFdrYbEpPHQk=;
+	s=korg; t=1759245419;
+	bh=PSdJ6WZujNv9Buh3RZx+DZTkrqxU7OKOVDqV15dT2v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aG7Z1gqMLwymK88ABhFD+LlGQ0T79weDhXluuMnCEbLTh8/pDbP1U+3z7EQvI1b/P
-	 dt/7AtjzCseYET8wFpn7+DibDwrw0amejWO5jID/u0It8kheIBFUo9JSyGFDkMdrEk
-	 fOS7IIoIfZi5T7+xlp+musL9sXF3C8rcEdjnfFHI=
+	b=GViYTUBKFUrylOWs2v2R5pk3lGQLVhJ5+zEMxBn8szTTx8tMjCPf4p3xmYvlKHpcx
+	 6nuNV61VPwiK+h9frMrpBq18CZkW4N1jC3r2QTJ0vqwxAqu58X8yMLcukgxliBknnB
+	 Rriqsv7adaCx2mWPtq32uQ7+poRLPpIknsY5QYFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jiayi Li <lijiayi@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/151] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
+Subject: [PATCH 6.1 13/73] usb: core: Add 0x prefix to quirks debug output
 Date: Tue, 30 Sep 2025 16:47:17 +0200
-Message-ID: <20250930143831.870880249@linuxfoundation.org>
+Message-ID: <20250930143821.110469895@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
+[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
 
-Adding a memory barrier before wake_up() in
-snd_usb_soundblaster_remote_complete() is supposed to ensure the write
-to mixer->rc_code is visible in wait_event_interruptible() from
-snd_usb_sbrc_hwdep_read().
+Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
+value. Improves readability and consistency with other hex outputs.
 
-However, this is not really necessary, since wake_up() is just a wrapper
-over __wake_up() which already executes a full memory barrier before
-accessing the state of the task to be waken up.
-
-Drop the redundant call to wmb() and implicitly fix the checkpatch
-complaint:
-
-  WARNING: memory barrier without comment
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/core/quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 3156bb50f9ff6..d50cd771356f8 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -208,7 +208,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
- 	if (code == rc->mute_code)
- 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
- 	mixer->rc_code = code;
--	wmb();
- 	wake_up(&mixer->rc_waitq);
- }
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index bfd97cad8aa4d..c0fd8ab3fe8fc 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -734,7 +734,7 @@ void usb_detect_quirks(struct usb_device *udev)
+ 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
  
+ 	if (udev->quirks)
+-		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
++		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
+ 			udev->quirks);
+ 
+ #ifdef CONFIG_USB_DEFAULT_PERSIST
 -- 
 2.51.0
 
