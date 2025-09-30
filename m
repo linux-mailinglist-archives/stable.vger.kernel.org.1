@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-182709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E709BADC7B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64912BADB64
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E4487A124D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C845C19448E1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7B9846F;
-	Tue, 30 Sep 2025 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5CA2F39C0;
+	Tue, 30 Sep 2025 15:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrQw90Qz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/fiUwMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7A61C862F;
-	Tue, 30 Sep 2025 15:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4832E1EB5E3;
+	Tue, 30 Sep 2025 15:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245833; cv=none; b=cq4BTdlUNO6X3duulObN3SrMagKqduNv0YyCsZAuRpolTpnnoBcu2dafVdiojKUvZIXSu9YWoBlc9fkxZ3p4jC9BlAK/+d/Z7aftuZGpEWSSfmhT/0AAhkGyS+pLA+2/s9HMPlvLC4F7OSh09w7Mj+tKnF6s3O3sjRE2ZvZXg/E=
+	t=1759245581; cv=none; b=kMDuXxqR3LMXBb6furUxbdrG4MyK7+d3rr7BmHkoTBkFSnE6FVpjMB4IWRKirD99DJcQsARxGS0kEFk3Sz7zPPaomgiHF91Z/oVZu9gwrkB+3ZEQeI2CdmYyS+ntDe6UXiTmHrUZ0wWIuf35qjG9JRalhAQCxKk6M70n+IcYWi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245833; c=relaxed/simple;
-	bh=Y+K+uA26GlygSCenG32BIuqNlOxOu7X7YaymhEJdIBA=;
+	s=arc-20240116; t=1759245581; c=relaxed/simple;
+	bh=Q6yI0k6bpg05C7rYIhJhovWBCdOqCt+qq/Z/64mlLX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uB/1YhqRJEmUzaYb0TTo9AmNujwAB/H8oBw+PxOFLSuZ5fwwvL942v673yAdEZVNeQLwjGTFB+RKZUKYd0o6VRNjSSWQbjiObfpQWs8DSb9nImgFyTPEDEWMLm7mG2m+NxWqCkeLSNmVE+VdLShwb5ZbbbDhwoZwJAjvFrP8Psk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrQw90Qz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516F5C4CEF0;
-	Tue, 30 Sep 2025 15:23:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KJlhNIUxVc5ds2g+CvzCa9OvL4p/RusHPmdSMq/nHugjcvs8sY9nBo0YIyhXR8a1VM0Ub2MPOFVnSpEiq6OcQSqBc7ZtPRC845qFDiZG9V+fByE7MFNzI+ij/OFlG2H642obY6hBRy+hZGB7p9eSnEN/hLxg8f0Zrw6o9kYKzw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/fiUwMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF1FC4CEF0;
+	Tue, 30 Sep 2025 15:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245832;
-	bh=Y+K+uA26GlygSCenG32BIuqNlOxOu7X7YaymhEJdIBA=;
+	s=korg; t=1759245581;
+	bh=Q6yI0k6bpg05C7rYIhJhovWBCdOqCt+qq/Z/64mlLX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrQw90QzXePzrGNGSYnFqD6+SDogUiwiopqJIZbAGpw5jlqeut8imdEcVN4XfE6DG
-	 D6aaqcXzQxYFzDQ6XRFpuAoJtUYFCB9xVkjtKYIHDYEeI9c3Rx8IIjNTOxnqT+Xopm
-	 hkHyPl1O7tqp86qA73lBzfesyftW8GvqvfcqC/Mw=
+	b=u/fiUwMmR0zJVd/VhP2dKrEwXXtoOfJ1SqXEuXk/bLtzndH3VHfEnMYkDb74tYdlG
+	 pc5yWMhXKaYQ+F1skxaY6fYe11pswr3gmZMVXz4nwg6RUVHMy1OmPYLzPpgZygm4mr
+	 rp9Ctz/+Ats8pOhi7YIp2Om1tZpPFKYBiWqA7udQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 64/91] tracing: dynevent: Add a missing lockdown check on dynevent
+	David Hildenbrand <david@redhat.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 59/73] mm/migrate_device: dont add folio to be freed to LRU in migrate_device_finalize()
 Date: Tue, 30 Sep 2025 16:48:03 +0200
-Message-ID: <20250930143823.847515785@linuxfoundation.org>
+Message-ID: <20250930143823.105601698@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 456c32e3c4316654f95f9d49c12cbecfb77d5660 upstream.
+commit 41cddf83d8b00f29fd105e7a0777366edc69a5cf upstream.
 
-Since dynamic_events interface on tracefs is compatible with
-kprobe_events and uprobe_events, it should also check the lockdown
-status and reject if it is set.
+If migration succeeded, we called
+folio_migrate_flags()->mem_cgroup_migrate() to migrate the memcg from the
+old to the new folio.  This will set memcg_data of the old folio to 0.
 
-Link: https://lore.kernel.org/all/175824455687.45175.3734166065458520748.stgit@devnote2/
+Similarly, if migration failed, memcg_data of the dst folio is left unset.
 
-Fixes: 17911ff38aa5 ("tracing: Add locked_down checks to the open calls of files created for tracefs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
+If we call folio_putback_lru() on such folios (memcg_data == 0), we will
+add the folio to be freed to the LRU, making memcg code unhappy.  Running
+the hmm selftests:
+
+  # ./hmm-tests
+  ...
+  #  RUN           hmm.hmm_device_private.migrate ...
+  [  102.078007][T14893] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x7ff27d200 pfn:0x13cc00
+  [  102.079974][T14893] anon flags: 0x17ff00000020018(uptodate|dirty|swapbacked|node=0|zone=2|lastcpupid=0x7ff)
+  [  102.082037][T14893] raw: 017ff00000020018 dead000000000100 dead000000000122 ffff8881353896c9
+  [  102.083687][T14893] raw: 00000007ff27d200 0000000000000000 00000001ffffffff 0000000000000000
+  [  102.085331][T14893] page dumped because: VM_WARN_ON_ONCE_FOLIO(!memcg && !mem_cgroup_disabled())
+  [  102.087230][T14893] ------------[ cut here ]------------
+  [  102.088279][T14893] WARNING: CPU: 0 PID: 14893 at ./include/linux/memcontrol.h:726 folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.090478][T14893] Modules linked in:
+  [  102.091244][T14893] CPU: 0 UID: 0 PID: 14893 Comm: hmm-tests Not tainted 6.13.0-09623-g6c216bc522fd #151
+  [  102.093089][T14893] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+  [  102.094848][T14893] RIP: 0010:folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.096104][T14893] Code: ...
+  [  102.099908][T14893] RSP: 0018:ffffc900236c37b0 EFLAGS: 00010293
+  [  102.101152][T14893] RAX: 0000000000000000 RBX: ffffea0004f30000 RCX: ffffffff8183f426
+  [  102.102684][T14893] RDX: ffff8881063cb880 RSI: ffffffff81b8117f RDI: ffff8881063cb880
+  [  102.104227][T14893] RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+  [  102.105757][T14893] R10: 0000000000000001 R11: 0000000000000002 R12: ffffc900236c37d8
+  [  102.107296][T14893] R13: ffff888277a2bcb0 R14: 000000000000001f R15: 0000000000000000
+  [  102.108830][T14893] FS:  00007ff27dbdd740(0000) GS:ffff888277a00000(0000) knlGS:0000000000000000
+  [  102.110643][T14893] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  102.111924][T14893] CR2: 00007ff27d400000 CR3: 000000010866e000 CR4: 0000000000750ef0
+  [  102.113478][T14893] PKRU: 55555554
+  [  102.114172][T14893] Call Trace:
+  [  102.114805][T14893]  <TASK>
+  [  102.115397][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.116547][T14893]  ? __warn.cold+0x110/0x210
+  [  102.117461][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.118667][T14893]  ? report_bug+0x1b9/0x320
+  [  102.119571][T14893]  ? handle_bug+0x54/0x90
+  [  102.120494][T14893]  ? exc_invalid_op+0x17/0x50
+  [  102.121433][T14893]  ? asm_exc_invalid_op+0x1a/0x20
+  [  102.122435][T14893]  ? __wake_up_klogd.part.0+0x76/0xd0
+  [  102.123506][T14893]  ? dump_page+0x4f/0x60
+  [  102.124352][T14893]  ? folio_lruvec_lock_irqsave+0x10e/0x170
+  [  102.125500][T14893]  folio_batch_move_lru+0xd4/0x200
+  [  102.126577][T14893]  ? __pfx_lru_add+0x10/0x10
+  [  102.127505][T14893]  __folio_batch_add_and_move+0x391/0x720
+  [  102.128633][T14893]  ? __pfx_lru_add+0x10/0x10
+  [  102.129550][T14893]  folio_putback_lru+0x16/0x80
+  [  102.130564][T14893]  migrate_device_finalize+0x9b/0x530
+  [  102.131640][T14893]  dmirror_migrate_to_device.constprop.0+0x7c5/0xad0
+  [  102.133047][T14893]  dmirror_fops_unlocked_ioctl+0x89b/0xc80
+
+Likely, nothing else goes wrong: putting the last folio reference will
+remove the folio from the LRU again.  So besides memcg complaining, adding
+the folio to be freed to the LRU is just an unnecessary step.
+
+The new flow resembles what we have in migrate_folio_move(): add the dst
+to the lru, remove migration ptes, unlock and unref dst.
+
+Link: https://lkml.kernel.org/r/20250210161317.717936-1-david@redhat.com
+Fixes: 8763cb45ab96 ("mm/migrate: new memory migration helper for use with device memory")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Jérôme Glisse <jglisse@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_dynevent.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ mm/migrate_device.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/kernel/trace/trace_dynevent.c
-+++ b/kernel/trace/trace_dynevent.c
-@@ -239,6 +239,10 @@ static int dyn_event_open(struct inode *
- {
- 	int ret;
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -854,20 +854,15 @@ void migrate_device_finalize(unsigned lo
+ 			dst = src;
+ 		}
  
-+	ret = security_locked_down(LOCKDOWN_TRACEFS);
-+	if (ret)
-+		return ret;
-+
- 	ret = tracing_check_open_get_tr(NULL);
- 	if (ret)
- 		return ret;
++		if (!folio_is_zone_device(dst))
++			folio_add_lru(dst);
+ 		remove_migration_ptes(src, dst, false);
+ 		folio_unlock(src);
+-
+-		if (folio_is_zone_device(src))
+-			folio_put(src);
+-		else
+-			folio_putback_lru(src);
++		folio_put(src);
+ 
+ 		if (dst != src) {
+ 			folio_unlock(dst);
+-			if (folio_is_zone_device(dst))
+-				folio_put(dst);
+-			else
+-				folio_putback_lru(dst);
++			folio_put(dst);
+ 		}
+ 	}
+ }
 
 
 
