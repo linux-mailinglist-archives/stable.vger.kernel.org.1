@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-182525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E0ABADAC2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26163BAD851
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C53C4A6DB0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47FF316B4CB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0698E2FFDE6;
-	Tue, 30 Sep 2025 15:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CCB3043C4;
+	Tue, 30 Sep 2025 15:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVT6uGpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogjxp0wY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C0F2F5301;
-	Tue, 30 Sep 2025 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE1C846F;
+	Tue, 30 Sep 2025 15:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245229; cv=none; b=LndQM8MPdxnuCkTpIbxvh6X0+LwoBhbVzsBX5GNdU+rhvC3wAOfHiZdRdGTZWoZwYcIgUH97BqXaKbAUj1svQePGgqiUqp5miASBf6iHwqDax9SP+tRAQpN5mBAqRLk9iilQvqXcywjNroF25YWEUCQUOETy07SRjNnNyuxBZNc=
+	t=1759244780; cv=none; b=TtDQoWb43c4j421mGK2elKFHukPTUmEO6fxGWteweqvLZN/xZMSeqLtQ58ump7guTwQ9Obc1NsIHX2+UhMNwaJRRRu+nCKp/kfMUtnaK9JSQfTVnFPqa9oJSxfbN/hvW5F1SztmD2QdqmC3drHJRQakxz6rsp5PxOCi4lpJoHYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245229; c=relaxed/simple;
-	bh=oWjsiEKn23pWXVN/m0hpQu4RL65TliQ11zW+3N/W3lg=;
+	s=arc-20240116; t=1759244780; c=relaxed/simple;
+	bh=JeD6GkkkPgjSmSb2n0g5DZhWRrq6w/+9pczmmYKVWrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pixo+bierdp02kkCuCNFQTwhGL16qsPkWde9zV73hMpXUMPpc/ONXHPShX12dmR7twxNaEWa5MUIAEqSqA0pQuMe99MMgSO9uDdTC11eKM2NkFD5hM8jap3L3KFG/u+nr5QurYi9jozUZoMxvlHzVVXg6Y56N6ZIZqNWjDm4jWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVT6uGpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46300C4CEF0;
-	Tue, 30 Sep 2025 15:13:49 +0000 (UTC)
+	 MIME-Version; b=dvR2WPOa1xwQz6knjL1DC0IOoZRW48wp8EDYynlcWmufo5ChEVv67ZPrus+r0DuyBM7Aur6nIrVK6KB++Y8timK5TBk+E7iXDfT0+BaNQ+MFp7d6sQZuLIw9JTlqPqD9FpCXfZDjZqshpObZh0wAoYEKCmxQNjNP2MWDnXVGvKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogjxp0wY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1880BC4CEF0;
+	Tue, 30 Sep 2025 15:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245229;
-	bh=oWjsiEKn23pWXVN/m0hpQu4RL65TliQ11zW+3N/W3lg=;
+	s=korg; t=1759244780;
+	bh=JeD6GkkkPgjSmSb2n0g5DZhWRrq6w/+9pczmmYKVWrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVT6uGpxrlsEB8IdvT4mbVX5NiBszyoJNENNCkOGeyVpgHV5dO6/o1klkrdw2PtK9
-	 h7s8W9z58zXNWmGgXhnHE58+JcoPgfDPijrpNnvX5wRo+wmzLCBwK9UNKX+tLoE3Uu
-	 NR9QR4OcbzGKakxqjIW9laIG+QopUVf1OaxDx8H8=
+	b=ogjxp0wY162UH/toPXC1cOSxT5DI3vBgJDhCLwT4+RpWfxuRbeH96FCDmksXatEqZ
+	 6yuzW2j8hV/cumQpI/dPLPvT94dgbNbsDEJtIpwtV3BMtMwgadNtZdSZZ9m5C1VYu2
+	 4PRy6KsW8dNAXO8PIWZh2pJ2LNoSyWXpaBXcQAH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/151] ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.16 111/143] tracing: dynevent: Add a missing lockdown check on dynevent
 Date: Tue, 30 Sep 2025 16:47:15 +0200
-Message-ID: <20250930143831.789965881@linuxfoundation.org>
+Message-ID: <20250930143835.657750305@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 03ddd3bdb94df3edb1f2408b57cfb00b3d92a208 ]
+commit 456c32e3c4316654f95f9d49c12cbecfb77d5660 upstream.
 
-Handle report from checkpatch.pl:
+Since dynamic_events interface on tracefs is compatible with
+kprobe_events and uprobe_events, it should also check the lockdown
+status and reject if it is set.
 
-  CHECK: multiple assignments should be avoided
+Link: https://lore.kernel.org/all/175824455687.45175.3734166065458520748.stgit@devnote2/
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-6-1a821463b632@collabora.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17911ff38aa5 ("tracing: Add locked_down checks to the open calls of files created for tracefs")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace_dynevent.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 866d309454aa3..4ab57ef56330d 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -1734,7 +1734,8 @@ static int snd_microii_spdif_default_put(struct snd_kcontrol *kcontrol,
- 	unsigned int pval, pval_old;
- 	int err;
+--- a/kernel/trace/trace_dynevent.c
++++ b/kernel/trace/trace_dynevent.c
+@@ -230,6 +230,10 @@ static int dyn_event_open(struct inode *
+ {
+ 	int ret;
  
--	pval = pval_old = kcontrol->private_value;
-+	pval = kcontrol->private_value;
-+	pval_old = pval;
- 	pval &= 0xfffff0f0;
- 	pval |= (ucontrol->value.iec958.status[1] & 0x0f) << 8;
- 	pval |= (ucontrol->value.iec958.status[0] & 0x0f);
--- 
-2.51.0
-
++	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	if (ret)
++		return ret;
++
+ 	ret = tracing_check_open_get_tr(NULL);
+ 	if (ret)
+ 		return ret;
 
 
 
