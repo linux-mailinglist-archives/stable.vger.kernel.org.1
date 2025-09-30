@@ -1,80 +1,48 @@
-Return-Path: <stable+bounces-182023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95436BAB807
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 07:33:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9973BAB81C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 07:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A1BE1C48F7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 05:33:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 283F21899DC8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 05:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C4C2765C3;
-	Tue, 30 Sep 2025 05:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373052765CE;
+	Tue, 30 Sep 2025 05:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="TI4uSpQw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lenag9U2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E635276050
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 05:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD02C34BA4C;
+	Tue, 30 Sep 2025 05:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759210403; cv=none; b=U3khWtVFnLOhxJRUaIPvhrZficERS2ooqF4fSXG7WlUWMpnXsu3G5WZzyOGf2RMN3OVwVAc9/N2RXah8VpyEhpuTv8s3v4O9P1Dqxlkdih9SPBCoFX1jOsL9S9bPIpPPytr7LOLrnMAsnkGHKVikh/NHSo7bLI9B03tqzc6f5IY=
+	t=1759211101; cv=none; b=j77VX61OnsdXructpFk68ehN0e1f/IKIYY+TVMcxSEQXES2kYw/EYGkF/kpiaow7h+kbQFWqRRW2C3q06Ku1vxKHLUF0KVYUk9I/iJtTTb+xUMFCfEWCDwb0eZ7s1vO9SJgIwMdnU8/RarCLOr50Ic9yrNOCzU5fF3RPbU+ZjAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759210403; c=relaxed/simple;
-	bh=+zYHcq1PnJGmU//SbV0gpmoJSYNqd+MwGlmrpbux8Rk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ukiCq3T3mJhrCE4LNS+ww/Mw2lErTvwsl0YnKx0BV0qWPtNNAPwhi82ZZ3+5wfZRPgxyJ1Je9OUySK84TTxuexJoDZ2w49WREyddO4JR1UnBVo0O8asqGiKHWdbia2c7Vh9OKt0GbED6D62ydwY3mv0v8NyIkWy2R+T27nCgm4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=TI4uSpQw; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so3211198f8f.3
-        for <stable@vger.kernel.org>; Mon, 29 Sep 2025 22:33:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1759210399; x=1759815199; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RcKZSqsNCClUnXNLZ+VWODkqJQUd67st9xIuGAhStQk=;
-        b=TI4uSpQwWfQKYiW1tI6/8kA5Z+W7OMOqi0a4zllk1q8j+84RD0TwN0Du9UKkguXWhO
-         W76z5mPf5mURJ4ve7m6CFUL+1+UsRX1pLFNYCGCwo3SFu01z3wnAa7RMnSU9BICyKlwO
-         ld4kwDoZEKgwKlSsnd9aGwUYu82qT3Iho1o+MtzCQMBzgVs1uqg5u3ukbs5ZPNPGNodb
-         543neIkoKYOqLzvovMx5dWX6W7EHk5etHpXdVKHjH0jlEYrqJXmnvgrsndCmaHc0Xjbr
-         jf9IHBQDX6BUC8KxoEkh0w/TJX3JwqnHOIlLZNgtum8ys1Mb2uOlKF8vBz4ICzOSZsa5
-         OtRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759210399; x=1759815199;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RcKZSqsNCClUnXNLZ+VWODkqJQUd67st9xIuGAhStQk=;
-        b=V2BLfK32eQiXkP2xytybPpzZMeMJATWVpC+NOPMF/RW9RfJ9TMM6sgJQEXmsPHZvX5
-         TGLABO0sZ9mqm4/hgNecA/3yMjnh8kG0KsjNtyrEda00UkDoV+zleJZvu37S2lUFg5Bc
-         wEzAY0es1ljGTC+5eN2EEQMMm8f2jVcYbjnU/VZ+bHXtvJoXJsg8TYje1Z4+th/Wamo6
-         o3ftSZvmAt8mD7B4iCSDXrDBJI+Q/7gk7rt8dg/khG346GT7mNqWMsHNT7CRSfc30lq/
-         X3BH+XqXG2j+yQ0hK/rZBpHb1uPGlfqF2aS4VLgqot2PrxTWHvphnwEgI9DwvSa6EAF5
-         4mow==
-X-Forwarded-Encrypted: i=1; AJvYcCUf3+jAYnjwtKQIiNt1DXJQsMxgmiYUdE0QGYMLpREcvdoZflRdWSDYwhS3AlexiF0CoEbz/T8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTh0wmdJsf1/Q5sWJIAnVE9/410cB2WgGHotpvgVcX8OBi2Dcf
-	odSnc757+0mFN/sSzzUQsRPEpL+fzzDQLoPpf/pvGLRcyjBjCWpqS7w4P8GaQQmGjWA=
-X-Gm-Gg: ASbGncsuEioJEPtd46iG8NVBZxuXMyRkHGemGjq0lJ3v/Fl9od7X7jktIsWfq21hgsK
-	g+AxJQ8R6xxoN8TUKjimK8McfwOcliLVmvdi4MuxV4FLmC+AX8xmvifwInZQI9MbIzd/TWWXrMM
-	2PNashsB4SvhOsnmhHyocFzSvS9xprYlTGj2Vta+YKFTciB8SLCMB9+f7y154j/A9tB2oBMbibw
-	1Ff7whUf6Imb/yPThLSo5KRYA5gmF/mej1p1RDOrUIZ9ZRzGCjRIVcwlGij9b0KgJ4/pLETmMk3
-	/F0vAiHnSiHOUv2pbu1sMj8NT7gpYehTHT9Ou+RVgF7F1pZO/HHeeoxkrC3OaDa7LBnfkhUBTp1
-	HiRQvTbUx2Cfb5RfOOu1ZMBBxrI3Lt/r8rN35/fKG9szLZz06h+X34Yo=
-X-Google-Smtp-Source: AGHT+IEkueAS01kFVAoXd3MEH9FbKcaIHwo56QQ73i1m/EjHyO0vo1fWE9up8eTSOW6ZhEmF700+iQ==
-X-Received: by 2002:a05:6000:400a:b0:3e4:957d:d00 with SMTP id ffacd0b85a97d-40e4c2d2576mr17438762f8f.58.1759210399124;
-        Mon, 29 Sep 2025 22:33:19 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.111])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc88b0779sm20750915f8f.58.2025.09.29.22.33.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 22:33:18 -0700 (PDT)
-Message-ID: <2bd09757-cd66-4a2a-8801-0f62dc99b9c8@tuxon.dev>
-Date: Tue, 30 Sep 2025 08:33:15 +0300
+	s=arc-20240116; t=1759211101; c=relaxed/simple;
+	bh=a78Qm9QHMfIuLD6QX+5pcxjGrWzdwlk1atDpLyjau+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JwI5qFk3k/4qHlykrymcQv5FSpEiqKwn1NKvR+NzPpaUxFgWZbBs61Qx54TdUCzZg4u3nFbpE0g3ETRKPTNKCize8mnZpMG7u+Eau53z0MqTGcN03uaRnBCDZW8/zGuQGDQ9oLx9U73E0+Zotph0Qdh++A/HCD9hT55u3NP+mIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lenag9U2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E962C4CEF0;
+	Tue, 30 Sep 2025 05:44:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759211100;
+	bh=a78Qm9QHMfIuLD6QX+5pcxjGrWzdwlk1atDpLyjau+g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lenag9U2etd8ReaixEBEnjvNRnOy71LZfh3OW0NIrtmelMLnE+QJggR2+z5xlyIBv
+	 KOzWcMnCD6Vx+lBJmiubP4DSOTWkgmerpQyol0CRrOYjD9b5K/WvW1lkTMcLAak3wj
+	 x1eQX/haoIcrmybg6Eg8UjAf7ekz+9rft4PqWwWeMwjWCH/n3kOU6Og+djsM13w9eK
+	 sD4qu2A9dWUpuMr0mFYgyAZ8jAgBHMCBTG75FpIg/CHMUKSyCBsuSqMAwDfyMJ0a1W
+	 87eB0R6JIVeg7cuXzRq+G/E7l4IUwdAta+Dek03K5zaieTnf8Iw2kO9+tg9i8MCQ8E
+	 GMi7iUK5y+TlA==
+Message-ID: <7d35d8ca-f711-41b2-b058-08a19a207160@kernel.org>
+Date: Tue, 30 Sep 2025 14:44:55 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,52 +50,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
- linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-References: <20250912095308.3603704-1-claudiu.beznea.uj@bp.renesas.com>
- <CAMuHMdXv1-w0SE7FZy5k3jg2FO-a-RB2w1WB=VM_UFEA9zjWDw@mail.gmail.com>
- <ef82c610-0571-4665-a5d1-07a9ed9fb8d3@tuxon.dev>
+Subject: Re: [PATCH v3] net/can/gs_usb: increase max interface to U8_MAX
+To: Celeste Liu <uwu@coelacanthus.name>
+Cc: Maximilian Schneider <max@schneidersoft.net>,
+ Henrik Brix Andersen <henrik@brixandersen.dk>,
+ Wolfgang Grandegger <wg@grandegger.com>, Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-can@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Runcheng Lu <runcheng.lu@hpmicro.com>,
+ stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
+References: <20250930-gs-usb-max-if-v3-1-21d97d7f1c34@coelacanthus.name>
 Content-Language: en-US
-In-Reply-To: <ef82c610-0571-4665-a5d1-07a9ed9fb8d3@tuxon.dev>
+From: Vincent Mailhol <mailhol@kernel.org>
+Autocrypt: addr=mailhol@kernel.org; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
+ fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
+ F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
+ 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
+ YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
+ dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
+ zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <20250930-gs-usb-max-if-v3-1-21d97d7f1c34@coelacanthus.name>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi, Geert,
+On 9/30/25 12:06 PM, Celeste Liu wrote:
+> This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
+> converter[1]. The original developers may have only 3 intefaces device to
+                                                        ^^^^^^^^^
+interfaces (missing "r")
 
-On 9/29/25 15:10, Claudiu Beznea wrote:
->> This conflicts with commit d57183d06851bae4 ("pinctrl: renesas: rzg2l:
->> Drop unnecessary pin configurations"), which I have already queued
->> in renesas-drivers/renesas-pinctrl-for-v6.19.  Hence I am replacing
->> the above hunk by:
->>
->>             /* Switching to GPIO is not required if reset value is
->> same as func */
->>             reg = readb(pctrl->base + PMC(off));
->>     -       spin_lock_irqsave(&pctrl->lock, flags);
->>     +       raw_spin_lock_irqsave(&pctrl->lock, flags);
->>             pfc = readl(pctrl->base + PFC(off));
->>             if ((reg & BIT(pin)) && (((pfc >> (pin * 4)) & PFC_MASK) == func)) {
->>     -               spin_unlock_irqrestore(&pctrl->lock, flags);
->>     +               raw_spin_unlock_irqrestore(&pctrl->lock, flags);
->>                     return;
->>             }
->>
->> while applying.
-> This is right. Thank you! I'm going to give it also a try (on actual HW) a
-> bit later. I'll let you know.
-
-Sorry for the delay, all looks good to me (checked on RZ/G3S).
-
-Thank you,
-Claudiu
-
+> test so they write 3 here and wait for future change.
 > 
-> Thank you,
-> Claudiu
+> During the HSCanT development, we actually used 4 interfaces, so the
+> limitation of 3 is not enough now. But just increase one is not
+> future-proofed. Since the channel type in gs_host_frame is u8, just
+> increase interface number limit to max size of u8 safely.
+> 
+> [1]: https://github.com/cherry-embedded/HSCanT-hardware
+> 
+> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+> Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+
+The patch is good as-is. However, speaking of the interface numbers, there is
+another issue in this gs_usb driver: net_device->dev_port is not populated, and
+according to the documentation, this is a bug.
+
+
+See the description here:
+
+
+
+  https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-net
+
+
+
+  What:		/sys/class/net/<iface>/dev_port
+
+  Date:		February 2014
+
+  KernelVersion:	3.15
+
+  Contact:	netdev@vger.kernel.org
+
+  Description:
+
+  		Indicates the port number of this network device, formatted
+
+  		as a decimal value. Some NICs have multiple independent ports
+
+  		on the same PCI bus, device and function. This attribute allows
+
+  		userspace to distinguish the respective interfaces.
+
+
+
+  		Note: some device drivers started to use 'dev_id' for this
+
+  		purpose since long before 3.15 and have not adopted the new
+
+  		attribute ever since. To query the port number, some tools look
+
+  		exclusively at 'dev_port', while others only consult 'dev_id'.
+
+  		If a network device has multiple client adapter ports as
+
+  		described in the previous paragraph and does not set this
+
+  		attribute to its port number, it's a kernel bug.
+
+
+
+Would you mind sending a separate patch (with a Fixes: tag) to resolve this?
+
+
+Yours sincerely,
+Vincent Mailhol
 
 
