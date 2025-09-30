@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24D4BADA7D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7394BBAD680
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71353BF3D3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B509E1942DF7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436A12236EB;
-	Tue, 30 Sep 2025 15:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E776305048;
+	Tue, 30 Sep 2025 14:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RT/O7qEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ef4ppuqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CF0223DD6;
-	Tue, 30 Sep 2025 15:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C840302163;
+	Tue, 30 Sep 2025 14:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245197; cv=none; b=o5qJJwYDI2q7iUAeQ9QVrYRP05Gvvn+reokBwPL8xYXOE+EJqrfRpK5boXkx6P5dKHDZ6fHxnqk9Qr+k+8ZJf6nDUJiFpC8eP0nLg93b64uVb182wewL1pz1qwP2TbkUiErb0oTxhliqyc8Yxqpmb8DGxKvmT85G4CdFbzcU1c4=
+	t=1759244319; cv=none; b=DVZ5Et/gy5dGcUUrNUHzvYllRO7C2I+6telQ3EdU2GuKU/2iXnjnVEtZAa1+Rc6DXTCWdGNg7umUH/T+9/6PR1i7X+eEw68zH+Gem3LJRD0S8MKGXafALDifCTzGsPmKfy8c2fzAqa7aQ5YDXP1KImRCcZhadYLRwmIJIsHroSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245197; c=relaxed/simple;
-	bh=zoty6v551NW4OImh+Qv75Pu9lPJJUJyT/Ho62B91glg=;
+	s=arc-20240116; t=1759244319; c=relaxed/simple;
+	bh=EhCNkDWmzIh5c75FiXueiS2d+j3sRXK6ccGYstEy41Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4FEuTRLVfPnl5tN34AQjwXj1ZtJesiqe3IaRWT9TK0KuM+WVqgt1gsQSMLFrKZCmrItwhcPMd7YqgxtEB6QxAnNkrvXMDiZzfhOXHIl9uhhk9qAfs3tG2AWyJydWa7EJdeo2r6h7VL3pSQEilo7ztchAoTxqf7F3/LU84q0HZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RT/O7qEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FCFC4CEF0;
-	Tue, 30 Sep 2025 15:13:14 +0000 (UTC)
+	 MIME-Version; b=Sh0EOSfq7xDsJcFAiiWhDeqVlvfnrUxHxdiYkwMWTlsZt0s2fTRrqxiLgZD1HuwKkp5BYxdUmGYqGOCplOamzRJvWkfjruSnkjFqsfQUw2h/J9io1LDseXP2GozwmdULRt8hcOmO4JSkbuQq+4TMmT74TTjN+9fGTYypnPlJYTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ef4ppuqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF908C113D0;
+	Tue, 30 Sep 2025 14:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245195;
-	bh=zoty6v551NW4OImh+Qv75Pu9lPJJUJyT/Ho62B91glg=;
+	s=korg; t=1759244319;
+	bh=EhCNkDWmzIh5c75FiXueiS2d+j3sRXK6ccGYstEy41Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RT/O7qEyj8+T7UGphzLZryXXZlBC8NKRXpNaak6IKupXR+FQDOeSgs/wMOja94mj5
-	 yfU9DKSClyscx4x/6Jnmm3tQcJKQmwJlj3C4zv9eUbGCsDpu+4aB0Bkq8ZmsqL8mQ8
-	 75Q1icJqiP+/cQZzJ4O24aCXPTMt/3neir6pXAxo=
+	b=ef4ppuqmZNxG5cX06mkdxCJIh7iricZ+LaeVhcfGUbTaPXCE0weDugPQxzQ5d1tel
+	 +Q/8ZtzUs21FwgEciNyXJ3eZ0S5nDTGyavaLkUkr3P0lVeimGaYMjuD8qNJpTGpnfs
+	 2AZ+xt7wr8+Un4VEA8Q9hsdFa0xxHP99LAFIf2fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 095/151] phy: broadcom: ns-usb3: fix Wvoid-pointer-to-enum-cast warning
+Subject: [PATCH 5.10 094/122] arm64: dts: imx8mp: Correct thermal sensor index
 Date: Tue, 30 Sep 2025 16:47:05 +0200
-Message-ID: <20250930143831.379909315@linuxfoundation.org>
+Message-ID: <20250930143826.841348791@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit bd6e74a2f0a0c76dda8e44d26f9b91a797586c3b ]
+[ Upstream commit a50342f976d25aace73ff551845ce89406f48f35 ]
 
-'family' is an enum, thus cast of pointer on 64-bit compile test with
-W=1 causes:
+The TMU has two temperature measurement sites located on the chip. The
+probe 0 is located inside of the ANAMIX, while the probe 1 is located near
+the ARM core. This has been confirmed by checking with HW design team and
+checking RTL code.
 
-  drivers/phy/broadcom/phy-bcm-ns-usb3.c:209:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+So correct the {cpu,soc}-thermal sensor index.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230810111958.205705-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
+Fixes: 30cdd62dce6b ("arm64: dts: imx8mp: Add thermal zones support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns-usb3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-@@ -206,7 +206,7 @@ static int bcm_ns_usb3_mdio_probe(struct
- 	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
- 	if (!of_id)
- 		return -EINVAL;
--	usb3->family = (enum bcm_ns_family)of_id->data;
-+	usb3->family = (uintptr_t)of_id->data;
- 
- 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
- 	err = of_address_to_resource(syscon_np, 0, &res);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 0186b3992b95f..8b02ead72a88c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -142,7 +142,7 @@
+ 		cpu-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 0>;
++			thermal-sensors = <&tmu 1>;
+ 			trips {
+ 				cpu_alert0: trip0 {
+ 					temperature = <85000>;
+@@ -172,7 +172,7 @@
+ 		soc-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 1>;
++			thermal-sensors = <&tmu 0>;
+ 			trips {
+ 				soc_alert0: trip0 {
+ 					temperature = <85000>;
+-- 
+2.51.0
+
 
 
 
