@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C343CBAD5BE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB3CBAD9FE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D10324783
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:56:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39DFF3A9E7B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F3A305040;
-	Tue, 30 Sep 2025 14:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B92306486;
+	Tue, 30 Sep 2025 15:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnSTvu0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miQrqRIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5CB1FCCF8;
-	Tue, 30 Sep 2025 14:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24C12236EB;
+	Tue, 30 Sep 2025 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244163; cv=none; b=TgfMhDR5EUZgNICg3WAerR3HrU3D9EqTVJK8R4YKwi5tFQvC73JjkKA53Z3Qyiyx3BnMbuSmPA5mHNQPdFpTZMcKIGBnyH71z6kLq04qNv14n4u4dW5FLdp1hanaM8cUj60fLuvv+tvtt+f6p+u8AI5SGrKvg9j3zaGjHmtd10A=
+	t=1759245038; cv=none; b=fm1a+PK2QgUBuoyv+MTMjS+BUfTM7HsjZPbYzz219dtRzxshU60yN4mBUA44db9YIgWIF4PDo4r0TYo6bbGdgt9WG+st7U+RuNA/PgFQwS78IexSliTOoUeGNmzvbAs5SEA4m/PAnwbHeem33x5A630D3t+KZSG24cS15FtP9nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244163; c=relaxed/simple;
-	bh=alPJPIuRW89sNcwZMJeylpufJKM5qrSwJa30gC8jATU=;
+	s=arc-20240116; t=1759245038; c=relaxed/simple;
+	bh=EfwP+73d/Rq+v93ATjheJL0XA9K44d5vY6+zzqoDCuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIu6topWYCKrBlCqcuVtiBoovcxErzrshbhlvS2OMHrIVfdVI+o3N7RSKAMu7p3dqLCCQBub3DxNAkBz+IMpxTO4rb/i/SjYk24s/L6SUHVGR7U4kUBeYgHS1z0eNmJXyUUFJnLRlnwRaWOSeQ1NS3eOPfAriPi/xEIu/ldAK3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnSTvu0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6E9C4CEF0;
-	Tue, 30 Sep 2025 14:56:02 +0000 (UTC)
+	 MIME-Version; b=EuP+yzikk3bCo4+9OIRfkE4DquKtzcgnxvKtVbvJwcchtpP5coxqiryooRwZgaPOSEnTQb1wsSTnXaoq9I/oZLr9w1UHV+CQAXV8aa/8FRkE1jbhLFx2ZR8HqUAPjx27tNNe84fDecTlB+WiurPJzpuL+6uAB4UkYD0dXjRPO3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miQrqRIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07341C4CEF0;
+	Tue, 30 Sep 2025 15:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244163;
-	bh=alPJPIuRW89sNcwZMJeylpufJKM5qrSwJa30gC8jATU=;
+	s=korg; t=1759245038;
+	bh=EfwP+73d/Rq+v93ATjheJL0XA9K44d5vY6+zzqoDCuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnSTvu0ezeNScfTH632O/0bcT1T/smnF+71bFVY75ceUuQRZqrMt8oTsgNyojvlC/
-	 TxviOpTDosLpM241q2vaP5O2USWa6EOENa+QNWWaYL/Q83TnH2ExOkSwomdTIO00Tj
-	 pG3siiD1o9HuGP+pF59Tu/dRLiolLh9n42C3gFjc=
+	b=miQrqRIXOnt4qRsI77he+coy329BpFahWTAUjF7mzEmg99VTeWxw8V5oWbA2E6MTR
+	 Pjj/4f6LEMijL9nKE448U789Ic91JM5NKgUPOATcx+RWHGHlQifYbQsi4v64liz3Ke
+	 IWlkKIJJHfvwJoxtbzGGDagNq3UHivhxsmxdk6NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Anssi Hannula <anssi.hannula@bitwise.fi>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/122] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Subject: [PATCH 5.15 046/151] can: xilinx_can: xcan_write_frame(): fix use-after-free of transmitted SKB
 Date: Tue, 30 Sep 2025 16:46:16 +0200
-Message-ID: <20250930143824.846746496@linuxfoundation.org>
+Message-ID: <20250930143829.446929467@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Anssi Hannula <anssi.hannula@bitwise.fi>
 
-[ Upstream commit d613f53c83ec47089c4e25859d5e8e0359f6f8da ]
+[ Upstream commit ef79f00be72bd81d2e1e6f060d83cf7e425deee4 ]
 
-When I did memory failure tests, below panic occurs:
+can_put_echo_skb() takes ownership of the SKB and it may be freed
+during or after the call.
 
-page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
-kernel BUG at include/linux/page-flags.h:616!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- unpoison_memory+0x2f3/0x590
- simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
- debugfs_attr_write+0x42/0x60
- full_proxy_write+0x5b/0x80
- vfs_write+0xd5/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f0314887
-RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
-RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
-RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
- </TASK>
-Modules linked in: hwpoison_inject
----[ end trace 0000000000000000 ]---
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: Fatal exception ]---
+However, xilinx_can xcan_write_frame() keeps using SKB after the call.
 
-The root cause is that unpoison_memory() tries to check the PG_HWPoison
-flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
-triggered.  This can be reproduced by below steps:
+Fix that by only calling can_put_echo_skb() after the code is done
+touching the SKB.
 
-1.Offline memory block:
+The tx_lock is held for the entire xcan_write_frame() execution and
+also on the can_get_echo_skb() side so the order of operations does not
+matter.
 
- echo offline > /sys/devices/system/memory/memory12/state
+An earlier fix commit 3d3c817c3a40 ("can: xilinx_can: Fix usage of skb
+memory") did not move the can_put_echo_skb() call far enough.
 
-2.Get offlined memory pfn:
-
- page-types -b n -rlN
-
-3.Write pfn to unpoison-pfn
-
- echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
-
-This scenario can be identified by pfn_to_online_page() returning NULL.
-And ZONE_DEVICE pages are never expected, so we can simply fail if
-pfn_to_online_page() == NULL to fix the bug.
-
-Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
-Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
+Signed-off-by: Anssi Hannula <anssi.hannula@bitwise.fi>
+Fixes: 1598efe57b3e ("can: xilinx_can: refactor code in preparation for CAN FD support")
+Link: https://patch.msgid.link/20250822095002.168389-1-anssi.hannula@bitwise.fi
+[mkl: add "commit" in front of sha1 in patch description]
+[mkl: fix indention]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/can/xilinx_can.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1616,10 +1616,9 @@ int unpoison_memory(unsigned long pfn)
- 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
- 					DEFAULT_RATELIMIT_BURST);
+diff --git a/drivers/net/can/xilinx_can.c b/drivers/net/can/xilinx_can.c
+index cb48598e32ad8..ac63e89397774 100644
+--- a/drivers/net/can/xilinx_can.c
++++ b/drivers/net/can/xilinx_can.c
+@@ -590,14 +590,6 @@ static void xcan_write_frame(struct net_device *ndev, struct sk_buff *skb,
+ 		dlc |= XCAN_DLCR_EDL_MASK;
+ 	}
  
--	if (!pfn_valid(pfn))
--		return -ENXIO;
+-	if (!(priv->devtype.flags & XCAN_FLAG_TX_MAILBOXES) &&
+-	    (priv->devtype.flags & XCAN_FLAG_TXFEMP))
+-		can_put_echo_skb(skb, ndev, priv->tx_head % priv->tx_max, 0);
+-	else
+-		can_put_echo_skb(skb, ndev, 0, 0);
 -
--	p = pfn_to_page(pfn);
-+	p = pfn_to_online_page(pfn);
-+	if (!p)
-+		return -EIO;
- 	page = compound_head(p);
+-	priv->tx_head++;
+-
+ 	priv->write_reg(priv, XCAN_FRAME_ID_OFFSET(frame_offset), id);
+ 	/* If the CAN frame is RTR frame this write triggers transmission
+ 	 * (not on CAN FD)
+@@ -630,6 +622,14 @@ static void xcan_write_frame(struct net_device *ndev, struct sk_buff *skb,
+ 					data[1]);
+ 		}
+ 	}
++
++	if (!(priv->devtype.flags & XCAN_FLAG_TX_MAILBOXES) &&
++	    (priv->devtype.flags & XCAN_FLAG_TXFEMP))
++		can_put_echo_skb(skb, ndev, priv->tx_head % priv->tx_max, 0);
++	else
++		can_put_echo_skb(skb, ndev, 0, 0);
++
++	priv->tx_head++;
+ }
  
- 	if (!PageHWPoison(p)) {
+ /**
+-- 
+2.51.0
+
 
 
 
