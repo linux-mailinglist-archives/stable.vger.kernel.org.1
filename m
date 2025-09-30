@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-182648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77501BADB9D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC33BADD29
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9B5C1944C6C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F397B3B0833
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61225173;
-	Tue, 30 Sep 2025 15:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A47630505F;
+	Tue, 30 Sep 2025 15:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKwspP5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRAcCi+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAFB27B328;
-	Tue, 30 Sep 2025 15:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC47D1F3FED;
+	Tue, 30 Sep 2025 15:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245632; cv=none; b=QG784N3R7dU3wVV3eOba6tEa65wPYnTMCtcSUzfa+5jYMZt//7bS/uF+JonGS8iYfcKY8fmVcJRwgCB1YEm3ee3rvVHwPfZPgV+LafJS3vwhedGHJRcL1dVLxHiic+cQDAK5KpuaTy7vaMl6qSnSjiLyXJietAFXZGSaoUrdgow=
+	t=1759245856; cv=none; b=nbmpenbklVwFhMHrSpSLGu+RyFQvC1klMnvsXE4w5G8bYyTLuIICKxc62R9S49g5IC7fZiALTL9/Rl3hmHU1zrBVA27AGv8fDiOq1c8fcaZe6AQDKfez3YtnzwbtJNrCgUF43Kj+sReWgcS4mk4Y62u37gATecV8a+zDGnym6NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245632; c=relaxed/simple;
-	bh=PRJhag8nfMoa4keA28wBL1IKGCvWYL8/pLgFwfWcF4w=;
+	s=arc-20240116; t=1759245856; c=relaxed/simple;
+	bh=JadtmOKpAJ5Sx4W5WhuXmwtjAFWIV7JFwu/XxKteJSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiSPHGaVECLap2hb4kZJI8p8NJzcmuWgFfTpvwwRWClCjXmX2SGcTtoWo3sWjhI3wxGBm3jaghHfqsktPJonUYxxW0Wq4JPTPgKgaBYxz4fmEtZ4JJwc/n3U+YExHZO47lngiCtoh9gJz771WPvZ2086P7SVq3IlbRNzkU2jIRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKwspP5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E45AC4CEF0;
-	Tue, 30 Sep 2025 15:20:31 +0000 (UTC)
+	 MIME-Version; b=Q65bXXwY4TIN2I8A4LG9s5BSmNE4WhiE3xRT+9brORjBMOPYsv04W2UaeBKTfCJtoKFvofczW1K1stDOXxXT+0HLYrxiUwHHu+4mPfj114Y7ZARVUXZIDl26BGuZCPA5G0lGZwbYIVAEHjpibGypo7uaDgFyLF0eTVk6ayIL3jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRAcCi+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A814C4CEF0;
+	Tue, 30 Sep 2025 15:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245632;
-	bh=PRJhag8nfMoa4keA28wBL1IKGCvWYL8/pLgFwfWcF4w=;
+	s=korg; t=1759245856;
+	bh=JadtmOKpAJ5Sx4W5WhuXmwtjAFWIV7JFwu/XxKteJSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKwspP5T9a3h/5TBFNUDTX07jpNtbG9xcXL78cd8viu+oVXz7mG/05c45HNyP3k2B
-	 rHBjnBif9Y1CqbDSpdfwA70PpRfCPbx5Ksc9pUQWnaUCFnFo+DJDBC5TKQ6cx6qMyH
-	 OPMwr5NC7G9MhuAj1EVuhvHyi7ZNf3AZaMSE25Zs=
+	b=tRAcCi+QXoZDbEvLXU7sFKORJDH1CxFY9Tn7bpAQhhN5Ft3AbFfzBFxGLOvEq/+Bd
+	 TETWsGGHxFs1P7BLlZesLKJgvatXMMkwxxeTDs8eeZAnd6ngNvpxRsdHJVpSKKZQaJ
+	 7nuLY1JucIlI49u7qqM1QKc69ovsuANNDZks3ckk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 66/73] i40e: fix validation of VF state in get resources
+	"stable@vger.kernel.org, linux-s390@vger.kernel.org,  Nathan Chancellor" <nathan@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.6 71/91] s390/cpum_cf: Fix uninitialized warning after backport of ce971233242b
 Date: Tue, 30 Sep 2025 16:48:10 +0200
-Message-ID: <20250930143823.415354696@linuxfoundation.org>
+Message-ID: <20250930143824.138522479@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 877b7e6ffc23766448236e8732254534c518ba42 ]
+Upstream commit ce971233242b ("s390/cpum_cf: Deny all sampling events by
+counter PMU"), backported to 6.6 as commit d660c8d8142e ("s390/cpum_cf:
+Deny all sampling events by counter PMU"), implicitly depends on the
+unconditional initialization of err to -ENOENT added by upstream
+commit aa1ac98268cd ("s390/cpumf: Fix double free on error in
+cpumf_pmu_event_init()"). The latter change is missing from 6.6,
+resulting in an instance of -Wuninitialized, which is fairly obvious
+from looking at the actual diff.
 
-VF state I40E_VF_STATE_ACTIVE is not the only state in which
-VF is actually active so it should not be used to determine
-if a VF is allowed to obtain resources.
+  arch/s390/kernel/perf_cpum_cf.c:858:10: warning: variable 'err' is uninitialized when used here [-Wuninitialized]
+    858 |                 return err;
+        |                        ^~~
 
-Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
-i40e_vc_get_vf_resources_msg() and cleared during reset.
+Commit aa1ac98268cd ("s390/cpumf: Fix double free on error in
+cpumf_pmu_event_init()") depends on commit c70ca298036c ("perf/core:
+Simplify the perf_event_alloc() error path"), which is a part of a much
+larger series unsuitable for stable.
 
-Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Extract the unconditional initialization of err to -ENOENT from
+commit aa1ac98268cd ("s390/cpumf: Fix double free on error in
+cpumf_pmu_event_init()") and apply it to 6.6 as a standalone change to
+resolve the warning.
+
+Fixes: d660c8d8142e ("s390/cpum_cf: Deny all sampling events by counter PMU")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    7 ++++++-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |    3 ++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ arch/s390/kernel/perf_cpum_cf.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1455,6 +1455,7 @@ static void i40e_trigger_vf_reset(struct
- 	 * functions that may still be running at this point.
- 	 */
- 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
-+	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
+--- a/arch/s390/kernel/perf_cpum_cf.c
++++ b/arch/s390/kernel/perf_cpum_cf.c
+@@ -852,7 +852,7 @@ static int cpumf_pmu_event_type(struct p
+ static int cpumf_pmu_event_init(struct perf_event *event)
+ {
+ 	unsigned int type = event->attr.type;
+-	int err;
++	int err = -ENOENT;
  
- 	/* In the case of a VFLR, the HW has already reset the VF and we
- 	 * just need to clean up, so don't hit the VFRTRIG register.
-@@ -2121,7 +2122,10 @@ static int i40e_vc_get_vf_resources_msg(
- 	size_t len = 0;
- 	int ret;
+ 	if (is_sampling_event(event))	/* No sampling support */
+ 		return err;
+@@ -861,8 +861,6 @@ static int cpumf_pmu_event_init(struct p
+ 	else if (event->pmu->type == type)
+ 		/* Registered as unknown PMU */
+ 		err = __hw_perf_event_init(event, cpumf_pmu_event_type(event));
+-	else
+-		return -ENOENT;
  
--	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
-+	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
-+
-+	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
-+	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
- 		aq_ret = I40E_ERR_PARAM;
- 		goto err;
- 	}
-@@ -2224,6 +2228,7 @@ static int i40e_vc_get_vf_resources_msg(
- 				vf->default_lan_addr.addr);
- 	}
- 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
-+	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
- 
- err:
- 	/* send the response back to the VF */
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -39,7 +39,8 @@ enum i40e_vf_states {
- 	I40E_VF_STATE_MC_PROMISC,
- 	I40E_VF_STATE_UC_PROMISC,
- 	I40E_VF_STATE_PRE_ENABLE,
--	I40E_VF_STATE_RESETTING
-+	I40E_VF_STATE_RESETTING,
-+	I40E_VF_STATE_RESOURCES_LOADED,
- };
- 
- /* VF capabilities */
+ 	if (unlikely(err) && event->destroy)
+ 		event->destroy(event);
 
 
 
