@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59477BAD650
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FE3BAD8C9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD361885903
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 415E13A7A54
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B556730505F;
-	Tue, 30 Sep 2025 14:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2168302CD6;
+	Tue, 30 Sep 2025 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrxAjvYi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prah/3vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733F4199939;
-	Tue, 30 Sep 2025 14:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE240846F;
+	Tue, 30 Sep 2025 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244283; cv=none; b=EJZpa380NUtgDpoR7f3YGN/2LVyPGzLarNKZallsbsJBCW7AwrNjSu6jJwKSVZqdVIwdba0JdHrGkCkIXd7/+WHTTeXIVQQdXlofYkECX3ETcO5R3kxp3TGh7NGUWeV/UZFRHWbhUJyhvxncKway/dqrIDxMng5KQuVOZzpa0+0=
+	t=1759244762; cv=none; b=PAPFXuWeWkYFR5OqoDt024Ac+Sva92XVDkK6N03qbVkajoaIAQtZB4a/QTkRAunWqNGiqWZ2M25vXBbMbduDziCvetAIpfOmf9OFy65Zb9UpuwOy0CTwPbqsKym5dZktOwF2rl3P+FxfSO4B14F1gr/lDaC0FOKOAWc+NAkt8Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244283; c=relaxed/simple;
-	bh=wfPgoISDa/ppZkz83P+8lSO8zkvtu8+u+uEfcZ+PX0s=;
+	s=arc-20240116; t=1759244762; c=relaxed/simple;
+	bh=S/Z+2m+Qd9VO6T8tVY1C1HzZF3B/CDjtC5ZXNgID5Os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8emBxfy0NP5WzyP0HVDWFMvtem2c6Lns1ChBpb9et0kzPfUGSGN/nnzvSPJlVpMgTYKz0QB1ItqAw0lvvqDGCTaTwep2tw85CJYL3fhArEkmTv9J8ilcrp9Xs6k+OrLr0e0K5tTALtRyJ8cU6P3I2ng28B+7PUUhYHS5am3irc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrxAjvYi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBC2C4CEF0;
-	Tue, 30 Sep 2025 14:58:02 +0000 (UTC)
+	 MIME-Version; b=ZBw0EXtLb3/eWhjJOp3EPxXKt4O7pFxme9oHq8ULi59MBen6HT0z+f8vD9M5PE4dteukPbNpLIs5+cVgP48CHYtsV2icxQVb443wYasj8QQok0IOJLJLvAAouhRLjQZ2NBWNCr+taCU1cG8QrdDHofgyhaIt/X+n9yYCQg2MxeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prah/3vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C971C4CEF0;
+	Tue, 30 Sep 2025 15:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244283;
-	bh=wfPgoISDa/ppZkz83P+8lSO8zkvtu8+u+uEfcZ+PX0s=;
+	s=korg; t=1759244762;
+	bh=S/Z+2m+Qd9VO6T8tVY1C1HzZF3B/CDjtC5ZXNgID5Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrxAjvYiqAQ984kFhDLy8otXAt905v+UAcSDhMnc1OGRNoBtl5+s/fhoqYEmJNeec
-	 wSNYAfxMzuHCThcb9hISpZ2f280mNx9CStQEPXenFRaB/CBe9JWcOjhISbQkySP021
-	 tZ/o9akWj8YXH1xxZ4d5/YxqrEATLSUQuDU5Pd4g=
+	b=prah/3vdWw7cPhzLWcrCOL+qgGpmFfUkKX756sTapsVEhXYv0iiK7d8hL+ckt9+pE
+	 dl+H5irIFxu6Gl/PEi+BlWsEacpyqzIuq/llpw5FPlBfxyPxulVz/P8cfdJAJCRr2G
+	 LOLWK+ukmBYzIb2zY5vGzPAcWKeel8ukOXH6ZvU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Lukasz Laguna <lukasz.laguna@intel.com>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 081/122] net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
-Date: Tue, 30 Sep 2025 16:46:52 +0200
-Message-ID: <20250930143826.315748572@linuxfoundation.org>
+Subject: [PATCH 6.16 089/143] drm/xe/vf: Dont expose sysfs attributes not applicable for VFs
+Date: Tue, 30 Sep 2025 16:46:53 +0200
+Message-ID: <20250930143834.777688925@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit b6f56a44e4c1014b08859dcf04ed246500e310e5 ]
+[ Upstream commit 500dad428e5b0de4c1bdfa893822a6e06ddad0b5 ]
 
-Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-device property") rfkill_find_type() gets called with the possibly
-uninitialized "const char *type_name;" local variable.
+VFs can't read BMG_PCIE_CAP(0x138340) register nor access PCODE
+(already guarded by the info.skip_pcode flag) so we shouldn't
+expose attributes that require any of them to avoid errors like:
 
-On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
+ [] xe 0000:03:00.1: [drm] Tile0: GT0: VF is trying to read an \
+                     inaccessible register 0x138340+0x0
+ [] RIP: 0010:xe_gt_sriov_vf_read32+0x6c2/0x9a0 [xe]
+ [] Call Trace:
+ []  xe_mmio_read32+0x110/0x280 [xe]
+ []  auto_link_downgrade_capable_show+0x2e/0x70 [xe]
+ []  dev_attr_show+0x1a/0x70
+ []  sysfs_kf_seq_show+0xaa/0x120
+ []  kernfs_seq_show+0x41/0x60
 
-        rfkill->type = (unsigned)id->driver_data;
-
-and there is no "type" property so device_property_read_string() will fail
-and leave type_name uninitialized, leading to a potential crash.
-
-rfkill_find_type() does accept a NULL pointer, fix the potential crash
-by initializing type_name to NULL.
-
-Note likely sofar this has not been caught because:
-
-1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-2. The stack happened to contain NULL where type_name is stored
-
-Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
-Cc: stable@vger.kernel.org
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20250913113515.21698-1-hansg@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0e414bf7ad01 ("drm/xe: Expose PCIe link downgrade attributes")
+Fixes: cdc36b66cd41 ("drm/xe: Expose fan control and voltage regulator version")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Reviewed-by: Raag Jadav <raag.jadav@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250916170029.3313-2-michal.wajdeczko@intel.com
+(cherry picked from commit a2d6223d224f333f705ed8495bf8bebfbc585c35)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_device_sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -78,10 +78,10 @@ static int rfkill_gpio_acpi_probe(struct
- static int rfkill_gpio_probe(struct platform_device *pdev)
- {
- 	struct rfkill_gpio_data *rfkill;
--	struct gpio_desc *gpio;
-+	const char *type_name = NULL;
- 	const char *name_property;
- 	const char *type_property;
--	const char *type_name;
-+	struct gpio_desc *gpio;
- 	int ret;
+diff --git a/drivers/gpu/drm/xe/xe_device_sysfs.c b/drivers/gpu/drm/xe/xe_device_sysfs.c
+index b9440f8c781e3..652da4d294c0b 100644
+--- a/drivers/gpu/drm/xe/xe_device_sysfs.c
++++ b/drivers/gpu/drm/xe/xe_device_sysfs.c
+@@ -166,7 +166,7 @@ int xe_device_sysfs_init(struct xe_device *xe)
+ 			return ret;
+ 	}
  
- 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
+-	if (xe->info.platform == XE_BATTLEMAGE) {
++	if (xe->info.platform == XE_BATTLEMAGE && !IS_SRIOV_VF(xe)) {
+ 		ret = sysfs_create_files(&dev->kobj, auto_link_downgrade_attrs);
+ 		if (ret)
+ 			return ret;
+-- 
+2.51.0
+
 
 
 
