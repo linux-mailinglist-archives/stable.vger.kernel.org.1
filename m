@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-182518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E2BBADA01
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D12BAD7F4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27164326F45
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83321888F4B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9D33081A9;
-	Tue, 30 Sep 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4B7304BCC;
+	Tue, 30 Sep 2025 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2lwkwrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij7J5aYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7D8307AF8;
-	Tue, 30 Sep 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F17846F;
+	Tue, 30 Sep 2025 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245207; cv=none; b=k4WVDworbJu+eYw+T98fXoctoZX7cu8FNugjCNJzdrVBilyxwonChMmVtmS+aVzc0AubyPJbIG0Q8eDap29PfUEGl1xjeZk8j28hw6b7yNCNXRlfPjXjyAW0sral5/RkJElXbJ8a7ms6zHwM0ka+plf/I3NyjDcLNNe+8M8u/Ds=
+	t=1759244756; cv=none; b=jMEIaryVTLHznbM0HEHTCfatOKab/cmq9MLEngPC/Btsf1iJUBauthkSxu2FXGTaHcBOBZj+RIlACeTENiNhN3vnlYscA36lDBIHYZAJIeiET5rjsBtWQvYtpNrKIEDeFykOnEQs/2rWUR7jQRD22a6RZoyXjpCK46Me09xtmPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245207; c=relaxed/simple;
-	bh=pDrz+WaQon+1pycsrb+6HTB1yiWWD6ZZbv8KYSJE7vE=;
+	s=arc-20240116; t=1759244756; c=relaxed/simple;
+	bh=0lbF0n7wg0qYQ9YYWWXNyg4HieNxxIGn2vj2BhmgXYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1dEQNO/SzQzIXcJQ6PFV3PZS9E4jndkN3nIdRfINYwbTRK3yaLZDU0qEKruDFjzC5lrBLATf3GmrmHV+pNbWUZ+H8AcwwIyECuSAhjrAbIFs95fM1aIqPHBJlrm2KcLilJLfrlWP88b5jZ+qo8+AP+aBQ0HOMkPxKEM5d5w7YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2lwkwrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64BEC113D0;
-	Tue, 30 Sep 2025 15:13:26 +0000 (UTC)
+	 MIME-Version; b=Fe6IvXAO+jSA4teLey5+Fmfs7gsiXLkMh/4qGFzjP1xZ7WQgSLG9A5YXu9Kv854SqKjz9EWuv/svOwxvCHhVuH1fOJ7Ita2vLmG+ME99b3KAkTKRlFmpEbhkxuS9bwx8/t3ex2szPDMSniOQfdRXFAp3zgXNh0xS2b5apHCv5ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij7J5aYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF510C113D0;
+	Tue, 30 Sep 2025 15:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245207;
-	bh=pDrz+WaQon+1pycsrb+6HTB1yiWWD6ZZbv8KYSJE7vE=;
+	s=korg; t=1759244756;
+	bh=0lbF0n7wg0qYQ9YYWWXNyg4HieNxxIGn2vj2BhmgXYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2lwkwrWUiYaekvjKWFoRo2NrPBO+fHclQr7a4XRynTJSBb8ju5LLbkVjeK6oiiqr
-	 W0r9+8+YGGHfSbhn99UorPcmGacigAzcAWeFbOYX+W8iD2PhjSQZ3fwlXIMj2Y70w5
-	 Z4ojH6WfLa93wqbrfIHWqKB13jVS6IzRAQ1cEJFk=
+	b=Ij7J5aYgzKuBwZ6YiD/eq73/7Q6WmZ9rvG7jAy6/Ub0T0GIaL7VUIGr4iXgnuXa43
+	 ZsEiDsspdE78VQ0X8eBmobCi+hJm1vI8uEGhRz7VFGm0SljHzlt46zjD25b1Tf/3z8
+	 PqSs8Cjbr7om+X1p/nOljZnrPOgvORqU870Ayi7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	"Luigino Camastra, Aisle Research" <luigino.camastra@aisle.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/151] ksmbd: smbdirect: validate data_offset and data_length field of smb_direct_data_transfer
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.16 105/143] i40e: fix input validation logic for action_meta
 Date: Tue, 30 Sep 2025 16:47:09 +0200
-Message-ID: <20250930143831.540614578@linuxfoundation.org>
+Message-ID: <20250930143835.417812934@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 5282491fc49d5614ac6ddcd012e5743eecb6a67c ]
+commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
 
-If data_offset and data_length of smb_direct_data_transfer struct are
-invalid, out of bounds issue could happen.
-This patch validate data_offset and data_length field in recv_done.
+Fix condition to check 'greater or equal' to prevent OOB dereference.
 
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
 Cc: stable@vger.kernel.org
-Fixes: 2ea086e35c3d ("ksmbd: add buffer validation for smb direct")
-Reviewed-by: Stefan Metzmacher <metze@samba.org>
-Reported-by: Luigino Camastra, Aisle Research <luigino.camastra@aisle.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Applied to fs/ksmbd/transport_rdma.c instead of fs/smb/server/transport_rdma.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/transport_rdma.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ksmbd/transport_rdma.c
-+++ b/fs/ksmbd/transport_rdma.c
-@@ -548,7 +548,7 @@ static void recv_done(struct ib_cq *cq,
- 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
- 		struct smb_direct_data_transfer *data_transfer =
- 			(struct smb_direct_data_transfer *)recvmsg->packet;
--		unsigned int data_length;
-+		unsigned int data_offset, data_length;
- 		int avail_recvmsg_count, receive_credits;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3605,7 +3605,7 @@ static int i40e_validate_cloud_filter(st
  
- 		if (wc->byte_len <
-@@ -559,14 +559,15 @@ static void recv_done(struct ib_cq *cq,
- 		}
- 
- 		data_length = le32_to_cpu(data_transfer->data_length);
--		if (data_length) {
--			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
--			    (u64)data_length) {
--				put_recvmsg(t, recvmsg);
--				smb_direct_disconnect_rdma_connection(t);
--				return;
--			}
-+		data_offset = le32_to_cpu(data_transfer->data_offset);
-+		if (wc->byte_len < data_offset ||
-+		    wc->byte_len < (u64)data_offset + data_length) {
-+			put_recvmsg(t, recvmsg);
-+			smb_direct_disconnect_rdma_connection(t);
-+			return;
-+		}
- 
-+		if (data_length) {
- 			if (t->full_packet_received)
- 				recvmsg->first_segment = true;
- 
+ 	/* action_meta is TC number here to which the filter is applied */
+ 	if (!tc_filter->action_meta ||
+-	    tc_filter->action_meta > vf->num_tc) {
++	    tc_filter->action_meta >= vf->num_tc) {
+ 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
+ 			 vf->vf_id, tc_filter->action_meta);
+ 		goto err;
 
 
 
