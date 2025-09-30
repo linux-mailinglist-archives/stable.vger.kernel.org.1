@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-182386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691D3BAD81E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A17ABADBD6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22FBB189E78B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 767D8188BE23
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA58E2FFDE6;
-	Tue, 30 Sep 2025 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3138E2FFDE6;
+	Tue, 30 Sep 2025 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcIWJ7+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnkMngBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6686D846F;
-	Tue, 30 Sep 2025 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDC71C862F;
+	Tue, 30 Sep 2025 15:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244776; cv=none; b=HnHiUlIk7RaETU8tySM0G1Blb9GP9eyuT3/p5HW29GQ0wilw2mTY+qjqYqlBI8TqIs2agEm+GjzMXjUO6VZWLO4lNQKmPd8XtxmRaI0HRv/fQwRPTUAz7IKDRC9Du+Ct+7GoSgsV6IgzEigntKfgHaCThKYgDVamRh+ZtiMcWdk=
+	t=1759245670; cv=none; b=BFnBFAjk6BGBUtXlbJquOKYeUEw/crrq7sXUGbqkrIvgaiNh1MQn3DVbLRCyGVZouVOvcUY/EWGI90BT2MDSdDiO0WJlBfGS9naWJgGlT5LRjnrEv1sEU7aqswjhvBy6ttBPBOFVWmpu2I51lO+FYeeXAB3Fg/wA90jEzlPsI0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244776; c=relaxed/simple;
-	bh=rNJuxAAWzTxFdOYJdKjvZaRw8A8P313GxFixKmGk/+Y=;
+	s=arc-20240116; t=1759245670; c=relaxed/simple;
+	bh=pxK/BksZTISZiEKfeUo/y8D+1AxPpvsglu1njZ24+YQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhDtB+BpXBRZahe1UtZcx6ni9ApoToWGRYmdJ/4KNW1eFs/rhDefPP8xlqDVQEml+30nB2KSUWcXgzkkgnULFsd0pToRGdFEB/FiC64Z7G6ZtBrxIoNO7t0S9pFI5Gr+DTCbBfPYDjUHX+zkwIBf/gW5TjQ+dnZXlnHSy+H4a50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcIWJ7+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0562C4CEF0;
-	Tue, 30 Sep 2025 15:06:15 +0000 (UTC)
+	 MIME-Version; b=YK/Q8jWtGcQXcKMksOt12fs9jePhWtMeH7z36Oxcswu3hhLXtfexazzjDrpdru9+sClGVs+tsgJooqmRjAg5pBV5sO1oOAbRmBJAupKOuAg0LLrmfF0U5gTXRPw5Lsei3kE7WJN6DFnY0OMIEKa7ybw8PKVqZIMUVL5LH8PP8cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnkMngBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4863FC4CEF0;
+	Tue, 30 Sep 2025 15:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244776;
-	bh=rNJuxAAWzTxFdOYJdKjvZaRw8A8P313GxFixKmGk/+Y=;
+	s=korg; t=1759245669;
+	bh=pxK/BksZTISZiEKfeUo/y8D+1AxPpvsglu1njZ24+YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcIWJ7+dCCDxgdca7Hu+j21JiCmGtl0JLSVz+kzkm/D8S6FiramX8kV2Vsny5SpnA
-	 CYHcRQAqBJvIizLCQW7oHAn4i/kvMn40eNTPUiKl9WevzOY1cIsLg+rYfPlsqbVL9W
-	 MhWYPEDdaAUKP4DnS6llf2aZ9f/M6JXRBWlodR8Q=
+	b=jnkMngBDtVnvxaIS9wknIq3GMn5Az9slukNGHZ+N4Hj7375pkVYOwvlze/iFM/iBA
+	 OmtxgBQUqrmI7uCcZWCqKn3p4be24nYelyW/j5o+rpjPsYFtwb73S6R9MUz3IGPK70
+	 8tx1jTesGKI1CKxjTHkQjkQev/oU7biGIQF7BqO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.16 110/143] crypto: af_alg - Fix incorrect boolean values in af_alg_ctx
+	Jiayi Li <lijiayi@kylinos.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 15/91] usb: core: Add 0x prefix to quirks debug output
 Date: Tue, 30 Sep 2025 16:47:14 +0200
-Message-ID: <20250930143835.618534398@linuxfoundation.org>
+Message-ID: <20250930143821.764160180@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-commit d0ca0df179c4b21e2a6c4a4fb637aa8fa14575cb upstream.
+[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
 
-Commit 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in
-af_alg_sendmsg") changed some fields from bool to 1-bit bitfields of
-type u32.
+Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
+value. Improves readability and consistency with other hex outputs.
 
-However, some assignments to these fields, specifically 'more' and
-'merge', assign values greater than 1.  These relied on C's implicit
-conversion to bool, such that zero becomes false and nonzero becomes
-true.
-
-With a 1-bit bitfields of type u32 instead, mod 2 of the value is taken
-instead, resulting in 0 being assigned in some cases when 1 was intended.
-
-Fix this by restoring the bool type.
-
-Fixes: 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/crypto/if_alg.h |    2 +-
+ drivers/usb/core/quirks.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -152,7 +152,7 @@ struct af_alg_ctx {
- 	size_t used;
- 	atomic_t rcvused;
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index bfd97cad8aa4d..c0fd8ab3fe8fc 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -734,7 +734,7 @@ void usb_detect_quirks(struct usb_device *udev)
+ 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
  
--	u32		more:1,
-+	bool		more:1,
- 			merge:1,
- 			enc:1,
- 			write:1,
+ 	if (udev->quirks)
+-		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
++		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
+ 			udev->quirks);
+ 
+ #ifdef CONFIG_USB_DEFAULT_PERSIST
+-- 
+2.51.0
+
 
 
 
