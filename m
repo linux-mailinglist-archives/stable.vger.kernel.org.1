@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-182590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47867BADBE5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB82FBAD509
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34EB43B62CB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895931886665
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE4B2FD1DD;
-	Tue, 30 Sep 2025 15:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09ED302755;
+	Tue, 30 Sep 2025 14:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfBy/bDP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rpj+z78f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D1C265CCD;
-	Tue, 30 Sep 2025 15:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBA73043C4;
+	Tue, 30 Sep 2025 14:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245439; cv=none; b=gSDCt3sFzeTCOCSPEwbdn//t3HPgh7yZK/n14BYTS4TLIYtQB665i9JWqBHw09J75AG/EPh0I1uvYgagK6kyX3p7mR39yNtj9Ip6VcxRFdSzn5gpYw7puMxGefHKQrpQqkuvBlDUQ6rcFjkk/ySUI7qB1DAo1nv+D2aZDTC+6XY=
+	t=1759244005; cv=none; b=dfhwLIR6O9V9ORFJNQsrz9Zs3zVb/1CIS6KraBdvKiJlsf+qsj26H9wNpTh/MxG/uELaa8gISfoMeRpK6vW17Aj9JJkf2Mm/Kib2TivaFe/wYImNTPbp//kDeT1zhLdG+olhQoBMzdn3HKUdKOlNAnaEXcs23jgPwEAbGAJQWlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245439; c=relaxed/simple;
-	bh=fJmKa7HZHNUwXgIiB2O4RcMhOP4GnQVE/mw5aJ+VimE=;
+	s=arc-20240116; t=1759244005; c=relaxed/simple;
+	bh=L7qTR+zOnP9v+UrlTP56tJj4Tt9UuwLC1EJL3tk6LsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZmTNBdk1JERPxeQt3APzJQoBKLvvG7mnupcPLkM0eW77OCZMJK+kZekbO5RKy19TCeuFeYzXL84mM4TyDa1u58Snu4OblziKKBQON0lGIrcyL5qqeCaVJ/3q3qbxp5fPRajtTVjsWolNBtGeWibDAFVsj2J8fv6fuahrqpiXoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfBy/bDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC741C4CEF0;
-	Tue, 30 Sep 2025 15:17:18 +0000 (UTC)
+	 MIME-Version; b=XMiqxkkzuCvgFnK6hBEevvbNy4YA9DIf4RlGQAoeqXlkDdCDsEtb1cEDoSk3dO4CRj2J1Buh7cLIT9emdlaJ/hn/pEPHEfPh4NIuY2oN5E2FA9wepFMoEUZaelqFeWHJa4QM4nwbEGGxoXzXNbnlsLo/aqV5E3LBaDZ1/D3+Efc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rpj+z78f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F2C4CEF0;
+	Tue, 30 Sep 2025 14:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245439;
-	bh=fJmKa7HZHNUwXgIiB2O4RcMhOP4GnQVE/mw5aJ+VimE=;
+	s=korg; t=1759244005;
+	bh=L7qTR+zOnP9v+UrlTP56tJj4Tt9UuwLC1EJL3tk6LsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfBy/bDPdPYUjutXV9RBzQpnYX5wjMB6SIVwNgeG9Xai6YEn3krKU9UKgPkoX8tdm
-	 rKaeWP7Yaa6gvRJtjVmZAe/n49YbaCBwqyZPQFd2b5WXrQKOwm7vXvjnbsvh55Y1eW
-	 d+DII7yn8ygPyvy26GBDxJRJ65okgOiNTqokYago=
+	b=Rpj+z78f+gXAikf4/XC2ZF9i22adZBEuSWxppJeCvRMmEkEORomCY93idd8TGyCM4
+	 XGC11KQea+flvl/ubC80BfDA33DKZihuNAV75674spfD/39k1Pj7m4Z3+z3/6l9Xmo
+	 +545v4wQ+Ey3uyFbRir/Exw5dnkqh+C9/NgdQaPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jinjiang Tu <tujinjiang@huawei.com>,
 	David Hildenbrand <david@redhat.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Jane Chu <jane.chu@oracle.com>,
 	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Zi Yan <ziy@nvidia.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Hugh Dickins <hughd@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/73] mm: add folio_expected_ref_count() for reference count calculation
+Subject: [PATCH 5.4 81/81] mm/hugetlb: fix folio is still mapped when deleted
 Date: Tue, 30 Sep 2025 16:47:23 +0200
-Message-ID: <20250930143821.361066351@linuxfoundation.org>
+Message-ID: <20250930143823.117383084@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,153 +67,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivank Garg <shivankg@amd.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit 86ebd50224c0734d965843260d0dc057a9431c61 ]
+[ Upstream commit 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7 ]
 
-Patch series " JFS: Implement migrate_folio for jfs_metapage_aops" v5.
+Migration may be raced with fallocating hole.  remove_inode_single_folio
+will unmap the folio if the folio is still mapped.  However, it's called
+without folio lock.  If the folio is migrated and the mapped pte has been
+converted to migration entry, folio_mapped() returns false, and won't
+unmap it.  Due to extra refcount held by remove_inode_single_folio,
+migration fails, restores migration entry to normal pte, and the folio is
+mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
 
-This patchset addresses a warning that occurs during memory compaction due
-to JFS's missing migrate_folio operation.  The warning was introduced by
-commit 7ee3647243e5 ("migrate: Remove call to ->writepage") which added
-explicit warnings when filesystem don't implement migrate_folio.
+The log is as follows:
+ BUG: Bad page cache in process hugetlb  pfn:156c00
+ page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
+ head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
+ aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
+ flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
+ page_type: f4(hugetlb)
+ page dumped because: still mapped when deleted
+ CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
+ Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4f/0x70
+  filemap_unaccount_folio+0xc4/0x1c0
+  __filemap_remove_folio+0x38/0x1c0
+  filemap_remove_folio+0x41/0xd0
+  remove_inode_hugepages+0x142/0x250
+  hugetlbfs_fallocate+0x471/0x5a0
+  vfs_fallocate+0x149/0x380
 
-The syzbot reported following [1]:
-  jfs_metapage_aops does not implement migrate_folio
-  WARNING: CPU: 1 PID: 5861 at mm/migrate.c:955 fallback_migrate_folio mm/migrate.c:953 [inline]
-  WARNING: CPU: 1 PID: 5861 at mm/migrate.c:955 move_to_new_folio+0x70e/0x840 mm/migrate.c:1007
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 5861 Comm: syz-executor280 Not tainted 6.15.0-rc1-next-20250411-syzkaller #0 PREEMPT(full)
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-  RIP: 0010:fallback_migrate_folio mm/migrate.c:953 [inline]
-  RIP: 0010:move_to_new_folio+0x70e/0x840 mm/migrate.c:1007
+Hold folio lock before checking if the folio is mapped to avold race with
+migration.
 
-To fix this issue, this series implement metapage_migrate_folio() for JFS
-which handles both single and multiple metapages per page configurations.
-
-While most filesystems leverage existing migration implementations like
-filemap_migrate_folio(), buffer_migrate_folio_norefs() or
-buffer_migrate_folio() (which internally used folio_expected_refs()),
-JFS's metapage architecture requires special handling of its private data
-during migration.  To support this, this series introduce the
-folio_expected_ref_count(), which calculates external references to a
-folio from page/swap cache, private data, and page table mappings.
-
-This standardized implementation replaces the previous ad-hoc
-folio_expected_refs() function and enables JFS to accurately determine
-whether a folio has unexpected references before attempting migration.
-
-Implement folio_expected_ref_count() to calculate expected folio reference
-counts from:
-- Page/swap cache (1 per page)
-- Private data (1)
-- Page table mappings (1 per map)
-
-While originally needed for page migration operations, this improved
-implementation standardizes reference counting by consolidating all
-refcount contributors into a single, reusable function that can benefit
-any subsystem needing to detect unexpected references to folios.
-
-The folio_expected_ref_count() returns the sum of these external
-references without including any reference the caller itself might hold.
-Callers comparing against the actual folio_ref_count() must account for
-their own references separately.
-
-Link: https://syzkaller.appspot.com/bug?extid=8bb6fd945af4e0ad9299 [1]
-Link: https://lkml.kernel.org/r/20250430100150.279751-1-shivankg@amd.com
-Link: https://lkml.kernel.org/r/20250430100150.279751-2-shivankg@amd.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Shivank Garg <shivankg@amd.com>
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Co-developed-by: David Hildenbrand <david@redhat.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Dave Kleikamp <shaggy@kernel.org>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Jane Chu <jane.chu@oracle.com>
+Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
+Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>
 Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 98c6d259319e ("mm/gup: check ref_count instead of lru before migration")
-[ Take the new function in mm.h, removing "const" from its parameter to stop
-  build warnings; but avoid all the conflicts of using it in mm/migrate.c. ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
+[ folio -> page ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h | 54 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ fs/hugetlbfs/inode.c |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 9e17670de8483..3bf7823e10979 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1782,6 +1782,60 @@ static inline int folio_estimated_sharers(struct folio *folio)
- 	return page_mapcount(folio_page(folio, 0));
- }
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -502,13 +502,13 @@ static void remove_inode_hugepages(struc
  
-+/**
-+ * folio_expected_ref_count - calculate the expected folio refcount
-+ * @folio: the folio
-+ *
-+ * Calculate the expected folio refcount, taking references from the pagecache,
-+ * swapcache, PG_private and page table mappings into account. Useful in
-+ * combination with folio_ref_count() to detect unexpected references (e.g.,
-+ * GUP or other temporary references).
-+ *
-+ * Does currently not consider references from the LRU cache. If the folio
-+ * was isolated from the LRU (which is the case during migration or split),
-+ * the LRU cache does not apply.
-+ *
-+ * Calling this function on an unmapped folio -- !folio_mapped() -- that is
-+ * locked will return a stable result.
-+ *
-+ * Calling this function on a mapped folio will not result in a stable result,
-+ * because nothing stops additional page table mappings from coming (e.g.,
-+ * fork()) or going (e.g., munmap()).
-+ *
-+ * Calling this function without the folio lock will also not result in a
-+ * stable result: for example, the folio might get dropped from the swapcache
-+ * concurrently.
-+ *
-+ * However, even when called without the folio lock or on a mapped folio,
-+ * this function can be used to detect unexpected references early (for example,
-+ * if it makes sense to even lock the folio and unmap it).
-+ *
-+ * The caller must add any reference (e.g., from folio_try_get()) it might be
-+ * holding itself to the result.
-+ *
-+ * Returns the expected folio refcount.
-+ */
-+static inline int folio_expected_ref_count(struct folio *folio)
-+{
-+	const int order = folio_order(folio);
-+	int ref_count = 0;
-+
-+	if (WARN_ON_ONCE(folio_test_slab(folio)))
-+		return 0;
-+
-+	if (folio_test_anon(folio)) {
-+		/* One reference per page from the swapcache. */
-+		ref_count += folio_test_swapcache(folio) << order;
-+	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
-+		/* One reference per page from the pagecache. */
-+		ref_count += !!folio->mapping << order;
-+		/* One reference from PG_private. */
-+		ref_count += folio_test_private(folio);
-+	}
-+
-+	/* One reference per page table mapping. */
-+	return ref_count + folio_mapcount(folio);
-+}
+ 			/*
+ 			 * If page is mapped, it was faulted in after being
+-			 * unmapped in caller.  Unmap (again) now after taking
+-			 * the fault mutex.  The mutex will prevent faults
+-			 * until we finish removing the page.
+-			 *
+-			 * This race can only happen in the hole punch case.
+-			 * Getting here in a truncate operation is a bug.
++			 * unmapped in caller or hugetlb_vmdelete_list() skips
++			 * unmapping it due to fail to grab lock.  Unmap (again)
++			 * while holding the fault mutex.  The mutex will prevent
++			 * faults until we finish removing the page.  Hold page
++			 * lock to guarantee no concurrent migration.
+ 			 */
++			lock_page(page);
+ 			if (unlikely(page_mapped(page))) {
+ 				BUG_ON(truncate_op);
  
- #ifndef HAVE_ARCH_MAKE_PAGE_ACCESSIBLE
- static inline int arch_make_page_accessible(struct page *page)
--- 
-2.51.0
-
+@@ -518,8 +518,6 @@ static void remove_inode_hugepages(struc
+ 					(index + 1) * pages_per_huge_page(h));
+ 				i_mmap_unlock_write(mapping);
+ 			}
+-
+-			lock_page(page);
+ 			/*
+ 			 * We must free the huge page and remove from page
+ 			 * cache (remove_huge_page) BEFORE removing the
 
 
 
