@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-182577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C15EBADAEC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630FFBADB6A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 143CE167D1A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF721944AA9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CF7217F55;
-	Tue, 30 Sep 2025 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A793D2F39C0;
+	Tue, 30 Sep 2025 15:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaQlNJCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H++LD+w6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B902FFDE6;
-	Tue, 30 Sep 2025 15:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B801EB5E3;
+	Tue, 30 Sep 2025 15:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245398; cv=none; b=M8ExGYc2R24YC8oPcNFqq6qRccsDWA8dJjjTpGgstyNgZaPWfKekg22UO9qrCG0TizNGBuuvzq5NwFRyB6HXJ9Ucpeo+eOiGVRXXaYB7oYbgWA1bD6rI2V35Ne5ssaXbg4/S7kllKGLsLZI0PWeH7G7lASb/1QNLpP1WeZseDP8=
+	t=1759245596; cv=none; b=WwaFX1nRvP7Xn93xg6yoBzkmQ+RItzRR7cZrGKMP2Uc9AmWnX0zR9/x1peSa8My+sudxw33pWanqnVMdFRIHDPwqfbTFAX2hyMRHFdC/O7lp69GO8cXzemQRC6/UrMsB5NzDjw6xagzNsaYRCJ2PD7EYwWhhV7zESQZOhv6t3ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245398; c=relaxed/simple;
-	bh=mtJqOqb3+xOAKNSPER/ZBEiOheByy5kXVGhBsmX0wGw=;
+	s=arc-20240116; t=1759245596; c=relaxed/simple;
+	bh=I0SxwHE8oG8uVx93qQ6NkU9uhNmTTfuFrkmI7lyOQQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbMd0DBAguDrD4O7GIGEB4U/WoRaejmUz4AwZKlRyL7WKqx15vBNM7pUBxWTLgsmdgXuHpSuH4xEQKPbOTb/r+vzx/1qOY7q2t2tskxslIXafLhlG0oD6xldS9apb91TmjUKWnLP55yRHKespvaXKdgAWLCpbEvpWP5BDgS9wSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaQlNJCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76728C4CEF0;
-	Tue, 30 Sep 2025 15:16:37 +0000 (UTC)
+	 MIME-Version; b=IiY+CffUjoSN3pgfCHK2EVL6+2d8OUbxqv5b6OjGawd755E4v5/5OFmzGJRa3vUFB2I+e1688UDyc8VaVrSWpG5pmtIDyQzpB7KbQvCU6D9ebY6Zw4+PpvO/BMdMyUTBoZzIi7GCivKF83fBU9vgwiis/31e/ZpsiSW6/6vCjww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H++LD+w6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C984CC4CEF0;
+	Tue, 30 Sep 2025 15:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245397;
-	bh=mtJqOqb3+xOAKNSPER/ZBEiOheByy5kXVGhBsmX0wGw=;
+	s=korg; t=1759245596;
+	bh=I0SxwHE8oG8uVx93qQ6NkU9uhNmTTfuFrkmI7lyOQQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaQlNJCOI0RSy+yeXwy5yohdqu+PbROynolkCzmS6RvPA84huBh3u7BY7kACNEJLL
-	 8hGQGXgPZuCFbvfjY1NdhiQ19DV/8sZScY6NlZ2zUuBzQc0cPAzqiZ0N2R7D4xYcyk
-	 cq+UQXqWxT3OZu+UxZLO6hFkK0gz16ConA0FV5gk=
+	b=H++LD+w6Sel3OfmKCd7VV7Nlz//3CF50PDZxMGmaJbD+QCCuK1jEDIOyo9IAmGM2O
+	 3jCeLp7esjzutZnUnkjhc87/8R0cIBHqbW+uzpvv9TSG0AHDkj8jPBpgiC6Vpn9HbF
+	 Ro9OF63JG/Y5SxtFjX5FMGRsdh+fkOh8h/UJmDpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/151] ethernet: rvu-af: Remove slash from the driver name
+Subject: [PATCH 6.1 34/73] ethernet: rvu-af: Remove slash from the driver name
 Date: Tue, 30 Sep 2025 16:47:38 +0200
-Message-ID: <20250930143832.703295364@linuxfoundation.org>
+Message-ID: <20250930143822.006679645@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,7 +87,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 4dec201158956..d97a4123438f0 100644
+index 254cad45a555f..2fe633be06bf9 100644
 --- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
 +++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
 @@ -21,8 +21,7 @@
