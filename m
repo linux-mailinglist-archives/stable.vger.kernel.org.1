@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-182713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9771BADC85
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FE8BADDAD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8F516F412
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A2117AD42D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08932FD1DD;
-	Tue, 30 Sep 2025 15:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A82316A956;
+	Tue, 30 Sep 2025 15:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5sXpqiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgmNGEzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2851DF73C;
-	Tue, 30 Sep 2025 15:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B1725FA0F;
+	Tue, 30 Sep 2025 15:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245846; cv=none; b=D7pGWnNvlPMYUBUQzfN7CSJFrcPfC6l8MHnQnMRo9ixk4LjSQ69DLpP/Mx0ap6T3IW5/hD4w+aXBR+Kz5GjmeypBndNiQVFxndMV/lT0V4NuT1VcQuqIQdtvu/BWJ3Y8a1k6UOQuv8d4qAPQiSsOoTZiXbJsGVqicB3D2Q50mro=
+	t=1759246106; cv=none; b=Cr/le4mGzVPqHoTjvWDO5q1/50jmrcm7bLD6pMeEZ5vxR48WcdHqZZjARac/VfaHpB734tP1kJSpuN3ge0iAlhJTJvUyB0X4++U5FpJpgUTjiW1G+jImqOpqztL3UuQtO5kV6uiVyZALZOZOQw+vmTzwf1JsGMAuRB+UQ95fMW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245846; c=relaxed/simple;
-	bh=nOW1ZjpnxVERGvQ6/wBz2GnzOV43AenPUvu68vk/tA0=;
+	s=arc-20240116; t=1759246106; c=relaxed/simple;
+	bh=0JA+TVolojIbN4FXt4fxWu4N+wr3ysGenDAYOdr0biw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Np/wHbsfFfOeV+xGoy8+nlru1AovPEywVoG2NrArmKO2mxJAzoKcYFQXALyDx3no9QW8b1/4A5fXzpG958LhF15QabAlC+8qOMgS8Hlsx3PLvKQ853akuq2n/ZYM1lEvXm4sXzwl+X887WUriWpVnzhPbAcyif1CDkEnRpI5xdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5sXpqiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E925CC4CEF0;
-	Tue, 30 Sep 2025 15:24:05 +0000 (UTC)
+	 MIME-Version; b=aA00CzY2UumB+bODQnYxZkMAlUZj8frdoRtNHWmda1iCWVtv/GcKj2dSxXw7OEnyQGmc4rnspNrbIqH0HqCACya6Xr4LZGgoViir0iSTAo+0rg2uJsmX5VpYSkTPLbLCn7zeJm7MMXwcbKFDdoPwDZfcnwKbWUtjXdyBfvAm2m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgmNGEzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C006C113D0;
+	Tue, 30 Sep 2025 15:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245846;
-	bh=nOW1ZjpnxVERGvQ6/wBz2GnzOV43AenPUvu68vk/tA0=;
+	s=korg; t=1759246106;
+	bh=0JA+TVolojIbN4FXt4fxWu4N+wr3ysGenDAYOdr0biw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5sXpqiTG9DG6dehF4ZRXUdgkBf4V7GUt3rET7pvrsFi7LVxY5cJnU9O4pfzPpnfN
-	 iqoiKTPVV5ef9kP/U0XQ6u26OtblQ9bsraNBvwEhq86Z3qWMwyVrQpwCMcfKIoF6Q/
-	 ucLL/9TaLmhp+zzO/4ST9hTf0gTmYFrDdLsy9jtI=
+	b=hgmNGEzFKb94zQtDELEMUEQflHhTnMqGWF4tIQmoMzTb38CZc/qhXH5r7B+VSeFpU
+	 /gUHxhaZIL9XWL/P51cpCgXueRLOxXJEmt+1gwkN+pbdFb0Y4AlpOvfnd+bHd44BYF
+	 50PrRGMfOLcUL31cnQhqMfzQKx1htrlgiMYcoX5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 68/91] mm/hugetlb: fix folio is still mapped when deleted
+	syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 53/89] nexthop: Forbid FDB status change while nexthop is in a group
 Date: Tue, 30 Sep 2025 16:48:07 +0200
-Message-ID: <20250930143824.008782424@linuxfoundation.org>
+Message-ID: <20250930143824.119430169@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7 upstream.
+[ Upstream commit 390b3a300d7872cef9588f003b204398be69ce08 ]
 
-Migration may be raced with fallocating hole.  remove_inode_single_folio
-will unmap the folio if the folio is still mapped.  However, it's called
-without folio lock.  If the folio is migrated and the mapped pte has been
-converted to migration entry, folio_mapped() returns false, and won't
-unmap it.  Due to extra refcount held by remove_inode_single_folio,
-migration fails, restores migration entry to normal pte, and the folio is
-mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
+The kernel forbids the creation of non-FDB nexthop groups with FDB
+nexthops:
 
-The log is as follows:
- BUG: Bad page cache in process hugetlb  pfn:156c00
- page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
- head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
- aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
- flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
- page_type: f4(hugetlb)
- page dumped because: still mapped when deleted
- CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
- Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x70
-  filemap_unaccount_folio+0xc4/0x1c0
-  __filemap_remove_folio+0x38/0x1c0
-  filemap_remove_folio+0x41/0xd0
-  remove_inode_hugepages+0x142/0x250
-  hugetlbfs_fallocate+0x471/0x5a0
-  vfs_fallocate+0x149/0x380
+ # ip nexthop add id 1 via 192.0.2.1 fdb
+ # ip nexthop add id 2 group 1
+ Error: Non FDB nexthop group cannot have fdb nexthops.
 
-Hold folio lock before checking if the folio is mapped to avold race with
-migration.
+And vice versa:
 
-Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
-Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ # ip nexthop add id 3 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 4 group 3 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+
+However, as long as no routes are pointing to a non-FDB nexthop group,
+the kernel allows changing the type of a nexthop from FDB to non-FDB and
+vice versa:
+
+ # ip nexthop add id 5 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 6 group 5
+ # ip nexthop replace id 5 via 192.0.2.2 fdb
+ # echo $?
+ 0
+
+This configuration is invalid and can result in a NPD [1] since FDB
+nexthops are not associated with a nexthop device:
+
+ # ip route add 198.51.100.1/32 nhid 6
+ # ping 198.51.100.1
+
+Fix by preventing nexthop FDB status change while the nexthop is in a
+group:
+
+ # ip nexthop add id 7 via 192.0.2.2 dev dummy1
+ # ip nexthop add id 8 group 7
+ # ip nexthop replace id 7 via 192.0.2.2 fdb
+ Error: Cannot change nexthop FDB status while in a group.
+
+[1]
+BUG: kernel NULL pointer dereference, address: 00000000000003c0
+[...]
+Oops: Oops: 0000 [#1] SMP
+CPU: 6 UID: 0 PID: 367 Comm: ping Not tainted 6.17.0-rc6-virtme-gb65678cacc03 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
+RIP: 0010:fib_lookup_good_nhc+0x1e/0x80
+[...]
+Call Trace:
+ <TASK>
+ fib_table_lookup+0x541/0x650
+ ip_route_output_key_hash_rcu+0x2ea/0x970
+ ip_route_output_key_hash+0x55/0x80
+ __ip4_datagram_connect+0x250/0x330
+ udp_connect+0x2b/0x60
+ __sys_connect+0x9c/0xd0
+ __x64_sys_connect+0x18/0x20
+ do_syscall_64+0xa4/0x2a0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: 38428d68719c ("nexthop: support for fdb ecmp nexthops")
+Reported-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68c9a4d2.050a0220.3c6139.0e63.GAE@google.com/
+Tested-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250921150824.149157-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hugetlbfs/inode.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/ipv4/nexthop.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -619,14 +619,16 @@ static bool remove_inode_single_folio(st
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 93aaea0006ba7..c52ff9364ae8d 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -2375,6 +2375,13 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
+ 		return -EINVAL;
+ 	}
  
- 	/*
- 	 * If folio is mapped, it was faulted in after being
--	 * unmapped in caller.  Unmap (again) while holding
--	 * the fault mutex.  The mutex will prevent faults
--	 * until we finish removing the folio.
-+	 * unmapped in caller or hugetlb_vmdelete_list() skips
-+	 * unmapping it due to fail to grab lock.  Unmap (again)
-+	 * while holding the fault mutex.  The mutex will prevent
-+	 * faults until we finish removing the folio.  Hold folio
-+	 * lock to guarantee no concurrent migration.
- 	 */
-+	folio_lock(folio);
- 	if (unlikely(folio_mapped(folio)))
- 		hugetlb_unmap_file_folio(h, mapping, folio, index);
- 
--	folio_lock(folio);
- 	/*
- 	 * We must remove the folio from page cache before removing
- 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
++	if (!list_empty(&old->grp_list) &&
++	    rtnl_dereference(new->nh_info)->fdb_nh !=
++	    rtnl_dereference(old->nh_info)->fdb_nh) {
++		NL_SET_ERR_MSG(extack, "Cannot change nexthop FDB status while in a group");
++		return -EINVAL;
++	}
++
+ 	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
+ 	if (err)
+ 		return err;
+-- 
+2.51.0
+
 
 
 
