@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-182675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599AABADC06
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A97BAD743
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 363F13271E7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 341473A6D11
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A663302CD6;
-	Tue, 30 Sep 2025 15:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE72A305E2F;
+	Tue, 30 Sep 2025 15:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn+jIIoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iu626Jxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39049205E3B;
-	Tue, 30 Sep 2025 15:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8F1D61B7;
+	Tue, 30 Sep 2025 15:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245718; cv=none; b=nEerdgL9TwJUDFD5gUeq64LpBLKlCGe3vcHz3ON86JxV8GoqlkQFCLhxP304Yk7SqFoDgNSP+HkFGoY67ielyGBM/F9aDYP2hf2awa55JP9F4NPK2iNBzRjl9ZZiBkCouoHAP0CYTx5GCGuakAG9yaZEjcTdtiGulbwgAdvjfE8=
+	t=1759244425; cv=none; b=QZhMzlpEdZ0M83PCk1xJKG1PjrCR0jDVbDCCjZpyFsEYanhrkhmS8Q9qBZVzDAff/oDOkSLvXOgCoCrM44rzmkMwBjlmYHfdr3eUn7hItgUuewmBDbqRp2qAU0xEwNuA876ByNoK+PCT8tD0pJ7fCFwAIwvUVuDDlMBSCC5RRwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245718; c=relaxed/simple;
-	bh=e3LhdmCnmHKP+Qd/lhEJFrbMenFHkYyiuFr1/W6EDc0=;
+	s=arc-20240116; t=1759244425; c=relaxed/simple;
+	bh=vNPPECFh5709jkwWMX59LnMgOF85sPqlaVXC44cqNlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4u8CM0Wq1H0wy2X2IRZLbkzU0huFgugQsA2uF0K6rSN4P41OV0Sf1z+FbRuwGfa6uGKygYPLbPco0Bd580j+/rmfEH98yWrZ7H8C/j7r3MZ4vmnX2UPHPJq8R1DAdORIVrGVtWJkpftpj1lDkKBE0uJGuNOBqnL/JS4ozfq8f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn+jIIoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B370BC116C6;
-	Tue, 30 Sep 2025 15:21:57 +0000 (UTC)
+	 MIME-Version; b=nGEehOzt0e7aNkwId+N5hjS86Jye4M5EmY+yxqSC9NyYo1IDDt7tGyIk0+b0LX8FdrxNFsY6KoJ9G9+cXymbi4FQ0wrSUliy8ErH8mNUIWmWb6oHDZAxJr252ojg2Cbmva+AxWNSYPVcuIieb4dBSI5Dc1jgcY+6KHTMAT3fwJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iu626Jxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0E6C4CEF0;
+	Tue, 30 Sep 2025 15:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245718;
-	bh=e3LhdmCnmHKP+Qd/lhEJFrbMenFHkYyiuFr1/W6EDc0=;
+	s=korg; t=1759244425;
+	bh=vNPPECFh5709jkwWMX59LnMgOF85sPqlaVXC44cqNlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cn+jIIojtt85uiZU6fo0yWIILivnS+cSgi75P/qK/JJTZYVbqRCaehpsnqyaLDDLM
-	 NNCw44vqFGZWsebNkVZUvHdOXFwi5jx+DEBrj4368BDMnfF7nTLaahElTE34Ilmnmy
-	 oL4wEBFvrplHYsFvKq0Ch8GFBKDUk+37JD7SRp5A=
+	b=Iu626JxjNdSrZeKsyh7L1wF1y4hQkSsLEi+7Hc71oCarQARJ9wDEF0736LwDv4OQa
+	 ydC/Rv5rd0v04Fmkr0DVlhCLf5uE25F+rkzjdIENb0Tvr7pr6ABE8keNjrSSqQbP8B
+	 +YA7EJ3lyQ9R2x9ZOvcveUr5CoSgFbV/8kGckMZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 30/91] smb: server: dont use delayed_work for post_recv_credits_work
+	Justin Bronder <jsbronder@cold-front.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.10 118/122] i40e: increase max descriptors for XL710
 Date: Tue, 30 Sep 2025 16:47:29 +0200
-Message-ID: <20250930143822.399146501@linuxfoundation.org>
+Message-ID: <20250930143827.792156723@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,108 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Justin Bronder <jsbronder@cold-front.org>
 
-[ Upstream commit 1cde0a74a7a8951b3097417847a458e557be0b5b ]
+[ Upstream commit aa6908ca3bd1e713fd6cd8d7193a008f060bf7d9 ]
 
-If we are using a hardcoded delay of 0 there's no point in
-using delayed_work it only adds confusion.
+In Tables 8-12 and 8-22 in the X710/XXV710/XL710 datasheet, the QLEN
+description states that the maximum size of the descriptor queue is 8k
+minus 32, or 8160.
 
-The client also uses a normal work_struct and now
-it is easier to move it to the common smbdirect_socket.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Justin Bronder <jsbronder@cold-front.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20231113231047.548659-2-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 55d225670def ("i40e: add validation for ring_len param")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h         |    1 +
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c |   25 +++++++++++++++++++------
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 3720304d67929..504e2a1cf33b8 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -147,7 +147,7 @@ struct smb_direct_transport {
- 	wait_queue_head_t	wait_send_pending;
- 	atomic_t		send_pending;
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -50,6 +50,7 @@
+ #define I40E_MAX_VEB			16
  
--	struct delayed_work	post_recv_credits_work;
-+	struct work_struct	post_recv_credits_work;
- 	struct work_struct	send_immediate_work;
- 	struct work_struct	disconnect_work;
+ #define I40E_MAX_NUM_DESCRIPTORS	4096
++#define I40E_MAX_NUM_DESCRIPTORS_XL710	8160
+ #define I40E_MAX_CSR_SPACE		(4 * 1024 * 1024 - 64 * 1024)
+ #define I40E_DEFAULT_NUM_DESCRIPTORS	512
+ #define I40E_REQ_DESCRIPTOR_MULTIPLE	32
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -1916,6 +1916,18 @@ static void i40e_get_drvinfo(struct net_
+ 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
+ }
  
-@@ -366,8 +366,8 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
- 
- 	spin_lock_init(&t->lock_new_recv_credits);
- 
--	INIT_DELAYED_WORK(&t->post_recv_credits_work,
--			  smb_direct_post_recv_credits);
-+	INIT_WORK(&t->post_recv_credits_work,
-+		  smb_direct_post_recv_credits);
- 	INIT_WORK(&t->send_immediate_work, smb_direct_send_immediate_work);
- 	INIT_WORK(&t->disconnect_work, smb_direct_disconnect_rdma_work);
- 
-@@ -399,7 +399,7 @@ static void free_transport(struct smb_direct_transport *t)
- 		   atomic_read(&t->send_pending) == 0);
- 
- 	cancel_work_sync(&t->disconnect_work);
--	cancel_delayed_work_sync(&t->post_recv_credits_work);
-+	cancel_work_sync(&t->post_recv_credits_work);
- 	cancel_work_sync(&t->send_immediate_work);
- 
- 	if (t->qp) {
-@@ -614,8 +614,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			wake_up_interruptible(&t->wait_send_credits);
- 
- 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
--			mod_delayed_work(smb_direct_wq,
--					 &t->post_recv_credits_work, 0);
-+			queue_work(smb_direct_wq, &t->post_recv_credits_work);
- 
- 		if (data_length) {
- 			enqueue_reassembly(t, recvmsg, (int)data_length);
-@@ -772,8 +771,7 @@ static int smb_direct_read(struct ksmbd_transport *t, char *buf,
- 		st->count_avail_recvmsg += queue_removed;
- 		if (is_receive_credit_post_required(st->recv_credits, st->count_avail_recvmsg)) {
- 			spin_unlock(&st->receive_credit_lock);
--			mod_delayed_work(smb_direct_wq,
--					 &st->post_recv_credits_work, 0);
-+			queue_work(smb_direct_wq, &st->post_recv_credits_work);
- 		} else {
- 			spin_unlock(&st->receive_credit_lock);
- 		}
-@@ -800,7 +798,7 @@ static int smb_direct_read(struct ksmbd_transport *t, char *buf,
- static void smb_direct_post_recv_credits(struct work_struct *work)
++static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
++{
++	struct i40e_hw *hw = &pf->hw;
++
++	switch (hw->mac.type) {
++	case I40E_MAC_XL710:
++		return I40E_MAX_NUM_DESCRIPTORS_XL710;
++	default:
++		return I40E_MAX_NUM_DESCRIPTORS;
++	}
++}
++
+ static void i40e_get_ringparam(struct net_device *netdev,
+ 			       struct ethtool_ringparam *ring)
  {
- 	struct smb_direct_transport *t = container_of(work,
--		struct smb_direct_transport, post_recv_credits_work.work);
-+		struct smb_direct_transport, post_recv_credits_work);
- 	struct smb_direct_recvmsg *recvmsg;
- 	int receive_credits, credits = 0;
- 	int ret;
-@@ -1681,7 +1679,7 @@ static int smb_direct_prepare_negotiation(struct smb_direct_transport *t)
- 		goto out_err;
+@@ -1923,8 +1935,8 @@ static void i40e_get_ringparam(struct ne
+ 	struct i40e_pf *pf = np->vsi->back;
+ 	struct i40e_vsi *vsi = pf->vsi[pf->lan_vsi];
+ 
+-	ring->rx_max_pending = I40E_MAX_NUM_DESCRIPTORS;
+-	ring->tx_max_pending = I40E_MAX_NUM_DESCRIPTORS;
++	ring->rx_max_pending = i40e_get_max_num_descriptors(pf);
++	ring->tx_max_pending = i40e_get_max_num_descriptors(pf);
+ 	ring->rx_mini_max_pending = 0;
+ 	ring->rx_jumbo_max_pending = 0;
+ 	ring->rx_pending = vsi->rx_rings[0]->count;
+@@ -1947,12 +1959,12 @@ static bool i40e_active_tx_ring_index(st
+ static int i40e_set_ringparam(struct net_device *netdev,
+ 			      struct ethtool_ringparam *ring)
+ {
++	u32 new_rx_count, new_tx_count, max_num_descriptors;
+ 	struct i40e_ring *tx_rings = NULL, *rx_rings = NULL;
+ 	struct i40e_netdev_priv *np = netdev_priv(netdev);
+ 	struct i40e_hw *hw = &np->vsi->back->hw;
+ 	struct i40e_vsi *vsi = np->vsi;
+ 	struct i40e_pf *pf = vsi->back;
+-	u32 new_rx_count, new_tx_count;
+ 	u16 tx_alloc_queue_pairs;
+ 	int timeout = 50;
+ 	int i, err = 0;
+@@ -1960,14 +1972,15 @@ static int i40e_set_ringparam(struct net
+ 	if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
+ 		return -EINVAL;
+ 
+-	if (ring->tx_pending > I40E_MAX_NUM_DESCRIPTORS ||
++	max_num_descriptors = i40e_get_max_num_descriptors(pf);
++	if (ring->tx_pending > max_num_descriptors ||
+ 	    ring->tx_pending < I40E_MIN_NUM_DESCRIPTORS ||
+-	    ring->rx_pending > I40E_MAX_NUM_DESCRIPTORS ||
++	    ring->rx_pending > max_num_descriptors ||
+ 	    ring->rx_pending < I40E_MIN_NUM_DESCRIPTORS) {
+ 		netdev_info(netdev,
+ 			    "Descriptors requested (Tx: %d / Rx: %d) out of range [%d-%d]\n",
+ 			    ring->tx_pending, ring->rx_pending,
+-			    I40E_MIN_NUM_DESCRIPTORS, I40E_MAX_NUM_DESCRIPTORS);
++			    I40E_MIN_NUM_DESCRIPTORS, max_num_descriptors);
+ 		return -EINVAL;
  	}
  
--	smb_direct_post_recv_credits(&t->post_recv_credits_work.work);
-+	smb_direct_post_recv_credits(&t->post_recv_credits_work);
- 	return 0;
- out_err:
- 	put_recvmsg(t, recvmsg);
--- 
-2.51.0
-
 
 
 
