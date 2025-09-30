@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-182147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8B4BAD4F7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CFDBAD8DE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C265118853F8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C45D3ACF9E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EA83043DA;
-	Tue, 30 Sep 2025 14:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C168B266B65;
+	Tue, 30 Sep 2025 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Akhb04Hd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBPfqJ3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3958F7D;
-	Tue, 30 Sep 2025 14:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE051487F4;
+	Tue, 30 Sep 2025 15:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243991; cv=none; b=gkFdMq+tdMuESiPQU/hy3XIqFz/AT0VR1mejpSUBs0OHSlb7IRQpU6Cdra51Q+w7DkxJKvXrgo12Jmd3SuvANKDpFJZfyEM5OkLKp1yhlqCNeWc9bp54+pCQHMFiQZAdpaOBebC8Ns+DJXvCy8qjLHxviMorpkT8UCgKINhyd6M=
+	t=1759244797; cv=none; b=pxU71VIHT5OgUw14kS4k+FRO2zCCMlFXZdYTMpMzfb06vnBFkjpjK7gxqx6DgYiOPoFjEsok76nMRuaVhePu11L96/E2IeFwiokBHOAPzCORCyZ5Owv7l3BNBQA78cZFD1OyBsxcIihrLHYtZs8pufPSONudrIU91S13Gl/qP6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243991; c=relaxed/simple;
-	bh=709BWBZhJCd+qc7HNP/yD21ZWt40rVqPZu/cWsPx6Bk=;
+	s=arc-20240116; t=1759244797; c=relaxed/simple;
+	bh=PbPoiT0gEnRxgy5pXeFipt6ejA0tfyyBPbOzcGtQg24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIqIDGyDntKCKgfR89I0YR1GaJz9V8HHl+SGxwnaCFCI0Y4yjaXQd4aKfj1thOLA2xx/skwdnZpMi5otp801KKcITyiztCaJvhjTeGJNfiWS0NnSoUml7wu+5TiTUTawxZEgy37tmYmxYCazAc+iaNyqMme0gRg5IVKgzvRzQ7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Akhb04Hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9F5C4CEF0;
-	Tue, 30 Sep 2025 14:53:10 +0000 (UTC)
+	 MIME-Version; b=GWe/4RdIrvfRkGsQMbARIsaGj5oopUNIcASUA4zJd5M/d0PgQZf8+/mvn99eX7nbosCt9u2pZhXVO3RwnWdoiN3EL1nyPXJdHBESCzbLnMrgC7ioE8BjX0SBlWHKVPQNTxQjLsvIvcOTXfcWlm/tvfamxcfeQXYs5lLaKFepzoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBPfqJ3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4962DC4CEF0;
+	Tue, 30 Sep 2025 15:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243991;
-	bh=709BWBZhJCd+qc7HNP/yD21ZWt40rVqPZu/cWsPx6Bk=;
+	s=korg; t=1759244796;
+	bh=PbPoiT0gEnRxgy5pXeFipt6ejA0tfyyBPbOzcGtQg24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Akhb04HdnQ9Hf8M+5duBv3iszYhIYijF65evTemAr0Tktr6OF9H9EBN3PG0PwXU+Q
-	 Z5+fPtOiMeugTM/IOg5rfs20TzQuDmnMLtthKrlzxfLPklSaATXgWNCGWHt6QXsR9U
-	 Lk/6QoIvNRNA8L4wy2F7S9OQm+CGAixgsfxsQM/g=
+	b=MBPfqJ3MV8PDlrLZ4BKmnWHI3G4rwYhnkb2AotawhEUqd1vNQbnxvkkcKhBU0Zw4K
+	 1rBDyynZwDdUxgA+R6MTsNbOnW3D2nIoj2KqDnh82RIUPCIONQzzftgrsFSzCXHE8T
+	 eZEHR1tiw5JLLdS26FcxktGK1rEPl4sJQrJMyggk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Kamakshi Nellore <nellorex.kamakshi@intel.com>
-Subject: [PATCH 5.4 78/81] i40e: fix idx validation in config queues msg
+	Josua Mayer <josua@solid-run.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.16 116/143] arm64: dts: marvell: cn9132-clearfog: disable eMMC high-speed modes
 Date: Tue, 30 Sep 2025 16:47:20 +0200
-Message-ID: <20250930143822.981890745@linuxfoundation.org>
+Message-ID: <20250930143835.855007681@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit f1ad24c5abe1eaef69158bac1405a74b3c365115 ]
+commit 48b51799a5461707705454568453618cdd7307f4 upstream.
 
-Ensure idx is within range of active/initialized TCs when iterating over
-vf->ch[idx] in i40e_vc_config_queues_msg().
+Similar to MacchiatoBIN the high-speed modes are unstable on the CN9132
+CEX-7 module, leading to failed transactions under normal use.
 
-Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
+Disable all high-speed modes including UHS.
+
+Additionally add no-sdio and non-removable properties as appropriate for
+eMMC.
+
+Fixes: e9ff907f4076 ("arm64: dts: add description for solidrun cn9132 cex7 module and clearfog board")
 Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/marvell/cn9132-sr-cex7.dtsi |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2320,7 +2320,7 @@ static int i40e_vc_config_queues_msg(str
- 		}
+--- a/arch/arm64/boot/dts/marvell/cn9132-sr-cex7.dtsi
++++ b/arch/arm64/boot/dts/marvell/cn9132-sr-cex7.dtsi
+@@ -137,6 +137,14 @@
+ 	pinctrl-0 = <&ap_mmc0_pins>;
+ 	pinctrl-names = "default";
+ 	vqmmc-supply = <&v_1_8>;
++	/*
++	 * Not stable in HS modes - phy needs "more calibration", so disable
++	 * UHS (by preventing voltage switch), SDR104, SDR50 and DDR50 modes.
++	 */
++	no-1-8-v;
++	no-sd;
++	no-sdio;
++	non-removable;
+ 	status = "okay";
+ };
  
- 		if (vf->adq_enabled) {
--			if (idx >= ARRAY_SIZE(vf->ch)) {
-+			if (idx >= vf->num_tc) {
- 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
- 				goto error_param;
- 			}
-@@ -2341,7 +2341,7 @@ static int i40e_vc_config_queues_msg(str
- 		 * to its appropriate VSIs based on TC mapping
- 		 */
- 		if (vf->adq_enabled) {
--			if (idx >= ARRAY_SIZE(vf->ch)) {
-+			if (idx >= vf->num_tc) {
- 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
- 				goto error_param;
- 			}
 
 
 
