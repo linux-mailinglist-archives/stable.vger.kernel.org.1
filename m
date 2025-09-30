@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3126BAD6CE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98423BAD512
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C99F3BC10F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 272683C3C94
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A129030597A;
-	Tue, 30 Sep 2025 14:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1082F60D8;
+	Tue, 30 Sep 2025 14:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZKcfC83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTMFcdtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F60E304989;
-	Tue, 30 Sep 2025 14:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873884D8CE;
+	Tue, 30 Sep 2025 14:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244352; cv=none; b=KegVwYPvXm2W0S7VgFYoiZcB3/qK2NpneL2c+X/EAj+qhuDy1VoLeOaMS2Wuf9yXamEw/3Bbw6FW5qNcVLOFyM9cKdV95akQV8q2wqZ02Ir9sat57NUNw6vRWASH9S2iJ1XCZJXj/6Td/CCWR32Uc1AQItpIfbdu7BwzcXTQLjQ=
+	t=1759243971; cv=none; b=qWxcmitefhaFJsbABG+wdOXz3Lzofz+4N+Kp+x6OilG3oJBCUZkJEJ6eOI3GUQCPCJN1VVpOPzVsgc9TcRiDkyE7sFQx2kItf5SHlBnHKz25evL5qShwEFu+oM8wqk6vEWcZ59rkRYe6l8KrIieyBYQOvBBBjiY/y2w05FomfL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244352; c=relaxed/simple;
-	bh=alUXn9vCW/+9oQSq9sm4QIoPzwil4DT41kOXy6zXDCw=;
+	s=arc-20240116; t=1759243971; c=relaxed/simple;
+	bh=SqSDhe/IncZyMKu/hO9YC+w6givzcOXtpylNCmGyXK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIhRxbZ34NC95/LYnoZHIV4qrrXr0o9MirO+BbTLWIuTNKhDGpjl0L3Rkzo7r3nzlkrWhn5E6+ciVpUS/FiBX0WKcriXfNHaoYUbqYhzkGG/PmLnjyv9A5oHY3rVshGsEXQw3Xyw1zE4xKBR1WkR+aKfioa/rI+kANOO6l14lxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZKcfC83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7041C4CEF0;
-	Tue, 30 Sep 2025 14:59:11 +0000 (UTC)
+	 MIME-Version; b=ZKY4lSqqC4Pby/KZaD2r5Uvl5Q6utE3Sp6r3H/uo28Aty6ncwFoVTSvrlFfDNf+GNyLATVr9R1dTTPxtEcy3gqVNTwhSu1l6KmiYw7jQPPsmx50rxiFqVgu/75GqZqnZd+351x8iHmAB9k9yA90bHVrLox8n8oaeNzSzk/LPCDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTMFcdtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E887EC4CEF0;
+	Tue, 30 Sep 2025 14:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244352;
-	bh=alUXn9vCW/+9oQSq9sm4QIoPzwil4DT41kOXy6zXDCw=;
+	s=korg; t=1759243971;
+	bh=SqSDhe/IncZyMKu/hO9YC+w6givzcOXtpylNCmGyXK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZKcfC83DV37ZIfWBYvA1TnEd4P1ZoZM3YS0It0taxfVZxSNd/UAKGFHr+479QpbD
-	 PZvziGiy8c95AL9xm0VQjPtXyiZJVYDANHkDyJ622pedBxTkbTgkIYW1n5ACjpuiH6
-	 Ry3IuHStq5QHzVkXE3zR3uBk4LOCu1YEci23EPN4=
+	b=kTMFcdtbfbODHak+KMjXJ8jUwXfMPp1rwLMLsfxM5zahR31RFSAML3jCzbhwdQ/+J
+	 d6WV1GfXdm/zY0igVx5Bq7kRi9cwAmX9A01UCcX0GZbYf9B12k9zfQ6uE0f4YYDd7X
+	 oopHMFSlhx4XIwBhJ2PDm2HQJ7nusxdOIu3ZUc8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/122] rtnetlink: Add RTNH_F_TRAP flag
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.4 72/81] i40e: add max boundary check for VF filters
 Date: Tue, 30 Sep 2025 16:47:14 +0200
-Message-ID: <20250930143827.198113809@linuxfoundation.org>
+Message-ID: <20250930143822.718441499@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 968a83f8cf6fd5a107289c57ee3197a52c72f02c ]
+commit cb79fa7118c150c3c76a327894bb2eb878c02619 upstream.
 
-The flag indicates to user space that the nexthop is not programmed to
-forward packets in hardware, but rather to trap them to the CPU. This is
-needed, for example, when the MAC of the nexthop neighbour is not
-resolved and packets should reach the CPU to trigger neighbour
-resolution.
+There is no check for max filters that VF can request. Add it.
 
-The flag will be used in subsequent patches by netdevsim to test nexthop
-objects programming to device drivers and in the future by mlxsw as
-well.
-
-Changes since RFC:
-* Reword commit message
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 390b3a300d78 ("nexthop: Forbid FDB status change while nexthop is in a group")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/rtnetlink.h | 6 ++++--
- net/ipv4/fib_semantics.c       | 2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
-index 31be7345e0c2e..5fb40c0c57ffd 100644
---- a/include/uapi/linux/rtnetlink.h
-+++ b/include/uapi/linux/rtnetlink.h
-@@ -396,11 +396,13 @@ struct rtnexthop {
- #define RTNH_F_DEAD		1	/* Nexthop is dead (used by multipath)	*/
- #define RTNH_F_PERVASIVE	2	/* Do recursive gateway lookup	*/
- #define RTNH_F_ONLINK		4	/* Gateway is forced on link	*/
--#define RTNH_F_OFFLOAD		8	/* offloaded route */
-+#define RTNH_F_OFFLOAD		8	/* Nexthop is offloaded */
- #define RTNH_F_LINKDOWN		16	/* carrier-down on nexthop */
- #define RTNH_F_UNRESOLVED	32	/* The entry is unresolved (ipmr) */
-+#define RTNH_F_TRAP		64	/* Nexthop is trapping packets */
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3665,6 +3665,8 @@ err:
+ 				       aq_ret);
+ }
  
--#define RTNH_COMPARE_MASK	(RTNH_F_DEAD | RTNH_F_LINKDOWN | RTNH_F_OFFLOAD)
-+#define RTNH_COMPARE_MASK	(RTNH_F_DEAD | RTNH_F_LINKDOWN | \
-+				 RTNH_F_OFFLOAD | RTNH_F_TRAP)
++#define I40E_MAX_VF_CLOUD_FILTER 0xFF00
++
+ /**
+  * i40e_vc_add_cloud_filter
+  * @vf: pointer to the VF info
+@@ -3704,6 +3706,14 @@ static int i40e_vc_add_cloud_filter(stru
+ 		goto err_out;
+ 	}
  
- /* Macros to handle hexthops */
- 
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index a308d3f0f845c..48516a403a9bb 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -1705,6 +1705,8 @@ int fib_nexthop_info(struct sk_buff *skb, const struct fib_nh_common *nhc,
- 	*flags |= (nhc->nhc_flags & RTNH_F_ONLINK);
- 	if (nhc->nhc_flags & RTNH_F_OFFLOAD)
- 		*flags |= RTNH_F_OFFLOAD;
-+	if (nhc->nhc_flags & RTNH_F_TRAP)
-+		*flags |= RTNH_F_TRAP;
- 
- 	if (!skip_oif && nhc->nhc_dev &&
- 	    nla_put_u32(skb, RTA_OIF, nhc->nhc_dev->ifindex))
--- 
-2.51.0
-
++	if (vf->num_cloud_filters >= I40E_MAX_VF_CLOUD_FILTER) {
++		dev_warn(&pf->pdev->dev,
++			 "VF %d: Max number of filters reached, can't apply cloud filter\n",
++			 vf->vf_id);
++		aq_ret = -ENOSPC;
++		goto err_out;
++	}
++
+ 	cfilter = kzalloc(sizeof(*cfilter), GFP_KERNEL);
+ 	if (!cfilter)
+ 		return -ENOMEM;
 
 
 
