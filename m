@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-182281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC34BAD752
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 737FEBAD932
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C8053A7F20
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E10E3BEE0D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDF0305E2F;
-	Tue, 30 Sep 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0932304964;
+	Tue, 30 Sep 2025 15:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IiMWPaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvHpSm+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A52303A05;
-	Tue, 30 Sep 2025 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2F4266B65;
+	Tue, 30 Sep 2025 15:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244435; cv=none; b=MPUNpmLWj/I9dX9/cCjnBrWPtxBhMfbA2H7giq6F8ZSvUwD0b4AyHbpFZtIsUU/MOFIwITZVTBVOiGl1pEA3YTZB3burJ4fweDhDckj62fu0SVzQu2bcIPGgV3W0GjHgu2Rs3z3evlITFyJr4StN/wjkVFlkjsKBbADSrhz7sec=
+	t=1759244902; cv=none; b=teFr3eyChAaqArzMGNKkidKwEelBH5gSMST2KLsyTY2xO5LiHqoo6FEOWw/01MXmmBz0SWQIlYKfjkYfWcTR4eWlvyqlSXwJJ3vm2t4CdF+iQhOCfM0s+aL+hwdj0+gNwUhryu/qz7IGobBHf9nMFnCnQ77IPS9jHmJRPu5kQR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244435; c=relaxed/simple;
-	bh=R2Q1PFWkMdXbZA3F/xnqdlmjHEGzH35qIJnYAwqh7wc=;
+	s=arc-20240116; t=1759244902; c=relaxed/simple;
+	bh=kyF5RF17xApd/5Xc3caVzp+qI5W2ONXzx04XoCoSwkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWfVMSbDmQP3TvbjxLOCbNZ02+OR78pFbUjJL2k5vBilSj+pYTOEzte/h5RM+yGaXC/bSwk1qkuU9ecXQeaf2Bdb/0SucqGPwiVxvrKCCLqkjx1oeBkBqiJvpVWjKNVf3sLEJmImYUIVXV4FtkngGf/RiptZqPiVskbgu08KU+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IiMWPaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF007C4CEF0;
-	Tue, 30 Sep 2025 15:00:34 +0000 (UTC)
+	 MIME-Version; b=dZlcclJva9vug6EjXl1hsfxIOlTGxIQaaCmuoM9HmAx9SSsfS24uqaQgJYwwPyVe3PP6J1LPH9G5IXvljLMZI6nMzbgo8Vmot5/JKGU6C5Jo7NmGM+cSTWN1d9NLOeCgaHwkb7eyIyJ1iYcJ5RZ/OKo93fXd0k+imxbT0oYeFfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvHpSm+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5C2C4CEF0;
+	Tue, 30 Sep 2025 15:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244435;
-	bh=R2Q1PFWkMdXbZA3F/xnqdlmjHEGzH35qIJnYAwqh7wc=;
+	s=korg; t=1759244902;
+	bh=kyF5RF17xApd/5Xc3caVzp+qI5W2ONXzx04XoCoSwkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1IiMWPazBo3zH93ZaysjbnaVh+e6vPqdEbFcxiNDh7QxZwZ93iBF75nE7N5ie4iiX
-	 3H+UqeZn8eWpcHTaLQMg6UR8WG0k01H59rxhODbohuAVNnE8kZ4D5eTZ2x51DXbkT7
-	 wtStSXJWSbNM/+Ph5lOGokkTd4/UcIs4BS4BfVxM=
+	b=AvHpSm+orKzEUlsJ0+LJcJgX0zyED+uXN3GfxugOWRhlxPOI8PRakKLGyLw3aIrVz
+	 hQ//eb5rj0xX/0R19OqdnwhwB9Jwkc9fzH2efAN92iNVLM21AV1jznQZFvC9wf3Glr
+	 zHxeVHxF9I7DVAnGcwpC2YgZef6P75uAacnzBFoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/122] i40e: fix validation of VF state in get resources
+	Eric Biggers <ebiggers@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 128/143] kmsan: fix out-of-bounds access to shadow memory
 Date: Tue, 30 Sep 2025 16:47:32 +0200
-Message-ID: <20250930143827.913523080@linuxfoundation.org>
+Message-ID: <20250930143836.333435663@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +64,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 877b7e6ffc23766448236e8732254534c518ba42 ]
+commit 85e1ff61060a765d91ee62dc5606d4d547d9d105 upstream.
 
-VF state I40E_VF_STATE_ACTIVE is not the only state in which
-VF is actually active so it should not be used to determine
-if a VF is allowed to obtain resources.
+Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
+kmsan_internal_set_shadow_origin():
 
-Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
-i40e_vc_get_vf_resources_msg() and cleared during reset.
+    BUG: unable to handle page fault for address: ffffbc3840291000
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
+    Oops: 0000 [#1] SMP NOPTI
+    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
+    Tainted: [N]=TEST
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
+    [...]
+    Call Trace:
+    <TASK>
+    __msan_memset+0xee/0x1a0
+    sha224_final+0x9e/0x350
+    test_hash_buffer_overruns+0x46f/0x5f0
+    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
+    ? __pfx_test_hash_buffer_overruns+0x10/0x10
+    kunit_try_run_case+0x198/0xa00
 
-Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This occurs when memset() is called on a buffer that is not 4-byte aligned
+and extends to the end of a guard page, i.e.  the next page is unmapped.
+
+The bug is that the loop at the end of kmsan_internal_set_shadow_origin()
+accesses the wrong shadow memory bytes when the address is not 4-byte
+aligned.  Since each 4 bytes are associated with an origin, it rounds the
+address and size so that it can access all the origins that contain the
+buffer.  However, when it checks the corresponding shadow bytes for a
+particular origin, it incorrectly uses the original unrounded shadow
+address.  This results in reads from shadow memory beyond the end of the
+buffer's shadow memory, which crashes when that memory is not mapped.
+
+To fix this, correctly align the shadow address before accessing the 4
+shadow bytes corresponding to each origin.
+
+Link: https://lkml.kernel.org/r/20250911195858.394235-1-ebiggers@kernel.org
+Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    7 ++++++-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |    3 ++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ mm/kmsan/core.c       |   10 +++++++---
+ mm/kmsan/kmsan_test.c |   16 ++++++++++++++++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1416,6 +1416,7 @@ static void i40e_trigger_vf_reset(struct
- 	 * functions that may still be running at this point.
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -195,7 +195,8 @@ void kmsan_internal_set_shadow_origin(vo
+ 				      u32 origin, bool checked)
+ {
+ 	u64 address = (u64)addr;
+-	u32 *shadow_start, *origin_start;
++	void *shadow_start;
++	u32 *aligned_shadow, *origin_start;
+ 	size_t pad = 0;
+ 
+ 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
+@@ -214,9 +215,12 @@ void kmsan_internal_set_shadow_origin(vo
+ 	}
+ 	__memset(shadow_start, b, size);
+ 
+-	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++		aligned_shadow = shadow_start;
++	} else {
+ 		pad = address % KMSAN_ORIGIN_SIZE;
+ 		address -= pad;
++		aligned_shadow = shadow_start - pad;
+ 		size += pad;
+ 	}
+ 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
+@@ -230,7 +234,7 @@ void kmsan_internal_set_shadow_origin(vo
+ 	 * corresponding shadow slot is zero.
  	 */
- 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
-+	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
+ 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
+-		if (origin || !shadow_start[i])
++		if (origin || !aligned_shadow[i])
+ 			origin_start[i] = origin;
+ 	}
+ }
+--- a/mm/kmsan/kmsan_test.c
++++ b/mm/kmsan/kmsan_test.c
+@@ -556,6 +556,21 @@ DEFINE_TEST_MEMSETXX(16)
+ DEFINE_TEST_MEMSETXX(32)
+ DEFINE_TEST_MEMSETXX(64)
  
- 	/* In the case of a VFLR, the HW has already reset the VF and we
- 	 * just need to clean up, so don't hit the VFRTRIG register.
-@@ -2082,7 +2083,10 @@ static int i40e_vc_get_vf_resources_msg(
- 	size_t len = 0;
- 	int ret;
- 
--	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
-+	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
++/* Test case: ensure that KMSAN does not access shadow memory out of bounds. */
++static void test_memset_on_guarded_buffer(struct kunit *test)
++{
++	void *buf = vmalloc(PAGE_SIZE);
 +
-+	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
-+	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
- 		aq_ret = I40E_ERR_PARAM;
- 		goto err;
- 	}
-@@ -2178,6 +2182,7 @@ static int i40e_vc_get_vf_resources_msg(
- 				vf->default_lan_addr.addr);
- 	}
- 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
-+	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
- 
- err:
- 	/* send the response back to the VF */
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -39,7 +39,8 @@ enum i40e_vf_states {
- 	I40E_VF_STATE_MC_PROMISC,
- 	I40E_VF_STATE_UC_PROMISC,
- 	I40E_VF_STATE_PRE_ENABLE,
--	I40E_VF_STATE_RESETTING
-+	I40E_VF_STATE_RESETTING,
-+	I40E_VF_STATE_RESOURCES_LOADED,
- };
- 
- /* VF capabilities */
++	kunit_info(test,
++		   "memset() on ends of guarded buffer should not crash\n");
++
++	for (size_t size = 0; size <= 128; size++) {
++		memset(buf, 0xff, size);
++		memset(buf + PAGE_SIZE - size, 0xff, size);
++	}
++	vfree(buf);
++}
++
+ static noinline void fibonacci(int *array, int size, int start)
+ {
+ 	if (start < 2 || (start == size))
+@@ -677,6 +692,7 @@ static struct kunit_case kmsan_test_case
+ 	KUNIT_CASE(test_memset16),
+ 	KUNIT_CASE(test_memset32),
+ 	KUNIT_CASE(test_memset64),
++	KUNIT_CASE(test_memset_on_guarded_buffer),
+ 	KUNIT_CASE(test_long_origin_chain),
+ 	KUNIT_CASE(test_stackdepot_roundtrip),
+ 	KUNIT_CASE(test_unpoison_memory),
 
 
 
