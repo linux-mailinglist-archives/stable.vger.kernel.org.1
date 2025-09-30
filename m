@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-182477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E4FBAD962
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C2EBAD74C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E313C18831CC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 541F9188A71D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3193043B8;
-	Tue, 30 Sep 2025 15:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4973064AA;
+	Tue, 30 Sep 2025 15:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmQM4UZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AuK1DWyp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEDA2FCBFC;
-	Tue, 30 Sep 2025 15:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810B1EE02F;
+	Tue, 30 Sep 2025 15:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245068; cv=none; b=ojsWUMb7GromamQUgvQ2fhToDAR+7RXa0vk4pZzbxMzECG8sVK637ZGgGoWV6GfFAJsigx56bYmeaVTp6vxE9M4VWTnr7JpMc/E/cggjn1RLqfzk8uI/qKR41xHa6B4PQpD0kOcOAhNy+VGOmOySXGQJszC3qVw9sUfhnE0QK0c=
+	t=1759244516; cv=none; b=Oy2JxggAOnSoS/kAU452RI830C7F8gEWmcQK7+goJEN1NPBtg41RPTn1TIn1gZJvDziOIgJ9Mo/NqT+nRf9RPytyv8B7U2S0chSnibGAw6edek+ZVKUCh9cfpIDO04tTNYrcXBfXDC3wbCwazvIJ9rdcVC+E83YWkAsf/UjpSNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245068; c=relaxed/simple;
-	bh=W0XZPE0hwWCyHM/oDDucHhL2ZYXZ6reTe7aqI0tsBEw=;
+	s=arc-20240116; t=1759244516; c=relaxed/simple;
+	bh=5bGP7PxUcHk2DD+HlSQMCFcoAbuuZCvXLroKRBCnlbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSpZF1Em7h6jp1v9L32Y9w6fJg40efziDb+QAi3czlaBrCjKZbECz94O4DsqAaScUjnmXA7kReAZmQHnqeXzPsdZBuhsfS69ibPkmf6ddcWMDLrQTIZKpaegNpmH+C08br0DusA1MVXtE8BO/BbdD+Vuk7gugyGg3/d51pN1xxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmQM4UZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E170BC4CEF0;
-	Tue, 30 Sep 2025 15:11:04 +0000 (UTC)
+	 MIME-Version; b=MXnl3eiPoawCHYy5cJvP0Tym8ySn1iZxS9WwGjoTM5dhJmXNA9HVRParFgz8b3t0v16SJnVz4t4z6+c3HellZHJniuEE2yT95M0molGTO5O5ObuzI39pnF5xJsWvR8OCIAgMYQGs4tfISTZpOo3SxUtrFQz7G+22QCnsqPYnHek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AuK1DWyp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A952C4CEF0;
+	Tue, 30 Sep 2025 15:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245065;
-	bh=W0XZPE0hwWCyHM/oDDucHhL2ZYXZ6reTe7aqI0tsBEw=;
+	s=korg; t=1759244514;
+	bh=5bGP7PxUcHk2DD+HlSQMCFcoAbuuZCvXLroKRBCnlbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmQM4UZRMa+LlG176t/pczJnMvY+aeQCNbK3CUdKEsFep6OZVH80xEN82hPtaPCWA
-	 pnpwrNJI94WEgj4mYBVJ/c8pCDeWZ3rxgkPJ8A+Qf/Lr7qYoqZwUJl8i3OmtFgJmIh
-	 40sgZoctcpDeanT/Cw8RqrBoAYhrTm/n30QQTsxw=
+	b=AuK1DWypoHUwRrwTAVlQkK215t7B809xtddSwkjDn5k3zCT46YYNU6pzg42WmfNpP
+	 D748wcBF+tc5RTPT5smK2aDGiBBW60+D3Wmlitv6Qxx5kjFKCFJuvcCxLvXvL2zYCj
+	 M1sTb9udCspRm+GOCVY0FdCS3nBrmGLUHVZdQQ7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 024/151] mtd: rawnand: stm32_fmc2: fix ECC overwrite
-Date: Tue, 30 Sep 2025 16:45:54 +0200
-Message-ID: <20250930143828.578135236@linuxfoundation.org>
+	Amit Chaudhari <amitchaudhari@mac.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 031/143] gpiolib: acpi: Add quirk for ASUS ProArt PX13
+Date: Tue, 30 Sep 2025 16:45:55 +0200
+Message-ID: <20250930143832.484270364@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit 811c0da4542df3c065f6cb843ced68780e27bb44 upstream.
+[ Upstream commit 23800ad1265f10c2bc6f42154ce4d20e59f2900e ]
 
-In case OOB write is requested during a data write, ECC is currently
-lost. Avoid this issue by only writing in the free spare area.
-This issue has been seen with a YAFFS2 file system.
+The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
+a few moments after entering hardware sleep.  This can be avoided
+by preventing the touchpad from being a wake source.
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Cc: stable@vger.kernel.org
-Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add to the wakeup ignore list.
+
+Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
+Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250814183430.3887973-1-superm1@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/stm32_fmc2_nand.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/gpio/gpiolib-acpi-quirks.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-+++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-@@ -975,9 +975,21 @@ static int stm32_fmc2_nfc_seq_write(stru
+diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
+index c13545dce3492..bfb04e67c4bc8 100644
+--- a/drivers/gpio/gpiolib-acpi-quirks.c
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -344,6 +344,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_interrupt = "AMDI0030:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 5.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4482
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt PX13"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ASCP1A00:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
- 	/* Write oob */
- 	if (oob_required) {
--		ret = nand_change_write_column_op(chip, mtd->writesize,
--						  chip->oob_poi, mtd->oobsize,
--						  false);
-+		unsigned int offset_in_page = mtd->writesize;
-+		const void *buf = chip->oob_poi;
-+		unsigned int len = mtd->oobsize;
-+
-+		if (!raw) {
-+			struct mtd_oob_region oob_free;
-+
-+			mtd_ooblayout_free(mtd, 0, &oob_free);
-+			offset_in_page += oob_free.offset;
-+			buf += oob_free.offset;
-+			len = oob_free.length;
-+		}
-+
-+		ret = nand_change_write_column_op(chip, offset_in_page,
-+						  buf, len, false);
- 		if (ret)
- 			return ret;
- 	}
+-- 
+2.51.0
+
 
 
 
