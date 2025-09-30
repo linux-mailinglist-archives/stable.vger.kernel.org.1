@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DBBBAD953
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3A7BAD78E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D39F317BF2B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A786A325684
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417293043B8;
-	Tue, 30 Sep 2025 15:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7040C2FCBFC;
+	Tue, 30 Sep 2025 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POXFA3L1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haAHDsEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CE61487F4;
-	Tue, 30 Sep 2025 15:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAA6173;
+	Tue, 30 Sep 2025 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245024; cv=none; b=NMibChgXgD+W2h/XS/KKoWr4S/jEPp17eSs9m40/8moJMc/vvmPzrwe3vPEbPHIH5ENxcIS9foVBiLXmTMwINhh86Z9ooSECllbyPZorFHKvf1Yho3SXl9/HYwLq1gumjMg1+7KXMbEb9fGw/+6/5s6ws/dY8bQpR9t5J7gPg1c=
+	t=1759244577; cv=none; b=WGKIvcntDQMMy8tKOYm/Uf6sN6W9Zu58N9kWQK50sGpvzRkCk3CrP8LTNu48bufo3VkujuTFMjSmrOxv4FNTJHjUUZKHJeLBq9OB1EZ9N1BNjx9ZTXQ2l9Z/8IwVC7XP6hXv5wI5VPgOln6IviArAs8YIEHiDEkOup8lJRi+dYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245024; c=relaxed/simple;
-	bh=7IwALrQeTBHtVekRRyaV1DhUK3XniLGCYqnQ8AtWnY0=;
+	s=arc-20240116; t=1759244577; c=relaxed/simple;
+	bh=YuYC9inX43D78xW0nbaRkukcRc4krcV4+ZIoKnj67mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxFOpUK620OT3+qyTBYIJUJg1kYrhPkmAXkgrahnHj45wfqYIHB19IsR/3b0zX4WBraxpfuRX61Yi4v8p6bQP09S46Hysws0UpYI1bePIlF3XnJ9kv6Jpsud7e+V3RbHsFZuERj+d+pu6QKowcuZEj1aEbartHq5Oy7tevlhrLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POXFA3L1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22502C4CEF0;
-	Tue, 30 Sep 2025 15:10:22 +0000 (UTC)
+	 MIME-Version; b=LbJzg2NWd5O3WkdbIbfqx+zJmXW+GyiC+YHLq74uL+D9T4uU/unzKxaW3XLJjCpJR8kvGCFSsYiVwTbfI6mTuYk4+d9cWq6YDQepkMqdHrXuZ8aPguYmiUZ0ceuFDfeh8YV/UgFyUBGZ+mKYn8dLiMRJIVMwSKKS4OvcEQl9CxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haAHDsEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77EAC4CEF0;
+	Tue, 30 Sep 2025 15:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245023;
-	bh=7IwALrQeTBHtVekRRyaV1DhUK3XniLGCYqnQ8AtWnY0=;
+	s=korg; t=1759244577;
+	bh=YuYC9inX43D78xW0nbaRkukcRc4krcV4+ZIoKnj67mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POXFA3L1+2Ydhjnf3i6EpNW2VJQ9Zo3zOh2t6lkzKcDAdqnCgh/daWNhXdI8Nr4Ks
-	 Khw0RZhfw8i0HRu4pSb3dyGGzeF+5/8GR1+smwmCRzX9unFvOC9XSvp5qzz53aqeVM
-	 clpOt/8iiBEtAnkqkBlxtaO5/DQzli1mBlbDwGIc=
+	b=haAHDsEn1kc8YV7VjcvAT5zju+ju9cN4FqOf7+93WnzBE+48xx4d0FaajLDbKOFGw
+	 KwhkAMaDPWkHpMxB0YFLeo9dBdm4JgVzbOOIXvYzB5Bgg+xKqbP4ovYf9QoZWCPugs
+	 3yjxtrUG4GnPwCvnr6zLFyrJ/xPSRGmJROISraBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitesh Narayan Lal <nitesh@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Xing Guo <higuoxing@gmail.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/151] i40e: Use irq_update_affinity_hint()
+Subject: [PATCH 6.16 048/143] selftests/fs/mount-notify: Fix compilation failure.
 Date: Tue, 30 Sep 2025 16:46:12 +0200
-Message-ID: <20250930143829.284976762@linuxfoundation.org>
+Message-ID: <20250930143833.148586862@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitesh Narayan Lal <nitesh@redhat.com>
+From: Xing Guo <higuoxing@gmail.com>
 
-[ Upstream commit d34c54d1739c2cdf2e4437b74e6da269147f4987 ]
+[ Upstream commit e51bd0e595476c1527bb0b4def095a6fd16b2563 ]
 
-The driver uses irq_set_affinity_hint() for two purposes:
+Commit c6d9775c2066 ("selftests/fs/mount-notify: build with tools include
+dir") introduces the struct __kernel_fsid_t to decouple dependency with
+headers_install.  The commit forgets to define a macro for __kernel_fsid_t
+and it will cause type re-definition issue.
 
- - To set the affinity_hint which is consumed by the userspace for
-   distributing the interrupts
-
- - To apply an affinity that it provides for the i40e interrupts
-
-The latter is done to ensure that all the interrupts are evenly spread
-across all available CPUs. However, since commit a0c9259dc4e1 ("irq/matrix:
-Spread interrupts on allocation") the spreading of interrupts is
-dynamically performed at the time of allocation. Hence, there is no need
-for the drivers to enforce their own affinity for the spreading of
-interrupts.
-
-Also, irq_set_affinity_hint() applying the provided cpumask as an affinity
-for the interrupt is an undocumented side effect. To remove this side
-effect irq_set_affinity_hint() has been marked as deprecated and new
-interfaces have been introduced. Hence, replace the irq_set_affinity_hint()
-with the new interface irq_update_affinity_hint() that only sets the
-pointer for the affinity_hint.
-
-Signed-off-by: Nitesh Narayan Lal <nitesh@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Link: https://lore.kernel.org/r/20210903152430.244937-4-nitesh@redhat.com
-Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
+Signed-off-by: Xing Guo <higuoxing@gmail.com>
+Link: https://lore.kernel.org/20250813031647.96411-1-higuoxing@gmail.com
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Closes: https://lore.kernel.org/oe-lkp/202508110628.65069d92-lkp@intel.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../mount-notify/mount-notify_test.c           | 17 ++++++++---------
+ .../mount-notify/mount-notify_test_ns.c        | 18 ++++++++----------
+ 2 files changed, 16 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 2a3b8dd72686d..9fb598f56be4a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -4152,10 +4152,10 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
- 		 *
- 		 * get_cpu_mask returns a static constant mask with
- 		 * a permanent lifetime so it's ok to pass to
--		 * irq_set_affinity_hint without making a copy.
-+		 * irq_update_affinity_hint without making a copy.
- 		 */
- 		cpu = cpumask_local_spread(q_vector->v_idx, -1);
--		irq_set_affinity_hint(irq_num, get_cpu_mask(cpu));
-+		irq_update_affinity_hint(irq_num, get_cpu_mask(cpu));
- 	}
+diff --git a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c
+index 63ce708d93ed0..e4b7c2b457ee7 100644
+--- a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c
++++ b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c
+@@ -2,6 +2,13 @@
+ // Copyright (c) 2025 Miklos Szeredi <miklos@szeredi.hu>
  
- 	vsi->irqs_ready = true;
-@@ -4166,7 +4166,7 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
- 		vector--;
- 		irq_num = pf->msix_entries[base + vector].vector;
- 		irq_set_affinity_notifier(irq_num, NULL);
--		irq_set_affinity_hint(irq_num, NULL);
-+		irq_update_affinity_hint(irq_num, NULL);
- 		free_irq(irq_num, &vsi->q_vectors[vector]);
- 	}
- 	return err;
-@@ -4987,7 +4987,7 @@ static void i40e_vsi_free_irq(struct i40e_vsi *vsi)
- 			/* clear the affinity notifier in the IRQ descriptor */
- 			irq_set_affinity_notifier(irq_num, NULL);
- 			/* remove our suggested affinity mask for this IRQ */
--			irq_set_affinity_hint(irq_num, NULL);
-+			irq_update_affinity_hint(irq_num, NULL);
- 			synchronize_irq(irq_num);
- 			free_irq(irq_num, vsi->q_vectors[i]);
+ #define _GNU_SOURCE
++
++// Needed for linux/fanotify.h
++typedef struct {
++	int	val[2];
++} __kernel_fsid_t;
++#define __kernel_fsid_t __kernel_fsid_t
++
+ #include <fcntl.h>
+ #include <sched.h>
+ #include <stdio.h>
+@@ -10,20 +17,12 @@
+ #include <sys/mount.h>
+ #include <unistd.h>
+ #include <sys/syscall.h>
++#include <sys/fanotify.h>
  
+ #include "../../kselftest_harness.h"
+ #include "../statmount/statmount.h"
+ #include "../utils.h"
+ 
+-// Needed for linux/fanotify.h
+-#ifndef __kernel_fsid_t
+-typedef struct {
+-	int	val[2];
+-} __kernel_fsid_t;
+-#endif
+-
+-#include <sys/fanotify.h>
+-
+ static const char root_mntpoint_templ[] = "/tmp/mount-notify_test_root.XXXXXX";
+ 
+ static const int mark_cmds[] = {
+diff --git a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c
+index 090a5ca65004a..9f57ca46e3afa 100644
+--- a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c
++++ b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c
+@@ -2,6 +2,13 @@
+ // Copyright (c) 2025 Miklos Szeredi <miklos@szeredi.hu>
+ 
+ #define _GNU_SOURCE
++
++// Needed for linux/fanotify.h
++typedef struct {
++	int	val[2];
++} __kernel_fsid_t;
++#define __kernel_fsid_t __kernel_fsid_t
++
+ #include <fcntl.h>
+ #include <sched.h>
+ #include <stdio.h>
+@@ -10,21 +17,12 @@
+ #include <sys/mount.h>
+ #include <unistd.h>
+ #include <sys/syscall.h>
++#include <sys/fanotify.h>
+ 
+ #include "../../kselftest_harness.h"
+-#include "../../pidfd/pidfd.h"
+ #include "../statmount/statmount.h"
+ #include "../utils.h"
+ 
+-// Needed for linux/fanotify.h
+-#ifndef __kernel_fsid_t
+-typedef struct {
+-	int	val[2];
+-} __kernel_fsid_t;
+-#endif
+-
+-#include <sys/fanotify.h>
+-
+ static const char root_mntpoint_templ[] = "/tmp/mount-notify_test_root.XXXXXX";
+ 
+ static const int mark_types[] = {
 -- 
 2.51.0
 
