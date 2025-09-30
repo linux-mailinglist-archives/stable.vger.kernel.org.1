@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-182476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25152BAD959
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233EBBAD56F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5D471882E38
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AB597A1D2A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EDA2236EB;
-	Tue, 30 Sep 2025 15:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCF2304BBF;
+	Tue, 30 Sep 2025 14:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCplIsrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMqHCSw3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447781EE02F;
-	Tue, 30 Sep 2025 15:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F7830594A;
+	Tue, 30 Sep 2025 14:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245068; cv=none; b=Yo9bB6RIE8Jpz2JWOaeuKR60MJUG0BRJbO26Xx4XlXPpbPUUQKPtPX7dwW25Fi6eOWa2wRS0/hn1T1hgeqaUOPbqoaXbJdRJeZ78o3lrUDM0PrmwgZSLgwpkOMs6roq9Oy4C2m9oycjaQRstfUAXNqPj0rsEfeZSOUxQhgJxvUU=
+	t=1759244087; cv=none; b=r8RwDxCdlXd7GV1QLSJruPD3t0dY9WcFtmYR3XBvqj3x72PLoGq7qLAmMxMhFPNS07NU9ltKb0a8cE6xE/hSk/zqm27VBtLK1K6i2Ax0oPWVSMjbX80T7ILQbvIgNFfLfwOuLyZKYLKgZ/zn2U1W41eRMpmQYnkNTpAryzPQTo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245068; c=relaxed/simple;
-	bh=IQghZj3xs/7dv+Vh2PfTV3CTSiOjT+xa4epiJ5DZamA=;
+	s=arc-20240116; t=1759244087; c=relaxed/simple;
+	bh=94MhCkolALjao50/9AS+K9oqJSVTYn/ooTNszmnHcbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIMOhDnqsfa2gXyjXHpF0ZC0RG0xCQTI9CskxgVzqwLpLK2K/DQbwDzFkPPE2lOiUown3Uyulj5Jf1OpcOoY2dBK7gpxnORuhgzZW3vAS/FZylfq20NveLRmbqYZNfGB1RyEe8miXkEk5ZzCkzpK60CQwPuNVerDVQgfdgRJenk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCplIsrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF90C113D0;
-	Tue, 30 Sep 2025 15:11:07 +0000 (UTC)
+	 MIME-Version; b=QREj9CKmRbMWorLtgJUCtULAzXdggqFgxnn3IJfpSU66tSxCrEM5dVgfcSVqzXbMOFKqamyODdT5HXoK7hpg0gnOMvDYTl60/U7692ct2HTqVmnFgWdfTnnK2mzuLB7JczjbxSrQkpieOBVOU2NHMDdDLS9nT6NK3fOVFDQ/9Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMqHCSw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A992BC4CEF0;
+	Tue, 30 Sep 2025 14:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245068;
-	bh=IQghZj3xs/7dv+Vh2PfTV3CTSiOjT+xa4epiJ5DZamA=;
+	s=korg; t=1759244087;
+	bh=94MhCkolALjao50/9AS+K9oqJSVTYn/ooTNszmnHcbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCplIsrModbLHJr7bFsG3HDj7rmIigMdAwSTV9JIKniprehpZT2v872Y+hvWTtSJp
-	 BTHWF/+5Hyn9z9jzpO9l1o65xj1uV6AYikURY0Fx8xYK2qFQpMYusDm+3lUKlhetIW
-	 E478+UFPRi8/zieNwu9YpmF2BfvZMt3SGvqJi7ro=
+	b=mMqHCSw3tOK6CqAlTSzCn3nhV88SzaQR33WwKbBls8RoNOf3DHBU6NL44+AGQCpLq
+	 kZvXWqQ52E7rFP9ZlXIwt3EPLoSqj3ScMOVfzy4a+06gyTbXVcxv+d79hGgy8i8DXy
+	 lqyeVwDxR++7HiEGuhLwWejEmIfxNj960BjMFaCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunsheng Luo <luochunsheng@ustc.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.15 025/151] fuse: check if copy_file_range() returns larger than requested size
+	Alexander Dahl <ada@thorsis.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 024/122] mtd: nand: raw: atmel: Fix comment in timings preparation
 Date: Tue, 30 Sep 2025 16:45:55 +0200
-Message-ID: <20250930143828.615316167@linuxfoundation.org>
+Message-ID: <20250930143823.988658659@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Alexander Dahl <ada@thorsis.com>
 
-commit e5203209b3935041dac541bc5b37efb44220cc0b upstream.
+[ Upstream commit 1c60e027ffdebd36f4da766d9c9abbd1ea4dd8f9 ]
 
-Just like write(), copy_file_range() should check if the return value is
-less or equal to the requested number of bytes.
+Looks like a copy'n'paste mistake introduced when initially adding the
+dynamic timings feature with commit f9ce2eddf176 ("mtd: nand: atmel: Add
+->setup_data_interface() hooks").  The context around this and
+especially the code itself suggests 'read' is meant instead of write.
 
-Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
-Closes: https://lore.kernel.org/all/20250807062425.694-1-luochunsheng@ustc.edu/
-Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
-Cc: <stable@vger.kernel.org> # v4.20
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240226122537.75097-1-ada@thorsis.com
+Stable-dep-of: fd779eac2d65 ("mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mtd/nand/raw/atmel/nand-controller.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3113,6 +3113,9 @@ static ssize_t __fuse_copy_file_range(st
- 		fc->no_copy_file_range = 1;
- 		err = -EOPNOTSUPP;
- 	}
-+	if (!err && outarg.size > len)
-+		err = -EIO;
-+
- 	if (err)
- 		goto out;
+--- a/drivers/mtd/nand/raw/atmel/nand-controller.c
++++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
+@@ -1378,7 +1378,7 @@ static int atmel_smc_nand_prepare_smccon
+ 		return ret;
  
+ 	/*
+-	 * The write cycle timing is directly matching tWC, but is also
++	 * The read cycle timing is directly matching tRC, but is also
+ 	 * dependent on the setup and hold timings we calculated earlier,
+ 	 * which gives:
+ 	 *
 
 
 
