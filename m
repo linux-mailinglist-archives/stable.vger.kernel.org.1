@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DD3BADC69
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EFEBADA98
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574A63C3633
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5AA32730C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8918C27B328;
-	Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19713081C3;
+	Tue, 30 Sep 2025 15:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SL3wCX+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMd8cy5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4575E173;
-	Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D330303CA8;
+	Tue, 30 Sep 2025 15:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245605; cv=none; b=DXq3tCjjm4bHOsnFtuEbGnShj1RWWISCuEDA84JivIX6JFinfEqy0dgUZKxarb6GhCBP2d6tCzWy252HjEhmpVSdtfRXyZCEftczqi+es+gUasF5csOH/JdZuOe19g8lovf9rUsWSJ436QBb6k1y0MnWALdzkw7O0uKMjmnYD6Y=
+	t=1759245303; cv=none; b=jfqXy39AL9Th4S0ms7eNC2qQlhKhVEn9c7HkUV0NhBx3wzf1HwfD1tNmi08jAd9qHhTxm9CLLfvSz/GH0QwVUel0ZWXMtjsab7GBjDbTT94UrlHeJB8J0uQNRn8x7cqRLx5WCrYzLr3HOWlxIgNbUwsvI4LDKm7KEmw06p4dRpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245605; c=relaxed/simple;
-	bh=nKRiAPRgs2FoFI1P2cBv5v0XDP4OfnCbc75oTdPx5T4=;
+	s=arc-20240116; t=1759245303; c=relaxed/simple;
+	bh=BbIQExRH/gkwmYiZRFEpvVYj6ble4ubE3EW6lf3MTiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDYhX136GM9ouFvLmOfoOZ7q2PobgnAc7Nl2ReCOpzFWrlWzLcYsNOnLH4XumCg9K9aGSjiP5srutQe7FX/D6oMNco5lN8kYnMCQVpZYUf1HVpZvPst4xctAzYnQgDeLQZlUXgplUoSmC2tcSelHpIhRWR61v8q+BSbZGzaE1RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SL3wCX+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8675C113D0;
-	Tue, 30 Sep 2025 15:20:04 +0000 (UTC)
+	 MIME-Version; b=A4rWScAEHzgn0t4ZUAcVFodOJwxO8O0Ka8XH0N91vhNR8y1XULCkIn7+CqGQSUZcyvqFhVn8ncA1/oMlnSR3reXTCx0zmoYj+k9WzcUzBT31gVFeWFis4aov5ze2OwkPDimNudwPx4N8LC9trJ6Q6WZeR3/qNL3JZJ7fK3KX3k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMd8cy5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C26C4CEF0;
+	Tue, 30 Sep 2025 15:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245605;
-	bh=nKRiAPRgs2FoFI1P2cBv5v0XDP4OfnCbc75oTdPx5T4=;
+	s=korg; t=1759245303;
+	bh=BbIQExRH/gkwmYiZRFEpvVYj6ble4ubE3EW6lf3MTiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SL3wCX+NihicAGsxaN/5mjRliHEbIG4+2gPLVNHO1oQjAcMGS+++NJ6iggJsWZewb
-	 QTBB8uaJAk1OHE4NRh6ZnyiWzn4/XaIccHrJ7C0/oddl3wiSEIRKogwkeyV12inLNB
-	 /PG/iJprw7+n/T2LTLSahw7y7ctGfORzFXvlDDj4=
+	b=tMd8cy5LRcaJ6HUGz0D92YNfgS3ltz4LIL+PJ6VTUWaCF8FpUx34h15rmfbxAqLrZ
+	 m4sTw4TX8umQCwKHMhsoKy4xosViN1a7/6s+FNyArlwLu7Ktm4JsxdFRxtjsXnsas9
+	 cupXsZwYjDUiXAOT6jKRbMMbl24mWTZNNqrNIHMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 27/73] bpf: Reject bpf_timer for PREEMPT_RT
+Subject: [PATCH 5.15 121/151] can: etas_es58x: advertise timestamping capabilities and add ioctl support
 Date: Tue, 30 Sep 2025 16:47:31 +0200
-Message-ID: <20250930143821.704438240@linuxfoundation.org>
+Message-ID: <20250930143832.428463480@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <leon.hwang@linux.dev>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
+[ Upstream commit 1d46efa0008a6d73dad40e78a2b3fa6d3cfb74e4 ]
 
-When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
-selftests by './test_progs -t timer':
+Currently, userland has no method to query which timestamping features
+are supported by the etas_es58x driver (aside maybe of getting RX
+messages and observe whether or not hardware timestamps stay at zero).
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+The canonical way for a network driver to advertise what kind of
+timestamping is supports is to implement
+ethtool_ops::get_ts_info(). Here, we use the CAN specific
+can_ethtool_op_get_ts_info_hwts() function to achieve this.
 
-In order to avoid such warning, reject bpf_timer in verifier when
-PREEMPT_RT is enabled.
+In addition, the driver currently does not support the hardware
+timestamps ioctls. According to [1], SIOCSHWTSTAMP is "must" and
+SIOCGHWTSTAMP is "should". This patch fills up that gap by
+implementing net_device_ops::ndo_eth_ioctl() using the CAN specific
+function can_eth_ioctl_hwts().
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[1] kernel doc Timestamping, section 3.1: "Hardware Timestamping
+Implementation: Device Drivers"
+Link: https://docs.kernel.org/networking/timestamping.html#hardware-timestamping-implementation-device-drivers
+
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://lore.kernel.org/all/20220727101641.198847-11-mailhol.vincent@wanadoo.fr
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 38c0abad45b1 ("can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/usb/etas_es58x/es58x_core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index ead1811534a0d..276a0de9a1bb2 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -5733,6 +5733,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
- 		verbose(env, "verifier bug. Two map pointers in a timer helper\n");
- 		return -EFAULT;
- 	}
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
-+		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
-+		return -EOPNOTSUPP;
-+	}
- 	meta->map_uid = reg->map_uid;
- 	meta->map_ptr = map;
- 	return 0;
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
+index 34d374d301e50..0c0e2363f674b 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -10,6 +10,7 @@
+  * Copyright (c) 2020, 2021 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+  */
+ 
++#include <linux/ethtool.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/usb.h>
+@@ -1981,7 +1982,12 @@ static netdev_tx_t es58x_start_xmit(struct sk_buff *skb,
+ static const struct net_device_ops es58x_netdev_ops = {
+ 	.ndo_open = es58x_open,
+ 	.ndo_stop = es58x_stop,
+-	.ndo_start_xmit = es58x_start_xmit
++	.ndo_start_xmit = es58x_start_xmit,
++	.ndo_eth_ioctl = can_eth_ioctl_hwts,
++};
++
++static const struct ethtool_ops es58x_ethtool_ops = {
++	.get_ts_info = can_ethtool_op_get_ts_info_hwts,
+ };
+ 
+ /**
+@@ -2088,6 +2094,7 @@ static int es58x_init_netdev(struct es58x_device *es58x_dev, int channel_idx)
+ 	es58x_init_priv(es58x_dev, es58x_priv(netdev), channel_idx);
+ 
+ 	netdev->netdev_ops = &es58x_netdev_ops;
++	netdev->ethtool_ops = &es58x_ethtool_ops;
+ 	netdev->flags |= IFF_ECHO;	/* We support local echo */
+ 
+ 	ret = register_candev(netdev);
 -- 
 2.51.0
 
