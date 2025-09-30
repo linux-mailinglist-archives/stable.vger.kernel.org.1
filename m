@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD18BADE44
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F01BADCC6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 785BB7A9812
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F83194554F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0CF2343B6;
-	Tue, 30 Sep 2025 15:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D952FD1DD;
+	Tue, 30 Sep 2025 15:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6eNjx8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAqKm0VM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175231EE02F;
-	Tue, 30 Sep 2025 15:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1316516A956;
+	Tue, 30 Sep 2025 15:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246224; cv=none; b=mI+G+EIV62Gzok7+MAQ1gq91OhTA4JKsIES/VadebU3fp1jmAXTi5xYv0hBT8d/9ocbNZE6i7e6hBrOCTZJmcKfcrC9fmEcOX3ORwoN8fQpqlQo77eGywz11G5hK+p1yD3TN6+rzDXL71sXSX0Hp4Qd7Z/89NgmHDmNMvu/mUys=
+	t=1759245908; cv=none; b=Nrw1+xdqk0FJRpgMoc4nFtShiWmQ9cE2g/DirbsBF/f69nIDDAr3DyiDq4Vk0HZUKFVXl3qV4LWr0QsGAC4k2+CcfIxZNWrNjKapQjnWjFmwZPZtxeztT5L4yhm73nKxYZlCtXaPfOEix4KRaKTHoGtVxJpVXi4wmMlLFEIq+FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246224; c=relaxed/simple;
-	bh=0f0n+iLkVO7WDQxuD5E/AJOrQBiRX5gSnk42rEN6xzQ=;
+	s=arc-20240116; t=1759245908; c=relaxed/simple;
+	bh=UL4OV/HnRRobqdUxn799RSmoEDQXbLa5QtNJoi6oJdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keyh32j6DpW98TUmvPpzqcahmwI3egeXVDJN9KGQG+PhRvdwNNFm1YPIn5rTs6PZVBatk2ELxEVJIabHV/irKkAWxw/+NAjzWY73prFvh/r86laEIzvJKKBnmQ2epZD4wSr/2AACb7c/hoF1Z+Sn3r90e7lANPrna56sDHNIanI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6eNjx8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9328AC4CEF0;
-	Tue, 30 Sep 2025 15:30:23 +0000 (UTC)
+	 MIME-Version; b=ivoQCfhOJI1UdAqiowV+5VQWW8y4lMHUIB31LW8d2PYhvsF5IreE56zxQJ7JKAoFVoMXqWamI/jdilGrSHyNY+FlF/yq7+JsLS+I+7D+FSl+1649N3i8/6454hV4FHNvy09LUx9/OqgpyNKHBkBeStzcNkrkbR/UIWrKsfBotoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAqKm0VM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D4CC4CEF0;
+	Tue, 30 Sep 2025 15:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246224;
-	bh=0f0n+iLkVO7WDQxuD5E/AJOrQBiRX5gSnk42rEN6xzQ=;
+	s=korg; t=1759245907;
+	bh=UL4OV/HnRRobqdUxn799RSmoEDQXbLa5QtNJoi6oJdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6eNjx8nxiZS+2koEL/EgOpYnKisCKD8idJ4a0NiVqkgWZCsv8HOGBwJ+RzgXaW42
-	 lhmbQH2NXNAbffaW9tp2ZVBH2cPQuXtAP2vEcK7KnobBSnDO5GtvifFK8S14kCRwDP
-	 LwZUXZ8nVmI1Kb6OHOgTmoqXgyA81aVMugvKO6Rs=
+	b=sAqKm0VMz3AroGsxUoo9mAziVuNOYMrJLlY/Kb55yfstMj35dnRuygh5cWlIOSQx+
+	 kmzpM/TAYtBj+qOQVXzhEkv1knXUdLdvU/MTPeq0JI0oK4g2EWtemSmopXj5NCxZN+
+	 telNo47EYHx77hKziEb2NPF1YF6VmOkkqFcBN+Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Kamakshi Nellore <nellorex.kamakshi@intel.com>
-Subject: [PATCH 6.12 69/89] i40e: fix idx validation in config queues msg
+	David Laight <David.Laight@aculab.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 6.6 84/91] minmax: fix up min3() and max3() too
 Date: Tue, 30 Sep 2025 16:48:23 +0200
-Message-ID: <20250930143824.761673314@linuxfoundation.org>
+Message-ID: <20250930143824.663822421@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit f1ad24c5abe1eaef69158bac1405a74b3c365115 upstream.
+[ Upstream commit 21b136cc63d2a9ddd60d4699552b69c214b32964 ]
 
-Ensure idx is within range of active/initialized TCs when iterating over
-vf->ch[idx] in i40e_vc_config_queues_msg().
+David Laight pointed out that we should deal with the min3() and max3()
+mess too, which still does excessive expansion.
 
-Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+And our current macros are actually rather broken.
+
+In particular, the macros did this:
+
+  #define min3(x, y, z) min((typeof(x))min(x, y), z)
+  #define max3(x, y, z) max((typeof(x))max(x, y), z)
+
+and that not only is a nested expansion of possibly very complex
+arguments with all that involves, the typing with that "typeof()" cast
+is completely wrong.
+
+For example, imagine what happens in max3() if 'x' happens to be a
+'unsigned char', but 'y' and 'z' are 'unsigned long'.  The types are
+compatible, and there's no warning - but the result is just random
+garbage.
+
+No, I don't think we've ever hit that issue in practice, but since we
+now have sane infrastructure for doing this right, let's just use it.
+It fixes any excessive expansion, and also avoids these kinds of broken
+type issues.
+
+Requested-by: David Laight <David.Laight@aculab.com>
+Acked-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/minmax.h |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2398,7 +2398,7 @@ static int i40e_vc_config_queues_msg(str
- 		}
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -152,13 +152,20 @@
+ #define umax(x, y)	\
+ 	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
  
- 		if (vf->adq_enabled) {
--			if (idx >= ARRAY_SIZE(vf->ch)) {
-+			if (idx >= vf->num_tc) {
- 				aq_ret = -ENODEV;
- 				goto error_param;
- 			}
-@@ -2419,7 +2419,7 @@ static int i40e_vc_config_queues_msg(str
- 		 * to its appropriate VSIs based on TC mapping
- 		 */
- 		if (vf->adq_enabled) {
--			if (idx >= ARRAY_SIZE(vf->ch)) {
-+			if (idx >= vf->num_tc) {
- 				aq_ret = -ENODEV;
- 				goto error_param;
- 			}
++#define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
++	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
++	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
++		#op"3("#x", "#y", "#z") signedness error");		\
++	__cmp(op, ux, __cmp(op, uy, uz)); })
++
+ /**
+  * min3 - return minimum of three values
+  * @x: first value
+  * @y: second value
+  * @z: third value
+  */
+-#define min3(x, y, z) min((typeof(x))min(x, y), z)
++#define min3(x, y, z) \
++	__careful_op3(min, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * max3 - return maximum of three values
+@@ -166,7 +173,8 @@
+  * @y: second value
+  * @z: third value
+  */
+-#define max3(x, y, z) max((typeof(x))max(x, y), z)
++#define max3(x, y, z) \
++	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
 
 
 
