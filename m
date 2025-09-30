@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E74DBAD540
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C5EBAD725
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 481427A1580
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84C12188564A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FF6303A01;
-	Tue, 30 Sep 2025 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146702FCBFC;
+	Tue, 30 Sep 2025 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlRaUE53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQBt9YLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EABC1F1302;
-	Tue, 30 Sep 2025 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CC41EE02F;
+	Tue, 30 Sep 2025 15:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244052; cv=none; b=ntqIx/UcPNwNr3IQIYTECDyod7bSKrDmndKJPAVawd79MBOfR5/GdlKtT90pq40woalqN3hlxlhsKyah2mGXxYgCG+h2UnqC2+Kg+OmZ4PWmmUUDg/gjvbx5emqgsh6FBZhdZudl3iTFTgBmPFy+kXrg8xzBwufCGeSR/KdH+IM=
+	t=1759244495; cv=none; b=lWuTXyoHtSjDSqxb4jPoTxJFH0QOpJ/O7ODIcvG6fNJ24iGXEWYbXMS4WzyuyIcOBJRI1OiOyUKxBC5wM0IfmeeajjkqoKbQupYY9bRkFsUK51kQTw3Ico/4h0HGdl98D1zFcxdyWb2hR2/0J5IMkjm7PxKM0ysBF1tce1gOht8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244052; c=relaxed/simple;
-	bh=D9YEQeiwG7ZWfHd55QE3hzSbQktPvpDEF5bUs7PD8m0=;
+	s=arc-20240116; t=1759244495; c=relaxed/simple;
+	bh=+5YpvCR8+kRYn2sc573ODN6B8OW0ExcKDjmc76cumjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGW+SpI4+FDTLiOqnYfgYZeior0QwBcW1udM2Tpk4u2vaWyKjSj5HMaAb9ZpI04Hu2PZXYjtaPeLZ2UhH+z/+uxbApipslB3x+8TxnIi8gDbF2EHPLHb572XVf9/ESExW43Fp7B6wKO1lKEEUEg3rvdpitaHRrjjxHIy4EOfLFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlRaUE53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7047AC4CEF0;
-	Tue, 30 Sep 2025 14:54:11 +0000 (UTC)
+	 MIME-Version; b=dkbxdNi6W91kOyI6LVRMtyrlAPuGA9dcNjp3l5kKoynXjGjXnG9ufr09WDSynC8eC5PM+zAQbLfG/OOwxTg7IlfggQDSh/J03RRsEXXuF/RtsZTDqGubNxDlTgZocJQU1w5SSvlhJCadhrFFWutEnb2IiF0aX9FGNgLME5pvtiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQBt9YLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5059BC4CEF0;
+	Tue, 30 Sep 2025 15:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244051;
-	bh=D9YEQeiwG7ZWfHd55QE3hzSbQktPvpDEF5bUs7PD8m0=;
+	s=korg; t=1759244495;
+	bh=+5YpvCR8+kRYn2sc573ODN6B8OW0ExcKDjmc76cumjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlRaUE53o8JzoQMOh17CyzL51F4bWqsDC1HYsKWHZhy9AjR9QugkMonaX3zob1mnH
-	 LBTDZzW5lqd8ucmyluvR/MkvHueRBcOJ/kIq7Bfc40mONNeKUE43gfWSG5p49ozWDi
-	 fTw6oWGQpeUn8Dc+NVGicrY+encQL4gEOuXwkhhU=
+	b=bQBt9YLElEbHbzHjmGCfx/vK9RLdfMTY0Pm+h0DbsXrHZJnjRAFZv2J1Uf68cB14j
+	 EH/LrTsuSwRtWtLFlRChiRas9ZScJT2R+DTWZiJSMfYG2UzDz2lNmDXf0PueHJpjCw
+	 MtdVKXMC+KPeg8DSACoN+FnQPfz/7bu8U7xgtgRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Courbot <acourbot@google.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/122] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
+Subject: [PATCH 6.16 009/143] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
 Date: Tue, 30 Sep 2025 16:45:33 +0200
-Message-ID: <20250930143823.053259812@linuxfoundation.org>
+Message-ID: <20250930143831.618004418@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 ]
+[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
 
-This is one of three clang warnings about incompatible enum types
-in a conditional expression:
+Adding a memory barrier before wake_up() in
+snd_usb_soundblaster_remote_complete() is supposed to ensure the write
+to mixer->rc_code is visible in wait_event_interruptible() from
+snd_usb_sbrc_hwdep_read().
 
-drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
-  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
+However, this is not really necessary, since wake_up() is just a wrapper
+over __wake_up() which already executes a full memory barrier before
+accessing the state of the task to be waken up.
 
-The code is correct, so just rework it to avoid the warning.
+Drop the redundant call to wmb() and implicitly fix the checkpatch
+complaint:
 
-Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@google.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ Adapted file path ]
+  WARNING: memory barrier without comment
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
-+++ b/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
-@@ -509,7 +509,11 @@ static int h264_enc_init(struct mtk_vcod
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index dab6d461cf8cd..5507340a7723e 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -212,7 +212,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
+ 	if (code == rc->mute_code)
+ 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
+ 	mixer->rc_code = code;
+-	wmb();
+ 	wake_up(&mixer->rc_waitq);
+ }
  
- 	inst->ctx = ctx;
- 	inst->vpu_inst.ctx = ctx;
--	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-+	if (is_ext)
-+		inst->vpu_inst.id = SCP_IPI_VENC_H264;
-+	else
-+		inst->vpu_inst.id = IPI_VENC_H264;
-+
- 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx, VENC_SYS);
- 
- 	mtk_vcodec_debug_enter(inst);
+-- 
+2.51.0
+
 
 
 
