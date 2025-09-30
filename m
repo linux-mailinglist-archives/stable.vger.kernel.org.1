@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADECDBAD5A8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28588BAD9FB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1A6F7A2C87
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80FBD3A874E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBF9303C9B;
-	Tue, 30 Sep 2025 14:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007D83043B8;
+	Tue, 30 Sep 2025 15:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et3dLHPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OM6mzx/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171B51FCCF8;
-	Tue, 30 Sep 2025 14:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B074F1487F4;
+	Tue, 30 Sep 2025 15:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244160; cv=none; b=LmlnQfMIOYU5JMB6us9h0WPBPWXyXi5kR4PAsjO1YXQH/OPkAjCHNkIaYNNbnPS/fTNPZY3YwhiX9if51nuJq/OGXVaa6+Z8hLnRiYeuzrB2vBWZ3OjvBu7QuONibMiFaCPjq6e/w+a6/zudb64/0tzI/XLxVS2Rz1k3WO8Sqz0=
+	t=1759245032; cv=none; b=hh2svEpb/fitCcxaA9fdqhrvMN20wNDSf9XlhfgTyRokGw56Rvs/btYEjidtXCZuWO+luANg1gwfiQsiENPqTszS4DHDPlcKxEHTLB/O+VAMP1gzv2w89iDRidY80XrDzlqIBhWKWw0eryB7IPVoV+0wL/8MepWxgKYmMOoHBtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244160; c=relaxed/simple;
-	bh=39Se7AoEBtCE0nhMI6h5n2Ae9/NK9K4i2jtC7mVghQg=;
+	s=arc-20240116; t=1759245032; c=relaxed/simple;
+	bh=p+jl7LPnFODa1Zuvs0OBMM3JivFZbMAgyeegqy3DrUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tWg516El4J1E4gBni0rcl7vJh73cB0qm1YKqqu4cgYFE0dv++hv2fx2Us/IH9I4QG51IAHCpjKOuLnvRj+o3ZwbyN9QpqwSGss0x9iNchFptVfIoCO1tSDRsg8+ET/rv5ScZR7UbnKCl505xb78qBe5sNggUznfdX0Io1+kaBQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et3dLHPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76200C4CEF0;
-	Tue, 30 Sep 2025 14:55:59 +0000 (UTC)
+	 MIME-Version; b=Xv9txcRrjRZpfrexONyR55k9II6Bt/TO0m8Tq7vvu+maKEyGvMAtXrDDG29Z3uqqdrMFzHMo7Zc0HKBZEK5ZyAfAaFRNRENXAO9NNNiox4moTwZcw6evu1xYd6RsBleCs7liGkqAvzVRvH7c/M1m/Vaoyp31AKzrHAAa82WNA6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OM6mzx/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D92C4CEF0;
+	Tue, 30 Sep 2025 15:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244160;
-	bh=39Se7AoEBtCE0nhMI6h5n2Ae9/NK9K4i2jtC7mVghQg=;
+	s=korg; t=1759245032;
+	bh=p+jl7LPnFODa1Zuvs0OBMM3JivFZbMAgyeegqy3DrUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et3dLHPxSxmtBxZmNu/6hU2P6Cn/V6geaoKChSqF0N95E0tvOMAu42PGpnRXSHRD9
-	 4iL7MGIrrCoECrWPYWnMEBd8gdmNmoq1qHUPTdl1adStKW0yyCupo/LmA10+kbRydr
-	 CBxEB7zzHgDjLROwZ92bhPaFEPo71iWDmjU/tim0=
+	b=OM6mzx/HUfyVADJI/Sp8XBRMKHjSXscHSVHdTwqWbStdqcslUmdDJxDZDOHAd4TB6
+	 mBJaBjH+ORyvkv9Uuul8qhYRvtB6x/1IXng+ry+S7Cxqbw9XzwXwmlDli+DmXBnnjr
+	 YNes2whtDhY0W/dENXh7ThNPAYHqaGbPQDtDFbbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/122] drm/i915/power: fix size for for_each_set_bit() in abox iteration
+Subject: [PATCH 5.15 045/151] can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
 Date: Tue, 30 Sep 2025 16:46:15 +0200
-Message-ID: <20250930143824.806276818@linuxfoundation.org>
+Message-ID: <20250930143829.402247914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit cfa7b7659757f8d0fc4914429efa90d0d2577dd7 ]
+[ Upstream commit 06e02da29f6f1a45fc07bd60c7eaf172dc21e334 ]
 
-for_each_set_bit() expects size to be in bits, not bytes. The abox mask
-iteration uses bytes, but it works by coincidence, because the local
-variable holding the mask is unsigned long, and the mask only ever has
-bit 2 as the highest bit. Using a smaller type could lead to subtle and
-very hard to track bugs.
+Since j1939_sk_bind() and j1939_sk_release() call j1939_local_ecu_put()
+when J1939_SOCK_BOUND was already set, but the error handling path for
+j1939_sk_bind() will not set J1939_SOCK_BOUND when j1939_local_ecu_get()
+fails, j1939_local_ecu_get() needs to undo priv->ents[sa].nusers++ when
+j1939_local_ecu_get() returns an error.
 
-Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://lore.kernel.org/r/20250905104149.1144751-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 7ea3baa6efe4bb93d11e1c0e6528b1468d7debf6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-[ adapted struct intel_display *display parameters to struct drm_i915_private *dev_priv ]
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/e7f80046-4ff7-4ce2-8ad8-7c3c678a42c9@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_power.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/can/j1939/bus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_power.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power.c
-@@ -4780,7 +4780,7 @@ static void icl_mbus_init(struct drm_i91
- 	if (IS_GEN(dev_priv, 12))
- 		abox_regs |= BIT(0);
+diff --git a/net/can/j1939/bus.c b/net/can/j1939/bus.c
+index 4866879016021..e0b966c2517cf 100644
+--- a/net/can/j1939/bus.c
++++ b/net/can/j1939/bus.c
+@@ -290,8 +290,11 @@ int j1939_local_ecu_get(struct j1939_priv *priv, name_t name, u8 sa)
+ 	if (!ecu)
+ 		ecu = j1939_ecu_create_locked(priv, name);
+ 	err = PTR_ERR_OR_ZERO(ecu);
+-	if (err)
++	if (err) {
++		if (j1939_address_is_unicast(sa))
++			priv->ents[sa].nusers--;
+ 		goto done;
++	}
  
--	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
-+	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
- 		intel_de_rmw(dev_priv, MBUS_ABOX_CTL(i), mask, val);
- }
- 
-@@ -5277,11 +5277,11 @@ static void tgl_bw_buddy_init(struct drm
- 	if (table[config].page_mask == 0) {
- 		drm_dbg(&dev_priv->drm,
- 			"Unknown memory configuration; disabling address buddy logic.\n");
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
- 			intel_de_write(dev_priv, BW_BUDDY_CTL(i),
- 				       BW_BUDDY_DISABLE);
- 	} else {
--		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
-+		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
- 			intel_de_write(dev_priv, BW_BUDDY_PAGE_MASK(i),
- 				       table[config].page_mask);
- 
+ 	ecu->nusers++;
+ 	/* TODO: do we care if ecu->addr != sa? */
+-- 
+2.51.0
+
 
 
 
