@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-182426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A668BAD938
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:11:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A95BADD1A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06CF43C1A36
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5F84327BA4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D17C302CD6;
-	Tue, 30 Sep 2025 15:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D04530505F;
+	Tue, 30 Sep 2025 15:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNGedoAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgzVejD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2951C2236EB;
-	Tue, 30 Sep 2025 15:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EA61F3FED;
+	Tue, 30 Sep 2025 15:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244909; cv=none; b=i7DqjGQV84kwavaKfAbZ/M3WEc35HVzBdEFoqIYEPihTisLbdvNVPuVDXbsEaZBKn04bziORzvIh/dsA0/VENc2KRegSiLliw0LRZuAiiURbO9MuiZjJteGDzt/MAmQK4PYETA4rORuyHWiRiFTE9ggAi9+znr6B4bO5th35RbM=
+	t=1759245996; cv=none; b=EOIMdXpx7m+A8+imD9FbCMrRl4WUHbk6Do3hlQLrqKOj++kcCE8U3JLRUPUSvNN8pinZGtyZZj8+rNurEBYR3OMdxAWwP0tLgKh7sQdt+wf9i43pWwJ7Cnn0ayHi/J31UtISGoE/sdwx2a06AMNMa+BnNBVJKcHvXzmf7FjlXFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244909; c=relaxed/simple;
-	bh=itPbgRsdqLs+kEAkk19pyrIgKXzyQk2ae7r8yI2XYrA=;
+	s=arc-20240116; t=1759245996; c=relaxed/simple;
+	bh=D7RHVwTT3GViuNNwawXYyWl/IFOz/KmdrqWT26fxOHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoBCx0kpcqQ+S20W9YqiTR/X6aMSGZYK19v+AF89wgHi8QBNao/T9S+SkJXt85iKosvtGk0vA/6cRXVp+/lEYEFTlVN1OR7lsZJ/5kHrDGkr44DIXMges0FwRSFoQrxVr5gfEDX0QdGkqpJbLnVk2xEucXCHK2C4CSI8k1yIkeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNGedoAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5C4C4CEF0;
-	Tue, 30 Sep 2025 15:08:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hDdY4PBBDvf4nmJObtJGeXQgPnpGJ5/vAPY29Op8Z/i4BPOPkf00/SZW/m2zSMkWa6thRJd757NynFegmhOuK6iU+yAA12WRC0NpfxdRB2lQxY/X01U04lLDIlul7KcX30GfjwUxWeIpFOV0lTpqi2llDbglhUj8EoCAAWqZdTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgzVejD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D215DC113D0;
+	Tue, 30 Sep 2025 15:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244909;
-	bh=itPbgRsdqLs+kEAkk19pyrIgKXzyQk2ae7r8yI2XYrA=;
+	s=korg; t=1759245996;
+	bh=D7RHVwTT3GViuNNwawXYyWl/IFOz/KmdrqWT26fxOHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNGedoAO4qwm9qe3F7EfIPGZo2sZ33FilMhrJCslFRnEV3YNBPGSa+Qt3W9p1FKLq
-	 LrUPbCV+KMEUijtaUDXmX5JcI4l6xqVfvlc8pHcdZlQNDUXTErcCiiojGm5NyntUpI
-	 1JAxYSz9+ZD6h/kS3WIkFuCipygCLQgHJjOFrwkE=
+	b=kgzVejD0jZJSvWlajXj9Ustxg1GrOrCenWTXcinRgjBF+/VQ035D5h8cOya2BTWp7
+	 aveCpPr61VTdLZUT4qg46CKpkHnHLPPpeBeBKsQi+I0osfYKpTq90LpD5olL8PrIat
+	 1KfOBTASruytePeS7UQ33UCYgmg+2PycV0h1uabA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Paul Walmsley <pjw@kernel.org>
-Subject: [PATCH 6.16 130/143] riscv: Use an atomic xchg in pudp_huge_get_and_clear()
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 20/89] mmc: sdhci-cadence: add Mobileye eyeQ support
 Date: Tue, 30 Sep 2025 16:47:34 +0200
-Message-ID: <20250930143836.411138061@linuxfoundation.org>
+Message-ID: <20250930143822.727545393@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Benoît Monin <benoit.monin@bootlin.com>
 
-commit 546e42c8c6d9498d5eac14bf2aca0383a11b145a upstream.
+[ Upstream commit 120ffe250dd95b5089d032f582c5be9e3a04b94b ]
 
-Make sure we return the right pud value and not a value that could
-have been overwritten in between by a different core.
+The MMC/SDHCI controller implemented by Mobileye needs the preset value
+quirks to configure the clock properly at speed slower than HS200.
+It otherwise works as a standard sd4hc controller.
 
-Fixes: c3cc2a4a3a23 ("riscv: Add support for PUD THP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250814-dev-alex-thp_pud_xchg-v1-1-b4704dfae206@rivosinc.com
-[pjw@kernel.org: use xchg rather than atomic_long_xchg; avoid atomic op for !CONFIG_SMP like x86]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+Link: https://lore.kernel.org/r/e97f409650495791e07484589e1666ead570fa12.1750156323.git.benoit.monin@bootlin.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/mmc/host/sdhci-cadence.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -964,6 +964,23 @@ static inline int pudp_test_and_clear_yo
- 	return ptep_test_and_clear_young(vma, address, (pte_t *)pudp);
- }
+diff --git a/drivers/mmc/host/sdhci-cadence.c b/drivers/mmc/host/sdhci-cadence.c
+index be1505e8c536e..7759531ccca70 100644
+--- a/drivers/mmc/host/sdhci-cadence.c
++++ b/drivers/mmc/host/sdhci-cadence.c
+@@ -433,6 +433,13 @@ static const struct sdhci_cdns_drv_data sdhci_elba_drv_data = {
+ 	},
+ };
  
-+#define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
-+static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
-+					    unsigned long address,  pud_t *pudp)
-+{
-+#ifdef CONFIG_SMP
-+	pud_t pud = __pud(xchg(&pudp->pud, 0));
-+#else
-+	pud_t pud = *pudp;
++static const struct sdhci_cdns_drv_data sdhci_eyeq_drv_data = {
++	.pltfm_data = {
++		.ops = &sdhci_cdns_ops,
++		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
++	},
++};
 +
-+	pud_clear(pudp);
-+#endif
-+
-+	page_table_check_pud_clear(mm, pud);
-+
-+	return pud;
-+}
-+
- static inline int pud_young(pud_t pud)
- {
- 	return pte_young(pud_pte(pud));
+ static const struct sdhci_cdns_drv_data sdhci_cdns_drv_data = {
+ 	.pltfm_data = {
+ 		.ops = &sdhci_cdns_ops,
+@@ -595,6 +602,10 @@ static const struct of_device_id sdhci_cdns_match[] = {
+ 		.compatible = "amd,pensando-elba-sd4hc",
+ 		.data = &sdhci_elba_drv_data,
+ 	},
++	{
++		.compatible = "mobileye,eyeq-sd4hc",
++		.data = &sdhci_eyeq_drv_data,
++	},
+ 	{ .compatible = "cdns,sd4hc" },
+ 	{ /* sentinel */ }
+ };
+-- 
+2.51.0
+
 
 
 
