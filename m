@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-182550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8CDBADA43
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08F9BADD32
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DA647A773A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34EC9328026
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95A130649C;
-	Tue, 30 Sep 2025 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CBE2FD1DD;
+	Tue, 30 Sep 2025 15:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4127M5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRwxhknI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B1F22256F;
-	Tue, 30 Sep 2025 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DE13C465;
+	Tue, 30 Sep 2025 15:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245309; cv=none; b=LlzgoPambebMEKat0FqCsrTk8vkz4kYHj3KWOjxdr87U8ZP205PRPV4mDfV9YGEbBKOR1LOnZ+0tv0s33IFU95t4z6iR0rczwUIs6VE5wfyfuDlcCZPjrHvFClaLrYzO7Z9ee8b8K6OWFTOD8Y21zrGcUMZC9NjZ+bUg08EmTTM=
+	t=1759246019; cv=none; b=tghRx+HE8nFKJ2oN3AQ1al0oMF/8oFpIz7Hv1e8mvBHEYfVEcYJO3QQJpMsxfKSQv0cQMIO9z6im5JKsqEHhu9pE5Bvnnn2cKKnYqK+5OGlaH9mMUYiUMZsrBdbQ6Y0MooAYt/hsvru3CdbQ8FYaXsM+AxeCwZmwT4FJ0Dnd9dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245309; c=relaxed/simple;
-	bh=9YgSqxc0TzEZWy9yfkStMaxWtChVm0MoIxhdPZUvSRg=;
+	s=arc-20240116; t=1759246019; c=relaxed/simple;
+	bh=gEyNwmuiRYuvH0pcJKJiPmbrQPH2oA8F3bsKhEKIj1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TtmnZ9UPtccgT7kLuRppFXDkJ1fL0994Nb4zLTXT0FzaUdFnQArFlYvKBQ2Ed5lGXBcdaXrVu4STsqYBUEE/U6vXpA4IvONAeYj/Hn0MAp8Kseik1QuAB+xknhQU1kUwagiI3lZUn/0c5LtOl21/Fy6uOXqMLGGod5HJJQ0P3Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4127M5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06FDC4CEF0;
-	Tue, 30 Sep 2025 15:15:08 +0000 (UTC)
+	 MIME-Version; b=ZzIdFjn025FUxdKknqcWlxQg4zEIZmNv/bAlfKjGpDQeBQEb9EHQIPy8axkSZvuTgyQlIT1pi5xxoUz5V7kFjaWJ7UbZBHDAbxQmpsLrsPYoSTv59w/CG5PRNJn7LC0egkGwT5tZhgjEaE9nQSHhn2iExVbqn7Ppz+r6WhuF2Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRwxhknI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4F1C4CEF0;
+	Tue, 30 Sep 2025 15:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245309;
-	bh=9YgSqxc0TzEZWy9yfkStMaxWtChVm0MoIxhdPZUvSRg=;
+	s=korg; t=1759246018;
+	bh=gEyNwmuiRYuvH0pcJKJiPmbrQPH2oA8F3bsKhEKIj1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4127M5jwhKcv0P+gWOt+8nUFLNJalqtpACPA8w+rOwILW7QTRDJ33J0vSGlw4gyR
-	 TXfgzKdUlkjcmLMP+EOayTW06xLRN6/dy9clraFpM3YU7ojd2XeCKUyuKmEeaDitHE
-	 JzZh5OdOGI5uYDSJpDDJQzD2rXU0mGBX0Yr7+d0w=
+	b=tRwxhknIsvKpjJQdXt5uQMM371w0z+a1fCO5tpMXLpNAZb/91SgyoDu7WIjGiDj3F
+	 xO3kZ6cND6BZ7niOyGMrV/ABYcc0JBBAm9Tg+lrI7buYI4SivaXXAfnb5GCEWqeOTe
+	 0NqfOQRG9r2U2lYgatyd2iO4WtrMpAI23O4v0Dc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Prakruthi SP <Prakruthi.SP@amd.com>,
+	Akshata MukundShetty <akshata.mukundshetty@amd.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/151] selftests: fib_nexthops: Fix creation of non-FDB nexthops
+Subject: [PATCH 6.12 27/89] HID: amd_sfh: Add sync across amd sfh work functions
 Date: Tue, 30 Sep 2025 16:47:41 +0200
-Message-ID: <20250930143832.819116896@linuxfoundation.org>
+Message-ID: <20250930143823.032152263@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +66,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit c29913109c70383cdf90b6fc792353e1009f24f5 ]
+[ Upstream commit bba920e6f803138587248079de47ad3464a396f6 ]
 
-The test creates non-FDB nexthops without a nexthop device which leads
-to the expected failure, but for the wrong reason:
+The process of the report is delegated across different work functions.
+Hence, add a sync mechanism to protect SFH work data across functions.
 
- # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
-
- IPv6 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-nRsN3E nexthop add id 63 via 2001:db8:91::4
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 64 via 2001:db8:91::5
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 63/64 fdb
- Error: Invalid nexthop id.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
- [...]
-
- IPv4 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-nRsN3E nexthop add id 14 via 172.16.1.2
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 15 via 172.16.1.3
- Error: Device attribute required for non-blackhole and non-fdb nexthops.
- COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 14/15 fdb
- Error: Invalid nexthop id.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
-
- COMMAND: ip -netns me-nRsN3E nexthop add id 16 via 172.16.1.2 fdb
- COMMAND: ip -netns me-nRsN3E nexthop add id 17 via 172.16.1.3 fdb
- COMMAND: ip -netns me-nRsN3E nexthop add id 104 group 14/15
- Error: Invalid nexthop id.
- TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
- [...]
- COMMAND: ip -netns me-0dlhyd ro add 172.16.0.0/22 nhid 15
- Error: Nexthop id does not exist.
- TEST: Route add with fdb nexthop                                    [ OK ]
-
-In addition, as can be seen in the above output, a couple of IPv4 test
-cases used the non-FDB nexthops (14 and 15) when they intended to use
-the FDB nexthops (16 and 17). These test cases only passed because
-failure was expected, but they failed for the wrong reason.
-
-Fix the test to create the non-FDB nexthops with a nexthop device and
-adjust the IPv4 test cases to use the FDB nexthops instead of the
-non-FDB nexthops.
-
-Output after the fix:
-
- # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
-
- IPv6 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-lNzfHP nexthop add id 63 via 2001:db8:91::4 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 64 via 2001:db8:91::5 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 63/64 fdb
- Error: FDB nexthop group can only have fdb nexthops.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
- [...]
-
- IPv4 fdb groups functional
- --------------------------
- [...]
- COMMAND: ip -netns me-lNzfHP nexthop add id 14 via 172.16.1.2 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 15 via 172.16.1.3 dev veth1
- COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 14/15 fdb
- Error: FDB nexthop group can only have fdb nexthops.
- TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
-
- COMMAND: ip -netns me-lNzfHP nexthop add id 16 via 172.16.1.2 fdb
- COMMAND: ip -netns me-lNzfHP nexthop add id 17 via 172.16.1.3 fdb
- COMMAND: ip -netns me-lNzfHP nexthop add id 104 group 16/17
- Error: Non FDB nexthop group cannot have fdb nexthops.
- TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
- [...]
- COMMAND: ip -netns me-lNzfHP ro add 172.16.0.0/22 nhid 16
- Error: Route cannot point to a fdb nexthop.
- TEST: Route add with fdb nexthop                                    [ OK ]
- [...]
- Tests passed:  30
- Tests failed:   0
- Tests skipped:  0
-
-Fixes: 0534c5489c11 ("selftests: net: add fdb nexthop tests")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250921150824.149157-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4b2c53d93a4b ("SFH:Transport Driver to add support of AMD Sensor Fusion Hub (SFH)")
+Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Closes: https://lore.kernel.org/all/a21abca5-4268-449d-95f1-bdd7a25894a5@linux.dev/
+Tested-by: Prakruthi SP <Prakruthi.SP@amd.com>
+Co-developed-by: Akshata MukundShetty <akshata.mukundshetty@amd.com>
+Signed-off-by: Akshata MukundShetty <akshata.mukundshetty@amd.com>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fib_nexthops.sh | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hid/amd-sfh-hid/amd_sfh_client.c | 12 ++++++++++--
+ drivers/hid/amd-sfh-hid/amd_sfh_common.h |  3 +++
+ drivers/hid/amd-sfh-hid/amd_sfh_pcie.c   |  4 ++++
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
-index a194dbcb405ae..97c553182e0c5 100755
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -440,8 +440,8 @@ ipv6_fdb_grp_fcnal()
- 	log_test $? 0 "Get Fdb nexthop group by id"
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+index 3438d392920fa..8dae9a7766853 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+@@ -39,8 +39,12 @@ int amd_sfh_get_report(struct hid_device *hid, int report_id, int report_type)
+ 	struct amdtp_hid_data *hid_data = hid->driver_data;
+ 	struct amdtp_cl_data *cli_data = hid_data->cli_data;
+ 	struct request_list *req_list = &cli_data->req_list;
++	struct amd_input_data *in_data = cli_data->in_data;
++	struct amd_mp2_dev *mp2;
+ 	int i;
  
- 	# fdb nexthop group can only contain fdb nexthops
--	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4"
--	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5"
-+	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4 dev veth1"
-+	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5 dev veth1"
- 	run_cmd "$IP nexthop add id 103 group 63/64 fdb"
- 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
++	mp2 = container_of(in_data, struct amd_mp2_dev, in_data);
++	guard(mutex)(&mp2->lock);
+ 	for (i = 0; i < cli_data->num_hid_devices; i++) {
+ 		if (cli_data->hid_sensor_hubs[i] == hid) {
+ 			struct request_list *new = kzalloc(sizeof(*new), GFP_KERNEL);
+@@ -75,6 +79,8 @@ void amd_sfh_work(struct work_struct *work)
+ 	u8 report_id, node_type;
+ 	u8 report_size = 0;
  
-@@ -520,15 +520,15 @@ ipv4_fdb_grp_fcnal()
- 	log_test $? 0 "Get Fdb nexthop group by id"
++	mp2 = container_of(in_data, struct amd_mp2_dev, in_data);
++	guard(mutex)(&mp2->lock);
+ 	req_node = list_last_entry(&req_list->list, struct request_list, list);
+ 	list_del(&req_node->list);
+ 	current_index = req_node->current_index;
+@@ -83,7 +89,6 @@ void amd_sfh_work(struct work_struct *work)
+ 	node_type = req_node->report_type;
+ 	kfree(req_node);
  
- 	# fdb nexthop group can only contain fdb nexthops
--	run_cmd "$IP nexthop add id 14 via 172.16.1.2"
--	run_cmd "$IP nexthop add id 15 via 172.16.1.3"
-+	run_cmd "$IP nexthop add id 14 via 172.16.1.2 dev veth1"
-+	run_cmd "$IP nexthop add id 15 via 172.16.1.3 dev veth1"
- 	run_cmd "$IP nexthop add id 103 group 14/15 fdb"
- 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
+-	mp2 = container_of(in_data, struct amd_mp2_dev, in_data);
+ 	mp2_ops = mp2->mp2_ops;
+ 	if (node_type == HID_FEATURE_REPORT) {
+ 		report_size = mp2_ops->get_feat_rep(sensor_index, report_id,
+@@ -107,6 +112,8 @@ void amd_sfh_work(struct work_struct *work)
+ 	cli_data->cur_hid_dev = current_index;
+ 	cli_data->sensor_requested_cnt[current_index] = 0;
+ 	amdtp_hid_wakeup(cli_data->hid_sensor_hubs[current_index]);
++	if (!list_empty(&req_list->list))
++		schedule_delayed_work(&cli_data->work, 0);
+ }
  
- 	# Non fdb nexthop group can not contain fdb nexthops
- 	run_cmd "$IP nexthop add id 16 via 172.16.1.2 fdb"
- 	run_cmd "$IP nexthop add id 17 via 172.16.1.3 fdb"
--	run_cmd "$IP nexthop add id 104 group 14/15"
-+	run_cmd "$IP nexthop add id 104 group 16/17"
- 	log_test $? 2 "Non-Fdb Nexthop group with fdb nexthops"
+ void amd_sfh_work_buffer(struct work_struct *work)
+@@ -117,9 +124,10 @@ void amd_sfh_work_buffer(struct work_struct *work)
+ 	u8 report_size;
+ 	int i;
  
- 	# fdb nexthop cannot have blackhole
-@@ -555,7 +555,7 @@ ipv4_fdb_grp_fcnal()
- 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
- 	log_test $? 255 "Fdb mac add with nexthop"
++	mp2 = container_of(in_data, struct amd_mp2_dev, in_data);
++	guard(mutex)(&mp2->lock);
+ 	for (i = 0; i < cli_data->num_hid_devices; i++) {
+ 		if (cli_data->sensor_sts[i] == SENSOR_ENABLED) {
+-			mp2 = container_of(in_data, struct amd_mp2_dev, in_data);
+ 			report_size = mp2->mp2_ops->get_in_rep(i, cli_data->sensor_idx[i],
+ 							       cli_data->report_id[i], in_data);
+ 			hid_input_report(cli_data->hid_sensor_hubs[i], HID_INPUT_REPORT,
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_common.h b/drivers/hid/amd-sfh-hid/amd_sfh_common.h
+index e5620d7db5690..00308d8998d4d 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_common.h
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_common.h
+@@ -10,6 +10,7 @@
+ #ifndef AMD_SFH_COMMON_H
+ #define AMD_SFH_COMMON_H
  
--	run_cmd "$IP ro add 172.16.0.0/22 nhid 15"
-+	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
- 	log_test $? 2 "Route add with fdb nexthop"
++#include <linux/mutex.h>
+ #include <linux/pci.h>
+ #include "amd_sfh_hid.h"
  
- 	run_cmd "$IP ro add 172.16.0.0/22 nhid 103"
+@@ -57,6 +58,8 @@ struct amd_mp2_dev {
+ 	u32 mp2_acs;
+ 	struct sfh_dev_status dev_en;
+ 	struct work_struct work;
++	/* mp2 to protect data */
++	struct mutex lock;
+ 	u8 init_done;
+ 	u8 rver;
+ };
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
+index 0c28ca349bcd3..9739f66e925c0 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
+@@ -405,6 +405,10 @@ static int amd_mp2_pci_probe(struct pci_dev *pdev, const struct pci_device_id *i
+ 	if (!privdata->cl_data)
+ 		return -ENOMEM;
+ 
++	rc = devm_mutex_init(&pdev->dev, &privdata->lock);
++	if (rc)
++		return rc;
++
+ 	privdata->sfh1_1_ops = (const struct amd_sfh1_1_ops *)id->driver_data;
+ 	if (privdata->sfh1_1_ops) {
+ 		if (boot_cpu_data.x86 >= 0x1A)
 -- 
 2.51.0
 
