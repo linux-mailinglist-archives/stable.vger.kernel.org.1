@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-182142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7856BAD4E3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D858BADD17
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBF717AAEF3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA341892146
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8A54D8CE;
-	Tue, 30 Sep 2025 14:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FE9306B0C;
+	Tue, 30 Sep 2025 15:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sflZlo80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RKrVEXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC168F7D;
-	Tue, 30 Sep 2025 14:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0317F25FA0F;
+	Tue, 30 Sep 2025 15:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243974; cv=none; b=tV6qXvNKzx1h45rtokOjPk7e+2LbvCg89OPOkhpykhgL6UE+XyPfNBqKupOXC4oDqPo3CandilA7hcUU3jcZrKYEk8KhS4ZL2y8LmkooslAjO+aVRpfbHzdv1gH7jvD2lW0rWRGZcB52DpJ0Ez2HJzfpw/4ijMBa9nMEJ2F6E+E=
+	t=1759245958; cv=none; b=twGLvwRZXoGZqvDjYyVTrvm+/U7Pg5SArpk9n7CLvjif2FnHBjuo06PxlGxlD+TGvIAimEp76l5lEVp4/q9jlm2jCgZlhreF/oXIMt6Y9XvnP2/MG4yI9rJ8Mb/4PQmZZMY51kQn9ka3/nFJ//z+/cNXRzVnIJ357VsWuW8AhyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243974; c=relaxed/simple;
-	bh=54qlCFXQ+6ihPuFlpAGhkFi5nSfgjArMCPvY+j43RVU=;
+	s=arc-20240116; t=1759245958; c=relaxed/simple;
+	bh=YJ8H54t/tqtJVyEoDJUD7NPPWjb/7759WiMs5DQv2xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CbT+SHGSHLibgDf2lHbY1VZtP55+EXyAgYaKeU61M8o8Y+69xk1VjQNApvRdAzSJKkuFV4yOXKBd7con43StzR3I38nJeoK6n411IzoxZLHJwDD9cE3O4/xPkNJRdEU1sKyCkEqpkRRsA2qF+zFVFa2JK1JnNtYcbwckas647MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sflZlo80; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39BDC4CEF0;
-	Tue, 30 Sep 2025 14:52:53 +0000 (UTC)
+	 MIME-Version; b=CChDUmnK3k+CkIdLNMvY3dsqAI/KMmAhU4vpdSVYpzqScWQeT/we/11xa4uI28yZvNvtp7sfoBYXY9BN7kIG0QUkrjOCakMC+BmT1XTVZZ8PQAeFrNRJweu1wn23DpNJ01w0flyLV3Z91x6p+AzWUxw492U6hGqlzl/3FZrL7VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RKrVEXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4817DC4CEF0;
+	Tue, 30 Sep 2025 15:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243974;
-	bh=54qlCFXQ+6ihPuFlpAGhkFi5nSfgjArMCPvY+j43RVU=;
+	s=korg; t=1759245957;
+	bh=YJ8H54t/tqtJVyEoDJUD7NPPWjb/7759WiMs5DQv2xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sflZlo80HoIc6GgEhdwGF7AXO/Frh9XpS4IiqJH+UyFEi1HImlLwuVrxveT8q4RxS
-	 Vfxt5KR7Ocnm2Eb0aR9xqeV9JgFYKaSkKPIlezl3WYb2O9XNj8tqnz++I0bTaWVEdF
-	 84KUj/ZlPHb0jPrk64M/SRRyOb8fR/poUkjv4+gY=
+	b=0RKrVEXTle77EcIW4blw8J9l7+jqAq13lSUnd8EkiGP37g4Kaus3oA450pjHbAgrI
+	 fDEEdp0Zv+dCJidDii3lff3q/GfSWBSAWG0RiL1wVC1j4b3+vzjq+WMdEGUnEKr7vV
+	 R8r5UkpgFI8kBeXPo9PEaCZIc+zTcuJknSUVMugY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	George Kennedy <george.kennedy@oracle.com>,
-	syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com,
-	Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 5.4 73/81] fbcon: fix integer overflow in fbcon_do_set_font
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 01/89] scsi: ufs: mcq: Fix memory allocation checks for SQE and CQE
 Date: Tue, 30 Sep 2025 16:47:15 +0200
-Message-ID: <20250930143822.759716444@linuxfoundation.org>
+Message-ID: <20250930143821.918162565@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +63,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe upstream.
+[ Upstream commit 5cb782ff3c62c837e4984b6ae9f5d9a423cd5088 ]
 
-Fix integer overflow vulnerabilities in fbcon_do_set_font() where font
-size calculations could overflow when handling user-controlled font
-parameters.
+Previous checks incorrectly tested the DMA addresses (dma_handle) for
+NULL. Since dma_alloc_coherent() returns the CPU (virtual) address, the
+NULL check should be performed on the *_base_addr pointer to correctly
+detect allocation failures.
 
-The vulnerabilities occur when:
-1. CALC_FONTSZ(h, pitch, charcount) performs h * pith * charcount
-   multiplication with user-controlled values that can overflow.
-2. FONT_EXTRA_WORDS * sizeof(int) + size addition can also overflow
-3. This results in smaller allocations than expected, leading to buffer
-   overflows during font data copying.
+Update the checks to validate sqe_base_addr and cqe_base_addr instead of
+sqe_dma_addr and cqe_dma_addr.
 
-Add explicit overflow checking using check_mul_overflow() and
-check_add_overflow() kernel helpers to safety validate all size
-calculations before allocation.
-
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 39b3cffb8cf3 ("fbcon: prevent user font height or width change from causing potential out-of-bounds access")
-Cc: George Kennedy <george.kennedy@oracle.com>
-Cc: stable <stable@vger.kernel.org>
-Cc: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Qianqiang Liu <qianqiang.liu@163.com>
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org> # v5.9+
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250912170023.3931881-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4682abfae2eb ("scsi: ufs: core: mcq: Allocate memory for MCQ mode")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufs-mcq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2509,9 +2509,16 @@ static int fbcon_set_font(struct vc_data
- 	if (fbcon_invalid_charcount(info, charcount))
- 		return -EINVAL;
- 
--	size = CALC_FONTSZ(h, pitch, charcount);
-+	/* Check for integer overflow in font size calculation */
-+	if (check_mul_overflow(h, pitch, &size) ||
-+	    check_mul_overflow(size, charcount, &size))
-+		return -EINVAL;
-+
-+	/* Check for overflow in allocation size calculation */
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+		return -EINVAL;
- 
--	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
-+	new_data = kmalloc(size, GFP_USER);
- 
- 	if (!new_data)
- 		return -ENOMEM;
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 420e943bb73a7..5e6197a6af5e2 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -243,7 +243,7 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
+ 		hwq->sqe_base_addr = dmam_alloc_coherent(hba->dev, utrdl_size,
+ 							 &hwq->sqe_dma_addr,
+ 							 GFP_KERNEL);
+-		if (!hwq->sqe_dma_addr) {
++		if (!hwq->sqe_base_addr) {
+ 			dev_err(hba->dev, "SQE allocation failed\n");
+ 			return -ENOMEM;
+ 		}
+@@ -252,7 +252,7 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
+ 		hwq->cqe_base_addr = dmam_alloc_coherent(hba->dev, cqe_size,
+ 							 &hwq->cqe_dma_addr,
+ 							 GFP_KERNEL);
+-		if (!hwq->cqe_dma_addr) {
++		if (!hwq->cqe_base_addr) {
+ 			dev_err(hba->dev, "CQE allocation failed\n");
+ 			return -ENOMEM;
+ 		}
+-- 
+2.51.0
+
 
 
 
