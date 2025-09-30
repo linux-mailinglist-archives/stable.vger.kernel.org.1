@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917D0BAD866
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99ACABAD6A7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8981648AA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A35C11C1266
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94220302CD6;
-	Tue, 30 Sep 2025 15:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DF730595D;
+	Tue, 30 Sep 2025 14:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFZP7Qgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6PWHG/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCE02E9EBC;
-	Tue, 30 Sep 2025 15:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD06E30506C;
+	Tue, 30 Sep 2025 14:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244806; cv=none; b=RS1DBxiMSu9rgc11LrQJjsEKRvw14N00jkbELfviJYy2/joXdg+yZgnoKhyEqFMW0d/DIHvaAqLPO/QGU4fUskuZmI5Onc4YmKd6/d43p/7gMbdEnuwCsryDHvpg5N3l4aBscua4uHOWXwirvsZTuVjdqLxedVYug+hXnnFLHj8=
+	t=1759244380; cv=none; b=O46GZTbMh3sToMdQFm/wHdueqq8P5YBStkgjAc6gHgkzjFwSthJM0hoq79dWWXati3Nb6xSYY0kN8EagYj1d4FPJAaSkIu69F370AL5p5H/qM3wHz6R+CcphadS68gWNbW+bqJ/lbWmJNi3D/4+3H4qwBIXxWcfQcvFYrRpF0iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244806; c=relaxed/simple;
-	bh=3UUwXsiwzQRw+GSbrj93YSdcG+wNN85Qticsa/eOlo0=;
+	s=arc-20240116; t=1759244380; c=relaxed/simple;
+	bh=eE7ynYRS3/7/NchgVsWnsEZb0NcCAw92PJSbxfwW70E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ndY7aFPN6F0ghVyg5RjiY+WMykGJYZ5QvqjhiJGprZoH9+7d4pzNOMEsR1LXZawv+N6cFk//ABZOxh+C2RrEawjk8xaOknqsRJkgsSeIq6ZDY6qYoBk1uCUJFaNkGAKGmCHam67nYVbquKazuEnEh52rjajk1LeWmuKPqql+KaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFZP7Qgp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF020C4CEF0;
-	Tue, 30 Sep 2025 15:06:45 +0000 (UTC)
+	 MIME-Version; b=IkyCrUTLkmX+m+q9WBPMFnfrf+kVRyYLCTk6tl4jkKZy27egSQKoGYt72IsB+dA6MB0+G4XpG/9FN+C2fjLvVkcFB6eleAYcmq+Kwi8UkmJMLLDqKvKt5oCq1VrLs0Y/ezg4647d2rCK2YT2uaO1t5KdTVWT0mPwBoPGpjV7HYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6PWHG/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22A6C4CEF0;
+	Tue, 30 Sep 2025 14:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244806;
-	bh=3UUwXsiwzQRw+GSbrj93YSdcG+wNN85Qticsa/eOlo0=;
+	s=korg; t=1759244379;
+	bh=eE7ynYRS3/7/NchgVsWnsEZb0NcCAw92PJSbxfwW70E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFZP7Qgpi5q1UThofRXqQVjX7+amXDJz5SF66cNWwN28v83ygqPnHs2Ju2fqmCHRK
-	 q8qZ9ZUMLOvEw3ADSD5eKDiyDWGYhsLLD/7FnOeM2LpoCY3g7OowquO8WEuy9Z9oAf
-	 QtxJKXYDEhibE6craGm+WHjT1lH2JouMJX8yz5ws=
+	b=Q6PWHG/NfWoxGAXmAA7EQA2Fa3W872n8t/el1YisM3XPvz7Y9YfCBvwEzi30utlot
+	 9Nk9DS1lJzKVl0+m2qxNStDzKiv4qYdxAogeTYdT5ksnYvC/zakfQH8vDY45iosL0u
+	 jNvyzSDBEwoJ/wm6NhIyx0fgUZh6pkGLbeootxQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.16 118/143] drm/xe: Dont copy pinned kernel bos twice on suspend
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.10 111/122] i40e: fix input validation logic for action_meta
 Date: Tue, 30 Sep 2025 16:47:22 +0200
-Message-ID: <20250930143835.932042624@linuxfoundation.org>
+Message-ID: <20250930143827.513762170@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-commit 77c8ede611c6a70a95f7b15648551d0121b40d6c upstream.
+commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
 
-We were copying the bo content the bos on the list
-"xe->pinned.late.kernel_bo_present" twice on suspend.
+Fix condition to check 'greater or equal' to prevent OOB dereference.
 
-Presumingly the intent is to copy the pinned external bos on
-the first pass.
-
-This is harmless since we (currently) should have no pinned
-external bos needing copy since
-a) exernal system bos don't have compressed content,
-b) We do not (yet) allow pinning of VRAM bos.
-
-Still, fix this up so that we copy pinned external bos on
-the first pass. We're about to allow bos pinned in VRAM.
-
-Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250918092207.54472-2-thomas.hellstrom@linux.intel.com
-(cherry picked from commit 9e69bafece43dcefec864f00b3ec7e088aa7fcbc)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_bo_evict.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
-index 7484ce55a303..d5dbc51e8612 100644
---- a/drivers/gpu/drm/xe/xe_bo_evict.c
-+++ b/drivers/gpu/drm/xe/xe_bo_evict.c
-@@ -158,8 +158,8 @@ int xe_bo_evict_all(struct xe_device *xe)
- 	if (ret)
- 		return ret;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3412,7 +3412,7 @@ static int i40e_validate_cloud_filter(st
  
--	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
--				    &xe->pinned.late.evicted, xe_bo_evict_pinned);
-+	ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.external,
-+				    &xe->pinned.late.external, xe_bo_evict_pinned);
- 
- 	if (!ret)
- 		ret = xe_bo_apply_to_pinned(xe, &xe->pinned.late.kernel_bo_present,
--- 
-2.51.0
-
+ 	/* action_meta is TC number here to which the filter is applied */
+ 	if (!tc_filter->action_meta ||
+-	    tc_filter->action_meta > vf->num_tc) {
++	    tc_filter->action_meta >= vf->num_tc) {
+ 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
+ 			 vf->vf_id, tc_filter->action_meta);
+ 		goto err;
 
 
 
