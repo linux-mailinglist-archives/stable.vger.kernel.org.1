@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-182614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D04BADB5E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACBBBADDAA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 289BF320288
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D25E27AD380
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BA02F39C0;
-	Tue, 30 Sep 2025 15:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755B42F6167;
+	Tue, 30 Sep 2025 15:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZJzhl6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz+Kj+7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D86A302CD6;
-	Tue, 30 Sep 2025 15:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E7A16A956;
+	Tue, 30 Sep 2025 15:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245522; cv=none; b=LwJpMQXKGQLKkEHUcrLds0qCGIHU5VEdGmu/VB0wXE1qQjtInudair+q3D2Fx3aRK8q8tv/lue/LKnLHQnnNFBAkv6pQeP1RVtdtHfX2dKCf1u/ZobamQUzH0Kz3MRxhmyFZ6aoAgZaEdiVfdaPX6ydTcgaKRP/RigFr8aSBriw=
+	t=1759246097; cv=none; b=G+4Ii0NMINJKoOCCVlO7lyE4KkYhask/z+tO45pVYGO4UMtD8G2CEaTeUq6MdgTuLo/ufc7L7/9oqKt1F1Av86kbyQ/VgA6rOb1UUXguIwN+wbJY8QC1yppLxby97/L3asRcBnHF+aw58tynVuskY7FTvfF3Z8o2MGI0Vjnx+TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245522; c=relaxed/simple;
-	bh=dFxI714c8OfyzaheSIYKqVVpTqQWnPPV/kO9rlKb1Mc=;
+	s=arc-20240116; t=1759246097; c=relaxed/simple;
+	bh=6A92gVe2uWyF9qKhCvGXNf3WhwwcWUjgNzD+C1XUgzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGJDxU2vghpziMw1TflDPkJyHphtMtDyjvn8WBeICZgNfFoNVk/ZeubVNaHCcfv7RIS6uDSdHzJw9ixY16vdADhaL+WMc1uYIgXn/qZ5q+r46drdyhigN8A13HywsjLTzTgUIxzoJSZhSjEjJDalrnauwuvUDHBcnkt2HgBAvVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZJzhl6+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A907C4CEF0;
-	Tue, 30 Sep 2025 15:18:40 +0000 (UTC)
+	 MIME-Version; b=bOY+LehrREZm2oYEk6wckH9p++LdxbQH0fwnLMGDZvDFjvpZhXRWApUsE0WIleiH6ds0GnTLd5XhehdLSj63h2Sl18T6X2h9DjgLZ20Q5JVrqLjSWEV8k81v30pftIko0bSJHZzYKkppUoyJE+PsLjOmYmvVVSafZjuzEq/oIAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz+Kj+7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45623C4CEF0;
+	Tue, 30 Sep 2025 15:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245521;
-	bh=dFxI714c8OfyzaheSIYKqVVpTqQWnPPV/kO9rlKb1Mc=;
+	s=korg; t=1759246095;
+	bh=6A92gVe2uWyF9qKhCvGXNf3WhwwcWUjgNzD+C1XUgzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZJzhl6+3BmUwVZo2B7jSMKxDJZLFeL5TeovTunEmo7dOToolmULDORj2AFAnMXf5
-	 0jnMt2P8k0F7RhUnku2/775IBChAFoCpmNdBGLE0uU+pOqUYZSIWuJdJTPrCHchTfk
-	 o932HgSSTsJL7tmGUU33QOCX6BT5M8SlsNUFmJ04=
+	b=xz+Kj+7nTxrzQidt+psk8QOFCskbFgFYwIiWo/60SMWVr/RSdFpAHIOqQf/Qqnugu
+	 nG6CTsU21lZ0QnqgyszyRlxHtNftelSLPc/vlriwPaSEpqppvWV9umWrX2cQpsVYsU
+	 fAiBS9MnX+26j7b4t5K38u15DDFhQXmsoLdj4ta8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/73] octeontx2-pf: Fix potential use after free in otx2_tc_add_flow()
+Subject: [PATCH 6.12 33/89] smb: server: use disable_work_sync in transport_rdma.c
 Date: Tue, 30 Sep 2025 16:47:47 +0200
-Message-ID: <20250930143822.388422447@linuxfoundation.org>
+Message-ID: <20250930143823.289459656@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +67,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit d9c70e93ec5988ab07ad2a92d9f9d12867f02c56 ]
+[ Upstream commit f7f89250175e0a82e99ed66da7012e869c36497d ]
 
-This code calls kfree_rcu(new_node, rcu) and then dereferences "new_node"
-and then dereferences it on the next line.  Two lines later, we take
-a mutex so I don't think this is an RCU safe region.  Re-order it to do
-the dereferences before queuing up the free.
+This makes it safer during the disconnect and avoids
+requeueing.
 
-Fixes: 68fbff68dbea ("octeontx2-pf: Add police action for TC flower")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/aNKCL1jKwK8GRJHh@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+It's ok to call disable_work[_sync]() more than once.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index bb77ab7ddfefd..6833cbf853445 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -1039,7 +1039,6 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 8f5a393828065..d059c890d1428 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -398,9 +398,9 @@ static void free_transport(struct smb_direct_transport *t)
+ 	wait_event(t->wait_send_pending,
+ 		   atomic_read(&t->send_pending) == 0);
  
- free_leaf:
- 	otx2_tc_del_from_flow_list(flow_cfg, new_node);
--	kfree_rcu(new_node, rcu);
- 	if (new_node->is_act_police) {
- 		mutex_lock(&nic->mbox.lock);
+-	cancel_work_sync(&t->disconnect_work);
+-	cancel_work_sync(&t->post_recv_credits_work);
+-	cancel_work_sync(&t->send_immediate_work);
++	disable_work_sync(&t->disconnect_work);
++	disable_work_sync(&t->post_recv_credits_work);
++	disable_work_sync(&t->send_immediate_work);
  
-@@ -1059,6 +1058,7 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
- 
- 		mutex_unlock(&nic->mbox.lock);
- 	}
-+	kfree_rcu(new_node, rcu);
- 
- 	return rc;
- }
+ 	if (t->qp) {
+ 		ib_drain_qp(t->qp);
 -- 
 2.51.0
 
