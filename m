@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0765BAD4EE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A244BAD90B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED1F63A65E3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17CD3A6996
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CECC3043DA;
-	Tue, 30 Sep 2025 14:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5400302CD6;
+	Tue, 30 Sep 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vF/G7cKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fx1U1h4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F4372617;
-	Tue, 30 Sep 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A138C266B65;
+	Tue, 30 Sep 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243932; cv=none; b=XlhO+C6+Jb7KQMfovdOSPcc+TgVdYqyWRIo9A3t6zPQRFDahgReb/KLFduJ9xFKIbVUzd4yNY7zBGCqlTN4byNk3T1f8RiSuQRUTnq4D8kFCoK5FXlIIeQi0GhEFn8VpGcg8cBRwHhxioytzd6IIeVWCX3wjDqWiyeiFOkUIl7I=
+	t=1759244832; cv=none; b=ttTsuUJIIYDpKTJdhIwaL1+zixEN04vN811+/zeJoOQL6gSLbwQqX12jF6b8VWAZMvEDLH8O7zEmY7550bwu4fPhB085cCfv9VGTc7QEv7fTWpI08H0YJmDzY85zfVocVzpBdEU54QjMU/2rMRjZGj5x3JQ+kfc2r7TATaYMHcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243932; c=relaxed/simple;
-	bh=PB/HDRzaatK5VQDBI/W20iP1WNGjeaX/6cYTxExFOnk=;
+	s=arc-20240116; t=1759244832; c=relaxed/simple;
+	bh=Hy+5Ia2L29R/I1bicQ8HlHNDReawFVR15YRSRb0Dfkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlVUOtGr4mCRbdMwCKN6fnpXMJcTSG6OGIcxL1kSDsyOgpyeKI3hru3ax2JWdVwVtmtOBBjjwktmBo0zl4JueKSPUEHZDuV/jjxYUP7P8L5fDY3KEQRTQOnlZXoD5bHCdeRi+fvYcp+qLwvNS8EKzidvxMSTVZXh6lvEWkKASL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vF/G7cKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514FAC4CEF0;
-	Tue, 30 Sep 2025 14:52:10 +0000 (UTC)
+	 MIME-Version; b=HzedlJfMulEZPm1Pt+7FPlrmUjlCbUuYFwa/hJEBdagPzVs8YW0WSxfsAgp1l6I41QCTp7qpoZK+kcRYx8Uq6wu7KE3zDQznuVHmYFpVpvgxxFN11nEuM5TUHWnofZvldBVTrOuaZ/E30D/PNtNePO4MSyzxEfmlgbh7mkdHzMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fx1U1h4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255B5C4CEF0;
+	Tue, 30 Sep 2025 15:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243930;
-	bh=PB/HDRzaatK5VQDBI/W20iP1WNGjeaX/6cYTxExFOnk=;
+	s=korg; t=1759244832;
+	bh=Hy+5Ia2L29R/I1bicQ8HlHNDReawFVR15YRSRb0Dfkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vF/G7cKkH9xazv1KdVz0CZYdAkVNBFfPxK9aqDGOCLqftx2E+GwpeM+pfLNkp0QXw
-	 xJyZ/6t3QTcTB7FKqtPGWbQ6pHvtMjrR8DrUVux3lh/rmOcN0ZFxuELyQrqF9kLgWO
-	 ajNRKrJFkvxYx8mYB6VlSPVfP4B3y0u2ehBSgbe0=
+	b=Fx1U1h4W9f9a0nSxXBxD1HRe8WK5TEWSwO7Q6msdm0Dm3ntHSM4KXZEaOkGK6L3tJ
+	 LYA4Bc/wgd5SdB02qK/kam7fIWWa+frQ8Es/75JYTD7olt0VbE69jeW+VpwjcuwRzI
+	 xhWi82CNtkhAcgmGzO1/8kPAYmO/HkXH6w8IKVAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 58/81] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
+Subject: [PATCH 6.16 096/143] smb: client: fix wrong index reference in smb2_compound_op()
 Date: Tue, 30 Sep 2025 16:47:00 +0200
-Message-ID: <20250930143822.104103451@linuxfoundation.org>
+Message-ID: <20250930143835.053595874@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
+[ Upstream commit fbe2dc6a9c7318f7263f5e4d50f6272b931c5756 ]
 
-Adding a memory barrier before wake_up() in
-snd_usb_soundblaster_remote_complete() is supposed to ensure the write
-to mixer->rc_code is visible in wait_event_interruptible() from
-snd_usb_sbrc_hwdep_read().
+In smb2_compound_op(), the loop that processes each command's response
+uses wrong indices when accessing response bufferes.
 
-However, this is not really necessary, since wake_up() is just a wrapper
-over __wake_up() which already executes a full memory barrier before
-accessing the state of the task to be waken up.
+This incorrect indexing leads to improper handling of command results.
+Also, if incorrectly computed index is greather than or equal to
+MAX_COMPOUND, it can cause out-of-bounds accesses.
 
-Drop the redundant call to wmb() and implicitly fix the checkpatch
-complaint:
-
-  WARNING: memory barrier without comment
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
+Fixes: 3681c74d342d ("smb: client: handle lack of EA support in smb2_query_path_info()") # 6.14
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/smb/client/smb2inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index f318b80d646d5..03d49d4c5141d 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -207,7 +207,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
- 	if (code == rc->mute_code)
- 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
- 	mixer->rc_code = code;
--	wmb();
- 	wake_up(&mixer->rc_waitq);
- }
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 86cad8ee8e6f3..ac3ce183bd59a 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -687,7 +687,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 	}
  
+ 	for (i = 0; i < num_cmds; i++) {
+-		char *buf = rsp_iov[i + i].iov_base;
++		char *buf = rsp_iov[i + 1].iov_base;
+ 
+ 		if (buf && resp_buftype[i + 1] != CIFS_NO_BUFFER)
+ 			rc = server->ops->map_error(buf, false);
 -- 
 2.51.0
 
