@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C75BADB02
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D19BADBD9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13151162350
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE5E4188EB7B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E9F2FD1DD;
-	Tue, 30 Sep 2025 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A7530597A;
+	Tue, 30 Sep 2025 15:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/NRmXwG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMXcaYcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71522217F55;
-	Tue, 30 Sep 2025 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E8C2FD1DD;
+	Tue, 30 Sep 2025 15:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245416; cv=none; b=TpgETiodA37RXLteR4zh9hl8gY4MrAJ71QyjRBCclcgyuJYkBLx0KXs8mwmkJ0csjRrLny4eV04eEEmf8NhHRYwiE8FuV0f8XktyUMu1Bg4MRDtHwu1ZkWEuCIp+8zRBj4m6yoHKW8r79WugHuLlquDcV17DWv5yNldrj/lP/S4=
+	t=1759245676; cv=none; b=Xh71WX/JGjIl34rGfOPNOECVlE4Wu1yCWnlfmAn59c6wGCdN3HfRPZs9tZVDuIC9grsMJhMSnJjslNWMKmdgYs2sUP86TIBfXFJoTy07xFVdqAwh9fG+JLaUjbpFKtZ2mVjCuNaljaYuX8T98swOTuQK4KbW3PtCyhLhoDGXbT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245416; c=relaxed/simple;
-	bh=vR0gw6mwqcrvrPU8WDYytuYhV1oW33WoLLJWEqR4LfA=;
+	s=arc-20240116; t=1759245676; c=relaxed/simple;
+	bh=5H5OnDikkDQ2xb5SKy6oAPowDZp5rhABR8r6zmodoZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMdK3xS6VybK+hvxy8sR0u+xmd7jCLsSFKqWqwYDW6kTU0ZCsfAYhTbcp6CDb9sQRWdz9PkZBUMUgExEOaiOlxkL3IvgkRdVbRvJS8yzUzoT5oF1B6JZuGgPbkVxmIwA2r11nNBtGzuAU5DewLxinRcJDWPKzyoB6cQ5UxSq/X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/NRmXwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9EEC113D0;
-	Tue, 30 Sep 2025 15:16:55 +0000 (UTC)
+	 MIME-Version; b=rCwcN0z2c+eNMMylW1EsA58s0ihllioxsKDH4T4oRox8vp1C0v70kVGlRK77E7uywgExTsGP3R439JTKQe7XqIHUiBVb/Ms3cDGywugRyrdKTDIETU/ar7GnNq0lEytxrd18VTi11mznWyV7z8MEWTEHWpmkEwoGwEZL5GDcO3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMXcaYcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AB7C4CEF0;
+	Tue, 30 Sep 2025 15:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245416;
-	bh=vR0gw6mwqcrvrPU8WDYytuYhV1oW33WoLLJWEqR4LfA=;
+	s=korg; t=1759245676;
+	bh=5H5OnDikkDQ2xb5SKy6oAPowDZp5rhABR8r6zmodoZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/NRmXwGqlgR64klCJj4Mo9sFAItmuqXHuxeo7b8Lfe5JdptBGa30a1QnAGuiheYZ
-	 XPpImuee/k9gJjw4dI+CmwU8YCordpbj7LUuzsJSn2irmceVhVTyRHLmc1IRrUWD4G
-	 NDIqmFtxEciiEHNT/X7qTxrAJ4hk3ZTRL9t/GCHw=
+	b=VMXcaYcv0Dt3Xe8U2X6N6iyYHLrL+aYKkaojSmmoFGbJnB9fzU0amneF0qw824sKS
+	 lxLSPKLvSo2XhUgJhFyc/jUagajrvmj7tyj4EsRboIIw4jfcdIOcNG116E9oeNE/zQ
+	 YKXy5pmvKv8rQuKD3SJKmLw4mhJAIWTliQdDJakk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/73] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+Subject: [PATCH 6.6 17/91] i2c: designware: Add quirk for Intel Xe
 Date: Tue, 30 Sep 2025 16:47:16 +0200
-Message-ID: <20250930143821.071472938@linuxfoundation.org>
+Message-ID: <20250930143821.846364460@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
+[ Upstream commit f6a8e9f3de4567c71ef9f5f13719df69a8b96081 ]
 
-The recent addition of DualSense mixer quirk relies on the input
-device handle, and the build can fail if CONFIG_INPUT isn't set.
-Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
-the build error.
+The regmap is coming from the parent also in case of Xe
+GPUs. Reusing the Wangxun quirk for that.
 
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Co-developed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250701122252.2590230-3-heikki.krogerus@linux.intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[Rodrigo fixed the co-developed tags while merging]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-designware-platdrv.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index f1b663a05f295..8c0b8383abe1e 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -528,6 +528,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
- 					  &snd_emu0204_control, NULL);
+diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+index f3245a6856309..1ebcf5673a06b 100644
+--- a/drivers/i2c/busses/i2c-designware-platdrv.c
++++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+@@ -168,7 +168,7 @@ static inline int dw_i2c_of_configure(struct platform_device *pdev)
  }
+ #endif
  
-+#if IS_REACHABLE(CONFIG_INPUT)
- /*
-  * Sony DualSense controller (PS5) jack detection
-  *
-@@ -784,6 +785,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
+-static int txgbe_i2c_request_regs(struct dw_i2c_dev *dev)
++static int dw_i2c_get_parent_regmap(struct dw_i2c_dev *dev)
+ {
+ 	dev->map = dev_get_regmap(dev->dev->parent, NULL);
+ 	if (!dev->map)
+@@ -190,12 +190,15 @@ static int dw_i2c_plat_request_regs(struct dw_i2c_dev *dev)
+ 	struct platform_device *pdev = to_platform_device(dev->dev);
+ 	int ret;
  
- 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
- }
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- /* ASUS Xonar U1 / U3 controls */
- 
-@@ -3648,10 +3650,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_emu0204_controls_create(mixer);
++	if (device_is_compatible(dev->dev, "intel,xe-i2c"))
++		return dw_i2c_get_parent_regmap(dev);
++
+ 	switch (dev->flags & MODEL_MASK) {
+ 	case MODEL_BAIKAL_BT1:
+ 		ret = bt1_i2c_request_regs(dev);
  		break;
- 
-+#if IS_REACHABLE(CONFIG_INPUT)
- 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
- 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
- 		err = snd_dualsense_controls_create(mixer);
+ 	case MODEL_WANGXUN_SP:
+-		ret = txgbe_i2c_request_regs(dev);
++		ret = dw_i2c_get_parent_regmap(dev);
  		break;
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
- 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
+ 	default:
+ 		dev->base = devm_platform_ioremap_resource(pdev, 0);
 -- 
 2.51.0
 
