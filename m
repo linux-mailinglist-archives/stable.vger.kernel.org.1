@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-182266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769ACBAD6B9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2276FBADD02
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1C721942B7E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83C353279C7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688B330597A;
-	Tue, 30 Sep 2025 14:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7052FB0BE;
+	Tue, 30 Sep 2025 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwCHUj65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hag/H/Ve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B022FFDE6;
-	Tue, 30 Sep 2025 14:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2554725FA0F;
+	Tue, 30 Sep 2025 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244389; cv=none; b=jgI9CXDlH/rhkjDLFa5d2pAnli1mYS5uXYN9aBqG9MWZa3qZB4B+jt/c1TyT4+bNwY3CA3KbODADLyyVvsOi6V1rO6/3W3RFDT6BdQHakRBF2RgeIOqjBtZuCZlRsMxmZN4u/SqGPgqyXLlzOP9YWBKPS737xmZcmpJdBYdh4Ic=
+	t=1759245961; cv=none; b=GywlWEZGvtePk97sEpvUKWlKr6j+zAI17Zn5law9Ph5ns4AWvf5ggSh9Zb1hmdumCo02591SOhN/f8XT7mxWR8ppj9WyNztPvPlsqgYo/awJdAl6kIGkvBaH0+T+juhAMgj05Up4jE1DjgwC7an5IMaUF34r3t9frV4CdPoUsyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244389; c=relaxed/simple;
-	bh=b4p6GwJfVm98Xm6vRBzZZFsRv1EVMbqf9wDj5sG/5lw=;
+	s=arc-20240116; t=1759245961; c=relaxed/simple;
+	bh=vevNe6J88zNHLwa8BSGzeH1M2jnUh35N376OA4qfw+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXvBxDX2W7QFQlpeJWYaWdsxRhMPDDUTNiT2tv43vRMPuSg+hu97TAUVtuHziBAowxVWaC/X4ER4qVRoWuEzDUJt0ql5GyUB6kSpBKzfN6h3XCOaWJQ5+y3FCZvMy5ULdQBbUp+HdrcRXw8ZoqknB+m3uKXyIhnCQj/uDr7Xo3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwCHUj65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC5BC4CEF0;
-	Tue, 30 Sep 2025 14:59:48 +0000 (UTC)
+	 MIME-Version; b=jWJp3ggVmL95G6U5i8TH7L58I0SKYv3x/CYnTwAhVOqtzxFboKlXfb6RBieXPhCgmGJ5XoTsTkKjAqFirthvIUl4zo16PGmvUgj2Sqc/zxBcecfiGv3Q1u7iIOsTLUaT5CvbpLSyWoBnGCRX97wN8G/drQhJtLFx1qAulc4TU7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hag/H/Ve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBE7C4CEF0;
+	Tue, 30 Sep 2025 15:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244389;
-	bh=b4p6GwJfVm98Xm6vRBzZZFsRv1EVMbqf9wDj5sG/5lw=;
+	s=korg; t=1759245961;
+	bh=vevNe6J88zNHLwa8BSGzeH1M2jnUh35N376OA4qfw+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wwCHUj65cwFuVFIiBe6u7nmNn0S/N1FB3xJ3KNB4CGZS7wortOMmQtD1zWvL9LwUU
-	 lg85bWos9CW2fjox2JYMYNDZHIn4IZ8nDlSGl3eJRevvXq/8OtIJmSgXxHwIQ7NmKo
-	 yYCkoUCy/yTou1jcuYvZNX4XiqQeYA5DpUyiM5WQ=
+	b=Hag/H/VeB3gMhx1PKH9k8i5mfYRP2A+myvMBGG60C1I1Y7na4ijhC/Xh7iG5Uyfrm
+	 pAgf2H5v2iBQDQic2wvi9EwbUL+iakx8FVOTG86Jj9VTu0jyUcB9p/WjRdHqYcGmIF
+	 avS7SHHLV9cOEgURlMf5zLShlksFGVfZgjy8kxPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.10 113/122] i40e: add mask to apply valid bits for itr_idx
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 10/89] HID: multitouch: Get the contact ID from HID_DG_TRANSDUCER_INDEX fields in case of Apple Touch Bar
 Date: Tue, 30 Sep 2025 16:47:24 +0200
-Message-ID: <20250930143827.592466052@linuxfoundation.org>
+Message-ID: <20250930143822.292446193@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Kerem Karabay <kekrby@gmail.com>
 
-commit eac04428abe9f9cb203ffae4600791ea1d24eb18 upstream.
+[ Upstream commit f41d736acc039d86512951f4e874b0f5e666babf ]
 
-The ITR index (itr_idx) is only 2 bits wide. When constructing the
-register value for QINT_RQCTL, all fields are ORed together. Without
-masking, higher bits from itr_idx may overwrite adjacent fields in the
-register.
+In Apple Touch Bar, the contact ID is contained in fields with the
+HID_DG_TRANSDUCER_INDEX usage rather than HID_DG_CONTACTID, thus differing
+from the HID spec. Add a quirk for the same.
 
-Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
-set.
-
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-multitouch.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -393,7 +393,7 @@ static void i40e_config_irq_link_list(st
- 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
- 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
- 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
--		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
-+		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
- 		wr32(hw, reg_idx, reg);
- 	}
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 5c424010bc025..be2bbce25b3df 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -72,6 +72,7 @@ MODULE_LICENSE("GPL");
+ #define MT_QUIRK_FORCE_MULTI_INPUT	BIT(20)
+ #define MT_QUIRK_DISABLE_WAKEUP		BIT(21)
+ #define MT_QUIRK_ORIENTATION_INVERT	BIT(22)
++#define MT_QUIRK_APPLE_TOUCHBAR		BIT(23)
  
+ #define MT_INPUTMODE_TOUCHSCREEN	0x02
+ #define MT_INPUTMODE_TOUCHPAD		0x03
+@@ -617,6 +618,7 @@ static struct mt_application *mt_find_application(struct mt_device *td,
+ static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
+ 						      struct hid_report *report)
+ {
++	struct mt_class *cls = &td->mtclass;
+ 	struct mt_report_data *rdata;
+ 	struct hid_field *field;
+ 	int r, n;
+@@ -641,7 +643,11 @@ static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
+ 
+ 		if (field->logical == HID_DG_FINGER || td->hdev->group != HID_GROUP_MULTITOUCH_WIN_8) {
+ 			for (n = 0; n < field->report_count; n++) {
+-				if (field->usage[n].hid == HID_DG_CONTACTID) {
++				unsigned int hid = field->usage[n].hid;
++
++				if (hid == HID_DG_CONTACTID ||
++				   (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR &&
++				   hid == HID_DG_TRANSDUCER_INDEX)) {
+ 					rdata->is_mt_collection = true;
+ 					break;
+ 				}
+@@ -819,6 +825,14 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+ 						     EV_KEY, BTN_TOUCH);
+ 			MT_STORE_FIELD(tip_state);
+ 			return 1;
++		case HID_DG_TRANSDUCER_INDEX:
++			/*
++			 * Contact ID in case of Apple Touch Bars is contained
++			 * in fields with HID_DG_TRANSDUCER_INDEX usage.
++			 */
++			if (!(cls->quirks & MT_QUIRK_APPLE_TOUCHBAR))
++				return 0;
++			fallthrough;
+ 		case HID_DG_CONTACTID:
+ 			MT_STORE_FIELD(contactid);
+ 			app->touches_by_report++;
+-- 
+2.51.0
+
 
 
 
