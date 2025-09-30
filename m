@@ -1,146 +1,156 @@
-Return-Path: <stable+bounces-182037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CBDBABB44
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:51:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522CFBABB56
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE97C3B6572
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 06:51:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC9511898EF4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 06:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E7B2BCF4A;
-	Tue, 30 Sep 2025 06:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DC92BD037;
+	Tue, 30 Sep 2025 06:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RcLHUDPa"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="Wwm3h4TL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="p9kq53Fg"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02B37D07D;
-	Tue, 30 Sep 2025 06:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7343427E1B1;
+	Tue, 30 Sep 2025 06:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759215104; cv=none; b=iwXbrzTsM8fR2903aMns5snMaLxNwARJEwg6zeiRFYnnD6pfAWKM1EEnQMsVWhhUw4w9YNk6hXsWpkUNp2ik2A6byiBB6BPQ4rNAJqE0jYWtQSY8stFukbdy7KG68yhXFe1ec237+t4SwMUN4i2TJciylEl4VUcrj0KhQ/2z53A=
+	t=1759215228; cv=none; b=ILYCN4Jj0xmlv5+MpDOkRG8HdgWhhOd2POPb+snRHNvNKtYJCDSkZ6Szqyel85aQFCJ9REH1kZjQ2NxQtiLwRp4bXtKMz+X+SHT//YoRADkdcZ5SS9ApmVN4Sq0W05t30PfygZF0pOz22W41FA7jaOISs2bmA+HuMBZ+8DcgKKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759215104; c=relaxed/simple;
-	bh=aJX3DGU+W1LZ8Dh+Z/Lm/fAFVzq9jzJXUxHKVTd4I1k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aNUh/FsUruIyRgJ1/fFh4iVgQU1DSxlDag+aqKTk2EbQyLh+uQMRcXfS5b8uyx10HdVvbrFagn3lBanhz0eVU5GkuVK1HNIwgqpNQgNcu+11r/s+dyTeFGzdiCVN/qa1d9bmOwYzYWar45hYgoSyDZssjidkU0SrpNLElAyKXCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RcLHUDPa; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <2ad95cd2-3a09-4873-b6c4-1e00a88dceb7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759215099;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yGN6BMSkXgx6PB6NEFYkeWWUVlKsILAVHZBwRtmuzRI=;
-	b=RcLHUDPak47T8AShrEH2BQNBqjOkZVnsG6DDUI6CgHbkDdkuF/qi+GBb1hVpjXJOcJs5tI
-	xqTja3a64qobHcaFO05TFcvfPnaKyOLYen9dXJTqom6mF4e0ZJK5KGMDeLEpv6UJRpFGye
-	CckGYTS2op4N2qbq6P99hGEv6fuQY/o=
-Date: Tue, 30 Sep 2025 14:51:23 +0800
+	s=arc-20240116; t=1759215228; c=relaxed/simple;
+	bh=USG8lenE4OmXYzm1tUnfdT2zeBwOkzOgEoVpjZDEcHg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KcM3IkpvsIcXQtsRYlBx40gON5TyFoj9TEC88WnNdTn1t74q7TD66BaIQaXVu9t8Tip8+wsElAMLz4rIadluzNpFJA3QSloHPZVHmoxyHTLqSF48+vwggXs0VcyMv9YT/zeNQ9vJcjSCZd7ewl7lACyP9nzCill2SAcsRndoYM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=Wwm3h4TL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=p9kq53Fg; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 5EAFF1D000A3;
+	Tue, 30 Sep 2025 02:53:45 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Tue, 30 Sep 2025 02:53:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	coelacanthus.name; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to; s=fm3;
+	 t=1759215225; x=1759301625; bh=EMtFpG+Bb1tLZ/pMnCpLyyl10Wvnkg0U
+	0h/ZqbI05EY=; b=Wwm3h4TLnCWzfr2Uf5RWbsb3RZOCS7WFYPAZ8LmwQlpQOBbD
+	EbpoVRQcZ6gOtNcLRSza4gzpA0wTU70Sue0n0OzChM80PwmP7eEhowZA8oILdDDy
+	leomtSg58S77D1wirkp+CUmcu7MvtFhIoSRdLnGYlF0XSf1qaOyx4GABN21VNeay
+	0vEYykUJ9bj9GEzOiVXgTTqnCL3wUr6eGK5WNJHo7ShT6D4Sc4qwkB1B9+Fw47LK
+	IOTtlwpTPKRgavMwSAsQzo1zWqZkgfKaMWCrJw7HzYh77D+32NjgEtpqIleQizK6
+	IAK98eRvR4re9mMAYyNALSsjUWulRTbdOUCYKw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1759215225; x=1759301625; bh=EMtFpG+Bb1tLZ/pMnCpLyyl10Wvn
+	kg0U0h/ZqbI05EY=; b=p9kq53Fg02uxrNOFTSm88uYA3bLcw3KULnlArq79OR9f
+	13HKnPO9iM6vUsvIEuDls+0O3M+K3u1Lh1pt+zhVDahckD3sMLd48UYmO3woPQGg
+	KJrHFbKfPsUwxjotUs66eNpNuJJ/XCnHFfC8Hd8AHkzLNX8Ie++vhNjGIcznEx//
+	lQ63mbCwmZqYNcWrFfJ1dYMBEvMS/dagRECjxYsLstK16K2GaZraHh7DcgrwD1kE
+	r2MxBOCn/DdadCnyqGH3VlVhksOeCLNFQ9QW9bfUT6AGTU14n7o9hr16+zHX8Pf+
+	7ZkBB9NbFc01Z9RvRJQTfVdKaXahArJu0cQPx+yiKw==
+X-ME-Sender: <xms:eH7baJJGuveAd2e2htkwwdqI77YK8qK4dvr4bE6woA7C1QXya7MV8A>
+    <xme:eH7baPOXnNIBSRc0tSdGrcoi99bRrU1rKQC1e8i-W7sIRrui9exKhPIRkQtLCQTxU
+    e3ueacDmbSV8ydzbeMV1ofC9UK_dNtKcVDaBH1n0iaqwoTy9JJhq1Q>
+X-ME-Received: <xmr:eH7baBlgD59ysbGa_LM5Ns_oLbZ_hjtvyutMXcb7jJVnTN7GuXDJZa6XOI9qag>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdektddvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomhepvegvlhgvshhtvgcu
+    nfhiuhcuoehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvqeenucggtffrrghtth
+    gvrhhnpeefteegleevudeiteefheetfffgtedugffgjeeigfejffduhedugffgkeeufeev
+    ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehufi
+    husegtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprhgtphhtthhopeejpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehmrghilhhhohhlrdhvihhntggvnhhtseifrghnrgguoh
+    hordhfrhdprhgtphhtthhopehlihhnuhigqdgtrghnsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepmhgrgiesshgthhhnvghiuggvrhhsohhfthdrnhgvthdprhgtph
+    htthhopehmkhhlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehufihusegt
+    ohgvlhgrtggrnhhthhhushdrnhgrmhgv
+X-ME-Proxy: <xmx:eH7baL5bV11s4NXn-Mhs7J8ajMzNZBayZag7kQ8G-3saGMQb0YdDbw>
+    <xmx:eH7baN2BUyXnFyqSNobakIstYZ64nJYWVuXEc0Ly-yXMibc46dL94g>
+    <xmx:eH7baOH2371aKz-m9CiwFbjGPtdAI4r56NOhDaLgANqCnsRmlFQNYA>
+    <xmx:eH7baEjS1O0EPAya3Tl1C3w66r3LPbMWWnnj8vFbN8YyS-RURBOT_g>
+    <xmx:eH7baPaZxgEQG0YJww2BBnUEtuCBL7zZ0Jj6DuFW4lB7l67dB7j51SCs>
+Feedback-ID: i95c648bc:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 30 Sep 2025 02:53:43 -0400 (EDT)
+From: Celeste Liu <uwu@coelacanthus.name>
+Date: Tue, 30 Sep 2025 14:53:39 +0800
+Subject: [PATCH] net/can/gs_usb: populate net_device->dev_port
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-Cc: peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
- npache@redhat.com, riel@surriel.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, usamaarif642@gmail.com, yuzhao@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ioworker0@gmail.com,
- stable@vger.kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <20250930060557.85133-1-lance.yang@linux.dev>
- <026a2673-8195-4927-8cde-f7517b601125@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <026a2673-8195-4927-8cde-f7517b601125@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250930-gs-usb-populate-net_device-dev_port-v1-1-68a065de6937@coelacanthus.name>
+X-B4-Tracking: v=1; b=H4sIAHJ+22gC/x2NQQqDMBBFryKz7kASK5hepRSxyWgHShIyUQri3
+ Tu4erzF+/8Aocok8OgOqLSzcE4q9tZB+MxpJeSoDs64wfje4Cq4yRtLLtt3boSJ2hQ1DISKqeT
+ a0N/t4qIN/Th60KVSaeHf9fJ8necf8HILjXUAAAA=
+X-Change-ID: 20250930-gs-usb-populate-net_device-dev_port-941f2d1c3889
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: Maximilian Schneider <max@schneidersoft.net>, linux-can@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Celeste Liu <uwu@coelacanthus.name>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1421; i=uwu@coelacanthus.name;
+ h=from:subject:message-id; bh=USG8lenE4OmXYzm1tUnfdT2zeBwOkzOgEoVpjZDEcHg=;
+ b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGjNt1JVNErWQ1lleJ+zMbrdz+0O6FmaS103rJ9ux50
+ /kPx/V7RnSUsjCIcTHIiimy5JWw/OS8dLZ7b8f2Lpg5rEwgQxi4OAXgJksy/OHlaW9T2vHxUrBa
+ RePZQuNalvNsDW7Z1oJG8w/G6ppMrGb4Z97f6xf+s7x2+V2Nu1s+72HdvTD7bt3sL/LTPJbcv+B
+ szw8A4hRF9w==
+X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
+ fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 
+The gs_usb driver supports USB devices with more than 1 CAN channel. In
+old kernel before 3.15, it uses net_device->dev_id to distinguish
+different channel in userspace, which was done in commit
+acff76fa45b4 ("can: gs_usb: gs_make_candev(): set netdev->dev_id").
+But since 3.15, the correct way is populating net_device->dev_port. And
+according to documentation, if network device support multiple interface,
+lack of net_device->dev_port SHALL be treated as a bug.
 
+Fixes: acff76fa45b4 ("can: gs_usb: gs_make_candev(): set netdev->dev_id")
+Cc: stable@vger.kernel.org
+Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+---
+ drivers/net/can/usb/gs_usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 2025/9/30 14:31, David Hildenbrand wrote:
-> On 30.09.25 08:05, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> When splitting an mTHP and replacing a zero-filled subpage with the 
->> shared
->> zeropage, try_to_map_unused_to_zeropage() currently drops several 
->> important
->> PTE bits.
->>
->> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
->> incremental snapshots, losing the soft-dirty bit means modified pages are
->> missed, leading to inconsistent memory state after restore.
->>
->> As pointed out by David, the more critical uffd-wp bit is also dropped.
->> This breaks the userfaultfd write-protection mechanism, causing writes
->> to be silently missed by monitoring applications, which can lead to data
->> corruption.
->>
->> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
->> creating the new zeropage mapping to ensure they are correctly tracked.
->>
->> Cc: <stable@vger.kernel.org>
->> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage 
->> when splitting isolated thp")
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Suggested-by: Dev Jain <dev.jain@arm.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->> v2 -> v3:
->>   - ptep_get() gets called only once per iteration (per Dev)
->>   - https://lore.kernel.org/linux-mm/20250930043351.34927-1- 
->> lance.yang@linux.dev/
->>
->> v1 -> v2:
->>   - Avoid calling ptep_get() multiple times (per Dev)
->>   - Double-check the uffd-wp bit (per David)
->>   - Collect Acked-by from David - thanks!
->>   - https://lore.kernel.org/linux-mm/20250928044855.76359-1- 
->> lance.yang@linux.dev/
->>
->>   mm/migrate.c | 14 ++++++++++----
->>   1 file changed, 10 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index ce83c2c3c287..bafd8cb3bebe 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, 
->> struct list_head *list)
->>   static bool try_to_map_unused_to_zeropage(struct 
->> page_vma_mapped_walk *pvmw,
->>                         struct folio *folio,
->> +                      pte_t old_pte,
->>                         unsigned long idx)
-> 
-> Nit:
-> 
-> static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk 
-> *pvmw,
->          struct folio *folio, pte_t old_pte, unsigned long idx)
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index c9482d6e947b0c7b033dc4f0c35f5b111e1bfd92..7ee68b47b569a142ffed3981edcaa9a1943ef0c2 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -1249,6 +1249,7 @@ static struct gs_can *gs_make_candev(unsigned int channel,
+ 
+ 	netdev->flags |= IFF_ECHO; /* we support full roundtrip echo */
+ 	netdev->dev_id = channel;
++	netdev->dev_port = channel;
+ 
+ 	/* dev setup */
+ 	strcpy(dev->bt_const.name, KBUILD_MODNAME);
 
-Well, let me clean that up ;p
+---
+base-commit: 30d4efb2f5a515a60fe6b0ca85362cbebea21e2f
+change-id: 20250930-gs-usb-populate-net_device-dev_port-941f2d1c3889
 
-> 
-> LGTM, Thanks!
-
-Cheers!
+Best regards,
+-- 
+Celeste Liu <uwu@coelacanthus.name>
 
 
