@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-182652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4702BADC9F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26939BADDD7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81393A8F7C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDBF7A441D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA08D308F03;
-	Tue, 30 Sep 2025 15:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8FF30505F;
+	Tue, 30 Sep 2025 15:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXD99IRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCx07N09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61879205E3B;
-	Tue, 30 Sep 2025 15:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFC825FA0F;
+	Tue, 30 Sep 2025 15:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245645; cv=none; b=VIRvfQsDkqIAVP6tpjkTaIdJCXQv5znNFlDwiUanWlT4ICx7ha8Z2cMIWa8SLpBL8fNOhzWiqisSHQGcH1uDQh2XClMLzy8z9sbtZPX1TJUXkrj69bxcyAaiKDLLp1bc0CRW/oaIzHL5NApfOM37IwGOUnq6hfhXzgZeKvl9c3A=
+	t=1759246129; cv=none; b=aS8g6ktgDhM62n0fsf2tOXiWrmB8z/YVlq5Os6S0py2laxN7+Uut/xjSvduXfcQlUrSzrMyPx2E6XGaQTcBrIMiNzRHw/SXnS0ZH69IKQH30cdd2RqDBCsA3q/RuVMhZK0M6FxtJ/v4KdxVJ7qrCc8cQSWys+RcBuNLqBOz6K1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245645; c=relaxed/simple;
-	bh=wtR3noJqqDzgwKFGp4pHBzaJ0mhTG7aV/zwH+C48lCQ=;
+	s=arc-20240116; t=1759246129; c=relaxed/simple;
+	bh=yDOmtIbX8BrrxxAdlbSW/ww5BNyWrtlTW52jYdmzp8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJMT5mq05yywpEH6xFYcN88jqCc8bmdTMN6FE+KZrAStPoyLW8DwM2slgVihryYeyqrSdLBrGWGmSFy1IT/Gb1Kn5R6lvK6Hu/8FrChcrUvs2gPCRR4JdRly0d/VkdYCgx2HZqXC2ybt2wgeNomIKcvpJOWqfD/o4yXx0GMiIvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXD99IRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF37C4CEF0;
-	Tue, 30 Sep 2025 15:20:44 +0000 (UTC)
+	 MIME-Version; b=ZBCR53OrpYAbIgjTkCyezj6ng5vlI5GOl4f1VurvwdO1jIjpJltT8He5sUjsYUUf0dVuEte4K5J2LqJRoxLmXRT0V/JOo+vyAGGmUd1BuDFhrMpBI342bH0boY0kjeJZ/xHGeLbzLh8OzmScEdkB7AQ1n5CZBx0K2Qha+qc2idA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCx07N09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4CDC4CEF0;
+	Tue, 30 Sep 2025 15:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245645;
-	bh=wtR3noJqqDzgwKFGp4pHBzaJ0mhTG7aV/zwH+C48lCQ=;
+	s=korg; t=1759246128;
+	bh=yDOmtIbX8BrrxxAdlbSW/ww5BNyWrtlTW52jYdmzp8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXD99IRkhZcLfEvrFhgNm+KO2+Ws5LxicpUG9qGqCryp1kJmzo8EFhjyDfHEEzID/
-	 Apq2iSm6/pMTA4xFLoTcnognE4qiTPdQom8ilf8HtaDcekTeN+wYB6w/prGqraQq2i
-	 Xpob5UsmW4dRoBfigqMKH1bOqPJMPVpuTFL8RPR4=
+	b=rCx07N09ehslsgGAKmLStPJWS3B9eY9NGqxe1rwlDm4GpG4N+WqfDFYRwfo6GIRYW
+	 hF21aWiHSuqPy6vY1Uqs7jTClAJbk5b/H9nlProPThEM2UQOx3/xmiX3+eEE9hj0/J
+	 IAMhlwHDiMD5jiRBd1RmzR0CEmbYjFVkiRP2XFEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
+	Hugh Dickins <hughd@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Keir Fraser <keirf@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Li Zhe <lizhe.67@bytedance.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Wei Xu <weixugc@google.com>,
+	Will Deacon <will@kernel.org>,
+	yangge <yangge1116@126.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Yu Zhao <yuzhao@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 70/73] kmsan: fix out-of-bounds access to shadow memory
+Subject: [PATCH 6.12 60/89] mm: folio_may_be_lru_cached() unless folio_test_large()
 Date: Tue, 30 Sep 2025 16:48:14 +0200
-Message-ID: <20250930143823.591384744@linuxfoundation.org>
+Message-ID: <20250930143824.404583389@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,135 +83,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit 85e1ff61060a765d91ee62dc5606d4d547d9d105 ]
+[ Upstream commit 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 ]
 
-Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-kmsan_internal_set_shadow_origin():
+mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
+large folio is added: so collect_longterm_unpinnable_folios() just wastes
+effort when calling lru_add_drain[_all]() on a large folio.
 
-    BUG: unable to handle page fault for address: ffffbc3840291000
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
-    Oops: 0000 [#1] SMP NOPTI
-    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
-    Tainted: [N]=TEST
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
-    [...]
-    Call Trace:
-    <TASK>
-    __msan_memset+0xee/0x1a0
-    sha224_final+0x9e/0x350
-    test_hash_buffer_overruns+0x46f/0x5f0
-    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
-    ? __pfx_test_hash_buffer_overruns+0x10/0x10
-    kunit_try_run_case+0x198/0xa00
+But although there is good reason not to batch up PMD-sized folios, we
+might well benefit from batching a small number of low-order mTHPs (though
+unclear how that "small number" limitation will be implemented).
 
-This occurs when memset() is called on a buffer that is not 4-byte aligned
-and extends to the end of a guard page, i.e.  the next page is unmapped.
+So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
+insulate those particular checks from future change.  Name preferred to
+"folio_is_batchable" because large folios can well be put on a batch: it's
+just the per-CPU LRU caches, drained much later, which need care.
 
-The bug is that the loop at the end of kmsan_internal_set_shadow_origin()
-accesses the wrong shadow memory bytes when the address is not 4-byte
-aligned.  Since each 4 bytes are associated with an origin, it rounds the
-address and size so that it can access all the origins that contain the
-buffer.  However, when it checks the corresponding shadow bytes for a
-particular origin, it incorrectly uses the original unrounded shadow
-address.  This results in reads from shadow memory beyond the end of the
-buffer's shadow memory, which crashes when that memory is not mapped.
+Marked for stable, to counter the increase in lru_add_drain_all()s from
+"mm/gup: check ref_count instead of lru before migration".
 
-To fix this, correctly align the shadow address before accessing the 4
-shadow bytes corresponding to each origin.
-
-Link: https://lkml.kernel.org/r/20250911195858.394235-1-ebiggers@kernel.org
-Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Tested-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
+Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
+Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context in tests ]
+[ Clean cherry-pick now into this tree ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmsan/core.c       |   10 +++++++---
- mm/kmsan/kmsan_test.c |   16 ++++++++++++++++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ include/linux/swap.h | 10 ++++++++++
+ mm/gup.c             |  4 ++--
+ mm/mlock.c           |  6 +++---
+ mm/swap.c            |  2 +-
+ 4 files changed, 16 insertions(+), 6 deletions(-)
 
---- a/mm/kmsan/core.c
-+++ b/mm/kmsan/core.c
-@@ -258,7 +258,8 @@ void kmsan_internal_set_shadow_origin(vo
- 				      u32 origin, bool checked)
- {
- 	u64 address = (u64)addr;
--	u32 *shadow_start, *origin_start;
-+	void *shadow_start;
-+	u32 *aligned_shadow, *origin_start;
- 	size_t pad = 0;
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index f3e0ac20c2e8c..63f85b3fee238 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -382,6 +382,16 @@ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
  
- 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
-@@ -277,9 +278,12 @@ void kmsan_internal_set_shadow_origin(vo
- 	}
- 	__memset(shadow_start, b, size);
- 
--	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+		aligned_shadow = shadow_start;
-+	} else {
- 		pad = address % KMSAN_ORIGIN_SIZE;
- 		address -= pad;
-+		aligned_shadow = shadow_start - pad;
- 		size += pad;
- 	}
- 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
-@@ -293,7 +297,7 @@ void kmsan_internal_set_shadow_origin(vo
- 	 * corresponding shadow slot is zero.
- 	 */
- 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
--		if (origin || !shadow_start[i])
-+		if (origin || !aligned_shadow[i])
- 			origin_start[i] = origin;
- 	}
- }
---- a/mm/kmsan/kmsan_test.c
-+++ b/mm/kmsan/kmsan_test.c
-@@ -470,6 +470,21 @@ static void test_memcpy_aligned_to_unali
- 	KUNIT_EXPECT_TRUE(test, report_matches(&expect));
- }
- 
-+/* Test case: ensure that KMSAN does not access shadow memory out of bounds. */
-+static void test_memset_on_guarded_buffer(struct kunit *test)
++static inline bool folio_may_be_lru_cached(struct folio *folio)
 +{
-+	void *buf = vmalloc(PAGE_SIZE);
-+
-+	kunit_info(test,
-+		   "memset() on ends of guarded buffer should not crash\n");
-+
-+	for (size_t size = 0; size <= 128; size++) {
-+		memset(buf, 0xff, size);
-+		memset(buf + PAGE_SIZE - size, 0xff, size);
-+	}
-+	vfree(buf);
++	/*
++	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
++	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
++	 * will be sensible, but nobody has implemented and tested that yet.
++	 */
++	return !folio_test_large(folio);
 +}
 +
- static noinline void fibonacci(int *array, int size, int start) {
- 	if (start < 2 || (start == size))
- 		return;
-@@ -515,6 +530,7 @@ static struct kunit_case kmsan_test_case
- 	KUNIT_CASE(test_memcpy_aligned_to_aligned),
- 	KUNIT_CASE(test_memcpy_aligned_to_unaligned),
- 	KUNIT_CASE(test_memcpy_aligned_to_unaligned2),
-+	KUNIT_CASE(test_memset_on_guarded_buffer),
- 	KUNIT_CASE(test_long_origin_chain),
- 	{},
- };
+ extern atomic_t lru_disable_count;
+ 
+ static inline bool lru_cache_disabled(void)
+diff --git a/mm/gup.c b/mm/gup.c
+index 4dd0eb70988b2..d105817a0c9aa 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2376,13 +2376,13 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 			continue;
+ 		}
+ 
+-		if (drained == 0 &&
++		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain();
+ 			drained = 1;
+ 		}
+-		if (drained == 1 &&
++		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+diff --git a/mm/mlock.c b/mm/mlock.c
+index cde076fa7d5e5..8c8d522efdd59 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
+ 	 */
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, folio) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+diff --git a/mm/swap.c b/mm/swap.c
+index d4cb4898f573e..ff846915db454 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -223,7 +223,7 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+ 		local_lock(&cpu_fbatches.lock);
+ 
+ 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
+-			folio_test_large(folio) || lru_cache_disabled())
++			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 
+ 	if (disable_irq)
+-- 
+2.51.0
+
 
 
 
