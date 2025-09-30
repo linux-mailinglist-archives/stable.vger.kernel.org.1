@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-182823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74DFBADE20
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8493BBADE18
 	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F333ACB25
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A451B17261A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3173430505F;
-	Tue, 30 Sep 2025 15:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBDB307AD3;
+	Tue, 30 Sep 2025 15:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10C3PtfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW39NkJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21D93C465;
-	Tue, 30 Sep 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EB0307AD5;
+	Tue, 30 Sep 2025 15:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246197; cv=none; b=VKL5Nu7XeMi0pOPnLIHqGVhrl3F9bwdezcpEUY32EN/Q3Z34H+tAaj4IFjkZVAgbT6PxTMMdhf9zSROMqwf+LMsvyJUXJtNTW/EOlkC7wq2X2hdN+eBLDgUHUSYDKDiaMxaBfT/D/6pwdRHR+y6SZibLKoPBtxhobvsF3CJanrw=
+	t=1759246203; cv=none; b=IHIy9Jx4QwDWzA3LLJ855fBnsIDtCJ5y/AZ8uHJnzwQGR1Mp0xBCxGOx/mUFJ+7I3V8TFuKZU9SuK/TOAYM9TIlvI2vpj0xeaX7/SPBNOWXSQSpCiyUqLkX6M0DMpYlCAi/kpjHNgaA6qYDEapdPphNmPES30TvZJSofhTlCPsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246197; c=relaxed/simple;
-	bh=nnVzIih6cFR0VXirMGTiZ7DldxSQ8g/G73xpHugGAAw=;
+	s=arc-20240116; t=1759246203; c=relaxed/simple;
+	bh=WWyHberq47yNxQtq+iWgE+p6MsOy3HNnCCuM9hh7nbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=adtbKUy/ypLGxUjSIJk2lp2F6eq1sMVI+LlHbW5bVzrqkBhA5suMInsso/7Y8xTsK1CmtiKDcYDrz2sEBxpr24DnE+KdocdQv1L26+MS8Kmy2gkENVyEM2PoT5Y8wuLbHm7w57OPAkgjlNXVYtEc/jisO8fisje/cu7lhGCXlF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10C3PtfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5EEC4CEF0;
-	Tue, 30 Sep 2025 15:29:56 +0000 (UTC)
+	 MIME-Version; b=KRK0UuehHjoBlZFQYznVXo4u/Rzty3t8T+ryc49rVrqlpe4yZr3Qb0AhSpBkgDAq9jOhMh3PF8ZvcAIQJMX97cChgIBCLImsJlACRmZNop3de4l5ocgQb+jXTglUDjNnJZEqW6DD7F2kVIejQXLRedKo7k7UBzwBGXYuvYG1ZNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW39NkJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF109C4CEF0;
+	Tue, 30 Sep 2025 15:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246196;
-	bh=nnVzIih6cFR0VXirMGTiZ7DldxSQ8g/G73xpHugGAAw=;
+	s=korg; t=1759246203;
+	bh=WWyHberq47yNxQtq+iWgE+p6MsOy3HNnCCuM9hh7nbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10C3PtfBCG9Gu5faolKA5Q3GCFlyiR/DH9wajMFXwPc4X1W62ySSY9p2gCzGL9fG7
-	 VKEcahNcSPQRowWs/B3/5/pguX8oNhfcctJbvUqy4ZuyOrFED2EZmIVu5O4RA9wBQQ
-	 m1QOTVHRHZzhx1BzHyyfwhupyLD0+wYH+Fe2BLJU=
+	b=PW39NkJPuejm1HMk6CKo9PkM0CvZYZ/ARzjRIojpgD+2EifV2F5yUemWaEKFWHFAm
+	 EANh1pOaeiiz6kN2wYgdped0yu3BWHInN7ewZqjwyf6BLxP/foU6IKFIyvAtMKDZOH
+	 WSN7yzfhUwODAgz1k2GV6SUnskFPQFsWMoLiXM6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 83/89] gpiolib: Extend software-node support to support secondary software-nodes
-Date: Tue, 30 Sep 2025 16:48:37 +0200
-Message-ID: <20250930143825.329194802@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 84/89] kmsan: fix out-of-bounds access to shadow memory
+Date: Tue, 30 Sep 2025 16:48:38 +0200
+Message-ID: <20250930143825.367875213@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
 References: <20250930143821.852512002@linuxfoundation.org>
@@ -66,69 +68,129 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit c6ccc4dde17676dfe617b9a37bd9ba19a8fc87ee upstream.
+commit 85e1ff61060a765d91ee62dc5606d4d547d9d105 upstream.
 
-When a software-node gets added to a device which already has another
-fwnode as primary node it will become the secondary fwnode for that
-device.
+Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
+kmsan_internal_set_shadow_origin():
 
-Currently if a software-node with GPIO properties ends up as the secondary
-fwnode then gpiod_find_by_fwnode() will fail to find the GPIOs.
+    BUG: unable to handle page fault for address: ffffbc3840291000
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
+    Oops: 0000 [#1] SMP NOPTI
+    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
+    Tainted: [N]=TEST
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
+    [...]
+    Call Trace:
+    <TASK>
+    __msan_memset+0xee/0x1a0
+    sha224_final+0x9e/0x350
+    test_hash_buffer_overruns+0x46f/0x5f0
+    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
+    ? __pfx_test_hash_buffer_overruns+0x10/0x10
+    kunit_try_run_case+0x198/0xa00
 
-Add a new gpiod_fwnode_lookup() helper which falls back to calling
-gpiod_find_by_fwnode() with the secondary fwnode if the GPIO was not
-found in the primary fwnode.
+This occurs when memset() is called on a buffer that is not 4-byte aligned
+and extends to the end of a guard page, i.e.  the next page is unmapped.
 
-Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20250920200955.20403-1-hansg@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+The bug is that the loop at the end of kmsan_internal_set_shadow_origin()
+accesses the wrong shadow memory bytes when the address is not 4-byte
+aligned.  Since each 4 bytes are associated with an origin, it rounds the
+address and size so that it can access all the origins that contain the
+buffer.  However, when it checks the corresponding shadow bytes for a
+particular origin, it incorrectly uses the original unrounded shadow
+address.  This results in reads from shadow memory beyond the end of the
+buffer's shadow memory, which crashes when that memory is not mapped.
+
+To fix this, correctly align the shadow address before accessing the 4
+shadow bytes corresponding to each origin.
+
+Link: https://lkml.kernel.org/r/20250911195858.394235-1-ebiggers@kernel.org
+Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ mm/kmsan/core.c       |   10 +++++++---
+ mm/kmsan/kmsan_test.c |   16 ++++++++++++++++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4317,6 +4317,23 @@ static struct gpio_desc *gpiod_find_by_f
- 	return desc;
- }
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -195,7 +195,8 @@ void kmsan_internal_set_shadow_origin(vo
+ 				      u32 origin, bool checked)
+ {
+ 	u64 address = (u64)addr;
+-	u32 *shadow_start, *origin_start;
++	void *shadow_start;
++	u32 *aligned_shadow, *origin_start;
+ 	size_t pad = 0;
  
-+static struct gpio_desc *gpiod_fwnode_lookup(struct fwnode_handle *fwnode,
-+					     struct device *consumer,
-+					     const char *con_id,
-+					     unsigned int idx,
-+					     enum gpiod_flags *flags,
-+					     unsigned long *lookupflags)
+ 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
+@@ -214,9 +215,12 @@ void kmsan_internal_set_shadow_origin(vo
+ 	}
+ 	__memset(shadow_start, b, size);
+ 
+-	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++		aligned_shadow = shadow_start;
++	} else {
+ 		pad = address % KMSAN_ORIGIN_SIZE;
+ 		address -= pad;
++		aligned_shadow = shadow_start - pad;
+ 		size += pad;
+ 	}
+ 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
+@@ -230,7 +234,7 @@ void kmsan_internal_set_shadow_origin(vo
+ 	 * corresponding shadow slot is zero.
+ 	 */
+ 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
+-		if (origin || !shadow_start[i])
++		if (origin || !aligned_shadow[i])
+ 			origin_start[i] = origin;
+ 	}
+ }
+--- a/mm/kmsan/kmsan_test.c
++++ b/mm/kmsan/kmsan_test.c
+@@ -556,6 +556,21 @@ DEFINE_TEST_MEMSETXX(16)
+ DEFINE_TEST_MEMSETXX(32)
+ DEFINE_TEST_MEMSETXX(64)
+ 
++/* Test case: ensure that KMSAN does not access shadow memory out of bounds. */
++static void test_memset_on_guarded_buffer(struct kunit *test)
 +{
-+	struct gpio_desc *desc;
++	void *buf = vmalloc(PAGE_SIZE);
 +
-+	desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx, flags, lookupflags);
-+	if (gpiod_not_found(desc) && !IS_ERR_OR_NULL(fwnode))
-+		desc = gpiod_find_by_fwnode(fwnode->secondary, consumer, con_id,
-+					    idx, flags, lookupflags);
++	kunit_info(test,
++		   "memset() on ends of guarded buffer should not crash\n");
 +
-+	return desc;
++	for (size_t size = 0; size <= 128; size++) {
++		memset(buf, 0xff, size);
++		memset(buf + PAGE_SIZE - size, 0xff, size);
++	}
++	vfree(buf);
 +}
 +
- struct gpio_desc *gpiod_find_and_request(struct device *consumer,
- 					 struct fwnode_handle *fwnode,
- 					 const char *con_id,
-@@ -4335,8 +4352,8 @@ struct gpio_desc *gpiod_find_and_request
- 	int ret = 0;
- 
- 	scoped_guard(srcu, &gpio_devices_srcu) {
--		desc = gpiod_find_by_fwnode(fwnode, consumer, con_id, idx,
--					    &flags, &lookupflags);
-+		desc = gpiod_fwnode_lookup(fwnode, consumer, con_id, idx,
-+					   &flags, &lookupflags);
- 		if (gpiod_not_found(desc) && platform_lookup_allowed) {
- 			/*
- 			 * Either we are not using DT or ACPI, or their lookup
+ static noinline void fibonacci(int *array, int size, int start)
+ {
+ 	if (start < 2 || (start == size))
+@@ -661,6 +676,7 @@ static struct kunit_case kmsan_test_case
+ 	KUNIT_CASE(test_memset16),
+ 	KUNIT_CASE(test_memset32),
+ 	KUNIT_CASE(test_memset64),
++	KUNIT_CASE(test_memset_on_guarded_buffer),
+ 	KUNIT_CASE(test_long_origin_chain),
+ 	KUNIT_CASE(test_stackdepot_roundtrip),
+ 	KUNIT_CASE(test_unpoison_memory),
 
 
 
