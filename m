@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-182269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADBEBAD704
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B53E3BADD90
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93CC74A5D4F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84B083B8D12
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C448A306D23;
-	Tue, 30 Sep 2025 14:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C69E245010;
+	Tue, 30 Sep 2025 15:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3zTW5gs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQlqTvQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803A9305968;
-	Tue, 30 Sep 2025 14:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC7A25D1F7;
+	Tue, 30 Sep 2025 15:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244399; cv=none; b=RIL/PS0mRB92mld07jCiZzf48jREQ/aC7zGoCbO8W7uaXTYoDSd6jiksCrVS9mmejxHEQq8c4UKZMuPJMdfcz+jbVkOTS7FEbAL0gptwe7IUZ3I7BDRqjZfw3zIGSpcMGuIivkrkNoul4KvsN0b60P6H874v2QqoWdStpRKr8eo=
+	t=1759245970; cv=none; b=Rfu7l4PIPxOMFgnw2MgUcejAmLzfjqwI5pEpWpyrC08vmtRyWUIkPomdI/LiKamSUF/6eGM4b41Md0/KO1rVYl92CjF5DVVwZz895hDFQL26rj9pMzbO4L7sYS+BCUk2J+CP9030BlW/rVkLlCBEFRvWqB16axB8DDgj1RgF+Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244399; c=relaxed/simple;
-	bh=qHESSQwh6iUf5uQw/Hq88BNhGYYj4BvnVSK+gXQpau0=;
+	s=arc-20240116; t=1759245970; c=relaxed/simple;
+	bh=9VyryZ6EMbL5PFplDfGSWG+c9xosZSrplx4W3+/Az/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O5q0cXXxaICRLAUBLrLPZdE5/CIWf/vTxQbl2foHgcgAHvGTTfd5tC2SkCJd4w02oLxk1kKoyqsXRrrgfjk63yaHDF05eQ/G6SnHrhmvcJKaPbSy5fBDQeGo1w84NH0KmHa6+S+wElqg3iOeUga6W2FXMn5283wFW35vkCMHaVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3zTW5gs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E5FC113D0;
-	Tue, 30 Sep 2025 14:59:58 +0000 (UTC)
+	 MIME-Version; b=sIsbgIbZqxZC/QVjUI5VU222UyvfcY/qvyk0Q8XKPmAO0EnLN7RdlhqM/I8dW6o5DWusB1qLzB++uyfZIiqUpY9hc2Xoj4aZktNA3m4ovFPdmRscb3Noy1ed+cOG7S7SefXkduR7NI0yIyVN3NdDi7/h30xb8c9BSFxfDXm/C4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQlqTvQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137CCC116B1;
+	Tue, 30 Sep 2025 15:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244399;
-	bh=qHESSQwh6iUf5uQw/Hq88BNhGYYj4BvnVSK+gXQpau0=;
+	s=korg; t=1759245970;
+	bh=9VyryZ6EMbL5PFplDfGSWG+c9xosZSrplx4W3+/Az/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3zTW5gsjJU/zjm6ioursH/kpoh3ff1ASg+ACby3DuUsVNsX++hTUY/gGw0IXW/Ze
-	 wCgMTPw5WHO0r6mXhU4gPveH0bMWcIDYWcdhnZYiKGUkm9CSq8qCPimhUaV/AwvEDo
-	 ZRSS+H8jzqXKcZ5YPz8Uy/QRkKFz2obYncQGwykI=
+	b=BQlqTvQcUBCAAiVU6MtvWfTlkbNszw3/qsyL5x5jP3CP0QESVZ97RtG0t5NXRcnNQ
+	 28AHzUOykU792Sa9VGSxC6tuzULpXhBwKIEl72kJxwKZHvm1sUSKCDEwmwa1ppv03K
+	 HwMLVuF7M0OUEfp3GnB7csu/L7ObkW5yk6gu1HRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	George Kennedy <george.kennedy@oracle.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Kees Cook <kees@kernel.org>,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 5.10 116/122] fbcon: Fix OOB access in font allocation
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 13/89] HID: multitouch: specify that Apple Touch Bar is direct
 Date: Tue, 30 Sep 2025 16:47:27 +0200
-Message-ID: <20250930143827.711648453@linuxfoundation.org>
+Message-ID: <20250930143822.419910633@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,72 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Kerem Karabay <kekrby@gmail.com>
 
-commit 9b2f5ef00e852f8e8902a4d4f73aeedc60220c12 upstream.
+[ Upstream commit 45ca23c5ee8b2b3074377fecc92fa72aa595f7c9 ]
 
-Commit 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-introduced an out-of-bounds access by storing data and allocation sizes
-in the same variable. Restore the old size calculation and use the new
-variable 'alloc_size' for the allocation.
+Currently the driver determines the device type based on the
+application, but this value is not reliable on Apple Touch Bar, where
+the application is HID_DG_TOUCHPAD even though this device is direct,
+so add a quirk for the same.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-Reported-by: Jani Nikula <jani.nikula@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6201
-Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: George Kennedy <george.kennedy@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Qianqiang Liu <qianqiang.liu@163.com>
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org> # v5.9+
-Cc: Zsolt Kajtar <soci@c64.rulez.org>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Qianqiang Liu <qianqiang.liu@163.com>
-Link: https://lore.kernel.org/r/20250922134619.257684-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/hid-multitouch.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2500,7 +2500,7 @@ static int fbcon_set_font(struct vc_data
- 	unsigned charcount = font->charcount;
- 	int w = font->width;
- 	int h = font->height;
--	int size;
-+	int size, alloc_size;
- 	int i, csum;
- 	u8 *new_data, *data = font->data;
- 	int pitch = PITCH(font->width);
-@@ -2533,10 +2533,10 @@ static int fbcon_set_font(struct vc_data
- 		return -EINVAL;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index ec676f26800ea..09a56adf619b7 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1341,6 +1341,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
+ 	if (td->serial_maybe)
+ 		mt_post_parse_default_settings(td, app);
  
- 	/* Check for overflow in allocation size calculation */
--	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
- 		return -EINVAL;
++	/*
++	 * The application for Apple Touch Bars is HID_DG_TOUCHPAD,
++	 * but these devices are direct.
++	 */
++	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR)
++		app->mt_flags |= INPUT_MT_DIRECT;
++
+ 	if (cls->is_indirect)
+ 		app->mt_flags |= INPUT_MT_POINTER;
  
--	new_data = kmalloc(size, GFP_USER);
-+	new_data = kmalloc(alloc_size, GFP_USER);
- 
- 	if (!new_data)
- 		return -ENOMEM;
+-- 
+2.51.0
+
 
 
 
