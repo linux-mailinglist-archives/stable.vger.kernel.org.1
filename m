@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-182729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC9DBADCC0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B32EBADCC3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A506327093
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D6DE194555B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E99245010;
-	Tue, 30 Sep 2025 15:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F250F3043CC;
+	Tue, 30 Sep 2025 15:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDUZATD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To+WM8iS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25CC16A956;
-	Tue, 30 Sep 2025 15:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD3E16A956;
+	Tue, 30 Sep 2025 15:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245898; cv=none; b=Xn2bsSdie6c9pv+P7OqSe7WZBlbPq+x7UVp2luyCVLJmGBSr+3QM584uOm1xYgN1U9v1RVGuOfOuIyCtgdxzfunQcbopUCI+YkZlEBTEOuzZoUpnD77yLfZT+8OtgG2yHiRpYfwfLDZ+qg+l7M+leeHmeowpSMH5Hrh+eTOJS2g=
+	t=1759245904; cv=none; b=bRUXUWM19WYk9M4fbh8VlxTRcVz6kX/sw60ZzOmtHHGFyU6ms2Ww1gm0Ww729+mQsD94PF0SbJjXXI8IuNmbxSbB0i8ivH7VRKVlu/jxgV47RZRlmq7UP4qqF4PNOt6k4oCuGb0khYJYB8DwUbx1x6uhT554JagQEV3jmTfyl9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245898; c=relaxed/simple;
-	bh=BvhApp6KqXsBG0Z8UgrKsjv+mVuT4hUt10Bqny8uA7o=;
+	s=arc-20240116; t=1759245904; c=relaxed/simple;
+	bh=pNIp9mOLaujLAT4xw51nKolLMmWxUR3YE+c9BN0COe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZrYwt1fLPu9k6Qht9p7vNukIE7HEN7lGLoTY/KOV7lOKUxbOgoBKf7GAf+zIQRJ7zNuG6u18qiwPv8BnqkCNfmt4P0HjcU7T9xBxEZ9nHOv/PdvCCI/K1neGd6RHnDOl2QJGDuwDq32PJ2JNiydWCrwzh1GeNp30XW7l+Fwapo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDUZATD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B57FC4CEF0;
-	Tue, 30 Sep 2025 15:24:56 +0000 (UTC)
+	 MIME-Version; b=tH+XavaLeAWKEykZSMq0pbLBsdBLtCjjxEzJRIH/pFb0AZ+K7w/thKpa5ICyGV0dxoRLSlYpGpPzwFxnWVSXeZ18TnQawwY9GQqllGK7iGPbjT4w/e9s3u+pleGUp94TpTpV9SCyy1kNUSh6gRs6Xvhca4TxTu1CWd9yq5npYUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To+WM8iS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAB7C4CEF0;
+	Tue, 30 Sep 2025 15:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245897;
-	bh=BvhApp6KqXsBG0Z8UgrKsjv+mVuT4hUt10Bqny8uA7o=;
+	s=korg; t=1759245904;
+	bh=pNIp9mOLaujLAT4xw51nKolLMmWxUR3YE+c9BN0COe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDUZATD2t35w77Vri/ttzRFSF/FiQ7YpCuRLsx9JBTc77xiYNy9wuPMhOsE98DSPM
-	 EDCbAFMy7zFR5lMEL/PeJ8fPj73/F89FXFYpR8WKdc1cjCFU4rkukChCIaG/47uiQD
-	 fBQ6HyeBL9ihD13GLPi0OXFrozxfx0qi/xz9bKVU=
+	b=To+WM8iS4mxO5CRSHtrW1qfuHreID4j+K8rfZbmIx3EzZZVatc2OTTnJSghqoPPtG
+	 KzY3/aG+XmCR6QRcuiOs1PEjsXT6VQWn1dGrMwJmEDoCOREV4NvsRr1oqZ9FCYs5xd
+	 jZaxYmH24LCzv36yYRizvPB9a/GTyRIR4th8NLrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Arnd Bergmann <arnd@kernel.org>,
 	David Laight <David.Laight@aculab.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.6 82/91] minmax: dont use max() in situations that want a C constant expression
-Date: Tue, 30 Sep 2025 16:48:21 +0200
-Message-ID: <20250930143824.582925602@linuxfoundation.org>
+Subject: [PATCH 6.6 83/91] minmax: improve macro expansion and type checking
+Date: Tue, 30 Sep 2025 16:48:22 +0200
+Message-ID: <20250930143824.623485931@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
 References: <20250930143821.118938523@linuxfoundation.org>
@@ -69,95 +70,198 @@ Content-Transfer-Encoding: 8bit
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit cb04e8b1d2f24c4c2c92f7b7529031fc35a16fed ]
+[ Upstream commit 22f5468731491e53356ba7c028f0fdea20b18e2c ]
 
-We only had a couple of array[] declarations, and changing them to just
-use 'MAX()' instead of 'max()' fixes the issue.
+This clarifies the rules for min()/max()/clamp() type checking and makes
+them a much more efficient macro expansion.
 
-This will allow us to simplify our min/max macros enormously, since they
-can now unconditionally use temporary variables to avoid using the
-argument values multiple times.
+In particular, we now look at the type and range of the inputs to see
+whether they work together, generating a mask of acceptable comparisons,
+and then just verifying that the inputs have a shared case:
 
+ - an expression with a signed type can be used for
+    (1) signed comparisons
+    (2) unsigned comparisons if it is statically known to have a
+        non-negative value
+
+ - an expression with an unsigned type can be used for
+    (3) unsigned comparison
+    (4) signed comparisons if the type is smaller than 'int' and thus
+        the C integer promotion rules will make it signed anyway
+
+Here rule (1) and (3) are obvious, and rule (2) is important in order to
+allow obvious trivial constants to be used together with unsigned
+values.
+
+Rule (4) is not necessarily a good idea, but matches what we used to do,
+and we have extant cases of this situation in the kernel.  Notably with
+bcachefs having an expression like
+
+	min(bch2_bucket_sectors_dirty(a), ca->mi.bucket_size)
+
+where bch2_bucket_sectors_dirty() returns an 's64', and
+'ca->mi.bucket_size' is of type 'u16'.
+
+Technically that bcachefs comparison is clearly sensible on a C type
+level, because the 'u16' will go through the normal C integer promotion,
+and become 'int', and then we're comparing two signed values and
+everything looks sane.
+
+However, it's not entirely clear that a 'min(s64,u16)' operation makes a
+lot of conceptual sense, and it's possible that we will remove rule (4).
+After all, the _reason_ we have these complicated type checks is exactly
+that the C type promotion rules are not very intuitive.
+
+But at least for now the rule is in place for backwards compatibility.
+
+Also note that rule (2) existed before, but is hugely relaxed by this
+commit.  It used to be true only for the simplest compile-time
+non-negative integer constants.  The new macro model will allow cases
+where the compiler can trivially see that an expression is non-negative
+even if it isn't necessarily a constant.
+
+For example, the amdgpu driver does
+
+	min_t(size_t, sizeof(fru_info->serial), pia[addr] & 0x3F));
+
+because our old 'min()' macro would see that 'pia[addr] & 0x3F' is of
+type 'int' and clearly not a C constant expression, so doing a 'min()'
+with a 'size_t' is a signedness violation.
+
+Our new 'min()' macro still sees that 'pia[addr] & 0x3F' is of type
+'int', but is smart enough to also see that it is clearly non-negative,
+and thus would allow that case without any complaints.
+
+Cc: Arnd Bergmann <arnd@kernel.org>
 Cc: David Laight <David.Laight@aculab.com>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c         |    2 +-
- drivers/input/touchscreen/cyttsp4_core.c       |    2 +-
- drivers/irqchip/irq-sun6i-r.c                  |    2 +-
- drivers/net/can/usb/etas_es58x/es58x_devlink.c |    2 +-
- fs/btrfs/tree-checker.c                        |    2 +-
- lib/vsprintf.c                                 |    2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ include/linux/compiler.h |    9 +++++
+ include/linux/minmax.h   |   78 ++++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 70 insertions(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
-@@ -708,7 +708,7 @@ static const char *smu_get_feature_name(
- size_t smu_cmn_get_pp_feature_mask(struct smu_context *smu,
- 				   char *buf)
- {
--	int8_t sort_feature[max(SMU_FEATURE_COUNT, SMU_FEATURE_MAX)];
-+	int8_t sort_feature[MAX(SMU_FEATURE_COUNT, SMU_FEATURE_MAX)];
- 	uint64_t feature_mask;
- 	int i, feature_index;
- 	uint32_t count = 0;
---- a/drivers/input/touchscreen/cyttsp4_core.c
-+++ b/drivers/input/touchscreen/cyttsp4_core.c
-@@ -871,7 +871,7 @@ static void cyttsp4_get_mt_touches(struc
- 	struct cyttsp4_touch tch;
- 	int sig;
- 	int i, j, t = 0;
--	int ids[max(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH)];
-+	int ids[MAX(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH)];
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -245,6 +245,15 @@ static inline void *offset_to_ptr(const
+ #define is_unsigned_type(type) (!is_signed_type(type))
  
- 	memset(ids, 0, si->si_ofs.tch_abs[CY_TCH_T].max * sizeof(int));
- 	for (i = 0; i < num_cur_tch; i++) {
---- a/drivers/irqchip/irq-sun6i-r.c
-+++ b/drivers/irqchip/irq-sun6i-r.c
-@@ -270,7 +270,7 @@ static const struct irq_domain_ops sun6i
+ /*
++ * Useful shorthand for "is this condition known at compile-time?"
++ *
++ * Note that the condition may involve non-constant values,
++ * but the compiler may know enough about the details of the
++ * values to determine that the condition is statically true.
++ */
++#define statically_true(x) (__builtin_constant_p(x) && (x))
++
++/*
+  * This is needed in functions which generate the stack canary, see
+  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
+  */
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -26,19 +26,63 @@
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
  
- static int sun6i_r_intc_suspend(void)
- {
--	u32 buf[BITS_TO_U32(max(SUN6I_NR_TOP_LEVEL_IRQS, SUN6I_NR_MUX_BITS))];
-+	u32 buf[BITS_TO_U32(MAX(SUN6I_NR_TOP_LEVEL_IRQS, SUN6I_NR_MUX_BITS))];
- 	int i;
+-/* is_signed_type() isn't a constexpr for pointer types */
+-#define __is_signed(x) 								\
+-	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
+-		is_signed_type(typeof(x)), 0)
+-
+-/* True for a non-negative signed int constant */
+-#define __is_noneg_int(x)	\
+-	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+-
+-#define __types_ok(x, y, ux, uy) 				\
+-	(__is_signed(ux) == __is_signed(uy) ||			\
+-	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
+-	 __is_noneg_int(x) || __is_noneg_int(y))
++/*
++ * __sign_use for integer expressions:
++ *   bit #0 set if ok for unsigned comparisons
++ *   bit #1 set if ok for signed comparisons
++ *
++ * In particular, statically non-negative signed integer
++ * expressions are ok for both.
++ *
++ * NOTE! Unsigned types smaller than 'int' are implicitly
++ * converted to 'int' in expressions, and are accepted for
++ * signed conversions for now. This is debatable.
++ *
++ * Note that 'x' is the original expression, and 'ux' is
++ * the unique variable that contains the value.
++ *
++ * We use 'ux' for pure type checking, and 'x' for when
++ * we need to look at the value (but without evaluating
++ * it for side effects! Careful to only ever evaluate it
++ * with sizeof() or __builtin_constant_p() etc).
++ *
++ * Pointers end up being checked by the normal C type
++ * rules at the actual comparison, and these expressions
++ * only need to be careful to not cause warnings for
++ * pointer use.
++ */
++#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
++#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
++#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
++	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
++
++/*
++ * To avoid warnings about casting pointers to integers
++ * of different sizes, we need that special sign type.
++ *
++ * On 64-bit we can just always use 'long', since any
++ * integer or pointer type can just be cast to that.
++ *
++ * This does not work for 128-bit signed integers since
++ * the cast would truncate them, but we do not use s128
++ * types in the kernel (we do use 'u128', but they will
++ * be handled by the !is_signed_type() case).
++ *
++ * NOTE! The cast is there only to avoid any warnings
++ * from when values that aren't signed integer types.
++ */
++#ifdef CONFIG_64BIT
++  #define __signed_type(ux) long
++#else
++  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
++#endif
++#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
++
++#define __types_ok(x,y,ux,uy) \
++	(__sign_use(x,ux) & __sign_use(y,uy))
++
++#define __types_ok3(x,y,z,ux,uy,uz) \
++	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
  
- 	/* Wake IRQs are enabled during system sleep and shutdown. */
---- a/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-@@ -215,7 +215,7 @@ static int es58x_devlink_info_get(struct
- 	struct es58x_sw_version *fw_ver = &es58x_dev->firmware_version;
- 	struct es58x_sw_version *bl_ver = &es58x_dev->bootloader_version;
- 	struct es58x_hw_revision *hw_rev = &es58x_dev->hardware_revision;
--	char buf[max(sizeof("xx.xx.xx"), sizeof("axxx/xxx"))];
-+	char buf[MAX(sizeof("xx.xx.xx"), sizeof("axxx/xxx"))];
- 	int ret = 0;
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -53,8 +97,8 @@
  
- 	if (es58x_sw_version_is_valid(fw_ver)) {
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -614,7 +614,7 @@ static int check_dir_item(struct extent_
- 		 */
- 		if (key->type == BTRFS_DIR_ITEM_KEY ||
- 		    key->type == BTRFS_XATTR_ITEM_KEY) {
--			char namebuf[max(BTRFS_NAME_LEN, XATTR_NAME_MAX)];
-+			char namebuf[MAX(BTRFS_NAME_LEN, XATTR_NAME_MAX)];
+ #define __careful_cmp_once(op, x, y, ux, uy) ({		\
+ 	__auto_type ux = (x); __auto_type uy = (y);	\
+-	static_assert(__types_ok(x, y, ux, uy),		\
+-		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
++	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
++		#op"("#x", "#y") signedness error");	\
+ 	__cmp(op, ux, uy); })
  
- 			read_extent_buffer(leaf, namebuf,
- 					(unsigned long)(di + 1), name_len);
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -1079,7 +1079,7 @@ char *resource_string(char *buf, char *e
- #define FLAG_BUF_SIZE		(2 * sizeof(res->flags))
- #define DECODED_BUF_SIZE	sizeof("[mem - 64bit pref window disabled]")
- #define RAW_BUF_SIZE		sizeof("[mem - flags 0x]")
--	char sym[max(2*RSRC_BUF_SIZE + DECODED_BUF_SIZE,
-+	char sym[MAX(2*RSRC_BUF_SIZE + DECODED_BUF_SIZE,
- 		     2*RSRC_BUF_SIZE + FLAG_BUF_SIZE + RAW_BUF_SIZE)];
+ #define __careful_cmp(op, x, y) \
+@@ -70,8 +114,8 @@
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
+-	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
++	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
++		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
  
- 	char *p = sym, *pend = sym + sizeof(sym);
+ #define __careful_clamp(val, lo, hi) \
 
 
 
