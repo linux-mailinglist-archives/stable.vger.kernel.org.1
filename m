@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86633BAD9CB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8754BBAD8B1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267F61895554
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4237C3A5E2E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2182FD1DD;
-	Tue, 30 Sep 2025 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E1F302CD6;
+	Tue, 30 Sep 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjBv7yWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2S8tcJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9B42236EB;
-	Tue, 30 Sep 2025 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1984217F55;
+	Tue, 30 Sep 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245201; cv=none; b=rOuPZr1aP2cfxQ5mY6fVTVy5bXm54hN3EaAfbYXtLSuTr14allOLQrMN4efpwYp6Hf0vaIPR+x6N2Z2j/jcJuWSFgnI7DN/fs2+a4Op0zITSxUsyGOREQTD3hHDWEaY8+A3PNMxeqn7tHljH6v1cgUSGgxKnoMsXCjem7QWNAHM=
+	t=1759244749; cv=none; b=Eqq4teW8dcD38fFYUpDAq3YHcK2wFtli6wRq064B7TQit/BcUR1VWTq5g1Ijs/e100thhWJCshO60zQD9BcFg+rZDTU9+tEIinofIQDRQpgAAf5zqbqph5szZNPt4ERjKt4ZV48iMzYaVv2TUQIXrxjWOLfewSR/sBMiNYf4loI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245201; c=relaxed/simple;
-	bh=rx0gA6S10WVMKrYWq7gn4pxy5d2xrnIxcmG6FIkj0gE=;
+	s=arc-20240116; t=1759244749; c=relaxed/simple;
+	bh=J9EJz9jSrpOp5ed913/EwKFMTo3cycbzYeXFUJH5tnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ODESc23Ni6oJYIQcSDcFP+4NdH9k0TPGaFYKPEBo88GNBXywR0v3rAMliLIPH64zyM7mBD9QeAA6KJESXZltoTRHHSAhl9Y0UxXZ9QNh4VJ6fP0Zl2b+PgBCx3Dx8rD21H4JDCWMb5rT9aaFMGnUojrEwFCrF65cO/+AJFzD61w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjBv7yWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D15C4CEF0;
-	Tue, 30 Sep 2025 15:13:20 +0000 (UTC)
+	 MIME-Version; b=d258jOxozqqB02lyo+Yjo6gmPDS2iuIPq4qif0jOLnJlUUwvMYitpL+M/RIQgFXYVfCrokqvKS0UahjDr/xHPtBznrvUsQh6UXzYkVzuJaXfBbFX7Z6qhsMHZzpMQKB1EAgkiRPOq2fysKmJ7MkpE+hz1vLRr/6iPtHdsv7Y0qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2S8tcJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C52C4CEF0;
+	Tue, 30 Sep 2025 15:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245201;
-	bh=rx0gA6S10WVMKrYWq7gn4pxy5d2xrnIxcmG6FIkj0gE=;
+	s=korg; t=1759244749;
+	bh=J9EJz9jSrpOp5ed913/EwKFMTo3cycbzYeXFUJH5tnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjBv7yWfRGcF+NACjghzGSzX47+kefiXE3dLi7ypdwYo81zhR1F5/wnRLtyNQnQXU
-	 1yO+VSWtSRBFeaVuqa5COGF1HBzJwZ0fLZQlhlMemys+zgFS/53q/+SKOVPJmsTZT8
-	 wRDOMTRajee6uzm65NKanTyU+V5GP5oma09doz8o=
+	b=P2S8tcJk29hSHjMZbOWyPdJwLL1LrXuy2YV+eJ8n6XT6hAgT29Vglgceek9HNk5vV
+	 NrCwjNsR+ohS1rv56z6xRCT990vRORGu1921ycmu6R9nwjJoUegFqRLyx0qpiLQqKQ
+	 t3WAnNaylogE0AZ4KHH4ANdFMkgrRHwIW5AKjoJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/151] phy: ti: omap-usb2: fix device leak at unbind
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Kamakshi Nellore <nellorex.kamakshi@intel.com>
+Subject: [PATCH 6.16 103/143] i40e: fix idx validation in i40e_validate_queue_map
 Date: Tue, 30 Sep 2025 16:47:07 +0200
-Message-ID: <20250930143831.460107287@linuxfoundation.org>
+Message-ID: <20250930143835.333787166@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 64961557efa1b98f375c0579779e7eeda1a02c42 ]
+commit aa68d3c3ac8d1dcec40d52ae27e39f6d32207009 upstream.
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+Ensure idx is within range of active/initialized TCs when iterating over
+vf->ch[idx] in i40e_validate_queue_map().
 
-Fixes: 478b6c7436c2 ("usb: phy: omap-usb2: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-3-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -363,6 +363,13 @@ static void omap_usb2_init_errata(struct
- 		phy->flags |= OMAP_USB2_DISABLE_CHRG_DET;
- }
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2469,8 +2469,10 @@ static int i40e_validate_queue_map(struc
+ 	u16 vsi_queue_id, queue_id;
  
-+static void omap_usb2_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
+ 	for_each_set_bit(vsi_queue_id, &queuemap, I40E_MAX_VSI_QP) {
+-		if (vf->adq_enabled) {
+-			vsi_id = vf->ch[vsi_queue_id / I40E_MAX_VF_VSI].vsi_id;
++		u16 idx = vsi_queue_id / I40E_MAX_VF_VSI;
 +
-+	put_device(dev);
-+}
-+
- static int omap_usb2_probe(struct platform_device *pdev)
- {
- 	struct omap_usb	*phy;
-@@ -373,6 +380,7 @@ static int omap_usb2_probe(struct platfo
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
- 	const struct usb_phy_data *phy_data;
-+	int ret;
- 
- 	phy_data = device_get_match_data(&pdev->dev);
- 	if (!phy_data)
-@@ -423,6 +431,11 @@ static int omap_usb2_probe(struct platfo
- 			return -EINVAL;
- 		}
- 		phy->control_dev = &control_pdev->dev;
-+
-+		ret = devm_add_action_or_reset(&pdev->dev, omap_usb2_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
- 	} else {
- 		if (of_property_read_u32_index(node,
- 					       "syscon-phy-power", 1,
++		if (vf->adq_enabled && idx < vf->num_tc) {
++			vsi_id = vf->ch[idx].vsi_id;
+ 			queue_id = (vsi_queue_id % I40E_DEFAULT_QUEUES_PER_VF);
+ 		} else {
+ 			queue_id = vsi_queue_id;
 
 
 
