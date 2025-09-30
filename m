@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-182422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A22BBAD893
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D659BADD2A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 717BF1941B14
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABACB1945703
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051752FCBFC;
-	Tue, 30 Sep 2025 15:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9E425FA0F;
+	Tue, 30 Sep 2025 15:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5Wop2/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbT9TZlI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C72236EB;
-	Tue, 30 Sep 2025 15:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7A51F3FED;
+	Tue, 30 Sep 2025 15:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244895; cv=none; b=Tnv2bAdbRb8b6/zfQvtnp/nZAAFNFYpkrsJ13OR5D6X5TpXw/yv5IdGF22Drnom2Aps/8G5772ZNE4BKZpmsVjT8GuwGRQuD4gSgfWSYC2G7dJ42a3/lncuayKL2uh9c5aqGKvlPipGzeqhRHGTKBjr6kBARtCfcXjrtSPOrgwI=
+	t=1759245980; cv=none; b=P6awONgJzJ2L7n0RQ7hFy8Ylhj+K+9sqF3J/hnN0IanHJn9ejobHkwyWSw91feQJBd2jIqrD1i/j2GcUstxoWKugGGq86Qy/cVYuXVXId8wU5ZzxeXsfMknN3xv72qGKqxUHuWV+HlvBjkxN69uYYs8gg7oaxvcOSVwLPzFWsEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244895; c=relaxed/simple;
-	bh=b6JCTcztPLkR9mo6DpdInK+4yp/TuaR0YtcNwnNAemo=;
+	s=arc-20240116; t=1759245980; c=relaxed/simple;
+	bh=jCyNTj+CGLSGgQoCiK0p1vegiw8iREFD19yXSP+UeD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SlIwiejKKTN4vQpbv1e0LYmfjdX6E3RP28JatHKiX6uvbuyzNff74+4XCIkDy2l4jBRYcPc61O8OiZwvUy9s4DbVgTBTZHIlaOBrl6bnuMufcostUFx3isU+RcwLlwMaZQNBBcAs1kaOSOmtGLJoT9rJBbc75klIfRmghvFudlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5Wop2/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FC3C4CEF0;
-	Tue, 30 Sep 2025 15:08:14 +0000 (UTC)
+	 MIME-Version; b=BqxHhoXRdp7a/oHNmJwlq3DqcwjrQzdDA109OX3auP47F6c92HMkOBeFyxxKpj/c6D1PiRVVk9+rPy7w0DTSGEBK2thNMHxaNNGkCNmN+6o87h6cQ3YchNVr9wD2GiCsRv1IDTIRvRNH0YQs57TW/wA+LUhezXUCN9AoAtOVo2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbT9TZlI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2F4C4CEF0;
+	Tue, 30 Sep 2025 15:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244895;
-	bh=b6JCTcztPLkR9mo6DpdInK+4yp/TuaR0YtcNwnNAemo=;
+	s=korg; t=1759245980;
+	bh=jCyNTj+CGLSGgQoCiK0p1vegiw8iREFD19yXSP+UeD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5Wop2/9SlzALTyxdqtbI+7nvvSoouyPmLhIltDVupHsjoH1kx1/qAPohVFYBKMTj
-	 gLddpXbSwSzJzizSlL8+xuPW/cD9+CTwX/Trb8qHHRn7Pgqste0zfhoPOF6JZj5Ovs
-	 hj09QrrAK6lVBQXJWq1H+QLb/x23hze3O0o6QsSw=
+	b=HbT9TZlI1fiC1ZpmFXnUu6QlZCkHbuGofhwqeWjr+eQ9NHo3Ju2xhMC1yUXnNfMrK
+	 en9AI758ocreE2fgUTShb8SUldJ1KCmo9WoN1NqZUCWD0jE6reqLDVhVvntlmOH2Ut
+	 mJTOqGgiR1I83+TcSgbJN1IvkNsaI+j2nTNuOfPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Acs <acsjakub@amazon.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Penglei Jiang <superman.xpt@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrei Vagin <avagin@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 126/143] fs/proc/task_mmu: check p->vec_buf for NULL
+	kernel test robot <lkp@intel.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 16/89] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
 Date: Tue, 30 Sep 2025 16:47:30 +0200
-Message-ID: <20250930143836.252535884@linuxfoundation.org>
+Message-ID: <20250930143822.540555584@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,97 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Acs <acsjakub@amazon.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 28aa29986dde79e8466bc87569141291053833f5 upstream.
+[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
 
-When the PAGEMAP_SCAN ioctl is invoked with vec_len = 0 reaches
-pagemap_scan_backout_range(), kernel panics with null-ptr-deref:
+The recent addition of DualSense mixer quirk relies on the input
+device handle, and the build can fail if CONFIG_INPUT isn't set.
+Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
+the build error.
 
-[   44.936808] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
-[   44.937797] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-[   44.938391] CPU: 1 UID: 0 PID: 2480 Comm: reproducer Not tainted 6.17.0-rc6 #22 PREEMPT(none)
-[   44.939062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   44.939935] RIP: 0010:pagemap_scan_thp_entry.isra.0+0x741/0xa80
-
-<snip registers, unreliable trace>
-
-[   44.946828] Call Trace:
-[   44.947030]  <TASK>
-[   44.949219]  pagemap_scan_pmd_entry+0xec/0xfa0
-[   44.952593]  walk_pmd_range.isra.0+0x302/0x910
-[   44.954069]  walk_pud_range.isra.0+0x419/0x790
-[   44.954427]  walk_p4d_range+0x41e/0x620
-[   44.954743]  walk_pgd_range+0x31e/0x630
-[   44.955057]  __walk_page_range+0x160/0x670
-[   44.956883]  walk_page_range_mm+0x408/0x980
-[   44.958677]  walk_page_range+0x66/0x90
-[   44.958984]  do_pagemap_scan+0x28d/0x9c0
-[   44.961833]  do_pagemap_cmd+0x59/0x80
-[   44.962484]  __x64_sys_ioctl+0x18d/0x210
-[   44.962804]  do_syscall_64+0x5b/0x290
-[   44.963111]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-vec_len = 0 in pagemap_scan_init_bounce_buffer() means no buffers are
-allocated and p->vec_buf remains set to NULL.
-
-This breaks an assumption made later in pagemap_scan_backout_range(), that
-page_region is always allocated for p->vec_buf_index.
-
-Fix it by explicitly checking p->vec_buf for NULL before dereferencing.
-
-Other sites that might run into same deref-issue are already (directly or
-transitively) protected by checking p->vec_buf.
-
-Note:
->From PAGEMAP_SCAN man page, it seems vec_len = 0 is valid when no output
-is requested and it's only the side effects caller is interested in,
-hence it passes check in pagemap_scan_get_args().
-
-This issue was found by syzkaller.
-
-Link: https://lkml.kernel.org/r/20250922082206.6889-1-acsjakub@amazon.de
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Penglei Jiang <superman.xpt@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/mixer_quirks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2286,6 +2286,9 @@ static void pagemap_scan_backout_range(s
- {
- 	struct page_region *cur_buf = &p->vec_buf[p->vec_buf_index];
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 2ee91469e6f73..8d7fc6edc8c79 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -531,6 +531,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
+ 					  &snd_emu0204_control, NULL);
+ }
  
-+	if (!p->vec_buf)
-+		return;
-+
- 	if (cur_buf->start != addr)
- 		cur_buf->end = addr;
- 	else
++#if IS_REACHABLE(CONFIG_INPUT)
+ /*
+  * Sony DualSense controller (PS5) jack detection
+  *
+@@ -787,6 +788,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
+ 
+ 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
+ }
++#endif /* IS_REACHABLE(CONFIG_INPUT) */
+ 
+ /* ASUS Xonar U1 / U3 controls */
+ 
+@@ -4222,10 +4224,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 		err = snd_emu0204_controls_create(mixer);
+ 		break;
+ 
++#if IS_REACHABLE(CONFIG_INPUT)
+ 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
+ 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
+ 		err = snd_dualsense_controls_create(mixer);
+ 		break;
++#endif /* IS_REACHABLE(CONFIG_INPUT) */
+ 
+ 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
+ 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
+-- 
+2.51.0
+
 
 
 
