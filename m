@@ -1,126 +1,159 @@
-Return-Path: <stable+bounces-182854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D20BAE38F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 19:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0AFBAE407
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 19:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5ED74A6D32
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 549F23BEE79
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1B52F5301;
-	Tue, 30 Sep 2025 17:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0848B22F74E;
+	Tue, 30 Sep 2025 17:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4BkDL2l"
+	dkim=pass (2048-bit key) header.d=stwm.de header.i=@stwm.de header.b="MnWH6S5n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from email.studentenwerk.mhn.de (email.studentenwerk.mhn.de [141.84.225.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF9726A1AB
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 17:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0DB1C860F
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 17:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.84.225.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759253881; cv=none; b=Dh74qyn8XRQ1p3A29AwnZ65kiOTW9ChFRhbSdZ5AQHZy1LOEq9jR/xCzxgiloYB56Xu6SSMg+WNCwxZTi2F1D+JGHYMEj0TbqGbG+eQD5mVUHigDfN20Qcot5Oi8kI6GkgpQnS1yivpJBKo8zVPIy5VP0OLZv2aVSfMSxJiQ+4c=
+	t=1759255037; cv=none; b=HnwjfTxzkSD013Hytc6VBvFFe0eKBC0HDTEnZdzU25SJjv/1xv0Wfxfy6VxGUf0xYMLAoXiDwsxGZF0Z1J0xD41UnwvikdkW3tAG5ClPviNdNhlvYpik+RbNw1atNkI8ZaUqyNBOZwnz7dagmLT7YtNH8oxJLFb+vLY7taOqIz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759253881; c=relaxed/simple;
-	bh=2TC+hXWlv6u2VfdLj+sqgeI1o1n9KDX4csxjWQttT40=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UBEIrnGxSEiMcR1cVeLeoh8wPyqBHdyYpMfXvKg/K9auLrBt0YJVHoISFQq31bDVzqRcdUZcWAIwe5vk16I7mkFy+FBllamd1r9pTHR+ikfhG21EngwO/4L6x3l4UejJmINWMsaWfyOETde+pDwM9kEiGMcEzkUXSUSx0oFUtaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R4BkDL2l; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8608f72582eso232724885a.2
-        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 10:37:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759253878; x=1759858678; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0/hKAmf18Y2yd5/OgWhquQHdykw3Pq1AdppT9xBph94=;
-        b=R4BkDL2lsug+3F4xDFhQSSm1oZFKYq1pzEBdLb4m6bBFqZL2uSPnm3j740r1/RVB/X
-         MuJ3U+6+U6OUnxF2y5nzmuJgPquT5txrNsNsHe3MuYyeIT3tm4OtpMbLObY7D1Yw2GRw
-         WUa+gH17oF80GMfXegDdUKbExHBNXec2MExKDNSn4w9IdS0jsca4IfiMYqIiTQdMP++T
-         3qHRJ9GUOFeLWERtsLRnmgfPPzarH4EnH5PgcG6Frn5k+IlqnGXnLTw+K6EEWk5fN8Yk
-         ERfT+yM6BJLyhCjTjf7IbIvNHA/gTJYRdwf8Oj0gM9YPTCZgfeJkzQ2fX2kuS0rjDlAe
-         NGgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759253878; x=1759858678;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0/hKAmf18Y2yd5/OgWhquQHdykw3Pq1AdppT9xBph94=;
-        b=AxUJ4Ya3PF/FhVSxpP6wXyzASe9HiHo6qYwdCRzIWJuN9/c6l1NsLtzCxqYBF+3jGd
-         ja7ne0dmvG1zUg6XI9xZ8Cj1bZPUNyNdEM0wRmPhHKWe3/0aLAT2aIJXEQKx27mY75ZD
-         s4wsotaGu7/jSnS1WRCDU1LXrR0bgz63FtrSuvH0kCO4p7/I1SeNJV9yds/T0z568nYA
-         sGeg5EOKCkMKAKvnyZL8yzYteFF533gQjj6z97t7gsP7yuBhPX2WG+4pSIQmbArGL2V8
-         tjw/GLyhpAfdN7G8AztOL01frhgxvM+9Y0ezCfjn2uRwtDBIERIgZygN7p5KFXdExQix
-         aQCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwVMT5qTykvaIAwRTuBXGa9DyX44Wgu25QQH3/pfhP1xXkn5PhvBrTP2Jtib2cI6dr3CjphzU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxdd/PtwvEYQ7lUfn1tNCSfJ15RAocYYJzQ+a8tKhcDdIOkkenN
-	iaduvnQKnFYeLIcSH/74GKFbNYxNSUiHKA5YupslYZqXXnm5qbyZVJKlXgythmSy
-X-Gm-Gg: ASbGncvyBtZ6EuFvqzFlvaJcgByuXJnaV68p3+oV0PbtRHgUrEL7WdViQvYfWvJPO1c
-	CxdyDds02809/aWdh5InjJ7pB7JzLXSqUbmoIkwZKF9hN/yzyssRdN/5Avu+5WiSfWU/Embkp5E
-	MNKTngwzYl2zo77jqqwsDpkAy7ggghkKP92WL8nYKOgPnGhsm3In0vfz9F4fZDC2mOziMJ89K+T
-	No/2YTOSzsmMwBEc2s/1naJuHSrMcpJjNrNB2EfkUL1LUVqCQSPM5g5l6TH9EcajraBsU7d79Xk
-	vCvt+rXXmlpA1nINao/2oggvoZrMBu4QDD9Dw+BlaOTdn9PIOwL5XoRUySUqlopm6b3ZRNUDlkt
-	OFHM6pLFCaltQZmYGJaMk1QqWhqx5aE4oJZ/a7huqMZTwMoTdh4Mr5hGq7jDym8w7Hv0Qo8IPtz
-	JD37ZAfb+r
-X-Google-Smtp-Source: AGHT+IGbjSFJAyEmYIrbmrRb0yeJFBW2dGMo2KMlv5+3FIAq4zrRdXA+otMMWuN8ptuBHCZdh1GUfQ==
-X-Received: by 2002:a05:6214:1d03:b0:773:b324:c5b2 with SMTP id 6a1803df08f44-873a5574753mr9567246d6.38.1759253878259;
-        Tue, 30 Sep 2025 10:37:58 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-801351c32b2sm99165166d6.4.2025.09.30.10.37.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 10:37:57 -0700 (PDT)
-Message-ID: <0d6e467e-1c03-452c-b8c6-a9d22a497ef9@gmail.com>
-Date: Tue, 30 Sep 2025 10:37:54 -0700
+	s=arc-20240116; t=1759255037; c=relaxed/simple;
+	bh=sR1/Er7syiJH3GH8DdMYrCsMdnNt6etP4jcU9xUQSz8=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=W1s5H6L1Ywoi8QG4nBKtTTwUgJYFlTLFmHAqANGs11umCmeEC444RF2z/91TS/hOP4dY7yVsXx3bm0R+PwIKDJYRu8YoY3YoynxfpOOHFVGxjtE0CteTm1qWtXvYfNhJqSJuWNcyO9WNsklEWHjOI5C94FT9iBSEdmoFUtPYiLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stwm.de; spf=pass smtp.mailfrom=stwm.de; dkim=pass (2048-bit key) header.d=stwm.de header.i=@stwm.de header.b=MnWH6S5n; arc=none smtp.client-ip=141.84.225.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stwm.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stwm.de
+Received: from mailhub.studentenwerk.mhn.de (mailhub.studentenwerk.mhn.de [127.0.0.1])
+	by email.studentenwerk.mhn.de (Postfix) with ESMTPS id 4cbm3D3lFnzRhRQ;
+	Tue, 30 Sep 2025 19:56:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwm.de; s=stwm-20170627;
+	t=1759255016;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b18t4bE+7ndSMwb+6DA+Il9zI9AR4NfZek+6cnm09h0=;
+	b=MnWH6S5nvVpeG3E/mX5pOKVYSc6tSXrcMhzHnQ3RFmfzQSHe0/1/uU5ZtrFvogAZzeGgdQ
+	uIYIOA958B3eebrZ3h7rb2YeX7tnD3uwy97NJ/rj/rjTazes++jE4MO4yymTiF8PyAjWns
+	kwQnY1PdCWEQjJMPFSMCjYN/ex1pDrkUSRv9UCRBkOuMkTxmxl+mE1Er0sgMqUbwfNsCVr
+	qlWGazuwdMgfPJlf7y/hUBvnOI5Fhs5o7nuG5obnKn6ffizI4CP1mQeAsS8zl0MMp2n21b
+	BRT450IGXYJ//kO8v+mms9DR0MB5YRrmwpPqZ7MWvNS7UrlvEkU3gIjDLUw4yw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/73] 6.1.155-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250930143820.537407601@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Tue, 30 Sep 2025 19:56:56 +0200
+From: Wolfgang Walter <linux@stwm.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Niklas Neronin <niklas.neronin@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: regression from 6.12.48 to 6.12.49: usb wlan adaptor stops
+ working: bisected
+In-Reply-To: <2025092930-manpower-flashily-e1fa@gregkh>
+References: <01b8c8de46251cfaad1329a46b7e3738@stwm.de>
+ <2025092930-manpower-flashily-e1fa@gregkh>
+Message-ID: <87a81487448f881d9f18dbce4e093a1a@stwm.de>
+X-Sender: linux@stwm.de
+Organization: =?UTF-8?Q?Studierendenwerk_M=C3=BCnchen_Oberbayern?=
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 9/30/25 07:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.155 release.
-> There are 73 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Am 2025-09-29 15:27, schrieb Greg Kroah-Hartman:
+> On Fri, Sep 26, 2025 at 05:54:00PM +0200, Wolfgang Walter wrote:
+>> Hello,o
+>> after upgrading to 6.12.49 my wlan adapter stops working. It is 
+>> detected:
+>> 
+>> kernel: mt76x2u 4-2:1.0: ASIC revision: 76120044
+>> kernel: mt76x2u 4-2:1.0: ROM patch build: 20141115060606a
+>> kernel: usb 3-4: reset high-speed USB device number 2 using xhci_hcd
+>> kernel: mt76x2u 4-2:1.0: Firmware Version: 0.0.00
+>> kernel: mt76x2u 4-2:1.0: Build: 1
+>> kernel: mt76x2u 4-2:1.0: Build Time: 201507311614____
+>> 
+>> but does nor work. The following 2 messages probably are relevant:
+>> 
+>> kernel: mt76x2u 4-2:1.0: MAC RX failed to stop
+>> kernel: mt76x2u 4-2:1.0: MAC RX failed to stop
+>> 
+>> later I see a lot of
+>> 
+>> kernel: mt76x2u 4-2:1.0: error: mt76x02u_mcu_wait_resp failed with 
+>> -110
+>> 
+>> 
+>> I bisected it down to commit
+>> 
+>> 9b28ef1e4cc07cdb35da257aa4358d0127168b68
+>> usb: xhci: remove option to change a default ring's TRB cycle bit
+>> 
+>> 
+>> 9b28ef1e4cc07cdb35da257aa4358d0127168b68 is the first bad commit
+>> commit 9b28ef1e4cc07cdb35da257aa4358d0127168b68
+>> Author: Niklas Neronin <niklas.neronin@linux.intel.com>
+>> Date:   Wed Sep 17 08:39:07 2025 -0400
+>> 
+>>     usb: xhci: remove option to change a default ring's TRB cycle bit
+>> 
+>>     [ Upstream commit e1b0fa863907a61e86acc19ce2d0633941907c8e ]
+>> 
+>>     The TRB cycle bit indicates TRB ownership by the Host Controller 
+>> (HC) or
+>>     Host Controller Driver (HCD). New rings are initialized with
+>> 'cycle_state'
+>>     equal to one, and all its TRBs' cycle bits are set to zero. When
+>> handling
+>>     ring expansion, set the source ring cycle bits to the same value 
+>> as the
+>>     destination ring.
+>> 
+>>     Move the cycle bit setting from xhci_segment_alloc() to
+>> xhci_link_rings(),
+>>     and remove the 'cycle_state' argument from 
+>> xhci_initialize_ring_info().
+>>     The xhci_segment_alloc() function uses kzalloc_node() to allocate
+>> segments,
+>>     ensuring that all TRB cycle bits are initialized to zero.
+>> 
+>>     Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+>>     Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+>>     Link: 
+>> https://lore.kernel.org/r/20241106101459.775897-12-mathias.nyman@linux.intel.com
+>>     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>     Stable-dep-of: a5c98e8b1398 ("xhci: dbc: Fix full DbC transfer 
+>> ring
+>> after several reconnects")
+>>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> 
+>> 
 > 
-> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.155-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> Does 6.17 also have this problem?
 > 
 > thanks,
 > 
 > greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I built a 6.17 kernel and it works fine, so no, 6.17 does not have this 
+problem.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Thanks a lot to you and all kernel developers who make the stable and 
+longterm kernels possible. We use them since many years and are very 
+happy with them.
+
+Regards
 -- 
-Florian
+Wolfgang Walter
+Studierendenwerk München Oberbayern
+Anstalt des öffentlichen Rechts
 
