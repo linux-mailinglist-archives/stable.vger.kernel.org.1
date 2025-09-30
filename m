@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-182325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3A7BAD78E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FD0BAD431
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A786A325684
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E3354826B6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7040C2FCBFC;
-	Tue, 30 Sep 2025 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA62302163;
+	Tue, 30 Sep 2025 14:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haAHDsEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phs1lZbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAA6173;
-	Tue, 30 Sep 2025 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03802D24AD;
+	Tue, 30 Sep 2025 14:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244577; cv=none; b=WGKIvcntDQMMy8tKOYm/Uf6sN6W9Zu58N9kWQK50sGpvzRkCk3CrP8LTNu48bufo3VkujuTFMjSmrOxv4FNTJHjUUZKHJeLBq9OB1EZ9N1BNjx9ZTXQ2l9Z/8IwVC7XP6hXv5wI5VPgOln6IviArAs8YIEHiDEkOup8lJRi+dYg=
+	t=1759243761; cv=none; b=BVSsd+WdgJgyHHsljAWB3iLuM04URncQOlvrDoyFNyjK+UNLmM9xevc1FHIsVMw3VccZkKrMYk9yQjom1njzHDWcGOUEX5HbqOgkQBmD2sfGJv9yI2MDu906DzyjfsGXojLS0H7FUQJwcJ5g6ilTPmUZ23BiHRek2EwWYdX4K5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244577; c=relaxed/simple;
-	bh=YuYC9inX43D78xW0nbaRkukcRc4krcV4+ZIoKnj67mo=;
+	s=arc-20240116; t=1759243761; c=relaxed/simple;
+	bh=3beHunAEKOQnGEDXBMIGKChk3RPQ6wHWWa6sN0vFrno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LbJzg2NWd5O3WkdbIbfqx+zJmXW+GyiC+YHLq74uL+D9T4uU/unzKxaW3XLJjCpJR8kvGCFSsYiVwTbfI6mTuYk4+d9cWq6YDQepkMqdHrXuZ8aPguYmiUZ0ceuFDfeh8YV/UgFyUBGZ+mKYn8dLiMRJIVMwSKKS4OvcEQl9CxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haAHDsEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77EAC4CEF0;
-	Tue, 30 Sep 2025 15:02:56 +0000 (UTC)
+	 MIME-Version; b=D8V/TLBzYIs1LECU2yUGhjzi9jULywz6lxG1GajLVtkvodeP3ITlfdTvq7x2NaK5UT52VPzQy6bQJTxJO7JCWgCG4EwhdeKSLUuomqOV+kElFTBygOPsRyl5ZdjH2TouCD6Ba9z/oMygvoH9+88gf30qkHVurbUVz6ErGilUQk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phs1lZbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84676C4CEF0;
+	Tue, 30 Sep 2025 14:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244577;
-	bh=YuYC9inX43D78xW0nbaRkukcRc4krcV4+ZIoKnj67mo=;
+	s=korg; t=1759243761;
+	bh=3beHunAEKOQnGEDXBMIGKChk3RPQ6wHWWa6sN0vFrno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haAHDsEn1kc8YV7VjcvAT5zju+ju9cN4FqOf7+93WnzBE+48xx4d0FaajLDbKOFGw
-	 KwhkAMaDPWkHpMxB0YFLeo9dBdm4JgVzbOOIXvYzB5Bgg+xKqbP4ovYf9QoZWCPugs
-	 3yjxtrUG4GnPwCvnr6zLFyrJ/xPSRGmJROISraBU=
+	b=phs1lZbDIrqI4pcrQVil2Jtn6zpK+aF1LADL09dzxesjHKvIyY/if2/we+Bm7+ls3
+	 jFRfU6M2IAlm0v/vxSpEyb1E9Mj9wDrGthdMGaC2mYIxot32buOZn5IFCqcMkNMv7Y
+	 TwqfG2CLj97F7E4CDxgi1zBoHZ1zjFkWgzAOvPCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xing Guo <higuoxing@gmail.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 048/143] selftests/fs/mount-notify: Fix compilation failure.
+	Wei Yang <richard.weiyang@gmail.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 10/81] mm/khugepaged: fix the address passed to notifier on testing young
 Date: Tue, 30 Sep 2025 16:46:12 +0200
-Message-ID: <20250930143833.148586862@linuxfoundation.org>
+Message-ID: <20250930143820.097612469@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +70,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xing Guo <higuoxing@gmail.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit e51bd0e595476c1527bb0b4def095a6fd16b2563 ]
+commit 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf upstream.
 
-Commit c6d9775c2066 ("selftests/fs/mount-notify: build with tools include
-dir") introduces the struct __kernel_fsid_t to decouple dependency with
-headers_install.  The commit forgets to define a macro for __kernel_fsid_t
-and it will cause type re-definition issue.
+Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
+mmu_notifier_test_young(), but we are passing the wrong address.
+In xxx_scan_pmd(), the actual iteration address is "_address" not
+"address".  We seem to misuse the variable on the very beginning.
 
-Signed-off-by: Xing Guo <higuoxing@gmail.com>
-Link: https://lore.kernel.org/20250813031647.96411-1-higuoxing@gmail.com
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Closes: https://lore.kernel.org/oe-lkp/202508110628.65069d92-lkp@intel.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change it to the right one.
+
+[akpm@linux-foundation.org fix whitespace, per everyone]
+Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
+Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mount-notify/mount-notify_test.c           | 17 ++++++++---------
- .../mount-notify/mount-notify_test_ns.c        | 18 ++++++++----------
- 2 files changed, 16 insertions(+), 19 deletions(-)
+ mm/khugepaged.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c
-index 63ce708d93ed0..e4b7c2b457ee7 100644
---- a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c
-+++ b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test.c
-@@ -2,6 +2,13 @@
- // Copyright (c) 2025 Miklos Szeredi <miklos@szeredi.hu>
- 
- #define _GNU_SOURCE
-+
-+// Needed for linux/fanotify.h
-+typedef struct {
-+	int	val[2];
-+} __kernel_fsid_t;
-+#define __kernel_fsid_t __kernel_fsid_t
-+
- #include <fcntl.h>
- #include <sched.h>
- #include <stdio.h>
-@@ -10,20 +17,12 @@
- #include <sys/mount.h>
- #include <unistd.h>
- #include <sys/syscall.h>
-+#include <sys/fanotify.h>
- 
- #include "../../kselftest_harness.h"
- #include "../statmount/statmount.h"
- #include "../utils.h"
- 
--// Needed for linux/fanotify.h
--#ifndef __kernel_fsid_t
--typedef struct {
--	int	val[2];
--} __kernel_fsid_t;
--#endif
--
--#include <sys/fanotify.h>
--
- static const char root_mntpoint_templ[] = "/tmp/mount-notify_test_root.XXXXXX";
- 
- static const int mark_cmds[] = {
-diff --git a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c
-index 090a5ca65004a..9f57ca46e3afa 100644
---- a/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c
-+++ b/tools/testing/selftests/filesystems/mount-notify/mount-notify_test_ns.c
-@@ -2,6 +2,13 @@
- // Copyright (c) 2025 Miklos Szeredi <miklos@szeredi.hu>
- 
- #define _GNU_SOURCE
-+
-+// Needed for linux/fanotify.h
-+typedef struct {
-+	int	val[2];
-+} __kernel_fsid_t;
-+#define __kernel_fsid_t __kernel_fsid_t
-+
- #include <fcntl.h>
- #include <sched.h>
- #include <stdio.h>
-@@ -10,21 +17,12 @@
- #include <sys/mount.h>
- #include <unistd.h>
- #include <sys/syscall.h>
-+#include <sys/fanotify.h>
- 
- #include "../../kselftest_harness.h"
--#include "../../pidfd/pidfd.h"
- #include "../statmount/statmount.h"
- #include "../utils.h"
- 
--// Needed for linux/fanotify.h
--#ifndef __kernel_fsid_t
--typedef struct {
--	int	val[2];
--} __kernel_fsid_t;
--#endif
--
--#include <sys/fanotify.h>
--
- static const char root_mntpoint_templ[] = "/tmp/mount-notify_test_root.XXXXXX";
- 
- static const int mark_types[] = {
--- 
-2.51.0
-
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1227,7 +1227,7 @@ static int khugepaged_scan_pmd(struct mm
+ 		}
+ 		if (pte_young(pteval) ||
+ 		    page_is_young(page) || PageReferenced(page) ||
+-		    mmu_notifier_test_young(vma->vm_mm, address))
++		    mmu_notifier_test_young(vma->vm_mm, _address))
+ 			referenced++;
+ 	}
+ 	if (writable) {
 
 
 
