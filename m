@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ADFBAD7FA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B09BAD66B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22DEC16AC6F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A413A1942A7B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3EA302CD6;
-	Tue, 30 Sep 2025 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62446302163;
+	Tue, 30 Sep 2025 14:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfTeptIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qucQ/XPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71219304964;
-	Tue, 30 Sep 2025 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C87201017;
+	Tue, 30 Sep 2025 14:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244683; cv=none; b=r4fauSL6Zuc9hpqi7nCpYlVKHgfzdgcU1oWdax6O+Rkx/yKwLsfj6oIMCl6sygqbPNEnz8DC5PEAz6SBfUcObqb+qX425SmMJW75tazqUB9iM2e6U+d8K+NKyUAfFnTHK/RZ2L8sDxwG1EtUrIzRDfxIpoR5Sn67WfdWTQkEQ6o=
+	t=1759244309; cv=none; b=CDSrt3W8H4ufh49MjCefsJeCeql3MQhMEQe6PFggWgCyyF7UH794ObDlcznCSOnytlNGYy+HUuQc3FugSMsGLa81KdET8x4gBLqnBM/0ofsme7LCdl6DSovYN8m18jrYntoz3NqkLwYB+qyS+skxA2iZ8OAjKvEdMH7aS5QNp2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244683; c=relaxed/simple;
-	bh=XwdGtPnz9e06ncZjDDTXP7XzLQseJbuJONYDG5fVEsA=;
+	s=arc-20240116; t=1759244309; c=relaxed/simple;
+	bh=jvJUXhOjj7aOzHC9zUQwsdP80c/+xTKxRZ66GHUd/Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4CAIjjmW0/u8uKRDexDEL9waEZ42G+S0iLsUtzrouoUWT/CiB+ayF7p/993cnH4uji0Wj/6w81/PPUupQaOQ3aaKrgYyTCPT4az0WrtqIexd0BDUhWWLbNo7XA10zB6SpbkJRIRLrNPW2400DfbJ3cnKDRF4a2S9is+6Trn4cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfTeptIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56C3C116C6;
-	Tue, 30 Sep 2025 15:04:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ptdfeb52NjGw61+HfgfvuUDZjvJx1cBCjcC7+wM/BZvycgpYGMXQ3sCOxpJarpEZ+RXM10vMMelUwbIVmczZp+kJVcdomV0WiQLdEh/4ZAltc+SxoTprASvO6firNZJP+Fl2aK2SFzY8wut8Apl+tnp2Aoi3hFyXj6jsOE2tHQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qucQ/XPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784A1C4CEF0;
+	Tue, 30 Sep 2025 14:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244683;
-	bh=XwdGtPnz9e06ncZjDDTXP7XzLQseJbuJONYDG5fVEsA=;
+	s=korg; t=1759244309;
+	bh=jvJUXhOjj7aOzHC9zUQwsdP80c/+xTKxRZ66GHUd/Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfTeptIvdRrgwgZ9YTpKdE7NZlwN1U62ty81rcsPqD6lDBxYmJI7rFtcKpu+zQN1h
-	 qutVPvrf0ZqF5rEC3WzvCuhL9viAnSm8EzFSZd0hRoQE9JxIRJQIVGWCVUOhkHVtIN
-	 pNULXJysX11J4z/mtM198key1IOOpKlfSkPnB92o=
+	b=qucQ/XPSt5XlNV33QfMa4AACF+ImBasV9MlzUwtANZJw0YLgkcmm6K8m+7m3EiNtO
+	 GCDLTbmpPmMU34H4248sCxDjGEhmeaqDyt8hsznBBzA0kBbg2HwvYdRqcF62PNKsiH
+	 7+knuVevYfFGI9olYFuMN15Yt1u5fQGapZFmHopE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 055/143] can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
+Subject: [PATCH 5.10 048/122] pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
 Date: Tue, 30 Sep 2025 16:46:19 +0200
-Message-ID: <20250930143833.426063820@linuxfoundation.org>
+Message-ID: <20250930143824.971994079@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 5c793afa07da6d2d4595f6c73a2a543a471bb055 ]
+[ Upstream commit d1dfcdd30140c031ae091868fb5bed084132bca1 ]
 
-On R-Car Gen3 using PSCI, s2ram powers down the SoC.  After resume, the
-CAN interface no longer works, until it is brought down and up again.
+As described in the added code comment, a reference to .exit.text is ok
+for drivers registered via platform_driver_probe().  Make this explicit
+to prevent the following section mismatch warning
 
-Fix this by calling rcar_can_start() from the PM resume callback, to
-fully initialize the controller instead of just restarting it.
+    WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
+
+that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/699b2f7fcb60b31b6f976a37f08ce99c5ffccb31.1755165227.git.geert+renesas@glider.be
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/rcar/rcar_can.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/pcmcia/omap_cf.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index 2b7dd359f27b7..8569178b66df7 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -861,7 +861,6 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct rcar_can_priv *priv = netdev_priv(ndev);
--	u16 ctlr;
- 	int err;
+diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+index d3ef5534991e6..a98841db02d5d 100644
+--- a/drivers/pcmcia/omap_cf.c
++++ b/drivers/pcmcia/omap_cf.c
+@@ -327,7 +327,13 @@ static int __exit omap_cf_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
- 	if (!netif_running(ndev))
-@@ -873,12 +872,7 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
- 		return err;
- 	}
- 
--	ctlr = readw(&priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_SLPM;
--	writew(ctlr, &priv->regs->ctlr);
--	ctlr &= ~RCAR_CAN_CTLR_CANM;
--	writew(ctlr, &priv->regs->ctlr);
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
-+	rcar_can_start(ndev);
- 
- 	netif_device_attach(ndev);
- 	netif_start_queue(ndev);
+-static struct platform_driver omap_cf_driver = {
++/*
++ * omap_cf_remove() lives in .exit.text. For drivers registered via
++ * platform_driver_probe() this is ok because they cannot get unbound at
++ * runtime. So mark the driver struct with __refdata to prevent modpost
++ * triggering a section mismatch warning.
++ */
++static struct platform_driver omap_cf_driver __refdata = {
+ 	.driver = {
+ 		.name	= driver_name,
+ 	},
 -- 
 2.51.0
 
