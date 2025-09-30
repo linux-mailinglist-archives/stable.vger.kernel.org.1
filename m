@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C10BADA2A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BE4BAD66E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20C63B161B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6C43BAB8B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03F82FCBFC;
-	Tue, 30 Sep 2025 15:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E5B199939;
+	Tue, 30 Sep 2025 14:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsE1H+vc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkqFg3GO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551042236EB;
-	Tue, 30 Sep 2025 15:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3101F03C5;
+	Tue, 30 Sep 2025 14:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245074; cv=none; b=YT3dOPbBZ9rYxt3oBqJvqrf4L8388fs3sHCfqdtvkd9tUC27q8u12psnvHONn4oJSMvCEbb01Ni5MtnykSXUjpgddlQHV3zcdm/Fi98QC2KyXKllwRyvZ1J6vK+ixEuX4ALL3Kb8xGhliBWdj/KUmnYNtzioIHXEdAc5K372VpY=
+	t=1759244270; cv=none; b=lbbHVQJQhM74tAPuIhTne73SIpWvG6tQT879u2xyZjk4aEGh+DeWEefsb5o4Yg3IkHAMnatA9PFtpAE+AqO+yaxwJ7R0clZ9XdHV2pvfjMq3tcYc/EMzkIw0aN/T/nXlQSed4+TYvpR4F8xm9rRarg4twlZEMUQUS6b4gjWORHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245074; c=relaxed/simple;
-	bh=uJCDTy39SFJTbFT/rhtboaC+V7BO93s4/QQFvxcZNIg=;
+	s=arc-20240116; t=1759244270; c=relaxed/simple;
+	bh=j8Vm4X1DoMyyD0NiA/FffDJRgAPprceb21A1lsUAnLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Seetl/4xxHY8ACmMUeYJUbLPgwx+EXvZ5lCcslYI/D5JbBdmV0DerSxynOryazXhSXFL3Wgb9E5sjg5kBAO/08aRPzyNi8wDp0sg9xDNk6LiiRSxqJ5MUTtJHzpY7rWRzDi/ZyYNO59l+iphILZPS3dWN+IJfomovRXCErivoMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsE1H+vc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90EAC4CEF0;
-	Tue, 30 Sep 2025 15:11:13 +0000 (UTC)
+	 MIME-Version; b=OYkplNLPa2lwjU8xsGyKnnzxjy5xs1acqFxN3I9qUy6QGVHmK9K2xH6v8LfGjLcQs8yBJYmCJY5CIK2KSylJIaM6lfEKaph3n8+0QYohmhVPvPYlq3CpwfyyPDCHJ53Znr3revnms7Ig3BbcJ5OpFFIxAtly8cb0OeQnAvXjhus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkqFg3GO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE114C4CEF0;
+	Tue, 30 Sep 2025 14:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245074;
-	bh=uJCDTy39SFJTbFT/rhtboaC+V7BO93s4/QQFvxcZNIg=;
+	s=korg; t=1759244270;
+	bh=j8Vm4X1DoMyyD0NiA/FffDJRgAPprceb21A1lsUAnLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xsE1H+vc+3oRbd8KiGh/hBrI+vv+mMhXozBoBy4/5RNF+BSMDMoivJjOAm/aLuqtj
-	 arqmhJ8iJU2MUC20sThCo6VwO38+2f0UEkfKh5SFvoB5jAoi26G39iM06DeIZFDMDr
-	 1rEpQzQGdCbac7MVftkhTMge0HUI8kwdQVSeagn4=
+	b=WkqFg3GOipp92zFHrq5KZCrmVnZhNX5Sla/qN9fOe3KtlsIfNTSZY/KKh6vtLGvuS
+	 oq+w8YedRoownPcjBP+j209oVuqFn3HVudZA7zgucHFzz01OrTHy7K+W7oHjBw81dy
+	 HgKn1NkqVywLRye87cCx/OoJ/ruSdyu9oqC+WDtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/151] dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
+Subject: [PATCH 5.10 051/122] qed: Dont collect too many protection override GRC elements
 Date: Tue, 30 Sep 2025 16:46:22 +0200
-Message-ID: <20250930143829.679326575@linuxfoundation.org>
+Message-ID: <20250930143825.091649586@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anders Roxell <anders.roxell@linaro.org>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-[ Upstream commit e63419dbf2ceb083c1651852209c7f048089ac0f ]
+[ Upstream commit 56c0a2a9ddc2f5b5078c5fb0f81ab76bbc3d4c37 ]
 
-Fix a critical memory allocation bug in edma_setup_from_hw() where
-queue_priority_map was allocated with insufficient memory. The code
-declared queue_priority_map as s8 (*)[2] (pointer to array of 2 s8),
-but allocated memory using sizeof(s8) instead of the correct size.
+In the protection override dump path, the firmware can return far too
+many GRC elements, resulting in attempting to write past the end of the
+previously-kmalloc'ed dump buffer.
 
-This caused out-of-bounds memory writes when accessing:
-  queue_priority_map[i][0] = i;
-  queue_priority_map[i][1] = i;
+This will result in a kernel panic with reason:
 
-The bug manifested as kernel crashes with "Oops - undefined instruction"
-on ARM platforms (BeagleBoard-X15) during EDMA driver probe, as the
-memory corruption triggered kernel hardening features on Clang.
+ BUG: unable to handle kernel paging request at ADDRESS
 
-Change the allocation to use sizeof(*queue_priority_map) which
-automatically gets the correct size for the 2D array structure.
+where "ADDRESS" is just past the end of the protection override dump
+buffer. The start address of the buffer is:
+ p_hwfn->cdev->dbg_features[DBG_FEATURE_PROTECTION_OVERRIDE].dump_buf
+and the size of the buffer is buf_size in the same data structure.
 
-Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-Link: https://lore.kernel.org/r/20250830094953.3038012-1-anders.roxell@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The panic can be arrived at from either the qede Ethernet driver path:
+
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc02662ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc0267792 [qed]
+ qed_dbg_feature at ffffffffc026aa8f [qed]
+ qed_dbg_all_data at ffffffffc026b211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc027298a [qed]
+ devlink_health_do_dump at ffffffff82497f61
+ devlink_health_report at ffffffff8249cf29
+ qed_report_fatal_error at ffffffffc0272baf [qed]
+ qede_sp_task at ffffffffc045ed32 [qede]
+ process_one_work at ffffffff81d19783
+
+or the qedf storage driver path:
+
+    [exception RIP: qed_grc_dump_addr_range+0x108]
+ qed_protection_override_dump at ffffffffc068b2ed [qed]
+ qed_dbg_protection_override_dump at ffffffffc068c792 [qed]
+ qed_dbg_feature at ffffffffc068fa8f [qed]
+ qed_dbg_all_data at ffffffffc0690211 [qed]
+ qed_fw_fatal_reporter_dump at ffffffffc069798a [qed]
+ devlink_health_do_dump at ffffffff8aa95e51
+ devlink_health_report at ffffffff8aa9ae19
+ qed_report_fatal_error at ffffffffc0697baf [qed]
+ qed_hw_err_notify at ffffffffc06d32d7 [qed]
+ qed_spq_post at ffffffffc06b1011 [qed]
+ qed_fcoe_destroy_conn at ffffffffc06b2e91 [qed]
+ qedf_cleanup_fcport at ffffffffc05e7597 [qedf]
+ qedf_rport_event_handler at ffffffffc05e7bf7 [qedf]
+ fc_rport_work at ffffffffc02da715 [libfc]
+ process_one_work at ffffffff8a319663
+
+Resolve this by clamping the firmware's return value to the maximum
+number of legal elements the firmware should return.
+
+Fixes: d52c89f120de8 ("qed*: Utilize FW 8.37.2.0")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Link: https://patch.msgid.link/f8e1182934aa274c18d0682a12dbaf347595469c.1757485536.git.jamie.bainbridge@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/edma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_debug.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 560fe658b8942..c555b0991ad10 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -2121,8 +2121,8 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
- 	 * priority. So Q0 is the highest priority queue and the last queue has
- 	 * the lowest priority.
- 	 */
--	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1, sizeof(s8),
--					  GFP_KERNEL);
-+	queue_priority_map = devm_kcalloc(dev, ecc->num_tc + 1,
-+					  sizeof(*queue_priority_map), GFP_KERNEL);
- 	if (!queue_priority_map)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_debug.c b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+index 4b4077cf2d266..b4e108d3ec945 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_debug.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_debug.c
+@@ -4374,10 +4374,11 @@ static enum dbg_status qed_protection_override_dump(struct qed_hwfn *p_hwfn,
+ 		goto out;
+ 	}
  
+-	/* Add override window info to buffer */
++	/* Add override window info to buffer, preventing buffer overflow */
+ 	override_window_dwords =
+-		qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
+-		PROTECTION_OVERRIDE_ELEMENT_DWORDS;
++		min(qed_rd(p_hwfn, p_ptt, GRC_REG_NUMBER_VALID_OVERRIDE_WINDOW) *
++		PROTECTION_OVERRIDE_ELEMENT_DWORDS,
++		PROTECTION_OVERRIDE_DEPTH_DWORDS);
+ 	if (override_window_dwords) {
+ 		addr = BYTES_TO_DWORDS(GRC_REG_PROTECTION_OVERRIDE_WINDOW);
+ 		offset += qed_grc_dump_addr_range(p_hwfn,
 -- 
 2.51.0
 
