@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3162BBAD7BB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEF1BAD614
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A94D189F043
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E0993243F6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D754C27C872;
-	Tue, 30 Sep 2025 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AA530506E;
+	Tue, 30 Sep 2025 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5lF2RnH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gcwp/xTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920881FF1C8;
-	Tue, 30 Sep 2025 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7E23043C4;
+	Tue, 30 Sep 2025 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244663; cv=none; b=tQaR2Fo8L8lv1BPEPVUDC2ZqI1S6SBnddLLjqGl4igeFVT8OyMe8eLaK7omPgabpqtNB8tNRiUpaeOKTxUNwpvseTlLvpow4fyBWGy2nZ2AekyKICEgUC+B3bQXmI6PrlrJHbvlIyI+SFS96nKworbUm8UMRBen+0bIncPLqxpQ=
+	t=1759244240; cv=none; b=rOvYTdcurAhfxjtZVxlVCh73kaV+hyitBQcRt/tbvs3ZwcPey2qLtK+eUlX7SMX9qiNsS2IQCRDSY6l2iTqFyoxyBLJcB/Hn86pNaejLELpv9F2Ovcg3oad5QlgLvVYKGgc6oj+jJsWRyjC9J4/F4E+IkLc1RmiWGBhe44Yw4ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244663; c=relaxed/simple;
-	bh=RZtL5uB30XBiPRpr1HBMojsPP3CjMqmXX+Xi52TUKGg=;
+	s=arc-20240116; t=1759244240; c=relaxed/simple;
+	bh=YqoL4CIkX0M9zD+JKbu7JabAuFCbuzjsbchhLeW2hik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oY9/AR4VqK7SXuKRiBS9q7zr8lBiztJxB53F5ONxTseM753Lsln32SHKe9d8WpQwA4hw53VyYuqaBR+0tnYaF0T3P0CYJWgW/gNG16rnQSDyCPfG/4SMklJSoX5aLwc5c9n/wS4OIaK//4vcRrz21Vw52UAhxFGXcbpCOmqXpLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5lF2RnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F119DC4CEF0;
-	Tue, 30 Sep 2025 15:04:22 +0000 (UTC)
+	 MIME-Version; b=WtyN8b30abxGUpYAlECuQHGX7kzC1Ctty3vJeFKTLAu820DzzpPPEew0vTS7LBgB5hMdx8bdibQpTQtNIkCoJbWwxazdj/ov0qv4F+h1dnIn9h6n8MaSNXQMk4VCcUmmK31R0LKC5a0JSaAk3fxH5KvW3tuwvzHmn9X3NJwxf2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gcwp/xTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CB1C4CEF0;
+	Tue, 30 Sep 2025 14:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244663;
-	bh=RZtL5uB30XBiPRpr1HBMojsPP3CjMqmXX+Xi52TUKGg=;
+	s=korg; t=1759244240;
+	bh=YqoL4CIkX0M9zD+JKbu7JabAuFCbuzjsbchhLeW2hik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5lF2RnHty+AFjjcGn2DNOs9Lv+nxU4Mycniz4Rcrpz5Df6ufkSAMGTzI/jWBB5Z7
-	 /AJ3VijsE+Aup07hGCcgYGLCaGTmNI9J2WWbwTacFTyI2vGE6rN0xrXhPmG58wEFhA
-	 X6IvhEJLEhHglHDAIhf+X2NTVj1QQspjVuIEIfAA=
+	b=Gcwp/xTOvoMYbGl1Dftv0UfMaerkltfVWV/plThWVqdoNmQryJ+djVkNko7ybEYQg
+	 wmlkRv65sPN65ofmaxY43GjiS9PXvm1zCstT4u7iitUxAIBLwbofuLCQKlzyHycmLs
+	 BqxRxl22rdBlbZAOdwKLWpd42nVPl1c1F9ZjE3Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Baron <jbaron@akamai.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 076/143] net: allow alloc_skb_with_frags() to use MAX_SKB_FRAGS
+Subject: [PATCH 5.10 069/122] serial: sc16is7xx: fix bug in flow control levels init
 Date: Tue, 30 Sep 2025 16:46:40 +0200
-Message-ID: <20250930143834.269435778@linuxfoundation.org>
+Message-ID: <20250930143825.825755632@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Baron <jbaron@akamai.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit ca9f9cdc4de97d0221100b11224738416696163c ]
+[ Upstream commit 535fd4c98452c87537a40610abba45daf5761ec6 ]
 
-Currently, alloc_skb_with_frags() will only fill (MAX_SKB_FRAGS - 1)
-slots. I think it should use all MAX_SKB_FRAGS slots, as callers of
-alloc_skb_with_frags() will size their allocation of frags based
-on MAX_SKB_FRAGS.
+When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
+writing to the TCR register to configure flow control levels, we are
+incorrectly writing to the MSR register. The default value of $00 is then
+used for TCR, which means that selectable trigger levels in FCR are used
+in place of TCR.
 
-This issue was discovered via a test patch that sets 'order' to 0
-in alloc_skb_with_frags(), which effectively tests/simulates high
-fragmentation. In this case sendmsg() on unix sockets will fail every
-time for large allocations. If the PAGE_SIZE is 4K, then data_len will
-request 68K or 17 pages, but alloc_skb_with_frags() can only allocate
-64K in this case or 16 pages.
+TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
+to be set. EFR[4] is already set in probe().
 
-Fixes: 09c2c90705bb ("net: allow alloc_skb_with_frags() to allocate bigger packets")
-Signed-off-by: Jason Baron <jbaron@akamai.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250922191957.2855612-1-jbaron@akamai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+MCR access requires LCR[7] to be zero.
+
+Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
+accessed instead because MCR shares the same address space as XON1.
+
+Since MCR[2] is unmodified and still zero, when writing to TCR we are in
+fact writing to MSR because TCR/TLR registers share the same address space
+as MSR/SPR.
+
+Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
+functions), as it is already enabled in sc16is7xx_probe() since commit
+43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
+Now LCR is $00, which means that MCR access is enabled.
+
+Also remove regcache_cache_bypass() calls since we no longer access the
+enhanced registers set, and TCR is already declared as volatile (in fact
+by declaring MSR as volatile, which shares the same address).
+
+Finally disable access to TCR/TLR registers after modifying them by
+clearing MCR[2].
+
+Note: the comment about "... and internal clock div" is wrong and can be
+      ignored/removed as access to internal clock div registers (DLL/DLH)
+      is permitted only when LCR[7] is logic 1, not when enhanced features
+      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ changed regmap variable from one->regmap to s->regmap ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index d6420b74ea9c6..cb77bb84371bd 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6667,7 +6667,7 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
- 		return NULL;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1018,7 +1018,6 @@ static int sc16is7xx_config_rs485(struct
+ static int sc16is7xx_startup(struct uart_port *port)
+ {
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	unsigned int val;
  
- 	while (data_len) {
--		if (nr_frags == MAX_SKB_FRAGS - 1)
-+		if (nr_frags == MAX_SKB_FRAGS)
- 			goto failure;
- 		while (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order))
- 			order--;
--- 
-2.51.0
-
+ 	sc16is7xx_power(port, 1);
+@@ -1030,16 +1029,6 @@ static int sc16is7xx_startup(struct uart
+ 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
+ 			     SC16IS7XX_FCR_FIFO_BIT);
+ 
+-	/* Enable EFR */
+-	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+-			     SC16IS7XX_LCR_CONF_MODE_B);
+-
+-	regcache_cache_bypass(s->regmap, true);
+-
+-	/* Enable write access to enhanced features and internal clock div */
+-	sc16is7xx_port_write(port, SC16IS7XX_EFR_REG,
+-			     SC16IS7XX_EFR_ENABLE_BIT);
+-
+ 	/* Enable TCR/TLR */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_TCRTLR_BIT,
+@@ -1051,7 +1040,8 @@ static int sc16is7xx_startup(struct uart
+ 			     SC16IS7XX_TCR_RX_RESUME(24) |
+ 			     SC16IS7XX_TCR_RX_HALT(48));
+ 
+-	regcache_cache_bypass(s->regmap, false);
++	/* Disable TCR/TLR access */
++	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
+ 
+ 	/* Now, initialize the UART */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
 
 
 
