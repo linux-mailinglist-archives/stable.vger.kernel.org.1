@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFC2BAD7DC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFF8BAD59C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B897A3B5ABD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957853248FA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6776627056D;
-	Tue, 30 Sep 2025 15:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EDE305040;
+	Tue, 30 Sep 2025 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO4G1n/F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9RnM4X9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F031F1302;
-	Tue, 30 Sep 2025 15:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549281AB6F1;
+	Tue, 30 Sep 2025 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244551; cv=none; b=rGXkSCSSPAUYFmRSqRzFgttqZ512beht5gVo02hFFxBy1sGLCAyW0ZH4LbJQ+qtGBwyS3UUTV1DpTLLKAlOQW3K5E1YMNS0HY3W3eoq8awleqKVjXvOBdEwbPT8T0Duo+6hAXYi95vi9k+z1DYyz7QGirZN4f2EKCq6QWm+kB/w=
+	t=1759244124; cv=none; b=aN80KBiVc0vDjmkngLL3mwCwP9CNFjn8IcZbb0jOLXIvOwFCAuHsKriZAOlkUVBSh+SPJubQFVcbBCwYa0iBXElXHbxGTXWP0E8manjYUfNvHgFKZcDEJhoCcgj8LKDhmAN6R5ATKALE6fW6T9U9truhfK0sgFKqGuVftbYHVRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244551; c=relaxed/simple;
-	bh=vW5MF/aMrjfBFnTngnBYrukpGkaFQdXS3Jn7axAs/60=;
+	s=arc-20240116; t=1759244124; c=relaxed/simple;
+	bh=jgHNquUE0O19WyMvsdwMLlnc01VmsHxoAemG9X6lpqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWbXR2kWQwV8PO1LNAOlmIzuFYfwcuzH6giDZBt5qn70QdSnubhdXxCec95kqfrKJI34nPxsEvwy91oUOZHGgyo2rpKRZc7jJmoWY9mp5+PXXlEF/7MGU+MG1nlfOCXdae/Xh5SpmgSZs7pnakkt5kTVLHIBfuD82e39MfEArdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO4G1n/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98128C4CEF0;
-	Tue, 30 Sep 2025 15:02:30 +0000 (UTC)
+	 MIME-Version; b=V9yP6Ig3efDJLSwNyx/d+GHeFNs1U61Ng6Rpw0Ak+bNAO6J+q+MjxrjQQ+S17v0JomgEyNH4V/k5KCKBB/ZM3KqXOZPBRfGL1P4xxY4oqtOglWcvE2ksj9FIgZby6mgeH3TikPrmgacwMi893WPUgToGuIaP4rOHShmDNthd7i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9RnM4X9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF338C4CEF0;
+	Tue, 30 Sep 2025 14:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244551;
-	bh=vW5MF/aMrjfBFnTngnBYrukpGkaFQdXS3Jn7axAs/60=;
+	s=korg; t=1759244124;
+	bh=jgHNquUE0O19WyMvsdwMLlnc01VmsHxoAemG9X6lpqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OO4G1n/F0/s3tpGJ+db4I+crRpPcDzdN4trb+E1v2fCnYWZYj1lmNv8dzXl3Rj5Op
-	 wtMtt+v9v4HeL4f0AdZtKCiUTOZ8erpFLSNRgua4Lu2PL1wl8pxMGh4IzPXVlp5Nml
-	 SulbJCfjkr8weE91Ssu8ipPfepqx+Jx8X328RySk=
+	b=q9RnM4X9tVoj7zov8SKiBcnYC9lChlZTRIfRbSrZTKLqROD4cqrXbmLFMibf0b0N5
+	 0pq2toERSMjBkMioQ4nQ7+O5JASfZIWrokVphrXra3zQH/7FoILg0RYMpXLZnQNqnO
+	 EwnhqDzCwkLrnq/ZnS4K9d54ihr5rPMp5B7yddeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 041/143] firmware: imx: Add stub functions for SCMI CPU API
+Subject: [PATCH 5.10 034/122] genirq: Export affinity setter for modules
 Date: Tue, 30 Sep 2025 16:46:05 +0200
-Message-ID: <20250930143832.873989606@linuxfoundation.org>
+Message-ID: <20250930143824.403249647@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 222accf05fc42f68ae02065d9c1542c20315118b ]
+[ Upstream commit 4d80d6ca5d77fde9880da8466e5b64f250e5bf82 ]
 
-To ensure successful builds when CONFIG_IMX_SCMI_CPU_DRV is not enabled,
-this patch adds static inline stub implementations for the following
-functions:
+Perf modules abuse irq_set_affinity_hint() to set the affinity of system
+PMU interrupts just because irq_set_affinity() was not exported.
 
-  - scmi_imx_cpu_start()
-  - scmi_imx_cpu_started()
-  - scmi_imx_cpu_reset_vector_set()
+The fact that irq_set_affinity_hint() actually sets the affinity is a
+non-documented side effect and the name is clearly saying it's a hint.
 
-These stubs return -EOPNOTSUPP to indicate that the functionality is not
-supported in the current configuration. This avoids potential build or
-link errors in code that conditionally calls these functions based on
-feature availability.
+To clean this up, export the real affinity setter.
 
-Fixes: 1055faa5d660 ("firmware: imx: Add i.MX95 SCMI CPU driver")
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20210518093117.968251441@linutronix.de
+Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/firmware/imx/sm.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ include/linux/interrupt.h | 35 ++---------------------------------
+ kernel/irq/manage.c       | 33 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
-index 6e700e455934e..1817df9aceac8 100644
---- a/include/linux/firmware/imx/sm.h
-+++ b/include/linux/firmware/imx/sm.h
-@@ -33,10 +33,28 @@ static inline int scmi_imx_misc_ctrl_set(u32 id, u32 val)
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index d6f833b403d59..9c52e263ef399 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -318,39 +318,8 @@ struct irq_affinity_desc {
+ 
+ extern cpumask_var_t irq_default_affinity;
+ 
+-/* Internal implementation. Use the helpers below */
+-extern int __irq_set_affinity(unsigned int irq, const struct cpumask *cpumask,
+-			      bool force);
+-
+-/**
+- * irq_set_affinity - Set the irq affinity of a given irq
+- * @irq:	Interrupt to set affinity
+- * @cpumask:	cpumask
+- *
+- * Fails if cpumask does not contain an online CPU
+- */
+-static inline int
+-irq_set_affinity(unsigned int irq, const struct cpumask *cpumask)
+-{
+-	return __irq_set_affinity(irq, cpumask, false);
+-}
+-
+-/**
+- * irq_force_affinity - Force the irq affinity of a given irq
+- * @irq:	Interrupt to set affinity
+- * @cpumask:	cpumask
+- *
+- * Same as irq_set_affinity, but without checking the mask against
+- * online cpus.
+- *
+- * Solely for low level cpu hotplug code, where we need to make per
+- * cpu interrupts affine before the cpu becomes online.
+- */
+-static inline int
+-irq_force_affinity(unsigned int irq, const struct cpumask *cpumask)
+-{
+-	return __irq_set_affinity(irq, cpumask, true);
+-}
++extern int irq_set_affinity(unsigned int irq, const struct cpumask *cpumask);
++extern int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask);
+ 
+ extern int irq_can_set_affinity(unsigned int irq);
+ extern int irq_select_affinity(unsigned int irq);
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 4ca4ab8ef2a5f..5cf1a32b74e24 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -456,7 +456,8 @@ int irq_update_affinity_desc(unsigned int irq,
+ 	return ret;
  }
- #endif
  
-+#if IS_ENABLED(CONFIG_IMX_SCMI_CPU_DRV)
- int scmi_imx_cpu_start(u32 cpuid, bool start);
- int scmi_imx_cpu_started(u32 cpuid, bool *started);
- int scmi_imx_cpu_reset_vector_set(u32 cpuid, u64 vector, bool start, bool boot,
- 				  bool resume);
-+#else
-+static inline int scmi_imx_cpu_start(u32 cpuid, bool start)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int scmi_imx_cpu_started(u32 cpuid, bool *started)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int scmi_imx_cpu_reset_vector_set(u32 cpuid, u64 vector, bool start,
-+						bool boot, bool resume)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
+-int __irq_set_affinity(unsigned int irq, const struct cpumask *mask, bool force)
++static int __irq_set_affinity(unsigned int irq, const struct cpumask *mask,
++			      bool force)
+ {
+ 	struct irq_desc *desc = irq_to_desc(irq);
+ 	unsigned long flags;
+@@ -471,6 +472,36 @@ int __irq_set_affinity(unsigned int irq, const struct cpumask *mask, bool force)
+ 	return ret;
+ }
  
- enum scmi_imx_lmm_op {
- 	SCMI_IMX_LMM_BOOT,
++/**
++ * irq_set_affinity - Set the irq affinity of a given irq
++ * @irq:	Interrupt to set affinity
++ * @cpumask:	cpumask
++ *
++ * Fails if cpumask does not contain an online CPU
++ */
++int irq_set_affinity(unsigned int irq, const struct cpumask *cpumask)
++{
++	return __irq_set_affinity(irq, cpumask, false);
++}
++EXPORT_SYMBOL_GPL(irq_set_affinity);
++
++/**
++ * irq_force_affinity - Force the irq affinity of a given irq
++ * @irq:	Interrupt to set affinity
++ * @cpumask:	cpumask
++ *
++ * Same as irq_set_affinity, but without checking the mask against
++ * online cpus.
++ *
++ * Solely for low level cpu hotplug code, where we need to make per
++ * cpu interrupts affine before the cpu becomes online.
++ */
++int irq_force_affinity(unsigned int irq, const struct cpumask *cpumask)
++{
++	return __irq_set_affinity(irq, cpumask, true);
++}
++EXPORT_SYMBOL_GPL(irq_force_affinity);
++
+ int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
+ {
+ 	unsigned long flags;
 -- 
 2.51.0
 
