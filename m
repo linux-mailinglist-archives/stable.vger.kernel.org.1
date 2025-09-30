@@ -1,64 +1,77 @@
-Return-Path: <stable+bounces-182268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8BCBAD6C8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD21CBADB2B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559B91942D65
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3A03268E1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C86306496;
-	Tue, 30 Sep 2025 14:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9CD302CD6;
+	Tue, 30 Sep 2025 15:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyzgJ3Dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imkmT+dr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CBA30649C;
-	Tue, 30 Sep 2025 14:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD341F1302;
+	Tue, 30 Sep 2025 15:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244397; cv=none; b=pfHp66r0IUtRJk3G2BUZYyWDKXMCoxpedf2VrJpHliEyY4hTnhkBrGj4tU2YFh5nt0oqQWhx8c2wy8IiBY6/6fY62fAWvtVxgQ2A5/ZtgWJD2E651gRgfPnMQTFLjttATYdjvvniA2WqBt0zJPv/J2iQ0MOjS++e3udzNg0JeFk=
+	t=1759245453; cv=none; b=rjpU+Brba1CUTDJ6t6plT+p7b2vdnl9lH/rmKpup82ahyPot0qCYidId9MZ1QHaIYCVGrCNl5go+IsCtQTzmKhxI3XkJ+S03fFmZUr7XpGr2D4Cmd2oPzkw0OFkXFaL5kpYCnPYRhhzujizYw1c5cfp4+FpW7TcDUuEvW2+jft0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244397; c=relaxed/simple;
-	bh=j8qh9tidLSkh6h3LgNohnLlbU5UxfUScTniWHXGFjvc=;
+	s=arc-20240116; t=1759245453; c=relaxed/simple;
+	bh=G530X0mYvlorVGf5Gr7JY8hFlaVnyzpz0L1E+vU9NQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L/cRiuPfPmUbB95udhU1JwzPvyHaDBi39itOUtPVSil0OmalDHUdIYGA1xqPtGPUjPITd0zncDxCflB4+I3P+3dZ06Zoc/XiJ554iepBXzQPGpEK37TDxmCiDHH9ABNjmOI3P81fsqeR9DomZjfs7RDawElkayKgalOje+ixtrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyzgJ3Dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C5CC4CEF0;
-	Tue, 30 Sep 2025 14:59:55 +0000 (UTC)
+	 MIME-Version; b=f6JqlasdbRzududtMLgXcvA4gyJRbB0LiyHCqBoQOAvuPGv21opkP16+ESbVoWfeSkv6LsxqA5BCwe/WfVwlx6hecv4RaJwIdsNputpDRIoANo5wloDHho/xJNZ3YAP3bDQ328EOXCbE22dxVPX+CiYMURXpTLnsMjI7dpIZzOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imkmT+dr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D276C4CEF0;
+	Tue, 30 Sep 2025 15:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244396;
-	bh=j8qh9tidLSkh6h3LgNohnLlbU5UxfUScTniWHXGFjvc=;
+	s=korg; t=1759245452;
+	bh=G530X0mYvlorVGf5Gr7JY8hFlaVnyzpz0L1E+vU9NQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RyzgJ3DvziFSKbxDQdi8wrgRvecIKJ8eOTGxYB4herfQi6wY6iZOAZuf2HFGROLQs
-	 DMIsE6rDKVM4YIpUrmrcsnMBPM2Wgxd5Lq4r6cgCimOoo5ZB8BLYZ4gJ1oeNwOkv79
-	 dlThZa+ZrCLulSDs3rjcPLl1WHYgbULzt0jTMW3s=
+	b=imkmT+drFAV4R0JXFtpWgkN45iwFahhHoVvhg3cdcP2j9+vYjJtiExm0VAglYQDUq
+	 NcaJFbT4epYAtwKPBdh8raHkRGUGvgnPmL454EawneZWgeHUtLAyV1OR+W3vIlpwOb
+	 YtGEigalRjSfMhalEYA+/VzOSh/YScNhDxj2Tlqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	George Kennedy <george.kennedy@oracle.com>,
-	syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com,
-	Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 5.10 115/122] fbcon: fix integer overflow in fbcon_do_set_font
+	Hugh Dickins <hughd@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Keir Fraser <keirf@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Li Zhe <lizhe.67@bytedance.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Wei Xu <weixugc@google.com>,
+	Will Deacon <will@kernel.org>,
+	yangge <yangge1116@126.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 22/73] mm: folio_may_be_lru_cached() unless folio_test_large()
 Date: Tue, 30 Sep 2025 16:47:26 +0200
-Message-ID: <20250930143827.670452598@linuxfoundation.org>
+Message-ID: <20250930143821.489861292@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +81,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Hugh Dickins <hughd@google.com>
 
-commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe upstream.
+[ Upstream commit 2da6de30e60dd9bb14600eff1cc99df2fa2ddae3 ]
 
-Fix integer overflow vulnerabilities in fbcon_do_set_font() where font
-size calculations could overflow when handling user-controlled font
-parameters.
+mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
+large folio is added: so collect_longterm_unpinnable_folios() just wastes
+effort when calling lru_add_drain[_all]() on a large folio.
 
-The vulnerabilities occur when:
-1. CALC_FONTSZ(h, pitch, charcount) performs h * pith * charcount
-   multiplication with user-controlled values that can overflow.
-2. FONT_EXTRA_WORDS * sizeof(int) + size addition can also overflow
-3. This results in smaller allocations than expected, leading to buffer
-   overflows during font data copying.
+But although there is good reason not to batch up PMD-sized folios, we
+might well benefit from batching a small number of low-order mTHPs (though
+unclear how that "small number" limitation will be implemented).
 
-Add explicit overflow checking using check_mul_overflow() and
-check_add_overflow() kernel helpers to safety validate all size
-calculations before allocation.
+So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
+insulate those particular checks from future change.  Name preferred to
+"folio_is_batchable" because large folios can well be put on a batch: it's
+just the per-CPU LRU caches, drained much later, which need care.
 
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 39b3cffb8cf3 ("fbcon: prevent user font height or width change from causing potential out-of-bounds access")
-Cc: George Kennedy <george.kennedy@oracle.com>
-Cc: stable <stable@vger.kernel.org>
-Cc: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Qianqiang Liu <qianqiang.liu@163.com>
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org> # v5.9+
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250912170023.3931881-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Marked for stable, to counter the increase in lru_add_drain_all()s from
+"mm/gup: check ref_count instead of lru before migration".
+
+Link: https://lkml.kernel.org/r/57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com
+Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Resolved conflicts in mm/swap.c; left "page" parts of mm/mlock.c as is ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/linux/swap.h | 10 ++++++++++
+ mm/gup.c             |  4 ++--
+ mm/mlock.c           |  2 +-
+ mm/swap.c            |  4 ++--
+ 4 files changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2527,9 +2527,16 @@ static int fbcon_set_font(struct vc_data
- 	if (fbcon_invalid_charcount(info, charcount))
- 		return -EINVAL;
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index add47f43e568e..3eecf97dfbb8d 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -392,6 +392,16 @@ void lru_cache_add(struct page *);
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
  
--	size = CALC_FONTSZ(h, pitch, charcount);
-+	/* Check for integer overflow in font size calculation */
-+	if (check_mul_overflow(h, pitch, &size) ||
-+	    check_mul_overflow(size, charcount, &size))
-+		return -EINVAL;
++static inline bool folio_may_be_lru_cached(struct folio *folio)
++{
++	/*
++	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
++	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
++	 * will be sensible, but nobody has implemented and tested that yet.
++	 */
++	return !folio_test_large(folio);
++}
 +
-+	/* Check for overflow in allocation size calculation */
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+		return -EINVAL;
+ extern atomic_t lru_disable_count;
  
--	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
-+	new_data = kmalloc(size, GFP_USER);
+ static inline bool lru_cache_disabled(void)
+diff --git a/mm/gup.c b/mm/gup.c
+index e1f125af9c844..b02993c9a8cdf 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1990,13 +1990,13 @@ static unsigned long collect_longterm_unpinnable_pages(
+ 			continue;
+ 		}
  
- 	if (!new_data)
- 		return -ENOMEM;
+-		if (drained == 0 &&
++		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain();
+ 			drained = 1;
+ 		}
+-		if (drained == 1 &&
++		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+ 				folio_ref_count(folio) !=
+ 				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 7032f6dd0ce19..3bf9e1d263da4 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -256,7 +256,7 @@ void mlock_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!pagevec_add(pvec, mlock_lru(&folio->page)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_pagevec(pvec);
+ 	local_unlock(&mlock_pvec.lock);
+ }
+diff --git a/mm/swap.c b/mm/swap.c
+index 85aa04fc48a67..e0fdf25350002 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -249,8 +249,8 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ static void folio_batch_add_and_move(struct folio_batch *fbatch,
+ 		struct folio *folio, move_fn_t move_fn)
+ {
+-	if (folio_batch_add(fbatch, folio) && !folio_test_large(folio) &&
+-	    !lru_cache_disabled())
++	if (folio_batch_add(fbatch, folio) &&
++	    folio_may_be_lru_cached(folio) && !lru_cache_disabled())
+ 		return;
+ 	folio_batch_move_lru(fbatch, move_fn);
+ }
+-- 
+2.51.0
+
 
 
 
