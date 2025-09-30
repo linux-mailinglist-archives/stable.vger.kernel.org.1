@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-182743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36060BADCF0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17DCBADDF8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCBD832770A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402AD1945F4A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4210304BCC;
-	Tue, 30 Sep 2025 15:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F882FD1DD;
+	Tue, 30 Sep 2025 15:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqjGgmFc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHgbPC5/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8462FFDE6;
-	Tue, 30 Sep 2025 15:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828A53C465;
+	Tue, 30 Sep 2025 15:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245945; cv=none; b=G5w5uXT9UZPnTJyq2dBWZLVgC16raqZffeOAy+oqu4DOwIcDDPQSiJl2b/97opMyEGX5AjYj3yu9yM7pp5EOJsFACXleu9yD2ZkrCemZUs+ZyZxJTw0Own3zhsIQLRL+AY7CqmGYY/Fc6m/1fFrsHDcBEKYar6D/CUiRSAi+lxM=
+	t=1759246168; cv=none; b=iNB7CZdx9aZAlqa3Wey1BmIWvGf1MFnDR2U4+UYgbiXQwpljtXJsDY/owhEkJENCFHUOt/j3RmoTZH+21JJoYlABsLABjeT941dVb9xUsIKNIMI8GfkXNyEEGP2A5mTVv6q6HS7gGlKrE1mnUU8mkdSSLmbnTSmqRojb7T1biSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245945; c=relaxed/simple;
-	bh=gQdkkzzhJixu0JQV9EUN+CN8E9lIZSyiht2AXCxlRpY=;
+	s=arc-20240116; t=1759246168; c=relaxed/simple;
+	bh=mx4SL4xl0mjzX1o/DH6tFjKU6PF3XsZFuU4rePQVcvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCn65OMPI4kvZLchhZLCqDqKMBq/ZPaBWtpZTY6lKlDG/R5IZJa/TzxntoqynFDU5qZWpdX2MprCJzAZLZCPxRvoqmfdWPaU9xMxOO6qjnW6MmjoVh+pG0x/d/z688jwqNCPMkQOYabuCKCNNuyjtCPjW2xaws/225ek/DryjN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqjGgmFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64EEC4CEF0;
-	Tue, 30 Sep 2025 15:25:44 +0000 (UTC)
+	 MIME-Version; b=LL8yzayLdnxh78YaCe4enTEp1ghTLfTmWT6AVE9ON4izZYFOH/qLbxuhegNbpk020YOwTUsMe6T5b4HinlYuK2StWYhtxCxmy/vOfWtXlUdF/eBe7P+V4+UFMD8xvvYYBlfCu9ZeUeYUGaDTxjIj0ZQC8xYoDWW0+Kn/a8tXN6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHgbPC5/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D33C4CEF0;
+	Tue, 30 Sep 2025 15:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245945;
-	bh=gQdkkzzhJixu0JQV9EUN+CN8E9lIZSyiht2AXCxlRpY=;
+	s=korg; t=1759246168;
+	bh=mx4SL4xl0mjzX1o/DH6tFjKU6PF3XsZFuU4rePQVcvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqjGgmFcr0xc/HFBVq0npALH44F/uM3iTd878Gonnt9ZHYAfqaAWOOzELn2RRHBeH
-	 8gTjKQVfZwV871KYuqYhWZjJy0BSq+lHaH6+6KByi2EWxjbG6DdlTmclYmXEE2P9Sy
-	 Y4I/niFQUJXLfudNuR0kmbTbWlCTtL3CA9wmm050=
+	b=QHgbPC5/cY51aaC5RmiYclCzmPOpPJ6sbWw3ga076/sH1V1S7kqHHiO7iPGo7SeNu
+	 Xzpsh2Q+r+iPAl5GQOcFBAK+m8L+4bCT3oipf5GpHpD3cImxyStLgRfCx5qApc1J1Z
+	 nGXIBvnNr1ISb+ZLCQ23WtZ2aDdTAtcp5oq8VUsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.6 89/91] minmax.h: move all the clamp() definitions after the min/max() ones
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 74/89] i40e: improve VF MAC filters accounting
 Date: Tue, 30 Sep 2025 16:48:28 +0200
-Message-ID: <20250930143824.874038286@linuxfoundation.org>
+Message-ID: <20250930143824.968567900@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,188 +65,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit c3939872ee4a6b8bdcd0e813c66823b31e6e26f7 ]
+commit b99dd77076bd3fddac6f7f1cbfa081c38fde17f5 upstream.
 
-At some point the definitions for clamp() got added in the middle of the
-ones for min() and max().  Re-order the definitions so they are more
-sensibly grouped.
+When adding new VM MAC, driver checks only *active* filters in
+vsi->mac_filter_hash. Each MAC, even in non-active state is using resources.
 
-Link: https://lkml.kernel.org/r/8bb285818e4846469121c8abc3dfb6e2@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+To determine number of MACs VM uses, count VSI filters in *any* state.
+
+Add i40e_count_all_filters() to simply count all filters, and rename
+i40e_count_filters() to i40e_count_active_filters() to avoid ambiguity.
+
+Fixes: cfb1d572c986 ("i40e: Add ensurance of MacVlan resources for every trusted VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |  109 ++++++++++++++++++++++---------------------------
- 1 file changed, 51 insertions(+), 58 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h             |    3 
+ drivers/net/ethernet/intel/i40e/i40e_main.c        |   26 +++++++-
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   65 ++++++++-------------
+ 3 files changed, 50 insertions(+), 44 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -99,22 +99,6 @@
- #define __careful_cmp(op, x, y) \
- 	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
- 
--#define __clamp(val, lo, hi)	\
--	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
--
--#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
--	__auto_type uval = (val);						\
--	__auto_type ulo = (lo);							\
--	__auto_type uhi = (hi);							\
--	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
--		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
--		"clamp("#val", "#lo", "#hi") signedness error");		\
--	__clamp(uval, ulo, uhi); })
--
--#define __careful_clamp(val, lo, hi) \
--	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
--
- /**
-  * min - return minimum of two values of the same or compatible types
-  * @x: first value
-@@ -171,6 +155,22 @@
- 	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -1277,7 +1277,8 @@ struct i40e_mac_filter *i40e_add_mac_fil
+ 					    const u8 *macaddr);
+ int i40e_del_mac_filter(struct i40e_vsi *vsi, const u8 *macaddr);
+ bool i40e_is_vsi_in_vlan(struct i40e_vsi *vsi);
+-int i40e_count_filters(struct i40e_vsi *vsi);
++int i40e_count_all_filters(struct i40e_vsi *vsi);
++int i40e_count_active_filters(struct i40e_vsi *vsi);
+ struct i40e_mac_filter *i40e_find_mac(struct i40e_vsi *vsi, const u8 *macaddr);
+ void i40e_vlan_stripping_enable(struct i40e_vsi *vsi);
+ static inline bool i40e_is_sw_dcb(struct i40e_pf *pf)
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1241,12 +1241,30 @@ void i40e_update_stats(struct i40e_vsi *
+ }
  
  /**
-+ * min_t - return minimum of two values, using the specified type
-+ * @type: data type to use
-+ * @x: first value
-+ * @y: second value
+- * i40e_count_filters - counts VSI mac filters
++ * i40e_count_all_filters - counts VSI MAC filters
+  * @vsi: the VSI to be searched
+  *
+- * Returns count of mac filters
+- **/
+-int i40e_count_filters(struct i40e_vsi *vsi)
++ * Return: count of MAC filters in any state.
 + */
-+#define min_t(type, x, y) __cmp_once(min, type, x, y)
++int i40e_count_all_filters(struct i40e_vsi *vsi)
++{
++	struct i40e_mac_filter *f;
++	struct hlist_node *h;
++	int bkt, cnt = 0;
++
++	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
++		cnt++;
++
++	return cnt;
++}
 +
 +/**
-+ * max_t - return maximum of two values, using the specified type
-+ * @type: data type to use
-+ * @x: first value
-+ * @y: second value
++ * i40e_count_active_filters - counts VSI MAC filters
++ * @vsi: the VSI to be searched
++ *
++ * Return: count of active MAC filters.
 + */
-+#define max_t(type, x, y) __cmp_once(max, type, x, y)
-+
-+/**
-  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
-  * @x: value1
-  * @y: value2
-@@ -180,6 +180,22 @@
- 	typeof(y) __y = (y);			\
- 	__x == 0 ? __y : ((__y == 0) ? __x : min(__x, __y)); })
- 
-+#define __clamp(val, lo, hi)	\
-+	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
-+
-+#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
-+	__auto_type uval = (val);						\
-+	__auto_type ulo = (lo);							\
-+	__auto_type uhi = (hi);							\
-+	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
-+		"clamp() low limit " #lo " greater than high limit " #hi);	\
-+	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
-+		"clamp("#val", "#lo", "#hi") signedness error");		\
-+	__clamp(uval, ulo, uhi); })
-+
-+#define __careful_clamp(val, lo, hi) \
-+	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-+
- /**
-  * clamp - return a value clamped to a given range with strict typechecking
-  * @val: current value
-@@ -191,28 +207,30 @@
-  */
- #define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
- 
--/*
-- * ..and if you can't take the strict
-- * types, you can specify one yourself.
-- *
-- * Or not use min/max/clamp at all, of course.
-- */
--
- /**
-- * min_t - return minimum of two values, using the specified type
-- * @type: data type to use
-- * @x: first value
-- * @y: second value
-+ * clamp_t - return a value clamped to a given range using a given type
-+ * @type: the type of variable to use
-+ * @val: current value
-+ * @lo: minimum allowable value
-+ * @hi: maximum allowable value
-+ *
-+ * This macro does no typechecking and uses temporary variables of type
-+ * @type to make all the comparisons.
-  */
--#define min_t(type, x, y) __cmp_once(min, type, x, y)
-+#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
- 
- /**
-- * max_t - return maximum of two values, using the specified type
-- * @type: data type to use
-- * @x: first value
-- * @y: second value
-+ * clamp_val - return a value clamped to a given range using val's type
-+ * @val: current value
-+ * @lo: minimum allowable value
-+ * @hi: maximum allowable value
-+ *
-+ * This macro does no typechecking and uses temporary variables of whatever
-+ * type the input argument @val is.  This is useful when @val is an unsigned
-+ * type and @lo and @hi are literals that will otherwise be assigned a signed
-+ * integer type.
-  */
--#define max_t(type, x, y) __cmp_once(max, type, x, y)
-+#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
- 
- /*
-  * Do not check the array parameter using __must_be_array().
-@@ -257,31 +275,6 @@
-  */
- #define max_array(array, len) __minmax_array(max, array, len)
- 
--/**
-- * clamp_t - return a value clamped to a given range using a given type
-- * @type: the type of variable to use
-- * @val: current value
-- * @lo: minimum allowable value
-- * @hi: maximum allowable value
-- *
-- * This macro does no typechecking and uses temporary variables of type
-- * @type to make all the comparisons.
-- */
--#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
--
--/**
-- * clamp_val - return a value clamped to a given range using val's type
-- * @val: current value
-- * @lo: minimum allowable value
-- * @hi: maximum allowable value
-- *
-- * This macro does no typechecking and uses temporary variables of whatever
-- * type the input argument @val is.  This is useful when @val is an unsigned
-- * type and @lo and @hi are literals that will otherwise be assigned a signed
-- * integer type.
-- */
--#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
--
- static inline bool in_range64(u64 val, u64 start, u64 len)
++int i40e_count_active_filters(struct i40e_vsi *vsi)
  {
- 	return (val - start) < len;
+ 	struct i40e_mac_filter *f;
+ 	struct hlist_node *h;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2865,24 +2865,6 @@ error_param:
+ 				      (u8 *)&stats, sizeof(stats));
+ }
+ 
+-/**
+- * i40e_can_vf_change_mac
+- * @vf: pointer to the VF info
+- *
+- * Return true if the VF is allowed to change its MAC filters, false otherwise
+- */
+-static bool i40e_can_vf_change_mac(struct i40e_vf *vf)
+-{
+-	/* If the VF MAC address has been set administratively (via the
+-	 * ndo_set_vf_mac command), then deny permission to the VF to
+-	 * add/delete unicast MAC addresses, unless the VF is trusted
+-	 */
+-	if (vf->pf_set_mac && !vf->trusted)
+-		return false;
+-
+-	return true;
+-}
+-
+ #define I40E_MAX_MACVLAN_PER_HW 3072
+ #define I40E_MAX_MACVLAN_PER_PF(num_ports) (I40E_MAX_MACVLAN_PER_HW /	\
+ 	(num_ports))
+@@ -2921,8 +2903,10 @@ static inline int i40e_check_vf_permissi
+ 	struct i40e_pf *pf = vf->pf;
+ 	struct i40e_vsi *vsi = pf->vsi[vf->lan_vsi_idx];
+ 	struct i40e_hw *hw = &pf->hw;
+-	int mac2add_cnt = 0;
+-	int i;
++	int i, mac_add_max, mac_add_cnt = 0;
++	bool vf_trusted;
++
++	vf_trusted = test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
+ 
+ 	for (i = 0; i < al->num_elements; i++) {
+ 		struct i40e_mac_filter *f;
+@@ -2942,9 +2926,8 @@ static inline int i40e_check_vf_permissi
+ 		 * The VF may request to set the MAC address filter already
+ 		 * assigned to it so do not return an error in that case.
+ 		 */
+-		if (!i40e_can_vf_change_mac(vf) &&
+-		    !is_multicast_ether_addr(addr) &&
+-		    !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
++		if (!vf_trusted && !is_multicast_ether_addr(addr) &&
++		    vf->pf_set_mac && !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
+ 			dev_err(&pf->pdev->dev,
+ 				"VF attempting to override administratively set MAC address, bring down and up the VF interface to resume normal operation\n");
+ 			return -EPERM;
+@@ -2953,29 +2936,33 @@ static inline int i40e_check_vf_permissi
+ 		/*count filters that really will be added*/
+ 		f = i40e_find_mac(vsi, addr);
+ 		if (!f)
+-			++mac2add_cnt;
++			++mac_add_cnt;
+ 	}
+ 
+ 	/* If this VF is not privileged, then we can't add more than a limited
+-	 * number of addresses. Check to make sure that the additions do not
+-	 * push us over the limit.
+-	 */
+-	if (!test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
+-		if ((i40e_count_filters(vsi) + mac2add_cnt) >
+-		    I40E_VC_MAX_MAC_ADDR_PER_VF) {
+-			dev_err(&pf->pdev->dev,
+-				"Cannot add more MAC addresses, VF is not trusted, switch the VF to trusted to add more functionality\n");
+-			return -EPERM;
+-		}
+-	/* If this VF is trusted, it can use more resources than untrusted.
++	 * number of addresses.
++	 *
++	 * If this VF is trusted, it can use more resources than untrusted.
+ 	 * However to ensure that every trusted VF has appropriate number of
+ 	 * resources, divide whole pool of resources per port and then across
+ 	 * all VFs.
+ 	 */
+-	} else {
+-		if ((i40e_count_filters(vsi) + mac2add_cnt) >
+-		    I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs,
+-						       hw->num_ports)) {
++	if (!vf_trusted)
++		mac_add_max = I40E_VC_MAX_MAC_ADDR_PER_VF;
++	else
++		mac_add_max = I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs, hw->num_ports);
++
++	/* VF can replace all its filters in one step, in this case mac_add_max
++	 * will be added as active and another mac_add_max will be in
++	 * a to-be-removed state. Account for that.
++	 */
++	if ((i40e_count_active_filters(vsi) + mac_add_cnt) > mac_add_max ||
++	    (i40e_count_all_filters(vsi) + mac_add_cnt) > 2 * mac_add_max) {
++		if (!vf_trusted) {
++			dev_err(&pf->pdev->dev,
++				"Cannot add more MAC addresses, VF is not trusted, switch the VF to trusted to add more functionality\n");
++			return -EPERM;
++		} else {
+ 			dev_err(&pf->pdev->dev,
+ 				"Cannot add more MAC addresses, trusted VF exhausted it's resources\n");
+ 			return -EPERM;
 
 
 
