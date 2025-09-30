@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FCD3BAD998
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CACBAD4C2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BB4E1943EA5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0609E3C116F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DB82236EB;
-	Tue, 30 Sep 2025 15:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A3D2264AB;
+	Tue, 30 Sep 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAZyAxMq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ip04CH4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22EE306B35;
-	Tue, 30 Sep 2025 15:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BBF2FD1B0;
+	Tue, 30 Sep 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245114; cv=none; b=RavaG3QnWxLcfo+JJ4AqkQTAqnSF9SJOSEx0xJb3oVYScmMsJMP2kkSh+K/k8pWCMVxLAlZNHksFL9z33mmbFNqBpCpdYjAnhQT0HFbOkxSEEqvOcR+gTdeA6PnjZryIJXO2scXxlj8YyzAiRvwoky0LDrNAIVLy5o73Kltskkg=
+	t=1759243867; cv=none; b=a41bZO7pBeHCqDHLWfUrrpbtbp5cMyKlhjWeYf/5J5iD/nVuCQifVptbGSQlpQbGPI6jnMNJpz6pwvqkGHCnbkxp1eAydoWlfc3OifzFUq9WAXPB1PJXC/N3/4YINhqGZRY4zzCp/hzDQhXiCMJiMJ+FbvShBrPy+g7XJTfAo9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245114; c=relaxed/simple;
-	bh=sHxEfPHOGCY7a0SWhjgImpL5Cg/Wt7ndyv+KP4pDC68=;
+	s=arc-20240116; t=1759243867; c=relaxed/simple;
+	bh=oQ3a8M+S/iOe3dIemdOLZ4/IIyYVfYanChzbvBF7RN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0ZRQHgWoaiDWhqnAu7g2/XzCNTTZzRjVeHu1kNnI04upyS3oiewZr3/uT+zCjBeOu46qUGVB+Yx2Re2uCrhkX5mKSEh/4dZu0UNGWc6Qo/ZHc+GB0MVtsv30IG6wBJV4PUgGzAsJmC/kIOZ9Q+qXgv2TmgXOWAnWl0+Pv5KG2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAZyAxMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480F5C4CEF0;
-	Tue, 30 Sep 2025 15:11:54 +0000 (UTC)
+	 MIME-Version; b=KFaqpktmlavD4LIkCYS9emoCVqG4AtslMB+CLe2bdLmPlbYxnWuwlWn+3KIR4F2nGZyC1yjRrkElywQnFK3GyJ4Q1Mm+Uwlu1mrUEay7d+suSqAUww1ZoYmc9HMcBg5D176FqdDBpEKj6gPqOaY1g2dkjcxt/ursmUyMpxrXhOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ip04CH4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E98C4CEF0;
+	Tue, 30 Sep 2025 14:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245114;
-	bh=sHxEfPHOGCY7a0SWhjgImpL5Cg/Wt7ndyv+KP4pDC68=;
+	s=korg; t=1759243867;
+	bh=oQ3a8M+S/iOe3dIemdOLZ4/IIyYVfYanChzbvBF7RN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAZyAxMqCk2Zdn5lIMeXvakYY0bjyvFt14CNfvRQK/+I7xVGzqdhPn74tWT+J3PbS
-	 CTz1hGGgZ+awgiKqb9DgQURlhvkkT3T+yX13nStgXCmOs2jSujwpWxWzA8cfYsagmW
-	 +k1XnLk3q5L6pIXZ18DL1yBmLu6FnX5yuqLZRLFA=
+	b=Ip04CH4dq+zcIJUi4o+jiWSgXEP/EFREhvOiajii1R8TroVV9gDvyKmM0BwKiKo+T
+	 oPqfmWEuC/IGoZ6wB3fT7mExVLao3nLv9B0gB0RF/1mm205nOijZE0EzbiTDGEnNyV
+	 HUd8yUE5yYJOWXHilNLZdemihL2qIlxcwhjijMg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.15 073/151] i40e: remove redundant memory barrier when cleaning Tx descs
+	Nathan Chancellor <nathan@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 41/81] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
 Date: Tue, 30 Sep 2025 16:46:43 +0200
-Message-ID: <20250930143830.504916603@linuxfoundation.org>
+Message-ID: <20250930143821.391551791@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit e37084a26070c546ae7961ee135bbfb15fbe13fd ]
+commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
 
-i40e has a feature which writes to memory location last descriptor
-successfully sent. Memory barrier in i40e_clean_tx_irq() was used to
-avoid forward-reading descriptor fields in case DD bit was not set.
-Having mentioned feature in place implies that such situation will not
-happen as we know in advance how many descriptors HW has dealt with.
+When accessing one of the files under /sys/fs/nilfs2/features when
+CONFIG_CFI_CLANG is enabled, there is a CFI violation:
 
-Besides, this barrier placement was wrong. Idea is to have this
-protection *after* reading DD bit from HW descriptor, not before.
-Digging through git history showed me that indeed barrier was before DD
-bit check, anyways the commit introducing i40e_get_head() should have
-wiped it out altogether.
+  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
+  ...
+  Call Trace:
+   <TASK>
+   sysfs_kf_seq_show+0x2a6/0x390
+   ? __cfi_kobj_attr_show+0x10/0x10
+   kernfs_seq_show+0x104/0x15b
+   seq_read_iter+0x580/0xe2b
+  ...
 
-Also, there was one commit doing s/read_barrier_depends/smp_rmb when get
-head feature was already in place, but it was only theoretical based on
-ixgbe experiences, which is different in these terms as that driver has
-to read DD bit from HW descriptor.
+When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
+is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
+nilfs_feature_attr_group is added to that kobject via
+sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
+which will call sysfs_kf_seq_show() when ->seq_show() is called.
+sysfs_kf_seq_show() in turn calls kobj_attr_show() through
+->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
+a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
+in the CFI violation since neither nilfs_feature_revision_show() nor
+nilfs_feature_README_show() match the prototype of ->show() in 'struct
+kobj_attribute'.
 
-Fixes: 1943d8ba9507 ("i40e/i40evf: enable hardware feature head write back")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Resolve the CFI violation by adjusting the second parameter in
+nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
+kobj_attribute' to match the expected prototype.
+
+Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
+Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/nilfs2/sysfs.c |    4 ++--
+ fs/nilfs2/sysfs.h |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index e2737875e3795..b94d67729283c 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -949,9 +949,6 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
- 		if (!eop_desc)
- 			break;
+--- a/fs/nilfs2/sysfs.c
++++ b/fs/nilfs2/sysfs.c
+@@ -1081,7 +1081,7 @@ void nilfs_sysfs_delete_device_group(str
+  ************************************************************************/
  
--		/* prevent any other reads prior to eop_desc */
--		smp_rmb();
--
- 		i40e_trace(clean_tx_irq, tx_ring, tx_desc, tx_buf);
- 		/* we have caught up to head, no work left to do */
- 		if (tx_head == tx_desc)
--- 
-2.51.0
-
+ static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
+-					    struct attribute *attr, char *buf)
++					    struct kobj_attribute *attr, char *buf)
+ {
+ 	return sysfs_emit(buf, "%d.%d\n",
+ 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
+@@ -1093,7 +1093,7 @@ static const char features_readme_str[]
+ 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
+ 
+ static ssize_t nilfs_feature_README_show(struct kobject *kobj,
+-					 struct attribute *attr,
++					 struct kobj_attribute *attr,
+ 					 char *buf)
+ {
+ 	return sysfs_emit(buf, features_readme_str);
+--- a/fs/nilfs2/sysfs.h
++++ b/fs/nilfs2/sysfs.h
+@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
+ 	struct completion sg_segments_kobj_unregister;
+ };
+ 
+-#define NILFS_COMMON_ATTR_STRUCT(name) \
++#define NILFS_KOBJ_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
+ 	struct attribute attr; \
+-	ssize_t (*show)(struct kobject *, struct attribute *, \
++	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
+ 			char *); \
+-	ssize_t (*store)(struct kobject *, struct attribute *, \
++	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
+ 			 const char *, size_t); \
+ }
+ 
+-NILFS_COMMON_ATTR_STRUCT(feature);
++NILFS_KOBJ_ATTR_STRUCT(feature);
+ 
+ #define NILFS_DEV_ATTR_STRUCT(name) \
+ struct nilfs_##name##_attr { \
 
 
 
