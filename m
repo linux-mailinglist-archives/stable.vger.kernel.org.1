@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-182811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D9EBADDEF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6E1BADAB6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1A507A5CBA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12BA3327E01
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613BE3C465;
-	Tue, 30 Sep 2025 15:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB252FD1DD;
+	Tue, 30 Sep 2025 15:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBOwwkwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fs7yNvXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE7020468D;
-	Tue, 30 Sep 2025 15:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5541D6188;
+	Tue, 30 Sep 2025 15:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246159; cv=none; b=ENwLzRsYHA4sbFGmcykI+B6DIgvgS90EseCjarUrXDmRUqQTlL7WXgR3SBmOfgAorq+jYGGopVIliEYh0hX7unVj+9FHdolVk64PQswgjPsyUPldctBBIjWjJ+sTJrxwzSd8aQiVRZ+ndML7rEsBEk0DBRDzmO4WEVXCaGQj+t4=
+	t=1759245357; cv=none; b=moN+LD1xP9k5qjDKdyr9EwbZASYUodZ2vvg9wWWeetXivnh9/3jDF5HPLgtLUfPBoFxBd+iUV1Esaxc2i42G04SsCr5jGabATP0J0dN2olx5O8pVyrMC/UVlnyY2AFB7Pc/kMMvGLaHK+uXRn7xJ3ZXLsowyiPerkEMFMoRCI8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246159; c=relaxed/simple;
-	bh=5dDKugh/54At+e11E2cMLzm4iLMtecHvsdZvmt6rKAc=;
+	s=arc-20240116; t=1759245357; c=relaxed/simple;
+	bh=KIyb7gkpWlajf2R7Tv2Ew1imbk4FrAU796xVVjmRUi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxvlv62c9chwbWTKEZGFu3aLJW20AcyjWVM9/l7LjwIn2+G1xwoby3hNYhGru3n7viFSAalZxe0kYvpfl2XpDm+7FMthglUXgG507P20/rOkUi+oPswNEfUNa9ERMMcZ09baqgDSZm1e6QK76gQ3HQ+qtbMsBzYTdOkN6cZblww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBOwwkwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290DC4CEF0;
-	Tue, 30 Sep 2025 15:29:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nhouf3IfixGd06lTGl1shr3vElw8DIHil04bFXf9r+Qq0x/U/M4iMIy00/dcy7QfK61SCNBFwAWasHj7TPgSTfZT5tbzsE2+2sbvXCJZtYld2g9dKhG+w6XDeVbVVlaibVaQh77191tqiiQapMbDPYEBxdfud4WpNioAbz0eE/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fs7yNvXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9815FC4CEF0;
+	Tue, 30 Sep 2025 15:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246159;
-	bh=5dDKugh/54At+e11E2cMLzm4iLMtecHvsdZvmt6rKAc=;
+	s=korg; t=1759245357;
+	bh=KIyb7gkpWlajf2R7Tv2Ew1imbk4FrAU796xVVjmRUi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBOwwkwisXf0FbylEZhDJrTBQzpfXtYWBwo0Iv6SNHSWbyvjzXvxLUpKyIsdhbl5p
-	 JrMDv5JevCPyk1cCyus6S3K7B8S17uWTCEVWO0ft9CrOkIEvaXvsb7m2pLPC2wqZwa
-	 RsW7TQijGDENCxMtmFsN6q0bUuf1n2ezFv8ScHys=
+	b=Fs7yNvXaspIOyqwRILdroVbtKrs+g7XAnnvid/jUvejgYPDH0srn4wDcvZFWG6n3Z
+	 dEHemvPaitxuRLNBCM/uqBf4u2lca0QE0D8QAWjWoQASk4+zq8GlM8H0FGKAPjw4hq
+	 /DwY+/+WdsrqCPn0pr2D0JRsJT4nhLjA/Zhe17Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 40/89] can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	George Kennedy <george.kennedy@oracle.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Qianqiang Liu <qianqiang.liu@163.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Kees Cook <kees@kernel.org>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 5.15 144/151] fbcon: Fix OOB access in font allocation
 Date: Tue, 30 Sep 2025 16:47:54 +0200
-Message-ID: <20250930143823.583552383@linuxfoundation.org>
+Message-ID: <20250930143833.329103372@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +70,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 38c0abad45b190a30d8284a37264d2127a6ec303 ]
+commit 9b2f5ef00e852f8e8902a4d4f73aeedc60220c12 upstream.
 
-Sending an PF_PACKET allows to bypass the CAN framework logic and to
-directly reach the xmit() function of a CAN driver. The only check
-which is performed by the PF_PACKET framework is to make sure that
-skb->len fits the interface's MTU.
+Commit 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
+introduced an out-of-bounds access by storing data and allocation sizes
+in the same variable. Restore the old size calculation and use the new
+variable 'alloc_size' for the allocation.
 
-Unfortunately, because the etas_es58x driver does not populate its
-net_device_ops->ndo_change_mtu(), it is possible for an attacker to
-configure an invalid MTU by doing, for example:
-
-  $ ip link set can0 mtu 9999
-
-After doing so, the attacker could open a PF_PACKET socket using the
-ETH_P_CANXL protocol:
-
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL));
-
-to inject a malicious CAN XL frames. For example:
-
-	struct canxl_frame frame = {
-		.flags = 0xff,
-		.len = 2048,
-	};
-
-The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
-check that the skb is valid, unfortunately under above conditions, the
-malicious packet is able to go through can_dev_dropped_skb() checks:
-
-  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
-     function does not check the actual device capabilities).
-
-  2. the length is a valid CAN XL length.
-
-And so, es58x_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN(FD)
-frame.
-
-This can result in a buffer overflow. For example, using the es581.4
-variant, the frame will be dispatched to es581_4_tx_can_msg(), go
-through the last check at the beginning of this function:
-
-	if (can_is_canfd_skb(skb))
-		return -EMSGSIZE;
-
-and reach this line:
-
-	memcpy(tx_can_msg->data, cf->data, cf->len);
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs!
-
-Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU or
-CANFD_MTU (depending on the device capabilities). By fixing the root
-cause, this prevents the buffer overflow.
-
-Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-1-0d1cada9393b@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
+Reported-by: Jani Nikula <jani.nikula@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6201
+Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: George Kennedy <george.kennedy@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Qianqiang Liu <qianqiang.liu@163.com>
+Cc: Shixiong Ou <oushixiong@kylinos.cn>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.9+
+Cc: Zsolt Kajtar <soci@c64.rulez.org>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Qianqiang Liu <qianqiang.liu@163.com>
+Link: https://lore.kernel.org/r/20250922134619.257684-1-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/etas_es58x/es58x_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
-index 71f24dc0a9271..4fc9bed0d2e1e 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
-@@ -7,7 +7,7 @@
-  *
-  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
-  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
-- * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+ * Copyright (c) 2020-2025 Vincent Mailhol <mailhol@kernel.org>
-  */
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2479,7 +2479,7 @@ static int fbcon_set_font(struct vc_data
+ 	unsigned charcount = font->charcount;
+ 	int w = font->width;
+ 	int h = font->height;
+-	int size;
++	int size, alloc_size;
+ 	int i, csum;
+ 	u8 *new_data, *data = font->data;
+ 	int pitch = PITCH(font->width);
+@@ -2512,10 +2512,10 @@ static int fbcon_set_font(struct vc_data
+ 		return -EINVAL;
  
- #include <linux/unaligned.h>
-@@ -1977,6 +1977,7 @@ static const struct net_device_ops es58x_netdev_ops = {
- 	.ndo_stop = es58x_stop,
- 	.ndo_start_xmit = es58x_start_xmit,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
-+	.ndo_change_mtu = can_change_mtu,
- };
+ 	/* Check for overflow in allocation size calculation */
+-	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
++	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
+ 		return -EINVAL;
  
- static const struct ethtool_ops es58x_ethtool_ops = {
--- 
-2.51.0
-
+-	new_data = kmalloc(size, GFP_USER);
++	new_data = kmalloc(alloc_size, GFP_USER);
+ 
+ 	if (!new_data)
+ 		return -ENOMEM;
 
 
 
