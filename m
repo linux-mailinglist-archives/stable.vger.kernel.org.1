@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-182286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01387BAD6EF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536EDBAD8F6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A72917E160
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16EB17883E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696F1306B33;
-	Tue, 30 Sep 2025 15:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DA7304964;
+	Tue, 30 Sep 2025 15:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrFVyNzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xl9Dn7j2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B9B303A29;
-	Tue, 30 Sep 2025 15:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C843074BB;
+	Tue, 30 Sep 2025 15:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244451; cv=none; b=aglGJi0z5iv2UCnr6pBWaAGbUCyDbMgVDxVT0iQLhmbEIr184vU43mYPqhcDmtbBje83bNOYDqAVcdPEsQ2wpMXK15PIGmEJ/xCKcsbv+z+INOPUe/uB/grZ7HsWagiMzpKDJeoLtAHhbgxUFVczudZDPYOuwza37U8hbaPIfrg=
+	t=1759244948; cv=none; b=ewZsxypEFWU7kYM1fFP33uQncH0sdT1GHUOYxw2+LFWTnLQi4We0YxjOCdJwFanb/+ghWBCbhVgvbuGE8mOErlnSFK4wPuOiJR4GBgcEYBjB0sAkoajbTL7WacBSWAlAxVLfUOMO6jbTlkpUwHqwBj1KWCYPZylO1FR8j/P7qK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244451; c=relaxed/simple;
-	bh=1xmrfcKFFFtuV/+CXx+A0B5UxO0nulz7sXO1crmyoPI=;
+	s=arc-20240116; t=1759244948; c=relaxed/simple;
+	bh=CGCGg/NsdI/bK/BXVgDUgKX1moWirUCtBCHz6c4YyHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdd6P6oEfNzSEw4mFNenZUewf9xURTkmypFrRUkcSc1DVj9tfA09TFX/wZlI++zs7ldvKeZjo4mjhHpxQJYbaZ1xzoyDvYAvi40LqzDyPeNlavK0jW8FhBXVtUH8Hjq+Rts71qHDzb/henUhXATylKKX0Ljo4pO4Dr/6qJrCkD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrFVyNzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99841C4CEF0;
-	Tue, 30 Sep 2025 15:00:50 +0000 (UTC)
+	 MIME-Version; b=sE7NOx9aogUHn9JBPA1hUPk4qzLOEf6d7wBgYb9NmDA/MLM4nkrlr4PrG+1ImV4Nioqg4kW7V5BxJwdGmM0jWamX4f49vl6AuE8Xnm557JEd+f/1XXAF1uyc28NwUOIsD8s+ly1u3yYoz+pmDT4GHCmpeKCYrLTtMZ9Rqo1ieZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xl9Dn7j2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D2CC4CEF0;
+	Tue, 30 Sep 2025 15:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244451;
-	bh=1xmrfcKFFFtuV/+CXx+A0B5UxO0nulz7sXO1crmyoPI=;
+	s=korg; t=1759244948;
+	bh=CGCGg/NsdI/bK/BXVgDUgKX1moWirUCtBCHz6c4YyHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrFVyNzmLT3yR62w1bQAN4kiz4kn3bYLBElwnkPnFz+fGu2czBRhnltJuGy38/5IT
-	 U++gpZaJyQRyXOEZxnSLQjHkqlqDzm323oDtCLYKn9GEOEY7HHr8fItBK3n9pjfN37
-	 +WcGBMtbb2HK89n3j2/AMkqFChIVPmGiIsLI8Kqo=
+	b=xl9Dn7j2OmMJjqG+Km6WDyftrUXIeR/AZq12s7wy9OHB2YD8XerY+HsTc6QurvyE1
+	 PbXiZYo74w7AV4M7uupAKnEObqHT9NV2V3gjpW6Ubvf/GdSBg8QgDaRh5+KjCNLfEq
+	 sO37Ky/eEO9LE84kY7yCtXzI4HTqWG1IGpzp/MZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Courbot <acourbot@google.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 011/143] HID: multitouch: Get the contact ID from HID_DG_TRANSDUCER_INDEX fields in case of Apple Touch Bar
+Subject: [PATCH 5.15 005/151] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
 Date: Tue, 30 Sep 2025 16:45:35 +0200
-Message-ID: <20250930143831.696749869@linuxfoundation.org>
+Message-ID: <20250930143827.803851771@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f41d736acc039d86512951f4e874b0f5e666babf ]
+[ Upstream commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 ]
 
-In Apple Touch Bar, the contact ID is contained in fields with the
-HID_DG_TRANSDUCER_INDEX usage rather than HID_DG_CONTACTID, thus differing
-from the HID spec. Add a quirk for the same.
+This is one of three clang warnings about incompatible enum types
+in a conditional expression:
 
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Co-developed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
+  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
+      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
+
+The code is correct, so just rework it to avoid the warning.
+
+Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Alexandre Courbot <acourbot@google.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ Adapted file path ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-multitouch.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 4c22bd2ba1708..c1be2978c0987 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -73,6 +73,7 @@ MODULE_LICENSE("GPL");
- #define MT_QUIRK_FORCE_MULTI_INPUT	BIT(20)
- #define MT_QUIRK_DISABLE_WAKEUP		BIT(21)
- #define MT_QUIRK_ORIENTATION_INVERT	BIT(22)
-+#define MT_QUIRK_APPLE_TOUCHBAR		BIT(23)
+--- a/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
++++ b/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
+@@ -513,7 +513,11 @@ static int h264_enc_init(struct mtk_vcod
  
- #define MT_INPUTMODE_TOUCHSCREEN	0x02
- #define MT_INPUTMODE_TOUCHPAD		0x03
-@@ -625,6 +626,7 @@ static struct mt_application *mt_find_application(struct mt_device *td,
- static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
- 						      struct hid_report *report)
- {
-+	struct mt_class *cls = &td->mtclass;
- 	struct mt_report_data *rdata;
- 	struct hid_field *field;
- 	int r, n;
-@@ -649,7 +651,11 @@ static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
- 
- 		if (field->logical == HID_DG_FINGER || td->hdev->group != HID_GROUP_MULTITOUCH_WIN_8) {
- 			for (n = 0; n < field->report_count; n++) {
--				if (field->usage[n].hid == HID_DG_CONTACTID) {
-+				unsigned int hid = field->usage[n].hid;
+ 	inst->ctx = ctx;
+ 	inst->vpu_inst.ctx = ctx;
+-	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
++	if (is_ext)
++		inst->vpu_inst.id = SCP_IPI_VENC_H264;
++	else
++		inst->vpu_inst.id = IPI_VENC_H264;
 +
-+				if (hid == HID_DG_CONTACTID ||
-+				   (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR &&
-+				   hid == HID_DG_TRANSDUCER_INDEX)) {
- 					rdata->is_mt_collection = true;
- 					break;
- 				}
-@@ -827,6 +833,14 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
- 						     EV_KEY, BTN_TOUCH);
- 			MT_STORE_FIELD(tip_state);
- 			return 1;
-+		case HID_DG_TRANSDUCER_INDEX:
-+			/*
-+			 * Contact ID in case of Apple Touch Bars is contained
-+			 * in fields with HID_DG_TRANSDUCER_INDEX usage.
-+			 */
-+			if (!(cls->quirks & MT_QUIRK_APPLE_TOUCHBAR))
-+				return 0;
-+			fallthrough;
- 		case HID_DG_CONTACTID:
- 			MT_STORE_FIELD(contactid);
- 			app->touches_by_report++;
--- 
-2.51.0
-
+ 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx, VENC_SYS);
+ 
+ 	mtk_vcodec_debug_enter(inst);
 
 
 
