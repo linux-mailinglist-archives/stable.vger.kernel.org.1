@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7391BAD64A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0408BAD7D3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B37291885528
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1ABC07A67AB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765F7302163;
-	Tue, 30 Sep 2025 14:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C29D2236EB;
+	Tue, 30 Sep 2025 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zt1642JN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuUsCg2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE41EF38E;
-	Tue, 30 Sep 2025 14:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A90217F55;
+	Tue, 30 Sep 2025 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244280; cv=none; b=iopXm0vXWBGD9SC/8NYOMhUuNMDewmRfhx1/GvvIHpHUJ/eDO+KBygP+GqgWuEgCX8KIF4ssP5xME44h3Kv9bVZA934SuJ2jwWXv7DFEFFnlyJSIbP1hW/a1pPqqJfsZu7N3wGrEtnGFnFOMVPGGH6I43Q8gvIlZXXcNzDMBPHA=
+	t=1759244726; cv=none; b=Eld9X/PEEiffD9EsrLWo93Zz3BYP9+iUMXWEmy4C+x64tId8wMlW2ayzCSDJJj4dI5It3Fntr0bD8SmHlvbRWlkECTBbj3l/S5Ks/nleB7NterONZxSWfLoiCBGrAkIPsK2u6vZR5XAxZ3QsdXO4LrN/E5TquWZ4gO57L5OfXfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244280; c=relaxed/simple;
-	bh=WfqdFUPpZFE3UFSv3GxnBS74dPS4iTRi4SwWUAhGroU=;
+	s=arc-20240116; t=1759244726; c=relaxed/simple;
+	bh=twY2Ml5qcH1zHZetQNKUBn6XTyK71rgQnmHLY60Oh7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hF8yir+ZtDQy7Iz2tX1XZ9jqWPOgCzIuVpoFcIhHdrPJTFSTrx+YwyevB+Ae9Te0No0EoKwvtJCCnUZMZMViNgyhxi1fk/F012h/kc2NlB+I8TwFMS3f1jDAo3MOQ1F+YLjX08AVi9gyDaBSetyrpqCmyJI+9j+jvhdypnUyQUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zt1642JN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958B9C4CEF0;
-	Tue, 30 Sep 2025 14:57:59 +0000 (UTC)
+	 MIME-Version; b=fLZbVUWxDT+bvRqffzlmE14ND5S2GnfEgsWEnkOXBzXGher3n5aWemdhj80YxgJedkDOohW9KUTX9E0EKMT2HAumpMa1m73FkYp10mt8qZK2zLvqVFfDgIWc63zIsasAH3RsgM98twbaSs9ZlotlHTyq1J7LX77uZPRXOluMX14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuUsCg2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44154C4CEF0;
+	Tue, 30 Sep 2025 15:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244280;
-	bh=WfqdFUPpZFE3UFSv3GxnBS74dPS4iTRi4SwWUAhGroU=;
+	s=korg; t=1759244726;
+	bh=twY2Ml5qcH1zHZetQNKUBn6XTyK71rgQnmHLY60Oh7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zt1642JN9Q0lGxLa9rxMVOUEZHxOijA4elTzTPo1GFJ8kbzlmE7AEkPGGigMVCXna
-	 rq/N28eemHA0OCSl2qUlEj8NUwwKM7ewCL2/5inCo4b7VuQ0ZC04f1nyJRWftq8eTN
-	 0rYlKG594Ge1MPWd+Ppfw7rdIerRfWedsmnTAQL4=
+	b=CuUsCg2i1fwOmr/d4n/oOSKm0eMXrXawPl7UmeVtMlOEVMri6ruQ73kE+PbUCn9lq
+	 ZOB/F+7teIIug/u5xgu75pqgndr1quS+6hHKdM3rGEKN5hA4zHHTUs54H3kAg0mO3I
+	 q8zXYSSXpxfcKbL+EoWXfaX7a48cJLM1lk1vHPx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/122] net: rfkill: gpio: add DT support
-Date: Tue, 30 Sep 2025 16:46:51 +0200
-Message-ID: <20250930143826.274037171@linuxfoundation.org>
+Subject: [PATCH 6.16 088/143] gpio: regmap: fix memory leak of gpio_regmap structure
+Date: Tue, 30 Sep 2025 16:46:52 +0200
+Message-ID: <20250930143834.738981635@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit d64c732dfc9edcd57feb693c23162117737e426b ]
+[ Upstream commit 3bd44edd6c55828fd4e11cb0efce5b7160bfa2de ]
 
-Allow probing rfkill-gpio via device tree. This hooks up the already
-existing support that was started in commit 262c91ee5e52 ("net:
-rfkill: gpio: prepare for DT and ACPI support") via the "rfkill-gpio"
-compatible, with the "name" and "type" properties renamed to "label"
-and "radio-type", respectively, in the device tree case.
+The gpio_regmap structure is leaked on the error path. Fix this by
+jumping to the appropriate kfree instead of returning directly.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://lore.kernel.org/r/20230102-rfkill-gpio-dt-v2-2-d1b83758c16d@pengutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: b6f56a44e4c1 ("net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer")
+Fixes: db305161880a ("gpio: regmap: Allow ngpio to be read from the property")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Suggested-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/r/20250922142427.3310221-7-ioana.ciornei@nxp.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-regmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -79,6 +79,8 @@ static int rfkill_gpio_probe(struct plat
- {
- 	struct rfkill_gpio_data *rfkill;
- 	struct gpio_desc *gpio;
-+	const char *name_property;
-+	const char *type_property;
- 	const char *type_name;
- 	int ret;
+diff --git a/drivers/gpio/gpio-regmap.c b/drivers/gpio/gpio-regmap.c
+index 87c4225784cfa..b3b84a404485e 100644
+--- a/drivers/gpio/gpio-regmap.c
++++ b/drivers/gpio/gpio-regmap.c
+@@ -274,7 +274,7 @@ struct gpio_regmap *gpio_regmap_register(const struct gpio_regmap_config *config
+ 	if (!chip->ngpio) {
+ 		ret = gpiochip_get_ngpios(chip, chip->parent);
+ 		if (ret)
+-			return ERR_PTR(ret);
++			goto err_free_gpio;
+ 	}
  
-@@ -86,8 +88,15 @@ static int rfkill_gpio_probe(struct plat
- 	if (!rfkill)
- 		return -ENOMEM;
- 
--	device_property_read_string(&pdev->dev, "name", &rfkill->name);
--	device_property_read_string(&pdev->dev, "type", &type_name);
-+	if (dev_of_node(&pdev->dev)) {
-+		name_property = "label";
-+		type_property = "radio-type";
-+	} else {
-+		name_property = "name";
-+		type_property = "type";
-+	}
-+	device_property_read_string(&pdev->dev, name_property, &rfkill->name);
-+	device_property_read_string(&pdev->dev, type_property, &type_name);
- 
- 	if (!rfkill->name)
- 		rfkill->name = dev_name(&pdev->dev);
-@@ -169,12 +178,19 @@ static const struct acpi_device_id rfkil
- MODULE_DEVICE_TABLE(acpi, rfkill_acpi_match);
- #endif
- 
-+static const struct of_device_id rfkill_of_match[] __maybe_unused = {
-+	{ .compatible = "rfkill-gpio", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, rfkill_of_match);
-+
- static struct platform_driver rfkill_gpio_driver = {
- 	.probe = rfkill_gpio_probe,
- 	.remove = rfkill_gpio_remove,
- 	.driver = {
- 		.name = "rfkill_gpio",
- 		.acpi_match_table = ACPI_PTR(rfkill_acpi_match),
-+		.of_match_table = of_match_ptr(rfkill_of_match),
- 	},
- };
- 
+ 	/* if not set, assume there is only one register */
+-- 
+2.51.0
+
 
 
 
