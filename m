@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-182626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B671BADB7F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22C9BADCD2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E244163522
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BCDF3273EB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F5C2FD1DD;
-	Tue, 30 Sep 2025 15:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC9E2FFDE6;
+	Tue, 30 Sep 2025 15:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoHoH/+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuZ+y4o5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB991EB5E3;
-	Tue, 30 Sep 2025 15:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D731F3FED;
+	Tue, 30 Sep 2025 15:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245561; cv=none; b=jvpa86D4fSV+JpuY5Fcy57dd9qwlYi4rBEWsQiazDpf5hsqZJSbfErjD1AziYqFb2hRkulBXTkqccBG6WtOCXcIQ9cNP0rZbwdBs825TuDVruQLfGLyl4J2dyhbJUEDb34REmC0mQfadMHC0lKS/LHWy/i1xwk8SJtFxe5prewU=
+	t=1759245922; cv=none; b=hwkdZVt5/ExvZrBKVQuSisWsRHWq3I5P1tfRsLQBXBlXTInUmLgflJTb53vITxG/stA7MVs2X0hrPgVfaE64z720K7gNTzV5+iAGtwfaGZ4z/oyp1mtruBWi2js+DrWQgZZoddZCWDvbybcBZ1zhiU9D92JsU8aUg2sAsJSQZfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245561; c=relaxed/simple;
-	bh=g1bSl+2f975x1oKZld9dZXskKWU8FmtdZkkn/mgCTmY=;
+	s=arc-20240116; t=1759245922; c=relaxed/simple;
+	bh=ZxEfE/edvgbYVzoccplrECp6+www/WdQpz0dW+PQ8p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWMWNhYxJtFFCe+cbirAfWFZaQBQKh/fjbhlmD7tq1VFC17m8bduf+qYZfMudPcqYk9mGslpIubAkYimMfBLUiWIfNVgvBEXLvIqXBQcrmuiafNg5oLt9LG9bTrarCUNM4Weidq274zYLv/KKTWW7szo1sfebi697xP3S92Y1c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoHoH/+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532C6C4CEF0;
-	Tue, 30 Sep 2025 15:19:20 +0000 (UTC)
+	 MIME-Version; b=N9vJJLpHJKVCZ3cteT92dfEjPK9rKEgARhOGWSkCoNOTjHSXuXyXcMF5O7/7gSuxUbDZ2fkVAZkCgy1JVE+fG3QQ2PQ5wPrf7A6aniCM1pnJrPKBFzezhxTO3fAC1hvvuMTWNwe4OrGZhF9Q34qCS9lsV7NU1ofGllz2gUxQVvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuZ+y4o5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C052C4CEF0;
+	Tue, 30 Sep 2025 15:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245560;
-	bh=g1bSl+2f975x1oKZld9dZXskKWU8FmtdZkkn/mgCTmY=;
+	s=korg; t=1759245921;
+	bh=ZxEfE/edvgbYVzoccplrECp6+www/WdQpz0dW+PQ8p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AoHoH/+e77iiDpxgWNqKKU4cDLtnD6SmqJngnhjfrFMrU6hACo5p9YjlypjSuIw/0
-	 8O8ID9ZfGGPmJKsrV4DR8+uCPyRYbuAkcnoF75Txs25NFQvz3WT66KmHy82PZxbhAi
-	 gz9KfkDY0n6UwZVm5RWY1UAtmTaV7X91TMmUqeoQ=
+	b=JuZ+y4o5O3kaKZoAiUWF+aGlzFNtSoktLrkgTXToORsZ+q5OtxjswQtQpKbFkcXPQ
+	 2tgOnOmYrJHcpJZgl3VbuTDvtRGfUqq4t0Ah+VjgPSDEbEbxc8uaOZRWMQyf516N5k
+	 NUXZC+KX0Rss6O0iW6F0XqpFQLjacyS2GTOdMP7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 54/73] mm/hugetlb: fix folio is still mapped when deleted
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.6 59/91] i40e: fix validation of VF state in get resources
 Date: Tue, 30 Sep 2025 16:47:58 +0200
-Message-ID: <20250930143822.885150845@linuxfoundation.org>
+Message-ID: <20250930143823.643832639@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-commit 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7 upstream.
+commit 877b7e6ffc23766448236e8732254534c518ba42 upstream.
 
-Migration may be raced with fallocating hole.  remove_inode_single_folio
-will unmap the folio if the folio is still mapped.  However, it's called
-without folio lock.  If the folio is migrated and the mapped pte has been
-converted to migration entry, folio_mapped() returns false, and won't
-unmap it.  Due to extra refcount held by remove_inode_single_folio,
-migration fails, restores migration entry to normal pte, and the folio is
-mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
+VF state I40E_VF_STATE_ACTIVE is not the only state in which
+VF is actually active so it should not be used to determine
+if a VF is allowed to obtain resources.
 
-The log is as follows:
- BUG: Bad page cache in process hugetlb  pfn:156c00
- page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
- head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
- aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
- flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
- page_type: f4(hugetlb)
- page dumped because: still mapped when deleted
- CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
- Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x70
-  filemap_unaccount_folio+0xc4/0x1c0
-  __filemap_remove_folio+0x38/0x1c0
-  filemap_remove_folio+0x41/0xd0
-  remove_inode_hugepages+0x142/0x250
-  hugetlbfs_fallocate+0x471/0x5a0
-  vfs_fallocate+0x149/0x380
+Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
+i40e_vc_get_vf_resources_msg() and cleared during reset.
 
-Hold folio lock before checking if the folio is mapped to avold race with
-migration.
-
-Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
-Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    7 ++++++-
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |    3 ++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -576,14 +576,16 @@ static bool remove_inode_single_folio(st
- 
- 	/*
- 	 * If folio is mapped, it was faulted in after being
--	 * unmapped in caller.  Unmap (again) while holding
--	 * the fault mutex.  The mutex will prevent faults
--	 * until we finish removing the folio.
-+	 * unmapped in caller or hugetlb_vmdelete_list() skips
-+	 * unmapping it due to fail to grab lock.  Unmap (again)
-+	 * while holding the fault mutex.  The mutex will prevent
-+	 * faults until we finish removing the folio.  Hold folio
-+	 * lock to guarantee no concurrent migration.
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1459,6 +1459,7 @@ static void i40e_trigger_vf_reset(struct
+ 	 * functions that may still be running at this point.
  	 */
-+	folio_lock(folio);
- 	if (unlikely(folio_mapped(folio)))
- 		hugetlb_unmap_file_folio(h, mapping, folio, index);
+ 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
++	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
  
--	folio_lock(folio);
- 	/*
- 	 * We must remove the folio from page cache before removing
- 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
+ 	/* In the case of a VFLR, the HW has already reset the VF and we
+ 	 * just need to clean up, so don't hit the VFRTRIG register.
+@@ -2125,7 +2126,10 @@ static int i40e_vc_get_vf_resources_msg(
+ 	size_t len = 0;
+ 	int ret;
+ 
+-	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
++	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
++
++	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
++	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
+ 		aq_ret = -EINVAL;
+ 		goto err;
+ 	}
+@@ -2228,6 +2232,7 @@ static int i40e_vc_get_vf_resources_msg(
+ 				vf->default_lan_addr.addr);
+ 	}
+ 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
++	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
+ 
+ err:
+ 	/* send the response back to the VF */
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -41,7 +41,8 @@ enum i40e_vf_states {
+ 	I40E_VF_STATE_MC_PROMISC,
+ 	I40E_VF_STATE_UC_PROMISC,
+ 	I40E_VF_STATE_PRE_ENABLE,
+-	I40E_VF_STATE_RESETTING
++	I40E_VF_STATE_RESETTING,
++	I40E_VF_STATE_RESOURCES_LOADED,
+ };
+ 
+ /* VF capabilities */
 
 
 
