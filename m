@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB87EBADBBB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B98BAD674
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 320997A8203
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DAD51654B4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32E6302CD6;
-	Tue, 30 Sep 2025 15:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A3630506E;
+	Tue, 30 Sep 2025 14:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnYweD1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+91pr/J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D7E20E334;
-	Tue, 30 Sep 2025 15:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9F94D8CE;
+	Tue, 30 Sep 2025 14:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245660; cv=none; b=Tt3mY1WTEjSupEhwewxwLXO/eiLLC7tS5+mywBK71TK3tmZjTbc7tUiilgIbWdGgxevDFIkY+BxyoIom0eYYcCnt9JflPSjLF5YVp4hkaD7SuHpMrHwiU0s5+YzUu3V+/32Umsd/La1IdPStzsjTNjcuSBosgtHNgzGXMINbaBY=
+	t=1759244342; cv=none; b=aNWjE+8Z74bU7KEFkEBK9+uXb5REzfj18IYlkojFL+ImRmg5dyF9P/WFlsNr2ogjMNCKnxPI0tY6IZpFbAWiBI3iULntP+v2OGqrxqiJncKCn+7Hqo+/te7tVm3TOUx+Ywd6r/c6czdDx0lioLJFuUmJ+vznYlFhC0SLxXMFuEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245660; c=relaxed/simple;
-	bh=eyoS5/gXB/B+WYSrLqDtdjL51Y3kzrGw4wOJZWlfX0U=;
+	s=arc-20240116; t=1759244342; c=relaxed/simple;
+	bh=3BXU2vEiBL1d7SVcnGJBPMHQyFQEyC00bOgM1JLAnqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SITBiithgfk0lbHO3zRRhKi8PRon766mLaeC0PrQCBjS1LGXYkUpbv1Qpl6bMm/tK9EK2rdZcnkFsLeqGJkmU1tArpgfH0z/+oIJi+SE4JQPAbE4wEkxaU3OjrpoUXD+XhwrQlfPOr403BRRt44JrCmBFVgMiDy7Y4p9qeezFdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnYweD1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB43C4CEF0;
-	Tue, 30 Sep 2025 15:20:59 +0000 (UTC)
+	 MIME-Version; b=KTyErsBWnncKV9Dkkt4rs9BV23Akd/RbX7+qQq8I3bB/BPCUNZQLSw9AgvKEVwPn4Z8SRkulwaQM+sH6iIPNonX9+mz1XKSp3oscJ/a1L/VTe8eTW1e1RcKWzwsbsLZTS6Vk8lGMYynbfaMKRzc/yl03Xhq1hDG1nZ9pyS3PmH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+91pr/J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BF7C4CEF0;
+	Tue, 30 Sep 2025 14:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245660;
-	bh=eyoS5/gXB/B+WYSrLqDtdjL51Y3kzrGw4wOJZWlfX0U=;
+	s=korg; t=1759244342;
+	bh=3BXU2vEiBL1d7SVcnGJBPMHQyFQEyC00bOgM1JLAnqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnYweD1gBR50QYH/W5UwleXCcW0hSTLaSSyfgF+c4UI95h1Ff5E25h/ccgqgs/WG4
-	 SN9d/kmGQVZdx0FblmNM56KBrVU7BEaqXchUxqRWivRaqwydQHR3TaFS5Qx1Hw8BTx
-	 0yNpqzfuSalWNyfipPTO6dUOwf+2TXDz4MLJgtOI=
+	b=1+91pr/JAAws70/oCNpO0BqY4J++fVHS1k5NhkYbUevGGimuA5UwJw6V6SmBqGRGw
+	 0Arj2Xb++ooeYrQuslnCmFhCiBGrAXKQc3SDC4tHtrBojH0TQsYOTFwp5Vtk9Dv3Yx
+	 /EDU97Gh32s2FGUCdCZw7uVIBKhDbdeagFNb9ujo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Kerem Karabay <kekrby@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/91] HID: multitouch: specify that Apple Touch Bar is direct
-Date: Tue, 30 Sep 2025 16:47:11 +0200
-Message-ID: <20250930143821.637000809@linuxfoundation.org>
+Subject: [PATCH 5.10 101/122] bnxt_en: correct offset handling for IPv6 destination address
+Date: Tue, 30 Sep 2025 16:47:12 +0200
+Message-ID: <20250930143827.120564199@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kerem Karabay <kekrby@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 45ca23c5ee8b2b3074377fecc92fa72aa595f7c9 ]
+[ Upstream commit 3d3aa9472c6dd0704e9961ed4769caac5b1c8d52 ]
 
-Currently the driver determines the device type based on the
-application, but this value is not reliable on Apple Touch Bar, where
-the application is HID_DG_TOUCHPAD even though this device is direct,
-so add a quirk for the same.
+In bnxt_tc_parse_pedit(), the code incorrectly writes IPv6
+destination values to the source address field (saddr) when
+processing pedit offsets within the destination address range.
 
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Kerem Karabay <kekrby@gmail.com>
-Co-developed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+This patch corrects the assignment to use daddr instead of saddr,
+ensuring that pedit operations on IPv6 destination addresses are
+applied correctly.
+
+Fixes: 9b9eb518e338 ("bnxt_en: Add support for NAT(L3/L4 rewrite)")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Link: https://patch.msgid.link/20250920121157.351921-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 8e9f71e69dd8c..d8fee341c096e 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1336,6 +1336,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
- 	if (td->serial_maybe)
- 		mt_post_parse_default_settings(td, app);
- 
-+	/*
-+	 * The application for Apple Touch Bars is HID_DG_TOUCHPAD,
-+	 * but these devices are direct.
-+	 */
-+	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR)
-+		app->mt_flags |= INPUT_MT_DIRECT;
-+
- 	if (cls->is_indirect)
- 		app->mt_flags |= INPUT_MT_POINTER;
- 
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
+index 775d0b7521ca0..ef2bd84c55ff5 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
+@@ -243,7 +243,7 @@ bnxt_tc_parse_pedit(struct bnxt *bp, struct bnxt_tc_actions *actions,
+ 			   offset < offset_of_ip6_daddr + 16) {
+ 			actions->nat.src_xlate = false;
+ 			idx = (offset - offset_of_ip6_daddr) / 4;
+-			actions->nat.l3.ipv6.saddr.s6_addr32[idx] = htonl(val);
++			actions->nat.l3.ipv6.daddr.s6_addr32[idx] = htonl(val);
+ 		} else {
+ 			netdev_err(bp->dev,
+ 				   "%s: IPv6_hdr: Invalid pedit field\n",
 -- 
 2.51.0
 
