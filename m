@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4259CBADA9B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4D4BADC30
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 872263276E5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8473AE663
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C8A205E3B;
-	Tue, 30 Sep 2025 15:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9579227B328;
+	Tue, 30 Sep 2025 15:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyn0IjSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXfKNU48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8482FD1DD;
-	Tue, 30 Sep 2025 15:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EF41EB5E3;
+	Tue, 30 Sep 2025 15:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245327; cv=none; b=ZPWiarDwDPRHqpWmnVWe1MJMFWowfnFhkF2FiG5TOxkVy+VnoMgwxQv/MLn9ns4qvCCxkHF1+UpYg2iotbbHwaXMoOv4WK2cEb6/mKbI1xg86byDLnXcuzpGaVgPbGvpTrzakCObR3a8cLrmaBizCYvTndVzR0xiKg4F8n4YulY=
+	t=1759245518; cv=none; b=XoAEHgRywLRs59xsgx+yJItWOx3N+21JqQjO3ywGgWQBD/Av209+qfUUb/LlZ5ilqh3katGnRiHYdC+G+uv0UK2U1CuYqAyTNYe7tYobKB/GQ8ExdFHt3VdEVPm+j7aI/v+ry50x3pnpszwl7kCr1CLc5ufBgsPCTjB2GUqWlpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245327; c=relaxed/simple;
-	bh=p5I6cKm8PngDhq8J9y8YubLrosmSQJwi2VMjUsrqz40=;
+	s=arc-20240116; t=1759245518; c=relaxed/simple;
+	bh=LOd4+Pxp4pTO+lI632YqNWoi4jGZOjHZK+SUxPIXbBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEiQnFkiMr8el024pZJAjpB91xDsiFiUiYm0nHAqPYvaq/zMFliJFQ+N4ZLYJCqfKtmbnn4NjNANiPh9Wg7gYhPTEPxnkwNRKkM6FsiebmLk9jRMoT8vlITBnSMbboqOGM9oLNqZOKmxjSU36pBCE1tWCYKRnq3f3MA+eDtUQZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tyn0IjSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516A3C4CEF0;
-	Tue, 30 Sep 2025 15:15:26 +0000 (UTC)
+	 MIME-Version; b=cXTQYgvUWwHg/dtTRc1bj0lAShPiUqH71J5CuXX1RwHQ0u8BeQb61f1NVuAINq36yfVXkvGy9M+a82AOEhTQZQ+rKzhcSUsZztEhN9jgQz1ITNK2HB8VuX4mrnP+b/roEQYAOxHdqPm60TKhUX5qNPalZQaiX3wLZRy74BL2irU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXfKNU48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6265C4CEF0;
+	Tue, 30 Sep 2025 15:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245326;
-	bh=p5I6cKm8PngDhq8J9y8YubLrosmSQJwi2VMjUsrqz40=;
+	s=korg; t=1759245518;
+	bh=LOd4+Pxp4pTO+lI632YqNWoi4jGZOjHZK+SUxPIXbBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tyn0IjSJedpPQUuaw2RZT4Tnjiw6553AIclCLXdHtiOXDoUhvTPq9RtcA88lFHNMa
-	 sTuou4yMQZ9XbQD6FId89yarCjlsYPgawp5CdANEbXW4noqqsrQ7w6rZXkkWE2TZ4y
-	 Phq/k86eDyhfW7YIp2p5O/6deu02gczZ2GPXpoaA=
+	b=YXfKNU48u79DJs/elZa+sIbHcyaz4auXh9WWPqdrmJoNAdPY8F0CGfsrKSK2i9Eu6
+	 n/MU3T2UrN56N6MYwe96Alk+myLeORGnLHO9AXU64TeU2YNCbcMq8glPjQVB7WHUqJ
+	 veziwUU2/u/wDqw3XXEujnDW/5/mVVZfXp28wIB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>,
-	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/151] crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg
+Subject: [PATCH 6.1 42/73] net: dsa: lantiq_gswip: suppress -EINVAL errors for bridge FDB entries added to the CPU port
 Date: Tue, 30 Sep 2025 16:47:46 +0200
-Message-ID: <20250930143833.015740346@linuxfoundation.org>
+Message-ID: <20250930143822.345588893@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 1b34cbbf4f011a121ef7b2d7d6e6920a036d5285 ]
+[ Upstream commit 987afe147965ef7a8e7d144ffef0d70af14bb1d4 ]
 
-Issuing two writes to the same af_alg socket is bogus as the
-data will be interleaved in an unpredictable fashion.  Furthermore,
-concurrent writes may create inconsistencies in the internal
-socket state.
+The blamed commit and others in that patch set started the trend
+of reusing existing DSA driver API for a new purpose: calling
+ds->ops->port_fdb_add() on the CPU port.
 
-Disallow this by adding a new ctx->write field that indiciates
-exclusive ownership for writing.
+The lantiq_gswip driver was not prepared to handle that, as can be seen
+from the many errors that Daniel presents in the logs:
 
-Fixes: 8ff590903d5 ("crypto: algif_skcipher - User-space interface for skcipher operations")
-Reported-by: Muhammad Alifa Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[  174.050000] gswip 1e108000.switch: port 2 failed to add fa:aa:72:f4:8b:1e vid 1 to fdb: -22
+[  174.060000] gswip 1e108000.switch lan2: entered promiscuous mode
+[  174.070000] gswip 1e108000.switch: port 2 failed to add 00:01:02:03:04:02 vid 0 to fdb: -22
+[  174.090000] gswip 1e108000.switch: port 2 failed to add 00:01:02:03:04:02 vid 1 to fdb: -22
+[  174.090000] gswip 1e108000.switch: port 2 failed to delete fa:aa:72:f4:8b:1e vid 1 from fdb: -2
+
+The errors are because gswip_port_fdb() wants to get a handle to the
+bridge that originated these FDB events, to associate it with a FID.
+Absolutely honourable purpose, however this only works for user ports.
+
+To get the bridge that generated an FDB entry for the CPU port, one
+would need to look at the db.bridge.dev argument. But this was
+introduced in commit c26933639b54 ("net: dsa: request drivers to perform
+FDB isolation"), first appeared in v5.18, and when the blamed commit was
+introduced in v5.14, no such API existed.
+
+So the core DSA feature was introduced way too soon for lantiq_gswip.
+Not acting on these host FDB entries and suppressing any errors has no
+other negative effect, and practically returns us to not supporting the
+host filtering feature at all - peacefully, this time.
+
+Fixes: 10fae4ac89ce ("net: dsa: include bridge addresses which are local in the host fdb list")
+Reported-by: Daniel Golle <daniel@makrotopia.org>
+Closes: https://lore.kernel.org/netdev/aJfNMLNoi1VOsPrN@pidgin.makrotopia.org/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250918072142.894692-3-vladimir.oltean@nxp.com
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c         |  7 +++++++
- include/crypto/if_alg.h | 10 ++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/dsa/lantiq_gswip.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index aa93501e27b95..24c273f53e90a 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -862,6 +862,12 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	}
+diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
+index dd01470cd5dde..d899ebb902a0c 100644
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -1366,8 +1366,9 @@ static int gswip_port_fdb(struct dsa_switch *ds, int port,
+ 	int i;
+ 	int err;
  
- 	lock_sock(sk);
-+	if (ctx->write) {
-+		release_sock(sk);
-+		return -EBUSY;
-+	}
-+	ctx->write = true;
-+
- 	if (ctx->init && !ctx->more) {
- 		if (ctx->used) {
- 			err = -EINVAL;
-@@ -969,6 +975,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
++	/* Operation not supported on the CPU port, don't throw errors */
+ 	if (!bridge)
+-		return -EINVAL;
++		return 0;
  
- unlock:
- 	af_alg_data_wakeup(sk);
-+	ctx->write = false;
- 	release_sock(sk);
- 
- 	return copied ?: err;
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index a406e281ae571..1424200fe88cf 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -136,6 +136,7 @@ struct af_alg_async_req {
-  *			SG?
-  * @enc:		Cryptographic operation to be performed when
-  *			recvmsg is invoked.
-+ * @write:		True if we are in the middle of a write.
-  * @init:		True if metadata has been sent.
-  * @len:		Length of memory allocated for this data structure.
-  * @inflight:		Non-zero when AIO requests are in flight.
-@@ -151,10 +152,11 @@ struct af_alg_ctx {
- 	size_t used;
- 	atomic_t rcvused;
- 
--	bool more;
--	bool merge;
--	bool enc;
--	bool init;
-+	u32		more:1,
-+			merge:1,
-+			enc:1,
-+			write:1,
-+			init:1;
- 
- 	unsigned int len;
- 
+ 	for (i = max_ports; i < ARRAY_SIZE(priv->vlans); i++) {
+ 		if (priv->vlans[i].bridge == bridge) {
 -- 
 2.51.0
 
