@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2723CBADAA1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322C6BADC4B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56D173278A3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1790188E367
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1153B22256F;
-	Tue, 30 Sep 2025 15:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE442F39C0;
+	Tue, 30 Sep 2025 15:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij2MzUdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKHQKav4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D401D6188;
-	Tue, 30 Sep 2025 15:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA83237163;
+	Tue, 30 Sep 2025 15:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245336; cv=none; b=ei9NLpqRxPMJiHtGLHy9hoJaRzCbYYzdcwr8LALOucGouvwrqEef0kiE0H2P8uSuTr9H6sCNGvqRq0fJoUk4bVM8/XExt4JR7Otd3fWDvALVk2atYshOH5G6YQL409pKHs7wmDgalLU0dfdfugSNcqYfFFFZNd6Z9Zw7+Kj+nY4=
+	t=1759245793; cv=none; b=MiKGzInhdZGEVRslzwHb8Sx12weAK7Dl5xC02mJ5mXomAr0AZx99K9BuGesvwLMnRBrogkjeJnkzDQaTLjae5Bh2j+40MInrl8NBu5kUOVNc6hFXYdb3Ozx4TUelYjkfCvQfj/1C5gWWflVEl6Zhqlj+VNYMYY5IMqAtRmYBy4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245336; c=relaxed/simple;
-	bh=J3Z/SfV2m147K3A671RIE393WSHvNCRqWf+MM1tc3AU=;
+	s=arc-20240116; t=1759245793; c=relaxed/simple;
+	bh=7uwD8PAWLk8Btvs3UFkHXm9uNEhhxmcflIjFAY6gGJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blIdfo4m6SJTXNCfJW3XaASx9issNWq9xbdnppdyEFdGfXKgEOqEsGnvP9pOjdUTU2E4GK0gYTXnXKccLza//NMNFz0VO58yprUOH5VtNgkWi5K8jn/Xow1sZAT4PsH5tv4/VI4ABVl1ckzdEBTvYDPHjYumXbecB2K4Dkhg7mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij2MzUdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16803C4CEF0;
-	Tue, 30 Sep 2025 15:15:35 +0000 (UTC)
+	 MIME-Version; b=Vx3N2+iPha6NjVS0S2vwuk3lJjvUqs3MvhKm5YeLGgXlNpbpBgiGjY61EgIvU0YW/E6cRBZ5BREgKRs1ga1xuuggxHQOytXi7g0WSFJz3iBhmD67LT76tfUlueEOaTwdoD6bH7I3s381izIJctzCnY/wGsOlFKnusef1rMQ/WCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKHQKav4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92451C4CEF0;
+	Tue, 30 Sep 2025 15:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245336;
-	bh=J3Z/SfV2m147K3A671RIE393WSHvNCRqWf+MM1tc3AU=;
+	s=korg; t=1759245793;
+	bh=7uwD8PAWLk8Btvs3UFkHXm9uNEhhxmcflIjFAY6gGJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ij2MzUdvIyuIectkVssi/AVsFzl3wrhaN6kFzQTji1awIXsD+Dt2zD9BEjpLwGy9j
-	 qc2iw4uOcNVbjaov35gwvRQ8sBCFJOXodYOJC8ouH3RSWWZuLoDW3AVF5HgmXY+3XA
-	 v4MHJ/pqYOuO/q+s71zu7lz32eT82KmJkgunSsrE=
+	b=WKHQKav4wxPvqSotRgdpML5/mA2ohHMJnRY9nOkEhVm1aaMu1fhEmMasY9jJMuNd4
+	 udxZo79NlaCvBb2nqc5bV47LrsITNbWMDLhN7G/Q+lBOVcFgasnNcwHrDdKgnEv/Uj
+	 FGFjSZR5ltXud/E48iHZuHvZr5LUjy3qXdU4diiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.15 139/151] i40e: fix input validation logic for action_meta
+	Daniel Golle <daniel@makrotopia.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 50/91] net: dsa: lantiq_gswip: suppress -EINVAL errors for bridge FDB entries added to the CPU port
 Date: Tue, 30 Sep 2025 16:47:49 +0200
-Message-ID: <20250930143833.132099614@linuxfoundation.org>
+Message-ID: <20250930143823.260323328@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
+[ Upstream commit 987afe147965ef7a8e7d144ffef0d70af14bb1d4 ]
 
-Fix condition to check 'greater or equal' to prevent OOB dereference.
+The blamed commit and others in that patch set started the trend
+of reusing existing DSA driver API for a new purpose: calling
+ds->ops->port_fdb_add() on the CPU port.
 
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The lantiq_gswip driver was not prepared to handle that, as can be seen
+from the many errors that Daniel presents in the logs:
+
+[  174.050000] gswip 1e108000.switch: port 2 failed to add fa:aa:72:f4:8b:1e vid 1 to fdb: -22
+[  174.060000] gswip 1e108000.switch lan2: entered promiscuous mode
+[  174.070000] gswip 1e108000.switch: port 2 failed to add 00:01:02:03:04:02 vid 0 to fdb: -22
+[  174.090000] gswip 1e108000.switch: port 2 failed to add 00:01:02:03:04:02 vid 1 to fdb: -22
+[  174.090000] gswip 1e108000.switch: port 2 failed to delete fa:aa:72:f4:8b:1e vid 1 from fdb: -2
+
+The errors are because gswip_port_fdb() wants to get a handle to the
+bridge that originated these FDB events, to associate it with a FID.
+Absolutely honourable purpose, however this only works for user ports.
+
+To get the bridge that generated an FDB entry for the CPU port, one
+would need to look at the db.bridge.dev argument. But this was
+introduced in commit c26933639b54 ("net: dsa: request drivers to perform
+FDB isolation"), first appeared in v5.18, and when the blamed commit was
+introduced in v5.14, no such API existed.
+
+So the core DSA feature was introduced way too soon for lantiq_gswip.
+Not acting on these host FDB entries and suppressing any errors has no
+other negative effect, and practically returns us to not supporting the
+host filtering feature at all - peacefully, this time.
+
+Fixes: 10fae4ac89ce ("net: dsa: include bridge addresses which are local in the host fdb list")
+Reported-by: Daniel Golle <daniel@makrotopia.org>
+Closes: https://lore.kernel.org/netdev/aJfNMLNoi1VOsPrN@pidgin.makrotopia.org/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250918072142.894692-3-vladimir.oltean@nxp.com
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/lantiq_gswip.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3472,7 +3472,7 @@ static int i40e_validate_cloud_filter(st
+diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
+index 054548294f039..c1a9ab9259768 100644
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -1366,8 +1366,9 @@ static int gswip_port_fdb(struct dsa_switch *ds, int port,
+ 	int i;
+ 	int err;
  
- 	/* action_meta is TC number here to which the filter is applied */
- 	if (!tc_filter->action_meta ||
--	    tc_filter->action_meta > vf->num_tc) {
-+	    tc_filter->action_meta >= vf->num_tc) {
- 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
- 			 vf->vf_id, tc_filter->action_meta);
- 		goto err;
++	/* Operation not supported on the CPU port, don't throw errors */
+ 	if (!bridge)
+-		return -EINVAL;
++		return 0;
+ 
+ 	for (i = max_ports; i < ARRAY_SIZE(priv->vlans); i++) {
+ 		if (priv->vlans[i].bridge == bridge) {
+-- 
+2.51.0
+
 
 
 
