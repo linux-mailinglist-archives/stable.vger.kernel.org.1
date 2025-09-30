@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-182100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FE5BAD46A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B24BAD7EB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526AD16ECA4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5846F3BC047
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CBA302755;
-	Tue, 30 Sep 2025 14:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC3A2FCBFC;
+	Tue, 30 Sep 2025 15:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0dEuD7w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+a48hW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D7D265CCD;
-	Tue, 30 Sep 2025 14:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FA81EE02F;
+	Tue, 30 Sep 2025 15:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243833; cv=none; b=nOpT5ULkcdTRAAlq6dmkodTX3q1UaH9B2zMAwhMD2EBUMjfAsmnPGnbvY6VTDDHS3gl+ZamBgprsq2RFk8RXcKab8ENWL5JYTRYHouxAwItSTjoMdQvB5Fn7A7yueCPg5x6hzX4ibl8oFb/hL5insEYgFGVY+1Q3CyHMyZivYNU=
+	t=1759244567; cv=none; b=H61vYjOwWh6mLglNYoRZsFxAdQ/5QFjr1HVYOM6eII/Vv5LSc+CI2jkHfWGpM7SFSIRlxs0hYan2dnKwv4QWyP3rWbf5Fice95Po89aaXg2ahDJa3sbfKOcMO95D5BqWZLZRwvQQvGoviZEVL9ossoDt3FrTzhsSEec4v8u57l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243833; c=relaxed/simple;
-	bh=cJdh8dsYsyQGFcjuaoHbVK5IxRS6xobDGw0QditBokk=;
+	s=arc-20240116; t=1759244567; c=relaxed/simple;
+	bh=I3W7/Df49uVwZz6Z7ZncJ5VHdMHgyXW8xHTN0A9RPdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBhyKraOedH7Gw2ITT+QnNXcfYRlbIUhu47ojH8PkTndPFqEQ/zeeTdTAXhkkXBkw6U1SB68GCZC3bSu2FQ1OlPQgAwP6jI8oxnJXDc12BLsK0kPZ3K3GNINoOrVXAXwkjyFV4v9/7DDZvlwtmFwroDIz5QvlCxqhDupDjDQs6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0dEuD7w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B803C4CEF0;
-	Tue, 30 Sep 2025 14:50:32 +0000 (UTC)
+	 MIME-Version; b=CsyulwT1PvWdZdnnt+GDwjOmI0mHzvNj9j7DH0YSm+xBNDX+wG42D/t/0RxuLr9vp42DoxCh9mICTsOqRuMeNNe22nFKDklo0SxBtG+mmTZagbDbCAHfyvLg28QUi9/K6o9WIuQmAfx7D3kCpBX/cpkv6NdSjUlVfEk4UrsFJCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+a48hW7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16A9C4CEF0;
+	Tue, 30 Sep 2025 15:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243833;
-	bh=cJdh8dsYsyQGFcjuaoHbVK5IxRS6xobDGw0QditBokk=;
+	s=korg; t=1759244567;
+	bh=I3W7/Df49uVwZz6Z7ZncJ5VHdMHgyXW8xHTN0A9RPdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0dEuD7wFqYek67SLqzREMQ74L9iEcVz/zF4m4IS9rU/7SAvZJV9MvWyKc3jRmkpg
-	 vx5e/EUIA3zSpovlVR9XQnxmMEGNe04YGma6t2jmE29L37bbRehN47/YrQ4vudX4DZ
-	 L8g1moMxW9lB8QqwZuPb8+Yk6t/OfZUT3GOdcVyg=
+	b=l+a48hW7HBokoW/BjowyohutJwQhhtimbamhxotyJu7V+b2W21h+9brzbsSAvL+zG
+	 DM4rbGFeT5OoDpOQ3aXIhsP03okMH4QmzPQwFQhzp+fqs9S9WhDP0rjdsR+Or/rcHL
+	 7qb9S7SyawtPnjnj1rt3XluXW2CAFJ4go5C7HQGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunsheng Luo <luochunsheng@ustc.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.4 08/81] fuse: check if copy_file_range() returns larger than requested size
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 046/143] smb: server: use disable_work_sync in transport_rdma.c
 Date: Tue, 30 Sep 2025 16:46:10 +0200
-Message-ID: <20250930143820.011098196@linuxfoundation.org>
+Message-ID: <20250930143833.071844499@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +67,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit e5203209b3935041dac541bc5b37efb44220cc0b upstream.
+[ Upstream commit f7f89250175e0a82e99ed66da7012e869c36497d ]
 
-Just like write(), copy_file_range() should check if the return value is
-less or equal to the requested number of bytes.
+This makes it safer during the disconnect and avoids
+requeueing.
 
-Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
-Closes: https://lore.kernel.org/all/20250807062425.694-1-luochunsheng@ustc.edu/
-Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
-Cc: <stable@vger.kernel.org> # v4.20
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It's ok to call disable_work[_sync]() more than once.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/transport_rdma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3365,6 +3365,9 @@ static ssize_t __fuse_copy_file_range(st
- 		fc->no_copy_file_range = 1;
- 		err = -EOPNOTSUPP;
- 	}
-+	if (!err && outarg.size > len)
-+		err = -EIO;
-+
- 	if (err)
- 		goto out;
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 10a6b4ed1a037..74dfb6496095d 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -399,9 +399,9 @@ static void free_transport(struct smb_direct_transport *t)
+ 	wait_event(t->wait_send_pending,
+ 		   atomic_read(&t->send_pending) == 0);
  
+-	cancel_work_sync(&t->disconnect_work);
+-	cancel_work_sync(&t->post_recv_credits_work);
+-	cancel_work_sync(&t->send_immediate_work);
++	disable_work_sync(&t->disconnect_work);
++	disable_work_sync(&t->post_recv_credits_work);
++	disable_work_sync(&t->send_immediate_work);
+ 
+ 	if (t->qp) {
+ 		ib_drain_qp(t->qp);
+-- 
+2.51.0
+
 
 
 
