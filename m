@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-182569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD6FBADBB8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B0BADD7D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE7A3B320A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2EFE1888354
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28CE1F4C8E;
-	Tue, 30 Sep 2025 15:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344EF2FD1DD;
+	Tue, 30 Sep 2025 15:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhNn3IVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkQivfyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0D7265CCD;
-	Tue, 30 Sep 2025 15:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FE22264AB;
+	Tue, 30 Sep 2025 15:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245372; cv=none; b=nyD7o7d0cyt+vJNGyZQ2ZKDfRyPtMS44N7rppuVaNzvIxN9W0PCfiqtmcJKyUbNMJrtQLTv4+6s2+Qcao48nUgocAZyjv8CqlEr7R1CTCKdPV3r2aaA8crq1ee5Z8LqwJRJ8lMwY24lH874fZyRNkHdqrEA91efWYhnP0I7f+/w=
+	t=1759246076; cv=none; b=HlxkVer/V+3BfRsuxxnB9nYp0TSAEvuxkmFTzrtD6H4X63J0H1cPlin96qTZsDvYYc8tOiW9wLB1Ap1lVL9eQlXV87ZnxS07MA68qAXeMzQdN/OU3zEHL0WuL0aFv100Cml64kUjRNMuR6jbiLcR2P/EUjizscsJNtNrlkJvYnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245372; c=relaxed/simple;
-	bh=mzeHO+2fkO7BmNsbo+zv3LlaW0jdLtXD8sOw9iFgj/g=;
+	s=arc-20240116; t=1759246076; c=relaxed/simple;
+	bh=kWlgvGFKPDBc9X4J2/MEmt185/KAI+u2cpc4Q1Id8Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDmpNg+a5XWqGEOEg1ga3g2/FZ0v1OkpuaSrqWLGc3Nlu4z09YPdXmIEsZrLOyBePgmyAl7iREjhILP1wJUdZ4Ca8p2Ir1Sm1mn+tz2sGetHz5nCHK1A+wF30VbaSpt+yj9jBshrHoB65vvSN+KFBAh4UPyuh+CaTSvT7TMcImU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhNn3IVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15808C4CEF0;
-	Tue, 30 Sep 2025 15:16:11 +0000 (UTC)
+	 MIME-Version; b=K4u9LIyapEG20dVgqs5wr+RuadHGSmO9ea3X/qOJ1y3qSBL6128t8KQD1zK+MROYJOIBH/8M1zwIQC07pMaSRtFkcCYE5ycnXHJmXub1vblMb+7ZTwOe/Xk7tNXD4YmmgEhHRgCiV1FjLpzCVayv1sMfKOmsaZtjvskaw8AA3wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkQivfyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E867C4CEF0;
+	Tue, 30 Sep 2025 15:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245372;
-	bh=mzeHO+2fkO7BmNsbo+zv3LlaW0jdLtXD8sOw9iFgj/g=;
+	s=korg; t=1759246075;
+	bh=kWlgvGFKPDBc9X4J2/MEmt185/KAI+u2cpc4Q1Id8Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhNn3IVogEDy2dUYwemgRUH0fWM5QgSyL50PKJ49GIpVFZrA5mh/7gsujm5Dr6CcU
-	 dqRiEENnSztF09fU4Apt09g71WKVzQAzNRY/YUqyjdu2VTd4SalUoGdMnx1GfWGHrP
-	 PhfIZxZhVRWNr1fLyGdr7MackamC1xNsU9CHpOfM=
+	b=PkQivfyRy5GJPOdIAnXQo1hGN77bt/l9+l7BajyUEe9NOgByQKkt0n+y/MCDClvGL
+	 AtDtTqqp6U34bEi9SAU0r8fcXTMTofcd5srJXzwTNRz1aXhXKElbP26HZd4jQuLBP+
+	 ZbFksoWi/r1bBDhdYryf0ty4AwbNs2zOHxA+NEPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Kamakshi Nellore <nellorex.kamakshi@intel.com>
-Subject: [PATCH 5.15 149/151] i40e: fix idx validation in config queues msg
+	syzbot+64e24275ad95a915a313@syzkaller.appspotmail.com,
+	Wang Liang <wangliang74@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 45/89] net: tun: Update napi->skb after XDP process
 Date: Tue, 30 Sep 2025 16:47:59 +0200
-Message-ID: <20250930143833.534276079@linuxfoundation.org>
+Message-ID: <20250930143823.785966157@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit f1ad24c5abe1eaef69158bac1405a74b3c365115 ]
+[ Upstream commit 1091860a16a86ccdd77c09f2b21a5f634f5ab9ec ]
 
-Ensure idx is within range of active/initialized TCs when iterating over
-vf->ch[idx] in i40e_vc_config_queues_msg().
+The syzbot report a UAF issue:
 
-Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Adjust context ]
+  BUG: KASAN: slab-use-after-free in skb_reset_mac_header include/linux/skbuff.h:3150 [inline]
+  BUG: KASAN: slab-use-after-free in napi_frags_skb net/core/gro.c:723 [inline]
+  BUG: KASAN: slab-use-after-free in napi_gro_frags+0x6e/0x1030 net/core/gro.c:758
+  Read of size 8 at addr ffff88802ef22c18 by task syz.0.17/6079
+  CPU: 0 UID: 0 PID: 6079 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+   print_address_description mm/kasan/report.c:378 [inline]
+   print_report+0xca/0x240 mm/kasan/report.c:482
+   kasan_report+0x118/0x150 mm/kasan/report.c:595
+   skb_reset_mac_header include/linux/skbuff.h:3150 [inline]
+   napi_frags_skb net/core/gro.c:723 [inline]
+   napi_gro_frags+0x6e/0x1030 net/core/gro.c:758
+   tun_get_user+0x28cb/0x3e20 drivers/net/tun.c:1920
+   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
+   new_sync_write fs/read_write.c:593 [inline]
+   vfs_write+0x5c9/0xb30 fs/read_write.c:686
+   ksys_write+0x145/0x250 fs/read_write.c:738
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+
+  Allocated by task 6079:
+   kasan_save_stack mm/kasan/common.c:47 [inline]
+   kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+   unpoison_slab_object mm/kasan/common.c:330 [inline]
+   __kasan_mempool_unpoison_object+0xa0/0x170 mm/kasan/common.c:558
+   kasan_mempool_unpoison_object include/linux/kasan.h:388 [inline]
+   napi_skb_cache_get+0x37b/0x6d0 net/core/skbuff.c:295
+   __alloc_skb+0x11e/0x2d0 net/core/skbuff.c:657
+   napi_alloc_skb+0x84/0x7d0 net/core/skbuff.c:811
+   napi_get_frags+0x69/0x140 net/core/gro.c:673
+   tun_napi_alloc_frags drivers/net/tun.c:1404 [inline]
+   tun_get_user+0x77c/0x3e20 drivers/net/tun.c:1784
+   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
+   new_sync_write fs/read_write.c:593 [inline]
+   vfs_write+0x5c9/0xb30 fs/read_write.c:686
+   ksys_write+0x145/0x250 fs/read_write.c:738
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  Freed by task 6079:
+   kasan_save_stack mm/kasan/common.c:47 [inline]
+   kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+   kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
+   poison_slab_object mm/kasan/common.c:243 [inline]
+   __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:275
+   kasan_slab_free include/linux/kasan.h:233 [inline]
+   slab_free_hook mm/slub.c:2422 [inline]
+   slab_free mm/slub.c:4695 [inline]
+   kmem_cache_free+0x18f/0x400 mm/slub.c:4797
+   skb_pp_cow_data+0xdd8/0x13e0 net/core/skbuff.c:969
+   netif_skb_check_for_xdp net/core/dev.c:5390 [inline]
+   netif_receive_generic_xdp net/core/dev.c:5431 [inline]
+   do_xdp_generic+0x699/0x11a0 net/core/dev.c:5499
+   tun_get_user+0x2523/0x3e20 drivers/net/tun.c:1872
+   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
+   new_sync_write fs/read_write.c:593 [inline]
+   vfs_write+0x5c9/0xb30 fs/read_write.c:686
+   ksys_write+0x145/0x250 fs/read_write.c:738
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+After commit e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in
+generic mode"), the original skb may be freed in skb_pp_cow_data() when
+XDP program was attached, which was allocated in tun_napi_alloc_frags().
+However, the napi->skb still point to the original skb, update it after
+XDP process.
+
+Reported-by: syzbot+64e24275ad95a915a313@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=64e24275ad95a915a313
+Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250917113919.3991267-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/tun.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2391,7 +2391,7 @@ static int i40e_vc_config_queues_msg(str
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index fae1a0ab36bdf..fb9d425eff8c1 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1932,6 +1932,9 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 				local_bh_enable();
+ 				goto unlock_frags;
+ 			}
++
++			if (frags && skb != tfile->napi.skb)
++				tfile->napi.skb = skb;
  		}
- 
- 		if (vf->adq_enabled) {
--			if (idx >= ARRAY_SIZE(vf->ch)) {
-+			if (idx >= vf->num_tc) {
- 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
- 				goto error_param;
- 			}
-@@ -2412,7 +2412,7 @@ static int i40e_vc_config_queues_msg(str
- 		 * to its appropriate VSIs based on TC mapping
- 		 */
- 		if (vf->adq_enabled) {
--			if (idx >= ARRAY_SIZE(vf->ch)) {
-+			if (idx >= vf->num_tc) {
- 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
- 				goto error_param;
- 			}
+ 		rcu_read_unlock();
+ 		local_bh_enable();
+-- 
+2.51.0
+
 
 
 
