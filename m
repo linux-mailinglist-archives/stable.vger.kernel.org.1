@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E10BAD6D1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C257BADB52
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8919188E24A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA2164C0FC6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845E3306D54;
-	Tue, 30 Sep 2025 15:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9867C306486;
+	Tue, 30 Sep 2025 15:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l291Cj7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xjip2Bf+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC5621ABD0;
-	Tue, 30 Sep 2025 15:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617A223DD6;
+	Tue, 30 Sep 2025 15:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244415; cv=none; b=cd5l2QFXfiY5GG4VE48pWNSFRXFQJJJi3nilBQrFjpaSdyYkz+jsudaA2jCmUj/O3B3ahavoO6nTjiGxpMBYgw4HckpUuW+nYwz5a0vIzoNkkdHEr4YppxR0oGDxdMmbU0iRlR9VMZPE9YGJu9xxTlu+mGDxWqlHWHOzNOU5BrM=
+	t=1759245291; cv=none; b=c84aGTaEV1TaVK8CQFiD0KE6Gb5ImQsRGhRMiNlpKL9eJ630OCQEF1EFPe6mX47evBYcG1NnECGp1OTufEmpU+Z754v9fF0loaEo7uKgMSxTVRu647swppqpbrjHTCcpPiD7699mHqxjL/ph+IxgHfc/yNdA0oyOvIpZOP9TdqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244415; c=relaxed/simple;
-	bh=lBk3wrZh0Xt/9D0hapALG7vdDEgw5j01KH6OKMtKoEY=;
+	s=arc-20240116; t=1759245291; c=relaxed/simple;
+	bh=zoLZkceUPnJ1r5nBR8BfHyrquz58Sx+JwILlEE/cY9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bix7APRO72Wv6i3zdRGqIJybKpjRSHJ6+ZkotVVKu4Ql35cKROdbo4Pyp/xNz+Pzk4pg5HQWhir7z/XriL7ZrfwfyMLRbgk/RdA5UPfXQ93EY1OQORgIYKbEwy0hl/QkY05Ad8RLKmUKToSX0Q4GysCrZupI1LMyvD6m9RyLubs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l291Cj7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4477C4CEF0;
-	Tue, 30 Sep 2025 15:00:14 +0000 (UTC)
+	 MIME-Version; b=ELpp9k077IYN/ffhlKgK1yL1w4dP4ew4isHVrMPO9lfTon63vMfhhWzCGvLVmIglJ88O9BQBr24Dlu9I3tykx5FQGC6VQ7gyj6CfpRJQ0AVO0C+vrdqkb14UVkfT32Tcz8a9K+a/Xd8NEkPqBSpnmy+ub+tS9GALwV6jZKECNVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xjip2Bf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15A1C4CEF0;
+	Tue, 30 Sep 2025 15:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244415;
-	bh=lBk3wrZh0Xt/9D0hapALG7vdDEgw5j01KH6OKMtKoEY=;
+	s=korg; t=1759245291;
+	bh=zoLZkceUPnJ1r5nBR8BfHyrquz58Sx+JwILlEE/cY9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l291Cj7UYOicWJbNQ8o6/jgHC52YzMEWLScAF54Likx/WuN/01b3HcLEkfg/YIB0h
-	 BEQwzTQEPqMP05tqhghmTddEgMqX4zAA/O73/w/T/VSNs8ZbjrLCeIkkH8gYEJ2qM1
-	 Gq2PDfo7VkXSLTKe9Z8Y4pyUDOCbAfsQcpl3Goj8=
+	b=Xjip2Bf+JL7+eH1oEZmVgxfPggi2bnskxokPkkqDiTc7NCX4fkxf5F9AxVj23ytkq
+	 1rdQjdAQ47HPu+GgBIgH0u71D9vcDhI+xDoVEAxZmszaWHopZ8nFAiXkQhw/oYD4ip
+	 uYv7WjqI4qXjgxruUPUecbEBb+FtcXTH9vgFUYgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 091/122] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+Subject: [PATCH 5.15 092/151] xhci: dbc: Fix full DbC transfer ring after several reconnects
 Date: Tue, 30 Sep 2025 16:47:02 +0200
-Message-ID: <20250930143826.725806488@linuxfoundation.org>
+Message-ID: <20250930143831.260690914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
+[ Upstream commit a5c98e8b1398534ae1feb6e95e2d3ee5215538ed ]
 
-The recent addition of DualSense mixer quirk relies on the input
-device handle, and the build can fail if CONFIG_INPUT isn't set.
-Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
-the build error.
+Pending requests will be flushed on disconnect, and the corresponding
+TRBs will be turned into No-op TRBs, which are ignored by the xHC
+controller once it starts processing the ring.
 
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+If the USB debug cable repeatedly disconnects before ring is started
+then the ring will eventually be filled with No-op TRBs.
+No new transfers can be queued when the ring is full, and driver will
+print the following error message:
+
+    "xhci_hcd 0000:00:14.0: failed to queue trbs"
+
+This is a normal case for 'in' transfers where TRBs are always enqueued
+in advance, ready to take on incoming data. If no data arrives, and
+device is disconnected, then ring dequeue will remain at beginning of
+the ring while enqueue points to first free TRB after last cancelled
+No-op TRB.
+s
+Solve this by reinitializing the rings when the debug cable disconnects
+and DbC is leaving the configured state.
+Clear the whole ring buffer and set enqueue and dequeue to the beginning
+of ring, and set cycle bit to its initial state.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250902105306.877476-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/host/xhci-dbgcap.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index b3afa7b26b9cd..7a4d449182d65 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -528,6 +528,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
- 					  &snd_emu0204_control, NULL);
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -447,6 +447,25 @@ static void xhci_dbc_ring_init(struct xh
+ 	xhci_initialize_ring_info(ring, 1);
  }
  
-+#if IS_REACHABLE(CONFIG_INPUT)
- /*
-  * Sony DualSense controller (PS5) jack detection
-  *
-@@ -784,6 +785,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
++static int xhci_dbc_reinit_ep_rings(struct xhci_dbc *dbc)
++{
++	struct xhci_ring *in_ring = dbc->eps[BULK_IN].ring;
++	struct xhci_ring *out_ring = dbc->eps[BULK_OUT].ring;
++
++	if (!in_ring || !out_ring || !dbc->ctx) {
++		dev_warn(dbc->dev, "Can't re-init unallocated endpoints\n");
++		return -ENODEV;
++	}
++
++	xhci_dbc_ring_init(in_ring);
++	xhci_dbc_ring_init(out_ring);
++
++	/* set ep context enqueue, dequeue, and cycle to initial values */
++	xhci_dbc_init_ep_contexts(dbc);
++
++	return 0;
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -871,7 +890,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 			dev_info(dbc->dev, "DbC cable unplugged\n");
+ 			dbc->state = DS_ENABLED;
+ 			xhci_dbc_flush_requests(dbc);
+-
++			xhci_dbc_reinit_ep_rings(dbc);
+ 			return EVT_DISC;
+ 		}
  
- 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
- }
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
+@@ -881,7 +900,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 			writel(portsc, &dbc->regs->portsc);
+ 			dbc->state = DS_ENABLED;
+ 			xhci_dbc_flush_requests(dbc);
+-
++			xhci_dbc_reinit_ep_rings(dbc);
+ 			return EVT_DISC;
+ 		}
  
- /* ASUS Xonar U1 / U3 controls */
- 
-@@ -3388,10 +3390,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_emu0204_controls_create(mixer);
- 		break;
- 
-+#if IS_REACHABLE(CONFIG_INPUT)
- 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
- 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
- 		err = snd_dualsense_controls_create(mixer);
- 		break;
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
- 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
--- 
-2.51.0
-
 
 
 
