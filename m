@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CE9BADC58
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC1CBADDDD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9596C325F3B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA89A16BD30
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6F720E334;
-	Tue, 30 Sep 2025 15:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A54223DD6;
+	Tue, 30 Sep 2025 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMXrhL7e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhylxcL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4952FD1DD;
-	Tue, 30 Sep 2025 15:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14410244665;
+	Tue, 30 Sep 2025 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245796; cv=none; b=KsnZiSGaaTejpiPHkC55Q4O6y19QvAwiBbgMFgQLQhmzYwwl1sgRbz2mho+tSNAYm+FrifDYZ6pEIUB8zkPT4mxwZvnQjLOXu0Fx2+Q53gKrjY8O5DPgyg6SERr2VN7HGDem0DqgM6PGIW4gLIBMN9koOMu2/MI930Hs54t+LFU=
+	t=1759246147; cv=none; b=n6wu3b13YNxjCF0Qv/f8+jamTw9cyOk2GMQJlA4VDVQzaezqYXFwk0kfHMZtlTkI++5D7GXkSxAhdj7CeEfWTK+Y0KJpHRY8nR9wLC3zbgVUtlfbv2qvp0vJtNz/SrX/A9E45nRg1kzqj4DO7+qV6wPI4+eGSvXUZameJreYTFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245796; c=relaxed/simple;
-	bh=OaML9MWwHuLo1pp4jiI9zYTOs1f+mxGHblojGl6Rces=;
+	s=arc-20240116; t=1759246147; c=relaxed/simple;
+	bh=mB/WkvF1SjgG0kiOHyEwwA9MOqxF2l+Fy/OBohZwV2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bM4mbDHRIn9wUuMBIE4foRjKPJN6UfVKxlTs7hDd9xf3dP1hc+q+k59oLyNiTdxwoEIap1glvJ0QiTUjwG9GcIYQXkZrJznivNXj5NSI+MKM896s2NAQxTaV/YpkUvE04ENpZpTXKw+rRcomc3/bA2QANwqK4GJqGFtV+roWWJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMXrhL7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4A2C4CEF0;
-	Tue, 30 Sep 2025 15:23:15 +0000 (UTC)
+	 MIME-Version; b=hZ+NMKiKWm7dkATSxyMPcroPP2SGbb3KNikgE+b/sJXjPh2fZO9U7T7ratjxhpWUK7RYhT418DZfY/VSIH+Eawgu//JrPg9BqSlUr8zFfZn2+yZkhWad44J50Yhcw4sb6gbt0C+LB6vwqIdoGLCZwBw0MKkgBuZscWOlVQEe37E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhylxcL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90771C4CEF0;
+	Tue, 30 Sep 2025 15:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245796;
-	bh=OaML9MWwHuLo1pp4jiI9zYTOs1f+mxGHblojGl6Rces=;
+	s=korg; t=1759246146;
+	bh=mB/WkvF1SjgG0kiOHyEwwA9MOqxF2l+Fy/OBohZwV2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMXrhL7edvUASIS+kP5+ApUjSApGoBummvLaMsboZcFhyDxt8vcPtcOegaDGiIc1U
-	 juJFkA4gg/cdpGI1Z7f2dyNJcQV6tIwCsmNVkF7koNAjBmo24qhtV1CL2rHAIFXc+x
-	 itMMb9eSwxNxhWZU9UNDTCsCWzjLLxRd/icUeUoo=
+	b=vhylxcL6B72yzdEY04D11awk/en0vEZKbdNUCB5C9hbfFFL0PYW+XGA9sJyHe9b2A
+	 9LEStljcKvwd9H+AS+w2X7ou1c35NJ9xWCYmwrpk/OKOAK8bUuUnfhknZw65OgA0NG
+	 LMrc/M4fq2QMOv2EY4+SQ1VlLCuGe0MtHAOpDiTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	James Guan <guan_yufei@163.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 51/91] octeontx2-pf: Fix potential use after free in otx2_tc_add_flow()
+Subject: [PATCH 6.12 36/89] wifi: virt_wifi: Fix page fault on connect
 Date: Tue, 30 Sep 2025 16:47:50 +0200
-Message-ID: <20250930143823.302970654@linuxfoundation.org>
+Message-ID: <20250930143823.418629376@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: James Guan <guan_yufei@163.com>
 
-[ Upstream commit d9c70e93ec5988ab07ad2a92d9f9d12867f02c56 ]
+[ Upstream commit 9c600589e14f5fc01b8be9a5d0ad1f094b8b304b ]
 
-This code calls kfree_rcu(new_node, rcu) and then dereferences "new_node"
-and then dereferences it on the next line.  Two lines later, we take
-a mutex so I don't think this is an RCU safe region.  Re-order it to do
-the dereferences before queuing up the free.
+This patch prevents page fault in __cfg80211_connect_result()[1]
+when connecting a virt_wifi device, while ensuring that virt_wifi
+can connect properly.
 
-Fixes: 68fbff68dbea ("octeontx2-pf: Add police action for TC flower")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/aNKCL1jKwK8GRJHh@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[1] https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
+
+Closes: https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
+Signed-off-by: James Guan <guan_yufei@163.com>
+Link: https://patch.msgid.link/20250910111929.137049-1-guan_yufei@163.com
+[remove irrelevant network-manager instructions]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/virtual/virt_wifi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 46bdbee9d38ad..635cfb9a3e2c5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -1116,7 +1116,6 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
+diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
+index 4ee3740804667..a77a27c36bdbe 100644
+--- a/drivers/net/wireless/virtual/virt_wifi.c
++++ b/drivers/net/wireless/virtual/virt_wifi.c
+@@ -277,7 +277,9 @@ static void virt_wifi_connect_complete(struct work_struct *work)
+ 		priv->is_connected = true;
  
- free_leaf:
- 	otx2_tc_del_from_flow_list(flow_cfg, new_node);
--	kfree_rcu(new_node, rcu);
- 	if (new_node->is_act_police) {
- 		mutex_lock(&nic->mbox.lock);
- 
-@@ -1136,6 +1135,7 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
- 
- 		mutex_unlock(&nic->mbox.lock);
- 	}
-+	kfree_rcu(new_node, rcu);
- 
- 	return rc;
+ 	/* Schedules an event that acquires the rtnl lock. */
+-	cfg80211_connect_result(priv->upperdev, requested_bss, NULL, 0, NULL, 0,
++	cfg80211_connect_result(priv->upperdev,
++				priv->is_connected ? fake_router_bssid : NULL,
++				NULL, 0, NULL, 0,
+ 				status, GFP_KERNEL);
+ 	netif_carrier_on(priv->upperdev);
  }
 -- 
 2.51.0
