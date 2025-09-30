@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-182718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E812BADC90
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433E3BADBC1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5E3178BA5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF15F326B56
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFA818BBAE;
-	Tue, 30 Sep 2025 15:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3F730597A;
+	Tue, 30 Sep 2025 15:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJI98CYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sH2XUkSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4E416A956;
-	Tue, 30 Sep 2025 15:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DBA303CBF;
+	Tue, 30 Sep 2025 15:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245861; cv=none; b=i1wYZUjs/mI07jCKyptJlfNmmEYpdTutTOgDtgjpb0kdke0sjL92MMThqQIfEmlwN1wvh3fDUPhh9lAbwl7vFsf2p3ycNrsN5L+X6/DOytmVVyLWDQ2qM/Jl2hRgxVnOojAwI3eFDoX+2YEzIdxCNFiljwA8/G7NfP/2UepLAjw=
+	t=1759245635; cv=none; b=fiXttJLPXdrbyNOsgSUz6jmlzNkNc/z8VU4Kv1w+8r19zoUdV/J3Pbh4+qY0BZVPK9CaNUHrNLMxw3M0CVE2/uVCQXShoBc7XH8ESNHjIkhObcC4Z/ZbU5RCxD/AC7G/TJMabRDI5dXMs3NLr003D1FeJ9WsZNch/pQocg0BZhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245861; c=relaxed/simple;
-	bh=U6UyMTXZnvvvnuoNznGs0lkFPgjy7XUGxPsRMy0EMas=;
+	s=arc-20240116; t=1759245635; c=relaxed/simple;
+	bh=Q0pmRuFUw98c1XHxRudACg5d2mgKFnyVNspCIiz32w4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nn/D5GazxY7d0ab4QUD2375k3UDImgRzGHJksKQ8guv9qf3SSw4nfX4MN0JyNYd/JM9l4avMSTfhlBwOAMXFS42sSIEpBCtDX/aq3Bk0VjpzsyJ0B3qphnZ6z4AW0geaFKvjVTqIWwDmDN/+vVPdyLjJlF6CwTjk3jV0OgPyecU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJI98CYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67510C4CEF0;
-	Tue, 30 Sep 2025 15:24:19 +0000 (UTC)
+	 MIME-Version; b=DV5e7yYtSA87kHiOuSz9O68uOlYcH/6Xxd5wvgR1xnDT1Pc9b/wnzazc2VnqT2Qm2j6kFs28/zLCSJ1hUJQc8/42nLs8AdBPHWd2yTVO8tpYhlVV4rWu80Zd4eUaK9Y6aU/98qtQ5izEtJYwR86Cz7coKgkP2/kcwvSbTHcwtVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sH2XUkSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF35FC4CEF0;
+	Tue, 30 Sep 2025 15:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245859;
-	bh=U6UyMTXZnvvvnuoNznGs0lkFPgjy7XUGxPsRMy0EMas=;
+	s=korg; t=1759245635;
+	bh=Q0pmRuFUw98c1XHxRudACg5d2mgKFnyVNspCIiz32w4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJI98CYcOx8nll/Ta0ueRvO5CEisjZzKZpB+qcGoaxcMEgGOBGzXydDBooYGtd6BK
-	 zpqPuOtU+k8rOTwucIPnbqg8gFLcsJKyS9u7JrdtZuK39V3apeh+IBfdRBNPbqC/zB
-	 b9TSxv9/ru9C/GCqaL00GEvioeaQbl0vRstcLWZQ=
+	b=sH2XUkSX8N6/QCCqfa2DkTF9Zc2pY/Jm1nLVrFfkfiK0A0wQN83309qqkXxkRHFfo
+	 e+b/3jllN6DjxY/O5Lc0dtbb66zyYsnnuexrC06YOSthNfzc716KnLD1WGIgNP96Zk
+	 VhzhCsN3aKks8x2po3bKpdlFgY01v6UfsyZAzGew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 6.6 72/91] ARM: bcm: Select ARM_GIC_V3 for ARCH_BRCMSTB
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Kamakshi Nellore <nellorex.kamakshi@intel.com>
+Subject: [PATCH 6.1 67/73] i40e: fix idx validation in config queues msg
 Date: Tue, 30 Sep 2025 16:48:11 +0200
-Message-ID: <20250930143824.178934239@linuxfoundation.org>
+Message-ID: <20250930143823.458040981@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,34 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-commit 2b28fe75c7dbe7ec322e706eed4622964409e21d upstream.
+[ Upstream commit f1ad24c5abe1eaef69158bac1405a74b3c365115 ]
 
-A number of recent Broadcom STB SoCs utilize a GIC-600 interrupt
-controller thus requiring the use of the GICv3 driver.
+Ensure idx is within range of active/initialized TCs when iterating over
+vf->ch[idx] in i40e_vc_config_queues_msg().
 
-Link: https://lore.kernel.org/r/20240726233414.2305526-1-florian.fainelli@broadcom.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-bcm/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm/mach-bcm/Kconfig
-+++ b/arch/arm/mach-bcm/Kconfig
-@@ -186,6 +186,7 @@ config ARCH_BRCMSTB
- 	select ARCH_HAS_RESET_CONTROLLER
- 	select ARM_AMBA
- 	select ARM_GIC
-+	select ARM_GIC_V3
- 	select ARM_ERRATA_798181 if SMP
- 	select HAVE_ARM_ARCH_TIMER
- 	select ZONE_DMA if ARM_LPAE
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2391,7 +2391,7 @@ static int i40e_vc_config_queues_msg(str
+ 		}
+ 
+ 		if (vf->adq_enabled) {
+-			if (idx >= ARRAY_SIZE(vf->ch)) {
++			if (idx >= vf->num_tc) {
+ 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
+ 				goto error_param;
+ 			}
+@@ -2412,7 +2412,7 @@ static int i40e_vc_config_queues_msg(str
+ 		 * to its appropriate VSIs based on TC mapping
+ 		 */
+ 		if (vf->adq_enabled) {
+-			if (idx >= ARRAY_SIZE(vf->ch)) {
++			if (idx >= vf->num_tc) {
+ 				aq_ret = I40E_ERR_NO_AVAILABLE_VSI;
+ 				goto error_param;
+ 			}
 
 
 
