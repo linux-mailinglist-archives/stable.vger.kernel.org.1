@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-182824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFFBADE13
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15BEBADE3A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BBE21946044
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:30:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37FCE7A98C4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3292D662F;
-	Tue, 30 Sep 2025 15:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A81F1DF73C;
+	Tue, 30 Sep 2025 15:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsNcEb6W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnebEiUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0DC1F4C8E;
-	Tue, 30 Sep 2025 15:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E1A537E9;
+	Tue, 30 Sep 2025 15:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246200; cv=none; b=H8SdFKtUr8d/elXmMlBKgf7EqNQjW+prKaRI/1BsPj1nC6Ple+e8dUtnTc8B09YDr8NIbEQvVtVgumBkbAsfJpBOBsMv6fsDM9eNm/OmP3XSn/rgV5fxbd1KCEgc/PiPp7DzF55PPxe5A9A5+QM6qiLEpx0Vq3CG3IqrYKgabzA=
+	t=1759246218; cv=none; b=Vuj7q0HOv8uhhCkk2ztlyLfYljl2IEbubX+ziFGkh4s6QwymwDAH42IINnW4gLRgSFHy1spwqFjisqQZiMuLM5ZrqJNzFpuRfedXBAKmqbOy28mqN7ol16fhwiz6TF9p9LQgI8idfu1/9I9wDYEwg3eU3s2C71z3+tSpHwwOPKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246200; c=relaxed/simple;
-	bh=Rg/FOSYD9bqtsy6jSy3Yj4XI32apbqT/xoalnqZBERo=;
+	s=arc-20240116; t=1759246218; c=relaxed/simple;
+	bh=Lv6puNGVhnsH0O1hSQT51LTvY9+5YQbUKCFvuJDLNMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuzWOEO0VUlItAKr19TL7d9mGt3s6CWgBTv6Az9dsenpSuO/FMnvuh0IxG4ycuHXT9LP3a4TUrxjv4xo7Vhl1U/ySRAYbU6AEnMWF+wJAuQrsokyvgNq3UlyT6lElqwFZoKT8tzlAE/g3DqhOBL7S7PJF8+3OSDIVYEs9QyQ9HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsNcEb6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD28C4CEF0;
-	Tue, 30 Sep 2025 15:29:59 +0000 (UTC)
+	 MIME-Version; b=F0U9GVru2ros23OezX+yisCYJE035D86KbOo7GKG0xf1Y+nLk7WD936PzzTaGHPXHGtGAQa1J2NasxkE/KAcG7SlkV7fOccvUd4ZqfILskzmZZJMK2wKt9JS6bSov48DdsZKyM9hTYUcCghV77EAyZwB/nTNvFvbTgRtS9ZO7ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnebEiUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A71C113D0;
+	Tue, 30 Sep 2025 15:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246199;
-	bh=Rg/FOSYD9bqtsy6jSy3Yj4XI32apbqT/xoalnqZBERo=;
+	s=korg; t=1759246217;
+	bh=Lv6puNGVhnsH0O1hSQT51LTvY9+5YQbUKCFvuJDLNMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsNcEb6WEL3SjEJP5jsvhif52bn4iAicWZPJhelxzreGnZsHbwYKHQe0k2Ur2BpXx
-	 Mv7GlqwbjT9M3/ZNlVlmJgNE5BM7QwxYMtuYPZgURjO3JQlMb9tra4Y6ihVxrt3wB8
-	 0dWi5IvDMldD7E0FPZmCE6W92rg4letpQmpE0Ifo=
+	b=CnebEiUddAL4jq4gD9wC2FTcP9Nzf09EN4K+iamBVp3s9UMwhlsr1+pzxTt4Qh9nh
+	 UOFiBzaeH3e13S3lAkh1KZIieH8yy3tZaGt8FTl6/QsZEgfhpJl659hx10tAEvNmhR
+	 +gTciaU5AYwzJiBPOCfSZdHtv0+3Bj4RxshxwPnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Chaudhari <amitchaudhari@mac.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 66/89] HID: asus: add support for missing PX series fn keys
-Date: Tue, 30 Sep 2025 16:48:20 +0200
-Message-ID: <20250930143824.641223171@linuxfoundation.org>
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 67/89] i40e: add validation for ring_len param
+Date: Tue, 30 Sep 2025 16:48:21 +0200
+Message-ID: <20250930143824.680190730@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
 References: <20250930143821.852512002@linuxfoundation.org>
@@ -65,33 +69,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amit Chaudhari <amitchaudhari@mac.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-commit 831f70a5b93bd2d9e858ced2c12fab5766ede5e7 upstream.
+commit 55d225670def06b01af2e7a5e0446fbe946289e8 upstream.
 
-Add support for missing hotkey keycodes affecting Asus PX13 and PX16 families
-so userspace can use them.
+The `ring_len` parameter provided by the virtual function (VF)
+is assigned directly to the hardware memory context (HMC) without
+any validation.
 
-Signed-off-by: Amit Chaudhari <amitchaudhari@mac.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+To address this, introduce an upper boundary check for both Tx and Rx
+queue lengths. The maximum number of descriptors supported by the
+hardware is 8k-32.
+Additionally, enforce alignment constraints: Tx rings must be a multiple
+of 8, and Rx rings must be a multiple of 32.
+
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-asus.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -971,7 +971,10 @@ static int asus_input_mapping(struct hid
- 		case 0xc4: asus_map_key_clear(KEY_KBDILLUMUP);		break;
- 		case 0xc5: asus_map_key_clear(KEY_KBDILLUMDOWN);		break;
- 		case 0xc7: asus_map_key_clear(KEY_KBDILLUMTOGGLE);	break;
-+		case 0x4e: asus_map_key_clear(KEY_FN_ESC);		break;
-+		case 0x7e: asus_map_key_clear(KEY_EMOJI_PICKER);	break;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -653,6 +653,13 @@ static int i40e_config_vsi_tx_queue(stru
  
-+		case 0x8b: asus_map_key_clear(KEY_PROG1);	break; /* ProArt Creator Hub key */
- 		case 0x6b: asus_map_key_clear(KEY_F21);		break; /* ASUS touchpad toggle */
- 		case 0x38: asus_map_key_clear(KEY_PROG1);	break; /* ROG key */
- 		case 0xba: asus_map_key_clear(KEY_PROG2);	break; /* Fn+C ASUS Splendid */
+ 	/* only set the required fields */
+ 	tx_ctx.base = info->dma_ring_addr / 128;
++
++	/* ring_len has to be multiple of 8 */
++	if (!IS_ALIGNED(info->ring_len, 8) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_context;
++	}
+ 	tx_ctx.qlen = info->ring_len;
+ 	tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[0]);
+ 	tx_ctx.rdylist_act = 0;
+@@ -716,6 +723,13 @@ static int i40e_config_vsi_rx_queue(stru
+ 
+ 	/* only set the required fields */
+ 	rx_ctx.base = info->dma_ring_addr / 128;
++
++	/* ring_len has to be multiple of 32 */
++	if (!IS_ALIGNED(info->ring_len, 32) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_param;
++	}
+ 	rx_ctx.qlen = info->ring_len;
+ 
+ 	if (info->splithdr_enabled) {
 
 
 
