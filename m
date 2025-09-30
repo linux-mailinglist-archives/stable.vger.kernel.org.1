@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-182641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F5C0BADB7C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9771BADC85
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B27F7A3B85
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8F516F412
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7264302CD6;
-	Tue, 30 Sep 2025 15:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08932FD1DD;
+	Tue, 30 Sep 2025 15:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gt2cijio"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5sXpqiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34BB237163;
-	Tue, 30 Sep 2025 15:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2851DF73C;
+	Tue, 30 Sep 2025 15:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245608; cv=none; b=lO4s7YZ/n7FWBj8GHo2Ln62gPQmxcxfYtCQEXVRU3RiqA4JymMLIedOwPfG6PLsVBNBjW1Ja1LahMvhJ5r0D07dqHd4mLApOpMI+E+a8Nh9Zvo3yWSWAJZW7i6PA8VXTY0m69M3w7E3w52qWMJ3AYUO5X8fomgT1sYD7ClhTnoE=
+	t=1759245846; cv=none; b=D7pGWnNvlPMYUBUQzfN7CSJFrcPfC6l8MHnQnMRo9ixk4LjSQ69DLpP/Mx0ap6T3IW5/hD4w+aXBR+Kz5GjmeypBndNiQVFxndMV/lT0V4NuT1VcQuqIQdtvu/BWJ3Y8a1k6UOQuv8d4qAPQiSsOoTZiXbJsGVqicB3D2Q50mro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245608; c=relaxed/simple;
-	bh=ZC8m8aOc8c8lZp9eMOc4N5gbet+yoO6AO3Urg44fepM=;
+	s=arc-20240116; t=1759245846; c=relaxed/simple;
+	bh=nOW1ZjpnxVERGvQ6/wBz2GnzOV43AenPUvu68vk/tA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SAb7yAMgSoZ3swWnxBjYGmakhA3OhUx0tshKwylTsf8HPvKc5Uc/XHOkdaeQUTM/KuZ98CTgsRYv48N4aLg7H/FoEWyC9+OiSEvdAKBdAgkdXq3zDmd5fm8K6BHZLWifro7cDAnGPK4SoSvUJmxn3pEQY65VAR0VQ9vqfTOBkcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gt2cijio; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1081BC4CEF0;
-	Tue, 30 Sep 2025 15:20:07 +0000 (UTC)
+	 MIME-Version; b=Np/wHbsfFfOeV+xGoy8+nlru1AovPEywVoG2NrArmKO2mxJAzoKcYFQXALyDx3no9QW8b1/4A5fXzpG958LhF15QabAlC+8qOMgS8Hlsx3PLvKQ853akuq2n/ZYM1lEvXm4sXzwl+X887WUriWpVnzhPbAcyif1CDkEnRpI5xdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5sXpqiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E925CC4CEF0;
+	Tue, 30 Sep 2025 15:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245608;
-	bh=ZC8m8aOc8c8lZp9eMOc4N5gbet+yoO6AO3Urg44fepM=;
+	s=korg; t=1759245846;
+	bh=nOW1ZjpnxVERGvQ6/wBz2GnzOV43AenPUvu68vk/tA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gt2cijioWMeAsqIzMVU74pNdDDIAhgM/InxZXPbrEnOQwe66Q6Dh4EfN+wDcz2q2Y
-	 SrzUr/RJyB8PeE7Og9sOE1iHqjiI86wSnwakzs+C8e8qlIsG/DBcFHelL/KyYcZrNE
-	 ZKmGmGclg7t6YppKytzXnzvI2n/stQD1TyRT27jg=
+	b=X5sXpqiTG9DG6dehF4ZRXUdgkBf4V7GUt3rET7pvrsFi7LVxY5cJnU9O4pfzPpnfN
+	 iqoiKTPVV5ef9kP/U0XQ6u26OtblQ9bsraNBvwEhq86Z3qWMwyVrQpwCMcfKIoF6Q/
+	 ucLL/9TaLmhp+zzO/4ST9hTf0gTmYFrDdLsy9jtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 6.1 62/73] minmax: deduplicate __unconst_integer_typeof()
-Date: Tue, 30 Sep 2025 16:48:06 +0200
-Message-ID: <20250930143823.239857685@linuxfoundation.org>
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 68/91] mm/hugetlb: fix folio is still mapped when deleted
+Date: Tue, 30 Sep 2025 16:48:07 +0200
+Message-ID: <20250930143824.008782424@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +66,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit 5e57418a2031cd5e1863efdf3d7447a16a368172 ]
+commit 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7 upstream.
 
-It appears that compiler_types.h already have an implementation of the
-__unconst_integer_typeof() called __unqual_scalar_typeof().  Use it
-instead of the copy.
+Migration may be raced with fallocating hole.  remove_inode_single_folio
+will unmap the folio if the folio is still mapped.  However, it's called
+without folio lock.  If the folio is migrated and the mapped pte has been
+converted to migration entry, folio_mapped() returns false, and won't
+unmap it.  Due to extra refcount held by remove_inode_single_folio,
+migration fails, restores migration entry to normal pte, and the folio is
+mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
 
-Link: https://lkml.kernel.org/r/20230911154913.4176033-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Herve Codina <herve.codina@bootlin.com>
+The log is as follows:
+ BUG: Bad page cache in process hugetlb  pfn:156c00
+ page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
+ head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
+ aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
+ flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
+ page_type: f4(hugetlb)
+ page dumped because: still mapped when deleted
+ CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
+ Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4f/0x70
+  filemap_unaccount_folio+0xc4/0x1c0
+  __filemap_remove_folio+0x38/0x1c0
+  filemap_remove_folio+0x41/0xd0
+  remove_inode_hugepages+0x142/0x250
+  hugetlbfs_fallocate+0x471/0x5a0
+  vfs_fallocate+0x149/0x380
+
+Hold folio lock before checking if the folio is mapped to avold race with
+migration.
+
+Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
+Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ fs/hugetlbfs/inode.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -169,27 +169,6 @@
- #define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -619,14 +619,16 @@ static bool remove_inode_single_folio(st
  
- /*
-- * Remove a const qualifier from integer types
-- * _Generic(foo, type-name: association, ..., default: association) performs a
-- * comparison against the foo type (not the qualified type).
-- * Do not use the const keyword in the type-name as it will not match the
-- * unqualified type of foo.
-- */
--#define __unconst_integer_type_cases(type)	\
--	unsigned type:  (unsigned type)0,	\
--	signed type:    (signed type)0
--
--#define __unconst_integer_typeof(x) typeof(			\
--	_Generic((x),						\
--		char: (char)0,					\
--		__unconst_integer_type_cases(char),		\
--		__unconst_integer_type_cases(short),		\
--		__unconst_integer_type_cases(int),		\
--		__unconst_integer_type_cases(long),		\
--		__unconst_integer_type_cases(long long),	\
--		default: (x)))
--
--/*
-  * Do not check the array parameter using __must_be_array().
-  * In the following legit use-case where the "array" passed is a simple pointer,
-  * __must_be_array() will return a failure.
-@@ -203,13 +182,13 @@
-  * 'int *buff' and 'int buff[N]' types.
-  *
-  * The array can be an array of const items.
-- * typeof() keeps the const qualifier. Use __unconst_integer_typeof() in order
-+ * typeof() keeps the const qualifier. Use __unqual_scalar_typeof() in order
-  * to discard the const qualifier for the __element variable.
-  */
- #define __minmax_array(op, array, len) ({				\
- 	typeof(&(array)[0]) __array = (array);				\
- 	typeof(len) __len = (len);					\
--	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
-+	__unqual_scalar_typeof(__array[0]) __element = __array[--__len];\
- 	while (__len--)							\
- 		__element = op(__element, __array[__len]);		\
- 	__element; })
+ 	/*
+ 	 * If folio is mapped, it was faulted in after being
+-	 * unmapped in caller.  Unmap (again) while holding
+-	 * the fault mutex.  The mutex will prevent faults
+-	 * until we finish removing the folio.
++	 * unmapped in caller or hugetlb_vmdelete_list() skips
++	 * unmapping it due to fail to grab lock.  Unmap (again)
++	 * while holding the fault mutex.  The mutex will prevent
++	 * faults until we finish removing the folio.  Hold folio
++	 * lock to guarantee no concurrent migration.
+ 	 */
++	folio_lock(folio);
+ 	if (unlikely(folio_mapped(folio)))
+ 		hugetlb_unmap_file_folio(h, mapping, folio, index);
+ 
+-	folio_lock(folio);
+ 	/*
+ 	 * We must remove the folio from page cache before removing
+ 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
 
 
 
