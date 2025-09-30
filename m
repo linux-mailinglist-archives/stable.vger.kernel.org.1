@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-182542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A240BADA3A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19921BADCA2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85DF61943ADE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1343A4A08A7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E333081A6;
-	Tue, 30 Sep 2025 15:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA995307ADD;
+	Tue, 30 Sep 2025 15:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9b+J+m2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOHom88J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63D7306B05;
-	Tue, 30 Sep 2025 15:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A594303CBF;
+	Tue, 30 Sep 2025 15:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245284; cv=none; b=ag6KVOjR90ZM/ue4qSRqJRaCCPOD2cC42wUyO4QOi5XptIvW1c2MUuNHAEX7WhIifuFQOOALIsonfebnn9KsEszGn5nIjoQBrgpET8ZEfAMnn141s++jR6sOuVuWfO2DyDbvDQgSCmEkxTMDLGaLvh6I0kKDdwg8cDfVICrNG40=
+	t=1759245651; cv=none; b=HQoJxGbTjHBoNPWQNzazhy+zdhmZfVi8e/C0PQ0YhTNJw309gaN88w41CI/OGEv04/yRqAH3ksHwfuK/FT3CvqDMsJZEWa6iD8r8GVj9sikRzMBgDtSgT0IP+vNsTgLAPXThCeZeBUxbwTUGw8NP7yIds7+9y6bRnOS5oRoDOEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245284; c=relaxed/simple;
-	bh=vVRe49FiRNIsynO4KVx154vRhs+kQVJZAhGjJhbiocE=;
+	s=arc-20240116; t=1759245651; c=relaxed/simple;
+	bh=de0tEuzZZRzU5Bl6B/5u/+H0ewRaNBD7L9C7dhNxVpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWnhUvJswSq5m0qzt259RBHtCXEk8xC7J/UKZEUAH12EYVNnfSK8prRBLrmqKxYc09n/y4ttrIzdlRj152UT6IlHFI7d6kub4KTMotRKXqKE2a5WVn/UyL4vfKQ4N08Csq902zQa+j6TDLSmvVE9RCZY4BRpr4HQiyy+AqZqdYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9b+J+m2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAD3C4CEF0;
-	Tue, 30 Sep 2025 15:14:43 +0000 (UTC)
+	 MIME-Version; b=dNI2H0NWe5nsc+vpHJdoByi25ZTBYQbNzTn3DZdMDEzPex5W2y2F3WP76BF43Igjcb6AQ7QN+SGEBmFQi8w2Z0TQXXTRmewSxEekTbPQ6UQu+f8O7BLISYg3+0Xt58zZPBs+1iRQRAKfKR7W/Q685u4kpGJSpCgJ4AxXU3ILrBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOHom88J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130CCC4CEF0;
+	Tue, 30 Sep 2025 15:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245284;
-	bh=vVRe49FiRNIsynO4KVx154vRhs+kQVJZAhGjJhbiocE=;
+	s=korg; t=1759245651;
+	bh=de0tEuzZZRzU5Bl6B/5u/+H0ewRaNBD7L9C7dhNxVpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9b+J+m21u7jakMwZ4s5aJg/xFRkXwta6pcnnJsKVj2J70IYF5XpPVtojHBrpai51
-	 etcRI61w7ZmoeymnO4ZDrenZeu2+ExmSRJu28q8zegU9H05a8xB8jx0LZtgmC3Bqyz
-	 rMigojssKJaL/ixgoWneANaUdZA9fHvPCCceMlcU=
+	b=qOHom88JvhNeToefyW034UOAJ8HXv9jtWeRCB8JWe6N31T+sGwvvSw9JHB6mpE0VR
+	 4uGEaBojKbwO+MkWah8RKFFWSKsEv76qGSd1b1GYZ/1PPKtI/aK8wFALkN8AtIn1iD
+	 r9opv0iSSIZiJKA46eMtOAZFeO+Z5gbM1n++/2uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/151] serial: sc16is7xx: fix bug in flow control levels init
+Subject: [PATCH 6.6 01/91] scsi: ufs: mcq: Fix memory allocation checks for SQE and CQE
 Date: Tue, 30 Sep 2025 16:47:00 +0200
-Message-ID: <20250930143831.182428280@linuxfoundation.org>
+Message-ID: <20250930143821.179898015@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 535fd4c98452c87537a40610abba45daf5761ec6 ]
+[ Upstream commit 5cb782ff3c62c837e4984b6ae9f5d9a423cd5088 ]
 
-When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
-writing to the TCR register to configure flow control levels, we are
-incorrectly writing to the MSR register. The default value of $00 is then
-used for TCR, which means that selectable trigger levels in FCR are used
-in place of TCR.
+Previous checks incorrectly tested the DMA addresses (dma_handle) for
+NULL. Since dma_alloc_coherent() returns the CPU (virtual) address, the
+NULL check should be performed on the *_base_addr pointer to correctly
+detect allocation failures.
 
-TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
-to be set. EFR[4] is already set in probe().
+Update the checks to validate sqe_base_addr and cqe_base_addr instead of
+sqe_dma_addr and cqe_dma_addr.
 
-MCR access requires LCR[7] to be zero.
-
-Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
-accessed instead because MCR shares the same address space as XON1.
-
-Since MCR[2] is unmodified and still zero, when writing to TCR we are in
-fact writing to MSR because TCR/TLR registers share the same address space
-as MSR/SPR.
-
-Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
-functions), as it is already enabled in sc16is7xx_probe() since commit
-43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
-Now LCR is $00, which means that MCR access is enabled.
-
-Also remove regcache_cache_bypass() calls since we no longer access the
-enhanced registers set, and TCR is already declared as volatile (in fact
-by declaring MSR as volatile, which shares the same address).
-
-Finally disable access to TCR/TLR registers after modifying them by
-clearing MCR[2].
-
-Note: the comment about "... and internal clock div" is wrong and can be
-      ignored/removed as access to internal clock div registers (DLL/DLH)
-      is permitted only when LCR[7] is logic 1, not when enhanced features
-      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ changed regmap variable from one->regmap to s->regmap ]
+Fixes: 4682abfae2eb ("scsi: ufs: core: mcq: Allocate memory for MCQ mode")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/ufs/core/ufs-mcq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1018,7 +1018,6 @@ static int sc16is7xx_config_rs485(struct
- static int sc16is7xx_startup(struct uart_port *port)
- {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
- 	unsigned int val;
- 
- 	sc16is7xx_power(port, 1);
-@@ -1030,16 +1029,6 @@ static int sc16is7xx_startup(struct uart
- 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
- 			     SC16IS7XX_FCR_FIFO_BIT);
- 
--	/* Enable EFR */
--	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--			     SC16IS7XX_LCR_CONF_MODE_B);
--
--	regcache_cache_bypass(s->regmap, true);
--
--	/* Enable write access to enhanced features and internal clock div */
--	sc16is7xx_port_write(port, SC16IS7XX_EFR_REG,
--			     SC16IS7XX_EFR_ENABLE_BIT);
--
- 	/* Enable TCR/TLR */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_TCRTLR_BIT,
-@@ -1051,7 +1040,8 @@ static int sc16is7xx_startup(struct uart
- 			     SC16IS7XX_TCR_RX_RESUME(24) |
- 			     SC16IS7XX_TCR_RX_HALT(48));
- 
--	regcache_cache_bypass(s->regmap, false);
-+	/* Disable TCR/TLR access */
-+	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
- 
- 	/* Now, initialize the UART */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 14864cfc24223..cb8f0652a4bee 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -209,7 +209,7 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
+ 		hwq->sqe_base_addr = dmam_alloc_coherent(hba->dev, utrdl_size,
+ 							 &hwq->sqe_dma_addr,
+ 							 GFP_KERNEL);
+-		if (!hwq->sqe_dma_addr) {
++		if (!hwq->sqe_base_addr) {
+ 			dev_err(hba->dev, "SQE allocation failed\n");
+ 			return -ENOMEM;
+ 		}
+@@ -218,7 +218,7 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
+ 		hwq->cqe_base_addr = dmam_alloc_coherent(hba->dev, cqe_size,
+ 							 &hwq->cqe_dma_addr,
+ 							 GFP_KERNEL);
+-		if (!hwq->cqe_dma_addr) {
++		if (!hwq->cqe_base_addr) {
+ 			dev_err(hba->dev, "CQE allocation failed\n");
+ 			return -ENOMEM;
+ 		}
+-- 
+2.51.0
+
 
 
 
