@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0537EBAD440
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25589BAD7D4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEDFC1632A2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB471890094
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8306B25D1F7;
-	Tue, 30 Sep 2025 14:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F0B30594A;
+	Tue, 30 Sep 2025 15:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx+T986D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMsPc27C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBC73C465;
-	Tue, 30 Sep 2025 14:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ECE1F152D;
+	Tue, 30 Sep 2025 15:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243791; cv=none; b=GtFDqah1j7G6T91X+hgf3OSvuTx6dKp9xhC310O2Pj2ZPVtQbmnmmm5+k+XDRk7vZV855DLjntgc/etR0ajD4ew8Nvs9yGNN1SH4x+OuJ2CKSG6SpiLgEcOnUYaEIwicRYL9AQeDsenbLG506GkoqVo2K9QUob+RccWiQPSIrMA=
+	t=1759244706; cv=none; b=IyRQ999Z1WmSnb6SwSav0qiT6c5q1wzgyKlpwp0/6X6HFtp1Pyury9K9spK6ebIU+EtcDuYGCv/rSW9SVeS9YfnAoARO7YEDzky4YZCY0A2R9vUWmGTsX8Vw+i9MWEOInrV3rxuQ+b7gom9yHUObRQq+cG4mO6yuFqaTpvt0ww8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243791; c=relaxed/simple;
-	bh=mADAgQTGpTJjGdFucB/kIR8x1vbP7mQRPvoTCKGHYXI=;
+	s=arc-20240116; t=1759244706; c=relaxed/simple;
+	bh=9/ofTBLWazO7801LlFf+Gs07KU8DXEMFap6wgNok0xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQFU34DsO8/MNetpHs7O9XomacVugwbUQFEbt9URvyytaRHFbPHTZB/Oqzps6R0TgaR+FvrQuWrodCbYElEYxDSJA7VWm+pyNffqz8T1ZgjH7CUwpMiNcGPA7riBBllTMpoh1jyQ6IPFU5mCpcj/Qr6fWHoo3YCVNx4ihsCWP3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx+T986D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1996C4CEF0;
-	Tue, 30 Sep 2025 14:49:50 +0000 (UTC)
+	 MIME-Version; b=DVqyiACd0WlQk1cMYE7JipNvzyt0H5y+y+pC8nCxyzH3Nqzt7LdHg9hJiuBRZpQRHiuuqYMoPZsadYQQpL3qZg1CT02gvMZOG1KVDpzzTINS9zYulBBC52rkxcYgInvK9dpeQ4v71p4M8n4OFE66LQZ7z08yL4RyDHW7rCIFhxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMsPc27C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41A6C4CEF0;
+	Tue, 30 Sep 2025 15:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243791;
-	bh=mADAgQTGpTJjGdFucB/kIR8x1vbP7mQRPvoTCKGHYXI=;
+	s=korg; t=1759244706;
+	bh=9/ofTBLWazO7801LlFf+Gs07KU8DXEMFap6wgNok0xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hx+T986DQKQEOReakgz8moriTji2litCR6fzz5MfdI45c2i+pEF1jfEV4FFhMUPY3
-	 WxoQmJqFS2IT4bHtNs+D7aWDOUTZUh5WrzNPkA8teZWCWzxSBHCyRpnvYHwapLSJoJ
-	 KMSCD8+T5bAuCQl+Ps8cX8bv+3TcU9nP3CDZ8VOA=
+	b=lMsPc27CX9H+IHNbwRPn0QHU51bIvKIPktrsrNIfF5f/lMqFgYuxNi2xfizrTdwBm
+	 lli9eJ5OFbUNauPf2BhlZYup643oUAerylIG02qP/6ax3vRNoTfnITwLyGdjtN+uqy
+	 YZhKzISOVhE/jPjqmQeVDyblvqm/HGl+2WNjhdHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	John Garry <john.garry@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 19/81] genirq/affinity: Add irq_update_affinity_desc()
+Subject: [PATCH 6.16 057/143] selftests/bpf: Skip timer cases when bpf_timer is not supported
 Date: Tue, 30 Sep 2025 16:46:21 +0200
-Message-ID: <20250930143820.473385277@linuxfoundation.org>
+Message-ID: <20250930143833.503095053@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-[ Upstream commit 1d3aec89286254487df7641c30f1b14ad1d127a5 ]
+[ Upstream commit fbdd61c94bcb09b0c0eb0655917bf4193d07aac1 ]
 
-Add a function to allow the affinity of an interrupt be switched to
-managed, such that interrupts allocated for platform devices may be
-managed.
+When enable CONFIG_PREEMPT_RT, verifier will reject bpf_timer with
+returning -EOPNOTSUPP.
 
-This new interface has certain limitations, and attempts to use it in the
-following circumstances will fail:
-- For when the kernel is configured for generic IRQ reservation mode (in
-  config GENERIC_IRQ_RESERVATION_MODE). The reason being that it could
-  conflict with managed vs. non-managed interrupt accounting.
-- The interrupt is already started, which should not be the case during
-  init
-- The interrupt is already configured as managed, which means double init
+Therefore, skip test cases when errno is EOPNOTSUPP.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/1606905417-183214-2-git-send-email-john.garry@huawei.com
-Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
+cd tools/testing/selftests/bpf
+./test_progs -t timer
+125     free_timer:SKIP
+456     timer:SKIP
+457/1   timer_crash/array:SKIP
+457/2   timer_crash/hash:SKIP
+457     timer_crash:SKIP
+458     timer_lockup:SKIP
+459     timer_mim:SKIP
+Summary: 5/0 PASSED, 6 SKIPPED, 0 FAILED
+
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/r/20250910125740.52172-3-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/interrupt.h |  8 +++++
- kernel/irq/manage.c       | 70 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/free_timer.c   | 4 ++++
+ tools/testing/selftests/bpf/prog_tests/timer.c        | 4 ++++
+ tools/testing/selftests/bpf/prog_tests/timer_crash.c  | 4 ++++
+ tools/testing/selftests/bpf/prog_tests/timer_lockup.c | 4 ++++
+ tools/testing/selftests/bpf/prog_tests/timer_mim.c    | 4 ++++
+ 5 files changed, 20 insertions(+)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 7b8bdc468492e..a601715279f50 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -341,6 +341,8 @@ extern int irq_can_set_affinity(unsigned int irq);
- extern int irq_select_affinity(unsigned int irq);
+diff --git a/tools/testing/selftests/bpf/prog_tests/free_timer.c b/tools/testing/selftests/bpf/prog_tests/free_timer.c
+index b7b77a6b29799..0de8facca4c5b 100644
+--- a/tools/testing/selftests/bpf/prog_tests/free_timer.c
++++ b/tools/testing/selftests/bpf/prog_tests/free_timer.c
+@@ -124,6 +124,10 @@ void test_free_timer(void)
+ 	int err;
  
- extern int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m);
-+extern int irq_update_affinity_desc(unsigned int irq,
-+				    struct irq_affinity_desc *affinity);
- 
- extern int
- irq_set_affinity_notifier(unsigned int irq, struct irq_affinity_notify *notify);
-@@ -376,6 +378,12 @@ static inline int irq_set_affinity_hint(unsigned int irq,
- 	return -EINVAL;
- }
- 
-+static inline int irq_update_affinity_desc(unsigned int irq,
-+					   struct irq_affinity_desc *affinity)
-+{
-+	return -EINVAL;
-+}
-+
- static inline int
- irq_set_affinity_notifier(unsigned int irq, struct irq_affinity_notify *notify)
- {
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 2a8a5e1779c9c..44d77e834c229 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -332,6 +332,76 @@ int irq_set_affinity_locked(struct irq_data *data, const struct cpumask *mask,
- 	return ret;
- }
- 
-+/**
-+ * irq_update_affinity_desc - Update affinity management for an interrupt
-+ * @irq:	The interrupt number to update
-+ * @affinity:	Pointer to the affinity descriptor
-+ *
-+ * This interface can be used to configure the affinity management of
-+ * interrupts which have been allocated already.
-+ *
-+ * There are certain limitations on when it may be used - attempts to use it
-+ * for when the kernel is configured for generic IRQ reservation mode (in
-+ * config GENERIC_IRQ_RESERVATION_MODE) will fail, as it may conflict with
-+ * managed/non-managed interrupt accounting. In addition, attempts to use it on
-+ * an interrupt which is already started or which has already been configured
-+ * as managed will also fail, as these mean invalid init state or double init.
-+ */
-+int irq_update_affinity_desc(unsigned int irq,
-+			     struct irq_affinity_desc *affinity)
-+{
-+	struct irq_desc *desc;
-+	unsigned long flags;
-+	bool activated;
-+	int ret = 0;
-+
-+	/*
-+	 * Supporting this with the reservation scheme used by x86 needs
-+	 * some more thought. Fail it for now.
-+	 */
-+	if (IS_ENABLED(CONFIG_GENERIC_IRQ_RESERVATION_MODE))
-+		return -EOPNOTSUPP;
-+
-+	desc = irq_get_desc_buslock(irq, &flags, 0);
-+	if (!desc)
-+		return -EINVAL;
-+
-+	/* Requires the interrupt to be shut down */
-+	if (irqd_is_started(&desc->irq_data)) {
-+		ret = -EBUSY;
-+		goto out_unlock;
+ 	skel = free_timer__open_and_load();
++	if (!skel && errno == EOPNOTSUPP) {
++		test__skip();
++		return;
 +	}
-+
-+	/* Interrupts which are already managed cannot be modified */
-+	if (irqd_affinity_is_managed(&desc->irq_data)) {
-+		ret = -EBUSY;
-+		goto out_unlock;
+ 	if (!ASSERT_OK_PTR(skel, "open_load"))
+ 		return;
+ 
+diff --git a/tools/testing/selftests/bpf/prog_tests/timer.c b/tools/testing/selftests/bpf/prog_tests/timer.c
+index d66687f1ee6a8..56f660ca567ba 100644
+--- a/tools/testing/selftests/bpf/prog_tests/timer.c
++++ b/tools/testing/selftests/bpf/prog_tests/timer.c
+@@ -86,6 +86,10 @@ void serial_test_timer(void)
+ 	int err;
+ 
+ 	timer_skel = timer__open_and_load();
++	if (!timer_skel && errno == EOPNOTSUPP) {
++		test__skip();
++		return;
 +	}
-+
-+	/*
-+	 * Deactivate the interrupt. That's required to undo
-+	 * anything an earlier activation has established.
-+	 */
-+	activated = irqd_is_activated(&desc->irq_data);
-+	if (activated)
-+		irq_domain_deactivate_irq(&desc->irq_data);
-+
-+	if (affinity->is_managed) {
-+		irqd_set(&desc->irq_data, IRQD_AFFINITY_MANAGED);
-+		irqd_set(&desc->irq_data, IRQD_MANAGED_SHUTDOWN);
+ 	if (!ASSERT_OK_PTR(timer_skel, "timer_skel_load"))
+ 		return;
+ 
+diff --git a/tools/testing/selftests/bpf/prog_tests/timer_crash.c b/tools/testing/selftests/bpf/prog_tests/timer_crash.c
+index f74b82305da8c..b841597c8a3a3 100644
+--- a/tools/testing/selftests/bpf/prog_tests/timer_crash.c
++++ b/tools/testing/selftests/bpf/prog_tests/timer_crash.c
+@@ -12,6 +12,10 @@ static void test_timer_crash_mode(int mode)
+ 	struct timer_crash *skel;
+ 
+ 	skel = timer_crash__open_and_load();
++	if (!skel && errno == EOPNOTSUPP) {
++		test__skip();
++		return;
 +	}
-+
-+	cpumask_copy(desc->irq_common_data.affinity, &affinity->mask);
-+
-+	/* Restore the activation state */
-+	if (activated)
-+		irq_domain_activate_irq(&desc->irq_data, false);
-+
-+out_unlock:
-+	irq_put_desc_busunlock(desc, flags);
-+	return ret;
-+}
-+
- int __irq_set_affinity(unsigned int irq, const struct cpumask *mask, bool force)
- {
- 	struct irq_desc *desc = irq_to_desc(irq);
+ 	if (!ASSERT_OK_PTR(skel, "timer_crash__open_and_load"))
+ 		return;
+ 	skel->bss->pid = getpid();
+diff --git a/tools/testing/selftests/bpf/prog_tests/timer_lockup.c b/tools/testing/selftests/bpf/prog_tests/timer_lockup.c
+index 1a2f99596916f..eb303fa1e09af 100644
+--- a/tools/testing/selftests/bpf/prog_tests/timer_lockup.c
++++ b/tools/testing/selftests/bpf/prog_tests/timer_lockup.c
+@@ -59,6 +59,10 @@ void test_timer_lockup(void)
+ 	}
+ 
+ 	skel = timer_lockup__open_and_load();
++	if (!skel && errno == EOPNOTSUPP) {
++		test__skip();
++		return;
++	}
+ 	if (!ASSERT_OK_PTR(skel, "timer_lockup__open_and_load"))
+ 		return;
+ 
+diff --git a/tools/testing/selftests/bpf/prog_tests/timer_mim.c b/tools/testing/selftests/bpf/prog_tests/timer_mim.c
+index 9ff7843909e7d..c930c7d7105b9 100644
+--- a/tools/testing/selftests/bpf/prog_tests/timer_mim.c
++++ b/tools/testing/selftests/bpf/prog_tests/timer_mim.c
+@@ -65,6 +65,10 @@ void serial_test_timer_mim(void)
+ 		goto cleanup;
+ 
+ 	timer_skel = timer_mim__open_and_load();
++	if (!timer_skel && errno == EOPNOTSUPP) {
++		test__skip();
++		return;
++	}
+ 	if (!ASSERT_OK_PTR(timer_skel, "timer_skel_load"))
+ 		goto cleanup;
+ 
 -- 
 2.51.0
 
