@@ -1,313 +1,175 @@
-Return-Path: <stable+bounces-182852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6ACBAE2EA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 19:30:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA895BAE31A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 19:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 810DB1927DB4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8480F3AC416
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A7830F7E3;
-	Tue, 30 Sep 2025 17:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5840D1F5434;
+	Tue, 30 Sep 2025 17:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JVkBCxjO"
+	dkim=pass (2048-bit key) header.d=kvanals.org header.i=@kvanals.org header.b="NA5kwX0m";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="EkGY2UdE"
 X-Original-To: stable@vger.kernel.org
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a8-83.smtp-out.amazonses.com (a8-83.smtp-out.amazonses.com [54.240.8.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC0130E0EC
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 17:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514A418BBAE
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 17:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.8.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759253318; cv=none; b=jeJWw3jU6sP2EmRa0h4kY3UNxx4tCWPdz1zg2HkKr/hxJZ2O6m3ye8Tkq6fmZ5u+LJTbnO3P9KMhlIdWnlpn/1IVdIO5gMpr9iJFMKjTrgW/Sl1gpOaPoln15qmTnwTQjb2DUEyxCGVC4kIYb93oeWOt1QKJY+kZlyu3Ll2krtY=
+	t=1759253502; cv=none; b=spZ32NKuIBrBuSB7osy15T4oz9n/I2JC7LtCEpQBfl+TTdPgK+2HFxI95b+ZoMvQV/FbpeFWk8J3q3Jex/TcuCUPoKgI9pMdn39TzzswrEGSSaYtaoYfYcGDRJ2LM+Dh1nSu2YCiGepx9uIkQj6reu+rxgqycmW+OwnxfEFP5aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759253318; c=relaxed/simple;
-	bh=zug1RGVFNRyLB1s0nsyVQMczgGwosnie+UXUsw4+l9w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q1NThSvpPWbP/GFQl/B7V6L5j0so8p21ibjQVmvOOETKXh917apM9HX7wOPVVox61/dr0et5iAfkphoMXr/6e3I10+OPZeBo8fgPQCr9j0gRGuVC3u7gVKXD5s3grIHm0H8bnzmplGCQ7gOgBwcfS4JK5GUYc9X+RumWFW+qsTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JVkBCxjO; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759253312;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=orilhY8Ftnw0yG11yBg9R6a/IIwv6TZglZsPMJyEfjY=;
-	b=JVkBCxjOlnf5Yq0k5BOcH0TwdfBgQyp+vf2HTSCt8cXvJS9I+e0U4JlM5aIQdV/lW+jNWV
-	3LFY4pvuoHXyRdbcvDv3aboDuQN8N/jwBZRGtNnbrCWqW1+oOWgAKViWGpulddcMGlgOO2
-	jnWlBf1b6az6iIW+F+2bSlHKVco9TT0=
-From: Wen Yang <wen.yang@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.1 6/6] arch_topology: Build cacheinfo from primary CPU
-Date: Wed,  1 Oct 2025 01:27:31 +0800
-Message-Id: <296ababbf0d4a3debe1ee5b5d29a5a23201f9fd6.1759251543.git.wen.yang@linux.dev>
-In-Reply-To: <cover.1759251543.git.wen.yang@linux.dev>
-References: <cover.1759251543.git.wen.yang@linux.dev>
+	s=arc-20240116; t=1759253502; c=relaxed/simple;
+	bh=mrJ/ZQYqKE4cT6lTBvckUQj1x2hcVTevKOZJdKtO/YA=;
+	h=From:Content-Type:Mime-Version:Subject:Message-ID:Date:Cc:To; b=SlJcL4/YeKbCAWY4b0AW3fpqrmhQg/8VoRK0Pu1dIlyGMIukNH1SqRclJMIbLT6Jd0TDADKe/y4gesDF9wKEAxU2tP652Ila2cEoc1rMMVYGL23sPsgwxiIOY+jFIy8LMVhWfr+jRlOWtT1bA8Qp3D7O4VFBdGd0A4Io44pyWDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kvanals.org; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=kvanals.org header.i=@kvanals.org header.b=NA5kwX0m; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=EkGY2UdE; arc=none smtp.client-ip=54.240.8.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kvanals.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=xojwidlurxakxokupknu2uvuxvz4uggf; d=kvanals.org; t=1759253498;
+	h=From:Content-Type:Content-Transfer-Encoding:Mime-Version:Subject:Message-Id:Date:Cc:To;
+	bh=mrJ/ZQYqKE4cT6lTBvckUQj1x2hcVTevKOZJdKtO/YA=;
+	b=NA5kwX0muIsKzjQ6KptfNhWaAegj5sDHVEAGqr05/VoStItaGc6E83955RY/5nOG
+	15xJa3L+q1tEVT5Y0v5bcidxN6kDV41GL4AronaCx6vNs8Odpy0vSQA4io/0wQsClOq
+	z2L+dMybKE5kiNucAY2SdRA0LiaOCxcpRTcHxsZLBzNsXfEBpAQF//uWAKt11ok3BIc
+	LPSOvtVGxRVSjFBqb4Ae1VAuyeb+c8B34byvHg5XhBE9/xmdMj0b7Wh4ihd9yl+6y3K
+	EpvPsZYzPduYEyqGbhHXBdeTnbp2cHpl7SU32bQKSJMgCvdtWMgHFZsQb5JQbGGg8yS
+	0ZZDoq4vQg==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1759253498;
+	h=From:Content-Type:Content-Transfer-Encoding:Mime-Version:Subject:Message-Id:Date:Cc:To:Feedback-ID;
+	bh=mrJ/ZQYqKE4cT6lTBvckUQj1x2hcVTevKOZJdKtO/YA=;
+	b=EkGY2UdEtWoWsUGdpBsa4EhUKScgiiyLSRPUNRfurJNblm319wA1CgXL6p0te2Hf
+	cNIyWaNGnKz8iB2XrbVPBB7uoexyYK2tQ9Vi+hLM+XYzsLIJRSjlRkgimQOSnAt9VFC
+	2sBoNltszsrV5PZfWM34dJg0h5kGw2rsDcpXRc+g=
+From: Kenneth Van Alstyne <kvanals@kvanals.org>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.5\))
+Subject: KVM: arm64: Regression in at least linux-6.1.y tree with recent
+ FPSIMD/SVE/SME fix 
+Message-ID: <010001999bae0958-4d80d25d-8dda-4006-a6b9-798f3e774f6c-000000@email.amazonses.com>
+Date: Tue, 30 Sep 2025 17:31:38 +0000
+Cc: regressions@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com
+To: stable@vger.kernel.org
+X-Mailer: Apple Mail (2.3864.100.1.1.5)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (olympus.kvanals.org [IPv6:2600:1f18:42d5:300:0:0:0:ffff]); Tue, 30 Sep 2025 17:31:38 +0000 (UTC)
+Feedback-ID: ::1.us-east-1.5jHMwTu/Jzmoolk7Ak3w+RKcSxXCCShHRX8XGxXgrSs=:AmazonSES
+X-SES-Outgoing: 2025.09.30-54.240.8.83
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+Greetings:
 
-[ Upstream commit 5944ce092b97caed5d86d961e963b883b5c44ee2 ]
-commit 3fcbf1c77d08 ("arch_topology: Fix cache attributes detection
-in the CPU hotplug path")
-adds a call to detect_cache_attributes() to populate the cacheinfo
-before updating the siblings mask. detect_cache_attributes() allocates
-memory and can take the PPTT mutex (on ACPI platforms). On PREEMPT_RT
-kernels, on secondary CPUs, this triggers a:
-  'BUG: sleeping function called from invalid context' [1]
-as the code is executed with preemption and interrupts disabled.
+Sending via plain text email -- apologies if you receive this twice.
 
-The primary CPU was previously storing the cache information using
-the now removed (struct cpu_topology).llc_id:
-commit 5b8dc787ce4a ("arch_topology: Drop LLC identifier stash from
-the CPU topology")
+If this isn't the process for reporting a regression in a LTS kernel per =
+https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html, =
+I'm happy to follow another process.
 
-allocate_cache_info() tries to build the cacheinfo from the primary
-CPU prior secondary CPUs boot, if the DT/ACPI description
-contains cache information.
-If allocate_cache_info() fails, then fallback to the current state
-for the cacheinfo allocation. [1] will be triggered in such case.
+Kernel 6.1.149 introduced a regression, at least on our ARM Cortex =
+A57-based platforms, via commit 8f4dc4e54eed4bebb18390305eb1f721c00457e1 =
+in arch/arm64/kernel/fpsimd.c where booting KVM VMs eventually leads to =
+a spinlock recursion BUG and crash of the box.
 
-When unplugging a CPU, the cacheinfo memory cannot be freed. If it
-was, then the memory would be allocated early by the re-plugged
-CPU and would trigger [1].
+Reverting that commit via the below reverts to the old (working) =
+behavior:
 
-Note that populate_cache_leaves() might be called multiple times
-due to populate_leaves being moved up. This is required since
-detect_cache_attributes() might be called with per_cpu_cacheinfo(cpu)
-being allocated but not populated.
-
-[1]:
- | BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
- | in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/111
- | preempt_count: 1, expected: 0
- | RCU nest depth: 1, expected: 1
- | 3 locks held by swapper/111/0:
- |  #0:  (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x218/0x12c8
- |  #1:  (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x48/0xf0
- |  #2:  (&zone->lock){+.+.}-{3:3}, at: rmqueue_bulk+0x64/0xa80
- | irq event stamp: 0
- | hardirqs last  enabled at (0):  0x0
- | hardirqs last disabled at (0):  copy_process+0x5dc/0x1ab8
- | softirqs last  enabled at (0):  copy_process+0x5dc/0x1ab8
- | softirqs last disabled at (0):  0x0
- | Preemption disabled at:
- |  migrate_enable+0x30/0x130
- | CPU: 111 PID: 0 Comm: swapper/111 Tainted: G        W          6.0.0-rc4-rt6-[...]
- | Call trace:
- |  __kmalloc+0xbc/0x1e8
- |  detect_cache_attributes+0x2d4/0x5f0
- |  update_siblings_masks+0x30/0x368
- |  store_cpu_topology+0x78/0xb8
- |  secondary_start_kernel+0xd0/0x198
- |  __secondary_switched+0xb0/0xb4
-
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/r/20230104183033.755668-7-pierre.gondois@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Wen Yang <wen.yang@linux.dev>
----
- arch/riscv/kernel/cacheinfo.c |  5 ---
- drivers/base/arch_topology.c  | 12 +++++-
- drivers/base/cacheinfo.c      | 71 ++++++++++++++++++++++++++---------
- include/linux/cacheinfo.h     |  1 +
- 4 files changed, 65 insertions(+), 24 deletions(-)
-
-diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-index 440a3df5944c..3a13113f1b29 100644
---- a/arch/riscv/kernel/cacheinfo.c
-+++ b/arch/riscv/kernel/cacheinfo.c
-@@ -113,11 +113,6 @@ static void fill_cacheinfo(struct cacheinfo **this_leaf,
- 	}
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 837d1937300a57..bc42163a7fd1f0 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1851,10 +1851,10 @@ void fpsimd_save_and_flush_cpu_state(void)
+  if (!system_supports_fpsimd())
+  return;
+  WARN_ON(preemptible());
+- get_cpu_fpsimd_context();
++ __get_cpu_fpsimd_context();
+  fpsimd_save();
+  fpsimd_flush_cpu_state();
+- put_cpu_fpsimd_context();
++ __put_cpu_fpsimd_context();
  }
- 
--int init_cache_level(unsigned int cpu)
--{
--	return init_of_cache_level(cpu);
--}
--
- int populate_cache_leaves(unsigned int cpu)
- {
- 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index e7d6e6657ffa..b1c1dd38ab01 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -736,7 +736,7 @@ void update_siblings_masks(unsigned int cpuid)
- 
- 	ret = detect_cache_attributes(cpuid);
- 	if (ret && ret != -ENOENT)
--		pr_info("Early cacheinfo failed, ret = %d\n", ret);
-+		pr_info("Early cacheinfo allocation failed, ret = %d\n", ret);
- 
- 	/* update core and thread sibling masks */
- 	for_each_online_cpu(cpu) {
-@@ -825,7 +825,7 @@ __weak int __init parse_acpi_topology(void)
- #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
- void __init init_cpu_topology(void)
- {
--	int ret;
-+	int cpu, ret;
- 
- 	reset_cpu_topology();
- 	ret = parse_acpi_topology();
-@@ -840,6 +840,14 @@ void __init init_cpu_topology(void)
- 		reset_cpu_topology();
- 		return;
- 	}
-+
-+	for_each_possible_cpu(cpu) {
-+		ret = fetch_cache_info(cpu);
-+		if (ret) {
-+			pr_err("Early cacheinfo failed, ret = %d\n", ret);
-+			break;
-+		}
-+	}
- }
- 
- void store_cpu_topology(unsigned int cpuid)
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index ab99b0f0d010..cd943d06d074 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -412,10 +412,6 @@ static void free_cache_attributes(unsigned int cpu)
- 		return;
- 
- 	cache_shared_cpu_map_remove(cpu);
--
--	kfree(per_cpu_cacheinfo(cpu));
--	per_cpu_cacheinfo(cpu) = NULL;
--	cache_leaves(cpu) = 0;
- }
- 
- int __weak init_cache_level(unsigned int cpu)
-@@ -428,29 +424,71 @@ int __weak populate_cache_leaves(unsigned int cpu)
- 	return -ENOENT;
- }
- 
-+static inline
-+int allocate_cache_info(int cpu)
-+{
-+	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
-+					 sizeof(struct cacheinfo), GFP_ATOMIC);
-+	if (!per_cpu_cacheinfo(cpu)) {
-+		cache_leaves(cpu) = 0;
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+int fetch_cache_info(unsigned int cpu)
-+{
-+	struct cpu_cacheinfo *this_cpu_ci;
-+	unsigned int levels, split_levels;
-+	int ret;
-+
-+	if (acpi_disabled) {
-+		ret = init_of_cache_level(cpu);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		ret = acpi_get_cache_info(cpu, &levels, &split_levels);
-+		if (ret < 0)
-+			return ret;
-+
-+		this_cpu_ci = get_cpu_cacheinfo(cpu);
-+		this_cpu_ci->num_levels = levels;
-+		/*
-+		 * This assumes that:
-+		 * - there cannot be any split caches (data/instruction)
-+		 *   above a unified cache
-+		 * - data/instruction caches come by pair
-+		 */
-+		this_cpu_ci->num_leaves = levels + split_levels;
-+	}
-+	if (!cache_leaves(cpu))
-+		return -ENOENT;
-+
-+	return allocate_cache_info(cpu);
-+}
-+
- int detect_cache_attributes(unsigned int cpu)
- {
- 	int ret;
- 
--	/* Since early detection of the cacheinfo is allowed via this
--	 * function and this also gets called as CPU hotplug callbacks via
--	 * cacheinfo_cpu_online, the initialisation can be skipped and only
--	 * CPU maps can be updated as the CPU online status would be update
--	 * if called via cacheinfo_cpu_online path.
-+	/* Since early initialization/allocation of the cacheinfo is allowed
-+	 * via fetch_cache_info() and this also gets called as CPU hotplug
-+	 * callbacks via cacheinfo_cpu_online, the init/alloc can be skipped
-+	 * as it will happen only once (the cacheinfo memory is never freed).
-+	 * Just populate the cacheinfo.
- 	 */
- 	if (per_cpu_cacheinfo(cpu))
--		goto update_cpu_map;
-+		goto populate_leaves;
- 
- 	if (init_cache_level(cpu) || !cache_leaves(cpu))
- 		return -ENOENT;
- 
--	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
--					 sizeof(struct cacheinfo), GFP_ATOMIC);
--	if (per_cpu_cacheinfo(cpu) == NULL) {
--		cache_leaves(cpu) = 0;
--		return -ENOMEM;
--	}
-+	ret = allocate_cache_info(cpu);
-+	if (ret)
-+		return ret;
- 
-+populate_leaves:
- 	/*
- 	 * populate_cache_leaves() may completely setup the cache leaves and
- 	 * shared_cpu_map or it may leave it partially setup.
-@@ -459,7 +497,6 @@ int detect_cache_attributes(unsigned int cpu)
- 	if (ret)
- 		goto free_ci;
- 
--update_cpu_map:
- 	/*
- 	 * For systems using DT for cache hierarchy, fw_token
- 	 * and shared_cpu_map will be set up here only if they are
-diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
-index 00d8e7f9d1c6..dfef57077cd0 100644
---- a/include/linux/cacheinfo.h
-+++ b/include/linux/cacheinfo.h
-@@ -85,6 +85,7 @@ int populate_cache_leaves(unsigned int cpu);
- int cache_setup_acpi(unsigned int cpu);
- bool last_level_cache_is_valid(unsigned int cpu);
- bool last_level_cache_is_shared(unsigned int cpu_x, unsigned int cpu_y);
-+int fetch_cache_info(unsigned int cpu);
- int detect_cache_attributes(unsigned int cpu);
- #ifndef CONFIG_ACPI_PPTT
- /*
--- 
-2.25.1
+  #ifdef CONFIG_KERNEL_MODE_NEON
+
+It's not entirely clear to me if this is specific to our firmware, =
+specific to ARM Cortex A57, or more systemic as we lack sufficiently =
+differentiated hardware to know.  I've tested on the latest 6.1 kernel =
+in addition to the one in the log below and have also tested a number of =
+firmware versions available for these boxes.
+
+Steps to reproduce:
+
+Boot VM in qemu-system-aarch64 with "-accel kvm" and "-cpu host" flags =
+set -- no other arguments seem to matter
+Generate CPU load in VM
+
+Kernel log:
+
+[sjc1] root@si-compute-kvm-e0fff70016b4:/# [  805.905413] BUG: spinlock =
+recursion on CPU#7, CPU 3/KVM/57616
+[  805.905452]  lock: 0xffff3045ef850240, .magic: dead4ead, .owner: CPU =
+3/KVM/57616, .owner_cpu: 7
+[  805.905477] CPU: 7 PID: 57616 Comm: CPU 3/KVM Tainted: G           O  =
+     6.1.152 #1
+[  805.905495] Hardware name: SoftIron SoftIron Platform =
+Mainboard/SoftIron Platform Mainboard, BIOS 1.31 May 11 2023
+[  805.905516] Call trace:
+[  805.905524]  dump_backtrace+0xe4/0x110
+[  805.905538]  show_stack+0x20/0x30
+[  805.905548]  dump_stack_lvl+0x6c/0x88
+[  805.905561]  dump_stack+0x18/0x34
+[  805.905571]  spin_dump+0x98/0xac
+[  805.905583]  do_raw_spin_lock+0x70/0x128
+[  805.905596]  _raw_spin_lock+0x18/0x28
+[  805.905607]  raw_spin_rq_lock_nested+0x18/0x28
+[  805.905620]  update_blocked_averages+0x70/0x550
+[  805.905634]  run_rebalance_domains+0x50/0x70
+[  805.905645]  handle_softirqs+0x198/0x328
+[  805.905659]  __do_softirq+0x1c/0x28
+[  805.905669]  ____do_softirq+0x18/0x28
+[  805.905680]  call_on_irq_stack+0x30/0x48
+[  805.905691]  do_softirq_own_stack+0x24/0x30
+[  805.905703]  do_softirq+0x74/0x90
+[  805.905714]  __local_bh_enable_ip+0x64/0x80
+[  805.905727]  fpsimd_save_and_flush_cpu_state+0x5c/0x68
+[  805.905740]  kvm_arch_vcpu_put_fp+0x4c/0x88
+[  805.905752]  kvm_arch_vcpu_put+0x28/0x88
+[  805.905764]  kvm_sched_out+0x38/0x58
+[  805.905774]  __schedule+0x55c/0x6c8
+[  805.905786]  schedule+0x60/0xa8
+[  805.905796]  kvm_vcpu_block+0x5c/0x90
+[  805.905807]  kvm_vcpu_halt+0x440/0x468
+[  805.905818]  kvm_vcpu_wfi+0x3c/0x70
+[  805.905828]  kvm_handle_wfx+0x18c/0x1f0
+[  805.905840]  handle_exit+0xb8/0x148
+[  805.905851]  kvm_arch_vcpu_ioctl_run+0x6c4/0x7b0
+[  805.905863]  kvm_vcpu_ioctl+0x1d0/0x8b8
+[  805.905874]  __arm64_sys_ioctl+0x9c/0xe0
+[  805.905886]  invoke_syscall+0x78/0x108
+[  805.905899]  el0_svc_common.constprop.3+0xb4/0xf8
+[  805.905912]  do_el0_svc+0x78/0x88
+[  805.905922]  el0_svc+0x48/0x78
+[  805.905932]  el0t_64_sync_handler+0x40/0xc0
+[  805.905943]  el0t_64_sync+0x18c/0x190
+[  806.048300] hrtimer: interrupt took 2976 ns
+[  826.924613] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+SoC 0 became not ready
+SoC 0 became ready
+
+Thanks,
+
+--
+Kenneth Van Alstyne, Jr.
 
 
