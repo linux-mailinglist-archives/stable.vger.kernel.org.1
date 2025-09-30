@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-182215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6304BAD5D5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09F7BAD4FD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD3A37A4522
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B33F63B1F88
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8CA3043C4;
-	Tue, 30 Sep 2025 14:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3BC238D3A;
+	Tue, 30 Sep 2025 14:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HN5We5n6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D64leVik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25A3199939;
-	Tue, 30 Sep 2025 14:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCDB1B4156;
+	Tue, 30 Sep 2025 14:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244219; cv=none; b=NNzhO4R3ECkkbK4rIytnrpkNhqnD96CfIhUdwUY8nXlexvAqQOnQRM4IZndzJaX0pVL+UqVTS9sXSAZRpByV7Ag0nHS3QtW9vz31e5a0oTLm4DjpxW397547+z8lASlubruVpU2+xPCswf3Un/nQooeVzgJDb40PjxpUAkOeH7k=
+	t=1759243948; cv=none; b=t/gRY+ez7Ogbpe9u4hvw7EvQ68Ggsz4DtqwEpc2bgKGqOh2nfU2k2rmj0Uq1puojF3W5zYDVh/jT5JGt4cJiPTmA4S/oC1xhgMnBLYL3a4e8rjLbS22mMyn30mcumkDrG7Cw2GdjdMFVgoFIpQ7L6QXvuyX36OJ82Jr3MjtDvks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244219; c=relaxed/simple;
-	bh=dag3PjzXl61fgkz1JCBl0+tWbsHvw9mBdTrhivLouGU=;
+	s=arc-20240116; t=1759243948; c=relaxed/simple;
+	bh=wrIsSeBvJnytLJgpqrejzdVCFpUVxaiar3/AOUv0gWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pofa8iLaS7y5KW2jkfcXNnk6oL/Sul66RKe5go52157EOmDSDEvtW0WRoWsmiWs//qEpFoq0n1vdxsnzkr0aR/Rmt/49ElgfDanI+RxTtCM71yove7qN2BRCluimcCX0fpVbANeUm7sVQzk5F+JoS/zERnvItewHO5hIDxiYfEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HN5We5n6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C150FC4CEF0;
-	Tue, 30 Sep 2025 14:56:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lE5/w2sSmhJnO94Sv/XB1Mwb4zozeHEYrt84onyXm+aHcMmVXMlKeEwO5oCmb8runGwNvH7/V55g4my0RZU7kTd2WBF/Mt3vc0fZkDJAB9vpDnw03rjb+CXgKSUAgt2q1YNP5jpJ0UYgF8gIQzB4/9lf3thQKVa3eVB0aVuMuZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D64leVik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D59AC4CEF0;
+	Tue, 30 Sep 2025 14:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244219;
-	bh=dag3PjzXl61fgkz1JCBl0+tWbsHvw9mBdTrhivLouGU=;
+	s=korg; t=1759243947;
+	bh=wrIsSeBvJnytLJgpqrejzdVCFpUVxaiar3/AOUv0gWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HN5We5n6Xz11jwBKFMFLEdCJZ51Gy4GS3gX6wmaPdruVbCWWrsFLd9RvRx5RjQDC4
-	 VDjX528q5sbTAr5v1Kc4D8HflzvQcYWn9rTqYevtJuzB2dfHv6/cKymVap4thnIc/6
-	 dMWXJ+c3daNNmWOBO0VE2kVzlT6hHFxDPPE+63PA=
+	b=D64leVik8a3VHlqCAsCTC10hsXXxqUC20YVySXHuCL4XkL1pd/yZyxAK/7BFW4z3z
+	 QFb+BPkctCiSX0WT4zf0oqwyeIuunInBwq8SEJYmXRNqo/OUOmi7sO54MS2Rq4NWZC
+	 UgC9I8hcAr/efMCJ9YYo3CeV/1Ax5/k9J9fvMOLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankur Tyagi <ankur.tyagi85@gmail.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/122] ASoC: wm8940: Correct typo in control name
+Subject: [PATCH 5.4 33/81] pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
 Date: Tue, 30 Sep 2025 16:46:35 +0200
-Message-ID: <20250930143825.624685020@linuxfoundation.org>
+Message-ID: <20250930143821.052026078@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit b4799520dcd6fe1e14495cecbbe9975d847cd482 ]
+[ Upstream commit d1dfcdd30140c031ae091868fb5bed084132bca1 ]
 
-Fixes: 0b5e92c5e020 ("ASoC WM8940 Driver")
-Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
-Link: https://patch.msgid.link/20250821082639.1301453-3-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+As described in the added code comment, a reference to .exit.text is ok
+for drivers registered via platform_driver_probe().  Make this explicit
+to prevent the following section mismatch warning
+
+    WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
+
+that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm8940.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pcmcia/omap_cf.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
-index 016cd8aeef37c..31234ad14e688 100644
---- a/sound/soc/codecs/wm8940.c
-+++ b/sound/soc/codecs/wm8940.c
-@@ -218,7 +218,7 @@ static const struct snd_kcontrol_new wm8940_snd_controls[] = {
- 	SOC_SINGLE_TLV("Digital Capture Volume", WM8940_ADCVOL,
- 		       0, 255, 0, wm8940_adc_tlv),
- 	SOC_ENUM("Mic Bias Level", wm8940_mic_bias_level_enum),
--	SOC_SINGLE_TLV("Capture Boost Volue", WM8940_ADCBOOST,
-+	SOC_SINGLE_TLV("Capture Boost Volume", WM8940_ADCBOOST,
- 		       8, 1, 0, wm8940_capture_boost_vol_tlv),
- 	SOC_SINGLE_TLV("Speaker Playback Volume", WM8940_SPKVOL,
- 		       0, 63, 0, wm8940_spk_vol_tlv),
+diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+index 0a04eb04f3a28..2e7559b7f103e 100644
+--- a/drivers/pcmcia/omap_cf.c
++++ b/drivers/pcmcia/omap_cf.c
+@@ -327,7 +327,13 @@ static int __exit omap_cf_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static struct platform_driver omap_cf_driver = {
++/*
++ * omap_cf_remove() lives in .exit.text. For drivers registered via
++ * platform_driver_probe() this is ok because they cannot get unbound at
++ * runtime. So mark the driver struct with __refdata to prevent modpost
++ * triggering a section mismatch warning.
++ */
++static struct platform_driver omap_cf_driver __refdata = {
+ 	.driver = {
+ 		.name	= (char *) driver_name,
+ 	},
 -- 
 2.51.0
 
