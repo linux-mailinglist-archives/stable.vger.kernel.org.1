@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-182466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2013BAD929
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E455BAD5B4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36EB97A9094
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A53F7A3072
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FC2303CB7;
-	Tue, 30 Sep 2025 15:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682BA199939;
+	Tue, 30 Sep 2025 14:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyBbbMpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWgvqBnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BD31EE02F;
-	Tue, 30 Sep 2025 15:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B58303C9B;
+	Tue, 30 Sep 2025 14:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245035; cv=none; b=rb2/txy6mDbAqpvx++syr2GAm0ogVu4/FAfEtOL5xx68pnmap5v9cS6dspJqTs7eOXY99KRMfXpRVVgXXk9JEsCirpgHBdJQZX0/xMl2XebJTXXfil0Ukxd5A6vlKTYus33Ldsj8JNOZ335i9DADADfHGCF3KScI7znmAV6/FUU=
+	t=1759244173; cv=none; b=W+ArnZQFvHAz8v37fiMjsPC8khLQmcgzcxQyz+uKNCch61DJ4Uke5vibFiiKJJh6VxAVz8WM4uIxudeuIWCu+OP+tRwXllMm3gQ0mWbKhafTRIb5MbZn87lc1l2fNrlAIO/Ng9Podi3Sl9fAzVHBvTZeHXbQ3JPpaZuwzuCjapk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245035; c=relaxed/simple;
-	bh=gO6fEcPnZYX3i+WiCd0WURlWtGSmOtMRYv+oVZd1tfg=;
+	s=arc-20240116; t=1759244173; c=relaxed/simple;
+	bh=pOYSVZ6z/GoijlOsDh9i5sUJYnp7juc+yOGMVXLHAQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DO3p3tPygmhX7dGrHE6fzfxYL4Z36VHqXj7mHEXVXVqbcO+VYeGmeQhLEBqQXtqRJ8bYAl0XBqyEuNACN9VWTzCXMLPBQipPpw+Bs6wFCXtew+3+2Km303eep2g+1A2ywYveigh6O10lZizePKCW6LQrvTApsw6ooGu49S24fOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyBbbMpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD14C113D0;
-	Tue, 30 Sep 2025 15:10:35 +0000 (UTC)
+	 MIME-Version; b=sLei2NBzAKhcOqiNLO5lEZVeM1P+bGhawwLABNwTT1tUZEJ2d+xRUAuuKzOVIjJIbXFddLY5oQLrBTXh04ohaK6lzToG+a7z+Bs3tAJl58uAp4KvOpz4QRqnqSTJhMkA5HodaysYnK6cBaJNRTaVQ5WS3ha/5G+m5jZCjyo/ZJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWgvqBnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EABC116B1;
+	Tue, 30 Sep 2025 14:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245035;
-	bh=gO6fEcPnZYX3i+WiCd0WURlWtGSmOtMRYv+oVZd1tfg=;
+	s=korg; t=1759244173;
+	bh=pOYSVZ6z/GoijlOsDh9i5sUJYnp7juc+yOGMVXLHAQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyBbbMpuTpBJWT8tahwzbyWDDkrgIRL236jhlerRM4tMcakoEkK8ow4pIbmiCa99g
-	 7nEPakDiXuJL6/kkcx4DKatdC9l/LTs+pmJJAPoHaXLavBKNITBhz4fE1EI58cptW4
-	 XHEQYPF6pGo86gj0FeqH5lFLfp7tmR/YOqZP6IOY=
+	b=KWgvqBnqRDjy7WOFG5LKfH5OpEUl2WPnXUSosqX34BoVycPyHarQjvXw3Vjw3WG6q
+	 WzdZNNTDzuyTk+Q0UxXwAjxtutCDtXTUPGFgztf9xBx3E/ve7oDizqjvr2XQce+Kbd
+	 Ysd9Xcpcu+K0hoVySsoaiTxRrSZgv+smiIzC0Hk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinpu Wang <jinpu.wang@ionos.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Subject: [PATCH 5.15 019/151] KVM: SVM: Set synthesized TSA CPUID flags
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 018/122] mtd: rawnand: stm32_fmc2: fix ECC overwrite
 Date: Tue, 30 Sep 2025 16:45:49 +0200
-Message-ID: <20250930143828.377952319@linuxfoundation.org>
+Message-ID: <20250930143823.737275549@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
 
-Commit f3f9deccfc68a6b7c8c1cc51e902edba23d309d4 LTS
+commit 811c0da4542df3c065f6cb843ced68780e27bb44 upstream.
 
-VERW_CLEAR is supposed to be set only by the hypervisor to denote TSA
-mitigation support to a guest. SQ_NO and L1_NO are both synthesizable,
-and are going to be set by hw CPUID on future machines.
+In case OOB write is requested during a data write, ECC is currently
+lost. Avoid this issue by only writing in the free spare area.
+This issue has been seen with a YAFFS2 file system.
 
-So keep the kvm_cpu_cap_init_kvm_defined() invocation *and* set them
-when synthesized.
-
-This fix is stable-only.
-
-Co-developed-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Jinpu Wang <jinpu.wang@ionos.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org> # 5.15.y
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: stable@vger.kernel.org
+Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mtd/nand/raw/stm32_fmc2_nand.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -564,10 +564,15 @@ void kvm_set_cpu_caps(void)
- 	if (cpu_feature_enabled(X86_FEATURE_SRSO_NO))
- 		kvm_cpu_cap_set(X86_FEATURE_SRSO_NO);
+--- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
++++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+@@ -973,9 +973,21 @@ static int stm32_fmc2_nfc_seq_write(stru
  
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_VERW_CLEAR);
+ 	/* Write oob */
+ 	if (oob_required) {
+-		ret = nand_change_write_column_op(chip, mtd->writesize,
+-						  chip->oob_poi, mtd->oobsize,
+-						  false);
++		unsigned int offset_in_page = mtd->writesize;
++		const void *buf = chip->oob_poi;
++		unsigned int len = mtd->oobsize;
 +
- 	kvm_cpu_cap_init_kvm_defined(CPUID_8000_0021_ECX,
- 		F(TSA_SQ_NO) | F(TSA_L1_NO)
- 	);
- 
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_SQ_NO);
-+	kvm_cpu_cap_check_and_set(X86_FEATURE_TSA_L1_NO);
++		if (!raw) {
++			struct mtd_oob_region oob_free;
 +
- 	/*
- 	 * Hide RDTSCP and RDPID if either feature is reported as supported but
- 	 * probing MSR_TSC_AUX failed.  This is purely a sanity check and
++			mtd_ooblayout_free(mtd, 0, &oob_free);
++			offset_in_page += oob_free.offset;
++			buf += oob_free.offset;
++			len = oob_free.length;
++		}
++
++		ret = nand_change_write_column_op(chip, offset_in_page,
++						  buf, len, false);
+ 		if (ret)
+ 			return ret;
+ 	}
 
 
 
