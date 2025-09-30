@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE6ABAD85A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFB3BAD9BC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C6C93AF2E8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C017832659C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DD030595C;
-	Tue, 30 Sep 2025 15:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B332C2F39C0;
+	Tue, 30 Sep 2025 15:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8haVFZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLuQOszH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C7C23506A;
-	Tue, 30 Sep 2025 15:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617B41EE02F;
+	Tue, 30 Sep 2025 15:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244686; cv=none; b=G+0okpHgvB8sI3KBgtCh8q145nwT0hPeqEicL17fb5PGmnS9y0L24EA9pNOLBRbBgf7r44XW1MsdvLWZP8RbZSlflk0SFISSL6OqcY4C8xfD8Rv/fBPA4+MVWH1rVQjcV/+cSB1iArEJMM1CwRRHRwyGgnMsvHOaWqZ5ppbmkZ8=
+	t=1759245126; cv=none; b=VWGAhbBPMYCkrNOklDw9ERNh44iq90g+K4SFe2cX29GgQol3M/TJe8+jPftO7xyq8wIEfqZDU9m+vmsgxB2bHh5r9vSa/DD2YUOnFknwYYMlFXyOtcq3rKdiiXsWtAeWpVevv3zzCXfhJXzJXk+kXb+M4E0HECGngzT2M7qFOt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244686; c=relaxed/simple;
-	bh=RguUYyxXh6oJxL3oKNVIuTIvhfR+2ttaqU+jUT5W86A=;
+	s=arc-20240116; t=1759245126; c=relaxed/simple;
+	bh=olE7XJX6gl31NhqyODeq39TWKQpLYbwi6kLfBqOmorU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SG7QRndQObFrbyy5Q3sQlQvLPGehKZbrhquIMr8BmJcZBp0WHluWYjKCqJl4ABo8H7dVjgXB7vyl1e1LoDldpNULpgaJOlzjLvPwRwATKSgYc+p54vDHfRWTqmOB1fXV5rzGwMQLAwR6iSrdmEGmiMW4NRtSKBfkSfOwaI1eBiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8haVFZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CCFC4CEF0;
-	Tue, 30 Sep 2025 15:04:45 +0000 (UTC)
+	 MIME-Version; b=s7T9LBHuTI0YN/I0A3tXShOxRMYJlo6hV1xuQHZExtISUHifZcPrGBY6XcmPZ/f4GUM6gQ+oxAOf/BFdi2dNs38WYiM9xZxx3NHaXfjDreCzanI3JSsILyJCNnBdYhrUADQe5euLWY6AP7Z+pzMT2pQVkeNSJpJANzxHgam26a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLuQOszH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65ADFC116B1;
+	Tue, 30 Sep 2025 15:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244686;
-	bh=RguUYyxXh6oJxL3oKNVIuTIvhfR+2ttaqU+jUT5W86A=;
+	s=korg; t=1759245123;
+	bh=olE7XJX6gl31NhqyODeq39TWKQpLYbwi6kLfBqOmorU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8haVFZXcE9faPng6haUBcqG8y2tYvk/69s17v5l+pZOK8mQ80fVAo3tN65Jces+S
-	 NZI/mAbgs7mlJ9zj2CCYC8+ThNVLnLXb7kcmv5oQoFgJfMmWBgIXyzcfsNp90Tjd9N
-	 Ss/fPW11ladFNu2pz9Xta4lhjhIwfHo2Ap2UA62E=
+	b=HLuQOszHeGrCyMHpTfAxXzsRjXEmGN0SGCGZ+AjTJQHW0kmGUmZ76ghPqQwwIZUIy
+	 iPQji7+yF55IZ93nJLdier+KRBPNWUffpN2cJB7kfGhhnd4NZzw7vmVzvLhnGERyTJ
+	 UzMa+AzMN6napzbgUqJ/tkHAKOlxK1xK5N732HyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Alexey Nepomnyashih <sdl@nppct.ru>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 082/143] net/mlx5e: Fix missing FEC RS stats for RS_544_514_INTERLEAVED_QUAD
+Subject: [PATCH 5.15 076/151] net: liquidio: fix overflow in octeon_init_instr_queue()
 Date: Tue, 30 Sep 2025 16:46:46 +0200
-Message-ID: <20250930143834.506475588@linuxfoundation.org>
+Message-ID: <20250930143830.622811462@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Alexey Nepomnyashih <sdl@nppct.ru>
 
-[ Upstream commit 6d0477d0d067a53c1d48d0aff1fd52e151721871 ]
+[ Upstream commit cca7b1cfd7b8a0eff2a3510c5e0f10efe8fa3758 ]
 
-Include MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD in the FEC RS stats
-handling. This addresses a gap introduced when adding support for
-200G/lane link modes.
+The expression `(conf->instr_type == 64) << iq_no` can overflow because
+`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
+operand to `u64` ensures correct 64-bit arithmetic.
 
-Fixes: 4e343c11efbb ("net/mlx5e: Support FEC settings for 200G per lane link modes")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1758525094-816583-4-git-send-email-tariqt@nvidia.com
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_stats.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-index 19664fa7f2171..46d6dd05fb814 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-@@ -1466,6 +1466,7 @@ static void fec_set_block_stats(struct mlx5e_priv *priv,
- 	case MLX5E_FEC_RS_528_514:
- 	case MLX5E_FEC_RS_544_514:
- 	case MLX5E_FEC_LLRS_272_257_1:
-+	case MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD:
- 		fec_set_rs_stats(fec_stats, out);
- 		return;
- 	case MLX5E_FEC_FIRECODE:
+diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+index 8e59c2825533a..2a066f193bca1 100644
+--- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
++++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+@@ -135,7 +135,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
+ 	oct->io_qmask.iq |= BIT_ULL(iq_no);
+ 
+ 	/* Set the 32B/64B mode for each input queue */
+-	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
++	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
+ 	iq->iqcmd_64B = (conf->instr_type == 64);
+ 
+ 	oct->fn_list.setup_iq_regs(oct, iq_no);
 -- 
 2.51.0
 
