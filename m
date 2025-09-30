@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-182448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C49DBAD920
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68087BAD75B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA1F324656
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE6018870C7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E91306B08;
-	Tue, 30 Sep 2025 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F450304964;
+	Tue, 30 Sep 2025 15:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3Lb4uhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o70NwOLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2212FD1DD;
-	Tue, 30 Sep 2025 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDA51F152D;
+	Tue, 30 Sep 2025 15:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244980; cv=none; b=LdbT/D7rt88q1atR8JI14+cpeYAbBmstmcsRc4ZZaRXVHQTZFX0Ci0Sbr7zomz/EXWJCcPIWumsJj2U/gt147Xx0F/C+OzAePE6uJuZnghuriaGEoTTncVc+c3UAHgbwOe/v+Qx/evkHwNBrJSZr9RpbhBPEjBvU60iSptpB+44=
+	t=1759244528; cv=none; b=tl/L+4+CT/+RyZoZIGtCUSh0ZT2X0t3mlvQxjps748FzHQqc2hd+eO022AiASnhibdbSqF/i7cNcfLsZbtQ9UlCGusRPPv362JL+sVwuu0M73aHWSw9mkuMmchXbT5jQfoXee/+CRFxsvdd5nnOCydYbbZX+MiySaDH4YtGTgPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244980; c=relaxed/simple;
-	bh=bgt4tJ0PIYBjE7OR6E9bSIVuN1EBeJCVe/KWxGnNOxM=;
+	s=arc-20240116; t=1759244528; c=relaxed/simple;
+	bh=nAHaC4lFmHhqKAWujhZzuIPKYSZTP/M2cHb9AMizF2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRkyHuks43VpdCtkUn8JKFtK1eVz2SzcZwsLj2GeAClScp8PUN6HQEy8yFixB1AXFFCkDErDj1JoEppIhMRFOW2Eg8fssg21COisJuU933t2hrUTyNE3cdRpQv+xd5Obw/xn4PCtuW6xeIPTy600plhIYKONjT7h86+a9uyX5WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3Lb4uhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6F3C4CEF0;
-	Tue, 30 Sep 2025 15:09:39 +0000 (UTC)
+	 MIME-Version; b=b+r98HrCCAfJONkN/srX5OL/asXwKBy9o/Z96WsrNrYiA8vw4ZvNalnlwXJXY2M0+K5D5j7MwfyLABCLrL08L+ERodhdvPmuOYAd2kNVpjbjjGS3Jcnn0fogYj2qgCi0XHKyXXzqTIMRdO20frDBPvD81jO1CVphNFhdF6yAQMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o70NwOLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB19C4CEF0;
+	Tue, 30 Sep 2025 15:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244980;
-	bh=bgt4tJ0PIYBjE7OR6E9bSIVuN1EBeJCVe/KWxGnNOxM=;
+	s=korg; t=1759244528;
+	bh=nAHaC4lFmHhqKAWujhZzuIPKYSZTP/M2cHb9AMizF2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3Lb4uhdJuy+5Wd2DgFTSRFOlHOTBEyffh58N8reUinVUodth3Q5GiNn12ak41uMI
-	 gKMWoYDVSBKtrgKvp/d3SQG1Y6fFIZnJst1gK0//OjAy3KISFBvYZt9eN/l76YVRK6
-	 xQH6Eh/bZtU/9ln0pUR207AZCL79cxSo4zpF7YlE=
+	b=o70NwOLonDymKC+sANwqyMroPr/o92G6RViZrrvusQ4X9P4zWe8rFny4EMsmtIZeo
+	 KvJ29oKhZePoYd39zWrPDgzhjvkKEd2EwPzMC4p7f5AvoKr2c6idSB629dcrxzIUQX
+	 lbkBxn8Ha2hI7LcEdgWpVwV3ZP3ycmd5mQoNvsII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/151] mtd: nand: raw: atmel: Fix comment in timings preparation
+Subject: [PATCH 6.16 035/143] IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
 Date: Tue, 30 Sep 2025 16:45:59 +0200
-Message-ID: <20250930143828.778379715@linuxfoundation.org>
+Message-ID: <20250930143832.640760363@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 1c60e027ffdebd36f4da766d9c9abbd1ea4dd8f9 ]
+[ Upstream commit 85fe9f565d2d5af95ac2bbaa5082b8ce62b039f5 ]
 
-Looks like a copy'n'paste mistake introduced when initially adding the
-dynamic timings feature with commit f9ce2eddf176 ("mtd: nand: atmel: Add
-->setup_data_interface() hooks").  The context around this and
-especially the code itself suggests 'read' is meant instead of write.
+Fix a bug where the driver's event subscription logic for SRQ-related
+events incorrectly sets obj_type for RMP objects.
 
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240226122537.75097-1-ada@thorsis.com
-Stable-dep-of: fd779eac2d65 ("mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing")
+When subscribing to SRQ events, get_legacy_obj_type() did not handle
+the MLX5_CMD_OP_CREATE_RMP case, which caused obj_type to be 0
+(default).
+This led to a mismatch between the obj_type used during subscription
+(0) and the value used during notification (1, taken from the event's
+type field). As a result, event mapping for SRQ objects could fail and
+event notification would not be delivered correctly.
+
+This fix adds handling for MLX5_CMD_OP_CREATE_RMP in get_legacy_obj_type,
+returning MLX5_EVENT_QUEUE_TYPE_RQ so obj_type is consistent between
+subscription and notification.
+
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/8f1048e3fdd1fde6b90607ce0ed251afaf8a148c.1755088962.git.leon@kernel.org
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Edward Srouji <edwards@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/devx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1378,7 +1378,7 @@ static int atmel_smc_nand_prepare_smccon
- 		return ret;
- 
- 	/*
--	 * The write cycle timing is directly matching tWC, but is also
-+	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index c369fee335621..00727472c8738 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -233,6 +233,7 @@ static u16 get_legacy_obj_type(u16 opcode)
+ {
+ 	switch (opcode) {
+ 	case MLX5_CMD_OP_CREATE_RQ:
++	case MLX5_CMD_OP_CREATE_RMP:
+ 		return MLX5_EVENT_QUEUE_TYPE_RQ;
+ 	case MLX5_CMD_OP_CREATE_QP:
+ 		return MLX5_EVENT_QUEUE_TYPE_QP;
+-- 
+2.51.0
+
 
 
 
