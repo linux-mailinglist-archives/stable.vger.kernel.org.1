@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7E9BAD53F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:54:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CDBBAD8B7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2020A16F023
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:54:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0A287A25F4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD603043D4;
-	Tue, 30 Sep 2025 14:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C263F1487F4;
+	Tue, 30 Sep 2025 15:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucdKOYbj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcR0XCm1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A827C1AB6F1;
-	Tue, 30 Sep 2025 14:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6C62236EB;
+	Tue, 30 Sep 2025 15:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244048; cv=none; b=pu5Hd74zWchQNDT4h27jz2WgSowmSiHtn5nyY4aBHEMi6i2aMZ3eOfjNJbzDNLmQR0dX8XJjDTbhoS4oR318Qs9iHECp+M4JzsdXp4WZj9ZwvuKe5Wp/Otz7Furukgl19knfp1Bj56k2iK/+Olusbv0e7I+jzaWvtbA58H2WP8M=
+	t=1759244932; cv=none; b=OgjqjpaUyhG4W3to7DEtYCt8qS7X2mOxfCOeHNwfctblgqZc99jMw8Wq5R9NYA85eZbvYlt89f5nauZ0iXAPow93E6MbsNf/BtWVAhTa/Y2zr554GwxQTj6gj8nDQrjX4nvIqa20ijHLBzSxWYenC6lkU7vn/e4zUlXn/pSxAF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244048; c=relaxed/simple;
-	bh=VDEDVx5QO7siUh0qUdkhGC2ZbT9c72m8/DpbF1sWKfo=;
+	s=arc-20240116; t=1759244932; c=relaxed/simple;
+	bh=er4b4xTgYtvpnT7Otc/yaPeuppluckEU9kfQBek9jok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFNQObPl8JKoTx7yskyZjrk9Y1xk+tRHMuA0gcJei4jaIoarM4a3DA+rhUonwcpVN4S278hINaqOS154xszx40X1W6n0kPofT0bQMFzSbpEwVBwPYsPSR19mA8Y4ulRlGOzaZr86EtMulmjZPbH0Db3tjgVpiYixx9pP06/NOv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucdKOYbj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CEBC4CEF0;
-	Tue, 30 Sep 2025 14:54:07 +0000 (UTC)
+	 MIME-Version; b=DrORgI/gtokGZapmcDH5tmgrxdwo2SzhCebH4/gYzP3BbfptMdVlNqDQybqtLk99xcpoFFhPJ3LDRwOG4j333TwVVvESEqnCDQB4x//sTrOktXVwEfL+YRpgKN6H1+dbrWkHbt0i6OtZIlxO8iVumtsaLcL6+XltiQaVZMbZIqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcR0XCm1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE77AC4CEF0;
+	Tue, 30 Sep 2025 15:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244048;
-	bh=VDEDVx5QO7siUh0qUdkhGC2ZbT9c72m8/DpbF1sWKfo=;
+	s=korg; t=1759244932;
+	bh=er4b4xTgYtvpnT7Otc/yaPeuppluckEU9kfQBek9jok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucdKOYbjQzY8ChtmJyjSo6b4xvxkGq6ApeRfS09dJiUI7LU/TUJmMOVsR7C/N5BM+
-	 eVzFO6sS4RWGu2akWYZoDQsCeTfIe+FvSFfuJZnFGLoTQNC1NcfTipyXKkEh+T7KUi
-	 tANaiEELhVCFI8e+0QTAsTcDqe1LTF/MUDrg8Y3g=
+	b=CcR0XCm1Gzyfses4ecpBKDV7AoPLR3zk8lbitHTDdpIFOGfw3UodyRnhTiUJHipTD
+	 J5O6CSMa7rSvXmy13Bl3zucimhzA846onbYQdOvWFCOMh4Os/wAmFk56M/40nkCU2t
+	 +9ENUD7iC5tUZnb1TyRxP4IIr5cQlqlitQdwKb1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eliav Farber <farbere@amazon.com>
-Subject: [PATCH 5.10 013/122] compiler.h: drop fallback overflow checkers
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 014/151] tracing: Fix tracing_marker may trigger page fault during preempt_disable
 Date: Tue, 30 Sep 2025 16:45:44 +0200
-Message-ID: <20250930143823.531610305@linuxfoundation.org>
+Message-ID: <20250930143828.173404668@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,405 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-[ Upstream commit 4eb6bd55cfb22ffc20652732340c4962f3ac9a91 ]
+[ Upstream commit 3d62ab32df065e4a7797204a918f6489ddb8a237 ]
 
-Once upgrading the minimum supported version of GCC to 5.1, we can drop
-the fallback code for !COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW.
+Both tracing_mark_write and tracing_mark_raw_write call
+__copy_from_user_inatomic during preempt_disable. But in some case,
+__copy_from_user_inatomic may trigger page fault, and will call schedule()
+subtly. And if a task is migrated to other cpu, the following warning will
+be trigger:
+        if (RB_WARN_ON(cpu_buffer,
+                       !local_read(&cpu_buffer->committing)))
 
-This is effectively a revert of commit f0907827a8a9 ("compiler.h: enable
-builtin overflow checkers and add fallback code")
+An example can illustrate this issue:
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1438#issuecomment-916745801
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+process flow						CPU
+---------------------------------------------------------------------
+
+tracing_mark_raw_write():				cpu:0
+   ...
+   ring_buffer_lock_reserve():				cpu:0
+      ...
+      cpu = raw_smp_processor_id()			cpu:0
+      cpu_buffer = buffer->buffers[cpu]			cpu:0
+      ...
+   ...
+   __copy_from_user_inatomic():				cpu:0
+      ...
+      # page fault
+      do_mem_abort():					cpu:0
+         ...
+         # Call schedule
+         schedule()					cpu:0
+	 ...
+   # the task schedule to cpu1
+   __buffer_unlock_commit():				cpu:1
+      ...
+      ring_buffer_unlock_commit():			cpu:1
+	 ...
+	 cpu = raw_smp_processor_id()			cpu:1
+	 cpu_buffer = buffer->buffers[cpu]		cpu:1
+
+As shown above, the process will acquire cpuid twice and the return values
+are not the same.
+
+To fix this problem using copy_from_user_nofault instead of
+__copy_from_user_inatomic, as the former performs 'access_ok' before
+copying.
+
+Link: https://lore.kernel.org/20250819105152.2766363-1-luogengkun@huaweicloud.com
+Fixes: 656c7f0d2d2b ("tracing: Replace kmap with copy_from_user() in trace_marker writing")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-clang.h     |   13 ---
- include/linux/compiler-gcc.h       |    4 -
- include/linux/overflow.h           |  138 ------------------------------------
- tools/include/linux/compiler-gcc.h |    4 -
- tools/include/linux/overflow.h     |  140 -------------------------------------
- 5 files changed, 6 insertions(+), 293 deletions(-)
+ kernel/trace/trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/compiler-clang.h
-+++ b/include/linux/compiler-clang.h
-@@ -72,19 +72,6 @@
- #define __no_sanitize_coverage
- #endif
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 7af8bbc57531c..a6040a707abb7 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7233,7 +7233,7 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
+ 	entry = ring_buffer_event_data(event);
+ 	entry->ip = _THIS_IP_;
  
--/*
-- * Not all versions of clang implement the type-generic versions
-- * of the builtin overflow checkers. Fortunately, clang implements
-- * __has_builtin allowing us to avoid awkward version
-- * checks. Unfortunately, we don't know which version of gcc clang
-- * pretends to be, so the macro may or may not be defined.
-- */
--#if __has_builtin(__builtin_mul_overflow) && \
--    __has_builtin(__builtin_add_overflow) && \
--    __has_builtin(__builtin_sub_overflow)
--#define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
--#endif
--
- #if __has_feature(shadow_call_stack)
- # define __noscs	__attribute__((__no_sanitize__("shadow-call-stack")))
- #endif
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -140,10 +140,6 @@
- #define __no_sanitize_coverage
- #endif
+-	len = __copy_from_user_inatomic(&entry->buf, ubuf, cnt);
++	len = copy_from_user_nofault(&entry->buf, ubuf, cnt);
+ 	if (len) {
+ 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
+ 		cnt = FAULTED_SIZE;
+@@ -7308,7 +7308,7 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
  
--#if GCC_VERSION >= 50100
--#define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
--#endif
--
- /*
-  * Turn individual warnings and errors on and off locally, depending
-  * on version.
---- a/include/linux/overflow.h
-+++ b/include/linux/overflow.h
-@@ -6,12 +6,9 @@
- #include <linux/limits.h>
+ 	entry = ring_buffer_event_data(event);
  
- /*
-- * In the fallback code below, we need to compute the minimum and
-- * maximum values representable in a given type. These macros may also
-- * be useful elsewhere, so we provide them outside the
-- * COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW block.
-- *
-- * It would seem more obvious to do something like
-+ * We need to compute the minimum and maximum values representable in a given
-+ * type. These macros may also be useful elsewhere. It would seem more obvious
-+ * to do something like:
-  *
-  * #define type_min(T) (T)(is_signed_type(T) ? (T)1 << (8*sizeof(T)-1) : 0)
-  * #define type_max(T) (T)(is_signed_type(T) ? ((T)1 << (8*sizeof(T)-1)) - 1 : ~(T)0)
-@@ -54,7 +51,6 @@ static inline bool __must_check __must_c
- 	return unlikely(overflow);
- }
- 
--#ifdef COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW
- /*
-  * For simplicity and code hygiene, the fallback code below insists on
-  * a, b and *d having the same type (similar to the min() and max()
-@@ -90,134 +86,6 @@ static inline bool __must_check __must_c
- 	__builtin_mul_overflow(__a, __b, __d);	\
- }))
- 
--#else
--
--
--/* Checking for unsigned overflow is relatively easy without causing UB. */
--#define __unsigned_add_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = __a + __b;			\
--	*__d < __a;				\
--})
--#define __unsigned_sub_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = __a - __b;			\
--	__a < __b;				\
--})
--/*
-- * If one of a or b is a compile-time constant, this avoids a division.
-- */
--#define __unsigned_mul_overflow(a, b, d) ({		\
--	typeof(a) __a = (a);				\
--	typeof(b) __b = (b);				\
--	typeof(d) __d = (d);				\
--	(void) (&__a == &__b);				\
--	(void) (&__a == __d);				\
--	*__d = __a * __b;				\
--	__builtin_constant_p(__b) ?			\
--	  __b > 0 && __a > type_max(typeof(__a)) / __b : \
--	  __a > 0 && __b > type_max(typeof(__b)) / __a;	 \
--})
--
--/*
-- * For signed types, detecting overflow is much harder, especially if
-- * we want to avoid UB. But the interface of these macros is such that
-- * we must provide a result in *d, and in fact we must produce the
-- * result promised by gcc's builtins, which is simply the possibly
-- * wrapped-around value. Fortunately, we can just formally do the
-- * operations in the widest relevant unsigned type (u64) and then
-- * truncate the result - gcc is smart enough to generate the same code
-- * with and without the (u64) casts.
-- */
--
--/*
-- * Adding two signed integers can overflow only if they have the same
-- * sign, and overflow has happened iff the result has the opposite
-- * sign.
-- */
--#define __signed_add_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a + (u64)__b;		\
--	(((~(__a ^ __b)) & (*__d ^ __a))	\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Subtraction is similar, except that overflow can now happen only
-- * when the signs are opposite. In this case, overflow has happened if
-- * the result has the opposite sign of a.
-- */
--#define __signed_sub_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a - (u64)__b;		\
--	((((__a ^ __b)) & (*__d ^ __a))		\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Signed multiplication is rather hard. gcc always follows C99, so
-- * division is truncated towards 0. This means that we can write the
-- * overflow check like this:
-- *
-- * (a > 0 && (b > MAX/a || b < MIN/a)) ||
-- * (a < -1 && (b > MIN/a || b < MAX/a) ||
-- * (a == -1 && b == MIN)
-- *
-- * The redundant casts of -1 are to silence an annoying -Wtype-limits
-- * (included in -Wextra) warning: When the type is u8 or u16, the
-- * __b_c_e in check_mul_overflow obviously selects
-- * __unsigned_mul_overflow, but unfortunately gcc still parses this
-- * code and warns about the limited range of __b.
-- */
--
--#define __signed_mul_overflow(a, b, d) ({				\
--	typeof(a) __a = (a);						\
--	typeof(b) __b = (b);						\
--	typeof(d) __d = (d);						\
--	typeof(a) __tmax = type_max(typeof(a));				\
--	typeof(a) __tmin = type_min(typeof(a));				\
--	(void) (&__a == &__b);						\
--	(void) (&__a == __d);						\
--	*__d = (u64)__a * (u64)__b;					\
--	(__b > 0   && (__a > __tmax/__b || __a < __tmin/__b)) ||	\
--	(__b < (typeof(__b))-1  && (__a > __tmin/__b || __a < __tmax/__b)) || \
--	(__b == (typeof(__b))-1 && __a == __tmin);			\
--})
--
--
--#define check_add_overflow(a, b, d)	__must_check_overflow(		\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_add_overflow(a, b, d),			\
--			__unsigned_add_overflow(a, b, d)))
--
--#define check_sub_overflow(a, b, d)	__must_check_overflow(		\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_sub_overflow(a, b, d),			\
--			__unsigned_sub_overflow(a, b, d)))
--
--#define check_mul_overflow(a, b, d)	__must_check_overflow(		\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_mul_overflow(a, b, d),			\
--			__unsigned_mul_overflow(a, b, d)))
--
--#endif /* COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW */
--
- /** check_shl_overflow() - Calculate a left-shifted value and check overflow
-  *
-  * @a: Value to be shifted
---- a/tools/include/linux/compiler-gcc.h
-+++ b/tools/include/linux/compiler-gcc.h
-@@ -38,7 +38,3 @@
- #endif
- #define __printf(a, b)	__attribute__((format(printf, a, b)))
- #define __scanf(a, b)	__attribute__((format(scanf, a, b)))
--
--#if GCC_VERSION >= 50100
--#define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
--#endif
---- a/tools/include/linux/overflow.h
-+++ b/tools/include/linux/overflow.h
-@@ -5,12 +5,9 @@
- #include <linux/compiler.h>
- 
- /*
-- * In the fallback code below, we need to compute the minimum and
-- * maximum values representable in a given type. These macros may also
-- * be useful elsewhere, so we provide them outside the
-- * COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW block.
-- *
-- * It would seem more obvious to do something like
-+ * We need to compute the minimum and maximum values representable in a given
-+ * type. These macros may also be useful elsewhere. It would seem more obvious
-+ * to do something like:
-  *
-  * #define type_min(T) (T)(is_signed_type(T) ? (T)1 << (8*sizeof(T)-1) : 0)
-  * #define type_max(T) (T)(is_signed_type(T) ? ((T)1 << (8*sizeof(T)-1)) - 1 : ~(T)0)
-@@ -36,8 +33,6 @@
- #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
- #define type_min(T) ((T)((T)-type_max(T)-(T)1))
- 
--
--#ifdef COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW
- /*
-  * For simplicity and code hygiene, the fallback code below insists on
-  * a, b and *d having the same type (similar to the min() and max()
-@@ -73,135 +68,6 @@
- 	__builtin_mul_overflow(__a, __b, __d);	\
- })
- 
--#else
--
--
--/* Checking for unsigned overflow is relatively easy without causing UB. */
--#define __unsigned_add_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = __a + __b;			\
--	*__d < __a;				\
--})
--#define __unsigned_sub_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = __a - __b;			\
--	__a < __b;				\
--})
--/*
-- * If one of a or b is a compile-time constant, this avoids a division.
-- */
--#define __unsigned_mul_overflow(a, b, d) ({		\
--	typeof(a) __a = (a);				\
--	typeof(b) __b = (b);				\
--	typeof(d) __d = (d);				\
--	(void) (&__a == &__b);				\
--	(void) (&__a == __d);				\
--	*__d = __a * __b;				\
--	__builtin_constant_p(__b) ?			\
--	  __b > 0 && __a > type_max(typeof(__a)) / __b : \
--	  __a > 0 && __b > type_max(typeof(__b)) / __a;	 \
--})
--
--/*
-- * For signed types, detecting overflow is much harder, especially if
-- * we want to avoid UB. But the interface of these macros is such that
-- * we must provide a result in *d, and in fact we must produce the
-- * result promised by gcc's builtins, which is simply the possibly
-- * wrapped-around value. Fortunately, we can just formally do the
-- * operations in the widest relevant unsigned type (u64) and then
-- * truncate the result - gcc is smart enough to generate the same code
-- * with and without the (u64) casts.
-- */
--
--/*
-- * Adding two signed integers can overflow only if they have the same
-- * sign, and overflow has happened iff the result has the opposite
-- * sign.
-- */
--#define __signed_add_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a + (u64)__b;		\
--	(((~(__a ^ __b)) & (*__d ^ __a))	\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Subtraction is similar, except that overflow can now happen only
-- * when the signs are opposite. In this case, overflow has happened if
-- * the result has the opposite sign of a.
-- */
--#define __signed_sub_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a - (u64)__b;		\
--	((((__a ^ __b)) & (*__d ^ __a))		\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Signed multiplication is rather hard. gcc always follows C99, so
-- * division is truncated towards 0. This means that we can write the
-- * overflow check like this:
-- *
-- * (a > 0 && (b > MAX/a || b < MIN/a)) ||
-- * (a < -1 && (b > MIN/a || b < MAX/a) ||
-- * (a == -1 && b == MIN)
-- *
-- * The redundant casts of -1 are to silence an annoying -Wtype-limits
-- * (included in -Wextra) warning: When the type is u8 or u16, the
-- * __b_c_e in check_mul_overflow obviously selects
-- * __unsigned_mul_overflow, but unfortunately gcc still parses this
-- * code and warns about the limited range of __b.
-- */
--
--#define __signed_mul_overflow(a, b, d) ({				\
--	typeof(a) __a = (a);						\
--	typeof(b) __b = (b);						\
--	typeof(d) __d = (d);						\
--	typeof(a) __tmax = type_max(typeof(a));				\
--	typeof(a) __tmin = type_min(typeof(a));				\
--	(void) (&__a == &__b);						\
--	(void) (&__a == __d);						\
--	*__d = (u64)__a * (u64)__b;					\
--	(__b > 0   && (__a > __tmax/__b || __a < __tmin/__b)) ||	\
--	(__b < (typeof(__b))-1  && (__a > __tmin/__b || __a < __tmax/__b)) || \
--	(__b == (typeof(__b))-1 && __a == __tmin);			\
--})
--
--
--#define check_add_overflow(a, b, d)					\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_add_overflow(a, b, d),			\
--			__unsigned_add_overflow(a, b, d))
--
--#define check_sub_overflow(a, b, d)					\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_sub_overflow(a, b, d),			\
--			__unsigned_sub_overflow(a, b, d))
--
--#define check_mul_overflow(a, b, d)					\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_mul_overflow(a, b, d),			\
--			__unsigned_mul_overflow(a, b, d))
--
--
--#endif /* COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW */
--
- /**
-  * array_size() - Calculate size of 2-dimensional array.
-  *
+-	len = __copy_from_user_inatomic(&entry->id, ubuf, cnt);
++	len = copy_from_user_nofault(&entry->id, ubuf, cnt);
+ 	if (len) {
+ 		entry->id = -1;
+ 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
+-- 
+2.51.0
+
 
 
 
