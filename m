@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312F1BAD4DF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602AABAD73D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 104A74A2DA2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C531A3A6773
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49E42D24AD;
-	Tue, 30 Sep 2025 14:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA723081A6;
+	Tue, 30 Sep 2025 15:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URFjI9mu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07Ws7IgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7159B35940;
-	Tue, 30 Sep 2025 14:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5A7307AF8;
+	Tue, 30 Sep 2025 15:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243907; cv=none; b=qkj5ll6qiU0hMe1Mgqp7dQgd4/zkCeKJsBpPZ/BL44bZQte9lqwpyUqItyImcVZAOUcHYHAuy87I6AGpnScRYDTmhofGUpp8GlYNXaiKmx3h39EUmyMY1AOZYg5L0Mugz13WOLbcdXIEfYgtjwFUCGbdxjIqqUikMIocIiE39IQ=
+	t=1759244422; cv=none; b=u7fmuCqSVl+BZP/chLz7ZHU4FN4Cwus3PpuIcL57umkzbD5oLX+7yiiFFkKZenz/CSj/MpJHRjEUn7jqKZ/w3dlPrjsfUahzk1CCOgw3lmsiqYCr0efbYQUkZ8CS8w5Gpbz7g6vD6CZhM0PfUFKCRumKQmL4i7fVLyQQeWzXoLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243907; c=relaxed/simple;
-	bh=IQ9spAcNX+t8IzYq3Qt1F+VQGO5pk/1ME4jGbwTyvlM=;
+	s=arc-20240116; t=1759244422; c=relaxed/simple;
+	bh=chPcqzFc1v6DnACeemljVWWDTeSeJ79MfH3+vIfzFyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUlTY3WTxbffrYW1hj0UQr5xNxR/pbzyzJg2IgtdQDRMPqJVh1mVc5aGj8WjgrsDeicLcwwLlcVhp7SEsKF3rfwkN4mriU8ScU573AZbPOFaE/4oyh6igKhLF2bfOEhnWE58Nh5vg1+bhwy3mbdZDhJ0oklLzhsz/Dt8aKBOfYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URFjI9mu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AB2C4CEF0;
-	Tue, 30 Sep 2025 14:51:46 +0000 (UTC)
+	 MIME-Version; b=bLuyy2civhz2FhEriB22dRj9eKNKQZHj2vwHo5ldvfGmDhZ9vH2IOvCALopu5OMGRfzqSO7t/XCIfVQkucCSzSxktckvNh5ZAu9jzuGmB1hB8QuSJ5o4HL2h9QdKhP2DFgDU28/juRzIX+jRoo+N2tJyrQHtN+yFspZVYxkJ9FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07Ws7IgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00F3C4CEF0;
+	Tue, 30 Sep 2025 15:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243907;
-	bh=IQ9spAcNX+t8IzYq3Qt1F+VQGO5pk/1ME4jGbwTyvlM=;
+	s=korg; t=1759244422;
+	bh=chPcqzFc1v6DnACeemljVWWDTeSeJ79MfH3+vIfzFyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URFjI9mu1mp0n7vtz2vSndY6RRBEUEw6g6vkYWJCQAb+dJNYl25v60USP5lPrpsae
-	 t4cybw0fUVSbqXtjA6afDIe1RCY0SoyFtv3g02RorRE2dFJq7XCTA3eO+VBLO2pcMJ
-	 qSXjK/A6Doh9o8f/5so0tz6qKL8Lt44u7B1x+3Q8=
+	b=07Ws7IgFNiFZVWjXBMwOPWgWA+Hz3E+2qf4xklK3kYpZsaOgrwDMd/bXGgTOwBGxb
+	 RtAu5kbu0VbzRJOFZXsbVYWBQY1W1KU2pXOupae1sWynQSTHZAsku7OTHP7kawordd
+	 G6PGsVWflMNE9TSAKsBav5TK88Izaj64MqBzzmGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 52/81] net: rfkill: gpio: add DT support
+Subject: [PATCH 5.10 083/122] mptcp: propagate shutdown to subflows when possible
 Date: Tue, 30 Sep 2025 16:46:54 +0200
-Message-ID: <20250930143821.859750558@linuxfoundation.org>
+Message-ID: <20250930143826.399402633@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit d64c732dfc9edcd57feb693c23162117737e426b ]
+[ Upstream commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b ]
 
-Allow probing rfkill-gpio via device tree. This hooks up the already
-existing support that was started in commit 262c91ee5e52 ("net:
-rfkill: gpio: prepare for DT and ACPI support") via the "rfkill-gpio"
-compatible, with the "name" and "type" properties renamed to "label"
-and "radio-type", respectively, in the device tree case.
+When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
+metadata to exchange, and all subflows can be safely shutdown.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://lore.kernel.org/r/20230102-rfkill-gpio-dt-v2-2-d1b83758c16d@pengutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: b6f56a44e4c1 ("net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer")
+Before this patch, the subflows were actually terminated at 'close()'
+time. That's certainly fine most of the time, but not when the userspace
+'shutdown()' a connection, without close()ing it. When doing so, the
+subflows were staying in LAST_ACK state on one side -- and consequently
+in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
+socket.
+
+Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
+consequence of this is that the TCP 'FIN' flag can be set earlier now,
+but the end result is the same. This affects the packetdrill tests
+looking at the end of the MPTCP connections, but for a good reason.
+
+Note that tcp_shutdown() will check the subflow state, so no need to do
+that again before calling it.
+
+Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
+Cc: stable@vger.kernel.org
+Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -79,6 +79,8 @@ static int rfkill_gpio_probe(struct plat
- {
- 	struct rfkill_gpio_data *rfkill;
- 	struct gpio_desc *gpio;
-+	const char *name_property;
-+	const char *type_property;
- 	const char *type_name;
- 	int ret;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -326,6 +326,20 @@ static void mptcp_stop_timer(struct sock
+ 	mptcp_sk(sk)->timer_ival = 0;
+ }
  
-@@ -86,8 +88,15 @@ static int rfkill_gpio_probe(struct plat
- 	if (!rfkill)
- 		return -ENOMEM;
- 
--	device_property_read_string(&pdev->dev, "name", &rfkill->name);
--	device_property_read_string(&pdev->dev, "type", &type_name);
-+	if (dev_of_node(&pdev->dev)) {
-+		name_property = "label";
-+		type_property = "radio-type";
-+	} else {
-+		name_property = "name";
-+		type_property = "type";
-+	}
-+	device_property_read_string(&pdev->dev, name_property, &rfkill->name);
-+	device_property_read_string(&pdev->dev, type_property, &type_name);
- 
- 	if (!rfkill->name)
- 		rfkill->name = dev_name(&pdev->dev);
-@@ -169,12 +178,19 @@ static const struct acpi_device_id rfkil
- MODULE_DEVICE_TABLE(acpi, rfkill_acpi_match);
- #endif
- 
-+static const struct of_device_id rfkill_of_match[] __maybe_unused = {
-+	{ .compatible = "rfkill-gpio", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, rfkill_of_match);
++static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
++{
++	struct mptcp_subflow_context *subflow;
 +
- static struct platform_driver rfkill_gpio_driver = {
- 	.probe = rfkill_gpio_probe,
- 	.remove = rfkill_gpio_remove,
- 	.driver = {
- 		.name = "rfkill_gpio",
- 		.acpi_match_table = ACPI_PTR(rfkill_acpi_match),
-+		.of_match_table = of_match_ptr(rfkill_of_match),
- 	},
- };
- 
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		bool slow;
++
++		slow = lock_sock_fast(ssk);
++		tcp_shutdown(ssk, SEND_SHUTDOWN);
++		unlock_sock_fast(ssk, slow);
++	}
++}
++
+ static void mptcp_check_data_fin_ack(struct sock *sk)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+@@ -348,6 +362,7 @@ static void mptcp_check_data_fin_ack(str
+ 			break;
+ 		case TCP_CLOSING:
+ 		case TCP_LAST_ACK:
++			mptcp_shutdown_subflows(msk);
+ 			inet_sk_state_store(sk, TCP_CLOSE);
+ 			sk->sk_state_change(sk);
+ 			break;
+@@ -430,6 +445,7 @@ static void mptcp_check_data_fin(struct
+ 			inet_sk_state_store(sk, TCP_CLOSING);
+ 			break;
+ 		case TCP_FIN_WAIT2:
++			mptcp_shutdown_subflows(msk);
+ 			inet_sk_state_store(sk, TCP_CLOSE);
+ 			// @@ Close subflows now?
+ 			break;
 
 
 
