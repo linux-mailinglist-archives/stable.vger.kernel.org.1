@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4F7BADC24
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3D8BADD34
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97EC17AC2BE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFD5232801C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE64D27056D;
-	Tue, 30 Sep 2025 15:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E597D25FA0F;
+	Tue, 30 Sep 2025 15:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmDNlPJ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LndKTWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A43A846F;
-	Tue, 30 Sep 2025 15:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22442F6167;
+	Tue, 30 Sep 2025 15:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245770; cv=none; b=Z3RVkktueKEDsFbrph5SlrUUSKJv0OyyOzUbFeftAQCi3ee7XI+99ZYzSHlRmZRccrqg05k+1kO2s2WMe00CNzM4pMRFaq9xoZTPx89gWtz6KQPk52k7x53fmXotYzGcS7WTvxBllnHXo5crH/33pQqrNJRTroYExFSTfrd7T/U=
+	t=1759246025; cv=none; b=CDkCrl0dZtlyqll4qEnvHM0uvkvoP9FqKv8hYm1NSQ0iz6MGXB7mAVASNyuBek8fS5c5KSfiC0b9P803YmmekHElgXqCVAxNCdnko+VrMfUSZ8GaKdcm2Sl8NFNe6HVQkS/+U44V1dT5vJR94VW+cv0NrOtGCumI6ocapI3fOgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245770; c=relaxed/simple;
-	bh=vv7KViAnXvcNe/aLUpZ8k2e4qvuZJY71sBrGO5qO3QQ=;
+	s=arc-20240116; t=1759246025; c=relaxed/simple;
+	bh=zTlkye9rEBRcx2qBvKLc/RKpPsHqZFX/4I8HDJThXhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a62BKkOUR57gF+1aab3Q0uPEkqBAUa52P8jBOYTXckmVpEQghNxcrzQi6/ThcMuno6T1xnTw/Nkri8HbBKIDCcreHDOJabiiEmW60wlQ/Ej8NRgdFyqD2oOrn85pdFpN1c7z4Yo/7sGQT/QVrG+S3UgA7jDTQ7VLq5JcnePTP0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmDNlPJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8684AC4CEF0;
-	Tue, 30 Sep 2025 15:22:49 +0000 (UTC)
+	 MIME-Version; b=RfDk8Q1f/ZqFITQfs3nZk2YMtuuGEvDngCY5E9kUMCY3M1LoHhUZFJdB/XUPGcPI8fLJmQunwt/VpEvQkCkb58/MSwv/akip2dDgXCOWn/dje4bN4TS/tRznIwiYHe/MqYME0NzZsV5kq3gChmHSKRLu5O4zgUVwTQB+nvV3FPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LndKTWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07726C4CEF0;
+	Tue, 30 Sep 2025 15:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245770;
-	bh=vv7KViAnXvcNe/aLUpZ8k2e4qvuZJY71sBrGO5qO3QQ=;
+	s=korg; t=1759246025;
+	bh=zTlkye9rEBRcx2qBvKLc/RKpPsHqZFX/4I8HDJThXhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmDNlPJ52PvIOXVM+HsHgn+TMnFMgCYlHPQj3R2iS9A8nPB+XTSG7CuGPZZiJwIUA
-	 4a0rufMHoO/55jJcxFk+sSIv+niv0u491/8hn8R9YCkVF7bFeAl1B6ZFTgORjkdY04
-	 FXrouvgYXPZq3X965AcIFZeFtk7rZvsRssr1mUco=
+	b=2LndKTWRQW8/MWA7Hb3dWOMCEAJQc1ksylfpa7IQ6OAJrp2Lq5zif7li4980mEdbw
+	 +KP46INfTM4qnFlmGnMHhoxU0Y4uAWS5+vTSRJso+IEjM+tqfL4xnmMJAsJf2z+hwp
+	 gGeb58XMbMxJB0GahjW1LKPbqtZKpSAs1zApklKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 44/91] bnxt_en: correct offset handling for IPv6 destination address
+Subject: [PATCH 6.12 29/89] arm64: dts: imx8mp: Correct thermal sensor index
 Date: Tue, 30 Sep 2025 16:47:43 +0200
-Message-ID: <20250930143823.004336776@linuxfoundation.org>
+Message-ID: <20250930143823.114687871@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 3d3aa9472c6dd0704e9961ed4769caac5b1c8d52 ]
+[ Upstream commit a50342f976d25aace73ff551845ce89406f48f35 ]
 
-In bnxt_tc_parse_pedit(), the code incorrectly writes IPv6
-destination values to the source address field (saddr) when
-processing pedit offsets within the destination address range.
+The TMU has two temperature measurement sites located on the chip. The
+probe 0 is located inside of the ANAMIX, while the probe 1 is located near
+the ARM core. This has been confirmed by checking with HW design team and
+checking RTL code.
 
-This patch corrects the assignment to use daddr instead of saddr,
-ensuring that pedit operations on IPv6 destination addresses are
-applied correctly.
+So correct the {cpu,soc}-thermal sensor index.
 
-Fixes: 9b9eb518e338 ("bnxt_en: Add support for NAT(L3/L4 rewrite)")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://patch.msgid.link/20250920121157.351921-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 30cdd62dce6b ("arm64: dts: imx8mp: Add thermal zones support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-index 273c9ba48f09a..b896f8d20ff33 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-@@ -244,7 +244,7 @@ bnxt_tc_parse_pedit(struct bnxt *bp, struct bnxt_tc_actions *actions,
- 			   offset < offset_of_ip6_daddr + 16) {
- 			actions->nat.src_xlate = false;
- 			idx = (offset - offset_of_ip6_daddr) / 4;
--			actions->nat.l3.ipv6.saddr.s6_addr32[idx] = htonl(val);
-+			actions->nat.l3.ipv6.daddr.s6_addr32[idx] = htonl(val);
- 		} else {
- 			netdev_err(bp->dev,
- 				   "%s: IPv6_hdr: Invalid pedit field\n",
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 40e847bc0b7f8..62cf525ab714b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -283,7 +283,7 @@
+ 		cpu-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 0>;
++			thermal-sensors = <&tmu 1>;
+ 			trips {
+ 				cpu_alert0: trip0 {
+ 					temperature = <85000>;
+@@ -313,7 +313,7 @@
+ 		soc-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 1>;
++			thermal-sensors = <&tmu 0>;
+ 			trips {
+ 				soc_alert0: trip0 {
+ 					temperature = <85000>;
 -- 
 2.51.0
 
