@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94C9BAD6AA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DA3BADBDC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDDEA1897AF5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 756A33B5C5E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BC230595D;
-	Tue, 30 Sep 2025 14:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68AE1F1302;
+	Tue, 30 Sep 2025 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QA17LruM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McOidUrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E1C304989;
-	Tue, 30 Sep 2025 14:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33F0265CCD;
+	Tue, 30 Sep 2025 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244372; cv=none; b=a+ek9mFJwZFkADE0HKX/st6qgwc6IQvaMnWXmUB2oyE0/MipIhrPbRz41CcgQDf7uuWtJjIz24/mZfDbc5JZoCsmlg0vC0TpX6a58Zw8LP1E5cUhftNOJOsygiTE5mAw4vS4jCAJQnvWQe+zBhF5TW+vT6yKcmYPDsM311Oh6MM=
+	t=1759245429; cv=none; b=Pih48oY4i21ycbC+ZIkdYfMK01DC/C6S/fAjzn7TyFBO6fW8EsE+ahu76bAG/MaY1AImfAIP74+2i8X15vKSXELNDBWd/eXTyo94zUgU7simPb/cfgX6ySyqnIOOUyRgajmO3yRJ4Dzlya+17hig9BRfQ6QXRPgepAsnX0l0rVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244372; c=relaxed/simple;
-	bh=Z7exjtIzi3KLBAxA9exneNpyYQ6K93A/Ccn5izeQXHs=;
+	s=arc-20240116; t=1759245429; c=relaxed/simple;
+	bh=+feplzBjTx7YYSLaeOK4WeaSTy5EI0iYJO6U1CCV9U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPJyc3J/cbxaUg9r8V+9Zm/9F/p+e5C40qPvzbZMVe5SJHfH2gyCjC3HkfgVWNREVF0Gd0ieL4VLvwxhr3tZzKhEXE1AYk3WlFRJKBhrJdRxVlOwJWE6Oqf+oZOZN0B3R8ZauHfppM2+PdhpLhxh2g05oO14vaq2ItSN+kgKysE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QA17LruM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8DFC116B1;
-	Tue, 30 Sep 2025 14:59:31 +0000 (UTC)
+	 MIME-Version; b=NMgmTzdgL91rdehan1TcBXYtAcnRbMPWI06RJeuY1/IemzcoqsoVKfhrPXgHNIv8q41AaVp57qfMUrPo7dXFzEea9pE8MGF5Y0bh0sRN3pRwPDRx9MKyA1laNlq+ovpBamIU2MT3eu7GHKQU/fdG6Go7pk33KwV/zyTbB5FVq7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McOidUrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BA8C4CEF0;
+	Tue, 30 Sep 2025 15:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244372;
-	bh=Z7exjtIzi3KLBAxA9exneNpyYQ6K93A/Ccn5izeQXHs=;
+	s=korg; t=1759245429;
+	bh=+feplzBjTx7YYSLaeOK4WeaSTy5EI0iYJO6U1CCV9U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QA17LruM8DzgjH38lHpXiEXSsQOIRWBJJYd6wGUsrwPr62yv30OM6+fDP4lCYTor+
-	 DPE/t9PqqO9ZIM8bvuapa0kurYHopSLMlLOfY/50Gy8Q253popZtwQ9MlvLD82HPQ2
-	 Tu7GKm+pzQypFrtD/PoI2juTCCNXucmZ3yjwi3nk=
+	b=McOidUrIa8i2rGqw1BhFonRLlUDqeVsPqXSiW8SseD+aBJSx6qPvi3HJO11URO1LL
+	 4OSfpm/5FhEzN8I0GWs1FtiFkKy7AaHCZXpGMyya1lLI7iuTnaQ4Chf2V1I3DEtgVr
+	 Blwf3BV7s1y2Wsh+byXqnwwmZqw+Zmeim0PnMbO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	qaqland <anguoli@uniontech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/122] crypto: af_alg - Fix incorrect boolean values in af_alg_ctx
+Subject: [PATCH 6.1 16/73] ALSA: usb-audio: Add mute TLV for playback volumes on more devices
 Date: Tue, 30 Sep 2025 16:47:20 +0200
-Message-ID: <20250930143827.432567384@linuxfoundation.org>
+Message-ID: <20250930143821.231856613@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: qaqland <anguoli@uniontech.com>
 
-[ Upstream commit d0ca0df179c4b21e2a6c4a4fb637aa8fa14575cb ]
+[ Upstream commit 2cbe4ac193ed7172cfd825c0cc46ce4a41be4ba1 ]
 
-Commit 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in
-af_alg_sendmsg") changed some fields from bool to 1-bit bitfields of
-type u32.
+Applying the quirk of that, the lowest Playback mixer volume setting
+mutes the audio output, on more devices.
 
-However, some assignments to these fields, specifically 'more' and
-'merge', assign values greater than 1.  These relied on C's implicit
-conversion to bool, such that zero becomes false and nonzero becomes
-true.
-
-With a 1-bit bitfields of type u32 instead, mod 2 of the value is taken
-instead, resulting in 0 being assigned in some cases when 1 was intended.
-
-Fix this by restoring the bool type.
-
-Fixes: 1b34cbbf4f01 ("crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Suggested-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Signed-off-by: qaqland <anguoli@uniontech.com>
+Link: https://patch.msgid.link/20250829-sound_quirk-v1-1-745529b44440@uniontech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/crypto/if_alg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index 1424200fe88cf..9af84cad92e93 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -152,7 +152,7 @@ struct af_alg_ctx {
- 	size_t used;
- 	atomic_t rcvused;
- 
--	u32		more:1,
-+	bool		more:1,
- 			merge:1,
- 			enc:1,
- 			write:1,
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 5b1aa5c418999..2a862785fd939 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2094,6 +2094,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_SET_IFACE_FIRST),
+ 	DEVICE_FLG(0x0556, 0x0014, /* Phoenix Audio TMX320VC */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
++	DEVICE_FLG(0x0572, 0x1b08, /* Conexant Systems (Rockwell), Inc. */
++		   QUIRK_FLAG_MIXER_MIN_MUTE),
+ 	DEVICE_FLG(0x0572, 0x1b09, /* Conexant Systems (Rockwell), Inc. */
+ 		   QUIRK_FLAG_MIXER_MIN_MUTE),
+ 	DEVICE_FLG(0x05a3, 0x9420, /* ELP HD USB Camera */
+@@ -2138,6 +2140,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x0b0e, 0x0349, /* Jabra 550a */
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
++	DEVICE_FLG(0x0bda, 0x498a, /* Realtek Semiconductor Corp. */
++		   QUIRK_FLAG_MIXER_MIN_MUTE),
+ 	DEVICE_FLG(0x0c45, 0x6340, /* Sonix HD USB Camera */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x0c45, 0x636b, /* Microdia JP001 USB Camera */
+@@ -2154,6 +2158,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x1101, 0x0003, /* Audioengine D1 */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
++	DEVICE_FLG(0x12d1, 0x3a07, /* Huawei Technologies Co., Ltd. */
++		   QUIRK_FLAG_MIXER_MIN_MUTE),
+ 	DEVICE_FLG(0x1224, 0x2a25, /* Jieli Technology USB PHY 2.0 */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
+ 	DEVICE_FLG(0x1395, 0x740a, /* Sennheiser DECT */
+@@ -2244,6 +2250,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x2912, 0x30c8, /* Audioengine D1 */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
++	DEVICE_FLG(0x2a70, 0x1881, /* OnePlus Technology (Shenzhen) Co., Ltd. BE02T */
++		   QUIRK_FLAG_MIXER_MIN_MUTE),
+ 	DEVICE_FLG(0x2b53, 0x0023, /* Fiero SC-01 (firmware v1.0.0 @ 48 kHz) */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x2b53, 0x0024, /* Fiero SC-01 (firmware v1.0.0 @ 96 kHz) */
+@@ -2260,6 +2268,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
++	DEVICE_FLG(0x339b, 0x3a07, /* Synaptics HONOR USB-C HEADSET */
++		   QUIRK_FLAG_MIXER_MIN_MUTE),
+ 	DEVICE_FLG(0x413c, 0xa506, /* Dell AE515 sound bar */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x534d, 0x0021, /* MacroSilicon MS2100/MS2106 */
 -- 
 2.51.0
 
