@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CDBBAD8B7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5F1BAD76A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0A287A25F4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01815324D08
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C263F1487F4;
-	Tue, 30 Sep 2025 15:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D31A1F152D;
+	Tue, 30 Sep 2025 15:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcR0XCm1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMmQtX1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6C62236EB;
-	Tue, 30 Sep 2025 15:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B89D30506E;
+	Tue, 30 Sep 2025 15:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244932; cv=none; b=OgjqjpaUyhG4W3to7DEtYCt8qS7X2mOxfCOeHNwfctblgqZc99jMw8Wq5R9NYA85eZbvYlt89f5nauZ0iXAPow93E6MbsNf/BtWVAhTa/Y2zr554GwxQTj6gj8nDQrjX4nvIqa20ijHLBzSxWYenC6lkU7vn/e4zUlXn/pSxAF4=
+	t=1759244538; cv=none; b=DKRSOenAhbQuPUCUgA3R4newHXnuP6PhUCBiB1F6KqGLjZ+WCgNUwwCyw/sp+Y49R+6OMtSZyuV00D/oumUXnOuZHdTb9H8byy28ZBeh3rrJ1QD7ml/dubD1/cxQLlCjYITa7CpXxpfy3Ilv8Z0nwGx3pxc90XSSr/cwWZpoAoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244932; c=relaxed/simple;
-	bh=er4b4xTgYtvpnT7Otc/yaPeuppluckEU9kfQBek9jok=;
+	s=arc-20240116; t=1759244538; c=relaxed/simple;
+	bh=J6Cta1M5TzEWSFX/YUJ6jxylJTvN8DyD/JwTGhZqDxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrORgI/gtokGZapmcDH5tmgrxdwo2SzhCebH4/gYzP3BbfptMdVlNqDQybqtLk99xcpoFFhPJ3LDRwOG4j333TwVVvESEqnCDQB4x//sTrOktXVwEfL+YRpgKN6H1+dbrWkHbt0i6OtZIlxO8iVumtsaLcL6+XltiQaVZMbZIqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcR0XCm1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE77AC4CEF0;
-	Tue, 30 Sep 2025 15:08:51 +0000 (UTC)
+	 MIME-Version; b=sLbgtY7yZx8hZOMjwxrHufcBkGBzNj4NNfa32eCZwJfGuyAMwaLtz4zttFSFf1wEnzgjOeqCWO4iGUFU/BBodeYA6waYnh7USRiaZhICTIr3syZ58ZLAGVQjreGHnxnjhSVsnrKwBXibTm107MwV+54+cy5MsEoUJaPAgcgNja8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMmQtX1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3061C4CEF0;
+	Tue, 30 Sep 2025 15:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244932;
-	bh=er4b4xTgYtvpnT7Otc/yaPeuppluckEU9kfQBek9jok=;
+	s=korg; t=1759244538;
+	bh=J6Cta1M5TzEWSFX/YUJ6jxylJTvN8DyD/JwTGhZqDxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcR0XCm1Gzyfses4ecpBKDV7AoPLR3zk8lbitHTDdpIFOGfw3UodyRnhTiUJHipTD
-	 J5O6CSMa7rSvXmy13Bl3zucimhzA846onbYQdOvWFCOMh4Os/wAmFk56M/40nkCU2t
-	 +9ENUD7iC5tUZnb1TyRxP4IIr5cQlqlitQdwKb1s=
+	b=gMmQtX1QYcMnJuXLbirM1RrzVpPOwaXuXN+mYrtHWBps/CWJ9PshnlfFvTZKyc4wZ
+	 srKn2MMAEjCpnAuMNhSl0s4gUTlClv2iJNIVyGHRnvISwNkz5Sei9IJhGa+/G7e9xJ
+	 jhBka3EHcav/C4TDPSp6l6A+jIo/Uo5clvf9JCME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 014/151] tracing: Fix tracing_marker may trigger page fault during preempt_disable
+Subject: [PATCH 6.16 020/143] net: sfp: add quirk for Potron SFP+ XGSPON ONU Stick
 Date: Tue, 30 Sep 2025 16:45:44 +0200
-Message-ID: <20250930143828.173404668@linuxfoundation.org>
+Message-ID: <20250930143832.049462991@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 3d62ab32df065e4a7797204a918f6489ddb8a237 ]
+[ Upstream commit dfec1c14aecee6813f9bafc7b560cc3a31d24079 ]
 
-Both tracing_mark_write and tracing_mark_raw_write call
-__copy_from_user_inatomic during preempt_disable. But in some case,
-__copy_from_user_inatomic may trigger page fault, and will call schedule()
-subtly. And if a task is migrated to other cpu, the following warning will
-be trigger:
-        if (RB_WARN_ON(cpu_buffer,
-                       !local_read(&cpu_buffer->committing)))
+Add quirk for Potron SFP+ XGSPON ONU Stick (YV SFP+ONT-XGSPON).
 
-An example can illustrate this issue:
+This device uses pins 2 and 7 for UART communication, so disable
+TX_FAULT and LOS. Additionally as it is an embedded system in an
+SFP+ form factor provide it enough time to fully boot before we
+attempt to use it.
 
-process flow						CPU
----------------------------------------------------------------------
+https://www.potrontec.com/index/index/list/cat_id/2.html#11-83
+https://pon.wiki/xgs-pon/ont/potron-technology/x-onu-sfpp/
 
-tracing_mark_raw_write():				cpu:0
-   ...
-   ring_buffer_lock_reserve():				cpu:0
-      ...
-      cpu = raw_smp_processor_id()			cpu:0
-      cpu_buffer = buffer->buffers[cpu]			cpu:0
-      ...
-   ...
-   __copy_from_user_inatomic():				cpu:0
-      ...
-      # page fault
-      do_mem_abort():					cpu:0
-         ...
-         # Call schedule
-         schedule()					cpu:0
-	 ...
-   # the task schedule to cpu1
-   __buffer_unlock_commit():				cpu:1
-      ...
-      ring_buffer_unlock_commit():			cpu:1
-	 ...
-	 cpu = raw_smp_processor_id()			cpu:1
-	 cpu_buffer = buffer->buffers[cpu]		cpu:1
-
-As shown above, the process will acquire cpuid twice and the return values
-are not the same.
-
-To fix this problem using copy_from_user_nofault instead of
-__copy_from_user_inatomic, as the former performs 'access_ok' before
-copying.
-
-Link: https://lore.kernel.org/20250819105152.2766363-1-luogengkun@huaweicloud.com
-Fixes: 656c7f0d2d2b ("tracing: Replace kmap with copy_from_user() in trace_marker writing")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://patch.msgid.link/20250617180324.229487-1-macroalpha82@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/sfp.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 7af8bbc57531c..a6040a707abb7 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7233,7 +7233,7 @@ tracing_mark_write(struct file *filp, const char __user *ubuf,
- 	entry = ring_buffer_event_data(event);
- 	entry->ip = _THIS_IP_;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 347c1e0e94d95..5347c95d1e772 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -361,6 +361,11 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
+ 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
+ }
  
--	len = __copy_from_user_inatomic(&entry->buf, ubuf, cnt);
-+	len = copy_from_user_nofault(&entry->buf, ubuf, cnt);
- 	if (len) {
- 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
- 		cnt = FAULTED_SIZE;
-@@ -7308,7 +7308,7 @@ tracing_mark_raw_write(struct file *filp, const char __user *ubuf,
++static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
++{
++	sfp->state_hw_mask &= ~mask;
++}
++
+ static void sfp_fixup_nokia(struct sfp *sfp)
+ {
+ 	sfp_fixup_long_startup(sfp);
+@@ -409,7 +414,19 @@ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
+ 	 * these are possibly used for other purposes on this
+ 	 * module, e.g. a serial port.
+ 	 */
+-	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
++	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
++}
++
++static void sfp_fixup_potron(struct sfp *sfp)
++{
++	/*
++	 * The TX_FAULT and LOS pins on this device are used for serial
++	 * communication, so ignore them. Additionally, provide extra
++	 * time for this device to fully start up.
++	 */
++
++	sfp_fixup_long_startup(sfp);
++	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
+ }
  
- 	entry = ring_buffer_event_data(event);
+ static void sfp_fixup_rollball_cc(struct sfp *sfp)
+@@ -512,6 +529,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
  
--	len = __copy_from_user_inatomic(&entry->id, ubuf, cnt);
-+	len = copy_from_user_nofault(&entry->id, ubuf, cnt);
- 	if (len) {
- 		entry->id = -1;
- 		memcpy(&entry->buf, FAULTED_STR, FAULTED_SIZE);
++	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
++
+ 	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
+ 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
+ 
 -- 
 2.51.0
 
