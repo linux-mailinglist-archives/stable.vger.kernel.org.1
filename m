@@ -1,82 +1,194 @@
-Return-Path: <stable+bounces-182063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CFCBACA0C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 13:04:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E57BACA9A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 13:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4EDB3A60B3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 11:03:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7E6616D2A2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 11:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE7E2139CE;
-	Tue, 30 Sep 2025 11:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfhCP6Tm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76207242D97;
+	Tue, 30 Sep 2025 11:16:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CB61DD9AD;
-	Tue, 30 Sep 2025 11:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5D5220687
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 11:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759230234; cv=none; b=gMk7HKCfuULbwfSIsNhesGe3PL/xcGKkQ4YJKeo3qO6GFEEbxyu1rhu+RGhWKDpHk4Ecfo4yTVlVsY4A2hbo1cV8dzc8eDjCM3jLa9NQc6rEzo2LlQCnsIwaBZMSvYlpMUG1ZG4IsKsY1DTmmvxGK8lCC6GWR5It+vlt4JhiEgs=
+	t=1759231018; cv=none; b=YixaX369uZNCyIz5qeRN9RTikW4UyXT0zWyGkFzIn28863Fyuh7vHHmis4XRKyKt9XbbUg6L+SxxgSziAQGeEMRZpUV3+I8yAU5tSKM4zrnu0qL/ejOh7U6Cv9f65UoBxFX26nH+7YGgeY/gDS+ljNAtadBgudp0Z5tlcoB0tL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759230234; c=relaxed/simple;
-	bh=ZGQBfrOsIbWOK3cA0NcinOuD17JZE3z7XJZBM1kqshc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZIa88YhavnoVjvSzVwPjRVraPcIqLmF3d45XtbKvsqwvvqXgnRYRluAWTXCkwEL6+FgN1wl/r3QWDAnEL7raDhYoKZJf9aLE9CiToOHVFlyoi+YSNOAzw+zWxb+QsaoI8Koy5NqsDmCyjFxrDu01+O6tWLIW5aN9giDxXh9L/yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfhCP6Tm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350F6C4CEF0;
-	Tue, 30 Sep 2025 11:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759230233;
-	bh=ZGQBfrOsIbWOK3cA0NcinOuD17JZE3z7XJZBM1kqshc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RfhCP6TmkOCSmOjcEJxrf0LYOnFVQm2xn9skqyF0Tb3u94PzfN6bR3dluKH3QiS6i
-	 OUYmigVSYNq+leQHPpeXbfNUBCOGgCo7X5mNmedRGL0zJ4cpGAbuMWF9lNydbrotOO
-	 1ODtEFHwatf4FrZ4WVm3jNXvk3cML9BDl6fc8Yy8=
-Date: Tue, 30 Sep 2025 13:03:50 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Zheng Qixing <zhengqixing@huaweicloud.com>
-Cc: axboe@kernel.dk, linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org, stable@vger.kernel.org, jack@suse.cz,
-	sashal@kernel.org, yukuai3@huawei.com, yi.zhang@huawei.com,
-	yangerkun@huawei.com, houtao1@huawei.com, zhengqixing@huawei.com
-Subject: Re: [PATCH 6.6.y] loop: Avoid updating block size under exclusive
- owner
-Message-ID: <2025093034-glance-limping-e739@gregkh>
-References: <20250930064933.1188006-1-zhengqixing@huaweicloud.com>
- <2025093029-clavicle-landline-0a31@gregkh>
- <4656e296-5dfa-46a7-8b9b-a089425b1eac@huaweicloud.com>
+	s=arc-20240116; t=1759231018; c=relaxed/simple;
+	bh=f9EKTG1fBHJM9pJS43Vttf02/bEAMGN9OK8xOaEKgcE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=KXEjFjwYMY7/kSF+UWqgyqgVZX8Ab9ZeRWQOxdGxkv39GIpAGLS/ewM3vSHOWRMKKGWSTLIogiKSM1F97wzDaB2elggUU4vOt/F/k6iubcyr9BE1nT8FRXH6IIhwC9JSbo8d1DXy+IWp06/N5n6XT/nYRWw/8vmN+RPg6yLYhB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4284df6ceaaso107815345ab.1
+        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 04:16:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759231016; x=1759835816;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I6Ebb4Qk4BsBLP48AswBIKoGzuUaeFoYM+Jv9/UfVxo=;
+        b=HK4FoOVh+z9li4mbgHiljwQ0evWWdvti64fslDOwU59YA2nT5TUSB8fBNOqwtbnXc4
+         RSxECkzJaEbJIO31I0HDdNiJmhK0buMYf8c4EoHRssDieWwz6tvll8jZGyW25mJMEJeu
+         S2ya+n8lLVL/AJNhQCaNY2NLwuAYs+xYAlz0mQ1ENoRrjKd7E6Jw5vYK1gzdNdGRsMRk
+         mEmHWnzCIXt0RNebvKNMVwRvlYZun1FD+8z8fps0+Loa8aEICTDBuGe2xJ+2T5hmpaRA
+         8k1i3+f9bAQRhnSnPo1+2vs0cvfcEHxJPStS/ugNkLpgKU0mUo82Q0TVoBaVtzBk1QKp
+         JiAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGE3sWrhdDS/bEqFe8o/0E/R9cqIYVQyLARtmRlJQj3ce8tL8EGRuj9ajeIUgD7vf+TBnVWAg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQJtBLolo/DRH1uiDsRwWlackiqwrO/z5Nu97fJEkxPReLm+4M
+	VSKBcNGEwzYSmaPgl7zaEJy6WNwusuHxhOkoKkcPn+L8EwNPPzLhwIENnMuSd6SYdGr0K9sAH1A
+	nqIH4Mc14qprxCBP2je6p2o0OEMKrtXKBi9fIYd+2a0LyJZT1EbodfF1xU5E=
+X-Google-Smtp-Source: AGHT+IH6sz85o5A0V5B/nIDbgv3reoyO8a3pMB6N8HqKdtSaLpO1RbI7l6kogHuwio8JrbQz4X9/y9Q57th5jPMY07XpKFq20Iye
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4656e296-5dfa-46a7-8b9b-a089425b1eac@huaweicloud.com>
+X-Received: by 2002:a05:6e02:b49:b0:425:7524:8b38 with SMTP id
+ e9e14a558f8ab-4259562c487mr100691175ab.22.1759231015795; Tue, 30 Sep 2025
+ 04:16:55 -0700 (PDT)
+Date: Tue, 30 Sep 2025 04:16:55 -0700
+In-Reply-To: <20250930071053.36158-1-lance.yang@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68dbbc27.a00a0220.102ee.0047.GAE@google.com>
+Subject: [syzbot ci] Re: mm/rmap: fix soft-dirty and uffd-wp bit loss when
+ remapping zero-filled mTHP subpage to shared zeropage
+From: syzbot ci <syzbot+ci4a5736baef02a97d@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, david@redhat.com, 
+	dev.jain@arm.com, gourry@gourry.net, harry.yoo@oracle.com, 
+	ioworker0@gmail.com, jannh@google.com, joshua.hahnjy@gmail.com, 
+	lance.yang@linux.dev, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
+	npache@redhat.com, peterx@redhat.com, rakie.kim@sk.com, riel@surriel.com, 
+	ryan.roberts@arm.com, stable@vger.kernel.org, usamaarif642@gmail.com, 
+	vbabka@suse.cz, ying.huang@linux.alibaba.com, yuzhao@google.com, 
+	ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Sep 30, 2025 at 03:51:39PM +0800, Zheng Qixing wrote:
-> Hi,
-> 
-> 
-> The patch applied in the 6.6.103 release encountered issues when adapted to
-> the 6.6.y branch and was reverted in 6.6.108 (commit 42a6aeb4b238, “Revert
-> ‘loop: Avoid updating block size under exclusive owner’”).
-> 
-> 
-> We have reworked the backport to address the adaptation problems. Could you
-> please review and re-apply the updated patch?
+syzbot ci has tested the following series
 
-Ah, I had missed that we reverted it, sorry for the noise.
+[v4] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
+https://lore.kernel.org/all/20250930071053.36158-1-lance.yang@linux.dev
+* [PATCH v4 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
 
-Now queued up, thanks.
+and found the following issue:
+general protection fault in remove_migration_pte
 
-greg k-h
+Full report is available here:
+https://ci.syzbot.org/series/8cc7e52f-a859-4251-bd08-9787cdaf7928
+
+***
+
+general protection fault in remove_migration_pte
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      262858079afde6d367ce3db183c74d8a43a0e83f
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/97ee4826-5d29-472d-a85d-51543b0e45de/config
+C repro:   https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/c_repro
+syz repro: https://ci.syzbot.org/findings/f4819db2-21f2-4280-8bc4-942445398953/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 6025 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
+RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
+Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
+RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
+RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
+RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
+R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
+FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ rmap_walk_anon+0x553/0x730 mm/rmap.c:2855
+ remove_migration_ptes mm/migrate.c:469 [inline]
+ migrate_folio_move mm/migrate.c:1381 [inline]
+ migrate_folios_move mm/migrate.c:1711 [inline]
+ migrate_pages_batch+0x202e/0x35e0 mm/migrate.c:1967
+ migrate_pages_sync mm/migrate.c:1997 [inline]
+ migrate_pages+0x1bcc/0x2930 mm/migrate.c:2106
+ migrate_to_node mm/mempolicy.c:1244 [inline]
+ do_migrate_pages+0x5ee/0x800 mm/mempolicy.c:1343
+ kernel_migrate_pages mm/mempolicy.c:1858 [inline]
+ __do_sys_migrate_pages mm/mempolicy.c:1876 [inline]
+ __se_sys_migrate_pages+0x544/0x650 mm/mempolicy.c:1872
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb18e18ec29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffdca5c9838 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
+RAX: ffffffffffffffda RBX: 00007fb18e3d5fa0 RCX: 00007fb18e18ec29
+RDX: 0000200000000300 RSI: 0000000000000003 RDI: 0000000000000000
+RBP: 00007fb18e211e41 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000000040 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fb18e3d5fa0 R14: 00007fb18e3d5fa0 R15: 0000000000000004
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
+RIP: 0010:remove_migration_pte+0x369/0x2320 mm/migrate.c:352
+Code: 00 48 8d 43 20 48 89 44 24 68 49 8d 47 40 48 89 84 24 e8 00 00 00 4c 89 64 24 48 4c 8b b4 24 50 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 f8 3e ff ff 49 8b 06 48 89 44 24
+RSP: 0018:ffffc90002fb73e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff88802957e300 RCX: 1ffffd40008c9006
+RDX: 0000000000000000 RSI: 0000000000030dff RDI: 0000000000030c00
+RBP: ffffc90002fb75d0 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520005f6e34 R12: ffffea0004648008
+R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004648000
+FS:  00005555624de500(0000) GS:ffff8880b83fc000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000300 CR3: 000000010d8b8000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	00 48 8d             	add    %cl,-0x73(%rax)
+   3:	43 20 48 89          	rex.XB and %cl,-0x77(%r8)
+   7:	44 24 68             	rex.R and $0x68,%al
+   a:	49 8d 47 40          	lea    0x40(%r15),%rax
+   e:	48 89 84 24 e8 00 00 	mov    %rax,0xe8(%rsp)
+  15:	00
+  16:	4c 89 64 24 48       	mov    %r12,0x48(%rsp)
+  1b:	4c 8b b4 24 50 01 00 	mov    0x150(%rsp),%r14
+  22:	00
+  23:	4c 89 f0             	mov    %r14,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	4c 89 f7             	mov    %r14,%rdi
+  34:	e8 f8 3e ff ff       	call   0xffff3f31
+  39:	49 8b 06             	mov    (%r14),%rax
+  3c:	48                   	rex.W
+  3d:	89                   	.byte 0x89
+  3e:	44                   	rex.R
+  3f:	24                   	.byte 0x24
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
