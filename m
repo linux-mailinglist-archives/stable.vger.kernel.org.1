@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7929BAD9A1
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3839BAD63E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F09CE188849E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D76318829D6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441BF302CD6;
-	Tue, 30 Sep 2025 15:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC5D1EF38E;
+	Tue, 30 Sep 2025 14:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1i+0WKGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eW3iYFMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38D32236EB;
-	Tue, 30 Sep 2025 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FD6262FF3;
+	Tue, 30 Sep 2025 14:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245147; cv=none; b=uH9CvLfGgkk2xs0pVhiEvAmGOII+aw5QHRbwQEFENZlOh34yHI2jMeD4E04cF3aN91mpTx/ADo48c/feWwTWePdE22Cl6YyOpWKTGXl3rm+q73psG+GO30KolmTPypOE762BDkR86/WD3hH2x/l96HqzV8Mpmkpt3wWSX8idnrs=
+	t=1759244269; cv=none; b=djVGQ0H7UUu0ZvHIPidxxMs60mVPDzfcLla7r0+Wr9gPKukI/JGDDxoYLWn3rNAdFPXh6Fbn/vJAb2315R7+ck47VMM9FH2iNPacWXA3VPSwP6xeF7swIBYb80NHy5QM/WJ6hvXK7uCi4yL9MOyMavKlXyFmWgZFIZ1rXBfvWg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245147; c=relaxed/simple;
-	bh=scU3DkAtCm84oNk9UmaAgoisyiK7pGq1/pjrPBpMxZ0=;
+	s=arc-20240116; t=1759244269; c=relaxed/simple;
+	bh=r3/Zb73f+fAzRm7lX0Gem9wUiiwA54howe4J1V7iEjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQ4QJjFvX0a5MC6zN2beiqa8t7f0S7GsW0NGe42hFjwa/bveDlQVN1yDM7PXr0Ge92bys/Lw1p0MbCHDen3jpaCdBcM6QkSabKGZf4ZnHQqCyVlUuEiqMaja/9mfahdDcY+c1EjKFPerFJX6G8bz7aM4cuLpXypCq+v8aRHoVhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1i+0WKGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A65DC4CEF0;
-	Tue, 30 Sep 2025 15:12:26 +0000 (UTC)
+	 MIME-Version; b=JmOPZZd5B1ViMl0JRpsxNb6e72dXJeXQpw2PyyUYD77ul7q5qR1ZP9mQl6I2ax1Q3uEc0IDMPpV112mGle+dIZ8eLnEBln1NVhf0Wyq1hXefA0C4UlpvazegW6ZXK8lpD9Gm1LLrsyIy+9/tZbVgsGmZ15lmjBp7lcr2VDN7TQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eW3iYFMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BC5C4CEF0;
+	Tue, 30 Sep 2025 14:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245146;
-	bh=scU3DkAtCm84oNk9UmaAgoisyiK7pGq1/pjrPBpMxZ0=;
+	s=korg; t=1759244267;
+	bh=r3/Zb73f+fAzRm7lX0Gem9wUiiwA54howe4J1V7iEjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1i+0WKGqYM4BSNrRdUhvDUHY4IN5YUaNM0xwggC/eNi2yhljXgWywiARQvXmE0lFV
-	 xe3KgW9NgbrRTmjhqmNDO4ONfZFivFbDVjGTROZV6mnSaU0TH6l57rWnBb2UqeKxxt
-	 O5yfy4n337KIC0HdSBby88vm5SsC+2qkUPcl3NFU=
+	b=eW3iYFMZ4LtL/eQ0pda41MGauzELiCtKK4yUeInv3fhXq8dUxE7woap3amXfW56XT
+	 TgT7BvDBA+pqB28UXgIPlcu4bCb9XmYEMBhtoNtDi6Pi4LDimTY5flDM1vckril50R
+	 i+ydtpBtVZ72YEbcMXcAtp37i5lzYn49ddowIEWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 078/151] nilfs2: fix CFI failure when accessing /sys/fs/nilfs2/features/*
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 077/122] phy: broadcom: ns-usb3: fix Wvoid-pointer-to-enum-cast warning
 Date: Tue, 30 Sep 2025 16:46:48 +0200
-Message-ID: <20250930143830.700561939@linuxfoundation.org>
+Message-ID: <20250930143826.152234477@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 025e87f8ea2ae3a28bf1fe2b052bfa412c27ed4a upstream.
+[ Upstream commit bd6e74a2f0a0c76dda8e44d26f9b91a797586c3b ]
 
-When accessing one of the files under /sys/fs/nilfs2/features when
-CONFIG_CFI_CLANG is enabled, there is a CFI violation:
+'family' is an enum, thus cast of pointer on 64-bit compile test with
+W=1 causes:
 
-  CFI failure at kobj_attr_show+0x59/0x80 (target: nilfs_feature_revision_show+0x0/0x30; expected type: 0xfc392c4d)
-  ...
-  Call Trace:
-   <TASK>
-   sysfs_kf_seq_show+0x2a6/0x390
-   ? __cfi_kobj_attr_show+0x10/0x10
-   kernfs_seq_show+0x104/0x15b
-   seq_read_iter+0x580/0xe2b
-  ...
+  drivers/phy/broadcom/phy-bcm-ns-usb3.c:209:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-When the kobject of the kset for /sys/fs/nilfs2 is initialized, its ktype
-is set to kset_ktype, which has a ->sysfs_ops of kobj_sysfs_ops.  When
-nilfs_feature_attr_group is added to that kobject via
-sysfs_create_group(), the kernfs_ops of each files is sysfs_file_kfops_rw,
-which will call sysfs_kf_seq_show() when ->seq_show() is called.
-sysfs_kf_seq_show() in turn calls kobj_attr_show() through
-->sysfs_ops->show().  kobj_attr_show() casts the provided attribute out to
-a 'struct kobj_attribute' via container_of() and calls ->show(), resulting
-in the CFI violation since neither nilfs_feature_revision_show() nor
-nilfs_feature_README_show() match the prototype of ->show() in 'struct
-kobj_attribute'.
-
-Resolve the CFI violation by adjusting the second parameter in
-nilfs_feature_{revision,README}_show() from 'struct attribute' to 'struct
-kobj_attribute' to match the expected prototype.
-
-Link: https://lkml.kernel.org/r/20250906144410.22511-1-konishi.ryusuke@gmail.com
-Fixes: aebe17f68444 ("nilfs2: add /sys/fs/nilfs2/features group")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202509021646.bc78d9ef-lkp@intel.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230810111958.205705-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sysfs.c |    4 ++--
- fs/nilfs2/sysfs.h |    8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/phy/broadcom/phy-bcm-ns-usb3.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -1068,7 +1068,7 @@ void nilfs_sysfs_delete_device_group(str
-  ************************************************************************/
+--- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
++++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
+@@ -206,7 +206,7 @@ static int bcm_ns_usb3_mdio_probe(struct
+ 	of_id = of_match_device(bcm_ns_usb3_id_table, dev);
+ 	if (!of_id)
+ 		return -EINVAL;
+-	usb3->family = (enum bcm_ns_family)of_id->data;
++	usb3->family = (uintptr_t)of_id->data;
  
- static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
--					    struct attribute *attr, char *buf)
-+					    struct kobj_attribute *attr, char *buf)
- {
- 	return sysfs_emit(buf, "%d.%d\n",
- 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
-@@ -1080,7 +1080,7 @@ static const char features_readme_str[]
- 	"(1) revision\n\tshow current revision of NILFS file system driver.\n";
- 
- static ssize_t nilfs_feature_README_show(struct kobject *kobj,
--					 struct attribute *attr,
-+					 struct kobj_attribute *attr,
- 					 char *buf)
- {
- 	return sysfs_emit(buf, features_readme_str);
---- a/fs/nilfs2/sysfs.h
-+++ b/fs/nilfs2/sysfs.h
-@@ -50,16 +50,16 @@ struct nilfs_sysfs_dev_subgroups {
- 	struct completion sg_segments_kobj_unregister;
- };
- 
--#define NILFS_COMMON_ATTR_STRUCT(name) \
-+#define NILFS_KOBJ_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
- 	struct attribute attr; \
--	ssize_t (*show)(struct kobject *, struct attribute *, \
-+	ssize_t (*show)(struct kobject *, struct kobj_attribute *, \
- 			char *); \
--	ssize_t (*store)(struct kobject *, struct attribute *, \
-+	ssize_t (*store)(struct kobject *, struct kobj_attribute *, \
- 			 const char *, size_t); \
- }
- 
--NILFS_COMMON_ATTR_STRUCT(feature);
-+NILFS_KOBJ_ATTR_STRUCT(feature);
- 
- #define NILFS_DEV_ATTR_STRUCT(name) \
- struct nilfs_##name##_attr { \
+ 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
+ 	err = of_address_to_resource(syscon_np, 0, &res);
 
 
 
