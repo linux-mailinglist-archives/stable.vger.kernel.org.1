@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980F9BAD6DA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F111BADD5F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 684A13A5CC5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A675A1897778
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B41D3054C5;
-	Tue, 30 Sep 2025 14:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F1F2F6167;
+	Tue, 30 Sep 2025 15:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWGJUstn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9Zt5urO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177DE304989;
-	Tue, 30 Sep 2025 14:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CD52032D;
+	Tue, 30 Sep 2025 15:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244369; cv=none; b=aeMBu95yJ/303X7QeVoj7TLehNWd+XQjKwRRah8wpg9PdD3E0AXue+EOcvbfjkW2Qurq/38LShu0X4gZt+z5oiEz8hzZzIru+imD50y+pe0N62oVQd9WlGhC6G0VWdkm0kW2B3X1ZVC0iT8Wg3Fw/mUb8f3QCeHNaZpbK3tV7/E=
+	t=1759246043; cv=none; b=dl6bmP+UY8pLrMnbwTT2JS5Us2IY/WGwfBiXKoJczbpzMo7qd6aISjHKUFnzcchz6hSVzBdU6aFIUXGJ4uO3MtYuHYsXeZTY/Et0pdZCXGQjOdsZahXq0F/Cs8Bi/5JwVxfFOn/1fB72enYfGEVnftuoN6I6LBOFDanBawYAjJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244369; c=relaxed/simple;
-	bh=iJ+2U24oi9zLDLKVvEEOfOyEoEkWeSzynjXqh4UoNxY=;
+	s=arc-20240116; t=1759246043; c=relaxed/simple;
+	bh=FQCRqYrqGAeWINtwYbokR1svpp+EPw60qfQmS7lf3PI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhvbOTOXS9l7AohZIWBYV85tExIDy8LRGJP0kLloo/lVzstlO5PJONZrY3I0C29l0DajH1kaQ2U7VJisF5pZ6DXR2W3Y95bo58wzGf+nPVj/RTq5ghLp39zAA2AyzLb+h00CUg9AAah1eLHZ4RQ08ek2HlVtBRRI2m/2UQrxby8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWGJUstn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A71C4CEF0;
-	Tue, 30 Sep 2025 14:59:28 +0000 (UTC)
+	 MIME-Version; b=FexuqhnatRp4Tw6LU2PxbTvGHgLYMo8h8vOnjblLUYQATEpUmI6njiTedNwoNtNEVHPYbxcyFwhZdv2AMyyrYzTCEgsdYhdH2WCl8zB/L00i4Q2fG9FggHqYQnCG8tKB3CJsxtXcM8qAWhUASPyH5bj/hMJFeOfwXbVoOkjJwlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9Zt5urO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574D7C4CEF0;
+	Tue, 30 Sep 2025 15:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244369;
-	bh=iJ+2U24oi9zLDLKVvEEOfOyEoEkWeSzynjXqh4UoNxY=;
+	s=korg; t=1759246042;
+	bh=FQCRqYrqGAeWINtwYbokR1svpp+EPw60qfQmS7lf3PI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWGJUstnle7g03nyAhnfKKeaM92zYuFXGkcLR8VLKdZRsQkIiEsIj35//mgg4wO6H
-	 SHjFB9Yndyi+NmaNPKM7HPSQHWrXuMAKG7KnAbjcgGroywlnQoUe2qYov1mwiPdizC
-	 lz5/CBIpTol5eu0qoOz/6cundRyA+a1XeNIQGFDY=
+	b=m9Zt5urO8vIRIRXZdplEPVhqDmVPVA7le9/1G6t3MeWtGTH7S6z46T3C6JMbo/zZo
+	 PwWUTaI5hVFRxY/oPbZLbocoghpwuxarDRDroRK4vdstXDPPxjGO35D+8918+qGKej
+	 kVjoSb+7PorfbBRh64mAaIuBuiCb03rgrYB+xIxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zabelin Nikita <n.zabelin@mt-integration.ru>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/122] drm/gma500: Fix null dereference in hdmi teardown
-Date: Tue, 30 Sep 2025 16:47:19 +0200
-Message-ID: <20250930143827.394105743@linuxfoundation.org>
+Subject: [PATCH 6.12 06/89] ALSA: usb-audio: Avoid multiple assignments in mixer_quirks
+Date: Tue, 30 Sep 2025 16:47:20 +0200
+Message-ID: <20250930143822.126178194@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zabelin Nikita <n.zabelin@mt-integration.ru>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 352e66900cde63f3dadb142364d3c35170bbaaff ]
+[ Upstream commit 03ddd3bdb94df3edb1f2408b57cfb00b3d92a208 ]
 
-pci_set_drvdata sets the value of pdev->driver_data to NULL,
-after which the driver_data obtained from the same dev is
-dereferenced in oaktrail_hdmi_i2c_exit, and the i2c_dev is
-extracted from it. To prevent this, swap these calls.
+Handle report from checkpatch.pl:
 
-Found by Linux Verification Center (linuxtesting.org) with Svacer.
+  CHECK: multiple assignments should be avoided
 
-Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
-Signed-off-by: Zabelin Nikita <n.zabelin@mt-integration.ru>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://lore.kernel.org/r/20250918150703.2562604-1-n.zabelin@mt-integration.ru
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-6-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/oaktrail_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi.c b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-index a097a59a9eaec..08e83b7513197 100644
---- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-+++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-@@ -724,8 +724,8 @@ void oaktrail_hdmi_teardown(struct drm_device *dev)
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 78c0feb7dcdb7..1eae6e83d0259 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1737,7 +1737,8 @@ static int snd_microii_spdif_default_put(struct snd_kcontrol *kcontrol,
+ 	unsigned int pval, pval_old;
+ 	int err;
  
- 	if (hdmi_dev) {
- 		pdev = hdmi_dev->dev;
--		pci_set_drvdata(pdev, NULL);
- 		oaktrail_hdmi_i2c_exit(pdev);
-+		pci_set_drvdata(pdev, NULL);
- 		iounmap(hdmi_dev->regs);
- 		kfree(hdmi_dev);
- 		pci_dev_put(pdev);
+-	pval = pval_old = kcontrol->private_value;
++	pval = kcontrol->private_value;
++	pval_old = pval;
+ 	pval &= 0xfffff0f0;
+ 	pval |= (ucontrol->value.iec958.status[1] & 0x0f) << 8;
+ 	pval |= (ucontrol->value.iec958.status[0] & 0x0f);
 -- 
 2.51.0
 
