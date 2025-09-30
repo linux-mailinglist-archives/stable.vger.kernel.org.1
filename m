@@ -1,61 +1,78 @@
-Return-Path: <stable+bounces-182151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB82FBAD509
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AEEBADC63
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895931886665
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:53:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A192326A55
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09ED302755;
-	Tue, 30 Sep 2025 14:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDEF20E334;
+	Tue, 30 Sep 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rpj+z78f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vs6i3JcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBA73043C4;
-	Tue, 30 Sep 2025 14:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C13B223DD6;
+	Tue, 30 Sep 2025 15:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244005; cv=none; b=dfhwLIR6O9V9ORFJNQsrz9Zs3zVb/1CIS6KraBdvKiJlsf+qsj26H9wNpTh/MxG/uELaa8gISfoMeRpK6vW17Aj9JJkf2Mm/Kib2TivaFe/wYImNTPbp//kDeT1zhLdG+olhQoBMzdn3HKUdKOlNAnaEXcs23jgPwEAbGAJQWlw=
+	t=1759245806; cv=none; b=A23ihptjq/7SF/zocLM9QQ6mCh2cnwRX942ixMo+5gsUyzAgk4mUOTH1haobyFAOkp2xXKe43+oLRv1BywjZtGf4uoL8tr7skAWX8ueY4XxNL4cw3UZNjj9t9ay0cPcVz+PokF5dKXZAn59ZlvLMmBUMf/nY+m00NzyvHojApeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244005; c=relaxed/simple;
-	bh=L7qTR+zOnP9v+UrlTP56tJj4Tt9UuwLC1EJL3tk6LsQ=;
+	s=arc-20240116; t=1759245806; c=relaxed/simple;
+	bh=R+VYrnhAhSogxMxS4ZTzLrMChqUnpNbWXLGW5Fh9bCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMiqxkkzuCvgFnK6hBEevvbNy4YA9DIf4RlGQAoeqXlkDdCDsEtb1cEDoSk3dO4CRj2J1Buh7cLIT9emdlaJ/hn/pEPHEfPh4NIuY2oN5E2FA9wepFMoEUZaelqFeWHJa4QM4nwbEGGxoXzXNbnlsLo/aqV5E3LBaDZ1/D3+Efc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rpj+z78f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F2C4CEF0;
-	Tue, 30 Sep 2025 14:53:24 +0000 (UTC)
+	 MIME-Version; b=Aw1KiR69uh4MYcB55Qx0A6BpIYSkZRsUiPr60uQxmpMu3fYQVaSwED89VcEhxVCLV+dNhYbkILlDIhJ/bW9xeLkWmiu5hjF8DaH6GwL7XWcAgDBnEJPoxbuW0HYTA9te4mu0uzDP8X6fIKgiGX4pBuNB39Oqz8gLpg5jp8/cqQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vs6i3JcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934E2C4CEF0;
+	Tue, 30 Sep 2025 15:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244005;
-	bh=L7qTR+zOnP9v+UrlTP56tJj4Tt9UuwLC1EJL3tk6LsQ=;
+	s=korg; t=1759245806;
+	bh=R+VYrnhAhSogxMxS4ZTzLrMChqUnpNbWXLGW5Fh9bCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rpj+z78f+gXAikf4/XC2ZF9i22adZBEuSWxppJeCvRMmEkEORomCY93idd8TGyCM4
-	 XGC11KQea+flvl/ubC80BfDA33DKZihuNAV75674spfD/39k1Pj7m4Z3+z3/6l9Xmo
-	 +545v4wQ+Ey3uyFbRir/Exw5dnkqh+C9/NgdQaPY=
+	b=vs6i3JcM8aoBYyrysQ3+7JqBdM8oqW8kIvL+/XDGZ8Jg+rBfN8qALkUOGruWALRJp
+	 BhTduXazdpyLk+zLhKe+lskMcFYxBBmItiehpr8mq7z4DPuCO94QygKbqYnswZ5/S4
+	 0XyDL4N7AOnry06RrEaOUjD4McbGjuvdlg90XCfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
+	Hugh Dickins <hughd@google.com>,
+	Will Deacon <will@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
 	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Keir Fraser <keirf@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Li Zhe <lizhe.67@bytedance.com>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Wei Xu <weixugc@google.com>,
+	yangge <yangge1116@126.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Yu Zhao <yuzhao@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 81/81] mm/hugetlb: fix folio is still mapped when deleted
+Subject: [PATCH 6.6 24/91] mm/gup: check ref_count instead of lru before migration
 Date: Tue, 30 Sep 2025 16:47:23 +0200
-Message-ID: <20250930143823.117383084@linuxfoundation.org>
+Message-ID: <20250930143822.142158765@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +84,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7 ]
+[ Upstream commit 98c6d259319ecf6e8d027abd3f14b81324b8c0ad ]
 
-Migration may be raced with fallocating hole.  remove_inode_single_folio
-will unmap the folio if the folio is still mapped.  However, it's called
-without folio lock.  If the folio is migrated and the mapped pte has been
-converted to migration entry, folio_mapped() returns false, and won't
-unmap it.  Due to extra refcount held by remove_inode_single_folio,
-migration fails, restores migration entry to normal pte, and the folio is
-mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
+Patch series "mm: better GUP pin lru_add_drain_all()", v2.
 
-The log is as follows:
- BUG: Bad page cache in process hugetlb  pfn:156c00
- page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
- head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
- aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
- flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
- page_type: f4(hugetlb)
- page dumped because: still mapped when deleted
- CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
- Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x70
-  filemap_unaccount_folio+0xc4/0x1c0
-  __filemap_remove_folio+0x38/0x1c0
-  filemap_remove_folio+0x41/0xd0
-  remove_inode_hugepages+0x142/0x250
-  hugetlbfs_fallocate+0x471/0x5a0
-  vfs_fallocate+0x149/0x380
+Series of lru_add_drain_all()-related patches, arising from recent mm/gup
+migration report from Will Deacon.
 
-Hold folio lock before checking if the folio is mapped to avold race with
-migration.
+This patch (of 5):
 
-Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
-Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Will Deacon reports:-
+
+When taking a longterm GUP pin via pin_user_pages(),
+__gup_longterm_locked() tries to migrate target folios that should not be
+longterm pinned, for example because they reside in a CMA region or
+movable zone.  This is done by first pinning all of the target folios
+anyway, collecting all of the longterm-unpinnable target folios into a
+list, dropping the pins that were just taken and finally handing the list
+off to migrate_pages() for the actual migration.
+
+It is critically important that no unexpected references are held on the
+folios being migrated, otherwise the migration will fail and
+pin_user_pages() will return -ENOMEM to its caller.  Unfortunately, it is
+relatively easy to observe migration failures when running pKVM (which
+uses pin_user_pages() on crosvm's virtual address space to resolve stage-2
+page faults from the guest) on a 6.15-based Pixel 6 device and this
+results in the VM terminating prematurely.
+
+In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
+mapping of guest memory prior to the pinning.  Subsequently, when
+pin_user_pages() walks the page-table, the relevant 'pte' is not present
+and so the faulting logic allocates a new folio, mlocks it with
+mlock_folio() and maps it in the page-table.
+
+Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch
+by pagevec"), mlock/munlock operations on a folio (formerly page), are
+deferred.  For example, mlock_folio() takes an additional reference on the
+target folio before placing it into a per-cpu 'folio_batch' for later
+processing by mlock_folio_batch(), which drops the refcount once the
+operation is complete.  Processing of the batches is coupled with the LRU
+batch logic and can be forcefully drained with lru_add_drain_all() but as
+long as a folio remains unprocessed on the batch, its refcount will be
+elevated.
+
+This deferred batching therefore interacts poorly with the pKVM pinning
+scenario as we can find ourselves in a situation where the migration code
+fails to migrate a folio due to the elevated refcount from the pending
+mlock operation.
+
+Hugh Dickins adds:-
+
+!folio_test_lru() has never been a very reliable way to tell if an
+lru_add_drain_all() is worth calling, to remove LRU cache references to
+make the folio migratable: the LRU flag may be set even while the folio is
+held with an extra reference in a per-CPU LRU cache.
+
+5.18 commit 2fbb0c10d1e8 may have made it more unreliable.  Then 6.11
+commit 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding
+to LRU batch") tried to make it reliable, by moving LRU flag clearing; but
+missed the mlock/munlock batches, so still unreliable as reported.
+
+And it turns out to be difficult to extend 33dfe9204f29's LRU flag
+clearing to the mlock/munlock batches: if they do benefit from batching,
+mlock/munlock cannot be so effective when easily suppressed while !LRU.
+
+Instead, switch to an expected ref_count check, which was more reliable
+all along: some more false positives (unhelpful drains) than before, and
+never a guarantee that the folio will prove migratable, but better.
+
+Note on PG_private_2: ceph and nfs are still using the deprecated
+PG_private_2 flag, with the aid of netfs and filemap support functions.
+Although it is consistently matched by an increment of folio ref_count,
+folio_expected_ref_count() intentionally does not recognize it, and ceph
+folio migration currently depends on that for PG_private_2 folios to be
+rejected.  New references to the deprecated flag are discouraged, so do
+not add it into the collect_longterm_unpinnable_folios() calculation: but
+longterm pinning of transiently PG_private_2 ceph and nfs folios (an
+uncommon case) may invoke a redundant lru_add_drain_all().  And this makes
+easy the backport to earlier releases: up to and including 6.12, btrfs
+also used PG_private_2, but without a ref_count increment.
+
+Note for stable backports: requires 6.16 commit 86ebd50224c0 ("mm:
+add folio_expected_ref_count() for reference count calculation").
+
+Link: https://lkml.kernel.org/r/41395944-b0e3-c3ac-d648-8ddd70451d28@google.com
+Link: https://lkml.kernel.org/r/bd1f314a-fca1-8f19-cac0-b936c9614557@google.com
+Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reported-by: Will Deacon <will@kernel.org>
+Closes: https://lore.kernel.org/linux-mm/20250815101858.24352-1-will@kernel.org/
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ folio -> page ]
+[ Clean cherry-pick now into this tree ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ mm/gup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -502,13 +502,13 @@ static void remove_inode_hugepages(struc
+diff --git a/mm/gup.c b/mm/gup.c
+index 497d7ce43d393..00ac2df7164c3 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1975,7 +1975,8 @@ static unsigned long collect_longterm_unpinnable_pages(
+ 			continue;
+ 		}
  
- 			/*
- 			 * If page is mapped, it was faulted in after being
--			 * unmapped in caller.  Unmap (again) now after taking
--			 * the fault mutex.  The mutex will prevent faults
--			 * until we finish removing the page.
--			 *
--			 * This race can only happen in the hole punch case.
--			 * Getting here in a truncate operation is a bug.
-+			 * unmapped in caller or hugetlb_vmdelete_list() skips
-+			 * unmapping it due to fail to grab lock.  Unmap (again)
-+			 * while holding the fault mutex.  The mutex will prevent
-+			 * faults until we finish removing the page.  Hold page
-+			 * lock to guarantee no concurrent migration.
- 			 */
-+			lock_page(page);
- 			if (unlikely(page_mapped(page))) {
- 				BUG_ON(truncate_op);
- 
-@@ -518,8 +518,6 @@ static void remove_inode_hugepages(struc
- 					(index + 1) * pages_per_huge_page(h));
- 				i_mmap_unlock_write(mapping);
- 			}
--
--			lock_page(page);
- 			/*
- 			 * We must free the huge page and remove from page
- 			 * cache (remove_huge_page) BEFORE removing the
+-		if (!folio_test_lru(folio) && drain_allow) {
++		if (drain_allow && folio_ref_count(folio) !=
++				   folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+ 			drain_allow = false;
+ 		}
+-- 
+2.51.0
+
 
 
 
