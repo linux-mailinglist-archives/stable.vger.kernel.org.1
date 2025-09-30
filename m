@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987BABAD776
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DAEBAD596
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A372189592D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104F8194203A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEB9303A29;
-	Tue, 30 Sep 2025 15:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619CE304BA2;
+	Tue, 30 Sep 2025 14:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMfxni5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMWqLve9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC111EE02F;
-	Tue, 30 Sep 2025 15:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3D8303C9B;
+	Tue, 30 Sep 2025 14:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244554; cv=none; b=RjM6/rP/613miWimEGyK46PVo0rVJt0nxgFoZ63A6os1mBQK0Bvm64Vpjuqqb8R8vOA5kH9jPKL7hOWQbjnzs2mhdDMrvIqmsSKVDT+MC0TKqbpXg1O77cn30grDby7H+IsVtlRWjvT4b0auq+1/arOvWOdNACNhksk2RKNRrmA=
+	t=1759244131; cv=none; b=rrwzEx7nX8dYYoBsMyH3i289xopEc3ndAprmuL1pApudTxrGY8fEhRXo2gK1hsUDqm4LyS2Ucm6sQ7Pm2QSEDjUZoyDJZn0zQAfIXyq+CTSZQt/1tlpF16qqj+xAN/YCI2dV2XxZd+LV/ZUUBVAl0nFuJy+6f3cXKpLHf9+Sfug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244554; c=relaxed/simple;
-	bh=FUIb0ZnXb4OFnHu/Ny0xlUsfJpupLpsvz3XY7G4VE8k=;
+	s=arc-20240116; t=1759244131; c=relaxed/simple;
+	bh=PFDixMgRNTBoRKdf90jsgivYjUUDz4tVIzLjScuA5xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FS21y9AdsCd+Zwu1V4PDCaMl+R13LQZqmbZzjIc5O6ACJq8ByS0BYNKZAnWNN44xIuXEywCXhZokF9XH80TXHsq3PNoTSGxQDkPAPbB+C+yf2nnqbKAGjZENXGn3dAHxaRr/aoLzSEjAj9Vwcqr6UoZSTmpXYcys32Y2b8f60U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMfxni5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DC5C4CEF0;
-	Tue, 30 Sep 2025 15:02:33 +0000 (UTC)
+	 MIME-Version; b=ZKz7aW+7mneq4+tufzq+q6JW6XPx7AUs8GbvhdIFZHYkv9OiGs0gvzLYOphyHUYpN7WjcmCdGjyf4yzOD1/QmXXMMDCUjSghKlc3DlnLSgP3pKT7PfOQ8IK3PgVj8BOKqXcyBmaLsjsp26jlwAotl5kmKMgty4YY7H9dIbsHljE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMWqLve9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB15C113D0;
+	Tue, 30 Sep 2025 14:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244554;
-	bh=FUIb0ZnXb4OFnHu/Ny0xlUsfJpupLpsvz3XY7G4VE8k=;
+	s=korg; t=1759244131;
+	bh=PFDixMgRNTBoRKdf90jsgivYjUUDz4tVIzLjScuA5xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMfxni5FfrztTpjdz0boGExlgmWNf50nltl1FaDnLdzdAe4vOAJLmYxJOz1/B/M1m
-	 PIrb1RCHI25qZf0VN0NuWJuzluFs+aFea1iTu17nRdrWmJTHMuY6xX/H/aP+B3fLul
-	 9xidC8/gVt4sgQI2ny8qL0cb/LtE6GeXaif1IFuE=
+	b=yMWqLve9SLMFim5rJ3m2DBJTNJgZt/S5XV1GTteEpJ3ZMu/maG1IPMAjqzdxutBKh
+	 YDKVMZYtxnM3R84SZO208ceufdTP9W8ZuvPyLiPmm6HEhpzIGhS8AFFr1VbNg/Z2ng
+	 pTnx75wjZ93rRri5T7rpo1OWWPjCLEuOPPmj4DcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Nitesh Narayan Lal <nitesh@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 042/143] arm64: dts: imx8mp: Correct thermal sensor index
-Date: Tue, 30 Sep 2025 16:46:06 +0200
-Message-ID: <20250930143832.913561270@linuxfoundation.org>
+Subject: [PATCH 5.10 036/122] i40e: Use irq_update_affinity_hint()
+Date: Tue, 30 Sep 2025 16:46:07 +0200
+Message-ID: <20250930143824.481972219@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Nitesh Narayan Lal <nitesh@redhat.com>
 
-[ Upstream commit a50342f976d25aace73ff551845ce89406f48f35 ]
+[ Upstream commit d34c54d1739c2cdf2e4437b74e6da269147f4987 ]
 
-The TMU has two temperature measurement sites located on the chip. The
-probe 0 is located inside of the ANAMIX, while the probe 1 is located near
-the ARM core. This has been confirmed by checking with HW design team and
-checking RTL code.
+The driver uses irq_set_affinity_hint() for two purposes:
 
-So correct the {cpu,soc}-thermal sensor index.
+ - To set the affinity_hint which is consumed by the userspace for
+   distributing the interrupts
 
-Fixes: 30cdd62dce6b ("arm64: dts: imx8mp: Add thermal zones support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+ - To apply an affinity that it provides for the i40e interrupts
+
+The latter is done to ensure that all the interrupts are evenly spread
+across all available CPUs. However, since commit a0c9259dc4e1 ("irq/matrix:
+Spread interrupts on allocation") the spreading of interrupts is
+dynamically performed at the time of allocation. Hence, there is no need
+for the drivers to enforce their own affinity for the spreading of
+interrupts.
+
+Also, irq_set_affinity_hint() applying the provided cpumask as an affinity
+for the interrupt is an undocumented side effect. To remove this side
+effect irq_set_affinity_hint() has been marked as deprecated and new
+interfaces have been introduced. Hence, replace the irq_set_affinity_hint()
+with the new interface irq_update_affinity_hint() that only sets the
+pointer for the affinity_hint.
+
+Signed-off-by: Nitesh Narayan Lal <nitesh@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Link: https://lore.kernel.org/r/20210903152430.244937-4-nitesh@redhat.com
+Stable-dep-of: 915470e1b44e ("i40e: fix IRQ freeing in i40e_vsi_request_irq_msix error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 948b88cf5e9df..305c2912e90f7 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -298,7 +298,7 @@
- 		cpu-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 0>;
-+			thermal-sensors = <&tmu 1>;
- 			trips {
- 				cpu_alert0: trip0 {
- 					temperature = <85000>;
-@@ -328,7 +328,7 @@
- 		soc-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
--			thermal-sensors = <&tmu 1>;
-+			thermal-sensors = <&tmu 0>;
- 			trips {
- 				soc_alert0: trip0 {
- 					temperature = <85000>;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index aa24d1808c981..0b0f6bf5affe0 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -3969,10 +3969,10 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
+ 		 *
+ 		 * get_cpu_mask returns a static constant mask with
+ 		 * a permanent lifetime so it's ok to pass to
+-		 * irq_set_affinity_hint without making a copy.
++		 * irq_update_affinity_hint without making a copy.
+ 		 */
+ 		cpu = cpumask_local_spread(q_vector->v_idx, -1);
+-		irq_set_affinity_hint(irq_num, get_cpu_mask(cpu));
++		irq_update_affinity_hint(irq_num, get_cpu_mask(cpu));
+ 	}
+ 
+ 	vsi->irqs_ready = true;
+@@ -3983,7 +3983,7 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
+ 		vector--;
+ 		irq_num = pf->msix_entries[base + vector].vector;
+ 		irq_set_affinity_notifier(irq_num, NULL);
+-		irq_set_affinity_hint(irq_num, NULL);
++		irq_update_affinity_hint(irq_num, NULL);
+ 		free_irq(irq_num, &vsi->q_vectors[vector]);
+ 	}
+ 	return err;
+@@ -4801,7 +4801,7 @@ static void i40e_vsi_free_irq(struct i40e_vsi *vsi)
+ 			/* clear the affinity notifier in the IRQ descriptor */
+ 			irq_set_affinity_notifier(irq_num, NULL);
+ 			/* remove our suggested affinity mask for this IRQ */
+-			irq_set_affinity_hint(irq_num, NULL);
++			irq_update_affinity_hint(irq_num, NULL);
+ 			synchronize_irq(irq_num);
+ 			free_irq(irq_num, vsi->q_vectors[i]);
+ 
 -- 
 2.51.0
 
