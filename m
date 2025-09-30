@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-182562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56FABADAAD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968E6BADD65
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D11417FCA5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3CF53A90A6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFD32FD1DD;
-	Tue, 30 Sep 2025 15:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9596B296BD0;
+	Tue, 30 Sep 2025 15:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZrW3PpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKjhPQxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3D21F4C8E;
-	Tue, 30 Sep 2025 15:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B69D1C862F;
+	Tue, 30 Sep 2025 15:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245351; cv=none; b=e531ksh+VDngFMW/Pwi2nuRmGhhjmiY9odU2CR5/uQHlDQw7BY7hdeyRnoJ536BnPixY62MCY3uCw2fAm9KGSZ20FZwt/rTfsJbEp0tQqB/OmeIANOMbM8OG7KPT43A6iMmW9RS8YJDwrwDYtHoIBUjddnUJtCCkYIt2V9lOZLk=
+	t=1759245935; cv=none; b=idTjq3KaOp1XA2SrWo5LMPaDYzE0A+z14twaMvliOUG8yBfzSp6ggOLwfFdONO4h3/NZzLqbe/FxbV1zzCPDg9jYtSCm4PWRjTM6Dwe9Uc1XhfOb0isUlfkO2+zALy/lXzrC+9T/cA12HVd9FGgtSaLXZORfkoDi7VQue4zx3co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245351; c=relaxed/simple;
-	bh=2HX5mZrlFBOp1/ZKvFDIarmT+E4H6aNJnsqoz9cfObQ=;
+	s=arc-20240116; t=1759245935; c=relaxed/simple;
+	bh=72mF+jZLtcXJyCidO79ilQSD3TZJ3l5BjJiqF9k9fN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRsWCunxVV6J0jZuwp9DRVAd5brq3e+Yj/p3RorY3rRlm1HFTza0xOidSyGGI3ZlUGKwTyUf7C68+uOaojcO2o79JzZP6UqCtbbNOMnbxB06C25bnqInpc3lxwvwjVISuspFvP9je4CBw5cg2bVCCeCIGYeR/xnK+fSoKBcbPwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZrW3PpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28B3C4CEF0;
-	Tue, 30 Sep 2025 15:15:50 +0000 (UTC)
+	 MIME-Version; b=oz+1z2uc/7xSYp80bG1+ACE97nW9xKY296cFpVEYd2+bvnxtwgRsabTU8HBFZQ2gYPXx8U2hpnS8qBkQgexwPDd5UJttBn9uKSH3vc4PgCGNvgIpds58yW4/W4TddTpRe2Jy3I+MZsImXnpv2OJUqiMJAiQdXrQcwVY4wywn5zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKjhPQxi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCF4C4CEF0;
+	Tue, 30 Sep 2025 15:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245351;
-	bh=2HX5mZrlFBOp1/ZKvFDIarmT+E4H6aNJnsqoz9cfObQ=;
+	s=korg; t=1759245935;
+	bh=72mF+jZLtcXJyCidO79ilQSD3TZJ3l5BjJiqF9k9fN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZrW3PpD0A0up/FQizaOHwmVcOTkB3dBP8yKH7+nfdGEWx/Gth8X6wph3Pae87Bgn
-	 4QqpgrcKVHSqGWGPAHe42EsNi1y0eG0hwG9eD0dqUyk7wNVxp9ylHcM7w3ydBAuqZg
-	 hfuCy66/LtmqSPL/P/9BM8qWpA528pW6rz99Q/KA=
+	b=UKjhPQxi4S/w8Z/NL0lVeajlfqdahd73pxylB33WEncVfRfatnFo2eVxUG/KoSxkN
+	 laiAFIsJdseCK1bL1czfq7SawQTX114XyV/FR1on7Wlvl9Dm4uCwKeo17BhVigpTMa
+	 s1F742zNILBHtW0gKR71vAVfX1TuOkGpxTbTmCaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.15 142/151] tracing: dynevent: Add a missing lockdown check on dynevent
+	syzbot+034246a838a10d181e78@syzkaller.appspotmail.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 53/91] futex: Prevent use-after-free during requeue-PI
 Date: Tue, 30 Sep 2025 16:47:52 +0200
-Message-ID: <20250930143833.246927362@linuxfoundation.org>
+Message-ID: <20250930143823.392257689@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 456c32e3c4316654f95f9d49c12cbecfb77d5660 upstream.
+[ Upstream commit b549113738e8c751b613118032a724b772aa83f2 ]
 
-Since dynamic_events interface on tracefs is compatible with
-kprobe_events and uprobe_events, it should also check the lockdown
-status and reject if it is set.
+syzbot managed to trigger the following race:
 
-Link: https://lore.kernel.org/all/175824455687.45175.3734166065458520748.stgit@devnote2/
+   T1                               T2
 
-Fixes: 17911ff38aa5 ("tracing: Add locked_down checks to the open calls of files created for tracefs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ futex_wait_requeue_pi()
+   futex_do_wait()
+     schedule()
+                               futex_requeue()
+                                 futex_proxy_trylock_atomic()
+                                   futex_requeue_pi_prepare()
+                                   requeue_pi_wake_futex()
+                                     futex_requeue_pi_complete()
+                                      /* preempt */
+
+         * timeout/ signal wakes T1 *
+
+   futex_requeue_pi_wakeup_sync() // Q_REQUEUE_PI_LOCKED
+   futex_hash_put()
+  // back to userland, on stack futex_q is garbage
+
+                                      /* back */
+                                     wake_up_state(q->task, TASK_NORMAL);
+
+In this scenario futex_wait_requeue_pi() is able to leave without using
+futex_q::lock_ptr for synchronization.
+
+This can be prevented by reading futex_q::task before updating the
+futex_q::requeue_state. A reference on the task_struct is not needed
+because requeue_pi_wake_futex() is invoked with a spinlock_t held which
+implies a RCU read section.
+
+Even if T1 terminates immediately after, the task_struct will remain valid
+during T2's wake_up_state().  A READ_ONCE on futex_q::task before
+futex_requeue_pi_complete() is enough because it ensures that the variable
+is read before the state is updated.
+
+Read futex_q::task before updating the requeue state, use it for the
+following wakeup.
+
+Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
+Reported-by: syzbot+034246a838a10d181e78@syzkaller.appspotmail.com
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Closes: https://lore.kernel.org/all/68b75989.050a0220.3db4df.01dd.GAE@google.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_dynevent.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/futex/requeue.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_dynevent.c
-+++ b/kernel/trace/trace_dynevent.c
-@@ -239,6 +239,10 @@ static int dyn_event_open(struct inode *
+diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
+index cba8b1a6a4cc2..7e43839ca7b05 100644
+--- a/kernel/futex/requeue.c
++++ b/kernel/futex/requeue.c
+@@ -223,18 +223,20 @@ static inline
+ void requeue_pi_wake_futex(struct futex_q *q, union futex_key *key,
+ 			   struct futex_hash_bucket *hb)
  {
- 	int ret;
+-	q->key = *key;
++	struct task_struct *task;
  
-+	ret = security_locked_down(LOCKDOWN_TRACEFS);
-+	if (ret)
-+		return ret;
-+
- 	ret = tracing_check_open_get_tr(NULL);
- 	if (ret)
- 		return ret;
++	q->key = *key;
+ 	__futex_unqueue(q);
+ 
+ 	WARN_ON(!q->rt_waiter);
+ 	q->rt_waiter = NULL;
+ 
+ 	q->lock_ptr = &hb->lock;
++	task = READ_ONCE(q->task);
+ 
+ 	/* Signal locked state to the waiter */
+ 	futex_requeue_pi_complete(q, 1);
+-	wake_up_state(q->task, TASK_NORMAL);
++	wake_up_state(task, TASK_NORMAL);
+ }
+ 
+ /**
+-- 
+2.51.0
+
 
 
 
