@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11D3BADBE2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D8DBADA1C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A75B170929
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 966D0161D47
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D01A173;
-	Tue, 30 Sep 2025 15:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065932FFDE6;
+	Tue, 30 Sep 2025 15:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6fZkiQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG7Z1gqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE75B205E3B;
-	Tue, 30 Sep 2025 15:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75E4223DD6;
+	Tue, 30 Sep 2025 15:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245680; cv=none; b=uKKsY0eL3fT+RZy06e2+hUMldPqML1w8+6FNrawY9cU2m+rQe5BLIzrhu+jBZ4NkdrPUsEg3A6pyVMVCYrUKV5CsmxoMf9UWLEjO4QaaYZyo87RnbqjAjcULZf/p/08liF/WkrJxlXK+/pfck8rR7H6+XhrcbWYLDvUTFkeM+5k=
+	t=1759245235; cv=none; b=A9dVe0AoKtLUIsqvJZrubui1yy9VI39BXSjxUrYKJU+ljuqYbpY7QEp7BiVPec7Op3eS8C20aeDGY9bnzePvTdG47qG7+PQsHsiJCIDPqnvOFoT+blh4wcTFRrVkHW+U8k934Zc/HW2xyxKBjfmKZ3LqftZcjiJt1mcBX2qqpJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245680; c=relaxed/simple;
-	bh=Sfj4yhQFu4/BNuLtyaOl8IPgUtZM07GtWB4it4Zj4K4=;
+	s=arc-20240116; t=1759245235; c=relaxed/simple;
+	bh=GbhITvSO25V0cmy067otzXb7KUZY58XVFdrYbEpPHQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGhGyMruIUlasJzLn6aGwqn/8guFqqJUpU/T43ShhnyiNzdED+LV5gogEomgsWPsgZ/TYAyvemVpBgHamPRUHUUcGUFv14DWGHANIE769OzS1kvc4TvQLWmtvlI3TsBJcNc1t/1j2BYWPX8wrh9h/dig7FmwL2bmHA+FqZvfDpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6fZkiQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A6AC4CEF0;
-	Tue, 30 Sep 2025 15:21:18 +0000 (UTC)
+	 MIME-Version; b=KUhZ35l+1gsrmQJ97du3loI7hJKfvw27UTHH2jymqtA86z6SKhRGdlIoWMAWoFF58xZO9QPSBMitDsgQAaRXTPJJsVO/Jua4hP4l9egb8PVFuU5rzpJB1Czn9B71vut4rLv8+N1UyfYgyzTUuP0eLHyaOrd8SVnr0TCG0Hq8ldA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG7Z1gqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40910C4CEF0;
+	Tue, 30 Sep 2025 15:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245679;
-	bh=Sfj4yhQFu4/BNuLtyaOl8IPgUtZM07GtWB4it4Zj4K4=;
+	s=korg; t=1759245235;
+	bh=GbhITvSO25V0cmy067otzXb7KUZY58XVFdrYbEpPHQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6fZkiQihhYuVFhBVxvqXKes+N8vzHG0dvIXCP64qYNdb/i0GRDskughjNZdI8YhE
-	 apsGtEXqqnhVXChOhpU8KuX5lKo0CFuRLgfPd/LxpRx6I3SOotiqERNk8OyfzPa7w9
-	 tvfINY+qjOTZtKR1sW6Hv4zSxIcffXFxG4HpJ3H8=
+	b=aG7Z1gqMLwymK88ABhFD+LlGQ0T79weDhXluuMnCEbLTh8/pDbP1U+3z7EQvI1b/P
+	 dt/7AtjzCseYET8wFpn7+DibDwrw0amejWO5jID/u0It8kheIBFUo9JSyGFDkMdrEk
+	 fOS7IIoIfZi5T7+xlp+musL9sXF3C8rcEdjnfFHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"noble.yang" <noble.yang@comtrue-inc.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/91] ALSA: usb-audio: Add DSD support for Comtrue USB Audio device
+Subject: [PATCH 5.15 107/151] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
 Date: Tue, 30 Sep 2025 16:47:17 +0200
-Message-ID: <20250930143821.888042942@linuxfoundation.org>
+Message-ID: <20250930143831.870880249@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: noble.yang <noble.yang@comtrue-inc.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit e9df1755485dd90a89656e8a21ec4d71c909fa30 ]
+[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
 
-The vendor Comtrue Inc. (0x2fc6) produces USB audio chipsets like
-the CT7601 which are capable of Native DSD playback.
+Adding a memory barrier before wake_up() in
+snd_usb_soundblaster_remote_complete() is supposed to ensure the write
+to mixer->rc_code is visible in wait_event_interruptible() from
+snd_usb_sbrc_hwdep_read().
 
-This patch adds QUIRK_FLAG_DSD_RAW for Comtrue (VID 0x2fc6), which enables
-native DSD playback (DSD_U32_LE) on their USB Audio device. This has been
-verified under Ubuntu 25.04 with JRiver.
+However, this is not really necessary, since wake_up() is just a wrapper
+over __wake_up() which already executes a full memory barrier before
+accessing the state of the task to be waken up.
 
-Signed-off-by: noble.yang <noble.yang@comtrue-inc.com>
-Link: https://patch.msgid.link/20250731110614.4070-1-noble228@gmail.com
+Drop the redundant call to wmb() and implicitly fix the checkpatch
+complaint:
+
+  WARNING: memory barrier without comment
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/usb/mixer_quirks.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index f19c808444c97..def326ddef267 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2305,6 +2305,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x2d87, /* Cayin device */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x2fc6, /* Comture-inc devices */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3336, /* HEM devices */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3353, /* Khadas devices */
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 3156bb50f9ff6..d50cd771356f8 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -208,7 +208,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
+ 	if (code == rc->mute_code)
+ 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
+ 	mixer->rc_code = code;
+-	wmb();
+ 	wake_up(&mixer->rc_waitq);
+ }
+ 
 -- 
 2.51.0
 
