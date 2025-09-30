@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8245ABAD60C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD217BAD9DA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09ED818851B4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C201616EA53
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4736D1F03C5;
-	Tue, 30 Sep 2025 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDAE2FCBFC;
+	Tue, 30 Sep 2025 15:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTI36js4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUmFBsVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E451AB6F1;
-	Tue, 30 Sep 2025 14:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DBB2F9D88;
+	Tue, 30 Sep 2025 15:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244204; cv=none; b=Occ0MiI9c2m1mKzRepUCpP/8p+reX93yf9Vio+I7vrMUY2sEnf+y8r15o4sBAo3zzxhGiu6X/tSTSfFivEFNYz10cjS1Mn7AwKs2uwO/IroaaDvsjQTPce/A4YqNJh+w1T8EfcIX1iKoh5pj3dFDA5JinIJun8r+tyRazA0sjEc=
+	t=1759245186; cv=none; b=MS9xP5ul2SrHMXsvx5DpWt7zTKqDfcEqOQOaEw1kMSW2fbxUGsY0zHdspjZBMRLGchyRAOJiNpKLmU+lxNAvsUryjMNGHDftmTm0e/l54ESQgk6ItvZQXkHnF5syzruVk3UxBQBSx6UcJ7yiS9nUwtEZOCMDozoGgmBhY2/u5ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244204; c=relaxed/simple;
-	bh=oqb9j9MTszV+YZEnJEPE61Dzih81qRflc/I7SWLhbTc=;
+	s=arc-20240116; t=1759245186; c=relaxed/simple;
+	bh=5bbP9VQDoMexk3/4EHXtur82VfTZ85Y9phsLKhuMvRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1s/Ag+Te+Vl8MzcqslfWBKQs7RWztHiMWtPOtyVP6cXCsU/Nqhk/YL9bQtayWb1LVjLcvPL1HJYpI+StRFnReZZrpuht8Qn7dY2nhiiKlv/zP14Q79/O+tgT3BSacOoHugWai/tMYUi7rX7/JcC0MoGaJ3+g065aCRJocGEUQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTI36js4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A65FC4CEF0;
-	Tue, 30 Sep 2025 14:56:42 +0000 (UTC)
+	 MIME-Version; b=qtPbu7dR/B7nnvKMTHfwnmQI1yqRLj664Prea2AaYWtXTU8N/wb8CgfpiTFqmD9dtY4CAj2wshDYS0cGsXqQcgPsjSaBu6TRbiffqVV39Vf75VoJauR7JoqUE/C4sT937Y28LqP63WqZjnO4tlO1gUskuv8W14fVEIcI49KStlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUmFBsVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562B3C4CEF0;
+	Tue, 30 Sep 2025 15:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244203;
-	bh=oqb9j9MTszV+YZEnJEPE61Dzih81qRflc/I7SWLhbTc=;
+	s=korg; t=1759245185;
+	bh=5bbP9VQDoMexk3/4EHXtur82VfTZ85Y9phsLKhuMvRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTI36js4RfSPV4OgWgR6a1qX5IwChburmzzvvoeK7VpytL5G+ldGlDQBVrhOmi3OD
-	 IVvqOKILejqSwHjalvKQk18rdoU0n/aw4gjozdlaXSqQq89Gf++Mky/HwWybOtouA+
-	 Bn740UVxDLazvu4IVNZxudTQSQiiUDws5Dknxq84=
+	b=UUmFBsVkkZgpJ4zrM2iK0xnsbY6ifOl4v3wFS83ofiKjH60cRjqPWVrWv0TdL4aRs
+	 jhpSImRhKm00htdOAmK+tvGnB92mnYSTGfuUaPkyeCHGUSz6li/Kqvvvk+Ho2aueQo
+	 BIwY2MQNU4XTJ6Cw4zGeXDP1J+Ss4u3Q/m/6TnN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.10 059/122] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+	Val Packett <val@packett.cool>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Yongqin Liu <yongqin.liu@linaro.org>
+Subject: [PATCH 5.15 060/151] soc: qcom: mdt_loader: Deal with zero e_shentsize
 Date: Tue, 30 Sep 2025 16:46:30 +0200
-Message-ID: <20250930143825.413027043@linuxfoundation.org>
+Message-ID: <20250930143829.991965126@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-commit 2c334d038466ac509468fbe06905a32d202117db upstream.
+commit 25daf9af0ac1bf12490b723b5efaf8dcc85980bc upstream.
 
-Since commit
+Firmware that doesn't provide section headers leave both e_shentsize and
+e_shnum 0, which obvious isn't compatible with the newly introduced
+stricter checks.
 
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Make the section-related checks conditional on either of these values
+being non-zero.
 
-the console log of some devices with hdq enabled but no bq27000 battery
-(like e.g. the Pandaboard) is flooded with messages like:
-
-[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
-
-as soon as user-space is finding a /sys entry and trying to read the
-"status" property.
-
-It turns out that the offending commit changes the logic to now return the
-value of cache.flags if it is <0. This is likely under the assumption that
-it is an error number. In normal errors from bq27xxx_read() this is indeed
-the case.
-
-But there is special code to detect if no bq27000 is installed or accessible
-through hdq/1wire and wants to report this. In that case, the cache.flags
-are set historically by
-
-	commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to constant -1 which did make reading properties return -ENODEV. So everything
-appeared to be fine before the return value was passed upwards.
-
-Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
-condition in power_supply_format_property() which then floods the console log.
-
-So we change the detection of missing bq27000 battery to simply set
-
-	cache.flags = -ENODEV
-
-instead of -1.
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Cc: Jerry Lv <Jerry.Lv@axis.com>
+Fixes: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/all/ece307c3-7d65-440f-babd-88cf9705b908@packett.cool/
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Closes: https://lore.kernel.org/all/aec9cd03-6fc2-4dc8-b937-8b7cf7bf4128@linaro.org/
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Fixes: 9f35ab0e53cc ("soc: qcom: mdt_loader: Fix error return values in mdt_header_valid()")
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20250730-mdt-loader-shentsize-zero-v1-1-04f43186229c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Yongqin Liu <yongqin.liu@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/mdt_loader.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1829,7 +1829,7 @@ static void bq27xxx_battery_update_unloc
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -39,12 +39,14 @@ static bool mdt_header_valid(const struc
+ 	if (phend > fw->size)
+ 		return false;
  
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
- 	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -1; /* read error */
-+		cache.flags = -ENODEV; /* read error */
- 	if (cache.flags >= 0) {
- 		cache.temperature = bq27xxx_battery_read_temperature(di);
- 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
+-	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
+-		return false;
++	if (ehdr->e_shentsize || ehdr->e_shnum) {
++		if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++			return false;
+ 
+-	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
+-	if (shend > fw->size)
+-		return false;
++		shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++		if (shend > fw->size)
++			return false;
++	}
+ 
+ 	return true;
+ }
 
 
 
