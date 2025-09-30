@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C08BAD86C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B8ABADA95
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F8D31C5E9F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D04B32726B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CCC266B65;
-	Tue, 30 Sep 2025 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6C12FFDE6;
+	Tue, 30 Sep 2025 15:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w071OgUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqFzvCfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3392F9D9E;
-	Tue, 30 Sep 2025 15:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A028246795;
+	Tue, 30 Sep 2025 15:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244816; cv=none; b=hPHmki6VNAODOOJF9l6DDxKy2RXN7KubAv4ODfAbQgnEg9xkgJ/L+2UJwKJNy70Zz7yAqorKUGZ92TL47qWD2nqmP5llMkpoaCtASYONwUo6tFrgrPCZnhmUGEpnPLHp1t3EoYlAkRyl8cj9N+QYWAli/rBXklfU7kpYnojgz4E=
+	t=1759245300; cv=none; b=uu5LITKnrpzlA2gHT6BFsSt9m4Hj7ou42Dq5dxJltXr5MW4lE7UDg56tjmJWWB8aVWX0+EFqmEQl6JkzETVwM1iKo2z7d6EYTCcJWhJF+I0RjZfUIFTBMfgEmiy8c6pJX+++ZJptxMhfEQjdEWii4ikC+U0HxwLaryxjQWDU2S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244816; c=relaxed/simple;
-	bh=Ib7EsOT7P/yp/UoGfNXwlJOdz643++wO6DOV6qQvX6E=;
+	s=arc-20240116; t=1759245300; c=relaxed/simple;
+	bh=ecnYhkKI1s89DwT4mr+M3GhX0w38t8fRz0eXAoeIvFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OClteLatNfxvhpGScD1Az7RYL2ZYmS6exLURRajUtBGUMuM3UdYLBFpX8e10R1wdynD5sg7lPNO41sRDNHxNXiErEOB3ftCg1NTWMy4BNueCA6VMXiUu+QacJ/4Zp/cv+ah0427OPkiabJlQsJ5eudU0iZbFtjSm6qL6BsyOhoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w071OgUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BA0C116B1;
-	Tue, 30 Sep 2025 15:06:54 +0000 (UTC)
+	 MIME-Version; b=ZVx/bBj4ETqbxK8/xeyI+NeZaeT0t/n743kpOnz4zCYvzWDF2rsPiA73Mh6rUchYZX4PwNKTbWYXy03O7/JbPOFEy9yQ6vDP5+DJA38or8o/ev1kLx+hudM9kfYikBwRdRUure7DsCrJVClcbTxRqXc9vQ59K974uAysRJE0wis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqFzvCfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61C9C4CEF0;
+	Tue, 30 Sep 2025 15:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244815;
-	bh=Ib7EsOT7P/yp/UoGfNXwlJOdz643++wO6DOV6qQvX6E=;
+	s=korg; t=1759245300;
+	bh=ecnYhkKI1s89DwT4mr+M3GhX0w38t8fRz0eXAoeIvFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w071OgURaumAWxZAaC3b1wa2iZBHLLw3fO1p8ET+pmBVlUEs7ad6qMeKf1128A3PZ
-	 /Xn+lPQyjF+yVH9Fy/vXwUQSViVmLmfz2N3KTvN1MiYlJz+xxcL3yfUgV8kn8o+DLy
-	 WjESDzlZmeHXorVGu/BSRqmdVay3+bobR1Gj/Oq0=
+	b=MqFzvCflk3IjRyMlmTGOQ1b6my5dx2N+OvrclbefCZPbwV5r64ju0O8FqYj3E59qb
+	 ml+uXF/VeICH2iAxTCCUwNDxFwTW3d5TrPxdNy6scvQpjTlcdWM9NnHJfjvN/MUYAs
+	 lEd6PXgHLbDwbtB0CgWqJ0ctEz0+9eFhArzLoxVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Ankur Tyagi <ankur.tyagi85@gmail.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 091/143] drm/i915/ddi: Guard reg_val against a INVALID_TRANSCODER
+Subject: [PATCH 5.15 085/151] ASoC: wm8940: Correct typo in control name
 Date: Tue, 30 Sep 2025 16:46:55 +0200
-Message-ID: <20250930143834.855878350@linuxfoundation.org>
+Message-ID: <20250930143830.983312516@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Kandpal <suraj.kandpal@intel.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 7f97a0a871d9532f2e1a5ee7d16d0e364215bcac ]
+[ Upstream commit b4799520dcd6fe1e14495cecbbe9975d847cd482 ]
 
-Currently we check if the encoder is INVALID or -1 and throw a
-WARN_ON but we still end up writing the temp value which will
-overflow and corrupt the whole programmed value.
-
---v2
--Assign a bogus transcoder to master in case we get a INVALID
-TRANSCODER [Jani]
-
-Fixes: 6671c367a9bea ("drm/i915/tgl: Select master transcoder for MST stream")
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://lore.kernel.org/r/20250908042208.1011144-1-suraj.kandpal@intel.com
-(cherry picked from commit c8e8e9ab14a6ea926641d161768e1e3ef286a853)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fixes: 0b5e92c5e020 ("ASoC WM8940 Driver")
+Reported-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Tested-by: Ankur Tyagi <ankur.tyagi85@gmail.com>
+Link: https://patch.msgid.link/20250821082639.1301453-3-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_ddi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/codecs/wm8940.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index d58f8fc373265..55b8bfcf364ae 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -593,8 +593,9 @@ intel_ddi_transcoder_func_reg_val_get(struct intel_encoder *encoder,
- 			enum transcoder master;
- 
- 			master = crtc_state->mst_master_transcoder;
--			drm_WARN_ON(display->drm,
--				    master == INVALID_TRANSCODER);
-+			if (drm_WARN_ON(display->drm,
-+					master == INVALID_TRANSCODER))
-+				master = TRANSCODER_A;
- 			temp |= TRANS_DDI_MST_TRANSPORT_SELECT(master);
- 		}
- 	} else {
+diff --git a/sound/soc/codecs/wm8940.c b/sound/soc/codecs/wm8940.c
+index 440d048ef0c02..03f5aedab4a54 100644
+--- a/sound/soc/codecs/wm8940.c
++++ b/sound/soc/codecs/wm8940.c
+@@ -218,7 +218,7 @@ static const struct snd_kcontrol_new wm8940_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Digital Capture Volume", WM8940_ADCVOL,
+ 		       0, 255, 0, wm8940_adc_tlv),
+ 	SOC_ENUM("Mic Bias Level", wm8940_mic_bias_level_enum),
+-	SOC_SINGLE_TLV("Capture Boost Volue", WM8940_ADCBOOST,
++	SOC_SINGLE_TLV("Capture Boost Volume", WM8940_ADCBOOST,
+ 		       8, 1, 0, wm8940_capture_boost_vol_tlv),
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", WM8940_SPKVOL,
+ 		       0, 63, 0, wm8940_spk_vol_tlv),
 -- 
 2.51.0
 
