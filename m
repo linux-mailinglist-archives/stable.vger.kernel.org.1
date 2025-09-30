@@ -1,211 +1,201 @@
-Return-Path: <stable+bounces-182026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB29BAB987
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 07:57:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB294BABA27
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C95016A886
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 05:57:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D75BC19258C1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 06:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315002773FB;
-	Tue, 30 Sep 2025 05:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVHrb7QV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B82821CC60;
+	Tue, 30 Sep 2025 06:08:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F34136658;
-	Tue, 30 Sep 2025 05:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4773B211290
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 06:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759211846; cv=none; b=D10cxV68Rd0T3SnoPEng+0xqF+MAmkZoenR0bFhQP2zA6OIlttKi/PV+aIHILejiGj6i4OqCO3huISG7/VZSR479CUMyNcww7/39jvhMVMg38rmlyqagH6x5sJYpbjeny71F0pk7/gkGqlAWlSVaKyQ3k5lD0FvmdcPnza3GcRA=
+	t=1759212493; cv=none; b=ZGMjzdASuaD2FgfCVOgPSVGUrwxP5U+o7OZEJ9PMd0oBHosfKP9OzyMdI0ECcLOuGbT9QbEv5GC71dUnU1pTTYvqKBKkXrLIHxqQTv3WuykEOvbLE+nQTuCjrcOEe5QMC8DGzF6lp2PMuC4a+jaO3mUX9MYYUtpVH1hKBL1bboY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759211846; c=relaxed/simple;
-	bh=FevOmcfAbtbv3ioDP617RrBm5iAG51gbMmWWWN+pG9Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q8gSU1TrY1epeJTLiLyYCCZ8BoPL9kUmER+ysBM/xRW1/CQkgFehmw9r0bC2Gfe4B9mytYgsXBWd1IoLw+tXZiIif5huBQ1DdMYIaqx1HaDHXvjUR7HJZCJNavnsViEzhc+yoEmm1mh3mfKCySryyYK8Grg2HUp0VgMYNh7uw64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVHrb7QV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86144C4CEF0;
-	Tue, 30 Sep 2025 05:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759211845;
-	bh=FevOmcfAbtbv3ioDP617RrBm5iAG51gbMmWWWN+pG9Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RVHrb7QVcR+bBCU2l+wrJ750TKEo6nHJ1W8QyYBuTSeukTM9NSwH9wU1pchZhMo/T
-	 HKIJRV+RUyQSKT1MTCRFV68k6r0B86Z5CvLn3+anZ7ZVNqMe5MuK1WHQh7y3Fu6t1/
-	 hLbeKDlXOqT/Im4pe/nP4ckwEXAhzo943TCMROmzAo2y3rXsXubZA41ubQrYCbLXEU
-	 IyKIhZFUc1y6KuakxeIFGel7rJb2D+odbRYN5+azLNoz0Rv5F7MQDGSNl14fjKzemA
-	 wdqXsym6xFzB5JiEWl+2Nu3BCyyL1ydu0+nvm8MbGW9hDOLVP1myQ3y+gGct7IMKmp
-	 Vj4pwgZUW3Zng==
-Message-ID: <7a2a0124-7269-40b5-a423-e4b704f51628@kernel.org>
-Date: Tue, 30 Sep 2025 14:57:20 +0900
+	s=arc-20240116; t=1759212493; c=relaxed/simple;
+	bh=P2NYa7XC6DgDhMIYYHqSv5QAg5zuqvm96XjzcfMZrYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jC6iUy346Jv2ltbCr/GAu5w/Mk0jKhxh76FVIAIU3/Uu7uOzxjrtqD/QAXV+4OLANFiIYiKOLjynFUIEKH6bv5NU4BSqjDI2B0ZrdfBka5mKtHF+k9ershBSJCQv5T/b7k760uY6/rKy92DbocJdHyjVWN/DAwQ4f0QKi9XHm60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3ee13baf2e1so4278855f8f.3
+        for <stable@vger.kernel.org>; Mon, 29 Sep 2025 23:08:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759212489; x=1759817289;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PeJ1hI+H1D/hmfkjwX/xQ5MOCbl8qf09bM4saMftPHU=;
+        b=NPo6SInRAYLrFDng/0WWvAs0pnJrmXtf/BGjBeYlumzC58S3G4vOGt/iQA6via7I8r
+         uCziVKbbLI+FDQqT/4aN7opaQ30wAZ9BAhqvmYU0FvUnQ2FYzMxw+eiRR+oxmKcL49S2
+         tcAkLL8lkZw8YTfm2CiMeB5f6iSXDQM9GV+WLnqv5hc9ETM4VgYnKgBxUMDZ3PEqdjVC
+         VaJBAzPikrhK+iwReZHu2FAD4M9QXpZEKLRM+Fej0UpNPoCjXRpk24eVFd6ia6SR43AK
+         cYIUVtL3dgclAluSG6ZDobHTC8A9HmGHLSgSvOuO7JNayo+IQZ4X8aS3EGwWcBEANn+p
+         CDQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrcSKMh1aWWk1uD9ByeXTowE+umB40/7tGVJxR/9XMxSw/73yn2xoohfdU6Lu3x6d6KC1kxIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2ZRHLreT4hg279vJJZRHsqjVIk1uobeg1pvU1cQyt6RKbPY+k
+	UJN6gixmVUzogjlR+b7MPw9HOrc4x7K2+eqZWt7v4BOmk0eNg3RjIhJ3
+X-Gm-Gg: ASbGncuU6ldpGN2FoolqlNLkA+x2Fz7+x9KdqoDDAENbbX+oAwl4sEc7rqilrPO7iSu
+	AeyikDsDM++9cSieMgtjLhY2/hKj1+H+7JeETMsy7XJK5wfqAmwgPXooWKGPzyLCU0d10YlIl9g
+	YvvAioHfF18TeWFFn1GQK5yBB7P61vRvueHbSgG+ZWtuff5pI+x2nTp2ZOyk6Z6vfgE9dLXOwrf
+	vzdCBJ5O+c9PMlh/FRXzfWBTbS7HscHec/bJ3P1Sq4zE18pFK/nGF1jiprSWbjedm7b3YqTOC8x
+	/ta2tIauPdPzSMJtyrY2zT0WwWNo+L4NnZIYAKFGH4pdoLCyWCNKqw8s3K1CdTs0u/2ZII+l/qN
+	OrEmn+AkZES50+NK3PJiLKMv3btDlUl8wQZNBioI=
+X-Google-Smtp-Source: AGHT+IHPnDFHgycvIIpRvpyKAjmZRopUiUot6cWIQicV70c4OwLebr3Y9E0pFRTisiPKYlM7bgtdTg==
+X-Received: by 2002:a05:6000:2089:b0:3eb:2437:97c5 with SMTP id ffacd0b85a97d-40e468e7384mr17999022f8f.22.1759212489345;
+        Mon, 29 Sep 2025 23:08:09 -0700 (PDT)
+Received: from localhost.localdomain ([2a09:0:1:2::301b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e56f77956sm41935605e9.20.2025.09.29.23.08.02
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 29 Sep 2025 23:08:09 -0700 (PDT)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com
+Cc: peterx@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	npache@redhat.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	usamaarif642@gmail.com,
+	yuzhao@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ioworker0@gmail.com,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH v3 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
+Date: Tue, 30 Sep 2025 14:05:57 +0800
+Message-ID: <20250930060557.85133-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] net/can/gs_usb: increase max interface to U8_MAX
-To: Celeste Liu <uwu@coelacanthus.name>
-Cc: Maximilian Schneider <max@schneidersoft.net>,
- Henrik Brix Andersen <henrik@brixandersen.dk>,
- Wolfgang Grandegger <wg@grandegger.com>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-can@vger.kernel.org,
- linux-kernel@vger.kernel.org, Runcheng Lu <runcheng.lu@hpmicro.com>,
- stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
-References: <20250930-gs-usb-max-if-v3-1-21d97d7f1c34@coelacanthus.name>
-Content-Language: en-US
-From: Vincent Mailhol <mailhol@kernel.org>
-Autocrypt: addr=mailhol@kernel.org; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
- fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
- F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
- 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
- YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
- dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
- zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <20250930-gs-usb-max-if-v3-1-21d97d7f1c34@coelacanthus.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Celeste,
+From: Lance Yang <lance.yang@linux.dev>
 
-Sorry, one last minute comment which I forgot in my previous message.
+When splitting an mTHP and replacing a zero-filled subpage with the shared
+zeropage, try_to_map_unused_to_zeropage() currently drops several important
+PTE bits.
 
-On 9/30/25 12:06 PM, Celeste Liu wrote:
-> This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
-> converter[1]. The original developers may have only 3 intefaces device to
-> test so they write 3 here and wait for future change.
-> 
-> During the HSCanT development, we actually used 4 interfaces, so the
-> limitation of 3 is not enough now. But just increase one is not
-> future-proofed. Since the channel type in gs_host_frame is u8, just
-> increase interface number limit to max size of u8 safely.
-> 
-> [1]: https://github.com/cherry-embedded/HSCanT-hardware
-> 
-> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-> Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-> ---
-> Changes in v3:
-> - Cc stable should in patch instead of cover letter.
-> - Link to v2: https://lore.kernel.org/r/20250930-gs-usb-max-if-v2-1-2cf9a44e6861@coelacanthus.name
-> 
-> Changes in v2:
-> - Use flexible array member instead of fixed array.
-> - Link to v1: https://lore.kernel.org/r/20250929-gs-usb-max-if-v1-1-e41b5c09133a@coelacanthus.name
-> ---
->  drivers/net/can/usb/gs_usb.c | 22 ++++++++++------------
->  1 file changed, 10 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-> index c9482d6e947b0c7b033dc4f0c35f5b111e1bfd92..69b068c8fa8fbab42337e2b0a3d0860ac678c792 100644
-> --- a/drivers/net/can/usb/gs_usb.c
-> +++ b/drivers/net/can/usb/gs_usb.c
-> @@ -289,11 +289,6 @@ struct gs_host_frame {
->  #define GS_MAX_RX_URBS 30
->  #define GS_NAPI_WEIGHT 32
->  
-> -/* Maximum number of interfaces the driver supports per device.
-> - * Current hardware only supports 3 interfaces. The future may vary.
-> - */
-> -#define GS_MAX_INTF 3
-> -
->  struct gs_tx_context {
->  	struct gs_can *dev;
->  	unsigned int echo_id;
-> @@ -324,7 +319,6 @@ struct gs_can {
->  
->  /* usb interface struct */
->  struct gs_usb {
-> -	struct gs_can *canch[GS_MAX_INTF];
->  	struct usb_anchor rx_submitted;
->  	struct usb_device *udev;
->  
-> @@ -336,9 +330,11 @@ struct gs_usb {
->  
->  	unsigned int hf_size_rx;
->  	u8 active_channels;
-> +	u8 channel_cnt;
->  
->  	unsigned int pipe_in;
->  	unsigned int pipe_out;
-> +	struct gs_can *canch[] __counted_by(channel_cnt);
->  };
->  
->  /* 'allocate' a tx context.
-> @@ -599,7 +595,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
->  	}
->  
->  	/* device reports out of range channel id */
-> -	if (hf->channel >= GS_MAX_INTF)
-> +	if (hf->channel >= parent->channel_cnt)
->  		goto device_detach;
->  
->  	dev = parent->canch[hf->channel];
-> @@ -699,7 +695,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
->  	/* USB failure take down all interfaces */
->  	if (rc == -ENODEV) {
->  device_detach:
-> -		for (rc = 0; rc < GS_MAX_INTF; rc++) {
-> +		for (rc = 0; rc < parent->channel_cnt; rc++) {
->  			if (parent->canch[rc])
->  				netif_device_detach(parent->canch[rc]->netdev);
->  		}
-> @@ -1460,17 +1456,19 @@ static int gs_usb_probe(struct usb_interface *intf,
->  	icount = dconf.icount + 1;
->  	dev_info(&intf->dev, "Configuring for %u interfaces\n", icount);
->  
-> -	if (icount > GS_MAX_INTF) {
-> +	if (icount > type_max(typeof(parent->channel_cnt))) {
-                              ^^^^^^
-If you send a v4 to fix the typo, can you also remove this typeof()?
+For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+incremental snapshots, losing the soft-dirty bit means modified pages are
+missed, leading to inconsistent memory state after restore.
 
-It used to be required, but this is not the case anymore since commit
-bd1ebf2467f9 ("overflow: Allow non-type arg to type_max() and type_min()").
+As pointed out by David, the more critical uffd-wp bit is also dropped.
+This breaks the userfaultfd write-protection mechanism, causing writes
+to be silently missed by monitoring applications, which can lead to data
+corruption.
 
-(my Reviewed-by tag is still valid).
+Preserve both the soft-dirty and uffd-wp bits from the old PTE when
+creating the new zeropage mapping to ensure they are correctly tracked.
 
->  		dev_err(&intf->dev,
->  			"Driver cannot handle more that %u CAN interfaces\n",
-> -			GS_MAX_INTF);
-> +			type_max(typeof(parent->channel_cnt)));
-                                 ^^^^^^
-same
+Cc: <stable@vger.kernel.org>
+Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Dev Jain <dev.jain@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+v2 -> v3:
+ - ptep_get() gets called only once per iteration (per Dev)
+ - https://lore.kernel.org/linux-mm/20250930043351.34927-1-lance.yang@linux.dev/
 
->  		return -EINVAL;
->  	}
->  
-> -	parent = kzalloc(sizeof(*parent), GFP_KERNEL);
-> +	parent = kzalloc(struct_size(parent, canch, icount), GFP_KERNEL);
->  	if (!parent)
->  		return -ENOMEM;
->  
-> +	parent->channel_cnt = icount;
-> +
->  	init_usb_anchor(&parent->rx_submitted);
->  
->  	usb_set_intfdata(intf, parent);
-> @@ -1531,7 +1529,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
->  		return;
->  	}
->  
-> -	for (i = 0; i < GS_MAX_INTF; i++)
-> +	for (i = 0; i < parent->channel_cnt; i++)
->  		if (parent->canch[i])
->  			gs_destroy_candev(parent->canch[i]);
+v1 -> v2:
+ - Avoid calling ptep_get() multiple times (per Dev)
+ - Double-check the uffd-wp bit (per David)
+ - Collect Acked-by from David - thanks!
+ - https://lore.kernel.org/linux-mm/20250928044855.76359-1-lance.yang@linux.dev/
 
+ mm/migrate.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index ce83c2c3c287..bafd8cb3bebe 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
+ 
+ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 					  struct folio *folio,
++					  pte_t old_pte,
+ 					  unsigned long idx)
+ {
+ 	struct page *page = folio_page(folio, idx);
+@@ -306,7 +307,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 		return false;
+ 	VM_BUG_ON_PAGE(!PageAnon(page), page);
+ 	VM_BUG_ON_PAGE(!PageLocked(page), page);
+-	VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
++	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+ 
+ 	if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & VM_LOCKED) ||
+ 	    mm_forbids_zeropage(pvmw->vma->vm_mm))
+@@ -322,6 +323,12 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 
+ 	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+ 					pvmw->vma->vm_page_prot));
++
++	if (pte_swp_soft_dirty(old_pte))
++		newpte = pte_mksoft_dirty(newpte);
++	if (pte_swp_uffd_wp(old_pte))
++		newpte = pte_mkuffd_wp(newpte);
++
+ 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
+ 
+ 	dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
+@@ -344,7 +351,7 @@ static bool remove_migration_pte(struct folio *folio,
+ 
+ 	while (page_vma_mapped_walk(&pvmw)) {
+ 		rmap_t rmap_flags = RMAP_NONE;
+-		pte_t old_pte;
++		pte_t old_pte = ptep_get(pvmw.pte);
+ 		pte_t pte;
+ 		swp_entry_t entry;
+ 		struct page *new;
+@@ -365,12 +372,11 @@ static bool remove_migration_pte(struct folio *folio,
+ 		}
+ #endif
+ 		if (rmap_walk_arg->map_unused_to_zeropage &&
+-		    try_to_map_unused_to_zeropage(&pvmw, folio, idx))
++		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+ 			continue;
+ 
+ 		folio_get(folio);
+ 		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+-		old_pte = ptep_get(pvmw.pte);
+ 
+ 		entry = pte_to_swp_entry(old_pte);
+ 		if (!is_migration_entry_young(entry))
 -- 
-Yours sincerely,
-Vincent Mailhol
+2.49.0
 
 
