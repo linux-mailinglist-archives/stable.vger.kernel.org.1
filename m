@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70679BAD6C5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045F5BADBCA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 637894A50F6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CF221885011
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969BA30507E;
-	Tue, 30 Sep 2025 14:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A1307AF8;
+	Tue, 30 Sep 2025 15:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyHLGXH+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ndkVUdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549D3199939;
-	Tue, 30 Sep 2025 14:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A91D24418F;
+	Tue, 30 Sep 2025 15:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244332; cv=none; b=bsQ3YSQ1k0CdO5k6KgvpxIjvmdBGc6RALdkzP+n8WfpKGB/O7woW4U8A632SA63+VuN3ZEFmJ4yY43yIyO4of0dcNZ+YVrlFDb0dM6nRylOaawQaf/cKPO8rPsEznL0GMF3HoTcyQLlfFHT2qIsLsx4r6ddyxB6W05bbWTq9Yjo=
+	t=1759245654; cv=none; b=YKxJNzfRu3OdzgpJ7OBRxPb/oPYzW5CJ3Do8BIQ2hHkg5/h8Twd0Mr9dxMavtK1xWwbxAe4HrZZ+s1qR6J8C2xsxwpIReVcVsUncCmOZbvKESQfWGbK2uBhxif8APX5Dbo0qgctDRPdjETuHZ7TCozcGurzZy54sa0T70e21oxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244332; c=relaxed/simple;
-	bh=uNkF/Bx+mYk6pzq+Aziy+rShD4xeFBZ42aN+fcFR3VU=;
+	s=arc-20240116; t=1759245654; c=relaxed/simple;
+	bh=kBCRpGyK1Xc6asJDVNcmkUbBZeUyjven2dnHWwCAnxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHmU2X+na3DJRHYjLNA+0GeAM35AnGUnDeNgYIuAA5IzGM9NsDdo457kmcssN/d6dFj7xrl4LTLloprQW4LJMYEfdQN0sZZyiVtgXquz7hLW47GFa0F49RMN8XK0c1wKBXP6+z41xzpX2xLMY17Ol2NXtZSy0lJQJBLM8eoz3LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyHLGXH+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0676C4CEF0;
-	Tue, 30 Sep 2025 14:58:51 +0000 (UTC)
+	 MIME-Version; b=NmNudzg/siai8UtDznyjctVjtp04LcdwdBGVn/aTHfN5ha65FsKn1HtdKNMwNE14Rxmx8sbL3vFFNC34/vFySSQTv6yXowshrgK2kaC4ufVgf0Z8NUG4MZh779jm51pDDqVCmAr3qdgtkVIKWBBPVzra88c4nmFX3qr/eskdPzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ndkVUdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDA2C4CEF0;
+	Tue, 30 Sep 2025 15:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244332;
-	bh=uNkF/Bx+mYk6pzq+Aziy+rShD4xeFBZ42aN+fcFR3VU=;
+	s=korg; t=1759245654;
+	bh=kBCRpGyK1Xc6asJDVNcmkUbBZeUyjven2dnHWwCAnxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyHLGXH+0cf7rcO8jUhVfBXfYjEVtmbNc1bQsZTw4H8S6Xu/H8F5aPLJllJ3WoAoc
-	 +TviOSPaEi8sOJ3qUPQoAbwIGg2rztzJMd4qpYON+rnRnUbMRy+GS1yVmLwcypyixe
-	 Sr/CAEjcQtmHxwdZJym+3qRDuy+2DFKEQ0L2IuPs=
+	b=0ndkVUdAAjjmCytlISqO1JnU1TXA5MzVj9RUDC2ZMv1oqYOpzALfbA7POFCLerATL
+	 cGOOEskQUaDqYZt7K5Ml4VII3N5iWLUOMOZK5bdS1QAx+Ir+6j0EB5mzWKjQ7vaIBz
+	 uqLcAwrz+0DP2IpioNxTZ9q1DihpTXd9+mp7GkEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/122] can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
+Subject: [PATCH 6.6 10/91] HID: multitouch: support getting the tip state from HID_DG_TOUCH fields in Apple Touch Bar
 Date: Tue, 30 Sep 2025 16:47:09 +0200
-Message-ID: <20250930143827.000757683@linuxfoundation.org>
+Message-ID: <20250930143821.545230509@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Kerem Karabay <kekrby@gmail.com>
 
-[ Upstream commit 61da0bd4102c459823fbe6b8b43b01fb6ace4a22 ]
+[ Upstream commit e0976a61a543b5e03bc0d08030a0ea036ee3751d ]
 
-Sending an PF_PACKET allows to bypass the CAN framework logic and to
-directly reach the xmit() function of a CAN driver. The only check
-which is performed by the PF_PACKET framework is to make sure that
-skb->len fits the interface's MTU.
+In Apple Touch Bar, the tip state is contained in fields with the
+HID_DG_TOUCH usage. This feature is gated by a quirk in order to
+prevent breaking other devices, see commit c2ef8f21ea8f
+("HID: multitouch: add support for trackpads").
 
-Unfortunately, because the sun4i_can driver does not populate its
-net_device_ops->ndo_change_mtu(), it is possible for an attacker to
-configure an invalid MTU by doing, for example:
-
-  $ ip link set can0 mtu 9999
-
-After doing so, the attacker could open a PF_PACKET socket using the
-ETH_P_CANXL protocol:
-
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
-
-to inject a malicious CAN XL frames. For example:
-
-	struct canxl_frame frame = {
-		.flags = 0xff,
-		.len = 2048,
-	};
-
-The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
-check that the skb is valid, unfortunately under above conditions, the
-malicious packet is able to go through can_dev_dropped_skb() checks:
-
-  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
-     function does not check the actual device capabilities).
-
-  2. the length is a valid CAN XL length.
-
-And so, sun4ican_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN frame.
-
-This can result in a buffer overflow. The driver will consume cf->len
-as-is with no further checks on this line:
-
-	dlc = cf->len;
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs a
-couple line below when doing:
-
-	for (i = 0; i < dlc; i++)
-		writel(cf->data[i], priv->base + (dreg + i * 4));
-
-Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU. By
-fixing the root cause, this prevents the buffer overflow.
-
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-3-0d1cada9393b@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/sun4i_can.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-multitouch.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 89796691917b3..1f2402f027742 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -751,6 +751,7 @@ static const struct net_device_ops sun4ican_netdev_ops = {
- 	.ndo_open = sun4ican_open,
- 	.ndo_stop = sun4ican_close,
- 	.ndo_start_xmit = sun4ican_start_xmit,
-+	.ndo_change_mtu = can_change_mtu,
- };
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 35426e702b301..d0b2e866dadaf 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -814,6 +814,17 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
  
- static const struct of_device_id sun4ican_of_match[] = {
+ 			MT_STORE_FIELD(confidence_state);
+ 			return 1;
++		case HID_DG_TOUCH:
++			/*
++			 * Legacy devices use TIPSWITCH and not TOUCH.
++			 * One special case here is of the Apple Touch Bars.
++			 * In these devices, the tip state is contained in
++			 * fields with the HID_DG_TOUCH usage.
++			 * Let's just ignore this field for other devices.
++			 */
++			if (!(cls->quirks & MT_QUIRK_APPLE_TOUCHBAR))
++				return -1;
++			fallthrough;
+ 		case HID_DG_TIPSWITCH:
+ 			if (field->application != HID_GD_SYSTEM_MULTIAXIS)
+ 				input_set_capability(hi->input,
+@@ -884,10 +895,6 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+ 		case HID_DG_CONTACTMAX:
+ 			/* contact max are global to the report */
+ 			return -1;
+-		case HID_DG_TOUCH:
+-			/* Legacy devices use TIPSWITCH and not TOUCH.
+-			 * Let's just ignore this field. */
+-			return -1;
+ 		}
+ 		/* let hid-input decide for the others */
+ 		return 0;
 -- 
 2.51.0
 
