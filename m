@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-182377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6217BAD836
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FAABAD653
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4F43258EE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD12D7A2683
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9083043C4;
-	Tue, 30 Sep 2025 15:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0897F30594A;
+	Tue, 30 Sep 2025 14:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZTtByXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ga98by2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBF6846F;
-	Tue, 30 Sep 2025 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67892FCBFC;
+	Tue, 30 Sep 2025 14:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244747; cv=none; b=ZlCZwTcap+LGQZ2JP6yxnB8rynUATbvJ3nOoxcMgLcRj2PWlvxQa07opEhzjrwl0JjoVwlFsszgqq9VtCt6HmB16Y2CpnPxDkJ475xlymzVn95mlgAgMVKRJbfsff4/J79n9/5jaa0a72Fsw5potFnjemwutbgRNny2r+fZfHZ4=
+	t=1759244322; cv=none; b=sF7laIf3o/Qid+iurMyKw4mQs4yJa0KqOvcnWPyUrfOrs9judkCcFjRmLAQEFKti+mDmQ5+Cikkxv5ds+NnR7yHfdXLhIRupVVC18HzwiMPv76jMH/qeI/9/sFM0DpxPpmCPmaFPhhSAzozzmPbh1DBJlSkL++VPKN2LIM8TW4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244747; c=relaxed/simple;
-	bh=Gpdm5Px5/mJyL+wmYGlJEJgqt9MCX41MNcHX/e6T3KA=;
+	s=arc-20240116; t=1759244322; c=relaxed/simple;
+	bh=OiYZ9PZB6hBP8IvE8DcDQFeVk5tFjHwm374iZYHzL2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABzHby8SxmrREjo0J3QK1Hf03sa7zij9rlhDTqJT0lKxRkYxbFULL2J6rhAqNPPP/WrXMP2FuPpYO/Pwl/+A6aciAEaKxpnuhxXS7MupbC/Oe8zFx3evZR7G0dGyCcTdkeLqO20DJovk8cmaUNv9dXtIqeqaZtUWAQy8R0EQAck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZTtByXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F8AC4CEF0;
-	Tue, 30 Sep 2025 15:05:45 +0000 (UTC)
+	 MIME-Version; b=sMZs2GGT9LAwTNdjQ2oVSynxUwnzHLWVy5l0oQLvX/pbeVe7Xq0AmT0XMKXDZ/Toz8Dv2BBq7go7vqYDeamaMj4TJ/E5ATxzu4RCd6cQy0qSPmLYcVG1CeL85DfuII9JPi58sBi73gSiGP3Am4ih/iG9tjEUx7klm2M2m8tu1b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ga98by2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17BBC4CEF0;
+	Tue, 30 Sep 2025 14:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244746;
-	bh=Gpdm5Px5/mJyL+wmYGlJEJgqt9MCX41MNcHX/e6T3KA=;
+	s=korg; t=1759244322;
+	bh=OiYZ9PZB6hBP8IvE8DcDQFeVk5tFjHwm374iZYHzL2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZTtByXDJ+T4nqV39/bGTIM+cNB2Q9Ya8Mz2yKpIrtGZPE7NdxZXo7I8drm7H7N3/
-	 8DaQaLOFhngcawvvr5rVP1DxssbEn/m2nme60RyOv9EP0GljjKytO8D6RtvFG7HHNC
-	 We8nraiz2k/FLEJLAh2hB5z6WwGQu4mvOjEtN7fE=
+	b=Ga98by2obWudMEsF1ae21iGnW8O9H3tyme4FnpWS98OBTDUdyKqhApOvrhyDC7GZY
+	 o0++70XXtgjr14q74KdLc9Zv/OkrxWcip6byBxn8Uer3RNMXwOiJ2cLHk8TRP2AWKX
+	 9Wj9RUsp7SN3yFNr+b4qYAcWXrRxC8qM7JNq4X4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.16 102/143] i40e: add validation for ring_len param
+	Christian Loehle <christian.loehle@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 095/122] cpufreq: Initialize cpufreq-based invariance before subsys
 Date: Tue, 30 Sep 2025 16:47:06 +0200
-Message-ID: <20250930143835.294368229@linuxfoundation.org>
+Message-ID: <20250930143826.880490959@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-commit 55d225670def06b01af2e7a5e0446fbe946289e8 upstream.
+[ Upstream commit 8ffe28b4e8d8b18cb2f2933410322c24f039d5d6 ]
 
-The `ring_len` parameter provided by the virtual function (VF)
-is assigned directly to the hardware memory context (HMC) without
-any validation.
+commit 2a6c72738706 ("cpufreq: Initialize cpufreq-based
+frequency-invariance later") postponed the frequency invariance
+initialization to avoid disabling it in the error case.
+This isn't locking safe, instead move the initialization up before
+the subsys interface is registered (which will rebuild the
+sched_domains) and add the corresponding disable on the error path.
 
-To address this, introduce an upper boundary check for both Tx and Rx
-queue lengths. The maximum number of descriptors supported by the
-hardware is 8k-32.
-Additionally, enforce alignment constraints: Tx rings must be a multiple
-of 8, and Rx rings must be a multiple of 32.
+Observed lockdep without this patch:
+[    0.989686] ======================================================
+[    0.989688] WARNING: possible circular locking dependency detected
+[    0.989690] 6.17.0-rc4-cix-build+ #31 Tainted: G S
+[    0.989691] ------------------------------------------------------
+[    0.989692] swapper/0/1 is trying to acquire lock:
+[    0.989693] ffff800082ada7f8 (sched_energy_mutex){+.+.}-{4:4}, at: rebuild_sched_domains_energy+0x30/0x58
+[    0.989705]
+               but task is already holding lock:
+[    0.989706] ffff000088c89bc8 (&policy->rwsem){+.+.}-{4:4}, at: cpufreq_online+0x7f8/0xbe0
+[    0.989713]
+               which lock already depends on the new lock.
 
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a6c72738706 ("cpufreq: Initialize cpufreq-based frequency-invariance later")
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/cpufreq/cpufreq.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -653,6 +653,13 @@ static int i40e_config_vsi_tx_queue(stru
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 149ba2e39a965..ff0daac63819e 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2792,6 +2792,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 			goto err_null_driver;
+ 	}
  
- 	/* only set the required fields */
- 	tx_ctx.base = info->dma_ring_addr / 128;
-+
-+	/* ring_len has to be multiple of 8 */
-+	if (!IS_ALIGNED(info->ring_len, 8) ||
-+	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+		ret = -EINVAL;
-+		goto error_context;
++	/*
++	 * Mark support for the scheduler's frequency invariance engine for
++	 * drivers that implement target(), target_index() or fast_switch().
++	 */
++	if (!cpufreq_driver->setpolicy) {
++		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
++		pr_debug("cpufreq: supports frequency invariance\n");
 +	}
- 	tx_ctx.qlen = info->ring_len;
- 	tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[0]);
- 	tx_ctx.rdylist_act = 0;
-@@ -716,6 +723,13 @@ static int i40e_config_vsi_rx_queue(stru
- 
- 	/* only set the required fields */
- 	rx_ctx.base = info->dma_ring_addr / 128;
 +
-+	/* ring_len has to be multiple of 32 */
-+	if (!IS_ALIGNED(info->ring_len, 32) ||
-+	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+		ret = -EINVAL;
-+		goto error_param;
-+	}
- 	rx_ctx.qlen = info->ring_len;
+ 	ret = subsys_interface_register(&cpufreq_interface);
+ 	if (ret)
+ 		goto err_boost_unreg;
+@@ -2814,21 +2823,14 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	hp_online = ret;
+ 	ret = 0;
  
- 	if (info->splithdr_enabled) {
+-	/*
+-	 * Mark support for the scheduler's frequency invariance engine for
+-	 * drivers that implement target(), target_index() or fast_switch().
+-	 */
+-	if (!cpufreq_driver->setpolicy) {
+-		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
+-		pr_debug("supports frequency invariance");
+-	}
+-
+ 	pr_debug("driver %s up and running\n", driver_data->name);
+ 	goto out;
+ 
+ err_if_unreg:
+ 	subsys_interface_unregister(&cpufreq_interface);
+ err_boost_unreg:
++	if (!cpufreq_driver->setpolicy)
++		static_branch_disable_cpuslocked(&cpufreq_freq_invariance);
+ 	remove_boost_sysfs_file();
+ err_null_driver:
+ 	write_lock_irqsave(&cpufreq_driver_lock, flags);
+-- 
+2.51.0
+
 
 
 
