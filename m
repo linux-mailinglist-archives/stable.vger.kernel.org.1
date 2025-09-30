@@ -1,40 +1,80 @@
-Return-Path: <stable+bounces-182022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC68EBAB7AD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 07:29:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95436BAB807
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 07:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91C003C35EF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 05:29:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A1BE1C48F7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 05:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BF71DF252;
-	Tue, 30 Sep 2025 05:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C4C2765C3;
+	Tue, 30 Sep 2025 05:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="TI4uSpQw"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D946288DB;
-	Tue, 30 Sep 2025 05:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E635276050
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 05:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759210169; cv=none; b=i3SnUO0I57EtnS9wGcSieR/DpjpqO4HkrnM+amEyy5DL/KNUmJGJRTwf9VVYHBvDnPfmbOslVnZiRtLyP4B2ZWAH78mPHMu6KiB+OAL1Mn1PDaq0WNWGQOXNBgCGy787b/I2mCxRpWN+LTpH59yf1QBLgUMdnzj+Bn3lpL7Dqvs=
+	t=1759210403; cv=none; b=U3khWtVFnLOhxJRUaIPvhrZficERS2ooqF4fSXG7WlUWMpnXsu3G5WZzyOGf2RMN3OVwVAc9/N2RXah8VpyEhpuTv8s3v4O9P1Dqxlkdih9SPBCoFX1jOsL9S9bPIpPPytr7LOLrnMAsnkGHKVikh/NHSo7bLI9B03tqzc6f5IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759210169; c=relaxed/simple;
-	bh=mKoCDWmOpjr09w/2zz9LMS5AmKiUiLhdr7GQPnjWlcE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fc16c1DBS+4XEhrvdTfflMk1RDLD7SYDO+k1SvjixKbB+NP2t4QfTnxnFdAlX+TrHKgnaQLr1Wxd/9wB0C910AdgJER8XPWy3F1I7dV6w2lUJgnpLvaoe88nQ5zIiqxT04L/3jWGde4vqyMjPQfpv9Co19V/gwHpdsrav0KyOtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 95FEA1424;
-	Mon, 29 Sep 2025 22:29:18 -0700 (PDT)
-Received: from [10.164.18.53] (MacBook-Pro.blr.arm.com [10.164.18.53])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 50DEF3F5A1;
-	Mon, 29 Sep 2025 22:29:18 -0700 (PDT)
-Message-ID: <68cff704-bbdb-41a7-81d4-7195f71ba73a@arm.com>
-Date: Tue, 30 Sep 2025 10:59:15 +0530
+	s=arc-20240116; t=1759210403; c=relaxed/simple;
+	bh=+zYHcq1PnJGmU//SbV0gpmoJSYNqd+MwGlmrpbux8Rk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ukiCq3T3mJhrCE4LNS+ww/Mw2lErTvwsl0YnKx0BV0qWPtNNAPwhi82ZZ3+5wfZRPgxyJ1Je9OUySK84TTxuexJoDZ2w49WREyddO4JR1UnBVo0O8asqGiKHWdbia2c7Vh9OKt0GbED6D62ydwY3mv0v8NyIkWy2R+T27nCgm4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=TI4uSpQw; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so3211198f8f.3
+        for <stable@vger.kernel.org>; Mon, 29 Sep 2025 22:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1759210399; x=1759815199; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=RcKZSqsNCClUnXNLZ+VWODkqJQUd67st9xIuGAhStQk=;
+        b=TI4uSpQwWfQKYiW1tI6/8kA5Z+W7OMOqi0a4zllk1q8j+84RD0TwN0Du9UKkguXWhO
+         W76z5mPf5mURJ4ve7m6CFUL+1+UsRX1pLFNYCGCwo3SFu01z3wnAa7RMnSU9BICyKlwO
+         ld4kwDoZEKgwKlSsnd9aGwUYu82qT3Iho1o+MtzCQMBzgVs1uqg5u3ukbs5ZPNPGNodb
+         543neIkoKYOqLzvovMx5dWX6W7EHk5etHpXdVKHjH0jlEYrqJXmnvgrsndCmaHc0Xjbr
+         jf9IHBQDX6BUC8KxoEkh0w/TJX3JwqnHOIlLZNgtum8ys1Mb2uOlKF8vBz4ICzOSZsa5
+         OtRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759210399; x=1759815199;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RcKZSqsNCClUnXNLZ+VWODkqJQUd67st9xIuGAhStQk=;
+        b=V2BLfK32eQiXkP2xytybPpzZMeMJATWVpC+NOPMF/RW9RfJ9TMM6sgJQEXmsPHZvX5
+         TGLABO0sZ9mqm4/hgNecA/3yMjnh8kG0KsjNtyrEda00UkDoV+zleJZvu37S2lUFg5Bc
+         wEzAY0es1ljGTC+5eN2EEQMMm8f2jVcYbjnU/VZ+bHXtvJoXJsg8TYje1Z4+th/Wamo6
+         o3ftSZvmAt8mD7B4iCSDXrDBJI+Q/7gk7rt8dg/khG346GT7mNqWMsHNT7CRSfc30lq/
+         X3BH+XqXG2j+yQ0hK/rZBpHb1uPGlfqF2aS4VLgqot2PrxTWHvphnwEgI9DwvSa6EAF5
+         4mow==
+X-Forwarded-Encrypted: i=1; AJvYcCUf3+jAYnjwtKQIiNt1DXJQsMxgmiYUdE0QGYMLpREcvdoZflRdWSDYwhS3AlexiF0CoEbz/T8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTh0wmdJsf1/Q5sWJIAnVE9/410cB2WgGHotpvgVcX8OBi2Dcf
+	odSnc757+0mFN/sSzzUQsRPEpL+fzzDQLoPpf/pvGLRcyjBjCWpqS7w4P8GaQQmGjWA=
+X-Gm-Gg: ASbGncsuEioJEPtd46iG8NVBZxuXMyRkHGemGjq0lJ3v/Fl9od7X7jktIsWfq21hgsK
+	g+AxJQ8R6xxoN8TUKjimK8McfwOcliLVmvdi4MuxV4FLmC+AX8xmvifwInZQI9MbIzd/TWWXrMM
+	2PNashsB4SvhOsnmhHyocFzSvS9xprYlTGj2Vta+YKFTciB8SLCMB9+f7y154j/A9tB2oBMbibw
+	1Ff7whUf6Imb/yPThLSo5KRYA5gmF/mej1p1RDOrUIZ9ZRzGCjRIVcwlGij9b0KgJ4/pLETmMk3
+	/F0vAiHnSiHOUv2pbu1sMj8NT7gpYehTHT9Ou+RVgF7F1pZO/HHeeoxkrC3OaDa7LBnfkhUBTp1
+	HiRQvTbUx2Cfb5RfOOu1ZMBBxrI3Lt/r8rN35/fKG9szLZz06h+X34Yo=
+X-Google-Smtp-Source: AGHT+IEkueAS01kFVAoXd3MEH9FbKcaIHwo56QQ73i1m/EjHyO0vo1fWE9up8eTSOW6ZhEmF700+iQ==
+X-Received: by 2002:a05:6000:400a:b0:3e4:957d:d00 with SMTP id ffacd0b85a97d-40e4c2d2576mr17438762f8f.58.1759210399124;
+        Mon, 29 Sep 2025 22:33:19 -0700 (PDT)
+Received: from [192.168.50.4] ([82.78.167.111])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc88b0779sm20750915f8f.58.2025.09.29.22.33.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Sep 2025 22:33:18 -0700 (PDT)
+Message-ID: <2bd09757-cd66-4a2a-8801-0f62dc99b9c8@tuxon.dev>
+Date: Tue, 30 Sep 2025 08:33:15 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,165 +82,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
-To: Lance Yang <lance.yang@linux.dev>
-Cc: peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, ryan.roberts@arm.com, npache@redhat.com,
- riel@surriel.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- harry.yoo@oracle.com, jannh@google.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- usamaarif642@gmail.com, yuzhao@google.com, lorenzo.stoakes@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ioworker0@gmail.com,
- stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com
-References: <20250930043351.34927-1-lance.yang@linux.dev>
- <0c498301-7434-4b2b-b7bc-73abe2057b67@arm.com>
- <668bfb74-014c-4fd5-a636-ff5ec17861c3@linux.dev>
+Subject: Re: [PATCH v2] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
+ linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+References: <20250912095308.3603704-1-claudiu.beznea.uj@bp.renesas.com>
+ <CAMuHMdXv1-w0SE7FZy5k3jg2FO-a-RB2w1WB=VM_UFEA9zjWDw@mail.gmail.com>
+ <ef82c610-0571-4665-a5d1-07a9ed9fb8d3@tuxon.dev>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <668bfb74-014c-4fd5-a636-ff5ec17861c3@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ef82c610-0571-4665-a5d1-07a9ed9fb8d3@tuxon.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi, Geert,
 
-On 30/09/25 10:52 am, Lance Yang wrote:
->
->
-> On 2025/9/30 12:50, Dev Jain wrote:
+On 9/29/25 15:10, Claudiu Beznea wrote:
+>> This conflicts with commit d57183d06851bae4 ("pinctrl: renesas: rzg2l:
+>> Drop unnecessary pin configurations"), which I have already queued
+>> in renesas-drivers/renesas-pinctrl-for-v6.19.  Hence I am replacing
+>> the above hunk by:
 >>
->> On 30/09/25 10:03 am, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> When splitting an mTHP and replacing a zero-filled subpage with the 
->>> shared
->>> zeropage, try_to_map_unused_to_zeropage() currently drops several 
->>> important
->>> PTE bits.
->>>
->>> For userspace tools like CRIU, which rely on the soft-dirty 
->>> mechanism for
->>> incremental snapshots, losing the soft-dirty bit means modified 
->>> pages are
->>> missed, leading to inconsistent memory state after restore.
->>>
->>> As pointed out by David, the more critical uffd-wp bit is also dropped.
->>> This breaks the userfaultfd write-protection mechanism, causing writes
->>> to be silently missed by monitoring applications, which can lead to 
->>> data
->>> corruption.
->>>
->>> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
->>> creating the new zeropage mapping to ensure they are correctly tracked.
->>>
->>> Cc: <stable@vger.kernel.org>
->>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage 
->>> when splitting isolated thp")
->>> Suggested-by: David Hildenbrand <david@redhat.com>
->>> Suggested-by: Dev Jain <dev.jain@arm.com>
->>> Acked-by: David Hildenbrand <david@redhat.com>
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->>> v1 -> v2:
->>>   - Avoid calling ptep_get() multiple times (per Dev)
->>>   - Double-check the uffd-wp bit (per David)
->>>   - Collect Acked-by from David - thanks!
->>>   - https://lore.kernel.org/linux-mm/20250928044855.76359-1- 
->>> lance.yang@linux.dev/
->>>
->>>   mm/migrate.c | 9 ++++++++-
->>>   1 file changed, 8 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/migrate.c b/mm/migrate.c
->>> index ce83c2c3c287..50aa91d9ab4e 100644
->>> --- a/mm/migrate.c
->>> +++ b/mm/migrate.c
->>> @@ -300,13 +300,14 @@ static bool 
->>> try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->>>                         unsigned long idx)
->>>   {
->>>       struct page *page = folio_page(folio, idx);
->>> +    pte_t oldpte = ptep_get(pvmw->pte);
+>>             /* Switching to GPIO is not required if reset value is
+>> same as func */
+>>             reg = readb(pctrl->base + PMC(off));
+>>     -       spin_lock_irqsave(&pctrl->lock, flags);
+>>     +       raw_spin_lock_irqsave(&pctrl->lock, flags);
+>>             pfc = readl(pctrl->base + PFC(off));
+>>             if ((reg & BIT(pin)) && (((pfc >> (pin * 4)) & PFC_MASK) == func)) {
+>>     -               spin_unlock_irqrestore(&pctrl->lock, flags);
+>>     +               raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+>>                     return;
+>>             }
 >>
->> What I meant to say was, you can pass oldpte from 
->> remove_migration_pte to this
->> function. Basically define old_pte = ptep_get(pvmw.pte) in the 
->> declarations of
->> the start of the while block in remove_migration_pte and remove the 
->> existing
->> one. That will ensure ptep_get() gets called only once per iteration.
->
-> Ah, got it. Thanks for the clarification!
->
-> IIUC, you mean something like this:
->
-> ```
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index ce83c2c3c287..bafd8cb3bebe 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, 
-> struct list_head *list)
->
->  static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk 
-> *pvmw,
->                        struct folio *folio,
-> +                      pte_t old_pte,
->                        unsigned long idx)
->  {
->      struct page *page = folio_page(folio, idx);
-> @@ -306,7 +307,7 @@ static bool try_to_map_unused_to_zeropage(struct 
-> page_vma_mapped_walk *pvmw,
->          return false;
->      VM_BUG_ON_PAGE(!PageAnon(page), page);
->      VM_BUG_ON_PAGE(!PageLocked(page), page);
-> -    VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
-> +    VM_BUG_ON_PAGE(pte_present(old_pte), page);
->
->      if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & 
-> VM_LOCKED) ||
->          mm_forbids_zeropage(pvmw->vma->vm_mm))
-> @@ -322,6 +323,12 @@ static bool try_to_map_unused_to_zeropage(struct 
-> page_vma_mapped_walk *pvmw,
->
->      newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
->                      pvmw->vma->vm_page_prot));
-> +
-> +    if (pte_swp_soft_dirty(old_pte))
-> +        newpte = pte_mksoft_dirty(newpte);
-> +    if (pte_swp_uffd_wp(old_pte))
-> +        newpte = pte_mkuffd_wp(newpte);
-> +
->      set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
->
->      dec_mm_counter(pvmw->vma->vm_mm, mm_counter(folio));
-> @@ -344,7 +351,7 @@ static bool remove_migration_pte(struct folio *folio,
->
->      while (page_vma_mapped_walk(&pvmw)) {
->          rmap_t rmap_flags = RMAP_NONE;
-> -        pte_t old_pte;
-> +        pte_t old_pte = ptep_get(pvmw.pte);
->          pte_t pte;
->          swp_entry_t entry;
->          struct page *new;
-> @@ -365,12 +372,11 @@ static bool remove_migration_pte(struct folio 
-> *folio,
->          }
->  #endif
->          if (rmap_walk_arg->map_unused_to_zeropage &&
-> -            try_to_map_unused_to_zeropage(&pvmw, folio, idx))
-> +            try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
->              continue;
->
->          folio_get(folio);
->          pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
-> -        old_pte = ptep_get(pvmw.pte);
->
->          entry = pte_to_swp_entry(old_pte);
->          if (!is_migration_entry_young(entry))
-> ```
->
-> ptep_get() gets called only once per iteration, right?
+>> while applying.
+> This is right. Thank you! I'm going to give it also a try (on actual HW) a
+> bit later. I'll let you know.
 
-Yup.
+Sorry for the delay, all looks good to me (checked on RZ/G3S).
+
+Thank you,
+Claudiu
+
+> 
+> Thank you,
+> Claudiu
+
 
