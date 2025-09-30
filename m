@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3E7BADD9E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DD7BADC7E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CA2A4E03A4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4C6519451FE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D978525FA0F;
-	Tue, 30 Sep 2025 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D012F6167;
+	Tue, 30 Sep 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bh8K7jwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwWH0i7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975C91DF73C;
-	Tue, 30 Sep 2025 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618DD245010;
+	Tue, 30 Sep 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246092; cv=none; b=usimr4xcMj/U60Lc/ozKzWeczGkya9bx31gUVDMohaszRP40Zfky+3HbqKgTXBQBTRW80RE2MNKitCbl1oNf5P7tB1I05YSagPC65q0nNEYugwX+aDpilojgPKNkHwgz9rGNF7mjX/vCtIiigFDzPAzBFubHzNuiAsdIimcWX4w=
+	t=1759245836; cv=none; b=Nfvkkk32tD1w1+9UUDc6sJK/jJCvB+HURizsj0YYpZ96lg6fhkI5X5bqGCmYgRKT/AUNbsE5Ev/WvMPgJr3Jefb0N6HfpEZC/nfn2a3LE4XJq9YVKjW9Y/yiXQ39W2ievtV89GR+dYL09D7M0e6ikuSNfVRepEI2sG/xp8Wq/Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246092; c=relaxed/simple;
-	bh=GttBQgNC03/EbcldbYrLlhtzc6DITGI/VcH1Wqx7tP0=;
+	s=arc-20240116; t=1759245836; c=relaxed/simple;
+	bh=eD/AEd27F3XjyoRwi6ZgQw14QMkQIW3Z/ph7mDTg7HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3j/Rv3MkGh3/O3wy+6BpamekWKVf3ORg32e7ATQcaOrjvxbBYUzJl9rLw+au0hAMj7DR2Dm6jeV/dHxbTVVil6lU40haHCFbSqdyMEThS6KwXqs7bSL2SqhBy4pGh31rzM4PZQr/r9HTnNBnytcuAkdncK18WkLZ/8ZjTGU2rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bh8K7jwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04190C4CEF0;
-	Tue, 30 Sep 2025 15:28:11 +0000 (UTC)
+	 MIME-Version; b=lFoWHPkoxJ9ObOloFfUA8qkM3U6Wu+BbqeHQrCrLGz6+hptPSZkSxVHqd58ayB7vFKNjHQXLn+HlClB9vBPAVC7wkgJ/K9DF6rGavk/DGvdIYMrXyO1X26/2OCMtxjagmsRyjrapP768Kvt8ntEP4jbbzqJdaQ9DWT6YoWYbm4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwWH0i7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5230C4CEF0;
+	Tue, 30 Sep 2025 15:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246092;
-	bh=GttBQgNC03/EbcldbYrLlhtzc6DITGI/VcH1Wqx7tP0=;
+	s=korg; t=1759245836;
+	bh=eD/AEd27F3XjyoRwi6ZgQw14QMkQIW3Z/ph7mDTg7HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bh8K7jwQJrSI49xTURCAxLGzro/poRlYnAIEDy3sgyGhHg473GDvekBSiugDjQaPV
-	 llqHT5cEoR8XyTI+Hp31dasALOYfOAhM+cbD9QlTum/a/I//ueqWWkWQfGKJFvLqx/
-	 OPhosUBQGD2X1I0tA3pl/DPPhW8Qbr1ZFBQxr+CA=
+	b=gwWH0i7k2If9zhH1iJScqPT0K0LH3GD0rzNh+yCa1UQyoulzEgGhma7HBUUUFwqqZ
+	 vTKh/ucnSEdKMIk5h/aBENICk6eQflvTm5MiT/upsniSRRmISM1Vc6QyEy4OCG26mG
+	 +Jy4KoStr2BvYEOAlI1Ci2fnl7y25NNxrRFN0OXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 50/89] vhost: Take a reference on the task in struct vhost_task.
+	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.6 65/91] ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY address
 Date: Tue, 30 Sep 2025 16:48:04 +0200
-Message-ID: <20250930143823.990693316@linuxfoundation.org>
+Message-ID: <20250930143823.886899461@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
 
-[ Upstream commit afe16653e05db07d658b55245c7a2e0603f136c0 ]
+commit ea9da67e2add7bd5f1e4b38dc2404480e711f4d8 upstream.
 
-vhost_task_create() creates a task and keeps a reference to its
-task_struct. That task may exit early via a signal and its task_struct
-will be released.
-A pending vhost_task_wake() will then attempt to wake the task and
-access a task_struct which is no longer there.
+On SoCFPGA/Sodia board, mdio bus cannot be probed, so the PHY cannot be
+found and the network device does not work.
 
-Acquire a reference on the task_struct while creating the thread and
-release the reference while the struct vhost_task itself is removed.
-If the task exits early due to a signal, then the vhost_task_wake() will
-still access a valid task_struct. The wake is safe and will be skipped
-in this case.
+```
+stmmaceth ff702000.ethernet eth0: __stmmac_open: Cannot attach to PHY (error: -19)
+```
 
-Fixes: f9010dbdce911 ("fork, vhost: Use CLONE_THREAD to fix freezer/ps regression")
-Reported-by: Sean Christopherson <seanjc@google.com>
-Closes: https://lore.kernel.org/all/aKkLEtoDXKxAAWju@google.com/
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Message-Id: <20250918181144.Ygo8BZ-R@linutronix.de>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To probe the mdio bus, add "snps,dwmac-mdio" as compatible string of the
+mdio bus. Also the PHY address connected to this board is 4. Therefore,
+change to 4.
+
+Cc: stable@vger.kernel.org # 6.3+
+Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/vhost_task.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index 2f844c279a3e0..7f24ccc896c64 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -100,6 +100,7 @@ void vhost_task_stop(struct vhost_task *vtsk)
- 	 * freeing it below.
- 	 */
- 	wait_for_completion(&vtsk->exited);
-+	put_task_struct(vtsk->task);
- 	kfree(vtsk);
- }
- EXPORT_SYMBOL_GPL(vhost_task_stop);
-@@ -148,7 +149,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
- 		return ERR_PTR(PTR_ERR(tsk));
- 	}
- 
--	vtsk->task = tsk;
-+	vtsk->task = get_task_struct(tsk);
- 	return vtsk;
- }
- EXPORT_SYMBOL_GPL(vhost_task_create);
--- 
-2.51.0
-
+--- a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
++++ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+@@ -66,8 +66,10 @@
+ 	mdio0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+-		phy0: ethernet-phy@0 {
+-			reg = <0>;
++		compatible = "snps,dwmac-mdio";
++
++		phy0: ethernet-phy@4 {
++			reg = <4>;
+ 			rxd0-skew-ps = <0>;
+ 			rxd1-skew-ps = <0>;
+ 			rxd2-skew-ps = <0>;
 
 
 
