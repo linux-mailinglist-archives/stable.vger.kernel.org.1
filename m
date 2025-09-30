@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-182074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ABC4BAD235
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:04:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B891FBAD23C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5EC8171EB6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:04:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B0177A61B2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6B81F03C5;
-	Tue, 30 Sep 2025 14:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF3F2D73A9;
+	Tue, 30 Sep 2025 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OXInAw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+7M1xV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87262238C1A
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 14:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9A61F03C5;
+	Tue, 30 Sep 2025 14:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759241053; cv=none; b=YRpcfEUdnMU/83o8bFETmEWwSVp6n2RrWKjH1jKfm2x8uUYaMtLtILp1nrdvgiTEJqunbPFkQ0ne1xRxoOmdrdu1QKqypHHr7pBxHeCCRcHNEtJp0jnihfPrdCypJWcTuwhNQ22fce38eTYZat+WFFH27dncwDiOn7IeV6QQSeQ=
+	t=1759241096; cv=none; b=qJtduwi9pYIweKv3l3BPzD4p1wCA+MFZHBdMvSsW7jjHUv56n2IzkqP8HBgcRnPwFsVxXj+AEAd1xYHev+DCFC1XaTLB8LANkZF6CElQzCtarPONk2k2x+4bcjA7qS7wyD/RGQvI7h5LqJ8yZLWnU/newpHzaDl2EKngawwXIWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759241053; c=relaxed/simple;
-	bh=JiHP1ztuAnIDaRoxBa5hkslOGdadzloL5a9/wQm51IE=;
+	s=arc-20240116; t=1759241096; c=relaxed/simple;
+	bh=f7N+70T3x95vSuISr61gZtk7HM/xw1BAP57RlU7XytE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SveMhKagXnC2NQ28K1ZnVljKYyfkHSS0JD1cECKNlksIhc/VUpvsewg31A/3Q0q6icQlm9Rd1DeBl3BVUhirq7PxMNLZfyjHXNapuidro+zVbDERPm/zj5BiEmtO11+ahGUBAaZ748a/9o+V6bAYuO4l6me07EcuilVFh1aYxyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OXInAw0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0ABC113D0;
-	Tue, 30 Sep 2025 14:04:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fesnEWV3lGKeGGBl05rhm6qKHFGILlivWbj9lQe3sjVqinvI2/5/yUjR380eugZJGWtRSm89sVPHbRMrkTQIunI7sY6VXwBiRmhQE0Zx6pdUhcPSdcxzeAXicblbAu/QzS3AJFAMmOo2Nhpc4NRGL4ZCDEW5FILNKozqe6HlSec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+7M1xV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C16C4CEF0;
+	Tue, 30 Sep 2025 14:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759241052;
-	bh=JiHP1ztuAnIDaRoxBa5hkslOGdadzloL5a9/wQm51IE=;
+	s=korg; t=1759241095;
+	bh=f7N+70T3x95vSuISr61gZtk7HM/xw1BAP57RlU7XytE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0OXInAw0fqEcv2NoDHYMNFLo20VRMTuVMzeVGSdIjcyTSGGdKV8LjWXhBQrI2U2Fk
-	 KnWL0mU13RDu4eZLkGq7AgQBUFK2ARQukeGNDDDxYPEat6Oa5q+Ku0FRa1lRm2SFIi
-	 9yMjyauTtJKU1UyOWB0USPl5cjo4jYOKBuQpMeVQ=
-Date: Tue, 30 Sep 2025 16:04:07 +0200
+	b=V+7M1xV7nxHAbdlFAPdgRoWhoz4ogdTagL/h9So8Shu6f5mR5mEMF+xoQSakOTPos
+	 7/suf3HCf6+1cCRVg/1gHfWCUYywb1Z81MEj/bYsaha+iNXzqk3gzMR4a1gXq3czdD
+	 i654X9MXbNatJkZAQHBodi7bqPpTK5iKfIYRtjUA=
+Date: Tue, 30 Sep 2025 16:04:52 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Mathias Nyman <mathias.nyman@linux.intel.com>
-Cc: Niklas Neronin <niklas.neronin@linux.intel.com>, stable@vger.kernel.org,
-	Wolfgang Walter <linux@stwm.de>
-Subject: Re: [PATCH] Revert "usb: xhci: remove option to change a default
- ring's TRB cycle bit"
-Message-ID: <2025093059-unrobed-eligible-ae6c@gregkh>
-References: <20250930132251.945081-1-niklas.neronin@linux.intel.com>
- <902780b3-7bc0-431d-bbb7-fe7b7b7fabd7@linux.intel.com>
+To: Eliav Farber <farbere@amazon.com>
+Cc: sashal@kernel.org, mario.limonciello@amd.com, lijo.lazar@amd.com,
+	David.Laight@aculab.com, arnd@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 00/12 6.6.y] Backport minmax.h updates from v6.17-rc7
+Message-ID: <2025093045-proclaim-backwash-3b41@gregkh>
+References: <20250929171733.20671-1-farbere@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,34 +55,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <902780b3-7bc0-431d-bbb7-fe7b7b7fabd7@linux.intel.com>
+In-Reply-To: <20250929171733.20671-1-farbere@amazon.com>
 
-On Tue, Sep 30, 2025 at 04:51:35PM +0300, Mathias Nyman wrote:
-> On 9/30/25 16:22, Niklas Neronin wrote:
-> > Revert 9b28ef1e4cc0 [ Upstream commit e1b0fa863907 ], it causes regression
-> > in 6.12.49 stable, no issues in upstream.
-> > 
-> > Commit 9b28ef1e4cc0 ("usb: xhci: remove option to change a default ring's
-> > TRB cycle bit") introduced a regression in 6.12.49 stable kernel.
-> > The original commit was never intended for stable kernels, but was added
-> > as a dependency for commit a5c98e8b1398 ("xhci: dbc: Fix full DbC transfer
-> > ring after several reconnects").
-> > 
-> > Since this commit is more of an optimization, revert it and solve the
-> > dependecy by modifying one line in xhci_dbc_ring_init(). Specifically,
-> > commit a5c98e8b1398 ("xhci: dbc: Fix full DbC transfer ring after several
-> > reconnects") moved function call xhci_initialize_ring_info() into a
-> > separate function. To resolve the dependency, the arguments for this
-> > function call are also reverted.
-> > 
-> > Closes: https://lore.kernel.org/stable/01b8c8de46251cfaad1329a46b7e3738@stwm.de/
-> > Tested-by: Wolfgang Walter <linux@stwm.de>
-> > Cc: stable@vger.kernel.org # v6.12.49
-> > Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+On Mon, Sep 29, 2025 at 05:17:21PM +0000, Eliav Farber wrote:
+> This series backports 15 patches to update minmax.h in the 6.6.y branch,
+> aligning it with v6.17-rc7.
 > 
-> Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+> The ultimate goal is to synchronize all longterm branches so that they
+> include the full set of minmax.h changes.
+> 
+> The key motivation is to bring in commit d03eba99f5bf ("minmax: allow
+> min()/max()/clamp() if the arguments have the same signedness"), which
+> is missing in older kernels.
+> 
+> In mainline, this change enables min()/max()/clamp() to accept mixed
+> argument types, provided both have the same signedness. Without it,
+> backported patches that use these forms may trigger compiler warnings,
+> which escalate to build failures when -Werror is enabled.
 
-Thanks, now queued up.
+All now queued up, thanks!
 
 greg k-h
 
