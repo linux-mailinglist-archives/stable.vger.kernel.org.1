@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A39EBADDE9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CE0BADD14
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2181945E7A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15FFE3C3FCF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4036A304BCC;
-	Tue, 30 Sep 2025 15:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565862F6167;
+	Tue, 30 Sep 2025 15:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNmFg3iY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BozC+B5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1246223DD6;
-	Tue, 30 Sep 2025 15:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEFC27056D;
+	Tue, 30 Sep 2025 15:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246156; cv=none; b=OcZOFjPXd9AaHRdCzZ2inpB3hyn+VCzfjHUvO6TRWRqoZbLWEv1VVpJ2fPNvi9NYPOaxYVBMoJrUWMVkgjnJ4GjUUJe0sT9uPnJ3d4pGEafuCIO0Y6wCPfsMj/NYiQp6hXDwephlQJdjCB7FnTxHNsrQIYaDpqV2dJihlu+n1Tc=
+	t=1759245826; cv=none; b=POiUTtpFsf7dorvrgCc6ESy0cn/wT3IN5S5RERT9l+LrpWqTiE2ir1bSUCzp/Oo8kTOg/84USalp11KMlt7TXQFWktESUF5QDbzjJTITski88tApbW9mCvmBGorHa6DdW+MGkI0Sae0IA8TrTB+mi1yzaqMZphKERu44wRawAyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246156; c=relaxed/simple;
-	bh=U+ERv5sA8q082R7CuW0kcX4clP4GKhAlOTZ0L85lc2M=;
+	s=arc-20240116; t=1759245826; c=relaxed/simple;
+	bh=OxXtkoew6U2XrpmxwRrVBcz0Qfn8W3hD0RiJKRIhmf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTkik7RMDZwWzgQEx6zjGLAAqxBEUWHBbD+5XqdIyYCnAhErG6zw96H/7cdfky0P11G0s4tWC54lHty0HvUDvgYrqAJxCj+EL+Qs6lNBsbLc2ohGkkfvgNOwXbwZkHbBpOYnSmnRUTfKZeCvfo5EzlsJBWacU132DvMHdIgd6PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNmFg3iY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5AEC4CEF0;
-	Tue, 30 Sep 2025 15:29:15 +0000 (UTC)
+	 MIME-Version; b=WbyAYT0VO775Zq/pDOGif7jnZCvFUTeoypLKjv1Mr/hCsRiB7Ut4s1iL4Yg6fYAgk57QXtPRWYKf1F3vBH3NgcDaEjzgQyH6Q+nCmmTr1szwvddH+cfzgnttAqDx2W4nDpabr5+n65E7JXtbimXgbLsS0GFZI97O+cay8jRa/fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BozC+B5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824EFC4CEF0;
+	Tue, 30 Sep 2025 15:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246155;
-	bh=U+ERv5sA8q082R7CuW0kcX4clP4GKhAlOTZ0L85lc2M=;
+	s=korg; t=1759245825;
+	bh=OxXtkoew6U2XrpmxwRrVBcz0Qfn8W3hD0RiJKRIhmf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNmFg3iY3ytb2lcJz5LPTS61IfaYiAinAFUo8pXv/hrzAZpwsx5d99aOZhurNsWma
-	 HFftJ5PIJfGzoDkZP/QPY/TvN7FrfSdFioaQ/GWdQ27Elc9xs+9f7cGmR52t9UmMmD
-	 DY98FM4I+ulk5UMY4KYf9akGU8rXiuRHdCB6dLzc=
+	b=BozC+B5tRRaUwfFPiV+7COV3wmZpVj8OamZt4u9DxebSCCZ6qVIKatU+kaFf/5utS
+	 szMSEdiGVB5AD4RBXZLrvdoqmeFQKqZ5CQexX6DSHPXE+9HmC9iyKKluBdfRyKvEcu
+	 +jF+3QmnyDbu31uic0z6oXQKfAUS+s+9DFAJpXHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 39/89] xfrm: xfrm_alloc_spi shouldnt use 0 as SPI
+Subject: [PATCH 6.6 54/91] smb: client: fix wrong index reference in smb2_compound_op()
 Date: Tue, 30 Sep 2025 16:47:53 +0200
-Message-ID: <20250930143823.541595363@linuxfoundation.org>
+Message-ID: <20250930143823.435177293@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-[ Upstream commit cd8ae32e4e4652db55bce6b9c79267d8946765a9 ]
+[ Upstream commit fbe2dc6a9c7318f7263f5e4d50f6272b931c5756 ]
 
-x->id.spi == 0 means "no SPI assigned", but since commit
-94f39804d891 ("xfrm: Duplicate SPI Handling"), we now create states
-and add them to the byspi list with this value.
+In smb2_compound_op(), the loop that processes each command's response
+uses wrong indices when accessing response bufferes.
 
-__xfrm_state_delete doesn't remove those states from the byspi list,
-since they shouldn't be there, and this shows up as a UAF the next
-time we go through the byspi list.
+This incorrect indexing leads to improper handling of command results.
+Also, if incorrectly computed index is greather than or equal to
+MAX_COMPOUND, it can cause out-of-bounds accesses.
 
-Reported-by: syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a25ee9d20d31e483ba7b
-Fixes: 94f39804d891 ("xfrm: Duplicate SPI Handling")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 3681c74d342d ("smb: client: handle lack of EA support in smb2_query_path_info()") # 6.14
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/smb2inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 6f99fd2d966c6..1e2f5ecd63248 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2502,6 +2502,8 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 0cc80f472432a..79641d1ee8675 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -641,7 +641,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
  
- 	for (h = 0; h < range; h++) {
- 		u32 spi = (low == high) ? low : get_random_u32_inclusive(low, high);
-+		if (spi == 0)
-+			goto next;
- 		newspi = htonl(spi);
+ 	tmp_rc = rc;
+ 	for (i = 0; i < num_cmds; i++) {
+-		char *buf = rsp_iov[i + i].iov_base;
++		char *buf = rsp_iov[i + 1].iov_base;
  
- 		spin_lock_bh(&net->xfrm.xfrm_state_lock);
-@@ -2517,6 +2519,7 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
- 		xfrm_state_put(x0);
- 		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 
-+next:
- 		if (signal_pending(current)) {
- 			err = -ERESTARTSYS;
- 			goto unlock;
+ 		if (buf && resp_buftype[i + 1] != CIFS_NO_BUFFER)
+ 			rc = server->ops->map_error(buf, false);
 -- 
 2.51.0
 
