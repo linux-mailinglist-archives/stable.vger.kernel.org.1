@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-182382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FE3BAD8C9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F20BAD4DC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 415E13A7A54
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F664A2C50
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2168302CD6;
-	Tue, 30 Sep 2025 15:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590AD303A16;
+	Tue, 30 Sep 2025 14:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prah/3vd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FasAHRaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE240846F;
-	Tue, 30 Sep 2025 15:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153DD35940;
+	Tue, 30 Sep 2025 14:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244762; cv=none; b=PAPFXuWeWkYFR5OqoDt024Ac+Sva92XVDkK6N03qbVkajoaIAQtZB4a/QTkRAunWqNGiqWZ2M25vXBbMbduDziCvetAIpfOmf9OFy65Zb9UpuwOy0CTwPbqsKym5dZktOwF2rl3P+FxfSO4B14F1gr/lDaC0FOKOAWc+NAkt8Ek=
+	t=1759243904; cv=none; b=I8t+JSQRy6JL9ufv9kt45PKGC/3nhJVJNCLmg0KRpkMxnKqD9x+UwHtsYcV0eHfVlwOjqqDnIZJVUMKOIXVa53TMYIMz/X9DUGX8eU5HKNnGuM9QN4ceV4tU5Yun4O0dQMuVtl7ei5ehd8VXu54K6N3u9ME/H9W3QOx7RfsfPaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244762; c=relaxed/simple;
-	bh=S/Z+2m+Qd9VO6T8tVY1C1HzZF3B/CDjtC5ZXNgID5Os=;
+	s=arc-20240116; t=1759243904; c=relaxed/simple;
+	bh=tkxrZh4npqODUqQB/qMqxjkg5YW7c67DTtPHUvDnXLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBw0EXtLb3/eWhjJOp3EPxXKt4O7pFxme9oHq8ULi59MBen6HT0z+f8vD9M5PE4dteukPbNpLIs5+cVgP48CHYtsV2icxQVb443wYasj8QQok0IOJLJLvAAouhRLjQZ2NBWNCr+taCU1cG8QrdDHofgyhaIt/X+n9yYCQg2MxeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prah/3vd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C971C4CEF0;
-	Tue, 30 Sep 2025 15:06:02 +0000 (UTC)
+	 MIME-Version; b=hFsdtLBP6n/9pRFJLpVcs/lKFZj+RZBTWCPR7k/ePs0kisPpqUZqKrJ8Dk34UCma2fpqM6xas6tvJWbOYkOPSq4MWvr0OD1J1InxO+wDxr9OqlhNfiQIL8nGIEw80Xz1BARlJ+JEGf5behoH5Nq1DyPwXpEd+06OeIn9oYrChIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FasAHRaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F82C4CEF0;
+	Tue, 30 Sep 2025 14:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244762;
-	bh=S/Z+2m+Qd9VO6T8tVY1C1HzZF3B/CDjtC5ZXNgID5Os=;
+	s=korg; t=1759243904;
+	bh=tkxrZh4npqODUqQB/qMqxjkg5YW7c67DTtPHUvDnXLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prah/3vdWw7cPhzLWcrCOL+qgGpmFfUkKX756sTapsVEhXYv0iiK7d8hL+ckt9+pE
-	 dl+H5irIFxu6Gl/PEi+BlWsEacpyqzIuq/llpw5FPlBfxyPxulVz/P8cfdJAJCRr2G
-	 LOLWK+ukmBYzIb2zY5vGzPAcWKeel8ukOXH6ZvU4=
+	b=FasAHRaz+Uw2e4N/MjbE2C42MWfNRETJaYggMKko5bjy2fO0CHyy32apDkR76g90O
+	 g351o2Dipt5+x1GCOOCgqH2CO7THJymvis+fGtM3yEMFrkbf9xkCmDNmgOfEuxn2yA
+	 xCwbxA1GfKAoi2EAzNN4SYdeQnxxKv69sBNwyf8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Lukasz Laguna <lukasz.laguna@intel.com>,
-	Raag Jadav <raag.jadav@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 089/143] drm/xe/vf: Dont expose sysfs attributes not applicable for VFs
+Subject: [PATCH 5.4 51/81] serial: sc16is7xx: fix bug in flow control levels init
 Date: Tue, 30 Sep 2025 16:46:53 +0200
-Message-ID: <20250930143834.777688925@linuxfoundation.org>
+Message-ID: <20250930143821.819835585@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 500dad428e5b0de4c1bdfa893822a6e06ddad0b5 ]
+[ Upstream commit 535fd4c98452c87537a40610abba45daf5761ec6 ]
 
-VFs can't read BMG_PCIE_CAP(0x138340) register nor access PCODE
-(already guarded by the info.skip_pcode flag) so we shouldn't
-expose attributes that require any of them to avoid errors like:
+When trying to set MCR[2], XON1 is incorrectly accessed instead. And when
+writing to the TCR register to configure flow control levels, we are
+incorrectly writing to the MSR register. The default value of $00 is then
+used for TCR, which means that selectable trigger levels in FCR are used
+in place of TCR.
 
- [] xe 0000:03:00.1: [drm] Tile0: GT0: VF is trying to read an \
-                     inaccessible register 0x138340+0x0
- [] RIP: 0010:xe_gt_sriov_vf_read32+0x6c2/0x9a0 [xe]
- [] Call Trace:
- []  xe_mmio_read32+0x110/0x280 [xe]
- []  auto_link_downgrade_capable_show+0x2e/0x70 [xe]
- []  dev_attr_show+0x1a/0x70
- []  sysfs_kf_seq_show+0xaa/0x120
- []  kernfs_seq_show+0x41/0x60
+TCR/TLR access requires EFR[4] (enable enhanced functions) and MCR[2]
+to be set. EFR[4] is already set in probe().
 
-Fixes: 0e414bf7ad01 ("drm/xe: Expose PCIe link downgrade attributes")
-Fixes: cdc36b66cd41 ("drm/xe: Expose fan control and voltage regulator version")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Reviewed-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://lore.kernel.org/r/20250916170029.3313-2-michal.wajdeczko@intel.com
-(cherry picked from commit a2d6223d224f333f705ed8495bf8bebfbc585c35)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+MCR access requires LCR[7] to be zero.
+
+Since LCR is set to $BF when trying to set MCR[2], XON1 is incorrectly
+accessed instead because MCR shares the same address space as XON1.
+
+Since MCR[2] is unmodified and still zero, when writing to TCR we are in
+fact writing to MSR because TCR/TLR registers share the same address space
+as MSR/SPR.
+
+Fix by first removing useless reconfiguration of EFR[4] (enable enhanced
+functions), as it is already enabled in sc16is7xx_probe() since commit
+43c51bb573aa ("sc16is7xx: make sure device is in suspend once probed").
+Now LCR is $00, which means that MCR access is enabled.
+
+Also remove regcache_cache_bypass() calls since we no longer access the
+enhanced registers set, and TCR is already declared as volatile (in fact
+by declaring MSR as volatile, which shares the same address).
+
+Finally disable access to TCR/TLR registers after modifying them by
+clearing MCR[2].
+
+Note: the comment about "... and internal clock div" is wrong and can be
+      ignored/removed as access to internal clock div registers (DLL/DLH)
+      is permitted only when LCR[7] is logic 1, not when enhanced features
+      is enabled. And DLL/DLH access is not needed in sc16is7xx_startup().
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20250731124451.1108864-1-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ s->regmap renames + context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_device_sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device_sysfs.c b/drivers/gpu/drm/xe/xe_device_sysfs.c
-index b9440f8c781e3..652da4d294c0b 100644
---- a/drivers/gpu/drm/xe/xe_device_sysfs.c
-+++ b/drivers/gpu/drm/xe/xe_device_sysfs.c
-@@ -166,7 +166,7 @@ int xe_device_sysfs_init(struct xe_device *xe)
- 			return ret;
- 	}
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1032,16 +1032,6 @@ static int sc16is7xx_startup(struct uart
+ 	sc16is7xx_port_write(port, SC16IS7XX_FCR_REG,
+ 			     SC16IS7XX_FCR_FIFO_BIT);
  
--	if (xe->info.platform == XE_BATTLEMAGE) {
-+	if (xe->info.platform == XE_BATTLEMAGE && !IS_SRIOV_VF(xe)) {
- 		ret = sysfs_create_files(&dev->kobj, auto_link_downgrade_attrs);
- 		if (ret)
- 			return ret;
--- 
-2.51.0
-
+-	/* Enable EFR */
+-	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+-			     SC16IS7XX_LCR_CONF_MODE_B);
+-
+-	regcache_cache_bypass(s->regmap, true);
+-
+-	/* Enable write access to enhanced features and internal clock div */
+-	sc16is7xx_port_write(port, SC16IS7XX_EFR_REG,
+-			     SC16IS7XX_EFR_ENABLE_BIT);
+-
+ 	/* Enable TCR/TLR */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_TCRTLR_BIT,
+@@ -1053,7 +1043,8 @@ static int sc16is7xx_startup(struct uart
+ 			     SC16IS7XX_TCR_RX_RESUME(24) |
+ 			     SC16IS7XX_TCR_RX_HALT(48));
+ 
+-	regcache_cache_bypass(s->regmap, false);
++	/* Disable TCR/TLR access */
++	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG, SC16IS7XX_MCR_TCRTLR_BIT, 0);
+ 
+ 	/* Now, initialize the UART */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
 
 
 
