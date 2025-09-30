@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FCCBADAC8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 510F5BADBFA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B0E77AAD69
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9746617868C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC652FD1DD;
-	Tue, 30 Sep 2025 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9E923507C;
+	Tue, 30 Sep 2025 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQVQedtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/+KuEVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55EB173;
-	Tue, 30 Sep 2025 15:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B28205E3B;
+	Tue, 30 Sep 2025 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245474; cv=none; b=FCn26vJp4eOX/UV9ijVf0Q0aKq2/PDPcCEIEs4CvOWFr8Rd4vjQrbmzdod7DD9WMWCbGjXopGLNpIWkmGsVeddPVzWMdNBpGnRiksVIzdm8C9RPVz1HdziHIVjMCNgrp/M28G+6uq4kYXgqU5v+9DdNcjlPrycx8otOYrNuOL+8=
+	t=1759245705; cv=none; b=JrDYdGAc8d8/CHcNbEA/6K7vaW5osKEu3jS1Qir+3deE/TSiG1OY1O7yjyARqj5ZAFf6wKMqc8qwS4l24We1P4WfOwm/NNBPsYq4Om5fnVqA4i+SRQ859243v/7/jQNgAgdRBD3VfyqZQEel5pHaeRxV1cNAh+bHMqncCdLY3Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245474; c=relaxed/simple;
-	bh=977DQ5STxipD3O1p00pwaHxmdBaJoeFHTft8oW4K0M4=;
+	s=arc-20240116; t=1759245705; c=relaxed/simple;
+	bh=1Ucs0gyR/4FDVcQJXuwYIMq0n1OK91yg5hlpE8Q349Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfdSeRZWWJmB39HKhP2ACW1WedbgHBB8Jg1f2jMc63V22dhfbbFxSEO3OlbjzCZqsDToL9RRs7HTT9a5+hkQi1Bf6oabr8dL5+CUavtl/NnmK0wKSBRks5J4U3zm6QXP7fH/da4VZgvOBqgrFTWmqumdywQ/5QXxDH10OCUwYS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQVQedtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3560BC4CEF0;
-	Tue, 30 Sep 2025 15:17:54 +0000 (UTC)
+	 MIME-Version; b=gZ3rTqhCQQqZzPGt/S6pWcVk97wys7dQ28a0MRUzQ3CbRFOfE1gpZPDbXbMj3nyd4yonatUYYoP7q597+tIh3PSLyCYLSpQnHCWk+WhTwpgKOHcnKPcGLQm4T790AQxcMeGNv6guisxBpm6aoKVQBSbNwP+Mch72CWRIPjagBNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/+KuEVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAE5C4CEF0;
+	Tue, 30 Sep 2025 15:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245474;
-	bh=977DQ5STxipD3O1p00pwaHxmdBaJoeFHTft8oW4K0M4=;
+	s=korg; t=1759245705;
+	bh=1Ucs0gyR/4FDVcQJXuwYIMq0n1OK91yg5hlpE8Q349Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQVQedtVesJPNgUjux7II+s622xIRummXUTF9iCvCzKqjAmG5mB+GluZA6cdt71aK
-	 U1kkhO3saYHKS4dne2b2ULEicIrVtpiIXKj6dRxkHo4dWsM1GzPJBavddJGsN/C/jz
-	 NC4PJNIytag3Q7qjw+fRdUbd11l28SJ2H31KTMkA=
+	b=O/+KuEVtdnfKObSgAlVrgtCBnfyuN+9lHa6SYqWUP9Xc3qmLjSWISQVXTlzizwbDG
+	 ij0aePcdXSjZRl+bfKhL5JZtYWq8oZ+FAw+ESTIjmNzSlhjKUSXYzn9iHFDR3PiEPN
+	 KU0nrGoffsLV5c0mBtUpy1Yk3KcQksr7IWtjobPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/73] ALSA: usb-audio: Simplify NULL comparison in mixer_quirks
+Subject: [PATCH 6.6 09/91] HID: multitouch: Get the contact ID from HID_DG_TRANSDUCER_INDEX fields in case of Apple Touch Bar
 Date: Tue, 30 Sep 2025 16:47:08 +0200
-Message-ID: <20250930143820.721859017@linuxfoundation.org>
+Message-ID: <20250930143821.504615260@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Kerem Karabay <kekrby@gmail.com>
 
-[ Upstream commit f2d6d660e8fd5f4467e80743f82119201e67fa9c ]
+[ Upstream commit f41d736acc039d86512951f4e874b0f5e666babf ]
 
-Handle report from checkpatch.pl:
+In Apple Touch Bar, the contact ID is contained in fields with the
+HID_DG_TRANSDUCER_INDEX usage rather than HID_DG_CONTACTID, thus differing
+from the HID spec. Add a quirk for the same.
 
-  CHECK: Comparison to NULL could be written "t->name"
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-7-1a821463b632@collabora.com
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-multitouch.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index f91dbc9255f12..9a5e8c47ce0d2 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -126,7 +126,7 @@ static int snd_create_std_mono_table(struct usb_mixer_interface *mixer,
- {
- 	int err;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index a85581cd511fd..35426e702b301 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -72,6 +72,7 @@ MODULE_LICENSE("GPL");
+ #define MT_QUIRK_FORCE_MULTI_INPUT	BIT(20)
+ #define MT_QUIRK_DISABLE_WAKEUP		BIT(21)
+ #define MT_QUIRK_ORIENTATION_INVERT	BIT(22)
++#define MT_QUIRK_APPLE_TOUCHBAR		BIT(23)
  
--	while (t->name != NULL) {
-+	while (t->name) {
- 		err = snd_create_std_mono_ctl(mixer, t->unitid, t->control,
- 				t->cmask, t->val_type, t->name, t->tlv_callback);
- 		if (err < 0)
+ #define MT_INPUTMODE_TOUCHSCREEN	0x02
+ #define MT_INPUTMODE_TOUCHPAD		0x03
+@@ -612,6 +613,7 @@ static struct mt_application *mt_find_application(struct mt_device *td,
+ static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
+ 						      struct hid_report *report)
+ {
++	struct mt_class *cls = &td->mtclass;
+ 	struct mt_report_data *rdata;
+ 	struct hid_field *field;
+ 	int r, n;
+@@ -636,7 +638,11 @@ static struct mt_report_data *mt_allocate_report_data(struct mt_device *td,
+ 
+ 		if (field->logical == HID_DG_FINGER || td->hdev->group != HID_GROUP_MULTITOUCH_WIN_8) {
+ 			for (n = 0; n < field->report_count; n++) {
+-				if (field->usage[n].hid == HID_DG_CONTACTID) {
++				unsigned int hid = field->usage[n].hid;
++
++				if (hid == HID_DG_CONTACTID ||
++				   (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR &&
++				   hid == HID_DG_TRANSDUCER_INDEX)) {
+ 					rdata->is_mt_collection = true;
+ 					break;
+ 				}
+@@ -814,6 +820,14 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+ 						     EV_KEY, BTN_TOUCH);
+ 			MT_STORE_FIELD(tip_state);
+ 			return 1;
++		case HID_DG_TRANSDUCER_INDEX:
++			/*
++			 * Contact ID in case of Apple Touch Bars is contained
++			 * in fields with HID_DG_TRANSDUCER_INDEX usage.
++			 */
++			if (!(cls->quirks & MT_QUIRK_APPLE_TOUCHBAR))
++				return 0;
++			fallthrough;
+ 		case HID_DG_CONTACTID:
+ 			MT_STORE_FIELD(contactid);
+ 			app->touches_by_report++;
 -- 
 2.51.0
 
