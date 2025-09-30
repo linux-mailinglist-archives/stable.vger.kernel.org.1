@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDC3BAD8CF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BADBADCAC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FF093A8290
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B9A3B3083
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010E1302CD6;
-	Tue, 30 Sep 2025 15:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C027303C93;
+	Tue, 30 Sep 2025 15:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pn/xdDp1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPPsCc4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF59E217F55;
-	Tue, 30 Sep 2025 15:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0F0173;
+	Tue, 30 Sep 2025 15:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244769; cv=none; b=OYIKMhncegRBvQUZYzc4+Vw5gQo8CsSaHn2FBCNuALOyh4KvZFu2snxtMNDiwcqZd+WlCP2kyCOd1qQulxAa1qScwru9F8eoNPeCK1LQsaYn80EGp9g4G3/xbY+D7nkG/fflSV059TMhkQ76oQ/PELEFcZkyvgyNcTuqVqJ9DSM=
+	t=1759245664; cv=none; b=DPrYCzHh8ztX/ZsFDRGywH5q/Jc2BsYsFrponqxOIU2oiGUnHbfmDwA1/6Xi7oQGfLTvFDcAAqfwb7mlIJtZ1o7nFttASAdz2DC259XlSjvB1/A+3FNEuiu6eAoEFHDR9LPeAv8jkZHyVIubehUsys5IhtmPqELtzTAmUwvWOfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244769; c=relaxed/simple;
-	bh=+HYUXWKHt68cHzhldUrPmt8vAql7ptLMRd4TI3DDYQc=;
+	s=arc-20240116; t=1759245664; c=relaxed/simple;
+	bh=9zzpYcNvTr5jOw1+Ek15Ny7YzM1Sa46KEAMSIPydwqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9QCgyHz3bVBcFmShKnn2MChtWTfMtPi6XqfHTiDoVVStPBKNOaWX4dum0LuHgaN7sagj4N8i+Z4BeuSBncvfaFjwNbZJMYvoIGjvW9wmdHVWzXICXCe/YI5HWSLetFFHOyPUmv50Q6ydw4g/yG5PRFnHNZnLwp8mtqWeC2NTFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pn/xdDp1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBACC4CEF0;
-	Tue, 30 Sep 2025 15:06:08 +0000 (UTC)
+	 MIME-Version; b=Y4dKDJHzRfhXHWWxpzOyrCr1hE3EyRmz5aI5vWM6iYoZRJHoWtH/Z8YneXEslHXXNjE0xk9LinfF+HlGAHlXgY1SvYvtRj7QU2WkfMuLxXuTecDeW/DMCu7KyTZ4A3QwZIEywIaOxhAGij60tx24Fp/IlCc2wvrfLUovnZ/+uGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPPsCc4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F119C4AF0B;
+	Tue, 30 Sep 2025 15:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244769;
-	bh=+HYUXWKHt68cHzhldUrPmt8vAql7ptLMRd4TI3DDYQc=;
+	s=korg; t=1759245663;
+	bh=9zzpYcNvTr5jOw1+Ek15Ny7YzM1Sa46KEAMSIPydwqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pn/xdDp1oNqrr0f90jBtgWugmAwO4E1PhjU5zLGOi4QfTI/yqWdA59hd+l526LM1o
-	 xLt4K8olhCDYpnZLoJNYlE0B8O/t4xyV14gAAlaasAwtCDp9dJxCBJ7VwBZHK14Iib
-	 Rd0NXCOhKXu6zMxPYNMV7ie2CvIhm7ueVvL9oeho=
+	b=rPPsCc4oeFLRuu6PHiRCrelcKkZXAkRzoIWf9IV8DcJp9LU0Itt4uW1YB42bmO4+x
+	 V81GlEE2c3NNm2BaNU7ajPZZFJ2JCzBJjSOissLnSYYlpZ4HCIODvV18khHPjrKZ/z
+	 KhO9fRqFVmEhUpo7KTwBZkkEwl3+yuT5ZUGe70vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.16 108/143] i40e: add mask to apply valid bits for itr_idx
+	Chen Ni <nichen@iscas.ac.cn>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 13/91] ALSA: usb-audio: Convert comma to semicolon
 Date: Tue, 30 Sep 2025 16:47:12 +0200
-Message-ID: <20250930143835.537399802@linuxfoundation.org>
+Message-ID: <20250930143821.679246737@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit eac04428abe9f9cb203ffae4600791ea1d24eb18 upstream.
+[ Upstream commit 9ca30a1b007d5fefb5752428f852a2d8d7219c1c ]
 
-The ITR index (itr_idx) is only 2 bits wide. When constructing the
-register value for QINT_RQCTL, all fields are ORed together. Without
-masking, higher bits from itr_idx may overwrite adjacent fields in the
-register.
+Replace comma between expressions with semicolons.
 
-Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
-set.
+Using a ',' in place of a ';' can have unintended side effects.
+Although that is not the case here, it is seems best to use ';'
+unless ',' is intended.
 
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by inspection.
+No functional change intended.
+Compile tested only.
+
+Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20250612060228.1518028-1-nichen@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -448,7 +448,7 @@ static void i40e_config_irq_link_list(st
- 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
- 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
- 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
--		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
-+		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
- 		wr32(hw, reg_idx, reg);
- 	}
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 95fa1c31ae550..f1b663a05f295 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -758,9 +758,9 @@ static int snd_dualsense_jack_create(struct usb_mixer_interface *mixer,
  
+ 	mei->ih.event = snd_dualsense_ih_event;
+ 	mei->ih.match = snd_dualsense_ih_match;
+-	mei->ih.connect = snd_dualsense_ih_connect,
+-	mei->ih.disconnect = snd_dualsense_ih_disconnect,
+-	mei->ih.start = snd_dualsense_ih_start,
++	mei->ih.connect = snd_dualsense_ih_connect;
++	mei->ih.disconnect = snd_dualsense_ih_disconnect;
++	mei->ih.start = snd_dualsense_ih_start;
+ 	mei->ih.name = name;
+ 	mei->ih.id_table = mei->id_table;
+ 
+-- 
+2.51.0
+
 
 
 
