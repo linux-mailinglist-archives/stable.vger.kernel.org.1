@@ -1,124 +1,153 @@
-Return-Path: <stable+bounces-182878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83093BAE859
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 22:19:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95810BAE93C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 22:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38E3C1717D8
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 20:19:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F4CB1C75A5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 20:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BB5246335;
-	Tue, 30 Sep 2025 20:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB03286D50;
+	Tue, 30 Sep 2025 20:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="QSJ4ZWIB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q937sLEB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47AC22A4F6
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 20:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FA94C81
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 20:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759263537; cv=none; b=R6XmzNT34jfsAcCP3R1slSRMO7JkeoMC0YOECpqcUbPqV/7v6JUtb+Ar1utAgitKEfTymnYIl+d2kN3Pf5oVJOP4KBafoWDh24Liqj802OBsDYJBKMm76GJtsWhq/8MybP+48+UXUQJFQ+nTLkpIpQim2iPRt18bM9hdWeoB/MY=
+	t=1759265845; cv=none; b=SgukOSEIOHKuNUDHPGjwGiNMxVlVqwYS4suwLy4Lil8mvFbKD601bIz5/y1aOrY/lhT3vYRtAqqqvI5MtiQL4QF0+3zb1zB6MOgAa2+rNcxE4rzCUpG0j1oLNGVJj+hU21pnE5ltChHgCCxRUD4t18wAsbwraoiBBMFGflOlsjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759263537; c=relaxed/simple;
-	bh=MmXauHjASPTNlj0mQwEIjT/B/YzKvv+oNcG9uMvXJLU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C65raRpaSm2+fCyU3g44P/i9VIvtN9NLH6avLlHdjcLvqYjWadW1SJ2I7WBsvHia6/zO8K/PusekysyrlU1b/bX1YLA0urf43hwWhGCqyH3/BPOwaBXpHda7XuqpM+XdP/M6PvEOocqLwgexS8V77ID8BQ2Pppz/YhleOiTAWXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=QSJ4ZWIB; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3c68ac7e18aso4346482f8f.2
-        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 13:18:54 -0700 (PDT)
+	s=arc-20240116; t=1759265845; c=relaxed/simple;
+	bh=6gn3JvEnkwb8OKeTMxuhbf4tkQ2jON2+HRrM6ridCJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HJeTsUXZpQIMwCpWl6mgsZLM03kDLbx1WSvykz0/08EwfccGsgNFQwgS2MicMdYMew7Rz2ZS9Pkqa4x7xPQrjfHgCkyYa0aYApVMUaobyCA1CWpNP06x6aYWQ1oNLkXuTiXxKyGiZ70riSM69xoQsX0GWcAc+sXgqW/G/CVtSzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q937sLEB; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3324fdfd54cso6912734a91.0
+        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 13:57:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1759263533; x=1759868333; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8I6dbvilgE5CwAYRRTgrE+fX48lvio4oI5BZ1CMQAEs=;
-        b=QSJ4ZWIBDW2SnjY7CJWIFlctnbrcM4oPlh7TmBDhgZ+1dCgJUyOIr31f2LFWPZMI85
-         gG+GMoaDMeh0ABCpg3b6JhVbEYUZEs3INLSmO9nnRJDxR3xZJO0E87Cf6FfH5dlzNdTw
-         /NIhaniUMAH1zwcrjVpCLf/nOBQxDFb7K22un1J89ocbbOayVlg4SjxTttpQGI/jE7QP
-         xGEJTPK1nm6X2czZUTXIKL/h5NkgOREn0JUzPwGkrcqQAsJ9RcTG3R9eRMEEFhnnPGOe
-         qv9JpL8yntVK0DqPsmWnbUH1sLx6kAXew7WZK4uu2OAdXzZjiQQttbCvM+9L//rZdDE3
-         48sg==
+        d=gmail.com; s=20230601; t=1759265843; x=1759870643; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KD4HsssgWXiRjdclammiAZ8JcMZf+BthaQoepiATDDI=;
+        b=Q937sLEBCF/R62VGA2G4f4Ey0zXlIZUoHrv1hxnQS+rJDyMts2OBZeLhvuYvBVbGIL
+         onWrTbeddfKt3C8DVlg+DexRestRZuxcz/TJ9QoSWgFG71wkuKmP9L0mkpxahFIAYUDQ
+         4nJ+y1rPq0WyApL3WzOQoBI3adMcZhBq8CAlYkRBObSU6T+RSAdNqz/1AD7qj1qnTbNs
+         Utbid/NJsGzWhm07o10HEzW0r8wLH7ehve8Rzd/hl6plL4it19Au5gGzJGMad4VHS0d6
+         HwjC1zDECRVTLKXkTEk6KjEiwYyIurqrfFDfwEV+S/VUfcxRQegTlPhfYpsUWsTWAewk
+         MM8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759263533; x=1759868333;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8I6dbvilgE5CwAYRRTgrE+fX48lvio4oI5BZ1CMQAEs=;
-        b=Hvk8cPBh+PLYDVxnguCiStf5f+WnF8MLFo5As+tRwwzRWwdWDt3nYqAn/mLE633JJi
-         0XfrejF2T5lq8rurS4bTc15uBTMimCP7WOJLwU2KzI6kgoBTw5DWUKSrB2NHqHvB+5j/
-         6r7uTCVnkr3cngjFERD/d2Jg8VTiNy9v98ppoJP2dUohqfryIoN1HsOAEb/W/ZrDk845
-         o8Mg9ZrMTFQ/zbPccvmRT5Cs23dwXcmzx8cyettYWgO7JdfynCV9qBsR1Lc7FH/1lC3M
-         L6/tN7x7/ClWmMbLer5+w/X0dQRivKOn3bs7TyJ2DyjwrWchRxezoIyDsmvgZ/jhkrjB
-         k+Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJlYJknDFJxgNd7c54LvqPvZHUl8MeeBNhzrcyTySeTH7qLOLE2oXFNg8eH5J0DGynXqP95UU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUpAK0sxV3UGUd2ZG00KBYMJmsa/GViRSgosoyG7nN58NpAa3N
-	TFzkH/aHcl/Z4mxc6Q0boc2+UDvqM8B9mMNoN7M14HJevy/lE3ZmTso=
-X-Gm-Gg: ASbGncvl1l5TPddX3Q0YSHsWD15zxUgH39Z8HHGbJLIWJ6JtiHbN9NVnyB010wX35iu
-	QTRLEUXxxAllvizpu6smkp8Qpa7da9+suquSM9j/hf8HIEg2iGZ4ebFFGD0tpMl+u/GrWtfkN5v
-	519XaIWEg0aGPjwEQmStlXnUdrsrOYMimqKkWYdLm9Ii7JUfE8BxhHJB9Aj8sWwsX5JyDhN5q5w
-	iMR57Oz3ylbbWFFH1QcPJOSRHldvZLKrfWIVe9YT/9/XiwYuVol2T5CTnazXwtvLR4MEV4QZCYW
-	0N2juC8j9/FNuIxqFB5Xub7hKOoOfUlGHXVjr01NLbivkbR83UUlciGgGnLOHCTt1z7Qf3Mskqc
-	RUCqdd55y42uVIao5Pq/Yc08UCGBX21So7t9SvHL7nNh27VR6YukAMiureRBcXafJCK+3unlutx
-	7eJrbQpTQ1+ex4X4SMENTsaow=
-X-Google-Smtp-Source: AGHT+IHVX3QXQRe9EuiPExL8BKNrajYyrxG7WzB4GC1B2EjOUomUTUBpPzTUhvs5y/w6rZHI4Wb2Fg==
-X-Received: by 2002:a05:6000:4312:b0:424:211a:4141 with SMTP id ffacd0b85a97d-425577ee1d3mr734255f8f.27.1759263532907;
-        Tue, 30 Sep 2025 13:18:52 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4965.dip0.t-ipconnect.de. [91.43.73.101])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5602df0sm24133218f8f.36.2025.09.30.13.18.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 13:18:52 -0700 (PDT)
-Message-ID: <a7b6616d-c5ec-4f11-9c51-48551705d535@googlemail.com>
-Date: Tue, 30 Sep 2025 22:18:51 +0200
+        d=1e100.net; s=20230601; t=1759265843; x=1759870643;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KD4HsssgWXiRjdclammiAZ8JcMZf+BthaQoepiATDDI=;
+        b=bGql7v96DBa2O5ZIHwrKgc6i21pSLGCA1fWTb7QmYjW54t+R9NyGTl3zN2ZsLAwF2S
+         Ifm9uFjlaIK93wG/EYEgsRMl2BxvqbC7pufZE4ONDzikLS6sSqByyLmMmIhqmOGeJT3E
+         G6RinsSYurHfz6b5Ka0Exl4kTsK3m3yWwPElsZcTLY3G2O7Q04Y4RcZ5LOOPn87MUAse
+         +/eoBOodqD3LKLO9H6tdRyvhqG5K0k03YZraWdmRGozuwQEcgx++Oz+ABtBwbWnNBM45
+         DhuVlQvc8h8cJSAveJaNImoHkt0jMdfDQhe9vwj0A3OH/oRxFrJCp3qu3vCI19oZ6ID6
+         id+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVgxp+B5UhY8HXumVwODHJjrzTO+Sr3OXPoNMxVPjsBHbG9CmOTYwy2gpf/ZTb64OEJ+yZiYss=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzerqypNEZhNAlLDWc9yz7Lfx/sJ7aGZpm+D1LjSJiHK0P7MgO
+	Yk43nAWfy7R3vX6LQBw5arcAOr6Z1uYVod2edrayWUF+KmCzjX716p6w
+X-Gm-Gg: ASbGncsppP78LII9UCO2lYWx+MTRD1RfkRTdjTZB2+Q8TbrN587GWR6SWtFKY27oll1
+	pNm0F+xk3MRApvAvvAZ8vTpBqoVCVf1hOApoQoRJmll/sEXPMV4lSrOU1YXfFXCe6ifApXXO/j1
+	AGmA0hKxhAoapGYTDbP2DVYFK6cmwyOX+fFCtqvZ1CABK+UWPfxZmYUmDlaeGYm+p2eWBZbhT3C
+	BT91ARua7G8D7ofuENwDDxzV1/k+DR1ddAQfeDPjNmO0gDesSFPncUof/RA+plkWyqNWiCaRp6J
+	RTF5zvxTGpJCipMygixwo0xg7EoUk76HWUMVz4xS+MVZuj13csXfBjssLfbzE3ZILUiHiEqMZIs
+	2cbWgEkC1PwGWp/ak5aC/FHt2g5aUe+W7eVM1cQYjn3euxPGPj+AUj9rg6POsYnNu0G/hPKo8Ey
+	v5cFd8+tyllIng6iT/2GyRv9YKTomV
+X-Google-Smtp-Source: AGHT+IEL9i/9pFNAxMQIrsaF8HkZgzD5JDTexCku+5N4stZQsJ2UqCF+gxubh0mvyi2u5bv1JlNBXw==
+X-Received: by 2002:a17:90b:1d04:b0:329:e2b1:def3 with SMTP id 98e67ed59e1d1-339a6e90504mr841855a91.10.1759265843136;
+        Tue, 30 Sep 2025 13:57:23 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2401:4900:4176:b4f9:480e:ed50:969b:5d2b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339a6ff26f8sm454898a91.13.2025.09.30.13.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 13:57:22 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: syzbot+9db318d6167044609878@syzkaller.appspotmail.com
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ext4: fix use-after-free in extent header access
+Date: Wed,  1 Oct 2025 02:27:15 +0530
+Message-ID: <20250930205715.615436-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 00/89] 6.12.50-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250930143821.852512002@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 30.09.2025 um 16:47 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.50 release.
-> There are 89 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+syzbot reported multiple use-after-free bugs when accessing extent headers
+in various ext4 functions. These occur because extent headers can be freed
+by concurrent operations while other threads still hold pointers to them.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+The issue is triggered by racing threads performing concurrent writes to
+the same file. After commit 665575cff098 ("filemap: move prefaulting out
+of hot write path"), the write path no longer prefaults pages in the hot
+path, creating a wider race window where:
 
+1. Thread A calls ext4_find_extent() and gets a path with extent headers
+2. Thread A's write attempt fails, entering the slow path
+3. During the gap, Thread B modifies the extent tree, freeing nodes
+4. Thread A continues using the now-freed extent headers, causing UAF
 
-Beste Grüße,
-Peter Schneider
+Fix this by validating the extent header in ext4_find_extent() before
+returning the path. This ensures all callers receive a valid extent path,
+fixing the race at a single point rather than adding checks throughout
+the codebase.
 
+This addresses crashes in ext4_ext_insert_extent(), ext4_ext_binsearch(),
+and potentially other locations that use extent paths.
+
+Reported-by: syzbot+9db318d6167044609878@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9db318d6167044609878
+Fixes: 665575cff098 ("filemap: move prefaulting out of hot write path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ fs/ext4/extents.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index ca5499e9412b..04ceae5b0a34 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4200,6 +4200,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	unsigned int allocated_clusters = 0;
+ 	struct ext4_allocation_request ar;
+ 	ext4_lblk_t cluster_offset;
++	struct ext4_extent_header *eh;
+ 
+ 	ext_debug(inode, "blocks %u/%u requested\n", map->m_lblk, map->m_len);
+ 	trace_ext4_ext_map_blocks_enter(inode, map->m_lblk, map->m_len, flags);
+@@ -4212,7 +4213,12 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	}
+ 
+ 	depth = ext_depth(inode);
+-
++	eh = path[depth].p_hdr;
++	if (!eh || le16_to_cpu(eh->eh_magic) != EXT4_EXT_MAGIC) {
++		EXT4_ERROR_INODE(inode, "invalid extent header after find_extent");
++		err = -EFSCORRUPTED;
++		goto out;
++	}
+ 	/*
+ 	 * consistent leaf must not be empty;
+ 	 * this situation is possible, though, _during_ tree modification;
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.43.0
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
