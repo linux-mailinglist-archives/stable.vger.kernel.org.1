@@ -1,146 +1,196 @@
-Return-Path: <stable+bounces-182061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7894EBAC75F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 12:24:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0638DBAC922
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 12:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31A86170BC7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 10:24:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4261923FC4
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 10:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6E72F83D9;
-	Tue, 30 Sep 2025 10:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="nKIpd7xH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E74D2F7475;
+	Tue, 30 Sep 2025 10:56:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4586E2F83DF
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 10:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471341AAE13
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 10:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759227867; cv=none; b=IrZ5MSCKODy/Ey7o19eElba3df8Fd9If7FB2CjOOq1vmFERRSZLWzcQERi8wS9z/VUs01FhlAFTVednqbwcHD2qApHfqt/3WbeuUHzppRRdUAm2AYUA8HtF4VAANrUvDHGHib3jq0Am0Ae/uZiHdk4y4CfBbgYO8HWzVd9iZip0=
+	t=1759229816; cv=none; b=rXe+6XMqpJSgxQYJVradQ39M+9gS1mh8rcdg1IZE/8cvWwqGRIMqRB9Q6qzhfDhuZTo0ubV1g0u0sCsU07RhdmabccQG6aRVt3vTopRuSYWpbJ6K/2VcfsUsWTt63qLoSo5kGYX2hC4M2psScwY3cUrbfdOXi9wtewD7SqfK4yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759227867; c=relaxed/simple;
-	bh=/xO3z020SlrGnH1T1fxHsnuXvcuFN/F7C6gDnFLfAhY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O7U6x/opshOCaIw8/GsX4nW06jLHKMP6yAv0OVifg5l5oXPCZ/TDpe45Z5Nz9MTAclkxWYPyUvy+OzfDe0/d9na7fiMMpC+liHY8ya/TTuJsuer4LT03hpxMtKKNXDJ7ZIIBliMI+DL1kRyYKVELlcnbZTLzYyxEraKD6OKaEbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=nKIpd7xH; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-636535e4b1aso2319621a12.0
-        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 03:24:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1759227863; x=1759832663; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yku4GoZzp9LeWe3ADlx09HHrsnQ3oJo5nPkdtrMrKK0=;
-        b=nKIpd7xH0CXPhYC2VZthyLijAwfxXiUFGgh3W/jjAWaRtzjJXsbPolvPjsWU1NvWW5
-         XJzHH5usUrlK9MxBaI+FWbY0E46BUUVQy9UslH17cchzoeR7/y5KLAtelVQj9TtjITBn
-         kz2JCwmlAJe8hIS7jCsOzG1frpIxVyzWWU4m7fifMtV37z7PioMOyJDcpTtWAQNRC7o2
-         KjAZMdVPjDi/VjNvTycWYE6/JmQ2mlOgOOmkrf3yxi6+zbPd42pfkofbkque5U2CX2/k
-         x2ypQYbl2pmaqrZ9WZrbtuUG20s9i7BQxYqlWiEQRq/2rbgPB1urPC4jcf1qw8wuLrPf
-         G+DQ==
+	s=arc-20240116; t=1759229816; c=relaxed/simple;
+	bh=P0bulvBSgw0/2qG+kHXMW1VRv65+K/7NX/DitiBMI/k=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=Kiwa9BCTD8X2A/tXTGClT9kJ04172XPt8wQIpV3F7fHvAKCuGY9aIzu7yyW5nPldP6d+lx4J0sNDQtWnOBvZCfLVPzfW1wBcfgYYHQRh1YxoCl/oOT4+owr4ApxHLOYgP5iDyhUNp7FzuXyS3aVMBvaYwHCae6EDRW/e6owJQkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-42721b7023eso48798605ab.2
+        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 03:56:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759227863; x=1759832663;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1759229814; x=1759834614;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yku4GoZzp9LeWe3ADlx09HHrsnQ3oJo5nPkdtrMrKK0=;
-        b=s+N8gzLTryiDQiJYZJ3n0xztJUg64CFVlH6msq2HPnc790KZyNkbc0ZY1ZGXonXCH5
-         cxHNmFYTtoxBfuZHnpTYJCh3VkuM4mithvbuIltBRwoIPpsu6662bkomYmcIaF9HSOXw
-         BBYRxOwyNtK9FKWAuPwCy4dZsG1sH2LkH3nsWzDJgGvZYKwLa0soQI5+8pGVUmLO8mib
-         PQwgCu1RLONuSBhNLANHfFzJf21H+LqgKRUxRF/lCbCibp1PL4mSHahcgdhxAEZ8EXrw
-         fLT2bvBmwTvo4TSd6ZT8LWdOqYir7mtXKCi2hJZm5onFVbkkvNE9JSlsukrI35dW9DcH
-         l01A==
-X-Forwarded-Encrypted: i=1; AJvYcCWraa7+JskMEOQkO/jwSrwXmekD+paWb9WDzqaN0h4HWz9JziqY03WRhvZgRl1iLcJEojoefy4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4NSPb0BRUBMZH3TZ6a27Nzejez9eGXouRpSGKcUQMtJOFkQrx
-	mZFJg8BdO98X1AKbFg+qMBqk28jIc2WD+H7id99PanUO5X4i+hlBEmQdyViMYIbStB8=
-X-Gm-Gg: ASbGncvUtjIFOxxV+5AxoGhNDW63wz4fcEHM0zfEbK2xq6fxjCnrQOKt+wRDYai56Fo
-	8UbDZp80LaoMBieEYC6b1gMteA2mGoi62mkTFUJqZLZ9dFN6/iDxlHt6ZEdLXH+yGrR8Z9sIZMs
-	FS14/dgCcJBVh18kf5qkUoZTYDOzdY9PDUbTP/cECbDfAVSRz8Fw6lUaJ6eSpeL3iXUJ5bp5CET
-	0gwXUmTEHxKlzcrjEH/qIMgr7F2joMXW+DDvs04fEZ6NUBToSXXENbsogwT83/i+PF62sl/nM/z
-	Wft/5CGeD0oXNRldYz1Ug9zXco0UnZkgOsgdoZwflgwJ9ZRoGZk4FMiXSbDnCjwvmWWpiit5eBP
-	SC0v3Ov/7Hw1bJBzzKSOmEPXd7iqTZHRTIbrjSRlgelo71Ryw15VYjiGnayHVQ8Ja5w==
-X-Google-Smtp-Source: AGHT+IEwT6Q7OMLIIwGyLtVN5rHhdWH9GNscWF9k7Eai3fNlLMNA2xSp+0/7z8qMh2DHsvkbRP8yBg==
-X-Received: by 2002:a17:906:6a13:b0:b3d:d30b:39c0 with SMTP id a640c23a62f3a-b4138d54e8fmr374520766b.21.1759227863393;
-        Tue, 30 Sep 2025 03:24:23 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.111])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b3ccb3234fesm494802366b.8.2025.09.30.03.24.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 03:24:22 -0700 (PDT)
-Message-ID: <aab3bf2f-b778-4754-a1ac-5e5e32e54743@tuxon.dev>
-Date: Tue, 30 Sep 2025 13:24:21 +0300
+        bh=A9s5lKvKDABnlyPv5FHzfoj0kZjQ9BrH1NHlxob5owg=;
+        b=DeiYRDH8pfdybewljzkiK7UmGfj0w2ccvFt9dSg3Zc+zRYlitPvqv3fgqDcjYW9a3u
+         cRQ5VAcvEXDogx4Lfcspio96hRGHK1/huBlPFwME0qYa19fWGhegDqBIzuU5yrNLYNpE
+         QF9oXR8oGowgphgjW9Ua2DgxRxb8bex4Mn3LXzOfkblwmMjF1o7AObAZv6t9bMRfwJQm
+         wdof/X+kJjbKiYqRY2Pc/7WPDBiOfFNUctEPb2fEnqp+wCa6c5h5v9Lq8o7MyCaiDzkd
+         OUcxurGqd5v0YJwuQKtwAPOKxNVorZ4tdNT3INcZ5SJEcT5NoIQ70ArK5eefo0AiL4D+
+         ZR2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWRE5CaT3n09O8XXau632u+Vw7jku+VcUZiAvex+QoYvj2WiHmGz3rVjwVtL3QdBnWgSM47se8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywrup1yWBxUx8t6V90sMOabv/h3+5zIzjpiRyD6rCPYMSRQXgz5
+	yrpIuhX0c/P/LBRDnPtN9kGRc5W8mtl/VtY1PKu6Rmj4jK2lNI8TXGWViwRth2PJxbrYd2WJUAI
+	eLriopg7WGynWk+pDClgKv6HQC3ZELOpnJPKgBWgF9kSS0cfhecFXWl53u24=
+X-Google-Smtp-Source: AGHT+IG6+NqI73w0Zf2L+W4izG5fN2n5MZDwq2eoASlJ8ucEBVdNMpT8OCeevvkXqn2u90OpDt97HulPwwihv4CG2Zc/ccRnQoLa
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
- linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-References: <20250912095308.3603704-1-claudiu.beznea.uj@bp.renesas.com>
- <CAMuHMdXv1-w0SE7FZy5k3jg2FO-a-RB2w1WB=VM_UFEA9zjWDw@mail.gmail.com>
- <ef82c610-0571-4665-a5d1-07a9ed9fb8d3@tuxon.dev>
- <2bd09757-cd66-4a2a-8801-0f62dc99b9c8@tuxon.dev>
- <CAMuHMdW6TQFZJ_r+XZOuh7yTUKwZxQRCr4Ps-xZ8U702xMd1=w@mail.gmail.com>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-In-Reply-To: <CAMuHMdW6TQFZJ_r+XZOuh7yTUKwZxQRCr4Ps-xZ8U702xMd1=w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:c26c:0:b0:425:7466:624d with SMTP id
+ e9e14a558f8ab-42595654e5cmr282606945ab.26.1759229814315; Tue, 30 Sep 2025
+ 03:56:54 -0700 (PDT)
+Date: Tue, 30 Sep 2025 03:56:54 -0700
+In-Reply-To: <20250930060557.85133-1-lance.yang@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68dbb776.a00a0220.102ee.0046.GAE@google.com>
+Subject: [syzbot ci] Re: mm/rmap: fix soft-dirty and uffd-wp bit loss when
+ remapping zero-filled mTHP subpage to shared zeropage
+From: syzbot ci <syzbot+ci80449aea3ab57787@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, david@redhat.com, 
+	dev.jain@arm.com, gourry@gourry.net, harry.yoo@oracle.com, 
+	ioworker0@gmail.com, jannh@google.com, joshua.hahnjy@gmail.com, 
+	lance.yang@linux.dev, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
+	npache@redhat.com, peterx@redhat.com, rakie.kim@sk.com, riel@surriel.com, 
+	ryan.roberts@arm.com, stable@vger.kernel.org, usamaarif642@gmail.com, 
+	vbabka@suse.cz, ying.huang@linux.alibaba.com, yuzhao@google.com, 
+	ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi, Geert,
+syzbot ci has tested the following series
 
-On 9/30/25 13:20, Geert Uytterhoeven wrote:
-> Hi Claudiu,
-> 
-> On Tue, 30 Sept 2025 at 07:33, Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
->> On 9/29/25 15:10, Claudiu Beznea wrote:
->>>> This conflicts with commit d57183d06851bae4 ("pinctrl: renesas: rzg2l:
->>>> Drop unnecessary pin configurations"), which I have already queued
->>>> in renesas-drivers/renesas-pinctrl-for-v6.19.  Hence I am replacing
->>>> the above hunk by:
->>>>
->>>>             /* Switching to GPIO is not required if reset value is
->>>> same as func */
->>>>             reg = readb(pctrl->base + PMC(off));
->>>>     -       spin_lock_irqsave(&pctrl->lock, flags);
->>>>     +       raw_spin_lock_irqsave(&pctrl->lock, flags);
->>>>             pfc = readl(pctrl->base + PFC(off));
->>>>             if ((reg & BIT(pin)) && (((pfc >> (pin * 4)) & PFC_MASK) == func)) {
->>>>     -               spin_unlock_irqrestore(&pctrl->lock, flags);
->>>>     +               raw_spin_unlock_irqrestore(&pctrl->lock, flags);
->>>>                     return;
->>>>             }
->>>>
->>>> while applying.
->>> This is right. Thank you! I'm going to give it also a try (on actual HW) a
->>> bit later. I'll let you know.
->>
->> Sorry for the delay, all looks good to me (checked on RZ/G3S).
-> 
-> Given this is a fix which will be backported, I will reshuffle both
-> commits, so your fix is first, and the above no longer applies (here).
+[v3] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
+https://lore.kernel.org/all/20250930060557.85133-1-lance.yang@linux.dev
+* [PATCH v3 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when remapping zero-filled mTHP subpage to shared zeropage
 
-That's OK for me. Thank you for handling it.
+and found the following issue:
+general protection fault in remove_migration_pte
 
-Claudiu
+Full report is available here:
+https://ci.syzbot.org/series/a2021abd-c238-431c-a92e-cc29beb53cbf
 
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
+***
+
+general protection fault in remove_migration_pte
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      1896ce8eb6c61824f6c1125d69d8fda1f44a22f8
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/84a2085e-d609-43ea-8b19-f9af8ea3d54a/config
+C repro:   https://ci.syzbot.org/findings/3e211477-5a8d-4d4d-935b-15076499b001/c_repro
+syz repro: https://ci.syzbot.org/findings/3e211477-5a8d-4d4d-935b-15076499b001/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 5985 Comm: syz.0.27 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
+RIP: 0010:remove_migration_pte+0x37f/0x2340 mm/migrate.c:361
+Code: 43 20 48 89 84 24 08 01 00 00 49 8d 47 40 48 89 84 24 00 01 00 00 4c 89 64 24 50 4c 8b b4 24 70 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 22 3e ff ff 49 8b 06 48 89 44 24
+RSP: 0018:ffffc90002c2f3c0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff888027799080 RCX: 1ffffd40008d1006
+RDX: 0000000000000000 RSI: 00000000000387ff RDI: 0000000000038600
+RBP: ffffc90002c2f5d0 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff52000585e30 R12: ffffea0004688008
+R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004688000
+FS:  0000555589124500(0000) GS:ffff8880b8d7e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000300 CR3: 0000000026118000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ rmap_walk_anon+0x553/0x730 mm/rmap.c:2842
+ remove_migration_ptes mm/migrate.c:478 [inline]
+ migrate_folio_move mm/migrate.c:1394 [inline]
+ migrate_folios_move mm/migrate.c:1725 [inline]
+ migrate_pages_batch+0x200a/0x35c0 mm/migrate.c:1972
+ migrate_pages_sync mm/migrate.c:2002 [inline]
+ migrate_pages+0x1bcc/0x2930 mm/migrate.c:2111
+ migrate_to_node mm/mempolicy.c:1244 [inline]
+ do_migrate_pages+0x5ee/0x800 mm/mempolicy.c:1343
+ kernel_migrate_pages mm/mempolicy.c:1858 [inline]
+ __do_sys_migrate_pages mm/mempolicy.c:1876 [inline]
+ __se_sys_migrate_pages+0x544/0x650 mm/mempolicy.c:1872
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f922b98ec29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffccaf966f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000100
+RAX: ffffffffffffffda RBX: 00007f922bbd5fa0 RCX: 00007f922b98ec29
+RDX: 0000200000000300 RSI: 0000000000000003 RDI: 0000000000000000
+RBP: 00007f922ba11e41 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000000040 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f922bbd5fa0 R14: 00007f922bbd5fa0 R15: 0000000000000004
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:ptep_get include/linux/pgtable.h:340 [inline]
+RIP: 0010:remove_migration_pte+0x37f/0x2340 mm/migrate.c:361
+Code: 43 20 48 89 84 24 08 01 00 00 49 8d 47 40 48 89 84 24 00 01 00 00 4c 89 64 24 50 4c 8b b4 24 70 01 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 22 3e ff ff 49 8b 06 48 89 44 24
+RSP: 0018:ffffc90002c2f3c0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff888027799080 RCX: 1ffffd40008d1006
+RDX: 0000000000000000 RSI: 00000000000387ff RDI: 0000000000038600
+RBP: ffffc90002c2f5d0 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff52000585e30 R12: ffffea0004688008
+R13: dffffc0000000000 R14: 0000000000000000 R15: ffffea0004688000
+FS:  0000555589124500(0000) GS:ffff8880b8d7e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000300 CR3: 0000000026118000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	43 20 48 89          	rex.XB and %cl,-0x77(%r8)
+   4:	84 24 08             	test   %ah,(%rax,%rcx,1)
+   7:	01 00                	add    %eax,(%rax)
+   9:	00 49 8d             	add    %cl,-0x73(%rcx)
+   c:	47                   	rex.RXB
+   d:	40                   	rex
+   e:	48 89 84 24 00 01 00 	mov    %rax,0x100(%rsp)
+  15:	00
+  16:	4c 89 64 24 50       	mov    %r12,0x50(%rsp)
+  1b:	4c 8b b4 24 70 01 00 	mov    0x170(%rsp),%r14
+  22:	00
+  23:	4c 89 f0             	mov    %r14,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	4c 89 f7             	mov    %r14,%rdi
+  34:	e8 22 3e ff ff       	call   0xffff3e5b
+  39:	49 8b 06             	mov    (%r14),%rax
+  3c:	48                   	rex.W
+  3d:	89                   	.byte 0x89
+  3e:	44                   	rex.R
+  3f:	24                   	.byte 0x24
 
 
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
