@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AACBAD9CE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C832BADAD3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00394189CEDA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:13:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C6747AAF29
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC37E30594A;
-	Tue, 30 Sep 2025 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF6D29827E;
+	Tue, 30 Sep 2025 15:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLxgzeFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfY2dbGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B04303CBF;
-	Tue, 30 Sep 2025 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1936C173;
+	Tue, 30 Sep 2025 15:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245204; cv=none; b=aDGA3Ho77RkrgErY0+zNMbkHHOfj69TEguTe/qOCbHFVk6S3X7XlD5j+xCM0wnUiuWVrdxt/9LJmB7q8anjF4Ju+r2GXDLLT044Fb02eTNu5/Wu4sUGDI7atwrNkMUznjRCPapooxyncGswfjrKyR6kd59ahWC6XrBhGitHq704=
+	t=1759245478; cv=none; b=feFxJNJAUQ58fas7lieY/F6Un0iiVr0J1Q/Xpf7QQdOoQeuGZayd1zT5nGJY/BI+7pg/Lz4ylhHcdBi8/K24e+Ly+MfJAuKKCZgMVOBsWtgYOUG6c4gBEVOU/63z2u2nZmb+F6mOHUyuNW1iZ5UBvS7AP6s+5XEZ1WSlWOK/zL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245204; c=relaxed/simple;
-	bh=bm112PxAtJWwql4UtHSIp3fH232/EbX68LMP/nh5iFg=;
+	s=arc-20240116; t=1759245478; c=relaxed/simple;
+	bh=Vsa2K7VgmZwxzrbjG8MSKIk6n2HtfV2weGsUgGYs3Pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNR19WMDTd5aaupsEbFpHI2GsRCkbvjviuFH/vZGKytDwiqF0/TMlIK1uU0Xt/HCk295IkScD+MUx565jmDMASTXCN5ary9YgwmqL7vOG+G2tKu/l5O0EN+WHYuqfZqQZhcLFFlmBk4/GaNc2ildLpofZfUCArDIbatTiqsFimY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLxgzeFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01523C4CEF0;
-	Tue, 30 Sep 2025 15:13:23 +0000 (UTC)
+	 MIME-Version; b=X21V0/LNoZ2XzUEzKXFgZ01o/XEWn4ldOM8UOYevKns7bG7+5NFMPOiOfzblwFRTLoqZlQrema7rSJjavQPHbjZCv+HhkUhBCf1spEdW/Qw31M8dBYY+jIgkNoR+b26HkNmvNTIqZ+orrIdD5y32vc62KKxsemoePl3tdQX+KyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfY2dbGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5F2C4CEF0;
+	Tue, 30 Sep 2025 15:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245204;
-	bh=bm112PxAtJWwql4UtHSIp3fH232/EbX68LMP/nh5iFg=;
+	s=korg; t=1759245478;
+	bh=Vsa2K7VgmZwxzrbjG8MSKIk6n2HtfV2weGsUgGYs3Pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLxgzeFPClKqsRbyU9wvE0RDGV2vmZ5bc1KvXF/I+uwJd1i9yR1NGyRkZMq2DHlU5
-	 9qaBL35bK8zGzUPf2lyWCL8s8smGYs+TGrcdKPx8wgK/Mp4gz0G4OI6ZJqyuptYrDP
-	 UZY1B9j5AUhO9rvVMGbq+N9cPi/nQka34DWDVkPE=
+	b=lfY2dbGthFy5jNGBwVlPkaJIEpoyH2JZuQno0ErWPDFNQtRzxuhpNSedZMsfafnBx
+	 ALMypmG1QBW42JYzzYrkUmHBPBSMdfNBfZVuLLaAgbx9Q5kQqIFoVXLiVsMyfIZo9U
+	 rBcX7lfdFdxN7xHe6tyipZeSgoWjgkabbPBuUhNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 098/151] mptcp: set remote_deny_join_id0 on SYN recv
-Date: Tue, 30 Sep 2025 16:47:08 +0200
-Message-ID: <20250930143831.499539153@linuxfoundation.org>
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 05/73] ALSA: usb-audio: Remove unneeded wmb() in mixer_quirks
+Date: Tue, 30 Sep 2025 16:47:09 +0200
+Message-ID: <20250930143820.767237335@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 96939cec994070aa5df852c10fad5fc303a97ea3 upstream.
+[ Upstream commit 9cea7425595697802e8d55a322a251999554b8b1 ]
 
-When a SYN containing the 'C' flag (deny join id0) was received, this
-piece of information was not propagated to the path-manager.
+Adding a memory barrier before wake_up() in
+snd_usb_soundblaster_remote_complete() is supposed to ensure the write
+to mixer->rc_code is visible in wait_event_interruptible() from
+snd_usb_sbrc_hwdep_read().
 
-Even if this flag is mainly set on the server side, a client can also
-tell the server it cannot try to establish new subflows to the client's
-initial IP address and port. The server's PM should then record such
-info when received, and before sending events about the new connection.
+However, this is not really necessary, since wake_up() is just a wrapper
+over __wake_up() which already executes a full memory barrier before
+accessing the state of the task to be waken up.
 
-Fixes: df377be38725 ("mptcp: add deny_join_id0 in mptcp_options_received")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-pm-uspace-deny_join_id0-v1-1-40171884ade8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in subflow.c, because of differences in the context, e.g.
-  introduced by commit 3a236aef280e ("mptcp: refactor passive socket
-  initialization"), which is not in this version. The same lines --
-  using 'mptcp_sk(new_msk)' instead of 'owner' -- can still be added
-  approximately at the same place, before calling
-  mptcp_pm_new_connection(). ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Drop the redundant call to wmb() and implicitly fix the checkpatch
+complaint:
+
+  WARNING: memory barrier without comment
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-8-1a821463b632@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/mixer_quirks.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -758,6 +758,9 @@ create_child:
- 			 */
- 			WRITE_ONCE(mptcp_sk(new_msk)->first, child);
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 9a5e8c47ce0d2..e5252167d6a40 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -208,7 +208,6 @@ static void snd_usb_soundblaster_remote_complete(struct urb *urb)
+ 	if (code == rc->mute_code)
+ 		snd_usb_mixer_notify_id(mixer, rc->mute_mixer_id);
+ 	mixer->rc_code = code;
+-	wmb();
+ 	wake_up(&mixer->rc_waitq);
+ }
  
-+			if (mp_opt.deny_join_id0)
-+				WRITE_ONCE(mptcp_sk(new_msk)->pm.remote_deny_join_id0, true);
-+
- 			/* new mpc subflow takes ownership of the newly
- 			 * created mptcp socket
- 			 */
+-- 
+2.51.0
+
 
 
 
