@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC1CBADDDD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742D1BADC3C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA89A16BD30
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D009D3AD9F3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A54223DD6;
-	Tue, 30 Sep 2025 15:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E6F29827E;
+	Tue, 30 Sep 2025 15:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhylxcL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNqh9f9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14410244665;
-	Tue, 30 Sep 2025 15:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856E0173;
+	Tue, 30 Sep 2025 15:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246147; cv=none; b=n6wu3b13YNxjCF0Qv/f8+jamTw9cyOk2GMQJlA4VDVQzaezqYXFwk0kfHMZtlTkI++5D7GXkSxAhdj7CeEfWTK+Y0KJpHRY8nR9wLC3zbgVUtlfbv2qvp0vJtNz/SrX/A9E45nRg1kzqj4DO7+qV6wPI4+eGSvXUZameJreYTFM=
+	t=1759245532; cv=none; b=oaQzE+bFuLF1F4754XeYdmbjCN6WHVit0bbtP0kV9d8Pzkv9BnOVXYgV9pp5fn2jDtlt5XkHDjBnqX0ydNMuAvEjLPPes2tl7p6tkDOdMxBOHn26NeWPW405BQEY/+F1eCI+SmhO2ZxUJcpz4I5UEEG5A3ULR/LVkylYRXHsFtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246147; c=relaxed/simple;
-	bh=mB/WkvF1SjgG0kiOHyEwwA9MOqxF2l+Fy/OBohZwV2o=;
+	s=arc-20240116; t=1759245532; c=relaxed/simple;
+	bh=H+a1ufMH7CX+raQccqYx1ObBpH+0rDOHvukG3oGEjXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZ+NMKiKWm7dkATSxyMPcroPP2SGbb3KNikgE+b/sJXjPh2fZO9U7T7ratjxhpWUK7RYhT418DZfY/VSIH+Eawgu//JrPg9BqSlUr8zFfZn2+yZkhWad44J50Yhcw4sb6gbt0C+LB6vwqIdoGLCZwBw0MKkgBuZscWOlVQEe37E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhylxcL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90771C4CEF0;
-	Tue, 30 Sep 2025 15:29:06 +0000 (UTC)
+	 MIME-Version; b=oANfLIShVR++9Hj7kTn+TMtUaTmdFhTrngn8Od+0em9KOJP84ZN3kezkGYNV0j2sjGuDtwUK+hXuxSYpO8XPuneg8dBY/3nlePcySFfJ3CNByxxi/7yNjqSLQXLhTqWN0X2DcSiEEWE1QxK9VhJUnElWrfdSk2DbNld0Qvr4CIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNqh9f9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC5AC4CEF0;
+	Tue, 30 Sep 2025 15:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246146;
-	bh=mB/WkvF1SjgG0kiOHyEwwA9MOqxF2l+Fy/OBohZwV2o=;
+	s=korg; t=1759245531;
+	bh=H+a1ufMH7CX+raQccqYx1ObBpH+0rDOHvukG3oGEjXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhylxcL6B72yzdEY04D11awk/en0vEZKbdNUCB5C9hbfFFL0PYW+XGA9sJyHe9b2A
-	 9LEStljcKvwd9H+AS+w2X7ou1c35NJ9xWCYmwrpk/OKOAK8bUuUnfhknZw65OgA0NG
-	 LMrc/M4fq2QMOv2EY4+SQ1VlLCuGe0MtHAOpDiTw=
+	b=mNqh9f9THZCwkf3CLrIAmaTynfs6K0RXVgeQjCJH+vxxnVYw6wWCbxjuXJctfnUow
+	 YF0nUXKv3EfzOv04zDnUzRlN/u9OJKBFB1+YUQo8xcAhoTfD6H07SfXv0Buva3fYo/
+	 MFukjFHqlp7eZupiUUwZQgXDUl+i1Xz1m74KQ1L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Guan <guan_yufei@163.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 36/89] wifi: virt_wifi: Fix page fault on connect
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Kamakshi Nellore <nellorex.kamakshi@intel.com>
+Subject: [PATCH 6.1 46/73] i40e: fix idx validation in i40e_validate_queue_map
 Date: Tue, 30 Sep 2025 16:47:50 +0200
-Message-ID: <20250930143823.418629376@linuxfoundation.org>
+Message-ID: <20250930143822.518053703@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Guan <guan_yufei@163.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 9c600589e14f5fc01b8be9a5d0ad1f094b8b304b ]
+commit aa68d3c3ac8d1dcec40d52ae27e39f6d32207009 upstream.
 
-This patch prevents page fault in __cfg80211_connect_result()[1]
-when connecting a virt_wifi device, while ensuring that virt_wifi
-can connect properly.
+Ensure idx is within range of active/initialized TCs when iterating over
+vf->ch[idx] in i40e_validate_queue_map().
 
-[1] https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
-
-Closes: https://lore.kernel.org/linux-wireless/20250909063213.1055024-1-guan_yufei@163.com/
-Signed-off-by: James Guan <guan_yufei@163.com>
-Link: https://patch.msgid.link/20250910111929.137049-1-guan_yufei@163.com
-[remove irrelevant network-manager instructions]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c27eac48160d ("i40e: Enable ADq and create queue channel/s on VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Kamakshi Nellore <nellorex.kamakshi@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/virtual/virt_wifi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index 4ee3740804667..a77a27c36bdbe 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -277,7 +277,9 @@ static void virt_wifi_connect_complete(struct work_struct *work)
- 		priv->is_connected = true;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2457,8 +2457,10 @@ static int i40e_validate_queue_map(struc
+ 	u16 vsi_queue_id, queue_id;
  
- 	/* Schedules an event that acquires the rtnl lock. */
--	cfg80211_connect_result(priv->upperdev, requested_bss, NULL, 0, NULL, 0,
-+	cfg80211_connect_result(priv->upperdev,
-+				priv->is_connected ? fake_router_bssid : NULL,
-+				NULL, 0, NULL, 0,
- 				status, GFP_KERNEL);
- 	netif_carrier_on(priv->upperdev);
- }
--- 
-2.51.0
-
+ 	for_each_set_bit(vsi_queue_id, &queuemap, I40E_MAX_VSI_QP) {
+-		if (vf->adq_enabled) {
+-			vsi_id = vf->ch[vsi_queue_id / I40E_MAX_VF_VSI].vsi_id;
++		u16 idx = vsi_queue_id / I40E_MAX_VF_VSI;
++
++		if (vf->adq_enabled && idx < vf->num_tc) {
++			vsi_id = vf->ch[idx].vsi_id;
+ 			queue_id = (vsi_queue_id % I40E_DEFAULT_QUEUES_PER_VF);
+ 		} else {
+ 			queue_id = vsi_queue_id;
 
 
 
