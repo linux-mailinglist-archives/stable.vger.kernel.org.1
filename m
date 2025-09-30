@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-182178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39C8BAD57E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86FF6BAD995
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56C1E1941AD0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC6B63A850F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FC730504B;
-	Tue, 30 Sep 2025 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085CA306496;
+	Tue, 30 Sep 2025 15:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCJwdGrt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ls3hrpWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8484F2FFDE6;
-	Tue, 30 Sep 2025 14:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BEB2FC881;
+	Tue, 30 Sep 2025 15:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244098; cv=none; b=XdpX9LfJn967rtMxfSYnaNw+WeUhGtxceAYNdyhoUdSjKHOrZH37IjdOPoEXrbMvzlqaG8AhV+Rp/HI0KfeXQv7FdiOHPmhKPqzzLuxFj/u/aSInSlu41WXoWpziqrO4yuQCEAqQE8CIqE8Ohwcxjl3Xqbez+OSefBzFvPlTWZc=
+	t=1759244977; cv=none; b=KBvlkJT7H91Us83wEIED2ptEbdiGjJtMJ43xuvKE3hVigj4FGvmXgQuqlD0LwcxpMFG6QcgdAAUMLke7c/uX9SPDxZTGJsJSKzWUROoe4RQL7H77NFjvpkthiaoJhgO4qZvB9dWuPnYVFfLKiHYvSx1x2ke3nmAIWWTlCsMEaeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244098; c=relaxed/simple;
-	bh=EOoyNhkutrRe1hNSNbQ+IVCE8HG9GdYM/3YPRH92GHc=;
+	s=arc-20240116; t=1759244977; c=relaxed/simple;
+	bh=hYNZ8FqANgdLMCor8HUBcK2QZ3cA8gm4M+ogxN6sgZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwMc3WhB4YENDhX0FiHR8Td72m7OpwFnd+iy5YO2VXhwXPJWWyy5e3NOWgCcywKZnQs7PATIziP6LDmxXPIt5IOzaj+Ns2fIx4j5uGWWE5RyKgroh7vGDnnzO08rBMczbQggWgoPsUR0AqYm9FTAVw1XCIn9HV2jHCS78rz6ppo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCJwdGrt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97678C4CEF0;
-	Tue, 30 Sep 2025 14:54:56 +0000 (UTC)
+	 MIME-Version; b=mWch9dcT+ZD3M6DegolKJs8LqH22rCZdDs2L0lMj4CwrYu8IBLJlVUkQ57txNEv34R6tLqHA9Z4DxRKLDGIvxORTpodJu6fbpOod1HQfEJjfoxPIsJEM3Z5qDbv8cFkg0SLT3oB0N+HM9YmlNzJpemlZgaIOPSLnJfkS4rBSNGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ls3hrpWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C783C113D0;
+	Tue, 30 Sep 2025 15:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244097;
-	bh=EOoyNhkutrRe1hNSNbQ+IVCE8HG9GdYM/3YPRH92GHc=;
+	s=korg; t=1759244977;
+	bh=hYNZ8FqANgdLMCor8HUBcK2QZ3cA8gm4M+ogxN6sgZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCJwdGrtHdLm2AVq8P47DL0si+VL+fwB4pDmra0MQSBrBeUTozyPOWb+nQLVBHdci
-	 Nr0jzoYmcui5o3ok6nRNkYJ6NfWYqDX88XVTtfmb/ZitM6NK5SlDGxI+roc7e6GhfE
-	 Rp9crlDVYEDCr0L2KV+EXulhY8xjWYxrzsPNwiuY=
+	b=ls3hrpWUnrt1X6Hj9QZ0SwKycykdaIgV2Fanqgh7ZorVuK7Rov031uEn4+2TU1p9c
+	 v/MWX3feidJlllPUVy5YeLDAabwDXVohh9BlFcy3+9qkFrhz/9o2m0zgJo0ysJKOgJ
+	 aBxLnAvkUYCtE5oWWSePW1exREhkNVXQyoA4DB/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabian Vogt <fvogt@suse.de>
-Subject: [PATCH 5.10 027/122] tty: hvc_console: Call hvc_kick in hvc_write unconditionally
+	Wei Yang <richard.weiyang@gmail.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 028/151] mm/khugepaged: fix the address passed to notifier on testing young
 Date: Tue, 30 Sep 2025 16:45:58 +0200
-Message-ID: <20250930143824.117546200@linuxfoundation.org>
+Message-ID: <20250930143828.739641895@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +70,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fvogt@suse.de>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-commit cfd956dcb101aa3d25bac321fae923323a47c607 upstream.
+commit 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf upstream.
 
-After hvc_write completes, call hvc_kick also in the case the output
-buffer has been drained, to ensure tty_wakeup gets called.
+Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
+mmu_notifier_test_young(), but we are passing the wrong address.
+In xxx_scan_pmd(), the actual iteration address is "_address" not
+"address".  We seem to misuse the variable on the very beginning.
 
-This fixes that functions which wait for a drained buffer got stuck
-occasionally.
+Change it to the right one.
 
-Cc: stable <stable@kernel.org>
-Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1230062
-Signed-off-by: Fabian Vogt <fvogt@suse.de>
-Link: https://lore.kernel.org/r/2011735.PYKUYFuaPT@fvogt-thinkpad
+[akpm@linux-foundation.org fix whitespace, per everyone]
+Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
+Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/hvc/hvc_console.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/khugepaged.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/hvc/hvc_console.c
-+++ b/drivers/tty/hvc/hvc_console.c
-@@ -543,10 +543,10 @@ static int hvc_write(struct tty_struct *
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1358,7 +1358,7 @@ static int khugepaged_scan_pmd(struct mm
+ 		}
+ 		if (pte_young(pteval) ||
+ 		    page_is_young(page) || PageReferenced(page) ||
+-		    mmu_notifier_test_young(vma->vm_mm, address))
++		    mmu_notifier_test_young(vma->vm_mm, _address))
+ 			referenced++;
  	}
- 
- 	/*
--	 * Racy, but harmless, kick thread if there is still pending data.
-+	 * Kick thread to flush if there's still pending data
-+	 * or to wakeup the write queue.
- 	 */
--	if (hp->n_outbuf)
--		hvc_kick();
-+	hvc_kick();
- 
- 	return written;
- }
+ 	if (!writable) {
 
 
 
