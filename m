@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ED6BAD7AF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF7DBAD4F1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D1B3188FF8F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870E83A9BF5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FB61EE02F;
-	Tue, 30 Sep 2025 15:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD7C2FB625;
+	Tue, 30 Sep 2025 14:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3lhUxtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMzvAXvu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9316202C48;
-	Tue, 30 Sep 2025 15:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB531F03D2;
+	Tue, 30 Sep 2025 14:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244637; cv=none; b=azrVCbaH24G7roq7iGDkHpkEt6iB1+ze/ukqBKQwIXCT3+f/peimNTSGinQLYujLCPqm4dqnGCgcXWiqedDwLiAJNcZdix2dDceuAk3ZcvRx0qoLFnXacYfL8vst8whQtRxF6uvpKqdwM9kAreLyNeUiiGk8jlliyU//jPxWsMM=
+	t=1759243941; cv=none; b=TGcJ4S+6dGcS4ecsNUEUV6gvP5HvfY3Kh4TMhAN65fLXA54f5e6STVHMqH2xBHawjahe7WA+juhHH4pG8GPahxoMRaKTOBCXmkWVx5wg+hFt92kxZFQ2FfXMtpFefkKhPeLkguPceWDYqmhOkwEswiT5ZbK2AB81VIHLcPJEKpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244637; c=relaxed/simple;
-	bh=wiudCm0PmTbRH0VuU1u5Sketw1TwBVnst+17zMPNyaw=;
+	s=arc-20240116; t=1759243941; c=relaxed/simple;
+	bh=OZPjz+N/SalNquu++mvz9O4xl3pdHtP7nXT24vg+JLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chB9u9d4P0fbxh3LI8HTkdDYpYOw/N9+Q0cgE2yke74yhXUn6BKKDolZzOkko27LbM4op9uFdOSdxKmHIxI+vSG0imU0WQjmiyqONz0h4EJvLw0uOoRnKnWphGeTfadUx+FtUpc7G+AJ72ZhxBp7NasiId1oetFQV5nBdwzGT/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3lhUxtS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED4CC4CEF0;
-	Tue, 30 Sep 2025 15:03:55 +0000 (UTC)
+	 MIME-Version; b=rts8xfV2CB51I7dTXxE5R+eiademsjgn09C6oxQUEycEtP6CPWHRyYZKQBBHvlQg/YbgEgNmN8Xvslv4rL6+OF3yVfMl34z0IYDyf0YXlenufSIdCv6jDnr9AoWlxuabNmx8NYHYIPhRbs4sLn4yQJYwZ/cFyiDHK/uEasWnVG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMzvAXvu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A66C4CEF0;
+	Tue, 30 Sep 2025 14:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244636;
-	bh=wiudCm0PmTbRH0VuU1u5Sketw1TwBVnst+17zMPNyaw=;
+	s=korg; t=1759243940;
+	bh=OZPjz+N/SalNquu++mvz9O4xl3pdHtP7nXT24vg+JLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3lhUxtS1BaO300jp7Wn41s3SV/ruw1vX5StTu3AxvC6qThX48EKa4swFDJHGe0YD
-	 OCZtZ/pCdBLTXecSQvip+b8d58wHYVGIoZTO6SNueaRGPxSJGlM6H31lw+LKoZVLcv
-	 Ozackm6x5a+elWcl4ReLzcVJyaIHymn4P2zSoYJs=
+	b=aMzvAXvu+XqOR0exa8Td+dhjI1+1/vXCRrR0+fhWB3XDPFyf+RwXno/UigsHhMUy9
+	 +rhCpB5Y9aFbqO7eT0DMOutTNnSX95aHGxvdVoTxIkkpa6A1TE90wIQZLQEEPiDF2X
+	 MYao6tcKyUDQ7bmPyVkyzC/tZ/KXIXgKhP1T7mg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 069/143] Bluetooth: hci_event: Fix UAF in hci_conn_tx_dequeue
+Subject: [PATCH 5.4 31/81] ALSA: firewire-motu: drop EPOLLOUT from poll return values as write is not supported
 Date: Tue, 30 Sep 2025 16:46:33 +0200
-Message-ID: <20250930143833.988549330@linuxfoundation.org>
+Message-ID: <20250930143820.968714695@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 2e128683176a56459cef8705fc7c35f438f88abd ]
+[ Upstream commit aea3493246c474bc917d124d6fb627663ab6bef0 ]
 
-This fixes the following UAF caused by not properly locking hdev when
-processing HCI_EV_NUM_COMP_PKTS:
+The ALSA HwDep character device of the firewire-motu driver incorrectly
+returns EPOLLOUT in poll(2), even though the driver implements no operation
+for write(2). This misleads userspace applications to believe write() is
+allowed, potentially resulting in unnecessarily wakeups.
 
-BUG: KASAN: slab-use-after-free in hci_conn_tx_dequeue+0x1be/0x220 net/bluetooth/hci_conn.c:3036
-Read of size 4 at addr ffff8880740f0940 by task kworker/u11:0/54
+This issue dates back to the driver's initial code added by a commit
+71c3797779d3 ("ALSA: firewire-motu: add hwdep interface"), and persisted
+when POLLOUT was updated to EPOLLOUT by a commit a9a08845e9ac ('vfs: do
+bulk POLL* -> EPOLL* replacement("").').
 
-CPU: 1 UID: 0 PID: 54 Comm: kworker/u11:0 Not tainted 6.16.0-rc7 #3 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
-Workqueue: hci1 hci_rx_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x230 mm/kasan/report.c:480
- kasan_report+0x118/0x150 mm/kasan/report.c:593
- hci_conn_tx_dequeue+0x1be/0x220 net/bluetooth/hci_conn.c:3036
- hci_num_comp_pkts_evt+0x1c8/0xa50 net/bluetooth/hci_event.c:4404
- hci_event_func net/bluetooth/hci_event.c:7477 [inline]
- hci_event_packet+0x7e0/0x1200 net/bluetooth/hci_event.c:7531
- hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
- </TASK>
+This commit fixes the bug.
 
-Allocated by task 54:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4359
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- __hci_conn_add+0x233/0x1b30 net/bluetooth/hci_conn.c:939
- le_conn_complete_evt+0x3d6/0x1220 net/bluetooth/hci_event.c:5628
- hci_le_enh_conn_complete_evt+0x189/0x470 net/bluetooth/hci_event.c:5794
- hci_event_func net/bluetooth/hci_event.c:7474 [inline]
- hci_event_packet+0x78c/0x1200 net/bluetooth/hci_event.c:7531
- hci_rx_work+0x46a/0xe80 net/bluetooth/hci_core.c:4070
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
-
-Freed by task 9572:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x62/0x70 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2381 [inline]
- slab_free mm/slub.c:4643 [inline]
- kfree+0x18e/0x440 mm/slub.c:4842
- device_release+0x9c/0x1c0
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x22b/0x480 lib/kobject.c:737
- hci_conn_cleanup net/bluetooth/hci_conn.c:175 [inline]
- hci_conn_del+0x8ff/0xcb0 net/bluetooth/hci_conn.c:1173
- hci_abort_conn_sync+0x5d1/0xdf0 net/bluetooth/hci_sync.c:5689
- hci_cmd_sync_work+0x210/0x3a0 net/bluetooth/hci_sync.c:332
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 home/kwqcheii/source/fuzzing/kernel/kasan/linux-6.16-rc7/arch/x86/entry/entry_64.S:245
-
-Fixes: 134f4b39df7b ("Bluetooth: add support for skb TX SND/COMPLETION timestamping")
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/20250829233749.366222-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/firewire/motu/motu-hwdep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 090c7ffa51525..d3d9c3cbd9293 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4391,6 +4391,8 @@ static void hci_num_comp_pkts_evt(struct hci_dev *hdev, void *data,
+diff --git a/sound/firewire/motu/motu-hwdep.c b/sound/firewire/motu/motu-hwdep.c
+index 0764a477052a2..5e1254f106bf8 100644
+--- a/sound/firewire/motu/motu-hwdep.c
++++ b/sound/firewire/motu/motu-hwdep.c
+@@ -73,7 +73,7 @@ static __poll_t hwdep_poll(struct snd_hwdep *hwdep, struct file *file,
+ 		events = 0;
+ 	spin_unlock_irq(&motu->lock);
  
- 	bt_dev_dbg(hdev, "num %d", ev->num);
- 
-+	hci_dev_lock(hdev);
-+
- 	for (i = 0; i < ev->num; i++) {
- 		struct hci_comp_pkts_info *info = &ev->handles[i];
- 		struct hci_conn *conn;
-@@ -4472,6 +4474,8 @@ static void hci_num_comp_pkts_evt(struct hci_dev *hdev, void *data,
- 	}
- 
- 	queue_work(hdev->workqueue, &hdev->tx_work);
-+
-+	hci_dev_unlock(hdev);
+-	return events | EPOLLOUT;
++	return events;
  }
  
- static void hci_mode_change_evt(struct hci_dev *hdev, void *data,
+ static int hwdep_get_info(struct snd_motu *motu, void __user *arg)
 -- 
 2.51.0
 
