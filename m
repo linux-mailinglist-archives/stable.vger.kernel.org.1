@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-182282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70392BAD6E6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:02:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B16BBADCE7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C2EF164C32
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD0FC3ACD01
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FCE303A29;
-	Tue, 30 Sep 2025 15:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD66223DD6;
+	Tue, 30 Sep 2025 15:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycJ1cqnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOGprnpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448A1202C48;
-	Tue, 30 Sep 2025 15:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B1F20E334;
+	Tue, 30 Sep 2025 15:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244438; cv=none; b=WYlzxdJW4RCfY6lIzwUlO+BxEAG5MtivnxNGGKddUJms1irHKGE+sn0VUfbPElrBekh/oBc6TYLLTRX9TPCSsxhpDC8PAfGtPxqks8ucZafcHf8qeXQA13PmRM6BoZIwGFd6bs5Ro+R4uVFecZ5pZGwm4QKVmSk02JAVd4mPGGM=
+	t=1759245732; cv=none; b=WZ5bq5XanS7dDASXVBl4veHcvUw+QBth0D3kFjwAeyuYYGAwQAhuG/gII7JU2z1Q5eLIfAWsrDvXb/LFE58ln1hZLPetemztffJ3W73VCU8b1VISWBCGyiJyKg96o5TrvPo30yp6Ds28sKvgjQj1IK0PBHzn9B/f5roBNJmHaSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244438; c=relaxed/simple;
-	bh=H7d8dD54l8v15zhGCYLlf7z4D3Az6UN/VLokjxNT6zc=;
+	s=arc-20240116; t=1759245732; c=relaxed/simple;
+	bh=1AFbflOeQzuY7qtEJCAHWrOCmJo34jTLG3OL8PqPBp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCuI0FzrOAxm2RVrdyR0KKnetZb6UXKq3X5s2Z88/xfIdYIsK6uIYASUEvezUTGj9AcDF18nl03JvOl/pKC35U3cj+TBqF7roGAfBA63Olati2suHmfYcX1R7+w8AUr+Z+XnqytyZYYLPn+Yb8Z3ejlUPTAoSgqGMLbfLWqJAac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycJ1cqnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66E2C4CEF0;
-	Tue, 30 Sep 2025 15:00:37 +0000 (UTC)
+	 MIME-Version; b=NqMbCFt4XR1EyHDDVsxzlAmK7nnp2KVPrnH7aK/PMA3wN07KhYjnV6aMLCEq3j1/QhsRlyC5McQPAxBj6sG41Tabdp2w1kP0Tq02hjTFJnzTdAjMzR3nQyWDUAEADlxkKOQq0UwssLdT98hQZJ+v1i7gUo89eu2XFweMtxxFELo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOGprnpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED529C4CEF0;
+	Tue, 30 Sep 2025 15:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244438;
-	bh=H7d8dD54l8v15zhGCYLlf7z4D3Az6UN/VLokjxNT6zc=;
+	s=korg; t=1759245732;
+	bh=1AFbflOeQzuY7qtEJCAHWrOCmJo34jTLG3OL8PqPBp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ycJ1cqnUuz5644ZTN72QyLhvmlXYoGtb8j8iAnXYFqso5QVs3heMBGK1qqWI+xUf4
-	 fQ2eVo2EBWph0tB830SfuGNz+wRkMEaMdzlEPZxs7zb5rP6aKKH/RQ78tgehH1XG40
-	 gePTWxPuOOAyHlglYzABlwvaj/37KoPxtS/jJgko=
+	b=ZOGprnpWQznTg9i+cdL8gVYtogIwCAu7RUe0PpHaViTrRK9unZkZ2o1pqspKSMQRg
+	 sCmj460J6ALwYCt19mnlXQtmZb2HfyjrOTZ6UE6qSU1rXsznT7LHw+vt1AXt0BF4oL
+	 nUVYQJZK/OiFbpVn/S8qUNuqom74ZyiW8aYYqnTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/122] mm/hugetlb: fix folio is still mapped when deleted
+Subject: [PATCH 6.6 34/91] xfrm: xfrm_alloc_spi shouldnt use 0 as SPI
 Date: Tue, 30 Sep 2025 16:47:33 +0200
-Message-ID: <20250930143827.953003796@linuxfoundation.org>
+Message-ID: <20250930143822.566682871@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 7b7387650dcf2881fd8bb55bcf3c8bd6c9542dd7 ]
+[ Upstream commit cd8ae32e4e4652db55bce6b9c79267d8946765a9 ]
 
-Migration may be raced with fallocating hole.  remove_inode_single_folio
-will unmap the folio if the folio is still mapped.  However, it's called
-without folio lock.  If the folio is migrated and the mapped pte has been
-converted to migration entry, folio_mapped() returns false, and won't
-unmap it.  Due to extra refcount held by remove_inode_single_folio,
-migration fails, restores migration entry to normal pte, and the folio is
-mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
+x->id.spi == 0 means "no SPI assigned", but since commit
+94f39804d891 ("xfrm: Duplicate SPI Handling"), we now create states
+and add them to the byspi list with this value.
 
-The log is as follows:
- BUG: Bad page cache in process hugetlb  pfn:156c00
- page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
- head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
- aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
- flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
- page_type: f4(hugetlb)
- page dumped because: still mapped when deleted
- CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
- Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x70
-  filemap_unaccount_folio+0xc4/0x1c0
-  __filemap_remove_folio+0x38/0x1c0
-  filemap_remove_folio+0x41/0xd0
-  remove_inode_hugepages+0x142/0x250
-  hugetlbfs_fallocate+0x471/0x5a0
-  vfs_fallocate+0x149/0x380
+__xfrm_state_delete doesn't remove those states from the byspi list,
+since they shouldn't be there, and this shows up as a UAF the next
+time we go through the byspi list.
 
-Hold folio lock before checking if the folio is mapped to avold race with
-migration.
-
-Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
-Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ folio -> page ]
+Reported-by: syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a25ee9d20d31e483ba7b
+Fixes: 94f39804d891 ("xfrm: Duplicate SPI Handling")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ net/xfrm/xfrm_state.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -515,13 +515,13 @@ static void remove_inode_hugepages(struc
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index acfbe1f013d1b..ded559f557675 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2296,6 +2296,8 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
  
- 			/*
- 			 * If page is mapped, it was faulted in after being
--			 * unmapped in caller.  Unmap (again) now after taking
--			 * the fault mutex.  The mutex will prevent faults
--			 * until we finish removing the page.
--			 *
--			 * This race can only happen in the hole punch case.
--			 * Getting here in a truncate operation is a bug.
-+			 * unmapped in caller or hugetlb_vmdelete_list() skips
-+			 * unmapping it due to fail to grab lock.  Unmap (again)
-+			 * while holding the fault mutex.  The mutex will prevent
-+			 * faults until we finish removing the page.  Hold page
-+			 * lock to guarantee no concurrent migration.
- 			 */
-+			lock_page(page);
- 			if (unlikely(page_mapped(page))) {
- 				BUG_ON(truncate_op);
+ 	for (h = 0; h < range; h++) {
+ 		u32 spi = (low == high) ? low : get_random_u32_inclusive(low, high);
++		if (spi == 0)
++			goto next;
+ 		newspi = htonl(spi);
  
-@@ -533,8 +533,6 @@ static void remove_inode_hugepages(struc
- 					(index + 1) * pages_per_huge_page(h));
- 				i_mmap_unlock_write(mapping);
- 			}
--
--			lock_page(page);
- 			/*
- 			 * We must free the huge page and remove from page
- 			 * cache (remove_huge_page) BEFORE removing the
+ 		spin_lock_bh(&net->xfrm.xfrm_state_lock);
+@@ -2311,6 +2313,7 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
+ 		xfrm_state_put(x0);
+ 		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
+ 
++next:
+ 		if (signal_pending(current)) {
+ 			err = -ERESTARTSYS;
+ 			goto unlock;
+-- 
+2.51.0
+
 
 
 
