@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C03BADE0E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248B7BADB40
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 273373B197E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD469194488B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353EB2264AB;
-	Tue, 30 Sep 2025 15:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7F72FFDE6;
+	Tue, 30 Sep 2025 15:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxiadkz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swQy6SpA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E793C244665;
-	Tue, 30 Sep 2025 15:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5AD27B328;
+	Tue, 30 Sep 2025 15:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246153; cv=none; b=BTpoPw88sDi5P6K7HLreG7/FpkSvR79maPzZAM6aeXFs3LS1TxzKMdkA0lKVBf+wsX5H3mbf0mh9Mgj/JjoT8AMiWmqj5rUdi0BEyPbkDFCwCIRoE5ieOsiADcQkotV9ARsmTMu6qHL0QTrNFHZPS9c61UmU+0Sl8+rZkhFY3UY=
+	t=1759245548; cv=none; b=MVk48g8CexLuExJdfDcXYG1FiwEP3njuxNFDxQ+6z8Burd3BnAIlY+v9Lil2TSsA4NKFrGOa8+2hwC6xUvGD7lkDLcc2Wmc5FhagI2D5NY2L9dr5+SIjJE/M4STRtB0pLaFa3knDK5bUgKTkF14Y1Fu6uQCk9Npw5gJcJIxGadk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246153; c=relaxed/simple;
-	bh=6rRD3/bP41ILDxcV3CnZqgrQNgQqep+HHYQGPBTYm0U=;
+	s=arc-20240116; t=1759245548; c=relaxed/simple;
+	bh=nzSV3DIRtSjHuxGCjOVhlEgKa3aq9z6GeK8mV/8qXRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfVpcOrzLfF+XP7aoqG8EZHE8ghj0HYumeNRbdufMvowRiWT2+cdW57Rpey96tGMA4XWKVVyAKoRXPbApGEjEk9Ff/JT9CzmhRZ3atrtMZms297HSmfGDt6rzLGqR+A/ZioTF1vpeC2ZGlSuDaVVbjPng3xH7nLyO42+oPVbkcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxiadkz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726EFC4CEF0;
-	Tue, 30 Sep 2025 15:29:12 +0000 (UTC)
+	 MIME-Version; b=NIXXFO1II2gg8dP5/iFBiTKBFq58shzEYs1k4iQKBOUjMCxfI40JTyC/nPRjx99vqPI3BU6EnQNKxopaxO3eEJzwCTtz6CTALH5o3UTggWCzdDwm0ghb6jr21ldDNwhng6obxyCW6ULZgOoqVXd/rTB/JitD+SgR3TqbVQBTdq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swQy6SpA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F0FC4CEF0;
+	Tue, 30 Sep 2025 15:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246152;
-	bh=6rRD3/bP41ILDxcV3CnZqgrQNgQqep+HHYQGPBTYm0U=;
+	s=korg; t=1759245544;
+	bh=nzSV3DIRtSjHuxGCjOVhlEgKa3aq9z6GeK8mV/8qXRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cxiadkz30Pe+g97UaWjwAgfWdwEb8jThSPPXGUF+KBJlBbXmvjFW8n/G8ZNHA8ZMv
-	 IG81RfDQ3RRdubPrpHZoTzxKz7HWdF4xisTLSbl+i6V8AA0dlHS8iulqkFVUIazDLm
-	 N4cD7r7/weQKYhBTFFYUUVSBnQUiB1Sc1Tb3KWZY=
+	b=swQy6SpAoqriHimn62PYbDZ4JdXJid7Ca+IlH1GyBEBNtaXAKf7kCWk91Af/YoCmJ
+	 hwYWPOgGPkCRBd9vo2UslYDDAVfFA7JpbpNQDdd32I29CVDHdANa2Sv/KFhaQQeBtC
+	 GRD+UfbQbyPMQImhnwcgfOQ9b81bVJxZo8VQc2kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 38/89] bpf: Reject bpf_timer for PREEMPT_RT
-Date: Tue, 30 Sep 2025 16:47:52 +0200
-Message-ID: <20250930143823.500330298@linuxfoundation.org>
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 49/73] i40e: add mask to apply valid bits for itr_idx
+Date: Tue, 30 Sep 2025 16:47:53 +0200
+Message-ID: <20250930143822.661503243@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <leon.hwang@linux.dev>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
+commit eac04428abe9f9cb203ffae4600791ea1d24eb18 upstream.
 
-When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
-selftests by './test_progs -t timer':
+The ITR index (itr_idx) is only 2 bits wide. When constructing the
+register value for QINT_RQCTL, all fields are ORed together. Without
+masking, higher bits from itr_idx may overwrite adjacent fields in the
+register.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
+set.
 
-In order to avoid such warning, reject bpf_timer in verifier when
-PREEMPT_RT is enabled.
-
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 6e22abf3326b6..1829f62a74a9e 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7799,6 +7799,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
- 		verbose(env, "verifier bug. Two map pointers in a timer helper\n");
- 		return -EFAULT;
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -446,7 +446,7 @@ static void i40e_config_irq_link_list(st
+ 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
+ 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
+ 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
+-		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
++		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
+ 		wr32(hw, reg_idx, reg);
  	}
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
-+		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
-+		return -EOPNOTSUPP;
-+	}
- 	meta->map_uid = reg->map_uid;
- 	meta->map_ptr = map;
- 	return 0;
--- 
-2.51.0
-
+ 
 
 
 
