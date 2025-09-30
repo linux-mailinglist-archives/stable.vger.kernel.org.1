@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-182579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84707BADA7B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121EFBAD746
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330B11944275
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DAC03A72C2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FDB2F39C0;
-	Tue, 30 Sep 2025 15:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34063306B05;
+	Tue, 30 Sep 2025 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dh1eZzEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQP6KK4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F32E217F55;
-	Tue, 30 Sep 2025 15:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C7D202C48;
+	Tue, 30 Sep 2025 15:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245404; cv=none; b=Tkt8lI/fzWiynqqzlPhfMB3ZYRREAT+7csiCzje6aCgY/GJEsPamO1KlBb6Ly9HkzsQrSuKtOeORoyn1IoKUboaTaJdtH0lQthQDvQqbuO/5VCQYvCD+HqYNMqdi6Ijvas52UGbTFKbgvqJ5Eqn+XM6q/ERNF/bhTaKUslEEp1k=
+	t=1759244428; cv=none; b=nCu/YqrH2d5rLqPIjN9wITfKWu7RQJzoAe+qMhaLG8osPLi0zFint6ztLAQxEIT8099TnOU264cWNJ62WCAqVfWH4Lr9IY7v36wryjC6Q+pJ4ParaMw1EFx7usZap6ONvSB2M+kVbz2ezNbb3cnBacF3U53roA7NiJqooKrLOfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245404; c=relaxed/simple;
-	bh=hvzPtjosgf9uvB/G/J2/w1+WxgHzvjPjXy7ItL9HU5c=;
+	s=arc-20240116; t=1759244428; c=relaxed/simple;
+	bh=nBm4rij7yoYOBItXlc/tdjvUfPCZ94lBJz6NTUTR5HM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6aVanDCalZ+eOOomtt/lnZRBpEZwbKiltTVqHz1P9QrX0T0Cqra9CaUL10+B8wSc+UbCPb5pSp2EjqvU2X5hpq0REBLVJxmMS2rrzsaL8MhZ5T119QKDkW0+N+tR2bjH8oHi63X+2FenomlSLyczIWjA1MiJ6wkMdEfaj6ROr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dh1eZzEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA9DC4CEF0;
-	Tue, 30 Sep 2025 15:16:43 +0000 (UTC)
+	 MIME-Version; b=bL88vagpBHdFzPfREb6ELkcI8XtLevk29BCjX4xXS9NgLoM2AM92itKt8kGzlSkJrpTNo7p+JlZUXUJgSDBt7KtrPXwWmouPF9Me/lSACfL1WBASb9k3aD/8N4qkqAAwYn0LzkzT/vGSVeTFsdg2Qx8PjjpJBuHg50UjTjAiV/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQP6KK4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547B8C113D0;
+	Tue, 30 Sep 2025 15:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245403;
-	bh=hvzPtjosgf9uvB/G/J2/w1+WxgHzvjPjXy7ItL9HU5c=;
+	s=korg; t=1759244428;
+	bh=nBm4rij7yoYOBItXlc/tdjvUfPCZ94lBJz6NTUTR5HM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dh1eZzEwpiLy5usHFcgSg/xu+6eVg51MMU3mIrpJBNmsXqr0gCaZRDhtx+RZ7kf1I
-	 C8dZDdTRHKQeSkzzVrPw530A/Shvok/xnXyz5n/Yo1VDMCreiAMPhlsVFItctZjjdW
-	 kM1Z6gFiXp+V+miHTWnpPx+L2z8pi5CW0jIry+zc=
+	b=KQP6KK4EiUGkLCiV3Iqa4sISDw0XViTfvdGDoDwsb63AoCqG+vG7UFVUWJH/uBi9d
+	 ovrRpy5/SrDkRJheO0h936BEweovDcPl9y3I0fuHl2rIL7AeRd6B3ButPj0gbDdLAx
+	 d5xyj33hJZGi9Tq/HU0TDmdQx7GJ2NygvUPrJszE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/151] can: dev: add generic function can_eth_ioctl_hwts()
+Subject: [PATCH 5.10 119/122] i40e: add validation for ring_len param
 Date: Tue, 30 Sep 2025 16:47:30 +0200
-Message-ID: <20250930143832.386675419@linuxfoundation.org>
+Message-ID: <20250930143827.832927150@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +66,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 90f942c5a6d775bad1be33ba214755314105da4a ]
+[ Upstream commit 55d225670def06b01af2e7a5e0446fbe946289e8 ]
 
-Tools based on libpcap (such as tcpdump) expect the SIOCSHWTSTAMP
-ioctl call to be supported. This is also specified in the kernel doc
-[1]. The purpose of this ioctl is to toggle the hardware timestamps.
+The `ring_len` parameter provided by the virtual function (VF)
+is assigned directly to the hardware memory context (HMC) without
+any validation.
 
-Currently, CAN devices which support hardware timestamping have those
-always activated. can_eth_ioctl_hwts() is a dumb function that will
-always succeed when requested to set tx_type to HWTSTAMP_TX_ON or
-rx_filter to HWTSTAMP_FILTER_ALL.
+To address this, introduce an upper boundary check for both Tx and Rx
+queue lengths. The maximum number of descriptors supported by the
+hardware is 8k-32.
+Additionally, enforce alignment constraints: Tx rings must be a multiple
+of 8, and Rx rings must be a multiple of 32.
 
-[1] Kernel doc: Timestamping, section 3.1 "Hardware Timestamping
-Implementation: Device Drivers"
-Link: https://docs.kernel.org/networking/timestamping.html#hardware-timestamping-implementation-device-drivers
-
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/all/20220727101641.198847-9-mailhol.vincent@wanadoo.fr
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 38c0abad45b1 ("can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow")
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/dev/dev.c | 29 +++++++++++++++++++++++++++++
- include/linux/can/dev.h   |  1 +
- 2 files changed, 30 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index d429a2940e83f..645564b9bff00 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -331,6 +331,35 @@ int can_change_mtu(struct net_device *dev, int new_mtu)
- }
- EXPORT_SYMBOL_GPL(can_change_mtu);
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -600,6 +600,13 @@ static int i40e_config_vsi_tx_queue(stru
  
-+/* generic implementation of netdev_ops::ndo_eth_ioctl for CAN devices
-+ * supporting hardware timestamps
-+ */
-+int can_eth_ioctl_hwts(struct net_device *netdev, struct ifreq *ifr, int cmd)
-+{
-+	struct hwtstamp_config hwts_cfg = { 0 };
+ 	/* only set the required fields */
+ 	tx_ctx.base = info->dma_ring_addr / 128;
 +
-+	switch (cmd) {
-+	case SIOCSHWTSTAMP: /* set */
-+		if (copy_from_user(&hwts_cfg, ifr->ifr_data, sizeof(hwts_cfg)))
-+			return -EFAULT;
-+		if (hwts_cfg.tx_type == HWTSTAMP_TX_ON &&
-+		    hwts_cfg.rx_filter == HWTSTAMP_FILTER_ALL)
-+			return 0;
-+		return -ERANGE;
-+
-+	case SIOCGHWTSTAMP: /* get */
-+		hwts_cfg.tx_type = HWTSTAMP_TX_ON;
-+		hwts_cfg.rx_filter = HWTSTAMP_FILTER_ALL;
-+		if (copy_to_user(ifr->ifr_data, &hwts_cfg, sizeof(hwts_cfg)))
-+			return -EFAULT;
-+		return 0;
-+
-+	default:
-+		return -EOPNOTSUPP;
++	/* ring_len has to be multiple of 8 */
++	if (!IS_ALIGNED(info->ring_len, 8) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_context;
 +	}
-+}
-+EXPORT_SYMBOL(can_eth_ioctl_hwts);
-+
- /* generic implementation of ethtool_ops::get_ts_info for CAN devices
-  * supporting hardware timestamps
-  */
-diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
-index 23f1c9f0109d7..c439735dce6a7 100644
---- a/include/linux/can/dev.h
-+++ b/include/linux/can/dev.h
-@@ -133,6 +133,7 @@ struct can_priv *safe_candev_priv(struct net_device *dev);
- int open_candev(struct net_device *dev);
- void close_candev(struct net_device *dev);
- int can_change_mtu(struct net_device *dev, int new_mtu);
-+int can_eth_ioctl_hwts(struct net_device *netdev, struct ifreq *ifr, int cmd);
- int can_ethtool_op_get_ts_info_hwts(struct net_device *dev,
- 				    struct ethtool_ts_info *info);
+ 	tx_ctx.qlen = info->ring_len;
+ 	tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[0]);
+ 	tx_ctx.rdylist_act = 0;
+@@ -665,6 +672,13 @@ static int i40e_config_vsi_rx_queue(stru
  
--- 
-2.51.0
-
+ 	/* only set the required fields */
+ 	rx_ctx.base = info->dma_ring_addr / 128;
++
++	/* ring_len has to be multiple of 32 */
++	if (!IS_ALIGNED(info->ring_len, 32) ||
++	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++		ret = -EINVAL;
++		goto error_param;
++	}
+ 	rx_ctx.qlen = info->ring_len;
+ 
+ 	if (info->splithdr_enabled) {
 
 
 
