@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-182279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121EFBAD746
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0780BADCE1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DAC03A72C2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDC443B2B51
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34063306B05;
-	Tue, 30 Sep 2025 15:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477D127056D;
+	Tue, 30 Sep 2025 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQP6KK4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1m08cZoA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C7D202C48;
-	Tue, 30 Sep 2025 15:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0423F846F;
+	Tue, 30 Sep 2025 15:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244428; cv=none; b=nCu/YqrH2d5rLqPIjN9wITfKWu7RQJzoAe+qMhaLG8osPLi0zFint6ztLAQxEIT8099TnOU264cWNJ62WCAqVfWH4Lr9IY7v36wryjC6Q+pJ4ParaMw1EFx7usZap6ONvSB2M+kVbz2ezNbb3cnBacF3U53roA7NiJqooKrLOfQ=
+	t=1759245726; cv=none; b=h4b/uPAHr32xXnt5Q70MwRY7b+2S20qZYoQodq+SL1AnQAa1KcA4isq2dGKftmhRFHe1QKTLUUudO27V7Axs1pjIgMDxxhU6vA7jonqaF2/n1XOkWDcCw/Es1ic4odSAQfKKNVLBbgbFlrzoY7LFyqmjklZoYQ8rAFG+S5+FGoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244428; c=relaxed/simple;
-	bh=nBm4rij7yoYOBItXlc/tdjvUfPCZ94lBJz6NTUTR5HM=;
+	s=arc-20240116; t=1759245726; c=relaxed/simple;
+	bh=cyNeyF2x50e1fOlOyU94DBJNsCvdPNfEoeMIQnV4Eqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bL88vagpBHdFzPfREb6ELkcI8XtLevk29BCjX4xXS9NgLoM2AM92itKt8kGzlSkJrpTNo7p+JlZUXUJgSDBt7KtrPXwWmouPF9Me/lSACfL1WBASb9k3aD/8N4qkqAAwYn0LzkzT/vGSVeTFsdg2Qx8PjjpJBuHg50UjTjAiV/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQP6KK4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547B8C113D0;
-	Tue, 30 Sep 2025 15:00:28 +0000 (UTC)
+	 MIME-Version; b=pzSI+dR3xnmPp2cxo3tsAenT8CEYNJzBaiQ4c9q+f153ykNORu1XF7fYhtCA4G5VoBbVA9ZcPNKFHRcJ+Owo+v0Y8U2vobfejkywZZTDWyQ0Q4Bd0G/Mz6VgqE2mj1/v2jht8PbL28TYY38zs8Ag78MZQFSz/HVvLHkt6ugX4AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1m08cZoA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DCEC4CEF0;
+	Tue, 30 Sep 2025 15:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244428;
-	bh=nBm4rij7yoYOBItXlc/tdjvUfPCZ94lBJz6NTUTR5HM=;
+	s=korg; t=1759245725;
+	bh=cyNeyF2x50e1fOlOyU94DBJNsCvdPNfEoeMIQnV4Eqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQP6KK4EiUGkLCiV3Iqa4sISDw0XViTfvdGDoDwsb63AoCqG+vG7UFVUWJH/uBi9d
-	 ovrRpy5/SrDkRJheO0h936BEweovDcPl9y3I0fuHl2rIL7AeRd6B3ButPj0gbDdLAx
-	 d5xyj33hJZGi9Tq/HU0TDmdQx7GJ2NygvUPrJszE=
+	b=1m08cZoAMs1ySdr7oabqq6uZQE+6uFFGj2UpdLOZuspFmBiErXBwrmFqXlNEQ/Rhl
+	 QMPDW3qqklH/0n+y/5dHqj6P8zbDIEW27B562kqWKmXv4OyLL8cKKm5LwMEVXi233P
+	 HgJuFP/JaKkTH9tQVb9nF7I6iAEWTjYxDhP9oS2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/122] i40e: add validation for ring_len param
-Date: Tue, 30 Sep 2025 16:47:30 +0200
-Message-ID: <20250930143827.832927150@linuxfoundation.org>
+Subject: [PATCH 6.6 32/91] can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
+Date: Tue, 30 Sep 2025 16:47:31 +0200
+Message-ID: <20250930143822.486103781@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 55d225670def06b01af2e7a5e0446fbe946289e8 ]
+[ Upstream commit 5c793afa07da6d2d4595f6c73a2a543a471bb055 ]
 
-The `ring_len` parameter provided by the virtual function (VF)
-is assigned directly to the hardware memory context (HMC) without
-any validation.
+On R-Car Gen3 using PSCI, s2ram powers down the SoC.  After resume, the
+CAN interface no longer works, until it is brought down and up again.
 
-To address this, introduce an upper boundary check for both Tx and Rx
-queue lengths. The maximum number of descriptors supported by the
-hardware is 8k-32.
-Additionally, enforce alignment constraints: Tx rings must be a multiple
-of 8, and Rx rings must be a multiple of 32.
+Fix this by calling rcar_can_start() from the PM resume callback, to
+fully initialize the controller instead of just restarting it.
 
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/699b2f7fcb60b31b6f976a37f08ce99c5ffccb31.1755165227.git.geert+renesas@glider.be
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/can/rcar/rcar_can.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -600,6 +600,13 @@ static int i40e_config_vsi_tx_queue(stru
+diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
+index f5aa5dbacaf21..1f26aba620b98 100644
+--- a/drivers/net/can/rcar/rcar_can.c
++++ b/drivers/net/can/rcar/rcar_can.c
+@@ -861,7 +861,6 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
+ {
+ 	struct net_device *ndev = dev_get_drvdata(dev);
+ 	struct rcar_can_priv *priv = netdev_priv(ndev);
+-	u16 ctlr;
+ 	int err;
  
- 	/* only set the required fields */
- 	tx_ctx.base = info->dma_ring_addr / 128;
-+
-+	/* ring_len has to be multiple of 8 */
-+	if (!IS_ALIGNED(info->ring_len, 8) ||
-+	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+		ret = -EINVAL;
-+		goto error_context;
-+	}
- 	tx_ctx.qlen = info->ring_len;
- 	tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[0]);
- 	tx_ctx.rdylist_act = 0;
-@@ -665,6 +672,13 @@ static int i40e_config_vsi_rx_queue(stru
+ 	if (!netif_running(ndev))
+@@ -873,12 +872,7 @@ static int __maybe_unused rcar_can_resume(struct device *dev)
+ 		return err;
+ 	}
  
- 	/* only set the required fields */
- 	rx_ctx.base = info->dma_ring_addr / 128;
-+
-+	/* ring_len has to be multiple of 32 */
-+	if (!IS_ALIGNED(info->ring_len, 32) ||
-+	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+		ret = -EINVAL;
-+		goto error_param;
-+	}
- 	rx_ctx.qlen = info->ring_len;
+-	ctlr = readw(&priv->regs->ctlr);
+-	ctlr &= ~RCAR_CAN_CTLR_SLPM;
+-	writew(ctlr, &priv->regs->ctlr);
+-	ctlr &= ~RCAR_CAN_CTLR_CANM;
+-	writew(ctlr, &priv->regs->ctlr);
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
++	rcar_can_start(ndev);
  
- 	if (info->splithdr_enabled) {
+ 	netif_device_attach(ndev);
+ 	netif_start_queue(ndev);
+-- 
+2.51.0
+
 
 
 
