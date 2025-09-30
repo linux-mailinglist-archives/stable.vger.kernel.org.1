@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-182374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E922BAD82D
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0491BAD6DD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B070E165982
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CDFB18876C9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDFF302CD6;
-	Tue, 30 Sep 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53050202C48;
+	Tue, 30 Sep 2025 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJe0dEvj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYcBRCbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390D02236EB;
-	Tue, 30 Sep 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBC0303A05;
+	Tue, 30 Sep 2025 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244737; cv=none; b=J7VtrBTJSU80EokjlIBiuhspXa5RGUm9EIuEFT3P723Jz/DEpuf4nYe0FA140pOvcsVSX8aRZF7ua5lV4YvLn9+TNpsxXJHy6bWT/UEaEArTiQZ9bGWhYHJoBlS27ifFANDimSeCGKbtpbiTDE56mdg1wwc8zZoTkpwBq0WTpvQ=
+	t=1759244419; cv=none; b=Y5hao6WStfoqdTs9SyKnypQvdr7kBrK9bNG/u8u3qox/Nt20YPcunmIaMDM2EtvcNfoBypMi9TdCBgYomLEfqhgRxVbG5EU5xQJKJuSbbQN6CJ+uCY1dY8cnl51/5aka3ghoXq2OUV27urvtr63Ualfc/Q30TG5UvKjmr05LPBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244737; c=relaxed/simple;
-	bh=kK60t0qUC5EJvBBxAwQ1lMaBW1zIWJG/4t8j7mTOBDA=;
+	s=arc-20240116; t=1759244419; c=relaxed/simple;
+	bh=5hYtZLI/8QOs/6O6w+/OPvA2THcW7qU8eJLl9rocw1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZ2CLZvqae93Lq7rfcWy4+QKRBxypzf6lE7BKTqTKaT+mLX2bsk+3c6I2gXoR72eNsZs1XN4fYpvwqqfTJDVtpPHu58Oy+qMSmz0hO085KNIMZudtyfH7c0AIXXgu/3opLEryFxedoE6+qm7liZCbHuqxV7wzOGPO5Yt1gsoSFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJe0dEvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3077C4CEF0;
-	Tue, 30 Sep 2025 15:05:36 +0000 (UTC)
+	 MIME-Version; b=SIlLlvUSGji4ca7USzwA8p9U7zlkxRKzWVg7CkAacmOjUBt7p6tWuQUU4AaZEsKKMtf1+j6v536huUWJ8hlXCxoKKTo63Wq5XX+lBt+mFWoSLOqZn/qFFbP8cL5PUcQonft9y1ofeT7jlDe8aUnEqWFVSY0H0WPvMtAcgvhIaqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYcBRCbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDEDC4CEF0;
+	Tue, 30 Sep 2025 15:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244737;
-	bh=kK60t0qUC5EJvBBxAwQ1lMaBW1zIWJG/4t8j7mTOBDA=;
+	s=korg; t=1759244418;
+	bh=5hYtZLI/8QOs/6O6w+/OPvA2THcW7qU8eJLl9rocw1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJe0dEvjN0Pq0fWeg5cuH5lmxD5Wznet+e32o/TohTzxQSDinlX9hpuH4k1VcKG/l
-	 g52PlqQ7JOU5TdyvYi08RqhgItiXIoOyllJKQX4tzbkFlNQs/g38YO8frVYHDabMei
-	 DingI/v6aPI6q32kOcSsab9v/8wFgIKbS9kn504Q=
+	b=tYcBRCbZdEQDRPg08foyrQd+E3qW8UIUYTN+zxVpEXOEUY5yFA9So6NMsxQ8ox5qD
+	 7E4d54z8q47olQbqs2CfLP8kILr40U4AuHCrC5xazdglNtSuo39Mo3AidD5fOv3urK
+	 nO+A1h3WMBjVD9EGmR73AJwT6eEnZCwONRIfsHoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	tglozar@redhat.com,
-	Wang Liang <wangliang74@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jiayi Li <lijiayi@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 099/143] tracing/osnoise: Fix slab-out-of-bounds in _parse_integer_limit()
+Subject: [PATCH 5.10 092/122] usb: core: Add 0x prefix to quirks debug output
 Date: Tue, 30 Sep 2025 16:47:03 +0200
-Message-ID: <20250930143835.173033843@linuxfoundation.org>
+Message-ID: <20250930143826.764190381@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-[ Upstream commit a2501032de0d1bc7971b2e43c03da534ac10ee9b ]
+[ Upstream commit 47c428fce0b41b15ab321d8ede871f780ccd038f ]
 
-When config osnoise cpus by write() syscall, the following KASAN splat may
-be observed:
+Use "0x%x" format for quirks debug print to clarify it's a hexadecimal
+value. Improves readability and consistency with other hex outputs.
 
-BUG: KASAN: slab-out-of-bounds in _parse_integer_limit+0x103/0x130
-Read of size 1 at addr ffff88810121e3a1 by task test/447
-CPU: 1 UID: 0 PID: 447 Comm: test Not tainted 6.17.0-rc6-dirty #288 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x55/0x70
- print_report+0xcb/0x610
- kasan_report+0xb8/0xf0
- _parse_integer_limit+0x103/0x130
- bitmap_parselist+0x16d/0x6f0
- osnoise_cpus_write+0x116/0x2d0
- vfs_write+0x21e/0xcc0
- ksys_write+0xee/0x1c0
- do_syscall_64+0xa8/0x2a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-This issue can be reproduced by below code:
-
-const char *cpulist = "1";
-int fd=open("/sys/kernel/debug/tracing/osnoise/cpus", O_WRONLY);
-write(fd, cpulist, strlen(cpulist));
-
-Function bitmap_parselist() was called to parse cpulist, it require that
-the parameter 'buf' must be terminated with a '\0' or '\n'. Fix this issue
-by adding a '\0' to 'buf' in osnoise_cpus_write().
-
-Cc: <mhiramat@kernel.org>
-Cc: <mathieu.desnoyers@efficios.com>
-Cc: <tglozar@redhat.com>
-Link: https://lore.kernel.org/20250916063948.3154627-1-wangliang74@huawei.com
-Fixes: 17f89102fe23 ("tracing/osnoise: Allow arbitrarily long CPU string")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://lore.kernel.org/r/20250603071045.3243699-1-lijiayi@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_osnoise.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/core/quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
-index 337bc0eb5d71b..dc734867f0fc4 100644
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -2325,12 +2325,13 @@ osnoise_cpus_write(struct file *filp, const char __user *ubuf, size_t count,
- 	if (count < 1)
- 		return 0;
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index f5894cb166867..55efefc5d702a 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -728,7 +728,7 @@ void usb_detect_quirks(struct usb_device *udev)
+ 	udev->quirks ^= usb_detect_dynamic_quirks(udev);
  
--	buf = kmalloc(count, GFP_KERNEL);
-+	buf = kmalloc(count + 1, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
+ 	if (udev->quirks)
+-		dev_dbg(&udev->dev, "USB quirks for this device: %x\n",
++		dev_dbg(&udev->dev, "USB quirks for this device: 0x%x\n",
+ 			udev->quirks);
  
- 	if (copy_from_user(buf, ubuf, count))
- 		return -EFAULT;
-+	buf[count] = '\0';
- 
- 	if (!zalloc_cpumask_var(&osnoise_cpumask_new, GFP_KERNEL))
- 		return -ENOMEM;
+ #ifdef CONFIG_USB_DEFAULT_PERSIST
 -- 
 2.51.0
 
