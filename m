@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-182227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797F0BAD638
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE6ABAD85A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C86311941AFD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C6C93AF2E8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC2F304989;
-	Tue, 30 Sep 2025 14:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DD030595C;
+	Tue, 30 Sep 2025 15:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10GqVYfm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8haVFZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6974A1F03C5;
-	Tue, 30 Sep 2025 14:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C7C23506A;
+	Tue, 30 Sep 2025 15:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244260; cv=none; b=YbUf8O4FLxuDb1pTonhxAZl36wV/GAdYjVaRzIwgAMj1D50Aq6iQESKECDVJ31Khm9BahrbTFaVn0dkh5lky8a3DxUDHmgZ/i32kvIR2PPl+jblpz4QQeBPEkB1/9xOGhVvJImQXTl3lac282LoHl3GiHEYzLvKG9+HSo0zhjXs=
+	t=1759244686; cv=none; b=G+0okpHgvB8sI3KBgtCh8q145nwT0hPeqEicL17fb5PGmnS9y0L24EA9pNOLBRbBgf7r44XW1MsdvLWZP8RbZSlflk0SFISSL6OqcY4C8xfD8Rv/fBPA4+MVWH1rVQjcV/+cSB1iArEJMM1CwRRHRwyGgnMsvHOaWqZ5ppbmkZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244260; c=relaxed/simple;
-	bh=8VPs7gO7k0r3zHC9QYTcwKcX5MY8IqiCE4f7oKEST9M=;
+	s=arc-20240116; t=1759244686; c=relaxed/simple;
+	bh=RguUYyxXh6oJxL3oKNVIuTIvhfR+2ttaqU+jUT5W86A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaJRXL/eHQCnMMOaduryFYYw7Q5wg1GWWmOpxN0GrislWyykciiE5Iye/ii2RAvd05Bke96J8SfAwCUL4O9OvQBc2ID4oEQ+pkIDZ5KhD/yHkZkil9P1htS2NqxgDc+VfrTaw84us6aO3wpnF+TBqVjB9deHo6nkAF9E4pQ3FIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10GqVYfm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3FFC4CEF0;
-	Tue, 30 Sep 2025 14:57:39 +0000 (UTC)
+	 MIME-Version; b=SG7QRndQObFrbyy5Q3sQlQvLPGehKZbrhquIMr8BmJcZBp0WHluWYjKCqJl4ABo8H7dVjgXB7vyl1e1LoDldpNULpgaJOlzjLvPwRwATKSgYc+p54vDHfRWTqmOB1fXV5rzGwMQLAwR6iSrdmEGmiMW4NRtSKBfkSfOwaI1eBiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8haVFZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CCFC4CEF0;
+	Tue, 30 Sep 2025 15:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244260;
-	bh=8VPs7gO7k0r3zHC9QYTcwKcX5MY8IqiCE4f7oKEST9M=;
+	s=korg; t=1759244686;
+	bh=RguUYyxXh6oJxL3oKNVIuTIvhfR+2ttaqU+jUT5W86A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10GqVYfmStTD2YC1lZqIPTWPmaLQ5h7E817DYkS+lg9gQnM7E78rdoqVyT73YvzEq
-	 GkNBQKoAwJSyhIQ5Nv3g8rGfhtvwAnj95q4m9lowqD+NCr8r7zQkRds2XJ0GF+bDqx
-	 8GK2X+YSaCg5BoYjP0+vGDcq4cwk9ZkdEv3M+ha8=
+	b=X8haVFZXcE9faPng6haUBcqG8y2tYvk/69s17v5l+pZOK8mQ80fVAo3tN65Jces+S
+	 NZI/mAbgs7mlJ9zj2CCYC8+ThNVLnLXb7kcmv5oQoFgJfMmWBgIXyzcfsNp90Tjd9N
+	 Ss/fPW11ladFNu2pz9Xta4lhjhIwfHo2Ap2UA62E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunfeng Yun <chunfeng.yun@mediatek.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/122] phy: ti: convert to devm_platform_ioremap_resource(_byname)
+Subject: [PATCH 6.16 082/143] net/mlx5e: Fix missing FEC RS stats for RS_544_514_INTERLEAVED_QUAD
 Date: Tue, 30 Sep 2025 16:46:46 +0200
-Message-ID: <20250930143826.071090590@linuxfoundation.org>
+Message-ID: <20250930143834.506475588@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunfeng Yun <chunfeng.yun@mediatek.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 79caf207d6699419e83ac150accc5c80c5719b47 ]
+[ Upstream commit 6d0477d0d067a53c1d48d0aff1fd52e151721871 ]
 
-Use devm_platform_ioremap_resource(_byname) to simplify code
+Include MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD in the FEC RS stats
+handling. This addresses a gap introduced when adding support for
+200G/lane link modes.
 
-Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
-Link: https://lore.kernel.org/r/1604642930-29019-17-git-send-email-chunfeng.yun@mediatek.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 64961557efa1 ("phy: ti: omap-usb2: fix device leak at unbind")
+Fixes: 4e343c11efbb ("net/mlx5e: Support FEC settings for 200G per lane link modes")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1758525094-816583-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-omap-control.c |   17 ++++++-----------
- drivers/phy/ti/phy-omap-usb2.c    |    4 +---
- drivers/phy/ti/phy-ti-pipe3.c     |   15 ++++-----------
- 3 files changed, 11 insertions(+), 25 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_stats.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/phy/ti/phy-omap-control.c
-+++ b/drivers/phy/ti/phy-omap-control.c
-@@ -268,7 +268,6 @@ MODULE_DEVICE_TABLE(of, omap_control_phy
- 
- static int omap_control_phy_probe(struct platform_device *pdev)
- {
--	struct resource	*res;
- 	const struct of_device_id *of_id;
- 	struct omap_control_phy *control_phy;
- 
-@@ -285,16 +284,13 @@ static int omap_control_phy_probe(struct
- 	control_phy->type = *(enum omap_control_phy_type *)of_id->data;
- 
- 	if (control_phy->type == OMAP_CTRL_TYPE_OTGHS) {
--		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--			"otghs_control");
--		control_phy->otghs_control = devm_ioremap_resource(
--			&pdev->dev, res);
-+		control_phy->otghs_control =
-+			devm_platform_ioremap_resource_byname(pdev, "otghs_control");
- 		if (IS_ERR(control_phy->otghs_control))
- 			return PTR_ERR(control_phy->otghs_control);
- 	} else {
--		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--				"power");
--		control_phy->power = devm_ioremap_resource(&pdev->dev, res);
-+		control_phy->power =
-+			devm_platform_ioremap_resource_byname(pdev, "power");
- 		if (IS_ERR(control_phy->power)) {
- 			dev_err(&pdev->dev, "Couldn't get power register\n");
- 			return PTR_ERR(control_phy->power);
-@@ -312,9 +308,8 @@ static int omap_control_phy_probe(struct
- 	}
- 
- 	if (control_phy->type == OMAP_CTRL_TYPE_PCIE) {
--		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--						   "pcie_pcs");
--		control_phy->pcie_pcs = devm_ioremap_resource(&pdev->dev, res);
-+		control_phy->pcie_pcs =
-+			devm_platform_ioremap_resource_byname(pdev, "pcie_pcs");
- 		if (IS_ERR(control_phy->pcie_pcs))
- 			return PTR_ERR(control_phy->pcie_pcs);
- 	}
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -366,7 +366,6 @@ static int omap_usb2_probe(struct platfo
- {
- 	struct omap_usb	*phy;
- 	struct phy *generic_phy;
--	struct resource *res;
- 	struct phy_provider *phy_provider;
- 	struct usb_otg *otg;
- 	struct device_node *node = pdev->dev.of_node;
-@@ -403,8 +402,7 @@ static int omap_usb2_probe(struct platfo
- 
- 	omap_usb2_init_errata(phy);
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	phy->phy_base = devm_ioremap_resource(&pdev->dev, res);
-+	phy->phy_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(phy->phy_base))
- 		return PTR_ERR(phy->phy_base);
- 
---- a/drivers/phy/ti/phy-ti-pipe3.c
-+++ b/drivers/phy/ti/phy-ti-pipe3.c
-@@ -758,35 +758,28 @@ static int ti_pipe3_get_sysctrl(struct t
- 
- static int ti_pipe3_get_tx_rx_base(struct ti_pipe3 *phy)
- {
--	struct resource *res;
- 	struct device *dev = phy->dev;
- 	struct platform_device *pdev = to_platform_device(dev);
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--					   "phy_rx");
--	phy->phy_rx = devm_ioremap_resource(dev, res);
-+	phy->phy_rx = devm_platform_ioremap_resource_byname(pdev, "phy_rx");
- 	if (IS_ERR(phy->phy_rx))
- 		return PTR_ERR(phy->phy_rx);
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--					   "phy_tx");
--	phy->phy_tx = devm_ioremap_resource(dev, res);
-+	phy->phy_tx = devm_platform_ioremap_resource_byname(pdev, "phy_tx");
- 
- 	return PTR_ERR_OR_ZERO(phy->phy_tx);
- }
- 
- static int ti_pipe3_get_pll_base(struct ti_pipe3 *phy)
- {
--	struct resource *res;
- 	struct device *dev = phy->dev;
- 	struct platform_device *pdev = to_platform_device(dev);
- 
- 	if (phy->mode == PIPE3_MODE_PCIE)
- 		return 0;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--					   "pll_ctrl");
--	phy->pll_ctrl_base = devm_ioremap_resource(dev, res);
-+	phy->pll_ctrl_base =
-+		devm_platform_ioremap_resource_byname(pdev, "pll_ctrl");
- 	return PTR_ERR_OR_ZERO(phy->pll_ctrl_base);
- }
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+index 19664fa7f2171..46d6dd05fb814 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+@@ -1466,6 +1466,7 @@ static void fec_set_block_stats(struct mlx5e_priv *priv,
+ 	case MLX5E_FEC_RS_528_514:
+ 	case MLX5E_FEC_RS_544_514:
+ 	case MLX5E_FEC_LLRS_272_257_1:
++	case MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD:
+ 		fec_set_rs_stats(fec_stats, out);
+ 		return;
+ 	case MLX5E_FEC_FIRECODE:
+-- 
+2.51.0
+
 
 
 
