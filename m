@@ -1,195 +1,146 @@
-Return-Path: <stable+bounces-182040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0650BABB6B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 09:00:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CBDBABB44
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A3681898D98
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 07:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE97C3B6572
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 06:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07F827A107;
-	Tue, 30 Sep 2025 07:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E7B2BCF4A;
+	Tue, 30 Sep 2025 06:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RcLHUDPa"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9611CC8FE;
-	Tue, 30 Sep 2025 07:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02B37D07D;
+	Tue, 30 Sep 2025 06:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759215619; cv=none; b=m269s4YGHSj6483O1ynqJ05+RlbGqGhfPc3jn63rb9JYxtJaDp00fcOb5vN16R2tkSnZ4KaMm+X1YR9A5OmU5mRfzNIvfxk4OIGI7AVGNzfK0nfllbY2s9RZU1R/gVrT8nH1rBCWNAPx0AM2sqyVq2W4Yy/JYHy6YxbLtxOCOn8=
+	t=1759215104; cv=none; b=iwXbrzTsM8fR2903aMns5snMaLxNwARJEwg6zeiRFYnnD6pfAWKM1EEnQMsVWhhUw4w9YNk6hXsWpkUNp2ik2A6byiBB6BPQ4rNAJqE0jYWtQSY8stFukbdy7KG68yhXFe1ec237+t4SwMUN4i2TJciylEl4VUcrj0KhQ/2z53A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759215619; c=relaxed/simple;
-	bh=1nRzo+4if6eps77k90YPPpU5HTbEPWG80Uu568W2D4c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UjVXEm6HWwQJpq3O/RwJbLbtSatOrbCHM1+6f3W6dMEWY6L7ATPgrURlI530hQujJ+oVN1/ozC4+8zhure766j3uH/Lait6+rgYtjaMon4Tsv6Qa7ktbcLcGu0tfsshYwQZGGXMc5CmZ9kDyLjw1wT3mBsXg5WlcQ7y+2qlo/I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cbTT86GP1zYQtvr;
-	Tue, 30 Sep 2025 14:59:56 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 166801A0F03;
-	Tue, 30 Sep 2025 15:00:14 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgAn6mH5f9tojSc3BQ--.45680S4;
-	Tue, 30 Sep 2025 15:00:11 +0800 (CST)
-From: Zheng Qixing <zhengqixing@huaweicloud.com>
-To: axboe@kernel.dk
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	stable@vger.kernel.org,
-	jack@suse.cz,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	yukuai3@huawei.com,
-	yi.zhang@huawei.com,
-	yangerkun@huawei.com,
-	houtao1@huawei.com,
-	zhengqixing@huawei.com
-Subject: [PATCH 6.6.y] loop: Avoid updating block size under exclusive owner
-Date: Tue, 30 Sep 2025 14:49:33 +0800
-Message-Id: <20250930064933.1188006-1-zhengqixing@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1759215104; c=relaxed/simple;
+	bh=aJX3DGU+W1LZ8Dh+Z/Lm/fAFVzq9jzJXUxHKVTd4I1k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aNUh/FsUruIyRgJ1/fFh4iVgQU1DSxlDag+aqKTk2EbQyLh+uQMRcXfS5b8uyx10HdVvbrFagn3lBanhz0eVU5GkuVK1HNIwgqpNQgNcu+11r/s+dyTeFGzdiCVN/qa1d9bmOwYzYWar45hYgoSyDZssjidkU0SrpNLElAyKXCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RcLHUDPa; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <2ad95cd2-3a09-4873-b6c4-1e00a88dceb7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759215099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yGN6BMSkXgx6PB6NEFYkeWWUVlKsILAVHZBwRtmuzRI=;
+	b=RcLHUDPak47T8AShrEH2BQNBqjOkZVnsG6DDUI6CgHbkDdkuF/qi+GBb1hVpjXJOcJs5tI
+	xqTja3a64qobHcaFO05TFcvfPnaKyOLYen9dXJTqom6mF4e0ZJK5KGMDeLEpv6UJRpFGye
+	CckGYTS2op4N2qbq6P99hGEv6fuQY/o=
+Date: Tue, 30 Sep 2025 14:51:23 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v3 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
+ remapping zero-filled mTHP subpage to shared zeropage
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
+ npache@redhat.com, riel@surriel.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, usamaarif642@gmail.com, yuzhao@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ioworker0@gmail.com,
+ stable@vger.kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
+References: <20250930060557.85133-1-lance.yang@linux.dev>
+ <026a2673-8195-4927-8cde-f7517b601125@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <026a2673-8195-4927-8cde-f7517b601125@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgAn6mH5f9tojSc3BQ--.45680S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxAFWDGryxtF45AF1UGrWUCFg_yoW5Kw13pF
-	42gFW5trWvgFW2gFWavw1vvry5Gw1xG3y7GFy2gw1j9ayUJ3sI9w1xJr90grW0qr93WFZ8
-	X39xJFW8uF1UJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
-	6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
-	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
-	xUF1v3UUUUU
-X-CM-SenderInfo: x2kh0wptl0x03j6k3tpzhluzxrxghudrp/
+X-Migadu-Flow: FLOW_OUT
 
-From: Zheng Qixing <zhengqixing@huawei.com>
 
-From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 7e49538288e523427beedd26993d446afef1a6fb ]
+On 2025/9/30 14:31, David Hildenbrand wrote:
+> On 30.09.25 08:05, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> When splitting an mTHP and replacing a zero-filled subpage with the 
+>> shared
+>> zeropage, try_to_map_unused_to_zeropage() currently drops several 
+>> important
+>> PTE bits.
+>>
+>> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+>> incremental snapshots, losing the soft-dirty bit means modified pages are
+>> missed, leading to inconsistent memory state after restore.
+>>
+>> As pointed out by David, the more critical uffd-wp bit is also dropped.
+>> This breaks the userfaultfd write-protection mechanism, causing writes
+>> to be silently missed by monitoring applications, which can lead to data
+>> corruption.
+>>
+>> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
+>> creating the new zeropage mapping to ensure they are correctly tracked.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage 
+>> when splitting isolated thp")
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Suggested-by: Dev Jain <dev.jain@arm.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>> v2 -> v3:
+>>   - ptep_get() gets called only once per iteration (per Dev)
+>>   - https://lore.kernel.org/linux-mm/20250930043351.34927-1- 
+>> lance.yang@linux.dev/
+>>
+>> v1 -> v2:
+>>   - Avoid calling ptep_get() multiple times (per Dev)
+>>   - Double-check the uffd-wp bit (per David)
+>>   - Collect Acked-by from David - thanks!
+>>   - https://lore.kernel.org/linux-mm/20250928044855.76359-1- 
+>> lance.yang@linux.dev/
+>>
+>>   mm/migrate.c | 14 ++++++++++----
+>>   1 file changed, 10 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/migrate.c b/mm/migrate.c
+>> index ce83c2c3c287..bafd8cb3bebe 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -297,6 +297,7 @@ bool isolate_folio_to_list(struct folio *folio, 
+>> struct list_head *list)
+>>   static bool try_to_map_unused_to_zeropage(struct 
+>> page_vma_mapped_walk *pvmw,
+>>                         struct folio *folio,
+>> +                      pte_t old_pte,
+>>                         unsigned long idx)
+> 
+> Nit:
+> 
+> static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk 
+> *pvmw,
+>          struct folio *folio, pte_t old_pte, unsigned long idx)
 
-Syzbot came up with a reproducer where a loop device block size is
-changed underneath a mounted filesystem. This causes a mismatch between
-the block device block size and the block size stored in the superblock
-causing confusion in various places such as fs/buffer.c. The particular
-issue triggered by syzbot was a warning in __getblk_slow() due to
-requested buffer size not matching block device block size.
+Well, let me clean that up ;p
 
-Fix the problem by getting exclusive hold of the loop device to change
-its block size. This fails if somebody (such as filesystem) has already
-an exclusive ownership of the block device and thus prevents modifying
-the loop device under some exclusive owner which doesn't expect it.
+> 
+> LGTM, Thanks!
 
-Reported-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Tested-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/20250711163202.19623-2-jack@suse.cz
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
----
- drivers/block/loop.c | 40 +++++++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 455e2a2b149f..6fe9180aafb3 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1472,19 +1472,36 @@ static int loop_set_dio(struct loop_device *lo, unsigned long arg)
- 	return error;
- }
- 
--static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
-+static int loop_set_block_size(struct loop_device *lo, blk_mode_t mode,
-+			       struct block_device *bdev, unsigned long arg)
- {
- 	int err = 0;
- 
--	if (lo->lo_state != Lo_bound)
--		return -ENXIO;
-+	/*
-+	 * If we don't hold exclusive handle for the device, upgrade to it
-+	 * here to avoid changing device under exclusive owner.
-+	 */
-+	if (!(mode & BLK_OPEN_EXCL)) {
-+		err = bd_prepare_to_claim(bdev, loop_set_block_size, NULL);
-+		if (err)
-+			return err;
-+	}
-+
-+	err = mutex_lock_killable(&lo->lo_mutex);
-+	if (err)
-+		goto abort_claim;
-+
-+	if (lo->lo_state != Lo_bound) {
-+		err = -ENXIO;
-+		goto unlock;
-+	}
- 
- 	err = blk_validate_block_size(arg);
- 	if (err)
--		return err;
-+		goto unlock;
- 
- 	if (lo->lo_queue->limits.logical_block_size == arg)
--		return 0;
-+		goto unlock;
- 
- 	sync_blockdev(lo->lo_device);
- 	invalidate_bdev(lo->lo_device);
-@@ -1496,6 +1513,11 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
- 	loop_update_dio(lo);
- 	blk_mq_unfreeze_queue(lo->lo_queue);
- 
-+unlock:
-+	mutex_unlock(&lo->lo_mutex);
-+abort_claim:
-+	if (!(mode & BLK_OPEN_EXCL))
-+		bd_abort_claiming(bdev, loop_set_block_size);
- 	return err;
- }
- 
-@@ -1514,9 +1536,6 @@ static int lo_simple_ioctl(struct loop_device *lo, unsigned int cmd,
- 	case LOOP_SET_DIRECT_IO:
- 		err = loop_set_dio(lo, arg);
- 		break;
--	case LOOP_SET_BLOCK_SIZE:
--		err = loop_set_block_size(lo, arg);
--		break;
- 	default:
- 		err = -EINVAL;
- 	}
-@@ -1571,9 +1590,12 @@ static int lo_ioctl(struct block_device *bdev, blk_mode_t mode,
- 		break;
- 	case LOOP_GET_STATUS64:
- 		return loop_get_status64(lo, argp);
-+	case LOOP_SET_BLOCK_SIZE:
-+		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
-+			return -EPERM;
-+		return loop_set_block_size(lo, mode, bdev, arg);
- 	case LOOP_SET_CAPACITY:
- 	case LOOP_SET_DIRECT_IO:
--	case LOOP_SET_BLOCK_SIZE:
- 		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
- 			return -EPERM;
- 		fallthrough;
--- 
-2.39.2
+Cheers!
 
 
