@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F296ABADDF2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 497DEBADD1B
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B06714C0ECA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71D814A53B3
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84C71DF73C;
-	Tue, 30 Sep 2025 15:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239AF2FC87A;
+	Tue, 30 Sep 2025 15:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bw4ro6PF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04JyLmBf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959E716A956;
-	Tue, 30 Sep 2025 15:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B07846F;
+	Tue, 30 Sep 2025 15:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246099; cv=none; b=cDf0ndi6H3ZcXzmgpRZ2bPyXWtbuDsunrrFCFPOowUFfHGC04XiKXy7zCgdMiJqJj4WNZwsJgHVIbckghjWgARdNeXmvHvCljAUP5QLvnMFIK3x/nk+1e0jm0DN0d8ZHS8tkU0ZrZ+ecRFUJT+ZnAFO9kJ7Ecljs4PjhCEQDSq4=
+	t=1759245839; cv=none; b=RnyfXklXk0ZjkpJKrrSchL8AeGGCdNHu9PV/dZX79HJzCLKJxasG0Q/VU+si8yhC25FSsrVcS6wIZ9hFboLK3oEZ6QFuFdALswBWNceoWU6ATTfoc/IWR4nr097wgKNmaSoXUABGuNF0oRbMoGpUJkw2fj4b8cE21pKOXwDXzVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246099; c=relaxed/simple;
-	bh=YuzHKsDxi/BNJCfsjAYGhL/YE1yHpf11Os0h6F7SyA0=;
+	s=arc-20240116; t=1759245839; c=relaxed/simple;
+	bh=b4c1eoEdqpBGQe2JTubd+26/3s5PpejI8NktXPk6yDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxUJU7QNj6v4D2tbTHLg2+fdnaPZ2vHcxX+bt09iJSzYBszdINkd2PN7nrHPDDhhqKaltaCPUWGeMmZQ8+9Y0EpoSjBxAfNr793SyklWHisMHuQ1cPjyzAwI4I2sjZXmq2V4Df82Uo/UU/yiXCWXOgywJgLC3ccyYcNeGTnW1DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bw4ro6PF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56BEC4CEF0;
-	Tue, 30 Sep 2025 15:28:18 +0000 (UTC)
+	 MIME-Version; b=PjR9eHmTu7RBM1UsGoCIhKFxDp+con4vBCLpTr9GP9UzR7gRln8GsFFspAvVFQSXPjK4V3xHeYnhyaaSICnIW80FmFVdqQbg3if67cdZVM8qbdY1PDeZ5/TTk6UrOfw2I3hEOnKGNGms7s/qK8cSI3V3OhA5e/BuW/cqiQtrQmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04JyLmBf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A8DC4CEF0;
+	Tue, 30 Sep 2025 15:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246099;
-	bh=YuzHKsDxi/BNJCfsjAYGhL/YE1yHpf11Os0h6F7SyA0=;
+	s=korg; t=1759245839;
+	bh=b4c1eoEdqpBGQe2JTubd+26/3s5PpejI8NktXPk6yDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bw4ro6PFTOIO7JGRaXY07epx+WIoLOmhz4crzgmzTdOKkorFfW7Tm8s99Ght1/Gmk
-	 IhkN/8nvv3Ws9SLzkXfnmMDGAHVGN1faLAU7DX2L470YYR671c2SHKtMxZB1C7PCvh
-	 h7GIgkNR/71jlclwKgR20bQW1YnmiAdNZ/Ldohwk=
+	b=04JyLmBf98SP3mQmM0TuagCv2ljCZlgAz07Fn/LGP8l+4c/yk2NgQ2lWQRRuzQaEu
+	 HHbrCmsyb+8JnbIW/4Gl/7DfrqOxN4m5zitZ66jXtylwxZPBldvfichbEmsnpfysdh
+	 hpxnrPCRRqzd/ftbhqdj8cA8PBeht5K2txTHVfk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 51/89] bnxt_en: correct offset handling for IPv6 destination address
+	Zhen Ni <zhen.ni@easystack.cn>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 66/91] afs: Fix potential null pointer dereference in afs_put_server
 Date: Tue, 30 Sep 2025 16:48:05 +0200
-Message-ID: <20250930143824.029261448@linuxfoundation.org>
+Message-ID: <20250930143823.928445923@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 3d3aa9472c6dd0704e9961ed4769caac5b1c8d52 ]
+commit 9158c6bb245113d4966df9b2ba602197a379412e upstream.
 
-In bnxt_tc_parse_pedit(), the code incorrectly writes IPv6
-destination values to the source address field (saddr) when
-processing pedit offsets within the destination address range.
+afs_put_server() accessed server->debug_id before the NULL check, which
+could lead to a null pointer dereference. Move the debug_id assignment,
+ensuring we never dereference a NULL server pointer.
 
-This patch corrects the assignment to use daddr instead of saddr,
-ensuring that pedit operations on IPv6 destination addresses are
-applied correctly.
-
-Fixes: 9b9eb518e338 ("bnxt_en: Add support for NAT(L3/L4 rewrite)")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://patch.msgid.link/20250920121157.351921-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2757a4dc1849 ("afs: Fix access after dec in put functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Acked-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/afs/server.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-index d2ca90407cce7..8057350236c5e 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-@@ -244,7 +244,7 @@ bnxt_tc_parse_pedit(struct bnxt *bp, struct bnxt_tc_actions *actions,
- 			   offset < offset_of_ip6_daddr + 16) {
- 			actions->nat.src_xlate = false;
- 			idx = (offset - offset_of_ip6_daddr) / 4;
--			actions->nat.l3.ipv6.saddr.s6_addr32[idx] = htonl(val);
-+			actions->nat.l3.ipv6.daddr.s6_addr32[idx] = htonl(val);
- 		} else {
- 			netdev_err(bp->dev,
- 				   "%s: IPv6_hdr: Invalid pedit field\n",
--- 
-2.51.0
-
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -401,13 +401,14 @@ struct afs_server *afs_use_server(struct
+ void afs_put_server(struct afs_net *net, struct afs_server *server,
+ 		    enum afs_server_trace reason)
+ {
+-	unsigned int a, debug_id = server->debug_id;
++	unsigned int a, debug_id;
+ 	bool zero;
+ 	int r;
+ 
+ 	if (!server)
+ 		return;
+ 
++	debug_id = server->debug_id;
+ 	a = atomic_read(&server->active);
+ 	zero = __refcount_dec_and_test(&server->ref, &r);
+ 	trace_afs_server(debug_id, r - 1, a, reason);
 
 
 
