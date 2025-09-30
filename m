@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2535DBADCFC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C3ABADDC8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033B53BCFDB
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D819B3C0485
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB063205E3B;
-	Tue, 30 Sep 2025 15:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C90A2FB0BE;
+	Tue, 30 Sep 2025 15:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJc8uFQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG7c0qjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679AD846F;
-	Tue, 30 Sep 2025 15:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5B03C465;
+	Tue, 30 Sep 2025 15:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245773; cv=none; b=H4OMQs07x4y/POwoIkm2qK7WQCeolY2aEiJO+1SvsY7aG1CEfS56uJqqX/qmFVRQpxBwyjVa8+6YKIaLmb+N7igFnaldshtuy0+rYwUl8gRmTPF0qu2RRp5w0rIYnJT+rRfV2W3RQAg0Y6fMzWKMYGumGrFm+wkom5I9VGpvADY=
+	t=1759246032; cv=none; b=INW2TcxGd1CxqafTc00hRyLjSCdLJ9IeTnpN93QcoobHyEYhJvZrgMb1T7gjvQuVlgb6W40iC66MU8Ce8dmhIhWLH9XlYz7ncuHP4rYUS/wBvJ3Sdt9b1YTkCetd6OPM0LpGTafyQsxfB3lpIEDxubelDziFVilGcZ4izdWx5Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245773; c=relaxed/simple;
-	bh=Q6N2DV1ACmq05NrGOhNG1t8KGfcs7Kqh/fjul3A0/vI=;
+	s=arc-20240116; t=1759246032; c=relaxed/simple;
+	bh=67WgSn2xbZDCGkvt5BpBsbu1/pLsw0viTp2LMjvVz8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SU87+Wsefma1vygAaFGkIiugqwTU9iANDrhOOvfvDBtLOd6LeSL8Ou+h8prz2PIW6TjhmLc00h4rjNo48Mf7wYfXWIWCi/ADEc7iHVxlSOzbHUSGMI6H2dxZTmSYvNrnmBY14AxJoXJwdt9jCtO6VDGh1VXkgcDn3XaJvTjyfGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJc8uFQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0221C4CEF0;
-	Tue, 30 Sep 2025 15:22:52 +0000 (UTC)
+	 MIME-Version; b=rVfp75mMnQ9TaXzc1kbhDv9lMyEn3tyZfunElRRdZKloTza/uckfm5l+l4xSJ9GCvvsBn2Bi1zJdFNLxMPsD15cXA1iR2wQHRnsjiJw52PoEXAno3Xw0viMmLWAoridT50rVco4Eol4AgSps1MtgU3drQTYD+rVZzE22HBvsxJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG7c0qjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3654FC4CEF0;
+	Tue, 30 Sep 2025 15:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245773;
-	bh=Q6N2DV1ACmq05NrGOhNG1t8KGfcs7Kqh/fjul3A0/vI=;
+	s=korg; t=1759246032;
+	bh=67WgSn2xbZDCGkvt5BpBsbu1/pLsw0viTp2LMjvVz8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJc8uFQ7Mkll1ddVNGMHD8b6S8C+qZIvgEiGEARsI0F5K8S0U2mUbbR33g5Pw5TG/
-	 yOhnAkYpmvdWCZ7K3VOvPx1+G2hydNBoUDi9WPVgaEHoDYh32Rldjzka8kGV8N2guO
-	 oMFHvHliJx+iDqu30KTdPF1TvYt+ZmWVW9jQ3MRk=
+	b=WG7c0qjVs7StV09UsROL5Ek8SChwjypEJj2eVdnK56MpeBpUNT0fc5VFxZ9z600iS
+	 0TGb4nmpBCkoVusmZzgc6kc/bhmHuF/bjvkWePjYw0KVyJsaLQHqZ4u8DlRDUnMS2L
+	 FTm/a841tkFhdKL1LUrpaApIkQiS4M54sNz5RYNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Baron <jbaron@akamai.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jihed Chaibi <jihed.chaibi.dev@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 45/91] net: allow alloc_skb_with_frags() to use MAX_SKB_FRAGS
+Subject: [PATCH 6.12 30/89] ARM: dts: kirkwood: Fix sound DAI cells for OpenRD clients
 Date: Tue, 30 Sep 2025 16:47:44 +0200
-Message-ID: <20250930143823.046297855@linuxfoundation.org>
+Message-ID: <20250930143823.155547948@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Baron <jbaron@akamai.com>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-[ Upstream commit ca9f9cdc4de97d0221100b11224738416696163c ]
+[ Upstream commit 29341c6c18b8ad2a9a4a68a61be7e1272d842f21 ]
 
-Currently, alloc_skb_with_frags() will only fill (MAX_SKB_FRAGS - 1)
-slots. I think it should use all MAX_SKB_FRAGS slots, as callers of
-alloc_skb_with_frags() will size their allocation of frags based
-on MAX_SKB_FRAGS.
+A previous commit changed the '#sound-dai-cells' property for the
+kirkwood audio controller from 1 to 0 in the kirkwood.dtsi file,
+but did not update the corresponding 'sound-dai' property in the
+kirkwood-openrd-client.dts file.
 
-This issue was discovered via a test patch that sets 'order' to 0
-in alloc_skb_with_frags(), which effectively tests/simulates high
-fragmentation. In this case sendmsg() on unix sockets will fail every
-time for large allocations. If the PAGE_SIZE is 4K, then data_len will
-request 68K or 17 pages, but alloc_skb_with_frags() can only allocate
-64K in this case or 16 pages.
+This created a mismatch, causing a dtbs_check validation error where
+the dts provides one cell (<&audio0 0>) while the .dtsi expects zero.
 
-Fixes: 09c2c90705bb ("net: allow alloc_skb_with_frags() to allocate bigger packets")
-Signed-off-by: Jason Baron <jbaron@akamai.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250922191957.2855612-1-jbaron@akamai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Remove the extraneous cell from the 'sound-dai' property to fix the
+schema validation warning and align with the updated binding.
+
+Fixes: e662e70fa419 ("arm: dts: kirkwood: fix error in #sound-dai-cells size")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 2 +-
+ arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 21a83e26f004b..867832f8bbaea 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6330,7 +6330,7 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
- 		return NULL;
+diff --git a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
+index d4e0b8150a84c..cf26e2ceaaa07 100644
+--- a/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
++++ b/arch/arm/boot/dts/marvell/kirkwood-openrd-client.dts
+@@ -38,7 +38,7 @@
+ 		simple-audio-card,mclk-fs = <256>;
  
- 	while (data_len) {
--		if (nr_frags == MAX_SKB_FRAGS - 1)
-+		if (nr_frags == MAX_SKB_FRAGS)
- 			goto failure;
- 		while (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order))
- 			order--;
+ 		simple-audio-card,cpu {
+-			sound-dai = <&audio0 0>;
++			sound-dai = <&audio0>;
+ 		};
+ 
+ 		simple-audio-card,codec {
 -- 
 2.51.0
 
