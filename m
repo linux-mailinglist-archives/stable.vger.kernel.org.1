@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C096DBAD7F7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C343CBAD5BE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74DBF4A2DAE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D10324783
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BDD302CD6;
-	Tue, 30 Sep 2025 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F3A305040;
+	Tue, 30 Sep 2025 14:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwpcfLhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnSTvu0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5491FF1C8;
-	Tue, 30 Sep 2025 15:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5CB1FCCF8;
+	Tue, 30 Sep 2025 14:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244586; cv=none; b=OaisQwQogus9Df65q5SU9nRbl7ul6MmW35NGPduGB06ajbPrcq9nem18vCSbRDoqQ6q1UWZ1YvLPhY8bMrQ5Nw+goAJ4KMVqwzAwdeTfrxGi7ERHUuKZLfojxxfb20f2IuZlyoCX7iEzwSCaAarb9UQ6T2B0NFzVqYbUmm4niMI=
+	t=1759244163; cv=none; b=TgfMhDR5EUZgNICg3WAerR3HrU3D9EqTVJK8R4YKwi5tFQvC73JjkKA53Z3Qyiyx3BnMbuSmPA5mHNQPdFpTZMcKIGBnyH71z6kLq04qNv14n4u4dW5FLdp1hanaM8cUj60fLuvv+tvtt+f6p+u8AI5SGrKvg9j3zaGjHmtd10A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244586; c=relaxed/simple;
-	bh=md24eNf8GWe9EnGpWR+RvUmMBFm5zEFRkaCxC2nzlmI=;
+	s=arc-20240116; t=1759244163; c=relaxed/simple;
+	bh=alPJPIuRW89sNcwZMJeylpufJKM5qrSwJa30gC8jATU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBrOb9y/W5gfksmiCQwFpEhwbBrUrR9VNqQp/qhqISno6/nSPraM5mZDrBOrlqIslafrl/UCBZfrs9FI6dOqLavPioppiOTKcwHNZx7+6Y+gXiwX4R4Y8AKi8mCD5V8cxbNKhs42MftW+ShVEa/CLKOkYZvEclezpOdyEUSkdGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwpcfLhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47384C4CEF0;
-	Tue, 30 Sep 2025 15:03:06 +0000 (UTC)
+	 MIME-Version; b=AIu6topWYCKrBlCqcuVtiBoovcxErzrshbhlvS2OMHrIVfdVI+o3N7RSKAMu7p3dqLCCQBub3DxNAkBz+IMpxTO4rb/i/SjYk24s/L6SUHVGR7U4kUBeYgHS1z0eNmJXyUUFJnLRlnwRaWOSeQ1NS3eOPfAriPi/xEIu/ldAK3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnSTvu0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6E9C4CEF0;
+	Tue, 30 Sep 2025 14:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244586;
-	bh=md24eNf8GWe9EnGpWR+RvUmMBFm5zEFRkaCxC2nzlmI=;
+	s=korg; t=1759244163;
+	bh=alPJPIuRW89sNcwZMJeylpufJKM5qrSwJa30gC8jATU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwpcfLhEyxUC5YEUtg1ejZBTB15P/lT8BH0105WmpXXI/IjFrpl2L4vIOe1Z9H8Uy
-	 dAH9TbMQR4lC5SUDV74UMfUTEhYji5Zp0yJQdDI2PhmuDRij6qFHr6IvCJN2duhjkH
-	 Ou65/kR+4Hmmf/lRoeUfnCFsThTBaJD1kI10r38g=
+	b=PnSTvu0ezeNScfTH632O/0bcT1T/smnF+71bFVY75ceUuQRZqrMt8oTsgNyojvlC/
+	 TxviOpTDosLpM241q2vaP5O2USWa6EOENa+QNWWaYL/Q83TnH2ExOkSwomdTIO00Tj
+	 pG3siiD1o9HuGP+pF59Tu/dRLiolLh9n42C3gFjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 051/143] NFSv4.2: Protect copy offload and clone against eof page pollution
-Date: Tue, 30 Sep 2025 16:46:15 +0200
-Message-ID: <20250930143833.265857194@linuxfoundation.org>
+Subject: [PATCH 5.10 045/122] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Date: Tue, 30 Sep 2025 16:46:16 +0200
+Message-ID: <20250930143824.846746496@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit b2036bb65114c01caf4a1afe553026e081703c8c ]
+[ Upstream commit d613f53c83ec47089c4e25859d5e8e0359f6f8da ]
 
-The NFSv4.2 copy offload and clone functions can also end up extending
-the size of the destination file, so they too need to call
-nfs_truncate_last_folio().
+When I did memory failure tests, below panic occurs:
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered.  This can be reproduced by below steps:
+
+1.Offline memory block:
+
+ echo offline > /sys/devices/system/memory/memory12/state
+
+2.Get offlined memory pfn:
+
+ page-types -b n -rlN
+
+3.Write pfn to unpoison-pfn
+
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+
+This scenario can be identified by pfn_to_online_page() returning NULL.
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
+Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs42proc.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ mm/memory-failure.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
-index 4b0e35a0d89dd..6a0b5871ba3b0 100644
---- a/fs/nfs/nfs42proc.c
-+++ b/fs/nfs/nfs42proc.c
-@@ -363,22 +363,27 @@ static int process_copy_commit(struct file *dst, loff_t pos_dst,
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1616,10 +1616,9 @@ int unpoison_memory(unsigned long pfn)
+ 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					DEFAULT_RATELIMIT_BURST);
  
- /**
-  * nfs42_copy_dest_done - perform inode cache updates after clone/copy offload
-- * @inode: pointer to destination inode
-+ * @file: pointer to destination file
-  * @pos: destination offset
-  * @len: copy length
-+ * @oldsize: length of the file prior to clone/copy
-  *
-  * Punch a hole in the inode page cache, so that the NFS client will
-  * know to retrieve new data.
-  * Update the file size if necessary, and then mark the inode as having
-  * invalid cached values for change attribute, ctime, mtime and space used.
-  */
--static void nfs42_copy_dest_done(struct inode *inode, loff_t pos, loff_t len)
-+static void nfs42_copy_dest_done(struct file *file, loff_t pos, loff_t len,
-+				 loff_t oldsize)
- {
-+	struct inode *inode = file_inode(file);
-+	struct address_space *mapping = file->f_mapping;
- 	loff_t newsize = pos + len;
- 	loff_t end = newsize - 1;
+-	if (!pfn_valid(pfn))
+-		return -ENXIO;
+-
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	page = compound_head(p);
  
--	WARN_ON_ONCE(invalidate_inode_pages2_range(inode->i_mapping,
--				pos >> PAGE_SHIFT, end >> PAGE_SHIFT));
-+	nfs_truncate_last_folio(mapping, oldsize, pos);
-+	WARN_ON_ONCE(invalidate_inode_pages2_range(mapping, pos >> PAGE_SHIFT,
-+						   end >> PAGE_SHIFT));
- 
- 	spin_lock(&inode->i_lock);
- 	if (newsize > i_size_read(inode))
-@@ -411,6 +416,7 @@ static ssize_t _nfs42_proc_copy(struct file *src,
- 	struct nfs_server *src_server = NFS_SERVER(src_inode);
- 	loff_t pos_src = args->src_pos;
- 	loff_t pos_dst = args->dst_pos;
-+	loff_t oldsize_dst = i_size_read(dst_inode);
- 	size_t count = args->count;
- 	ssize_t status;
- 
-@@ -485,7 +491,7 @@ static ssize_t _nfs42_proc_copy(struct file *src,
- 			goto out;
- 	}
- 
--	nfs42_copy_dest_done(dst_inode, pos_dst, res->write_res.count);
-+	nfs42_copy_dest_done(dst, pos_dst, res->write_res.count, oldsize_dst);
- 	nfs_invalidate_atime(src_inode);
- 	status = res->write_res.count;
- out:
-@@ -1252,6 +1258,7 @@ static int _nfs42_proc_clone(struct rpc_message *msg, struct file *src_f,
- 	struct nfs42_clone_res res = {
- 		.server	= server,
- 	};
-+	loff_t oldsize_dst = i_size_read(dst_inode);
- 	int status;
- 
- 	msg->rpc_argp = &args;
-@@ -1286,7 +1293,7 @@ static int _nfs42_proc_clone(struct rpc_message *msg, struct file *src_f,
- 		/* a zero-length count means clone to EOF in src */
- 		if (count == 0 && res.dst_fattr->valid & NFS_ATTR_FATTR_SIZE)
- 			count = nfs_size_to_loff_t(res.dst_fattr->size) - dst_offset;
--		nfs42_copy_dest_done(dst_inode, dst_offset, count);
-+		nfs42_copy_dest_done(dst_f, dst_offset, count, oldsize_dst);
- 		status = nfs_post_op_update_inode(dst_inode, res.dst_fattr);
- 	}
- 
--- 
-2.51.0
-
+ 	if (!PageHWPoison(p)) {
 
 
 
