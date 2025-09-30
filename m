@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925BEBADDE0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059C5BADB85
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:20:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE4A57A3F6B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 412B77A3DFC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF633C465;
-	Tue, 30 Sep 2025 15:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C8D2F39C0;
+	Tue, 30 Sep 2025 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYPf1mH5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEHc0kS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16C516A956;
-	Tue, 30 Sep 2025 15:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F59173;
+	Tue, 30 Sep 2025 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246140; cv=none; b=D+40E1rKPnPhymJ9iFAYZ5MFKEtNSlAnI2VpIkzfwElss1LGYwTgj+0MnKS3MBAKzofKVtypCJAyjh//nIkgl3uMvYGef5Puzk969tjDibMJRNqcsXp+oJDsYz0zxjTz0Sa3btmLKU2ZXoLcOsmrLOWpgPOTgKOde4OvI1/FyKE=
+	t=1759245618; cv=none; b=DHHUU3esLQ1VoEfdhR887n9OXTYU1kIUVrzudUjVQLoYGP2ww/y/NPCq9TJpnZwjB/napQL7Orq2U6IPbUd8Ist+J9JOVrV0/oGmQVakBELgUR4UghmveDLN+iDDvL3jJGJ73ng7vwPec4aBnghMwVlUpdXKjPXtg3kbH29DYd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246140; c=relaxed/simple;
-	bh=jgldId6h/QPfRjBMSW7XcNFrEcWB8DmQeODxcywOk44=;
+	s=arc-20240116; t=1759245618; c=relaxed/simple;
+	bh=6z2B819VSe0CIkoqsu8QkYaP8ynZIt9HNl6atN9QABg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N46hUIiSapvtqjZugxfMNWJFyK69oov3/SK7sZEXxAey9E7r++WUwc7RaqqAOl0QbRGaqOikbaCDemfhQx18Wmpft2n4D3/r5hlYwHmhLp6F3EF8b+GbahxJ1fQ+xsLEx4GTzRpDnw7f4q3D9uSJ7+/7qpAzlUt20rVc3YePNQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYPf1mH5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58013C4CEF0;
-	Tue, 30 Sep 2025 15:29:00 +0000 (UTC)
+	 MIME-Version; b=QXg8zwOb2kl/4KI/0ucV9f8+gPK+0uBItrTDxUX+5vCKe939rvEBxHMcSxcb7oysxihGUpMlVhSjsE7EBxrky3QU9aSI/ZqBY0UNJ42MQC0tpNB6jKQEwxQ0SQkhvyz2TjNR4d7QLckCkJeiH0QV+jBe7EXbGW1cjoiSwjoDATM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEHc0kS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6548C116B1;
+	Tue, 30 Sep 2025 15:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246140;
-	bh=jgldId6h/QPfRjBMSW7XcNFrEcWB8DmQeODxcywOk44=;
+	s=korg; t=1759245618;
+	bh=6z2B819VSe0CIkoqsu8QkYaP8ynZIt9HNl6atN9QABg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYPf1mH5zN+fUrKSiJFuzulP0asKDIVqwqm9esPcCnsQNeOlQxRCeDJJ6SJoVxgMi
-	 Hk9ubPLvhdx91J+GlFgq7r1Y7SUTQzZaHlk+OeocEAh7K3LvfqKSG0di9hOZHcutK/
-	 0uzyR7St3Z/UUjrFDY670XChuHislijRVqmdBSRs=
+	b=BEHc0kS0+SK5aKAj+L/7T34wRH+oOqsxyeNIgmHWaPnIzz75rnim+poewZFhLMUKr
+	 BtU0c5elQdXrfe8lNY8V7wW13uqmAqIPpot9zgukfiqDQdEoQkCHgh9nrqR2o6b6qi
+	 e4poV/5n1YbiUTumP0n3B+aMTWOuohMdUgolfph4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 63/89] drm/panthor: Defer scheduler entitiy destruction to queue release
+	David Laight <David.Laight@aculab.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 73/73] minmax: simplify and clarify min_t()/max_t() implementation
 Date: Tue, 30 Sep 2025 16:48:17 +0200
-Message-ID: <20250930143824.521587453@linuxfoundation.org>
+Message-ID: <20250930143823.719370010@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrián Larumbe <adrian.larumbe@collabora.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 7d9c3442b02ab7dd3c44e20095a178fd57d2eccb ]
+commit 017fa3e89187848fd056af757769c9e66ac3e93d upstream.
 
-Commit de8548813824 ("drm/panthor: Add the scheduler logical block")
-handled destruction of a group's queues' drm scheduler entities early
-into the group destruction procedure.
+This simplifies the min_t() and max_t() macros by no longer making them
+work in the context of a C constant expression.
 
-However, that races with the group submit ioctl, because by the time
-entities are destroyed (through the group destroy ioctl), the submission
-procedure might've already obtained a group handle, and therefore the
-ability to push jobs into entities. This is met with a DRM error message
-within the drm scheduler core as a situation that should never occur.
+That means that you can no longer use them for static initializers or
+for array sizes in type definitions, but there were only a couple of
+such uses, and all of them were converted (famous last words) to use
+MIN_T/MAX_T instead.
 
-Fix by deferring drm scheduler entity destruction to queue release time.
-
-Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
-Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250919164436.531930-1-adrian.larumbe@collabora.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ include/linux/minmax.h |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 20135a9bc026e..0bc5b69ec636b 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -865,8 +865,7 @@ static void group_free_queue(struct panthor_group *group, struct panthor_queue *
- 	if (IS_ERR_OR_NULL(queue))
- 		return;
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -45,17 +45,20 @@
  
--	if (queue->entity.fence_context)
--		drm_sched_entity_destroy(&queue->entity);
-+	drm_sched_entity_destroy(&queue->entity);
+ #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
  
- 	if (queue->scheduler.ops)
- 		drm_sched_fini(&queue->scheduler);
-@@ -3458,11 +3457,6 @@ int panthor_group_destroy(struct panthor_file *pfile, u32 group_handle)
- 	if (!group)
- 		return -EINVAL;
+-#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
+-	typeof(x) unique_x = (x);			\
+-	typeof(y) unique_y = (y);			\
++#define __cmp_once_unique(op, type, x, y, ux, uy) \
++	({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
++
++#define __cmp_once(op, type, x, y) \
++	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
++
++#define __careful_cmp_once(op, x, y) ({			\
+ 	static_assert(__types_ok(x, y),			\
+ 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
+-	__cmp(op, unique_x, unique_y); })
++	__cmp_once(op, __auto_type, x, y); })
  
--	for (u32 i = 0; i < group->queue_count; i++) {
--		if (group->queues[i])
--			drm_sched_entity_destroy(&group->queues[i]->entity);
--	}
--
- 	mutex_lock(&sched->reset.lock);
- 	mutex_lock(&sched->lock);
- 	group->destroyed = true;
--- 
-2.51.0
-
+ #define __careful_cmp(op, x, y)					\
+ 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
+-		__cmp(op, x, y),				\
+-		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
++		__cmp(op, x, y), __careful_cmp_once(op, x, y))
+ 
+ #define __clamp(val, lo, hi)	\
+ 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+@@ -158,7 +161,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
++#define min_t(type, x, y) __cmp_once(min, type, x, y)
+ 
+ /**
+  * max_t - return maximum of two values, using the specified type
+@@ -166,7 +169,7 @@
+  * @x: first value
+  * @y: second value
+  */
+-#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
++#define max_t(type, x, y) __cmp_once(max, type, x, y)
+ 
+ /*
+  * Do not check the array parameter using __must_be_array().
 
 
 
