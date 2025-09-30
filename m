@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07D9BADD98
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E3FBAD88D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EDC93B9589
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:26:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45D11941B57
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547BE296BD0;
-	Tue, 30 Sep 2025 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832AD302CD6;
+	Tue, 30 Sep 2025 15:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHazV7to"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vCeggaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102A625D1F7;
-	Tue, 30 Sep 2025 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E91E2236EB;
+	Tue, 30 Sep 2025 15:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245977; cv=none; b=JKnmbTCjmRwM3bLOSMOX1qrWpIYkN5rA5cKDSI31eHDZOuKUJ8kQLcoWbsCkYXxhpV8ogeeLE1ZdmIT3B1iACDxplXzSS+yVf/76CG7x+nfbICPr855o9SQ7FhEmYvmhbtVlQCFYgCU3nbxqOIZgWoAWED2LNwSzXqSi27rTBiA=
+	t=1759244892; cv=none; b=N69mLDIsMbuPXf7bu+07E6ojNZWrOIe1NIrF3NkRE+UATSsJYmmskmoe4ul6KZSbCiPRd+2vR0TmdbRJbHFlApENW4mMvWeVif3lTrQ+roEC7SSPFrYjRWu0pv83LY6fkfgq2v42sB3QxBQLWszkRyiSDB0TOXQ4CWMHuckRMzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245977; c=relaxed/simple;
-	bh=Uq5ozdFwyteRSOrRrAYkx0lqgwBqvbQ/ZRWHEGvWH3Q=;
+	s=arc-20240116; t=1759244892; c=relaxed/simple;
+	bh=Vc6s+KKVWqeBuwoVbwJJU0dgyp5cLoB+DdGQCoHlHPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9QHjjyMuH03XI++gxXCoAOm3hftoS6gGGl4wu1Urk5+tLa+SROGU+VTWmtU2PQrwV4qj6vHf6QfqUzC3t9QEqdcbGRT8pX/ScHr54wEi3J5/WZ/7ImOyCLTaBgtokCGHdLc7WLXZj+safSv5c0Qi6PUTkR86Ci9WMrfFrX99Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHazV7to; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CDAC113D0;
-	Tue, 30 Sep 2025 15:26:16 +0000 (UTC)
+	 MIME-Version; b=I7LMdopU4Sur7M6PwDv/ZNwAwjUZmaNnAKxx39CppsM3bU6CprVpkR5+26N1aPEvfonI9L+2fWGlF9IlMdlNp0qlpuxmJPOLn1a0Trv95bcmMgYkDms9zzdYs71OcK99VecG401PBVk67m8YoTvzm0DoMbmoxdTDuGDCIxziNps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vCeggaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DC4C4CEF0;
+	Tue, 30 Sep 2025 15:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245976;
-	bh=Uq5ozdFwyteRSOrRrAYkx0lqgwBqvbQ/ZRWHEGvWH3Q=;
+	s=korg; t=1759244892;
+	bh=Vc6s+KKVWqeBuwoVbwJJU0dgyp5cLoB+DdGQCoHlHPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHazV7toyWR7kghUFkBcMN1h/9SezoReCBroywk0k7sQbYPWMJ1HnC6G8AX2Y7UMW
-	 mL/eIeBjI+87MylTZheWZ06IGMk2q9bUbxzSQoTEvAS9hn0wP3rX5SoIILKkxFolzR
-	 ubkinFLJ3Tr9Cz3AakDLpm5s3HVj9HeAaUncux7I=
+	b=0vCeggaYEZyyf6XsxMnpg1ySBU0/Vw6SX6sHl3/vrBqfxncs+4ZzCkEYHVUsHifoF
+	 4s8NK6sbqQHmnhgesmCgi/99sjWOIcnDHseNmZ7dQu2v8YLxzQ/c3k9BfhV7wC+l1V
+	 OibHLUsS5TPiI14TE8FTYzNqz+K/vtTpuWlhSAXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 15/89] ALSA: hda/realtek: Add support for ASUS NUC using CS35L41 HDA
+	Zhen Ni <zhen.ni@easystack.cn>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.16 125/143] afs: Fix potential null pointer dereference in afs_put_server
 Date: Tue, 30 Sep 2025 16:47:29 +0200
-Message-ID: <20250930143822.502017013@linuxfoundation.org>
+Message-ID: <20250930143836.213012160@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 84fc8896f0d9d1c075e0e08a416faedbd73907fa ]
+commit 9158c6bb245113d4966df9b2ba602197a379412e upstream.
 
-Add support for ASUS NUC14LNS.
+afs_put_server() accessed server->debug_id before the NULL check, which
+could lead to a null pointer dereference. Move the debug_id assignment,
+ensuring we never dereference a NULL server pointer.
 
-This NUC uses a single CS35L41 Amp in using Internal Boost with SPI.
-To support the Single Amp, a new quirk is required.
-
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250612160029.848104-3-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2757a4dc1849 ("afs: Fix access after dec in put functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Acked-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/afs/server.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5f061d2d9fc96..a41df821e15f7 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7272,6 +7272,11 @@ static void cs35l41_fixup_spi_two(struct hda_codec *codec, const struct hda_fixu
- 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 2);
- }
- 
-+static void cs35l41_fixup_spi_one(struct hda_codec *codec, const struct hda_fixup *fix, int action)
-+{
-+	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 1);
-+}
-+
- static void cs35l41_fixup_spi_four(struct hda_codec *codec, const struct hda_fixup *fix, int action)
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -331,13 +331,14 @@ struct afs_server *afs_use_server(struct
+ void afs_put_server(struct afs_net *net, struct afs_server *server,
+ 		    enum afs_server_trace reason)
  {
- 	comp_generic_fixup(codec, action, "spi", "CSC3551", "-%s:00-cs35l41-hda.%d", 4);
-@@ -7956,6 +7961,7 @@ enum {
- 	ALC287_FIXUP_CS35L41_I2C_2,
- 	ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED,
- 	ALC287_FIXUP_CS35L41_I2C_4,
-+	ALC245_FIXUP_CS35L41_SPI_1,
- 	ALC245_FIXUP_CS35L41_SPI_2,
- 	ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED,
- 	ALC245_FIXUP_CS35L41_SPI_4,
-@@ -10067,6 +10073,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cs35l41_fixup_spi_two,
- 	},
-+	[ALC245_FIXUP_CS35L41_SPI_1] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cs35l41_fixup_spi_one,
-+	},
- 	[ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cs35l41_fixup_spi_two,
-@@ -11001,6 +11011,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x83ce, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x8516, "ASUS X101CH", ALC269_FIXUP_ASUS_X101),
-+	SND_PCI_QUIRK(0x1043, 0x88f4, "ASUS NUC14LNS", ALC245_FIXUP_CS35L41_SPI_1),
- 	SND_PCI_QUIRK(0x104d, 0x9073, "Sony VAIO", ALC275_FIXUP_SONY_VAIO_GPIO2),
- 	SND_PCI_QUIRK(0x104d, 0x907b, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
- 	SND_PCI_QUIRK(0x104d, 0x9084, "Sony VAIO", ALC275_FIXUP_SONY_HWEQ),
--- 
-2.51.0
-
+-	unsigned int a, debug_id = server->debug_id;
++	unsigned int a, debug_id;
+ 	bool zero;
+ 	int r;
+ 
+ 	if (!server)
+ 		return;
+ 
++	debug_id = server->debug_id;
+ 	a = atomic_read(&server->active);
+ 	zero = __refcount_dec_and_test(&server->ref, &r);
+ 	trace_afs_server(debug_id, r - 1, a, reason);
 
 
 
