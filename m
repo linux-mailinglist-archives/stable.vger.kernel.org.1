@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B59BAD67C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254AEBAD464
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2075A3AC986
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A18B1941319
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C94305070;
-	Tue, 30 Sep 2025 14:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF87B3C465;
+	Tue, 30 Sep 2025 14:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+gPC19d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DslSwZSN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C67A201017;
-	Tue, 30 Sep 2025 14:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784DE2253FC;
+	Tue, 30 Sep 2025 14:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244299; cv=none; b=YNxokdURyGFW2hENfigruuMLKDFMeUmlsaagubFM9Ldwi2YX9XOASufy/KR6j8s97Vtz2dMadx8rWMOXPD2ivpOWvW97UuYaJaSxk+2qClmpuZTshycw4+qtNwmmz/QUlVSzvbU3VOJuBLOuEc0HYNyR0RuhPHZp3CL/djEFZwc=
+	t=1759243813; cv=none; b=RGKuEWX50YRx9SPUSwtfj+zaJfWjMhLHiwKuMKCbksEQqOXm07OYOCHcTse36nel82+cMR+audPcjOH7gxRqnoKjxXb1BZgYSKIjjQAksTvZctpwHa76/CVm4sR0PXgbpeax7+teby1wXw0ysNDYKsQX3JtysfICPdG/+Jt/cZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244299; c=relaxed/simple;
-	bh=Ia0+YI/a8Px20OqBPujKWpYnDkYsRyPd8eo/N34qFMs=;
+	s=arc-20240116; t=1759243813; c=relaxed/simple;
+	bh=jbBiHG6FrrWtVa7Nw3zrDxjylcHh9T26UJcfELRjiBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jg/KtaLr29enswXdHHzcPeLjchCbEo/ydPk52TtzNZlSHlyPDYWvXg4a3WTVLiTrqPYle6OTjChJgnRrypxqNu+tptFtUkgi467cIYx7kziW5pDa7jJF+ToyMMUrCWlF6GwAtquNx2I7hXg+qVP3LHljFYCzh8WgZi+Fkw1X8aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+gPC19d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C9FC4CEF0;
-	Tue, 30 Sep 2025 14:58:18 +0000 (UTC)
+	 MIME-Version; b=LxnbaNe0VvqYUKFnNPNEfO84ncJRSUFZAkq5f4RjmNHEujUA4VXc2EcxGR5U2XRN3kd0w0sSpxCq1GdPJqZSndDjGKbtma+a9w0B0gB05M9/ddDS7do4HtcBj3wlbSHOalybNKkm8zG5Tjs5IKG2nnRf3pJgmCGsRslAO5Ellts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DslSwZSN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822CEC4CEF0;
+	Tue, 30 Sep 2025 14:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244298;
-	bh=Ia0+YI/a8Px20OqBPujKWpYnDkYsRyPd8eo/N34qFMs=;
+	s=korg; t=1759243812;
+	bh=jbBiHG6FrrWtVa7Nw3zrDxjylcHh9T26UJcfELRjiBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+gPC19dTBWCrs15ijNXSrByxpfwSl8vqcvJeEDXaaTzAbf9CPzy1o+TyeTcOmKwO
-	 sKXNiN+8zdwAULkbHry6aPnbo90BlussBNpNOewAqmwYZINl9J/BkDGTBrBM3W6wJ9
-	 uALHpX8sW9bbHW8ZunX5/Kz1o4aMi+oh1CjlAYF8=
+	b=DslSwZSNB+ddar0cykb489lfkSGoLiP/X8mGqLPunCa62/pvG+g2p/peG856g3BB/
+	 q4F7t7sHdYarrwNn3DndK71vmmLNkfXf7vh/QKTAMSKLy7qxDhCMJVjLYVduy4hIl+
+	 5ozLUGGwOKhr9/mBJcfFIHy/2wzBRmjAZTqi2D+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/122] Revert "net/mlx5e: Update and set Xon/Xoff upon port speed set"
+Subject: [PATCH 5.4 24/81] can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
 Date: Tue, 30 Sep 2025 16:46:26 +0200
-Message-ID: <20250930143825.249734376@linuxfoundation.org>
+Message-ID: <20250930143820.677386372@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tariq Toukan <tariqt@nvidia.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 3fbfe251cc9f6d391944282cdb9bcf0bd02e01f8 ]
+[ Upstream commit f214744c8a27c3c1da6b538c232da22cd027530e ]
 
-This reverts commit d24341740fe48add8a227a753e68b6eedf4b385a.
-It causes errors when trying to configure QoS, as well as
-loss of L2 connectivity (on multi-host devices).
+Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
+callback") expects that a call to j1939_priv_put() can be unconditionally
+delayed until j1939_sk_sock_destruct() is called. But a refcount leak will
+happen when j1939_sk_bind() is called again after j1939_local_ecu_get()
+ from previous j1939_sk_bind() call returned an error. We need to call
+j1939_priv_put() before j1939_sk_bind() returns an error.
 
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/20250910170011.70528106@kernel.org
-Fixes: d24341740fe4 ("net/mlx5e: Update and set Xon/Xoff upon port speed set")
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/4f49a1bc-a528-42ad-86c0-187268ab6535@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/can/j1939/socket.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index cc93c503984a1..cef60bc2589cc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -141,8 +141,6 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
- 	if (port_state == VPORT_STATE_UP) {
- 		netdev_info(priv->netdev, "Link up\n");
- 		netif_carrier_on(priv->netdev);
--		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
--						NULL, NULL, NULL);
- 	} else {
- 		netdev_info(priv->netdev, "Link down\n");
- 		netif_carrier_off(priv->netdev);
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index 29f9a343b0dbf..f477add424bc9 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -520,6 +520,9 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	ret = j1939_local_ecu_get(priv, jsk->addr.src_name, jsk->addr.sa);
+ 	if (ret) {
+ 		j1939_netdev_stop(priv);
++		jsk->priv = NULL;
++		synchronize_rcu();
++		j1939_priv_put(priv);
+ 		goto out_release_sock;
+ 	}
+ 
 -- 
 2.51.0
 
