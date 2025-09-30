@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-182563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD012BADA61
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:16:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A39EBADDE9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8FD81943FCA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2181945E7A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3A729827E;
-	Tue, 30 Sep 2025 15:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4036A304BCC;
+	Tue, 30 Sep 2025 15:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymVWj5hY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNmFg3iY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E8D7640E;
-	Tue, 30 Sep 2025 15:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1246223DD6;
+	Tue, 30 Sep 2025 15:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245354; cv=none; b=ZjZEY8HwPr0XhKUaUR2Zvik/pRseNZKAIQ9PSqRwxIrbxOdDLa7t4otPlLIzEBoBgjvZ86/GZH4lVG8RHKQOwwC5ZJQINv/IzgASeydiDSDUhTWbIDzUya5l1aa2JpW7RXZewA8Xs0clzeM764iZ+KscEh8dXBOJ+3GNQFg8CoI=
+	t=1759246156; cv=none; b=OcZOFjPXd9AaHRdCzZ2inpB3hyn+VCzfjHUvO6TRWRqoZbLWEv1VVpJ2fPNvi9NYPOaxYVBMoJrUWMVkgjnJ4GjUUJe0sT9uPnJ3d4pGEafuCIO0Y6wCPfsMj/NYiQp6hXDwephlQJdjCB7FnTxHNsrQIYaDpqV2dJihlu+n1Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245354; c=relaxed/simple;
-	bh=emfzQ80FIE9hImDHjrEYjf3mgHY0kH0xFTXX3VM+Bhs=;
+	s=arc-20240116; t=1759246156; c=relaxed/simple;
+	bh=U+ERv5sA8q082R7CuW0kcX4clP4GKhAlOTZ0L85lc2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GmzN7DinHTRs2lXJRs1Ofkh62qUv1LD0QsQXzdmKZTojYOIf5AbRY2WApV2QLeC1BMV4eB8P7D3tJ/Nb3WwEkUb5hGfhgMEPydGmt5oy+Y2sZlJa5cQdYqhj1TZNPgiN17ZjB1/RId6B07+Ry1cqSqMp7yA9CM+u3tPpm2Y0Wcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymVWj5hY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81E2C4CEF0;
-	Tue, 30 Sep 2025 15:15:53 +0000 (UTC)
+	 MIME-Version; b=KTkik7RMDZwWzgQEx6zjGLAAqxBEUWHBbD+5XqdIyYCnAhErG6zw96H/7cdfky0P11G0s4tWC54lHty0HvUDvgYrqAJxCj+EL+Qs6lNBsbLc2ohGkkfvgNOwXbwZkHbBpOYnSmnRUTfKZeCvfo5EzlsJBWacU132DvMHdIgd6PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNmFg3iY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5AEC4CEF0;
+	Tue, 30 Sep 2025 15:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245354;
-	bh=emfzQ80FIE9hImDHjrEYjf3mgHY0kH0xFTXX3VM+Bhs=;
+	s=korg; t=1759246155;
+	bh=U+ERv5sA8q082R7CuW0kcX4clP4GKhAlOTZ0L85lc2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymVWj5hYKAdBCD6Y/DBviDLcubuI95hEzMmBICl1HFF+u+IW7AA16Xj2rGReaGbRc
-	 HZ3Vd+arKSvpp1bi8KKo0Y6o1oeOvyZZ8kQYP7M5avzQGpvy/bApCW7+OvdmfNnnDy
-	 Xy8BuwXm82g7rcwNFb36YtEtrvF5YGSezcZ4BRdw=
+	b=TNmFg3iY3ytb2lcJz5LPTS61IfaYiAinAFUo8pXv/hrzAZpwsx5d99aOZhurNsWma
+	 HFftJ5PIJfGzoDkZP/QPY/TvN7FrfSdFioaQ/GWdQ27Elc9xs+9f7cGmR52t9UmMmD
+	 DY98FM4I+ulk5UMY4KYf9akGU8rXiuRHdCB6dLzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	George Kennedy <george.kennedy@oracle.com>,
-	syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com,
-	Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Qianqiang Liu <qianqiang.liu@163.com>,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 5.15 143/151] fbcon: fix integer overflow in fbcon_do_set_font
+	syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 39/89] xfrm: xfrm_alloc_spi shouldnt use 0 as SPI
 Date: Tue, 30 Sep 2025 16:47:53 +0200
-Message-ID: <20250930143833.288271075@linuxfoundation.org>
+Message-ID: <20250930143823.541595363@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe upstream.
+[ Upstream commit cd8ae32e4e4652db55bce6b9c79267d8946765a9 ]
 
-Fix integer overflow vulnerabilities in fbcon_do_set_font() where font
-size calculations could overflow when handling user-controlled font
-parameters.
+x->id.spi == 0 means "no SPI assigned", but since commit
+94f39804d891 ("xfrm: Duplicate SPI Handling"), we now create states
+and add them to the byspi list with this value.
 
-The vulnerabilities occur when:
-1. CALC_FONTSZ(h, pitch, charcount) performs h * pith * charcount
-   multiplication with user-controlled values that can overflow.
-2. FONT_EXTRA_WORDS * sizeof(int) + size addition can also overflow
-3. This results in smaller allocations than expected, leading to buffer
-   overflows during font data copying.
+__xfrm_state_delete doesn't remove those states from the byspi list,
+since they shouldn't be there, and this shows up as a UAF the next
+time we go through the byspi list.
 
-Add explicit overflow checking using check_mul_overflow() and
-check_add_overflow() kernel helpers to safety validate all size
-calculations before allocation.
-
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 39b3cffb8cf3 ("fbcon: prevent user font height or width change from causing potential out-of-bounds access")
-Cc: George Kennedy <george.kennedy@oracle.com>
-Cc: stable <stable@vger.kernel.org>
-Cc: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Qianqiang Liu <qianqiang.liu@163.com>
-Cc: Shixiong Ou <oushixiong@kylinos.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org> # v5.9+
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250912170023.3931881-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a25ee9d20d31e483ba7b
+Fixes: 94f39804d891 ("xfrm: Duplicate SPI Handling")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_state.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2506,9 +2506,16 @@ static int fbcon_set_font(struct vc_data
- 	if (fbcon_invalid_charcount(info, charcount))
- 		return -EINVAL;
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 6f99fd2d966c6..1e2f5ecd63248 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2502,6 +2502,8 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
  
--	size = CALC_FONTSZ(h, pitch, charcount);
-+	/* Check for integer overflow in font size calculation */
-+	if (check_mul_overflow(h, pitch, &size) ||
-+	    check_mul_overflow(size, charcount, &size))
-+		return -EINVAL;
-+
-+	/* Check for overflow in allocation size calculation */
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+		return -EINVAL;
+ 	for (h = 0; h < range; h++) {
+ 		u32 spi = (low == high) ? low : get_random_u32_inclusive(low, high);
++		if (spi == 0)
++			goto next;
+ 		newspi = htonl(spi);
  
--	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
-+	new_data = kmalloc(size, GFP_USER);
+ 		spin_lock_bh(&net->xfrm.xfrm_state_lock);
+@@ -2517,6 +2519,7 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
+ 		xfrm_state_put(x0);
+ 		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
  
- 	if (!new_data)
- 		return -ENOMEM;
++next:
+ 		if (signal_pending(current)) {
+ 			err = -ERESTARTSYS;
+ 			goto unlock;
+-- 
+2.51.0
+
 
 
 
