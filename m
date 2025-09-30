@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-182631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA768BADB61
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:19:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B295BADD8F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54D2C1944995
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:20:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B741380474
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B1229827E;
-	Tue, 30 Sep 2025 15:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E53B3043DD;
+	Tue, 30 Sep 2025 15:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHn485nl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl0ddrEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4033223DD6;
-	Tue, 30 Sep 2025 15:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE78F16A956;
+	Tue, 30 Sep 2025 15:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245578; cv=none; b=sSQV5gruB3EYY0jYOUW05YgctMP906JyzUv64wGODETzYHO7w/W2ep4C7ebSYJN/9UFgVPXsASbryYXeLpm5oZdp6i+4nvmUqsXUP6zoJA+pFsRlUrLzBXjwB9Bksj9UOuu/akTb27DpNIKqErPw/64kBHHylSLA+z87CZmSap0=
+	t=1759246085; cv=none; b=rPfYKcIC2gwyNv/VR6FvpkTl2X9IOsi1lXeWDhp3MC/fTb2qdZ3xlzc2AR63VUCVAmi3JcTPpTMn4JNfoK+Ua96NxmZ4MeeBtTmcYVkv7TUCxjUgNncM7GumjJNPebeSwojrcHL9ckKMzVoGnvTzG5QTNrXxKXxQ+A3wSBPuMbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245578; c=relaxed/simple;
-	bh=fsHQ0ata/cHPXT40h4318VwZmpNYEAJ09ypAvvH+JzU=;
+	s=arc-20240116; t=1759246085; c=relaxed/simple;
+	bh=4brhJC3WeTpYFQbq0iYjUG+U5PkHdh3s1BH3qNnf+kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPKyuOl6FKmBhwnN1WR5prBmRljsh40c/sQZe0Hg7oT1HYLcy0ImwlyYVtNz9qh/bUu3NEdMTm6dKVfx/ggOKsB4fICu13T+BbJBrui+c+bn3uz7XhHw/vMp5ddcnFEj6SSOzICt0nMGPOTxfB52OAq8z44YyCxPCYva+zYq188=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHn485nl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5602AC4CEF0;
-	Tue, 30 Sep 2025 15:19:37 +0000 (UTC)
+	 MIME-Version; b=oBtUMGdHiANV9h4e0XU+XJeXHTWFIHXgLQcoKt9Ef/u1Es9XBX9CQnVRJIyY8zVWKl30Tj4IOHvnDFrrcal6wpNuoZJYX0eaDadDQ/7u/8MBd9lTnjt9NHFIJ+Q1lCLIPtwtQDTmAG9duH7TohpHUEL1dfkx7uzRD7IH2k666O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl0ddrEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2667CC4CEF0;
+	Tue, 30 Sep 2025 15:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245577;
-	bh=fsHQ0ata/cHPXT40h4318VwZmpNYEAJ09ypAvvH+JzU=;
+	s=korg; t=1759246085;
+	bh=4brhJC3WeTpYFQbq0iYjUG+U5PkHdh3s1BH3qNnf+kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHn485nlQW42kC7LbTu8kZdZwSoy0knFPTJg7EZIh1fmihnFzQ7XS07RmA/MfQ2kk
-	 LLGs4yyzEA7+CFBM/7JyDtntabuUVT0n2KSde5IH+CDsOrlTtKEPri5aqKM31WOpoV
-	 arG/HnZPg++krUJi6q3Mb1PMUGTkaLFWIkhVYgJs=
+	b=bl0ddrENa/mfP3gFBj3HPbsubK3dYBCXaN0jgKjkuBJw4s0TH+k0fz3YSCwuzoOwY
+	 Dd88BtYlfhNtNX5J2LhDaKnUNUfZ8DiLKW2wJVf1kD88s5T092nr+WVx66X4HXcrXJ
+	 a9xPwfq5b18T91muLt5IWVPPyKDt1Ew3bsXBBgoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 58/73] mm: migrate_device: use more folio in migrate_device_finalize()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 48/89] Bluetooth: hci_sync: Fix hci_resume_advertising_sync
 Date: Tue, 30 Sep 2025 16:48:02 +0200
-Message-ID: <20250930143823.057126758@linuxfoundation.org>
+Message-ID: <20250930143823.910278926@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 58bf8c2bf47550bc94fea9cafd2bc7304d97102c upstream.
+[ Upstream commit 1488af7b8b5f9896ea88ee35aa3301713f72737c ]
 
-Saves a couple of calls to compound_head() and remove last two callers of
-putback_lru_page().
+hci_resume_advertising_sync is suppose to resume all instance paused by
+hci_pause_advertising_sync, this logic is used for procedures are only
+allowed when not advertising, but instance 0x00 was not being
+re-enabled.
 
-Link: https://lkml.kernel.org/r/20240826065814.1336616-5-wangkefeng.wang@huawei.com
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate_device.c |   41 ++++++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+ net/bluetooth/hci_sync.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -829,42 +829,45 @@ void migrate_device_finalize(unsigned lo
- 	unsigned long i;
- 
- 	for (i = 0; i < npages; i++) {
--		struct folio *dst, *src;
-+		struct folio *dst = NULL, *src = NULL;
- 		struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
- 		struct page *page = migrate_pfn_to_page(src_pfns[i]);
- 
-+		if (newpage)
-+			dst = page_folio(newpage);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 5f5137764b80a..333f32a9fd219 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2604,6 +2604,13 @@ static int hci_resume_advertising_sync(struct hci_dev *hdev)
+ 			hci_remove_ext_adv_instance_sync(hdev, adv->instance,
+ 							 NULL);
+ 		}
 +
- 		if (!page) {
--			if (newpage) {
--				unlock_page(newpage);
--				put_page(newpage);
-+			if (dst) {
-+				folio_unlock(dst);
-+				folio_put(dst);
- 			}
- 			continue;
- 		}
- 
--		if (!(src_pfns[i] & MIGRATE_PFN_MIGRATE) || !newpage) {
--			if (newpage) {
--				unlock_page(newpage);
--				put_page(newpage);
-+		src = page_folio(page);
-+
-+		if (!(src_pfns[i] & MIGRATE_PFN_MIGRATE) || !dst) {
-+			if (dst) {
-+				folio_unlock(dst);
-+				folio_put(dst);
- 			}
--			newpage = page;
-+			dst = src;
- 		}
- 
--		src = page_folio(page);
--		dst = page_folio(newpage);
- 		remove_migration_ptes(src, dst, false);
- 		folio_unlock(src);
- 
--		if (is_zone_device_page(page))
--			put_page(page);
-+		if (folio_is_zone_device(src))
-+			folio_put(src);
- 		else
--			putback_lru_page(page);
-+			folio_putback_lru(src);
- 
--		if (newpage != page) {
--			unlock_page(newpage);
--			if (is_zone_device_page(newpage))
--				put_page(newpage);
-+		if (dst != src) {
-+			folio_unlock(dst);
-+			if (folio_is_zone_device(dst))
-+				folio_put(dst);
- 			else
--				putback_lru_page(newpage);
-+				folio_putback_lru(dst);
- 		}
- 	}
- }
++		/* If current advertising instance is set to instance 0x00
++		 * then we need to re-enable it.
++		 */
++		if (!hdev->cur_adv_instance)
++			err = hci_enable_ext_advertising_sync(hdev,
++							      hdev->cur_adv_instance);
+ 	} else {
+ 		/* Schedule for most recent instance to be restarted and begin
+ 		 * the software rotation loop
+-- 
+2.51.0
+
 
 
 
