@@ -1,67 +1,62 @@
-Return-Path: <stable+bounces-182205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409DEBAD5F6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:57:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E3BBAD980
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E89618816F7
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1373267DD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C0D305070;
-	Tue, 30 Sep 2025 14:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3052236EB;
+	Tue, 30 Sep 2025 15:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcBoGkhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUKsJJnx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13D0303C9B;
-	Tue, 30 Sep 2025 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B371EE02F;
+	Tue, 30 Sep 2025 15:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244187; cv=none; b=T8idQrTONBS4+7tIYL1SRa29vimjvoChEdcyBSCOkMpAMaWvgLLGggWoiJy5uByHEuwDQ7apb1XZFIF32dvDz5JhYCJh0k0ZjeKcoDA5qu0sOHHwRDNkhzyIf7VG/t7YElae/A2PsLA+lxMKUfTdHI1iCSpatPf8u4jGSvREHbQ=
+	t=1759245062; cv=none; b=EgsKMTvOBqWqCSuQAbRmgMihS/iaParnYi7SY4JLjYqRMVFBZ9ivDdsEm3XbwPdEzNWxqPho2FMnP6EC3yjs55tSpds46kFcjKQwiifVacefE5tiNFh3E5iInb+pXt8+MfFJlxlhDxYLgCCAmefGkdCj+UCuaffPD8H8TcztsHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244187; c=relaxed/simple;
-	bh=Z5d0b5DGcSBbhhIKTZeyvPJji5Ji+ULzzLR+8R5C37M=;
+	s=arc-20240116; t=1759245062; c=relaxed/simple;
+	bh=Rx5ii5ymQK6781NzOp5jAn1jpCKWJJt4tBIJU0tXOH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0nA9lM9ZBrpfnSPg3Ir92OFS2OZqs190KQDEyFZsWlAdpqHSkcocKxLle/+q6VgAqlkAQhoyYKIBxzm8PdmX7SP3jxvYQYJQAonJIQdEnwjKtwMsEtB3k68V28qyaFJ+lvns0bAk58hQ8nZvALxGe2KJ6BhtNJ3mihlgPMGWB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcBoGkhq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360C6C113D0;
-	Tue, 30 Sep 2025 14:56:26 +0000 (UTC)
+	 MIME-Version; b=UFUy6wT8W4K1PMeo1Rl8QUEQpN90osFNg+zgc+xdmyKeMi3v8DGOP8EFJmmDTW8RFworgCbyYj/YQ+Hw9xldRa3FrPsFq89yhwkNrdrLEOwKk2HsyRObYJwhlpLwjF6D6sXEMIiri8Begq/gMqMduXbCWTUHwrxidWXknfFiOiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUKsJJnx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3A2C113D0;
+	Tue, 30 Sep 2025 15:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244186;
-	bh=Z5d0b5DGcSBbhhIKTZeyvPJji5Ji+ULzzLR+8R5C37M=;
+	s=korg; t=1759245062;
+	bh=Rx5ii5ymQK6781NzOp5jAn1jpCKWJJt4tBIJU0tXOH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcBoGkhq258ECAMb1o6jiyeSS/SUuq+mAN/fwi/5XZIpPUDzOJc3be9hDjD2g4ivo
-	 +NeU5vD+Z3jdpPBMxTpDxb2hnxY5JXIdT4trYrqPZjMkN+u3zdFPMkm4X0DrDR8O6l
-	 GHZlJ6F7yS+sjB8Wg6Dkc86+78l6P6vAR6Y2anAE=
+	b=uUKsJJnxF32MwvFchpiSEwMQRuPO5M2SCTnOs2u7SP+wHUFvmbrTB+aD56qex/8He
+	 wP4OYukTXoIDimy1tUFHudstAlCwu2wLfa0SrGyItXXfuGoRe3Gypy5JSIS+tppNKi
+	 vOXmVQfKuwVmzvkisbamf0r+OahzDL/C5+XqhhHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Cai Huoqing <cai.huoqing@linux.dev>,
-	linux-mtd@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/122] mtd: rawnand: stm32_fmc2: Fix dma_map_sg error check
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 023/151] ocfs2: fix recursive semaphore deadlock in fiemap call
 Date: Tue, 30 Sep 2025 16:45:53 +0200
-Message-ID: <20250930143823.902488364@linuxfoundation.org>
+Message-ID: <20250930143828.538410123@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,64 +68,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Mark Tinguely <mark.tinguely@oracle.com>
 
-[ Upstream commit 43b81c2a3e6e07915151045aa13a6e8a9bd64419 ]
+commit 04100f775c2ea501927f508f17ad824ad1f23c8d upstream.
 
-dma_map_sg return 0 on error, in case of error return -EIO.
+syzbot detected a OCFS2 hang due to a recursive semaphore on a
+FS_IOC_FIEMAP of the extent list on a specially crafted mmap file.
 
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Christophe Kerello <christophe.kerello@foss.st.com>
-Cc: Cai Huoqing <cai.huoqing@linux.dev>
-Cc: linux-mtd@lists.infradead.org
-Cc: linux-stm32@st-md-mailman.stormreply.com
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Reviewed-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20220819060801.10443-5-jinpu.wang@ionos.com
-Stable-dep-of: 513c40e59d5a ("mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC buffer")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+context_switch kernel/sched/core.c:5357 [inline]
+   __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
+   __schedule_loop kernel/sched/core.c:7043 [inline]
+   schedule+0x165/0x360 kernel/sched/core.c:7058
+   schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7115
+   rwsem_down_write_slowpath+0x872/0xfe0 kernel/locking/rwsem.c:1185
+   __down_write_common kernel/locking/rwsem.c:1317 [inline]
+   __down_write kernel/locking/rwsem.c:1326 [inline]
+   down_write+0x1ab/0x1f0 kernel/locking/rwsem.c:1591
+   ocfs2_page_mkwrite+0x2ff/0xc40 fs/ocfs2/mmap.c:142
+   do_page_mkwrite+0x14d/0x310 mm/memory.c:3361
+   wp_page_shared mm/memory.c:3762 [inline]
+   do_wp_page+0x268d/0x5800 mm/memory.c:3981
+   handle_pte_fault mm/memory.c:6068 [inline]
+   __handle_mm_fault+0x1033/0x5440 mm/memory.c:6195
+   handle_mm_fault+0x40a/0x8e0 mm/memory.c:6364
+   do_user_addr_fault+0x764/0x1390 arch/x86/mm/fault.c:1387
+   handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+   exc_page_fault+0x76/0xf0 arch/x86/mm/fault.c:1532
+   asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:623
+RIP: 0010:copy_user_generic arch/x86/include/asm/uaccess_64.h:126 [inline]
+RIP: 0010:raw_copy_to_user arch/x86/include/asm/uaccess_64.h:147 [inline]
+RIP: 0010:_inline_copy_to_user include/linux/uaccess.h:197 [inline]
+RIP: 0010:_copy_to_user+0x85/0xb0 lib/usercopy.c:26
+Code: e8 00 bc f7 fc 4d 39 fc 72 3d 4d 39 ec 77 38 e8 91 b9 f7 fc 4c 89
+f7 89 de e8 47 25 5b fd 0f 01 cb 4c 89 ff 48 89 d9 4c 89 f6 <f3> a4 0f
+1f 00 48 89 cb 0f 01 ca 48 89 d8 5b 41 5c 41 5d 41 5e 41
+RSP: 0018:ffffc9000403f950 EFLAGS: 00050256
+RAX: ffffffff84c7f101 RBX: 0000000000000038 RCX: 0000000000000038
+RDX: 0000000000000000 RSI: ffffc9000403f9e0 RDI: 0000200000000060
+RBP: ffffc9000403fa90 R08: ffffc9000403fa17 R09: 1ffff92000807f42
+R10: dffffc0000000000 R11: fffff52000807f43 R12: 0000200000000098
+R13: 00007ffffffff000 R14: ffffc9000403f9e0 R15: 0000200000000060
+   copy_to_user include/linux/uaccess.h:225 [inline]
+   fiemap_fill_next_extent+0x1c0/0x390 fs/ioctl.c:145
+   ocfs2_fiemap+0x888/0xc90 fs/ocfs2/extent_map.c:806
+   ioctl_fiemap fs/ioctl.c:220 [inline]
+   do_vfs_ioctl+0x1173/0x1430 fs/ioctl.c:532
+   __do_sys_ioctl fs/ioctl.c:596 [inline]
+   __se_sys_ioctl+0x82/0x170 fs/ioctl.c:584
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5f13850fd9
+RSP: 002b:00007ffe3b3518b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000200000000000 RCX: 00007f5f13850fd9
+RDX: 0000200000000040 RSI: 00000000c020660b RDI: 0000000000000004
+RBP: 6165627472616568 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe3b3518f0
+R13: 00007ffe3b351b18 R14: 431bde82d7b634db R15: 00007f5f1389a03b
+
+ocfs2_fiemap() takes a read lock of the ip_alloc_sem semaphore (since
+v2.6.22-527-g7307de80510a) and calls fiemap_fill_next_extent() to read the
+extent list of this running mmap executable.  The user supplied buffer to
+hold the fiemap information page faults calling ocfs2_page_mkwrite() which
+will take a write lock (since v2.6.27-38-g00dc417fa3e7) of the same
+semaphore.  This recursive semaphore will hold filesystem locks and causes
+a hang of the fileystem.
+
+The ip_alloc_sem protects the inode extent list and size.  Release the
+read semphore before calling fiemap_fill_next_extent() in ocfs2_fiemap()
+and ocfs2_fiemap_inline().  This does an unnecessary semaphore lock/unlock
+on the last extent but simplifies the error path.
+
+Link: https://lkml.kernel.org/r/61d1a62b-2631-4f12-81e2-cd689914360b@oracle.com
+Fixes: 00dc417fa3e7 ("ocfs2: fiemap support")
+Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
+Reported-by: syzbot+541dcc6ee768f77103e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=541dcc6ee768f77103e7
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/stm32_fmc2_nand.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/ocfs2/extent_map.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-+++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-@@ -858,8 +858,8 @@ static int stm32_fmc2_nfc_xfer(struct na
+--- a/fs/ocfs2/extent_map.c
++++ b/fs/ocfs2/extent_map.c
+@@ -696,6 +696,8 @@ out:
+  * it not only handles the fiemap for inlined files, but also deals
+  * with the fast symlink, cause they have no difference for extent
+  * mapping per se.
++ *
++ * Must be called with ip_alloc_sem semaphore held.
+  */
+ static int ocfs2_fiemap_inline(struct inode *inode, struct buffer_head *di_bh,
+ 			       struct fiemap_extent_info *fieinfo,
+@@ -707,6 +709,7 @@ static int ocfs2_fiemap_inline(struct in
+ 	u64 phys;
+ 	u32 flags = FIEMAP_EXTENT_DATA_INLINE|FIEMAP_EXTENT_LAST;
+ 	struct ocfs2_inode_info *oi = OCFS2_I(inode);
++	lockdep_assert_held_read(&oi->ip_alloc_sem);
  
- 	ret = dma_map_sg(nfc->dev, nfc->dma_data_sg.sgl,
- 			 eccsteps, dma_data_dir);
--	if (ret < 0)
--		return ret;
-+	if (!ret)
-+		return -EIO;
+ 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 	if (ocfs2_inode_is_fast_symlink(inode))
+@@ -722,8 +725,11 @@ static int ocfs2_fiemap_inline(struct in
+ 			phys += offsetof(struct ocfs2_dinode,
+ 					 id2.i_data.id_data);
  
- 	desc_data = dmaengine_prep_slave_sg(dma_ch, nfc->dma_data_sg.sgl,
- 					    eccsteps, dma_transfer_dir,
-@@ -889,8 +889,10 @@ static int stm32_fmc2_nfc_xfer(struct na
++		/* Release the ip_alloc_sem to prevent deadlock on page fault */
++		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		ret = fiemap_fill_next_extent(fieinfo, 0, phys, id_count,
+ 					      flags);
++		down_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+@@ -792,9 +798,11 @@ int ocfs2_fiemap(struct inode *inode, st
+ 		len_bytes = (u64)le16_to_cpu(rec.e_leaf_clusters) << osb->s_clustersize_bits;
+ 		phys_bytes = le64_to_cpu(rec.e_blkno) << osb->sb->s_blocksize_bits;
+ 		virt_bytes = (u64)le32_to_cpu(rec.e_cpos) << osb->s_clustersize_bits;
+-
++		/* Release the ip_alloc_sem to prevent deadlock on page fault */
++		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		ret = fiemap_fill_next_extent(fieinfo, virt_bytes, phys_bytes,
+ 					      len_bytes, fe_flags);
++		down_read(&OCFS2_I(inode)->ip_alloc_sem);
+ 		if (ret)
+ 			break;
  
- 		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
- 				 eccsteps, dma_data_dir);
--		if (ret < 0)
-+		if (!ret) {
-+			ret = -EIO;
- 			goto err_unmap_data;
-+		}
- 
- 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
- 						   nfc->dma_ecc_sg.sgl,
 
 
 
