@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-182383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0EBBAD8CC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB87EBADBBB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46DFC3A7CC5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 320997A8203
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC83E3043A1;
-	Tue, 30 Sep 2025 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32E6302CD6;
+	Tue, 30 Sep 2025 15:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvvuCE1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnYweD1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EA1846F;
-	Tue, 30 Sep 2025 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D7E20E334;
+	Tue, 30 Sep 2025 15:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244765; cv=none; b=FCxN3LfZYOLugE2UoBc0SQ7GWMDuqQY3CiiH10AeVbFVKTvtIe4wi+iitgsrRivCUt5z6FaF1wFMcjDMtLZ/4wBwKxZsodjII5FYItIna+L8yiAHsofN3ZSbaH763wN3xNSu7wDvs93oJ9QvHOxpsOOozGksaaeBDOOsBqCRCH0=
+	t=1759245660; cv=none; b=Tt3mY1WTEjSupEhwewxwLXO/eiLLC7tS5+mywBK71TK3tmZjTbc7tUiilgIbWdGgxevDFIkY+BxyoIom0eYYcCnt9JflPSjLF5YVp4hkaD7SuHpMrHwiU0s5+YzUu3V+/32Umsd/La1IdPStzsjTNjcuSBosgtHNgzGXMINbaBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244765; c=relaxed/simple;
-	bh=/8gJ1YE9DZFzWi2fdL7R5ul1dEPx0z2iiKYmVU8J6tc=;
+	s=arc-20240116; t=1759245660; c=relaxed/simple;
+	bh=eyoS5/gXB/B+WYSrLqDtdjL51Y3kzrGw4wOJZWlfX0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vA41xdDCDIUZ5GQ4/XUJEzVY60NoTNoucSS9ngxGO4AOhCexmAE8TCkJEW7MEzQOFGbcO7zr+ejHd3NZ8eJX04R8Sl51FkLr+jnCyS31SLVPUbFEfBW9CcYee0rSsxZXfsVjJfzML6R6xJZfk11rPeBwjqPeRDLCJawxaXq+uoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvvuCE1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22634C4CEF0;
-	Tue, 30 Sep 2025 15:06:04 +0000 (UTC)
+	 MIME-Version; b=SITBiithgfk0lbHO3zRRhKi8PRon766mLaeC0PrQCBjS1LGXYkUpbv1Qpl6bMm/tK9EK2rdZcnkFsLeqGJkmU1tArpgfH0z/+oIJi+SE4JQPAbE4wEkxaU3OjrpoUXD+XhwrQlfPOr403BRRt44JrCmBFVgMiDy7Y4p9qeezFdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnYweD1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB43C4CEF0;
+	Tue, 30 Sep 2025 15:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244765;
-	bh=/8gJ1YE9DZFzWi2fdL7R5ul1dEPx0z2iiKYmVU8J6tc=;
+	s=korg; t=1759245660;
+	bh=eyoS5/gXB/B+WYSrLqDtdjL51Y3kzrGw4wOJZWlfX0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvvuCE1FMoZ9NhqrCDo8BpJLODt7whU3Su6s+STSDmU5AV3HcF+69dFG+QqBH7Ohg
-	 KyVW5cg/nBh/W0jHk+keQW5gyOuBJHqiPkjFUDGutvB2/ir5ps2hTnpMGvvJOwaT+e
-	 a+frjL66lO20Y7cvRtoHr96fMPR9/gCqtGEjPcb4=
+	b=jnYweD1gBR50QYH/W5UwleXCcW0hSTLaSSyfgF+c4UI95h1Ff5E25h/ccgqgs/WG4
+	 SN9d/kmGQVZdx0FblmNM56KBrVU7BEaqXchUxqRWivRaqwydQHR3TaFS5Qx1Hw8BTx
+	 0yNpqzfuSalWNyfipPTO6dUOwf+2TXDz4MLJgtOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.16 107/143] i40e: add max boundary check for VF filters
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 12/91] HID: multitouch: specify that Apple Touch Bar is direct
 Date: Tue, 30 Sep 2025 16:47:11 +0200
-Message-ID: <20250930143835.497094332@linuxfoundation.org>
+Message-ID: <20250930143821.637000809@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Kerem Karabay <kekrby@gmail.com>
 
-commit cb79fa7118c150c3c76a327894bb2eb878c02619 upstream.
+[ Upstream commit 45ca23c5ee8b2b3074377fecc92fa72aa595f7c9 ]
 
-There is no check for max filters that VF can request. Add it.
+Currently the driver determines the device type based on the
+application, but this value is not reliable on Apple Touch Bar, where
+the application is HID_DG_TOUCHPAD even though this device is direct,
+so add a quirk for the same.
 
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Kerem Karabay <kekrby@gmail.com>
+Co-developed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/hid/hid-multitouch.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3908,6 +3908,8 @@ err:
- 				       aq_ret);
- }
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 8e9f71e69dd8c..d8fee341c096e 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1336,6 +1336,13 @@ static int mt_touch_input_configured(struct hid_device *hdev,
+ 	if (td->serial_maybe)
+ 		mt_post_parse_default_settings(td, app);
  
-+#define I40E_MAX_VF_CLOUD_FILTER 0xFF00
++	/*
++	 * The application for Apple Touch Bars is HID_DG_TOUCHPAD,
++	 * but these devices are direct.
++	 */
++	if (cls->quirks & MT_QUIRK_APPLE_TOUCHBAR)
++		app->mt_flags |= INPUT_MT_DIRECT;
 +
- /**
-  * i40e_vc_add_cloud_filter
-  * @vf: pointer to the VF info
-@@ -3947,6 +3949,14 @@ static int i40e_vc_add_cloud_filter(stru
- 		goto err_out;
- 	}
+ 	if (cls->is_indirect)
+ 		app->mt_flags |= INPUT_MT_POINTER;
  
-+	if (vf->num_cloud_filters >= I40E_MAX_VF_CLOUD_FILTER) {
-+		dev_warn(&pf->pdev->dev,
-+			 "VF %d: Max number of filters reached, can't apply cloud filter\n",
-+			 vf->vf_id);
-+		aq_ret = -ENOSPC;
-+		goto err_out;
-+	}
-+
- 	cfilter = kzalloc(sizeof(*cfilter), GFP_KERNEL);
- 	if (!cfilter) {
- 		aq_ret = -ENOMEM;
+-- 
+2.51.0
+
 
 
 
