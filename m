@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-182607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA63BADB01
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC34BAD752
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6F867AB168
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C8053A7F20
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859823074BB;
-	Tue, 30 Sep 2025 15:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDF0305E2F;
+	Tue, 30 Sep 2025 15:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfB30+Z1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IiMWPaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434523064B9;
-	Tue, 30 Sep 2025 15:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A52303A05;
+	Tue, 30 Sep 2025 15:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245498; cv=none; b=uFXsxbFmkB/I16dY7Qzycj24v4X9xKzI704kxRG400T0RbVhz7tLhgUC+68KSxLLsHQh+mc3QxqCZkIL9DdYrWmCXlNtzCvpJwe65O73dMy4OE1AvaIwhBsNKzv2izbVLJN/0Xmzs/24RAtiYmgz1IUJslmlViLid37ClLYWkzM=
+	t=1759244435; cv=none; b=MPUNpmLWj/I9dX9/cCjnBrWPtxBhMfbA2H7giq6F8ZSvUwD0b4AyHbpFZtIsUU/MOFIwITZVTBVOiGl1pEA3YTZB3burJ4fweDhDckj62fu0SVzQu2bcIPGgV3W0GjHgu2Rs3z3evlITFyJr4StN/wjkVFlkjsKBbADSrhz7sec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245498; c=relaxed/simple;
-	bh=JY4DDcqzxSdRQ1oyw4cm0jqPwKWie/ei3c5EmNOtlx0=;
+	s=arc-20240116; t=1759244435; c=relaxed/simple;
+	bh=R2Q1PFWkMdXbZA3F/xnqdlmjHEGzH35qIJnYAwqh7wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHCO/gVjYWrpJ8KWJknZwX70Co+e0eLYgkdXYDd9J1itoiuLhw5Zg8pUSBPyXYXAi9yudmjGtfywpjmOVs/9hFCCr9JN1cdXP/ohndyc0JouwctkS4mImpzhZsJwRmlsV3y/DRZemHKFaSY25cW73Qa0sPnj195cQXc5Xd+QY3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfB30+Z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8484C4CEF0;
-	Tue, 30 Sep 2025 15:18:17 +0000 (UTC)
+	 MIME-Version; b=aWfVMSbDmQP3TvbjxLOCbNZ02+OR78pFbUjJL2k5vBilSj+pYTOEzte/h5RM+yGaXC/bSwk1qkuU9ecXQeaf2Bdb/0SucqGPwiVxvrKCCLqkjx1oeBkBqiJvpVWjKNVf3sLEJmImYUIVXV4FtkngGf/RiptZqPiVskbgu08KU+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IiMWPaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF007C4CEF0;
+	Tue, 30 Sep 2025 15:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245498;
-	bh=JY4DDcqzxSdRQ1oyw4cm0jqPwKWie/ei3c5EmNOtlx0=;
+	s=korg; t=1759244435;
+	bh=R2Q1PFWkMdXbZA3F/xnqdlmjHEGzH35qIJnYAwqh7wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfB30+Z11VMTHW9Ls2gQB4EGRMI0mm260nlRhNO6dq89x4iCnLvMxzgariJEH5Q5A
-	 5bM2h5ml7h/wtmGuL6JjrVkakrNzhxFKZEOYWatEoluaNu/fn8JIzauc28YPqmr74g
-	 NOWdZ2/fGoxC3SelvHd2U0qsnXu83jcAI/jkkn4U=
+	b=1IiMWPazBo3zH93ZaysjbnaVh+e6vPqdEbFcxiNDh7QxZwZ93iBF75nE7N5ie4iiX
+	 3H+UqeZn8eWpcHTaLQMg6UR8WG0k01H59rxhODbohuAVNnE8kZ4D5eTZ2x51DXbkT7
+	 wtStSXJWSbNM/+Ph5lOGokkTd4/UcIs4BS4BfVxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/73] can: etas_es58x: sort the includes by alphabetic order
+Subject: [PATCH 5.10 121/122] i40e: fix validation of VF state in get resources
 Date: Tue, 30 Sep 2025 16:47:32 +0200
-Message-ID: <20250930143821.747148906@linuxfoundation.org>
+Message-ID: <20250930143827.913523080@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit 8fd9323ef7210b90d1d209dd4f0d65a8411b60e1 ]
+[ Upstream commit 877b7e6ffc23766448236e8732254534c518ba42 ]
 
-Follow the best practices, reorder the includes.
+VF state I40E_VF_STATE_ACTIVE is not the only state in which
+VF is actually active so it should not be used to determine
+if a VF is allowed to obtain resources.
 
-While doing so, bump up copyright year of each modified files.
+Use I40E_VF_STATE_RESOURCES_LOADED that is set only in
+i40e_vc_get_vf_resources_msg() and cleared during reset.
 
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/all/20221126160525.87036-1-mailhol.vincent@wanadoo.fr
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 38c0abad45b1 ("can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow")
+Fixes: 61125b8be85d ("i40e: Fix failed opcode appearing if handling messages from VF")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/etas_es58x/es581_4.c    | 4 ++--
- drivers/net/can/usb/etas_es58x/es58x_core.c | 6 +++---
- drivers/net/can/usb/etas_es58x/es58x_core.h | 8 ++++----
- drivers/net/can/usb/etas_es58x/es58x_fd.c   | 4 ++--
- 4 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    7 ++++++-
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |    3 ++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/usb/etas_es58x/es581_4.c b/drivers/net/can/usb/etas_es58x/es581_4.c
-index 1bcdcece5ec72..4151b18fd045d 100644
---- a/drivers/net/can/usb/etas_es58x/es581_4.c
-+++ b/drivers/net/can/usb/etas_es58x/es581_4.c
-@@ -6,12 +6,12 @@
-  *
-  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
-  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
-- * Copyright (c) 2020, 2021 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+ * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-  */
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1416,6 +1416,7 @@ static void i40e_trigger_vf_reset(struct
+ 	 * functions that may still be running at this point.
+ 	 */
+ 	clear_bit(I40E_VF_STATE_INIT, &vf->vf_states);
++	clear_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
  
-+#include <asm/unaligned.h>
- #include <linux/kernel.h>
- #include <linux/units.h>
--#include <asm/unaligned.h>
+ 	/* In the case of a VFLR, the HW has already reset the VF and we
+ 	 * just need to clean up, so don't hit the VFRTRIG register.
+@@ -2082,7 +2083,10 @@ static int i40e_vc_get_vf_resources_msg(
+ 	size_t len = 0;
+ 	int ret;
  
- #include "es58x_core.h"
- #include "es581_4.h"
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
-index ddb7c5735c9ac..5aba168496037 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
-@@ -7,15 +7,15 @@
-  *
-  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
-  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
-- * Copyright (c) 2020, 2021 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+ * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-  */
+-	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_INIT)) {
++	i40e_sync_vf_state(vf, I40E_VF_STATE_INIT);
++
++	if (!test_bit(I40E_VF_STATE_INIT, &vf->vf_states) ||
++	    test_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states)) {
+ 		aq_ret = I40E_ERR_PARAM;
+ 		goto err;
+ 	}
+@@ -2178,6 +2182,7 @@ static int i40e_vc_get_vf_resources_msg(
+ 				vf->default_lan_addr.addr);
+ 	}
+ 	set_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states);
++	set_bit(I40E_VF_STATE_RESOURCES_LOADED, &vf->vf_states);
  
-+#include <asm/unaligned.h>
-+#include <linux/crc16.h>
- #include <linux/ethtool.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/usb.h>
--#include <linux/crc16.h>
--#include <asm/unaligned.h>
+ err:
+ 	/* send the response back to the VF */
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -39,7 +39,8 @@ enum i40e_vf_states {
+ 	I40E_VF_STATE_MC_PROMISC,
+ 	I40E_VF_STATE_UC_PROMISC,
+ 	I40E_VF_STATE_PRE_ENABLE,
+-	I40E_VF_STATE_RESETTING
++	I40E_VF_STATE_RESETTING,
++	I40E_VF_STATE_RESOURCES_LOADED,
+ };
  
- #include "es58x_core.h"
- 
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.h b/drivers/net/can/usb/etas_es58x/es58x_core.h
-index 640fe0a1df636..4a082fd69e6ff 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.h
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.h
-@@ -6,17 +6,17 @@
-  *
-  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
-  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
-- * Copyright (c) 2020, 2021 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+ * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-  */
- 
- #ifndef __ES58X_COMMON_H__
- #define __ES58X_COMMON_H__
- 
--#include <linux/types.h>
--#include <linux/usb.h>
--#include <linux/netdevice.h>
- #include <linux/can.h>
- #include <linux/can/dev.h>
-+#include <linux/netdevice.h>
-+#include <linux/types.h>
-+#include <linux/usb.h>
- 
- #include "es581_4.h"
- #include "es58x_fd.h"
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_fd.c b/drivers/net/can/usb/etas_es58x/es58x_fd.c
-index c97ffa71fd758..fa87b0b78e3eb 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_fd.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_fd.c
-@@ -8,12 +8,12 @@
-  *
-  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
-  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
-- * Copyright (c) 2020, 2021 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+ * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-  */
- 
-+#include <asm/unaligned.h>
- #include <linux/kernel.h>
- #include <linux/units.h>
--#include <asm/unaligned.h>
- 
- #include "es58x_core.h"
- #include "es58x_fd.h"
--- 
-2.51.0
-
+ /* VF capabilities */
 
 
 
