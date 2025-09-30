@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46C8BAD82F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB93BAD660
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30EEE324FEC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD780324B05
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C244B3043A1;
-	Tue, 30 Sep 2025 15:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3092FCBFC;
+	Tue, 30 Sep 2025 14:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umSyHNAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZQ08xqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E35B846F;
-	Tue, 30 Sep 2025 15:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE1C2F39C5;
+	Tue, 30 Sep 2025 14:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244740; cv=none; b=RoEAxAdo1BnPRxaTq1UcC4/cViKYhN+nXjEbKCPwVds9gJnw0RthuqEj4/qqghnQ9GNnc2PUMlsXTB+Qx777DcgiEuHzmeP+hb/jLTBcs5BgbqVAt3AYCxM8cVx67brFpE7chQa9QPRTp1iu9T+wPyy7wqf8kSoPy30QwK/df5w=
+	t=1759244316; cv=none; b=Q45+48MuS2qmECxlb0rC2/c5+5r9eAs60wx4NAtS+U2B9UArNp6QiVkN0IHir8kr6U2OFCT5ikpJuUHKXgsL9xOG4W4AqtxyyqpSCtWb79vTOVBSG/tlZMLSgwP1/nduxtLo9Mt+dtxef1m0rwQRNZrdqnBoxAJgll0W2xM/QdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244740; c=relaxed/simple;
-	bh=BIINlTQkBbcPKl6I9/n82vQXcPqetTGstbxEIxDT/h8=;
+	s=arc-20240116; t=1759244316; c=relaxed/simple;
+	bh=p0rEeWnBs+R424CnDmrt58uGmxjFld890rxyUPzjdsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJosUAIewW0G3vz/uozGnnT/BK24Np+NAbplgphj0JI7AK72AyD8YgQEXlggIHhe4HmcwmlqVaR3x6kMgJbIgnpafxd0naj13QaJUI7UW3e0OyyYZUIRAMOPj0tloi8OvuVS8yQ1/7PgL2J1Tl+qHpKPOO+txzA8ZP1eGDgluWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umSyHNAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E575EC4CEF0;
-	Tue, 30 Sep 2025 15:05:39 +0000 (UTC)
+	 MIME-Version; b=BEwfimFZlehwbjcnkKYipGF28zlANILdjZmiMMD88+sG0WK0g54hUGaWFhgrEVR7LNqN2/C3pvP17vWF92SNOfk3bUUMc0lCNcplk+gRqnzyo17yfAIs04bUfWgcHIs0W1KSW7fwyM18oqZ/R4priTlNs/I4rBlm0aYegvDwKzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZQ08xqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5B1C4CEF0;
+	Tue, 30 Sep 2025 14:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244740;
-	bh=BIINlTQkBbcPKl6I9/n82vQXcPqetTGstbxEIxDT/h8=;
+	s=korg; t=1759244315;
+	bh=p0rEeWnBs+R424CnDmrt58uGmxjFld890rxyUPzjdsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umSyHNAiGOJDl/+d7V5e7VAObr73mgcYZDxFw5+IwRAvGUJpATWEjG9FouPSWEW6n
-	 Z0VCzvWDfgyyt1bhBNTJzntOTuZTvrSfC27w3yFHWMJ0EjFFNGlHOE7LazxeoD5aa7
-	 VbvC8ZEz7YdV+yCySNCGryDqqjV29VomIsEi1L+M=
+	b=yZQ08xqFezOsgNmhqPx1GZIHKneBTStfMcbiclewQ8GCXMIiUI2y36U43RH+kWzPU
+	 HxAvz19ARIFt3ykwkMKo0M3TNkgVaTB+vPvmNcXLSuWb4f9dTXipYZ8hh3nYpGGQsA
+	 2WlbiCiDw/Qhr6w8SfIT3D9Hxs0fx+G2JJsUfbX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinpeng Sun <xinpeng.sun@intel.com>,
-	Even Xu <even.xu@intel.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.16 100/143] HID: intel-thc-hid: intel-quickspi: Add WCL Device IDs
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 093/122] IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
 Date: Tue, 30 Sep 2025 16:47:04 +0200
-Message-ID: <20250930143835.213271162@linuxfoundation.org>
+Message-ID: <20250930143826.802429703@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinpeng Sun <xinpeng.sun@intel.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-commit cc54ed51c761728f6933cca889b684ed7fbaaf07 upstream.
+[ Upstream commit 85fe9f565d2d5af95ac2bbaa5082b8ce62b039f5 ]
 
-Add THC SPI WildcatLake device IDs.
+Fix a bug where the driver's event subscription logic for SRQ-related
+events incorrectly sets obj_type for RMP objects.
 
-Signed-off-by: Xinpeng Sun <xinpeng.sun@intel.com>
-Reviewed-by: Even Xu <even.xu@intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When subscribing to SRQ events, get_legacy_obj_type() did not handle
+the MLX5_CMD_OP_CREATE_RMP case, which caused obj_type to be 0
+(default).
+This led to a mismatch between the obj_type used during subscription
+(0) and the value used during notification (1, taken from the event's
+type field). As a result, event mapping for SRQ objects could fail and
+event notification would not be delivered correctly.
+
+This fix adds handling for MLX5_CMD_OP_CREATE_RMP in get_legacy_obj_type,
+returning MLX5_EVENT_QUEUE_TYPE_RQ so obj_type is consistent between
+subscription and notification.
+
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/8f1048e3fdd1fde6b90607ce0ed251afaf8a148c.1755088962.git.leon@kernel.org
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Edward Srouji <edwards@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c |    2 ++
- drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/infiniband/hw/mlx5/devx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c
-+++ b/drivers/hid/intel-thc-hid/intel-quickspi/pci-quickspi.c
-@@ -961,6 +961,8 @@ static const struct pci_device_id quicks
- 	{PCI_DEVICE_DATA(INTEL, THC_PTL_H_DEVICE_ID_SPI_PORT2, &ptl), },
- 	{PCI_DEVICE_DATA(INTEL, THC_PTL_U_DEVICE_ID_SPI_PORT1, &ptl), },
- 	{PCI_DEVICE_DATA(INTEL, THC_PTL_U_DEVICE_ID_SPI_PORT2, &ptl), },
-+	{PCI_DEVICE_DATA(INTEL, THC_WCL_DEVICE_ID_SPI_PORT1, &ptl), },
-+	{PCI_DEVICE_DATA(INTEL, THC_WCL_DEVICE_ID_SPI_PORT2, &ptl), },
- 	{}
- };
- MODULE_DEVICE_TABLE(pci, quickspi_pci_tbl);
---- a/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h
-+++ b/drivers/hid/intel-thc-hid/intel-quickspi/quickspi-dev.h
-@@ -19,6 +19,8 @@
- #define PCI_DEVICE_ID_INTEL_THC_PTL_H_DEVICE_ID_SPI_PORT2	0xE34B
- #define PCI_DEVICE_ID_INTEL_THC_PTL_U_DEVICE_ID_SPI_PORT1	0xE449
- #define PCI_DEVICE_ID_INTEL_THC_PTL_U_DEVICE_ID_SPI_PORT2	0xE44B
-+#define PCI_DEVICE_ID_INTEL_THC_WCL_DEVICE_ID_SPI_PORT1 	0x4D49
-+#define PCI_DEVICE_ID_INTEL_THC_WCL_DEVICE_ID_SPI_PORT2 	0x4D4B
- 
- /* HIDSPI special ACPI parameters DSM methods */
- #define ACPI_QUICKSPI_REVISION_NUM			2
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 301c061bb3190..679d85db26f4f 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -194,6 +194,7 @@ static u16 get_legacy_obj_type(u16 opcode)
+ {
+ 	switch (opcode) {
+ 	case MLX5_CMD_OP_CREATE_RQ:
++	case MLX5_CMD_OP_CREATE_RMP:
+ 		return MLX5_EVENT_QUEUE_TYPE_RQ;
+ 	case MLX5_CMD_OP_CREATE_QP:
+ 		return MLX5_EVENT_QUEUE_TYPE_QP;
+-- 
+2.51.0
+
 
 
 
