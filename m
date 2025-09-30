@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C16CBAD62C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:58:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ED4BAD7EE
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D9A1189B81B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:57:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44ED61685FA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D79D302163;
-	Tue, 30 Sep 2025 14:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F23304964;
+	Tue, 30 Sep 2025 15:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INkRK25b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqcqlJNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4BD1EF38E;
-	Tue, 30 Sep 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617BB1F152D;
+	Tue, 30 Sep 2025 15:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244247; cv=none; b=p/FB+/EH+mot79r/7BiZY3pSBrQLroS4UFpbvkCciKN2daUuNrPWjhMgi54CYYaP9uQh+kI8zMb6K1odrXhY5t2DQLC0CmphltVSPdnYvgCPBHcuEYEiGON1o+0WGHF3spOc5kLZ+dl7CMYX09rAVlMjcHRKD11DfNrozD+UeBs=
+	t=1759244670; cv=none; b=PrOIKqUZFHFrOmbh/cc+Ta1VHKH9t+et/dy5mERpE0orpSONC5IZCjclr0kDebfMZcMbxv5RZnkLdLK4Xhyn1dmJR6AEJOxtGkHqBgY4pPW/VFsmMhJrYkkjz7QMTcFGYdvJys54quIGKg/eN9Vq/cqB8a7etXbomXMg65ppjjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244247; c=relaxed/simple;
-	bh=hVj1BlbncewAIF0LTRZYKlayaahn1j3tKGrr8TWU2oo=;
+	s=arc-20240116; t=1759244670; c=relaxed/simple;
+	bh=M6x/9AvDl6AmZ0oDBRZ8tguA1eFoSlkqMxvivUgZWvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDrqM814jxl3V5XoL2Cl5gAZg0/BlvOEwD45QOWa5lJ5iDfx5y0e+boHUpwg4KKK3rDLvfPwBqjXv8O0uIJvoNkAoWHEPOUsVra1DsBIQS+W4Te2ZJhMOdIkYAMYYcgcMqCBJ7vWbzIGDLRNU/eYBEO0ev9TlQx6cjhAxjogbzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INkRK25b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32054C4CEF0;
-	Tue, 30 Sep 2025 14:57:26 +0000 (UTC)
+	 MIME-Version; b=KAFWFbyxhe0IrgBE8lJhb3fmWbYrXp5iRkUlA74jhAkG61UR3pDts7iDLbTSJ3E2uaZYnbus4qrZm6szZM9KTaiVYXxIx2JV1eY2UHtSQUQXuKPe5AP0dhjWBEvR+VOdmE4ellcqbHk9N3TZXOkRU2j0DCV/4sz5xGjHr7x2hFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqcqlJNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC71C116B1;
+	Tue, 30 Sep 2025 15:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244246;
-	bh=hVj1BlbncewAIF0LTRZYKlayaahn1j3tKGrr8TWU2oo=;
+	s=korg; t=1759244670;
+	bh=M6x/9AvDl6AmZ0oDBRZ8tguA1eFoSlkqMxvivUgZWvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INkRK25bf4yCnyDzaXkfUt/E5LYkhNqZWcjYLq3C+tNXXDouv/2s2D6joH+LzI9xp
-	 DeVElky5nrZKcNzjjZ4XBNoxpKB64ehTBd0DBoi7POcu5CBUubq3gYEKzhG4HdTIW0
-	 ddbdIXHLR3BCTlBGu8RBmdyEFsN/TGZ5C87sfdOI=
+	b=LqcqlJNYVW9GLQpxpZLtMWHLuAIvDKzdOk4GiTPdX6kctpyYXtfPf9Nz4UETbVmY0
+	 yDp6OjChl+9/3Cawly/ebKyW8wOPrXdo2lpVnyqVSkenTaU0/+CUc+//zzqo8KN1LY
+	 Pcq8CXI4JcpbfH3jqOfsQFCuDk0sRt5mRMoZ3h/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>,
-	Yunseong Kim <ysk@kzalloc.com>,
-	syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/122] USB: gadget: dummy-hcd: Fix locking bug in RT-enabled kernels
+Subject: [PATCH 6.16 078/143] selftests: fib_nexthops: Fix creation of non-FDB nexthops
 Date: Tue, 30 Sep 2025 16:46:42 +0200
-Message-ID: <20250930143825.906673170@linuxfoundation.org>
+Message-ID: <20250930143834.347083816@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +63,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 8d63c83d8eb922f6c316320f50c82fa88d099bea ]
+[ Upstream commit c29913109c70383cdf90b6fc792353e1009f24f5 ]
 
-Yunseong Kim and the syzbot fuzzer both reported a problem in
-RT-enabled kernels caused by the way dummy-hcd mixes interrupt
-management and spin-locking.  The pattern was:
+The test creates non-FDB nexthops without a nexthop device which leads
+to the expected failure, but for the wrong reason:
 
-	local_irq_save(flags);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock(&dum->lock);
-	...		// calls usb_gadget_giveback_request()
-	local_irq_restore(flags);
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
 
-The code was written this way because usb_gadget_giveback_request()
-needs to be called with interrupts disabled and the private lock not
-held.
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 63 via 2001:db8:91::4
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 64 via 2001:db8:91::5
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 63/64 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
 
-While this pattern works fine in non-RT kernels, it's not good when RT
-is enabled.  RT kernels handle spinlocks much like mutexes; in particular,
-spin_lock() may sleep.  But sleeping is not allowed while local
-interrupts are disabled.
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 14 via 172.16.1.2
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 15 via 172.16.1.3
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 14/15 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
 
-To fix the problem, rewrite the code to conform to the pattern used
-elsewhere in dummy-hcd and other UDC drivers:
+ COMMAND: ip -netns me-nRsN3E nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 104 group 14/15
+ Error: Invalid nexthop id.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-0dlhyd ro add 172.16.0.0/22 nhid 15
+ Error: Nexthop id does not exist.
+ TEST: Route add with fdb nexthop                                    [ OK ]
 
-	spin_lock_irqsave(&dum->lock, flags);
-	...
-	spin_unlock(&dum->lock);
-	usb_gadget_giveback_request(...);
-	spin_lock(&dum->lock);
-	...
-	spin_unlock_irqrestore(&dum->lock, flags);
+In addition, as can be seen in the above output, a couple of IPv4 test
+cases used the non-FDB nexthops (14 and 15) when they intended to use
+the FDB nexthops (16 and 17). These test cases only passed because
+failure was expected, but they failed for the wrong reason.
 
-This approach satisfies the RT requirements.
+Fix the test to create the non-FDB nexthops with a nexthop device and
+adjust the IPv4 test cases to use the FDB nexthops instead of the
+non-FDB nexthops.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Fixes: b4dbda1a22d2 ("USB: dummy-hcd: disable interrupts during req->complete")
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
-Closes: <https://lore.kernel.org/linux-usb/5b337389-73b9-4ee4-a83e-7e82bf5af87a@kzalloc.com/>
-Reported-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-Closes: <https://lore.kernel.org/linux-usb/68ac2411.050a0220.37038e.0087.GAE@google.com/>
-Tested-by: syzbot+8baacc4139f12fa77909@syzkaller.appspotmail.com
-CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: stable@vger.kernel.org
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/bb192ae2-4eee-48ee-981f-3efdbbd0d8f0@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Output after the fix:
+
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 63 via 2001:db8:91::4 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 64 via 2001:db8:91::5 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 63/64 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
+
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 14 via 172.16.1.2 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 15 via 172.16.1.3 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 14/15 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+
+ COMMAND: ip -netns me-lNzfHP nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 104 group 16/17
+ Error: Non FDB nexthop group cannot have fdb nexthops.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-lNzfHP ro add 172.16.0.0/22 nhid 16
+ Error: Route cannot point to a fdb nexthop.
+ TEST: Route add with fdb nexthop                                    [ OK ]
+ [...]
+ Tests passed:  30
+ Tests failed:   0
+ Tests skipped:  0
+
+Fixes: 0534c5489c11 ("selftests: net: add fdb nexthop tests")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250921150824.149157-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/fib_nexthops.sh | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -759,8 +759,7 @@ static int dummy_dequeue(struct usb_ep *
- 	if (!dum->driver)
- 		return -ESHUTDOWN;
+diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+index b39f748c25722..2ac394c99d018 100755
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -467,8 +467,8 @@ ipv6_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
  
--	local_irq_save(flags);
--	spin_lock(&dum->lock);
-+	spin_lock_irqsave(&dum->lock, flags);
- 	list_for_each_entry(iter, &ep->queue, queue) {
- 		if (&iter->req != _req)
- 			continue;
-@@ -770,15 +769,16 @@ static int dummy_dequeue(struct usb_ep *
- 		retval = 0;
- 		break;
- 	}
--	spin_unlock(&dum->lock);
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4"
+-	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5"
++	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4 dev veth1"
++	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 63/64 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
  
- 	if (retval == 0) {
- 		dev_dbg(udc_dev(dum),
- 				"dequeued req %p from %s, len %d buf %p\n",
- 				req, _ep->name, _req->length, _req->buf);
-+		spin_unlock(&dum->lock);
- 		usb_gadget_giveback_request(_ep, _req);
-+		spin_lock(&dum->lock);
- 	}
--	local_irq_restore(flags);
-+	spin_unlock_irqrestore(&dum->lock, flags);
- 	return retval;
- }
+@@ -547,15 +547,15 @@ ipv4_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
  
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 14 via 172.16.1.2"
+-	run_cmd "$IP nexthop add id 15 via 172.16.1.3"
++	run_cmd "$IP nexthop add id 14 via 172.16.1.2 dev veth1"
++	run_cmd "$IP nexthop add id 15 via 172.16.1.3 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 14/15 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
+ 
+ 	# Non fdb nexthop group can not contain fdb nexthops
+ 	run_cmd "$IP nexthop add id 16 via 172.16.1.2 fdb"
+ 	run_cmd "$IP nexthop add id 17 via 172.16.1.3 fdb"
+-	run_cmd "$IP nexthop add id 104 group 14/15"
++	run_cmd "$IP nexthop add id 104 group 16/17"
+ 	log_test $? 2 "Non-Fdb Nexthop group with fdb nexthops"
+ 
+ 	# fdb nexthop cannot have blackhole
+@@ -582,7 +582,7 @@ ipv4_fdb_grp_fcnal()
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
+ 	log_test $? 255 "Fdb mac add with nexthop"
+ 
+-	run_cmd "$IP ro add 172.16.0.0/22 nhid 15"
++	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
+ 	log_test $? 2 "Route add with fdb nexthop"
+ 
+ 	run_cmd "$IP ro add 172.16.0.0/22 nhid 103"
+-- 
+2.51.0
+
 
 
 
