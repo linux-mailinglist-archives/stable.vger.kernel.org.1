@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8E4BADD50
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:27:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF64BBADC21
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8561945BCE
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57FAB1893A52
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584D43043B8;
-	Tue, 30 Sep 2025 15:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94392F39C0;
+	Tue, 30 Sep 2025 15:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu33rZma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8af5Vf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146213C465;
-	Tue, 30 Sep 2025 15:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E3220E334;
+	Tue, 30 Sep 2025 15:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246013; cv=none; b=WBaokLjCsgzfVNjc+B49RJsVU6XMbF2qpaowHnm300u9348feNqGNjj86gO0LiaHZg54CGNByMSl+5jyA9/aas56JE4xvUsE35TkgId3OJRrfuYESzIjMK8LhXf3mnYEtrYtFLS+8ImF8IQwC9JMw6I6lZvQN1R5RRjBunV5htI=
+	t=1759245756; cv=none; b=EhkL/s5sAbh/dmAIo4nyq3R+7CT7tfGWS7AGh2BEYgENDFuSF7Fq7fHyVGfXKxPjhWNzpxS/z4SwqntQ8cTKeS/5Y+6CGKkmuj8p8ZprEiQCgRSLsFYOFGacFG5YnoWASXLtX0LmjA3jzkfbRrTWFhQ7hMpwLj18vkykov7NnRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759246013; c=relaxed/simple;
-	bh=OtBSJVkDmHuEBgrpUa0m7JyZJjyslrZEocHsXBcCvuw=;
+	s=arc-20240116; t=1759245756; c=relaxed/simple;
+	bh=9mjKj27WwIec4VGJbCIpEC/yUPjJ+jlDNYBgfsKdJWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUb7GtB9D9e7wItZEekU/V9VmVidoPbW9xc9yTDGKl2YWJzsTYmRp6S4BDNH3TZ4kc42JyeFMNdqvC17U3QVoGllIGAUzCJxivslDXkMEhzoGbM1H62bCZbZ+s/oxnsOsxs44vELuHbigoA5c7+/IprVKMAVLps0d+BYjNedLXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu33rZma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1976AC4CEF0;
-	Tue, 30 Sep 2025 15:26:51 +0000 (UTC)
+	 MIME-Version; b=cniQOvHEHOfoRHBkSSvianMWF4CC+6E5Js12VQjZEWnN31yfNjqG5+Vs0HmcWnZO1CxRffvvD1Hk/2XizO6HEQ7cNhv5vGe3pRYuS9L4ApKvHEYQmeZld+TvCQe3XNOfRqY0A5PLhlO4bljCERVwJ2h+nguQ20domWEzzZwcFQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8af5Vf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADAAC4CEF0;
+	Tue, 30 Sep 2025 15:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759246012;
-	bh=OtBSJVkDmHuEBgrpUa0m7JyZJjyslrZEocHsXBcCvuw=;
+	s=korg; t=1759245756;
+	bh=9mjKj27WwIec4VGJbCIpEC/yUPjJ+jlDNYBgfsKdJWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nu33rZmaE68TBr16wKFNDcdD1oO0vmf6Z2x7Hri2rVWSxx5JpmG8qBvZG8zlwTZn6
-	 IH7r3HqR7aOUREZLUpNydBhNXsV/kLpuPSLfO7llhoaUvV5+d+MSfd6K8uNyYhvwr0
-	 6ZMUBZmVgNFUbTSvUC6xd30DsLafr7gs4i5WOPD4=
+	b=v8af5Vf9maaRrvCWvN7+bBuqHotUgRkd/WFCYbbKoOgRkvtVt1xDwS3u4nJgKQo2c
+	 Tq0tueeZEVV/yslqe9k/u6a3aZDua+HsDLCEsjA2cCMHYbDUMsbU5UYPxHbjfIibfd
+	 rbUgFqijWODqdOjvsQdYPbow/q/sg+oESPezQWbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Petr Malat <oss@malat.biz>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 25/89] net: sfp: add quirk for FLYPRO copper SFP+ module
+Subject: [PATCH 6.6 40/91] ethernet: rvu-af: Remove slash from the driver name
 Date: Tue, 30 Sep 2025 16:47:39 +0200
-Message-ID: <20250930143822.943468004@linuxfoundation.org>
+Message-ID: <20250930143822.835632352@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
-References: <20250930143821.852512002@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Petr Malat <oss@malat.biz>
 
-[ Upstream commit ddbf0e78a8b20ec18d314d31336a0230fdc9b394 ]
+[ Upstream commit b65678cacc030efd53c38c089fb9b741a2ee34c8 ]
 
-Add quirk for a copper SFP that identifies itself as "FLYPRO"
-"SFP-10GT-CS-30M". It uses RollBall protocol to talk to the PHY.
+Having a slash in the driver name leads to EIO being returned while
+reading /sys/module/rvu_af/drivers content.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20250831105910.3174-1-olek2@wp.pl
+Remove DRV_STRING as it's not used anywhere.
+
+Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
+Signed-off-by: Petr Malat <oss@malat.biz>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250918152106.1798299-1-oss@malat.biz
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index e8670249d32c1..f1827a1bd7a59 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -491,6 +491,9 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
- 		  sfp_fixup_nokia),
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 6302990e9a5ff..729d1833a829a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -21,8 +21,7 @@
+ #include "rvu.h"
+ #include "lmac_common.h"
  
-+	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
-+	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
-+
- 	// Fiberstore SFP-10G-T doesn't identify as copper, uses the Rollball
- 	// protocol to talk to the PHY and needs 4 sec wait before probing the
- 	// PHY.
+-#define DRV_NAME	"Marvell-CGX/RPM"
+-#define DRV_STRING      "Marvell CGX/RPM Driver"
++#define DRV_NAME	"Marvell-CGX-RPM"
+ 
+ #define CGX_RX_STAT_GLOBAL_INDEX	9
+ 
 -- 
 2.51.0
 
