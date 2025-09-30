@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-182616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E755BADB28
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813FEBADDDA
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274DD19447BD
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB1A16AE88
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759F7302CD6;
-	Tue, 30 Sep 2025 15:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70382264AB;
+	Tue, 30 Sep 2025 15:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2IYp9sF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFVYeEyP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1E227B328;
-	Tue, 30 Sep 2025 15:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F0016A956;
+	Tue, 30 Sep 2025 15:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245528; cv=none; b=sKZB0BQ2l6WbSTVEyUnHjQj1laPMB0lNTnzMz0TiC7EKL74h01zRbwIy08b8fiJsj/SzjSxma9NYu4YruO5G64oREPiCRqZMpOLl2QZu31KN2MyaecWscd5BTuQGR0I/OwTduWzreufrDg/MhywVm70534Nf505vmL5810xkH2k=
+	t=1759246145; cv=none; b=r/SJYapoZfPcsPmOp2HjVW7RX+ni+QUsOYUwwUCogTxr2x/F0qYarlVIsGPUjEzewrKicjwVxTQt9pVIzMhHgPfaEVPJMGbnL20HsJr5LxckywDTNi2IDYE2PsFe+7eOuup6lG77Z+ELxoV3Q8tTYBxKP3KWeOjkdnUcD7Z9qTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245528; c=relaxed/simple;
-	bh=+a1JwmM1WfUj8jFfW9TMcSPDgl52RqdVprAKK6yqASk=;
+	s=arc-20240116; t=1759246145; c=relaxed/simple;
+	bh=SpqlaYcQ1sFznTFXQRF5VJNInP8n/54dHZXqqBRzo3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZtYPixmKqlDZKu71XJpXn5b0mMBwjK8z9vSfbIi1aeTocqR51eu49XaewNPIKvxv+hKQ1/3Nagu4EUoyYca+npxLP3uGUGwibmLGG7y0n8fRedJq+Pa+MFW7bD34h4m/fs93N+NYcf9msHDm0aPZRk7G8yL9aToCEEVtpoc5BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2IYp9sF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D237C4CEF0;
-	Tue, 30 Sep 2025 15:18:47 +0000 (UTC)
+	 MIME-Version; b=psNu3B11sNSDD/RbIxkC+RezZ2H2DnxHFhbyZZ90Ck94qY3b1Cycm2wHwZnB0ygBneYls8u2tb9Trkc33YRo3J1qFw+nShl/dUrnY82vAo+R3TUeUqTUjFn04XPEOByhieTDq+UqBNVGpcxUV+GGOdJ9ZQTFadP7GiKF5g2/DgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFVYeEyP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6BCC4CEF0;
+	Tue, 30 Sep 2025 15:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245528;
-	bh=+a1JwmM1WfUj8jFfW9TMcSPDgl52RqdVprAKK6yqASk=;
+	s=korg; t=1759246143;
+	bh=SpqlaYcQ1sFznTFXQRF5VJNInP8n/54dHZXqqBRzo3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2IYp9sF1C5kr0Cab6MrJp/Wo5Ue4mWi1Fn3wGsHBVJRDI/JtpAOmI4RXQKkOn5X8
-	 NIKYFVLxWuFjFfIwkrCeqgJRomluVqa0kWT6xYQjDYchG1sM6laUVm0jt6BatEaMSo
-	 5ntochUQrDg+Z5QCQeaZcl3GleslQsoDQWvV0bb0=
+	b=IFVYeEyP9oGemv969aeb9b1358upu5EoGi9FGvHlNRHgp3smqNJOzF56WrTlRIL3T
+	 uh9kKYtJkozRG5DNkEhufM5StjT1WfQUKZNrFZa1dzomcG4CqJ8k3/dYFnNxowug8L
+	 cEkqfVNJAGZXajJPRwFp+Yopq0jzRrGST0F24ids=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+034246a838a10d181e78@syzkaller.appspotmail.com,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/73] futex: Prevent use-after-free during requeue-PI
+Subject: [PATCH 6.12 35/89] btrfs: dont allow adding block device of less than 1 MB
 Date: Tue, 30 Sep 2025 16:47:49 +0200
-Message-ID: <20250930143822.473817038@linuxfoundation.org>
+Message-ID: <20250930143823.374860018@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143821.852512002@linuxfoundation.org>
+References: <20250930143821.852512002@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Mark Harmstone <mark@harmstone.com>
 
-[ Upstream commit b549113738e8c751b613118032a724b772aa83f2 ]
+[ Upstream commit 3d1267475b94b3df7a61e4ea6788c7c5d9e473c4 ]
 
-syzbot managed to trigger the following race:
+Commit 15ae0410c37a79 ("btrfs-progs: add error handling for
+device_get_partition_size_fd_stat()") in btrfs-progs inadvertently
+changed it so that if the BLKGETSIZE64 ioctl on a block device returned
+a size of 0, this was no longer seen as an error condition.
 
-   T1                               T2
+Unfortunately this is how disconnected NBD devices behave, meaning that
+with btrfs-progs 6.16 it's now possible to add a device you can't
+remove:
 
- futex_wait_requeue_pi()
-   futex_do_wait()
-     schedule()
-                               futex_requeue()
-                                 futex_proxy_trylock_atomic()
-                                   futex_requeue_pi_prepare()
-                                   requeue_pi_wake_futex()
-                                     futex_requeue_pi_complete()
-                                      /* preempt */
+  # btrfs device add /dev/nbd0 /root/temp
+  # btrfs device remove /dev/nbd0 /root/temp
+  ERROR: error removing device '/dev/nbd0': Invalid argument
 
-         * timeout/ signal wakes T1 *
+This check should always have been done kernel-side anyway, so add a
+check in btrfs_init_new_device() that the new device doesn't have a size
+less than BTRFS_DEVICE_RANGE_RESERVED (i.e. 1 MB).
 
-   futex_requeue_pi_wakeup_sync() // Q_REQUEUE_PI_LOCKED
-   futex_hash_put()
-  // back to userland, on stack futex_q is garbage
-
-                                      /* back */
-                                     wake_up_state(q->task, TASK_NORMAL);
-
-In this scenario futex_wait_requeue_pi() is able to leave without using
-futex_q::lock_ptr for synchronization.
-
-This can be prevented by reading futex_q::task before updating the
-futex_q::requeue_state. A reference on the task_struct is not needed
-because requeue_pi_wake_futex() is invoked with a spinlock_t held which
-implies a RCU read section.
-
-Even if T1 terminates immediately after, the task_struct will remain valid
-during T2's wake_up_state().  A READ_ONCE on futex_q::task before
-futex_requeue_pi_complete() is enough because it ensures that the variable
-is read before the state is updated.
-
-Read futex_q::task before updating the requeue state, use it for the
-following wakeup.
-
-Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
-Reported-by: syzbot+034246a838a10d181e78@syzkaller.appspotmail.com
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Closes: https://lore.kernel.org/all/68b75989.050a0220.3db4df.01dd.GAE@google.com/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/requeue.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/volumes.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
-index cba8b1a6a4cc2..7e43839ca7b05 100644
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -223,18 +223,20 @@ static inline
- void requeue_pi_wake_futex(struct futex_q *q, union futex_key *key,
- 			   struct futex_hash_bucket *hb)
- {
--	q->key = *key;
-+	struct task_struct *task;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 58e0cac5779dd..ce991a8390466 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -2699,6 +2699,11 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
+ 		goto error;
+ 	}
  
-+	q->key = *key;
- 	__futex_unqueue(q);
- 
- 	WARN_ON(!q->rt_waiter);
- 	q->rt_waiter = NULL;
- 
- 	q->lock_ptr = &hb->lock;
-+	task = READ_ONCE(q->task);
- 
- 	/* Signal locked state to the waiter */
- 	futex_requeue_pi_complete(q, 1);
--	wake_up_state(q->task, TASK_NORMAL);
-+	wake_up_state(task, TASK_NORMAL);
- }
- 
- /**
++	if (bdev_nr_bytes(file_bdev(bdev_file)) <= BTRFS_DEVICE_RANGE_RESERVED) {
++		ret = -EINVAL;
++		goto error;
++	}
++
+ 	if (fs_devices->seeding) {
+ 		seeding_dev = true;
+ 		down_write(&sb->s_umount);
 -- 
 2.51.0
 
