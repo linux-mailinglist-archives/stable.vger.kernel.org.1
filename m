@@ -1,122 +1,109 @@
-Return-Path: <stable+bounces-182051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D051BBABF8E
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 10:14:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8927ABABFA9
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 10:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA25617419C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:14:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365D13C6CD6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A89C27A114;
-	Tue, 30 Sep 2025 08:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811D12F3631;
+	Tue, 30 Sep 2025 08:16:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4AA2F39B4
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 08:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CE419343B;
+	Tue, 30 Sep 2025 08:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759220048; cv=none; b=i+pLoom9YU2UtxB3nwKWzwtVb5bd6lb2ScSbrUX7gwI4Ww490iTkmQkNws3D6DJWaWU33z71ck5EHncgTW8+95H6QyhCI+EUf81KiY5lr2eezUrLEHFI5y6Ij+MSwhPLdpUNyRuHlD/zfOkq1k8YN1M51C5PXxHk2fai8NMQ040=
+	t=1759220200; cv=none; b=lmjt6LsTBb4xdhSgQcyem4buHQiFkix7UUhsoB5uwQMT6Wh+ZsfU1hOVzjU4HiPLNRFcRsSuOFEOWqpXNtFs2Y/T7195w32kWR5stiniJjcgAi44bpAr/bJGvxuiyNVCwL/ATq209I9iu74J00gS/9qlwqw5nyR26rdqEgz8DkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759220048; c=relaxed/simple;
-	bh=MYRwQfM/D/QD/qI8NUujoMHGFl+avNWViKueqXxVRVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YZ6bQsijuDYNibEGAmVLb5oNhrVpt7ZwkU6PABMI3UJjdeO5cyezBsiF5Vv/Cmz4WJ1bFjr5021P3qWWb7uUEalS+OgtnYUJWH40v1LdkasGLnvZSQhqt79rnYhyJXb7TxDmdwyk2oJFqzqm3l4ObXtWvHgstD9TeiC14c0PCjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v3VUb-0005bN-0h; Tue, 30 Sep 2025 10:13:49 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v3VUY-001DPb-2q;
-	Tue, 30 Sep 2025 10:13:46 +0200
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8267147CF25;
-	Tue, 30 Sep 2025 08:13:46 +0000 (UTC)
-Date: Tue, 30 Sep 2025 10:13:45 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Celeste Liu <uwu@coelacanthus.name>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Maximilian Schneider <max@schneidersoft.net>, Henrik Brix Andersen <henrik@brixandersen.dk>, 
-	Wolfgang Grandegger <wg@grandegger.com>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Runcheng Lu <runcheng.lu@hpmicro.com>, stable@vger.kernel.org, Vincent Mailhol <mailhol@kernel.org>
-Subject: Re: [PATCH v4] net/can/gs_usb: increase max interface to U8_MAX
-Message-ID: <20250930-fancy-dodo-of-chemistry-c92515-mkl@pengutronix.de>
-References: <20250930-gs-usb-max-if-v4-1-8e163eb583da@coelacanthus.name>
+	s=arc-20240116; t=1759220200; c=relaxed/simple;
+	bh=V5wuETQcgvIF648FSp/qiHyosW7aBRE9KR160cw0vcU=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=lE0tLqFA9v24WP6NjZbiAqgzfWLAo5ymUJy+2Qw75xu04ocYIdsJDKf56nukRYfaVEjKJR7PNxXUZAO+dl+w5HTC7kajwNm/FtP65SxnbYvZ1G2Q6Wx0axpLvcjtckzLTGNxtWyR9Aa/oP/aO9BFxoUr5U3JcwUg97OJxb+box4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-05 (Coremail) with SMTP id zQCowAAHpg_Ukdto_09DCQ--.10836S2;
+	Tue, 30 Sep 2025 16:16:28 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: robh@kernel.org,
+	saravanak@google.com,
+	lizhi.hou@amd.com
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] of: unittest: Fix device reference count leak in of_unittest_pci_node_verify
+Date: Tue, 30 Sep 2025 16:16:18 +0800
+Message-Id: <20250930081618.794-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:zQCowAAHpg_Ukdto_09DCQ--.10836S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1kKFWxAry3JryxuryUWrg_yoW8GFy5pw
+	47Kas0vrWkGa17Kw4jvF1xZFy5C3y2k3yrGFyxA3WI9395Z34xtryUtayUtrn8ZrWkXFs0
+	q3W7tay0kF4UtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK67AK6r43MxAIw28IcxkI7VAKI48JMx
+	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
+	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+	WUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU0tCzDUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cykog7jsflt7oxgg"
-Content-Disposition: inline
-In-Reply-To: <20250930-gs-usb-max-if-v4-1-8e163eb583da@coelacanthus.name>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
+In of_unittest_pci_node_verify(), when the add parameter is false,
+device_find_any_child() obtains a reference to a child device. This
+function implicitly calls get_device() to increment the device's
+reference count before returning the pointer. However, the caller
+fails to properly release this reference by calling put_device(),
+leading to a device reference count leak. Add put_device() in the else
+branch immediately after child_dev is no longer needed.
 
---cykog7jsflt7oxgg
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4] net/can/gs_usb: increase max interface to U8_MAX
-MIME-Version: 1.0
+As the comment of device_find_any_child states: "NOTE: you will need
+to drop the reference with put_device() after use".
 
-On 30.09.2025 14:15:47, Celeste Liu wrote:
-> This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
-> converter[1]. The original developers may have only 3 interfaces device to
-> test so they write 3 here and wait for future change.
->=20
-> During the HSCanT development, we actually used 4 interfaces, so the
-> limitation of 3 is not enough now. But just increase one is not
-> future-proofed. Since the channel type in gs_host_frame is u8, just
-> increase interface number limit to max size of u8 safely.
+Found by code review.
 
-I really like the new approach you've implemented in this patch, but now
-the patch description doesn't match anymore.
+Cc: stable@vger.kernel.org
+Fixes: 26409dd04589 ("of: unittest: Add pci_dt_testdrv pci driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- modified the put_device() location as suggestions.
+---
+ drivers/of/unittest.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-regards,
-Marc
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index e3503ec20f6c..388e9ec2cccf 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -4300,6 +4300,7 @@ static int of_unittest_pci_node_verify(struct pci_dev *pdev, bool add)
+ 		unittest(!np, "Child device tree node is not removed\n");
+ 		child_dev = device_find_any_child(&pdev->dev);
+ 		unittest(!child_dev, "Child device is not removed\n");
++		put_device(child_dev);
+ 	}
+ 
+ failed:
+-- 
+2.17.1
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---cykog7jsflt7oxgg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmjbkTYACgkQDHRl3/mQ
-kZxM2gf/VJUd6lg/E6w2BHLpJ3OHVsxwevaCo6cnUzxANlAkl42PXyY+a4ZEsqlT
-uC0KyV/QlIy96Mwp5ZYN3Tel7EKKHl2bQc1dfgFu+xHdMrTsbsXHPle/oPpR0OVB
-UrpFTZ+8+5wByk2Glio76aiw8Z82qguYf12mT5MtGs1AwqYmn3xXBBdQY2oUUzik
-mpoQGAk2aLcNDdRFv1jDaGIQygRDbFBbTzWz63ytIMScu+DcfcHTjkLGujv6TFnA
-qxEeqDt6EkMnlQWSUIu/ErjnCn2AUVasdCWbHl6ZVaz/BdQtZyNNt028D3N0Dk37
-WRLHGKoCqGEXZ8EycYL95j431NKbyQ==
-=racr
------END PGP SIGNATURE-----
-
---cykog7jsflt7oxgg--
 
