@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-182394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929AABAD8EA
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDD4BADB14
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2029F3ADD95
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D62A7320078
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C015D2F9D9E;
-	Tue, 30 Sep 2025 15:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B84329827E;
+	Tue, 30 Sep 2025 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnJuuVJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjeNTwjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0701487F4;
-	Tue, 30 Sep 2025 15:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A9A1F1302;
+	Tue, 30 Sep 2025 15:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244803; cv=none; b=QOn3Jh8aOAwh/L8UitHIOTv95/68uhEbqD4rHfhZHK0Ht2I2o8drBMLg1ktNCDjZmNhU/vFlNetAFJnthYLdatkET/hJ/3Pd5dpucjxa2vgQePqba2+mosomVlg8a/wvf9lYlttOk74w4L7ZqlgY2B3sOykGUyu6xHraV7EEJIc=
+	t=1759245435; cv=none; b=fIQ9gIUg5dgqpqhQLiflV+9Wwah/GC73AgheXePWwuZRcrWZutrwkrv1GqN3bRlOcy5O3wZsOYCrQCf4RgLISYk3uawyYszX+JFABM35n5MRra1T6Ua9VFgqZV0q6mGbYmowwjgXOKFmReIvccseKoxPU7RKE33iF+wQaJKcbnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244803; c=relaxed/simple;
-	bh=OuERbUtzBYlOjw+Is4ti/TZD36pfqwtFTmd2qHkyICE=;
+	s=arc-20240116; t=1759245435; c=relaxed/simple;
+	bh=Qlo20GS8Wv816rwYLtY4URzGcjDFbW5Ja0fJTA6UjCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5cZQZnvFu9qsAlC04wKGFyQM+5q1t99y/Qa8v97NmnrrKmpP0M9S3aBd3sARS5LaNNn9yzmRcCOLm3iCXK6Xw04oA1uVpJb4zoSWWuEW92FmfouPaTAv4BzS0pvv6jkl5SpYwSkV8sRfUHeOf9nkrLnsspdOq1ez6hlDE4ljbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnJuuVJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63D2C4CEF0;
-	Tue, 30 Sep 2025 15:06:42 +0000 (UTC)
+	 MIME-Version; b=atXfdzferHD3vzPbl6dBKNrO8TE/ZkVCZAHihl+EHFZ8jq8FZvN0T3GNLGXaCZL1Z91tXDyv9Pb14BQntjZSSfJYdpR6WSoDNqoWGdNGgnqHygSoqvyps11ZFYHHNLZpEGUK4e1r1yO/QfBxwvnhJbUov2HnV3MWiBHu2wZKNpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjeNTwjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394AEC4CEF0;
+	Tue, 30 Sep 2025 15:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244803;
-	bh=OuERbUtzBYlOjw+Is4ti/TZD36pfqwtFTmd2qHkyICE=;
+	s=korg; t=1759245432;
+	bh=Qlo20GS8Wv816rwYLtY4URzGcjDFbW5Ja0fJTA6UjCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cnJuuVJ+76gAJuqMl3h0ZGRWUuNDLVQOtUqV9MlBVl1P/skxfCTzSpva4sNXRPdGm
-	 slak+FkV5CarM4gB307JUoIWaa2WKdPD5Sz+EiyhMG9C9WpOQHPNkakOajWbkoHYJi
-	 EUwJCEO0lMcjtPJyEclKnDECr+PjK6vOvldjIEpM=
+	b=AjeNTwjjCWA5/QM9zkwF7ievyAObLvwPTo/ASDdw9sgvlNXfcHGCIfBHjI8FaazK2
+	 H23XIko/T6GgxxBJo7zBwqnX2C7HYgAZjGU1vHLwPGLK8XRv7qZZgaifbzCw1I4Nbi
+	 JidXUhUVZPV6PLfRAaGvTBAAfByEKw3pHSRWlb6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 6.16 117/143] arm64: dts: marvell: cn9132-clearfog: fix multi-lane pci x2 and x4 ports
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 17/73] IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions
 Date: Tue, 30 Sep 2025 16:47:21 +0200
-Message-ID: <20250930143835.893003496@linuxfoundation.org>
+Message-ID: <20250930143821.276004258@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-commit 794a066688038df46c01e177cc6faebded0acba4 upstream.
+[ Upstream commit 85fe9f565d2d5af95ac2bbaa5082b8ce62b039f5 ]
 
-The mvebu-comphy driver does not currently know how to pass correct
-lane-count to ATF while configuring the serdes lanes.
+Fix a bug where the driver's event subscription logic for SRQ-related
+events incorrectly sets obj_type for RMP objects.
 
-This causes the system to hard reset during reconfiguration, if a pci
-card is present and has established a link during bootloader.
+When subscribing to SRQ events, get_legacy_obj_type() did not handle
+the MLX5_CMD_OP_CREATE_RMP case, which caused obj_type to be 0
+(default).
+This led to a mismatch between the obj_type used during subscription
+(0) and the value used during notification (1, taken from the event's
+type field). As a result, event mapping for SRQ objects could fail and
+event notification would not be delivered correctly.
 
-Remove the comphy handles from the respective pci nodes to avoid runtime
-reconfiguration, relying solely on bootloader configuration - while
-avoiding the hard reset.
+This fix adds handling for MLX5_CMD_OP_CREATE_RMP in get_legacy_obj_type,
+returning MLX5_EVENT_QUEUE_TYPE_RQ so obj_type is consistent between
+subscription and notification.
 
-When bootloader has configured the lanes correctly, the pci ports are
-functional under Linux.
-
-This issue may be addressed in the comphy driver at a future point.
-
-Fixes: e9ff907f4076 ("arm64: dts: add description for solidrun cn9132 cex7 module and clearfog board")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
+Link: https://patch.msgid.link/r/8f1048e3fdd1fde6b90607ce0ed251afaf8a148c.1755088962.git.leon@kernel.org
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Edward Srouji <edwards@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/marvell/cn9132-clearfog.dts |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/devx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
-+++ b/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
-@@ -413,7 +413,13 @@
- /* SRDS #0,#1,#2,#3 - PCIe */
- &cp0_pcie0 {
- 	num-lanes = <4>;
--	phys = <&cp0_comphy0 0>, <&cp0_comphy1 0>, <&cp0_comphy2 0>, <&cp0_comphy3 0>;
-+	/*
-+	 * The mvebu-comphy driver does not currently know how to pass correct
-+	 * lane-count to ATF while configuring the serdes lanes.
-+	 * Rely on bootloader configuration only.
-+	 *
-+	 * phys = <&cp0_comphy0 0>, <&cp0_comphy1 0>, <&cp0_comphy2 0>, <&cp0_comphy3 0>;
-+	 */
- 	status = "okay";
- };
- 
-@@ -475,7 +481,13 @@
- /* SRDS #0,#1 - PCIe */
- &cp1_pcie0 {
- 	num-lanes = <2>;
--	phys = <&cp1_comphy0 0>, <&cp1_comphy1 0>;
-+	/*
-+	 * The mvebu-comphy driver does not currently know how to pass correct
-+	 * lane-count to ATF while configuring the serdes lanes.
-+	 * Rely on bootloader configuration only.
-+	 *
-+	 * phys = <&cp1_comphy0 0>, <&cp1_comphy1 0>;
-+	 */
- 	status = "okay";
- };
- 
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index cc126e62643a0..80c26551564fb 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -191,6 +191,7 @@ static u16 get_legacy_obj_type(u16 opcode)
+ {
+ 	switch (opcode) {
+ 	case MLX5_CMD_OP_CREATE_RQ:
++	case MLX5_CMD_OP_CREATE_RMP:
+ 		return MLX5_EVENT_QUEUE_TYPE_RQ;
+ 	case MLX5_CMD_OP_CREATE_QP:
+ 		return MLX5_EVENT_QUEUE_TYPE_QP;
+-- 
+2.51.0
+
 
 
 
