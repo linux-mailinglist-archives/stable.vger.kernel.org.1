@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3852BAD4A9
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA17BAD9A5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3B0C188238B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F7FE7A9A2A
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847EA2441B8;
-	Tue, 30 Sep 2025 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B4E302CD6;
+	Tue, 30 Sep 2025 15:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TC8Ylnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuaYRKAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C1226B748;
-	Tue, 30 Sep 2025 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B1E2236EB;
+	Tue, 30 Sep 2025 15:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243894; cv=none; b=cHo0DGcz8z3KR/OXNTRTEPMPhInzsl/cczSex1A9eP6gatqR/qlWxkJ3gyeRon9VvZPkV1ODIgLohEf7VfonQljkpW7cI4bYQq+lsRFnicUfTaA5umaioLVzWfn5cRtrz7Fsb/bb37DlewxW5SysNQFl2X2VgIAKyRwZpRuGqIE=
+	t=1759245153; cv=none; b=uGH6UleFa/yj3jfzNlD+yv+IodRZfBGdvUeIHb23s6++8ebdOzOR/IlrtnVVYAhx/50fyBTzZvkj0zZzFnT8+vQDtOQZ5M9+MUDvETSUTC91aWp3vkhQMPBtH0hYf73cC5wnHWT/2B1MgbNT4KOcrR/nDg9BWg5p6hGdNMw1avY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243894; c=relaxed/simple;
-	bh=jWbJRXF4XIstRx4ocP4MPmdfh1EW5XkjhMIdDwO8gH4=;
+	s=arc-20240116; t=1759245153; c=relaxed/simple;
+	bh=LqnVtTHgtUUIKrmD9VwppnMi1s9pw1ygLUcxyewC4TI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqfvEJwPP+obcsXjCCXb1SbtSML9bAwWxtOgfNnv/01SG37NDSLdgx0yspOVb1Rnua7ytHBeoWOK5HjAt0ZJn3Aa8Jh3apvARrVCzXvWQOj/F6ySniXRBVO9xp7RHH0SPzMDgPoo/2vI/nkkKKPdhCypOgrd810iL7wvCF1u7II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TC8Ylnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9ADC4CEF0;
-	Tue, 30 Sep 2025 14:51:33 +0000 (UTC)
+	 MIME-Version; b=QjCxZKUYnz5KJrKyetbLP7g/oJDPQUvZ+Zy6ZhQvTKWcLy0Z/v/rtActT6mxcU8CJYZUlztdKEG3khTsP7EDLeRHCrgmrdkR9Yid0BnIVmBqJVYqgzv56ngh3V5QyYYfQQ0Y9bD7zaAtAGLnsxhCH+L9UvkBZ6vx3pcXeyIR/1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuaYRKAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BE2C4CEF0;
+	Tue, 30 Sep 2025 15:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243894;
-	bh=jWbJRXF4XIstRx4ocP4MPmdfh1EW5XkjhMIdDwO8gH4=;
+	s=korg; t=1759245152;
+	bh=LqnVtTHgtUUIKrmD9VwppnMi1s9pw1ygLUcxyewC4TI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TC8YlnmtEoTYB0FFhkAXYN8dDUyUfk9ohZLeGcpZiKKqiI7piBiTjup8Z/R1dUqj
-	 7ySfbHLZa4ox+DaU/GEPgG3J/6xvMnUoGEJW3CVMt1y5sRevQNoDiyx+4JH/v+DjwK
-	 VVk1amMLxKXKjuTr4fOz1ohkoXiJ2I6UqyLzMkxQ=
+	b=FuaYRKAD0ZkVd0jrGGw5mJ22o71UxzhXBDPQLJcYbJ4HDOH4mNLrQRKEkeLXHiLee
+	 OYcYU9vW0zZPZBJbr3T4wiSSYwk6h4x2jQYooASAw90LytPZ4Ln6KuwF9g5s4i71Y6
+	 H7vjLPGkjzHmCuT6sxxMCKpXofEcmxE0ALL+zi6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 48/81] ASoC: SOF: Intel: hda-stream: Fix incorrect variable used in error message
+	Jerry Lv <Jerry.Lv@axis.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.15 080/151] power: supply: bq27xxx: restrict no-battery detection to bq27000
 Date: Tue, 30 Sep 2025 16:46:50 +0200
-Message-ID: <20250930143821.688491480@linuxfoundation.org>
+Message-ID: <20250930143830.777540842@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
+References: <20250930143827.587035735@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-[ Upstream commit 35fc531a59694f24a2456569cf7d1a9c6436841c ]
+commit 1e451977e1703b6db072719b37cd1b8e250b9cc9 upstream.
 
-The dev_err message is reporting an error about capture streams however
-it is using the incorrect variable num_playback instead of num_capture.
-Fix this by using the correct variable num_capture.
+There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may in some
+cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not be
+interpreted as "no battery" like for a disconnected battery with some built
+in bq27000 chip.
 
-Fixes: a1d1e266b445 ("ASoC: SOF: Intel: Add Intel specific HDA stream operations")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250902120639.2626861-1-colin.i.king@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So restrict the no-battery detection originally introduced by
+
+    commit 3dd843e1c26a ("bq27000: report missing device better.")
+
+to the bq27000.
+
+There is no need to backport further because this was hidden before
+
+	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+
+Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
+Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/intel/hda-stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
-index 0c11fceb28a7a..d3edc40c7f473 100644
---- a/sound/soc/sof/intel/hda-stream.c
-+++ b/sound/soc/sof/intel/hda-stream.c
-@@ -655,7 +655,7 @@ int hda_dsp_stream_init(struct snd_sof_dev *sdev)
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1872,8 +1872,8 @@ static void bq27xxx_battery_update_unloc
+ 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
  
- 	if (num_capture >= SOF_HDA_CAPTURE_STREAMS) {
- 		dev_err(sdev->dev, "error: too many capture streams %d\n",
--			num_playback);
-+			num_capture);
- 		return -EINVAL;
- 	}
- 
--- 
-2.51.0
-
+ 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+-	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -ENODEV; /* read error */
++	if (di->chip == BQ27000 && (cache.flags & 0xff) == 0xff)
++		cache.flags = -ENODEV; /* bq27000 hdq read error */
+ 	if (cache.flags >= 0) {
+ 		cache.temperature = bq27xxx_battery_read_temperature(di);
+ 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
 
 
 
