@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-182185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9595BAD599
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E577BAD794
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819BC3248A3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECBE219433DB
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84303305045;
-	Tue, 30 Sep 2025 14:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F04302CD6;
+	Tue, 30 Sep 2025 15:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbqfH4Xv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BKnIGpl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3BF303C9B;
-	Tue, 30 Sep 2025 14:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712701F152D;
+	Tue, 30 Sep 2025 15:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244121; cv=none; b=bPFRt7W+lMyIZwKSRXFzFPoEEQjY1TzX6CIXrA7EPdmEUVBzBaTPDqnZfoc1mrT9BQMgPyODzKsuFzna/0virRdo2DmL+3ioepvzaCzUb/o2gkNL3SymC9jrY2SmU8RLRz5qk6ixw8HgbMi7IFxll2WQE2ANOAJ9QFe/8yudPKM=
+	t=1759244592; cv=none; b=RYbo2Dor0/iZJvkb1cf5mqsegkVQsFzjaAKA4Ek02GjUODwni09VygbYpLTN9tJCjepqlf80LKBge7GvmMXQlVG/0mwdpV4rM8gOcycR0MEUAKaUo5hpHp8ffR3CNeat7+fdcHMRWbeznKNBoODXPUO0Dc4LgAl2pFmeOVuNWA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244121; c=relaxed/simple;
-	bh=c0xffjRR196/vrfYSr47BvPaHPURKGSxG5+f6Si0dMc=;
+	s=arc-20240116; t=1759244592; c=relaxed/simple;
+	bh=XOEzb3WxbAIVQnGro9bJj/qroOrKwOZAj25YHrY/Uqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hogQwxzXhUlIMPmMkrXOxgMl1wcwqplsUZbt5wS379C3kD1CSG5lmkD8UDAkQsE9S08zW49lTE5RmEyXimmF10P00DjgzzIDM31Gn8BFEcFZk9QWvk92aSqIDeWpYf2byryHSxCpxIv9x9qd5xeHMKopkW6GS4/vrbCxHCKUMwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbqfH4Xv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AB7C4CEF0;
-	Tue, 30 Sep 2025 14:55:20 +0000 (UTC)
+	 MIME-Version; b=mAT68cbQA4KSJvrHmHIRAHJs/yvWhwxvFNpR4VazSf4hnINsyYqAb+ZZyvMbT7CKjVmy5WFb3xNszD0eEOt05dL5arI1+3/Iuqk6DMNYCpqyRrSuiidV0+hyzsfVSVP/ocDRSklN8++89Uls2X9z9jQwcpsaQUBMrnfB6m5iDvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BKnIGpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD6EC4CEF0;
+	Tue, 30 Sep 2025 15:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244121;
-	bh=c0xffjRR196/vrfYSr47BvPaHPURKGSxG5+f6Si0dMc=;
+	s=korg; t=1759244592;
+	bh=XOEzb3WxbAIVQnGro9bJj/qroOrKwOZAj25YHrY/Uqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbqfH4Xv0x89XgTyNZlm1Th9zf7jgNqc72v8PPmSIzKYJ1U8t/pIuISZTvKE0ZsRQ
-	 Sr+D+5PNk87RXG0vPEnFDLgKdCf3phgQc5qyjLQ/qHAAN2o86BHHaYnRCR02Mr2rUL
-	 qsN8iI3880b2jDDRD6T5uazEAXOlGq7Aw9RIVC/Y=
+	b=1BKnIGpl16aP+h9gIaO1fr4i+/BDitCSJ+5GfkdQiyJ/nc4dNFXOuAhzHER1ZAaSx
+	 BnP0vvnhqn+mKWNgn5mdWKKaJ9r68mc0ulOpZGY5QaGqB/eSzTB0nokb9WcmUGh4x3
+	 7ZnQh5IqD/GyJv0wj4Vf0/851SW6sorqIJT1Xo30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 016/122] compiler-clang.h: define __SANITIZE_*__ macros only when undefined
+	Steven Price <steven.price@arm.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 023/143] drm/panfrost: Add support for Mali on the MT8370 SoC
 Date: Tue, 30 Sep 2025 16:45:47 +0200
-Message-ID: <20250930143823.656035493@linuxfoundation.org>
+Message-ID: <20250930143832.166153517@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-References: <20250930143822.939301999@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-commit 3fac212fe489aa0dbe8d80a42a7809840ca7b0f9 upstream.
+[ Upstream commit 81645377c231803389ab0f2d09df6622e32dd327 ]
 
-Clang 22 recently added support for defining __SANITIZE__ macros similar
-to GCC [1], which causes warnings (or errors with CONFIG_WERROR=y or W=e)
-with the existing defines that the kernel creates to emulate this behavior
-with existing clang versions.
+Add a compatible for the MediaTek MT8370 SoC, with an integrated ARM
+Mali G57 MC2 GPU (Valhall-JM, dual core), with new platform data for
+its support in the panfrost driver.
+It uses the same data as MT8186 for the power management features to
+describe power supplies, pm_domains and enablement (one regulator, two
+power domains) but also sets the FORCE_AARCH64_PGTABLE flag in the GPU
+configuration quirks bitfield to enable AARCH64 4K page table format
+mode.
+As MT8186 and MT8370 SoC have different GPU architecture (Mali G52 2EE
+MC2 for MT8186), making them not compatible, and this mode is only
+enabled for Mediatek SoC that are Mali G57 based (compatible with
+mediatek,mali-mt8188 or mediatek,mali-8192), having specific platform
+data allows to set this flag for MT8370 without modifying MT8186
+configuration and behaviour.
 
-  In file included from <built-in>:3:
-  In file included from include/linux/compiler_types.h:171:
-  include/linux/compiler-clang.h:37:9: error: '__SANITIZE_THREAD__' macro redefined [-Werror,-Wmacro-redefined]
-     37 | #define __SANITIZE_THREAD__
-        |         ^
-  <built-in>:352:9: note: previous definition is here
-    352 | #define __SANITIZE_THREAD__ 1
-        |         ^
-
-Refactor compiler-clang.h to only define the sanitizer macros when they
-are undefined and adjust the rest of the code to use these macros for
-checking if the sanitizers are enabled, clearing up the warnings and
-allowing the kernel to easily drop these defines when the minimum
-supported version of LLVM for building the kernel becomes 22.0.0 or newer.
-
-Link: https://lkml.kernel.org/r/20250902-clang-update-sanitize-defines-v1-1-cf3702ca3d92@kernel.org
-Link: https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250509-mt8370-enable-gpu-v6-4-2833888cb1d3@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-clang.h |   29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/panfrost/panfrost_drv.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/include/linux/compiler-clang.h
-+++ b/include/linux/compiler-clang.h
-@@ -24,23 +24,42 @@
- #define KASAN_ABI_VERSION 5
+diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
+index 21b28bef84015..07cd67baa81bf 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_drv.c
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+@@ -841,6 +841,15 @@ static const struct panfrost_compatible mediatek_mt8192_data = {
+ 	.gpu_quirks = BIT(GPU_QUIRK_FORCE_AARCH64_PGTABLE),
+ };
  
- /*
-+ * Clang 22 added preprocessor macros to match GCC, in hopes of eventually
-+ * dropping __has_feature support for sanitizers:
-+ * https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c
-+ * Create these macros for older versions of clang so that it is easy to clean
-+ * up once the minimum supported version of LLVM for building the kernel always
-+ * creates these macros.
-+ *
-  * Note: Checking __has_feature(*_sanitizer) is only true if the feature is
-  * enabled. Therefore it is not required to additionally check defined(CONFIG_*)
-  * to avoid adding redundant attributes in other configurations.
-  */
-+#if __has_feature(address_sanitizer) && !defined(__SANITIZE_ADDRESS__)
-+#define __SANITIZE_ADDRESS__
-+#endif
-+#if __has_feature(hwaddress_sanitizer) && !defined(__SANITIZE_HWADDRESS__)
-+#define __SANITIZE_HWADDRESS__
-+#endif
-+#if __has_feature(thread_sanitizer) && !defined(__SANITIZE_THREAD__)
-+#define __SANITIZE_THREAD__
-+#endif
- 
--#if __has_feature(address_sanitizer) || __has_feature(hwaddress_sanitizer)
--/* Emulate GCC's __SANITIZE_ADDRESS__ flag */
-+/*
-+ * Treat __SANITIZE_HWADDRESS__ the same as __SANITIZE_ADDRESS__ in the kernel.
-+ */
-+#ifdef __SANITIZE_HWADDRESS__
- #define __SANITIZE_ADDRESS__
-+#endif
++static const struct panfrost_compatible mediatek_mt8370_data = {
++	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
++	.supply_names = default_supplies,
++	.num_pm_domains = 2,
++	.pm_domain_names = mediatek_pm_domains,
++	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
++	.gpu_quirks = BIT(GPU_QUIRK_FORCE_AARCH64_PGTABLE),
++};
 +
-+#ifdef __SANITIZE_ADDRESS__
- #define __no_sanitize_address \
- 		__attribute__((no_sanitize("address", "hwaddress")))
- #else
- #define __no_sanitize_address
- #endif
- 
--#if __has_feature(thread_sanitizer)
--/* emulate gcc's __SANITIZE_THREAD__ flag */
--#define __SANITIZE_THREAD__
-+#ifdef __SANITIZE_THREAD__
- #define __no_sanitize_thread \
- 		__attribute__((no_sanitize("thread")))
- #else
+ static const struct of_device_id dt_match[] = {
+ 	/* Set first to probe before the generic compatibles */
+ 	{ .compatible = "amlogic,meson-gxm-mali",
+@@ -863,6 +872,7 @@ static const struct of_device_id dt_match[] = {
+ 	{ .compatible = "mediatek,mt8186-mali", .data = &mediatek_mt8186_data },
+ 	{ .compatible = "mediatek,mt8188-mali", .data = &mediatek_mt8188_data },
+ 	{ .compatible = "mediatek,mt8192-mali", .data = &mediatek_mt8192_data },
++	{ .compatible = "mediatek,mt8370-mali", .data = &mediatek_mt8370_data },
+ 	{ .compatible = "allwinner,sun50i-h616-mali", .data = &allwinner_h616_data },
+ 	{}
+ };
+-- 
+2.51.0
+
 
 
 
