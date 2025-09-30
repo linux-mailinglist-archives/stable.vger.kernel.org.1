@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-182364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BBABAD872
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F705BAD452
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39D773B1113
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:05:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A85CF1941008
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA0D304BCC;
-	Tue, 30 Sep 2025 15:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035892F60D8;
+	Tue, 30 Sep 2025 14:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftX1vbfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4Munfb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571031F152D;
-	Tue, 30 Sep 2025 15:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15923C465;
+	Tue, 30 Sep 2025 14:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244703; cv=none; b=q0ZXj/EIOks0tF+5dDoFPLK2evlXFf+hqdv+G2iVo3W+PLKi41rUujcFZi1cYskKPeVyXb9iMtSRaZJBmi1vrU3e0QgW3HAtGeFz2wr0og3l+0Wa57Tm5c18caOlLaVp8ga0ReqYWBxJcuFEkyD9uW21crn6UuWNVdq7RKwdu8M=
+	t=1759243788; cv=none; b=pXHyBmt4ZTq7fpaNtizKeNRQmsVuvppiVyW25k1DMBCb/5TpqZraj8bLF9Vf+2LC8oSaWb2Xhy/B1TQtjpEbYWI0IiNu/Z8IgjlUo8NTN4AkWJeIYWgj7vjbLl/pHxQ+mG5dN+Kry3OtDmOHFCkypjboTIxQFGMsTR/rRU/bezU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244703; c=relaxed/simple;
-	bh=37Ckxul7RxvkAfXODyohsqgzIdtW7OuFeSfKa3aWCqU=;
+	s=arc-20240116; t=1759243788; c=relaxed/simple;
+	bh=mBIoIXuPNWgJtPaF4EIF9IhR39OQqgwKqTEkYU0o+rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuwZfjAErXTPrCsOiu6xBR4beb8roPA2JYPQ0xDYOcgFIpg/ECJ0hl8+aHOwtjy5i3x2f8PXWDZG7pzmCoQ4Smqiko9pR3vZl6fED62MQ4Dw7zTQYfBhrsnAiN3kWnGy2J/znHO86uII/CMPLO+Frm/yR10+KGXKNu3QcBieiG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftX1vbfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F2DC4CEF0;
-	Tue, 30 Sep 2025 15:05:02 +0000 (UTC)
+	 MIME-Version; b=g568nD28R91JJ1KbWgIX8nH7NqzL001BxGx9LHoCrM/VJ5rm5PIAC5QPGbDbyobpdybOXC9iUWl5/Fm5xCFv8ZWxtYFq4bLCHAwuHtE2KJUEbvl+psgijwHGjNBcXLIb5T0WlXqLYVljuefoiXpATZ2svTqSO9k0LEsz6x1pEgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4Munfb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD04C4CEF0;
+	Tue, 30 Sep 2025 14:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244702;
-	bh=37Ckxul7RxvkAfXODyohsqgzIdtW7OuFeSfKa3aWCqU=;
+	s=korg; t=1759243787;
+	bh=mBIoIXuPNWgJtPaF4EIF9IhR39OQqgwKqTEkYU0o+rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftX1vbfBe0iljMf/cQchGkYbDhHE4HWk+0L7JR+FYwjJQeAevkc0yRun0PuzIpXmu
-	 GYbnvn4Sh0Yow1R36uzGTkltwbde26ghj0+0+y0HkenX0pDs6kk0MIyAwUAR8s82fD
-	 LFbLbcLyrUhm2IW0+BSKoSIhiAwUELXwHX0AjSzk=
+	b=X4Munfb8l00zu0T7zhbU9gT52ZMcDFvbjXShirbf+C6vncy/lF7vAhKS90CtZfkdT
+	 0B4YdynZMbNOeaK5u+YPKvm3ZbNs6/qFuJVTvwp308QDEBJYC3j7iB7a2PavNYqm5G
+	 o1XRAKiWQ0djgXlitb6FapYETPipZbTP7K2w44nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 056/143] bpf: Reject bpf_timer for PREEMPT_RT
+	Kohei Enju <enjuk@amazon.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 5.4 18/81] igb: fix link test skipping when interface is admin down
 Date: Tue, 30 Sep 2025 16:46:20 +0200
-Message-ID: <20250930143833.464975049@linuxfoundation.org>
+Message-ID: <20250930143820.429867818@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <leon.hwang@linux.dev>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit e25ddfb388c8b7e5f20e3bf38d627fb485003781 ]
+[ Upstream commit d709f178abca22a4d3642513df29afe4323a594b ]
 
-When enable CONFIG_PREEMPT_RT, the kernel will warn when run timer
-selftests by './test_progs -t timer':
+The igb driver incorrectly skips the link test when the network
+interface is admin down (if_running == false), causing the test to
+always report PASS regardless of the actual physical link state.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe,
+etc.) which correctly test the physical link state regardless of admin
+state.
+Remove the if_running check to ensure link test always reflects the
+physical link state.
 
-In order to avoid such warning, reject bpf_timer in verifier when
-PREEMPT_RT is enabled.
-
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20250910125740.52172-2-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is down")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index d6782efd25734..a6338936085ae 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -8405,6 +8405,10 @@ static int process_timer_func(struct bpf_verifier_env *env, int regno,
- 		verifier_bug(env, "Two map pointers in a timer helper");
- 		return -EFAULT;
- 	}
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
-+		verbose(env, "bpf_timer cannot be used for PREEMPT_RT.\n");
-+		return -EOPNOTSUPP;
-+	}
- 	meta->map_uid = reg->map_uid;
- 	meta->map_ptr = map;
- 	return 0;
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index de2c39436fe0a..8166fb619db45 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2070,11 +2070,8 @@ static void igb_diag_test(struct net_device *netdev,
+ 	} else {
+ 		dev_info(&adapter->pdev->dev, "online testing starting\n");
+ 
+-		/* PHY is powered down when interface is down */
+-		if (if_running && igb_link_test(adapter, &data[TEST_LINK]))
++		if (igb_link_test(adapter, &data[TEST_LINK]))
+ 			eth_test->flags |= ETH_TEST_FL_FAILED;
+-		else
+-			data[TEST_LINK] = 0;
+ 
+ 		/* Online tests aren't run; pass by default */
+ 		data[TEST_REG] = 0;
 -- 
 2.51.0
 
