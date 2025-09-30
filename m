@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-182486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C00FBAD992
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E32BAD494
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21FF2323262
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BFE9194180F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58DB2FD1DD;
-	Tue, 30 Sep 2025 15:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8979265CCD;
+	Tue, 30 Sep 2025 14:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcWOO8dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHqCdqrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73246217F55;
-	Tue, 30 Sep 2025 15:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8209325D1F7;
+	Tue, 30 Sep 2025 14:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245094; cv=none; b=YvaiuTnur3b3DlKs8M8KCeVuHctAM1+XX//018fV47SERiq29l1Kj3i80nqS2YlosMqc0YXDKtJcD4+RI4CuW7HlX2CBBNn/HNsHsB16za0UmXdOm4dJk2GQL4o+Q49TV/ltM+d8nGQcSVZwcpfKzmwkN6YrGQvEoPUSHH0SFw8=
+	t=1759243850; cv=none; b=nNMWMYbAIaGy1tIELybFWXTWbXs+NJ33tuxfpjYMauFfuG50IVuOyC6DhEX0jH1amLgtWWpwKb8of3naAQ9TbOOauqr22FDHgV5/9THr4pDeyqTuiJp6u+RAHf2V2ZAXsoySpr2mViWCCx+rVqXDill+hXwCMvoXlLWjstyfQQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245094; c=relaxed/simple;
-	bh=SARIV/MC2B1AQcA0KpijJ6Iba4zFJE6aBubEbk1n48Y=;
+	s=arc-20240116; t=1759243850; c=relaxed/simple;
+	bh=0JKZKlTCAX9VYORQzeT202ApgnbVXdMnshYm0uooCIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BqurhxdSfDOw7w486E0Q31a9KLtIqH6CuJPdX9ShXlUqs/QddgrIs7BpMaNwkeiORwOeD2i/ddHh/nlGZOK3LsUDxVMW3tEi+39cyPBu2thAIz5abu9Cd7RC3WaUXA6tpZ+ynKXZzuc6+PNXIVWhgB4XB/ffu51m6zSnwjxfMjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcWOO8dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC20C4CEF0;
-	Tue, 30 Sep 2025 15:11:33 +0000 (UTC)
+	 MIME-Version; b=nDFEa3kgxjHK2OQwCM+KsTdxDqfiELAO7FLghthULWrr+28QRafql9/c95QD65FlVFxZ1ayjr336DzTuEYSoPJyYw/VGCOXMqtPvkJ7R2XhKWjLSq91gofMFCt+W34PylR2TNYmEAdn/lEeDl2CCOrJK4wFMZPUzMKjmunr7szE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHqCdqrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EA3C4CEF0;
+	Tue, 30 Sep 2025 14:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245094;
-	bh=SARIV/MC2B1AQcA0KpijJ6Iba4zFJE6aBubEbk1n48Y=;
+	s=korg; t=1759243850;
+	bh=0JKZKlTCAX9VYORQzeT202ApgnbVXdMnshYm0uooCIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcWOO8dvhdLcBtIej5GDpO7HwqDkkb7S62lhn3qKHK8UXZOuR0m+XKy4gHuy+HDBf
-	 OgetYYvgpxUV+uvmRCs4Yx3QjiP7eu+lxaBIuK0tKRGQv9Ukw9uzf/cu3TZJyUk6n0
-	 3RgoI+kpCn+CcrIc/XTbPOjlWAXZSpREps4Yo5e0=
+	b=sHqCdqrCNOYTkWRSgSqXCsbJd/RXUlfjAl0cXIVV3QwDW1XG3a9Un1MA2our94wMo
+	 c+9l34YpiooSpFMOSkMvQaAV0S/Kx1w5FqMveP5TE+Rj7ViswLrU0p3iz6M6QvUpZS
+	 +OJP356yBrRao7LFg7WQq3eZhpJQ6YhzpE/twW2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 067/151] pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
-Date: Tue, 30 Sep 2025 16:46:37 +0200
-Message-ID: <20250930143830.267134608@linuxfoundation.org>
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 5.4 36/81] i40e: remove redundant memory barrier when cleaning Tx descs
+Date: Tue, 30 Sep 2025 16:46:38 +0200
+Message-ID: <20250930143821.186678683@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit d1dfcdd30140c031ae091868fb5bed084132bca1 ]
+[ Upstream commit e37084a26070c546ae7961ee135bbfb15fbe13fd ]
 
-As described in the added code comment, a reference to .exit.text is ok
-for drivers registered via platform_driver_probe().  Make this explicit
-to prevent the following section mismatch warning
+i40e has a feature which writes to memory location last descriptor
+successfully sent. Memory barrier in i40e_clean_tx_irq() was used to
+avoid forward-reading descriptor fields in case DD bit was not set.
+Having mentioned feature in place implies that such situation will not
+happen as we know in advance how many descriptors HW has dealt with.
 
-    WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
+Besides, this barrier placement was wrong. Idea is to have this
+protection *after* reading DD bit from HW descriptor, not before.
+Digging through git history showed me that indeed barrier was before DD
+bit check, anyways the commit introducing i40e_get_head() should have
+wiped it out altogether.
 
-that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
+Also, there was one commit doing s/read_barrier_depends/smp_rmb when get
+head feature was already in place, but it was only theoretical based on
+ixgbe experiences, which is different in these terms as that driver has
+to read DD bit from HW descriptor.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Fixes: 1943d8ba9507 ("i40e/i40evf: enable hardware feature head write back")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/omap_cf.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
-index f0b2c2d034695..ca88c75f04277 100644
---- a/drivers/pcmcia/omap_cf.c
-+++ b/drivers/pcmcia/omap_cf.c
-@@ -331,7 +331,13 @@ static int __exit omap_cf_remove(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index 6067c88668341..ff213cbe84ca8 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -794,9 +794,6 @@ static bool i40e_clean_tx_irq(struct i40e_vsi *vsi,
+ 		if (!eop_desc)
+ 			break;
  
--static struct platform_driver omap_cf_driver = {
-+/*
-+ * omap_cf_remove() lives in .exit.text. For drivers registered via
-+ * platform_driver_probe() this is ok because they cannot get unbound at
-+ * runtime. So mark the driver struct with __refdata to prevent modpost
-+ * triggering a section mismatch warning.
-+ */
-+static struct platform_driver omap_cf_driver __refdata = {
- 	.driver = {
- 		.name	= driver_name,
- 	},
+-		/* prevent any other reads prior to eop_desc */
+-		smp_rmb();
+-
+ 		i40e_trace(clean_tx_irq, tx_ring, tx_desc, tx_buf);
+ 		/* we have caught up to head, no work left to do */
+ 		if (tx_head == tx_desc)
 -- 
 2.51.0
 
