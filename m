@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-182478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A61BBADA2B
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BE8BAD7FD
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24CA53B0F06
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:11:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A5EC4A35E0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE44F30595C;
-	Tue, 30 Sep 2025 15:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF7D2FC881;
+	Tue, 30 Sep 2025 15:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3WbPQ1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZt29UJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DC91EE02F;
-	Tue, 30 Sep 2025 15:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AB91EE02F;
+	Tue, 30 Sep 2025 15:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245071; cv=none; b=XRgCsKmhNdRpoN6xPWmugi0QewSdwFrP57X1pdeVCr8FDstRunGx1WgoaaV+nGvfNh/52SzcUmJf8G+Ay3U/IrQQCeC3aOfJahE7KmfbiDnJxvq5YHP7kElTdsbMsV6t1+VfVxzP5bvKGifJ2uyZXa/z4NITI6aWaVDqPCy94cM=
+	t=1759244589; cv=none; b=Ktbyn4dhAgWCJfCFu0odUwnKp1DESm9dM+1ajmBTFHbpJuOF6SizXHapjaZUMh+cb4QNG80s0TZbSnzyRzoT6SjpZLxJP344kFik2+cLHmFM7v8PMqixcgRyTOF+zZLpJY/cQf+h9ioM6UdkW98vNaafzaUIIymavAojvhdAA7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245071; c=relaxed/simple;
-	bh=0IRF/TqRhegeGpGnvURowcEOoRFyXW3nvHJicufFIHM=;
+	s=arc-20240116; t=1759244589; c=relaxed/simple;
+	bh=78eZ4mxdgmehVafubClEtVhhhlrTeTYx9cHUZWP98Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDzWNZMNCglaqlJ+wif1e3clKTQxpkiMz6JPiC4rrvKE9p1ymVy0nrrz3fb09z5hihpiylFGjh5nctZzjmtBknwsZC6xno7PoL9jWQzHkpTe5Ed9tlfLID2PtuKSq6XyO7oGaJygSEgwcDcc7nL3Y7TbFVbJycj1+JSaL00FTFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3WbPQ1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67F3C4CEF0;
-	Tue, 30 Sep 2025 15:11:10 +0000 (UTC)
+	 MIME-Version; b=a6NNVeC6SaNjQq6NZg+k9Nj9y0D5KrsoBkk28/2QhnfLMtV0KJqoFootKZjwNXeI1+wYD01Ovq7lvnueaCk4jP+9jUDhRcRwbdKbOdQWA0VBl1ABicfRalFJpfcZMjYyof0rB8gtyKxFQvBTDlDBLr0bNDgyQ3S8Ret6UudVMs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZt29UJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A1FC4CEF0;
+	Tue, 30 Sep 2025 15:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245071;
-	bh=0IRF/TqRhegeGpGnvURowcEOoRFyXW3nvHJicufFIHM=;
+	s=korg; t=1759244589;
+	bh=78eZ4mxdgmehVafubClEtVhhhlrTeTYx9cHUZWP98Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3WbPQ1pmVT3cnTjX1jISnE9FauuBAUj8En2PmhSdJBKrQM465Vv31BpknEu0U0hu
-	 r/DgGT3WR+RHcOqvvdzrBztLrEpCt9HliOlxa7EbDAhSNIAQNoFYiOQlhIDksk4iyg
-	 AQrQvm5TdrVQZp1qOJkPD9L7h/aZCwz6jbLqAXlY=
+	b=QZt29UJfQMYbni657XZBjynBNYbnWDQ38hSr6Zr6NKQ45F2QWA3e70NE6wWb9YKLg
+	 Ru5kkUEIzvQbC1HaFGrlLgInoN6GyYzC/jqk+HGcKOmIe/FfLOTOy1JdUcqaNVtmUz
+	 D2E3HMXug1IAIhX5Ilh4KmT6yMIb0OCt84Yotc10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/151] tcp_bpf: Call sk_msg_free() when tcp_bpf_send_verdict() fails to allocate psock->cork.
+Subject: [PATCH 6.16 022/143] drm/panfrost: Commonize Mediatek power domain array definitions
 Date: Tue, 30 Sep 2025 16:45:46 +0200
-Message-ID: <20250930143828.252614226@linuxfoundation.org>
+Message-ID: <20250930143832.126827981@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit a3967baad4d533dc254c31e0d221e51c8d223d58 ]
+[ Upstream commit bd77b870eb190c9cf5d9b7208625513e99e5be2d ]
 
-syzbot reported the splat below. [0]
+In the panfrost driver, the platform data of several Mediatek SoC
+declares and uses several different power domains arrays according to
+GPU core number present in the SoC:
+- mediatek_mt8186_pm_domains (2 cores)
+- mediatek_mt8183_pm_domains (3 cores)
+- mediatek_mt8192_pm_domains (5 cores)
 
-The repro does the following:
+As they all are fixed arrays, starting with the same entries and the
+platform data also has a power domains array length field
+(num_pm_domains), they can be replaced by a single array, containing
+all entries, if the num_pm_domains field of the platform data is also
+set to the matching core number.
 
-  1. Load a sk_msg prog that calls bpf_msg_cork_bytes(msg, cork_bytes)
-  2. Attach the prog to a SOCKMAP
-  3. Add a socket to the SOCKMAP
-  4. Activate fault injection
-  5. Send data less than cork_bytes
+So, create a generic power domain array (mediatek_pm_domains) and use
+it in the mt8183(b), mt8186, mt8188 and mt8192 platform data instead.
 
-At 5., the data is carried over to the next sendmsg() as it is
-smaller than the cork_bytes specified by bpf_msg_cork_bytes().
-
-Then, tcp_bpf_send_verdict() tries to allocate psock->cork to hold
-the data, but this fails silently due to fault injection + __GFP_NOWARN.
-
-If the allocation fails, we need to revert the sk->sk_forward_alloc
-change done by sk_msg_alloc().
-
-Let's call sk_msg_free() when tcp_bpf_send_verdict fails to allocate
-psock->cork.
-
-The "*copied" also needs to be updated such that a proper error can
-be returned to the caller, sendmsg. It fails to allocate psock->cork.
-Nothing has been corked so far, so this patch simply sets "*copied"
-to 0.
-
-[0]:
-WARNING: net/ipv4/af_inet.c:156 at inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156, CPU#1: syz-executor/5983
-Modules linked in:
-CPU: 1 UID: 0 PID: 5983 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156
-Code: 0f 0b 90 e9 62 fe ff ff e8 7a db b5 f7 90 0f 0b 90 e9 95 fe ff ff e8 6c db b5 f7 90 0f 0b 90 e9 bb fe ff ff e8 5e db b5 f7 90 <0f> 0b 90 e9 e1 fe ff ff 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c 9f fc
-RSP: 0018:ffffc90000a08b48 EFLAGS: 00010246
-RAX: ffffffff8a09d0b2 RBX: dffffc0000000000 RCX: ffff888024a23c80
-RDX: 0000000000000100 RSI: 0000000000000fff RDI: 0000000000000000
-RBP: 0000000000000fff R08: ffff88807e07c627 R09: 1ffff1100fc0f8c4
-R10: dffffc0000000000 R11: ffffed100fc0f8c5 R12: ffff88807e07c380
-R13: dffffc0000000000 R14: ffff88807e07c60c R15: 1ffff1100fc0f872
-FS:  00005555604c4500(0000) GS:ffff888125af1000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555604df5c8 CR3: 0000000032b06000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- __sk_destruct+0x86/0x660 net/core/sock.c:2339
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x286/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1052
- </IRQ>
-
-Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
-Reported-by: syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68c0b6b5.050a0220.3c6139.0013.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250909232623.4151337-1-kuniyu@google.com
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250509-mt8370-enable-gpu-v6-3-2833888cb1d3@collabora.com
+Stable-dep-of: 81645377c231 ("drm/panfrost: Add support for Mali on the MT8370 SoC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_bpf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panfrost/panfrost_drv.c | 27 +++++++++++--------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 9e24542251b1c..11cb3a353cc6d 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -363,8 +363,11 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
- 		if (!psock->cork) {
- 			psock->cork = kzalloc(sizeof(*psock->cork),
- 					      GFP_ATOMIC | __GFP_NOWARN);
--			if (!psock->cork)
-+			if (!psock->cork) {
-+				sk_msg_free(sk, msg);
-+				*copied = 0;
- 				return -ENOMEM;
-+			}
- 		}
- 		memcpy(psock->cork, msg, sizeof(*msg));
- 		return 0;
+diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
+index 7b899a9b2120c..21b28bef84015 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_drv.c
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+@@ -789,6 +789,8 @@ static const struct panfrost_compatible amlogic_data = {
+ 	.vendor_quirk = panfrost_gpu_amlogic_quirk,
+ };
+ 
++static const char * const mediatek_pm_domains[] = { "core0", "core1", "core2",
++						    "core3", "core4" };
+ /*
+  * The old data with two power supplies for MT8183 is here only to
+  * keep retro-compatibility with older devicetrees, as DVFS will
+@@ -798,48 +800,43 @@ static const struct panfrost_compatible amlogic_data = {
+  * coupled regulators instead.
+  */
+ static const char * const legacy_supplies[] = { "mali", "sram", NULL };
+-static const char * const mediatek_mt8183_pm_domains[] = { "core0", "core1", "core2" };
+ static const struct panfrost_compatible mediatek_mt8183_data = {
+ 	.num_supplies = ARRAY_SIZE(legacy_supplies) - 1,
+ 	.supply_names = legacy_supplies,
+-	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
+-	.pm_domain_names = mediatek_mt8183_pm_domains,
++	.num_pm_domains = 3,
++	.pm_domain_names = mediatek_pm_domains,
+ };
+ 
+ static const struct panfrost_compatible mediatek_mt8183_b_data = {
+ 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
+ 	.supply_names = default_supplies,
+-	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
+-	.pm_domain_names = mediatek_mt8183_pm_domains,
++	.num_pm_domains = 3,
++	.pm_domain_names = mediatek_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
+ };
+ 
+-static const char * const mediatek_mt8186_pm_domains[] = { "core0", "core1" };
+ static const struct panfrost_compatible mediatek_mt8186_data = {
+ 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
+ 	.supply_names = default_supplies,
+-	.num_pm_domains = ARRAY_SIZE(mediatek_mt8186_pm_domains),
+-	.pm_domain_names = mediatek_mt8186_pm_domains,
++	.num_pm_domains = 2,
++	.pm_domain_names = mediatek_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
+ };
+ 
+-/* MT8188 uses the same power domains and power supplies as MT8183 */
+ static const struct panfrost_compatible mediatek_mt8188_data = {
+ 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
+ 	.supply_names = default_supplies,
+-	.num_pm_domains = ARRAY_SIZE(mediatek_mt8183_pm_domains),
+-	.pm_domain_names = mediatek_mt8183_pm_domains,
++	.num_pm_domains = 3,
++	.pm_domain_names = mediatek_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
+ 	.gpu_quirks = BIT(GPU_QUIRK_FORCE_AARCH64_PGTABLE),
+ };
+ 
+-static const char * const mediatek_mt8192_pm_domains[] = { "core0", "core1", "core2",
+-							   "core3", "core4" };
+ static const struct panfrost_compatible mediatek_mt8192_data = {
+ 	.num_supplies = ARRAY_SIZE(default_supplies) - 1,
+ 	.supply_names = default_supplies,
+-	.num_pm_domains = ARRAY_SIZE(mediatek_mt8192_pm_domains),
+-	.pm_domain_names = mediatek_mt8192_pm_domains,
++	.num_pm_domains = 5,
++	.pm_domain_names = mediatek_pm_domains,
+ 	.pm_features = BIT(GPU_PM_CLK_DIS) | BIT(GPU_PM_VREG_OFF),
+ 	.gpu_quirks = BIT(GPU_QUIRK_FORCE_AARCH64_PGTABLE),
+ };
 -- 
 2.51.0
 
