@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-182738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1DFBADCDC
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:25:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93621BADC57
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A2B332754F
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:25:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6C13BFBF0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12171F3FED;
-	Tue, 30 Sep 2025 15:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C039629ACF7;
+	Tue, 30 Sep 2025 15:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9Fg/sbh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/asW4K7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8C4245010;
-	Tue, 30 Sep 2025 15:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B44A173;
+	Tue, 30 Sep 2025 15:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245928; cv=none; b=a/LPO5Vo8qRgTl/RJttaNYXfjqo449m9rKQDLSqZK38GSK1vkSMdlX4YgMnBLiAnq3ZdvElOPOeyzCsDfeLQjDzg8uvIPJuj7/b6qxnEnb6TfKr4ViAiXMr/PBrxajAsSwkp/0BtZbMKVS92R1xjXm88Nof2Wfsz3mMXIlPxepw=
+	t=1759245567; cv=none; b=VcQN5caG03PwQHuuuWXNNajW5/g9Ex/osE+iNFqsnsEIYYqW//gPqhkr1c6A2YQPW9ZB5sqxGYA0CY5Ej89lfgHdxja0hJNmkWG9mNDXOmxdGPk8nul7u7nCSRE6VBfF/5Egpx2Ks8m+ybFeCf+m/9ZPOYvhe79mLzsvthV4dts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245928; c=relaxed/simple;
-	bh=Sfw1NUfVZigEUPzuvE7gHQslySEkHR56IBCRm7DGRgw=;
+	s=arc-20240116; t=1759245567; c=relaxed/simple;
+	bh=eFIPeiFUiuVqpR82O+7D5Y1N1DVYXDn5v+Xx9sQpQ/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sEfYmURrAmpZ4YrgjswNdT+Br7lrb6SokRCRVcjIk1mbJ3bo/wmo1M+k2ZKuv2+7BEZIx9h86SAR2GeprWFw1MdfEm2RLoRDTP1peFrD1nki/wznV8OEpwXqI0wk9FZSXixarvdG6jPaP6vGB4AxXaBHk4yuWoH+nUKvB0W98Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9Fg/sbh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1183DC4CEF0;
-	Tue, 30 Sep 2025 15:25:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LEhqTiknZLKozwQ8LOnf38vYzqLg+XZCaBQS120lxGmkyvaMjFrSBVUqfr1MN5qYTpV83nea1s1KoPmqyTW7hMV9LGJfz/V/lO+ivLFGu3IyCwU5uXVdwhfk6BecK8oP3wDXF5jU9984O4VvRUOG6JpiYQVrZ/Fy1qUR2eFLD8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/asW4K7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAAAC4CEF0;
+	Tue, 30 Sep 2025 15:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245928;
-	bh=Sfw1NUfVZigEUPzuvE7gHQslySEkHR56IBCRm7DGRgw=;
+	s=korg; t=1759245567;
+	bh=eFIPeiFUiuVqpR82O+7D5Y1N1DVYXDn5v+Xx9sQpQ/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9Fg/sbhWbDvR8keJ7E9Gt/RZVnANFQDC1gc70BLkKD5o0eAnOve539d+MS67aRY3
-	 CGHff4FXSozfE7QEAf8BFPkGA0uRjVVW2hQyxzxwMVIT0uZILxRUjhBnLH/B9NCJJi
-	 Fp5y/GV3MkXr5kbRIhwl1OOVwlL7Py/ZhzpGzu14=
+	b=s/asW4K7At/HVXPku2I1STP2phHjO97gvPliGazjrCRcQ+udvKRCbEtoQuv2PcECV
+	 5XaL0TgwsrhSIpzyeLeudO1qrsByz/1YFz1HannZr9B/0Fgx8nlmVM1+4uEIhDoK6G
+	 nmA8tslZ5wr46EFM7sua6vvoQJr5R8ixvBgd+uUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 61/91] i40e: add mask to apply valid bits for itr_idx
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	George Kennedy <george.kennedy@oracle.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Qianqiang Liu <qianqiang.liu@163.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Kees Cook <kees@kernel.org>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.1 56/73] fbcon: Fix OOB access in font allocation
 Date: Tue, 30 Sep 2025 16:48:00 +0200
-Message-ID: <20250930143823.725023665@linuxfoundation.org>
+Message-ID: <20250930143822.968849206@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
+References: <20250930143820.537407601@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +70,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit eac04428abe9f9cb203ffae4600791ea1d24eb18 upstream.
+commit 9b2f5ef00e852f8e8902a4d4f73aeedc60220c12 upstream.
 
-The ITR index (itr_idx) is only 2 bits wide. When constructing the
-register value for QINT_RQCTL, all fields are ORed together. Without
-masking, higher bits from itr_idx may overwrite adjacent fields in the
-register.
+Commit 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
+introduced an out-of-bounds access by storing data and allocation sizes
+in the same variable. Restore the old size calculation and use the new
+variable 'alloc_size' for the allocation.
 
-Apply I40E_QINT_RQCTL_ITR_INDX_MASK to ensure only the intended bits are
-set.
-
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
+Reported-by: Jani Nikula <jani.nikula@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6201
+Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: George Kennedy <george.kennedy@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Qianqiang Liu <qianqiang.liu@163.com>
+Cc: Shixiong Ou <oushixiong@kylinos.cn>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.9+
+Cc: Zsolt Kajtar <soci@c64.rulez.org>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Qianqiang Liu <qianqiang.liu@163.com>
+Link: https://lore.kernel.org/r/20250922134619.257684-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -448,7 +448,7 @@ static void i40e_config_irq_link_list(st
- 		    (qtype << I40E_QINT_RQCTL_NEXTQ_TYPE_SHIFT) |
- 		    (pf_queue_id << I40E_QINT_RQCTL_NEXTQ_INDX_SHIFT) |
- 		    BIT(I40E_QINT_RQCTL_CAUSE_ENA_SHIFT) |
--		    (itr_idx << I40E_QINT_RQCTL_ITR_INDX_SHIFT);
-+		    FIELD_PREP(I40E_QINT_RQCTL_ITR_INDX_MASK, itr_idx);
- 		wr32(hw, reg_idx, reg);
- 	}
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2489,7 +2489,7 @@ static int fbcon_set_font(struct vc_data
+ 	unsigned charcount = font->charcount;
+ 	int w = font->width;
+ 	int h = font->height;
+-	int size;
++	int size, alloc_size;
+ 	int i, csum;
+ 	u8 *new_data, *data = font->data;
+ 	int pitch = PITCH(font->width);
+@@ -2522,10 +2522,10 @@ static int fbcon_set_font(struct vc_data
+ 		return -EINVAL;
  
+ 	/* Check for overflow in allocation size calculation */
+-	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
++	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &alloc_size))
+ 		return -EINVAL;
+ 
+-	new_data = kmalloc(size, GFP_USER);
++	new_data = kmalloc(alloc_size, GFP_USER);
+ 
+ 	if (!new_data)
+ 		return -ENOMEM;
 
 
 
