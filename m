@@ -1,50 +1,56 @@
-Return-Path: <stable+bounces-182053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E46DBAC0DF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 10:30:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F45BAC223
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 10:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 029133A40DF
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:30:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6835A18847D1
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 08:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878CE244693;
-	Tue, 30 Sep 2025 08:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2527027B328;
+	Tue, 30 Sep 2025 08:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zu1wj6xd"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C3gpJDXO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4092BB17;
-	Tue, 30 Sep 2025 08:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3621D5AC6
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 08:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759221013; cv=none; b=cLCDe46MsUPOl1L+7tkU4UFG8KTmPIETXPpBIHGn3lTzKMZ7GjIE2uKnF02FZOAIWo+DEJli06PS2jf9q/MQp+tlmRaPYxtBnOvmmmIa1zLYtcDXCIgAdpuA6XVHW0EXi7pqh2caytX3HUGr48gaYPLQspTejImQVBQiYjt+DUw=
+	t=1759222381; cv=none; b=kYUEVyjQYvyw1+PfU3bi7mM6cEBgokJCeddD8DJdabBXLwFXKmZvTOFx8loe9AwJtJklPM+tnBEDoI295YRyY6kByqeVFjIPbZgSQa/jEocuKOo7j1XWQVjrXHm9iWS60BEtn7yBAVou+74qXZntt5St43qKZml0bhd0wGfvJqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759221013; c=relaxed/simple;
-	bh=yMMeJdLx4XblKD8OQUJirZMZelXcwNUtF8vTNEGW8RU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=idZoc+/90qeFnhQ8fFU8UM9oWJs8soDlc905PzW3gPY1mOtmpFTbe+QalBkfbHSRDxqf56K/gOpqabeaGd8c6N0w5DGbEXu0CJ2FDVowAE5ynYzXCfbP9+6gSh0hIMWV8RSc7VbPVKxZL3zsValfUtUAVqZ/t9U3IG4voWHT+bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zu1wj6xd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB72C4CEF0;
-	Tue, 30 Sep 2025 08:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759221012;
-	bh=yMMeJdLx4XblKD8OQUJirZMZelXcwNUtF8vTNEGW8RU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Zu1wj6xdAb8IiLDQccASL9uWBNGPlOu5lN3gmENmgzVe16bVr0004/RxPu5qBMzPq
-	 43NBkJ37E4Xg1HDRtmOkVBOxaGnfuit22zmRyqm3DAsx8HMz5buXNrm0wO7P5HEHI0
-	 KHQe5Gk9EeZODb16/VPRaC1jEJ9risZP0JtJ7JaZXUqaiAiurnAPpIg4e0yLEAiBmL
-	 7pyl/lVKXol0/IMA5E7pyruYPA3TpiELA6ChIwsA++DoqTW6TZmGOOfuWWRYlKrPRT
-	 UGbRMoxIZWQuLCMkoNqoUr3BWeicbegefgq/bgh93F+f/G/HCSsTmMMx73DXjy0z/O
-	 sI5RlYRP0xFzQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DF139D0C1A;
-	Tue, 30 Sep 2025 08:30:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1759222381; c=relaxed/simple;
+	bh=RolK84d4YEmZDJGqxxFUWjVWiZW2624dVKeGrayET1A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HMXHKNUI5zq4g2uFgdypH7wh4q5nswIlCkeKsw+leiar9NMymKfqeju+vAjQyA4UFuJ0R2COdKDf/tz80qDoIqJpuLLaHMrCo+RLmBz9rD9DHx2C4tkgmcpf6Dozzlnfs+Ocg9q18V49pNx5XS6nvL2K6kozYC+nWL53bV8jEQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C3gpJDXO; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759222367;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fO4H831Gj0XcQXa/CBJ4KpYimoBucD9IAyXJi5ODctk=;
+	b=C3gpJDXOACHAQEnoMAoBwnVQZs5KRLvQ4499eGhI1TEpqdUAotKSeTQQQ+7J5rLE/r9j0p
+	U1EY9/gNKh1gWXuzn/tZB0FM/oN0wIeiFV97Q0M8NapuFHLOwDpz3/t6rsdToDRWgauqVr
+	wGZlNgkLEtx+vb0xmF3F4J6v/7b29VE=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: kvmarm@lists.linux.dev
+Cc: Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: Prevent access to vCPU events before init
+Date: Tue, 30 Sep 2025 01:52:37 -0700
+Message-Id: <20250930085237.108326-1-oliver.upton@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,52 +58,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] net: nfc: nci: Add parameter validation for packet
- data
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175922100601.1892773.12754446584125259059.git-patchwork-notify@kernel.org>
-Date: Tue, 30 Sep 2025 08:30:06 +0000
-References: <20250925132846.213425-1-deepak.sharma.472935@gmail.com>
-In-Reply-To: <20250925132846.213425-1-deepak.sharma.472935@gmail.com>
-To: Deepak Sharma <deepak.sharma.472935@gmail.com>
-Cc: krzk@kernel.org, vadim.fedorenko@linux.dev, linville@tuxdriver.com,
- kuba@kernel.org, edumazet@google.com, juraj@sarinay.com, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel-mentees@lists.linux.dev, david.hunter.linux@gmail.com,
- skhan@linuxfoundation.org,
- syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+Another day, another syzkaller bug. KVM erroneously allows userspace to
+pend vCPU events for a vCPU that hasn't been initialized yet, leading to
+KVM interpreting a bunch of uninitialized garbage for routing /
+injecting the exception.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+In one case the injection code and the hyp disagree on whether the vCPU
+has a 32bit EL1 and put the vCPU into an illegal mode for AArch64,
+tripping the BUG() in exception_target_el() during the next injection:
 
-On Thu, 25 Sep 2025 18:58:46 +0530 you wrote:
-> Syzbot reported an uninitialized value bug in nci_init_req, which was
-> introduced by commit 5aca7966d2a7 ("Merge tag
-> 'perf-tools-fixes-for-v6.17-2025-09-16' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools").
-> 
-> This bug arises due to very limited and poor input validation
-> that was done at nic_valid_size(). This validation only
-> validates the skb->len (directly reflects size provided at the
-> userspace interface) with the length provided in the buffer
-> itself (interpreted as NCI_HEADER). This leads to the processing
-> of memory content at the address assuming the correct layout
-> per what opcode requires there. This leads to the accesses to
-> buffer of `skb_buff->data` which is not assigned anything yet.
-> 
-> [...]
+  kernel BUG at arch/arm64/kvm/inject_fault.c:40!
+  Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+  CPU: 3 UID: 0 PID: 318 Comm: repro Not tainted 6.17.0-rc4-00104-g10fd0285305d #6 PREEMPT
+  Hardware name: linux,dummy-virt (DT)
+  pstate: 21402009 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+  pc : exception_target_el+0x88/0x8c
+  lr : pend_serror_exception+0x18/0x13c
+  sp : ffff800082f03a10
+  x29: ffff800082f03a10 x28: ffff0000cb132280 x27: 0000000000000000
+  x26: 0000000000000000 x25: ffff0000c2a99c20 x24: 0000000000000000
+  x23: 0000000000008000 x22: 0000000000000002 x21: 0000000000000004
+  x20: 0000000000008000 x19: ffff0000c2a99c20 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 00000000200000c0
+  x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+  x8 : ffff800082f03af8 x7 : 0000000000000000 x6 : 0000000000000000
+  x5 : ffff800080f621f0 x4 : 0000000000000000 x3 : 0000000000000000
+  x2 : 000000000040009b x1 : 0000000000000003 x0 : ffff0000c2a99c20
+  Call trace:
+   exception_target_el+0x88/0x8c (P)
+   kvm_inject_serror_esr+0x40/0x3b4
+   __kvm_arm_vcpu_set_events+0xf0/0x100
+   kvm_arch_vcpu_ioctl+0x180/0x9d4
+   kvm_vcpu_ioctl+0x60c/0x9f4
+   __arm64_sys_ioctl+0xac/0x104
+   invoke_syscall+0x48/0x110
+   el0_svc_common.constprop.0+0x40/0xe0
+   do_el0_svc+0x1c/0x28
+   el0_svc+0x34/0xf0
+   el0t_64_sync_handler+0xa0/0xe4
+   el0t_64_sync+0x198/0x19c
+  Code: f946bc01 b4fffe61 9101e020 17fffff2 (d4210000)
 
-Here is the summary with links:
-  - [net,v4] net: nfc: nci: Add parameter validation for packet data
-    https://git.kernel.org/netdev/net/c/9c328f54741b
+Reject the ioctls outright as no sane VMM would call these before
+KVM_ARM_VCPU_INIT anyway. Even if it did the exception would've been
+thrown away by the eventual reset of the vCPU's state.
 
-You are awesome, thank you!
+Cc: stable@vger.kernel.org # 6.17
+Fixes: b7b27facc7b5 ("arm/arm64: KVM: Add KVM_GET/SET_VCPU_EVENTS")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+---
+
+While the blamed commit is indeed broken, only 6.17+ kernels actually
+hit the BUG() due to commit efa1368ba9f4 ("KVM: arm64: Commit exceptions
+from KVM_SET_VCPU_EVENTS immediately).
+
+ arch/arm64/kvm/arm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index a59b4046617c..c44357d26ee8 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1795,6 +1795,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 	case KVM_GET_VCPU_EVENTS: {
+ 		struct kvm_vcpu_events events;
+ 
++		if (!kvm_vcpu_initialized(vcpu))
++			return -ENOEXEC;
++
+ 		if (kvm_arm_vcpu_get_events(vcpu, &events))
+ 			return -EINVAL;
+ 
+@@ -1806,6 +1809,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 	case KVM_SET_VCPU_EVENTS: {
+ 		struct kvm_vcpu_events events;
+ 
++		if (!kvm_vcpu_initialized(vcpu))
++			return -ENOEXEC;
++
+ 		if (copy_from_user(&events, argp, sizeof(events)))
+ 			return -EFAULT;
+ 
+
+base-commit: 10fd0285305d0b48e8a3bf15d4f17fc4f3d68cb6
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.5
 
 
