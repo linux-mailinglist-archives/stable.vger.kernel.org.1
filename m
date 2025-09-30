@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9658BADC18
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:22:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D711BAD869
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A515174841
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:22:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 288421940C0F
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38878846F;
-	Tue, 30 Sep 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEF8302CD6;
+	Tue, 30 Sep 2025 15:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuIQzDqG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXaccJEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E946B237163;
-	Tue, 30 Sep 2025 15:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A88F266B65;
+	Tue, 30 Sep 2025 15:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245753; cv=none; b=oCZnTZf9S98aCka6uiTbiJpcrGwKsfrGUkUr4skNhUAzyPol9NwhU7DbAPOT0U0i0VoWT7HI2S1hxNT6PGAONcVIPdC/EquJMRDL5ccGW2B4PrhXhsVQ+32S6vbx9J9ge0oKo61ut5m5q4VITPXDulTyEjJXIOFX52Z8nb1RzJE=
+	t=1759244852; cv=none; b=HxOGMtF/M9urK5fJZhhw4tbPaPfWjIhJh2roU1Jlt4Di1KwXqxtQYV8UjMIvO0+kQ2DggWL+vN6x8L3qzK1CP4ZMWidZ/WPCNgHlDN7Is5BN0syeqVicKnqlvr5HFhQ0M7PF5sYwoujiihw4bqgarPoGlvigTg7uzkQYxRgoFJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245753; c=relaxed/simple;
-	bh=PqhGvbw9gYxn2qDYIWsZ5CbxfrHrzTHcL7rLEafVirI=;
+	s=arc-20240116; t=1759244852; c=relaxed/simple;
+	bh=Rh46yUW3hSmqLdjZD5Ap6sBHwOcnZDlVPUA+NpqIwP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UcoaYrea2MV9N0gRZgDrzbxpPKlc9Bg5h/yNDHtQW4tiTZ0fcY7trQT0hC5fBX6zyXszjRQ9ByG9Ebp1SNCheyEaIHfW5hCJehxAd6A8rcICvmyOCT7xTcWLUgrc5rkcKzuFk6RZ4iFGstekQz7dQDrHl+XzNCuZ8E4W4kn1Jz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuIQzDqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DA9C4CEF0;
-	Tue, 30 Sep 2025 15:22:32 +0000 (UTC)
+	 MIME-Version; b=XTYBxDVkNBkDCmw+vdWgfyIvBm33SQHswudx8VdYoNQwppmY9RJViYzzv+6MyEhMgpk6in8qdcA27T6Sfk5cFMbJFW/1yx+c5Zz4Kuoz4XqoBYroTFQx66/t7A1CCVKlPq/REs+mKEvnhSpvsoNlnPDmbzEE95xoHH7sI0unyYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXaccJEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0433EC113D0;
+	Tue, 30 Sep 2025 15:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245752;
-	bh=PqhGvbw9gYxn2qDYIWsZ5CbxfrHrzTHcL7rLEafVirI=;
+	s=korg; t=1759244852;
+	bh=Rh46yUW3hSmqLdjZD5Ap6sBHwOcnZDlVPUA+NpqIwP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuIQzDqGR1V5gbG66JqeESlxuRjNUyZCC1DZXl/euFUo1xYct0mnikO2D6P/2bBDL
-	 RNuU0G2vtTvS3iXx4WwOxS6YHffWocpOzvJrJnaJ21wPHaOIm5kocNiaZvwxeC1Gug
-	 ftdWa6gJGodqeCEaTWI1TV5QFYY9CnOM5N3pHWDU=
+	b=zXaccJEalUzcjR4tRylFti+ZsSxXT1dhx9sEpy3PVmCv536D2jT4anW6tW2iB/r6Z
+	 POFa1jze4jjXFLUg6yCxVRKRI9aG1+BjLHkdwigIw5LELB9WNorAdOxl9yDyZNAy6m
+	 5iu3ci6acFtetvAdiLvKBGe4Q4PgWVZXRZA9lrNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?St=C3=A9phane=20Grosjean?= <stephane.grosjean@hms-networks.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 39/91] can: peak_usb: fix shift-out-of-bounds issue
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 134/143] mm/damon/sysfs: do not ignore callbacks return value in damon_sysfs_damon_call()
 Date: Tue, 30 Sep 2025 16:47:38 +0200
-Message-ID: <20250930143822.793727263@linuxfoundation.org>
+Message-ID: <20250930143836.571248708@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
+From: Akinobu Mita <akinobu.mita@gmail.com>
 
-[ Upstream commit c443be70aaee42c2d1d251e0329e0a69dd96ae54 ]
+commit 06195ee967d06ead757f9291bbaf1a0b30fa10b8 upstream.
 
-Explicitly uses a 64-bit constant when the number of bits used for its
-shifting is 32 (which is the case for PC CAN FD interfaces supported by
-this driver).
+The callback return value is ignored in damon_sysfs_damon_call(), which
+means that it is not possible to detect invalid user input when writing
+commands such as 'commit' to
+/sys/kernel/mm/damon/admin/kdamonds/<K>/state.  Fix it.
 
-Signed-off-by: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
-Link: https://patch.msgid.link/20250918132413.30071-1-stephane.grosjean@free.fr
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/20250917-aboriginal-refined-honeybee-82b1aa-mkl@pengutronix.de
-Fixes: bb4785551f64 ("can: usb: PEAK-System Technik USB adapters driver core")
-[mkl: update subject, apply manually]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250920132546.5822-1-akinobu.mita@gmail.com
+Fixes: f64539dcdb87 ("mm/damon/sysfs: use damon_call() for update_schemes_stats")
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.14+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/peak_usb/pcan_usb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-index 24ad9f593a773..9d162d1004c26 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-@@ -111,7 +111,7 @@ void peak_usb_update_ts_now(struct peak_time_ref *time_ref, u32 ts_now)
- 		u32 delta_ts = time_ref->ts_dev_2 - time_ref->ts_dev_1;
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1576,12 +1576,14 @@ static int damon_sysfs_damon_call(int (*
+ 		struct damon_sysfs_kdamond *kdamond)
+ {
+ 	struct damon_call_control call_control = {};
++	int err;
  
- 		if (time_ref->ts_dev_2 < time_ref->ts_dev_1)
--			delta_ts &= (1 << time_ref->adapter->ts_used_bits) - 1;
-+			delta_ts &= (1ULL << time_ref->adapter->ts_used_bits) - 1;
+ 	if (!kdamond->damon_ctx)
+ 		return -EINVAL;
+ 	call_control.fn = fn;
+ 	call_control.data = kdamond;
+-	return damon_call(kdamond->damon_ctx, &call_control);
++	err = damon_call(kdamond->damon_ctx, &call_control);
++	return err ? err : call_control.return_code;
+ }
  
- 		time_ref->ts_total += delta_ts;
- 	}
--- 
-2.51.0
-
+ struct damon_sysfs_schemes_walk_data {
 
 
 
