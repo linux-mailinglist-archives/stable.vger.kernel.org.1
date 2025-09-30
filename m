@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-182418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F528BAD89C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC40BADC36
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58E1816DA78
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:08:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 820AA3248EC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7CB2FFDE6;
-	Tue, 30 Sep 2025 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5797B296BD0;
+	Tue, 30 Sep 2025 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKGHMf6u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eA3G2W01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AF92236EB;
-	Tue, 30 Sep 2025 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C74846F;
+	Tue, 30 Sep 2025 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244882; cv=none; b=MotXAxgT0DsbaUVkiDP86bSUt2KKd8iSCB2OK8D/zbdJtu9+S+qXvqp3RBWNzZpj1umouQtZeCAwHpht6YNH3jw+VuEPsYUvxK0gBhWTXyGYvPOJPnRm6EMG1Lr7lRQWypGBUyfjARA2mjEzJBzpOLVIRFzHoDxZM7dUF/zFyVY=
+	t=1759245780; cv=none; b=AOm5qKCj0JbsZIKS/9T3TBKsrfcpdBJ8XRN8sBdaHzLdsLjETaS90IjMIYNkzbhqxmo7AdCTedAtnjNTVFOO8GtPQurrhAPnKGgvgn7zveWyuvTrKes0QZglAfOsW64T8aWntXxM/KuA6ENJSO5+615NcaA9FJFOtU+1FgslxFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244882; c=relaxed/simple;
-	bh=rWJKVlWq0BZdrMmoAm86ZkBDjVo1TLwa9XUTeFozcPo=;
+	s=arc-20240116; t=1759245780; c=relaxed/simple;
+	bh=Mdj1OOpcx7aVJ3WaMEiH1PAAlz3M9ptyKOvv1YRa6AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IN5vUXWzIi6fEm1fvRQbAiw2HrknalOzFdLM6yoU3fqpV9/Pfi78hav97hwgdxkNRcJ8oyy8CTgvwiXCQ8spZZTgZt4pb/ZnNCC4CjlDW88NOJ06vcuo9S6iRK1uvLIiZvrLq8i/l6Zmpw1fJf6KqNbH7gJg0kudJb8nJrVhirw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKGHMf6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237ABC4CEF0;
-	Tue, 30 Sep 2025 15:08:01 +0000 (UTC)
+	 MIME-Version; b=enHxHzfUdoAyijB5yGPQoNGElkhlwm9dtV3L0gTSR41SenStf17f9aUyTe0qLVKtn7KhQHXqtlNqitQohrgMHiymRtqrWWKsVa1L6iymBTW/+qOEahMOlOwP0ji+TxWN3V2H3N6QjGIhh1JYVp8lo188insxQUlts+v/mmBueio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eA3G2W01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76926C4CEF0;
+	Tue, 30 Sep 2025 15:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244882;
-	bh=rWJKVlWq0BZdrMmoAm86ZkBDjVo1TLwa9XUTeFozcPo=;
+	s=korg; t=1759245779;
+	bh=Mdj1OOpcx7aVJ3WaMEiH1PAAlz3M9ptyKOvv1YRa6AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKGHMf6u4l7gaLQmJgHoOuHn2uVCv61BlSIcVtC8NVWiZm5I2MJ/oxWBUm13nH7kp
-	 ArYBP/wt9DafLB9Azpi7k0a6btIrqJelZF8rD/K8Glg3oteWSSJepHMkKAq5NoH730
-	 0+ICCHy97BasxiIaNFmPRrBE1LIBMdVjYM9lLYJ0=
+	b=eA3G2W01hYhrvTJq3Z2liKUtS0qc0iVkQf6+DhW4OCNAQ1MgVg/FjC4SCWR75yWQA
+	 5c9oKivY++Dhw0WhBwH6Qd4Ingj7YxUD0ZSBfckWf/o++TftIvQo8Sw2QWDJAJLQ7H
+	 nY0B8IGzIqiwFiwI87qopMTVvisur6bRMt95fRWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>,
-	Niravkumar L Rabara <nirav.rabara@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 142/143] spi: cadence-qspi: defer runtime support on socfpga if reset bit is enabled
+Subject: [PATCH 6.6 47/91] selftests: fib_nexthops: Fix creation of non-FDB nexthops
 Date: Tue, 30 Sep 2025 16:47:46 +0200
-Message-ID: <20250930143836.900279287@linuxfoundation.org>
+Message-ID: <20250930143823.129837218@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
+References: <20250930143821.118938523@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,162 +63,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 30dbc1c8d50f13c1581b49abe46fe89f393eacbf ]
+[ Upstream commit c29913109c70383cdf90b6fc792353e1009f24f5 ]
 
-Enabling runtime PM allows the kernel to gate clocks and power to idle
-devices. On SoCFPGA, a warm reset does not fully reinitialize these
-domains.This leaves devices suspended and powered down, preventing U-Boot
-or the kernel from reusing them after a warm reset, which breaks the boot
-process.
+The test creates non-FDB nexthops without a nexthop device which leads
+to the expected failure, but for the wrong reason:
 
-Fixes: 4892b374c9b7 ("mtd: spi-nor: cadence-quadspi: Add runtime PM support")
-CC: stable@vger.kernel.org # 6.12+
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Signed-off-by: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
-Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Link: https://patch.msgid.link/910aad68ba5d948919a7b90fa85a2fadb687229b.1757491372.git.khairul.anuar.romli@altera.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 63 via 2001:db8:91::4
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 64 via 2001:db8:91::5
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 63/64 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
+
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 14 via 172.16.1.2
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 15 via 172.16.1.3
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 14/15 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+
+ COMMAND: ip -netns me-nRsN3E nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 104 group 14/15
+ Error: Invalid nexthop id.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-0dlhyd ro add 172.16.0.0/22 nhid 15
+ Error: Nexthop id does not exist.
+ TEST: Route add with fdb nexthop                                    [ OK ]
+
+In addition, as can be seen in the above output, a couple of IPv4 test
+cases used the non-FDB nexthops (14 and 15) when they intended to use
+the FDB nexthops (16 and 17). These test cases only passed because
+failure was expected, but they failed for the wrong reason.
+
+Fix the test to create the non-FDB nexthops with a nexthop device and
+adjust the IPv4 test cases to use the FDB nexthops instead of the
+non-FDB nexthops.
+
+Output after the fix:
+
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 63 via 2001:db8:91::4 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 64 via 2001:db8:91::5 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 63/64 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
+
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 14 via 172.16.1.2 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 15 via 172.16.1.3 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 14/15 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+
+ COMMAND: ip -netns me-lNzfHP nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 104 group 16/17
+ Error: Non FDB nexthop group cannot have fdb nexthops.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-lNzfHP ro add 172.16.0.0/22 nhid 16
+ Error: Route cannot point to a fdb nexthop.
+ TEST: Route add with fdb nexthop                                    [ OK ]
+ [...]
+ Tests passed:  30
+ Tests failed:   0
+ Tests skipped:  0
+
+Fixes: 0534c5489c11 ("selftests: net: add fdb nexthop tests")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250921150824.149157-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |   57 +++++++++++++++++++++++++-------------
- 1 file changed, 38 insertions(+), 19 deletions(-)
+ tools/testing/selftests/net/fib_nexthops.sh | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -46,6 +46,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SP
- #define CQSPI_DMA_SET_MASK		BIT(7)
- #define CQSPI_SUPPORT_DEVICE_RESET	BIT(8)
- #define CQSPI_DISABLE_STIG_MODE		BIT(9)
-+#define CQSPI_DISABLE_RUNTIME_PM	BIT(10)
+diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+index a6f2c0b9555d1..e2e4fffd87e39 100755
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -464,8 +464,8 @@ ipv6_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
  
- /* Capabilities */
- #define CQSPI_SUPPORTS_OCTAL		BIT(0)
-@@ -1468,14 +1469,17 @@ static int cqspi_exec_mem_op(struct spi_
- 	int ret;
- 	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
- 	struct device *dev = &cqspi->pdev->dev;
-+	const struct cqspi_driver_platdata *ddata = of_device_get_match_data(dev);
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4"
+-	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5"
++	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4 dev veth1"
++	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 63/64 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
  
- 	if (refcount_read(&cqspi->inflight_ops) == 0)
- 		return -ENODEV;
+@@ -544,15 +544,15 @@ ipv4_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
  
--	ret = pm_runtime_resume_and_get(dev);
--	if (ret) {
--		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
--		return ret;
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		ret = pm_runtime_resume_and_get(dev);
-+		if (ret) {
-+			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
-+			return ret;
-+		}
- 	}
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 14 via 172.16.1.2"
+-	run_cmd "$IP nexthop add id 15 via 172.16.1.3"
++	run_cmd "$IP nexthop add id 14 via 172.16.1.2 dev veth1"
++	run_cmd "$IP nexthop add id 15 via 172.16.1.3 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 14/15 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
  
- 	if (!refcount_read(&cqspi->refcount))
-@@ -1491,8 +1495,10 @@ static int cqspi_exec_mem_op(struct spi_
+ 	# Non fdb nexthop group can not contain fdb nexthops
+ 	run_cmd "$IP nexthop add id 16 via 172.16.1.2 fdb"
+ 	run_cmd "$IP nexthop add id 17 via 172.16.1.3 fdb"
+-	run_cmd "$IP nexthop add id 104 group 14/15"
++	run_cmd "$IP nexthop add id 104 group 16/17"
+ 	log_test $? 2 "Non-Fdb Nexthop group with fdb nexthops"
  
- 	ret = cqspi_mem_process(mem, op);
+ 	# fdb nexthop cannot have blackhole
+@@ -579,7 +579,7 @@ ipv4_fdb_grp_fcnal()
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
+ 	log_test $? 255 "Fdb mac add with nexthop"
  
--	pm_runtime_mark_last_busy(dev);
--	pm_runtime_put_autosuspend(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_mark_last_busy(dev);
-+		pm_runtime_put_autosuspend(dev);
-+	}
+-	run_cmd "$IP ro add 172.16.0.0/22 nhid 15"
++	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
+ 	log_test $? 2 "Route add with fdb nexthop"
  
- 	if (ret)
- 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
-@@ -1986,11 +1992,12 @@ static int cqspi_probe(struct platform_d
- 			goto probe_setup_failed;
- 	}
- 
--	pm_runtime_enable(dev);
--
--	pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
--	pm_runtime_use_autosuspend(dev);
--	pm_runtime_get_noresume(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_enable(dev);
-+		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
-+		pm_runtime_use_autosuspend(dev);
-+		pm_runtime_get_noresume(dev);
-+	}
- 
- 	ret = spi_register_controller(host);
- 	if (ret) {
-@@ -1998,13 +2005,17 @@ static int cqspi_probe(struct platform_d
- 		goto probe_setup_failed;
- 	}
- 
--	pm_runtime_mark_last_busy(dev);
--	pm_runtime_put_autosuspend(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_put_autosuspend(dev);
-+		pm_runtime_mark_last_busy(dev);
-+		pm_runtime_put_autosuspend(dev);
-+	}
- 
- 	return 0;
- probe_setup_failed:
- 	cqspi_controller_enable(cqspi, 0);
--	pm_runtime_disable(dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
-+		pm_runtime_disable(dev);
- probe_reset_failed:
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
-@@ -2015,7 +2026,11 @@ probe_clk_failed:
- 
- static void cqspi_remove(struct platform_device *pdev)
- {
-+	const struct cqspi_driver_platdata *ddata;
- 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
-+	struct device *dev = &pdev->dev;
-+
-+	ddata = of_device_get_match_data(dev);
- 
- 	refcount_set(&cqspi->refcount, 0);
- 
-@@ -2028,14 +2043,17 @@ static void cqspi_remove(struct platform
- 	if (cqspi->rx_chan)
- 		dma_release_channel(cqspi->rx_chan);
- 
--	if (pm_runtime_get_sync(&pdev->dev) >= 0)
--		clk_disable(cqspi->clk);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
-+		if (pm_runtime_get_sync(&pdev->dev) >= 0)
-+			clk_disable(cqspi->clk);
- 
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
- 
--	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_put_sync(&pdev->dev);
-+		pm_runtime_disable(&pdev->dev);
-+	}
- }
- 
- static int cqspi_runtime_suspend(struct device *dev)
-@@ -2114,7 +2132,8 @@ static const struct cqspi_driver_platdat
- 	.quirks = CQSPI_DISABLE_DAC_MODE
- 			| CQSPI_NO_SUPPORT_WR_COMPLETION
- 			| CQSPI_SLOW_SRAM
--			| CQSPI_DISABLE_STIG_MODE,
-+			| CQSPI_DISABLE_STIG_MODE
-+			| CQSPI_DISABLE_RUNTIME_PM,
- };
- 
- static const struct cqspi_driver_platdata versal_ospi = {
+ 	run_cmd "$IP ro add 172.16.0.0/22 nhid 103"
+-- 
+2.51.0
+
 
 
 
