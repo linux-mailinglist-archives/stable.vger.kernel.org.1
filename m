@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8EABAD758
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:03:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39C8BAD57E
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CEC1178BF6
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:02:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56C1E1941AD0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0C1202C48;
-	Tue, 30 Sep 2025 15:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FC730504B;
+	Tue, 30 Sep 2025 14:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCryxWKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCJwdGrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8751EE02F;
-	Tue, 30 Sep 2025 15:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8484F2FFDE6;
+	Tue, 30 Sep 2025 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759244524; cv=none; b=Y1Mm4M2TpcGlSSKxCUwcjeW2OkCSrnw+uXXq4GKjAoNwDuPEAMnczYlZEI3s68wqe5+bd0z6M0f07X2gVlhD4iwAhZl/zUmWr1j3EyfDPuVmbeg43R1GvATPg8sXvjSBRpLLGhk0/r1QFiBg3KIx2PaIwgQUuhFLIKTZm4IGTiY=
+	t=1759244098; cv=none; b=XdpX9LfJn967rtMxfSYnaNw+WeUhGtxceAYNdyhoUdSjKHOrZH37IjdOPoEXrbMvzlqaG8AhV+Rp/HI0KfeXQv7FdiOHPmhKPqzzLuxFj/u/aSInSlu41WXoWpziqrO4yuQCEAqQE8CIqE8Ohwcxjl3Xqbez+OSefBzFvPlTWZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759244524; c=relaxed/simple;
-	bh=oZIHfvlOtEjIHBUfePXny7msNNJ1IDeM0b5tj+xyBH4=;
+	s=arc-20240116; t=1759244098; c=relaxed/simple;
+	bh=EOoyNhkutrRe1hNSNbQ+IVCE8HG9GdYM/3YPRH92GHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbNKwKiJn4ANR6Ok5ToE0jmP43/322PCZQvkRFbTL2qrNzCFmeS4ZdiZ4N5MJU3tNnJ/P/q7c0Zoar4Ie2cbWz9z8EhajtVsw7KLJ0bGbDFUlfbVaEdyGSxCP0FUmjWzlPZVcqiGuqs1QKrP4cqISDfLzY5TgBY7NDY54VpgTJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCryxWKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C60DC4CEF0;
-	Tue, 30 Sep 2025 15:02:04 +0000 (UTC)
+	 MIME-Version; b=fwMc3WhB4YENDhX0FiHR8Td72m7OpwFnd+iy5YO2VXhwXPJWWyy5e3NOWgCcywKZnQs7PATIziP6LDmxXPIt5IOzaj+Ns2fIx4j5uGWWE5RyKgroh7vGDnnzO08rBMczbQggWgoPsUR0AqYm9FTAVw1XCIn9HV2jHCS78rz6ppo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCJwdGrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97678C4CEF0;
+	Tue, 30 Sep 2025 14:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759244524;
-	bh=oZIHfvlOtEjIHBUfePXny7msNNJ1IDeM0b5tj+xyBH4=;
+	s=korg; t=1759244097;
+	bh=EOoyNhkutrRe1hNSNbQ+IVCE8HG9GdYM/3YPRH92GHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCryxWKK2BnsgxmCbI+JuEe5rY4Yy3bZA4VywTFgkX8YSREZrk2Q40l9DO5kEgvJc
-	 CVspaPWH3+BNusGxOOhn01xlzpBtPNxGYjNFxA7FXRrz4OS/W5h6HDYKn5P3UgVQ3t
-	 qEJuej/qBbKQmb0L1fmYxP4w5htoMapZsm+seAok=
+	b=OCJwdGrtHdLm2AVq8P47DL0si+VL+fwB4pDmra0MQSBrBeUTozyPOWb+nQLVBHdci
+	 Nr0jzoYmcui5o3ok6nRNkYJ6NfWYqDX88XVTtfmb/ZitM6NK5SlDGxI+roc7e6GhfE
+	 Rp9crlDVYEDCr0L2KV+EXulhY8xjWYxrzsPNwiuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 034/143] net: sfp: add quirk for FLYPRO copper SFP+ module
+	stable <stable@kernel.org>,
+	Fabian Vogt <fvogt@suse.de>
+Subject: [PATCH 5.10 027/122] tty: hvc_console: Call hvc_kick in hvc_write unconditionally
 Date: Tue, 30 Sep 2025 16:45:58 +0200
-Message-ID: <20250930143832.602316552@linuxfoundation.org>
+Message-ID: <20250930143824.117546200@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
-References: <20250930143831.236060637@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Fabian Vogt <fvogt@suse.de>
 
-[ Upstream commit ddbf0e78a8b20ec18d314d31336a0230fdc9b394 ]
+commit cfd956dcb101aa3d25bac321fae923323a47c607 upstream.
 
-Add quirk for a copper SFP that identifies itself as "FLYPRO"
-"SFP-10GT-CS-30M". It uses RollBall protocol to talk to the PHY.
+After hvc_write completes, call hvc_kick also in the case the output
+buffer has been drained, to ensure tty_wakeup gets called.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20250831105910.3174-1-olek2@wp.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes that functions which wait for a drained buffer got stuck
+occasionally.
+
+Cc: stable <stable@kernel.org>
+Closes: https://bugzilla.opensuse.org/show_bug.cgi?id=1230062
+Signed-off-by: Fabian Vogt <fvogt@suse.de>
+Link: https://lore.kernel.org/r/2011735.PYKUYFuaPT@fvogt-thinkpad
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/hvc/hvc_console.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 5347c95d1e772..4cd1d6c51dc2a 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -492,6 +492,9 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
- 		  sfp_fixup_nokia),
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -543,10 +543,10 @@ static int hvc_write(struct tty_struct *
+ 	}
  
-+	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
-+	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
-+
- 	// Fiberstore SFP-10G-T doesn't identify as copper, uses the Rollball
- 	// protocol to talk to the PHY and needs 4 sec wait before probing the
- 	// PHY.
--- 
-2.51.0
-
+ 	/*
+-	 * Racy, but harmless, kick thread if there is still pending data.
++	 * Kick thread to flush if there's still pending data
++	 * or to wakeup the write queue.
+ 	 */
+-	if (hp->n_outbuf)
+-		hvc_kick();
++	hvc_kick();
+ 
+ 	return written;
+ }
 
 
 
