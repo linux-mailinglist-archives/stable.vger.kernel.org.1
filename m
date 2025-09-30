@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-182460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747C1BAD92C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:10:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6561BAD5C6
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1762C1942EED
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:10:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE0F43AE216
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01242FCBFC;
-	Tue, 30 Sep 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E808303A0B;
+	Tue, 30 Sep 2025 14:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17rw0iYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PO1jvIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9CC2236EB;
-	Tue, 30 Sep 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5591AB6F1;
+	Tue, 30 Sep 2025 14:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245017; cv=none; b=UH743X6nbpXvrdsQEbusmD4mJM40iZOrFZhxQ0ODGAhXRMHbbGn6KGDm9EGeCMrixxY1wHPIcDKfvVxSjBZp4S9Dnl3uVcYngZ+WLKHYp8Zaw2pHaxMw5b45vVsD3Ew4fjjhJkmgElJTPgnxvhAaT+94jSnIIHp3Ym98h1qbTbk=
+	t=1759244141; cv=none; b=iOa0HOWgqPNwC7f9F3U4MXY4I9HLl255r1CimvvhuJK9xwY8pySRuNI3O8u4FhE7qv1WKYDqWVKHzJpQSbi2h6h0U2WLPXJ1UqCmsvfWCRPlohdqwJhRMf5BIg6e6H6+zJ0X2OC31AC+bfr7gm/NTdqLAoezqP27LxItj25QIPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245017; c=relaxed/simple;
-	bh=kzKjjhq1pu5vKj9lQzqyIQcVNCdHEy3ANUmRLuHKYvw=;
+	s=arc-20240116; t=1759244141; c=relaxed/simple;
+	bh=ywpk5LYsveTdR3ZWwmU8Qj84h6g3cJ45EBCqwKA7zbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUl9KzWGBVh8rNhPFE5RCCTN6YPvAm82MO/cQVbc5tPOmtako5Gf144t+SNaKuDno/jqMglSBVBTFX4dTNzmDz34yxyjiSEwH1JethpEZB53BuutozlBoiguJXzT/o9hy4+PxbatClghXDwEHDmVfAR1lxVEgBSOcvxxKQCI8K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17rw0iYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14769C4CEF0;
-	Tue, 30 Sep 2025 15:10:16 +0000 (UTC)
+	 MIME-Version; b=q7R6SHU5VIjuYkF/McEzwgY1lQvc5EaXBrE1k/I3Yv0o5rVA7x663fFo73GMNRcVvRL1dSuxtoSUhySYSXXsjGVtxC4g1EtMetnEHpntsENjBI/jn2QsCY00xGltYo3UVg7/2Iu/D+iTKVDfaaCWGtlczBaapW2lKTajZLFrRUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PO1jvIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86032C4CEF0;
+	Tue, 30 Sep 2025 14:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245017;
-	bh=kzKjjhq1pu5vKj9lQzqyIQcVNCdHEy3ANUmRLuHKYvw=;
+	s=korg; t=1759244140;
+	bh=ywpk5LYsveTdR3ZWwmU8Qj84h6g3cJ45EBCqwKA7zbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17rw0iYzVB9NbBpllYcEvK1B9aLqoufwxK/XluZk/KoiFXodAJgQoqrEOQp75MGRl
-	 6zjT+oyB+qOkRX540UJWgGjwOH98v2txs1EZ9X0PuuU/2XzTm/Sc9O3edsW6Se7pDl
-	 Taw1LpG4keH/W08nEBQPBcKTRP+Gj+hmsN2gpRXs=
+	b=2PO1jvIwanRL4IUFVrSoj8+Viqis3k+zECRly8BY1YMKyl6TsmyfDEDELWnMbps26
+	 PIuMoBBoFFz08y0aTIiUVXCQIap1d7qXdtTtJnjIy7WbNQTbf+0j6n98weqN52D8c1
+	 Pd1LvKl6Kc7hE6uac1QHWF71jsZ8yImH4pWXxc1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.15 040/151] igb: fix link test skipping when interface is admin down
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 039/122] can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
 Date: Tue, 30 Sep 2025 16:46:10 +0200
-Message-ID: <20250930143829.206836246@linuxfoundation.org>
+Message-ID: <20250930143824.603774723@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit d709f178abca22a4d3642513df29afe4323a594b ]
+[ Upstream commit 06e02da29f6f1a45fc07bd60c7eaf172dc21e334 ]
 
-The igb driver incorrectly skips the link test when the network
-interface is admin down (if_running == false), causing the test to
-always report PASS regardless of the actual physical link state.
+Since j1939_sk_bind() and j1939_sk_release() call j1939_local_ecu_put()
+when J1939_SOCK_BOUND was already set, but the error handling path for
+j1939_sk_bind() will not set J1939_SOCK_BOUND when j1939_local_ecu_get()
+fails, j1939_local_ecu_get() needs to undo priv->ents[sa].nusers++ when
+j1939_local_ecu_get() returns an error.
 
-This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe,
-etc.) which correctly test the physical link state regardless of admin
-state.
-Remove the if_running check to ensure link test always reflects the
-physical link state.
-
-Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is down")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/e7f80046-4ff7-4ce2-8ad8-7c3c678a42c9@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/can/j1939/bus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index 39c7bdf8c0e2d..a35e4a54b6e3e 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -2077,11 +2077,8 @@ static void igb_diag_test(struct net_device *netdev,
- 	} else {
- 		dev_info(&adapter->pdev->dev, "online testing starting\n");
+diff --git a/net/can/j1939/bus.c b/net/can/j1939/bus.c
+index 4866879016021..e0b966c2517cf 100644
+--- a/net/can/j1939/bus.c
++++ b/net/can/j1939/bus.c
+@@ -290,8 +290,11 @@ int j1939_local_ecu_get(struct j1939_priv *priv, name_t name, u8 sa)
+ 	if (!ecu)
+ 		ecu = j1939_ecu_create_locked(priv, name);
+ 	err = PTR_ERR_OR_ZERO(ecu);
+-	if (err)
++	if (err) {
++		if (j1939_address_is_unicast(sa))
++			priv->ents[sa].nusers--;
+ 		goto done;
++	}
  
--		/* PHY is powered down when interface is down */
--		if (if_running && igb_link_test(adapter, &data[TEST_LINK]))
-+		if (igb_link_test(adapter, &data[TEST_LINK]))
- 			eth_test->flags |= ETH_TEST_FL_FAILED;
--		else
--			data[TEST_LINK] = 0;
- 
- 		/* Online tests aren't run; pass by default */
- 		data[TEST_REG] = 0;
+ 	ecu->nusers++;
+ 	/* TODO: do we care if ecu->addr != sa? */
 -- 
 2.51.0
 
