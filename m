@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-182499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019A0BAD9A4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:12:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DB3BAD4A0
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0333188326A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:12:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D634171D45
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49572FCBFC;
-	Tue, 30 Sep 2025 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C55E2D24AD;
+	Tue, 30 Sep 2025 14:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1bZYbbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUmsk+Pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934CB2236EB;
-	Tue, 30 Sep 2025 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCD12441B8;
+	Tue, 30 Sep 2025 14:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245150; cv=none; b=AAxSq080tC0v0e+52QhS+ErbVBtmgkDwKqSqbYKWaxBVgL2ORYnzJHj6ivnOIJ6HPqcKKp5jXOLaTnyhc3MEmyz5DAc3P+aDkRvv1qOhUndqF9Btgat/yKWz9XvLOykFpBca2P103beOUWswTbiHBcdOMmaJFBEUk9JrlBawWec=
+	t=1759243891; cv=none; b=s+z+ft1yQkYpkpETTWmVQMjPyqBdgTSQQduRGEP72fUC5CVbfx8mc53Pv7UC/kd70RICD2sO5UzamW8k6IbTKQJZ3KnQ9y7JhyH5rXjQ1fFL5Btqv7NWKi6HSGWuF9m2v93m2tbMEIGINdyu3DqEbWnQ74A0pLzMctgeexclUdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245150; c=relaxed/simple;
-	bh=1LaO4BwljlRwAk43xzUaStEkVITr7CsoNb1qQeewhRU=;
+	s=arc-20240116; t=1759243891; c=relaxed/simple;
+	bh=CynlTSwuHzs8AGf5T7/cUvxX+Ib5/TtSY7RHdSTMNFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZgpFJ2O7XadG3Qt5WOeA2pJTBtHxtFmdRZzhbznpRyXw60r7gqwCSO1N4qUTjPpjdHicfHSgHZMARAuPmQQ4K+smxFo7g77eY69J7kxVgRR2WfPq56h2fvf6X4lqKXE/sAfYfZxjG30Xdp27g2gDxlONsKnLIgkRbq5STJYPGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1bZYbbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F203C4CEF0;
-	Tue, 30 Sep 2025 15:12:29 +0000 (UTC)
+	 MIME-Version; b=nFaWjMGeru4IDtje5y8NZcq7z6QNUgNuKZBw6/aQGMkygxqBMh4Xwp3OeWB1K1uoQWrTbcYEE3BgUrLM1iwD7XaUMgxQYNQ9hlRI3qstv0ebAM1bxjVQOnzxEa0YpI9WRh6C0Dt/4eUgBsD2+Z/F1nmdFb5heam7EYnp8AiAN+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUmsk+Pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BB7C4CEF0;
+	Tue, 30 Sep 2025 14:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245150;
-	bh=1LaO4BwljlRwAk43xzUaStEkVITr7CsoNb1qQeewhRU=;
+	s=korg; t=1759243890;
+	bh=CynlTSwuHzs8AGf5T7/cUvxX+Ib5/TtSY7RHdSTMNFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q1bZYbbAP6jE/59fpv8anQeprNKPmjSiPFSfNENCX+cNRvnf3LjHbr8ka7mOEG6p2
-	 z75ZAVHH+7No2/HHZn7WPOAyqSrqu20ocbstQ+A0VF2qNPISE39dPLMRmVLCP6tkkS
-	 gPoitX69hSNpqwybatloAJltlARB7rre2V7x39hw=
+	b=lUmsk+PlhyX7cstcUN1iL/Zdat6UuFS+EG072cN1sRppl6IYvk2acRiZFYdeS1vQk
+	 wzwqzojXVcjhKbmcnzofyqAqFRpL4mSWG38urdESrlE+do2A48LWCh61nEQFf8Vy88
+	 NZlqa7WeDK2cypSQBvazY0a8gyxNMwbvJ6Nj19AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.15 079/151] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 47/81] ASoC: wm8974: Correct PLL rate rounding
 Date: Tue, 30 Sep 2025 16:46:49 +0200
-Message-ID: <20250930143830.739604928@linuxfoundation.org>
+Message-ID: <20250930143821.646512080@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 2c334d038466ac509468fbe06905a32d202117db upstream.
+[ Upstream commit 9b17d3724df55ecc2bc67978822585f2b023be48 ]
 
-Since commit
+Using a single value of 22500000 for both 48000Hz and 44100Hz audio
+will sometimes result in returning wrong dividers due to rounding.
+Update the code to use the actual value for both.
 
-	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-
-the console log of some devices with hdq enabled but no bq27000 battery
-(like e.g. the Pandaboard) is flooded with messages like:
-
-[   34.247833] power_supply bq27000-battery: driver failed to report 'status' property: -1
-
-as soon as user-space is finding a /sys entry and trying to read the
-"status" property.
-
-It turns out that the offending commit changes the logic to now return the
-value of cache.flags if it is <0. This is likely under the assumption that
-it is an error number. In normal errors from bq27xxx_read() this is indeed
-the case.
-
-But there is special code to detect if no bq27000 is installed or accessible
-through hdq/1wire and wants to report this. In that case, the cache.flags
-are set historically by
-
-	commit 3dd843e1c26a ("bq27000: report missing device better.")
-
-to constant -1 which did make reading properties return -ENODEV. So everything
-appeared to be fine before the return value was passed upwards.
-
-Now the -1 is returned as -EPERM instead of -ENODEV, triggering the error
-condition in power_supply_format_property() which then floods the console log.
-
-So we change the detection of missing bq27000 battery to simply set
-
-	cache.flags = -ENODEV
-
-instead of -1.
-
-Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-Cc: Jerry Lv <Jerry.Lv@axis.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/692f79eb6fd541adb397038ea6e750d4de2deddf.1755945297.git.hns@goldelico.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 51b2bb3f2568 ("ASoC: wm8974: configure pll and mclk divider automatically")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250821082639.1301453-4-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/wm8974.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1873,7 +1873,7 @@ static void bq27xxx_battery_update_unloc
+diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
+index dc4fe4f5239d6..f32527ed06fb5 100644
+--- a/sound/soc/codecs/wm8974.c
++++ b/sound/soc/codecs/wm8974.c
+@@ -427,10 +427,14 @@ static int wm8974_update_clocks(struct snd_soc_dai *dai)
+ 	fs256 = 256 * priv->fs;
  
- 	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
- 	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -1; /* read error */
-+		cache.flags = -ENODEV; /* read error */
- 	if (cache.flags >= 0) {
- 		cache.temperature = bq27xxx_battery_read_temperature(di);
- 		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
+ 	f = wm8974_get_mclkdiv(priv->mclk, fs256, &mclkdiv);
+-
+ 	if (f != priv->mclk) {
+ 		/* The PLL performs best around 90MHz */
+-		fpll = wm8974_get_mclkdiv(22500000, fs256, &mclkdiv);
++		if (fs256 % 8000)
++			f = 22579200;
++		else
++			f = 24576000;
++
++		fpll = wm8974_get_mclkdiv(f, fs256, &mclkdiv);
+ 	}
+ 
+ 	wm8974_set_dai_pll(dai, 0, 0, priv->mclk, fpll);
+-- 
+2.51.0
+
 
 
 
