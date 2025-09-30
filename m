@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-182659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF40BADBD3
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A86BAD50C
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 138CC188AB5A
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:21:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81953C22E5
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF343054C5;
-	Tue, 30 Sep 2025 15:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E2F303A16;
+	Tue, 30 Sep 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ib7sWRsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxaCyNrV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB29205E3B;
-	Tue, 30 Sep 2025 15:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173C62264AB;
+	Tue, 30 Sep 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245668; cv=none; b=XR4clieOxGAion4nOxsc9MVRXLTcnNyKsjDCHEtBxv7gs6gDebVz+/aNkT4hS1svzyrduq+aZyJsK670dVuQAcsxf35LdELB4TGir7aqv/KdfKYuHIreuIIgk5hoaZtaYOh2Hs1q6hRdKIVqsXunmPGnLEkvBrJowRZ2Dtuj75w=
+	t=1759243968; cv=none; b=TmaqUm0ETaRwtRJcwYXEAwxOpe++ezB13Fdo8Bf7P8AYtO1WTI+Jn1Ug+dQ7je/fgN7Al/SyrZziyH+PtT6zK7Ub5dxr19vI8nEfTTd+OxDsJ+PQ0/w95weMxKMewAQ0asND62bE0iaFuscj9VWb+4zS6yz2TfW0cwz0WWPPN3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245668; c=relaxed/simple;
-	bh=cdpFMa2QBxQnkado6z5L3WPwGCbeTgxV/qz+QQQy++U=;
+	s=arc-20240116; t=1759243968; c=relaxed/simple;
+	bh=jxzfaln1UU9IcO+nlgXL3M3ubnt8Mn/+0NGpN1q9cBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbkLkSzufsLGtBJXA9kC69pdNuH60m2VMsqmjsE9wqbXah9L04fofYnLB7kgRF8K3bf/GXvU2m1NZny/XVSJ+ww6s5AsukTah5QQeydVySJV5gl7MAkPy67UXhwbunA50hYeUgRNjrL3NXl6h2Foh+tBTAmKeOldyMaGlEL09lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ib7sWRsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0ADC4CEF0;
-	Tue, 30 Sep 2025 15:21:05 +0000 (UTC)
+	 MIME-Version; b=ozBjp7MjxRmBd+Qs6JTxYAMQFUS6kX72wDTHHLHQWx70ahFJYrZQDl+4g9ALDUENVdME32X7dMdOlV0BSFKxJajvURTzRu5z6LXGFsIkbpwMaThVoS9hu6h1fxDFJSbPYc1AP85KfZIc+cA8hJ9MCgRmFd+iQL+2Vi4Ae3kw0o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxaCyNrV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A095C4CEF0;
+	Tue, 30 Sep 2025 14:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245666;
-	bh=cdpFMa2QBxQnkado6z5L3WPwGCbeTgxV/qz+QQQy++U=;
+	s=korg; t=1759243968;
+	bh=jxzfaln1UU9IcO+nlgXL3M3ubnt8Mn/+0NGpN1q9cBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ib7sWRsnuYZ858DNgqqXHiZlU1BFZXM2B30TYG1rKhE396IOg+XtO4QHLRMXARjp3
-	 V/bdufa0zXC/G0FGs1AY/DPvqPj6Lwd8XE5wxtvo93wXmHBi08WH9/uu+AK1HgtUSH
-	 PPokYsHN653C2/06yx14u4FzXDhNBgWVW2allSfM=
+	b=VxaCyNrVaEDELDTNmkDgpPyXwo52U/kxoe5iT1RA2rFlesdQvKrmwQxlWl2zfVBB0
+	 75fMxL+WTNW2Mt574de4GgXidN2koju8BkJePzpNowU1+zzeeMKpSIXVfW+a9+zOSH
+	 Ti7Av47aUaJjQQJ7i5GEWLaE/LQVLNogwzkuBRIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 14/91] ALSA: usb-audio: Fix build with CONFIG_INPUT=n
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.4 71/81] i40e: fix input validation logic for action_meta
 Date: Tue, 30 Sep 2025 16:47:13 +0200
-Message-ID: <20250930143821.722707588@linuxfoundation.org>
+Message-ID: <20250930143822.674991330@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
+References: <20250930143819.654157320@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-[ Upstream commit d0630a0b80c08530857146e3bf183a7d6b743847 ]
+commit 9739d5830497812b0bdeaee356ddefbe60830b88 upstream.
 
-The recent addition of DualSense mixer quirk relies on the input
-device handle, and the build can fail if CONFIG_INPUT isn't set.
-Put (rather ugly) workarounds to wrap with IS_REACHABLE() for avoiding
-the build error.
+Fix condition to check 'greater or equal' to prevent OOB dereference.
 
-Fixes: 79d561c4ec04 ("ALSA: usb-audio: Add mixer quirk for Sony DualSense PS5")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506130733.gnPKw2l3-lkp@intel.com/
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250613081543.7404-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index f1b663a05f295..8c0b8383abe1e 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -528,6 +528,7 @@ static int snd_emu0204_controls_create(struct usb_mixer_interface *mixer)
- 					  &snd_emu0204_control, NULL);
- }
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3367,7 +3367,7 @@ static int i40e_validate_cloud_filter(st
  
-+#if IS_REACHABLE(CONFIG_INPUT)
- /*
-  * Sony DualSense controller (PS5) jack detection
-  *
-@@ -784,6 +785,7 @@ static int snd_dualsense_controls_create(struct usb_mixer_interface *mixer)
- 
- 	return snd_dualsense_jack_create(mixer, "Headset Mic Jack", false);
- }
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- /* ASUS Xonar U1 / U3 controls */
- 
-@@ -3648,10 +3650,12 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_emu0204_controls_create(mixer);
- 		break;
- 
-+#if IS_REACHABLE(CONFIG_INPUT)
- 	case USB_ID(0x054c, 0x0ce6): /* Sony DualSense controller (PS5) */
- 	case USB_ID(0x054c, 0x0df2): /* Sony DualSense Edge controller (PS5) */
- 		err = snd_dualsense_controls_create(mixer);
- 		break;
-+#endif /* IS_REACHABLE(CONFIG_INPUT) */
- 
- 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
- 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C400 */
--- 
-2.51.0
-
+ 	/* action_meta is TC number here to which the filter is applied */
+ 	if (!tc_filter->action_meta ||
+-	    tc_filter->action_meta > vf->num_tc) {
++	    tc_filter->action_meta >= vf->num_tc) {
+ 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
+ 			 vf->vf_id, tc_filter->action_meta);
+ 		goto err;
 
 
 
