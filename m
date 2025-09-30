@@ -1,77 +1,56 @@
-Return-Path: <stable+bounces-182702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BBBBADD05
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4356BAD8FC
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 463C43C7983
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:23:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 891BF3B0980
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA7B245010;
-	Tue, 30 Sep 2025 15:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3806E2FCBFC;
+	Tue, 30 Sep 2025 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PijoQrHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVeK0Oyb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7A4846F;
-	Tue, 30 Sep 2025 15:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C65266B65;
+	Tue, 30 Sep 2025 15:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245810; cv=none; b=Ythi8y6AIYJVD4eUskvikSpBhcWD2PbsD5hHFFXkXpPqYZN9kvBWv/N9ks8XlQzm3RDLtUu2muoCXEWvJmWzenJ5lML35sGeEiXu1T5IGlE+SLLbBfQZnUZ8xbCh8HiWQHOippqNaK+zTxPlNM2KReGpfpJfKelqgukQ3ZY00z4=
+	t=1759244813; cv=none; b=iCjT4UGx1uz0CHyZw3JcB5zZ5c72tofuljy80zSxAdgCqgkMMKRfOn5C77cTmuyPJPm5HkbIpcAcWO6TkSenb9Huyuw/nlAFoll2fGLtmdT02HNa6s9L0P0b68OwQMmy42803IZkqbHjo57ypWD8HXNDFOS6RrdUYCV94a+5RfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245810; c=relaxed/simple;
-	bh=3Lqj3tCYA6D8ZcffmkAK4z7V2MAKCzD47auxMPcmNF0=;
+	s=arc-20240116; t=1759244813; c=relaxed/simple;
+	bh=dpJ1iJACEavZerUzgvbG6Dr5CPDxrmf+aqggLjIIVq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHSbghcOEXdri64Fg7kMz9LzTi8DQnRTGcLNrBXGB9YDsky0+scRUY7l9c5ZRQPksofAPM5NxlkEWCkHOed+10asNYgFl5vvcevpm2okpDzYXrptiNDnQE7BI65xJKWUWan7830q3mhOptDWfByxTAF8bbQLF4KQi3KN9arO1o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PijoQrHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FE6C4CEF0;
-	Tue, 30 Sep 2025 15:23:29 +0000 (UTC)
+	 MIME-Version; b=iQJ6SkN5wCVbUTdnWJ534Sn0wTJK2qmIpQe2ITwrv6gNlNA/OvhMItf1Jj1iYhfUWph5AnYGQQPaW7Ew1TPAxsmh+0lf+4kNUwSqWVwzTwVLzNTfC0MdHpyD88xWmjw0Jg0g+Cdv/pvoAfmr0M4GXA4Uweege5jKY1dhfWs/BJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVeK0Oyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286E8C4CEF0;
+	Tue, 30 Sep 2025 15:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245809;
-	bh=3Lqj3tCYA6D8ZcffmkAK4z7V2MAKCzD47auxMPcmNF0=;
+	s=korg; t=1759244812;
+	bh=dpJ1iJACEavZerUzgvbG6Dr5CPDxrmf+aqggLjIIVq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PijoQrHog3m2HPy7X6SWfbcrUW908Ocdw1jSR5Qk20RM6hs40VTK9Rt9tm+MbAOWO
-	 44gi5wojeWHhvI61JwwXKUFp82yM9NdkitW/uNGNNFJzZE0CwmGSWnCois9/tm8UK/
-	 ovUssrC/Hm+z6LYLksNMSLfQZfVmhqPMJH5EgNYQ=
+	b=CVeK0Oybj3Lw1inc8TmNDBkLiRXZb4PZj+DQm9MegyfBd2INZesqSnUu+zDBeJHtl
+	 c5bSBNKkpPHUl9Fdx8RAEDRGCx7i2zTRbvn8gzTh+/YNYBrY3lrx5kiTZs2I5wYk2b
+	 xCQHkGDJ5HjwqzNFighVmvAPehj8uFe/8ZXTDa6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Keir Fraser <keirf@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Li Zhe <lizhe.67@bytedance.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Peter Xu <peterx@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	yangge <yangge1116@126.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/91] mm/gup: local lru_add_drain() to avoid lru_add_drain_all()
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 120/143] drm/amd/display: Only restore backlight after amdgpu_dm_init or dm_resume
 Date: Tue, 30 Sep 2025 16:47:24 +0200
-Message-ID: <20250930143822.185221638@linuxfoundation.org>
+Message-ID: <20250930143836.014468142@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143821.118938523@linuxfoundation.org>
-References: <20250930143821.118938523@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,93 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-[ Upstream commit a09a8a1fbb374e0053b97306da9dbc05bd384685 ]
+commit 44b0fed0a5947f54fd14255cd0766df952267bc5 upstream.
 
-In many cases, if collect_longterm_unpinnable_folios() does need to drain
-the LRU cache to release a reference, the cache in question is on this
-same CPU, and much more efficiently drained by a preliminary local
-lru_add_drain(), than the later cross-CPU lru_add_drain_all().
+On clients that utilize AMD_PRIVATE_COLOR properties for HDR support,
+brightness sliders can include a hardware controlled portion and a
+gamma-based portion. This is the case on the Steam Deck OLED when using
+gamescope with Steam as a client.
 
-Marked for stable, to counter the increase in lru_add_drain_all()s from
-"mm/gup: check ref_count instead of lru before migration".  Note for clean
-backports: can take 6.16 commit a03db236aebf ("gup: optimize longterm
-pin_user_pages() for large folio") first.
+When a user sets a brightness level while HDR is active, the gamma-based
+portion and/or hardware portion are adjusted to achieve the desired
+brightness. However, when a modeset takes place while the gamma-based
+portion is in-use, restoring the hardware brightness level overrides the
+user's overall brightness level and results in a mismatch between what
+the slider reports and the display's current brightness.
 
-Link: https://lkml.kernel.org/r/66f2751f-283e-816d-9530-765db7edc465@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Resolved minor conflicts ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To avoid overriding gamma-based brightness, only restore HW backlight
+level after boot or resume. This ensures that the backlight level is
+set correctly after the DC layer resets it while avoiding interference
+with subsequent modesets.
+
+Fixes: 7875afafba84 ("drm/amd/display: Fix brightness level not retained over reboot")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4551
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a490c8d77d500b5981e739be3d59c60cfe382536)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/gup.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   12 ++++++++----
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |    7 +++++++
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 00ac2df7164c3..5be764395e046 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1953,7 +1953,7 @@ static unsigned long collect_longterm_unpinnable_pages(
- {
- 	unsigned long i, collected = 0;
- 	struct folio *prev_folio = NULL;
--	bool drain_allow = true;
-+	int drained = 0;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2035,6 +2035,8 @@ static int amdgpu_dm_init(struct amdgpu_
  
- 	for (i = 0; i < nr_pages; i++) {
- 		struct folio *folio = page_folio(pages[i]);
-@@ -1975,10 +1975,17 @@ static unsigned long collect_longterm_unpinnable_pages(
- 			continue;
+ 	dc_hardware_init(adev->dm.dc);
+ 
++	adev->dm.restore_backlight = true;
++
+ 	adev->dm.hpd_rx_offload_wq = hpd_rx_irq_create_workqueue(adev);
+ 	if (!adev->dm.hpd_rx_offload_wq) {
+ 		drm_err(adev_to_drm(adev), "amdgpu: failed to create hpd rx offload workqueue.\n");
+@@ -3396,6 +3398,7 @@ static int dm_resume(struct amdgpu_ip_bl
+ 		dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D0);
+ 
+ 		dc_resume(dm->dc);
++		adev->dm.restore_backlight = true;
+ 
+ 		amdgpu_dm_irq_resume_early(adev);
+ 
+@@ -9801,7 +9804,6 @@ static void amdgpu_dm_commit_streams(str
+ 	bool mode_set_reset_required = false;
+ 	u32 i;
+ 	struct dc_commit_streams_params params = {dc_state->streams, dc_state->stream_count};
+-	bool set_backlight_level = false;
+ 
+ 	/* Disable writeback */
+ 	for_each_old_connector_in_state(state, connector, old_con_state, i) {
+@@ -9921,7 +9923,6 @@ static void amdgpu_dm_commit_streams(str
+ 			acrtc->hw_mode = new_crtc_state->mode;
+ 			crtc->hwmode = new_crtc_state->mode;
+ 			mode_set_reset_required = true;
+-			set_backlight_level = true;
+ 		} else if (modereset_required(new_crtc_state)) {
+ 			drm_dbg_atomic(dev,
+ 				       "Atomic commit: RESET. crtc id %d:[%p]\n",
+@@ -9978,13 +9979,16 @@ static void amdgpu_dm_commit_streams(str
+ 	 * to fix a flicker issue.
+ 	 * It will cause the dm->actual_brightness is not the current panel brightness
+ 	 * level. (the dm->brightness is the correct panel level)
+-	 * So we set the backlight level with dm->brightness value after set mode
++	 * So we set the backlight level with dm->brightness value after initial
++	 * set mode. Use restore_backlight flag to avoid setting backlight level
++	 * for every subsequent mode set.
+ 	 */
+-	if (set_backlight_level) {
++	if (dm->restore_backlight) {
+ 		for (i = 0; i < dm->num_of_edps; i++) {
+ 			if (dm->backlight_dev[i])
+ 				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
  		}
++		dm->restore_backlight = false;
+ 	}
+ }
  
--		if (drain_allow && folio_ref_count(folio) !=
--				   folio_expected_ref_count(folio) + 1) {
-+		if (drained == 0 &&
-+				folio_ref_count(folio) !=
-+				folio_expected_ref_count(folio) + 1) {
-+			lru_add_drain();
-+			drained = 1;
-+		}
-+		if (drained == 1 &&
-+				folio_ref_count(folio) !=
-+				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
--			drain_allow = false;
-+			drained = 2;
- 		}
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -611,6 +611,13 @@ struct amdgpu_display_manager {
+ 	u32 actual_brightness[AMDGPU_DM_MAX_NUM_EDP];
  
- 		if (!folio_isolate_lru(folio))
--- 
-2.51.0
-
+ 	/**
++	 * @restore_backlight:
++	 *
++	 * Flag to indicate whether to restore backlight after modeset.
++	 */
++	bool restore_backlight;
++
++	/**
+ 	 * @aux_hpd_discon_quirk:
+ 	 *
+ 	 * quirk for hpd discon while aux is on-going.
 
 
 
