@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD6EBADBC4
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E43BAD85D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC1633AB22C
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:16:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49DE51925EDF
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6A129827E;
-	Tue, 30 Sep 2025 15:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16302FD1DD;
+	Tue, 30 Sep 2025 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfH/ShYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMYGf8oR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C277640E;
-	Tue, 30 Sep 2025 15:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3CF2F6167;
+	Tue, 30 Sep 2025 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245388; cv=none; b=NjS6zdI8QZqhBo8FKbk3iNsDHG+no0AmUf4MaFMOpHWDxqhjjfFSFilszpt3XxTau3uSyuuLa5uaLK/Bq+5w1ahFVd2NR0Xn0Q8jw0sKFmpJif0ea/WNZ27bPKuGwDHudl691IswNBbLhKUxHBYqnSQ4t8EzFK1vCIh5BbHzhgM=
+	t=1759244842; cv=none; b=OtW4UpGLTW6gFtEwLKmhHPxbj8KoTreXr64Uc94Z58Jj5VdnCa/ZpZFNj8FSgR1jFUfNwIYHqf14r7TCmhuMyiT7zpBIBc+ZiOnszUc4GJOluX5H0f3nGilILEeY9qmwmsr9M3iiBd+avVo6zvaELNb/pGPhokXoXUg0HFGAIKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245388; c=relaxed/simple;
-	bh=r8RPpeDt7jPDz84QHCdACsXPu+RUmxKxEUPGbWSP7ag=;
+	s=arc-20240116; t=1759244842; c=relaxed/simple;
+	bh=SLMzTJFwLi5C8+ul/zAgqW9He5fNA01k8Zocl5AKfAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok1+QwwMnqnjYs4arcNCEX8i2IE7T+jeVPgmDSgROc/q/zdX4vzWE0f661brBmeNIWx6T3NNUfAjkgtA/Merr00JnQfSln5jWaiWr1FxujzIkp0KLFANsVnvqNaBavOvK2tFrtzL2I2Cghl3jzkvTQZp7e56I1nPNhtkTJ/MJtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfH/ShYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF9C113D0;
-	Tue, 30 Sep 2025 15:16:27 +0000 (UTC)
+	 MIME-Version; b=lVNCH+xrFoR7Jz1QBtCfjmmArJTPe0G1BLaexpT2OEqXY/mDf7E6CuFAKtr9lhSExgVqLmdWFxjTXYZWDn2ivv02GCNzLvvU5jc54VrXg78iaal7lw7iDoBKpKsT3tWtYDqrDYEBTeUXfb2Nw6jyiAzEovNb7qmTpYKAHalENTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMYGf8oR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C401C4CEF0;
+	Tue, 30 Sep 2025 15:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245388;
-	bh=r8RPpeDt7jPDz84QHCdACsXPu+RUmxKxEUPGbWSP7ag=;
+	s=korg; t=1759244842;
+	bh=SLMzTJFwLi5C8+ul/zAgqW9He5fNA01k8Zocl5AKfAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfH/ShYw4Ci4eiHUzgNpc05bXMtOQ82ilappr8f8OEJ9FBof0hm1xyuUEE7uHY8IV
-	 dxrTohxtVy00/9z1IliCmdUKZmPip+CIUMjEbUFqg/sgWro32oHCMH2V6fpL50n/On
-	 pjZUETCk00fZRn1XOdUamoY379lABRn0bmc58sA4=
+	b=fMYGf8oRHVI3OXG4C/bMvP/0YVlj0iXx/qN5gHkU1zzZk9rTefBR22S+tyUUNsPse
+	 YLQVNZM0MTEF/cTvVnQhYgodLoAupjDI3Lni87uGmNLEZc0FPrP1bY+IM/15h2xi3I
+	 vEjv0zZR3tMXBuXtXsVa/5JTpIxMc6Wk8S4mTBjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/151] can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
+	Christian Loehle <christian.loehle@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Subject: [PATCH 6.16 131/143] x86/topology: Implement topology_is_core_online() to address SMT regression
 Date: Tue, 30 Sep 2025 16:47:35 +0200
-Message-ID: <20250930143832.585012628@linuxfoundation.org>
+Message-ID: <20250930143836.453138761@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 61da0bd4102c459823fbe6b8b43b01fb6ace4a22 ]
+commit 2066f00e5b2dc061fb6d8c88fadaebc97f11feaa upstream.
 
-Sending an PF_PACKET allows to bypass the CAN framework logic and to
-directly reach the xmit() function of a CAN driver. The only check
-which is performed by the PF_PACKET framework is to make sure that
-skb->len fits the interface's MTU.
+Christian reported that commit a430c11f4015 ("intel_idle: Rescan "dead" SMT
+siblings during initialization") broke the use case in which both 'nosmt'
+and 'maxcpus' are on the kernel command line because it onlines primary
+threads, which were offline due to the maxcpus limit.
 
-Unfortunately, because the sun4i_can driver does not populate its
-net_device_ops->ndo_change_mtu(), it is possible for an attacker to
-configure an invalid MTU by doing, for example:
+The initially proposed fix to skip primary threads in the loop is
+inconsistent. While it prevents the primary thread to be onlined, it then
+onlines the corresponding hyperthread(s), which does not really make sense.
 
-  $ ip link set can0 mtu 9999
+The CPU iterator in cpuhp_smt_enable() contains a check which excludes all
+threads of a core, when the primary thread is offline. The default
+implementation is a NOOP and therefore not effective on x86.
 
-After doing so, the attacker could open a PF_PACKET socket using the
-ETH_P_CANXL protocol:
+Implement topology_is_core_online() on x86 to address this issue. This
+makes the behaviour consistent between x86 and PowerPC.
 
-	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
-
-to inject a malicious CAN XL frames. For example:
-
-	struct canxl_frame frame = {
-		.flags = 0xff,
-		.len = 2048,
-	};
-
-The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
-check that the skb is valid, unfortunately under above conditions, the
-malicious packet is able to go through can_dev_dropped_skb() checks:
-
-  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
-     function does not check the actual device capabilities).
-
-  2. the length is a valid CAN XL length.
-
-And so, sun4ican_start_xmit() receives a CAN XL frame which it is not
-able to correctly handle and will thus misinterpret it as a CAN frame.
-
-This can result in a buffer overflow. The driver will consume cf->len
-as-is with no further checks on this line:
-
-	dlc = cf->len;
-
-Here, cf->len corresponds to the flags field of the CAN XL frame. In
-our previous example, we set canxl_frame->flags to 0xff. Because the
-maximum expected length is 8, a buffer overflow of 247 bytes occurs a
-couple line below when doing:
-
-	for (i = 0; i < dlc; i++)
-		writel(cf->data[i], priv->base + (dreg + i * 4));
-
-Populate net_device_ops->ndo_change_mtu() to ensure that the
-interface's MTU can not be set to anything bigger than CAN_MTU. By
-fixing the root cause, this prevents the buffer overflow.
-
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-3-0d1cada9393b@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a430c11f4015 ("intel_idle: Rescan "dead" SMT siblings during initialization")
+Fixes: f694481b1d31 ("ACPI: processor: Rescan "dead" SMT siblings during initialization")
+Closes: https://lore.kernel.org/linux-pm/724616a2-6374-4ba3-8ce3-ea9c45e2ae3b@arm.com/
+Reported-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/12740505.O9o76ZdvQC@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/topology.h | 10 ++++++++++
+ arch/x86/kernel/cpu/topology.c  | 13 +++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 3e5aa2e0ea66e..703389f5f0602 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -748,6 +748,7 @@ static const struct net_device_ops sun4ican_netdev_ops = {
- 	.ndo_open = sun4ican_open,
- 	.ndo_stop = sun4ican_close,
- 	.ndo_start_xmit = sun4ican_start_xmit,
-+	.ndo_change_mtu = can_change_mtu,
- };
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 6c79ee7c0957..21041898157a 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -231,6 +231,16 @@ static inline bool topology_is_primary_thread(unsigned int cpu)
+ }
+ #define topology_is_primary_thread topology_is_primary_thread
  
- static const struct of_device_id sun4ican_of_match[] = {
++int topology_get_primary_thread(unsigned int cpu);
++
++static inline bool topology_is_core_online(unsigned int cpu)
++{
++	int pcpu = topology_get_primary_thread(cpu);
++
++	return pcpu >= 0 ? cpu_online(pcpu) : false;
++}
++#define topology_is_core_online topology_is_core_online
++
+ #else /* CONFIG_SMP */
+ static inline int topology_phys_to_logical_pkg(unsigned int pkg) { return 0; }
+ static inline int topology_max_smt_threads(void) { return 1; }
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index e35ccdc84910..6073a16628f9 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -372,6 +372,19 @@ unsigned int topology_unit_count(u32 apicid, enum x86_topology_domains which_uni
+ 	return topo_unit_count(lvlid, at_level, apic_maps[which_units].map);
+ }
+ 
++#ifdef CONFIG_SMP
++int topology_get_primary_thread(unsigned int cpu)
++{
++	u32 apic_id = cpuid_to_apicid[cpu];
++
++	/*
++	 * Get the core domain level APIC id, which is the primary thread
++	 * and return the CPU number assigned to it.
++	 */
++	return topo_lookup_cpuid(topo_apicid(apic_id, TOPO_CORE_DOMAIN));
++}
++#endif
++
+ #ifdef CONFIG_ACPI_HOTPLUG_CPU
+ /**
+  * topology_hotplug_apic - Handle a physical hotplugged APIC after boot
 -- 
 2.51.0
 
