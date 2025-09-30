@@ -1,126 +1,120 @@
-Return-Path: <stable+bounces-182845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AF7BAE2A5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 19:23:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798F5BAE2B7
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 19:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC6D27A41B0
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:21:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CC4D32511D
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C97230C0FF;
-	Tue, 30 Sep 2025 17:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7B726B0AE;
+	Tue, 30 Sep 2025 17:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J+9hjDoH"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="e0XNhCO0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6FD26B0AE
-	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 17:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8E68287E
+	for <stable@vger.kernel.org>; Tue, 30 Sep 2025 17:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759253004; cv=none; b=NPGBRMmNJ1NPiqgFhG9aBdheyToLLwEitHqkH2OAbUN9h9auF4BGsLd4NwXKZCZgU+bEaZETxYcy4SHEA3AmmlQ2nEmn1nyh/BatjSbY6d4U56G+/v5uoRtb9YeBrPSxCvXSTRaJLWX9ymDfwJJgMzGgehZTZTNF8We/AW1FmyQ=
+	t=1759253287; cv=none; b=gJTWwcCC9txLx3OEln9GDJ1oaANqQuTesBdeE6lbhjx4t2EeabBY7xqs6BIUYGkybiOhC6w63wnwe5j4x76uu9pZaAQheC3zFdkk/p0gP8co6VBvcgGDTBcMuBxQ/N2aHEsDrA5llxh34DD56B8+BBo4KDpwvcoFOM2WHVJPdtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759253004; c=relaxed/simple;
-	bh=Gmprb3G0hVbY/wqnk/AWfgc0XcA4SLvjCB8vCR8Kz1U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ATpy8RM6qk2Z1MUEtlyhJ9mis3Es065qwcPp03GDZ/Ll7zYB2Ox3D68YvXHZW1eKqNraH7kgkAb5NBze3j+XEgx1oeOWuY03aufMEx57RogCj23mGR9ki/4edINTSCD597yaVjTofIpP4whfatB5IKn+PtH5pRfAJBsew3ww1tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J+9hjDoH; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4dd7233b407so54960571cf.1
-        for <stable@vger.kernel.org>; Tue, 30 Sep 2025 10:23:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759253000; x=1759857800; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sNXg0KH+3u6gOVaOqmzWivNbyQ6+EgiPLfdVOQgDUu0=;
-        b=J+9hjDoHRYzJQxLIASQpF85NhmT8TKvp0GMN7GlIFhHhG5RGsAXDYebJDXMr1GD6pb
-         OPUVoH8SIl+E607J9M533JIRiMYO8EpRdNeCd+kKU0ZmVmsDCKh/+LesbtfjTqf7r36r
-         X/FpGULbPwqgQFqo6Z0NYqRSv41yELkQYqav/rPRHr7iiNkkUqoaR9n5NamqSqp7J64l
-         pRMypillSb06sU7eL73TuOfOu/LW5+ZH8/08u9zt+VhVbTiJuIEktN9wfpTYBb1i0g7G
-         t9qfEDrjtDDHMeOS4yX+fs3B+w61XRTcsVBN51Rt8U0MnwMv3wGttLvImvIxWEbnJ9D4
-         qO7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759253000; x=1759857800;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sNXg0KH+3u6gOVaOqmzWivNbyQ6+EgiPLfdVOQgDUu0=;
-        b=bLvyrb+qK+4u3hh0LLtRjFxmDKM90z1z0S1a6VmxBkWbPTE+grbdxM4wvA7LFAIL/8
-         jevOPWiOcBeg5yb5eRHvud3YNfdFt0VRaGURtmOziBysr7Q6QQZMiTVho7uS0eqH16mX
-         pU1mVTClWnQpPDr08j702G6QlO44+qC7UCBCc3pUc6T2hkUbajW9+i7/veNAlK7QUOFM
-         aQl2vEQluDEfKm+/rTDvcv7k9xjxA8IfwRu3Fa7yFGsKHdq74wNC11aF+8UKSZkXjGM6
-         NmpxfUyPnt3jjHz0OJGXrC+oHWKWzb0pUdNZGmqZm6Tevwyb00KquhQV36UwJh3kxp7A
-         cLbw==
-X-Forwarded-Encrypted: i=1; AJvYcCWznJoM5gFbg0saT0SnIQUWesNarTDmL5FBJ2Cg0R0ALdS+Az15kBLGXibIjB+lewrlrQxZNEE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2x9ZpQEKDnh1fZKuOpizs4b9SvUi+TIA3Qo5os8KO6LgLcfdv
-	8IlYySReM2pI2iU2QJZhbwGq0bv5KrPW+HQ+YhweEGM9EyWhKaTEd+Dh
-X-Gm-Gg: ASbGncvk4tef/USdTK0rA8nd5E+1kuow5cWRmuhZIEDc2uXqSyBrcOR6M+aY0Ex3YHI
-	dR5gbKHZPvleuxAXCPqBnEht30bzOftaJmickjDJDcRETbLh4xSMTHuXUK8qYKytCPoqjiOIDkJ
-	y2VrTKKoRdpF2pd+hBINL9FXCrA5m5x085Mdcp9/b+BEKhDVFOV1nrd9J3bnm5zthH5CB50U8Lp
-	NB/PSLrf9BMmbQAo3G4gR8fo0Uyn2YW5T5kOnGHw4Vce/p2zZWNMviFoj7XuNzAuVqyO6P7kFuY
-	+ke5apar5eJE2C6ouQvGSUZozj8pggUR58rzOTKAKwE4hUeRD7dPzDx1hUlqjXgJ7rk6HDDbSIR
-	uqlJGSkr/eAEwXfOkvmo34PG45rE6Ors1p+fZr5SFX4RQrhQKmm471uX1FTCTZrVu6zgHPot3Lw
-	wQuxiSOKJU
-X-Google-Smtp-Source: AGHT+IE6pmTMC5913viVxHCB4hjx7BlppxYkXAL1vAw+AKddbNTwcrXB5U4RHHgog0XwsfyAUet6eA==
-X-Received: by 2002:ac8:5741:0:b0:4b3:4a3a:48b8 with SMTP id d75a77b69052e-4e41e827c5emr4195621cf.73.1759252999952;
-        Tue, 30 Sep 2025 10:23:19 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4db11222768sm101479241cf.37.2025.09.30.10.23.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 10:23:19 -0700 (PDT)
-Message-ID: <3b5693e2-c63b-4977-96ba-72374832dfa4@gmail.com>
-Date: Tue, 30 Sep 2025 10:23:16 -0700
+	s=arc-20240116; t=1759253287; c=relaxed/simple;
+	bh=bN8050SeQ37WVbp086DyHKJ2gMBp8Gfpzlww6eit/+U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Erwzb6ls1xnSyetyS30JSROMcgrvAaYmCpYUNc8qP8XTTZPj3C8Rd11ZmLZF4M4SOBq6cw7/Yj8ciBmfw76EQOsATqLaQZu/GWHgcVrOqWei0o49yn0ZYCHWkbxlfHVn2qiKuJk7kEdk1AGOYYannPMzoQxuBeP+fXuTKZBJUhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=e0XNhCO0; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1759253282;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Kb4vrT1IqfH/wEYBny1isKoOnot4x3idjBMooqMXDo0=;
+	b=e0XNhCO0QY88WWEuyjnQYGLJAO+J9szaoUtDS/hwOGLW5j43As9+o/bLM4nQZrzLxQpPN4
+	dH+lmj5LqCsHXt7krdDygNx8ZENZl+Vs5JD2LbgZT5JUU6Q4+CkWiq93HZ7AGDQqaKJvhU
+	c+3UMMe+dTIZAN+PM3QPkBSFjcr8jUo=
+From: Wen Yang <wen.yang@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wen Yang <wen.yang@linux.dev>
+Subject: [PATCH 6.1 0/6] fix invalid sleeping in detect_cache_attributes()
+Date: Wed,  1 Oct 2025 01:27:25 +0800
+Message-Id: <cover.1759251543.git.wen.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/122] 5.10.245-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250930143822.939301999@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 9/30/25 07:45, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.245 release.
-> There are 122 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 02 Oct 2025 14:37:59 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.245-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+commit 3fcbf1c77d08 ("arch_topology: Fix cache attributes detection
+in the CPU hotplug path")
+adds a call to detect_cache_attributes() to populate the cacheinfo
+before updating the siblings mask. detect_cache_attributes() allocates
+memory and can take the PPTT mutex (on ACPI platforms). On PREEMPT_RT
+kernels, on secondary CPUs, this triggers a:
+  'BUG: sleeping function called from invalid context'
+as the code is executed with preemption and interrupts disabled:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+ | BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+ | in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/111
+ | preempt_count: 1, expected: 0
+ | RCU nest depth: 1, expected: 1
+ | 3 locks held by swapper/111/0:
+ |  #0:  (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x218/0x12c8
+ |  #1:  (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x48/0xf0
+ |  #2:  (&zone->lock){+.+.}-{3:3}, at: rmqueue_bulk+0x64/0xa80
+ | irq event stamp: 0
+ | hardirqs last  enabled at (0):  0x0
+ | hardirqs last disabled at (0):  copy_process+0x5dc/0x1ab8
+ | softirqs last  enabled at (0):  copy_process+0x5dc/0x1ab8
+ | softirqs last disabled at (0):  0x0
+ | Preemption disabled at:
+ |  migrate_enable+0x30/0x130
+ | CPU: 111 PID: 0 Comm: swapper/111 Tainted: G        W          6.0.0-rc4-rt6-[...]
+ | Call trace:
+ |  __kmalloc+0xbc/0x1e8
+ |  detect_cache_attributes+0x2d4/0x5f0
+ |  update_siblings_masks+0x30/0x368
+ |  store_cpu_topology+0x78/0xb8
+ |  secondary_start_kernel+0xd0/0x198
+ |  __secondary_switched+0xb0/0xb4
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+
+Pierre fixed this issue in the upstream 6.3 and the original series is follows:
+https://lore.kernel.org/all/167404285593.885445.6219705651301997538.b4-ty@arm.com/
+
+We also encountered the same issue on 6.1 stable branch,  and need to backport this series.
+
+Pierre Gondois (6):
+  cacheinfo: Use RISC-V's init_cache_level() as generic OF
+    implementation
+  cacheinfo: Return error code in init_of_cache_level()
+  cacheinfo: Check 'cache-unified' property to count cache leaves
+  ACPI: PPTT: Remove acpi_find_cache_levels()
+  ACPI: PPTT: Update acpi_find_last_cache_level() to
+    acpi_get_cache_info()
+  arch_topology: Build cacheinfo from primary CPU
+
+ arch/arm64/kernel/cacheinfo.c |  11 ++-
+ arch/riscv/kernel/cacheinfo.c |  42 -----------
+ drivers/acpi/pptt.c           |  93 +++++++++++++----------
+ drivers/base/arch_topology.c  |  12 ++-
+ drivers/base/cacheinfo.c      | 134 +++++++++++++++++++++++++++++-----
+ include/linux/cacheinfo.h     |  11 ++-
+ 6 files changed, 196 insertions(+), 107 deletions(-)
+
 -- 
-Florian
+2.25.1
+
 
