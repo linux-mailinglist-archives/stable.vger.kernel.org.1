@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-182586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05428BADA92
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:17:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC96BAD860
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E20FD18944D2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:17:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7968316E410
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BBF2F39C0;
-	Tue, 30 Sep 2025 15:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512062FFDE6;
+	Tue, 30 Sep 2025 15:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LD/YsywL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsR2noiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6189D1F1302;
-	Tue, 30 Sep 2025 15:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1CB1FC7C5;
+	Tue, 30 Sep 2025 15:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245426; cv=none; b=guIiYlp3ksZ6KXUwqoVpXKoPSo/2uJdmTL8suJMrOx4jSSY5XHz/Bi7+lG2KM8kUWbAIFHolsl+Gikca5wUdWlbRJ4S1R5Cny0MlZPU0TEtT7NRqsVKe2kpf2Gi6nhduyF0mIFdTGopCqif1PEoXS/dgtFPoCvQ5BBW89INUzEw=
+	t=1759244794; cv=none; b=UkSrfmdbBr7rOgfklOPABj3ezicPx71xWZODHBJDTt/z3x//gjquS0LS+eqEmvSgiKMv+rdNiAAvoMuaE9oYAIcqfwvEMZZFP5NCB2SJe0XkzjdCOQZ9KACize+/rTUs+Yj7qyPu3xwKavDHKoOfa1YERIxOy6A+F2yciXno0aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245426; c=relaxed/simple;
-	bh=V9l172AJq6xwNezKe03UrGwbPZ86V+hzocHePQ+jGHg=;
+	s=arc-20240116; t=1759244794; c=relaxed/simple;
+	bh=e5FFKuUC1YHm/GsR4Fll/+keDJKFCCzorA9hWQJyjrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDJ6sRsAyndcyOtfI5K4QNPYjeUX0WmqGgPyuKCKi+jlUuff85oEbNVyPcs3B1D1XmJhGD2f1FlpNJ94whkxHNbikWfa6Xadj4P6YsKzUHbzmLOaYyrSdwhF3hEtjcn692pYOQtsWjsbM2fmu+GNXhDrfwyWjXEpb87PprNkTXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LD/YsywL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A88C4CEF0;
-	Tue, 30 Sep 2025 15:17:05 +0000 (UTC)
+	 MIME-Version; b=Gd6ACC/N1jWfiEjX5+p02KCtcskPdI9a/ggvXO5EqLV3gEJN+fd8wMEJeGcKIKEn0aiaCFf8pzMiTWsWHMpIGcLuA8bSEXEs2VC46byHZrXZlDcADDlP9YnylcgvnLmvGS4KC0dj/V0Er6mky/21Kom36MupJwgCH3zYcXpZumk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsR2noiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C87FC4CEF0;
+	Tue, 30 Sep 2025 15:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245426;
-	bh=V9l172AJq6xwNezKe03UrGwbPZ86V+hzocHePQ+jGHg=;
+	s=korg; t=1759244793;
+	bh=e5FFKuUC1YHm/GsR4Fll/+keDJKFCCzorA9hWQJyjrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LD/YsywLEu9zWTLECnZEvb8pkzyOvMhUkks/IU22Oxl0P/blDhq1udqyDAGSKY7EL
-	 cefNdyBuRNWvIgpqzmU3JC71nuMSFHnJ8YLsdfrwhnv4uZBoRJ5ePY/+pX+yv3ts3e
-	 zOJ696pC2NEXK4enaeOfCLJi4kkhpAUT3rdvjpWw=
+	b=wsR2noiJAL65v0f/IvGGUI97/tTvYiRMbpWpLVGNZ4CwciW7nliolYkyKJP2KEdMS
+	 FUccCGdJw5yT1LDHbKAkPNZPv4RdSZqq9FIsHzbp669wYDcY5jeheShwID7pw7z1Jt
+	 dFHA4Jz60k6eeWFvZ3123+omSZKgqpyjeLNL8tio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoli An <anguoli@uniontech.com>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/73] ALSA: usb-audio: move mixer_quirks min_mute into common quirk
+	Josua Mayer <josua@solid-run.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.16 115/143] arm64: dts: marvell: cn913x-solidrun: fix sata ports status
 Date: Tue, 30 Sep 2025 16:47:19 +0200
-Message-ID: <20250930143821.192291198@linuxfoundation.org>
+Message-ID: <20250930143835.817174646@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143820.537407601@linuxfoundation.org>
-References: <20250930143820.537407601@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 2c3ca8cc55a3afc7a4fa99ed8f5f5d05dd2e65b3 ]
+commit d3021e6aa11fecdafa85038a037c04d5bfeda9d5 upstream.
 
-We have found more and more devices that have the same problem, that
-the mixer's minimum value is muted. Accroding to pipewire's MR[1]
-and Arch Linux wiki[2], this should be a very common problem in USB
-audio devices. Move the quirk into common quirk,as a preparation of
-more devices' quirk's patch coming on the road[3].
+Commit "arm64: dts: marvell: only enable complete sata nodes" changed
+armada-cp11x.dtsi disabling all sata ports status by default.
 
-1. https://gitlab.freedesktop.org/pipewire/pipewire/-/merge_requests/2514
-2. https://wiki.archlinux.org/index.php?title=PipeWire&oldid=804138#No_sound_from_USB_DAC_until_30%_volume
-3. On the road, in the physical sense. We have been buying ton of
-   these devices for testing the problem.
+The author missed some dts which relied on the dtsi enabling all ports,
+and just disabled unused ones instead.
 
-Tested-by: Guoli An <anguoli@uniontech.com>
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
-Link: https://patch.msgid.link/20250827-sound-quirk-min-mute-v1-1-4717aa8a4f6a@uniontech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Update dts for SolidRun cn913x based boards to enable the available
+ports, rather than disabling the unvavailable one.
+
+Further according to dt bindings the serdes phys are to be specified in
+the port node, not the controller node.
+Move those phys properties accordingly in clearfog base/pro/solidwan.
+
+Fixes: 30023876aef4 ("arm64: dts: marvell: only enable complete sata nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 10 +++-------
- sound/usb/quirks.c       | 12 ++++++++++--
- sound/usb/usbaudio.h     |  4 ++++
- 3 files changed, 17 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/marvell/cn9130-cf.dtsi         | 7 ++++---
+ arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts | 6 ++++--
+ arch/arm64/boot/dts/marvell/cn9132-clearfog.dts    | 6 ++----
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 8c0b8383abe1e..270a0be672b7e 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3899,16 +3899,12 @@ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
- 		if (unitid == 7 && cval->control == UAC_FU_VOLUME)
- 			snd_dragonfly_quirk_db_scale(mixer, cval, kctl);
- 		break;
-+	}
-+
- 	/* lowest playback value is muted on some devices */
--	case USB_ID(0x0572, 0x1b09): /* Conexant Systems (Rockwell), Inc. */
--	case USB_ID(0x0d8c, 0x000c): /* C-Media */
--	case USB_ID(0x0d8c, 0x0014): /* C-Media */
--	case USB_ID(0x19f7, 0x0003): /* RODE NT-USB */
--	case USB_ID(0x2d99, 0x0026): /* HECATE G2 GAMING HEADSET */
-+	if (mixer->chip->quirk_flags & QUIRK_FLAG_MIXER_MIN_MUTE)
- 		if (strstr(kctl->id.name, "Playback"))
- 			cval->min_mute = 1;
--		break;
--	}
+diff --git a/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi b/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
+index ad0ab34b6602..bd42bfbe408b 100644
+--- a/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
++++ b/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
+@@ -152,11 +152,12 @@ expander0_pins: cp0-expander0-pins {
  
- 	/* ALSA-ify some Plantronics headset control names */
- 	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index d4f4466b028c8..5b1aa5c418999 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2094,6 +2094,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_SET_IFACE_FIRST),
- 	DEVICE_FLG(0x0556, 0x0014, /* Phoenix Audio TMX320VC */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x0572, 0x1b09, /* Conexant Systems (Rockwell), Inc. */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x05a3, 0x9420, /* ELP HD USB Camera */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x05a7, 0x1020, /* Bose Companion 5 */
-@@ -2140,8 +2142,10 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x0c45, 0x636b, /* Microdia JP001 USB Camera */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
--	DEVICE_FLG(0x0d8c, 0x0014, /* USB Audio Device */
--		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
-+	DEVICE_FLG(0x0d8c, 0x000c, /* C-Media */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
-+	DEVICE_FLG(0x0d8c, 0x0014, /* C-Media */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x0ecb, 0x205c, /* JBL Quantum610 Wireless */
- 		   QUIRK_FLAG_FIXED_RATE),
- 	DEVICE_FLG(0x0ecb, 0x2069, /* JBL Quantum810 Wireless */
-@@ -2188,6 +2192,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
- 	DEVICE_FLG(0x1901, 0x0191, /* GE B850V3 CP2114 audio interface */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x19f7, 0x0003, /* RODE NT-USB */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x19f7, 0x0035, /* RODE NT-USB+ */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x1bcf, 0x2281, /* HD Webcam */
-@@ -2248,6 +2254,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
-+	DEVICE_FLG(0x2d99, 0x0026, /* HECATE G2 GAMING HEADSET */
-+		   QUIRK_FLAG_MIXER_MIN_MUTE),
- 	DEVICE_FLG(0x2fc6, 0xf0b7, /* iBasso DC07 Pro */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
-diff --git a/sound/usb/usbaudio.h b/sound/usb/usbaudio.h
-index 65dcb1a02e976..17db6a7f3a844 100644
---- a/sound/usb/usbaudio.h
-+++ b/sound/usb/usbaudio.h
-@@ -180,6 +180,9 @@ extern bool snd_usb_skip_validation;
-  *  for the given endpoint.
-  * QUIRK_FLAG_MIC_RES_16 and QUIRK_FLAG_MIC_RES_384
-  *  Set the fixed resolution for Mic Capture Volume (mostly for webcams)
-+ * QUIRK_FLAG_MIXER_MIN_MUTE
-+ *  Set minimum volume control value as mute for devices where the lowest
-+ *  playback value represents muted state instead of minimum audible volume
-  */
+ /* SRDS #0 - SATA on M.2 connector */
+ &cp0_sata0 {
+-	phys = <&cp0_comphy0 1>;
+ 	status = "okay";
  
- #define QUIRK_FLAG_GET_SAMPLE_RATE	(1U << 0)
-@@ -206,5 +209,6 @@ extern bool snd_usb_skip_validation;
- #define QUIRK_FLAG_FIXED_RATE		(1U << 21)
- #define QUIRK_FLAG_MIC_RES_16		(1U << 22)
- #define QUIRK_FLAG_MIC_RES_384		(1U << 23)
-+#define QUIRK_FLAG_MIXER_MIN_MUTE	(1U << 24)
+-	/* only port 1 is available */
+-	/delete-node/ sata-port@0;
++	sata-port@1 {
++		phys = <&cp0_comphy0 1>;
++		status = "okay";
++	};
+ };
  
- #endif /* __USBAUDIO_H */
+ /* microSD */
+diff --git a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
+index 47234d0858dd..338853d3b179 100644
+--- a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
++++ b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
+@@ -563,11 +563,13 @@ &cp1_rtc {
+ 
+ /* SRDS #1 - SATA on M.2 (J44) */
+ &cp1_sata0 {
+-	phys = <&cp1_comphy1 0>;
+ 	status = "okay";
+ 
+ 	/* only port 0 is available */
+-	/delete-node/ sata-port@1;
++	sata-port@0 {
++		phys = <&cp1_comphy1 0>;
++		status = "okay";
++	};
+ };
+ 
+ &cp1_syscon0 {
+diff --git a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts b/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
+index 0f53745a6fa0..115c55d73786 100644
+--- a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
++++ b/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
+@@ -512,10 +512,9 @@ &cp1_sata0 {
+ 	status = "okay";
+ 
+ 	/* only port 1 is available */
+-	/delete-node/ sata-port@0;
+-
+ 	sata-port@1 {
+ 		phys = <&cp1_comphy3 1>;
++		status = "okay";
+ 	};
+ };
+ 
+@@ -631,9 +630,8 @@ &cp2_sata0 {
+ 	status = "okay";
+ 
+ 	/* only port 1 is available */
+-	/delete-node/ sata-port@0;
+-
+ 	sata-port@1 {
++		status = "okay";
+ 		phys = <&cp2_comphy3 1>;
+ 	};
+ };
 -- 
 2.51.0
 
