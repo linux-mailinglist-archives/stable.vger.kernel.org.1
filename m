@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-182519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6372CBAD9F2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:13:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBC2BAD692
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27B8E19202D5
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:14:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D5B51942233
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7463081D6;
-	Tue, 30 Sep 2025 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11EE2FFDE6;
+	Tue, 30 Sep 2025 14:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPJCHPXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIJLr6vE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579362FFDE6;
-	Tue, 30 Sep 2025 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0214D8CE;
+	Tue, 30 Sep 2025 14:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759245210; cv=none; b=XULIx+T40Y9bMwjZvzDnKq9uP0O01rggnH7AKjtddnKoaZIcIumcNrqc26IpJxIVjFsQ3Hr0g6Uxco7g41D7t3xTkgGqMXy8js7LniZlfFPkhTUmhS9VNhi0gLcAi1IK8mA4hFYdnkMF8LDIBPNmzFu39BTURkeNR2wBQfcUbv4=
+	t=1759244335; cv=none; b=L45oOg/+cww1SY3nyAMQCpA27q+e5rKvqWGb4/c3N0eK6bU2UwgXEMjaFrXuknvA/wWqthwDKLrfnc4m14JCTkev3MOzNP+sbwKimPW4AVo0yncJD++CEw6vHeqcX2sw2AL1sQeaAfPpXpBe1eFPoqJLaaEkYeT34sYI8l3n0ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759245210; c=relaxed/simple;
-	bh=6peGh7Hp6WdCqz9eVeH4l9t5DQrKwtvGg3UvS8rzSWk=;
+	s=arc-20240116; t=1759244335; c=relaxed/simple;
+	bh=jXRlOUnTli/uIt3NiHTyjASnciEGeglSlouCT+kceTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQPzRgGtFqVFC641a3jmJp9+MF0kU1fDQy5WFdNMizezVDvcXQ363vjuGl+R+8VU1SWzB/jRGGhGurCodSEU6DADXjf76C83yTFiXJDGASYQ35WD4RaPrVrcPluR+3CIKTsaUUot9m8/J0+WxxIjyUdWOiZlJG+eA/rxtX+5ulc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPJCHPXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FD9C4CEF0;
-	Tue, 30 Sep 2025 15:13:29 +0000 (UTC)
+	 MIME-Version; b=tGu8DseunMZcTT7VcDtWqH8Sr3SEZITz6vwyEggmERE+Wj1/9D4LBXmWWlJby8JIGGw8ktMvw3OjNbXPQ6bt1Q9r4E2RRfAZYPCvtwTt/A1LPcR6JxXUa9yK5dSj8p9GIq5wKhwEyUVlzl/QmIPaGFt7jA71Fs64lzHvicfQt3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIJLr6vE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C1BC4CEF0;
+	Tue, 30 Sep 2025 14:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759245210;
-	bh=6peGh7Hp6WdCqz9eVeH4l9t5DQrKwtvGg3UvS8rzSWk=;
+	s=korg; t=1759244335;
+	bh=jXRlOUnTli/uIt3NiHTyjASnciEGeglSlouCT+kceTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPJCHPXkPyAJaDXoxmkg/s8C6iamip8XViRVZg/laivhxk2nzxSaeLQP5Kbw8PlbO
-	 CykDAsOjjGclkxPxSBj5KoXPTX36ER+mkmsv/olO5y2q925TndFBxk4az6yQzk8yQ7
-	 oCJyzSIU0dJBbW/eLNhzIkozg5ra9THObfLT8/hA=
+	b=tIJLr6vEIpPxVnHVo9D8wJ93AqF/VyfusJtmvE8EJUZjkLrCY7w8i1FNI7kxt0mbk
+	 E+bWHSxG56FThMe52eRAGqpbAKMQQpEsnM3XrTsq61fLdggugYLyYAaWT3IXvf4Rtb
+	 7iingRKGWYq+CaqpbBw9V+Xxseckbw00HO1Gr8X4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/151] mptcp: propagate shutdown to subflows when possible
+Subject: [PATCH 5.10 099/122] can: mcba_usb: populate ndo_change_mtu() to prevent buffer overflow
 Date: Tue, 30 Sep 2025 16:47:10 +0200
-Message-ID: <20250930143831.581421085@linuxfoundation.org>
+Message-ID: <20250930143827.040763005@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143827.587035735@linuxfoundation.org>
-References: <20250930143827.587035735@linuxfoundation.org>
+In-Reply-To: <20250930143822.939301999@linuxfoundation.org>
+References: <20250930143822.939301999@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-[ Upstream commit f755be0b1ff429a2ecf709beeb1bcd7abc111c2b ]
+[ Upstream commit 17c8d794527f01def0d1c8b7dc2d7b8d34fed0e6 ]
 
-When the MPTCP DATA FIN have been ACKed, there is no more MPTCP related
-metadata to exchange, and all subflows can be safely shutdown.
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-Before this patch, the subflows were actually terminated at 'close()'
-time. That's certainly fine most of the time, but not when the userspace
-'shutdown()' a connection, without close()ing it. When doing so, the
-subflows were staying in LAST_ACK state on one side -- and consequently
-in FIN_WAIT2 on the other side -- until the 'close()' of the MPTCP
-socket.
+Unfortunately, because the mcba_usb driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
 
-Now, when the DATA FIN have been ACKed, all subflows are shutdown. A
-consequence of this is that the TCP 'FIN' flag can be set earlier now,
-but the end result is the same. This affects the packetdrill tests
-looking at the end of the MPTCP connections, but for a good reason.
+  $ ip link set can0 mtu 9999
 
-Note that tcp_shutdown() will check the subflow state, so no need to do
-that again before calling it.
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
 
-Fixes: 3721b9b64676 ("mptcp: Track received DATA_FIN sequence number and add related helpers")
-Cc: stable@vger.kernel.org
-Fixes: 16a9a9da1723 ("mptcp: Add helper to process acks of DATA_FIN")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250912-net-mptcp-fix-sft-connect-v1-1-d40e77cbbf02@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+
+to inject a malicious CAN XL frames. For example:
+
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
+
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
+
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
+
+  2. the length is a valid CAN XL length.
+
+And so, mcba_usb_start_xmit() receives a CAN XL frame which it is not
+able to correctly handle and will thus misinterpret it as a CAN frame.
+
+This can result in a buffer overflow. The driver will consume cf->len
+as-is with no further checks on these lines:
+
+	usb_msg.dlc = cf->len;
+
+	memcpy(usb_msg.data, cf->data, usb_msg.dlc);
+
+Here, cf->len corresponds to the flags field of the CAN XL frame. In
+our previous example, we set canxl_frame->flags to 0xff. Because the
+maximum expected length is 8, a buffer overflow of 247 bytes occurs!
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU. By
+fixing the root cause, this prevents the buffer overflow.
+
+Fixes: 51f3baad7de9 ("can: mcba_usb: Add support for Microchip CAN BUS Analyzer")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-4-0d1cada9393b@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/can/usb/mcba_usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -354,6 +354,19 @@ static void mptcp_close_wake_up(struct s
- 		sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
- }
+diff --git a/drivers/net/can/usb/mcba_usb.c b/drivers/net/can/usb/mcba_usb.c
+index c07e327929ba5..7179eb0fedb1e 100644
+--- a/drivers/net/can/usb/mcba_usb.c
++++ b/drivers/net/can/usb/mcba_usb.c
+@@ -769,6 +769,7 @@ static const struct net_device_ops mcba_netdev_ops = {
+ 	.ndo_open = mcba_usb_open,
+ 	.ndo_stop = mcba_usb_close,
+ 	.ndo_start_xmit = mcba_usb_start_xmit,
++	.ndo_change_mtu = can_change_mtu,
+ };
  
-+static void mptcp_shutdown_subflows(struct mptcp_sock *msk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		bool slow;
-+
-+		slow = lock_sock_fast(ssk);
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+		unlock_sock_fast(ssk, slow);
-+	}
-+}
- static bool mptcp_pending_data_fin_ack(struct sock *sk)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
-@@ -377,6 +390,7 @@ static void mptcp_check_data_fin_ack(str
- 			break;
- 		case TCP_CLOSING:
- 		case TCP_LAST_ACK:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		}
-@@ -539,6 +553,7 @@ static bool mptcp_check_data_fin(struct
- 			inet_sk_state_store(sk, TCP_CLOSING);
- 			break;
- 		case TCP_FIN_WAIT2:
-+			mptcp_shutdown_subflows(msk);
- 			inet_sk_state_store(sk, TCP_CLOSE);
- 			break;
- 		default:
+ /* Microchip CANBUS has hardcoded bittiming values by default.
+-- 
+2.51.0
+
 
 
 
