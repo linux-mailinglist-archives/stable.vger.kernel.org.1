@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-182125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DED4BAD4E2
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 16:52:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA36BAD7B2
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 17:04:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA6B4A3236
-	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 14:51:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6CF5324DC8
+	for <lists+stable@lfdr.de>; Tue, 30 Sep 2025 15:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170062FFDE6;
-	Tue, 30 Sep 2025 14:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8162427C872;
+	Tue, 30 Sep 2025 15:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SxfY3b1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mD6ajzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75531E3DF2;
-	Tue, 30 Sep 2025 14:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D981EE02F;
+	Tue, 30 Sep 2025 15:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759243917; cv=none; b=FuX4EBhuGKccC/82bPh6wgLSlACMC0DZaj8OoDNrVNoy+VJDScvpd65QHvF1LFg/nzMF/BdMZH3Vhu9w8L7dmA0UNCenGh09xlhcP2ylOb4nbGwRuODHnakbl2QDwjFMdnv+McJHbsAIYrxgM0hbnItGGtt2f3HboOP0NN/bScY=
+	t=1759244627; cv=none; b=eQAY6deQ5suMGO4ctXXSACbVkoDWFxxuaZZmlVONLJd5+a2E6oXyBh7GzxRdoUgDI0fY9fscY1qQtxssZP1K63RVMU50evC/PDpv1iqu1L2P8T+lEHJgkRQE7YHLNtRT5LUkTR+4+OST4Dqi66zSOaIx324Y5ZjLNN9ag8G3REw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759243917; c=relaxed/simple;
-	bh=SEQEP4OGeglMRHA2OXXcsrWpiNY6y6hqI6Qq5zLZbRk=;
+	s=arc-20240116; t=1759244627; c=relaxed/simple;
+	bh=HKxpE/lHiBVXt8D5ON61NSoZnlp2oeGztgnobqID6No=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NE180E2TFs8q+8mwSh7SyWM6gXhqKqhtRBvOG+TbzJ30WZcfiYHeXiVbdL+Aq33r+RuINi4ucdSehFslNyf9TKbRNd7F1qdeMhLlGZPMUovueRH52K3nhjL23egWX7RWad9l8nnL0xxIZs0pWD4D+hXQbFnbJoNBFJI8KeFWjwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SxfY3b1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36018C4CEF0;
-	Tue, 30 Sep 2025 14:51:57 +0000 (UTC)
+	 MIME-Version; b=AyEyN7BYiLySUxZV2NIc/uX6SjFy7slVPIChzbHIivZgv3WBWGqgB2MIXJGITPkhMmKeUtEFs0Ld8T4eOyeTBg4Nb0PMQxvDK5hfkDyWWi+9aRInHKjuMlptlNmFWDqIJ732k4nVCyXGX+pcyFAEe27m59fyg1jLNYnopq/vmYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mD6ajzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E4EC4CEF0;
+	Tue, 30 Sep 2025 15:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1759243917;
-	bh=SEQEP4OGeglMRHA2OXXcsrWpiNY6y6hqI6Qq5zLZbRk=;
+	s=korg; t=1759244626;
+	bh=HKxpE/lHiBVXt8D5ON61NSoZnlp2oeGztgnobqID6No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1SxfY3b1jcrOTbWsHoUw4Hr4VcAD0pU/NdirvGKA8293KRXjiTAUrzurbBRbGBVf6
-	 4M+KtGXbiX/cK3WysapBoK705tCckEtJSutSd3G8m/HqQbpSfQqgXQeADVb6yQ/6sl
-	 uCHSDVNAIJnLYLZFxYoabagCvWNh2rCiW/cRfFf8=
+	b=2mD6ajzIP/UDCiZwWVhvrCadLzwHcpzi+FAEPrafq4zWB4Y86Ln4FaOvwWjVQMyDb
+	 hXRTbAgvlxmQR+6Sjx7CV1a5+s0gbGdGjXeKb/NkyR49Cb15UF6T6SPJTa0fvfUivh
+	 uD95Ufe66qpGd+haRiK3gpK3Acr12ZjDwRCdWn2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.4 28/81] phy: ti-pipe3: fix device leak at unbind
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 066/143] net/smc: fix warning in smc_rx_splice() when calling get_page()
 Date: Tue, 30 Sep 2025 16:46:30 +0200
-Message-ID: <20250930143820.840678019@linuxfoundation.org>
+Message-ID: <20250930143833.866459449@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930143819.654157320@linuxfoundation.org>
-References: <20250930143819.654157320@linuxfoundation.org>
+In-Reply-To: <20250930143831.236060637@linuxfoundation.org>
+References: <20250930143831.236060637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
 
-commit e19bcea99749ce8e8f1d359f68ae03210694ad56 upstream.
+[ Upstream commit a35c04de2565db191726b5741e6b66a35002c652 ]
 
-Make sure to drop the reference to the control device taken by
-of_find_device_by_node() during probe when the driver is unbound.
+smc_lo_register_dmb() allocates DMB buffers with kzalloc(), which are
+later passed to get_page() in smc_rx_splice(). Since kmalloc memory is
+not page-backed, this triggers WARN_ON_ONCE() in get_page() and prevents
+holding a refcount on the buffer. This can lead to use-after-free if
+the memory is released before splice_to_pipe() completes.
 
-Fixes: 918ee0d21ba4 ("usb: phy: omap-usb3: Don't use omap_get_control_dev()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250724131206.2211-4-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use folio_alloc() instead, ensuring DMBs are page-backed and safe for
+get_page().
+
+WARNING: CPU: 18 PID: 12152 at ./include/linux/mm.h:1330 smc_rx_splice+0xaf8/0xe20 [smc]
+CPU: 18 UID: 0 PID: 12152 Comm: smcapp Kdump: loaded Not tainted 6.17.0-rc3-11705-g9cf4672ecfee #10 NONE
+Hardware name: IBM 3931 A01 704 (z/VM 7.4.0)
+Krnl PSW : 0704e00180000000 000793161032696c (smc_rx_splice+0xafc/0xe20 [smc])
+           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
+Krnl GPRS: 0000000000000000 001cee80007d3001 00077400000000f8 0000000000000005
+           0000000000000001 001cee80007d3006 0007740000001000 001c000000000000
+           000000009b0c99e0 0000000000001000 001c0000000000f8 001c000000000000
+           000003ffcc6f7c88 0007740003e98000 0007931600000005 000792969b2ff7b8
+Krnl Code: 0007931610326960: af000000		mc	0,0
+           0007931610326964: a7f4ff43		brc	15,00079316103267ea
+          #0007931610326968: af000000		mc	0,0
+          >000793161032696c: a7f4ff3f		brc	15,00079316103267ea
+           0007931610326970: e320f1000004	lg	%r2,256(%r15)
+           0007931610326976: c0e53fd1b5f5	brasl	%r14,000793168fd5d560
+           000793161032697c: a7f4fbb5		brc	15,00079316103260e6
+           0007931610326980: b904002b		lgr	%r2,%r11
+Call Trace:
+ smc_rx_splice+0xafc/0xe20 [smc]
+ smc_rx_splice+0x756/0xe20 [smc])
+ smc_rx_recvmsg+0xa74/0xe00 [smc]
+ smc_splice_read+0x1ce/0x3b0 [smc]
+ sock_splice_read+0xa2/0xf0
+ do_splice_read+0x198/0x240
+ splice_file_to_pipe+0x7e/0x110
+ do_splice+0x59e/0xde0
+ __do_splice+0x11a/0x2d0
+ __s390x_sys_splice+0x140/0x1f0
+ __do_syscall+0x122/0x280
+ system_call+0x6e/0x90
+Last Breaking-Event-Address:
+smc_rx_splice+0x960/0xe20 [smc]
+---[ end trace 0000000000000000 ]---
+
+Fixes: f7a22071dbf3 ("net/smc: implement DMB-related operations of loopback-ism")
+Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Signed-off-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Link: https://patch.msgid.link/20250917184220.801066-1-sidraya@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-ti-pipe3.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/smc/smc_loopback.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/phy/ti/phy-ti-pipe3.c
-+++ b/drivers/phy/ti/phy-ti-pipe3.c
-@@ -667,12 +667,20 @@ static int ti_pipe3_get_clk(struct ti_pi
- 	return 0;
- }
- 
-+static void ti_pipe3_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int ti_pipe3_get_sysctrl(struct ti_pipe3 *phy)
+diff --git a/net/smc/smc_loopback.c b/net/smc/smc_loopback.c
+index 3c5f64ca41153..85f0b7853b173 100644
+--- a/net/smc/smc_loopback.c
++++ b/net/smc/smc_loopback.c
+@@ -56,6 +56,7 @@ static int smc_lo_register_dmb(struct smcd_dev *smcd, struct smcd_dmb *dmb,
  {
- 	struct device *dev = phy->dev;
- 	struct device_node *node = dev->of_node;
- 	struct device_node *control_node;
- 	struct platform_device *control_pdev;
-+	int ret;
+ 	struct smc_lo_dmb_node *dmb_node, *tmp_node;
+ 	struct smc_lo_dev *ldev = smcd->priv;
++	struct folio *folio;
+ 	int sba_idx, rc;
  
- 	phy->phy_power_syscon = syscon_regmap_lookup_by_phandle(node,
- 							"syscon-phy-power");
-@@ -703,6 +711,11 @@ static int ti_pipe3_get_sysctrl(struct t
- 		}
+ 	/* check space for new dmb */
+@@ -74,13 +75,16 @@ static int smc_lo_register_dmb(struct smcd_dev *smcd, struct smcd_dmb *dmb,
  
- 		phy->control_dev = &control_pdev->dev;
+ 	dmb_node->sba_idx = sba_idx;
+ 	dmb_node->len = dmb->dmb_len;
+-	dmb_node->cpu_addr = kzalloc(dmb_node->len, GFP_KERNEL |
+-				     __GFP_NOWARN | __GFP_NORETRY |
+-				     __GFP_NOMEMALLOC);
+-	if (!dmb_node->cpu_addr) {
 +
-+		ret = devm_add_action_or_reset(dev, ti_pipe3_put_device,
-+					       phy->control_dev);
-+		if (ret)
-+			return ret;
++	/* not critical; fail under memory pressure and fallback to TCP */
++	folio = folio_alloc(GFP_KERNEL | __GFP_NOWARN | __GFP_NOMEMALLOC |
++			    __GFP_NORETRY | __GFP_ZERO,
++			    get_order(dmb_node->len));
++	if (!folio) {
+ 		rc = -ENOMEM;
+ 		goto err_node;
  	}
++	dmb_node->cpu_addr = folio_address(folio);
+ 	dmb_node->dma_addr = SMC_DMA_ADDR_INVALID;
+ 	refcount_set(&dmb_node->refcnt, 1);
  
- 	if (phy->mode == PIPE3_MODE_PCIE) {
+@@ -122,7 +126,7 @@ static void __smc_lo_unregister_dmb(struct smc_lo_dev *ldev,
+ 	write_unlock_bh(&ldev->dmb_ht_lock);
+ 
+ 	clear_bit(dmb_node->sba_idx, ldev->sba_idx_mask);
+-	kvfree(dmb_node->cpu_addr);
++	folio_put(virt_to_folio(dmb_node->cpu_addr));
+ 	kfree(dmb_node);
+ 
+ 	if (atomic_dec_and_test(&ldev->dmb_cnt))
+-- 
+2.51.0
+
 
 
 
